@@ -62,3 +62,12 @@ export function trackerSpokeStatus(links: readonly TrackerSpokeLoopService[]) {
 		...(peer && { peer: peer.status() })
 	};
 }
+
+export function validateTrackerLinks(options: TrackerNativeRuntimeOptions): void {
+	const { links = [], role, recurring, notification } = options;
+	if (role === 'hub' && links.length) throw new TypeError('A Tracker hub cannot have spoke links');
+	if (recurring && (role !== 'hub' || !notification?.webhook))
+		throw new TypeError('Tracker recurrence needs a hub with a configured notification outbox');
+	const kinds = new Set(links.map((link) => link.link ?? 'hub'));
+	if (kinds.size !== links.length) throw new TypeError('Duplicate Tracker spoke link');
+}

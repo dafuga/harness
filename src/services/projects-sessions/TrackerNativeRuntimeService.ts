@@ -23,7 +23,8 @@ import { composeTrackerDispatch } from './tracker-native-runtime-service/nativeT
 import {
 	composeTrackerLinks,
 	composeTrackerTelemetry,
-	trackerSpokeStatus
+	trackerSpokeStatus,
+	validateTrackerLinks
 } from './tracker-native-runtime-service/nativeTrackerLinks';
 import { configuredTrackerDestinations } from './tracker-native-runtime-service/configuredTrackerDestinations';
 
@@ -47,7 +48,7 @@ export class TrackerNativeRuntimeService {
 	private readonly links: TrackerSpokeLoopService[];
 
 	constructor(database: SqliteDatabase, options: TrackerNativeRuntimeOptions) {
-		validateLinks(options);
+		validateTrackerLinks(options);
 		const { node, now, storage, hostEffects } = options;
 		const store = new TrackerPersistenceService(database, node, { ...storage, now });
 		this.store = store;
@@ -135,19 +136,6 @@ function composeResponder(
 	if (!syncResponder) return undefined;
 	const runStore = dispatch ? () => runs : undefined;
 	return new TrackerHubSyncService({ runs: runStore, ...syncResponder, store });
-}
-
-function validateLinks({
-	links = [],
-	role,
-	recurring,
-	notification
-}: TrackerNativeRuntimeOptions): void {
-	if (role === 'hub' && links.length) throw new TypeError('A Tracker hub cannot have spoke links');
-	if (recurring && (role !== 'hub' || !notification?.webhook))
-		throw new TypeError('Tracker recurrence needs a hub with a configured notification outbox');
-	const kinds = new Set(links.map((link) => link.link ?? 'hub'));
-	if (kinds.size !== links.length) throw new TypeError('Duplicate Tracker spoke link');
 }
 
 function composeRecurrence(

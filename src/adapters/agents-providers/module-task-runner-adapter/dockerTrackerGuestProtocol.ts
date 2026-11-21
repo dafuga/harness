@@ -28,10 +28,11 @@ const command = z.tuple([trackerGuestItemId, action, text]);
 
 export function scopedTrackerGuestRequest(
 	frame: string,
-	{ itemId, runId }: Pick<TrackerGuestGrant, 'itemId' | 'runId'>
+	scope: Pick<TrackerGuestGrant, 'itemId' | 'runId'>
 ): TrackerGuestRequest | undefined {
 	const request = command.safeParse(JSON.parse(frame));
 	if (!request.success) return undefined;
+	const { itemId, runId } = scope;
 	const [id, verb, value] = request.data;
 	if (!itemId.startsWith(id)) return undefined;
 	const parsed = trackerGuestRequestSchema.safeParse([itemId, runId, verb, value]);
@@ -41,8 +42,9 @@ export function scopedTrackerGuestRequest(
 /** Use a domain-separated key confined to a single local run and item. */
 export function deriveTrackerGuestKey(
 	secret: string | Uint8Array,
-	{ node, itemId, runId, attemptKey }: TrackerGuestIdentity
+	identity: TrackerGuestIdentity
 ): Buffer {
+	const { node, itemId, runId, attemptKey } = identity;
 	return createHmac('sha256', secret)
 		.update(JSON.stringify(['harness-tracker-guest/v1', node, itemId, runId, attemptKey]))
 		.digest();

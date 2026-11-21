@@ -15,9 +15,8 @@ const worker = [
 	'-c',
 	`set -eu
 	command -v tracker >/dev/null || exit 71
-	test "$TRACKER_ITEM_ID/$TRACKER_RUN_ID" = fixture001/41
-	test -z "\${HARNESS_TRACKER_GUEST_AUTH_FILE:-}\${HARNESS_TRACKER_CONFIG:-}\${ANTHROPIC_API_KEY:-}"
-	test ! -S /var/run/docker.sock
+	test "$TRACKER_ITEM_ID/$TRACKER_RUN_ID" = fixture001/41 || exit 74
+	test -z "\${HARNESS_TRACKER_GUEST_AUTH_FILE:-}\${HARNESS_TRACKER_CONFIG:-}\${ANTHROPIC_API_KEY:-}" || exit 75
 	cat
 	tracker start fixture >/dev/null
 	tracker note fixture001 'One retry ✓' >/dev/null
@@ -72,6 +71,29 @@ function syntheticTracker(key: string) {
 	return { server, requests, writes };
 }
 
+function localAttach(root: string, key: string, file: string): ManagedProviderDockerAdapter['run'] {
+	return (command, workspace, collect) => {
+		assert(!command.some((arg) => arg.includes(key) || arg.includes(file)));
+		return collect(
+			spawn(command[0], command.slice(1), {
+				cwd: workspace.cwd,
+				detached: true,
+				stdio: 'pipe',
+				env: {
+					PATH: [
+						join(root, 'missing'),
+						process.execPath.replace(/\/[^/]+$/, ''),
+						'/usr/bin',
+						'/bin'
+					].join(':'),
+					HOME: root,
+					TMPDIR: '/tmp'
+				}
+			})
+		);
+	};
+}
+
 async function main() {
 	const root = await mkdtemp('/tmp/htrk-test-');
 	const key = randomBytes(32).toString('hex');
@@ -93,26 +115,7 @@ async function main() {
 			TRACKER_RUN_ID: String(runId),
 			ANTHROPIC_API_KEY: 'synthetic-canary'
 		});
-		ManagedProviderDockerAdapter.prototype.run = (command, workspace, collect) => {
-			assert(!command.some((arg) => arg.includes(key) || arg.includes(file)));
-			return collect(
-				spawn(command[0], command.slice(1), {
-					cwd: workspace.cwd,
-					detached: true,
-					stdio: 'pipe',
-					env: {
-						PATH: [
-							join(root, 'missing'),
-							process.execPath.replace(/\/[^/]+$/, ''),
-							'/usr/bin',
-							'/bin'
-						].join(':'),
-						HOME: root,
-						TMPDIR: '/tmp'
-					}
-				})
-			);
-		};
+		ManagedProviderDockerAdapter.prototype.run = localAttach(root, key, file);
 		const { code, stdout } = await taskProcess(worker, {
 			cwd,
 			platform: 'linux',

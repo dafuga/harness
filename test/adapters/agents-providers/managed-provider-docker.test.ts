@@ -1,3 +1,5 @@
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { ManagedProviderDockerAdapter } from '../../../src/adapters/agents-providers/ManagedProviderDockerAdapter';
@@ -57,4 +59,21 @@ test('only explicit Linux uses a pinned local image, and macOS tooling requires 
 	expect(() => dockerTaskImage('linux', 'win32', image)).toThrow('Linux or macOS host');
 	expect(() => dockerTaskImage('linux', 'darwin')).toThrow('HARNESS_TASK_DOCKER_IMAGE');
 	expect(() => dockerTaskImage('linux', 'darwin', 'fixture:mutable')).toThrow('full ID');
+});
+
+test('managed Linux provider keeps its streams while tracker acts on its assigned run', async () => {
+	const result = await observedTaskOperation(
+		'adapter.agents-providers-module-task-runner',
+		'run-offline-provider-with-scoped-tracker',
+		() =>
+			promisify(execFile)('bun', ['test/support/managedTrackerGuestFixture.ts'], {
+				timeout: 20_000
+			})
+	);
+	expect(JSON.parse(result.stdout)).toEqual({
+		code: 0,
+		providerOutput: 'Prompt with Unicode ✓\nProvider completed',
+		requests: ['start', 'note', 'note', 'progress', 'flag', 'show', 'done', 'show'],
+		writes: ['start', 'note', 'progress', 'flag', 'done']
+	});
 });

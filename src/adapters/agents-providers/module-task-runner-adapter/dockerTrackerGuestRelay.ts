@@ -28,7 +28,7 @@ export async function relayDockerTrackerGuest(
 		await writeFramePayload(child.stdin, prompt);
 		let count = 0;
 		for await (const frame of readFrames(child.stderr)) {
-			if (++count > 256) throw new Error('Tracker request limit reached');
+			if (++count > 256) throw new RangeError('Tracker request limit reached');
 			const reply = await trackerGuestReply(frame, grant, auth, lifetime);
 			await writeFramePayload(child.stdin, reply);
 		}
@@ -77,13 +77,14 @@ async function trackerGuestReply(
 
 async function boundedReply(response: Response): Promise<unknown> {
 	const reader = response.body?.getReader();
-	if (!reader) throw new Error();
+	if (!reader) throw new TypeError('Tracker response has no body');
 	try {
 		let size = 0;
 		const chunks: Uint8Array[] = [];
 		for (let chunk = await reader.read(); !chunk.done; chunk = await reader.read()) {
 			size += chunk.value.byteLength;
-			if (size > maxRelayPayloadBytes - 32) throw new Error();
+			if (size > maxRelayPayloadBytes - 32)
+				throw new RangeError('Tracker response exceeds relay limit');
 			chunks.push(chunk.value);
 		}
 		return JSON.parse(Buffer.concat(chunks, size).toString('utf8'));

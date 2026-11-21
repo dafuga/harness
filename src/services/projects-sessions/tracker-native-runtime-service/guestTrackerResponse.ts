@@ -2,7 +2,11 @@
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerRunReceipt } from '../../agents-providers/TrackerDispatcherService.types';
 
-export function guestTrackerResponse(item: TrackerItem, run: TrackerRunReceipt, read: boolean) {
+export function guestTrackerResponse(
+	item: TrackerItem,
+	run: TrackerRunReceipt,
+	read: boolean
+): Response {
 	const {
 		id,
 		title,
@@ -36,4 +40,22 @@ export function guestTrackerResponse(item: TrackerItem, run: TrackerRunReceipt, 
 	if (Buffer.byteLength(body) > 120 * 1024)
 		return Response.json({ error: 'assigned item exceeds relay read size' }, { status: 413 });
 	return new Response(body, { headers: { 'content-type': 'application/json' } });
+}
+
+export function guestCommandFailure(status: number): Response {
+	switch (status) {
+		case 400:
+			return Response.json({ error: 'invalid guest Tracker command' }, { status });
+		case 403:
+			return Response.json({ error: 'guest Tracker scope denied' }, { status });
+		case 409:
+			return Response.json(
+				{ error: 'guest Tracker command conflicts with item or run state' },
+				{ status }
+			);
+		case 413:
+			return Response.json({ error: 'guest Tracker command too large' }, { status });
+		default:
+			return Response.json({ error: 'guest Tracker command failed' }, { status: 503 });
+	}
 }

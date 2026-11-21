@@ -19,7 +19,7 @@ import { TrackerSyncAuthService } from '../../networking-security/TrackerSyncAut
 import { readTrackerHubBody } from '../tracker-hub-sync/hubHttp';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
-import { guestTrackerResponse } from './guestTrackerResponse';
+import { guestCommandFailure, guestTrackerResponse } from './guestTrackerResponse';
 import type { GuestCommandContext, GuestCommandReceipt } from './guestTrackerCommands.types';
 
 const denied = () => trackerItemError('guest scope denied', 403);
@@ -41,32 +41,22 @@ export class TrackerGuestCommandApi {
 
 	async handle(request: Request): Promise<Response> {
 		try {
-			const { pathname, search } = new URL(request.url);
-			if (request.method !== 'POST' || pathname !== trackerGuestPath || search) throw denied();
-			const body = await readTrackerHubBody(
-				{
-					method: 'POST',
-					pathAndQuery: trackerGuestPath,
-					headers: request.headers,
-					body: request.body,
-					signal: request.signal
-				},
-				4096
-			);
-			const parsed = trackerGuestRequestSchema.safeParse(JSON.parse(body));
-			if (!parsed.success) throw trackerItemError('invalid guest command');
-			return this.command(parsed.data, body, request);
+			const { command, body } = await readGuestCommand(request);
+			return this.command(command, body, request);
 		} catch (error) {
-			return guestCommandFailure(error);
+			return guestCommandFailure(guestFailureStatus(error));
 		}
 	}
 
 	private command(command: TrackerGuestRequest, body: string, request: Request): Response {
-		const [itemId, runId, action] = command;
+		const [itemId, , action] = command;
 		const now = (this.options.now ?? Date.now)();
 		request.signal.throwIfAborted();
 		const run = this.store.commitLocal(() => {
-			const run = this.authorizedRun(itemId, runId, body, request.headers);
+			const run = authorizedGuestRun(this.store, this.signingKey, command, {
+				body,
+				headers: request.headers
+			});
 			return decideGuestCommand(
 				this.store,
 				{
@@ -81,25 +71,55 @@ export class TrackerGuestCommandApi {
 		});
 		return guestTrackerResponse(this.items.getStored(itemId), run, action === 'show');
 	}
+}
 
-	private authorizedRun(itemId: string, runId: number, body: string, headers: Headers) {
-		const authorization = headers.get('authorization');
-		if (!authorization) throw denied();
-		const { database, node } = this.store;
-		const run = dispatchRunRows(database, node, itemId).find(
-			(row) =>
-				row.id === runId && row.node === node && row.revision >= 0 && row.dispatch_at !== undefined
-		);
-		if (!run) throw denied();
-		const key = this.signingKey({ itemId, runId, attemptKey: attemptKey(run) });
-		try {
-			const auth = new TrackerSyncAuthService(key);
-			const signed = { method: 'POST', pathAndQuery: trackerGuestPath, body };
-			if (!auth.verify(signed, authorization)) throw denied();
-			return run;
-		} finally {
-			key.fill(0);
-		}
+function guestFailureStatus(error: unknown): number {
+	if (error instanceof SyntaxError) return 400;
+	if (error && typeof error === 'object' && 'status' in error && typeof error.status === 'number')
+		return error.status;
+	return 503;
+}
+
+async function readGuestCommand(request: Request) {
+	const { pathname, search } = new URL(request.url);
+	if (request.method !== 'POST' || pathname !== trackerGuestPath || search) throw denied();
+	const body = await readTrackerHubBody(
+		{
+			method: 'POST',
+			pathAndQuery: trackerGuestPath,
+			headers: request.headers,
+			body: request.body,
+			signal: request.signal
+		},
+		4096
+	);
+	const parsed = trackerGuestRequestSchema.safeParse(JSON.parse(body));
+	if (!parsed.success) throw trackerItemError('invalid guest command');
+	return { command: parsed.data, body };
+}
+
+function authorizedGuestRun(
+	store: TrackerPersistenceService,
+	signingKey: TrackerGuestSigningKey,
+	[itemId, runId]: TrackerGuestRequest,
+	{ body, headers }: { body: string; headers: Headers }
+): TrackerRunReceipt {
+	const authorization = headers.get('authorization');
+	if (!authorization) throw denied();
+	const { database, node } = store;
+	const run = dispatchRunRows(database, node, itemId).find(
+		(row) =>
+			row.id === runId && row.node === node && row.revision >= 0 && row.dispatch_at !== undefined
+	);
+	if (!run) throw denied();
+	const key = signingKey({ itemId, runId, attemptKey: attemptKey(run) });
+	try {
+		const auth = new TrackerSyncAuthService(key);
+		const signed = { method: 'POST', pathAndQuery: trackerGuestPath, body };
+		if (!auth.verify(signed, authorization)) throw denied();
+		return run;
+	} finally {
+		key.fill(0);
 	}
 }
 
@@ -188,24 +208,4 @@ function guestActionBody(action: string, text: string | null) {
 
 function digest(text: string): string {
 	return createHash('sha256').update(text).digest('hex');
-}
-
-function guestCommandFailure(error: unknown): Response {
-	const status =
-		error instanceof SyntaxError ? 400 : (error as { status?: unknown } | null)?.status;
-	switch (status) {
-		case 400:
-			return Response.json({ error: 'invalid guest Tracker command' }, { status });
-		case 403:
-			return Response.json({ error: 'guest Tracker scope denied' }, { status });
-		case 409:
-			return Response.json(
-				{ error: 'guest Tracker command conflicts with item or run state' },
-				{ status }
-			);
-		case 413:
-			return Response.json({ error: 'guest Tracker command too large' }, { status });
-		default:
-			return Response.json({ error: 'guest Tracker command failed' }, { status: 503 });
-	}
 }

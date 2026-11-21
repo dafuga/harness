@@ -92,6 +92,11 @@
 				"required": true
 			},
 			{
+				"name": "readTrackerHubBody.limit",
+				"type": "number",
+				"required": false
+			},
+			{
 				"name": "trackerHubResponse.status",
 				"type": "number",
 				"required": true
@@ -280,6 +285,11 @@
 						"name": "readTrackerHubBody.request",
 						"type": "TrackerHubRequest",
 						"required": true
+					},
+					{
+						"name": "readTrackerHubBody.limit",
+						"type": "number",
+						"required": false
 					}
 				],
 				"outputs": [

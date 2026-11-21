@@ -55,6 +55,14 @@ export const moduleTaskVerificationScopes: Record<string, VerificationScope> = {
 				'public codex usage is retained without guessing absent counters': 'usage-pricing',
 				'failed turns preserve available usage for cost attribution': 'usage-pricing'
 			},
+			'test/adapters/agents-providers/managed-provider-docker.test.ts': {
+				'managed Linux provider keeps its streams while tracker acts on its assigned run':
+					'provider-platform'
+			},
+			'test/managed-docker-tracker.e2e.test.ts': {
+				'Linux guest tracker completes its scoped host-signed run and leaves no task Docker resources':
+					'docker-tracker-completion'
+			},
 			'test/adapters/agents-providers/module-task-worktree-adapter.test.ts': {
 				'submission checkpoint preserves source HEAD and both staged and unstaged work':
 					'contract-admission'

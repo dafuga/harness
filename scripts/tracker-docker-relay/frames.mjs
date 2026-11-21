@@ -1,8 +1,10 @@
 // @harness-uid u_7cexw2zytg
-import { Buffer } from 'node:buffer';
+import { runInThisContext } from 'node:vm';
 
-// Keep the implementation self-contained so the Docker launcher can embed the same framing.
-export function trackerRelayFraming(Buffer) {
+// The same checked-in implementation runs in the host and the standalone Docker launcher.
+// Only this constant is compiled. Frames and command inputs are data.
+export const trackerRelayFramingSource = String.raw`(function trackerRelayFraming() {
+	const { Buffer } = globalThis;
 	const maxFrameBytes = 4096;
 
 	function appendFrameBytes(prefix, suffix) {
@@ -67,7 +69,7 @@ export function trackerRelayFraming(Buffer) {
 	}
 
 	return { readFrames, writeFrame, readFramePayload, writeFramePayload, maxRelayPayloadBytes };
-}
+})()`;
 
 export const { readFrames, writeFrame, readFramePayload, writeFramePayload, maxRelayPayloadBytes } =
-	trackerRelayFraming(Buffer);
+	runInThisContext(trackerRelayFramingSource);

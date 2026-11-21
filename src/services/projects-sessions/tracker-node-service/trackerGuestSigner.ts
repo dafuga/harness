@@ -4,7 +4,13 @@ import { deriveTrackerGuestKey } from '../../../adapters/agents-providers/module
 import type { TrackerGuestSigningKey } from '../../../adapters/agents-providers/module-task-runner-adapter/dockerTrackerGuest.types';
 import type { TrackerGuestAuthWriter } from '../tracker-native-runtime-service/nativeTrackerHostEffects.types';
 
-export function trackerGuestSigner(node: string, secret: string) {
+export function trackerGuestSigner(
+	node: string,
+	secret: string
+): {
+	signingKey: TrackerGuestSigningKey;
+	write: TrackerGuestAuthWriter;
+} {
 	const signingKey: TrackerGuestSigningKey = (identity) =>
 		deriveTrackerGuestKey(secret, { node, ...identity });
 	const write: TrackerGuestAuthWriter = ({ path, itemId, runId, apiPort, key: attemptKey }) => {

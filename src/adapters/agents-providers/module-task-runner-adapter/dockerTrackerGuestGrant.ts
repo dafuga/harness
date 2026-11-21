@@ -21,16 +21,17 @@ export async function dockerTrackerGuestGrant(
 	const path = process.env.HARNESS_TRACKER_GUEST_AUTH_FILE;
 	if (path === undefined) return undefined;
 	try {
-		if (!isAbsolute(path)) throw new Error();
+		if (!isAbsolute(path)) throw new TypeError('Invalid managed Docker Tracker grant');
 		const location = relative(await realpath(cwd), await realpath(path));
-		if (!location.startsWith('..' + sep) && !isAbsolute(location)) throw new Error();
+		if (!location.startsWith('..' + sep) && !isAbsolute(location))
+			throw new TypeError('Invalid managed Docker Tracker grant');
 		const grant = grantSchema.parse(JSON.parse(await readPrivateGrant(path)));
 		if (
 			grant.itemId !== process.env.TRACKER_ITEM_ID ||
 			String(grant.runId) !== process.env.TRACKER_RUN_ID ||
 			(assignedItem && assignedItem !== grant.itemId)
 		)
-			throw new Error();
+			throw new TypeError('Invalid managed Docker Tracker grant');
 		return { ...grant, key: Buffer.from(grant.key, 'hex') };
 	} catch {
 		throw new ModuleTaskRunError(
@@ -50,10 +51,10 @@ async function readPrivateGrant(path: string): Promise<string> {
 			(info.mode & 0o077) !== 0 ||
 			info.nlink !== 1
 		)
-			throw new Error();
+			throw new TypeError('Invalid managed Docker Tracker grant');
 		const bytes = Buffer.alloc(1025);
 		const { bytesRead } = await file.read(bytes, 0, bytes.length, 0);
-		if (bytesRead > 1024) throw new Error();
+		if (bytesRead > 1024) throw new TypeError('Invalid managed Docker Tracker grant');
 		return bytes.subarray(0, bytesRead).toString('utf8');
 	} finally {
 		await file.close();

@@ -22,6 +22,13 @@
 			"src/adapters/agents-providers/module-task-runner-adapter/ModuleTaskRunError.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/ProviderRequestGate.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/TaskOutputOverflowError.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/dockerTrackerGuest.types.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/dockerTrackerGuestGrant.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/dockerTrackerGuestLauncher.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/dockerTrackerGuestProgram.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/dockerTrackerGuestProtocol.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/dockerTrackerGuestRelay.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/dockerTrackerGuestShim.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/managedTaskSessions.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/managedTaskSessions.types.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/provider-request-gate/providerDestination.ts",
@@ -52,6 +59,21 @@
 			"ProviderRequestGate.origin",
 			"ProviderRequestGate.close",
 			"TaskOutputOverflowError",
+			"TrackerGuestRequest",
+			"TrackerGuestIdentity",
+			"TrackerGuestSigningKey",
+			"TrackerGuestGrant",
+			"dockerTrackerGuestGrant",
+			"trackerGuestLauncherSource",
+			"dockerTrackerGuestCommand",
+			"trackerGuestPath",
+			"trackerGuestItemId",
+			"trackerGuestRunId",
+			"trackerGuestRequestSchema",
+			"scopedTrackerGuestRequest",
+			"deriveTrackerGuestKey",
+			"relayDockerTrackerGuest",
+			"trackerGuestShimSource",
 			"managedTaskSessions",
 			"LaunchGeneration",
 			"CompleteGeneration",
@@ -118,6 +140,71 @@
 				"name": "ProviderRequestGate.constructor.forward",
 				"type": "typeof globalThis.fetch",
 				"required": false
+			},
+			{
+				"name": "dockerTrackerGuestGrant.cwd",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "dockerTrackerGuestGrant.assignedItem",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "dockerTrackerGuestCommand.command",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "dockerTrackerGuestCommand.itemId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "dockerTrackerGuestCommand.runId",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "scopedTrackerGuestRequest.frame",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "scopedTrackerGuestRequest.scope",
+				"type": "Pick<TrackerGuestGrant, 'itemId' | 'runId'>",
+				"required": true
+			},
+			{
+				"name": "deriveTrackerGuestKey.secret",
+				"type": "string | Uint8Array",
+				"required": true
+			},
+			{
+				"name": "deriveTrackerGuestKey.identity",
+				"type": "TrackerGuestIdentity",
+				"required": true
+			},
+			{
+				"name": "relayDockerTrackerGuest.child",
+				"type": "TaskChild",
+				"required": true
+			},
+			{
+				"name": "relayDockerTrackerGuest.grant",
+				"type": "TrackerGuestGrant",
+				"required": true
+			},
+			{
+				"name": "relayDockerTrackerGuest.prompt",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "relayDockerTrackerGuest.signal",
+				"type": "AbortSignal",
+				"required": true
 			},
 			{
 				"name": "managedTaskSessions.input",
@@ -323,6 +410,50 @@
 				"type": "unknown"
 			},
 			{
+				"name": "dockerTrackerGuestGrant",
+				"type": "Promise<TrackerGuestGrant | undefined>"
+			},
+			{
+				"name": "trackerGuestLauncherSource",
+				"type": "string"
+			},
+			{
+				"name": "dockerTrackerGuestCommand",
+				"type": "string[]"
+			},
+			{
+				"name": "trackerGuestPath",
+				"type": "unknown"
+			},
+			{
+				"name": "trackerGuestItemId",
+				"type": "unknown"
+			},
+			{
+				"name": "trackerGuestRunId",
+				"type": "unknown"
+			},
+			{
+				"name": "trackerGuestRequestSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "scopedTrackerGuestRequest",
+				"type": "TrackerGuestRequest | undefined"
+			},
+			{
+				"name": "deriveTrackerGuestKey",
+				"type": "Buffer"
+			},
+			{
+				"name": "relayDockerTrackerGuest",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "trackerGuestShimSource",
+				"type": "string"
+			},
+			{
 				"name": "managedTaskSessions",
 				"type": "unknown"
 			},
@@ -415,6 +546,14 @@
 			{
 				"name": "ModuleTaskRunError",
 				"type": "thrown"
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown"
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown"
 			}
 		],
 		"errorStatus": "unknown",
@@ -477,6 +616,154 @@
 					}
 				],
 				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "dockerTrackerGuestGrant",
+				"inputs": [
+					{
+						"name": "dockerTrackerGuestGrant.cwd",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "dockerTrackerGuestGrant.assignedItem",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "dockerTrackerGuestGrant",
+						"type": "Promise<TrackerGuestGrant | undefined>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "dockerTrackerGuestCommand",
+				"inputs": [
+					{
+						"name": "dockerTrackerGuestCommand.command",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "dockerTrackerGuestCommand.itemId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "dockerTrackerGuestCommand.runId",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "dockerTrackerGuestCommand",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scopedTrackerGuestRequest",
+				"inputs": [
+					{
+						"name": "scopedTrackerGuestRequest.frame",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "scopedTrackerGuestRequest.scope",
+						"type": "Pick<TrackerGuestGrant, 'itemId' | 'runId'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scopedTrackerGuestRequest",
+						"type": "TrackerGuestRequest | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "deriveTrackerGuestKey",
+				"inputs": [
+					{
+						"name": "deriveTrackerGuestKey.secret",
+						"type": "string | Uint8Array",
+						"required": true
+					},
+					{
+						"name": "deriveTrackerGuestKey.identity",
+						"type": "TrackerGuestIdentity",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "deriveTrackerGuestKey",
+						"type": "Buffer"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "relayDockerTrackerGuest",
+				"inputs": [
+					{
+						"name": "relayDockerTrackerGuest.child",
+						"type": "TaskChild",
+						"required": true
+					},
+					{
+						"name": "relayDockerTrackerGuest.grant",
+						"type": "TrackerGuestGrant",
+						"required": true
+					},
+					{
+						"name": "relayDockerTrackerGuest.prompt",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "relayDockerTrackerGuest.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "relayDockerTrackerGuest",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			},
 			{
@@ -991,7 +1278,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "script.tracker-docker-relay-frames",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.agents-providers-module-task-analytics-service-model-run-pricing",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.networking-security-tracker-sync-auth",
 			"via": "import",
 			"origin": "derived"
 		}

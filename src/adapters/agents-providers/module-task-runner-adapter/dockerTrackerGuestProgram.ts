@@ -1,9 +1,9 @@
 // @harness-uid u_rw64iex44n
-import { trackerRelayFraming } from '../../../../scripts/tracker-docker-relay/frames.mjs';
+import { trackerRelayFramingSource } from '../../../../scripts/tracker-docker-relay/frames.mjs';
 import { trackerGuestLauncherSource } from './dockerTrackerGuestLauncher';
 import { trackerGuestShimSource } from './dockerTrackerGuestShim';
 
-const frames = `const { readFrames, writeFrame, readFramePayload, writeFramePayload } = (${trackerRelayFraming})(Buffer);`;
+const frames = `const { readFrames, writeFrame, readFramePayload, writeFramePayload } = ${trackerRelayFramingSource};`;
 
 export function dockerTrackerGuestCommand(
 	command: string[],

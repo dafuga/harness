@@ -11,7 +11,10 @@
 		"source": [
 			"src/services/projects-sessions/TrackerNativeRuntimeService.ts",
 			"src/services/projects-sessions/TrackerNativeRuntimeService.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/TrackerGuestCommandApi.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/configuredTrackerDestinations.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/guestTrackerCommands.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/guestTrackerResponse.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDispatch.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDuePolicy.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types.ts",
@@ -47,7 +50,14 @@
 			"TrackerLegacyDestinationBindings",
 			"TrackerNativeNotificationOptions",
 			"TrackerNativeRuntimeOptions",
+			"TrackerGuestCommandApi",
+			"TrackerGuestCommandApi.constructor",
+			"TrackerGuestCommandApi.handle",
 			"configuredTrackerDestinations",
+			"GuestCommandContext",
+			"GuestCommandReceipt",
+			"guestTrackerResponse",
+			"guestCommandFailure",
 			"composeTrackerDispatch",
 			"liveTrackerDuePolicy",
 			"observeTrackerDuePolicy",
@@ -63,6 +73,7 @@
 			"composeTrackerLinks",
 			"composeTrackerTelemetry",
 			"trackerSpokeStatus",
+			"validateTrackerLinks",
 			"trackerGithubCli",
 			"trackerHostAdapter",
 			"adapterIssues",
@@ -122,8 +133,48 @@
 				"required": true
 			},
 			{
+				"name": "TrackerGuestCommandApi.constructor.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "TrackerGuestCommandApi.constructor.signingKey",
+				"type": "TrackerGuestSigningKey",
+				"required": true
+			},
+			{
+				"name": "TrackerGuestCommandApi.constructor.options",
+				"type": "Pick<TrackerNativeRuntimeOptions, 'now' | 'timeZone'>",
+				"required": true
+			},
+			{
+				"name": "TrackerGuestCommandApi.handle.request",
+				"type": "Request",
+				"required": true
+			},
+			{
 				"name": "configuredTrackerDestinations.bindings",
 				"type": "TrackerLegacyDestinationBindings",
+				"required": true
+			},
+			{
+				"name": "guestTrackerResponse.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "guestTrackerResponse.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "guestTrackerResponse.read",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "guestCommandFailure.status",
+				"type": "number",
 				"required": true
 			},
 			{
@@ -189,6 +240,11 @@
 			{
 				"name": "trackerSpokeStatus.links",
 				"type": "readonly TrackerSpokeLoopService[]",
+				"required": true
+			},
+			{
+				"name": "validateTrackerLinks.options",
+				"type": "TrackerNativeRuntimeOptions",
 				"required": true
 			},
 			{
@@ -467,8 +523,20 @@
 				"type": "Promise<void>"
 			},
 			{
+				"name": "TrackerGuestCommandApi.handle",
+				"type": "Promise<Response>"
+			},
+			{
 				"name": "configuredTrackerDestinations",
 				"type": "unknown"
+			},
+			{
+				"name": "guestTrackerResponse",
+				"type": "Response"
+			},
+			{
+				"name": "guestCommandFailure",
+				"type": "Response"
 			},
 			{
 				"name": "composeTrackerDispatch",
@@ -493,6 +561,10 @@
 			{
 				"name": "trackerSpokeStatus",
 				"type": "unknown"
+			},
+			{
+				"name": "validateTrackerLinks",
+				"type": "void"
 			},
 			{
 				"name": "trackerGithubCli",
@@ -666,6 +738,24 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "TrackerGuestCommandApi.handle",
+				"inputs": [
+					{
+						"name": "TrackerGuestCommandApi.handle.request",
+						"type": "Request",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerGuestCommandApi.handle",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "configuredTrackerDestinations",
 				"inputs": [
 					{
@@ -682,6 +772,52 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "guestTrackerResponse",
+				"inputs": [
+					{
+						"name": "guestTrackerResponse.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "guestTrackerResponse.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "guestTrackerResponse.read",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "guestTrackerResponse",
+						"type": "Response"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "guestCommandFailure",
+				"inputs": [
+					{
+						"name": "guestCommandFailure.status",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "guestCommandFailure",
+						"type": "Response"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "composeTrackerDispatch",
@@ -824,6 +960,29 @@
 					}
 				],
 				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "validateTrackerLinks",
+				"inputs": [
+					{
+						"name": "validateTrackerLinks.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateTrackerLinks",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			},
 			{
@@ -1355,10 +1514,43 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerGuestCommandApi.constructor",
+				"inputs": [
+					{
+						"name": "TrackerGuestCommandApi.constructor.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "TrackerGuestCommandApi.constructor.signingKey",
+						"type": "TrackerGuestSigningKey",
+						"required": true
+					},
+					{
+						"name": "TrackerGuestCommandApi.constructor.options",
+						"type": "Pick<TrackerNativeRuntimeOptions, 'now' | 'timeZone'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerGuestCommandApi.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-module-task-runner",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "adapter.projects-sessions-tracker-adapter-lease",
 			"via": "import",
@@ -1381,6 +1573,16 @@
 		},
 		{
 			"unit": "function.agents-providers-pick-tracker-model",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-plan-tracker-item-mutation",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -1426,6 +1628,11 @@
 		},
 		{
 			"unit": "service.agents-providers-tracker-dispatcher",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.networking-security-tracker-sync-auth",
 			"via": "import",
 			"origin": "derived"
 		},

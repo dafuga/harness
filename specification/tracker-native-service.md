@@ -191,21 +191,25 @@ generated client file holds inert placeholders for daemon-only paths.
 Use the immutable native `harness` and `tracker` shim in the configured
 tool directory so worker commands reach that foreground service.
 
-The staged managed Docker runner keeps the guest on `--network=none`.
-The separate relay fixture in #164 uses the attached streams for its
-own protocol and does not compose with provider prompts and output.
-Production Docker needs a qualified provider credential and egress path,
-plus an item-scoped host-signed Tracker completion channel that works
-alongside provider I/O. The optional node signer hook writes the private
-per-attempt authorization file just before launch. Its path reaches only
-the Linux host worker via `HARNESS_TRACKER_GUEST_AUTH_FILE`. The writer
-receives the item, run, canonical attempt key and loopback port. The
-worker removes the grant as it exits. This draft
-provides the consumer and leaves the signer and guest route to that
-integration. The host-side client binding keeps
-the daemon socket, signing key, and credentials outside guest storage.
-Worker exit alone never completes the Tracker item. Keep the Docker lane
-held on the protected hosts until the production seams pass rehearsal.
+The managed Docker runner keeps the guest on `--network=none`. The guest
+runs `tracker` from its task-private temporary directory. The shim shares
+the Docker attachment with provider input and output, uses a 4 KiB frame
+limit, and keeps replies to 128 KiB. It supports `start`, `note`,
+`progress`, `flag`, `block`, `done --note`, and `show --json` for
+the assigned item. `show` includes the assigned run and the item's notes.
+
+The native node writes a private grant for the local Docker launcher and
+derives its key from the node, item, run ID and canonical attempt key.
+The Linux host worker alone receives the grant path through
+`HARNESS_TRACKER_GUEST_AUTH_FILE` and removes the grant on exit. The
+host signs each admitted command for the loopback Tracker listener.
+The listener checks the persisted assignment and commits a retry
+receipt atomically with each mutation. Identical mutations within the
+same attempt return the current state without repeating the write.
+The daemon socket, signing key and provider credentials stay on the host.
+
+Keep the Docker lane held on protected hosts until the isolated guest
+command rehearsal and provider credential and egress qualification pass.
 
 ### External provider driver protocol
 

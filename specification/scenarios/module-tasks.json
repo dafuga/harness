@@ -57,6 +57,11 @@
 			"coverage": "required"
 		},
 		{
+			"id": "docker-tracker-completion",
+			"title": "The managed Linux guest completes only its assigned Tracker run through the signed host listener",
+			"coverage": "required"
+		},
+		{
 			"id": "quota-fallback",
 			"title": "Only Claude quota rejection selects Luna 6 max",
 			"coverage": "required"
@@ -176,6 +181,13 @@
 			"timeoutMs": 240000
 		},
 		{
+			"id": "managed-docker-tracker",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/managed-docker-tracker.e2e.test.ts",
+			"timeoutMs": 120000
+		},
+		{
 			"id": "analytics-attribution",
 			"kind": "e2e",
 			"runner": "command",
@@ -192,6 +204,7 @@
 				"contract-admission",
 				"assigned-worker",
 				"provider-platform",
+				"docker-tracker-completion",
 				"quota-fallback",
 				"owner-recovery",
 				"usage-pricing",
@@ -209,6 +222,7 @@
 				"contract-admission",
 				"assigned-worker",
 				"provider-platform",
+				"docker-tracker-completion",
 				"quota-fallback",
 				"owner-recovery",
 				"usage-pricing",

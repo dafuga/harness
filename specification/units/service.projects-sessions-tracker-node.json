@@ -14,6 +14,7 @@
 			"src/services/projects-sessions/tracker-node-service/TrackerNodeStartupError.ts",
 			"src/services/projects-sessions/tracker-node-service/TrackerNodeTransportError.ts",
 			"src/services/projects-sessions/tracker-node-service/holdLegacySupervisorSocket.ts",
+			"src/services/projects-sessions/tracker-node-service/trackerGuestSigner.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerNodeConfig.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerNodeConfig.types.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerNodeListeners.ts",
@@ -30,6 +31,7 @@
 			"TrackerNodeStartupError",
 			"TrackerNodeTransportError",
 			"holdLegacySupervisorSocket",
+			"trackerGuestSigner",
 			"loadTrackerNodeConfig",
 			"trackerSyncPort",
 			"verifyTrackerLegacyFence",
@@ -59,6 +61,16 @@
 			},
 			{
 				"name": "holdLegacySupervisorSocket.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerGuestSigner.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerGuestSigner.secret",
 				"type": "string",
 				"required": true
 			},
@@ -198,6 +210,10 @@
 				"type": "Promise<()"
 			},
 			{
+				"name": "trackerGuestSigner",
+				"type": "{ signingKey: TrackerGuestSigningKey; write: TrackerGuestAuthWriter; }"
+			},
+			{
 				"name": "loadTrackerNodeConfig",
 				"type": "TrackerNodeConfig"
 			},
@@ -314,6 +330,29 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerGuestSigner",
+				"inputs": [
+					{
+						"name": "trackerGuestSigner.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerGuestSigner.secret",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerGuestSigner",
+						"type": "{ signingKey: TrackerGuestSigningKey; write: TrackerGuestAuthWriter; }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "loadTrackerNodeConfig",
@@ -668,6 +707,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-module-task-runner",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "adapter.open-sqlite",
 			"via": "import",

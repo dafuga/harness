@@ -9,27 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": ["scripts/tracker-docker-relay/frames.mjs"],
-		"symbols": ["readFrames", "writeFrame"]
+		"symbols": ["trackerRelayFramingSource"]
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [
-			{
-				"name": "readFrames.input",
-				"type": "AsyncIterable<Buffer>",
-				"required": true
-			},
-			{
-				"name": "writeFrame.output",
-				"type": "Writable",
-				"required": true
-			},
-			{
-				"name": "writeFrame.frame",
-				"type": "string",
-				"required": true
-			}
-		],
+		"inputs": [],
 		"outputs": [
 			{
 				"name": "readFrames",
@@ -51,54 +35,7 @@
 			}
 		],
 		"errorStatus": "unknown",
-		"operations": [
-			{
-				"name": "readFrames",
-				"inputs": [
-					{
-						"name": "readFrames.input",
-						"type": "AsyncIterable<Buffer>",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "readFrames",
-						"type": "unknown"
-					}
-				],
-				"errors": [
-					{
-						"name": "SyntaxError",
-						"type": "thrown"
-					}
-				],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "writeFrame",
-				"inputs": [
-					{
-						"name": "writeFrame.output",
-						"type": "Writable",
-						"required": true
-					},
-					{
-						"name": "writeFrame.frame",
-						"type": "string",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "writeFrame",
-						"type": "unknown"
-					}
-				],
-				"errors": [],
-				"errorStatus": "none-found"
-			}
-		],
+		"operations": [],
 		"initialization": []
 	},
 	"dependencies": [],
