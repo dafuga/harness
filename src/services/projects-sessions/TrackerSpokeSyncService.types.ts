@@ -47,6 +47,7 @@ export interface TrackerSpokeOptions {
 	/** Include replicated operations in normal pushes. Defaults to true for peer links. */
 	relayOps?: boolean;
 	pullWaitSeconds?: number;
+	onPushAcknowledged?(): void;
 }
 
 export type TrackerSpokePullResult =

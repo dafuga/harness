@@ -1,0 +1,55 @@
+{
+	"schemaVersion": 1,
+	"id": "tracker-notification-storage",
+	"title": "Durable Tracker notification storage on the pinned legacy schema",
+	"kind": "headless",
+	"units": [
+		"repository.projects-sessions-tracker-notification-queue",
+		"service.projects-sessions-tracker-native-runtime"
+	],
+	"states": [
+		{ "id": "startup", "title": "Startup and same-database legacy reopen", "coverage": "required" },
+		{
+			"id": "retry-and-resume",
+			"title": "Legacy retry and pause/resume state",
+			"coverage": "required"
+		},
+		{
+			"id": "receipt-replay",
+			"title": "Exact request replay after failed acknowledgement",
+			"coverage": "required"
+		},
+		{
+			"id": "migration-rollback",
+			"title": "Atomic refusal of an incompatible schema",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"builds": [],
+	"tests": [
+		{
+			"id": "sqlite-lifecycle",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/repositories/projects-sessions/tracker-notification-queue.test.ts",
+			"timeoutMs": 120000
+		}
+	],
+	"evidence": [
+		{
+			"id": "tracker-notification-storage-output",
+			"kind": "output",
+			"states": ["startup", "retry-and-resume", "receipt-replay", "migration-rollback"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "tracker-notification-storage-assertions",
+			"kind": "assertions",
+			"states": ["startup", "retry-and-resume", "receipt-replay", "migration-rollback"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

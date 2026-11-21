@@ -1,5 +1,11 @@
 // @harness-uid u_lahmutfc24
 import type { SqliteDatabase, SqliteValue } from '../../core/development-tooling/sqliteTypes';
+import { SqliteAdapter } from '../../adapters/development-tooling/SqliteAdapter';
+import {
+	importTrackerRunHistory,
+	localTrackerRunHistory,
+	relayedTrackerRunHistory
+} from './tracker-run-read-repository/trackerRunReplication';
 import type {
 	TrackerListedRun,
 	TrackerRunFilters,
@@ -25,6 +31,33 @@ export class TrackerRunReadRepository {
 
 	finished(): TrackerListedRun[] {
 		return this.rows("WHERE state = 'finished'");
+	}
+
+	exportLocal() {
+		return localTrackerRunHistory(this.database, 5000);
+	}
+
+	historyRowsFor(peer: string): readonly unknown[] {
+		const local = localTrackerRunHistory(this.database, 3000).map((row) => ({
+			...row,
+			node: this.node
+		}));
+		return [...local, ...relayedTrackerRunHistory(this.database, peer)];
+	}
+
+	importRemote(peer: string, rows: readonly unknown[]): void {
+		if (peer === this.node || peer === '?') return;
+		new SqliteAdapter(this.database, []).transaction(() =>
+			importTrackerRunHistory(this.database, rows, () => peer)
+		);
+	}
+
+	importHubHistory(rows: readonly unknown[]): void {
+		new SqliteAdapter(this.database, []).transaction(() =>
+			importTrackerRunHistory(this.database, rows, ({ node }) =>
+				typeof node === 'string' && node !== this.node ? node : undefined
+			)
+		);
 	}
 
 	private rows(clause: string, ...bindings: SqliteValue[]): TrackerListedRun[] {

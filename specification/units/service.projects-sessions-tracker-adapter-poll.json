@@ -30,6 +30,8 @@
 			"TrackerGithubTimelineEvent",
 			"TrackerAdapterPollService",
 			"TrackerAdapterPollService.constructor",
+			"TrackerAdapterPollService.status",
+			"TrackerAdapterPollService.tick",
 			"TrackerAdapterPollService.poll",
 			"TrackerGithubIssue",
 			"TrackerGithubTimelineEvent",
@@ -73,6 +75,11 @@
 			{
 				"name": "TrackerAdapterPollService.constructor.dependencies",
 				"type": "TrackerAdapterPollDependencies",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterPollService.tick.signal",
+				"type": "AbortSignal",
 				"required": true
 			},
 			{
@@ -279,6 +286,14 @@
 		],
 		"outputs": [
 			{
+				"name": "TrackerAdapterPollService.status",
+				"type": "{ runner: string; active: boolean }"
+			},
+			{
+				"name": "TrackerAdapterPollService.tick",
+				"type": "Promise<void>"
+			},
+			{
 				"name": "TrackerAdapterPollService.poll",
 				"type": "Promise<TrackerAdapterPollResult>"
 			},
@@ -329,12 +344,51 @@
 		],
 		"errors": [
 			{
+				"name": "AggregateError",
+				"type": "thrown"
+			},
+			{
 				"name": "TrackerAdapterPollError",
 				"type": "thrown"
 			}
 		],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "TrackerAdapterPollService.status",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerAdapterPollService.status",
+						"type": "{ runner: string; active: boolean }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterPollService.tick",
+				"inputs": [
+					{
+						"name": "TrackerAdapterPollService.tick.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterPollService.tick",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "AggregateError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "TrackerAdapterPollService.poll",
 				"inputs": [

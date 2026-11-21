@@ -16,6 +16,9 @@ import type { TrackerDispatchSchedulerOptions } from './TrackerDispatchScheduler
 /** Reconcile committed attempts before reserving new work for the node. */
 export class TrackerDispatchSchedulerService {
 	private ticking = false;
+	private readonly waits = new Map<string, string>();
+	private lastTickAt: string | null = null;
+	private lastError: string | null = null;
 
 	constructor(
 		private readonly repository: TrackerDispatchRepository,
@@ -23,11 +26,38 @@ export class TrackerDispatchSchedulerService {
 		private readonly options: TrackerDispatchSchedulerOptions
 	) {}
 
+	status() {
+		return {
+			enabled: this.options.policy?.enabled !== false,
+			stuck: this.repository.stuckRequests().map((item) => ({
+				...item,
+				computer: item.computer ?? 'box',
+				reason: this.waits.get(item.id) ?? 'ready but has not started'
+			}))
+		};
+	}
+
+	runnerStatus() {
+		return {
+			enabled: this.options.policy?.enabled !== false,
+			last_tick_at: this.lastTickAt,
+			last_error: this.lastError,
+			waiting_on: this.waits.values().next().value ?? null
+		};
+	}
+
 	async tick(signal: AbortSignal): Promise<void> {
 		if (signal.aborted || this.ticking) return;
 		this.ticking = true;
+		this.waits.clear();
 		try {
 			if (!(await this.reconcile(signal))) await this.requestWork(signal);
+			if (signal.aborted) return;
+			this.lastTickAt = new Date((this.options.policy?.now ?? Date.now)()).toISOString();
+			this.lastError = null;
+		} catch (error) {
+			if (!signal.aborted) this.lastError = 'dispatch tick failed';
+			throw error;
 		} finally {
 			this.ticking = false;
 		}
@@ -81,7 +111,9 @@ export class TrackerDispatchSchedulerService {
 		const permission =
 			intent.source === 'due' ? await grant?.(id, intent.token, signal) : undefined;
 		signal.throwIfAborted();
-		return this.release(await this.dispatcher.claim(id, intent.token, permission), signal);
+		const decision = await this.dispatcher.claim(id, intent.token, permission);
+		if (decision.status === 'held') this.waits.set(id, decision.reason);
+		return this.release(decision, signal);
 	}
 
 	private async release(result: TrackerDispatchResult, signal: AbortSignal): Promise<boolean> {

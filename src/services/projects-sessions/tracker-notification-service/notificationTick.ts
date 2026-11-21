@@ -61,8 +61,18 @@ function scan(
 	});
 }
 
-function isWebhookDelivery(attempt: DeliveryAttempt): boolean {
-	return attempt.kind === 'outbox' || attempt.kind === 'attention';
+function holdIssued(
+	attempt: DeliveryAttempt,
+	options: TrackerNotificationOptions,
+	paused: boolean
+): boolean {
+	if (attempt.kind !== 'outbox' && attempt.kind !== 'attention') return false;
+	const chief = options.webhook?.destination;
+	if (options.role !== 'hub' || !chief) return true;
+	if (!paused) return false;
+	if (attempt.kind === 'attention') return true;
+	const { destination } = attempt.request;
+	return attempt.holdWhenPaused ?? (destination.id === chief.id && destination.kind === chief.kind);
 }
 
 async function deliverWebhooks(
@@ -84,10 +94,13 @@ export async function runNotificationTick(
 	options: TrackerNotificationOptions,
 	itemIds?: readonly string[]
 ): Promise<void> {
-	const { chiefOfStaff, queue, role, source } = options;
-	const issued = queue.update((state) => state.inFlight);
+	const { chiefOfStaff, queue, source } = options;
+	const { issued, paused } = queue.update((state) => ({
+		issued: state.inFlight,
+		paused: Boolean(state.paused)
+	}));
 	if (issued) {
-		if (role === 'spoke' && isWebhookDelivery(issued)) return;
+		if (holdIssued(issued, options, paused)) return;
 		await deliver(options, issued);
 	}
 	const now = options.now();

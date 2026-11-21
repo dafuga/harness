@@ -8,24 +8,37 @@ import type { TrackerAdapterPollDependencies } from './TrackerAdapterPollService
 import type { TrackerHubOptions } from './TrackerHubSyncService.types';
 import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
 import type { TrackerNotificationOptions } from './TrackerNotificationService.types';
+import type { TrackerRecurringJobRunner } from './TrackerRecurringService.types';
 import type { TrackerSpokeLoopOptions } from './TrackerSpokeLoopService.types';
+
+export interface TrackerLegacyDestinationBindings {
+	urls?: ReadonlyMap<string, string>;
+	commands?: ReadonlyMap<string, string>;
+}
 
 export interface TrackerNativeNotificationOptions extends Omit<
 	TrackerNotificationOptions,
-	'source' | 'role' | 'now'
+	'source' | 'role' | 'now' | 'queue'
 > {
-	resolveDestination: TrackerNotificationSourceOptions['resolveDestination'];
+	queue?: TrackerNotificationOptions['queue'];
+	resolveDestination?: TrackerNotificationSourceOptions['resolveDestination'];
+	legacyDestinations?: TrackerLegacyDestinationBindings;
 }
 
-export interface TrackerNativeRuntimeOptions extends Omit<TrackerLocalApiOptions, 'runs'> {
+export interface TrackerNativeRuntimeOptions extends Omit<
+	TrackerLocalApiOptions,
+	'runs' | 'recurring'
+> {
 	node: string;
 	role: 'hub' | 'spoke';
 	storage?: Omit<TrackerSchemaAdapterConfig, 'now'>;
 	notification?: TrackerNativeNotificationOptions;
 	adapter?: TrackerAdapterPollDependencies;
+	recurring?: { jobs?: TrackerRecurringJobRunner };
 	dispatch?: Omit<TrackerDispatchSchedulerOptions, 'policy'> &
 		Pick<TrackerDispatchRepositoryOptions, 'due' | 'sessions'> & {
 			policy: Omit<TrackerDispatchPolicy, 'node' | 'now' | 'hub'>;
+			telemetry?: { sample(): unknown; onMachines?(machines: readonly unknown[]): void };
 		};
 	syncResponder?: Omit<TrackerHubOptions, 'store'>;
 	links?: readonly Omit<TrackerSpokeLoopOptions, 'store'>[];

@@ -21,7 +21,8 @@ export interface RetryRow {
 export interface CallbackRow extends RetryRow {
 	itemId: string;
 	targetId: string;
-	destination: TrackerDestination;
+	destination?: TrackerDestination;
+	legacyTarget?: string;
 	events: CallbackEvent[];
 	status: 'pending' | 'ok' | 'failed';
 	doneAt?: number;
@@ -94,6 +95,7 @@ export interface DeliveryAttempt {
 	keys: string[];
 	request: TrackerDeliveryRequest;
 	startedAt: number;
+	holdWhenPaused?: boolean;
 }
 
 export interface TrackerNotificationState {

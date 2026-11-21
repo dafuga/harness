@@ -1,5 +1,5 @@
 // @harness-uid u_g7kdpz7bel
-import { randomBytes } from 'node:crypto';
+import { randomBytes, randomUUID } from 'node:crypto';
 import type { TrackerItemReadRepository } from '../../repositories/projects-sessions/TrackerItemReadRepository';
 import { checkTrackerItem } from '../../utils/projects-sessions/checkTrackerItem';
 import type { TrackerItemInput } from '../../utils/projects-sessions/normalizeTrackerItemFields.types';
@@ -46,10 +46,11 @@ export class TrackerLocalApiService {
 
 	private read(parts: string[], query: Record<string, string>): Response | undefined {
 		switch (parts[0]) {
-			case 'items':
-				if (parts.length === 1) return trackerResponse(200, this.items.list(query));
-				if (parts.length === 2) return trackerResponse(200, this.items.get(parts[1]));
+			case 'items': {
+				const response = this.readItems(parts, query);
+				if (response) return response;
 				break;
+			}
 			case 'check':
 				return trackerResponse(
 					200,
@@ -69,6 +70,27 @@ export class TrackerLocalApiService {
 		return run === undefined ? undefined : trackerResponse(200, run);
 	}
 
+	private readItems(parts: string[], query: Record<string, string>): Response | undefined {
+		if (parts.length === 1) return trackerResponse(200, this.items.list(query));
+		if (parts.length === 2) return trackerResponse(200, this.items.get(parts[1]));
+		if (parts.length === 3 && parts[2] === 'history' && this.options.recurring)
+			return this.readHistory(parts[1], query.limit);
+		return undefined;
+	}
+
+	private readHistory(id: string, rawLimit?: string): Response {
+		const recurring = this.options.recurring;
+		if (recurring?.role === 'spoke')
+			return trackerResponse(409, {
+				error: 'run tracker history on the box (the hub keeps the run history)'
+			});
+		const limit = Number(rawLimit) || 50;
+		if (!Number.isSafeInteger(limit))
+			return trackerResponse(400, { error: 'invalid history limit' });
+		const item = this.items.resolve(id);
+		return trackerResponse(200, recurring?.history?.(item.id, limit) ?? []);
+	}
+
 	private async write(request: Request, [, id, verb]: string[]): Promise<Response | undefined> {
 		const action = itemAction(request.method, id, verb);
 		if (!action) return undefined;
@@ -82,6 +104,7 @@ export class TrackerLocalApiService {
 			node: this.store.node,
 			now: this.options.now?.() ?? Date.now(),
 			timeZone: this.options.timeZone,
+			launchNonce: randomUUID(),
 			candidates: this.items.candidates(),
 			validateModel: this.options.validateModel,
 			planLaunch: this.options.planLaunch
