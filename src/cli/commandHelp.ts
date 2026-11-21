@@ -9,7 +9,7 @@ export const commandHelp = [
 		aliases: []
 	},
 	plainHelp('provider', 'Open the installed provider sign-in tools.'),
-	plainHelp('harbor', 'Inspect Harbor using its installed CLI package.'),
+	plainHelp('harbor', 'Use Harbor capabilities from its installed CLI and SDK.'),
 	{
 		name: 'benchmark',
 		signature: 'benchmark',
