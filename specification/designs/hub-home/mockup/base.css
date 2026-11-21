@@ -1,0 +1,72 @@
+/* Element defaults the Hub inherits from packages/reports/src/lib/styles/base.css (that file also
+   runs Tailwind, so the mockup repeats only the rules these screens rely on). */
+:root {
+	font-family: var(--hx-font-family-body);
+	font-synthesis: var(--hx-style-synthesis-none);
+	color-scheme: dark;
+}
+* {
+	box-sizing: border-box;
+}
+body {
+	margin: 0;
+	background: var(--hx-color-background);
+}
+a {
+	color: inherit;
+	text-decoration: none;
+}
+button,
+input {
+	font: inherit;
+	color: inherit;
+}
+code {
+	font-family: var(--hx-font-family-code);
+	font-size: var(--hx-type-size-inline);
+}
+h1,
+h2,
+h3,
+h4,
+p,
+ol,
+ul {
+	margin: 0;
+}
+ol,
+ul {
+	padding: 0;
+	list-style: none;
+}
+.hh-sr {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+.home-page {
+	min-height: 100vh;
+	background: var(--hx-color-background);
+	color: var(--hx-color-text);
+}
+/* Light scheme additions. home-scheme.css leaves info at its dark value, which is too faint on
+   paper; the Active pill, live dots and Working avatars need a darker info mixed the same way. */
+.home-scheme {
+	--hh-light-info: color-mix(in srgb, var(--hx-color-info) 58%, var(--home-ink));
+	--hh-light-info-soft: color-mix(in srgb, var(--hx-color-info) 16%, transparent);
+	--hh-light-text-on-gold: var(--home-ink);
+}
+@media (prefers-color-scheme: light) {
+	:root {
+		color-scheme: light;
+	}
+	.home-page {
+		--hx-color-info: var(--hh-light-info);
+		--hx-color-info-soft: var(--hh-light-info-soft);
+		--hx-color-primary-contrast: var(--hh-light-text-on-gold);
+		--hx-color-scrim-strong: var(--home-light-scrim);
+	}
+}

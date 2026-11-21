@@ -1,0 +1,112 @@
+/* Root page frame: the Hub top bar, the headline, and the five-section grid at each width. */
+.hh-topbar {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-16);
+	min-height: 72px;
+	padding: 0 var(--hx-gutter);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.hh-brand {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-10);
+	font-size: var(--hx-type-size-lg);
+	font-weight: var(--hx-style-weight-semibold);
+}
+.hh-brand-mark {
+	color: var(--hx-color-primary);
+}
+.hh-crumb {
+	padding: var(--hx-space-8) var(--hx-space-18);
+	border-inline: var(--hx-border-thin) solid var(--hx-color-border);
+	color: var(--hx-color-text-supporting);
+	font-size: var(--hx-type-size-sm);
+}
+.hh-account {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-10);
+	margin-left: auto;
+	font-size: var(--hx-type-size-sm);
+}
+.hh-page.po-page {
+	max-width: 1520px;
+}
+.hh-head .po-title {
+	font-size: var(--hx-type-size-3xl);
+	line-height: var(--hx-space-40);
+}
+.hh-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--hx-space-20);
+	align-items: stretch;
+}
+.hh-agents {
+	grid-column: span 2;
+}
+/* Wide: four columns. Agents and the two-row lists get the room; nothing stretches to 1920. */
+@media (min-width: 1650px) {
+	.hh-page.po-page {
+		max-width: 1800px;
+	}
+	.hh-grid {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+	.hh-projects,
+	.hh-wip {
+		grid-column: span 2;
+	}
+	.hh-projects .po-items {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		column-gap: var(--hx-space-28);
+	}
+	.hh-projects .po-item[data-wide] {
+		display: block;
+	}
+}
+.po-item[data-wide] {
+	display: none;
+}
+.hh-head .po-machine {
+	white-space: nowrap;
+}
+/* Tablet: two columns, Agents across the top. */
+@media (max-width: 1000px) {
+	.hh-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+/* Phone: one column in the brief's order; each preview shows two rows (the rest is See all). */
+@media (max-width: 560px) {
+	.hh-topbar {
+		min-height: 60px;
+	}
+	.hh-crumb,
+	.hh-account-name {
+		display: none;
+	}
+	.hh-grid {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--hx-space-14);
+	}
+	.hh-agents,
+	.hh-projects,
+	.hh-wip {
+		grid-column: auto;
+	}
+	.hh-head .po-title {
+		font-size: var(--hx-type-size-2xl);
+		line-height: var(--hx-space-32);
+	}
+	.hh-head .po-machines {
+		flex-wrap: nowrap;
+		overflow-x: auto;
+	}
+	.hh-section.po-card {
+		padding: var(--hx-space-16);
+		gap: var(--hx-space-12);
+	}
+}

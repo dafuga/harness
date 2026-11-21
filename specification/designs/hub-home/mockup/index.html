@@ -1,0 +1,58 @@
+<!doctype html>
+<!--
+	Hub home redesign mockup. Not app code: a static page that draws every screen from synthetic
+	data so render.mjs can capture it. Query: ?screen=root|agents|agent-chat|plans|scheduled|
+	projects|wip|wip-projects &state=default|busy|empty|loading. Colour scheme follows the
+	browser's prefers-color-scheme, exactly as the Hub homepage does.
+-->
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Harness · Home</title>
+		<!-- The real Harness catalog and the approved n79x63 overview cards, read from the repo. -->
+		<link rel="stylesheet" href="../../../../packages/reports/src/lib/styles/app-tokens.css" />
+		<link rel="stylesheet" href="../../../../packages/hub/src/lib/styles/home-scheme.css" />
+		<link
+			rel="stylesheet"
+			href="../../../../packages/reports/src/lib/styles/project-overview.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../../../packages/reports/src/lib/styles/project-overview-cards.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../../../packages/reports/src/lib/styles/project-overview-controls.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="../../../../packages/reports/src/lib/styles/project-overview-responsive.css"
+		/>
+		<!-- Mockup-only layout, drawn from the same tokens. -->
+		<link rel="stylesheet" href="base.css" />
+		<link rel="stylesheet" href="home.css" />
+		<link rel="stylesheet" href="sections.css" />
+		<link rel="stylesheet" href="states.css" />
+		<link rel="stylesheet" href="modal.css" />
+		<link rel="stylesheet" href="modal-panes.css" />
+		<link rel="stylesheet" href="modal-chat.css" />
+	</head>
+	<body>
+		<div class="home-scheme">
+			<div class="home-page" id="app"></div>
+		</div>
+		<script src="data.js"></script>
+		<script src="data-work.js"></script>
+		<script src="data-busy.js"></script>
+		<script src="ui.js"></script>
+		<script src="root.js"></script>
+		<script src="root-lists.js"></script>
+		<script src="modal-agents.js"></script>
+		<script src="modal-plans.js"></script>
+		<script src="modal-scheduled.js"></script>
+		<script src="modal-projects.js"></script>
+		<script src="modal-wip.js"></script>
+		<script src="app.js"></script>
+	</body>
+</html>
