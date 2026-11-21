@@ -45,6 +45,9 @@ export interface TrackerRunReceipt extends TrackerReceiptUsage {
 	verificationFor?: string;
 	kill_at?: number;
 	session_id?: string | null;
+	tmux?: string | null;
+	/** Host process identity for an adopted legacy receipt. */
+	host_session_id?: string;
 	redone_by?: string;
 	revision: number;
 }
@@ -54,6 +57,7 @@ export interface TrackerSessionEvidence {
 	id: string;
 	state: 'live' | 'exited';
 	startedAt: number;
+	tmux?: string;
 }
 
 export type TrackerDispatchEvent =

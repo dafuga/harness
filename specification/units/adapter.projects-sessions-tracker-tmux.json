@@ -1,0 +1,361 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.projects-sessions-tracker-tmux",
+	"uid": "u_fyf7e7kyi5",
+	"kind": "adapter",
+	"title": "Tracker tmux",
+	"responsibility": "Reads retained Tracker panes and guards terminal writes against pane, cursor, and provider changes.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/projects-sessions/TrackerTmuxAdapter.ts",
+			"src/adapters/projects-sessions/TrackerTmuxAdapter.types.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerTmuxPane.ts"
+		],
+		"symbols": [
+			"TrackerTmuxAdapter",
+			"TrackerTmuxAdapter.constructor",
+			"TrackerTmuxAdapter.scan",
+			"TrackerTmuxAdapter.inventory",
+			"TrackerTmuxAdapter.nudge",
+			"TrackerTmuxAdapterConfig",
+			"TrackerTmuxPane",
+			"TrackerTmuxNudge",
+			"trackerPaneFormat",
+			"trackerSessionName",
+			"trackerTmuxPane",
+			"matchesTrackerTmuxPane",
+			"trackerTmuxKeys"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "TrackerTmuxAdapter.constructor.config",
+				"type": "TrackerTmuxAdapterConfig",
+				"required": true,
+				"description": "Controlled tmux executable and canonical Tracker node."
+			},
+			{
+				"name": "TrackerTmuxAdapter.scan.signal",
+				"type": "AbortSignal",
+				"required": true,
+				"description": "Lifetime for the inventory and bounded pane reads."
+			},
+			{
+				"name": "TrackerTmuxAdapter.scan.names",
+				"type": "RegExp",
+				"required": false,
+				"description": "Allowed session names. Defaults to the existing Tracker task-session names."
+			},
+			{
+				"name": "TrackerTmuxAdapter.inventory.signal",
+				"type": "AbortSignal",
+				"required": true,
+				"description": "Lifetime for the socket inventory calls."
+			},
+			{
+				"name": "TrackerTmuxAdapter.nudge.input",
+				"type": "TrackerTmuxNudge",
+				"required": true,
+				"description": "Observed pane identity and cursor state, expected provider, and literal text."
+			},
+			{
+				"name": "TrackerTmuxAdapter.nudge.signal",
+				"type": "AbortSignal",
+				"required": true,
+				"description": "Lifetime for the identity checks and guarded write."
+			},
+			{
+				"name": "trackerTmuxPane.raw",
+				"type": "string",
+				"required": true,
+				"description": "One line from the expected tmux pane format."
+			},
+			{
+				"name": "trackerTmuxPane.scope",
+				"type": "{ socket: string; runnerSocket: boolean; names: RegExp }",
+				"required": true,
+				"description": "Socket identity, runner designation and accepted session names."
+			},
+			{
+				"name": "matchesTrackerTmuxPane.observed",
+				"type": "TrackerTmuxPane['pane']",
+				"required": true,
+				"description": "Fresh pane observation on the configured socket."
+			},
+			{
+				"name": "matchesTrackerTmuxPane.expected",
+				"type": "Pick<TrackerTmuxPane['pane'], 'key' | 'activity' | 'createdAt' | 'x' | 'y'>",
+				"required": true,
+				"description": "Identity, time and cursor from the planned nudge."
+			},
+			{
+				"name": "trackerTmuxKeys.paneId",
+				"type": "string",
+				"required": true,
+				"description": "Validated numeric tmux pane ID on the selected socket."
+			},
+			{
+				"name": "trackerTmuxKeys.message",
+				"type": "string",
+				"required": true,
+				"description": "Control-character-free message already checked by the caller."
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerTmuxAdapter.scan",
+				"type": "Promise<WatchdogPane[]>",
+				"description": "Read the allowed pane layouts and capture their visible screens only when identity is stable."
+			},
+			{
+				"name": "TrackerTmuxAdapter.inventory",
+				"type": "Promise<WatchdogPane[]>",
+				"description": "Read pane identity and timing without reading terminal output."
+			},
+			{
+				"name": "TrackerTmuxAdapter.nudge",
+				"type": "Promise<boolean>",
+				"description": "Send literal keys and Enter only if the same pane still has the intended idle composer."
+			},
+			{
+				"name": "trackerPaneFormat",
+				"type": "unknown",
+				"description": "Tmux format for the stable pane fields used in revalidation."
+			},
+			{
+				"name": "trackerSessionName",
+				"type": "unknown",
+				"description": "The retained Tracker manual and managed tmux session naming rule."
+			},
+			{
+				"name": "trackerTmuxPane",
+				"type": "TrackerTmuxPane | undefined",
+				"description": "Parse one safe tmux pane layout or omit it when the row cannot be verified."
+			},
+			{
+				"name": "matchesTrackerTmuxPane",
+				"type": "boolean",
+				"description": "Compare the observed pane identity, activity, creation time, and cursor to the intended target."
+			},
+			{
+				"name": "trackerTmuxKeys",
+				"type": "string",
+				"description": "Build the tmux command body with text escaped for literal input."
+			}
+		],
+		"errors": [
+			{
+				"name": "TrackerHostProcessError",
+				"type": "thrown",
+				"description": "The bounded host command could not produce a trustworthy response."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "TrackerTmuxAdapter.scan",
+				"inputs": [
+					{
+						"name": "TrackerTmuxAdapter.scan.signal",
+						"type": "AbortSignal",
+						"required": true,
+						"description": "Lifetime for the inventory and bounded pane reads."
+					},
+					{
+						"name": "TrackerTmuxAdapter.scan.names",
+						"type": "RegExp",
+						"required": false,
+						"description": "Allowed session names. Defaults to the existing Tracker task-session names."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerTmuxAdapter.scan",
+						"type": "Promise<WatchdogPane[]>",
+						"description": "Read the allowed pane layouts and capture their visible screens only when identity is stable."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerTmuxAdapter.inventory",
+				"inputs": [
+					{
+						"name": "TrackerTmuxAdapter.inventory.signal",
+						"type": "AbortSignal",
+						"required": true,
+						"description": "Lifetime for the socket inventory calls."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerTmuxAdapter.inventory",
+						"type": "Promise<WatchdogPane[]>",
+						"description": "Read pane identity and timing without reading terminal output."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerTmuxAdapter.nudge",
+				"inputs": [
+					{
+						"name": "TrackerTmuxAdapter.nudge.input",
+						"type": "TrackerTmuxNudge",
+						"required": true,
+						"description": "Observed pane identity and cursor state, expected provider, and literal text."
+					},
+					{
+						"name": "TrackerTmuxAdapter.nudge.signal",
+						"type": "AbortSignal",
+						"required": true,
+						"description": "Lifetime for the identity checks and guarded write."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerTmuxAdapter.nudge",
+						"type": "Promise<boolean>",
+						"description": "Send literal keys and Enter only if the same pane still has the intended idle composer."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerTmuxPane",
+				"inputs": [
+					{
+						"name": "trackerTmuxPane.raw",
+						"type": "string",
+						"required": true,
+						"description": "One line from the expected tmux pane format."
+					},
+					{
+						"name": "trackerTmuxPane.scope",
+						"type": "{ socket: string; runnerSocket: boolean; names: RegExp }",
+						"required": true,
+						"description": "Socket identity, runner designation and accepted session names."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerTmuxPane",
+						"type": "TrackerTmuxPane | undefined",
+						"description": "Parse one safe tmux pane layout or omit it when the row cannot be verified."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "matchesTrackerTmuxPane",
+				"inputs": [
+					{
+						"name": "matchesTrackerTmuxPane.observed",
+						"type": "TrackerTmuxPane['pane']",
+						"required": true,
+						"description": "Fresh pane observation on the configured socket."
+					},
+					{
+						"name": "matchesTrackerTmuxPane.expected",
+						"type": "Pick<TrackerTmuxPane['pane'], 'key' | 'activity' | 'createdAt' | 'x' | 'y'>",
+						"required": true,
+						"description": "Identity, time and cursor from the planned nudge."
+					}
+				],
+				"outputs": [
+					{
+						"name": "matchesTrackerTmuxPane",
+						"type": "boolean",
+						"description": "Compare the observed pane identity, activity, creation time, and cursor to the intended target."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "trackerTmuxKeys",
+				"inputs": [
+					{
+						"name": "trackerTmuxKeys.paneId",
+						"type": "string",
+						"required": true,
+						"description": "Validated numeric tmux pane ID on the selected socket."
+					},
+					{
+						"name": "trackerTmuxKeys.message",
+						"type": "string",
+						"required": true,
+						"description": "Control-character-free message already checked by the caller."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerTmuxKeys",
+						"type": "string",
+						"description": "Build the tmux command body with text escaped for literal input."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerTmuxAdapter.constructor",
+				"inputs": [
+					{
+						"name": "TrackerTmuxAdapter.constructor.config",
+						"type": "TrackerTmuxAdapterConfig",
+						"required": true,
+						"description": "Controlled tmux executable and canonical Tracker node."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerTmuxAdapter.constructor",
+						"type": "unknown",
+						"description": "Bind the configured tmux executable to the node-specific legacy socket set."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.projects-sessions-tracker-host-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-watchdog-pane",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/projects-sessions/TrackerTmuxAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/projects-sessions/TrackerTmuxAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

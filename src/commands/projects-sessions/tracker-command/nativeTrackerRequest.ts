@@ -45,6 +45,7 @@ function nativeTrackerRequest(
 	words: string[],
 	values: Record<string, unknown>
 ): NativeTrackerRequest {
+	if (command === 'watchdog') return watchdogRequest(words, values);
 	const item = itemQuery(command, words, values);
 	if (item) return item;
 	if (idVerbs.has(command)) return itemAction(command, words, values);
@@ -55,6 +56,17 @@ function nativeTrackerRequest(
 		method: 'GET',
 		path: path + (command === 'digest' && !values.json ? '?format=text' : '')
 	};
+}
+
+function watchdogRequest(
+	[mode, ...trailing]: string[],
+	{ item }: Record<string, unknown>
+): NativeTrackerRequest {
+	if (!trailing.length && mode === 'alerts' && !item)
+		return { method: 'GET', path: '/watchdog/alerts' };
+	if (!trailing.length && mode === 'dry-run')
+		return { method: 'GET', path: '/watchdog/dry-run' + query({ item }) };
+	throw new TypeError('usage: tracker watchdog alerts|dry-run [--item ID]');
 }
 
 function itemQuery(
