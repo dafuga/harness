@@ -1,5 +1,5 @@
 // @harness-uid u_rw64iex44n
-import { trackerRelayFramingSource } from '../../../../scripts/tracker-docker-relay/frames.mjs';
+import { trackerRelayFramingSource } from './dockerTrackerFrames';
 import { trackerGuestLauncherSource } from './dockerTrackerGuestLauncher';
 import { trackerGuestShimSource } from './dockerTrackerGuestShim';
 

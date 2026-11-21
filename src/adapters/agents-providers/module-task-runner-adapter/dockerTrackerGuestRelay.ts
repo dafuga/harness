@@ -1,10 +1,6 @@
 // @harness-uid u_rw64iex44n
 import { once } from 'node:events';
-import {
-	maxRelayPayloadBytes,
-	readFrames,
-	writeFramePayload
-} from '../../../../scripts/tracker-docker-relay/frames.mjs';
+import { maxRelayPayloadBytes, readFrames, writeFramePayload } from './dockerTrackerFrames';
 import type { TaskChild } from './taskProcess.types';
 import type { TrackerGuestGrant } from './dockerTrackerGuest.types';
 import { TrackerSyncAuthService } from '../../../services/networking-security/TrackerSyncAuthService';

@@ -2,11 +2,9 @@
 	"name": "managed-docker-tracker-commands",
 	"goal": "The normal task process preserves provider streams and an offline guest Tracker shim reaches the host-signed service for exactly its assigned item and run. Verify duplicate retries, denied scope, and task-owned cleanup in isolated Docker.",
 	"createdAt": "2026-11-21T22:18:40.310Z",
-	"updatedAt": "2026-11-21T22:21:17.544Z",
+	"updatedAt": "2026-11-21T22:52:53.382Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T22:52:48.658Z",
+			"evidence": "Exact synthetic transport red returned 71 with no signed traffic."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T22:52:50.543Z",
+			"evidence": "Provider I/O stays separate from bounded Tracker relay frames. Native host service verifies the assigned run and writes replay receipts atomically."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T22:52:53.382Z",
+			"evidence": "The unchanged synthetic transport assertion passed in a sealed Harness snapshot. Separate native foreground regression verifies run completion and journal replay."
 		},
 		{
 			"id": "verify",
