@@ -198,7 +198,9 @@ Production Docker needs a qualified provider credential and egress path,
 plus an item-scoped host-signed Tracker completion channel that works
 alongside provider I/O. The optional node signer hook writes the private
 per-attempt authorization file just before launch. Its path reaches only
-the Linux host worker via `HARNESS_TRACKER_GUEST_AUTH_FILE`. This draft
+the Linux host worker via `HARNESS_TRACKER_GUEST_AUTH_FILE`. The writer
+receives the item, run, canonical attempt key and loopback port. The
+worker removes the grant as it exits. This draft
 provides the consumer and leaves the signer and guest route to that
 integration. The host-side client binding keeps
 the daemon socket, signing key, and credentials outside guest storage.
