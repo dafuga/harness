@@ -1,6 +1,10 @@
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { format, type Options } from 'prettier';
 import { test } from 'vitest';
 import { expect } from './verificationExpect';
+import { createProject } from '../src/cli/program/create-project/createProject';
 import { projectFiles } from '../src/templates/projects-sessions/project';
 import { measureWorkload } from './support/measureWorkload';
 import { assertFoundationLint } from './support/project-template/foundations';
@@ -103,6 +107,55 @@ test('library projects include Bun TypeScript test structure', () => {
 	expect(packageJson.scripts.typecheck).toBe('tsc --noEmit');
 	expect(packageJson.devDependencies['@typescript-eslint/parser']).toBeDefined();
 	expect(packageJson.devDependencies.prettier).toBeDefined();
+});
+
+test('static apps scaffold a prerendered build while default apps use adapter-auto', () =>
+	measureWorkload('template.project', 'static-app-scaffold', () => {
+		const staticFiles = projectFiles({ kind: 'app', name: 'static-app', adapter: 'static' });
+		const staticPackage = JSON.parse(fileContents(staticFiles, 'package.json'));
+		expect(staticPackage.devDependencies['@sveltejs/adapter-static']).toBeDefined();
+		expect(staticPackage.devDependencies['@sveltejs/adapter-auto']).toBeUndefined();
+		const staticConfig = fileContents(staticFiles, 'svelte.config.js');
+		expect(staticConfig).toContain("'@sveltejs/adapter-static'");
+		expect(staticConfig).toContain("adapter({ pages: 'build', assets: 'build' })");
+		expect(fileContents(staticFiles, 'src/routes/+layout.ts')).toBe(
+			'export const prerender = true;\n'
+		);
+
+		const defaults = projectFiles({ kind: 'app', name: 'default-app' });
+		expect(JSON.parse(fileContents(defaults, 'package.json')).devDependencies).toHaveProperty([
+			'@sveltejs/adapter-auto'
+		]);
+		expect(fileContents(defaults, 'svelte.config.js')).toContain("'@sveltejs/adapter-auto'");
+		expect(defaults.some((file) => file.path === 'src/routes/+layout.ts')).toBe(false);
+	}));
+
+test('project creation writes a static app and rejects unsupported adapter requests before writing', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-static-app-'));
+	try {
+		const created = await measureWorkload(
+			'workflow.create-project',
+			'create-static-app-files',
+			() => createProject({ kind: 'app', name: 'static-app', parent: root, adapter: 'static' })
+		);
+		expect(created.writes.some((file) => file.path === 'src/routes/+layout.ts')).toBe(true);
+		expect(await readFile(join(root, 'static-app/src/routes/+layout.ts'), 'utf8')).toBe(
+			'export const prerender = true;\n'
+		);
+		await expect(
+			createProject({ kind: 'app', name: 'invalid-app', parent: root, adapter: 'unknown' })
+		).rejects.toThrow('Unsupported app adapter');
+		await expect(
+			createProject({ kind: 'lib', name: 'invalid-lib', parent: root, adapter: 'static' })
+		).rejects.toThrow('only available for app projects');
+		for (const name of ['invalid-app', 'invalid-lib']) {
+			await expect(readFile(join(root, name, 'package.json'))).rejects.toMatchObject({
+				code: 'ENOENT'
+			});
+		}
+	} finally {
+		await rm(root, { recursive: true, force: true });
+	}
 });
 
 test.each(['app', 'lib'] as const)(
