@@ -1,0 +1,43 @@
+{
+	"name": "tracker-spoke-sync",
+	"goal": "Prove durable Tracker spoke push and pull against pinned legacy wire behavior, including lost receipts, database identity replacement and isolated hub/peer cursors.",
+	"createdAt": "2026-11-21T15:10:13.450Z",
+	"updatedAt": "2026-11-21T15:10:49.123Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:10:49.123Z",
+			"evidence": "Pinned 122e190 wire handler and PR #140 signer. Declare push drain and retry, pull commit and retry, hub identity replay, stale response rejection, and independent hub/peer cursor states. All tests use in-memory synthetic state without listeners; vendor SQLite journal and scheduling stay with parent."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
