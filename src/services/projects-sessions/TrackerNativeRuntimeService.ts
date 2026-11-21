@@ -69,6 +69,10 @@ export class TrackerNativeRuntimeService {
 		return trackerSpokeStatus(this.links);
 	}
 
+	kickLinks(): void {
+		for (const link of this.links) link.kick();
+	}
+
 	/** The service owner awaits shutdown before closing the SQLite handle. */
 	async runLinks(signal: AbortSignal): Promise<void> {
 		const controller = new AbortController();
@@ -86,7 +90,15 @@ export class TrackerNativeRuntimeService {
 function composeItemApi(
 	store: TrackerPersistenceService,
 	runs: TrackerRunReadRepository,
-	{ now, timeZone, ladderConfig, validateModel, planLaunch, role }: TrackerNativeRuntimeOptions,
+	{
+		now,
+		timeZone,
+		ladderConfig,
+		validateModel,
+		planLaunch,
+		role,
+		manualLaunch
+	}: TrackerNativeRuntimeOptions,
 	recurring?: TrackerRecurringRepository
 ) {
 	return new TrackerLocalApiService(store, new TrackerItemReadRepository(store.database), {
@@ -95,6 +107,7 @@ function composeItemApi(
 		ladderConfig,
 		validateModel,
 		planLaunch,
+		manualLaunch,
 		runs,
 		recurring: { role, history: recurring && ((id, limit) => recurring.history(id, limit)) }
 	});

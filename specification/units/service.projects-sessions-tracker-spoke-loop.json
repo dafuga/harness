@@ -18,6 +18,7 @@
 			"TrackerSpokeLoopService.kind",
 			"TrackerSpokeLoopService.status",
 			"TrackerSpokeLoopService.upstream",
+			"TrackerSpokeLoopService.kick",
 			"TrackerSpokeLoopService.run",
 			"TrackerSpokeLoopOptions",
 			"TrackerSpokeStatus"
@@ -49,6 +50,10 @@
 			{
 				"name": "TrackerSpokeLoopService.upstream",
 				"type": "unknown"
+			},
+			{
+				"name": "TrackerSpokeLoopService.kick",
+				"type": "void"
 			},
 			{
 				"name": "TrackerSpokeLoopService.run",
@@ -98,6 +103,18 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "TrackerSpokeLoopService.kick",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerSpokeLoopService.kick",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "TrackerSpokeLoopService.run",

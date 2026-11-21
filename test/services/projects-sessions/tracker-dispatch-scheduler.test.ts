@@ -75,6 +75,12 @@ async function proveManagedAdoption(root: string) {
 			{ id: 1, state: 'running', session_id: `fixture-${fixture.child?.pid}` }
 		]);
 		expect(runner.start).toHaveBeenCalledTimes(1);
+		expect(runner.start.mock.calls[0]).toHaveLength(3);
+		const brief = String(runner.start.mock.calls[0].at(2));
+		expect(brief).toContain(`tracker done ${sampleId.slice(0, 6)}`);
+		expect(brief).toMatch(
+			/tracker done[\s\S]+only as the final step[\s\S]+Never remove your current working directory/
+		);
 		expect(runner.observe.mock.calls.map(([, key]) => key)).toEqual([
 			fixture.startedKey,
 			fixture.startedKey

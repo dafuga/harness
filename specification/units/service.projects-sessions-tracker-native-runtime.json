@@ -20,6 +20,7 @@
 			"TrackerNativeRuntimeService",
 			"TrackerNativeRuntimeService.constructor",
 			"TrackerNativeRuntimeService.spokeStatus",
+			"TrackerNativeRuntimeService.kickLinks",
 			"TrackerNativeRuntimeService.runLinks",
 			"TrackerLocalApiService",
 			"TrackerNotificationService",
@@ -133,6 +134,10 @@
 				"type": "unknown"
 			},
 			{
+				"name": "TrackerNativeRuntimeService.kickLinks",
+				"type": "void"
+			},
+			{
 				"name": "TrackerNativeRuntimeService.runLinks",
 				"type": "Promise<void>"
 			},
@@ -180,6 +185,18 @@
 					{
 						"name": "TrackerNativeRuntimeService.spokeStatus",
 						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerNativeRuntimeService.kickLinks",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerNativeRuntimeService.kickLinks",
+						"type": "void"
 					}
 				],
 				"errors": [],
