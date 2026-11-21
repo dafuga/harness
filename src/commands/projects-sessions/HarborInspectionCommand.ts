@@ -1,6 +1,6 @@
 // @harness-uid u_yga4vj5ueo
 import { execFile } from 'node:child_process';
-import { extname, isAbsolute } from 'node:path';
+import { extname, isAbsolute, resolve } from 'node:path';
 import { promisify } from 'node:util';
 import type { Command } from 'commander';
 import { ExpectedCliError } from '../../core/development-tooling/errors';
@@ -21,11 +21,13 @@ const RUNTIME_ENV = [
 	'HARBOR_HOME'
 ];
 
+type PublishOptions = { commit: string; artifact: string; profile: string; approve?: string };
+
 export class HarborInspectionCommand {
 	register(program: Command): void {
 		const harbor = program
 			.command('harbor')
-			.description('Inspect Harbor using its installed CLI package.');
+			.description('Use Harbor capabilities from its installed CLI and SDK.');
 		harbor
 			.command('version')
 			.description('Show the installed Harbor CLI version.')
@@ -49,38 +51,88 @@ export class HarborInspectionCommand {
 			.action((options: { config?: string }) =>
 				this.run(['agent', 'status', ...(options.config ? ['--config', options.config] : [])])
 			);
+		harbor
+			.command('publish <project>')
+			.description(
+				'Review a verified Harbor testnet release, or publish it with the matching approval digest.'
+			)
+			.requiredOption('--commit <sha>', 'Full verified source commit.')
+			.requiredOption('--artifact <path>', 'Relative .harborapp output path.')
+			.requiredOption('--profile <file>', 'Trusted local Harbor testnet profile.')
+			.option('--approve <digest>', 'Approval digest from the matching review.')
+			.action((project: string, options: PublishOptions) =>
+				this.run(
+					[
+						'publish',
+						project,
+						'--commit',
+						options.commit,
+						'--artifact',
+						options.artifact,
+						'--profile',
+						options.profile,
+						...(options.approve === undefined ? [] : ['--approve', options.approve])
+					],
+					true
+				)
+			);
 	}
 
-	private async run(args: string[]): Promise<void> {
-		const entry = process.env.HARNESS_HARBOR_CLI_PATH;
+	private async run(args: string[], publish = false): Promise<void> {
+		const entryVariable = publish ? 'HARNESS_HARBOR_APP_SDK_PATH' : 'HARNESS_HARBOR_CLI_PATH';
+		const entry = process.env[entryVariable];
 		if (!entry || !isAbsolute(entry) || !['.js', '.cjs', '.mjs'].includes(extname(entry))) {
-			throw new ExpectedCliError(
-				'Set HARNESS_HARBOR_CLI_PATH to the installed Harbor package entry.'
-			);
+			throw new ExpectedCliError(`Set ${entryVariable} to the installed Harbor package entry.`);
 		}
 		const node = process.env.HARNESS_HARBOR_NODE_PATH || Bun.which('node');
 		if (!node || !isAbsolute(node) || /\.(?:bat|cmd)$/i.test(node)) {
 			throw new ExpectedCliError('Set HARNESS_HARBOR_NODE_PATH to an absolute Node executable.');
 		}
 		const env = Object.fromEntries(RUNTIME_ENV.map((key) => [key, process.env[key]]));
+		if (publish) {
+			env.HARNESS_CLI_PATH = resolve(process.argv[1]);
+			env.HARNESS_HARBOR_CLI_PATH = process.env.HARNESS_HARBOR_CLI_PATH;
+			env.HARNESS_HARBOR_NODE_PATH = node;
+		}
 		try {
-			const result = await execute(node, [entry, ...args], {
+			const child = execute(node, [entry, ...args], {
 				env,
 				windowsHide: true,
-				timeout: 3000,
-				killSignal: 'SIGKILL',
+				timeout: publish ? 780_000 : 3000,
+				killSignal: publish ? 'SIGTERM' : 'SIGKILL',
 				maxBuffer: 1024 * 1024
 			});
+			const result = await (publish ? waitForPublication(child) : child);
 			console.log(result.stdout.replace(/\r?\n$/, ''));
 		} catch (error) {
 			const code = (error as NodeJS.ErrnoException).code;
 			if (typeof code === 'number') {
-				console.error('The installed Harbor CLI reported an inspection error.');
+				console.error(
+					publish
+						? 'Harbor could not complete publication. Check the testnet profile and local verification record.'
+						: 'The installed Harbor CLI reported an inspection error.'
+				);
 				process.exitCode = code;
 				return;
 			}
-			throw new ExpectedCliError('Could not inspect Harbor through its installed CLI.');
+			throw new ExpectedCliError(
+				publish
+					? 'Harbor publication stopped.'
+					: 'Could not inspect Harbor through its installed CLI.'
+			);
 		}
+	}
+}
+
+async function waitForPublication(child: ReturnType<typeof execute>) {
+	const cancel = () => child.child.kill('SIGTERM');
+	process.on('SIGINT', cancel);
+	process.on('SIGTERM', cancel);
+	try {
+		return await child;
+	} finally {
+		process.off('SIGINT', cancel);
+		process.off('SIGTERM', cancel);
 	}
 }
 

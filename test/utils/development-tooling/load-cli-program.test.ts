@@ -43,6 +43,7 @@ test('Harbor inspection forwards fixed argv without provider or signing credenti
 		}));`
 	);
 	vi.stubEnv('HARNESS_HARBOR_CLI_PATH', entry);
+	vi.stubEnv('HARNESS_HARBOR_APP_SDK_PATH', entry);
 	vi.stubEnv('HARNESS_HARBOR_NODE_PATH', process.execPath);
 	vi.stubEnv('OPENAI_API_KEY', 'synthetic-provider-key');
 	vi.stubEnv('HARBOR_PRIVATE_KEY', 'synthetic-harbor-key');
@@ -61,6 +62,56 @@ test('Harbor inspection forwards fixed argv without provider or signing credenti
 				name: 'agent-status',
 				input: ['agent', 'status', '--config', config],
 				expected: ['agent', 'status', '--config', config]
+			},
+			{
+				name: 'publish-review',
+				input: [
+					'publish',
+					root,
+					'--commit',
+					'a'.repeat(40),
+					'--artifact',
+					'out/app.harborapp',
+					'--profile',
+					config
+				],
+				expected: [
+					'publish',
+					root,
+					'--commit',
+					'a'.repeat(40),
+					'--artifact',
+					'out/app.harborapp',
+					'--profile',
+					config
+				]
+			},
+			{
+				name: 'publish-approved',
+				input: [
+					'publish',
+					root,
+					'--commit',
+					'a'.repeat(40),
+					'--artifact',
+					'out/app.harborapp',
+					'--profile',
+					config,
+					'--approve',
+					'b'.repeat(64)
+				],
+				expected: [
+					'publish',
+					root,
+					'--commit',
+					'a'.repeat(40),
+					'--artifact',
+					'out/app.harborapp',
+					'--profile',
+					config,
+					'--approve',
+					'b'.repeat(64)
+				]
 			}
 		];
 		for (const { name, input, expected } of commands) {
