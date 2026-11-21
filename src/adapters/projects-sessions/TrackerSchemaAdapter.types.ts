@@ -7,3 +7,9 @@ export interface TrackerDatabaseIdentity {
 	createdAt: number;
 	dbId: string;
 }
+
+export interface TrackerReplayOperation {
+	item_id: string;
+	fields: string;
+	hlc: string;
+}

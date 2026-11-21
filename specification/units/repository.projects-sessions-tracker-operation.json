@@ -112,6 +112,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.projects-sessions-tracker-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.sqlite-types",
 			"via": "import",
 			"origin": "derived"
