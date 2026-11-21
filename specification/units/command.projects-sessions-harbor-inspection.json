@@ -10,10 +10,25 @@
 	"owns": {
 		"source": [
 			"src/commands/projects-sessions/HarborInspectionCommand.ts",
+			"src/commands/projects-sessions/HarborInspectionCommand.types.ts",
 			"src/commands/projects-sessions/harborRunProfiles.ts",
 			"src/commands/projects-sessions/registerHarborAppTools.ts"
 		],
-		"symbols": ["HarborInspectionCommand", "HarborInspectionCommand.register"]
+		"symbols": [
+			"HarborInspectionCommand",
+			"HarborInspectionCommand.register",
+			"PublishOptions",
+			"RunMode",
+			"RunProfile",
+			"RunHarborSdkTool",
+			"ScaffoldArguments",
+			"HARBOR_RUN_PROFILES",
+			"installedEntry",
+			"nodeExecutable",
+			"runtimeEnv",
+			"unsetIfEmpty",
+			"registerHarborAppTools"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -23,6 +38,42 @@
 				"type": "Command",
 				"required": true,
 				"description": "The root Harness command that receives the Harbor command group."
+			},
+			{
+				"name": "installedEntry.sdk",
+				"type": "boolean",
+				"required": true,
+				"description": "Selects the SDK entry instead of the Harbor CLI entry."
+			},
+			{
+				"name": "runtimeEnv.mode",
+				"type": "RunMode",
+				"required": true,
+				"description": "The mode that selects the environment allowed for this process."
+			},
+			{
+				"name": "runtimeEnv.node",
+				"type": "string",
+				"required": true,
+				"description": "The selected absolute Node executable, forwarded in publish mode."
+			},
+			{
+				"name": "unsetIfEmpty.value",
+				"type": "string | undefined",
+				"required": true,
+				"description": "An environment value supplied by the caller."
+			},
+			{
+				"name": "registerHarborAppTools.harbor",
+				"type": "Command",
+				"required": true,
+				"description": "The existing Harbor command group."
+			},
+			{
+				"name": "registerHarborAppTools.run",
+				"type": "RunHarborSdkTool",
+				"required": true,
+				"description": "The existing finite SDK app tooling runner."
 			}
 		],
 		"outputs": [
@@ -55,32 +106,6 @@
 						"name": "HarborInspectionCommand.register",
 						"type": "void",
 						"description": "Adds Harbor version, chain info, agent and service status, runtime doctor, app templates, scaffold, check, pack, Android staging, a workspace-bound MCP stdio session and verified testnet publication."
-					}
-				],
-				"errors": [],
-				"errorStatus": "declared"
-			},
-			{
-				"name": "registerHarborAppTools",
-				"inputs": [
-					{
-						"name": "registerHarborAppTools.harbor",
-						"type": "Command",
-						"required": true,
-						"description": "The existing Harbor command group."
-					},
-					{
-						"name": "registerHarborAppTools.run",
-						"type": "RunHarborSdkTool",
-						"required": true,
-						"description": "The existing finite SDK app tooling runner."
-					}
-				],
-				"outputs": [
-					{
-						"name": "registerHarborAppTools",
-						"type": "void",
-						"description": "Registers SDK templates, scaffold, check, pack, Android staging, and the unbuffered MCP authoring session."
 					}
 				],
 				"errors": [],
@@ -172,6 +197,32 @@
 						"name": "unsetIfEmpty",
 						"type": "string | undefined",
 						"description": "Undefined for an empty or unset value, otherwise the original value."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "registerHarborAppTools",
+				"inputs": [
+					{
+						"name": "registerHarborAppTools.harbor",
+						"type": "Command",
+						"required": true,
+						"description": "The existing Harbor command group."
+					},
+					{
+						"name": "registerHarborAppTools.run",
+						"type": "RunHarborSdkTool",
+						"required": true,
+						"description": "The existing finite SDK app tooling runner."
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerHarborAppTools",
+						"type": "void",
+						"description": "Registers SDK templates, scaffold, check, pack, Android staging, and the unbuffered MCP authoring session."
 					}
 				],
 				"errors": [],
