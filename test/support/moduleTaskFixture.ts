@@ -107,7 +107,12 @@ if(mode==='outside') writeFileSync('outside.txt','outside requested module');
 else if(!mode.startsWith('completion-')) writeFileSync('src/orders.ts','export const orders = 2;\\n');
 const response = check ? JSON.stringify({status: check==='security-review'?'failed':'passed',summary}) : summary;
 if(provider==='claude') {console.log(JSON.stringify({type:'system',subtype:'init',model}));console.log(JSON.stringify({type:'result',subtype:'success',is_error:false,result:response,usage:{input_tokens:70,output_tokens:20,cache_read_input_tokens:30,cache_creation_input_tokens:0,cache_creation:{ephemeral_1h_input_tokens:0}},total_cost_usd:0.002,modelUsage:{[model]:{}}}));}
-else { console.log(JSON.stringify({type:'thread.started',thread_id:'fixture-session'})); console.log(JSON.stringify({type:'item.completed',item:{type:'agent_message',text:response}})); console.log(JSON.stringify({type:'turn.completed',model,usage:{input_tokens:100,output_tokens:20,cached_input_tokens:30}})); }
+else {
+  console.log(JSON.stringify({type:'thread.started',thread_id:'fixture-session'}));
+  if (check) console.log(JSON.stringify({type:'item.completed',item:{type:'agent_message',text:'Reviewing the submitted changes.'}}));
+  console.log(JSON.stringify({type:'item.completed',item:{type:'agent_message',text:response}}));
+  console.log(JSON.stringify({type:'turn.completed',model,usage:{input_tokens:100,output_tokens:20,cached_input_tokens:30}}));
+}
 `;
 }
 
