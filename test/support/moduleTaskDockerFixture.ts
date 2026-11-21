@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { expect } from '../verificationExpect';
 import { moduleTaskFixture } from './moduleTaskFixture';
 import { runCommand, runHarness } from './cli';
@@ -67,6 +68,18 @@ export async function verifyDockerOrchestrator(base: string) {
 	});
 }
 
+export async function verifyDockerProcess(base: string) {
+	await withDockerFixture(base, async (f, env) => {
+		const file = fileURLToPath(new URL('./managedProviderProcessFixture.ts', import.meta.url));
+		const result = await runCommand(['bun', file, f.root], f.root, true, env);
+		expect(JSON.parse(result.stdout)).toEqual({
+			exit: { code: 37, stdout: 'Prompt ✓\n[literal $(exit 91); * "]' },
+			interrupted: 'interrupted',
+			removed: true
+		});
+	});
+}
+
 async function withDockerFixture(
 	base: string,
 	check: (
@@ -79,6 +92,7 @@ async function withDockerFixture(
 	const fixture = await moduleTaskFixture();
 	const image = `harness-managed-provider-test:${randomUUID()}`;
 	try {
+		await runCommand(['docker', 'image', 'inspect', '--format={{.Id}}', base], fixture.root);
 		await writeFile(join(fixture.root, 'claude-fixture'), fixtureSource, { mode: 0o755 });
 		await writeFile(
 			join(fixture.root, 'Dockerfile'),

@@ -13,6 +13,7 @@ export const wantedContractSchema = z.strictObject({
 	outputs: z.array(contractItemSchema).min(1),
 	errors: z.array(contractItemSchema)
 });
+export const taskPlatformSchema = z.enum(['linux', 'macos']);
 export const taskInputSchema = z.strictObject({
 	id,
 	title: text,
@@ -34,6 +35,7 @@ export const taskInputSchema = z.strictObject({
 	estimatedDifficulty: z.enum(['small', 'medium', 'large']).optional(),
 	model: z.string().trim().min(1).max(150).default('auto'),
 	provider: z.enum(['claude', 'codex']).optional(),
+	platform: taskPlatformSchema.optional(),
 	intelligence: z.enum(['low', 'medium', 'high', 'xhigh', 'max', 'ultra']).optional(),
 	assignee: id.optional()
 });
