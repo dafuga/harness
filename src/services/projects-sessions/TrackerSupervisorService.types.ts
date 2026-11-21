@@ -4,7 +4,8 @@ export type TrackerSupervisorWorker =
 	| 'dispatch'
 	| 'notifications'
 	| 'recurring'
-	| 'telemetry';
+	| 'telemetry'
+	| 'watchdog';
 
 export interface TrackerSupervisorOptions {
 	now?: () => number;

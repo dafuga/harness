@@ -1,0 +1,255 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.projects-sessions-tracker-host-process",
+	"uid": "u_ucbos7kmyv",
+	"kind": "adapter",
+	"title": "Tracker host process",
+	"responsibility": "Runs approved Tracker host executables with explicit JSON, bounded output, and a scoped process environment.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/projects-sessions/TrackerHostProcessAdapter.ts",
+			"src/adapters/projects-sessions/TrackerHostProcessAdapter.types.ts",
+			"src/adapters/projects-sessions/tracker-host-process-adapter/TrackerHostProcessError.ts",
+			"src/adapters/projects-sessions/tracker-host-process-adapter/trackerHostCommand.ts"
+		],
+		"symbols": [
+			"TrackerHostProcessAdapter",
+			"TrackerHostProcessAdapter.constructor",
+			"TrackerHostProcessAdapter.request",
+			"TrackerHostProcessOperation",
+			"TrackerHostProcessError",
+			"controlledTrackerExecutable",
+			"runTrackerHostCommand"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "TrackerHostProcessAdapter.constructor.path",
+				"type": "string",
+				"required": true,
+				"description": "Absolute path to an owner-controlled executable."
+			},
+			{
+				"name": "TrackerHostProcessAdapter.request.operation",
+				"type": "TrackerHostProcessOperation",
+				"required": true,
+				"description": "One supported host effect operation passed as a direct argument."
+			},
+			{
+				"name": "TrackerHostProcessAdapter.request.payload",
+				"type": "object",
+				"required": true,
+				"description": "Operation fields sent as JSON on stdin. The adapter sets the protocol version."
+			},
+			{
+				"name": "TrackerHostProcessAdapter.request.signal",
+				"type": "AbortSignal",
+				"required": true,
+				"description": "Lifetime of the command request before drain."
+			},
+			{
+				"name": "controlledTrackerExecutable.path",
+				"type": "string",
+				"required": true,
+				"description": "Absolute path selected by the node operator."
+			},
+			{
+				"name": "runTrackerHostCommand.executable",
+				"type": "string",
+				"required": true,
+				"description": "Previously validated absolute executable path."
+			},
+			{
+				"name": "runTrackerHostCommand.args",
+				"type": "string[]",
+				"required": true,
+				"description": "Arguments sent directly to the executable without shell evaluation."
+			},
+			{
+				"name": "runTrackerHostCommand.signal",
+				"type": "AbortSignal",
+				"required": true,
+				"description": "Signal that terminates the direct host command."
+			},
+			{
+				"name": "runTrackerHostCommand.options",
+				"type": "{ input?: string; environment?: Record<string, string> }",
+				"required": false,
+				"default": {},
+				"description": "Optional stdin and explicit, command-owned environment variables."
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerHostProcessAdapter.request",
+				"type": "Promise<unknown>",
+				"description": "Run the selected operation and return its versioned JSON response for validation by the caller."
+			},
+			{
+				"name": "controlledTrackerExecutable",
+				"type": "string",
+				"description": "Resolve and validate the executable against the service user and mode requirements."
+			},
+			{
+				"name": "runTrackerHostCommand",
+				"type": "Promise<{ stdout: string; stderr: string; code: number }>",
+				"description": "Run the checked executable with bounded output, deadline, and a scoped environment."
+			}
+		],
+		"errors": [
+			{
+				"name": "TrackerHostProcessError",
+				"type": "thrown",
+				"description": "The bounded host command could not produce a trustworthy response."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "The configured executable is outside the accepted ownership or permission boundary."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "TrackerHostProcessAdapter.request",
+				"inputs": [
+					{
+						"name": "TrackerHostProcessAdapter.request.operation",
+						"type": "TrackerHostProcessOperation",
+						"required": true,
+						"description": "One supported host effect operation passed as a direct argument."
+					},
+					{
+						"name": "TrackerHostProcessAdapter.request.payload",
+						"type": "object",
+						"required": true,
+						"description": "Operation fields sent as JSON on stdin. The adapter sets the protocol version."
+					},
+					{
+						"name": "TrackerHostProcessAdapter.request.signal",
+						"type": "AbortSignal",
+						"required": true,
+						"description": "Lifetime of the command request before drain."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerHostProcessAdapter.request",
+						"type": "Promise<unknown>",
+						"description": "Run the selected operation and return its versioned JSON response for validation by the caller."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "controlledTrackerExecutable",
+				"inputs": [
+					{
+						"name": "controlledTrackerExecutable.path",
+						"type": "string",
+						"required": true,
+						"description": "Absolute path selected by the node operator."
+					}
+				],
+				"outputs": [
+					{
+						"name": "controlledTrackerExecutable",
+						"type": "string",
+						"description": "Resolve and validate the executable against the service user and mode requirements."
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "The configured executable is outside the accepted ownership or permission boundary."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "runTrackerHostCommand",
+				"inputs": [
+					{
+						"name": "runTrackerHostCommand.executable",
+						"type": "string",
+						"required": true,
+						"description": "Previously validated absolute executable path."
+					},
+					{
+						"name": "runTrackerHostCommand.args",
+						"type": "string[]",
+						"required": true,
+						"description": "Arguments sent directly to the executable without shell evaluation."
+					},
+					{
+						"name": "runTrackerHostCommand.signal",
+						"type": "AbortSignal",
+						"required": true,
+						"description": "Signal that terminates the direct host command."
+					},
+					{
+						"name": "runTrackerHostCommand.options",
+						"type": "{ input?: string; environment?: Record<string, string> }",
+						"required": false,
+						"default": {},
+						"description": "Optional stdin and explicit, command-owned environment variables."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runTrackerHostCommand",
+						"type": "Promise<{ stdout: string; stderr: string; code: number }>",
+						"description": "Run the checked executable with bounded output, deadline, and a scoped environment."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerHostProcessAdapter.constructor",
+				"inputs": [
+					{
+						"name": "TrackerHostProcessAdapter.constructor.path",
+						"type": "string",
+						"required": true,
+						"description": "Absolute path to an owner-controlled executable."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerHostProcessAdapter.constructor",
+						"type": "unknown",
+						"description": "Validate and pin the configured executable before it can receive host requests."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/projects-sessions/TrackerHostProcessAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/projects-sessions/TrackerHostProcessAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -10,6 +10,7 @@ import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
 import type { TrackerNotificationOptions } from './TrackerNotificationService.types';
 import type { TrackerRecurringJobRunner } from './TrackerRecurringService.types';
 import type { TrackerSpokeLoopOptions } from './TrackerSpokeLoopService.types';
+import type { TrackerHostEffects } from './tracker-native-runtime-service/nativeTrackerHostEffects.types';
 
 export interface TrackerLegacyDestinationBindings {
 	urls?: ReadonlyMap<string, string>;
@@ -34,6 +35,8 @@ export interface TrackerNativeRuntimeOptions extends Omit<
 	storage?: Omit<TrackerSchemaAdapterConfig, 'now'>;
 	notification?: TrackerNativeNotificationOptions;
 	adapter?: TrackerAdapterPollDependencies;
+	hostEffects?: TrackerHostEffects;
+	hostEffectsHeld?: boolean;
 	recurring?: { jobs?: TrackerRecurringJobRunner };
 	dispatch?: Omit<TrackerDispatchSchedulerOptions, 'policy'> &
 		Pick<TrackerDispatchRepositoryOptions, 'due' | 'sessions'> & {

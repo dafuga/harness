@@ -52,6 +52,7 @@ function adoptSession(
 		reviseRun(run, {
 			state: 'running',
 			session_id: session.id,
+			...(session.tmux && { tmux: session.tmux }),
 			started_at: session.startedAt,
 			eta_at: run.eta_at ?? etaFor(snapshot.item, policy, now)
 		})
@@ -131,7 +132,7 @@ function resumeRun(
 	if (
 		!matchesSession(run, session, now) ||
 		session.state !== 'live' ||
-		session.id !== run.session_id
+		session.id !== (run.host_session_id ?? run.session_id)
 	) {
 		return skip('ignored', 'the original session is no longer live');
 	}
@@ -157,7 +158,7 @@ function canResume(
 	return (
 		run.state === 'finished' &&
 		run.outcome === 'blocked' &&
-		Boolean(run.session_id) &&
+		Boolean(run.host_session_id ?? run.session_id) &&
 		answeredBlock(item) &&
 		matchesRequest(item, run, policy) &&
 		!hasOpenSession(snapshot, policy, now, run) &&

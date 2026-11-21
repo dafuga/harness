@@ -10,6 +10,7 @@ import {
 } from 'node:fs';
 import { isAbsolute } from 'node:path';
 import { z } from 'zod';
+import { trackerHostEffectsSchema } from '../tracker-native-runtime-service/trackerHostEffectsSchema';
 import type { TrackerNodeConfig } from './trackerNodeConfig.types';
 
 const absolutePath = z.string().refine(isAbsolute);
@@ -24,6 +25,7 @@ const configFields = {
 	legacyFenceFile: absolutePath,
 	legacySupervisorSocket: absolutePath.optional(),
 	syncSecretFile: absolutePath,
+	hostEffects: trackerHostEffectsSchema.optional(),
 	notifications: z
 		.strictObject({
 			targets: z.record(
@@ -53,6 +55,7 @@ const configSchema = z.discriminatedUnion('role', [
 const fenceSchema = z.strictObject({
 	version: z.literal(1),
 	checkpoint: id,
+	hostEffects: z.literal(true).optional(),
 	legacyAutostart: z.literal('disabled'),
 	node: nodeName,
 	role: z.enum(['hub', 'spoke']),
@@ -65,6 +68,15 @@ const fenceSchema = z.strictObject({
 export function loadTrackerNodeConfig(path: string): TrackerNodeConfig {
 	const config = configSchema.parse(readPrivateJson(path));
 	if (config.apiPort === trackerSyncPort(config)) throw new TypeError('Tracker ports must differ');
+	const effects = config.hostEffects;
+	if (
+		effects?.mode === 'active' &&
+		config.node !== 'daniel-primary-mbp' &&
+		(effects.adapter || effects.watchdog?.chiefOfStaff)
+	)
+		throw new TypeError(
+			'Tracker adapter polling and watchdog CoS delivery require the designated primary Mac'
+		);
 	return config;
 }
 
@@ -73,8 +85,16 @@ export function trackerSyncPort(config: TrackerNodeConfig): number | undefined {
 }
 
 export function verifyTrackerLegacyFence(config: TrackerNodeConfig): string {
-	const { checkpoint, node, role, database, apiPort, syncPort, legacySupervisorSocket } =
-		fenceSchema.parse(readPrivateJson(config.legacyFenceFile));
+	const {
+		checkpoint,
+		node,
+		role,
+		database,
+		apiPort,
+		syncPort,
+		legacySupervisorSocket,
+		hostEffects
+	} = fenceSchema.parse(readPrivateJson(config.legacyFenceFile));
 	if (
 		node !== config.node ||
 		role !== config.role ||
@@ -84,7 +104,17 @@ export function verifyTrackerLegacyFence(config: TrackerNodeConfig): string {
 		legacySupervisorSocket !== config.legacySupervisorSocket
 	)
 		throw new TypeError('Tracker legacy fence does not cover this node');
+	verifyHostEffectsFence(config, { checkpoint, hostEffects });
 	return checkpoint;
+}
+
+function verifyHostEffectsFence(
+	config: TrackerNodeConfig,
+	{ checkpoint, hostEffects }: { checkpoint: string; hostEffects?: true }
+) {
+	const effects = config.hostEffects;
+	if (effects?.mode === 'active' && (!hostEffects || effects.checkpoint !== checkpoint))
+		throw new TypeError('Tracker fence does not authorize host effects');
 }
 
 export function verifyTrackerDatabasePath(path: string): void {

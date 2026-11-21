@@ -20,6 +20,8 @@
 			"TrackerDispatchRepository.constructor",
 			"TrackerDispatchRepository.update",
 			"TrackerDispatchRepository.managedRuns",
+			"TrackerDispatchRepository.legacyRuns",
+			"TrackerDispatchRepository.adoptLegacy",
 			"TrackerDispatchRepository.assertLegacyRollbackSafe",
 			"TrackerDispatchRepository.candidates",
 			"TrackerDispatchRepository.stuckRequests",
@@ -33,6 +35,8 @@
 			"assertLegacyDispatchRollbackSafe",
 			"dispatchRunRows",
 			"managedDispatchRuns",
+			"legacyDispatchRuns",
+			"adoptLegacyDispatchRun",
 			"persistDispatchRun",
 			"trackerRunSchema"
 		]
@@ -59,6 +63,16 @@
 			{
 				"name": "TrackerDispatchRepository.update.decide",
 				"type": "(snapshot: TrackerDispatchSnapshot) => TrackerDispatchDecision",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatchRepository.adoptLegacy.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatchRepository.adoptLegacy.session",
+				"type": "TrackerSessionEvidence",
 				"required": true
 			},
 			{
@@ -107,6 +121,31 @@
 				"required": true
 			},
 			{
+				"name": "legacyDispatchRuns.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "legacyDispatchRuns.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "adoptLegacyDispatchRun.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "adoptLegacyDispatchRun.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "adoptLegacyDispatchRun.session",
+				"type": "TrackerSessionEvidence",
+				"required": true
+			},
+			{
 				"name": "persistDispatchRun.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -130,6 +169,14 @@
 			{
 				"name": "TrackerDispatchRepository.managedRuns",
 				"type": "TrackerRunReceipt[]"
+			},
+			{
+				"name": "TrackerDispatchRepository.legacyRuns",
+				"type": "TrackerRunReceipt[]"
+			},
+			{
+				"name": "TrackerDispatchRepository.adoptLegacy",
+				"type": "void"
 			},
 			{
 				"name": "TrackerDispatchRepository.assertLegacyRollbackSafe",
@@ -162,6 +209,14 @@
 			{
 				"name": "managedDispatchRuns",
 				"type": "TrackerRunReceipt[]"
+			},
+			{
+				"name": "legacyDispatchRuns",
+				"type": "TrackerRunReceipt[]"
+			},
+			{
+				"name": "adoptLegacyDispatchRun",
+				"type": "void"
 			},
 			{
 				"name": "persistDispatchRun",
@@ -210,6 +265,41 @@
 					{
 						"name": "TrackerDispatchRepository.managedRuns",
 						"type": "TrackerRunReceipt[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerDispatchRepository.legacyRuns",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerDispatchRepository.legacyRuns",
+						"type": "TrackerRunReceipt[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerDispatchRepository.adoptLegacy",
+				"inputs": [
+					{
+						"name": "TrackerDispatchRepository.adoptLegacy.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "TrackerDispatchRepository.adoptLegacy.session",
+						"type": "TrackerSessionEvidence",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerDispatchRepository.adoptLegacy",
+						"type": "void"
 					}
 				],
 				"errors": [],
@@ -361,6 +451,57 @@
 					{
 						"name": "managedDispatchRuns",
 						"type": "TrackerRunReceipt[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "legacyDispatchRuns",
+				"inputs": [
+					{
+						"name": "legacyDispatchRuns.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "legacyDispatchRuns.node",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "legacyDispatchRuns",
+						"type": "TrackerRunReceipt[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "adoptLegacyDispatchRun",
+				"inputs": [
+					{
+						"name": "adoptLegacyDispatchRun.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "adoptLegacyDispatchRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "adoptLegacyDispatchRun.session",
+						"type": "TrackerSessionEvidence",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "adoptLegacyDispatchRun",
+						"type": "void"
 					}
 				],
 				"errors": [],
