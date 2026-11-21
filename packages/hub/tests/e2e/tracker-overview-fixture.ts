@@ -202,7 +202,7 @@ export async function capture(page: Page, testInfo: TestInfo, state: string, vie
 	await testInfo.attach(`${state}-${viewport.id}.png`, { body, contentType: 'image/png' });
 	recordCapture(
 		{
-			evidence: 'screens',
+			evidence: 'hub-overview-screens',
 			kind: 'screenshot',
 			state,
 			viewport: viewport.id,
