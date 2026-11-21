@@ -1,7 +1,9 @@
+// @harness-uid u_7n2divksx4
 import type { PlannedFile } from '../../core/development-tooling/files';
 import type { ProjectTemplateInput } from '../projects-sessions/project.types';
 
-export function godotProjectFiles({ name, dimension = '2d' }: ProjectTemplateInput): PlannedFile[] {
+export function godotProjectFiles(input: ProjectTemplateInput): PlannedFile[] {
+	const { name, dimension = '2d' } = input;
 	const root = dimension === '3d' ? 'Node3D' : 'Node2D';
 	return [
 		{
