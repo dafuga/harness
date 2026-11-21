@@ -1,0 +1,41 @@
+{
+	"name": "nc9x10-tracker-reads",
+	"goal": "Prove legacy 122e190 lookup, item list, due/ignored/recurring digest and redacted loopback JSON on an injected SQLite fixture",
+	"createdAt": "2026-11-21T15:35:27.833Z",
+	"updatedAt": "2026-11-21T15:38:22.600Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:38:22.600Z",
+			"evidence": "Legacy 122e190 Store.get/list and buildDigest/formatDigest define the finite fixture matrix. Compare whole public JSON, ordering, errors, and text, and pass the Overview response through its real parser. Read-only injected SQLite; parent owns daemon and journal wiring."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
