@@ -1572,13 +1572,13 @@
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-			"definition": "fc327936981eb1ef64eef693127c67f1a5e77c8807ef9b7a93914cbe55fdc4df",
+			"definition": "2614a2836542c1817abf93a513d2074f87bdb7dea539d3c994586e7d0ff93bbe",
 			"relocationDefinition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b",
 			"review": {
-				"commit": "caea83354142413dd97edae29bdd055924c9847b",
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-				"definition": "fc327936981eb1ef64eef693127c67f1a5e77c8807ef9b7a93914cbe55fdc4df",
-				"reason": "Keeps the Tracker overview publisher in the desktop backend lifecycle."
+				"reason": "Compose the local Desktop and remote clients with the responsive mockup renderer.",
+				"definition": "2614a2836542c1817abf93a513d2074f87bdb7dea539d3c994586e7d0ff93bbe"
 			},
 			"previousReviews": [
 				{
@@ -1598,6 +1598,12 @@
 					"path": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 					"definition": "e17905e36b16d1ea9acad4df5deda52208ca85268d2d9b86f88fceae26872ef2",
 					"reason": "Retain the game branch’s unload confirmation and quit-time window and backend guards."
+				},
+				{
+					"commit": "caea83354142413dd97edae29bdd055924c9847b",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "fc327936981eb1ef64eef693127c67f1a5e77c8807ef9b7a93914cbe55fdc4df",
+					"reason": "Keeps the Tracker overview publisher in the desktop backend lifecycle."
 				}
 			]
 		},
@@ -3911,14 +3917,22 @@
 			"unit": "desktop.service.project-run",
 			"from": "packages/desktop/src/services/project-run-service/ProjectRunService.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
-			"definition": "c0c8e938ebe7537ff6697610d106e55e70bbc9243489cf608b69027423e25ee4",
+			"definition": "2488d72e7e1acbad3d187edfba59d3c91903546bc74b5b9828bac0161e4d2b5c",
 			"relocationDefinition": "1c852abd6f52c52c7ce29c47f3b8477eb7c958547321a94cfef241083068e502",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
 				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
-				"definition": "c0c8e938ebe7537ff6697610d106e55e70bbc9243489cf608b69027423e25ee4",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"reason": "Use the selected agent for the new unit proposal, then send visual authoring to Sonnet.",
+				"definition": "2488d72e7e1acbad3d187edfba59d3c91903546bc74b5b9828bac0161e4d2b5c"
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
+					"definition": "c0c8e938ebe7537ff6697610d106e55e70bbc9243489cf608b69027423e25ee4",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.project-proposal",
@@ -4311,7 +4325,14 @@
 			"unit": "desktop.adapter.planning-facade",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/PlanningFacadeAdapter.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
-			"definition": "afff4002416783534f5046ec92099d8a29b37ef726ad3bfdef6e4529d145b47b"
+			"definition": "9ac0c7c803504e36b3f86bdf38c2d192a6076e8e10429f7141a96e6014aa031a",
+			"relocationDefinition": "afff4002416783534f5046ec92099d8a29b37ef726ad3bfdef6e4529d145b47b",
+			"review": {
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
+				"reason": "Resolve the approved option’s screenshots together under one pinned version read.",
+				"definition": "9ac0c7c803504e36b3f86bdf38c2d192a6076e8e10429f7141a96e6014aa031a"
+			}
 		},
 		{
 			"unit": "desktop.function.planning-message",
@@ -4329,14 +4350,22 @@
 			"unit": "desktop.function.planning-writes",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/planningWrites.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
-			"definition": "d892b3f0b451c59f8046bff249122c9fca3f3f7733d5cd3baddb8fbe2c29d029",
+			"definition": "0a2033b4ff7ef64fe8a851aaee13adc91340f13e70e30f0e6c883633aef9ee86",
 			"relocationDefinition": "26c1fa6ed92d6361d09e0804f6eff2b034e8b9315c575142fe22f0a0d30933ac",
 			"review": {
-				"commit": "ae9e653255f830ee4d47f84bab200245efa52b8f",
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
-				"definition": "d892b3f0b451c59f8046bff249122c9fca3f3f7733d5cd3baddb8fbe2c29d029",
-				"reason": "Create layout plans with screen viewports while retaining shell plan compatibility."
-			}
+				"reason": "Save every responsive image of a design option in a single immutable version.",
+				"definition": "0a2033b4ff7ef64fe8a851aaee13adc91340f13e70e30f0e6c883633aef9ee86"
+			},
+			"previousReviews": [
+				{
+					"commit": "ae9e653255f830ee4d47f84bab200245efa52b8f",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
+					"definition": "d892b3f0b451c59f8046bff249122c9fca3f3f7733d5cd3baddb8fbe2c29d029",
+					"reason": "Create layout plans with screen viewports while retaining shell plan compatibility."
+				}
+			]
 		},
 		{
 			"unit": "desktop.adapter.capacitor-bridge",
@@ -4667,7 +4696,14 @@
 			"unit": "desktop.service.plan-run",
 			"from": "packages/desktop/src/services/PlanRunService.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
-			"definition": "efa5aeed6c9be2c1a74d7f9a7cf08cbb3b31bf7a61c504518418a0d81d498da8"
+			"definition": "8ff720c60d089a3819652c9fe27092f942894d1e7e459246fec94a95362c2018",
+			"relocationDefinition": "efa5aeed6c9be2c1a74d7f9a7cf08cbb3b31bf7a61c504518418a0d81d498da8",
+			"review": {
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
+				"reason": "Route visual entities to HTML and CSS mockups and preserve the selected runner for behavior notes.",
+				"definition": "8ff720c60d089a3819652c9fe27092f942894d1e7e459246fec94a95362c2018"
+			}
 		},
 		{
 			"unit": "relay.service.device-revocation",
@@ -4941,20 +4977,35 @@
 			"unit": "planning.service.planning",
 			"from": "packages/planning/src/services/planning-service/PlanningService.ts",
 			"to": "packages/planning/src/lib/planning-collaboration/planning/planning-service/PlanningService.ts",
-			"definition": "842a0a7f0eb280629e529e8d7254acb460115bebe524bfb4c0d6506f5da0de02"
+			"definition": "0627673aa3b4f0c622486eedf8417c66025ac79d4a84bb45831196034189db39",
+			"relocationDefinition": "842a0a7f0eb280629e529e8d7254acb460115bebe524bfb4c0d6506f5da0de02",
+			"review": {
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/PlanningService.ts",
+				"reason": "Provide ordered version and option screenshot reads for the Change handoff.",
+				"definition": "0627673aa3b4f0c622486eedf8417c66025ac79d4a84bb45831196034189db39"
+			}
 		},
 		{
 			"unit": "planning.function.plan-design",
 			"from": "packages/planning/src/services/planning-service/planDesign.ts",
 			"to": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planDesign.ts",
-			"definition": "c672dcfeee6c5b04ce74d2888b22ce01eab310a2ccb562e08226b315ea3f0953",
+			"definition": "a54e042d79b4fe604bb06c59a4c0ce2026d9850bc167ed8ddd9e176df6a402b7",
 			"relocationDefinition": "802e22cb4d88e4925e9f496afe4ff18f479eed8f2ae40f0d9b7f300b164ae1fe",
 			"review": {
-				"commit": "ae9e653255f830ee4d47f84bab200245efa52b8f",
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
 				"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planDesign.ts",
-				"definition": "c672dcfeee6c5b04ce74d2888b22ce01eab310a2ccb562e08226b315ea3f0953",
-				"reason": "Treat reusable layouts as visual designs requiring images."
-			}
+				"reason": "Validate sized captures and require all the bytes an exact design approval binds.",
+				"definition": "a54e042d79b4fe604bb06c59a4c0ce2026d9850bc167ed8ddd9e176df6a402b7"
+			},
+			"previousReviews": [
+				{
+					"commit": "ae9e653255f830ee4d47f84bab200245efa52b8f",
+					"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planDesign.ts",
+					"definition": "c672dcfeee6c5b04ce74d2888b22ce01eab310a2ccb562e08226b315ea3f0953",
+					"reason": "Treat reusable layouts as visual designs requiring images."
+				}
+			]
 		},
 		{
 			"unit": "planning.function.plan-history",
@@ -4991,7 +5042,14 @@
 			"unit": "planning.function.plan-thread",
 			"from": "packages/planning/src/services/planning-service/planThread.ts",
 			"to": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planThread.ts",
-			"definition": "0a13f3b5a49de66de9dbc81704035afa1b07304ce676f8c71965b29da872292f"
+			"definition": "474f9d9504da5422268d9a072524b5d8612ad6526c6bc3cb102b411d21ec0e0c",
+			"relocationDefinition": "0a13f3b5a49de66de9dbc81704035afa1b07304ce676f8c71965b29da872292f",
+			"review": {
+				"commit": "f99a4dd918922d2644a677644ded1398a4136627",
+				"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planThread.ts",
+				"reason": "Retain the planning thread validation and reference binding already committed on main.",
+				"definition": "474f9d9504da5422268d9a072524b5d8612ad6526c6bc3cb102b411d21ec0e0c"
+			}
 		},
 		{
 			"unit": "planning.function.plan-write",
@@ -5417,13 +5475,13 @@
 			"unit": "desktop.service.local-client",
 			"from": "packages/desktop/src/services/LocalClientService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-			"definition": "bbd255f3b64af1587a08a456291b5d1cd00fc621d404a1699a41382700f83b50",
+			"definition": "fc4ac939b6401690b8183751141ab5a92f1b3b260a9096025bea4fa1a83e96b0",
 			"relocationDefinition": "db0ec4b62e6922c297169687608d262d5d27c0fbea6e3b27da2a52def20bb765",
 			"review": {
-				"commit": "caea83354142413dd97edae29bdd055924c9847b",
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-				"definition": "bbd255f3b64af1587a08a456291b5d1cd00fc621d404a1699a41382700f83b50",
-				"reason": "Uses the configured native Hub account as the overview source."
+				"reason": "Give local windows the same headless rendering workflow as remote clients.",
+				"definition": "fc4ac939b6401690b8183751141ab5a92f1b3b260a9096025bea4fa1a83e96b0"
 			},
 			"previousReviews": [
 				{
@@ -5437,6 +5495,12 @@
 					"path": "packages/desktop/src/services/LocalClientService.ts",
 					"definition": "b22f573e49778ad7dbda682a022403c64da2ae30cb03d8b9f33db55b527d5893",
 					"reason": "Retain the game branch’s local transport request bound for full-size game documents."
+				},
+				{
+					"commit": "caea83354142413dd97edae29bdd055924c9847b",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+					"definition": "bbd255f3b64af1587a08a456291b5d1cd00fc621d404a1699a41382700f83b50",
+					"reason": "Uses the configured native Hub account as the overview source."
 				}
 			]
 		},
@@ -5540,14 +5604,22 @@
 			"unit": "desktop.service.client-projects",
 			"from": "packages/desktop/src/services/ClientProjectsService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.ts",
-			"definition": "d826b63ecb38d784b43182a19686c1db3fb408da0ea4a3637f949fe4af08d6fa",
+			"definition": "e33e2814bb995021dd73731aa44b096ceece36666bbc1eff23182d29ebabca58",
 			"relocationDefinition": "e7b1ac7d1e24d5fb3626b6072183bfc29bf27d362eca39ba35c3a254b3da4f42",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.ts",
-				"definition": "d826b63ecb38d784b43182a19686c1db3fb408da0ea4a3637f949fe4af08d6fa",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"reason": "Use the same mockup authoring and renderer in an authorized remote project session.",
+				"definition": "e33e2814bb995021dd73731aa44b096ceece36666bbc1eff23182d29ebabca58"
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.ts",
+					"definition": "d826b63ecb38d784b43182a19686c1db3fb408da0ea4a3637f949fe4af08d6fa",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "reports.service.screenshot-upload",
@@ -5671,7 +5743,14 @@
 			"unit": "desktop.function.change-execute",
 			"from": "packages/desktop/src/services/change-run-service/changeExecute.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/change-run-service/changeExecute.ts",
-			"definition": "8868058332251dc94177b77eff212cd8160482724a686ee437713773a8fa6f61"
+			"definition": "62cea8af8117355699f738df67403cdcb83563fbeb3457b7a0d16b645e90c200",
+			"relocationDefinition": "8868058332251dc94177b77eff212cd8160482724a686ee437713773a8fa6f61",
+			"review": {
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/change-run-service/changeExecute.ts",
+				"reason": "Give the Change runner the exact approved option source and screenshot references.",
+				"definition": "62cea8af8117355699f738df67403cdcb83563fbeb3457b7a0d16b645e90c200"
+			}
 		},
 		{
 			"unit": "reports.store.console-workspace",

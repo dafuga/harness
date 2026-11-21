@@ -5855,6 +5855,27 @@
 			"commit": "7a2e13ba28bf8ccf067589ff5c93c1f1b3f7eed9",
 			"reason": "Retain the reviewed change: verification record: optional skippedBuilds next to builds.",
 			"definition": "4d7b575accd81204242458a749178423430b0bf3b26a9ebf0d7f7f08fa04ebc9"
+		},
+		{
+			"unit": "desktop.function.change-execute",
+			"name": "changeExecute",
+			"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+			"reason": "Give the implementation agent the pinned mockup source and approved screenshot set.",
+			"definition": "d87df8b40acbebf5e6b9aeaa687e2562c83a48cddb36619b86c8da8d3398e075"
+		},
+		{
+			"unit": "desktop.function.prepare-run",
+			"name": "prepareRun",
+			"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+			"reason": "Route direct visual Plan authoring to Claude while preserving selected runners for headless Plan and Change.",
+			"definition": "3c4f5df41a34ef4c08f096bc1f49e99513569dfe2989ad016a97620bd557989a"
+		},
+		{
+			"unit": "planning.function.plan-design",
+			"name": "approve",
+			"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+			"reason": "Verify all approved captures in the pinned immutable plan read and bind the source digest.",
+			"definition": "cccc29d9017ea8eb55f03bb81a10c3a88aa186d38f02fe07d9aa8ef06948f205"
 		}
 	],
 	"retiredOwners": [
