@@ -8,7 +8,9 @@ export function isHubHomePreview(id: string) {
 	return id.startsWith(prefix + 'home') || id === prefix + 'quota-subscription';
 }
 
-const stamp = (hours: number) => new Date(NOW + hours * 3_600_000).toISOString();
+function stamp(hours: number) {
+	return new Date(NOW + hours * 3_600_000).toISOString();
+}
 
 const snapshot: OwnerHomeSnapshot = {
 	overview: allStatesSnapshot(),
