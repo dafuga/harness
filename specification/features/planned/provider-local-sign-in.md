@@ -1,3 +1,12 @@
+---
+status: planned
+shippedIn: null
+unitIds:
+  - command.agents-providers-provider-sign-in
+owner: null
+reviewedAt: null
+---
+
 # Local provider sign-in
 
 The Harness CLI provides one entry point for opening the installed ChatGPT, Claude and Gemini sign-in tools on the current computer. The Harbor desktop host can use the same command while keeping the provider session in the operator's terminal.
