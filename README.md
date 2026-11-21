@@ -93,8 +93,9 @@ comparing the database fingerprints.
 harness tracker rehearse /path/to/disposable-copy.sqlite --node fixture-spoke
 ```
 
-The rehearsal serves core items, duplicate checks, and digest requests.
-It does not read fleet configuration or run sync, jobs, adapters, or notifications.
+The rehearsal serves core items, duplicate checks, digest requests, and run
+reads. The installed daemon continues to own fleet configuration, sync, jobs,
+adapters, and notifications.
 
 ## API access from the CLI
 

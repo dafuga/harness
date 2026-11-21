@@ -10,13 +10,15 @@
 	"owns": {
 		"source": [
 			"src/services/projects-sessions/TrackerLocalApiService.ts",
-			"src/services/projects-sessions/TrackerLocalApiService.types.ts"
+			"src/services/projects-sessions/TrackerLocalApiService.types.ts",
+			"src/services/projects-sessions/tracker-local-api-service/readTrackerRunEndpoint.ts"
 		],
 		"symbols": [
 			"TrackerLocalApiService",
 			"TrackerLocalApiService.constructor",
 			"TrackerLocalApiService.handle",
-			"TrackerLocalApiOptions"
+			"TrackerLocalApiOptions",
+			"readTrackerRunEndpoint"
 		]
 	},
 	"contract": {
@@ -42,12 +44,31 @@
 				"name": "TrackerLocalApiService.handle.request",
 				"type": "Request",
 				"required": true
+			},
+			{
+				"name": "readTrackerRunEndpoint.parts",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "readTrackerRunEndpoint.query",
+				"type": "Record<string, string>",
+				"required": true
+			},
+			{
+				"name": "readTrackerRunEndpoint.options",
+				"type": "TrackerLocalApiOptions & { items: TrackerItemReadRepository }",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "TrackerLocalApiService.handle",
 				"type": "Promise<Response>"
+			},
+			{
+				"name": "readTrackerRunEndpoint",
+				"type": "unknown"
 			}
 		],
 		"errors": [],
@@ -66,6 +87,34 @@
 					{
 						"name": "TrackerLocalApiService.handle",
 						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readTrackerRunEndpoint",
+				"inputs": [
+					{
+						"name": "readTrackerRunEndpoint.parts",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "readTrackerRunEndpoint.query",
+						"type": "Record<string, string>",
+						"required": true
+					},
+					{
+						"name": "readTrackerRunEndpoint.options",
+						"type": "TrackerLocalApiOptions & { items: TrackerItemReadRepository }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerRunEndpoint",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -106,6 +155,26 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.agents-providers-classify-tracker-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-parse-tracker-model-spec",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-pick-tracker-model",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-tracker-run-report",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-check-tracker-item",
 			"via": "import",
 			"origin": "derived"
@@ -122,6 +191,11 @@
 		},
 		{
 			"unit": "repository.projects-sessions-tracker-item-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-run-read",
 			"via": "import",
 			"origin": "derived"
 		},

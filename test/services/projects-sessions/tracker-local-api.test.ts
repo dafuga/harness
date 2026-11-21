@@ -1,6 +1,7 @@
 import { DatabaseSync } from 'node:sqlite';
 import { afterEach, beforeEach, expect, test } from 'vitest';
 import { TrackerItemReadRepository } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository';
+import { TrackerRunReadRepository } from '../../../src/repositories/projects-sessions/TrackerRunReadRepository';
 import { TrackerLocalApiService } from '../../../src/services/projects-sessions/TrackerLocalApiService';
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
 
@@ -14,7 +15,8 @@ beforeEach(() => {
 		now: () => Date.UTC(2026, 10, 21, 12)
 	});
 	api = new TrackerLocalApiService(store, new TrackerItemReadRepository(database), {
-		now: () => Date.UTC(2026, 10, 21, 12)
+		now: () => Date.UTC(2026, 10, 21, 12),
+		runs: new TrackerRunReadRepository(database, store.node)
 	});
 });
 
@@ -31,7 +33,10 @@ function request(path: string, method = 'GET', payload?: object | string) {
 }
 
 test('commits item and notes under the actor, serves the overview feed and returns tombstones', async () => {
-	const created = await request('/items', 'POST', { title: 'Fixture bridge rollout', due: 'today' });
+	const created = await request('/items', 'POST', {
+		title: 'Fixture bridge rollout',
+		due: 'today'
+	});
 	expect(created.status).toBe(201);
 	const { id } = await created.json();
 	expect(id).toMatch(/^[0-9a-z]{10}$/);
@@ -89,4 +94,34 @@ test('blocks, unblocks and reopens an item with durable notes', async () => {
 	});
 	expect(await (await mark('done')).json()).toMatchObject({ status: 'done' });
 	expect(await (await mark('reopen')).json()).toMatchObject({ status: 'open' });
+});
+
+test('reports persisted run history and selects a model through the native item API', async () => {
+	const { id } = await (
+		await request('/items', 'POST', { title: 'Fixture model selection' })
+	).json();
+	database.exec(`
+		CREATE TABLE runs(id INTEGER, item_id TEXT, queued_at INTEGER, state TEXT, rung TEXT, outcome TEXT);
+		CREATE TABLE remote_runs(node TEXT, id INTEGER, item_id TEXT, queued_at INTEGER,
+			state TEXT, rung TEXT, outcome TEXT);
+	`);
+	database.prepare("INSERT INTO runs VALUES (1, ?, 100, 'finished', 'sol', 'done')").run(id);
+	database
+		.prepare(
+			"INSERT INTO remote_runs VALUES ('fixture-peer', 1, ?, 200, 'finished', 'sol', 'blocked')"
+		)
+		.run(id);
+	const runs = await request(`/runs?item=${id.slice(0, 6)}`);
+	expect(await runs.json()).toMatchObject([
+		{ id: 1, node: 'fixture-mac' },
+		{ id: 1, node: 'fixture-peer' }
+	]);
+	const report = await request('/models/report');
+	expect(await report.json()).toMatchObject({
+		ladder: expect.arrayContaining(['sol']),
+		rows: expect.arrayContaining([{ rung: 'sol', kind: '*', runs: 2, done: 1, blocked: 1 }])
+	});
+	const pick = await request(`/items/${id.slice(0, 6)}/pick`);
+	expect(await pick.json()).toMatchObject({ item_id: id, rung: 'sol', cli: 'codex', auto: false });
+	expect(store.maxSeq()).toBe(1);
 });

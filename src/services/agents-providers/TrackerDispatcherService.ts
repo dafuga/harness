@@ -62,3 +62,24 @@ export class TrackerDispatcherService {
 		return runs.find((run) => run.node === node && run.id === id && run.revision === revision);
 	}
 }
+
+export type {
+	TrackerAttemptVersion,
+	TrackerDispatchDecision,
+	TrackerDispatchEvent,
+	TrackerDispatchItem,
+	TrackerDispatchPolicy,
+	TrackerDispatchResult,
+	TrackerDispatchSnapshot,
+	TrackerDispatchStore,
+	TrackerDispatchWrites,
+	TrackerDueGrant,
+	TrackerDuePolicy,
+	TrackerLaunchIntent,
+	TrackerLaunchOptions,
+	TrackerLaunchPick,
+	TrackerLaunchRequest,
+	TrackerLaunchRung,
+	TrackerRunReceipt,
+	TrackerSessionEvidence
+} from './TrackerDispatcherService.types';

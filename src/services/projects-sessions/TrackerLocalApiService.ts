@@ -11,6 +11,7 @@ import type {
 import { trackerItemError } from '../../utils/projects-sessions/trackerItemError';
 import { trackerItemTransitions } from '../../utils/projects-sessions/trackerItemTransitions';
 import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
+import { readTrackerRunEndpoint } from './tracker-local-api-service/readTrackerRunEndpoint';
 import type { TrackerPersistenceService } from './TrackerPersistenceService';
 
 const itemAlphabet = '0123456789abcdefghjkmnpqrstvwxyz';
@@ -48,7 +49,7 @@ export class TrackerLocalApiService {
 			case 'items':
 				if (parts.length === 1) return trackerResponse(200, this.items.list(query));
 				if (parts.length === 2) return trackerResponse(200, this.items.get(parts[1]));
-				return undefined;
+				break;
 			case 'check':
 				return trackerResponse(
 					200,
@@ -64,7 +65,8 @@ export class TrackerLocalApiService {
 				return trackerResponse(200, digest);
 			}
 		}
-		return undefined;
+		const run = readTrackerRunEndpoint(parts, query, { ...this.options, items: this.items });
+		return run === undefined ? undefined : trackerResponse(200, run);
 	}
 
 	private async write(request: Request, [, id, verb]: string[]): Promise<Response | undefined> {

@@ -2,6 +2,7 @@
 import { openSqlite } from '../../adapters/development-tooling/openSqlite';
 import type { SqliteDatabase } from '../../core/development-tooling/sqliteTypes';
 import { TrackerItemReadRepository } from '../../repositories/projects-sessions/TrackerItemReadRepository';
+import { TrackerRunReadRepository } from '../../repositories/projects-sessions/TrackerRunReadRepository';
 import { TrackerLocalApiService } from './TrackerLocalApiService';
 import { TrackerPersistenceService } from './TrackerPersistenceService';
 
@@ -23,7 +24,9 @@ export class TrackerRehearsalService {
 		try {
 			database = openSqlite(databasePath);
 			const store = new TrackerPersistenceService(database, node);
-			api = new TrackerLocalApiService(store, new TrackerItemReadRepository(database));
+			api = new TrackerLocalApiService(store, new TrackerItemReadRepository(database), {
+				runs: new TrackerRunReadRepository(database, node)
+			});
 		} catch (error) {
 			await server.stop(true);
 			database?.close();

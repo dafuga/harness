@@ -185,25 +185,7 @@
 			"rankResourcePlacement",
 			"admitResourceHost",
 			"chooseResourceHost",
-			"TrackerDispatcherService",
-			"TrackerAttemptVersion",
-			"TrackerDispatchDecision",
-			"TrackerDispatchEvent",
-			"TrackerDispatchItem",
-			"TrackerDispatchPolicy",
-			"TrackerDispatchResult",
-			"TrackerDispatchSnapshot",
-			"TrackerDispatchStore",
-			"TrackerDispatchWrites",
-			"TrackerDueGrant",
-			"TrackerDuePolicy",
-			"TrackerLaunchIntent",
-			"TrackerLaunchOptions",
-			"TrackerLaunchPick",
-			"TrackerLaunchRequest",
-			"TrackerLaunchRung",
-			"TrackerRunReceipt",
-			"TrackerSessionEvidence"
+			"TrackerRunReadRepository"
 		]
 	},
 	"contract": {
@@ -663,6 +645,11 @@
 		},
 		{
 			"unit": "repository.projects-sessions-tracker-operation",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-run-read",
 			"via": "reexport",
 			"origin": "derived"
 		},

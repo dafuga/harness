@@ -202,25 +202,5 @@ export { scoreResourceHost } from './services/execution-runtimes/resource-placem
 export { rankResourcePlacement } from './services/execution-runtimes/resource-placement/rankResourcePlacement';
 export { admitResourceHost } from './services/execution-runtimes/resource-placement/admitResourceHost';
 export { chooseResourceHost } from './services/execution-runtimes/resource-placement/chooseResourceHost';
-export { TrackerDispatcherService } from './services/agents-providers/TrackerDispatcherService';
-export type {
-	TrackerAttemptVersion,
-	TrackerDispatchDecision,
-	TrackerDispatchEvent,
-	TrackerDispatchItem,
-	TrackerDispatchPolicy,
-	TrackerDispatchResult,
-	TrackerDispatchSnapshot,
-	TrackerDispatchStore,
-	TrackerDispatchWrites,
-	TrackerDueGrant,
-	TrackerDuePolicy,
-	TrackerLaunchIntent,
-	TrackerLaunchOptions,
-	TrackerLaunchPick,
-	TrackerLaunchRequest,
-	TrackerLaunchRung,
-	TrackerRunReceipt,
-	TrackerSessionEvidence
-} from './services/agents-providers/TrackerDispatcherService.types';
+export * from './services/agents-providers/TrackerDispatcherService';
 export { TrackerRunReadRepository } from './repositories/projects-sessions/TrackerRunReadRepository';
