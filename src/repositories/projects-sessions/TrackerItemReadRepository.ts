@@ -1,5 +1,6 @@
 // @harness-uid u_xba7ieg4je
 import type { SqliteDatabase, SqliteStatement } from '../../core/development-tooling/sqliteTypes';
+import { TrackerItemReadError } from './tracker-item-read-repository/TrackerItemReadError';
 import { buildTrackerDigest } from './tracker-item-read-repository/buildTrackerDigest';
 import { formatTrackerDigest } from './tracker-item-read-repository/formatTrackerDigest';
 import { serializeTrackerItem } from './tracker-item-read-repository/serializeTrackerItem';
@@ -53,7 +54,7 @@ export class TrackerItemReadRepository {
 	}
 
 	/** Build the digest with an explicit clock and the store's configured time zone. */
-	digest(nowMs: number, timeZone = defaultTimeZone): TrackerDigest {
+	digest(nowMs: number, timeZone: string = defaultTimeZone): TrackerDigest {
 		const rows = this.database
 			.prepare(`SELECT * FROM items WHERE ${visibleItems} AND ${activeStatus}`)
 			.all() as TrackerItemRow[];
@@ -61,7 +62,7 @@ export class TrackerItemReadRepository {
 	}
 
 	/** Format a digest using the legacy CLI section order and summaries. */
-	digestText(nowMs: number, timeZone = defaultTimeZone): string {
+	digestText(nowMs: number, timeZone: string = defaultTimeZone): string {
 		return formatTrackerDigest(this.digest(nowMs, timeZone));
 	}
 
@@ -69,7 +70,7 @@ export class TrackerItemReadRepository {
 		const id = String(idOrPrefix || '')
 			.trim()
 			.toLowerCase();
-		if (!id) throw readError('item id required');
+		if (!id) throw new TrackerItemReadError('item id required');
 		const exact = this.database.prepare('SELECT * FROM items WHERE id = ?').get(id) as
 			| TrackerItemRow
 			| undefined;
@@ -77,8 +78,9 @@ export class TrackerItemReadRepository {
 		const rows = this.database
 			.prepare("SELECT * FROM items WHERE id LIKE ? || '%' AND deleted = 0 LIMIT 2")
 			.all(id) as TrackerItemRow[];
-		if (!rows.length) throw readError(`no item "${id}"`, 404);
-		if (rows.length > 1) throw readError(`"${id}" is ambiguous; use more characters`);
+		if (!rows.length) throw new TrackerItemReadError(`no item "${id}"`, 404);
+		if (rows.length > 1)
+			throw new TrackerItemReadError(`"${id}" is ambiguous; use more characters`);
 		return rows[0];
 	}
 
@@ -95,17 +97,13 @@ function normalizeStatus(value: string): string {
 		.replace(/[\s-]+/g, '_');
 	const status = normalized === 'inprogress' ? 'in_progress' : normalized;
 	if (!itemStatuses.has(status)) {
-		throw readError('status must be open, in_progress, blocked, done or ignored');
+		throw new TrackerItemReadError('status must be open, in_progress, blocked, done or ignored');
 	}
 	return status;
 }
 
 function queryFlag(value: string | boolean | undefined): boolean {
 	return value === true || value === '1' || value === 'true';
-}
-
-function readError(message: string, status = 400) {
-	return Object.assign(new Error(message), { status });
 }
 
 export type { TrackerDigest, TrackerItem, TrackerItemListFilters };

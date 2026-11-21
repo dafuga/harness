@@ -2,6 +2,7 @@
 import type { SqliteStatement } from '../../../core/development-tooling/sqliteTypes';
 import type { TrackerItem, TrackerItemRow } from '../TrackerItemReadRepository.types';
 import type { StoredTrackerCallback, StoredTrackerNote } from './serializeTrackerItem.types';
+import { TrackerItemReadError } from './TrackerItemReadError';
 
 /** Shape an item for public reads. SQLite-only fields and callback targets stay private. */
 export function serializeTrackerItem(row: TrackerItemRow, notes: SqliteStatement): TrackerItem {
@@ -80,7 +81,7 @@ function publicCallback(raw: string | null): TrackerItem['callback'] {
 		callback = JSON.parse(raw);
 	} catch {
 		// Native JSON errors can contain part of the stored command or URL.
-		throw new Error('Invalid Tracker callback metadata');
+		throw new TrackerItemReadError('Invalid Tracker callback metadata', 500);
 	}
 	if (!callback) return null;
 	return { target: callback.url ? webhookLabel(callback.url) : 'command', node: callback.node };
