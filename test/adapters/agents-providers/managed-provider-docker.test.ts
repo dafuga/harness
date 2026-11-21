@@ -24,7 +24,6 @@ test('Docker command preserves argv and uses a task-owned workspace volume and b
 		'--interactive',
 		'--init',
 		'--pull=never',
-		'--platform=linux',
 		'--network=none',
 		'--cap-drop=ALL',
 		'--security-opt=no-new-privileges',
