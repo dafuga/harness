@@ -21,8 +21,9 @@ export async function readGithubIntakeRecord(
 	source: TrackerAdapterSource,
 	issue: TrackerGithubIssue,
 	options: GithubIssueIntakeOptions & { signal: AbortSignal; titlePrefix?: string },
-	{ provider, redactText }: TrackerAdapterPollDependencies
+	dependencies: TrackerAdapterPollDependencies
 ): Promise<TrackerAdapterIntakeRecord | null> {
+	const { provider, redactText } = dependencies;
 	const scope = scopeGithubIssueIntake(source, issue, options);
 	if (!scope) return null;
 	const timeline = scope.needsTimeline

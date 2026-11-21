@@ -195,7 +195,6 @@ export { nextTrackerClock } from './utils/projects-sessions/nextTrackerClock';
 export { TrackerPersistenceService } from './services/projects-sessions/TrackerPersistenceService';
 export { TrackerCutoverCommand } from './commands/projects-sessions/TrackerCutoverCommand';
 export { TrackerLocalApiService } from './services/projects-sessions/TrackerLocalApiService';
-export { TrackerRehearsalService } from './services/projects-sessions/TrackerRehearsalService';
 export { classifyResourceHost } from './services/execution-runtimes/resource-placement/classifyResourceHost';
 export { scoreResourceHost } from './services/execution-runtimes/resource-placement/scoreResourceHost';
 export { rankResourcePlacement } from './services/execution-runtimes/resource-placement/rankResourcePlacement';
@@ -218,3 +217,4 @@ export { TrackerNotificationService } from './services/projects-sessions/Tracker
 export { planGithubIssueIntake } from './helpers/planning-collaboration/planGithubIssueIntake';
 export * from './services/projects-sessions/TrackerAdapterPollService';
 export { TrackerNotificationSourceRepository } from './repositories/projects-sessions/TrackerNotificationSourceRepository';
+export { TrackerNativeRuntimeService } from './services/projects-sessions/TrackerNativeRuntimeService';

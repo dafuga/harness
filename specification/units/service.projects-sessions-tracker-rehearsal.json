@@ -82,22 +82,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "repository.projects-sessions-tracker-item-read",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "repository.projects-sessions-tracker-run-read",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.projects-sessions-tracker-local-api",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.projects-sessions-tracker-persistence",
+			"unit": "service.projects-sessions-tracker-native-runtime",
 			"via": "import",
 			"origin": "derived"
 		}

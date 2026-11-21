@@ -1,0 +1,174 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-native-runtime",
+	"uid": "u_bl6xl2h4a3",
+	"kind": "service",
+	"title": "TrackerNativeRuntimeService",
+	"responsibility": "Owns the TrackerNativeRuntimeService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/TrackerNativeRuntimeService.ts",
+			"src/services/projects-sessions/TrackerNativeRuntimeService.types.ts"
+		],
+		"symbols": [
+			"TrackerNativeRuntimeService",
+			"TrackerNativeRuntimeService.constructor",
+			"TrackerNativeRuntimeService.runLinks",
+			"TrackerNativeNotificationOptions",
+			"TrackerNativeRuntimeOptions"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerNativeRuntimeService.constructor.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "TrackerNativeRuntimeService.constructor.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
+				"name": "TrackerNativeRuntimeService.runLinks.signal",
+				"type": "AbortSignal",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerNativeRuntimeService.runLinks",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerNativeRuntimeService.runLinks",
+				"inputs": [
+					{
+						"name": "TrackerNativeRuntimeService.runLinks.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNativeRuntimeService.runLinks",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerNativeRuntimeService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerNativeRuntimeService.constructor.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "TrackerNativeRuntimeService.constructor.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNativeRuntimeService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.projects-sessions-tracker-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-notification-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-run-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-adapter-poll",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-hub-sync",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-local-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-notification",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-spoke-loop",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerNativeRuntimeService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerNativeRuntimeService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

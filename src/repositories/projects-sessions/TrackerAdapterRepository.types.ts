@@ -1,3 +1,4 @@
+// @harness-uid u_eug7dfr5kp
 import type { GithubIssueIntakeSource } from '../../helpers/planning-collaboration/planGithubIssueIntake.types';
 
 export interface TrackerAdapterSource extends GithubIssueIntakeSource {

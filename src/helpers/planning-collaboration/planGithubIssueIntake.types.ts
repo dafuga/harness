@@ -1,3 +1,4 @@
+// @harness-uid u_o6i4mwa3wf
 export interface GithubIssueIntakeSource {
 	target: string;
 	kind: string;

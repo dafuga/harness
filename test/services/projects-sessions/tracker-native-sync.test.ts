@@ -1,25 +1,29 @@
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test } from 'vitest';
-import { TrackerItemReadRepository } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerSyncAuthService } from '../../../src/services/networking-security/TrackerSyncAuthService';
-import { TrackerHubSyncService } from '../../../src/services/projects-sessions/TrackerHubSyncService';
-import { TrackerLocalApiService } from '../../../src/services/projects-sessions/TrackerLocalApiService';
-import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
+import type { TrackerHubSyncService } from '../../../src/services/projects-sessions/TrackerHubSyncService';
+import type { TrackerLocalApiService } from '../../../src/services/projects-sessions/TrackerLocalApiService';
+import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
+import type { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
 import { TrackerSpokeSyncService } from '../../../src/services/projects-sessions/TrackerSpokeSyncService';
 import type { TrackerSpokeTransport } from '../../../src/services/projects-sessions/TrackerSpokeSyncService.types';
 
 const fixtureSecret = 'synthetic-tracker-wire-secret';
 
-function nativeStore(node: string) {
+function nativeStore(node: string, role: 'hub' | 'spoke' = 'spoke') {
 	const database = new DatabaseSync(':memory:');
-	const store = new TrackerPersistenceService(database, node, {
+	const {
+		items: api,
+		store,
+		sync
+	} = new TrackerNativeRuntimeService(database, {
+		node,
+		role,
 		now: () => 5000,
-		databaseId: () => `fixture-${node}`
+		storage: { databaseId: () => `fixture-${node}` },
+		syncResponder: role === 'hub' ? { auth: new TrackerSyncAuthService(fixtureSecret) } : undefined
 	});
-	const api = new TrackerLocalApiService(store, new TrackerItemReadRepository(database), {
-		now: () => 5000
-	});
-	return { api, database, store };
+	return { api, database, store, sync };
 }
 
 function wire(hub: TrackerHubSyncService): TrackerSpokeTransport {
@@ -61,14 +65,10 @@ function local(api: TrackerLocalApiService, path: string, method = 'GET', body?:
 test('native hub and two native spokes converge after a lost receipt and offline edits', async () => {
 	const alpha = nativeStore('alpha');
 	const beta = nativeStore('beta');
-	const central = nativeStore('hub');
+	const central = nativeStore('hub', 'hub');
 	try {
-		const transport = wire(
-			new TrackerHubSyncService({
-				auth: new TrackerSyncAuthService(fixtureSecret),
-				store: central.store
-			})
-		);
+		if (!central.sync) throw new Error('Fixture hub sync responder is required');
+		const transport = wire(central.sync);
 		let drop = true;
 		const alphaLink = spoke(alpha.store, async (request) => {
 			const reply = await transport(request);

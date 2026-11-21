@@ -1,12 +1,11 @@
 import { DatabaseSync } from 'node:sqlite';
 import { vi } from 'vitest';
-import { TrackerAdapterPollService } from '../../src/services/projects-sessions/TrackerAdapterPollService';
 import type {
 	TrackerAdapterLease,
 	TrackerAdapterReadQuery,
 	TrackerGithubIssue
 } from '../../src/services/projects-sessions/TrackerAdapterPollService.types';
-import { TrackerPersistenceService } from '../../src/services/projects-sessions/TrackerPersistenceService';
+import { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import type {
 	TrackerAdapterFeed,
 	TrackerAdapterFixtureOptions
@@ -41,7 +40,6 @@ export function adapterFixture(options: TrackerAdapterFixtureOptions = {}) {
 		started: false,
 		failWrite: false
 	};
-	const store = new TrackerPersistenceService(database, node, { now: () => feed.now });
 	const readIssues = vi.fn(async function* (_source: unknown, _query: TrackerAdapterReadQuery) {
 		yield* feed.issues;
 		if (feed.failRead) throw new Error('synthetic provider body');
@@ -53,18 +51,36 @@ export function adapterFixture(options: TrackerAdapterFixtureOptions = {}) {
 	const markTracked = vi.fn(async () => {
 		if (feed.failWrite) throw new Error('synthetic provider body');
 	});
-	const ids = () => ['fixture-001', 'fixture-002', 'fixture-003'][store.maxSeq()] ?? 'fixture-004';
-	const service = new TrackerAdapterPollService(store, {
-		lease: options.lease ?? { owner: node, tryAcquire: () => () => {} },
-		provider: { readIssues, readTimeline, readComments, markTracked },
-		redactText: options.redactText ?? ((text) => text),
-		intakePolicy: options.intakePolicy,
+	const ids = () =>
+		['fixture-001', 'fixture-002', 'fixture-003'][runtime.store.maxSeq()] ?? 'fixture-004';
+	const runtime: TrackerNativeRuntimeService = new TrackerNativeRuntimeService(database, {
+		node,
+		role: 'spoke',
 		now: () => feed.now,
-		itemId: ids,
-		hasStarted: () => feed.started
+		adapter: {
+			lease: options.lease ?? { owner: node, tryAcquire: () => () => {} },
+			provider: { readIssues, readTimeline, readComments, markTracked },
+			redactText: options.redactText ?? ((text) => text),
+			intakePolicy: options.intakePolicy,
+			now: () => feed.now,
+			itemId: ids,
+			hasStarted: () => feed.started
+		}
 	});
+	const { adapter: service, store, items } = runtime;
+	if (!service) throw new Error('Fixture adapter poller is required');
 	seedLegacySource(database);
-	return { service, store, database, feed, readIssues, readTimeline, readComments, markTracked };
+	return {
+		service,
+		store,
+		items,
+		database,
+		feed,
+		readIssues,
+		readTimeline,
+		readComments,
+		markTracked
+	};
 }
 
 function seedLegacySource(database: DatabaseSync): void {

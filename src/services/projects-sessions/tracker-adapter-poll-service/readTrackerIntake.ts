@@ -6,7 +6,7 @@ import type {
 	TrackerAdapterReadQuery
 } from '../TrackerAdapterPollService.types';
 import { applyTrackerIntakeEvent, applyTrackerIntakeEvents } from './applyTrackerIntakeEvents';
-import { assertTrackerPollActive } from './assertTrackerPollActive';
+import { assertTrackerPollActive } from './trackerAdapterPollError';
 import { commitTrackerIntake, planTrackerIntake } from './commitTrackerIntake';
 import { githubCommentEvent, readGithubIntakeRecord } from './githubIntakeRecord';
 
@@ -48,10 +48,11 @@ export async function readTrackerIssues(
 }
 
 export async function readTrackerComments(
-	{ repository, store, dependencies }: TrackerAdapterIntakeContext,
+	context: TrackerAdapterIntakeContext,
 	source: TrackerAdapterSource,
 	query: TrackerAdapterReadQuery
 ): Promise<number> {
+	const { repository, store, dependencies } = context;
 	const { provider, redactText } = dependencies;
 	if (!provider.readComments) return 0;
 	let events = 0;

@@ -82,7 +82,8 @@ test('poll retries a partially consumed feed and acknowledges the write only aft
 });
 
 test('poll commits links and event receipts with their operations and preserves close and reopen', async () => {
-	const { database, feed, service, store } = adapterFixture();
+	const fixture = adapterFixture();
+	const { database, feed, service, store, items } = fixture;
 	try {
 		refuseInsert(database, 'adapter_links');
 		await expect(service.poll(adapterSourceId)).rejects.toThrow('Tracker adapter intake failed');
@@ -117,7 +118,9 @@ test('poll commits links and event receipts with their operations and preserves 
 			status: 'done',
 			due: null
 		});
-		await verifyReopen({ database, feed, service, store });
+		const overview = await items.handle(new Request('http://fixture.invalid/items?status=all'));
+		expect(await overview.json()).toMatchObject([{ id: 'fixture-001', status: 'done', due: null }]);
+		await verifyReopen(fixture);
 	} finally {
 		database.close();
 	}
@@ -189,15 +192,8 @@ async function verifyWriteRetry(restarted: ReturnType<typeof adapterFixture>): P
 	expect(restarted.store.maxSeq()).toBe(1);
 }
 
-async function verifyReopen({
-	database,
-	feed,
-	service,
-	store
-}: Pick<
-	ReturnType<typeof adapterFixture>,
-	'database' | 'feed' | 'service' | 'store'
->): Promise<void> {
+async function verifyReopen(fixture: ReturnType<typeof adapterFixture>): Promise<void> {
+	const { database, feed, service, store } = fixture;
 	feed.timeline.push({ id: 502, event: 'reopened', created_at: new Date(42_000).toISOString() });
 	feed.now = 50_000;
 	await expect(service.poll(adapterSourceId)).resolves.toMatchObject({ events: 1 });

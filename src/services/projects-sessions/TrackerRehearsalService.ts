@@ -1,10 +1,7 @@
 // @harness-uid u_q52bxqlyeg
 import { openSqlite } from '../../adapters/development-tooling/openSqlite';
 import type { SqliteDatabase } from '../../core/development-tooling/sqliteTypes';
-import { TrackerItemReadRepository } from '../../repositories/projects-sessions/TrackerItemReadRepository';
-import { TrackerRunReadRepository } from '../../repositories/projects-sessions/TrackerRunReadRepository';
-import { TrackerLocalApiService } from './TrackerLocalApiService';
-import { TrackerPersistenceService } from './TrackerPersistenceService';
+import { TrackerNativeRuntimeService } from './TrackerNativeRuntimeService';
 
 const host = '127.0.0.1';
 
@@ -12,21 +9,18 @@ const host = '127.0.0.1';
 export class TrackerRehearsalService {
 	async start(databasePath: string, node: string, port: number) {
 		let database: SqliteDatabase | undefined;
-		let api: TrackerLocalApiService | undefined;
+		let runtime: TrackerNativeRuntimeService | undefined;
 		const health = rehearsalHealth(node);
 		const server = bindLoopback(port, (request) => {
-			if (!api) return Response.json({ error: 'starting' }, { status: 503 });
+			if (!runtime) return Response.json({ error: 'starting' }, { status: 503 });
 			if (request.method === 'GET' && new URL(request.url).pathname === '/health') {
 				return Response.json(health);
 			}
-			return api.handle(request);
+			return runtime.items.handle(request);
 		});
 		try {
 			database = openSqlite(databasePath);
-			const store = new TrackerPersistenceService(database, node);
-			api = new TrackerLocalApiService(store, new TrackerItemReadRepository(database), {
-				runs: new TrackerRunReadRepository(database, node)
-			});
+			runtime = new TrackerNativeRuntimeService(database, { node, role: 'spoke' });
 		} catch (error) {
 			await server.stop(true);
 			database?.close();

@@ -1,9 +1,7 @@
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test } from 'vitest';
-import { TrackerItemReadRepository } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository';
-import { TrackerNotificationSourceRepository } from '../../../src/repositories/projects-sessions/TrackerNotificationSourceRepository';
-import { TrackerLocalApiService } from '../../../src/services/projects-sessions/TrackerLocalApiService';
-import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
+import type { TrackerLocalApiService } from '../../../src/services/projects-sessions/TrackerLocalApiService';
+import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import {
 	notificationFixture,
 	start,
@@ -14,27 +12,35 @@ import {
 test('delivers a committed item completion once through the shared Tracker journal source', async () => {
 	const database = new DatabaseSync(':memory:');
 	try {
-		const store = new TrackerPersistenceService(database, 'fixture-owner', { now: () => start });
-		const api = new TrackerLocalApiService(store, new TrackerItemReadRepository(database), {
-			now: () => start
-		});
 		const reference = 'https://fixture.invalid/complete';
-		const journalSource = new TrackerNotificationSourceRepository(store, {
+		const fixture = notificationFixture();
+		const {
+			items: api,
+			notifications,
+			store
+		} = new TrackerNativeRuntimeService(database, {
+			node: 'fixture-owner',
+			role: 'spoke',
+			now: () => start,
 			timeZone: 'Europe/Lisbon',
-			resolveDestination: (target) =>
-				target && typeof target === 'object' && 'url' in target && target.url === reference
-					? worker
-					: undefined
+			notification: {
+				queue: fixture.queue,
+				destinations: fixture.options.destinations,
+				resolveDestination: (target) =>
+					target && typeof target === 'object' && 'url' in target && target.url === reference
+						? worker
+						: undefined
+			}
 		});
-		const fixture = notificationFixture({ options: { role: 'spoke', source: journalSource } });
+		if (!notifications) throw new Error('Fixture notification service is required');
 		const create = await post(api, '/items', { title: 'Fixture task', callback_url: reference });
 		expect(create.status).toBe(201);
 		const { id } = await create.json();
-		await fixture.service.tick();
+		await notifications.tick();
 		expect(fixture.calls).toHaveLength(0);
 		const complete = await post(api, `/items/${id}/done`, { note: 'Fixture completion note' });
 		expect(complete.status).toBe(200);
-		await Promise.all([fixture.service.tick(), fixture.restart().tick()]);
+		await Promise.all([notifications.tick(), notifications.tick()]);
 		expect(fixture.calls).toHaveLength(1);
 		expect(fixture.calls[0].destination).toEqual(worker);
 		expect(wire(fixture.calls[0])).toMatchObject({
