@@ -204,3 +204,4 @@ export { admitResourceHost } from './services/execution-runtimes/resource-placem
 export { chooseResourceHost } from './services/execution-runtimes/resource-placement/chooseResourceHost';
 export * from './services/agents-providers/TrackerDispatcherService';
 export { TrackerRunReadRepository } from './repositories/projects-sessions/TrackerRunReadRepository';
+export { TrackerSpokeLoopService } from './services/projects-sessions/TrackerSpokeLoopService';
