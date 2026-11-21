@@ -27,6 +27,17 @@ Harness invokes Node with literal arguments, a limited runtime environment and a
 Chain inspection supports the existing `--url` option and prints JSON. Agent status supports the
 existing `--config` option and keeps the Harbor package’s output.
 
+Harbor app development uses the same Harness executable through the installed SDK:
+
+- `harness harbor templates` lists available Harbor SDK templates.
+- `harness harbor scaffold <template> <dir> [id] [name] [--mobile]` creates a project, using the running Harness revision for the project scaffold.
+- `harness harbor check [dir]` validates the app bundle.
+- `harness harbor pack [dir] [output]` writes a bundle to a new file.
+- `harness harbor stage-android <bundle> <dir>` stages a Godot Web bundle for an Android app.
+
+Set `HARNESS_HARBOR_APP_SDK_PATH` to the installed SDK entry for these commands.
+The SDK supplies the default bundle path, validates the same bytes and owns the Android asset layout.
+
 `harness harbor publish <project> --commit <sha> --artifact <path> --profile <file>`
 uses its own verification command and the installed Harbor App SDK. It returns the
 exact canonical export, publisher, chain and capability review with an approval digest.
