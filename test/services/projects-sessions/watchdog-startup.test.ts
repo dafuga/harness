@@ -1,7 +1,16 @@
 import { expect, test } from 'vitest';
 import { WatchdogStartupService } from '../../../src/services/projects-sessions/WatchdogStartupService';
 import type { StartupScan } from '../../../src/services/projects-sessions/WatchdogStartupService.types';
-import { codexTrust, host, item, minute, now, pane, run } from './watchdog-fixtures';
+import {
+	codexTrust,
+	host,
+	item,
+	minute,
+	now,
+	pane,
+	recordWatchdogOutcome,
+	run
+} from './watchdog-fixtures';
 
 const service = new WatchdogStartupService();
 const workspace = '/tmp/fixture';
@@ -33,7 +42,9 @@ test('plans one eligible trust decision scoped to the attested recent launch', (
 		],
 		clearAlerts: []
 	};
-	expect(service.plan({ ...input, panes: [capture, capture] })).toEqual(planned);
+	const actual = service.plan({ ...input, panes: [capture, capture] });
+	expect(actual).toEqual(planned);
+	recordWatchdogOutcome('startup', actual);
 	expect(service.plan({ ...input, items: [item({ status: 'open' })] })).toEqual(planned);
 });
 

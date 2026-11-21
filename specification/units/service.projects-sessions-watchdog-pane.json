@@ -122,7 +122,7 @@
 			}
 		],
 		"errors": [],
-		"errorStatus": "none",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "WatchdogPaneService.startupPrompt",
@@ -141,7 +141,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "WatchdogPaneService.idlePrompt",
@@ -160,7 +160,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "WatchdogPaneService.isManual",
@@ -179,7 +179,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "WatchdogPaneService.manualItem",
@@ -203,7 +203,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "WatchdogPaneService.isStopped",
@@ -237,7 +237,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "WatchdogPaneService.matchesRun",
@@ -261,7 +261,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none"
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []

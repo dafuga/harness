@@ -1,13 +1,23 @@
 import { expect, test } from 'vitest';
 import { WatchdogIdleService } from '../../../src/services/projects-sessions/WatchdogIdleService';
 import type { IdleScan } from '../../../src/services/projects-sessions/WatchdogIdleService.types';
-import { claude, host, item, minute, now, pane, run } from './watchdog-fixtures';
+import {
+	claude,
+	host,
+	item,
+	minute,
+	now,
+	pane,
+	recordWatchdogOutcome,
+	run
+} from './watchdog-fixtures';
 
 const service = new WatchdogIdleService();
 const input = { host, now, items: [item()], runs: [run()], panes: [pane()] } satisfies IdleScan;
 
 test('nudges once, then alerts, with a quota hold taking precedence', () => {
-	expect(service.plan(input)).toEqual({
+	const initial = service.plan(input);
+	expect(initial).toEqual({
 		actions: [
 			{
 				id: item().id,
@@ -21,9 +31,9 @@ test('nudges once, then alerts, with a quota hold taking precedence', () => {
 		],
 		abandonRunIds: []
 	});
-	expect(service.plan({ ...input, runs: [run({ idleNudges: 1 })] }).actions[0]?.action).toBe(
-		'alert'
-	);
+	const next = service.plan({ ...input, runs: [run({ idleNudges: 1 })] });
+	expect(next.actions[0]?.action).toBe('alert');
+	recordWatchdogOutcome('idle', { initial, next });
 	expect(service.plan({ ...input, quotaHolds: ['codex'] }).actions[0]).toMatchObject({
 		action: 'alert',
 		reason: `codex quota exhausted on ${host}`

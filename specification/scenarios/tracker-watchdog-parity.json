@@ -75,6 +75,14 @@
 			"timeoutMs": 60000
 		}
 	],
-	"evidence": [],
+	"evidence": [
+		{
+			"id": "watchdog-decision",
+			"kind": "output",
+			"states": ["pane", "idle", "startup", "recovery", "resume"],
+			"viewports": [],
+			"required": true
+		}
+	],
 	"viewports": []
 }
