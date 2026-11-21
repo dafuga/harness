@@ -48,35 +48,9 @@ async function proveManagedAdoption(root: string) {
 	const dbPath = join(root, 'tracker.db');
 	const receiptPath = join(root, 'receipt.json');
 	let state = openDispatcher(dbPath);
-	let child: ReturnType<typeof spawn> | undefined;
-	let exited: Promise<unknown> | undefined;
-	let startedKey = '';
-	const start = vi.fn<TrackerDispatchRunner['start']>(async (reservation) => {
-		expect(state.repo.managedRuns()).toMatchObject([{ state: 'queued', dispatch_at: now() }]);
-		startedKey = reservation.key;
-		child = spawn(process.execPath, ['-e', childProgram, receiptPath, startedKey, String(now())], {
-			stdio: ['ignore', 'pipe', 'ignore'],
-			env: {}
-		});
-		exited = once(child, 'close');
-		await Promise.race([
-			once(child.stdout!, 'data'),
-			exited.then(() => {
-				throw new Error('fixture child exited before receipt');
-			})
-		]);
-		throw new Error('lost start reply');
-	});
-	const observe = vi.fn<TrackerDispatchRunner['observe']>(async (_run, key) => {
-		const receipt = JSON.parse(await readFile(receiptPath, 'utf8'));
-		if (receipt.key !== key || receipt.pid !== child?.pid) return undefined;
-		process.kill(receipt.pid, 0);
-		return {
-			type: 'session',
-			session: { key, id: `fixture-${receipt.pid}`, startedAt: receipt.startedAt, state: 'live' }
-		};
-	});
-	const runner = { start, observe };
+	const fixture = fixtureRunner(receiptPath, () => state);
+	const { start, observe } = fixture.runner;
+	const { runner } = fixture;
 	try {
 		state.store.appendLocal({
 			itemId: sampleId,
@@ -108,13 +82,58 @@ async function proveManagedAdoption(root: string) {
 		expect(state.repo.managedRuns()).toMatchObject([{ state: 'queued' }]);
 		await restarted.tick(signal);
 		expect(state.repo.managedRuns()).toMatchObject([
-			{ id: 1, state: 'running', session_id: `fixture-${child?.pid}` }
+			{ id: 1, state: 'running', session_id: `fixture-${fixture.pid()}` }
 		]);
 		expect(start).toHaveBeenCalledTimes(1);
-		expect(observe.mock.calls.map(([, key]) => key)).toEqual([startedKey, startedKey]);
+		expect(start.mock.calls[0]).toHaveLength(3);
+		const brief = String(start.mock.calls[0].at(2));
+		expect(brief).toContain(`tracker done ${sampleId.slice(0, 6)}`);
+		expect(brief).toMatch(
+			/tracker done[\s\S]+only as the final step[\s\S]+Never remove your current working directory/
+		);
+		expect(observe.mock.calls.map(([, key]) => key)).toEqual([fixture.key(), fixture.key()]);
 	} finally {
-		child?.kill();
-		await exited;
+		await fixture.stop();
 		state.database.close();
 	}
+}
+
+function fixtureRunner(receiptPath: string, current: () => ReturnType<typeof openDispatcher>) {
+	let child: ReturnType<typeof spawn> | undefined;
+	let exited: Promise<unknown> | undefined;
+	let startedKey = '';
+	const start = vi.fn<TrackerDispatchRunner['start']>(async (reservation) => {
+		expect(current().repo.managedRuns()).toMatchObject([{ state: 'queued', dispatch_at: now() }]);
+		startedKey = reservation.key;
+		child = spawn(process.execPath, ['-e', childProgram, receiptPath, startedKey, String(now())], {
+			stdio: ['ignore', 'pipe', 'ignore'],
+			env: {}
+		});
+		exited = once(child, 'close');
+		await Promise.race([
+			once(child.stdout!, 'data'),
+			exited.then(() => {
+				throw new Error('fixture child exited before receipt');
+			})
+		]);
+		throw new Error('lost start reply');
+	});
+	const observe = vi.fn<TrackerDispatchRunner['observe']>(async (_run, key) => {
+		const receipt = JSON.parse(await readFile(receiptPath, 'utf8'));
+		if (receipt.key !== key || receipt.pid !== child?.pid) return undefined;
+		process.kill(receipt.pid, 0);
+		return {
+			type: 'session',
+			session: { key, id: `fixture-${receipt.pid}`, startedAt: receipt.startedAt, state: 'live' }
+		};
+	});
+	return {
+		runner: { start, observe },
+		pid: () => child?.pid,
+		key: () => startedKey,
+		async stop() {
+			child?.kill();
+			await exited;
+		}
+	};
 }
