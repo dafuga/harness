@@ -1,5 +1,6 @@
-import { mkdir, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
+import { DatabaseSync } from 'node:sqlite';
 import { expect, test } from 'vitest';
 import { runCommand, runHarness } from './support/cli';
 import { withTempDir } from './support/temporary';
@@ -51,6 +52,62 @@ process.exitCode = args[1] === 'ignored' ? 4 : args[1] === 'open' ? 5 : 0;
 				expect(await runHarness(['tracker', ...args], home, false, env)).toEqual(expected);
 				expect(await runCommand([shim, ...args], home, false, env)).toEqual(expected);
 			}
+		}),
+	30_000
+);
+
+test(
+	'Tracker cutover verification detects a same-count queued operation change',
+	() =>
+		withTempDir('harness-tracker-cutover-', async (home) => {
+			const before = join(home, 'before.sqlite');
+			const after = join(home, 'after.sqlite');
+			const marker = 'private-fixture-field';
+			const db = new DatabaseSync(before);
+			try {
+				db.exec(`
+				CREATE TABLE meta (k TEXT PRIMARY KEY, v TEXT);
+				INSERT INTO meta VALUES ('pushed_seq', '0'), ('peer_pushed_seq', '0');
+				CREATE TABLE ops(seq INTEGER PRIMARY KEY, op_id TEXT UNIQUE, node TEXT, fields TEXT);
+			`);
+				db.prepare('INSERT INTO ops VALUES (?, ?, ?, ?)').run(1, 'a', 'fixture', marker);
+			} finally {
+				db.close();
+			}
+			await copyFile(before, after);
+			const beforeBytes = await readFile(before);
+			const args = [
+				'tracker',
+				'verify-cutover',
+				before,
+				after,
+				'--node',
+				'fixture',
+				'--peer-relay-ops'
+			];
+			const env = { HOME: home, HARNESS_TRACKER_LEGACY_BIN: join(home, 'missing-tracker') };
+			const equal = await runHarness(args, home, false, env);
+			expect(equal).toMatchObject({ exitCode: 0, stderr: '' });
+			expect(JSON.parse(equal.stdout)).toMatchObject({
+				matches: true,
+				before: { pendingPush: { hub: { rowCount: 1 }, peer: { rowCount: 1 } } }
+			});
+			const modified = new DatabaseSync(after);
+			try {
+				modified.exec("UPDATE ops SET fields = 'new fixture value'");
+			} finally {
+				modified.close();
+			}
+			const changedBytes = await readFile(after);
+			const different = await runHarness(args, home, false, env);
+			expect(different).toMatchObject({ exitCode: 1, stderr: '' });
+			expect(JSON.parse(different.stdout)).toMatchObject({
+				matches: false,
+				changedTables: ['ops'],
+				changedPendingLinks: ['hub', 'peer']
+			});
+			expect(different.stdout).not.toContain(marker);
+			expect([await readFile(before), await readFile(after)]).toEqual([beforeBytes, changedBytes]);
 		}),
 	30_000
 );
