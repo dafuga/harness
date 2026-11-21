@@ -14,6 +14,7 @@
 			"hub.component.public-site-home-features",
 			"hub.component.public-site-home-hero",
 			"hub.component.public-site-home-steps",
+			"reports.component.brand-mark",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-footer",
@@ -81,6 +82,11 @@
 		},
 		{
 			"unit": "hub.function.public-site-published-download",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.brand-mark",
 			"via": "import",
 			"origin": "derived"
 		},

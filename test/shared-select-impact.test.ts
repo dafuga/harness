@@ -138,12 +138,13 @@ test('a change of Select reaches its consumers, the pages that show them, and th
 		'desktop.page.root',
 		'desktop.page.settings',
 		'hub.page.projects-project-id-harness-path',
-		'hub.page.root'
+		'hub.page.projects'
 	];
 	const between = ['desktop.component.runtime-evidence', 'hub.component.members-panel'];
 	expect(report.units.indirect).toEqual(
 		expect.arrayContaining([...shown, 'hub.page.projects-project-id-members', ...between])
 	);
+	expect(report.units.indirect).not.toContain('hub.page.root');
 	const own = ['test/components/select.test.ts', 'tests/e2e/shared-select-reports.spec.ts'];
 	const theirs = ['runtime-screens', 'runtime-evidence'].map(
 		(name) => `desktop/test/components/${name}.test.ts`

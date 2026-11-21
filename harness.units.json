@@ -80,6 +80,12 @@
 			"reason": "The Electron socket returns the same snapshot shape as the local website."
 		},
 		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.types.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+			"reason": "The desktop socket contract declares the shared overview snapshot type."
+		},
+		{
 			"from": "packages/desktop/src/models/development-tooling/DesktopBridge.types.ts",
 			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
 			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
@@ -240,6 +246,12 @@
 			"specifier": "$shared/BrandMark.svelte",
 			"to": "packages/reports/src/components/BrandMark.svelte",
 			"reason": "The hosted frame renders the shared brand component through its configured $shared alias."
+		},
+		{
+			"from": "packages/hub/src/components/public-site/HomePage.svelte",
+			"specifier": "$shared/BrandMark.svelte",
+			"to": "packages/reports/src/components/BrandMark.svelte",
+			"reason": "The public Hub homepage renders the same brand component as the signed-in Hub frame."
 		},
 		{
 			"from": "packages/desktop/src/components/agents-providers/AgentSettings.svelte",
