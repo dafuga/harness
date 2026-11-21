@@ -198,3 +198,4 @@ export { nextAttentionBatchAt } from './helpers/attention-timing/nextAttentionBa
 export { groupAttentionLines } from './helpers/attention-timing/groupAttentionLines';
 export { clockMinutes } from './helpers/attention-timing/clockMinutes';
 export { planDigestAlertTick } from './helpers/attention-timing/planDigestAlertTick';
+export { TrackerNotificationService } from './services/projects-sessions/TrackerNotificationService';
