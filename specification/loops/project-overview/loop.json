@@ -2,10 +2,12 @@
 	"name": "project-overview",
 	"goal": "Prove the approved Project Overview states and read-only tracker boundary on the native app and website, with exact-revision tests and screenshots.",
 	"createdAt": "2026-11-20T22:52:32.565Z",
-	"updatedAt": "2026-11-21T08:46:19.056Z",
+	"updatedAt": "2026-11-21T10:03:34.279Z",
 	"agentModel": "gpt-6.2-sol",
 	"template": "feature",
-	"templateLineage": ["feature"],
+	"templateLineage": [
+		"feature"
+	],
 	"enforceOrder": false,
 	"steps": [
 		{
@@ -47,6 +49,21 @@
 		{
 			"id": "hub-production",
 			"title": "Verify approved Hub production release identity, owner read, and anonymous denial",
+			"status": "pending"
+		},
+		{
+			"id": "mac-release",
+			"title": "Prove the signed Mac archive, installed owner read and public download delivery",
+			"status": "pending"
+		},
+		{
+			"id": "ios-release",
+			"title": "Verify the matching App Store Connect build, device acceptance and approved distribution",
+			"status": "pending"
+		},
+		{
+			"id": "cos-release-handoff",
+			"title": "Hand off verified immutable artifacts and first-production commands for Chief of Staff",
 			"status": "pending"
 		}
 	],

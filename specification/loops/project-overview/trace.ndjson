@@ -5,3 +5,6 @@
 {"event":"step.added","timestamp":"2026-11-21T08:46:10.746Z","loop":"project-overview","step":"hosted-proof","title":"Prove owner-only fresh tracker data on hosted Hub and the background publisher"}
 {"event":"step.added","timestamp":"2026-11-21T08:46:17.569Z","loop":"project-overview","step":"paired-ios-proof","title":"Prove the paired iOS path using native credential custody and read-only account access"}
 {"event":"step.added","timestamp":"2026-11-21T08:46:19.056Z","loop":"project-overview","step":"hub-production","title":"Verify approved Hub production release identity, owner read, and anonymous denial"}
+{"event":"step.added","timestamp":"2026-11-21T10:03:29.073Z","loop":"project-overview","step":"mac-release","title":"Prove the signed Mac archive, installed owner read and public download delivery"}
+{"event":"step.added","timestamp":"2026-11-21T10:03:33.247Z","loop":"project-overview","step":"ios-release","title":"Verify the matching App Store Connect build, device acceptance and approved distribution"}
+{"event":"step.added","timestamp":"2026-11-21T10:03:34.279Z","loop":"project-overview","step":"cos-release-handoff","title":"Hand off verified immutable artifacts and first-production commands for Chief of Staff"}
