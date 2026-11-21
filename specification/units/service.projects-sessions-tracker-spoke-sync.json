@@ -20,6 +20,9 @@
 			"TrackerSpokeSyncService.constructor",
 			"TrackerSpokeSyncService.push",
 			"TrackerSpokeSyncService.pull",
+			"TrackerSpokeSyncService.permitDue",
+			"TrackerSpokeSyncService.exchangeMachine",
+			"TrackerSpokeSyncService.#post",
 			"TrackerSpokeSyncService.#acceptIdentity",
 			"TrackerSpokeSyncService.#cursor",
 			"TrackerSpokeSyncService.#request",
@@ -40,6 +43,36 @@
 				"type": "TrackerSpokeOptions",
 				"required": true,
 				"description": "Injected local journal, transport and signing key. Defaults to the hub link, relaying on a peer only, and a 25-second pull wait."
+			},
+			{
+				"name": "TrackerSpokeSyncService.permitDue.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerSpokeSyncService.permitDue.token",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerSpokeSyncService.exchangeMachine.sample",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "TrackerSpokeSyncService.exchangeMachine.runs",
+				"type": "readonly unknown[]",
+				"required": true
+			},
+			{
+				"name": "TrackerSpokeSyncService.#post.pathAndQuery",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerSpokeSyncService.#post.body",
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "TrackerSpokeSyncService.#acceptIdentity.dbId",
@@ -139,6 +172,75 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "TrackerSpokeSyncService.permitDue",
+				"inputs": [
+					{
+						"name": "TrackerSpokeSyncService.permitDue.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerSpokeSyncService.permitDue.token",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSpokeSyncService.permitDue",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSpokeSyncService.exchangeMachine",
+				"inputs": [
+					{
+						"name": "TrackerSpokeSyncService.exchangeMachine.sample",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "TrackerSpokeSyncService.exchangeMachine.runs",
+						"type": "readonly unknown[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSpokeSyncService.exchangeMachine",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSpokeSyncService.#post",
+				"inputs": [
+					{
+						"name": "TrackerSpokeSyncService.#post.pathAndQuery",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerSpokeSyncService.#post.body",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSpokeSyncService.#post",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "TrackerSpokeSyncService.#acceptIdentity",

@@ -18,8 +18,10 @@
 		],
 		"symbols": [
 			"normalizeTrackerCron",
+			"trackerCronOccurrences",
 			"CronField",
 			"CronSchedule",
+			"CronTimeCache",
 			"trackerTimeZone",
 			"trackerDateFormatter",
 			"trackerDateParts",
@@ -53,6 +55,16 @@
 			{
 				"name": "normalizeTrackerCron.now",
 				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerCronOccurrences.raw",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerCronOccurrences.timeZone",
+				"type": "string",
 				"required": true
 			},
 			{
@@ -171,6 +183,29 @@
 					{
 						"name": "normalizeTrackerCron",
 						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerCronOccurrences",
+				"inputs": [
+					{
+						"name": "trackerCronOccurrences.raw",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerCronOccurrences.timeZone",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerCronOccurrences",
+						"type": "(after: number)"
 					}
 				],
 				"errors": [],

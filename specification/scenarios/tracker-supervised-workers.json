@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "tracker-supervised-workers",
+	"title": "Tracker worker lifecycle and durable recovery",
+	"kind": "headless",
+	"units": [
+		"service.projects-sessions-tracker-supervisor",
+		"service.projects-sessions-tracker-dispatch-scheduler",
+		"service.projects-sessions-tracker-recurring"
+	],
+	"states": [
+		{
+			"id": "worker-lifecycle",
+			"title": "Independent polling and drained shutdown",
+			"coverage": "required"
+		},
+		{
+			"id": "managed-adoption",
+			"title": "Single start and recovery from a durable child receipt",
+			"coverage": "required"
+		},
+		{
+			"id": "wake-recovery",
+			"title": "Catch-up history and durable wake retry",
+			"coverage": "required"
+		},
+		{
+			"id": "job-receipt",
+			"title": "Recovery of a lost synthetic job receipt",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"builds": [],
+	"tests": [
+		{
+			"id": "worker-lifecycle",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/projects-sessions/tracker-supervisor.test.ts",
+			"timeoutMs": 60000
+		},
+		{
+			"id": "managed-adoption",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/projects-sessions/tracker-dispatch-scheduler.test.ts",
+			"timeoutMs": 60000
+		},
+		{
+			"id": "recurring-recovery",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/projects-sessions/tracker-recurring.test.ts",
+			"timeoutMs": 60000
+		}
+	],
+	"evidence": [
+		{
+			"id": "supervised-workers-output",
+			"kind": "output",
+			"states": ["worker-lifecycle", "managed-adoption", "wake-recovery", "job-receipt"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "supervised-workers-assertions",
+			"kind": "assertions",
+			"states": ["worker-lifecycle", "managed-adoption", "wake-recovery", "job-receipt"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -2,11 +2,9 @@
 	"name": "tracker-supervisor-worker-isolation",
 	"goal": "A blocked adapter poll cannot delay other worker ticks, an individual worker cannot overlap itself, and cancellation drains all active ticks before SQLite closes.",
 	"createdAt": "2026-11-21T17:10:39.466Z",
-	"updatedAt": "2026-11-21T17:12:46.487Z",
+	"updatedAt": "2026-11-21T17:16:14.519Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T17:16:14.519Z",
+			"evidence": "The unchanged case passed at ce0a7e7e16 with the matching fixed environment profile. Notification ticks continued during the held adapter, and shutdown waited for release."
 		},
 		{
 			"id": "verify",

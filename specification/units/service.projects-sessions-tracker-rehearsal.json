@@ -28,6 +28,11 @@
 				"name": "TrackerRehearsalService.start.port",
 				"type": "number",
 				"required": true
+			},
+			{
+				"name": "TrackerRehearsalService.start.options",
+				"type": "Omit<TrackerNativeRuntimeOptions, 'node'>",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -36,7 +41,12 @@
 				"type": "unknown"
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
 		"errorStatus": "unknown",
 		"operations": [
 			{
@@ -56,6 +66,11 @@
 						"name": "TrackerRehearsalService.start.port",
 						"type": "number",
 						"required": true
+					},
+					{
+						"name": "TrackerRehearsalService.start.options",
+						"type": "Omit<TrackerNativeRuntimeOptions, 'node'>",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -64,7 +79,12 @@
 						"type": "unknown"
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			}
 		],
@@ -77,12 +97,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.projects-sessions-tracker-adapter-lease",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.sqlite-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "service.projects-sessions-tracker-native-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-supervisor",
 			"via": "import",
 			"origin": "derived"
 		}

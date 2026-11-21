@@ -186,7 +186,7 @@
 			},
 			{
 				"name": "canonicalNode.policy",
-				"type": "TrackerDispatchPolicy",
+				"type": "Pick<TrackerDispatchPolicy, 'resolveHost'>",
 				"required": true
 			},
 			{
@@ -738,7 +738,7 @@
 					},
 					{
 						"name": "canonicalNode.policy",
-						"type": "TrackerDispatchPolicy",
+						"type": "Pick<TrackerDispatchPolicy, 'resolveHost'>",
 						"required": true
 					}
 				],

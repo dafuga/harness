@@ -10,14 +10,25 @@
 	"owns": {
 		"source": [
 			"src/services/projects-sessions/TrackerNativeRuntimeService.ts",
-			"src/services/projects-sessions/TrackerNativeRuntimeService.types.ts"
+			"src/services/projects-sessions/TrackerNativeRuntimeService.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/configuredTrackerDestinations.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDispatch.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDuePolicy.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerLinks.ts"
 		],
 		"symbols": [
 			"TrackerNativeRuntimeService",
 			"TrackerNativeRuntimeService.constructor",
 			"TrackerNativeRuntimeService.runLinks",
+			"TrackerLegacyDestinationBindings",
 			"TrackerNativeNotificationOptions",
-			"TrackerNativeRuntimeOptions"
+			"TrackerNativeRuntimeOptions",
+			"configuredTrackerDestinations",
+			"composeTrackerDispatch",
+			"liveTrackerDuePolicy",
+			"observeTrackerDuePolicy",
+			"composeTrackerLinks",
+			"composeTrackerTelemetry"
 		]
 	},
 	"contract": {
@@ -37,12 +48,101 @@
 				"name": "TrackerNativeRuntimeService.runLinks.signal",
 				"type": "AbortSignal",
 				"required": true
+			},
+			{
+				"name": "configuredTrackerDestinations.bindings",
+				"type": "TrackerLegacyDestinationBindings",
+				"required": true
+			},
+			{
+				"name": "composeTrackerDispatch.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "composeTrackerDispatch.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
+				"name": "liveTrackerDuePolicy.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "liveTrackerDuePolicy.policy",
+				"type": "TrackerDuePolicy",
+				"required": true
+			},
+			{
+				"name": "liveTrackerDuePolicy.role",
+				"type": "'hub' | 'spoke'",
+				"required": true
+			},
+			{
+				"name": "observeTrackerDuePolicy.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "observeTrackerDuePolicy.value",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "composeTrackerLinks.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "composeTrackerLinks.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
+				"name": "composeTrackerTelemetry.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "composeTrackerTelemetry.runs",
+				"type": "TrackerRunReadRepository",
+				"required": true
+			},
+			{
+				"name": "composeTrackerTelemetry.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "TrackerNativeRuntimeService.runLinks",
 				"type": "Promise<void>"
+			},
+			{
+				"name": "configuredTrackerDestinations",
+				"type": "unknown"
+			},
+			{
+				"name": "composeTrackerDispatch",
+				"type": "unknown"
+			},
+			{
+				"name": "liveTrackerDuePolicy",
+				"type": "TrackerDuePolicy"
+			},
+			{
+				"name": "observeTrackerDuePolicy",
+				"type": "void"
+			},
+			{
+				"name": "composeTrackerLinks",
+				"type": "unknown"
+			},
+			{
+				"name": "composeTrackerTelemetry",
+				"type": "unknown"
 			}
 		],
 		"errors": [
@@ -66,6 +166,149 @@
 					{
 						"name": "TrackerNativeRuntimeService.runLinks",
 						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "configuredTrackerDestinations",
+				"inputs": [
+					{
+						"name": "configuredTrackerDestinations.bindings",
+						"type": "TrackerLegacyDestinationBindings",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "configuredTrackerDestinations",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "composeTrackerDispatch",
+				"inputs": [
+					{
+						"name": "composeTrackerDispatch.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "composeTrackerDispatch.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "composeTrackerDispatch",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "liveTrackerDuePolicy",
+				"inputs": [
+					{
+						"name": "liveTrackerDuePolicy.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "liveTrackerDuePolicy.policy",
+						"type": "TrackerDuePolicy",
+						"required": true
+					},
+					{
+						"name": "liveTrackerDuePolicy.role",
+						"type": "'hub' | 'spoke'",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "liveTrackerDuePolicy",
+						"type": "TrackerDuePolicy"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "observeTrackerDuePolicy",
+				"inputs": [
+					{
+						"name": "observeTrackerDuePolicy.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "observeTrackerDuePolicy.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "observeTrackerDuePolicy",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "composeTrackerLinks",
+				"inputs": [
+					{
+						"name": "composeTrackerLinks.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "composeTrackerLinks.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "composeTrackerLinks",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "composeTrackerTelemetry",
+				"inputs": [
+					{
+						"name": "composeTrackerTelemetry.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "composeTrackerTelemetry.runs",
+						"type": "TrackerRunReadRepository",
+						"required": true
+					},
+					{
+						"name": "composeTrackerTelemetry.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "composeTrackerTelemetry",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -110,6 +353,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.projects-sessions-tracker-dispatch",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.projects-sessions-tracker-item-read",
 			"via": "import",
 			"origin": "derived"
@@ -125,12 +373,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.projects-sessions-tracker-recurring",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.projects-sessions-tracker-run-read",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
+			"unit": "service.agents-providers-tracker-dispatcher",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-adapter-poll",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-dispatch-scheduler",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -155,7 +418,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-recurring",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-spoke-loop",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-spoke-sync",
 			"via": "import",
 			"origin": "derived"
 		}

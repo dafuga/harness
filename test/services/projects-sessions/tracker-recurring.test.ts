@@ -3,12 +3,14 @@ import { onTestFinished, test, vi } from 'vitest';
 import { TrackerRecurringRepository } from '../../../src/repositories/projects-sessions/TrackerRecurringRepository';
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
 import { TrackerRecurringService } from '../../../src/services/projects-sessions/TrackerRecurringService';
+import { measureWorkload } from '../../support/measureWorkload';
 import { expect } from '../../verificationExpect';
 
 const id = 'fixture001';
 const epoch = Date.parse('2026-11-21T10:00:00Z');
 const hour = 3600_000;
 const iso = (ms: number) => new Date(ms).toISOString();
+const unit = 'service.projects-sessions-tracker-recurring';
 
 function fixture() {
 	const db = new DatabaseSync(':memory:');
@@ -30,7 +32,10 @@ function fixture() {
 	};
 }
 
-test('commits catch-up history with a recoverable stable wake after a queue failure', async () => {
+test('commits catch-up history with a recoverable stable wake after a queue failure', () =>
+	measureWorkload(unit, 'wake-recovery', proveWakeRecovery));
+
+async function proveWakeRecovery() {
 	const { db, store, now, advance } = fixture();
 	const repo = new TrackerRecurringRepository(store);
 	const signal = new AbortController().signal;
@@ -64,9 +69,12 @@ test('commits catch-up history with a recoverable stable wake after a queue fail
 	});
 	expect(store.maxSeq()).toBe(highWater);
 	expect(() => repo.assertLegacyRollbackSafe()).not.toThrow();
-});
+}
 
-test('adopts a job result after losing the reply and wakes the owner once', async () => {
+test('adopts a job result after losing the reply and wakes the owner once', () =>
+	measureWorkload(unit, 'job-receipt', proveJobReceipt));
+
+async function proveJobReceipt() {
 	const { db, store, now, advance } = fixture();
 	const repo = new TrackerRecurringRepository(store);
 	const enqueue = vi.fn();
@@ -108,4 +116,4 @@ test('adopts a job result after losing the reply and wakes the owner once', asyn
 		{ status: 'done', by: 'box-job', note: 'box job: finding: fixture finding' }
 	]);
 	expect(repo.jobStatus()).toEqual({ jobs: 1, running: [], queued: 0 });
-});
+}
