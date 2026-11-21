@@ -2,7 +2,7 @@ import type { Manifest } from './units-shell-kind.test.types';
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { unitProject } from './support/unitProject';
+import { checkGeneratedAppContracts, unitProject } from './support/unitProject';
 
 test('a declared shell kind survives reindexing under the same id, and new components stay components', async () => {
 	const project = await unitProject('app');
@@ -24,7 +24,8 @@ test('a declared shell kind survives reindexing under the same id, and new compo
 		manifest.owns.source
 	]);
 	expect(await listed()).toEqual(before);
-	await project.harness(['units', 'check']);
+	await project.harness(['units', 'uid-backfill', '--write']);
+	await checkGeneratedAppContracts(project);
 	await project.harness(['generate', 'component', 'StatusChip']);
 	await project.harness(['units', 'index', '--write']);
 	const added = (await listed()).filter((name) => !before.includes(name));

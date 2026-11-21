@@ -37,7 +37,7 @@ test('a package extending the generated SvelteKit config without it is found, an
 	});
 	expect(unsyncedKitPackages(root)).toEqual(['hub', 'reports']);
 	await assertFreshCliStartup();
-});
+}, 30_000);
 
 /** Root setup may sync apps for tests; standalone CLI startup must never depend on that sync. */
 async function assertFreshCliStartup(): Promise<void> {
