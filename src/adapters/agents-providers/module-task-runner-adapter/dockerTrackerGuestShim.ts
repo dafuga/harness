@@ -1,5 +1,6 @@
 // @harness-uid u_rw64iex44n
-/* global readFrames, writeFrame, readFramePayload */
+// A standalone Bun program embedded in the managed container command.
+export const trackerGuestShimSource: string = String.raw`
 import { once } from 'node:events';
 import { createConnection } from 'node:net';
 import console from 'node:console';
@@ -57,10 +58,10 @@ async function trackerMain(args) {
 	const { frame, json } = commandFrame(args);
 	const [status, result] = await requestTracker(frame);
 	if (status >= 200 && status < 300) {
-		console.log(json ? JSON.stringify(result, null, 2) : `[${result.id}] ${result.status}`);
+		console.log(json ? JSON.stringify(result, null, 2) : '[' + result.id + '] ' + result.status);
 		return 0;
 	}
-	console.error(`tracker: ${result.error ?? `HTTP ${status}`}`);
+	console.error('tracker: ' + (result.error ?? 'HTTP ' + status));
 	return status === 503 ? 3 : 1;
 }
 
@@ -68,7 +69,8 @@ try {
 	process.exitCode = await trackerMain(process.argv.slice(2));
 } catch (error) {
 	console.error(
-		error instanceof TypeError ? `tracker: ${error.message}` : 'tracker: relay unavailable'
+		error instanceof TypeError ? 'tracker: ' + error.message : 'tracker: relay unavailable'
 	);
 	process.exitCode = 1;
 }
+`;

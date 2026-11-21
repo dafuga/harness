@@ -1,5 +1,6 @@
 // @harness-uid u_rw64iex44n
-/* global readFrames, writeFrame, readFramePayload, writeFramePayload */
+// A standalone Bun program embedded in the managed container command.
+export const trackerGuestLauncherSource: string = String.raw`
 import { spawn } from 'node:child_process';
 import { once } from 'node:events';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
@@ -60,7 +61,7 @@ async function runGuestProvider({ executable, argv, prompt }, { directory, path,
 		stdio: ['pipe', 'inherit', 'ignore'],
 		env: {
 			...process.env,
-			PATH: `${directory}:${process.env.PATH ?? '/usr/bin:/bin'}`,
+			PATH: directory + ':' + (process.env.PATH ?? '/usr/bin:/bin'),
 			HARNESS_TRACKER_GUEST_SOCKET: path,
 			TRACKER_ITEM_ID: itemId,
 			TRACKER_RUN_ID: runId
@@ -77,3 +78,4 @@ try {
 } catch {
 	process.exitCode = 125;
 }
+`;
