@@ -1,3 +1,4 @@
+// @harness-uid u_vqnqshfas2
 import type { QuietHours } from '../../helpers/attention-timing/attentionTiming.types';
 import type { TrackerNotificationState } from './tracker-notification-service/notificationState.types';
 
@@ -126,15 +127,18 @@ export interface TrackerNotificationOptions {
 	retryMinutes?: number;
 }
 
+/** Extensible legacy event fields serialized by the notification transport. */
+export type TrackerPayloadFields = Record<string, unknown>;
+
 export type TrackerWebhookEnqueue =
 	| {
 			kind: 'recurring_due';
 			key: string;
 			itemId: string;
 			at: number;
-			payload: Record<string, unknown>;
+			payload: TrackerPayloadFields;
 	  }
-	| { kind: 'autolaunch'; key: string; payload: Record<string, unknown> }
+	| { kind: 'autolaunch'; key: string; payload: TrackerPayloadFields }
 	| { kind: 'launch_wait'; itemId: string; computer: string; reason: string };
 
 export type { TrackerNotificationState };

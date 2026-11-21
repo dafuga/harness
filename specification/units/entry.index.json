@@ -180,7 +180,8 @@
 			"nextAttentionBatchAt",
 			"groupAttentionLines",
 			"clockMinutes",
-			"planDigestAlertTick"
+			"planDigestAlertTick",
+			"TrackerNotificationService"
 		]
 	},
 	"contract": {
@@ -795,6 +796,11 @@
 		},
 		{
 			"unit": "service.picker-preview",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-notification",
 			"via": "reexport",
 			"origin": "derived"
 		},

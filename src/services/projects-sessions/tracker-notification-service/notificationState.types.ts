@@ -1,6 +1,8 @@
+// @harness-uid u_vqnqshfas2
 import type {
 	TrackerDeliveryRequest,
 	TrackerDestination,
+	TrackerPayloadFields,
 	TrackerWebhookEvent
 } from '../TrackerNotificationService.types';
 
@@ -25,7 +27,7 @@ export interface CallbackRow extends RetryRow {
 	doneAt?: number;
 }
 
-export interface WebhookPayload extends Record<string, unknown> {
+export interface WebhookPayload extends TrackerPayloadFields {
 	event_id: string;
 	event: TrackerWebhookEvent;
 	item_id: string | null;
@@ -63,7 +65,7 @@ export interface FlagRow {
 	createdAt: number;
 }
 
-export interface AttentionPayload extends Record<string, unknown> {
+export interface AttentionPayload extends TrackerPayloadFields {
 	event: AttentionKind;
 	item_id: string;
 	title: string | null;
@@ -109,4 +111,11 @@ export interface TrackerNotificationState {
 	lastAttentionSent?: number;
 	lastAttentionError?: string;
 	inFlight?: DeliveryAttempt;
+}
+
+export interface WebhookEntryDetails {
+	at?: number;
+	escalation?: number;
+	changedFields?: string[];
+	payload?: TrackerPayloadFields;
 }
