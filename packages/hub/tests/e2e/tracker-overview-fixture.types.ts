@@ -14,3 +14,9 @@ export interface OverviewControl {
 	/** Lets a `held` read finish; the page then shows what the endpoint answered. */
 	release: () => void;
 }
+
+export interface Viewport {
+	id: string;
+	width: number;
+	height: number;
+}

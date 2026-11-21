@@ -2,24 +2,12 @@ import { createServer, type IncomingMessage, type Server, type ServerResponse } 
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import type { ElectronApplication } from '../../../../../test/support/browserTest';
+import type { HubSpy, HubSpyRecord } from './trackerOverviewPublisherFixture.types';
+export type { HubSpy, HubSpyRecord } from './trackerOverviewPublisherFixture.types';
 
 /** Synthetic owner and non-owner Hub identities. The tokens are fixture values, never secrets. */
 export const OWNER = { id: 'fixture-owner', token: 'fixture-owner-token' };
 export const OTHER = { id: 'fixture-other-actor', token: 'fixture-other-token' };
-
-/** One request the Hub spy received from the real publisher wire. */
-export type HubSpyRecord = {
-	method: string;
-	path: string;
-	bearer: string | null;
-	body: string;
-};
-
-export type HubSpy = {
-	origin: string;
-	records: HubSpyRecord[];
-	close(): Promise<void>;
-};
 
 /** Reads the request body as text; the spy never stores it beyond the synthetic run. */
 function readBody(request: IncomingMessage): Promise<string> {

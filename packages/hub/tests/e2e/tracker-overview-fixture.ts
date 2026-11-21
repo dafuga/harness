@@ -7,13 +7,18 @@ import { buildStamp } from '../../../../src/utils/buildStamp';
 import { recordCapture } from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import { pageWorkload } from '../../../desktop/tests/e2e/page-workload';
 import { ada, hostedFixture, type HostedState } from './hosted-fixture';
-import type { OverviewControl, OverviewMode } from './tracker-overview-fixture.types';
+import type { OverviewControl, OverviewMode, Viewport } from './tracker-overview-fixture.types';
 import type {
 	OverviewCard,
 	OverviewItem,
 	OverviewSnapshot
 } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverview.types';
-export type { OverviewCall, OverviewControl, OverviewMode } from './tracker-overview-fixture.types';
+export type {
+	OverviewCall,
+	OverviewControl,
+	OverviewMode,
+	Viewport
+} from './tracker-overview-fixture.types';
 
 /** A second, signed-in account that the tracker does not name as owner. Synthetic. */
 export const grace = {
@@ -34,66 +39,67 @@ function item(
 	return { id, title, status, updatedAt: at, due: null, live, stale: false };
 }
 
+const cutover = item('SYN-1', 'Confirm the cutover window', 'in_progress');
+const audit = item('SYN-2', 'Rotate the audit key', 'blocked');
+const docs = item('SYN-3', 'Draft the release notes', 'in_progress', true);
+const notes = item('SYN-4', 'Summarise the field notes', 'open');
+const shipped = item('SYN-5', 'Ship the 2.4 build', 'done');
+const base = { liveSessions: 0, updatedAt: at, milestone: null };
+const projects: OverviewCard[] = [
+	{
+		...base,
+		agent: 'synthetic-sync',
+		state: 'needs-you',
+		counts: { open: 0, in_progress: 1, blocked: 0, done: 0 },
+		items: [cutover],
+		attention: { item: cutover, text: 'Approve the cutover window?' },
+		blocked: null
+	},
+	{
+		...base,
+		agent: 'synthetic-relay',
+		state: 'blocked',
+		counts: { open: 0, in_progress: 0, blocked: 1, done: 0 },
+		items: [audit],
+		attention: null,
+		blocked: { item: audit, text: 'Waiting on the audit key rotation' }
+	},
+	{
+		...base,
+		agent: 'synthetic-docs',
+		state: 'active',
+		liveSessions: 1,
+		counts: { open: 0, in_progress: 1, blocked: 0, done: 0 },
+		items: [docs],
+		attention: null,
+		blocked: null,
+		milestone: { text: 'Drafted the outline', at }
+	},
+	{
+		...base,
+		agent: 'synthetic-notes',
+		state: 'quiet',
+		counts: { open: 1, in_progress: 0, blocked: 0, done: 0 },
+		items: [notes],
+		attention: null,
+		blocked: null
+	},
+	{
+		...base,
+		agent: 'synthetic-release',
+		state: 'done',
+		counts: { open: 0, in_progress: 0, blocked: 0, done: 1 },
+		items: [shipped],
+		attention: null,
+		blocked: null
+	}
+];
+
 /** Five synthetic projects, one per state, with one computer and one live session. */
 export function syntheticOverview(): OverviewSnapshot {
-	const cutover = item('SYN-1', 'Confirm the cutover window', 'in_progress');
-	const audit = item('SYN-2', 'Rotate the audit key', 'blocked');
-	const docs = item('SYN-3', 'Draft the release notes', 'in_progress', true);
-	const notes = item('SYN-4', 'Summarise the field notes', 'open');
-	const shipped = item('SYN-5', 'Ship the 2.4 build', 'done');
-	const base = { liveSessions: 0, updatedAt: at, milestone: null };
-	const projects: OverviewCard[] = [
-		{
-			...base,
-			agent: 'synthetic-sync',
-			state: 'needs-you',
-			counts: { open: 0, in_progress: 1, blocked: 0, done: 0 },
-			items: [cutover],
-			attention: { item: cutover, text: 'Approve the cutover window?' },
-			blocked: null
-		},
-		{
-			...base,
-			agent: 'synthetic-relay',
-			state: 'blocked',
-			counts: { open: 0, in_progress: 0, blocked: 1, done: 0 },
-			items: [audit],
-			attention: null,
-			blocked: { item: audit, text: 'Waiting on the audit key rotation' }
-		},
-		{
-			...base,
-			agent: 'synthetic-docs',
-			state: 'active',
-			liveSessions: 1,
-			counts: { open: 0, in_progress: 1, blocked: 0, done: 0 },
-			items: [docs],
-			attention: null,
-			blocked: null,
-			milestone: { text: 'Drafted the outline', at }
-		},
-		{
-			...base,
-			agent: 'synthetic-notes',
-			state: 'quiet',
-			counts: { open: 1, in_progress: 0, blocked: 0, done: 0 },
-			items: [notes],
-			attention: null,
-			blocked: null
-		},
-		{
-			...base,
-			agent: 'synthetic-release',
-			state: 'done',
-			counts: { open: 0, in_progress: 0, blocked: 0, done: 1 },
-			items: [shipped],
-			attention: null,
-			blocked: null
-		}
-	];
 	return {
 		status: 'ready',
-		projects,
+		projects: structuredClone(projects),
 		machines: [
 			{ name: 'synthetic-computer', status: 'ok' },
 			{ name: 'synthetic-laptop', status: 'busy' }
@@ -154,12 +160,11 @@ const scenario = JSON.parse(
 ) as ScenarioManifest;
 
 /** The widths the scenario declares; ids match the scenario's viewports. */
-export const viewports = [
+export const viewports: Viewport[] = [
 	{ id: 'desktop', width: 1440, height: 900 },
 	{ id: 'tablet', width: 920, height: 800 },
 	{ id: 'mobile', width: 390, height: 844 }
 ];
-export type Viewport = (typeof viewports)[number];
 
 /** Declares one expected console error per page load that asks the endpoint, for this test only. */
 export function refusal(

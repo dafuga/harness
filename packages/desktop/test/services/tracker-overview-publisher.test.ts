@@ -5,7 +5,6 @@ import type { TrackerOverviewAuthority } from '../../src/lib/development-tooling
 import { TrackerOverviewPublisher } from '../../src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/TrackerOverviewPublisher';
 import { createTrackerOverviewPublisher } from '../../src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createTrackerOverviewPublisher';
 import { HostedFailureValidator } from '../../src/validators/development-tooling/HostedFailureValidator';
-
 /** Synthetic owner credential; the token is a fixture value, never a real secret. */
 const credential = {
 	origin: 'https://hub.example.invalid',
