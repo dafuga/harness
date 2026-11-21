@@ -223,3 +223,4 @@ export type {
 	TrackerRunReceipt,
 	TrackerSessionEvidence
 } from './services/agents-providers/TrackerDispatcherService.types';
+export { TrackerRunReadRepository } from './repositories/projects-sessions/TrackerRunReadRepository';
