@@ -25,7 +25,7 @@ test.skipIf(!dockerBase)(
 	60000
 );
 test.skipIf(!dockerBase)(
-	'Linux process preserves its exit and cleans up after cancellation',
+	'Linux process preserves its exit and recovers scoped containers after cancellation and restart',
 	() => verifyDockerProcess(dockerBase!),
 	60000
 );
