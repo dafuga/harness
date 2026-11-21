@@ -36,42 +36,10 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "TrackerSpokeSyncService.constructor.store",
-				"type": "unknown",
+				"name": "TrackerSpokeSyncService.constructor.options",
+				"type": "TrackerSpokeOptions",
 				"required": true,
-				"description": "Local journal that atomically writes metadata and durably deduplicates applied operations by ID."
-			},
-			{
-				"name": "TrackerSpokeSyncService.constructor.transport",
-				"type": "unknown",
-				"required": true,
-				"description": "Sends an exact signed request to the configured link and rejects transport, timeout and HTTP failures."
-			},
-			{
-				"name": "TrackerSpokeSyncService.constructor.secret",
-				"type": "unknown",
-				"required": true,
-				"description": "Shared Tracker signing key in text or bytes."
-			},
-			{
-				"name": "TrackerSpokeSyncService.constructor.link",
-				"type": "string",
-				"required": false,
-				"default": "hub",
-				"description": "Selects the legacy hub or peer metadata keys. Defaults to hub."
-			},
-			{
-				"name": "TrackerSpokeSyncService.constructor.relayOps",
-				"type": "unknown",
-				"required": false,
-				"description": "Includes replicated origins in normal pushes. Defaults to true for a peer and false for a hub."
-			},
-			{
-				"name": "TrackerSpokeSyncService.constructor.pullWaitSeconds",
-				"type": "number",
-				"required": false,
-				"default": 25,
-				"description": "Requested long-poll duration in seconds. Defaults to 25."
+				"description": "Injected local journal, transport and signing key. Defaults to the hub link, relaying on a peer only, and a 25-second pull wait."
 			},
 			{
 				"name": "TrackerSpokeSyncService.#acceptIdentity.dbId",
@@ -127,9 +95,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "TypeError",
 				"type": "thrown",
-				"description": "Push or pull rejects a failed transport, invalid sync data or failed journal operation. Retry from the durable cursor."
+				"description": "A persisted cursor, push receipt or pull page is invalid. Failures from the journal and transport propagate as supplied."
 			}
 		],
 		"errorStatus": "declared",
@@ -146,9 +114,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "TypeError",
 						"type": "thrown",
-						"description": "Rejects on an invalid receipt, invalid persisted cursor, failed transport or failed journal update. The unacknowledged batch remains eligible for retry."
+						"description": "Rejects a malformed push receipt or stored cursor. Transport and journal failures also reject, leaving the unacknowledged batch eligible for retry."
 					}
 				],
 				"errorStatus": "declared"
@@ -165,9 +133,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "TypeError",
 						"type": "thrown",
-						"description": "Rejects on an invalid page, invalid persisted cursor, failed transport or failed journal update. An unapplied page does not advance the cursor."
+						"description": "Rejects a malformed pull page or stored cursor. Transport and journal failures also reject, leaving an unapplied page eligible for retry."
 					}
 				],
 				"errorStatus": "declared"
@@ -211,7 +179,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "TypeError",
 						"type": "thrown",
 						"description": "Rejects corrupt cursor metadata that is not a nonnegative safe integer."
 					}
@@ -250,42 +218,10 @@
 				"name": "TrackerSpokeSyncService.constructor",
 				"inputs": [
 					{
-						"name": "TrackerSpokeSyncService.constructor.store",
-						"type": "unknown",
+						"name": "TrackerSpokeSyncService.constructor.options",
+						"type": "TrackerSpokeOptions",
 						"required": true,
-						"description": "Local journal that atomically writes metadata and durably deduplicates applied operations by ID."
-					},
-					{
-						"name": "TrackerSpokeSyncService.constructor.transport",
-						"type": "unknown",
-						"required": true,
-						"description": "Sends an exact signed request to the configured link and rejects transport, timeout and HTTP failures."
-					},
-					{
-						"name": "TrackerSpokeSyncService.constructor.secret",
-						"type": "unknown",
-						"required": true,
-						"description": "Shared Tracker signing key in text or bytes."
-					},
-					{
-						"name": "TrackerSpokeSyncService.constructor.link",
-						"type": "string",
-						"required": false,
-						"default": "hub",
-						"description": "Selects the legacy hub or peer metadata keys. Defaults to hub."
-					},
-					{
-						"name": "TrackerSpokeSyncService.constructor.relayOps",
-						"type": "unknown",
-						"required": false,
-						"description": "Includes replicated origins in normal pushes. Defaults to true for a peer and false for a hub."
-					},
-					{
-						"name": "TrackerSpokeSyncService.constructor.pullWaitSeconds",
-						"type": "number",
-						"required": false,
-						"default": 25,
-						"description": "Requested long-poll duration in seconds. Defaults to 25."
+						"description": "Injected local journal, transport and signing key. Defaults to the hub link, relaying on a peer only, and a 25-second pull wait."
 					}
 				],
 				"outputs": [

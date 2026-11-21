@@ -49,20 +49,14 @@ export class TrackerSpokeSyncService {
 	#pushing?: Promise<number>;
 	#pulling?: Promise<TrackerSpokePullResult>;
 
-	constructor({
-		store,
-		transport,
-		secret,
-		link = 'hub',
-		relayOps = link === 'peer',
-		pullWaitSeconds = 25
-	}: TrackerSpokeOptions) {
-		this.#store = store;
-		this.#transport = transport;
-		this.#auth = new TrackerSyncAuthService(secret);
-		this.#keys = trackerMetaKeys(link === 'peer' ? 'peer_' : '');
-		this.#relayOps = relayOps;
-		this.#wait = pullWaitSeconds;
+	constructor(options: TrackerSpokeOptions) {
+		const peer = options.link === 'peer';
+		this.#store = options.store;
+		this.#transport = options.transport;
+		this.#auth = new TrackerSyncAuthService(options.secret);
+		this.#keys = trackerMetaKeys(peer ? 'peer_' : '');
+		this.#relayOps = options.relayOps ?? peer;
+		this.#wait = options.pullWaitSeconds ?? 25;
 	}
 
 	/** Drain pending batches. A failed request leaves its batch eligible for the next call. */
@@ -144,7 +138,7 @@ export class TrackerSpokeSyncService {
 	#cursor(key: string): number {
 		const cursor = Number(this.#store.getMeta(key));
 		if (!Number.isSafeInteger(cursor) || cursor < 0)
-			throw new Error('Invalid Tracker stored cursor');
+			throw new TypeError('Invalid Tracker stored cursor');
 		return cursor;
 	}
 
@@ -182,19 +176,20 @@ const pullPage = z.object({
 
 function decodeTrackerPushReceipt(reply: unknown): string {
 	const parsed = pushReceipt.safeParse(reply);
-	if (!parsed.success) throw new Error('Invalid Tracker push receipt');
+	if (!parsed.success) throw new TypeError('Invalid Tracker push receipt');
 	return parsed.data.db_id;
 }
 
 function decodeTrackerPullPage(reply: unknown, since: number) {
 	const parsed = pullPage.safeParse(reply);
-	if (!parsed.success) throw new Error('Invalid Tracker pull page');
+	if (!parsed.success) throw new TypeError('Invalid Tracker pull page');
 	const page = parsed.data;
 	let last = Math.min(since, page.max);
 	for (const { seq } of page.ops) {
-		if (seq <= since || seq <= last) throw new Error('Invalid Tracker pull page sequence');
+		if (seq <= since || seq <= last) throw new TypeError('Invalid Tracker pull page sequence');
 		last = seq;
 	}
-	if (last > page.max || last !== page.last) throw new Error('Invalid Tracker pull page cursor');
+	if (last > page.max || last !== page.last)
+		throw new TypeError('Invalid Tracker pull page cursor');
 	return page;
 }
