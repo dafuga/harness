@@ -1,5 +1,5 @@
 // @harness-uid u_fyf7e7kyi5
-import { writeFileSync } from 'node:fs';
+import { lstatSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { TrackerWorkerClient } from '../../../services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types';
 
@@ -19,5 +19,27 @@ export function trackerWorkerClient(directory: string, address: TrackerWorkerCli
 		...(role === 'hub' ? { syncPort } : { upstream: { url: 'http://127.0.0.1:1' } })
 	};
 	writeFileSync(path, JSON.stringify(config), { mode: 0o600, flag: 'wx' });
+	return path;
+}
+
+export function trackerGuestAuthFile(
+	directory: string,
+	{ itemId, runId }: { itemId: string; runId: number },
+	address: Pick<TrackerWorkerClient, 'writeGuestAuth' | 'apiPort'>
+): string | undefined {
+	const { writeGuestAuth, apiPort } = address;
+	if (!writeGuestAuth) return undefined;
+	const path = join(directory, 'guest-auth.json');
+	writeGuestAuth({ path, itemId, runId, apiPort });
+	const file = lstatSync(path);
+	if (
+		!file.isFile() ||
+		file.uid !== process.getuid?.() ||
+		file.nlink !== 1 ||
+		(file.mode & 0o077) !== 0
+	)
+		throw new TypeError(
+			'Tracker Docker guest auth file must be private and owned by the service user'
+		);
 	return path;
 }

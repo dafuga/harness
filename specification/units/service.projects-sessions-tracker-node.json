@@ -158,6 +158,11 @@
 				"required": true
 			},
 			{
+				"name": "trackerNodeRuntime.writeGuestAuth",
+				"type": "TrackerGuestAuthWriter",
+				"required": false
+			},
+			{
 				"name": "trackerUpstreamLink.input",
 				"type": "TrackerUpstream",
 				"required": true
@@ -587,6 +592,11 @@
 						"name": "trackerNodeRuntime.config",
 						"type": "TrackerNodeConfig",
 						"required": true
+					},
+					{
+						"name": "trackerNodeRuntime.writeGuestAuth",
+						"type": "TrackerGuestAuthWriter",
+						"required": false
 					}
 				],
 				"outputs": [

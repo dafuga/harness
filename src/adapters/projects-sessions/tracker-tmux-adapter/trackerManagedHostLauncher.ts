@@ -25,7 +25,7 @@ import {
 	managedBrief,
 	trackerSocket
 } from './trackerManagedWorkerProcess';
-import { trackerWorkerClient } from './trackerWorkerClient';
+import { trackerGuestAuthFile, trackerWorkerClient } from './trackerWorkerClient';
 import {
 	privateTrackerDirectory,
 	trackerManagedProviderCommand,
@@ -72,7 +72,7 @@ export function trackerManagedHostLauncher(
 				await launchTmux(
 					{ tmux, trackerBin, trackerExecutable, worktree: plan.worktree },
 					plan.receipt,
-					{ script, command, clientPath: plan.clientPath },
+					{ script, command, clientPath: plan.clientPath, guestAuthFile: plan.guestAuthFile },
 					signal
 				);
 			}
@@ -131,7 +131,13 @@ async function prepareManagedLaunch(
 		mode: 0o600,
 		flag: 'wx'
 	});
-	return { receipt, worktree, clientPath: trackerWorkerClient(directory, client) };
+	return {
+		receipt,
+		worktree,
+		clientPath: trackerWorkerClient(directory, client),
+		guestAuthFile:
+			input.backend === 'docker' ? trackerGuestAuthFile(directory, receipt, client) : undefined
+	};
 }
 
 async function inspectManagedSession(
