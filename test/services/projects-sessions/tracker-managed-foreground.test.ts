@@ -1,5 +1,5 @@
 import { createHmac } from 'node:crypto';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test } from 'vitest';
@@ -67,10 +67,12 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 			.trim()
 			.split('\n');
 		expect(outputs).toHaveLength(1);
-		expect(JSON.parse(outputs[0])).toMatchObject({
+		const dispatched = JSON.parse(outputs[0]);
+		expect(dispatched).toMatchObject({
 			brief: expect.stringContaining('tracker done abc123'),
 			guestAuthFile: expect.stringMatching(/\/effects\/[a-f0-9]{64}\/guest-auth\.json$/)
 		});
+		expect(existsSync(dispatched.guestAuthFile)).toBe(false);
 	} finally {
 		database.close();
 	}
@@ -113,7 +115,11 @@ async function verifyCompletedGuest(runtime: TrackerNativeRuntimeService, key: B
 	const item = await after.json();
 	expect(item).toMatchObject({
 		status: 'done',
-		notes_log: [{ text: 'Exactly once' }, { text: 'Verified' }]
+		notes_log: [
+			{ text: 'auto-launch requested on daniel-primary-mbp' },
+			{ text: 'Exactly once' },
+			{ text: 'Verified' }
+		]
 	});
 	expect(item).not.toHaveProperty('callback');
 	expect(item).not.toHaveProperty('auto');
@@ -123,7 +129,7 @@ function signedCommand(runtime: TrackerNativeRuntimeService, command: unknown[],
 	const pathAndQuery = '/native/guest/v1';
 	const method = 'POST';
 	const body = JSON.stringify(command);
-	const headers = key
+	const headers: Record<string, string> = key
 		? {
 				authorization: new TrackerSyncAuthService(key).authorizationHeader({
 					method,
