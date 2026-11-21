@@ -3,6 +3,8 @@ set -euo pipefail
 source_sha=$(jq -er '.source | select(test("^[a-f0-9]{40}$"))')
 export BUN_INSTALL_CACHE_DIR=/tmp/bun-cache
 export WRANGLER_SEND_METRICS=false
+wrangler_version=$(node -p 'require("/usr/local/lib/node_modules/wrangler/package.json").version')
+WRANGLER_LOG=log wrangler --version | grep -F "$wrangler_version" >/dev/null
 mkdir -p /tmp/fluora /tmp/release/site /tmp/release/config
 tar -xf /source -C /tmp/fluora --exclude='./.wrangler' --exclude='.wrangler'
 cd /tmp/fluora
@@ -26,8 +28,6 @@ migration_manifest=$(for file in migrations/*.sql; do
   jq -cn --arg name "${file##*/}" --arg digest "$(sha256sum "$file" | cut -d' ' -f1)" '{name:$name,digest:$digest}'
 done | jq -cs .)
 tar --sort=name --mtime=@0 --owner=0 --group=0 --numeric-owner -cf /out/artifact.tar -C /tmp/release .
-wrangler_version=$(node -p 'require("/usr/local/lib/node_modules/wrangler/package.json").version')
-wrangler --version | grep -F "$wrangler_version" >/dev/null
 jq -n --arg node "$(node --version)" --arg bun "$(bun --version)" \
   --arg wrangler "$wrangler_version" \
   --arg gcloud "$(gcloud version --format=json | jq -er '.["Google Cloud SDK"]')" \
