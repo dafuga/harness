@@ -1,0 +1,39 @@
+{
+	"schemaVersion": 1,
+	"id": "script.tracker-shim",
+	"kind": "script",
+	"title": "tracker-shim",
+	"responsibility": "Owns the tracker-shim build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/tracker-shim.sh"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/tracker-shim.sh",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/tracker-shim.sh"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

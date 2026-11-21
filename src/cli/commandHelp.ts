@@ -128,6 +128,13 @@ export const commandHelp = [
 		aliases: []
 	},
 	{
+		name: 'tracker',
+		signature: 'tracker [args...]',
+		description: 'Use the shared Tracker service.',
+		term: 'tracker [args...]',
+		aliases: []
+	},
+	{
 		name: 'module',
 		signature: 'module',
 		description: 'Discover and add project capabilities.',

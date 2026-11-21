@@ -43,6 +43,31 @@ to `build/` with adapter-static. The default app scaffold uses adapter-auto.
 
 The Explorer’s APIs catalog lists HTTP endpoints and method exports at the selected project revision. Each page has an APIs tab for source-recorded usage through its components and services. API cards open contracts and consumer links in the same revision. Computed or external requests are not presented as confirmed same-app endpoint dependencies.
 
+## Tracker
+
+```bash
+harness tracker list --status in_progress
+harness tracker show ITEM --json
+harness tracker note ITEM "Recorded a milestone"
+harness tracker --help
+```
+
+`harness tracker` forwards Tracker commands to the retained Tracker client. The
+client uses the local Tracker service and its existing database. Its options,
+output, and exit codes are the same from either entry point.
+
+Harness looks for `~/.local/libexec/harness/tracker-legacy` first, then
+`~/.local/bin/tracker`. Set `HARNESS_TRACKER_LEGACY_BIN` to an absolute
+executable path for an isolated test or a separately installed client.
+
+The packaged [Tracker shim](scripts/tracker-shim.sh) forwards the old
+`tracker` entry point to Harness. Set `HARNESS_EXECUTABLE` when staging it
+against a specific Harness binary. Before replacing a live client with the
+shim, retain a link to its versioned executable at
+`~/.local/libexec/harness/tracker-legacy` and confirm that both entry points
+reach the same service. The retained executable must point to the client
+release. Keep the previous CLI target available for rollback.
+
 ## API access from the CLI
 
 `harness api` calls the same HTTP APIs as the app. It works from any directory;

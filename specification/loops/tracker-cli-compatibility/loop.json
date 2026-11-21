@@ -2,7 +2,7 @@
 	"name": "tracker-cli-compatibility",
 	"goal": "Use the shared Harness CLI and an exec shim to relay Tracker commands with the same bytes, options and exit codes while preserving the existing service.",
 	"createdAt": "2026-11-21T14:39:50.384Z",
-	"updatedAt": "2026-11-21T14:41:38.564Z",
+	"updatedAt": "2026-11-21T14:47:07.452Z",
 	"template": "feature",
 	"templateLineage": [
 		"feature"
@@ -19,7 +19,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T14:47:07.452Z",
+			"evidence": "Harness registers the Tracker command family, delegates raw argv to an explicitly selected or retained client, and packages an exec shim. The unit tests exercise launch error and recursion handling."
 		},
 		{
 			"id": "test",
