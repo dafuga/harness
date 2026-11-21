@@ -54,3 +54,27 @@ process.exitCode = args[1] === 'ignored' ? 4 : args[1] === 'open' ? 5 : 0;
 		}),
 	30_000
 );
+
+test(
+	'Tracker shim finds its installed Harness executable with a restricted service PATH',
+	() =>
+		withTempDir('harness-tracker-service-', async (home) => {
+			const directory = join(home, '.local', 'libexec', 'harness');
+			const shim = join(root, 'scripts', 'tracker-shim.sh');
+			await mkdir(directory, { recursive: true });
+			await writeFile(join(directory, 'harness'), '#!/bin/sh\nprintf "%s\\n" "$@"\n', {
+				mode: 0o700
+			});
+			const result = await runCommand([shim, 'note', 'item', 'Fixture event'], home, false, {
+				HOME: home,
+				HARNESS_EXECUTABLE: '',
+				PATH: '/usr/bin:/bin:/usr/sbin:/sbin'
+			});
+			expect(result).toEqual({
+				exitCode: 0,
+				stdout: 'tracker\nnote\nitem\nFixture event\n',
+				stderr: ''
+			});
+		}),
+	30_000
+);
