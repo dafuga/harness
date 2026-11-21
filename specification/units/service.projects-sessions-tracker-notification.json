@@ -1,0 +1,2442 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-notification",
+	"uid": "u_vqnqshfas2",
+	"kind": "service",
+	"title": "TrackerNotificationService",
+	"responsibility": "Apply Tracker callback, webhook and reminder transitions with atomic queue updates and receipt replay through injected destinations.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/TrackerNotificationService.ts",
+			"src/services/projects-sessions/TrackerNotificationService.types.ts",
+			"src/services/projects-sessions/tracker-notification-service/TrackerNotificationStateError.ts",
+			"src/services/projects-sessions/tracker-notification-service/attentionBatch.ts",
+			"src/services/projects-sessions/tracker-notification-service/attentionInitialization.ts",
+			"src/services/projects-sessions/tracker-notification-service/attentionTransitions.ts",
+			"src/services/projects-sessions/tracker-notification-service/callbackDelivery.ts",
+			"src/services/projects-sessions/tracker-notification-service/completeDelivery.ts",
+			"src/services/projects-sessions/tracker-notification-service/deliveryRequest.ts",
+			"src/services/projects-sessions/tracker-notification-service/directReminders.ts",
+			"src/services/projects-sessions/tracker-notification-service/enqueueWebhook.ts",
+			"src/services/projects-sessions/tracker-notification-service/notificationRules.ts",
+			"src/services/projects-sessions/tracker-notification-service/notificationState.types.ts",
+			"src/services/projects-sessions/tracker-notification-service/notificationTick.ts",
+			"src/services/projects-sessions/tracker-notification-service/outboxRouting.ts",
+			"src/services/projects-sessions/tracker-notification-service/outboxRouting.types.ts",
+			"src/services/projects-sessions/tracker-notification-service/webhookBatch.ts",
+			"src/services/projects-sessions/tracker-notification-service/webhookEvents.ts",
+			"src/services/projects-sessions/tracker-notification-service/webhookReminders.ts"
+		],
+		"symbols": [
+			"TrackerDeliveryRequest",
+			"TrackerDeliveryResult",
+			"TrackerDestination",
+			"TrackerNotificationDestinations",
+			"TrackerNotificationItem",
+			"TrackerNotificationOp",
+			"TrackerNotificationOptions",
+			"TrackerNotificationQueue",
+			"TrackerNotificationSource",
+			"TrackerNotificationState",
+			"TrackerWebhookEnqueue",
+			"TrackerWebhookOptions",
+			"TrackerNotificationService",
+			"TrackerNotificationService.constructor",
+			"TrackerNotificationService.tick",
+			"TrackerNotificationService.enqueue",
+			"TrackerNotificationService.pause",
+			"TrackerNotificationService.resume",
+			"TrackerDestination",
+			"TrackerItemCallback",
+			"TrackerNotificationItem",
+			"TrackerNotificationOp",
+			"TrackerNotificationSource",
+			"TrackerNotificationQueue",
+			"TrackerDeliveryRequest",
+			"TrackerDeliveryResult",
+			"TrackerNotificationDestinations",
+			"TrackerWebhookEvent",
+			"TrackerWebhookRoute",
+			"TrackerWebhookOptions",
+			"TrackerNotificationOptions",
+			"TrackerPayloadFields",
+			"TrackerWebhookEnqueue",
+			"TrackerNotificationState",
+			"TrackerNotificationStateError",
+			"nextAttention",
+			"initializeAttention",
+			"attentionState",
+			"needsAttention",
+			"enqueueTransition",
+			"observeAttention",
+			"launchWaitLine",
+			"queueLaunchWait",
+			"scanCallbacks",
+			"nextCallback",
+			"completeDelivery",
+			"webhookRequest",
+			"callbackRequest",
+			"scanDirectReminders",
+			"nextDirectReminder",
+			"enqueueWebhook",
+			"minute",
+			"intervalMs",
+			"isoTime",
+			"clockTime",
+			"eventId",
+			"activeItem",
+			"flagged",
+			"dueTime",
+			"localDay",
+			"readyRows",
+			"CallbackEvent",
+			"AttentionKind",
+			"ReminderKind",
+			"RetryRow",
+			"CallbackRow",
+			"WebhookPayload",
+			"OutboxRow",
+			"ReminderRow",
+			"FlagRow",
+			"AttentionPayload",
+			"AttentionRow",
+			"AttentionItemState",
+			"DeliveryAttempt",
+			"TrackerNotificationState",
+			"WebhookEntryDetails",
+			"runNotificationTick",
+			"quietOutboxEvent",
+			"nextOutbox",
+			"OutboxRecipient",
+			"OutboxGroup",
+			"outboxBatch",
+			"outboxSingle",
+			"enqueueEvent",
+			"itemEvent",
+			"summaryEvent",
+			"normalizeActor",
+			"scanWebhookEvents",
+			"scanWebhookFlags",
+			"scanWebhookDue"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "TrackerNotificationService.constructor.options",
+				"type": "TrackerNotificationOptions",
+				"required": true,
+				"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+			},
+			{
+				"name": "TrackerNotificationService.tick.itemIds",
+				"type": "readonly string[]",
+				"required": false,
+				"default": null,
+				"description": "Optional IDs to scan for completion callbacks. Omit to scan all items."
+			},
+			{
+				"name": "TrackerNotificationService.enqueue.entry",
+				"type": "TrackerWebhookEnqueue",
+				"required": true,
+				"description": "A recurring occurrence, auto-launch summary, or launch wait to queue under its Tracker key."
+			},
+			{
+				"name": "TrackerNotificationService.pause.by",
+				"type": "string",
+				"required": false,
+				"default": null,
+				"description": "Actor credited with pausing webhook delivery. Omit to record an anonymous pause."
+			},
+			{
+				"name": "nextAttention.state",
+				"type": "TrackerNotificationState",
+				"required": true,
+				"description": "Mutable draft owned by the queue transaction."
+			},
+			{
+				"name": "nextAttention.options",
+				"type": "TrackerNotificationOptions",
+				"required": true,
+				"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+			},
+			{
+				"name": "nextAttention.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds from the injected clock for this scan or send."
+			},
+			{
+				"name": "initializeAttention.state",
+				"type": "TrackerNotificationState",
+				"required": true,
+				"description": "Mutable draft owned by the queue transaction."
+			},
+			{
+				"name": "initializeAttention.source",
+				"type": "TrackerNotificationSource",
+				"required": true,
+				"description": "Read-only access to Tracker items, local registrations and operations on the current node."
+			},
+			{
+				"name": "initializeAttention.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds from the injected clock for this scan or send."
+			},
+			{
+				"name": "attentionState.item",
+				"type": "TrackerNotificationItem",
+				"required": true,
+				"description": "Current Tracker item projection, including field clocks and delivery attributes."
+			},
+			{
+				"name": "needsAttention.state",
+				"type": "AttentionItemState",
+				"required": true,
+				"description": "Tracked item state from before or after a journal operation."
+			},
+			{
+				"name": "enqueueTransition.state",
+				"type": "TrackerNotificationState",
+				"required": true,
+				"description": "Mutable draft owned by the queue transaction."
+			},
+			{
+				"name": "enqueueTransition.item",
+				"type": "TrackerNotificationItem",
+				"required": true,
+				"description": "Current Tracker item projection, including field clocks and delivery attributes."
+			},
+			{
+				"name": "enqueueTransition.event",
+				"type": "Exclude<AttentionKind, 'launch_wait'>",
+				"required": true,
+				"description": "The done, blocked or needs-Daniel transition to record."
+			},
+			{
+				"name": "enqueueTransition.timing",
+				"type": "{ clock: string | undefined; now: number; at: number; note?: string }",
+				"required": true,
+				"description": "Transition clock, queue time, occurrence time and any latest completion note."
+			},
+			{
+				"name": "observeAttention.state",
+				"type": "TrackerNotificationState",
+				"required": true,
+				"description": "Mutable draft owned by the queue transaction."
+			},
+			{
+				"name": "observeAttention.source",
+				"type": "TrackerNotificationSource",
+				"required": true,
+				"description": "Read-only access to Tracker items, local registrations and operations on the current node."
+			},
+			{
+				"name": "observeAttention.op",
+				"type": "TrackerNotificationOp",
+				"required": true,
+				"description": "Journal operation with its sequence, clock, actor and field changes."
+			},
+			{
+				"name": "observeAttention.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds from the injected clock for this scan or send."
+			},
+			{
+				"name": "launchWaitLine.item",
+				"type": "TrackerNotificationItem",
+				"required": true,
+				"description": "Current Tracker item projection, including field clocks and delivery attributes."
+			},
+			{
+				"name": "launchWaitLine.work",
+				"type": "{ computer: string; reason: string }",
+				"required": true,
+				"description": "Computer and reason explaining the current launch hold."
+			},
+			{
+				"name": "launchWaitLine.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds from the injected clock for this scan or send."
+			},
+			{
+				"name": "queueLaunchWait.state",
+				"type": "TrackerNotificationState",
+				"required": true,
+				"description": "Mutable draft owned by the queue transaction."
+			},
+			{
+				"name": "queueLaunchWait.line",
+				"type": "AttentionPayload",
+				"required": true,
+				"description": "Launch-wait payload with the current launch token and message."
+			},
+			{
+				"name": "queueLaunchWait.key",
+				"type": "string",
+				"required": true,
+				"description": "Stable Tracker queue key used to deduplicate this event."
+			},
+			{
+				"name": "queueLaunchWait.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds from the injected clock for this scan or send."
+			},
+			{
+				"name": "scanCallbacks.state",
+				"type": "TrackerNotificationState",
+				"required": true,
+				"description": "Mutable draft owned by the queue transaction."
+			},
+			{
+				"name": "scanCallbacks.source",
+				"type": "TrackerNotificationSource",
+				"required": true,
+				"description": "Read-only access to Tracker items, local registrations and operations on the current node."
+			},
+			{
+				"name": "scanCallbacks.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds from the injected clock for this scan or send."
+			},
+			{
+				"name": "scanCallbacks.itemIds",
+				"type": "readonly string[]",
+				"required": false,
+				"default": null,
+				"description": "Optional IDs to scan for completion callbacks. Omit to scan all items."
+			},
+			{
+				"name": "nextCallback.state",
+				"type": "TrackerNotificationState",
+				"required": true,
+				"description": "Mutable draft owned by the queue transaction."
+			},
+			{
+				"name": "nextCallback.source",
+				"type": "TrackerNotificationSource",
+				"required": true,
+				"description": "Read-only access to Tracker items, local registrations and operations on the current node."
+			},
+			{
+				"name": "nextCallback.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds from the injected clock for this scan or send."
+			},
+			{
+				"name": "completeDelivery.state",
+				"type": "TrackerNotificationState",
+				"required": true,
+				"description": "Mutable draft owned by the queue transaction."
+			},
+			{
+				"name": "completeDelivery.attempt",
+				"type": "DeliveryAttempt",
+				"required": true,
+				"description": "Previously persisted exact request, member keys and attempt start time."
+			},
+			{
+				"name": "completeDelivery.result",
+				"type": "TrackerDeliveryResult",
+				"required": true,
+				"description": "Destination receipt or a confirmed rejection with a safe diagnostic."
+			},
+			{
+				"name": "completeDelivery.options",
+				"type": "TrackerNotificationOptions",
+				"required": true,
+				"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+			},
+			{
+				"name": "webhookRequest.destination",
+				"type": "TrackerDestination",
+				"required": true,
+				"description": "Opaque, stable reference for the injected destination."
+			},
+			{
+				"name": "webhookRequest.payload",
+				"type": "TrackerPayloadFields & { event_id: string; event: string }",
+				"required": true,
+				"description": "Tracker payload to serialize using the legacy wire field names."
+			},
+			{
+				"name": "callbackRequest.id",
+				"type": "string",
+				"required": true,
+				"description": "Stable idempotency key for the destination."
+			},
+			{
+				"name": "callbackRequest.destination",
+				"type": "TrackerDestination",
+				"required": true,
+				"description": "Opaque, stable reference for the injected destination."
+			},
+			{
+				"name": "callbackRequest.payload",
+				"type": "TrackerPayloadFields & { type: string }",
+				"required": true,
+				"description": "Tracker payload to serialize using the legacy wire field names."
+			},
+			{
+				"name": "callbackRequest.commandEvent",
+				"type": "{ id: string; events: readonly string[] }",
+				"required": false,
+				"default": null,
+				"description": "Item ID and ordered completion events for the command environment. Omit for a non-item payload."
+			},
+			{
+				"name": "scanDirectReminders.state",
+				"type": "TrackerNotificationState",
+				"required": true,
+				"description": "Mutable draft owned by the queue transaction."
+			},
+			{
+				"name": "scanDirectReminders.options",
+				"type": "TrackerNotificationOptions",
+				"required": true,
+				"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+			},
+			{
+				"name": "scanDirectReminders.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds from the injected clock for this scan or send."
+			},
+			{
+				"name": "nextDirectReminder.state",
+				"type": "TrackerNotificationState",
+				"required": true,
+				"description": "Mutable draft owned by the queue transaction."
+			},
+			{
+				"name": "nextDirectReminder.options",
+				"type": "TrackerNotificationOptions",
+				"required": true,
+				"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+			},
+			{
+				"name": "nextDirectReminder.destination",
+				"type": "TrackerDestination",
+				"required": true,
+				"description": "Configured destination for the direct reminder channel."
+			},
+			{
+				"name": "nextDirectReminder.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds from the injected clock for this scan or send."
+			},
+			{
+				"name": "enqueueWebhook.state",
+				"type": "TrackerNotificationState",
+				"required": true,
+				"description": "Mutable draft owned by the queue transaction."
+			},
+			{
+				"name": "enqueueWebhook.entry",
+				"type": "TrackerWebhookEnqueue",
+				"required": true,
+				"description": "A recurring occurrence, auto-launch summary, or launch wait to queue under its Tracker key."
+			},
+			{
+				"name": "enqueueWebhook.options",
+				"type": "TrackerNotificationOptions",
+				"required": true,
+				"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+			},
+			{
+				"name": "intervalMs.minutes",
+				"type": "number | undefined",
+				"required": true,
+				"description": "Configured duration in minutes, with an absent or zero value selecting the fallback."
+			},
+			{
+				"name": "intervalMs.fallback",
+				"type": "number",
+				"required": true,
+				"description": "Default duration in minutes."
+			},
+			{
+				"name": "isoTime.time",
+				"type": "number",
+				"required": true,
+				"description": "Instant in epoch milliseconds."
+			},
+			{
+				"name": "clockTime.clock",
+				"type": "string | undefined",
+				"required": true,
+				"description": "Tracker hybrid logical clock string, when present."
+			},
+			{
+				"name": "eventId.keys",
+				"type": "readonly string[]",
+				"required": true,
+				"description": "Tracker queue keys whose sorted, newline-separated values identify the envelope."
+			},
+			{
+				"name": "activeItem.item",
+				"type": "TrackerNotificationItem | undefined",
+				"required": true,
+				"description": "Current Tracker item projection, including field clocks and delivery attributes."
+			},
+			{
+				"name": "flagged.item",
+				"type": "TrackerNotificationItem | undefined",
+				"required": true,
+				"description": "Current Tracker item projection, including field clocks and delivery attributes."
+			},
+			{
+				"name": "dueTime.value",
+				"type": "string | null",
+				"required": true,
+				"description": "A Tracker date-only due value, timed due value, or null."
+			},
+			{
+				"name": "dueTime.tz",
+				"type": "string",
+				"required": true,
+				"description": "IANA time zone used for the Lisbon-style calendar rules."
+			},
+			{
+				"name": "localDay.at",
+				"type": "number",
+				"required": true,
+				"description": "Instant in epoch milliseconds."
+			},
+			{
+				"name": "localDay.tz",
+				"type": "string",
+				"required": true,
+				"description": "IANA time zone used for the Lisbon-style calendar rules."
+			},
+			{
+				"name": "readyRows.rows",
+				"type": "Iterable<T>",
+				"required": true,
+				"description": "Queue rows examined for this operation."
+			},
+			{
+				"name": "readyRows.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds from the injected clock for this scan or send."
+			},
+			{
+				"name": "readyRows.pending",
+				"type": "(row: T) => boolean",
+				"required": true,
+				"description": "Predicate selecting rows that still need processing."
+			},
+			{
+				"name": "runNotificationTick.options",
+				"type": "TrackerNotificationOptions",
+				"required": true,
+				"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+			},
+			{
+				"name": "runNotificationTick.itemIds",
+				"type": "readonly string[]",
+				"required": false,
+				"default": null,
+				"description": "Optional IDs to scan for completion callbacks. Omit to scan all items."
+			},
+			{
+				"name": "quietOutboxEvent.row",
+				"type": "OutboxRow",
+				"required": true,
+				"description": "Durable outbox row with its snapshot of the item event and retry history."
+			},
+			{
+				"name": "nextOutbox.state",
+				"type": "TrackerNotificationState",
+				"required": true,
+				"description": "Mutable draft owned by the queue transaction."
+			},
+			{
+				"name": "nextOutbox.options",
+				"type": "TrackerNotificationOptions",
+				"required": true,
+				"description": "Source and destination adapters, the quiet window and the routing policy."
+			},
+			{
+				"name": "nextOutbox.chief",
+				"type": "TrackerDestination",
+				"required": true,
+				"description": "Configured and available Chief of Staff webhook destination."
+			},
+			{
+				"name": "nextOutbox.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds from the injected clock for this scan or send."
+			},
+			{
+				"name": "outboxBatch.rows",
+				"type": "OutboxRow[]",
+				"required": true,
+				"description": "Eligible and coalesced rows addressed to a single recipient."
+			},
+			{
+				"name": "outboxBatch.destination",
+				"type": "TrackerDestination",
+				"required": true,
+				"description": "Opaque, stable reference for the injected destination."
+			},
+			{
+				"name": "outboxBatch.route",
+				"type": "string | null",
+				"required": true,
+				"description": "Matched route name, or null for the Chief of Staff."
+			},
+			{
+				"name": "outboxBatch.context",
+				"type": "{ node: string; now: number }",
+				"required": true,
+				"description": "Node name and current tick time used in the outgoing envelope."
+			},
+			{
+				"name": "outboxSingle.row",
+				"type": "OutboxRow",
+				"required": true,
+				"description": "Durable outbox row with its snapshot of the item event and retry history."
+			},
+			{
+				"name": "outboxSingle.destination",
+				"type": "TrackerDestination",
+				"required": true,
+				"description": "Opaque, stable reference for the injected destination."
+			},
+			{
+				"name": "outboxSingle.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds from the injected clock for this scan or send."
+			},
+			{
+				"name": "enqueueEvent.state",
+				"type": "TrackerNotificationState",
+				"required": true,
+				"description": "Mutable draft owned by the queue transaction."
+			},
+			{
+				"name": "enqueueEvent.event",
+				"type": "WebhookPayload",
+				"required": true,
+				"description": "Already-rendered item or summary payload with a stable event ID."
+			},
+			{
+				"name": "enqueueEvent.timing",
+				"type": "{ key: string; now: number; nextAt?: number }",
+				"required": true,
+				"description": "Stable queue key, creation instant and optional initial eligibility time."
+			},
+			{
+				"name": "itemEvent.item",
+				"type": "TrackerNotificationItem",
+				"required": true,
+				"description": "Current Tracker item projection, including field clocks and delivery attributes."
+			},
+			{
+				"name": "itemEvent.event",
+				"type": "TrackerWebhookEvent",
+				"required": true,
+				"description": "Tracker event kind used to construct the notification."
+			},
+			{
+				"name": "itemEvent.identity",
+				"type": "{ key: string; node: string; now: number }",
+				"required": true,
+				"description": "Stable queue key, sending node and default event timestamp."
+			},
+			{
+				"name": "itemEvent.extra",
+				"type": "WebhookEntryDetails",
+				"required": false,
+				"default": {},
+				"description": "Optional event time, escalation, changed fields or recurring occurrence details."
+			},
+			{
+				"name": "summaryEvent.key",
+				"type": "string",
+				"required": true,
+				"description": "Stable Tracker queue key used to deduplicate this event."
+			},
+			{
+				"name": "summaryEvent.source",
+				"type": "TrackerNotificationSource",
+				"required": true,
+				"description": "Read-only access to Tracker items, local registrations and operations on the current node."
+			},
+			{
+				"name": "summaryEvent.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds from the injected clock for this scan or send."
+			},
+			{
+				"name": "summaryEvent.payload",
+				"type": "TrackerPayloadFields",
+				"required": true,
+				"description": "Tracker payload to serialize using the legacy wire field names."
+			},
+			{
+				"name": "normalizeActor.value",
+				"type": "string | null | undefined",
+				"required": true,
+				"description": "Owner, waiter, route alias or actor name. Missing names normalize to an empty string."
+			},
+			{
+				"name": "scanWebhookEvents.state",
+				"type": "TrackerNotificationState",
+				"required": true,
+				"description": "Mutable draft owned by the queue transaction."
+			},
+			{
+				"name": "scanWebhookEvents.source",
+				"type": "TrackerNotificationSource",
+				"required": true,
+				"description": "Read-only access to Tracker items, local registrations and operations on the current node."
+			},
+			{
+				"name": "scanWebhookEvents.settings",
+				"type": "TrackerWebhookOptions",
+				"required": true,
+				"description": "Webhook routing, changed field and Chief of Staff batch settings."
+			},
+			{
+				"name": "scanWebhookEvents.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds from the injected clock for this scan or send."
+			},
+			{
+				"name": "scanWebhookFlags.state",
+				"type": "TrackerNotificationState",
+				"required": true,
+				"description": "Mutable draft owned by the queue transaction."
+			},
+			{
+				"name": "scanWebhookFlags.options",
+				"type": "TrackerNotificationOptions",
+				"required": true,
+				"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+			},
+			{
+				"name": "scanWebhookFlags.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds from the injected clock for this scan or send."
+			},
+			{
+				"name": "scanWebhookDue.state",
+				"type": "TrackerNotificationState",
+				"required": true,
+				"description": "Mutable draft owned by the queue transaction."
+			},
+			{
+				"name": "scanWebhookDue.options",
+				"type": "TrackerNotificationOptions",
+				"required": true,
+				"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+			},
+			{
+				"name": "scanWebhookDue.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds from the injected clock for this scan or send."
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerNotificationService.tick",
+				"type": "Promise<void>",
+				"description": "Resolves after pending receipt replay, item scanning and eligible delivery for this tick."
+			},
+			{
+				"name": "TrackerNotificationService.enqueue",
+				"type": "void",
+				"description": "Commits a deduplicated queue intent on the hub. Delivery waits for a tick."
+			},
+			{
+				"name": "TrackerNotificationService.pause",
+				"type": "Promise<void>",
+				"description": "Commits the first pause time and its actor on the hub."
+			},
+			{
+				"name": "TrackerNotificationService.resume",
+				"type": "Promise<void>",
+				"description": "Clears the pause, resets pending outbox retries and drains work with one forced catch-up batch."
+			},
+			{
+				"name": "nextAttention",
+				"type": "DeliveryAttempt | undefined",
+				"description": "Prepared Chief of Staff batch when eligible. Drops obsolete or superseded lines and records the attempt window."
+			},
+			{
+				"name": "initializeAttention",
+				"type": "void",
+				"description": "Seeds the observed item state and carries forward still-relevant unsent legacy flags and blocks."
+			},
+			{
+				"name": "attentionState",
+				"type": "AttentionItemState",
+				"description": "Snapshot of status, escalation eligibility and resolution."
+			},
+			{
+				"name": "needsAttention",
+				"type": "boolean",
+				"description": "Whether the observed state represents an unresolved flag for an active item."
+			},
+			{
+				"name": "enqueueTransition",
+				"type": "void",
+				"description": "Queues the transition under its item and clock key, superseding older unsent lines of the same kind."
+			},
+			{
+				"name": "observeAttention",
+				"type": "void",
+				"description": "Applies one operation to the observed state and records a newly entered attention state."
+			},
+			{
+				"name": "launchWaitLine",
+				"type": "AttentionPayload",
+				"description": "Legacy launch-wait message with its item and launch token."
+			},
+			{
+				"name": "queueLaunchWait",
+				"type": "void",
+				"description": "Adds or refreshes the pending launch hold under the same launch token."
+			},
+			{
+				"name": "scanCallbacks",
+				"type": "void",
+				"description": "Adds eligible local completion events once per item clock and callback target."
+			},
+			{
+				"name": "nextCallback",
+				"type": "DeliveryAttempt | undefined",
+				"description": "Earliest eligible completion callback request, with an HTTP envelope or command variables."
+			},
+			{
+				"name": "completeDelivery",
+				"type": "void",
+				"description": "Commits the delivery receipt or next retry and clears the issued request in the same transaction."
+			},
+			{
+				"name": "webhookRequest",
+				"type": "TrackerDeliveryRequest",
+				"description": "JSON body and HTTP headers carrying the same webhook event ID."
+			},
+			{
+				"name": "callbackRequest",
+				"type": "TrackerDeliveryRequest",
+				"description": "JSON body and the legacy HTTP headers or command environment for the callback."
+			},
+			{
+				"name": "scanDirectReminders",
+				"type": "void",
+				"description": "Inserts reminders for current flags and due items, and closes inactive rows."
+			},
+			{
+				"name": "nextDirectReminder",
+				"type": "DeliveryAttempt | undefined",
+				"description": "One grouped reminder request, or an empty result after advancing rows held by quiet hours."
+			},
+			{
+				"name": "enqueueWebhook",
+				"type": "void",
+				"description": "Queues a recurring wake-up, dispatcher summary or launch hold for later processing."
+			},
+			{
+				"name": "minute",
+				"type": "unknown",
+				"description": "Number of milliseconds in one minute."
+			},
+			{
+				"name": "intervalMs",
+				"type": "number",
+				"description": "Duration in milliseconds, applying the default for absent or zero values."
+			},
+			{
+				"name": "isoTime",
+				"type": "string",
+				"description": "ISO UTC timestamp."
+			},
+			{
+				"name": "clockTime",
+				"type": "number",
+				"description": "Epoch milliseconds parsed from the Tracker clock, with zero for a missing or malformed clock."
+			},
+			{
+				"name": "eventId",
+				"type": "string",
+				"description": "First 32 hexadecimal characters of the SHA-256 digest of the sorted keys."
+			},
+			{
+				"name": "activeItem",
+				"type": "item is TrackerNotificationItem",
+				"description": "Whether the row represents an active Tracker item."
+			},
+			{
+				"name": "flagged",
+				"type": "item is TrackerNotificationItem",
+				"description": "Whether an active item has an unresolved needs-Daniel flag."
+			},
+			{
+				"name": "dueTime",
+				"type": "number | null",
+				"description": "Exact due instant, or null for a missing or invalid due value. Date-only dues use local midnight."
+			},
+			{
+				"name": "localDay",
+				"type": "number",
+				"description": "Numeric local calendar day in year, month and day order."
+			},
+			{
+				"name": "readyRows",
+				"type": "T[]",
+				"description": "Eligible rows ordered by their creation time, retaining insertion order on ties."
+			},
+			{
+				"name": "runNotificationTick",
+				"type": "Promise<void>",
+				"description": "Replays any issued receipt, scans current state and drains eligible delivery work."
+			},
+			{
+				"name": "quietOutboxEvent",
+				"type": "boolean",
+				"description": "Whether the event should respect quiet hours and current attention eligibility."
+			},
+			{
+				"name": "nextOutbox",
+				"type": "DeliveryAttempt | undefined",
+				"description": "Next grouped or single webhook request after routing, collapsing and eligibility checks."
+			},
+			{
+				"name": "outboxBatch",
+				"type": "DeliveryAttempt",
+				"description": "Grouped outbox request with a stable ID, item payloads, recurring wake-ups and counts."
+			},
+			{
+				"name": "outboxSingle",
+				"type": "DeliveryAttempt",
+				"description": "Single outbox request with the legacy payload, current attempt number and send time."
+			},
+			{
+				"name": "enqueueEvent",
+				"type": "void",
+				"description": "Adds the immutable event snapshot when its queue key is new."
+			},
+			{
+				"name": "itemEvent",
+				"type": "WebhookPayload",
+				"description": "Legacy item event payload with its clock-derived fields and hashed queue key."
+			},
+			{
+				"name": "summaryEvent",
+				"type": "WebhookPayload",
+				"description": "Legacy auto-launch summary with its deterministic event ID."
+			},
+			{
+				"name": "normalizeActor",
+				"type": "string",
+				"description": "Trimmed, lowercase name for case-insensitive matching."
+			},
+			{
+				"name": "scanWebhookEvents",
+				"type": "void",
+				"description": "Bootstraps or advances the cursor in the same transaction as its classified events."
+			},
+			{
+				"name": "scanWebhookFlags",
+				"type": "void",
+				"description": "Advances active flag escalations and groups imminent reminders with a due ping."
+			},
+			{
+				"name": "scanWebhookDue",
+				"type": "void",
+				"description": "Queues each eligible non-recurring due clock once."
+			}
+		],
+		"errors": [
+			{
+				"name": "TrackerNotificationStateError",
+				"type": "thrown",
+				"description": "The journal cursor does not advance or an issued request refers to a missing queue row. Injected source, queue and destination failures propagate to the caller."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "TrackerNotificationService.tick",
+				"inputs": [
+					{
+						"name": "TrackerNotificationService.tick.itemIds",
+						"type": "readonly string[]",
+						"required": false,
+						"default": null,
+						"description": "Optional IDs to scan for completion callbacks. Omit to scan all items."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNotificationService.tick",
+						"type": "Promise<void>",
+						"description": "Resolves after pending receipt replay, item scanning and eligible delivery for this tick."
+					}
+				],
+				"errors": [
+					{
+						"name": "Source, queue or destination failure",
+						"type": "thrown",
+						"description": "Rejects on an uncertain destination outcome, a source error or a queue failure. An issued request remains eligible for receipt replay."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "TrackerNotificationService.enqueue",
+				"inputs": [
+					{
+						"name": "TrackerNotificationService.enqueue.entry",
+						"type": "TrackerWebhookEnqueue",
+						"required": true,
+						"description": "A recurring occurrence, auto-launch summary, or launch wait to queue under its Tracker key."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNotificationService.enqueue",
+						"type": "void",
+						"description": "Commits a deduplicated queue intent on the hub. Delivery waits for a tick."
+					}
+				],
+				"errors": [
+					{
+						"name": "Source, queue or destination failure",
+						"type": "thrown",
+						"description": "Propagates queue or source failures without committing a partial entry."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "TrackerNotificationService.pause",
+				"inputs": [
+					{
+						"name": "TrackerNotificationService.pause.by",
+						"type": "string",
+						"required": false,
+						"default": null,
+						"description": "Actor credited with pausing webhook delivery. Omit to record an anonymous pause."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNotificationService.pause",
+						"type": "Promise<void>",
+						"description": "Commits the first pause time and its actor on the hub."
+					}
+				],
+				"errors": [
+					{
+						"name": "Source, queue or destination failure",
+						"type": "thrown",
+						"description": "Rejects if the queue cannot persist the pause."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "TrackerNotificationService.resume",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerNotificationService.resume",
+						"type": "Promise<void>",
+						"description": "Clears the pause, resets pending outbox retries and drains work with one forced catch-up batch."
+					}
+				],
+				"errors": [
+					{
+						"name": "Source, queue or destination failure",
+						"type": "thrown",
+						"description": "Propagates queue or tick failures. The committed resume state and issued request remain available for recovery."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "nextAttention",
+				"inputs": [
+					{
+						"name": "nextAttention.state",
+						"type": "TrackerNotificationState",
+						"required": true,
+						"description": "Mutable draft owned by the queue transaction."
+					},
+					{
+						"name": "nextAttention.options",
+						"type": "TrackerNotificationOptions",
+						"required": true,
+						"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+					},
+					{
+						"name": "nextAttention.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds from the injected clock for this scan or send."
+					}
+				],
+				"outputs": [
+					{
+						"name": "nextAttention",
+						"type": "DeliveryAttempt | undefined",
+						"description": "Prepared Chief of Staff batch when eligible. Drops obsolete or superseded lines and records the attempt window."
+					}
+				],
+				"errors": [
+					{
+						"name": "Source, queue or destination failure",
+						"type": "thrown",
+						"description": "Propagates source and rendering errors. Invalid date and time zone inputs may throw RangeError."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "initializeAttention",
+				"inputs": [
+					{
+						"name": "initializeAttention.state",
+						"type": "TrackerNotificationState",
+						"required": true,
+						"description": "Mutable draft owned by the queue transaction."
+					},
+					{
+						"name": "initializeAttention.source",
+						"type": "TrackerNotificationSource",
+						"required": true,
+						"description": "Read-only access to Tracker items, local registrations and operations on the current node."
+					},
+					{
+						"name": "initializeAttention.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds from the injected clock for this scan or send."
+					}
+				],
+				"outputs": [
+					{
+						"name": "initializeAttention",
+						"type": "void",
+						"description": "Seeds the observed item state and carries forward still-relevant unsent legacy flags and blocks."
+					}
+				],
+				"errors": [
+					{
+						"name": "Source, queue or destination failure",
+						"type": "thrown",
+						"description": "Propagates item source, latest-note and rendering errors."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "attentionState",
+				"inputs": [
+					{
+						"name": "attentionState.item",
+						"type": "TrackerNotificationItem",
+						"required": true,
+						"description": "Current Tracker item projection, including field clocks and delivery attributes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "attentionState",
+						"type": "AttentionItemState",
+						"description": "Snapshot of status, escalation eligibility and resolution."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "needsAttention",
+				"inputs": [
+					{
+						"name": "needsAttention.state",
+						"type": "AttentionItemState",
+						"required": true,
+						"description": "Tracked item state from before or after a journal operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "needsAttention",
+						"type": "boolean",
+						"description": "Whether the observed state represents an unresolved flag for an active item."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "enqueueTransition",
+				"inputs": [
+					{
+						"name": "enqueueTransition.state",
+						"type": "TrackerNotificationState",
+						"required": true,
+						"description": "Mutable draft owned by the queue transaction."
+					},
+					{
+						"name": "enqueueTransition.item",
+						"type": "TrackerNotificationItem",
+						"required": true,
+						"description": "Current Tracker item projection, including field clocks and delivery attributes."
+					},
+					{
+						"name": "enqueueTransition.event",
+						"type": "Exclude<AttentionKind, 'launch_wait'>",
+						"required": true,
+						"description": "The done, blocked or needs-Daniel transition to record."
+					},
+					{
+						"name": "enqueueTransition.timing",
+						"type": "{ clock: string | undefined; now: number; at: number; note?: string }",
+						"required": true,
+						"description": "Transition clock, queue time, occurrence time and any latest completion note."
+					}
+				],
+				"outputs": [
+					{
+						"name": "enqueueTransition",
+						"type": "void",
+						"description": "Queues the transition under its item and clock key, superseding older unsent lines of the same kind."
+					}
+				],
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "An invalid transition instant cannot be formatted."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "observeAttention",
+				"inputs": [
+					{
+						"name": "observeAttention.state",
+						"type": "TrackerNotificationState",
+						"required": true,
+						"description": "Mutable draft owned by the queue transaction."
+					},
+					{
+						"name": "observeAttention.source",
+						"type": "TrackerNotificationSource",
+						"required": true,
+						"description": "Read-only access to Tracker items, local registrations and operations on the current node."
+					},
+					{
+						"name": "observeAttention.op",
+						"type": "TrackerNotificationOp",
+						"required": true,
+						"description": "Journal operation with its sequence, clock, actor and field changes."
+					},
+					{
+						"name": "observeAttention.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds from the injected clock for this scan or send."
+					}
+				],
+				"outputs": [
+					{
+						"name": "observeAttention",
+						"type": "void",
+						"description": "Applies one operation to the observed state and records a newly entered attention state."
+					}
+				],
+				"errors": [
+					{
+						"name": "Source, queue or destination failure",
+						"type": "thrown",
+						"description": "Propagates source-read and transition-rendering errors."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "launchWaitLine",
+				"inputs": [
+					{
+						"name": "launchWaitLine.item",
+						"type": "TrackerNotificationItem",
+						"required": true,
+						"description": "Current Tracker item projection, including field clocks and delivery attributes."
+					},
+					{
+						"name": "launchWaitLine.work",
+						"type": "{ computer: string; reason: string }",
+						"required": true,
+						"description": "Computer and reason explaining the current launch hold."
+					},
+					{
+						"name": "launchWaitLine.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds from the injected clock for this scan or send."
+					}
+				],
+				"outputs": [
+					{
+						"name": "launchWaitLine",
+						"type": "AttentionPayload",
+						"description": "Legacy launch-wait message with its item and launch token."
+					}
+				],
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "An invalid tick time cannot be formatted."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "queueLaunchWait",
+				"inputs": [
+					{
+						"name": "queueLaunchWait.state",
+						"type": "TrackerNotificationState",
+						"required": true,
+						"description": "Mutable draft owned by the queue transaction."
+					},
+					{
+						"name": "queueLaunchWait.line",
+						"type": "AttentionPayload",
+						"required": true,
+						"description": "Launch-wait payload with the current launch token and message."
+					},
+					{
+						"name": "queueLaunchWait.key",
+						"type": "string",
+						"required": true,
+						"description": "Stable Tracker queue key used to deduplicate this event."
+					},
+					{
+						"name": "queueLaunchWait.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds from the injected clock for this scan or send."
+					}
+				],
+				"outputs": [
+					{
+						"name": "queueLaunchWait",
+						"type": "void",
+						"description": "Adds or refreshes the pending launch hold under the same launch token."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "scanCallbacks",
+				"inputs": [
+					{
+						"name": "scanCallbacks.state",
+						"type": "TrackerNotificationState",
+						"required": true,
+						"description": "Mutable draft owned by the queue transaction."
+					},
+					{
+						"name": "scanCallbacks.source",
+						"type": "TrackerNotificationSource",
+						"required": true,
+						"description": "Read-only access to Tracker items, local registrations and operations on the current node."
+					},
+					{
+						"name": "scanCallbacks.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds from the injected clock for this scan or send."
+					},
+					{
+						"name": "scanCallbacks.itemIds",
+						"type": "readonly string[]",
+						"required": false,
+						"default": null,
+						"description": "Optional IDs to scan for completion callbacks. Omit to scan all items."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scanCallbacks",
+						"type": "void",
+						"description": "Adds eligible local completion events once per item clock and callback target."
+					}
+				],
+				"errors": [
+					{
+						"name": "Source, queue or destination failure",
+						"type": "thrown",
+						"description": "Propagates failures from the item or local agent source."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "nextCallback",
+				"inputs": [
+					{
+						"name": "nextCallback.state",
+						"type": "TrackerNotificationState",
+						"required": true,
+						"description": "Mutable draft owned by the queue transaction."
+					},
+					{
+						"name": "nextCallback.source",
+						"type": "TrackerNotificationSource",
+						"required": true,
+						"description": "Read-only access to Tracker items, local registrations and operations on the current node."
+					},
+					{
+						"name": "nextCallback.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds from the injected clock for this scan or send."
+					}
+				],
+				"outputs": [
+					{
+						"name": "nextCallback",
+						"type": "DeliveryAttempt | undefined",
+						"description": "Earliest eligible completion callback request, with an HTTP envelope or command variables."
+					}
+				],
+				"errors": [
+					{
+						"name": "Source, queue or destination failure",
+						"type": "thrown",
+						"description": "Propagates public-item lookup and payload encoding failures."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "completeDelivery",
+				"inputs": [
+					{
+						"name": "completeDelivery.state",
+						"type": "TrackerNotificationState",
+						"required": true,
+						"description": "Mutable draft owned by the queue transaction."
+					},
+					{
+						"name": "completeDelivery.attempt",
+						"type": "DeliveryAttempt",
+						"required": true,
+						"description": "Previously persisted exact request, member keys and attempt start time."
+					},
+					{
+						"name": "completeDelivery.result",
+						"type": "TrackerDeliveryResult",
+						"required": true,
+						"description": "Destination receipt or a confirmed rejection with a safe diagnostic."
+					},
+					{
+						"name": "completeDelivery.options",
+						"type": "TrackerNotificationOptions",
+						"required": true,
+						"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+					}
+				],
+				"outputs": [
+					{
+						"name": "completeDelivery",
+						"type": "void",
+						"description": "Commits the delivery receipt or next retry and clears the issued request in the same transaction."
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerNotificationStateError",
+						"type": "thrown",
+						"description": "An issued attempt references a missing queue entry, or the injected clock or quiet-hour calculation fails."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "webhookRequest",
+				"inputs": [
+					{
+						"name": "webhookRequest.destination",
+						"type": "TrackerDestination",
+						"required": true,
+						"description": "Opaque, stable reference for the injected destination."
+					},
+					{
+						"name": "webhookRequest.payload",
+						"type": "TrackerPayloadFields & { event_id: string; event: string }",
+						"required": true,
+						"description": "Tracker payload to serialize using the legacy wire field names."
+					}
+				],
+				"outputs": [
+					{
+						"name": "webhookRequest",
+						"type": "TrackerDeliveryRequest",
+						"description": "JSON body and HTTP headers carrying the same webhook event ID."
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "The supplied payload cannot be serialized as JSON."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "callbackRequest",
+				"inputs": [
+					{
+						"name": "callbackRequest.id",
+						"type": "string",
+						"required": true,
+						"description": "Stable idempotency key for the destination."
+					},
+					{
+						"name": "callbackRequest.destination",
+						"type": "TrackerDestination",
+						"required": true,
+						"description": "Opaque, stable reference for the injected destination."
+					},
+					{
+						"name": "callbackRequest.payload",
+						"type": "TrackerPayloadFields & { type: string }",
+						"required": true,
+						"description": "Tracker payload to serialize using the legacy wire field names."
+					},
+					{
+						"name": "callbackRequest.commandEvent",
+						"type": "{ id: string; events: readonly string[] }",
+						"required": false,
+						"default": null,
+						"description": "Item ID and ordered completion events for the command environment. Omit for a non-item payload."
+					}
+				],
+				"outputs": [
+					{
+						"name": "callbackRequest",
+						"type": "TrackerDeliveryRequest",
+						"description": "JSON body and the legacy HTTP headers or command environment for the callback."
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "The supplied payload cannot be serialized as JSON."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "scanDirectReminders",
+				"inputs": [
+					{
+						"name": "scanDirectReminders.state",
+						"type": "TrackerNotificationState",
+						"required": true,
+						"description": "Mutable draft owned by the queue transaction."
+					},
+					{
+						"name": "scanDirectReminders.options",
+						"type": "TrackerNotificationOptions",
+						"required": true,
+						"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+					},
+					{
+						"name": "scanDirectReminders.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds from the injected clock for this scan or send."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scanDirectReminders",
+						"type": "void",
+						"description": "Inserts reminders for current flags and due items, and closes inactive rows."
+					}
+				],
+				"errors": [
+					{
+						"name": "Source, queue or destination failure",
+						"type": "thrown",
+						"description": "Propagates source and calendar errors without partially committing reminder rows."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "nextDirectReminder",
+				"inputs": [
+					{
+						"name": "nextDirectReminder.state",
+						"type": "TrackerNotificationState",
+						"required": true,
+						"description": "Mutable draft owned by the queue transaction."
+					},
+					{
+						"name": "nextDirectReminder.options",
+						"type": "TrackerNotificationOptions",
+						"required": true,
+						"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+					},
+					{
+						"name": "nextDirectReminder.destination",
+						"type": "TrackerDestination",
+						"required": true,
+						"description": "Configured destination for the direct reminder channel."
+					},
+					{
+						"name": "nextDirectReminder.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds from the injected clock for this scan or send."
+					}
+				],
+				"outputs": [
+					{
+						"name": "nextDirectReminder",
+						"type": "DeliveryAttempt | undefined",
+						"description": "One grouped reminder request, or an empty result after advancing rows held by quiet hours."
+					}
+				],
+				"errors": [
+					{
+						"name": "Source, queue or destination failure",
+						"type": "thrown",
+						"description": "Propagates current-item, digest and payload preparation failures."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "enqueueWebhook",
+				"inputs": [
+					{
+						"name": "enqueueWebhook.state",
+						"type": "TrackerNotificationState",
+						"required": true,
+						"description": "Mutable draft owned by the queue transaction."
+					},
+					{
+						"name": "enqueueWebhook.entry",
+						"type": "TrackerWebhookEnqueue",
+						"required": true,
+						"description": "A recurring occurrence, auto-launch summary, or launch wait to queue under its Tracker key."
+					},
+					{
+						"name": "enqueueWebhook.options",
+						"type": "TrackerNotificationOptions",
+						"required": true,
+						"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+					}
+				],
+				"outputs": [
+					{
+						"name": "enqueueWebhook",
+						"type": "void",
+						"description": "Queues a recurring wake-up, dispatcher summary or launch hold for later processing."
+					}
+				],
+				"errors": [
+					{
+						"name": "Source, queue or destination failure",
+						"type": "thrown",
+						"description": "Propagates source lookup and payload preparation failures."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "intervalMs",
+				"inputs": [
+					{
+						"name": "intervalMs.minutes",
+						"type": "number | undefined",
+						"required": true,
+						"description": "Configured duration in minutes, with an absent or zero value selecting the fallback."
+					},
+					{
+						"name": "intervalMs.fallback",
+						"type": "number",
+						"required": true,
+						"description": "Default duration in minutes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "intervalMs",
+						"type": "number",
+						"description": "Duration in milliseconds, applying the default for absent or zero values."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "isoTime",
+				"inputs": [
+					{
+						"name": "isoTime.time",
+						"type": "number",
+						"required": true,
+						"description": "Instant in epoch milliseconds."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isoTime",
+						"type": "string",
+						"description": "ISO UTC timestamp."
+					}
+				],
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "The supplied instant cannot be represented as an ISO timestamp."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "clockTime",
+				"inputs": [
+					{
+						"name": "clockTime.clock",
+						"type": "string | undefined",
+						"required": true,
+						"description": "Tracker hybrid logical clock string, when present."
+					}
+				],
+				"outputs": [
+					{
+						"name": "clockTime",
+						"type": "number",
+						"description": "Epoch milliseconds parsed from the Tracker clock, with zero for a missing or malformed clock."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "eventId",
+				"inputs": [
+					{
+						"name": "eventId.keys",
+						"type": "readonly string[]",
+						"required": true,
+						"description": "Tracker queue keys whose sorted, newline-separated values identify the envelope."
+					}
+				],
+				"outputs": [
+					{
+						"name": "eventId",
+						"type": "string",
+						"description": "First 32 hexadecimal characters of the SHA-256 digest of the sorted keys."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "activeItem",
+				"inputs": [
+					{
+						"name": "activeItem.item",
+						"type": "TrackerNotificationItem | undefined",
+						"required": true,
+						"description": "Current Tracker item projection, including field clocks and delivery attributes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "activeItem",
+						"type": "item is TrackerNotificationItem",
+						"description": "Whether the row represents an active Tracker item."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "flagged",
+				"inputs": [
+					{
+						"name": "flagged.item",
+						"type": "TrackerNotificationItem | undefined",
+						"required": true,
+						"description": "Current Tracker item projection, including field clocks and delivery attributes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "flagged",
+						"type": "item is TrackerNotificationItem",
+						"description": "Whether an active item has an unresolved needs-Daniel flag."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "dueTime",
+				"inputs": [
+					{
+						"name": "dueTime.value",
+						"type": "string | null",
+						"required": true,
+						"description": "A Tracker date-only due value, timed due value, or null."
+					},
+					{
+						"name": "dueTime.tz",
+						"type": "string",
+						"required": true,
+						"description": "IANA time zone used for the Lisbon-style calendar rules."
+					}
+				],
+				"outputs": [
+					{
+						"name": "dueTime",
+						"type": "number | null",
+						"description": "Exact due instant, or null for a missing or invalid due value. Date-only dues use local midnight."
+					}
+				],
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "A date-only value uses an invalid time zone."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "localDay",
+				"inputs": [
+					{
+						"name": "localDay.at",
+						"type": "number",
+						"required": true,
+						"description": "Instant in epoch milliseconds."
+					},
+					{
+						"name": "localDay.tz",
+						"type": "string",
+						"required": true,
+						"description": "IANA time zone used for the Lisbon-style calendar rules."
+					}
+				],
+				"outputs": [
+					{
+						"name": "localDay",
+						"type": "number",
+						"description": "Numeric local calendar day in year, month and day order."
+					}
+				],
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "The supplied instant or time zone is invalid."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "readyRows",
+				"inputs": [
+					{
+						"name": "readyRows.rows",
+						"type": "Iterable<T>",
+						"required": true,
+						"description": "Queue rows examined for this operation."
+					},
+					{
+						"name": "readyRows.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds from the injected clock for this scan or send."
+					},
+					{
+						"name": "readyRows.pending",
+						"type": "(row: T) => boolean",
+						"required": true,
+						"description": "Predicate selecting rows that still need processing."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readyRows",
+						"type": "T[]",
+						"description": "Eligible rows ordered by their creation time, retaining insertion order on ties."
+					}
+				],
+				"errors": [
+					{
+						"name": "Source, queue or destination failure",
+						"type": "thrown",
+						"description": "Propagates iterator or readiness predicate failures."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "runNotificationTick",
+				"inputs": [
+					{
+						"name": "runNotificationTick.options",
+						"type": "TrackerNotificationOptions",
+						"required": true,
+						"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+					},
+					{
+						"name": "runNotificationTick.itemIds",
+						"type": "readonly string[]",
+						"required": false,
+						"default": null,
+						"description": "Optional IDs to scan for completion callbacks. Omit to scan all items."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runNotificationTick",
+						"type": "Promise<void>",
+						"description": "Replays any issued receipt, scans current state and drains eligible delivery work."
+					}
+				],
+				"errors": [
+					{
+						"name": "Source, queue or destination failure",
+						"type": "thrown",
+						"description": "Propagates source, queue and uncertain delivery failures and leaves any issued request available for replay."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "quietOutboxEvent",
+				"inputs": [
+					{
+						"name": "quietOutboxEvent.row",
+						"type": "OutboxRow",
+						"required": true,
+						"description": "Durable outbox row with its snapshot of the item event and retry history."
+					}
+				],
+				"outputs": [
+					{
+						"name": "quietOutboxEvent",
+						"type": "boolean",
+						"description": "Whether the event should respect quiet hours and current attention eligibility."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "nextOutbox",
+				"inputs": [
+					{
+						"name": "nextOutbox.state",
+						"type": "TrackerNotificationState",
+						"required": true,
+						"description": "Mutable draft owned by the queue transaction."
+					},
+					{
+						"name": "nextOutbox.options",
+						"type": "TrackerNotificationOptions",
+						"required": true,
+						"description": "Source and destination adapters, the quiet window and the routing policy."
+					},
+					{
+						"name": "nextOutbox.chief",
+						"type": "TrackerDestination",
+						"required": true,
+						"description": "Configured and available Chief of Staff webhook destination."
+					},
+					{
+						"name": "nextOutbox.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds from the injected clock for this scan or send."
+					}
+				],
+				"outputs": [
+					{
+						"name": "nextOutbox",
+						"type": "DeliveryAttempt | undefined",
+						"description": "Next grouped or single webhook request after routing, collapsing and eligibility checks."
+					}
+				],
+				"errors": [
+					{
+						"name": "Source, queue or destination failure",
+						"type": "thrown",
+						"description": "Propagates source, destination lookup, quiet-hour and request preparation errors."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "outboxBatch",
+				"inputs": [
+					{
+						"name": "outboxBatch.rows",
+						"type": "OutboxRow[]",
+						"required": true,
+						"description": "Eligible and coalesced rows addressed to a single recipient."
+					},
+					{
+						"name": "outboxBatch.destination",
+						"type": "TrackerDestination",
+						"required": true,
+						"description": "Opaque, stable reference for the injected destination."
+					},
+					{
+						"name": "outboxBatch.route",
+						"type": "string | null",
+						"required": true,
+						"description": "Matched route name, or null for the Chief of Staff."
+					},
+					{
+						"name": "outboxBatch.context",
+						"type": "{ node: string; now: number }",
+						"required": true,
+						"description": "Node name and current tick time used in the outgoing envelope."
+					}
+				],
+				"outputs": [
+					{
+						"name": "outboxBatch",
+						"type": "DeliveryAttempt",
+						"description": "Grouped outbox request with a stable ID, item payloads, recurring wake-ups and counts."
+					}
+				],
+				"errors": [
+					{
+						"name": "Source, queue or destination failure",
+						"type": "thrown",
+						"description": "Propagates invalid timestamp and JSON encoding errors."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "outboxSingle",
+				"inputs": [
+					{
+						"name": "outboxSingle.row",
+						"type": "OutboxRow",
+						"required": true,
+						"description": "Durable outbox row with its snapshot of the item event and retry history."
+					},
+					{
+						"name": "outboxSingle.destination",
+						"type": "TrackerDestination",
+						"required": true,
+						"description": "Opaque, stable reference for the injected destination."
+					},
+					{
+						"name": "outboxSingle.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds from the injected clock for this scan or send."
+					}
+				],
+				"outputs": [
+					{
+						"name": "outboxSingle",
+						"type": "DeliveryAttempt",
+						"description": "Single outbox request with the legacy payload, current attempt number and send time."
+					}
+				],
+				"errors": [
+					{
+						"name": "Source, queue or destination failure",
+						"type": "thrown",
+						"description": "Propagates invalid timestamp and JSON encoding errors."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "enqueueEvent",
+				"inputs": [
+					{
+						"name": "enqueueEvent.state",
+						"type": "TrackerNotificationState",
+						"required": true,
+						"description": "Mutable draft owned by the queue transaction."
+					},
+					{
+						"name": "enqueueEvent.event",
+						"type": "WebhookPayload",
+						"required": true,
+						"description": "Already-rendered item or summary payload with a stable event ID."
+					},
+					{
+						"name": "enqueueEvent.timing",
+						"type": "{ key: string; now: number; nextAt?: number }",
+						"required": true,
+						"description": "Stable queue key, creation instant and optional initial eligibility time."
+					}
+				],
+				"outputs": [
+					{
+						"name": "enqueueEvent",
+						"type": "void",
+						"description": "Adds the immutable event snapshot when its queue key is new."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "itemEvent",
+				"inputs": [
+					{
+						"name": "itemEvent.item",
+						"type": "TrackerNotificationItem",
+						"required": true,
+						"description": "Current Tracker item projection, including field clocks and delivery attributes."
+					},
+					{
+						"name": "itemEvent.event",
+						"type": "TrackerWebhookEvent",
+						"required": true,
+						"description": "Tracker event kind used to construct the notification."
+					},
+					{
+						"name": "itemEvent.identity",
+						"type": "{ key: string; node: string; now: number }",
+						"required": true,
+						"description": "Stable queue key, sending node and default event timestamp."
+					},
+					{
+						"name": "itemEvent.extra",
+						"type": "WebhookEntryDetails",
+						"required": false,
+						"default": {},
+						"description": "Optional event time, escalation, changed fields or recurring occurrence details."
+					}
+				],
+				"outputs": [
+					{
+						"name": "itemEvent",
+						"type": "WebhookPayload",
+						"description": "Legacy item event payload with its clock-derived fields and hashed queue key."
+					}
+				],
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "An invalid event timestamp cannot be formatted."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "summaryEvent",
+				"inputs": [
+					{
+						"name": "summaryEvent.key",
+						"type": "string",
+						"required": true,
+						"description": "Stable Tracker queue key used to deduplicate this event."
+					},
+					{
+						"name": "summaryEvent.source",
+						"type": "TrackerNotificationSource",
+						"required": true,
+						"description": "Read-only access to Tracker items, local registrations and operations on the current node."
+					},
+					{
+						"name": "summaryEvent.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds from the injected clock for this scan or send."
+					},
+					{
+						"name": "summaryEvent.payload",
+						"type": "TrackerPayloadFields",
+						"required": true,
+						"description": "Tracker payload to serialize using the legacy wire field names."
+					}
+				],
+				"outputs": [
+					{
+						"name": "summaryEvent",
+						"type": "WebhookPayload",
+						"description": "Legacy auto-launch summary with its deterministic event ID."
+					}
+				],
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "An invalid summary timestamp cannot be formatted."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "normalizeActor",
+				"inputs": [
+					{
+						"name": "normalizeActor.value",
+						"type": "string | null | undefined",
+						"required": true,
+						"description": "Owner, waiter, route alias or actor name. Missing names normalize to an empty string."
+					}
+				],
+				"outputs": [
+					{
+						"name": "normalizeActor",
+						"type": "string",
+						"description": "Trimmed, lowercase name for case-insensitive matching."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "scanWebhookEvents",
+				"inputs": [
+					{
+						"name": "scanWebhookEvents.state",
+						"type": "TrackerNotificationState",
+						"required": true,
+						"description": "Mutable draft owned by the queue transaction."
+					},
+					{
+						"name": "scanWebhookEvents.source",
+						"type": "TrackerNotificationSource",
+						"required": true,
+						"description": "Read-only access to Tracker items, local registrations and operations on the current node."
+					},
+					{
+						"name": "scanWebhookEvents.settings",
+						"type": "TrackerWebhookOptions",
+						"required": true,
+						"description": "Webhook routing, changed field and Chief of Staff batch settings."
+					},
+					{
+						"name": "scanWebhookEvents.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds from the injected clock for this scan or send."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scanWebhookEvents",
+						"type": "void",
+						"description": "Bootstraps or advances the cursor in the same transaction as its classified events."
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerNotificationStateError",
+						"type": "thrown",
+						"description": "The item source fails, or the operation page does not advance the durable cursor."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "scanWebhookFlags",
+				"inputs": [
+					{
+						"name": "scanWebhookFlags.state",
+						"type": "TrackerNotificationState",
+						"required": true,
+						"description": "Mutable draft owned by the queue transaction."
+					},
+					{
+						"name": "scanWebhookFlags.options",
+						"type": "TrackerNotificationOptions",
+						"required": true,
+						"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+					},
+					{
+						"name": "scanWebhookFlags.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds from the injected clock for this scan or send."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scanWebhookFlags",
+						"type": "void",
+						"description": "Advances active flag escalations and groups imminent reminders with a due ping."
+					}
+				],
+				"errors": [
+					{
+						"name": "Source, queue or destination failure",
+						"type": "thrown",
+						"description": "Propagates source failures and invalid time zone or reminder slot configuration."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "scanWebhookDue",
+				"inputs": [
+					{
+						"name": "scanWebhookDue.state",
+						"type": "TrackerNotificationState",
+						"required": true,
+						"description": "Mutable draft owned by the queue transaction."
+					},
+					{
+						"name": "scanWebhookDue.options",
+						"type": "TrackerNotificationOptions",
+						"required": true,
+						"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+					},
+					{
+						"name": "scanWebhookDue.now",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds from the injected clock for this scan or send."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scanWebhookDue",
+						"type": "void",
+						"description": "Queues each eligible non-recurring due clock once."
+					}
+				],
+				"errors": [
+					{
+						"name": "Source, queue or destination failure",
+						"type": "thrown",
+						"description": "Propagates source and calendar calculation failures."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerNotificationService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerNotificationService.constructor.options",
+						"type": "TrackerNotificationOptions",
+						"required": true,
+						"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNotificationService.constructor",
+						"type": "unknown",
+						"description": "Service bound to the supplied ports. Construction performs no queue operations."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "helper.attention-timing-attention-timing-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-group-attention-lines",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-next-attention-batch-at",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-next-reminder-at",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-next-reminder-slot-at",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-quiet-hour-boundary",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-wall-clock-to-epoch-ms",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-zoned-wall-clock",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerNotificationService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerNotificationService.ts"
+			}
+		]
+	},
+	"scenarios": ["tracker-notification-delivery"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
