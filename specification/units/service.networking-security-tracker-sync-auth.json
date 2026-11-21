@@ -7,36 +7,141 @@
 	"responsibility": "Sign and verify Tracker sync requests using the legacy TrackerHMAC wire format.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
-		"source": ["src/services/networking-security/TrackerSyncAuthService.ts"],
-		"symbols": ["TrackerSyncAuthService", "TrackerSyncAuthService.run"]
+		"source": [
+			"src/services/networking-security/TrackerSyncAuthService.ts",
+			"src/services/networking-security/TrackerSyncAuthService.types.ts"
+		],
+		"symbols": [
+			"TrackerSyncAuthService",
+			"TrackerSyncAuthService.constructor",
+			"TrackerSyncAuthService.authorizationHeader",
+			"TrackerSyncAuthService.verify",
+			"TrackerSyncRequest"
+		]
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "TrackerSyncAuthService.constructor.secret",
+				"type": "string | Uint8Array",
+				"required": true
+			},
+			{
+				"name": "TrackerSyncAuthService.authorizationHeader.request",
+				"type": "TrackerSyncRequest",
+				"required": true
+			},
+			{
+				"name": "TrackerSyncAuthService.authorizationHeader.now",
+				"type": "number",
+				"required": false
+			},
+			{
+				"name": "TrackerSyncAuthService.verify.request",
+				"type": "TrackerSyncRequest",
+				"required": true
+			},
+			{
+				"name": "TrackerSyncAuthService.verify.authorization",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "TrackerSyncAuthService.verify.now",
+				"type": "number",
+				"required": false
+			}
+		],
 		"outputs": [
 			{
-				"name": "TrackerSyncAuthService.run",
+				"name": "TrackerSyncAuthService.authorizationHeader",
 				"type": "string"
+			},
+			{
+				"name": "TrackerSyncAuthService.verify",
+				"type": "boolean"
 			}
 		],
 		"errors": [],
-		"errorStatus": "none-found",
+		"errorStatus": "unknown",
 		"operations": [
 			{
-				"name": "TrackerSyncAuthService.run",
-				"inputs": [],
+				"name": "TrackerSyncAuthService.authorizationHeader",
+				"inputs": [
+					{
+						"name": "TrackerSyncAuthService.authorizationHeader.request",
+						"type": "TrackerSyncRequest",
+						"required": true
+					},
+					{
+						"name": "TrackerSyncAuthService.authorizationHeader.now",
+						"type": "number",
+						"required": false
+					}
+				],
 				"outputs": [
 					{
-						"name": "TrackerSyncAuthService.run",
+						"name": "TrackerSyncAuthService.authorizationHeader",
 						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSyncAuthService.verify",
+				"inputs": [
+					{
+						"name": "TrackerSyncAuthService.verify.request",
+						"type": "TrackerSyncRequest",
+						"required": true
+					},
+					{
+						"name": "TrackerSyncAuthService.verify.authorization",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "TrackerSyncAuthService.verify.now",
+						"type": "number",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSyncAuthService.verify",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerSyncAuthService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerSyncAuthService.constructor.secret",
+						"type": "string | Uint8Array",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSyncAuthService.constructor",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
 				"errorStatus": "none-found"
 			}
-		],
-		"initialization": []
+		]
 	},
 	"dependencies": [],
 	"runtime": {
