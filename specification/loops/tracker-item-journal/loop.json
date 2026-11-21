@@ -2,7 +2,7 @@
 	"name": "tracker-item-journal",
 	"goal": "Apply Tracker item operations to existing SQLite stores with exactly-once op IDs, per-field clock merges, append-only notes, and atomic commit.",
 	"createdAt": "2026-11-21T14:54:14.292Z",
-	"updatedAt": "2026-11-21T14:54:14.394Z",
+	"updatedAt": "2026-11-21T15:00:10.909Z",
 	"template": "feature",
 	"templateLineage": [
 		"feature"
@@ -19,12 +19,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T15:00:10.816Z",
+			"evidence": "Ported the existing operation envelope and durable projection semantics into a driver-injected Harness repository. The duplicate check precedes INSERT under the write lock to preserve SQLite AUTOINCREMENT cursor values."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T15:00:10.909Z",
+			"evidence": "Three initially failing cases at f5feb238f5 now pass. The reconnect assertion additionally caught duplicate retry advancing sqlite_sequence from 2 to 5 and passes with the insert guard. On harbor-mbp-2, the real 122e190 store and candidate produced equal synthetic ops, item rows, notes, coupled receipt and sequence rows, and returned integrity_check=ok."
 		},
 		{
 			"id": "verify",

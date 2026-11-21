@@ -171,7 +171,8 @@
 			"scenarioHealth",
 			"TaskOrchestrationCommand",
 			"ProviderSessionAdapter",
-			"TrackerCommand"
+			"TrackerCommand",
+			"TrackerOperationRepository"
 		]
 	},
 	"contract": {
@@ -581,6 +582,11 @@
 		},
 		{
 			"unit": "repository.codex-session",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-operation",
 			"via": "reexport",
 			"origin": "derived"
 		},

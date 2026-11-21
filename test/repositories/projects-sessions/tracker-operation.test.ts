@@ -75,6 +75,9 @@ test('applyOps merges fields and ordered notes across a reconnect', () => {
 		received_at: 2500
 	});
 	expect(journal.applyOps([older, newest])).toEqual({ operations: [], itemIds: [] });
+	expect(database.prepare("SELECT seq FROM sqlite_sequence WHERE name = 'ops'").get()).toEqual({
+		seq: 2
+	});
 });
 
 test('applyOps orders same-time changes by node and leaves note history intact', () => {

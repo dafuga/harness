@@ -1,0 +1,136 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.projects-sessions-tracker-operation",
+	"uid": "u_c5mwmd6z6z",
+	"kind": "repository",
+	"title": "TrackerOperationRepository",
+	"responsibility": "Owns the TrackerOperationRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/projects-sessions/TrackerOperationRepository.ts",
+			"src/repositories/projects-sessions/TrackerOperationRepository.types.ts"
+		],
+		"symbols": [
+			"TrackerOperationRepository",
+			"TrackerOperationRepository.constructor",
+			"TrackerOperationRepository.applyOps",
+			"TrackerAppliedOperations",
+			"TrackerOperation",
+			"TrackerOperation",
+			"TrackerAppliedOperations"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerOperationRepository.constructor.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "TrackerOperationRepository.constructor.now",
+				"type": "unknown",
+				"required": false
+			},
+			{
+				"name": "TrackerOperationRepository.applyOps.operations",
+				"type": "readonly TrackerOperation[]",
+				"required": true
+			},
+			{
+				"name": "TrackerOperationRepository.applyOps.persist",
+				"type": "() => void",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerOperationRepository.applyOps",
+				"type": "TrackerAppliedOperations"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerOperationRepository.applyOps",
+				"inputs": [
+					{
+						"name": "TrackerOperationRepository.applyOps.operations",
+						"type": "readonly TrackerOperation[]",
+						"required": true
+					},
+					{
+						"name": "TrackerOperationRepository.applyOps.persist",
+						"type": "() => void",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOperationRepository.applyOps",
+						"type": "TrackerAppliedOperations"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerOperationRepository.constructor",
+				"inputs": [
+					{
+						"name": "TrackerOperationRepository.constructor.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "TrackerOperationRepository.constructor.now",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerOperationRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/projects-sessions/TrackerOperationRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/projects-sessions/TrackerOperationRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
