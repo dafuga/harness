@@ -6,6 +6,7 @@ import {
 	type TaskProcessExecutor
 } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter.types';
 import { observedTaskOperation } from '../../support/taskProfiles';
+import type { Seam } from './module-task-runner.test.types';
 test('Claude and Codex launch exact models and intelligence without shell interpolation', () => {
 	const runner = new ModuleTaskRunnerAdapter();
 	expect(
@@ -206,6 +207,5 @@ test.each<[string, 'claude' | 'codex', number, object[]]>([
 	await expect(failure).rejects.toThrow(message);
 });
 test('the process executor seam is typed, never unknown or any', () => {
-	type Seam = ConstructorParameters<typeof ModuleTaskRunnerAdapter>[0];
 	expectTypeOf<Seam>().toEqualTypeOf<TaskProcessExecutor | undefined>();
 });

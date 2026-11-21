@@ -3,6 +3,7 @@ import { jevMetrics } from '../../src/cli/program/analyticsJevMetrics';
 import type { AnalyticsEvent } from '../../src/core/reports-media/analyticsTypes';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
+import type { InvocationInput } from './workflow.analytics-jev-metrics.test.types';
 
 function jevEvent(
 	id: string,
@@ -43,13 +44,6 @@ function summarize(result: ReturnType<typeof jevMetrics>) {
 		}))
 	};
 }
-
-type InvocationInput = {
-	events: AnalyticsEvent[];
-	type: string;
-	author?: string;
-	model?: string;
-};
 
 const invocations: Array<{ name: string; input: InvocationInput }> = [
 	{

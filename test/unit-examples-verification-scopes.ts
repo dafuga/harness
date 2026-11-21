@@ -2,8 +2,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { basename, join, resolve } from 'node:path';
 import { scenarioManifestSchema, type ScenarioManifest } from '../src/core/unitTypes';
 import type { VerificationScope } from './verification-targets';
-
-type Command = ScenarioManifest['tests'][number];
+import type { Command } from './unit-examples-verification-scopes.types';
 
 const examplesFile = /^examples-.+\.json$/;
 const rootCommand = /^bun test\/verification-output\.ts vitest (\S+)$/;

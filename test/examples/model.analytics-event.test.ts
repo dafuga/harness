@@ -7,6 +7,7 @@ import type {
 } from '../../src/models/reports-media/AnalyticsEvent.types';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
+import type { Row } from './model.analytics-event.test.types';
 
 /**
  * Each public operation of the AnalyticsEvent model runs its real code against an in-memory
@@ -58,8 +59,6 @@ const incoming: AnalyticsEventAttributes = {
 const patch: AnalyticsEventUpdateInput = {
 	data: { ...first.data, status: 'failed', exitCode: 1 }
 };
-
-type Row = Record<string, unknown>;
 
 /**
  * An in-memory adapter whose tables hold rows by id. The seeded rows are stored in the events

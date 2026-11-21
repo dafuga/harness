@@ -7,6 +7,7 @@ import {
 } from '../../src/core/projects-sessions/activityTypes';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
+import type { Parser, ExampleCase } from './function.activity-types.test.types';
 
 /**
  * Each agent activity schema is called the way AgentRegistryRepository parses the file an agent
@@ -46,9 +47,6 @@ const completion = {
 	outcome: 'Examples recorded'
 };
 const failure = { at: completion.at, status: 'failed', outcome: null };
-
-type Parser = { parse(value: unknown): unknown };
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
 
 /** Parses each input as a caller does; a refusal is kept as the reasons the schema gives. */
 function parsing(schema: Parser) {
