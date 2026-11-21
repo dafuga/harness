@@ -1,5 +1,5 @@
 // @harness-uid u_g7kdpz7bel
-import { randomBytes } from 'node:crypto';
+import { randomBytes, randomUUID } from 'node:crypto';
 import type { TrackerItemReadRepository } from '../../repositories/projects-sessions/TrackerItemReadRepository';
 import { checkTrackerItem } from '../../utils/projects-sessions/checkTrackerItem';
 import type { TrackerItemInput } from '../../utils/projects-sessions/normalizeTrackerItemFields.types';
@@ -97,6 +97,7 @@ export class TrackerLocalApiService {
 			node: this.store.node,
 			now: this.options.now?.() ?? Date.now(),
 			timeZone: this.options.timeZone,
+			launchNonce: randomUUID(),
 			candidates: this.items.candidates(),
 			validateModel: this.options.validateModel,
 			planLaunch: this.options.planLaunch
