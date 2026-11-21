@@ -119,8 +119,22 @@ export class TrackerDispatchSchedulerService {
 	private async release(result: TrackerDispatchResult, signal: AbortSignal): Promise<boolean> {
 		if (result.status !== 'start') return false;
 		signal.throwIfAborted();
-		const event = await this.options.runner.start(result, signal);
+		const event = await this.options.runner.start(
+			result,
+			signal,
+			launchCompletionInstructions(result.run.item_id)
+		);
 		if (event) await this.dispatcher.record(result.run.item_id, result.run, event);
 		return true;
 	}
+}
+
+function launchCompletionInstructions(itemId: string): string {
+	return [
+		'## Completion and worktree cleanup',
+		'',
+		`After verification passes, run \`tracker done ${itemId.slice(0, 6)} --note "<result, PR link, tests run>"\` first and verify it succeeds.`,
+		'Remove a task-owned worktree only as the final step, after leaving it and only when authorized.',
+		'Never remove your current working directory. Leave cleanup to the launcher or a separate session if you are still in the worktree.'
+	].join('\n');
 }

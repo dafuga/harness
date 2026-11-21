@@ -9,7 +9,7 @@ import { skipsAnalytics } from '../workflows/reports-media/skipsAnalytics';
 /** Shared executable entry; compatibility imports never call it. */
 export async function runCli(entry: string): Promise<void> {
 	const args = process.argv.slice(2);
-	// The legacy parser owns every Tracker flag, including --help, --version and --.
+	// Tracker owns compatibility flags and its role selector.
 	if (args[0] === 'tracker') {
 		const { TrackerCommand } = await import('../commands/projects-sessions/TrackerCommand');
 		process.exitCode = await new TrackerCommand().run(args.slice(1));
