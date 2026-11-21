@@ -111,3 +111,20 @@ test('applyOps rolls back an incomplete batch and any coupled receipt', () => {
 	).toEqual(['fixture-item']);
 	expect(database.prepare('SELECT id FROM fixture_claims').get()).toEqual({ id: 'source-record' });
 });
+
+test('opsSince preserves sequence order and scopes queues to the selected node', () => {
+	const newest = operation(3000, 'alpha', { title: 'Newest' });
+	const remote = operation(1000, 'beta', { 'note+': 'Relayed' });
+	const older = operation(2000, 'alpha', { status: 'open' });
+	newest.actor = ' fixture-operator ';
+	expect(journal.maxSeq()).toBe(0);
+	journal.applyOps([newest, remote, older]);
+	expect(journal.maxSeq()).toBe(3);
+	expect(journal.opsSince(0, 2)).toEqual([
+		{ ...newest, actor: 'fixture-operator', seq: 1 },
+		{ ...remote, seq: 2 }
+	]);
+	expect(journal.opsSince(1, 1000, { onlyNode: 'alpha' })).toEqual([{ ...older, seq: 3 }]);
+	expect(journal.countOpsSince(1)).toBe(2);
+	expect(journal.countOpsSince(1, 'alpha')).toBe(1);
+});
