@@ -2,7 +2,7 @@
 	"name": "project-overview",
 	"goal": "Prove the approved Project Overview states and read-only tracker boundary on the native app and website, with exact-revision tests and screenshots.",
 	"createdAt": "2026-11-20T22:52:32.565Z",
-	"updatedAt": "2026-11-21T10:03:34.279Z",
+	"updatedAt": "2026-11-21T11:04:06.936Z",
 	"agentModel": "gpt-6.2-sol",
 	"template": "feature",
 	"templateLineage": ["feature"],
@@ -37,12 +37,16 @@
 		{
 			"id": "hosted-proof",
 			"title": "Prove owner-only fresh tracker data on hosted Hub and the background publisher",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T11:04:05.528Z",
+			"evidence": "Sealed capture 8032ae264dc1 at 9711c7ae76 passed 70 Workerd cases with 36 distinct inspected screenshots and 68 browser readings. Compiled Electron publisher and owner admission passed in the separate 999354b6bb run. Live production depends on the Hub production step."
 		},
 		{
 			"id": "paired-ios-proof",
 			"title": "Prove the paired iOS path using native credential custody and read-only account access",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T11:04:06.936Z",
+			"evidence": "The 4f1d1530c5 native simulator passed 82 checks on harbor-mbp-2 with real fixture pairing and Keychain, synthetic Hub identity and card data, and denial refresh clearing the cards. Physical-device and distribution checks remain in the iOS release step."
 		},
 		{
 			"id": "hub-production",
