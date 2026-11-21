@@ -43,7 +43,7 @@ process.exitCode = args[1] === 'ignored' ? 4 : args[1] === 'open' ? 5 : 0;
 		]) {
 			const expected = await runCommand([backend, ...args], home, false, env);
 			expect(await runHarness(['tracker', ...args], home, false, env)).toEqual(expected);
-			expect(await runCommand(['sh', shim, ...args], home, false, env)).toEqual(expected);
+			expect(await runCommand([shim, ...args], home, false, env)).toEqual(expected);
 		}
 	} finally {
 		await rm(home, { recursive: true, force: true });
