@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-module-task-analytics-service-tracker-run-records",
+	"uid": "u_yqgzxyqdn5",
+	"kind": "service",
+	"title": "trackerRunRecords",
+	"responsibility": "Project completed Tracker attempts into the shared run record with original cost provenance.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/module-task-analytics-service/trackerRunRecords.ts"],
+		"symbols": ["trackerRunRecords"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerRunRecords.rows",
+				"type": "readonly TrackerRunRow[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerRunRecords",
+				"type": "RunRecord[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerRunRecords",
+				"inputs": [
+					{
+						"name": "trackerRunRecords.rows",
+						"type": "readonly TrackerRunRow[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRunRecords",
+						"type": "RunRecord[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-tracker-run-report",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-analytics-service-model-run-record",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/module-task-analytics-service/trackerRunRecords.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/module-task-analytics-service/trackerRunRecords.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

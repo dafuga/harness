@@ -1,0 +1,753 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-node",
+	"uid": "u_gvqtr5mdwv",
+	"kind": "service",
+	"title": "TrackerNodeService",
+	"responsibility": "Owns the TrackerNodeService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/TrackerNodeService.ts",
+			"src/services/projects-sessions/TrackerNodeService.types.ts",
+			"src/services/projects-sessions/tracker-node-service/TrackerNodeStartupError.ts",
+			"src/services/projects-sessions/tracker-node-service/TrackerNodeTransportError.ts",
+			"src/services/projects-sessions/tracker-node-service/holdLegacySupervisorSocket.ts",
+			"src/services/projects-sessions/tracker-node-service/trackerNodeConfig.ts",
+			"src/services/projects-sessions/tracker-node-service/trackerNodeConfig.types.ts",
+			"src/services/projects-sessions/tracker-node-service/trackerNodeListeners.ts",
+			"src/services/projects-sessions/tracker-node-service/trackerNodeNotifications.ts",
+			"src/services/projects-sessions/tracker-node-service/trackerNodeOwnership.ts",
+			"src/services/projects-sessions/tracker-node-service/trackerNodeRuntime.ts",
+			"src/services/projects-sessions/tracker-node-service/trackerUpstreamLink.ts"
+		],
+		"symbols": [
+			"TrackerNodeService",
+			"TrackerNodeService.start",
+			"TrackerNodeOwner",
+			"TrackerNodeOwnership",
+			"TrackerNodeStartupError",
+			"TrackerNodeTransportError",
+			"holdLegacySupervisorSocket",
+			"loadTrackerNodeConfig",
+			"trackerSyncPort",
+			"verifyTrackerLegacyFence",
+			"verifyTrackerDatabasePath",
+			"readPrivateText",
+			"readPrivateJson",
+			"TrackerUpstream",
+			"TrackerNodeConfig",
+			"bindTrackerListener",
+			"unavailable",
+			"trackerNodeApi",
+			"trackerNodeSync",
+			"trackerNodeNotifications",
+			"trackerNodeOwnership",
+			"trackerNodeRuntime",
+			"trackerUpstreamLink",
+			"allowedTrackerTransport"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerNodeService.start.config",
+				"type": "TrackerNodeConfig",
+				"required": true
+			},
+			{
+				"name": "holdLegacySupervisorSocket.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "loadTrackerNodeConfig.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerSyncPort.config",
+				"type": "TrackerNodeConfig",
+				"required": true
+			},
+			{
+				"name": "verifyTrackerLegacyFence.config",
+				"type": "TrackerNodeConfig",
+				"required": true
+			},
+			{
+				"name": "verifyTrackerDatabasePath.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readPrivateText.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readPrivateJson.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "bindTrackerListener.port",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "bindTrackerListener.type",
+				"type": "'api' | 'sync'",
+				"required": true
+			},
+			{
+				"name": "bindTrackerListener.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "bindTrackerListener.handle",
+				"type": "(request: Request) => Promise<Response> | Response",
+				"required": true
+			},
+			{
+				"name": "trackerNodeApi.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerNodeApi.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "trackerNodeApi.supervisor",
+				"type": "TrackerSupervisorService",
+				"required": true
+			},
+			{
+				"name": "trackerNodeApi.checkpoint",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerNodeSync.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerNodeSync.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "trackerNodeNotifications.config",
+				"type": "TrackerNodeConfig",
+				"required": true
+			},
+			{
+				"name": "trackerNodeOwnership.release",
+				"type": "() => void",
+				"required": true
+			},
+			{
+				"name": "trackerNodeRuntime.config",
+				"type": "TrackerNodeConfig",
+				"required": true
+			},
+			{
+				"name": "trackerNodeRuntime.writeGuestAuth",
+				"type": "TrackerGuestAuthWriter",
+				"required": false
+			},
+			{
+				"name": "trackerUpstreamLink.input",
+				"type": "TrackerUpstream",
+				"required": true
+			},
+			{
+				"name": "trackerUpstreamLink.secret",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerUpstreamLink.link",
+				"type": "'hub' | 'peer'",
+				"required": true
+			},
+			{
+				"name": "trackerUpstreamLink.relayOps",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "allowedTrackerTransport.url",
+				"type": "URL",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerNodeService.start",
+				"type": "Promise<TrackerNodeOwner>"
+			},
+			{
+				"name": "holdLegacySupervisorSocket",
+				"type": "Promise<()"
+			},
+			{
+				"name": "loadTrackerNodeConfig",
+				"type": "TrackerNodeConfig"
+			},
+			{
+				"name": "trackerSyncPort",
+				"type": "number | undefined"
+			},
+			{
+				"name": "verifyTrackerLegacyFence",
+				"type": "string"
+			},
+			{
+				"name": "verifyTrackerDatabasePath",
+				"type": "void"
+			},
+			{
+				"name": "readPrivateText",
+				"type": "string"
+			},
+			{
+				"name": "readPrivateJson",
+				"type": "unknown"
+			},
+			{
+				"name": "bindTrackerListener",
+				"type": "unknown"
+			},
+			{
+				"name": "unavailable",
+				"type": "Response"
+			},
+			{
+				"name": "trackerNodeApi",
+				"type": "unknown"
+			},
+			{
+				"name": "trackerNodeSync",
+				"type": "unknown"
+			},
+			{
+				"name": "trackerNodeNotifications",
+				"type": "TrackerNativeNotificationOptions | undefined"
+			},
+			{
+				"name": "trackerNodeOwnership",
+				"type": "TrackerNodeOwnership"
+			},
+			{
+				"name": "trackerNodeRuntime",
+				"type": "TrackerNativeRuntimeOptions"
+			},
+			{
+				"name": "trackerUpstreamLink",
+				"type": "Omit<TrackerSpokeLoopOptions, 'store'>"
+			},
+			{
+				"name": "allowedTrackerTransport",
+				"type": "boolean"
+			}
+		],
+		"errors": [
+			{
+				"name": "TrackerNodeStartupError",
+				"type": "thrown"
+			},
+			{
+				"name": "TrackerNodeTransportError",
+				"type": "thrown"
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerNodeService.start",
+				"inputs": [
+					{
+						"name": "TrackerNodeService.start.config",
+						"type": "TrackerNodeConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNodeService.start",
+						"type": "Promise<TrackerNodeOwner>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerNodeStartupError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "holdLegacySupervisorSocket",
+				"inputs": [
+					{
+						"name": "holdLegacySupervisorSocket.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "holdLegacySupervisorSocket",
+						"type": "Promise<()"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "loadTrackerNodeConfig",
+				"inputs": [
+					{
+						"name": "loadTrackerNodeConfig.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "loadTrackerNodeConfig",
+						"type": "TrackerNodeConfig"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerSyncPort",
+				"inputs": [
+					{
+						"name": "trackerSyncPort.config",
+						"type": "TrackerNodeConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerSyncPort",
+						"type": "number | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "verifyTrackerLegacyFence",
+				"inputs": [
+					{
+						"name": "verifyTrackerLegacyFence.config",
+						"type": "TrackerNodeConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyTrackerLegacyFence",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "verifyTrackerDatabasePath",
+				"inputs": [
+					{
+						"name": "verifyTrackerDatabasePath.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyTrackerDatabasePath",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readPrivateText",
+				"inputs": [
+					{
+						"name": "readPrivateText.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readPrivateText",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readPrivateJson",
+				"inputs": [
+					{
+						"name": "readPrivateJson.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readPrivateJson",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "bindTrackerListener",
+				"inputs": [
+					{
+						"name": "bindTrackerListener.port",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "bindTrackerListener.type",
+						"type": "'api' | 'sync'",
+						"required": true
+					},
+					{
+						"name": "bindTrackerListener.signal",
+						"type": "AbortSignal",
+						"required": true
+					},
+					{
+						"name": "bindTrackerListener.handle",
+						"type": "(request: Request) => Promise<Response> | Response",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "bindTrackerListener",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "unavailable",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "unavailable",
+						"type": "Response"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerNodeApi",
+				"inputs": [
+					{
+						"name": "trackerNodeApi.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerNodeApi.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					},
+					{
+						"name": "trackerNodeApi.supervisor",
+						"type": "TrackerSupervisorService",
+						"required": true
+					},
+					{
+						"name": "trackerNodeApi.checkpoint",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerNodeApi",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerNodeSync",
+				"inputs": [
+					{
+						"name": "trackerNodeSync.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerNodeSync.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerNodeSync",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerNodeNotifications",
+				"inputs": [
+					{
+						"name": "trackerNodeNotifications.config",
+						"type": "TrackerNodeConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerNodeNotifications",
+						"type": "TrackerNativeNotificationOptions | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerNodeOwnership",
+				"inputs": [
+					{
+						"name": "trackerNodeOwnership.release",
+						"type": "() => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerNodeOwnership",
+						"type": "TrackerNodeOwnership"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "trackerNodeRuntime",
+				"inputs": [
+					{
+						"name": "trackerNodeRuntime.config",
+						"type": "TrackerNodeConfig",
+						"required": true
+					},
+					{
+						"name": "trackerNodeRuntime.writeGuestAuth",
+						"type": "TrackerGuestAuthWriter",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerNodeRuntime",
+						"type": "TrackerNativeRuntimeOptions"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerUpstreamLink",
+				"inputs": [
+					{
+						"name": "trackerUpstreamLink.input",
+						"type": "TrackerUpstream",
+						"required": true
+					},
+					{
+						"name": "trackerUpstreamLink.secret",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerUpstreamLink.link",
+						"type": "'hub' | 'peer'",
+						"required": true
+					},
+					{
+						"name": "trackerUpstreamLink.relayOps",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerUpstreamLink",
+						"type": "Omit<TrackerSpokeLoopOptions, 'store'>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "allowedTrackerTransport",
+				"inputs": [
+					{
+						"name": "allowedTrackerTransport.url",
+						"type": "URL",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "allowedTrackerTransport",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.open-sqlite",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-adapter-lease",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-parse-tracker-model-spec",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-normalize-tracker-item-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-plan-tracker-item-mutation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-tracker-dispatcher",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.networking-security-tracker-sync-auth",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-notification",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-spoke-loop",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-supervisor",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerNodeService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerNodeService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,256 @@
+{
+	"schemaVersion": 1,
+	"id": "function.agents-providers-classify-tracker-task",
+	"uid": "u_6owiaffoxw",
+	"kind": "function",
+	"title": "classifyTrackerTask",
+	"responsibility": "Classify Tracker items and identify their model-selection risk and effort requirements.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/agents-providers/classifyTrackerTask.ts",
+			"src/utils/agents-providers/classifyTrackerTask.types.ts"
+		],
+		"symbols": [
+			"classifyTrackerTask",
+			"sizeOf",
+			"projectOf",
+			"floorReasons",
+			"isHarnessModule",
+			"isVisualInspection",
+			"solEffort",
+			"TrackerModelItem",
+			"TrackerTaskKind",
+			"TrackerTaskSize"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "classifyTrackerTask.item",
+				"type": "TrackerModelItem",
+				"required": true
+			},
+			{
+				"name": "sizeOf.item",
+				"type": "TrackerModelItem",
+				"required": true
+			},
+			{
+				"name": "projectOf.item",
+				"type": "TrackerModelItem",
+				"required": true
+			},
+			{
+				"name": "floorReasons.item",
+				"type": "TrackerModelItem",
+				"required": true
+			},
+			{
+				"name": "isHarnessModule.item",
+				"type": "TrackerModelItem",
+				"required": true
+			},
+			{
+				"name": "isVisualInspection.item",
+				"type": "TrackerModelItem",
+				"required": true
+			},
+			{
+				"name": "solEffort.kind",
+				"type": "TrackerTaskKind",
+				"required": true
+			},
+			{
+				"name": "solEffort.size",
+				"type": "TrackerTaskSize",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "classifyTrackerTask",
+				"type": "TrackerTaskKind"
+			},
+			{
+				"name": "sizeOf",
+				"type": "TrackerTaskSize"
+			},
+			{
+				"name": "projectOf",
+				"type": "string | null"
+			},
+			{
+				"name": "floorReasons",
+				"type": "string[]"
+			},
+			{
+				"name": "isHarnessModule",
+				"type": "boolean"
+			},
+			{
+				"name": "isVisualInspection",
+				"type": "boolean"
+			},
+			{
+				"name": "solEffort",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "classifyTrackerTask",
+				"inputs": [
+					{
+						"name": "classifyTrackerTask.item",
+						"type": "TrackerModelItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "classifyTrackerTask",
+						"type": "TrackerTaskKind"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sizeOf",
+				"inputs": [
+					{
+						"name": "sizeOf.item",
+						"type": "TrackerModelItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sizeOf",
+						"type": "TrackerTaskSize"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "projectOf",
+				"inputs": [
+					{
+						"name": "projectOf.item",
+						"type": "TrackerModelItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "projectOf",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "floorReasons",
+				"inputs": [
+					{
+						"name": "floorReasons.item",
+						"type": "TrackerModelItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "floorReasons",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isHarnessModule",
+				"inputs": [
+					{
+						"name": "isHarnessModule.item",
+						"type": "TrackerModelItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isHarnessModule",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isVisualInspection",
+				"inputs": [
+					{
+						"name": "isVisualInspection.item",
+						"type": "TrackerModelItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isVisualInspection",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "solEffort",
+				"inputs": [
+					{
+						"name": "solEffort.kind",
+						"type": "TrackerTaskKind",
+						"required": true
+					},
+					{
+						"name": "solEffort.size",
+						"type": "TrackerTaskSize",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "solEffort",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/agents-providers/classifyTrackerTask.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/agents-providers/classifyTrackerTask.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

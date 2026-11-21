@@ -1,0 +1,832 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-adapter-poll",
+	"uid": "u_wlip653voz",
+	"kind": "service",
+	"title": "TrackerAdapterPollService",
+	"responsibility": "Owns the TrackerAdapterPollService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/TrackerAdapterPollService.ts",
+			"src/services/projects-sessions/TrackerAdapterPollService.types.ts",
+			"src/services/projects-sessions/tracker-adapter-poll-service/applyTrackerIntakeEvents.ts",
+			"src/services/projects-sessions/tracker-adapter-poll-service/commitTrackerIntake.ts",
+			"src/services/projects-sessions/tracker-adapter-poll-service/githubIntakeRecord.ts",
+			"src/services/projects-sessions/tracker-adapter-poll-service/readTrackerIntake.ts",
+			"src/services/projects-sessions/tracker-adapter-poll-service/trackerAdapterPollError.ts"
+		],
+		"symbols": [
+			"TrackerAdapterIntakePolicy",
+			"TrackerAdapterLease",
+			"TrackerAdapterPollDependencies",
+			"TrackerAdapterPollOptions",
+			"TrackerAdapterPollResult",
+			"TrackerAdapterReadQuery",
+			"TrackerGithubAdapterProvider",
+			"TrackerGithubComment",
+			"TrackerGithubIssue",
+			"TrackerGithubTimelineEvent",
+			"TrackerAdapterPollService",
+			"TrackerAdapterPollService.constructor",
+			"TrackerAdapterPollService.status",
+			"TrackerAdapterPollService.tick",
+			"TrackerAdapterPollService.poll",
+			"TrackerGithubIssue",
+			"TrackerGithubTimelineEvent",
+			"TrackerGithubComment",
+			"TrackerAdapterReadQuery",
+			"TrackerGithubAdapterProvider",
+			"TrackerAdapterLease",
+			"TrackerAdapterIntakePolicy",
+			"TrackerAdapterPollDependencies",
+			"TrackerAdapterPollOptions",
+			"TrackerAdapterAction",
+			"TrackerAdapterWriteError",
+			"TrackerAdapterPollResult",
+			"TrackerAdapterEvent",
+			"TrackerAdapterIntakeRecord",
+			"TrackerAdapterCommentEvent",
+			"TrackerAdapterIntakeContext",
+			"applyTrackerIntakeEvents",
+			"applyTrackerIntakeEvent",
+			"planTrackerIntake",
+			"commitTrackerIntake",
+			"trackerEventFields",
+			"readGithubIntakeRecord",
+			"githubCommentEvent",
+			"matchesGithubIssue",
+			"readTrackerIssues",
+			"readTrackerComments",
+			"TrackerAdapterPollError",
+			"TrackerAdapterPollError.constructor",
+			"assertTrackerPollActive"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerAdapterPollService.constructor.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterPollService.constructor.dependencies",
+				"type": "TrackerAdapterPollDependencies",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterPollService.tick.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterPollService.poll.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterPollService.poll.options",
+				"type": "TrackerAdapterPollOptions",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "applyTrackerIntakeEvents.repository",
+				"type": "TrackerAdapterRepository",
+				"required": true
+			},
+			{
+				"name": "applyTrackerIntakeEvents.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "applyTrackerIntakeEvents.link",
+				"type": "TrackerAdapterLink",
+				"required": true
+			},
+			{
+				"name": "applyTrackerIntakeEvents.record",
+				"type": "TrackerAdapterIntakeRecord",
+				"required": true
+			},
+			{
+				"name": "applyTrackerIntakeEvent.repository",
+				"type": "TrackerAdapterRepository",
+				"required": true
+			},
+			{
+				"name": "applyTrackerIntakeEvent.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "applyTrackerIntakeEvent.link",
+				"type": "TrackerAdapterLink",
+				"required": true
+			},
+			{
+				"name": "applyTrackerIntakeEvent.event",
+				"type": "TrackerAdapterEvent",
+				"required": true
+			},
+			{
+				"name": "planTrackerIntake.context",
+				"type": "TrackerAdapterIntakeContext",
+				"required": true
+			},
+			{
+				"name": "planTrackerIntake.source",
+				"type": "TrackerAdapterSource",
+				"required": true
+			},
+			{
+				"name": "planTrackerIntake.record",
+				"type": "TrackerAdapterIntakeRecord",
+				"required": true
+			},
+			{
+				"name": "commitTrackerIntake.context",
+				"type": "TrackerAdapterIntakeContext",
+				"required": true
+			},
+			{
+				"name": "commitTrackerIntake.source",
+				"type": "TrackerAdapterSource",
+				"required": true
+			},
+			{
+				"name": "commitTrackerIntake.record",
+				"type": "TrackerAdapterIntakeRecord",
+				"required": true
+			},
+			{
+				"name": "commitTrackerIntake.action",
+				"type": "TrackerAdapterAction",
+				"required": true
+			},
+			{
+				"name": "trackerEventFields.item",
+				"type": "TrackerAdapterItem",
+				"required": true
+			},
+			{
+				"name": "trackerEventFields.link",
+				"type": "TrackerAdapterLink",
+				"required": true
+			},
+			{
+				"name": "trackerEventFields.event",
+				"type": "Omit<TrackerAdapterEvent, 'id' | 'time'> & { id?: string }",
+				"required": true
+			},
+			{
+				"name": "readGithubIntakeRecord.source",
+				"type": "TrackerAdapterSource",
+				"required": true
+			},
+			{
+				"name": "readGithubIntakeRecord.issue",
+				"type": "TrackerGithubIssue",
+				"required": true
+			},
+			{
+				"name": "readGithubIntakeRecord.options",
+				"type": "GithubIssueIntakeOptions & { signal: AbortSignal; titlePrefix?: string }",
+				"required": true
+			},
+			{
+				"name": "readGithubIntakeRecord.dependencies",
+				"type": "TrackerAdapterPollDependencies",
+				"required": true
+			},
+			{
+				"name": "githubCommentEvent.source",
+				"type": "TrackerAdapterSource",
+				"required": true
+			},
+			{
+				"name": "githubCommentEvent.comment",
+				"type": "TrackerGithubComment",
+				"required": true
+			},
+			{
+				"name": "githubCommentEvent.redactText",
+				"type": "TrackerAdapterPollDependencies['redactText']",
+				"required": true
+			},
+			{
+				"name": "matchesGithubIssue.source",
+				"type": "TrackerAdapterSource",
+				"required": true
+			},
+			{
+				"name": "matchesGithubIssue.record",
+				"type": "TrackerAdapterIntakeRecord",
+				"required": true
+			},
+			{
+				"name": "matchesGithubIssue.item",
+				"type": "TrackerAdapterCandidate",
+				"required": true
+			},
+			{
+				"name": "matchesGithubIssue.matchesItem",
+				"type": "TrackerAdapterIntakePolicy['matchesItem']",
+				"required": false
+			},
+			{
+				"name": "readTrackerIssues.context",
+				"type": "TrackerAdapterIntakeContext",
+				"required": true
+			},
+			{
+				"name": "readTrackerIssues.source",
+				"type": "TrackerAdapterSource",
+				"required": true
+			},
+			{
+				"name": "readTrackerIssues.query",
+				"type": "TrackerAdapterReadQuery",
+				"required": true
+			},
+			{
+				"name": "readTrackerIssues.dryRun",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "readTrackerComments.context",
+				"type": "TrackerAdapterIntakeContext",
+				"required": true
+			},
+			{
+				"name": "readTrackerComments.source",
+				"type": "TrackerAdapterSource",
+				"required": true
+			},
+			{
+				"name": "readTrackerComments.query",
+				"type": "TrackerAdapterReadQuery",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterPollError.constructor.message",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "assertTrackerPollActive.signal",
+				"type": "AbortSignal",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerAdapterPollService.status",
+				"type": "{ runner: string; active: boolean }"
+			},
+			{
+				"name": "TrackerAdapterPollService.tick",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "TrackerAdapterPollService.poll",
+				"type": "Promise<TrackerAdapterPollResult>"
+			},
+			{
+				"name": "applyTrackerIntakeEvents",
+				"type": "number"
+			},
+			{
+				"name": "applyTrackerIntakeEvent",
+				"type": "boolean"
+			},
+			{
+				"name": "planTrackerIntake",
+				"type": "TrackerAdapterAction"
+			},
+			{
+				"name": "commitTrackerIntake",
+				"type": "TrackerAdapterLink"
+			},
+			{
+				"name": "trackerEventFields",
+				"type": "Record<string, unknown>"
+			},
+			{
+				"name": "readGithubIntakeRecord",
+				"type": "Promise<TrackerAdapterIntakeRecord | null>"
+			},
+			{
+				"name": "githubCommentEvent",
+				"type": "TrackerAdapterCommentEvent | null"
+			},
+			{
+				"name": "matchesGithubIssue",
+				"type": "boolean"
+			},
+			{
+				"name": "readTrackerIssues",
+				"type": "unknown"
+			},
+			{
+				"name": "readTrackerComments",
+				"type": "Promise<number>"
+			},
+			{
+				"name": "assertTrackerPollActive",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "AggregateError",
+				"type": "thrown"
+			},
+			{
+				"name": "TrackerAdapterPollError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerAdapterPollService.status",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerAdapterPollService.status",
+						"type": "{ runner: string; active: boolean }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterPollService.tick",
+				"inputs": [
+					{
+						"name": "TrackerAdapterPollService.tick.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterPollService.tick",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "AggregateError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterPollService.poll",
+				"inputs": [
+					{
+						"name": "TrackerAdapterPollService.poll.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerAdapterPollService.poll.options",
+						"type": "TrackerAdapterPollOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterPollService.poll",
+						"type": "Promise<TrackerAdapterPollResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "applyTrackerIntakeEvents",
+				"inputs": [
+					{
+						"name": "applyTrackerIntakeEvents.repository",
+						"type": "TrackerAdapterRepository",
+						"required": true
+					},
+					{
+						"name": "applyTrackerIntakeEvents.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "applyTrackerIntakeEvents.link",
+						"type": "TrackerAdapterLink",
+						"required": true
+					},
+					{
+						"name": "applyTrackerIntakeEvents.record",
+						"type": "TrackerAdapterIntakeRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "applyTrackerIntakeEvents",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "applyTrackerIntakeEvent",
+				"inputs": [
+					{
+						"name": "applyTrackerIntakeEvent.repository",
+						"type": "TrackerAdapterRepository",
+						"required": true
+					},
+					{
+						"name": "applyTrackerIntakeEvent.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "applyTrackerIntakeEvent.link",
+						"type": "TrackerAdapterLink",
+						"required": true
+					},
+					{
+						"name": "applyTrackerIntakeEvent.event",
+						"type": "TrackerAdapterEvent",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "applyTrackerIntakeEvent",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "planTrackerIntake",
+				"inputs": [
+					{
+						"name": "planTrackerIntake.context",
+						"type": "TrackerAdapterIntakeContext",
+						"required": true
+					},
+					{
+						"name": "planTrackerIntake.source",
+						"type": "TrackerAdapterSource",
+						"required": true
+					},
+					{
+						"name": "planTrackerIntake.record",
+						"type": "TrackerAdapterIntakeRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "planTrackerIntake",
+						"type": "TrackerAdapterAction"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "commitTrackerIntake",
+				"inputs": [
+					{
+						"name": "commitTrackerIntake.context",
+						"type": "TrackerAdapterIntakeContext",
+						"required": true
+					},
+					{
+						"name": "commitTrackerIntake.source",
+						"type": "TrackerAdapterSource",
+						"required": true
+					},
+					{
+						"name": "commitTrackerIntake.record",
+						"type": "TrackerAdapterIntakeRecord",
+						"required": true
+					},
+					{
+						"name": "commitTrackerIntake.action",
+						"type": "TrackerAdapterAction",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "commitTrackerIntake",
+						"type": "TrackerAdapterLink"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerEventFields",
+				"inputs": [
+					{
+						"name": "trackerEventFields.item",
+						"type": "TrackerAdapterItem",
+						"required": true
+					},
+					{
+						"name": "trackerEventFields.link",
+						"type": "TrackerAdapterLink",
+						"required": true
+					},
+					{
+						"name": "trackerEventFields.event",
+						"type": "Omit<TrackerAdapterEvent, 'id' | 'time'> & { id?: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerEventFields",
+						"type": "Record<string, unknown>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readGithubIntakeRecord",
+				"inputs": [
+					{
+						"name": "readGithubIntakeRecord.source",
+						"type": "TrackerAdapterSource",
+						"required": true
+					},
+					{
+						"name": "readGithubIntakeRecord.issue",
+						"type": "TrackerGithubIssue",
+						"required": true
+					},
+					{
+						"name": "readGithubIntakeRecord.options",
+						"type": "GithubIssueIntakeOptions & { signal: AbortSignal; titlePrefix?: string }",
+						"required": true
+					},
+					{
+						"name": "readGithubIntakeRecord.dependencies",
+						"type": "TrackerAdapterPollDependencies",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readGithubIntakeRecord",
+						"type": "Promise<TrackerAdapterIntakeRecord | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "githubCommentEvent",
+				"inputs": [
+					{
+						"name": "githubCommentEvent.source",
+						"type": "TrackerAdapterSource",
+						"required": true
+					},
+					{
+						"name": "githubCommentEvent.comment",
+						"type": "TrackerGithubComment",
+						"required": true
+					},
+					{
+						"name": "githubCommentEvent.redactText",
+						"type": "TrackerAdapterPollDependencies['redactText']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "githubCommentEvent",
+						"type": "TrackerAdapterCommentEvent | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "matchesGithubIssue",
+				"inputs": [
+					{
+						"name": "matchesGithubIssue.source",
+						"type": "TrackerAdapterSource",
+						"required": true
+					},
+					{
+						"name": "matchesGithubIssue.record",
+						"type": "TrackerAdapterIntakeRecord",
+						"required": true
+					},
+					{
+						"name": "matchesGithubIssue.item",
+						"type": "TrackerAdapterCandidate",
+						"required": true
+					},
+					{
+						"name": "matchesGithubIssue.matchesItem",
+						"type": "TrackerAdapterIntakePolicy['matchesItem']",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "matchesGithubIssue",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readTrackerIssues",
+				"inputs": [
+					{
+						"name": "readTrackerIssues.context",
+						"type": "TrackerAdapterIntakeContext",
+						"required": true
+					},
+					{
+						"name": "readTrackerIssues.source",
+						"type": "TrackerAdapterSource",
+						"required": true
+					},
+					{
+						"name": "readTrackerIssues.query",
+						"type": "TrackerAdapterReadQuery",
+						"required": true
+					},
+					{
+						"name": "readTrackerIssues.dryRun",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerIssues",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readTrackerComments",
+				"inputs": [
+					{
+						"name": "readTrackerComments.context",
+						"type": "TrackerAdapterIntakeContext",
+						"required": true
+					},
+					{
+						"name": "readTrackerComments.source",
+						"type": "TrackerAdapterSource",
+						"required": true
+					},
+					{
+						"name": "readTrackerComments.query",
+						"type": "TrackerAdapterReadQuery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerComments",
+						"type": "Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "assertTrackerPollActive",
+				"inputs": [
+					{
+						"name": "assertTrackerPollActive.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assertTrackerPollActive",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerAdapterPollError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerAdapterPollService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerAdapterPollService.constructor.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "TrackerAdapterPollService.constructor.dependencies",
+						"type": "TrackerAdapterPollDependencies",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterPollService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "TrackerAdapterPollError.constructor",
+				"inputs": [
+					{
+						"name": "TrackerAdapterPollError.constructor.message",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterPollError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "helper.planning-collaboration-plan-github-issue-intake",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-adapter",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-adapter-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerAdapterPollService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerAdapterPollService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

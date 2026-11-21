@@ -1,5 +1,4 @@
-import { afterEach, test, vi } from 'vitest';
-import { expect } from '../../verificationExpect';
+import { afterEach, expect, test, vi } from 'vitest';
 import { measureWorkload } from '../../support/measureWorkload';
 import {
 	expectJson,

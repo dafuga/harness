@@ -1,0 +1,192 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-spoke-loop",
+	"uid": "u_7763mfxmkn",
+	"kind": "service",
+	"title": "TrackerSpokeLoopService",
+	"responsibility": "Owns the TrackerSpokeLoopService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/TrackerSpokeLoopService.ts",
+			"src/services/projects-sessions/TrackerSpokeLoopService.types.ts"
+		],
+		"symbols": [
+			"TrackerSpokeLoopService",
+			"TrackerSpokeLoopService.constructor",
+			"TrackerSpokeLoopService.kind",
+			"TrackerSpokeLoopService.status",
+			"TrackerSpokeLoopService.upstream",
+			"TrackerSpokeLoopService.kick",
+			"TrackerSpokeLoopService.run",
+			"TrackerSpokeLoopOptions",
+			"TrackerSpokeStatus"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerSpokeLoopService.constructor.options",
+				"type": "TrackerSpokeLoopOptions",
+				"required": true
+			},
+			{
+				"name": "TrackerSpokeLoopService.run.signal",
+				"type": "AbortSignal",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerSpokeLoopService.kind",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerSpokeLoopService.status",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerSpokeLoopService.upstream",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerSpokeLoopService.kick",
+				"type": "void"
+			},
+			{
+				"name": "TrackerSpokeLoopService.run",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerSpokeLoopService.kind",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerSpokeLoopService.kind",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSpokeLoopService.status",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerSpokeLoopService.status",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSpokeLoopService.upstream",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerSpokeLoopService.upstream",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "TrackerSpokeLoopService.kick",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerSpokeLoopService.kick",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSpokeLoopService.run",
+				"inputs": [
+					{
+						"name": "TrackerSpokeLoopService.run.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSpokeLoopService.run",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerSpokeLoopService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerSpokeLoopService.constructor.options",
+						"type": "TrackerSpokeLoopOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSpokeLoopService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-spoke-sync",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerSpokeLoopService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerSpokeLoopService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

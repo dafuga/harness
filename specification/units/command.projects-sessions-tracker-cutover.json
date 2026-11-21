@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "command.projects-sessions-tracker-cutover",
+	"uid": "u_us5nnnvzqk",
+	"kind": "command",
+	"title": "TrackerCutoverCommand",
+	"responsibility": "Owns the TrackerCutoverCommand command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/projects-sessions/TrackerCutoverCommand.ts"],
+		"symbols": ["TrackerCutoverCommand", "TrackerCutoverCommand.run"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerCutoverCommand.run.args",
+				"type": "string[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerCutoverCommand.run",
+				"type": "number"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerCutoverCommand.run",
+				"inputs": [
+					{
+						"name": "TrackerCutoverCommand.run.args",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerCutoverCommand.run",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.projects-sessions-tracker-snapshot",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/projects-sessions/TrackerCutoverCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/projects-sessions/TrackerCutoverCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

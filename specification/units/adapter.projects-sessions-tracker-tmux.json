@@ -1,0 +1,916 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.projects-sessions-tracker-tmux",
+	"uid": "u_fyf7e7kyi5",
+	"kind": "adapter",
+	"title": "Tracker tmux",
+	"responsibility": "Reads retained Tracker panes and guards terminal writes against pane, cursor, and provider changes.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/projects-sessions/TrackerTmuxAdapter.ts",
+			"src/adapters/projects-sessions/TrackerTmuxAdapter.types.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher.types.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedLaunchReceipt.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedProviderCommands.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedWorkerProcess.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerTmuxPane.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerWorkerClient.ts"
+		],
+		"symbols": [
+			"TrackerTmuxAdapter",
+			"TrackerTmuxAdapter.constructor",
+			"TrackerTmuxAdapter.scan",
+			"TrackerTmuxAdapter.inventory",
+			"TrackerTmuxAdapter.nudge",
+			"TrackerTmuxAdapterConfig",
+			"TrackerTmuxPane",
+			"TrackerTmuxNudge",
+			"trackerManagedHostLauncher",
+			"TrackerManagedReceipt",
+			"TrackerManagedCommand",
+			"TrackerManagedProfiles",
+			"TrackerManagedTarget",
+			"TrackerManagedExec",
+			"trackerManagedToken",
+			"checkTrackerManagedReceipt",
+			"trackerManagedEvidence",
+			"validateManagedProfiles",
+			"privateTrackerDirectory",
+			"trackerManagedProviderCommand",
+			"workerScript",
+			"launchTmux",
+			"trackerSocket",
+			"managedBrief",
+			"trackerPaneFormat",
+			"trackerSessionName",
+			"trackerTmuxPane",
+			"matchesTrackerTmuxPane",
+			"trackerTmuxKeys",
+			"trackerWorkerClient",
+			"trackerGuestAuthFile"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "TrackerTmuxAdapter.constructor.config",
+				"type": "TrackerTmuxAdapterConfig",
+				"required": true,
+				"description": "Controlled tmux executable and canonical Tracker node."
+			},
+			{
+				"name": "TrackerTmuxAdapter.scan.signal",
+				"type": "AbortSignal",
+				"required": true,
+				"description": "Lifetime for the inventory and bounded pane reads."
+			},
+			{
+				"name": "TrackerTmuxAdapter.scan.names",
+				"type": "RegExp",
+				"required": false,
+				"description": "Allowed session names. Defaults to the existing Tracker task-session names."
+			},
+			{
+				"name": "TrackerTmuxAdapter.inventory.signal",
+				"type": "AbortSignal",
+				"required": true,
+				"description": "Lifetime for the socket inventory calls."
+			},
+			{
+				"name": "TrackerTmuxAdapter.nudge.input",
+				"type": "TrackerTmuxNudge",
+				"required": true,
+				"description": "Observed pane identity and cursor state, expected provider, and literal text."
+			},
+			{
+				"name": "TrackerTmuxAdapter.nudge.signal",
+				"type": "AbortSignal",
+				"required": true,
+				"description": "Lifetime for the identity checks and guarded write."
+			},
+			{
+				"name": "trackerManagedHostLauncher.config",
+				"type": "TrackerManagedLaunchConfig",
+				"required": true
+			},
+			{
+				"name": "trackerManagedHostLauncher.client",
+				"type": "TrackerWorkerClient",
+				"required": true
+			},
+			{
+				"name": "trackerManagedHostLauncher.platform",
+				"type": "typeof process.platform",
+				"required": false
+			},
+			{
+				"name": "trackerManagedToken.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerManagedToken.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "checkTrackerManagedReceipt.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "checkTrackerManagedReceipt.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "checkTrackerManagedReceipt.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerManagedEvidence.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerManagedEvidence.receipt",
+				"type": "TrackerManagedReceipt",
+				"required": true
+			},
+			{
+				"name": "trackerManagedEvidence.live",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "validateManagedProfiles.profiles",
+				"type": "TrackerManagedProfiles",
+				"required": true
+			},
+			{
+				"name": "privateTrackerDirectory.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerManagedProviderCommand.profiles",
+				"type": "TrackerManagedProfiles",
+				"required": true
+			},
+			{
+				"name": "trackerManagedProviderCommand.input",
+				"type": "TrackerHostStartRequest",
+				"required": true
+			},
+			{
+				"name": "trackerManagedProviderCommand.briefPath",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerManagedProviderCommand.host",
+				"type": "typeof process.platform",
+				"required": true
+			},
+			{
+				"name": "launchTmux.tmux",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "launchTmux.trackerBin",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "launchTmux.trackerExecutable",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "launchTmux.worktree",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "launchTmux.receipt",
+				"type": "TrackerManagedReceipt",
+				"required": true
+			},
+			{
+				"name": "launchTmux.script",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "launchTmux.command",
+				"type": "TrackerManagedCommand",
+				"required": true
+			},
+			{
+				"name": "launchTmux.clientPath",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "launchTmux.guestAuthFile",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "launchTmux.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "trackerSocket.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "managedBrief.input",
+				"type": "TrackerHostStartRequest",
+				"required": true
+			},
+			{
+				"name": "trackerTmuxPane.raw",
+				"type": "string",
+				"required": true,
+				"description": "One line from the expected tmux pane format."
+			},
+			{
+				"name": "trackerTmuxPane.scope",
+				"type": "{ socket: string; runnerSocket: boolean; names: RegExp }",
+				"required": true,
+				"description": "Socket identity, runner designation and accepted session names."
+			},
+			{
+				"name": "matchesTrackerTmuxPane.observed",
+				"type": "TrackerTmuxPane['pane']",
+				"required": true,
+				"description": "Fresh pane observation on the configured socket."
+			},
+			{
+				"name": "matchesTrackerTmuxPane.expected",
+				"type": "Pick<TrackerTmuxPane['pane'], 'key' | 'activity' | 'createdAt' | 'x' | 'y'>",
+				"required": true,
+				"description": "Identity, time and cursor from the planned nudge."
+			},
+			{
+				"name": "trackerTmuxKeys.paneId",
+				"type": "string",
+				"required": true,
+				"description": "Validated numeric tmux pane ID on the selected socket."
+			},
+			{
+				"name": "trackerTmuxKeys.message",
+				"type": "string",
+				"required": true,
+				"description": "Control-character-free message already checked by the caller."
+			},
+			{
+				"name": "trackerWorkerClient.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerWorkerClient.address",
+				"type": "TrackerWorkerClient",
+				"required": true
+			},
+			{
+				"name": "trackerGuestAuthFile.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerGuestAuthFile.itemId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerGuestAuthFile.runId",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerGuestAuthFile.address",
+				"type": "Pick<TrackerWorkerClient, 'writeGuestAuth' | 'apiPort'>",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerTmuxAdapter.scan",
+				"type": "Promise<WatchdogPane[]>",
+				"description": "Read the allowed pane layouts and capture their visible screens only when identity is stable."
+			},
+			{
+				"name": "TrackerTmuxAdapter.inventory",
+				"type": "Promise<WatchdogPane[]>",
+				"description": "Read pane identity and timing without reading terminal output."
+			},
+			{
+				"name": "TrackerTmuxAdapter.nudge",
+				"type": "Promise<boolean>",
+				"description": "Send literal keys and Enter only if the same pane still has the intended idle composer."
+			},
+			{
+				"name": "trackerPaneFormat",
+				"type": "unknown",
+				"description": "Tmux format for the stable pane fields used in revalidation."
+			},
+			{
+				"name": "trackerSessionName",
+				"type": "unknown",
+				"description": "The retained Tracker manual and managed tmux session naming rule."
+			},
+			{
+				"name": "trackerTmuxPane",
+				"type": "TrackerTmuxPane | undefined",
+				"description": "Parse one safe tmux pane layout or omit it when the row cannot be verified."
+			},
+			{
+				"name": "matchesTrackerTmuxPane",
+				"type": "boolean",
+				"description": "Compare the observed pane identity, activity, creation time, and cursor to the intended target."
+			},
+			{
+				"name": "trackerTmuxKeys",
+				"type": "string",
+				"description": "Build the tmux command body with text escaped for literal input."
+			}
+		],
+		"errors": [
+			{
+				"name": "TrackerHostProcessError",
+				"type": "thrown",
+				"description": "The bounded host command could not produce a trustworthy response."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "TrackerTmuxAdapter.scan",
+				"inputs": [
+					{
+						"name": "TrackerTmuxAdapter.scan.signal",
+						"type": "AbortSignal",
+						"required": true,
+						"description": "Lifetime for the inventory and bounded pane reads."
+					},
+					{
+						"name": "TrackerTmuxAdapter.scan.names",
+						"type": "RegExp",
+						"required": false,
+						"description": "Allowed session names. Defaults to the existing Tracker task-session names."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerTmuxAdapter.scan",
+						"type": "Promise<WatchdogPane[]>",
+						"description": "Read the allowed pane layouts and capture their visible screens only when identity is stable."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerTmuxAdapter.inventory",
+				"inputs": [
+					{
+						"name": "TrackerTmuxAdapter.inventory.signal",
+						"type": "AbortSignal",
+						"required": true,
+						"description": "Lifetime for the socket inventory calls."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerTmuxAdapter.inventory",
+						"type": "Promise<WatchdogPane[]>",
+						"description": "Read pane identity and timing without reading terminal output."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerTmuxAdapter.nudge",
+				"inputs": [
+					{
+						"name": "TrackerTmuxAdapter.nudge.input",
+						"type": "TrackerTmuxNudge",
+						"required": true,
+						"description": "Observed pane identity and cursor state, expected provider, and literal text."
+					},
+					{
+						"name": "TrackerTmuxAdapter.nudge.signal",
+						"type": "AbortSignal",
+						"required": true,
+						"description": "Lifetime for the identity checks and guarded write."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerTmuxAdapter.nudge",
+						"type": "Promise<boolean>",
+						"description": "Send literal keys and Enter only if the same pane still has the intended idle composer."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerManagedHostLauncher",
+				"inputs": [
+					{
+						"name": "trackerManagedHostLauncher.config",
+						"type": "TrackerManagedLaunchConfig",
+						"required": true
+					},
+					{
+						"name": "trackerManagedHostLauncher.client",
+						"type": "TrackerWorkerClient",
+						"required": true
+					},
+					{
+						"name": "trackerManagedHostLauncher.platform",
+						"type": "typeof process.platform",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerManagedHostLauncher",
+						"type": "TrackerHostLaunchPort"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerManagedToken",
+				"inputs": [
+					{
+						"name": "trackerManagedToken.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerManagedToken.key",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerManagedToken",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "checkTrackerManagedReceipt",
+				"inputs": [
+					{
+						"name": "checkTrackerManagedReceipt.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "checkTrackerManagedReceipt.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "checkTrackerManagedReceipt.key",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkTrackerManagedReceipt",
+						"type": "TrackerManagedReceipt | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerManagedEvidence",
+				"inputs": [
+					{
+						"name": "trackerManagedEvidence.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerManagedEvidence.receipt",
+						"type": "TrackerManagedReceipt",
+						"required": true
+					},
+					{
+						"name": "trackerManagedEvidence.live",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerManagedEvidence",
+						"type": "TrackerHostSession | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "validateManagedProfiles",
+				"inputs": [
+					{
+						"name": "validateManagedProfiles.profiles",
+						"type": "TrackerManagedProfiles",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateManagedProfiles",
+						"type": "TrackerManagedProfiles"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "privateTrackerDirectory",
+				"inputs": [
+					{
+						"name": "privateTrackerDirectory.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "privateTrackerDirectory",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerManagedProviderCommand",
+				"inputs": [
+					{
+						"name": "trackerManagedProviderCommand.profiles",
+						"type": "TrackerManagedProfiles",
+						"required": true
+					},
+					{
+						"name": "trackerManagedProviderCommand.input",
+						"type": "TrackerHostStartRequest",
+						"required": true
+					},
+					{
+						"name": "trackerManagedProviderCommand.briefPath",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerManagedProviderCommand.host",
+						"type": "typeof process.platform",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerManagedProviderCommand",
+						"type": "TrackerManagedCommand | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "launchTmux",
+				"inputs": [
+					{
+						"name": "launchTmux.tmux",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "launchTmux.trackerBin",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "launchTmux.trackerExecutable",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "launchTmux.worktree",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "launchTmux.receipt",
+						"type": "TrackerManagedReceipt",
+						"required": true
+					},
+					{
+						"name": "launchTmux.script",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "launchTmux.command",
+						"type": "TrackerManagedCommand",
+						"required": true
+					},
+					{
+						"name": "launchTmux.clientPath",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "launchTmux.guestAuthFile",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "launchTmux.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "launchTmux",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerSocket",
+				"inputs": [
+					{
+						"name": "trackerSocket.node",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerSocket",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "managedBrief",
+				"inputs": [
+					{
+						"name": "managedBrief.input",
+						"type": "TrackerHostStartRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "managedBrief",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerTmuxPane",
+				"inputs": [
+					{
+						"name": "trackerTmuxPane.raw",
+						"type": "string",
+						"required": true,
+						"description": "One line from the expected tmux pane format."
+					},
+					{
+						"name": "trackerTmuxPane.scope",
+						"type": "{ socket: string; runnerSocket: boolean; names: RegExp }",
+						"required": true,
+						"description": "Socket identity, runner designation and accepted session names."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerTmuxPane",
+						"type": "TrackerTmuxPane | undefined",
+						"description": "Parse one safe tmux pane layout or omit it when the row cannot be verified."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "matchesTrackerTmuxPane",
+				"inputs": [
+					{
+						"name": "matchesTrackerTmuxPane.observed",
+						"type": "TrackerTmuxPane['pane']",
+						"required": true,
+						"description": "Fresh pane observation on the configured socket."
+					},
+					{
+						"name": "matchesTrackerTmuxPane.expected",
+						"type": "Pick<TrackerTmuxPane['pane'], 'key' | 'activity' | 'createdAt' | 'x' | 'y'>",
+						"required": true,
+						"description": "Identity, time and cursor from the planned nudge."
+					}
+				],
+				"outputs": [
+					{
+						"name": "matchesTrackerTmuxPane",
+						"type": "boolean",
+						"description": "Compare the observed pane identity, activity, creation time, and cursor to the intended target."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "trackerTmuxKeys",
+				"inputs": [
+					{
+						"name": "trackerTmuxKeys.paneId",
+						"type": "string",
+						"required": true,
+						"description": "Validated numeric tmux pane ID on the selected socket."
+					},
+					{
+						"name": "trackerTmuxKeys.message",
+						"type": "string",
+						"required": true,
+						"description": "Control-character-free message already checked by the caller."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerTmuxKeys",
+						"type": "string",
+						"description": "Build the tmux command body with text escaped for literal input."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerWorkerClient",
+				"inputs": [
+					{
+						"name": "trackerWorkerClient.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerWorkerClient.address",
+						"type": "TrackerWorkerClient",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerWorkerClient",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerGuestAuthFile",
+				"inputs": [
+					{
+						"name": "trackerGuestAuthFile.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerGuestAuthFile.itemId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerGuestAuthFile.runId",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "trackerGuestAuthFile.address",
+						"type": "Pick<TrackerWorkerClient, 'writeGuestAuth' | 'apiPort'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerGuestAuthFile",
+						"type": "string | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerTmuxAdapter.constructor",
+				"inputs": [
+					{
+						"name": "TrackerTmuxAdapter.constructor.config",
+						"type": "TrackerTmuxAdapterConfig",
+						"required": true,
+						"description": "Controlled tmux executable and canonical Tracker node."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerTmuxAdapter.constructor",
+						"type": "unknown",
+						"description": "Bind the configured tmux executable to the node-specific legacy socket set."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.projects-sessions-tracker-host-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-watchdog-pane",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/projects-sessions/TrackerTmuxAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/projects-sessions/TrackerTmuxAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

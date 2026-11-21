@@ -1,5 +1,4 @@
-import { test, vi } from 'vitest';
-import { expect } from '../../verificationExpect';
+import { expect, test, vi } from 'vitest';
 import { expectJson, hubFixture, operation, signedRequest } from './trackerHubFixture';
 
 test('push accepts a split UTF-8 body and rejects oversized streams before journal access', async () => {

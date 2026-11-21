@@ -1,0 +1,45 @@
+{
+	"name": "tracker-model-ladder",
+	"goal": "Match the installed Tracker model ladder and preserve attempt, outcome, and cost semantics in synthetic Harness run analytics",
+	"createdAt": "2026-11-21T14:43:53.848Z",
+	"updatedAt": "2026-11-21T14:53:41.848Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T14:44:21.081Z",
+			"evidence": "Installed Tracker 122e190a ladder matches migration-plan 2ccd898. Verify pins, risk rules, eligible order, learning and retries with synthetic rows. Preserve legacy report arithmetic and reuse Harness v1 run records with explicit historical price provenance. Provider calls and runtime integration are out of scope."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-21T14:53:36.229Z",
+			"evidence": "Added named pins, automatic eligibility and retries, outcome history and report, and a Tracker adapter for the existing v1 run record."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-21T14:53:41.848Z",
+			"evidence": "22 focused and adjacent Vitest cases passed. Installed-release differential proof matched 448 selections, 160 retries, 60 history scopes, and the full report for 54 synthetic local and replicated attempts."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

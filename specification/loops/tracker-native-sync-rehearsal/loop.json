@@ -1,0 +1,45 @@
+{
+	"name": "tracker-native-sync-rehearsal",
+	"goal": "Exercise native Tracker item operations through the signed hub and two spoke services with SQLite journals.",
+	"createdAt": "2026-11-21T15:42:21.617Z",
+	"updatedAt": "2026-11-21T15:42:21.810Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:42:21.680Z",
+			"evidence": "One in-process hub and two stores represent three independent database identities. Simulate a committed push with a lost receipt and edits during disconnection before reconnecting both spokes."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:42:21.745Z",
+			"evidence": "The previously declared journal, item transitions, signer, hub and spoke handlers compose using TrackerPersistenceService. The fixture starts no live listener or service."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:42:21.810Z",
+			"evidence": "8aad56ce8e passed 56 cases on harbor-mbp-2, including signed lost-receipt retry and convergence after concurrent notes and owner edits in three independent SQLite stores."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"id": "helper.attention-timing-zoned-wall-clock",
+	"uid": "u_r6mrd6gy5y",
+	"kind": "helper",
+	"title": "zonedWallClock",
+	"responsibility": "Owns the zonedWallClock helper unit.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/helpers/attention-timing/zonedWallClock.ts"],
+		"symbols": ["zonedWallClock"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "zonedWallClock.atMs",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "zonedWallClock.tz",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "zonedWallClock",
+				"type": "WallClock"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "zonedWallClock",
+				"inputs": [
+					{
+						"name": "zonedWallClock.atMs",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "zonedWallClock.tz",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "zonedWallClock",
+						"type": "WallClock"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "helper.attention-timing-attention-timing-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/helpers/attention-timing/zonedWallClock.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/helpers/attention-timing/zonedWallClock.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

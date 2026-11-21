@@ -1,0 +1,315 @@
+{
+	"schemaVersion": 1,
+	"id": "command.projects-sessions-tracker",
+	"uid": "u_r7qgepnoax",
+	"kind": "command",
+	"title": "TrackerCommand",
+	"responsibility": "Owns the TrackerCommand command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/commands/projects-sessions/TrackerCommand.ts",
+			"src/commands/projects-sessions/tracker-command/formatNativeTrackerItem.ts",
+			"src/commands/projects-sessions/tracker-command/nativeTrackerCli.types.ts",
+			"src/commands/projects-sessions/tracker-command/nativeTrackerOptions.ts",
+			"src/commands/projects-sessions/tracker-command/nativeTrackerRequest.ts",
+			"src/commands/projects-sessions/tracker-command/runNativeTracker.ts"
+		],
+		"symbols": [
+			"TrackerCommand",
+			"TrackerCommand.register",
+			"TrackerCommand.run",
+			"formatNativeTrackerItem",
+			"nativeItemPrefix",
+			"NativeTrackerRequest",
+			"NativeTrackerItem",
+			"nativeTrackerCommonOptions",
+			"nativeTrackerCommandOptions",
+			"nativeTrackerCommands",
+			"nativeTrackerArgs",
+			"selectedTrackerConfig",
+			"runNativeTracker"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerCommand.register.program",
+				"type": "Command",
+				"required": true
+			},
+			{
+				"name": "TrackerCommand.run.args",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "formatNativeTrackerItem.item",
+				"type": "NativeTrackerItem",
+				"required": true
+			},
+			{
+				"name": "nativeItemPrefix.command",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "nativeItemPrefix.first",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "nativeItemPrefix.item",
+				"type": "NativeTrackerItem",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerArgs.args",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "runNativeTracker.args",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "runNativeTracker.path",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerCommand.register",
+				"type": "void"
+			},
+			{
+				"name": "TrackerCommand.run",
+				"type": "number | Promise<number>"
+			},
+			{
+				"name": "formatNativeTrackerItem",
+				"type": "string"
+			},
+			{
+				"name": "nativeItemPrefix",
+				"type": "unknown"
+			},
+			{
+				"name": "nativeTrackerCommonOptions",
+				"type": "unknown"
+			},
+			{
+				"name": "nativeTrackerCommandOptions",
+				"type": "unknown"
+			},
+			{
+				"name": "nativeTrackerCommands",
+				"type": "unknown"
+			},
+			{
+				"name": "nativeTrackerArgs",
+				"type": "unknown"
+			},
+			{
+				"name": "selectedTrackerConfig",
+				"type": "string | undefined"
+			},
+			{
+				"name": "runNativeTracker",
+				"type": "Promise<number>"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerCommand.register",
+				"inputs": [
+					{
+						"name": "TrackerCommand.register.program",
+						"type": "Command",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerCommand.register",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerCommand.run",
+				"inputs": [
+					{
+						"name": "TrackerCommand.run.args",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerCommand.run",
+						"type": "number | Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "formatNativeTrackerItem",
+				"inputs": [
+					{
+						"name": "formatNativeTrackerItem.item",
+						"type": "NativeTrackerItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "formatNativeTrackerItem",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "nativeItemPrefix",
+				"inputs": [
+					{
+						"name": "nativeItemPrefix.command",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "nativeItemPrefix.first",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "nativeItemPrefix.item",
+						"type": "NativeTrackerItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeItemPrefix",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "nativeTrackerArgs",
+				"inputs": [
+					{
+						"name": "nativeTrackerArgs.args",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeTrackerArgs",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "selectedTrackerConfig",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "selectedTrackerConfig",
+						"type": "string | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "runNativeTracker",
+				"inputs": [
+					{
+						"name": "runNativeTracker.args",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "runNativeTracker.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runNativeTracker",
+						"type": "Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.projects-sessions-tracker-cutover",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-rehearsal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-serve",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-node",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/projects-sessions/TrackerCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/projects-sessions/TrackerCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
