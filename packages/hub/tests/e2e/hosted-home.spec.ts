@@ -10,6 +10,7 @@ import {
 } from './hosted-home';
 
 const archive = '/downloads/Harness-mac-arm64.zip';
+const pendingMac = 'Mac app coming soon';
 const hero = (page: Page) => page.getByRole('heading', { level: 1, name: /Build with agents/ });
 const download = (page: Page) => page.getByRole('region', { name: 'Get Harness on your Mac' });
 const missing = {
@@ -65,7 +66,7 @@ test('a published Mac archive becomes the download link', async ({ page }) => {
 	await expect(
 		page.getByRole('main').getByRole('link', { name: 'Download for Mac' }).first()
 	).toHaveAttribute('href', archive);
-	await expect(download(page).getByRole('button', { name: 'Download for Mac' })).toHaveCount(0);
+	await expect(download(page).getByRole('button', { name: pendingMac })).toHaveCount(0);
 	await expect(download(page).getByText('iPhone app · Coming soon')).toBeVisible();
 	expect(asked).toEqual(['HEAD']);
 	await capture(page, 'home-desktop-mac-available');
@@ -74,14 +75,17 @@ test('a published Mac archive becomes the download link', async ({ page }) => {
 for (const answer of ['missing', 'page'] as const)
 	test(`a ${answer} Mac archive keeps the download pending`, async ({ page, browserErrors }) => {
 		if (answer === 'missing') browserErrors.expectError(missing);
+		await page.setViewportSize({ width: 920, height: 960 });
 		await hostedFixture(page, { signedIn: false });
 		const asked = await macRelease(page, answer);
 		await page.goto('/');
 		await expect.poll(() => asked.length).toBe(1);
-		const pending = download(page).getByRole('button', { name: 'Download for Mac' });
+		await expect(download(page).getByText(/Mac build is being prepared/)).toBeVisible();
+		await capture(page, `home-tablet-mac-${answer}`);
+		const pending = download(page).getByRole('button', { name: pendingMac, exact: true });
 		await expect(pending).toBeDisabled();
 		await expect(pending).toHaveAccessibleDescription(/Mac build is being prepared/);
-		await expect(page.getByRole('link', { name: 'Download for Mac' })).toHaveAttribute(
+		await expect(page.getByRole('link', { name: pendingMac, exact: true })).toHaveAttribute(
 			'href',
 			'#download'
 		);
@@ -97,7 +101,9 @@ for (const view of views)
 			await hostedFixture(page, { signedIn: false });
 			await macRelease(page, 'page');
 			await page.goto('/');
-			await expect(download(page).getByRole('button', { name: 'Download for Mac' })).toBeVisible();
+			await expect(download(page).getByText(/Mac build is being prepared/)).toBeVisible();
+			await capture(page, `home-${view.name}-${scheme}`);
+			await expect(download(page).getByRole('button', { name: pendingMac })).toBeVisible();
 			expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 				view.width
 			);
@@ -113,7 +119,6 @@ for (const view of views)
 			])
 				expect(await contrast(page, quiet)).toBeGreaterThanOrEqual(4.5);
 			await layout(page, view.name === 'desktop');
-			await capture(page, `home-${view.name}-${scheme}`);
 		});
 
 /** On a desktop the hero sits beside its loop and the steps share a row; on a phone they stack. */

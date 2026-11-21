@@ -10,6 +10,7 @@ const html = (mac: string | null, ios: string | null) =>
 test('an unpublished Mac build is a disabled button that says why, never a dead link', () => {
 	const body = html(null, null);
 	expect(body).toMatch(/<button[^>]*disabled[^>]*aria-describedby="home-mac-pending"/);
+	expect(body).toMatch(/<button[^>]*>Mac app coming soon<\/button>/);
 	expect(body).toContain('id="home-mac-pending"');
 	expect(body).not.toMatch(/<a[^>]*download/);
 	expect(body).toContain('iPhone app · Coming soon');
@@ -26,10 +27,11 @@ test('a published build is a direct download link and the iPhone app gets its ow
 
 test('the hero download goes to the build when there is one, else to the download section', () => {
 	const pending = render(HomeHero, { props: { download: '#download' } }).body;
-	expect(pending).toMatch(/<a[^>]*href="#download"[^>]*>Download for Mac/);
+	expect(pending).toMatch(/<a[^>]*href="#download"[^>]*>Mac app coming soon/);
 	expect(pending).toContain('iPhone app coming soon');
 	const ready = render(HomeHero, { props: { download: '/downloads/Harness.dmg', iosReady: true } });
 	expect(ready.body).toMatch(/<a[^>]*href="\/downloads\/Harness\.dmg"/);
+	expect(ready.body).toContain('Download for Mac');
 	expect(ready.body).not.toContain('coming soon');
 });
 
