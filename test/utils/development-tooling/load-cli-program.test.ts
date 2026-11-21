@@ -142,8 +142,22 @@ function harborDispatchCases(root: string) {
 		{ name: 'publish-approved', input: approved, expected: approved, sdk: true },
 		{ name: 'templates', input: ['templates'], expected: ['templates'], sdk: true },
 		{ name: 'scaffold-mobile', input: scaffold, expected: scaffold, sdk: true },
+		{
+			name: 'scaffold-defaults',
+			input: scaffold.slice(0, 3),
+			expected: scaffold.slice(0, 3),
+			sdk: true
+		},
+		{
+			name: 'scaffold-id-default-name',
+			input: scaffold.slice(0, 4),
+			expected: scaffold.slice(0, 4),
+			sdk: true
+		},
 		{ name: 'check-default', input: ['check'], expected: ['check'], sdk: true },
 		{ name: 'check', input: check, expected: check, sdk: true },
+		{ name: 'pack-defaults', input: ['pack'], expected: ['pack'], sdk: true },
+		{ name: 'pack-default-output', input: pack.slice(0, 2), expected: pack.slice(0, 2), sdk: true },
 		{ name: 'pack', input: pack, expected: pack, sdk: true },
 		{ name: 'stage-android', input: stageAndroid, expected: stageAndroid, sdk: true }
 	];
