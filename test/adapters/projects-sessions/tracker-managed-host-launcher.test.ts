@@ -26,7 +26,12 @@ async function proveManagedWorker({ root, git }: TemporaryRepo) {
 	const managed = loadManagedFixture(root, paths.config);
 	const { trackerManagedHostLauncher } =
 		await import('../../../src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher');
-	const launcher = trackerManagedHostLauncher(managed, { client, platform: 'darwin' });
+	const scoped = {
+		...client,
+		writeGuestAuth: ({ path }: { path: string }) =>
+			writeFileSync(path, 'synthetic', { flag: 'wx', mode: 0o600 })
+	};
+	const launcher = trackerManagedHostLauncher(managed, { client: scoped, platform: 'darwin' });
 	const docker = launchInput(root, 1, 'docker');
 	const native = launchInput(root, 2, 'native');
 	for (const input of [docker, native]) {
@@ -35,7 +40,7 @@ async function proveManagedWorker({ root, git }: TemporaryRepo) {
 			session: { key: input.key, state: 'exited', exitCode: 0 }
 		});
 	}
-	const restarted = trackerManagedHostLauncher(managed, { client, platform: 'darwin' });
+	const restarted = trackerManagedHostLauncher(managed, { client: scoped, platform: 'darwin' });
 	const replies = await restarted.inspect(
 		{ node, keys: [docker.key, native.key, 'wrong'] },
 		signal
@@ -143,7 +148,8 @@ function verifyWorkerInvocations(profiles: { native: string; docker: string }) {
 		image: null,
 		secret: false,
 		client: { node, apiPort: client.apiPort },
-		legacy: '/dev/null/tracker'
+		legacy: '/dev/null/tracker',
+		guestAuthFile: null
 	});
 	expect(docker[0].cwd).toMatch(/\/effects\/[a-f0-9]{64}\/worktree$/);
 	expect(native[0].cwd).not.toBe(docker[0].cwd);
