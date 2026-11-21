@@ -8,7 +8,10 @@ export async function modelExampleCases(unit: ComponentManifest, root = process.
 	const symbol = unit.owns.symbols[0];
 	if (!source || !symbol) return { schema: null, reason: 'no runtime schema' } as const;
 
-	const exports = (await import(pathToFileURL(resolve(root, source)).href)) as Record<string, unknown>;
+	const exports = (await import(pathToFileURL(resolve(root, source)).href)) as Record<
+		string,
+		unknown
+	>;
 	const owner = exports[symbol] as { definition?: SqliteModel } | undefined;
 	const schema = owner?.definition;
 	if (!schema) return { schema: null, reason: 'no runtime schema' } as const;
@@ -21,7 +24,8 @@ export async function modelExampleCases(unit: ComponentManifest, root = process.
 			if (!field) {
 				failures.push(`runtime field ${fieldName} is missing`);
 			} else {
-				if (field.type !== item.type) failures.push(`runtime field type does not match ${item.type}`);
+				if (field.type !== item.type)
+					failures.push(`runtime field type does not match ${item.type}`);
 				if (example === null) {
 					if (field.nullable !== true) failures.push('null requires a nullable field');
 				} else if (!matchesExampleType(example, field.type)) {
@@ -40,7 +44,10 @@ export async function modelExampleCases(unit: ComponentManifest, root = process.
 	return { schema, cases };
 }
 
-function matchesExampleType(example: unknown, type: SqliteModel['fields'][string]['type']): boolean {
+function matchesExampleType(
+	example: unknown,
+	type: SqliteModel['fields'][string]['type']
+): boolean {
 	switch (type) {
 		case 'string':
 			return typeof example === 'string';
@@ -57,5 +64,7 @@ function matchesExampleType(example: unknown, type: SqliteModel['fields'][string
 					(byte) => typeof byte === 'number' && Number.isInteger(byte) && byte >= 0 && byte <= 255
 				)
 			);
+		default:
+			return false;
 	}
 }

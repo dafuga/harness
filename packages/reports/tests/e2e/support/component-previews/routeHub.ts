@@ -11,6 +11,8 @@ export function hubRoute(
 	const routes: Record<string, { route: string; path: string }> = {
 		'hub.layout.root': { route: '/', path: '/' },
 		'hub.page.root': { route: '/', path: '/' },
+		'hub.page.projects': { route: '/projects', path: '/projects' },
+		'hub.page.tracker-overview': { route: '/tracker-overview', path: '/tracker-overview' },
 		'hub.page.projects-project-id-harness-path': {
 			route: '/projects/[projectId]/harness/[...path]',
 			path: hostedAddress

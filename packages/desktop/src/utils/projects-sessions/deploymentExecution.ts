@@ -5,7 +5,10 @@ import { deploymentWorktree } from './deploymentWorktree';
 import { deploymentCommand } from './deploymentCommand';
 import { deploymentHealth } from './deploymentProof';
 import { saveDeployment } from './deploymentState';
-import { captureDeploymentTarget, verifyDeploymentSnapshot } from '../verification-evidence/verifyDeploymentSnapshot';
+import {
+	captureDeploymentTarget,
+	verifyDeploymentSnapshot
+} from '../verification-evidence/verifyDeploymentSnapshot';
 /** Each target uses its own immutable checkout; later edits and lower deployments can continue. */
 export async function deploymentExecution(reviewed: ReviewedDeployment, runtime: Runtime) {
 	if (reviewed.plan.blockers.length) throw new Error(reviewed.plan.blockers.join(' '));

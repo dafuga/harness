@@ -2,7 +2,10 @@ import { resolve } from 'node:path';
 import { types } from 'node:util';
 import { runInNewContext } from 'node:vm';
 import { pathToFileURL } from 'node:url';
-import type { UnitDocumentation, UsageExample } from '../../src/utils/unit-documentation/unitDocumentation';
+import type {
+	UnitDocumentation,
+	UsageExample
+} from '../../src/utils/unit-documentation/unitDocumentation';
 import { expect } from '../verificationExpect';
 import type { DeclaredHelperExamples, ObservedUsageExample } from './unitExamples.types';
 

@@ -29,22 +29,30 @@ export async function stateTests(
 	options: { headless?: boolean } = {}
 ): Promise<StateTest[]> {
 	const paths = declaredTestPaths(context, unit, state);
-	if (!options.headless)
-		for (const file of attributedTests(context, unit))
-			if (!paths.has(file)) paths.set(file, new Set());
+	if (!options.headless) addAttributedTests(paths, attributedTests(context, unit));
 	const found: StateTest[] = [];
 	for (const [file, viewports] of paths) {
 		if (!context.loaded.index.files.has(file)) continue;
 		if (!context.testSyntax.has(file))
 			context.testSyntax.set(file, authoredTest(await guidanceText(context, file)));
 		const syntax = context.testSyntax.get(file)!;
-		if (
-			syntax.test &&
-			(options.headless || syntax.states.has(state) || (viewports.size > 0 && syntax.matrix))
-		)
+		if (coversState(syntax, state, viewports.size, options.headless))
 			found.push({ file, viewports: [...viewports] });
 	}
 	return found;
+}
+
+function coversState(
+	syntax: ReturnType<typeof authoredTest>,
+	state: string,
+	viewports: number,
+	headless = false
+): boolean {
+	return syntax.test && (headless || syntax.states.has(state) || (viewports > 0 && syntax.matrix));
+}
+
+function addAttributedTests(paths: Map<string, Set<string>>, files: string[]): void {
+	for (const file of files) if (!paths.has(file)) paths.set(file, new Set());
 }
 
 function declaredTestPaths(context: GuidanceContext, unit: ComponentManifest, state: string) {

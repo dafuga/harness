@@ -33,7 +33,8 @@ export async function specificationStorageReport(root: string) {
 function filesBelow(directory: string): string[] {
 	return safeEntries(directory).flatMap((entry) => {
 		const path = join(directory, entry.name);
-		return entry.isDirectory() ? filesBelow(path) : entry.isFile() ? [path] : [];
+		if (entry.isDirectory()) return filesBelow(path);
+		return entry.isFile() ? [path] : [];
 	});
 }
 
@@ -57,6 +58,9 @@ async function lineCount(path: string): Promise<number> {
 	if (fileBytes(path) === 0) return 0;
 	let lines = 0;
 	const reader = createInterface({ input: createReadStream(path), crlfDelay: Infinity });
-	for await (const _line of reader) lines++;
+	for await (const line of reader) {
+		void line;
+		lines++;
+	}
 	return lines;
 }

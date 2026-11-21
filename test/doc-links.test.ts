@@ -9,7 +9,7 @@ test('document links resolve relative files and anchors without treating code as
 	};
 	const files = {
 		exists: (path: string) => path in sources,
-		read: (path: string) => sources[path]!
+		read: (path: string) => sources[path]
 	};
 	expect(brokenDocLinks(['README.md'], files)).toEqual([]);
 	sources['docs/guide.md'] += '\n[Broken](missing.md)\n[Bad anchor](../README.md#gone)';
@@ -29,7 +29,7 @@ test('architecture source paths and paths outside the repository are diagnosed',
 	};
 	const files = {
 		exists: (path: string) => path in sources,
-		read: (path: string) => sources[path]!
+		read: (path: string) => sources[path]
 	};
 	expect(brokenDocLinks(['ARCHITECTURE.md'], files, ['ARCHITECTURE.md'])).toEqual([
 		'ARCHITECTURE.md:1: `src/gone.ts` does not exist',

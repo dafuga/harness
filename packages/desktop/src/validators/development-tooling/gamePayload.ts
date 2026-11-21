@@ -1,10 +1,5 @@
 // @harness-uid u_3okwrglc6p
-import {
-	ipcFields,
-	textField,
-	enumField,
-	commitPattern
-} from '../../utils/ipc-payload/ipcFields';
+import { ipcFields, textField, enumField, commitPattern } from '../../utils/ipc-payload/ipcFields';
 import { assertDocument } from '../../../../game/src/validators/game-authoring/gameDocument';
 import { validateSession } from '../../../../game/src/adapters/agents-providers/DecartAdapter';
 import type { RenderSessionRequest } from '../../../../game/src/models/game-authoring/Game.types';

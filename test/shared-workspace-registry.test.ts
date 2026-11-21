@@ -4,6 +4,7 @@ import {
 } from '../packages/reports/tests/e2e/support/component-previews/catalogVariants';
 import { catalogVisual } from '../packages/reports/tests/e2e/support/component-previews/visualUnits';
 import { readFileSync } from 'node:fs';
+import { getFileInfo } from 'prettier';
 import { join } from 'node:path';
 import { beforeAll, expect, test } from 'vitest';
 import { HandlerRuntimeAdapter } from '../packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter';
@@ -47,11 +48,17 @@ beforeAll(async () => {
 	loaded = await loadUnits(process.cwd(), undefined, indexer);
 }, 60_000);
 
-test('cataloged application configs keep their implementation and entries under configs', () => {
+test('cataloged configs keep their source paths and canonical registry records', async () => {
 	const configs = loaded.stored.filter(
 		(unit) => unit.status === 'active' && unit.kind === 'config'
 	);
 	expect(configs.length).toBeGreaterThan(0);
+	const ignorePath = '.prettierignore';
+	const record = await getFileInfo(`specification/units/${configs[0].id}.json`, { ignorePath });
+	expect(record.ignored, 'Canonical unit JSON is excluded from the repository formatter').toBe(
+		true
+	);
+	expect((await getFileInfo('package.json', { ignorePath })).ignored).toBe(false);
 	for (const unit of configs)
 		for (const source of unit.owns.source)
 			expect(source, `${unit.id} config source`).toMatch(/(?:^|\/)src\/configs\//);

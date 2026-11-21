@@ -41,22 +41,27 @@ export class GitAdapter {
 
 export type { GitRunOptions, GitResult } from './GitAdapter.types';
 
+const gitEnvironmentKeys = new Set([
+	'SSH_AUTH_SOCK',
+	'SSH_ASKPASS',
+	'XDG_CONFIG_HOME',
+	'SSL_CERT_FILE',
+	'SSL_CERT_DIR',
+	'GH_TOKEN'
+]);
+
 /** Authentication transport belongs only to Git, never generic evaluator children. */
 function gitEnvironment(extra: Record<string, string> = {}): Record<string, string> {
 	const inherited: Record<string, string> = {};
-	for (const [key, value] of Object.entries(process.env))
+	for (const [key, value] of Object.entries(process.env)) {
+		if (value === undefined) continue;
 		if (
-			(key.startsWith('GIT_') ||
-				key === 'SSH_AUTH_SOCK' ||
-				key === 'SSH_ASKPASS' ||
-				key === 'XDG_CONFIG_HOME' ||
-				key === 'SSL_CERT_FILE' ||
-				key === 'SSL_CERT_DIR' ||
-				key === 'GH_TOKEN' ||
-				key.endsWith('_PROXY') ||
-				key.endsWith('_proxy')) &&
-			value !== undefined
+			gitEnvironmentKeys.has(key) ||
+			key.startsWith('GIT_') ||
+			key.endsWith('_PROXY') ||
+			key.endsWith('_proxy')
 		)
 			inherited[key] = value;
+	}
 	return { ...inherited, ...extra, GIT_TERMINAL_PROMPT: '0' };
 }

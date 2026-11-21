@@ -62,7 +62,10 @@ test('rejects cases beyond the recorded form limits', () => {
 	expect(() =>
 		recordExampleCases(
 			{ unitId, symbol, state, evidence, file },
-			Array.from({ length: caseForm.most + 1 }, (_, index) => ({ ...example, name: `case-${index}` })),
+			Array.from({ length: caseForm.most + 1 }, (_, index) => ({
+				...example,
+				name: `case-${index}`
+			})),
 			env
 		)
 	).toThrow(RangeError);
