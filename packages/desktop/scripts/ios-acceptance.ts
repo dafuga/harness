@@ -39,7 +39,7 @@ import {
 } from './ios-acceptance-simulator';
 import { movedSources, named, readSources, revision, toolsProof } from './ios-acceptance-source';
 import type { SourceReading } from './ios-acceptance-source';
-import { reconnection, savedCopies, workspace } from './ios-acceptance-workspace';
+import { pairedOverview, reconnection, savedCopies, workspace } from './ios-acceptance-workspace';
 import { desktopRoot, fileDigest, fixtureProduct } from './ios-products';
 import { scanFixtureProduct } from './ios-scan-fixture';
 import { startRemoteFixture } from './remote-fixture-host';
@@ -61,6 +61,7 @@ async function onDevice(run: Acceptance, releaseCopy: string): Promise<void> {
 		install(run.udid, scanFixtureProduct);
 		await scanEndings(run);
 		await pairing(run);
+		await pairedOverview(run);
 		await workspace(run);
 		await savedCopies(run);
 		await reconnection(run);
