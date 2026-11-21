@@ -1,0 +1,68 @@
+{
+	"schemaVersion": 1,
+	"id": "hosted-homepage",
+	"title": "Public Harness Hub homepage",
+	"kind": "ui",
+	"units": [
+		"hub.page.root",
+		"hub.component.public-site-home-hero",
+		"hub.component.public-site-home-download"
+	],
+	"states": [
+		{
+			"id": "default",
+			"title": "The public homepage says the Mac and iPhone apps are coming soon",
+			"coverage": "required",
+			"units": [
+				"hub.page.root",
+				"hub.component.public-site-home-hero",
+				"hub.component.public-site-home-download"
+			]
+		},
+		{
+			"id": "available",
+			"title": "The public homepage links to the published Mac archive while iPhone stays pending",
+			"coverage": "required",
+			"units": [
+				"hub.page.root",
+				"hub.component.public-site-home-hero",
+				"hub.component.public-site-home-download"
+			]
+		}
+	],
+	"viewports": [
+		{ "id": "desktop", "width": 1280, "height": 800 },
+		{ "id": "tablet", "width": 920, "height": 960 },
+		{ "id": "mobile", "width": 390, "height": 844 }
+	],
+	"tests": [
+		{
+			"id": "hosted-home",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test tests/e2e/hosted-home.spec.ts --workers=1",
+			"cwd": "packages/hub"
+		}
+	],
+	"evidence": [
+		{
+			"id": "homepage-screen",
+			"kind": "screenshot",
+			"states": ["default", "available"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"capture": "full-page",
+			"build": "hub",
+			"required": true
+		},
+		{
+			"id": "homepage-benchmarks",
+			"kind": "benchmark",
+			"states": ["default", "available"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"build": "hub",
+			"required": true
+		}
+	]
+}

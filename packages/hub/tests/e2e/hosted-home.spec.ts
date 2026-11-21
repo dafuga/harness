@@ -4,7 +4,9 @@ import {
 	backgroundLightness,
 	box,
 	capture,
+	captureHomeScenario,
 	contrast,
+	homeViewports,
 	macRelease,
 	projectsPage
 } from './hosted-home';
@@ -59,6 +61,16 @@ test('a signed-in person also gets the public homepage, with Your projects', asy
 test('a published Mac archive becomes the download link', async ({ page }) => {
 	await hostedFixture(page, { signedIn: false });
 	const asked = await macRelease(page, 'zip');
+	for (const viewport of homeViewports) {
+		await page.setViewportSize({ width: viewport.width, height: viewport.height });
+		await published(page);
+		await captureHomeScenario(page, 'available', viewport.id);
+		if (viewport.id === 'desktop') await capture(page, 'home-desktop-mac-available');
+	}
+	expect(asked).toEqual(homeViewports.map(() => 'HEAD'));
+});
+
+async function published(page: Page) {
 	await page.goto('/');
 	const link = download(page).getByRole('link', { name: 'Download for Mac' });
 	await expect(link).toHaveAttribute('href', archive);
@@ -68,9 +80,7 @@ test('a published Mac archive becomes the download link', async ({ page }) => {
 	).toHaveAttribute('href', archive);
 	await expect(download(page).getByRole('button', { name: pendingMac })).toHaveCount(0);
 	await expect(download(page).getByText('iPhone app · Coming soon')).toBeVisible();
-	expect(asked).toEqual(['HEAD']);
-	await capture(page, 'home-desktop-mac-available');
-});
+}
 
 for (const answer of ['missing', 'page'] as const)
 	test(`a ${answer} Mac archive keeps the download pending`, async ({ page, browserErrors }) => {
@@ -91,6 +101,7 @@ for (const answer of ['missing', 'page'] as const)
 		);
 		await expect(page.locator(`a[href="${archive}"]`)).toHaveCount(0);
 		await expect(download(page).getByText('iPhone app · Coming soon')).toBeVisible();
+		if (answer === 'missing') await captureHomeScenario(page, 'default', 'tablet');
 	});
 
 for (const view of views)
@@ -119,6 +130,8 @@ for (const view of views)
 			])
 				expect(await contrast(page, quiet)).toBeGreaterThanOrEqual(4.5);
 			await layout(page, view.name === 'desktop');
+			if (scheme === 'dark')
+				await captureHomeScenario(page, 'default', view.name === 'phone' ? 'mobile' : 'desktop');
 		});
 
 /** On a desktop the hero sits beside its loop and the steps share a row; on a phone they stack. */

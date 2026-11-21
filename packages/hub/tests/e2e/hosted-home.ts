@@ -1,6 +1,16 @@
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import type { Locator, Page } from '@playwright/test';
+import type { ScenarioManifest } from '../../../../src/core/unitTypes';
+import { buildStamp } from '../../../../src/utils/buildStamp';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../../../src/utils/reports-media/record-capture/recordCapture';
+import { pageWorkload } from '../../../desktop/tests/e2e/page-workload';
+import scenario from '../../../../specification/scenarios/hosted-homepage.json' with { type: 'json' };
+
+export const homeViewports = scenario.viewports;
 
 /** The page the visitor reads: every color is measured as painted, whatever its CSS notation. */
 export async function contrast(page: Page, text: Locator): Promise<number> {
@@ -51,6 +61,40 @@ export async function capture(page: Page, name: string): Promise<void> {
 	mkdirSync(directory, { recursive: true });
 	await page.evaluate(() => document.fonts.ready);
 	await page.screenshot({ path: join(directory, `${name}.png`), fullPage: true });
+}
+
+/** Record the settled homepage, where both pending or available actions are visible in one capture. */
+export async function captureHomeScenario(page: Page, state: string, viewport: string) {
+	if (!evidenceRequested()) return;
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await Promise.all(Array.from(document.images, (image) => image.decode()));
+		await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+	});
+	const stamp = await page.locator('meta[name="harness-build"]').getAttribute('content');
+	const buildId = buildStamp(stamp ?? undefined);
+	const revision = process.env.HARNESS_VERIFY_REVISION;
+	if (!buildId || !revision) throw new Error('Homepage captures need a stamped Hub build.');
+	const pixels = await page.screenshot({ fullPage: true, animations: 'disabled', scale: 'css' });
+	recordCapture(
+		{
+			evidence: 'homepage-screen',
+			kind: 'screenshot',
+			state,
+			viewport,
+			file: `homepage-${state}-${viewport}.png`,
+			mediaType: 'image/png',
+			provenance: 'actual-capture',
+			server: { buildId, revision }
+		},
+		pixels
+	);
+	await pageWorkload(page, scenario as ScenarioManifest, {
+		state,
+		name: 'homepage',
+		viewport,
+		buildId
+	});
 }
 
 const pathIs = (path: string) => (url: URL) => url.pathname === path;
