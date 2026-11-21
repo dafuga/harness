@@ -5,35 +5,89 @@ import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { createInterface } from 'node:readline';
 import { StringDecoder } from 'node:string_decoder';
-import { clearInterval, setInterval } from 'node:timers';
-import type { TaskRunInput } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
+import type {
+	TaskPlatform,
+	TaskRunInput
+} from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import type { TaskProcessResult } from '../ModuleTaskRunnerAdapter.types';
 import { ProviderSessionAdapter } from '../ProviderSessionAdapter';
+import {
+	ManagedProviderDockerAdapter,
+	managedProviderDockerResources
+} from '../ManagedProviderDockerAdapter';
 import { TaskOutputOverflowError, type TaskChild } from './taskProcess.types';
 import { resourceWork } from '../../../utils/execution-runtimes/resourceWork';
 import type { ResourceContext } from '../../../core/execution-runtimes/resourceTypes';
 import { ProviderRequestGate } from './ProviderRequestGate';
 import { guardedProviderCommand } from './provider-request-gate/providerDestination';
-import {
-	contextPollMs,
-	contextStop,
-	defaultContextTokens,
-	hardContextTokens,
-	providerCompactionTokens,
-	telemetryTimeoutMs
-} from './sessionPolicy';
+import { ModuleTaskRunError } from './ModuleTaskRunError';
+import { processMonitor, killGroup } from './taskProcessMonitor';
+import { hardContextTokens, providerCompactionTokens } from './sessionPolicy';
 
-/** Keep subscription auth on this host; never forward inherited provider keys or raw event logs. */
-export function taskProcess(command: string[], input: TaskRunInput): Promise<TaskProcessResult> {
+/** Keep native subscription auth on this host. The Docker pilot runs offline. */
+export async function taskProcess(
+	command: string[],
+	input: TaskRunInput
+): Promise<TaskProcessResult> {
+	const image = dockerTaskImage(
+		input.platform,
+		process.platform,
+		process.env.HARNESS_TASK_DOCKER_IMAGE
+	);
 	return resourceWork(
-		{ priority: 'coding', memoryMiB: 2048, label: 'Module task CLI' },
-		(resources) => runTaskProcess(command, input, resources),
+		{
+			priority: 'coding',
+			label: 'Module task CLI',
+			...(image ? managedProviderDockerResources : { memoryMiB: 2048 })
+		},
+		(resources) =>
+			image
+				? runDockerTaskProcess(command, input, resources, image)
+				: runNativeTaskProcess(command, input, resources),
 		process.env,
 		{ signal: input.signal }
 	);
 }
 
-async function runTaskProcess(command: string[], input: TaskRunInput, resources: ResourceContext) {
+export function dockerTaskImage(
+	platform: TaskPlatform | undefined,
+	host: typeof process.platform,
+	image?: string
+): string | undefined {
+	if (platform === 'macos' && host !== 'darwin')
+		throw new ModuleTaskRunError('This task requires native macOS.');
+	if (platform !== 'linux') return undefined;
+	if (host !== 'linux' && host !== 'darwin')
+		throw new ModuleTaskRunError('The Linux Docker pilot requires a Linux or macOS host.');
+	if (!image || !/^sha256:[a-f0-9]{64}$/.test(image))
+		throw new ModuleTaskRunError(
+			'Set HARNESS_TASK_DOCKER_IMAGE to the full ID of an approved local Linux fixture image.'
+		);
+	return image;
+}
+
+function runDockerTaskProcess(
+	command: string[],
+	input: TaskRunInput,
+	resources: ResourceContext,
+	image: string
+) {
+	const meter = new ProviderSessionAdapter(input.provider, undefined);
+	return new ManagedProviderDockerAdapter().run(
+		command,
+		{ cwd: input.cwd, signal: input.signal, image },
+		(child) => {
+			if (child.pid) resources.track(child.pid);
+			return collectTaskProcess(child, input, meter);
+		}
+	);
+}
+
+async function runNativeTaskProcess(
+	command: string[],
+	input: TaskRunInput,
+	resources: ResourceContext
+) {
 	input.signal.throwIfAborted();
 	const env = taskEnvironment(resources);
 	if (input.supervision) env.HARNESS_ORCHESTRATION_TRACKER = input.supervision.tracker;
@@ -59,7 +113,7 @@ function collectTaskProcess(
 	child: TaskChild,
 	input: TaskRunInput,
 	meter: ProviderSessionAdapter,
-	gate: ProviderRequestGate
+	gate?: ProviderRequestGate
 ): Promise<TaskProcessResult> {
 	const controller = processMonitor(child, input, meter, gate);
 	const lines = createInterface({ input: child.stdout, crlfDelay: Infinity });
@@ -80,79 +134,26 @@ function collectTaskProcess(
 	child.stderr.resume();
 	child.stdin.on('error', () => {});
 	return new Promise((resolve, reject) => {
-		child.once('error', reject);
+		let launchError: Error | undefined;
+		child.once('error', (error) => {
+			launchError = error;
+		});
 		child.once('close', (code) => {
 			const stop = controller.close();
-			if (overflow && !stop)
+			if (launchError) reject(launchError);
+			else if (overflow && !stop)
 				reject(new TaskOutputOverflowError('Task CLI output exceeded its bound.'));
 			else
 				resolve({
 					code: code ?? 1,
 					stdout: stdout + decoder.end(),
 					observation: meter.summary(),
-					preRequestEstimateTokens: gate.blockedEstimate,
+					preRequestEstimateTokens: gate?.blockedEstimate,
 					stop
 				});
 		});
 		child.stdin.end(input.prompt);
 	});
-}
-
-function processMonitor(
-	child: TaskChild,
-	input: TaskRunInput,
-	meter: ProviderSessionAdapter,
-	gate: ProviderRequestGate
-) {
-	const threshold = input.supervision?.contextTokens ?? defaultContextTokens;
-	const startedAt = Date.now();
-	let exited = false;
-	let stop: TaskProcessResult['stop'];
-	const halt = (reason: NonNullable<TaskProcessResult['stop']>) => {
-		if (!stop || reason === 'hard-limit') stop = reason;
-		if (!exited) killGroup(child);
-	};
-	const sample = () => {
-		try {
-			const peak = meter.sample().peakContextTokens;
-			const reason = contextStop(peak, threshold);
-			if (reason === 'hard-limit') halt(reason);
-			else if (gate.blockedEstimate !== undefined || (!exited && reason === 'rotated'))
-				halt('rotated');
-			else if (!exited && peak === null && Date.now() - startedAt >= telemetryTimeoutMs)
-				halt('meter-unavailable');
-		} catch {
-			halt('meter-unavailable');
-		}
-	};
-	const abort = () => halt('interrupted');
-	input.signal.addEventListener('abort', abort, { once: true });
-	if (input.signal.aborted) abort();
-	const poll = setInterval(sample, contextPollMs);
-	const timer = setTimeout(() => halt('timeout'), input.supervision ? 21_600_000 : 900_000);
-	child.once('exit', () => {
-		exited = true;
-		killGroup(child);
-	});
-	return {
-		sample,
-		close() {
-			exited = true;
-			clearInterval(poll);
-			clearTimeout(timer);
-			input.signal.removeEventListener('abort', abort);
-			sample();
-			return stop;
-		}
-	};
-}
-
-function killGroup(child: TaskChild): void {
-	try {
-		if (child.pid) process.kill(process.platform === 'win32' ? child.pid : -child.pid, 'SIGKILL');
-	} catch {
-		/* The process group already stopped. */
-	}
 }
 
 function taskEnvironment(resources: ResourceContext): Record<string, string | undefined> {

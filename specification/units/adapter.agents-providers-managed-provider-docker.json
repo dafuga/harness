@@ -1,0 +1,156 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-managed-provider-docker",
+	"uid": "u_ymrcybx25k",
+	"kind": "adapter",
+	"title": "ManagedProviderDockerAdapter",
+	"responsibility": "Start offline Linux provider fixtures with an explicit Docker policy, attach their standard streams and remove the task-owned container on completion.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/ManagedProviderDockerAdapter.ts",
+			"src/adapters/agents-providers/ManagedProviderDockerAdapter.types.ts"
+		],
+		"symbols": [
+			"managedProviderDockerResources",
+			"ManagedProviderDockerAdapter",
+			"ManagedProviderDockerAdapter.command",
+			"ManagedProviderDockerAdapter.run",
+			"DockerTaskWorkspace",
+			"DockerTaskCreate",
+			"DockerTaskDaemon"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ManagedProviderDockerAdapter.command.[executable, ...args]",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "ManagedProviderDockerAdapter.command.task",
+				"type": "DockerTaskCreate",
+				"required": true
+			},
+			{
+				"name": "ManagedProviderDockerAdapter.run.command",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "ManagedProviderDockerAdapter.run.workspace",
+				"type": "DockerTaskWorkspace",
+				"required": true
+			},
+			{
+				"name": "ManagedProviderDockerAdapter.run.collect",
+				"type": "(child: ChildProcessWithoutNullStreams) => Promise<T>",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "managedProviderDockerResources",
+				"type": "unknown"
+			},
+			{
+				"name": "ManagedProviderDockerAdapter.command",
+				"type": "string[]"
+			},
+			{
+				"name": "ManagedProviderDockerAdapter.run",
+				"type": "Promise<T>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ModuleTaskRunError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ManagedProviderDockerAdapter.command",
+				"inputs": [
+					{
+						"name": "ManagedProviderDockerAdapter.command.[executable, ...args]",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "ManagedProviderDockerAdapter.command.task",
+						"type": "DockerTaskCreate",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ManagedProviderDockerAdapter.command",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ManagedProviderDockerAdapter.run",
+				"inputs": [
+					{
+						"name": "ManagedProviderDockerAdapter.run.command",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "ManagedProviderDockerAdapter.run.workspace",
+						"type": "DockerTaskWorkspace",
+						"required": true
+					},
+					{
+						"name": "ManagedProviderDockerAdapter.run.collect",
+						"type": "(child: ChildProcessWithoutNullStreams) => Promise<T>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ManagedProviderDockerAdapter.run",
+						"type": "Promise<T>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-module-task-runner",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/ManagedProviderDockerAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/ManagedProviderDockerAdapter.ts"
+			}
+		]
+	},
+	"scenarios": ["module-tasks"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
