@@ -1,4 +1,5 @@
 // @harness-uid u_rbabjoss2e
+import type { SqliteFieldValue } from './SqliteAdapter.types';
 import type {
 	PersistenceAdapter,
 	SqliteDatabase,
@@ -11,9 +12,6 @@ import {
 	sqliteTableSql
 } from '../../utils/development-tooling/sqliteTableSql';
 import { SqliteTableAdapter } from './SqliteTableAdapter';
-
-/** A stored field value: a scalar its type accepts, null, or an object for json and blob fields. */
-type SqliteFieldValue = string | number | boolean | null | object;
 
 /** A driver-injected adapter: constructing or importing it never opens a database. */
 export class SqliteAdapter implements PersistenceAdapter {
