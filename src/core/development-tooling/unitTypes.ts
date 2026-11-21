@@ -27,7 +27,9 @@ export const contractItemSchema = z.strictObject({
 	default: z.json().optional(),
 	description: z.string().optional(),
 	/** Values a person declared as examples of the item; any JSON, kept exactly as written. */
-	examples: z.array(z.json()).optional()
+	examples: z.array(z.json()).optional(),
+	/** Why a declared boundary intentionally accepts an unknown type; required by strict checks. */
+	unknownReason: text.optional()
 });
 
 /** Authored usage, distinct from observed verification evidence. */
