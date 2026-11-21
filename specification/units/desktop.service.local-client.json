@@ -46,7 +46,11 @@
 				"type": "WireChannel",
 				"required": true,
 				"description": "The wire channel the value is sent on, which WireChannel limits to 'run', 'cache' or 'connection'; the two sends in this file use 'run' for run events. emit passes the channel through without checking it at runtime.",
-				"examples": ["run", "cache", "connection"]
+				"examples": [
+					"run",
+					"cache",
+					"connection"
+				]
 			},
 			{
 				"name": "LocalClientService.emit.value",
@@ -79,7 +83,10 @@
 				"name": "LocalClientService.ended",
 				"type": "boolean",
 				"description": "Whether the wire session of this window has ended, read from the wire session's ended flag on every access. While it is true, attach closes a new socket with 4401 and does not register it.",
-				"examples": [false, true]
+				"examples": [
+					false,
+					true
+				]
 			},
 			{
 				"name": "LocalClientService.attach",
@@ -119,7 +126,10 @@
 						"name": "LocalClientService.ended",
 						"type": "boolean",
 						"description": "Whether the wire session of this window has ended, read from the wire session's ended flag on every access. While it is true, attach closes a new socket with 4401 and does not register it.",
-						"examples": [false, true]
+						"examples": [
+							false,
+							true
+						]
 					}
 				],
 				"errors": [],
@@ -153,7 +163,11 @@
 						"type": "WireChannel",
 						"required": true,
 						"description": "The wire channel the value is sent on, which WireChannel limits to 'run', 'cache' or 'connection'; the two sends in this file use 'run' for run events. emit passes the channel through without checking it at runtime.",
-						"examples": ["run", "cache", "connection"]
+						"examples": [
+							"run",
+							"cache",
+							"connection"
+						]
 					},
 					{
 						"name": "LocalClientService.emit.value",
@@ -249,7 +263,7 @@
 	},
 	"dependencies": [
 		{
-			"unit": "desktop.model.agent-runner-types",
+			"unit": "desktop.function.planning-collaboration-mockup-source",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -329,7 +343,9 @@
 			}
 		]
 	},
-	"scenarios": ["remote-desktop-boundaries"],
+	"scenarios": [
+		"remote-desktop-boundaries"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

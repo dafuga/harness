@@ -51,7 +51,9 @@
 				"type": "string",
 				"required": true,
 				"description": "The revision passed to the planning API for the snapshot and to Git reads for prompt and notes text.",
-				"examples": ["0123456789abcdef0123456789abcdef01234567"]
+				"examples": [
+					"0123456789abcdef0123456789abcdef01234567"
+				]
 			},
 			{
 				"name": "readPlanMessages.context",
@@ -104,14 +106,18 @@
 				"type": "string",
 				"required": true,
 				"description": "The unit ID whose planning commit history is requested.",
-				"examples": ["reports.component.evidence-grid"]
+				"examples": [
+					"reports.component.evidence-grid"
+				]
 			},
 			{
 				"name": "readPlanHistory.revision",
 				"type": "string",
 				"required": true,
 				"description": "The revision passed to the planning API to limit the entity history.",
-				"examples": ["0123456789abcdef0123456789abcdef01234567"]
+				"examples": [
+					"0123456789abcdef0123456789abcdef01234567"
+				]
 			},
 			{
 				"name": "planRecord.context",
@@ -166,7 +172,9 @@
 				"type": "string",
 				"required": true,
 				"description": "The Git revision from which each version's prompt and optional notes are read.",
-				"examples": ["0123456789abcdef0123456789abcdef01234567"]
+				"examples": [
+					"0123456789abcdef0123456789abcdef01234567"
+				]
 			},
 			{
 				"name": "planVersion.context",
@@ -391,7 +399,9 @@
 						"type": "string",
 						"required": true,
 						"description": "The revision passed to the planning API for the snapshot and to Git reads for prompt and notes text.",
-						"examples": ["0123456789abcdef0123456789abcdef01234567"]
+						"examples": [
+							"0123456789abcdef0123456789abcdef01234567"
+						]
 					}
 				],
 				"outputs": [
@@ -522,14 +532,18 @@
 						"type": "string",
 						"required": true,
 						"description": "The unit ID whose planning commit history is requested.",
-						"examples": ["reports.component.evidence-grid"]
+						"examples": [
+							"reports.component.evidence-grid"
+						]
 					},
 					{
 						"name": "readPlanHistory.revision",
 						"type": "string",
 						"required": true,
 						"description": "The revision passed to the planning API to limit the entity history.",
-						"examples": ["0123456789abcdef0123456789abcdef01234567"]
+						"examples": [
+							"0123456789abcdef0123456789abcdef01234567"
+						]
 					}
 				],
 				"outputs": [
@@ -617,7 +631,9 @@
 						"type": "string",
 						"required": true,
 						"description": "The Git revision from which each version's prompt and optional notes are read.",
-						"examples": ["0123456789abcdef0123456789abcdef01234567"]
+						"examples": [
+							"0123456789abcdef0123456789abcdef01234567"
+						]
 					}
 				],
 				"outputs": [
@@ -802,6 +818,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.function.planning-collaboration-mockup-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.planning-convert",
 			"via": "import",
 			"origin": "derived"
@@ -832,7 +853,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

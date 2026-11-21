@@ -24,3 +24,15 @@ export type RenderMockups = (
 	captures: MockupCapture[],
 	signal: AbortSignal
 ) => Promise<Uint8Array[]>;
+
+export interface MockupPlanDraft {
+	notes: string;
+	prompt: string;
+	generator: { provider: 'claude'; model: string };
+	options: {
+		direction: string;
+		prompt: string;
+		revisedPrompt: null;
+		images: MockupImage[];
+	}[];
+}

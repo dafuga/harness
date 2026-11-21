@@ -303,6 +303,13 @@
 				]
 			},
 			{
+				"name": "DesignPanel.inline",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Show the open plan on the entity Overview, with the current version and without the history picker or duplicate measures."
+			},
+			{
 				"name": "DesignPanel.onthread",
 				"type": "(thread: ThreadInfo) => void",
 				"required": true,
@@ -313,13 +320,6 @@
 				"type": "(target: ThreadTarget) => Promise<void>",
 				"required": true,
 				"description": "Required asynchronous callback for a comment on the loaded image, given a target with its version, image hash, state, viewport, option (when the image has one) and region, or a null region for the whole image. It is called only while annotatable is true, and a rejection is caught and shown as the panel's error text."
-			},
-			{
-				"name": "DesignPanel.inline",
-				"type": "boolean",
-				"required": false,
-				"default": false,
-				"description": "Show the open plan on the entity Overview, with the current version and without the history picker or duplicate measures."
 			}
 		],
 		"outputs": [

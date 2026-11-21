@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import type { RunContext } from '../../models/development-tooling/RunContext.types';
 import type { DesignVersion } from '../../models/planning-collaboration/DesignVersion.types';
 import type { MockupSource } from './mockupSource.types';
-import { beforeState, mockupHtml, mockupSource } from './mockupSource';
+import { MockupFailure, beforeState, mockupHtml, mockupSource } from './mockupSource';
 
 async function writeSource(target: string, source: MockupSource, option: number) {
 	const states = [
@@ -46,12 +46,13 @@ export async function approvedMockup(
 	context: RunContext,
 	version: DesignVersion,
 	directory: string
-) {
+): Promise<{ directory: string; reference: string } | null> {
 	const source = mockupSource(version.notes);
 	if (!source) return null;
 	const approval = context.request.approval!;
 	const option = version.options?.findIndex(({ id }) => id === approval.option) ?? -1;
-	if (option < 0 || !source.options[option]) throw new Error('Approved mockup source is missing.');
+	if (option < 0 || !source.options[option])
+		throw new MockupFailure('Approved mockup source is missing.');
 	const target = join(directory, 'approved-mockup');
 	await mkdir(target);
 	await writeSource(target, source, option);
@@ -74,6 +75,6 @@ export async function approvedMockup(
 	const primary =
 		screenshots.find(({ state, viewport }) => state === 'default' && viewport === 'width-1440') ??
 		screenshots.find(({ state }) => !state.startsWith(beforeState));
-	if (!primary) throw new Error('The approval holds no proposed screenshot.');
+	if (!primary) throw new MockupFailure('The approval holds no proposed screenshot.');
 	return { directory: target, reference: join(target, primary.file) };
 }

@@ -8,6 +8,7 @@ import { mockupModels } from '../explorer-ui/composeModes';
 import { designCount } from './designCount';
 import { designDirections } from './plan-design/designDirections';
 import {
+	MockupFailure,
 	answerSchema,
 	mockupMarker,
 	mockupSource,
@@ -15,10 +16,15 @@ import {
 	variationSchema
 } from './mockupSource';
 import { mockupMatrix } from './mockupMatrix';
-import type { MockupAnswer, MockupSource, MockupVariation } from './mockupSource.types';
+import type {
+	MockupAnswer,
+	MockupPlanDraft,
+	MockupSource,
+	MockupVariation
+} from './mockupSource.types';
 
 const { author: sonnet, variations: haiku } = mockupModels;
-export const defaultWidths = [390, 834, 1440, 1920];
+const defaultWidths = [390, 834, 1440, 1920];
 export { visualCategory as visualPlan } from '../explorer-ui/composeModes';
 
 function displayRequest(text: string) {
@@ -70,14 +76,14 @@ async function projectCss(context: RunContext, answer: MockupAnswer) {
 	if (
 		paths.some((path) => !tracked.has(path) || path.split('/').some((part) => part.startsWith('.')))
 	)
-		throw new Error('The mockup cites source outside the selected project revision.');
+		throw new MockupFailure('The mockup cites source outside the selected project revision.');
 	if (
 		!context.entity.planned &&
 		!answer.sources.some((path) => context.entity.sources.includes(path))
 	)
-		throw new Error('The mockup must cite source belonging to the existing entity.');
+		throw new MockupFailure('The mockup must cite source belonging to the existing entity.');
 	if (answer.stylesheets.some((file) => !file.endsWith('.css')))
-		throw new Error('A mockup stylesheet must be a project CSS file.');
+		throw new MockupFailure('A mockup stylesheet must be a project CSS file.');
 	return (
 		await Promise.all(answer.stylesheets.map((file) => gitText(root, revision.commit, file)))
 	).join('\n');
@@ -86,7 +92,7 @@ async function projectCss(context: RunContext, answer: MockupAnswer) {
 async function ask(context: RunContext, model: string, prompt: string, schema: z.ZodType) {
 	const { signal, root, id, emit, mockupRunner } = context;
 	if (signal.aborted) throw new RunCancelled();
-	if (!mockupRunner) throw new Error('Claude CLI is required for visual Plans.');
+	if (!mockupRunner) throw new MockupFailure('Claude CLI is required for visual Plans.');
 	emit({
 		runId: id,
 		kind: 'status',
@@ -107,7 +113,9 @@ async function ask(context: RunContext, model: string, prompt: string, schema: z
 	});
 	if (signal.aborted) throw new RunCancelled();
 	if (sourceChanges(before, await sourceSnapshot(root)).length)
-		throw new Error('The Plan agent changed project files. The changes remain recoverable.');
+		throw new MockupFailure(
+			'The Plan agent changed project files. The changes remain recoverable.'
+		);
 	return JSON.parse(
 		result.text.trim().replace(/^```(?:json)?\s*([\s\S]+?)\s*```$/i, '$1')
 	) as unknown;
@@ -116,9 +124,9 @@ async function ask(context: RunContext, model: string, prompt: string, schema: z
 async function authored(context: RunContext, prompt: string): Promise<MockupSource> {
 	const answer = answerSchema.parse(await ask(context, sonnet, prompt, answerSchema));
 	if (answer.options.length !== designCount(context.request))
-		throw new Error('Sonnet did not return the requested number of mockup options.');
+		throw new MockupFailure('Sonnet did not return the requested number of mockup options.');
 	if (Boolean(answer.before) === context.entity.planned)
-		throw new Error('The mockup does not describe the current implementation correctly.');
+		throw new MockupFailure('The mockup does not describe the current implementation correctly.');
 	return sourceSchema.parse({
 		...answer,
 		projectCss: await projectCss(context, answer),
@@ -137,10 +145,13 @@ function mergeVariations(source: MockupSource, extra: MockupVariation): MockupSo
 				state.options.length !== options.length || Boolean(state.before) !== Boolean(before)
 		)
 	)
-		throw new Error('Haiku must render every existing option and its corresponding before state.');
+		throw new MockupFailure(
+			'Haiku must render every existing option and its corresponding before state.'
+		);
 	const states = new Map(source.states.map((state) => [state.id, state]));
 	for (const state of extra.states) {
-		if (states.has(state.id)) throw new Error('Haiku must preserve existing mockup states.');
+		if (states.has(state.id))
+			throw new MockupFailure('Haiku must preserve existing mockup states.');
 		states.set(state.id, state);
 	}
 	const widths = [...new Set([...source.widths, ...extra.widths])].sort((a, b) => a - b);
@@ -161,7 +172,7 @@ async function expanded(context: RunContext, source: MockupSource) {
 	return mergeVariations(source, extra);
 }
 
-export async function mockupPlan(context: RunContext, proposal: string) {
+export async function mockupPlan(context: RunContext, proposal: string): Promise<MockupPlanDraft> {
 	const anchor = context.entity.threads.find((thread) => thread.id === context.request.threadId);
 	const latest = context.entity.latestVersion;
 	const chosen = displayOnly(context.request.text) ? latest : (anchor?.version ?? latest);
@@ -180,7 +191,7 @@ export async function mockupPlan(context: RunContext, proposal: string) {
 	if (followup || displayRequest(context.request.text)) source = await expanded(context, source);
 	const notes = mockupMarker + JSON.stringify(source);
 	if (notes.length > 1000000)
-		throw new Error('The mockup source exceeds the design version size limit.');
+		throw new MockupFailure('The mockup source exceeds the design version size limit.');
 	const options = await mockupMatrix(context, source, followup ? context.request.text : prompt);
 	return {
 		notes,

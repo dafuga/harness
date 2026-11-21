@@ -21,12 +21,19 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/desktop/src/components/shared-primitives/Composer.svelte"],
-		"symbols": ["Composer", "Composer.action"]
+		"source": [
+			"packages/desktop/src/components/shared-primitives/Composer.svelte"
+		],
+		"symbols": [
+			"Composer",
+			"Composer.action"
+		]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.explorer-ui-explorer-kit-notice"],
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-notice"
+		],
 		"inputs": [
 			{
 				"name": "Composer.modes",
@@ -34,8 +41,16 @@
 				"required": true,
 				"description": "Ordered list of the modes this context allows (comment, ask, plan, change): the first is used until the person picks a mode, and falls back to the first whenever the chosen mode is no longer offered. An empty list disables the message box and submission, and the mode buttons appear only when more than one mode is offered.",
 				"examples": [
-					["comment", "ask", "plan", "change"],
-					["comment", "plan"],
+					[
+						"comment",
+						"ask",
+						"plan",
+						"change"
+					],
+					[
+						"comment",
+						"plan"
+					],
 					[]
 				]
 			},
@@ -57,7 +72,13 @@
 								{
 									"id": "claude-opus-5-5",
 									"label": "Claude Opus 5.5",
-									"efforts": ["low", "medium", "high", "xhigh", "max"],
+									"efforts": [
+										"low",
+										"medium",
+										"high",
+										"xhigh",
+										"max"
+									],
 									"defaultEffort": "xhigh",
 									"isDefault": true
 								}
@@ -100,14 +121,20 @@
 				"type": "boolean",
 				"required": true,
 				"description": "Whether Change is approved for the current design: when false, the Change mode button (when shown) is disabled, a Notice asks for approval, and Change submission is blocked even when Change is the only offered mode. It has no effect on Ask, Plan or Comment.",
-				"examples": [true, false]
+				"examples": [
+					true,
+					false
+				]
 			},
 			{
 				"name": "Composer.running",
 				"type": "boolean",
 				"required": true,
 				"description": "Whether work is already running: when true, the message box and submission are disabled in every mode. It does not disable the mode buttons or the provider selection.",
-				"examples": [false, true]
+				"examples": [
+					false,
+					true
+				]
 			},
 			{
 				"name": "Composer.notice",
@@ -115,7 +142,10 @@
 				"required": false,
 				"default": "",
 				"description": "Optional hint shown in the non-agent layout; a nonempty value replaces the default comment hint. It is hidden while Ask, Plan or Change is selected.",
-				"examples": ["", "Only comments are open while this design is in review."]
+				"examples": [
+					"",
+					"Only comments are open while this design is in review."
+				]
 			},
 			{
 				"name": "Composer.failureReported",
@@ -123,7 +153,10 @@
 				"required": false,
 				"default": false,
 				"description": "True when the parent already displays the current send failure, which hides this component’s “Couldn’t send” alert that otherwise appears after a false callback result.",
-				"examples": [false, true]
+				"examples": [
+					false,
+					true
+				]
 			},
 			{
 				"name": "Composer.placeholder",
@@ -131,7 +164,10 @@
 				"required": false,
 				"default": "",
 				"description": "Message-box prompt for Plan and Change; an empty value shows “Describe the next design…”. Ask always shows “Ask a question…” and Comment always shows “Leave a comment…”, whatever this value is.",
-				"examples": ["", "Describe the sidebar change…"]
+				"examples": [
+					"",
+					"Describe the sidebar change…"
+				]
 			},
 			{
 				"name": "Composer.visual",
@@ -139,7 +175,17 @@
 				"required": false,
 				"default": false,
 				"description": "Whether a Plan is visual: when true, a Plan request includes the device’s design-option count (agentSettings.designOptions) as designOptions, and a caption shows that count. Ask, Change and Comment never include the count, so the flag has no effect on them.",
-				"examples": [false, true]
+				"examples": [
+					false,
+					true
+				]
+			},
+			{
+				"name": "Composer.fixedVisual",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Use Sonnet and Haiku for direct visual Plan requests. Defaults to false for the project composer."
 			},
 			{
 				"name": "Composer.compact",
@@ -147,7 +193,10 @@
 				"required": false,
 				"default": false,
 				"description": "Turns on the compact composer styling and, passed to the agent controls, makes the agent choices icons that open pickers.",
-				"examples": [false, true]
+				"examples": [
+					false,
+					true
+				]
 			},
 			{
 				"name": "Composer.comment",
@@ -272,7 +321,11 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-renderer", "agent-creation"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-renderer",
+		"agent-creation"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

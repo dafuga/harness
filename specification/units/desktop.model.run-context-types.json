@@ -8,8 +8,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/models/development-tooling/RunContext.types.ts"],
-		"symbols": ["RunContext", "CreatedEntity", "RunPhase", "RunEvent"]
+		"source": [
+			"packages/desktop/src/models/development-tooling/RunContext.types.ts"
+		],
+		"symbols": [
+			"RunContext",
+			"CreatedEntity",
+			"RunPhase",
+			"RunEvent"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -21,6 +28,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.function.planning-collaboration-mockup-source",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.model.agent-runner-types",
 			"via": "import",
@@ -57,7 +69,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

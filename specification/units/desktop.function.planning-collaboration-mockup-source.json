@@ -1,0 +1,188 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.planning-collaboration-mockup-source",
+	"kind": "function",
+	"title": "mockupSource",
+	"responsibility": "Validate, read, and compose immutable HTML and CSS mockup artifacts.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/utils/planning-collaboration/mockupSource.ts",
+			"packages/desktop/src/utils/planning-collaboration/mockupSource.types.ts"
+		],
+		"symbols": [
+			"mockupMarker",
+			"beforeState",
+			"MockupFailure",
+			"MockupFailure.constructor",
+			"answerSchema",
+			"variationSchema",
+			"sourceSchema",
+			"mockupSource",
+			"mockupHtml",
+			"MockupAnswer",
+			"MockupSource",
+			"MockupVariation",
+			"MockupDocument",
+			"MockupImage",
+			"MockupCapture",
+			"RenderMockups",
+			"MockupPlanDraft"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "MockupFailure.constructor.message",
+				"type": "string",
+				"required": true,
+				"description": "Explanation of a failed authoring, approval, or rendering operation."
+			},
+			{
+				"name": "mockupSource.notes",
+				"type": "string | undefined",
+				"required": true,
+				"description": "Stored design notes, possibly including the versioned mockup source marker."
+			},
+			{
+				"name": "mockupHtml.document",
+				"type": "Pick<MockupDocument, 'html' | 'css'>",
+				"required": true,
+				"description": "Static HTML body fragment and the CSS rules for one mockup state."
+			},
+			{
+				"name": "mockupHtml.projectCss",
+				"type": "string",
+				"required": true,
+				"description": "CSS from the referenced project stylesheets at the selected revision."
+			}
+		],
+		"outputs": [
+			{
+				"name": "mockupMarker",
+				"type": "unknown",
+				"description": "Prefix identifying design notes that hold versioned mockup source."
+			},
+			{
+				"name": "beforeState",
+				"type": "unknown",
+				"description": "Prefix identifying the matched current implementation capture for a proposed state."
+			},
+			{
+				"name": "answerSchema",
+				"type": "unknown",
+				"description": "Validator for base documents and design options authored by Sonnet."
+			},
+			{
+				"name": "variationSchema",
+				"type": "unknown",
+				"description": "Validator for the additional widths and state documents authored by Haiku."
+			},
+			{
+				"name": "sourceSchema",
+				"type": "unknown",
+				"description": "Validator for stored mockup source and its renderer matrix."
+			},
+			{
+				"name": "mockupSource",
+				"type": "MockupSource | null",
+				"description": "Validated source and its capture matrix, or null for notes without a mockup marker."
+			},
+			{
+				"name": "mockupHtml",
+				"type": "string",
+				"description": "Standalone HTML document containing the recorded project styles and one design state."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "mockupSource",
+				"inputs": [
+					{
+						"name": "mockupSource.notes",
+						"type": "string | undefined",
+						"required": true,
+						"description": "Stored design notes, possibly including the versioned mockup source marker."
+					}
+				],
+				"outputs": [
+					{
+						"name": "mockupSource",
+						"type": "MockupSource | null",
+						"description": "Validated source and its capture matrix, or null for notes without a mockup marker."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "mockupHtml",
+				"inputs": [
+					{
+						"name": "mockupHtml.document",
+						"type": "Pick<MockupDocument, 'html' | 'css'>",
+						"required": true,
+						"description": "Static HTML body fragment and the CSS rules for one mockup state."
+					},
+					{
+						"name": "mockupHtml.projectCss",
+						"type": "string",
+						"required": true,
+						"description": "CSS from the referenced project stylesheets at the selected revision."
+					}
+				],
+				"outputs": [
+					{
+						"name": "mockupHtml",
+						"type": "string",
+						"description": "Standalone HTML document containing the recorded project styles and one design state."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "MockupFailure.constructor",
+				"inputs": [
+					{
+						"name": "MockupFailure.constructor.message",
+						"type": "string",
+						"required": true,
+						"description": "Explanation of a failed authoring, approval, or rendering operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "MockupFailure.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/planning-collaboration/mockupSource.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/planning-collaboration/mockupSource.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

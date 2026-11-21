@@ -8,8 +8,14 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/remote-fixture-project.ts"],
-		"symbols": ["fixtureImage", "remoteFixtureProject", "fixtureProviders"]
+		"source": [
+			"packages/desktop/scripts/remote-fixture-project.ts"
+		],
+		"symbols": [
+			"fixtureImage",
+			"remoteFixtureProject",
+			"fixtureProviders"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -20,7 +26,10 @@
 				"required": false,
 				"default": 96,
 				"description": "The side length in pixels of the square picture that fixtureImage draws, which matters when a caller needs a size other than the default 96 (the generator in fixtureProviders asks for 128). The code does not validate it, so a non-whole or non-positive value is passed to the PNG encoder as given.",
-				"examples": [96, 128]
+				"examples": [
+					96,
+					128
+				]
 			},
 			{
 				"name": "fixtureImage.variant",
@@ -28,7 +37,11 @@
 				"required": false,
 				"default": 0,
 				"description": "The tint of the picture, which matters when a copy must differ from the original: its blue value is 160 + 9 * variant, so 0 is the original picture. The code does not range-check it, and a blue value outside 0 to 255 wraps around, which happens for whole variants above 10 or below -17.",
-				"examples": [0, 1, 2]
+				"examples": [
+					0,
+					1,
+					2
+				]
 			}
 		],
 		"outputs": [
@@ -83,7 +96,10 @@
 						"required": false,
 						"default": 96,
 						"description": "The side length in pixels of the square picture that fixtureImage draws, which matters when a caller needs a size other than the default 96 (the generator in fixtureProviders asks for 128). The code does not validate it, so a non-whole or non-positive value is passed to the PNG encoder as given.",
-						"examples": [96, 128]
+						"examples": [
+							96,
+							128
+						]
 					},
 					{
 						"name": "fixtureImage.variant",
@@ -91,7 +107,11 @@
 						"required": false,
 						"default": 0,
 						"description": "The tint of the picture, which matters when a copy must differ from the original: its blue value is 160 + 9 * variant, so 0 is the original picture. The code does not range-check it, and a blue value outside 0 to 255 wraps around, which happens for whole variants above 10 or below -17.",
-						"examples": [0, 1, 2]
+						"examples": [
+							0,
+							1,
+							2
+						]
 					}
 				],
 				"outputs": [
@@ -141,7 +161,7 @@
 				"outputs": [
 					{
 						"name": "fixtureProviders",
-						"type": "Record<ProviderId, AgentRunner> & { generator: ImageGenerator; }",
+						"type": "Record<ProviderId, AgentRunner> & { renderMockups: RenderMockups; }",
 						"description": "The synthetic runners for codex and claude plus an image generator; they start no process and change no file. Each runner's discover reports one available model and its run returns a canned answer after about 1.2 seconds, while the generator's generateImage returns a 128-pixel fixture picture whose variant starts at 0 and rises by one with each call."
 					}
 				],
@@ -158,6 +178,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.function.planning-collaboration-mockup-source",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.model.agent-runner-types",
 			"via": "import",
@@ -184,7 +209,9 @@
 			}
 		]
 	},
-	"scenarios": ["plan-fixture-contracts"],
+	"scenarios": [
+		"plan-fixture-contracts"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

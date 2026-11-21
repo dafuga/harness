@@ -17,7 +17,8 @@ export async function desktopEvidence(page: Page, state: string, native = false)
 	expect(buildId, 'The rendered compiled renderer must carry its build identity').toBeTruthy();
 	expect(revision, 'Evidence must identify the verification revision').toMatch(/^[a-f0-9]{40}$/);
 	const width = page.viewportSize()?.width ?? (await page.evaluate(() => innerWidth));
-	const viewport = width < 600 ? 'mobile' : width < 1000 ? 'tablet' : 'desktop';
+	const baseline = width < 600 ? 'mobile' : width < 1000 ? 'tablet' : 'desktop';
+	const viewport = width === 834 ? 'mockup-tablet' : width === 1920 ? 'mockup-wide' : baseline;
 	recordCapture(
 		{
 			evidence: `${native ? 'native-screens' : 'renderer-screens'}-${viewport}`,

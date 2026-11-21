@@ -17,8 +17,12 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/desktop/src/components/shared-primitives/PriorImage.svelte"],
-		"symbols": ["PriorImage"]
+		"source": [
+			"packages/desktop/src/components/shared-primitives/PriorImage.svelte"
+		],
+		"symbols": [
+			"PriorImage"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -34,28 +38,50 @@
 				"type": "string",
 				"required": true,
 				"description": "Entity identifier passed to imageUrl with the version and digest. This component treats it as an opaque string and does not parse or validate it.",
-				"examples": ["entity-123"]
+				"examples": [
+					"entity-123"
+				]
 			},
 			{
 				"name": "PriorImage.version",
 				"type": "string",
 				"required": true,
 				"description": "Version string passed to imageUrl and rendered in the Before · {version} caption. This component does not parse it or choose which version is earlier.",
-				"examples": ["v2"]
+				"examples": [
+					"v2"
+				]
 			},
 			{
 				"name": "PriorImage.sha256",
 				"type": "string",
 				"required": true,
 				"description": "SHA-256 digest passed to imageUrl with the entity identifier and version. This component does not calculate or validate the digest.",
-				"examples": ["e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"]
+				"examples": [
+					"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+				]
 			},
 			{
 				"name": "PriorImage.title",
 				"type": "string",
 				"required": true,
 				"description": "Title used as the image alt text when the resolved URL is non-empty. It is not shown in the fallback message.",
-				"examples": ["Earlier kitchen elevation"]
+				"examples": [
+					"Earlier kitchen elevation"
+				]
+			},
+			{
+				"name": "PriorImage.caption",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "Text of the comparison caption. Defaults to the historical version label."
+			},
+			{
+				"name": "PriorImage.note",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "Text shown when no before capture exists. Defaults to an empty string."
 			}
 		],
 		"outputs": [

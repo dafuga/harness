@@ -1,0 +1,129 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.planning-collaboration-mockup-matrix",
+	"kind": "function",
+	"title": "mockupMatrix",
+	"responsibility": "Associate each authored option with the screenshots of its states and viewport widths.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/utils/planning-collaboration/mockupMatrix.ts"
+		],
+		"symbols": [
+			"mockupMatrix"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "mockupMatrix.context",
+				"type": "RunContext",
+				"required": true,
+				"description": "Prepared Plan context with the renderer, progress emitter, and cancellation signal."
+			},
+			{
+				"name": "mockupMatrix.source",
+				"type": "MockupSource",
+				"required": true,
+				"description": "HTML and CSS for the default captures and requested states, including before documents where available."
+			},
+			{
+				"name": "mockupMatrix.prompt",
+				"type": "string",
+				"required": true,
+				"description": "Instruction recorded with the rendered design options."
+			}
+		],
+		"outputs": [
+			{
+				"name": "mockupMatrix",
+				"type": "Promise<MockupPlanDraft['options']>",
+				"description": "Design options with ordered state and width screenshot artifacts."
+			}
+		],
+		"errors": [
+			{
+				"name": "MockupFailure",
+				"type": "thrown",
+				"description": "The requested capture count exceeds the limit or the renderer returned an incomplete set."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "mockupMatrix",
+				"inputs": [
+					{
+						"name": "mockupMatrix.context",
+						"type": "RunContext",
+						"required": true,
+						"description": "Prepared Plan context with the renderer, progress emitter, and cancellation signal."
+					},
+					{
+						"name": "mockupMatrix.source",
+						"type": "MockupSource",
+						"required": true,
+						"description": "HTML and CSS for the default captures and requested states, including before documents where available."
+					},
+					{
+						"name": "mockupMatrix.prompt",
+						"type": "string",
+						"required": true,
+						"description": "Instruction recorded with the rendered design options."
+					}
+				],
+				"outputs": [
+					{
+						"name": "mockupMatrix",
+						"type": "Promise<MockupPlanDraft['options']>",
+						"description": "Design options with ordered state and width screenshot artifacts."
+					}
+				],
+				"errors": [
+					{
+						"name": "MockupFailure",
+						"type": "thrown",
+						"description": "The requested capture count exceeds the limit or the renderer returned an incomplete set."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.planning-collaboration-mockup-png",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.planning-collaboration-mockup-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.run-context-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/planning-collaboration/mockupMatrix.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/planning-collaboration/mockupMatrix.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -17,6 +17,7 @@
 			"composeModes",
 			"designCounts",
 			"defaultDesignCount",
+			"mockupModels",
 			"visualCategory",
 			"composeModes",
 			"ComposeMode",
@@ -57,14 +58,21 @@
 				"type": "boolean",
 				"required": true,
 				"description": "Whether the current view is writable. It gates plan and change when agents is true and does not affect comment.",
-				"examples": [true, false]
+				"examples": [
+					true,
+					false
+				]
 			},
 			{
 				"name": "visualCategory.category",
 				"type": "string",
 				"required": true,
 				"description": "The catalog category string to classify for visual planning. Only exact pages, layouts, and components values return true; matching is case-sensitive.",
-				"examples": ["pages", "layouts", "components"]
+				"examples": [
+					"pages",
+					"layouts",
+					"components"
+				]
 			}
 		],
 		"outputs": [
@@ -73,28 +81,50 @@
 				"type": "unknown",
 				"description": "The integer option counts available for visual plans. The list runs from 1 to 10 inclusive.",
 				"examples": [
-					[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+					[
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10
+					]
 				]
 			},
 			{
 				"name": "defaultDesignCount",
 				"type": "unknown",
 				"description": "The default number of design options for a Plan. Its value is 3, within the available 1-to-10 range.",
-				"examples": [3]
+				"examples": [
+					3
+				]
 			},
 			{
 				"name": "visualCategory",
 				"type": "boolean",
 				"description": "Whether the category is one of the visual categories for planning. It is true only for exact pages, layouts, or components strings.",
-				"examples": [true, false]
+				"examples": [
+					true,
+					false
+				]
 			},
 			{
 				"name": "composeModes",
 				"type": "ComposeMode[]",
 				"description": "The ordered composer actions for the supplied capabilities and writable state. It contains comment when comments are enabled and then plan and change when agents are enabled on a writable view; it can be empty and never returns ask.",
 				"examples": [
-					["comment", "plan", "change"],
-					["comment"],
+					[
+						"comment",
+						"plan",
+						"change"
+					],
+					[
+						"comment"
+					],
 					[]
 				]
 			}
@@ -132,7 +162,10 @@
 						"type": "boolean",
 						"required": true,
 						"description": "Whether the current view is writable. It gates plan and change when agents is true and does not affect comment.",
-						"examples": [true, false]
+						"examples": [
+							true,
+							false
+						]
 					}
 				],
 				"outputs": [
@@ -141,8 +174,14 @@
 						"type": "ComposeMode[]",
 						"description": "The ordered composer actions for the supplied capabilities and writable state. It contains comment when comments are enabled and then plan and change when agents are enabled on a writable view; it can be empty and never returns ask.",
 						"examples": [
-							["comment", "plan", "change"],
-							["comment"],
+							[
+								"comment",
+								"plan",
+								"change"
+							],
+							[
+								"comment"
+							],
 							[]
 						]
 					}
@@ -158,7 +197,11 @@
 						"type": "string",
 						"required": true,
 						"description": "The catalog category string to classify for visual planning. Only exact pages, layouts, and components values return true; matching is case-sensitive.",
-						"examples": ["pages", "layouts", "components"]
+						"examples": [
+							"pages",
+							"layouts",
+							"components"
+						]
 					}
 				],
 				"outputs": [
@@ -166,7 +209,10 @@
 						"name": "visualCategory",
 						"type": "boolean",
 						"description": "Whether the category is one of the visual categories for planning. It is true only for exact pages, layouts, or components strings.",
-						"examples": [true, false]
+						"examples": [
+							true,
+							false
+						]
 					}
 				],
 				"errors": [],
@@ -197,7 +243,9 @@
 			}
 		]
 	},
-	"scenarios": ["function-examples"],
+	"scenarios": [
+		"function-examples"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

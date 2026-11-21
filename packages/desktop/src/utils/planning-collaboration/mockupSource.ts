@@ -1,8 +1,15 @@
 import { z } from 'zod';
-import type { MockupDocument } from './mockupSource.types';
+import type { MockupDocument, MockupSource } from './mockupSource.types';
 
 export const mockupMarker = 'harness-html-mockup-v1\n';
 export const beforeState = 'before-';
+
+export class MockupFailure extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = 'MockupFailure';
+	}
+}
 
 const css = z
 	.string()
@@ -56,12 +63,15 @@ export const sourceSchema = answerSchema.extend({
 	enhancer: z.string().nullable()
 });
 
-export function mockupSource(notes: string | undefined) {
+export function mockupSource(notes: string | undefined): MockupSource | null {
 	if (!notes?.startsWith(mockupMarker)) return null;
 	return sourceSchema.parse(JSON.parse(notes.slice(mockupMarker.length)));
 }
 
-export function mockupHtml(document: Pick<MockupDocument, 'html' | 'css'>, projectCss: string) {
+export function mockupHtml(
+	document: Pick<MockupDocument, 'html' | 'css'>,
+	projectCss: string
+): string {
 	return (
 		'<!doctype html><html><head><meta charset="utf-8">' +
 		'<meta name="viewport" content="width=device-width, initial-scale=1">' +

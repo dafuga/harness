@@ -15,6 +15,7 @@
 			"ProviderDiscoveryService",
 			"ProviderDiscoveryService.constructor",
 			"ProviderDiscoveryService.list",
+			"ProviderDiscoveryService.mockupRunner",
 			"ProviderDiscoveryService.select"
 		]
 	},
@@ -32,21 +33,29 @@
 				"type": "ProviderId",
 				"required": true,
 				"description": "The ProviderId key used to choose a stored runner and discover its state. The type permits only codex or claude.",
-				"examples": ["codex", "claude"]
+				"examples": [
+					"codex",
+					"claude"
+				]
 			},
 			{
 				"name": "ProviderDiscoveryService.select.model",
 				"type": "string",
 				"required": true,
 				"description": "The model identifier matched exactly against an entry in the selected runner's discovered models. Selection throws if no discovered model has this ID.",
-				"examples": ["claude-opus-5-5"]
+				"examples": [
+					"claude-opus-5-5"
+				]
 			},
 			{
 				"name": "ProviderDiscoveryService.select.effort",
 				"type": "string | null",
 				"required": true,
 				"description": "The requested effort passed to validateModel for the selected model. Null or the empty string skips effort membership checking; any other truthy value must occur in that model's efforts.",
-				"examples": ["xhigh", null]
+				"examples": [
+					"xhigh",
+					null
+				]
 			}
 		],
 		"outputs": [
@@ -134,6 +143,23 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "ProviderDiscoveryService.mockupRunner",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProviderDiscoveryService.mockupRunner",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "ProviderDiscoveryService.select",
 				"inputs": [
 					{
@@ -141,21 +167,29 @@
 						"type": "ProviderId",
 						"required": true,
 						"description": "The ProviderId key used to choose a stored runner and discover its state. The type permits only codex or claude.",
-						"examples": ["codex", "claude"]
+						"examples": [
+							"codex",
+							"claude"
+						]
 					},
 					{
 						"name": "ProviderDiscoveryService.select.model",
 						"type": "string",
 						"required": true,
 						"description": "The model identifier matched exactly against an entry in the selected runner's discovered models. Selection throws if no discovered model has this ID.",
-						"examples": ["claude-opus-5-5"]
+						"examples": [
+							"claude-opus-5-5"
+						]
 					},
 					{
 						"name": "ProviderDiscoveryService.select.effort",
 						"type": "string | null",
 						"required": true,
 						"description": "The requested effort passed to validateModel for the selected model. Null or the empty string skips effort membership checking; any other truthy value must occur in that model's efforts.",
-						"examples": ["xhigh", null]
+						"examples": [
+							"xhigh",
+							null
+						]
 					}
 				],
 				"outputs": [
@@ -225,7 +259,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

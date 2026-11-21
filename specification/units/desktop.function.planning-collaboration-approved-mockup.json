@@ -1,0 +1,129 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.planning-collaboration-approved-mockup",
+	"kind": "function",
+	"title": "approvedMockup",
+	"responsibility": "Stage only the approved option’s HTML, CSS, and screenshot bytes for the implementation agent.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/utils/planning-collaboration/approvedMockup.ts"
+		],
+		"symbols": [
+			"approvedMockup"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "approvedMockup.context",
+				"type": "RunContext",
+				"required": true,
+				"description": "Change context with the approved option, selected revision, and planning artifact reader."
+			},
+			{
+				"name": "approvedMockup.version",
+				"type": "DesignVersion",
+				"required": true,
+				"description": "Design version named by the current Change approval."
+			},
+			{
+				"name": "approvedMockup.directory",
+				"type": "string",
+				"required": true,
+				"description": "Temporary working directory owned and cleaned up by the Change run."
+			}
+		],
+		"outputs": [
+			{
+				"name": "approvedMockup",
+				"type": "Promise<{ directory: string; reference: string } | null>",
+				"description": "Directory of the approved sources and screenshots, with its primary reference path. Absent for a legacy approval."
+			}
+		],
+		"errors": [
+			{
+				"name": "MockupFailure",
+				"type": "thrown",
+				"description": "The approved option has no recorded source or proposed screenshot."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "approvedMockup",
+				"inputs": [
+					{
+						"name": "approvedMockup.context",
+						"type": "RunContext",
+						"required": true,
+						"description": "Change context with the approved option, selected revision, and planning artifact reader."
+					},
+					{
+						"name": "approvedMockup.version",
+						"type": "DesignVersion",
+						"required": true,
+						"description": "Design version named by the current Change approval."
+					},
+					{
+						"name": "approvedMockup.directory",
+						"type": "string",
+						"required": true,
+						"description": "Temporary working directory owned and cleaned up by the Change run."
+					}
+				],
+				"outputs": [
+					{
+						"name": "approvedMockup",
+						"type": "Promise<{ directory: string; reference: string } | null>",
+						"description": "Directory of the approved sources and screenshots, with its primary reference path. Absent for a legacy approval."
+					}
+				],
+				"errors": [
+					{
+						"name": "MockupFailure",
+						"type": "thrown",
+						"description": "The approved option has no recorded source or proposed screenshot."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.planning-collaboration-mockup-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.design-version-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.run-context-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/planning-collaboration/approvedMockup.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/planning-collaboration/approvedMockup.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

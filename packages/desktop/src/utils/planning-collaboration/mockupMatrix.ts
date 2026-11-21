@@ -1,6 +1,6 @@
 import type { RunContext } from '../../models/development-tooling/RunContext.types';
-import { beforeState, mockupHtml } from './mockupSource';
-import type { MockupCapture, MockupSource } from './mockupSource.types';
+import { MockupFailure, beforeState, mockupHtml } from './mockupSource';
+import type { MockupCapture, MockupPlanDraft, MockupSource } from './mockupSource.types';
 import { mockupPng } from './mockupPng';
 
 const heights = new Map([
@@ -41,11 +41,15 @@ function captures(source: MockupSource): MockupCapture[] {
 		)
 	);
 	if (result.length > 160)
-		throw new Error('The requested sizes, states and options exceed 160 screenshots.');
+		throw new MockupFailure('The requested sizes, states and options exceed 160 screenshots.');
 	return result;
 }
 
-export async function mockupMatrix(context: RunContext, source: MockupSource, prompt: string) {
+export async function mockupMatrix(
+	context: RunContext,
+	source: MockupSource,
+	prompt: string
+): Promise<MockupPlanDraft['options']> {
 	const matrix = captures(source);
 	context.emit({
 		runId: context.id,
@@ -55,7 +59,7 @@ export async function mockupMatrix(context: RunContext, source: MockupSource, pr
 	});
 	const bytes = await context.renderMockups(matrix, context.signal);
 	if (bytes.length !== matrix.length)
-		throw new Error('The renderer did not return every requested screenshot.');
+		throw new MockupFailure('The renderer did not return every requested screenshot.');
 	return source.options.map(({ direction }, option) => ({
 		direction,
 		prompt,

@@ -1,6 +1,7 @@
 import type { Browser, Page } from 'playwright-core';
 import { RunCancelled } from '../../models/agents-providers/AgentRunner.types';
-import type { MockupCapture, RenderMockups } from './mockupSource.types';
+import type { MockupCapture } from './mockupSource.types';
+import { MockupFailure } from './mockupSource';
 
 const url = 'http://mockup.invalid/';
 const contentPolicy =
@@ -15,7 +16,9 @@ async function launchBrowser(): Promise<Browser> {
 		try {
 			return await chromium.launch({ ...launch, channel: 'chrome' });
 		} catch {
-			throw new Error('Install Playwright Chromium or Google Chrome to render Plan mockups.');
+			throw new MockupFailure(
+				'Install Playwright Chromium or Google Chrome to render Plan mockups.'
+			);
 		}
 	}
 }
@@ -54,7 +57,10 @@ async function screenshot(browser: Browser, capture: MockupCapture): Promise<Buf
 	}
 }
 
-export const mockupCapture: RenderMockups = async (captures, signal) => {
+export async function mockupCapture(
+	captures: MockupCapture[],
+	signal: AbortSignal
+): Promise<Uint8Array[]> {
 	if (signal.aborted) throw new RunCancelled();
 	const browser = await launchBrowser();
 	const cancel = () => {
@@ -75,4 +81,4 @@ export const mockupCapture: RenderMockups = async (captures, signal) => {
 		signal.removeEventListener('abort', cancel);
 		await browser.close();
 	}
-};
+}

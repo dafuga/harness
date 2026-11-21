@@ -28,6 +28,7 @@
 			"text",
 			"slug",
 			"planValidate",
+			"planViewport",
 			"contractHash",
 			"author",
 			"region",
@@ -43,28 +44,48 @@
 				"type": "string",
 				"required": true,
 				"description": "A design version must match /^v\\d{3,}$/: a lowercase v followed by at least three digits. This validator imposes no additional length limit.",
-				"examples": ["v001", "v2026"]
+				"examples": [
+					"v001",
+					"v2026"
+				]
 			},
 			{
 				"name": "text.value",
 				"type": "unknown",
 				"required": true,
 				"description": "Accepts only a string whose trimmed form is nonempty and whose JavaScript length is at most 1,000,000. Validation does not trim or replace the original value.",
-				"examples": ["Plan design", "Plan validation notes"]
+				"examples": [
+					"Plan design",
+					"Plan validation notes"
+				]
 			},
 			{
 				"name": "slug.value",
 				"type": "unknown",
 				"required": true,
 				"description": "Accepts a lowercase slug starting with a letter, followed by lowercase letters or digits and optionally hyphen-separated nonempty lowercase alphanumeric groups. It must be at most 64 characters.",
-				"examples": ["planning", "plan-validate", "rev2"]
+				"examples": [
+					"planning",
+					"plan-validate",
+					"rev2"
+				]
 			},
 			{
 				"name": "planValidate.unitId",
 				"type": "string",
 				"required": true,
 				"description": "A unit identifier must contain exactly one dot, with a supported category (page, shell, layout, component, function, config, or service) followed by a valid slug. The category maps to its plural folder below src and the slug becomes the folder name.",
-				"examples": ["function.plan-validate", "component.evidence-grid", "page.home"]
+				"examples": [
+					"function.plan-validate",
+					"component.evidence-grid",
+					"page.home"
+				]
+			},
+			{
+				"name": "planViewport.value",
+				"type": "string",
+				"required": true,
+				"description": "A legacy viewport name or a width-prefixed pixel count."
 			},
 			{
 				"name": "contractHash.contract",
@@ -86,9 +107,15 @@
 								"type": "string"
 							}
 						],
-						"errors": ["invalid-input"],
-						"states": ["draft"],
-						"viewports": ["diagram"]
+						"errors": [
+							"invalid-input"
+						],
+						"states": [
+							"draft"
+						],
+						"viewports": [
+							"diagram"
+						]
 					}
 				]
 			},
@@ -128,7 +155,10 @@
 				"type": "string",
 				"required": true,
 				"description": "A safe artifact filename begins with a lowercase letter or digit and then uses only lowercase letters, digits, dots, or hyphens; it cannot contain '..'. This validator applies the rule to a filename string without directory components.",
-				"examples": ["plan-v001.json", "design-image.png"]
+				"examples": [
+					"plan-v001.json",
+					"design-image.png"
+				]
 			}
 		],
 		"outputs": [
@@ -172,7 +202,9 @@
 				"name": "contractHash",
 				"type": "string",
 				"description": "Returns the lowercase 64-character SHA-256 hexadecimal digest of the canonical JSON for the validated contract. Runtime properties on the contract object are included in that canonical serialization.",
-				"examples": ["af5c207d27c3ca5f889c6a1f73b9f81d758ed11247cd07cafa200736eac92b01"]
+				"examples": [
+					"af5c207d27c3ca5f889c6a1f73b9f81d758ed11247cd07cafa200736eac92b01"
+				]
 			},
 			{
 				"name": "author",
@@ -221,7 +253,10 @@
 						"type": "string",
 						"required": true,
 						"description": "A design version must match /^v\\d{3,}$/: a lowercase v followed by at least three digits. This validator imposes no additional length limit.",
-						"examples": ["v001", "v2026"]
+						"examples": [
+							"v001",
+							"v2026"
+						]
 					}
 				],
 				"outputs": [
@@ -248,7 +283,10 @@
 						"type": "unknown",
 						"required": true,
 						"description": "Accepts only a string whose trimmed form is nonempty and whose JavaScript length is at most 1,000,000. Validation does not trim or replace the original value.",
-						"examples": ["Plan design", "Plan validation notes"]
+						"examples": [
+							"Plan design",
+							"Plan validation notes"
+						]
 					}
 				],
 				"outputs": [
@@ -275,7 +313,11 @@
 						"type": "unknown",
 						"required": true,
 						"description": "Accepts a lowercase slug starting with a letter, followed by lowercase letters or digits and optionally hyphen-separated nonempty lowercase alphanumeric groups. It must be at most 64 characters.",
-						"examples": ["planning", "plan-validate", "rev2"]
+						"examples": [
+							"planning",
+							"plan-validate",
+							"rev2"
+						]
 					}
 				],
 				"outputs": [
@@ -302,7 +344,11 @@
 						"type": "string",
 						"required": true,
 						"description": "A unit identifier must contain exactly one dot, with a supported category (page, shell, layout, component, function, config, or service) followed by a valid slug. The category maps to its plural folder below src and the slug becomes the folder name.",
-						"examples": ["function.plan-validate", "component.evidence-grid", "page.home"]
+						"examples": [
+							"function.plan-validate",
+							"component.evidence-grid",
+							"page.home"
+						]
 					}
 				],
 				"outputs": [
@@ -327,6 +373,26 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "planViewport",
+				"inputs": [
+					{
+						"name": "planViewport.value",
+						"type": "string",
+						"required": true,
+						"description": "A legacy viewport name or a width-prefixed pixel count."
+					}
+				],
+				"outputs": [
+					{
+						"name": "planViewport",
+						"type": "boolean",
+						"description": "True when the name is a legacy viewport or a supported width between 240 and 2560 pixels."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "contractHash",
 				"inputs": [
 					{
@@ -349,9 +415,15 @@
 										"type": "string"
 									}
 								],
-								"errors": ["invalid-input"],
-								"states": ["draft"],
-								"viewports": ["diagram"]
+								"errors": [
+									"invalid-input"
+								],
+								"states": [
+									"draft"
+								],
+								"viewports": [
+									"diagram"
+								]
 							}
 						]
 					}
@@ -361,7 +433,9 @@
 						"name": "contractHash",
 						"type": "string",
 						"description": "Returns the lowercase 64-character SHA-256 hexadecimal digest of the canonical JSON for the validated contract. Runtime properties on the contract object are included in that canonical serialization.",
-						"examples": ["af5c207d27c3ca5f889c6a1f73b9f81d758ed11247cd07cafa200736eac92b01"]
+						"examples": [
+							"af5c207d27c3ca5f889c6a1f73b9f81d758ed11247cd07cafa200736eac92b01"
+						]
 					}
 				],
 				"errors": [
@@ -461,7 +535,10 @@
 						"type": "string",
 						"required": true,
 						"description": "A safe artifact filename begins with a lowercase letter or digit and then uses only lowercase letters, digits, dots, or hyphens; it cannot contain '..'. This validator applies the rule to a filename string without directory components.",
-						"examples": ["plan-v001.json", "design-image.png"]
+						"examples": [
+							"plan-v001.json",
+							"design-image.png"
+						]
 					}
 				],
 				"outputs": [
@@ -505,7 +582,10 @@
 			}
 		]
 	},
-	"scenarios": ["planning-artifacts", "shells-shared-app"],
+	"scenarios": [
+		"planning-artifacts",
+		"shells-shared-app"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
