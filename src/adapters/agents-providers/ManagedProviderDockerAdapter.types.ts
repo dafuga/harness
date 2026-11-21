@@ -19,8 +19,7 @@ export interface DockerTaskDaemon {
 	id: string;
 }
 
-export interface DockerTaskLaunch {
-	version: 1;
+interface DockerLaunchIdentity {
 	owner: string;
 	cwd: string;
 	host: string;
@@ -28,4 +27,22 @@ export interface DockerTaskLaunch {
 	pid: number;
 	startedAt: string;
 	containerId?: string;
+}
+
+export interface DockerBindLaunch extends DockerLaunchIdentity {
+	version: 1;
+}
+
+export interface DockerVolumeLaunch extends DockerLaunchIdentity {
+	version: 2;
+	stage: 'volume' | 'storage' | 'task';
+	storageId?: string;
+}
+
+export type DockerTaskLaunch = DockerBindLaunch | DockerVolumeLaunch;
+
+export interface DockerVolumeResources {
+	volume: boolean;
+	storage?: string;
+	task?: string;
 }

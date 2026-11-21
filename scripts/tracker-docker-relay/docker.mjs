@@ -2,7 +2,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { addAbortListener, once } from 'node:events';
-import { realpathSync } from 'node:fs';
 import process from 'node:process';
 import { ManagedProviderDockerAdapter } from '../../src/adapters/agents-providers/ManagedProviderDockerAdapter';
 import { readFrames, writeFrame } from './frames.mjs';
@@ -36,7 +35,7 @@ export function localDocker() {
 		}).trim();
 }
 
-function assertContainer(docker, id, workspace) {
+function assertContainer(docker, id) {
 	const [container] = JSON.parse(docker('inspect', id));
 	const { HostConfig: host, Config: config, Mounts: mounts } = container;
 	assert(/^[1-9]\d*:\d+$/.test(config.User));
@@ -46,9 +45,11 @@ function assertContainer(docker, id, workspace) {
 	assert.deepEqual(host.CapDrop, ['ALL']);
 	assert.deepEqual(host.SecurityOpt, ['no-new-privileges']);
 	assert.deepEqual(
-		mounts.map(({ Type, Source, Destination }) => [Type, Source, Destination]),
-		[['bind', workspace, '/workspace']]
+		mounts.map(({ Type, Destination }) => [Type, Destination]),
+		[['volume', '/workspace']]
 	);
+	assert.match(mounts[0].Name, /^harness-task-[a-f0-9-]+$/);
+	return mounts[0].Name;
 }
 
 async function collect(child, scope, signal) {
@@ -76,14 +77,16 @@ async function collect(child, scope, signal) {
 export async function runGuest(docker, task, scope, args) {
 	const adapter = new ProofDockerAdapter();
 	const findOwned = () => docker('ps', '-aq', '--filter', `label=${adapter.label}`);
+	let volume;
 	try {
 		await adapter.run(['bun', '/workspace/guest.js', ...args], task, async (child) => {
 			const id = findOwned();
 			assert(/^[a-f0-9]{12}$/.test(id), 'Expected one task-owned guest');
-			assertContainer(docker, id, realpathSync(task.cwd));
+			volume = assertContainer(docker, id);
 			await collect(child, scope, task.signal);
 		});
 	} finally {
 		if (adapter.label) assert.equal(findOwned(), '', 'Task-owned container cleanup failed');
+		if (volume) assert.equal(docker('volume', 'ls', '-q', '--filter', `name=${volume}`), '');
 	}
 }
