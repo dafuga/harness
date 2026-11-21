@@ -1,0 +1,58 @@
+{
+	"schemaVersion": 1,
+	"id": "command.agents-providers-provider-sign-in",
+	"uid": "u_hcdv6alnyy",
+	"kind": "command",
+	"title": "ProviderSignInCommand",
+	"responsibility": "Owns the ProviderSignInCommand command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/agents-providers/ProviderSignInCommand.ts"],
+		"symbols": ["ProviderSignInCommand", "ProviderSignInCommand.run"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "ProviderSignInCommand.run",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "ProviderSignInCommand.run",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProviderSignInCommand.run",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/agents-providers/ProviderSignInCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/agents-providers/ProviderSignInCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
