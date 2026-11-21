@@ -27,7 +27,7 @@
 		"inputs": [
 			{
 				"name": "ModuleTaskWorkerService.constructor.root",
-				"type": "unknown",
+				"type": "string",
 				"required": false,
 				"description": "Repository root that Git commands, the task queue, task worktrees and the analytics sync are bound to. Defaults to process.cwd(), read when the worker is constructed without a root.",
 				"examples": ["/home/dev/harness", "/srv/harness/checkout"]
@@ -64,7 +64,7 @@
 			},
 			{
 				"name": "ModuleTaskWorkerService.once.signal",
-				"type": "unknown",
+				"type": "AbortSignal",
 				"required": false,
 				"description": "Abort signal given to the runner as TaskRunInput.signal; the quota fallback checks it with throwIfAborted() before dispatching again. Defaults to AbortSignal.timeout(900000), which aborts after 900000 ms (15 minutes)."
 			},
@@ -691,7 +691,7 @@
 					},
 					{
 						"name": "ModuleTaskWorkerService.once.signal",
-						"type": "unknown",
+						"type": "AbortSignal",
 						"required": false,
 						"description": "Abort signal given to the runner as TaskRunInput.signal; the quota fallback checks it with throwIfAborted() before dispatching again. Defaults to AbortSignal.timeout(900000), which aborts after 900000 ms (15 minutes)."
 					}
@@ -1349,7 +1349,7 @@
 				"inputs": [
 					{
 						"name": "ModuleTaskWorkerService.constructor.root",
-						"type": "unknown",
+						"type": "string",
 						"required": false,
 						"description": "Repository root that Git commands, the task queue, task worktrees and the analytics sync are bound to. Defaults to process.cwd(), read when the worker is constructed without a root.",
 						"examples": ["/home/dev/harness", "/srv/harness/checkout"]

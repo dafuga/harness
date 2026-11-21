@@ -24,7 +24,7 @@
 		"inputs": [
 			{
 				"name": "TaskCommand.constructor.root",
-				"type": "unknown",
+				"type": "string",
 				"required": false,
 				"default": "undefined",
 				"description": "Filesystem root used to read the selected loop state and resolve committed task evidence and audit storage. If omitted, the constructor uses process.cwd().",
@@ -288,7 +288,7 @@
 				"inputs": [
 					{
 						"name": "TaskCommand.constructor.root",
-						"type": "unknown",
+						"type": "string",
 						"required": false,
 						"default": "undefined",
 						"description": "Filesystem root used to read the selected loop state and resolve committed task evidence and audit storage. If omitted, the constructor uses process.cwd().",
