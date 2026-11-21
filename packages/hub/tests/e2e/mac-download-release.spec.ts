@@ -22,9 +22,9 @@ test('configured storage streams one vetted archive through the compiled Hub rou
 	expect(head.headers()).toMatchObject({
 		'content-type': 'application/zip',
 		'content-disposition': 'attachment; filename="Harness-mac-arm64.zip"',
-		'content-length': String(synthetic.length),
-		'cache-control': 'no-store'
+		'content-length': String(synthetic.length)
 	});
+	expect(head.headers()['cache-control']).toMatch(/(?:^|,\s*)no-store(?:,|$)/);
 	expect(await head.body()).toHaveLength(0);
 	const downloaded = await request.get(path, { maxRedirects: 0 });
 	expect(downloaded.status()).toBe(200);

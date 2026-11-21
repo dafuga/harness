@@ -35,7 +35,13 @@ const unavailableNotice =
 	'The tracker could not be reached from this host, so no projects are shown.';
 
 /** Records the compiled account surface, with synthetic credentials and tracker data only. */
-async function attachShot(page: Page, testInfo: TestInfo, state: string, viewport: Viewport) {
+async function attachShot(
+	page: Page,
+	testInfo: TestInfo,
+	state: string,
+	viewport: Viewport,
+	evidence = 'account-screen'
+) {
 	await page.evaluate(async () => {
 		await document.fonts.ready;
 		await new Promise<void>((resolve) =>
@@ -54,7 +60,7 @@ async function attachShot(page: Page, testInfo: TestInfo, state: string, viewpor
 	if (!buildId || !revision) throw new Error('Project account captures need a stamped Hub build.');
 	recordCapture(
 		{
-			evidence: 'account-screen',
+			evidence,
 			kind: 'screenshot',
 			state,
 			viewport: viewport.id,
@@ -149,7 +155,7 @@ test('the verified GitHub callback status appears on the projects page', async (
 	await overviewFixture(page);
 	await open(page, viewports[0], '/projects?github=connected');
 	await expect(page.getByText('GitHub is connected.', { exact: true })).toBeVisible();
-	await attachShot(page, testInfo, 'github-connected', viewports[0]);
+	await attachShot(page, testInfo, 'github-connected', viewports[0], 'github-result');
 });
 
 for (const viewport of viewports) {
