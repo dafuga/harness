@@ -125,7 +125,7 @@ const projects = [
 ];
 
 /** One project in every state, with each part of a card the approved design shows. */
-export function allStatesSnapshot(): OverviewSnapshot {
+export function allStatesSnapshot(): Extract<OverviewSnapshot, { status: 'ready' }> {
 	return {
 		status: 'ready',
 		liveSessions: 3,
