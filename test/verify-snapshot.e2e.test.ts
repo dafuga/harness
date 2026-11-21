@@ -1,10 +1,13 @@
+import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile, rm, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { fixtureSources } from './support/verifyFixture';
 import { baselineRepo, cloneRepo, type VerifyRepo } from './support/verifyRepo';
+import { ownEnvironment } from './support/cli';
 
 let baseline: VerifyRepo;
 beforeAll(async () => {
@@ -116,6 +119,8 @@ test('a declared output may be written, and nothing else may be', async () => {
 		await missing.repo.dispose();
 	}
 
+	await expectCancelledArtifactBuild(artifactArgs);
+
 	const beside = await verifyWith({ FIXTURE_MUTATE: 'builds/out.js' }, declared);
 	expect([beside.exitCode, beside.record.failures]).toEqual([1, [gained('builds/out.js')]]);
 	await beside.repo.dispose();
@@ -123,6 +128,72 @@ test('a declared output may be written, and nothing else may be', async () => {
 	expect([source.exitCode, source.record.failures]).toEqual([1, [gained('src/utils/extra.ts')]]);
 	await source.repo.dispose();
 }, 300_000);
+
+async function expectCancelledArtifactBuild(artifactArgs: string[]): Promise<void> {
+	const repo = await cloneRepo(baseline);
+	const marker = join(repo.root, '.git', 'setup-process.json');
+	const cli = fileURLToPath(new URL('../src/index.ts', import.meta.url));
+	let pid: number | undefined;
+	let snapshot: string | undefined;
+	try {
+		const config = await repo.json<{ setup: unknown[] }>('harness.verify.json');
+		const report = `printf '{"pid":%s,"snapshot":"%s"}' "$!" "$(pwd -P)" > "${marker}.tmp"`;
+		await repo.write(
+			'harness.verify.json',
+			JSON.stringify({
+				...config,
+				outputs: ['build/'],
+				setup: [
+					...config.setup,
+					{ command: `sleep 120 & ${report} && mv "${marker}.tmp" "${marker}"; wait` }
+				]
+			})
+		);
+		await repo.commit('chore: exercise cancellable export setup');
+		const child = spawn('bun', [cli, 'verify', 'run', '--json', ...artifactArgs], {
+			cwd: repo.root,
+			env: ownEnvironment(),
+			stdio: 'ignore'
+		});
+		const closed = new Promise((resolve) => child.once('close', resolve));
+		try {
+			await expect
+				.poll(
+					async () => {
+						const state = await readFile(marker, 'utf8').catch(() => '');
+						if (!state) return false;
+						({ pid, snapshot } = JSON.parse(state));
+						return !!pid && processAlive(pid) && !!snapshot && existsSync(snapshot);
+					},
+					{ timeout: 15_000 }
+				)
+				.toBe(true);
+			child.kill('SIGTERM');
+			await expect
+				.poll(() => [processAlive(pid!), existsSync(snapshot!)], {
+					timeout: 10_000
+				})
+				.toEqual([false, false]);
+			expect(await closed).not.toBe(0);
+		} finally {
+			if (pid && processAlive(pid)) process.kill(pid, 'SIGTERM');
+			if (child.exitCode === null && child.signalCode === null) child.kill('SIGTERM');
+			await closed;
+		}
+	} finally {
+		if (snapshot) await rm(snapshot, { recursive: true, force: true });
+		await repo.dispose();
+	}
+}
+
+function processAlive(pid: number): boolean {
+	try {
+		process.kill(pid, 0);
+		return true;
+	} catch {
+		return false;
+	}
+}
 
 test('an output declaration cannot cover tracked source', async () => {
 	const broad = await verifyWith({ FIXTURE_MUTATE: 'src/utils/extra.ts' }, (repo) =>
