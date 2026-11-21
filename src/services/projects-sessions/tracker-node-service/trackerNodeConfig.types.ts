@@ -9,6 +9,7 @@ interface TrackerNodeConfigFields {
 	legacyFenceFile: string;
 	legacySupervisorSocket?: string;
 	syncSecretFile: string;
+	backupDirectory?: string;
 	hostEffects?: TrackerHostEffectsMode;
 	notifications?: {
 		targets: Record<string, { url: string; bearerFile?: string }>;

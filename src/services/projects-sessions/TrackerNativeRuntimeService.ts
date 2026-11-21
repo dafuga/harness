@@ -1,5 +1,6 @@
 // @harness-uid u_bl6xl2h4a3
 import type { SqliteDatabase } from '../../core/development-tooling/sqliteTypes';
+import type { TrackerLadderConfig } from '../../utils/agents-providers/parseTrackerModelSpec.types';
 import type { TrackerDispatcherService } from '../agents-providers/TrackerDispatcherService';
 import type { TrackerDispatchSchedulerService } from './TrackerDispatchSchedulerService';
 import { TrackerItemReadRepository } from '../../repositories/projects-sessions/TrackerItemReadRepository';
@@ -10,7 +11,10 @@ import { TrackerRecurringRepository } from '../../repositories/projects-sessions
 import { TrackerAdapterPollService } from './TrackerAdapterPollService';
 import { TrackerHubSyncService } from './TrackerHubSyncService';
 import { TrackerLocalApiService } from './TrackerLocalApiService';
-import type { TrackerNativeRuntimeOptions } from './TrackerNativeRuntimeService.types';
+import type {
+	TrackerDuePreviewPolicy,
+	TrackerNativeRuntimeOptions
+} from './TrackerNativeRuntimeService.types';
 import { TrackerNotificationService } from './TrackerNotificationService';
 import { TrackerPersistenceService } from './TrackerPersistenceService';
 import type { TrackerSpokeLoopService } from './TrackerSpokeLoopService';
@@ -19,6 +23,7 @@ import { trackerHostAdapter } from './tracker-native-runtime-service/trackerHost
 import { trackerHostWatchdog } from './tracker-native-runtime-service/trackerHostWatchdog';
 import { configuredHostDispatch } from './tracker-native-runtime-service/trackerHostLaunch';
 import { composeTrackerDispatch } from './tracker-native-runtime-service/nativeTrackerDispatch';
+import { trackerDueItemPreview } from './tracker-native-runtime-service/readTrackerDuePreview';
 import {
 	composeTrackerLinks,
 	composeTrackerTelemetry,
@@ -31,6 +36,9 @@ export class TrackerNativeRuntimeService {
 	readonly role: 'hub' | 'spoke';
 	readonly dispatch?: TrackerDispatcherService;
 	readonly scheduler?: TrackerDispatchSchedulerService;
+	readonly duePreview: TrackerDuePreviewPolicy;
+	readonly backupDirectory?: string;
+	readonly ladderConfig?: TrackerLadderConfig;
 	readonly store: TrackerPersistenceService;
 	readonly items: TrackerLocalApiService;
 	readonly notifications?: TrackerNotificationService;
@@ -46,10 +54,12 @@ export class TrackerNativeRuntimeService {
 
 	constructor(database: SqliteDatabase, options: TrackerNativeRuntimeOptions) {
 		validateLinks(options);
-		const { node, now, storage, hostEffects } = options;
+		const { node, now, storage, hostEffects, role } = options;
 		const store = new TrackerPersistenceService(database, node, { ...storage, now });
 		this.store = store;
-		this.role = options.role;
+		this.role = role;
+		this.backupDirectory = options.backupDirectory;
+		this.ladderConfig = options.ladderConfig;
 		this.now = now ?? Date.now;
 		this.hostEffectsHeld = options.hostEffectsHeld === true;
 		this.watchdog = configuredHostWatchdog(store, hostEffects?.watchdog, this.now);
@@ -57,15 +67,16 @@ export class TrackerNativeRuntimeService {
 		this.notifications = composeNotifications(store, options);
 		const recurring = composeRecurrence(store, options, this.notifications);
 		this.recurring = recurring?.worker;
-		this.items = composeItemApi(store, runs, options, recurring?.repo);
 		this.links = composeTrackerLinks(store, options);
 		this.adapter = configuredHostAdapter(store, runs, options, this.now);
 		const dispatch = options.dispatch ?? configuredHostDispatch(store, hostEffects);
 		const workerOptions = { ...options, dispatch };
-		({ dispatch: this.dispatch, scheduler: this.scheduler } = composeTrackerDispatch(
-			store,
-			workerOptions
-		));
+		({
+			dispatch: this.dispatch,
+			scheduler: this.scheduler,
+			duePreview: this.duePreview
+		} = composeTrackerDispatch(store, workerOptions));
+		this.items = composeItemApi(this, runs, options, recurring?.repo);
 		({ tick: this.telemetry, samples: this.fleetSamples } = composeTrackerTelemetry(
 			store,
 			runs,
@@ -97,7 +108,7 @@ export class TrackerNativeRuntimeService {
 }
 
 function composeItemApi(
-	store: TrackerPersistenceService,
+	runtime: TrackerNativeRuntimeService,
 	runs: TrackerRunReadRepository,
 	{
 		now,
@@ -110,6 +121,7 @@ function composeItemApi(
 	}: TrackerNativeRuntimeOptions,
 	recurring?: TrackerRecurringRepository
 ) {
+	const { store } = runtime;
 	return new TrackerLocalApiService(store, new TrackerItemReadRepository(store.database), {
 		now,
 		timeZone,
@@ -117,6 +129,7 @@ function composeItemApi(
 		validateModel,
 		planLaunch,
 		manualLaunch,
+		schedulePreview: (item) => trackerDueItemPreview(runtime, item),
 		runs,
 		recurring: { role, history: recurring && ((id, limit) => recurring.history(id, limit)) }
 	});

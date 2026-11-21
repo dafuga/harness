@@ -7,7 +7,10 @@ import { planTrackerItemMutation } from '../../utils/projects-sessions/planTrack
 import { trackerItemError } from '../../utils/projects-sessions/trackerItemError';
 import { itemAction, itemMutation } from './tracker-local-api-service/trackerLocalItemMutation';
 import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
-import { readTrackerRunEndpoint } from './tracker-local-api-service/readTrackerRunEndpoint';
+import {
+	readTrackerItemDetail,
+	readTrackerRunEndpoint
+} from './tracker-local-api-service/readTrackerRunEndpoint';
 import type { TrackerPersistenceService } from './TrackerPersistenceService';
 import {
 	isTrackerManualLaunch,
@@ -71,7 +74,8 @@ export class TrackerLocalApiService {
 
 	private readItems(parts: string[], query: Record<string, string>): Response | undefined {
 		if (parts.length === 1) return trackerResponse(200, this.items.list(query));
-		if (parts.length === 2) return trackerResponse(200, this.items.get(parts[1]));
+		if (parts.length === 2)
+			return trackerResponse(200, readTrackerItemDetail(this.items.get(parts[1]), this.options));
 		if (parts.length === 3 && parts[2] === 'history' && this.options.recurring)
 			return this.readHistory(parts[1], query.limit);
 		return undefined;

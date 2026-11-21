@@ -2,11 +2,9 @@
 	"name": "tracker-cli-compat",
 	"goal": "Prove the five priority legacy CLI surfaces using isolated native fixtures while preserving read-only inspections and legacy output and command exits.",
 	"createdAt": "2026-11-21T21:50:41.611Z",
-	"updatedAt": "2026-11-21T21:52:07.087Z",
+	"updatedAt": "2026-11-21T22:10:13.315Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T22:05:40.549Z",
+			"evidence": "At 6680997560, the unchanged command fixture suite reported five failures and three passes: show emitted JSON in human mode, and ignore, autolaunch, adapter list, and backup list were unavailable."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T22:05:42.282Z",
+			"evidence": "Connected CLI parsing and rendering to native item transitions, run/due reads, adapter ownership and backup metadata."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T22:10:13.315Z",
+			"evidence": "The same committed command, assertions and fixtures passed all eight tests in a clean snapshot of the fix."
 		},
 		{
 			"id": "verify",

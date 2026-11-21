@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"src/commands/projects-sessions/TrackerCommand.ts",
+			"src/commands/projects-sessions/tracker-command/formatNativeTrackerInspection.ts",
 			"src/commands/projects-sessions/tracker-command/formatNativeTrackerItem.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerCli.types.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerOptions.ts",
@@ -20,17 +21,26 @@
 			"TrackerCommand",
 			"TrackerCommand.register",
 			"TrackerCommand.run",
+			"formatNativeTrackerInspection",
 			"formatNativeTrackerItem",
 			"nativeItemPrefix",
 			"formatNativeTrackerRunRead",
+			"formatListedRun",
 			"NativeTrackerRequest",
 			"NativeTrackerItem",
+			"NativeTrackerItemDetail",
+			"NativeTrackerAdapter",
+			"NativeTrackerBackupList",
+			"NativeTrackerInspection",
 			"NativeTrackerListedRun",
 			"NativeTrackerRunReport",
 			"NativeTrackerPick",
 			"NativeTrackerRunRead",
 			"nativeTrackerCommonOptions",
 			"nativeTrackerCommandOptions",
+			"nativeTrackerIdVerbs",
+			"nativeTrackerInspectionRequest",
+			"nativeTrackerIgnoreRequest",
 			"nativeTrackerCommands",
 			"nativeTrackerArgs",
 			"selectedTrackerConfig",
@@ -48,6 +58,16 @@
 			{
 				"name": "TrackerCommand.run.args",
 				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "formatNativeTrackerInspection.command",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "formatNativeTrackerInspection.data",
+				"type": "NativeTrackerInspection",
 				"required": true
 			},
 			{
@@ -81,6 +101,36 @@
 				"required": true
 			},
 			{
+				"name": "formatListedRun.run",
+				"type": "NativeTrackerListedRun",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerInspectionRequest.command",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerInspectionRequest.words",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerIgnoreRequest.command",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerIgnoreRequest.[id, ...words]",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerIgnoreRequest.values",
+				"type": "Record<string, string | boolean | undefined>",
+				"required": true
+			},
+			{
 				"name": "nativeTrackerArgs.args",
 				"type": "string[]",
 				"required": true
@@ -106,6 +156,10 @@
 				"type": "number | Promise<number>"
 			},
 			{
+				"name": "formatNativeTrackerInspection",
+				"type": "unknown"
+			},
+			{
 				"name": "formatNativeTrackerItem",
 				"type": "string"
 			},
@@ -118,12 +172,28 @@
 				"type": "string | undefined"
 			},
 			{
+				"name": "formatListedRun",
+				"type": "string"
+			},
+			{
 				"name": "nativeTrackerCommonOptions",
 				"type": "unknown"
 			},
 			{
 				"name": "nativeTrackerCommandOptions",
 				"type": "unknown"
+			},
+			{
+				"name": "nativeTrackerIdVerbs",
+				"type": "unknown"
+			},
+			{
+				"name": "nativeTrackerInspectionRequest",
+				"type": "NativeTrackerRequest | undefined"
+			},
+			{
+				"name": "nativeTrackerIgnoreRequest",
+				"type": "NativeTrackerRequest | undefined"
 			},
 			{
 				"name": "nativeTrackerCommands",
@@ -181,6 +251,29 @@
 					{
 						"name": "TrackerCommand.run",
 						"type": "number | Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "formatNativeTrackerInspection",
+				"inputs": [
+					{
+						"name": "formatNativeTrackerInspection.command",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "formatNativeTrackerInspection.data",
+						"type": "NativeTrackerInspection",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "formatNativeTrackerInspection",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -253,6 +346,85 @@
 					}
 				],
 				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "formatListedRun",
+				"inputs": [
+					{
+						"name": "formatListedRun.run",
+						"type": "NativeTrackerListedRun",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "formatListedRun",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "nativeTrackerInspectionRequest",
+				"inputs": [
+					{
+						"name": "nativeTrackerInspectionRequest.command",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "nativeTrackerInspectionRequest.words",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeTrackerInspectionRequest",
+						"type": "NativeTrackerRequest | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "nativeTrackerIgnoreRequest",
+				"inputs": [
+					{
+						"name": "nativeTrackerIgnoreRequest.command",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "nativeTrackerIgnoreRequest.[id, ...words]",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "nativeTrackerIgnoreRequest.values",
+						"type": "Record<string, string | boolean | undefined>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeTrackerIgnoreRequest",
+						"type": "NativeTrackerRequest | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			},
 			{

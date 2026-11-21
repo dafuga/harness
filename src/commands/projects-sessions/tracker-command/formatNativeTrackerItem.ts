@@ -44,6 +44,8 @@ const commandPrefixes = new Map([
 	['plan', 'added '],
 	['goal', 'added '],
 	['note', 'noted: '],
+	['ignore', 'ignored: '],
+	['unignore', 'unignored: '],
 	['flag', 'flagged: '],
 	['answer', 'resolved: '],
 	['resolve', 'resolved: '],
@@ -79,7 +81,7 @@ export function formatNativeTrackerRunRead(
 	}
 }
 
-function formatListedRun(run: NativeTrackerListedRun): string {
+export function formatListedRun(run: NativeTrackerListedRun): string {
 	const stamp = (ms?: number | null) => (ms ? new Date(ms).toISOString() : '-');
 	const session = run.session_name
 		? `  ${run.session_name}${run.tmux ? ` (tmux ${run.tmux})` : ''}`

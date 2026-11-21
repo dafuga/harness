@@ -14,6 +14,8 @@
 			"src/services/projects-sessions/tracker-node-service/TrackerNodeStartupError.ts",
 			"src/services/projects-sessions/tracker-node-service/TrackerNodeTransportError.ts",
 			"src/services/projects-sessions/tracker-node-service/holdLegacySupervisorSocket.ts",
+			"src/services/projects-sessions/tracker-node-service/readTrackerBackupList.ts",
+			"src/services/projects-sessions/tracker-node-service/readTrackerNodeInspection.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerNodeConfig.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerNodeConfig.types.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerNodeListeners.ts",
@@ -30,6 +32,8 @@
 			"TrackerNodeStartupError",
 			"TrackerNodeTransportError",
 			"holdLegacySupervisorSocket",
+			"readTrackerBackupList",
+			"readTrackerNodeInspection",
 			"loadTrackerNodeConfig",
 			"trackerSyncPort",
 			"verifyTrackerLegacyFence",
@@ -60,6 +64,26 @@
 			{
 				"name": "holdLegacySupervisorSocket.path",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readTrackerBackupList.dir",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "readTrackerNodeInspection.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readTrackerNodeInspection.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "readTrackerNodeInspection.supervisor",
+				"type": "TrackerSupervisorService",
 				"required": true
 			},
 			{
@@ -198,6 +222,14 @@
 				"type": "Promise<()"
 			},
 			{
+				"name": "readTrackerBackupList",
+				"type": "unknown"
+			},
+			{
+				"name": "readTrackerNodeInspection",
+				"type": "Response | undefined"
+			},
+			{
 				"name": "loadTrackerNodeConfig",
 				"type": "TrackerNodeConfig"
 			},
@@ -310,6 +342,52 @@
 					{
 						"name": "holdLegacySupervisorSocket",
 						"type": "Promise<()"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readTrackerBackupList",
+				"inputs": [
+					{
+						"name": "readTrackerBackupList.dir",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerBackupList",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readTrackerNodeInspection",
+				"inputs": [
+					{
+						"name": "readTrackerNodeInspection.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readTrackerNodeInspection.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					},
+					{
+						"name": "readTrackerNodeInspection.supervisor",
+						"type": "TrackerSupervisorService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerNodeInspection",
+						"type": "Response | undefined"
 					}
 				],
 				"errors": [],
@@ -700,6 +778,16 @@
 		},
 		{
 			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-adapter-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-run-read",
 			"via": "import",
 			"origin": "derived"
 		},

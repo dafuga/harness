@@ -3,27 +3,13 @@ import { resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import type { NativeTrackerRequest } from './nativeTrackerCli.types';
 
-import { nativeTrackerCommandOptions, nativeTrackerCommonOptions, query } from './nativeTrackerOptions';
-
-const idVerbs = new Set([
-	'show',
-	'update',
-	'rm',
-	'history',
-	'launch',
-	'unlaunch',
-	'start',
-	'reopen',
-	'note',
-	'progress',
-	'flag',
-	'block',
-	'unblock',
-	'answer',
-	'resolve',
-	'done',
-	'unflag'
-]);
+import {
+	nativeTrackerCommandOptions,
+	nativeTrackerCommonOptions,
+	nativeTrackerIdVerbs,
+	nativeTrackerIgnoreRequest,
+	nativeTrackerInspectionRequest
+} from './nativeTrackerOptions';
 
 export const nativeTrackerCommands = [...nativeTrackerCommandOptions.keys()].join(', ');
 
@@ -43,12 +29,15 @@ export function nativeTrackerArgs(args: string[]) {
 function nativeTrackerRequest(
 	command: string,
 	words: string[],
-	values: Record<string, unknown>
+	values: Record<string, string | boolean | undefined>
 ): NativeTrackerRequest {
 	if (command === 'watchdog') return watchdogRequest(words, values);
-	const item = itemQuery(command, words, values) ?? runReadRequest(command, words, values);
+	const item =
+		itemQuery(command, words, values) ??
+		runReadRequest(command, words, values) ??
+		nativeTrackerInspectionRequest(command, words);
 	if (item) return item;
-	if (idVerbs.has(command)) return itemAction(command, words, values);
+	if (nativeTrackerIdVerbs.has(command)) return itemAction(command, words, values);
 	if (words.length) throw new TypeError(`usage: tracker ${command}`);
 	if (command === 'sync') return { method: 'POST', path: '/sync' };
 	const path = command === 'ensure' ? '/health' : `/${command}`;
@@ -93,7 +82,7 @@ function watchdogRequest(
 function itemQuery(
 	command: string,
 	words: string[],
-	values: Record<string, unknown>
+	values: Record<string, string | boolean | undefined>
 ): NativeTrackerRequest | undefined {
 	const fields = Object.fromEntries(
 		Object.entries(values).filter(([key]) => !Object.hasOwn(nativeTrackerCommonOptions, key))
@@ -119,7 +108,7 @@ function itemQuery(
 				path: '/check' + query({ ...fields, text: requiredText(words, command) })
 			};
 		default:
-			return undefined;
+			return nativeTrackerIgnoreRequest(command, words, values);
 	}
 }
 
@@ -215,4 +204,13 @@ function requiredText(words: string[], command: string): string {
 	const value = words.join(' ');
 	if (!value) throw new TypeError(`usage: tracker ${command} <text...>`);
 	return value;
+}
+
+function query(fields: Record<string, unknown>): string {
+	const params = new URLSearchParams();
+	for (const [key, value] of Object.entries(fields)) {
+		if (value !== undefined && value !== false)
+			params.set(key, value === true ? '1' : String(value));
+	}
+	return params.size ? '?' + params.toString() : '';
 }
