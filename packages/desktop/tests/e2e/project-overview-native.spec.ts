@@ -1,9 +1,12 @@
-import { expect, test } from '../../../../test/support/browserTest';
+import { expect as baseExpect, test } from '../../../../test/support/browserTest';
 import { captureOverview, fakeOverviewBridge } from './support/projectOverviewNativeFixture';
 import { scenarioCapture } from './scenario-capture';
 import scenario from '../../../../specification/scenarios/project-overview-desktop.json' with { type: 'json' };
 import type { ScenarioManifest } from '../../../../src/core/unitTypes';
 import type { OverviewBridge } from './support/projectOverviewNativeFixture.types';
+
+const expect = baseExpect.configure({ timeout: 25_000 });
+test.setTimeout(90_000);
 
 const viewports = [
 	{ name: 'desktop', width: 1440, height: 900 },

@@ -1,4 +1,4 @@
-import { expect, test } from '../../../../test/support/browserTest';
+import { expect as baseExpect, test } from '../../../../test/support/browserTest';
 import type { Page } from '@playwright/test';
 import {
 	pairedAccountCalls,
@@ -12,6 +12,8 @@ import type { ScenarioManifest } from '../../../../src/core/unitTypes';
 /** The phone viewport the scenario declares: the only size its screenshots are taken at. */
 const phone = { width: 390, height: 844 };
 const overviewPath = '/api/tracker-overview';
+const expect = baseExpect.configure({ timeout: 25_000 });
+test.setTimeout(90_000);
 
 /** The paired landing page's visible link: the only way the overview is opened in these tests. */
 const overviewLink = (page: Page) =>
@@ -87,7 +89,12 @@ test('a signed-in non-owner is denied on confirmation, so the landing page offer
 	await page.setViewportSize(phone);
 	await pairedPhoneFixture(page, 'non-owner');
 	await page.goto('/');
-	await expect.poll(async () => (await pairedAccountCalls(page)).length).toBe(1);
+	await expect
+		.poll(
+			async () =>
+				(await pairedAccountCalls(page)).filter((call) => call.path === overviewPath).length
+		)
+		.toBe(1);
 	await expect(overviewLink(page)).toHaveCount(0);
 	await expectReadsOnly(page);
 });

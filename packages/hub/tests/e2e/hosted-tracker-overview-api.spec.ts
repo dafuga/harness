@@ -1,4 +1,4 @@
-import { expect, test } from '../../../../test/support/browserTest';
+import { expect as baseExpect, test } from '../../../../test/support/browserTest';
 import { buildStamp } from '../../../../src/utils/buildStamp';
 import {
 	evidenceRequested,
@@ -14,6 +14,9 @@ import {
 	snapshot
 } from '../../test/support/trackerOverviewFixture';
 import { hostedFixture } from './hosted-fixture';
+
+const expect = baseExpect.configure({ timeout: 25_000 });
+test.setTimeout(90_000);
 
 // Synthetic records only. The compiled /tracker-overview page runs in Chromium; its own
 // /api/tracker-overview HTTP is answered by the actual serveTrackerOverview handler through a

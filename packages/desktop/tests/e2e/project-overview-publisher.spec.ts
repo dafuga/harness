@@ -18,6 +18,7 @@ import {
 	TRACKER_URLS
 } from './support/projectOverviewElectronFixture';
 import {
+	makeTemporaryDesktopEntry,
 	OTHER,
 	OWNER,
 	seedHostedSession,
@@ -45,7 +46,7 @@ async function launchWithPublisher(temp: string, hub: HubSpy): Promise<ElectronA
 	) as Record<string, string>;
 	return _electron.launch({
 		executablePath: electronBinary,
-		args: [desktopRoot, `--user-data-dir=${join(temp, 'profile')}`],
+		args: [await makeTemporaryDesktopEntry(temp, desktopRoot)],
 		env: {
 			...env,
 			HARNESS_HUB_ORIGIN: hub.origin,

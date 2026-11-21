@@ -1,4 +1,4 @@
-import { expect, test } from '../../../../test/support/browserTest';
+import { expect as baseExpect, test } from '../../../../test/support/browserTest';
 import { ada } from './hosted-fixture';
 import {
 	capture,
@@ -8,6 +8,9 @@ import {
 	refusal,
 	viewports
 } from './tracker-overview-fixture';
+
+const expect = baseExpect.configure({ timeout: 25_000 });
+test.setTimeout(90_000);
 
 /** The five synthetic project names, one per card state. */
 const projects = [

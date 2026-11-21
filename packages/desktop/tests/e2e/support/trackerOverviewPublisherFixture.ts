@@ -74,6 +74,28 @@ export async function startHubSpy(): Promise<HubSpy> {
 	};
 }
 
+/** Sets the profile before loading the compiled main. Electron can ignore --user-data-dir. */
+export async function makeTemporaryDesktopEntry(temp: string, desktopRoot: string) {
+	const entry = join(temp, 'entry');
+	const profile = join(temp, 'profile');
+	await mkdir(entry);
+	await mkdir(profile);
+	await writeFile(
+		join(entry, 'package.json'),
+		JSON.stringify({ name: 'harness-fixture', main: 'entry.cjs' })
+	);
+	await writeFile(
+		join(entry, 'entry.cjs'),
+		`
+		const { app } = require('electron');
+		app.setPath('userData', ${JSON.stringify(profile)});
+		app.setAppPath(${JSON.stringify(desktopRoot)});
+		require(${JSON.stringify(join(desktopRoot, 'dist/main.cjs'))});
+	`
+	);
+	return entry;
+}
+
 /**
  * Seeds the synthetic hosted session in this app's temporary profile. The SSH-launched fixture
  * has no unlocked Keychain, so substitute only the main process's OS storage boundary.
