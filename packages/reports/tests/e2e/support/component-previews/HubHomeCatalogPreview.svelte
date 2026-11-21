@@ -9,7 +9,8 @@
 	import '../../../../../hub/src/lib/styles/home-scheme.css';
 	import '../../../../../hub/src/lib/styles/hub-home/index.css';
 
-	let { id, Component }: { id: string; Component: SvelteComponent } = $props();
+	let { id, Component }: { id: string; Component: SvelteComponent<Record<string, unknown>> } =
+		$props();
 
 	const { api, projects } = browserContext();
 	let list = $state<ProjectSummary[]>([]);
@@ -30,7 +31,7 @@
 		snapshots = Object.fromEntries(entries);
 	});
 
-	const props = $derived<Record<string, Record<string, unknown>>>({
+	const fixtureProps = $derived<Record<string, Record<string, unknown>>>({
 		'home-agents': { agents: view.agents, send, receipt },
 		'home-cards': { view, open: noop, send },
 		'home-composer': { agents: view.agents, send },
@@ -73,7 +74,7 @@
 						<HubHomeRow title="Prepare the export cutover" meta="Atlas" />
 					</Component>
 				{:else}
-					<Component {...props[name]} />
+					<Component {...fixtureProps[name]} />
 				{/if}
 			</div>
 		</div>
