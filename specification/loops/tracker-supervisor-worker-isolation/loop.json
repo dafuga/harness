@@ -2,7 +2,7 @@
 	"name": "tracker-supervisor-worker-isolation",
 	"goal": "A blocked adapter poll cannot delay other worker ticks, an individual worker cannot overlap itself, and cancellation drains all active ticks before SQLite closes.",
 	"createdAt": "2026-11-21T17:10:39.466Z",
-	"updatedAt": "2026-11-21T17:11:09.889Z",
+	"updatedAt": "2026-11-21T17:12:46.487Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T17:12:24.130Z",
+			"evidence": "At a7c95dc170 the committed test observed one notification tick while the adapter was blocked; expected more than one."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T17:12:46.487Z",
+			"evidence": "Run one non-overlapping poll loop per configured worker under the common lifetime and drain all workers before close."
 		},
 		{
 			"id": "green",

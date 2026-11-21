@@ -36,7 +36,10 @@ export class TrackerSupervisorService {
 		this.running = true;
 		const controller = new AbortController();
 		const lifetime = AbortSignal.any([signal, controller.signal]);
-		const workers = [this.runtime.runLinks(lifetime), this.poll(lifetime)];
+		const workers = [
+			this.runtime.runLinks(lifetime),
+			...this.workers().map(([name, tick]) => this.poll(name, tick, lifetime))
+		];
 		try {
 			await Promise.all(workers);
 		} finally {
@@ -46,16 +49,16 @@ export class TrackerSupervisorService {
 		}
 	}
 
-	private async poll(signal: AbortSignal): Promise<void> {
-		const workers = this.workers();
+	private async poll(
+		name: TrackerSupervisorWorker,
+		tick: (signal: AbortSignal) => Promise<void>,
+		signal: AbortSignal
+	): Promise<void> {
 		while (!signal.aborted) {
-			for (const [name, tick] of workers) {
-				if (signal.aborted) return;
-				try {
-					await tick(signal);
-				} catch (error) {
-					if (!signal.aborted) this.options.onError?.(name, error);
-				}
+			try {
+				await tick(signal);
+			} catch (error) {
+				if (!signal.aborted) this.options.onError?.(name, error);
 			}
 			await delay(this.options.intervalMs ?? 5_000, undefined, { signal }).catch(() => {});
 		}
