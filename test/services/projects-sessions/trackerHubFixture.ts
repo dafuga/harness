@@ -1,4 +1,5 @@
-import { expect, vi } from 'vitest';
+import { vi } from 'vitest';
+import { expect } from '../../verificationExpect';
 import { TrackerSyncAuthService } from '../../../src/services/networking-security/TrackerSyncAuthService';
 import { TrackerHubSyncService } from '../../../src/services/projects-sessions/TrackerHubSyncService';
 import type {

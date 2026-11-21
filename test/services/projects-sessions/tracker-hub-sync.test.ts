@@ -1,4 +1,5 @@
-import { expect, test, vi } from 'vitest';
+import { test, vi } from 'vitest';
+import { expect } from '../../verificationExpect';
 import { measureWorkload } from '../../support/measureWorkload';
 import {
 	auth,
