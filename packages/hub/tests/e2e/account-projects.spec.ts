@@ -143,6 +143,15 @@ test('switching accounts clears the owner link on /projects', async ({
 	await expect(page.getByText(ada.name)).toHaveCount(0);
 });
 
+test('the verified GitHub callback status appears on the projects page', async ({
+	page
+}, testInfo) => {
+	await overviewFixture(page);
+	await open(page, viewports[0], '/projects?github=connected');
+	await expect(page.getByText('GitHub is connected.', { exact: true })).toBeVisible();
+	await attachShot(page, testInfo, 'github-connected', viewports[0]);
+});
+
 for (const viewport of viewports) {
 	test(`owner /projects settles at ${viewport.id}`, async ({ page }, testInfo) => {
 		await overviewFixture(page, 'ready');

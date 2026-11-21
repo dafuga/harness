@@ -3,7 +3,7 @@
 	"id": "project-overview-hub-projects",
 	"title": "Signed-in Harness Hub projects",
 	"kind": "ui",
-	"units": ["hub.page.projects"],
+	"units": ["hub.page.projects", "hub.controller.github-connection"],
 	"states": [
 		{
 			"id": "owner",
@@ -22,6 +22,12 @@
 			"title": "Anonymous visitors see Google sign-in and no tracker data",
 			"coverage": "required",
 			"units": ["hub.page.projects"]
+		},
+		{
+			"id": "github-connected",
+			"title": "The verified GitHub callback result appears in the signed-in dashboard",
+			"coverage": "required",
+			"units": ["hub.controller.github-connection"]
 		}
 	],
 	"viewports": [
@@ -56,6 +62,16 @@
 			"kind": "screenshot",
 			"states": ["owner", "non-owner", "signed-out"],
 			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"capture": "viewport",
+			"build": "hub",
+			"required": true
+		},
+		{
+			"id": "account-screen",
+			"kind": "screenshot",
+			"states": ["github-connected"],
+			"viewports": ["desktop"],
 			"provenance": "actual-capture",
 			"capture": "viewport",
 			"build": "hub",
