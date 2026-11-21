@@ -1,0 +1,45 @@
+{
+	"name": "tracker-hub-sync",
+	"goal": "Prove the five signed Tracker 122e190 hub routes, journal cursor recovery and long-poll lifecycle with synthetic in-process stores.",
+	"createdAt": "2026-11-21T15:20:59.328Z",
+	"updatedAt": "2026-11-21T15:35:57.939Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:21:11.141Z",
+			"evidence": "Match all five authenticated 122e190 route responses and the peer observation API. Prove cursor rewind, long-poll notification and cancellation, push retry, malformed request handling and telemetry through synthetic stores and no listener."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:30:35.486Z",
+			"evidence": "Added an internal handler with the PR #140 verifier, injected stores, raw target and body binding, bounded inputs, release-compatible responses, and cancellable journal polling without a listener."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:35:57.939Z",
+			"evidence": "On harbor-mbp-2 with one worker, all 13 Tracker handler cases and three signing cases passed at 70a65abbbb. An in-process comparison matched 12 signatures and byte-for-byte responses from release 122e190. The final revision gets the same route checks."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
