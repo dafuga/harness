@@ -59,8 +59,9 @@ test('pressure is observed during a running task; that task finishes and subsequ
 	let nextStarted = false;
 	await state.service.run(resourceRequestSchema.parse({}), async () => {
 		state.pressure(true);
-		await delay(550);
-		expect(state.service.queue.all()[0].notice).toContain('Memory pressure');
+		await expect
+			.poll(() => state.service.queue.all()[0]?.notice, { timeout: 2500 })
+			.toBe('Memory reserve is exhausted');
 		const abort = new AbortController();
 		const waiting = state.service.run(
 			resourceRequestSchema.parse({ priority: 'agent-test' }),
@@ -82,7 +83,7 @@ test('pressure is observed during a running task; that task finishes and subsequ
 			{ waitTimeoutMs: 300 }
 		);
 		await expect(timedOut).rejects.toThrow(
-			'Resource queue wait timed out; last reason: Memory pressure is critical'
+			'Resource queue wait timed out; last reason: Memory reserve is exhausted'
 		);
 		expect(nextStarted).toBe(false);
 		expect(state.service.queue.all()).toHaveLength(1);
