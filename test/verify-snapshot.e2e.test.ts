@@ -1,4 +1,6 @@
 import { existsSync } from 'node:fs';
+import { readFile, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { fixtureSources } from './support/verifyFixture';
@@ -16,14 +18,15 @@ const mutated = (path: string) => `snapshot mutated during verification: ${path}
 /** Changes and explains a shared function, then verifies with a misbehaving check. */
 async function verifyWith(
 	env: Record<string, string>,
-	prepare?: (repo: VerifyRepo) => Promise<void>
+	prepare?: (repo: VerifyRepo) => Promise<void>,
+	args: string[] = []
 ) {
 	const repo = await cloneRepo(baseline);
 	await prepare?.(repo);
 	await repo.change('src/utils/slugify.ts', (source) =>
 		source.replace('toLowerCase', 'toUpperCase')
 	);
-	const outcome = await repo.verify([], env);
+	const outcome = await repo.verify(args, env);
 	return { repo, ...outcome };
 }
 
@@ -81,10 +84,36 @@ test('a file that one check adds and a later check removes is still caught', asy
 
 test('a declared output may be written, and nothing else may be', async () => {
 	const declared = (repo: VerifyRepo) => declareOutputs(repo, ['build/']);
-	const built = await verifyWith({ FIXTURE_MUTATE: 'build/out.js' }, declared);
-	expect([built.exitCode, built.record.failures]).toEqual([0, []]);
-	expect(built.record.gates).toMatchObject({ snapshot: 'passed' });
-	await built.repo.dispose();
+	const artifactArgs = ['--retain-artifact', 'build/out.js'];
+	const built = await verifyWith({ FIXTURE_MUTATE: 'build/out.js' }, declared, artifactArgs);
+	try {
+		expect([built.exitCode, built.record.failures]).toEqual([0, []]);
+		expect(built.record.gates).toMatchObject({ snapshot: 'passed', artifact: 'passed' });
+		const output = join(built.directory, 'artifacts/export');
+		const bytes = await readFile(output);
+		expect(bytes.length).toBeGreaterThan(0);
+		expect(built.record.retainedArtifact).toEqual({
+			sourcePath: 'build/out.js',
+			path: 'artifacts/export',
+			bytes: bytes.length,
+			sha256: createHash('sha256').update(bytes).digest('hex')
+		});
+		const check = ['verify', 'check', '--record', built.record.id, '--json'];
+		expect((await built.repo.run(check)).exitCode).toBe(0);
+		await writeFile(output, 'tampered fixture');
+		expect((await built.repo.run(check)).exitCode).toBe(1);
+	} finally {
+		await built.repo.dispose();
+	}
+
+	const missing = await verifyWith({}, declared, artifactArgs);
+	try {
+		expect([missing.exitCode, missing.record.gates?.artifact]).toEqual([1, 'failed']);
+		expect(existsSync(join(missing.directory, 'artifacts/export'))).toBe(false);
+		expect(missing.record.retainedArtifact).toBeUndefined();
+	} finally {
+		await missing.repo.dispose();
+	}
 
 	const beside = await verifyWith({ FIXTURE_MUTATE: 'builds/out.js' }, declared);
 	expect([beside.exitCode, beside.record.failures]).toEqual([1, [gained('builds/out.js')]]);
