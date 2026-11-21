@@ -13,6 +13,7 @@ export function composeTrackerLinks(
 	return (options.links ?? []).map(
 		(link) =>
 			new TrackerSpokeLoopService({
+				now: options.now,
 				...link,
 				store,
 				onDuePolicy(value) {
@@ -30,10 +31,13 @@ export function composeTrackerTelemetry(
 ) {
 	const telemetry = options.dispatch?.telemetry;
 	const link = options.links?.find((entry) => (entry.link ?? 'hub') === 'hub');
-	if (!telemetry || !link) return undefined;
+	const machines = options.syncResponder?.machines;
+	if (machines) return { tick: undefined, samples: () => machines.latestSamples() };
+	if (!telemetry || !link) return { tick: undefined, samples: undefined };
 	const now = options.now ?? Date.now;
 	let nextPoll = -Infinity;
-	return async (signal: AbortSignal) => {
+	let samples: readonly unknown[] = [];
+	const tick = async (signal: AbortSignal) => {
 		if (now() < nextPoll) return;
 		nextPoll = now() + 60_000;
 		const client = new TrackerSpokeSyncService({
@@ -44,6 +48,17 @@ export function composeTrackerTelemetry(
 		const received = await client.exchangeMachine(telemetry.sample(), runs.exportLocal());
 		signal.throwIfAborted();
 		if (received.run_history) runs.importHubHistory(received.run_history);
-		telemetry.onMachines?.(received.machines);
+		samples = received.machines;
+		telemetry.onMachines?.(samples);
+	};
+	return { tick, samples: () => samples };
+}
+
+export function trackerSpokeStatus(links: readonly TrackerSpokeLoopService[]) {
+	const hub = links.find(({ kind }) => kind === 'hub');
+	const peer = links.find(({ kind }) => kind === 'peer');
+	return {
+		...(hub ? { hub: hub.upstream(), ...hub.status() } : { disabled: true }),
+		...(peer && { peer: peer.status() })
 	};
 }

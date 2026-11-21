@@ -18,7 +18,8 @@ import { TrackerRecurringService } from './TrackerRecurringService';
 import { composeTrackerDispatch } from './tracker-native-runtime-service/nativeTrackerDispatch';
 import {
 	composeTrackerLinks,
-	composeTrackerTelemetry
+	composeTrackerTelemetry,
+	trackerSpokeStatus
 } from './tracker-native-runtime-service/nativeTrackerLinks';
 import { configuredTrackerDestinations } from './tracker-native-runtime-service/configuredTrackerDestinations';
 
@@ -34,40 +35,38 @@ export class TrackerNativeRuntimeService {
 	readonly sync?: TrackerHubSyncService;
 	readonly recurring?: TrackerRecurringService;
 	readonly telemetry?: (signal: AbortSignal) => Promise<void>;
+	readonly fleetSamples?: () => readonly unknown[];
+	readonly now: () => number;
 	private readonly links: TrackerSpokeLoopService[];
 
 	constructor(database: SqliteDatabase, options: TrackerNativeRuntimeOptions) {
 		validateLinks(options);
-		const { node, now, storage, adapter, syncResponder, notification } = options;
+		const { node, now, storage, adapter } = options;
 		const store = new TrackerPersistenceService(database, node, { ...storage, now });
 		this.store = store;
 		this.role = options.role;
+		this.now = now ?? Date.now;
 		const runs = new TrackerRunReadRepository(database, node);
-		if (notification) this.notifications = composeNotifications(store, options, notification);
+		this.notifications = composeNotifications(store, options);
 		const recurring = composeRecurrence(store, options, this.notifications);
 		this.recurring = recurring?.worker;
-		this.items = new TrackerLocalApiService(store, new TrackerItemReadRepository(database), {
-			now,
-			timeZone: options.timeZone,
-			ladderConfig: options.ladderConfig,
-			validateModel: options.validateModel,
-			planLaunch: options.planLaunch,
-			runs,
-			recurring: {
-				role: this.role,
-				history: recurring && ((id, limit) => recurring.repo.history(id, limit))
-			}
-		});
+		this.items = composeItemApi(store, runs, options, recurring?.repo);
 		this.links = composeTrackerLinks(store, options);
 		if (adapter) this.adapter = new TrackerAdapterPollService(store, adapter);
-		const dispatcher = composeTrackerDispatch(store, options);
-		this.dispatch = dispatcher?.dispatch;
-		this.scheduler = dispatcher?.scheduler;
-		this.telemetry = composeTrackerTelemetry(store, runs, options);
-		if (syncResponder) {
-			const runStore = dispatcher ? () => runs : undefined;
-			this.sync = new TrackerHubSyncService({ runs: runStore, ...syncResponder, store });
-		}
+		({ dispatch: this.dispatch, scheduler: this.scheduler } = composeTrackerDispatch(
+			store,
+			options
+		));
+		({ tick: this.telemetry, samples: this.fleetSamples } = composeTrackerTelemetry(
+			store,
+			runs,
+			options
+		));
+		this.sync = composeResponder(store, runs, options, this.dispatch);
+	}
+
+	spokeStatus() {
+		return trackerSpokeStatus(this.links);
 	}
 
 	/** The service owner awaits shutdown before closing the SQLite handle. */
@@ -82,6 +81,34 @@ export class TrackerNativeRuntimeService {
 			await Promise.allSettled(links);
 		}
 	}
+}
+
+function composeItemApi(
+	store: TrackerPersistenceService,
+	runs: TrackerRunReadRepository,
+	{ now, timeZone, ladderConfig, validateModel, planLaunch, role }: TrackerNativeRuntimeOptions,
+	recurring?: TrackerRecurringRepository
+) {
+	return new TrackerLocalApiService(store, new TrackerItemReadRepository(store.database), {
+		now,
+		timeZone,
+		ladderConfig,
+		validateModel,
+		planLaunch,
+		runs,
+		recurring: { role, history: recurring && ((id, limit) => recurring.history(id, limit)) }
+	});
+}
+
+function composeResponder(
+	store: TrackerPersistenceService,
+	runs: TrackerRunReadRepository,
+	{ syncResponder }: TrackerNativeRuntimeOptions,
+	dispatch?: TrackerDispatcherService
+) {
+	if (!syncResponder) return undefined;
+	const runStore = dispatch ? () => runs : undefined;
+	return new TrackerHubSyncService({ runs: runStore, ...syncResponder, store });
 }
 
 function validateLinks({
@@ -114,9 +141,10 @@ function composeRecurrence(
 
 function composeNotifications(
 	store: TrackerPersistenceService,
-	options: TrackerNativeRuntimeOptions,
-	notification: NonNullable<TrackerNativeRuntimeOptions['notification']>
+	options: TrackerNativeRuntimeOptions
 ) {
+	const { notification } = options;
+	if (!notification) return undefined;
 	const { resolveDestination, legacyDestinations, queue, ...delivery } = notification;
 	const resolve = resolveDestination ?? configuredTrackerDestinations(legacyDestinations ?? {});
 	const now = options.now ?? Date.now;

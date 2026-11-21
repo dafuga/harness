@@ -11,8 +11,15 @@ export function composeTrackerDispatch(
 	store: TrackerPersistenceService,
 	options: TrackerNativeRuntimeOptions
 ) {
-	if (!options.dispatch) return undefined;
-	const { policy: supplied, due, sessions, telemetry: _telemetry, ...scheduler } = options.dispatch;
+	if (!options.dispatch) return { dispatch: undefined, scheduler: undefined };
+	const {
+		policy: supplied,
+		due,
+		sessions,
+		runner,
+		scheduleDue,
+		grant: configuredGrant
+	} = options.dispatch;
 	const { node, now = Date.now, role } = options;
 	const policy = { ...supplied, node, now, hub: role === 'hub' };
 	const duePolicy = due && (() => liveTrackerDuePolicy(store, due(), role));
@@ -23,11 +30,12 @@ export function composeTrackerDispatch(
 		now
 	});
 	const dispatch = new TrackerDispatcherService(repository, policy);
-	const grant = scheduler.grant ?? spokeGrant(store, options);
+	const grant = configuredGrant ?? spokeGrant(store, options);
 	return {
 		dispatch,
 		scheduler: new TrackerDispatchSchedulerService(repository, dispatch, {
-			...scheduler,
+			runner,
+			scheduleDue,
 			policy,
 			grant
 		})
