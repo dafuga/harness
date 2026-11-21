@@ -2,6 +2,7 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test } from 'vitest';
+import { trackerRunSchema } from '../../../src/repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema';
 import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { TrackerSupervisorService } from '../../../src/services/projects-sessions/TrackerSupervisorService';
 import { nativeTrackerArgs } from '../../../src/commands/projects-sessions/tracker-command/nativeTrackerRequest';
@@ -119,3 +120,52 @@ if (operation !== 'watchdog-scan') {
 }
 process.stdout.write(JSON.stringify(result));
 `;
+
+test('retains the legacy MB2 observed row while its pane is live and closes it without a provider launch', () =>
+	measureWorkload(
+		'service.projects-sessions-tracker-native-runtime',
+		'retained-observed-pane',
+		() => withTempDir('hnt-observed-', proveObserved)
+	));
+
+async function proveObserved(root: string) {
+	const executable = join(root, 'watchdog');
+	const db = new DatabaseSync(':memory:');
+	writeFileSync(executable, `#!${process.execPath}\n${watchdogDriver}`, { mode: 0o700 });
+	const runtime = new TrackerNativeRuntimeService(db, {
+		node: 'harbor-mbp-2',
+		role: 'spoke',
+		now: () => firstPoll,
+		hostEffects: { watchdog: { driver: executable } }
+	});
+	try {
+		db.exec(trackerRunSchema);
+		db.prepare(
+			`INSERT INTO runs(id,item_id,rung,cli,model,state,queued_at,watch_pane,idle_nudges)
+			VALUES (9,?,'manual','codex','gpt-6.2-sol','observed',?,'synthetic-pane',0)`
+		).run(itemId, firstPoll);
+		runtime.store.appendLocal({
+			itemId,
+			fields: { title: 'Observed task', kind: 'task', status: 'open' }
+		});
+		const signal = new AbortController().signal;
+		await runtime.watchdog!.tick(signal);
+		expect(db.prepare('SELECT state FROM runs WHERE id = 9').get()).toMatchObject({
+			state: 'observed'
+		});
+		const response = await runtime.items.handle(
+			new Request(`http://tracker-fixture.invalid/items/${itemId}/done`, {
+				method: 'POST',
+				body: '{}'
+			})
+		);
+		expect(response.ok).toBe(true);
+		await runtime.watchdog!.tick(signal);
+		expect(db.prepare('SELECT id,state,outcome,watch_pane FROM runs').all()).toEqual([
+			{ id: 9, state: 'finished', outcome: 'abandoned', watch_pane: 'synthetic-pane' }
+		]);
+		expect(existsSync(join(root, 'effects.ndjson'))).toBe(false);
+	} finally {
+		db.close();
+	}
+}
