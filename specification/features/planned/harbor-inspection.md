@@ -9,7 +9,7 @@ owner: null
 reviewedAt: null
 ---
 
-# Harbor inspection through Harness
+# Harbor CLI and SDK through Harness
 
 Harbor’s installed CLI package remains the implementation of chain and agent inspection.
 Harness exposes `harness harbor version`, `harness harbor chain info` and `harness harbor agent status`.
@@ -20,3 +20,11 @@ Commands preserve the installed Harbor package’s stdout and exit status for th
 Harness invokes Node with literal arguments, a limited runtime environment and a finite deadline.
 Chain inspection supports the existing `--url` option and prints JSON. Agent status supports the
 existing `--config` option and keeps the Harbor package’s output.
+
+`harness harbor publish <project> --commit <sha> --artifact <path> --profile <file>`
+uses its own verification command and the installed Harbor App SDK. It returns the
+exact canonical export, publisher, chain and capability review with an approval digest.
+Adding `--approve <digest>` authorizes that same verified export and configured
+testnet target. Set `HARNESS_HARBOR_APP_SDK_PATH` to the trusted SDK's
+`bin/harbor-app.mjs` entry. The Harbor SDK owns review, the existing Harbor
+wallet and chain checks, and HarborStore upload and install verification.

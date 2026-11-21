@@ -18,7 +18,7 @@ export const commandHelp = [
 	{
 		name: 'harbor',
 		signature: 'harbor',
-		description: 'Inspect Harbor using its installed CLI package.',
+		description: 'Use Harbor capabilities from its installed CLI and SDK.',
 		term: 'harbor',
 		aliases: []
 	},
