@@ -5,6 +5,35 @@ import type { NativeHostedStatus } from '../../../models/projects-sessions/Proje
 import { NativeHandoffValidator } from '../../../validators/development-tooling/NativeHandoffValidator';
 import { NativeAccountStatusService } from './NativeAccountStatusService';
 import { responseRecord } from '../../../validators/projects-sessions/RemoteProjectResponseValidator';
+import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
+
+/** The owner-only Hub overview; only the verified native account of this device may read it. */
+const overviewPath = '/api/tracker-overview';
+const unavailableOverview: OverviewSnapshot = { status: 'unavailable' };
+
+/** Only a complete overview is shown; any other answer reads as unavailable, with no rows. */
+function readableOverview(value: unknown): OverviewSnapshot {
+	const snapshot = value as { status?: unknown; projects?: unknown; machines?: unknown } | null;
+	if (snapshot?.status !== 'ready' || !Array.isArray(snapshot.projects)) return unavailableOverview;
+	if (!Array.isArray(snapshot.machines)) return unavailableOverview;
+	return snapshot as OverviewSnapshot;
+}
+
+/**
+ * The owner's overview, read with this device's own account: one exact GET, no query or body.
+ * Signed out, refused, unreachable, malformed, or answered after the session changed reads as
+ * unavailable. Nothing falls back to the local tracker, and no earlier snapshot is kept.
+ */
+async function readOverview(options: AuthOptions): Promise<OverviewSnapshot> {
+	const generation = options.store.generation;
+	try {
+		const value = await options.http.json(overviewPath);
+		return options.store.generation === generation ? readableOverview(value) : unavailableOverview;
+	} catch {
+		return unavailableOverview;
+	}
+}
+
 export class NativeAuthService {
 	private pending: Pending | null = null;
 	private queue: Promise<unknown> = Promise.resolve();
@@ -34,6 +63,10 @@ export class NativeAuthService {
 			return { configured: true, state: 'signed-out' };
 		});
 	}
+	overview(): Promise<OverviewSnapshot> {
+		return readOverview(this.options);
+	}
+
 	private serial(action: () => Promise<NativeHostedStatus>): Promise<NativeHostedStatus> {
 		const next = this.queue.then(action);
 		this.queue = next.catch(() => undefined);

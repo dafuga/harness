@@ -26,12 +26,16 @@ const controls: Record<string, keyof LocalControl> = {
 const withInput: (keyof LocalControl)[] = ['approvePairing', 'denyPairing', 'revokeDevice'];
 
 /**
- * The one fixed read of the local tracker. It takes no input, so a window cannot name a URL,
- * a fetcher or a path: any field left after the protocol epoch is refused before it is read.
+ * The one fixed overview. It takes no input, so a window cannot name a URL, a fetcher or a path:
+ * any field left after the protocol epoch is refused before it is read. A Hub-configured Desktop
+ * answers from the Hub; without one, it reads the local tracker.
  */
-function overview(input: Fields): Promise<OverviewSnapshot> {
+function overview(
+	input: Fields,
+	hubOverview?: () => Promise<OverviewSnapshot>
+): Promise<OverviewSnapshot> {
 	if (Object.keys(input).length) throw new Error('This operation takes no fields.');
-	return readProjectOverview();
+	return hubOverview ? hubOverview() : readProjectOverview();
 }
 
 /**
@@ -48,7 +52,7 @@ export class LocalOperationsService {
 		const { method } = request,
 			input: Fields = { ...request.input };
 		delete input.epoch;
-		if (method === 'projectOverview') return overview(input);
+		if (method === 'projectOverview') return overview(input, this.options.hubOverview);
 		if (Object.hasOwn(controls, method)) return this.control(controls[method], input);
 		const payload = this.payloads.parse(channels[method as keyof typeof channels], input),
 			operation = (this.options.bridge as Fields)[method];

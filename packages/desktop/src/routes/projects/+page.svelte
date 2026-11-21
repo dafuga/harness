@@ -62,7 +62,7 @@
 			asked++;
 			snapshot = unavailable;
 		};
-		/** Re-reads on focus, when shown, when back online and every half minute, but only on a paired phone. */
+		/** Re-reads on focus, when shown, when back online and every half minute: on the desktop app and a paired phone. */
 		const sync = new ProjectSyncService({ refresh: reload });
 		const clear = () => {
 			sync.stop();
@@ -77,14 +77,17 @@
 			show();
 			sync.start();
 		};
-		if (!phone) show();
-		else {
+		/** A sign-out or a denied account clears the rows of this computer too, not only those of a phone. */
+		releases.push(
+			bridge?.onCacheStatus?.((status) => {
+				if (status.status === 'denied') cleared();
+			})
+		);
+		if (!phone) {
+			show();
+			if (bridge) sync.start();
+		} else {
 			releases.push(phone.onStatus(follow));
-			releases.push(
-				bridge?.onCacheStatus?.((status) => {
-					if (status.status === 'denied') cleared();
-				})
-			);
 			void phone.status().then(follow, clear);
 		}
 		return () => {
