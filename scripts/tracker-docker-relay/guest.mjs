@@ -1,3 +1,4 @@
+// @harness-uid u_zbrkhvcaat
 import assert from 'node:assert/strict';
 import { Database } from 'bun:sqlite';
 import { existsSync, readdirSync, writeFileSync } from 'node:fs';
@@ -75,7 +76,7 @@ async function main() {
 		// Withhold the newline to exercise the incomplete-frame byte limit.
 		await new Promise((resolve) => process.stdout.write('x'.repeat(4097), resolve));
 		await frames.next();
-		throw new Error('Host relay accepted an oversized frame');
+		throw new RangeError('Host relay accepted an oversized frame');
 	}
 	const database = new Database('/tmp/spoke.sqlite');
 	try {

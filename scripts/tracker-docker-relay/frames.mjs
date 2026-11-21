@@ -1,3 +1,4 @@
+// @harness-uid u_7cexw2zytg
 import { Buffer } from 'node:buffer';
 
 const maxFrameBytes = 4096;
@@ -21,7 +22,7 @@ export async function* readFrames(input) {
 		}
 		pending = appendFrameBytes(pending, chunk.subarray(start));
 	}
-	if (pending.length) throw new Error('Incomplete Tracker relay frame');
+	if (pending.length) throw new SyntaxError('Incomplete Tracker relay frame');
 }
 
 export function writeFrame(output, frame) {

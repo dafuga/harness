@@ -1,0 +1,121 @@
+{
+	"schemaVersion": 1,
+	"id": "script.tracker-docker-relay-frames",
+	"uid": "u_7cexw2zytg",
+	"kind": "script",
+	"title": "frames",
+	"responsibility": "Owns the frames build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/tracker-docker-relay/frames.mjs"],
+		"symbols": ["readFrames", "writeFrame"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "readFrames.input",
+				"type": "AsyncIterable<Buffer>",
+				"required": true
+			},
+			{
+				"name": "writeFrame.output",
+				"type": "Writable",
+				"required": true
+			},
+			{
+				"name": "writeFrame.frame",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "readFrames",
+				"type": "unknown"
+			},
+			{
+				"name": "writeFrame",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "SyntaxError",
+				"type": "thrown"
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "readFrames",
+				"inputs": [
+					{
+						"name": "readFrames.input",
+						"type": "AsyncIterable<Buffer>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readFrames",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeFrame",
+				"inputs": [
+					{
+						"name": "writeFrame.output",
+						"type": "Writable",
+						"required": true
+					},
+					{
+						"name": "writeFrame.frame",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeFrame",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/tracker-docker-relay/frames.mjs",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/tracker-docker-relay/frames.mjs"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

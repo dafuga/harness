@@ -1,3 +1,4 @@
+// @harness-uid u_batgn7nwfy
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { addAbortListener, once } from 'node:events';
