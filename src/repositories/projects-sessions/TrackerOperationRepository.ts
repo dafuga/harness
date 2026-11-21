@@ -1,56 +1,12 @@
 // @harness-uid u_c5mwmd6z6z
+import { trackerItemFields } from '../../adapters/projects-sessions/TrackerSchemaAdapter';
 import type { SqliteDatabase, SqliteValue } from '../../core/development-tooling/sqliteTypes';
 import type {
 	TrackerAppliedOperations,
 	TrackerOperation
 } from './TrackerOperationRepository.types';
 
-const itemFields = new Set([
-	'kind',
-	'title',
-	'status',
-	'due',
-	'owner',
-	'agent',
-	'notes',
-	'parent',
-	'needs_daniel',
-	'question',
-	'answer',
-	'answered_at',
-	'answered_by',
-	'resolved',
-	'callback',
-	'deleted',
-	'created_at',
-	'created_by',
-	'blocked_reason',
-	'auto',
-	'project',
-	'repo',
-	'computer',
-	'model',
-	'sensitive',
-	'launch_target',
-	'launch_source',
-	'launch_pick',
-	'schedule_off',
-	'schedule_status',
-	'every',
-	'every_tz',
-	'occurrence',
-	'last_result',
-	'missed',
-	'ignored_reason',
-	'ignored_by',
-	'ignored_at',
-	'ignored_until',
-	'ignored_prev_status',
-	'adapter_notice',
-	'adapter_instructions',
-	'adapter_closed',
-	'adapter_due_owner'
-]);
+const itemFields = new Set<string>(trackerItemFields);
 const appendNoteField = 'note+';
 const clockPattern = /^(\d{15})-\d{6}-.+$/;
 

@@ -1,4 +1,3 @@
-// @harness-uid u_meb6d57f7w
 export interface TrackerOperation {
 	op_id: string;
 	item_id: string;

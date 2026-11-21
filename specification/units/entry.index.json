@@ -172,7 +172,8 @@
 			"TaskOrchestrationCommand",
 			"ProviderSessionAdapter",
 			"TrackerCommand",
-			"TrackerOperationRepository"
+			"TrackerOperationRepository",
+			"TrackerSchemaAdapter"
 		]
 	},
 	"contract": {
@@ -237,6 +238,11 @@
 		},
 		{
 			"unit": "adapter.networking-security-harness-http",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-schema",
 			"via": "reexport",
 			"origin": "derived"
 		},
