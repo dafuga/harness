@@ -16,4 +16,16 @@ export interface DockerTaskCreate {
 export interface DockerTaskDaemon {
 	env: Record<string, string | undefined>;
 	host: string;
+	id: string;
+}
+
+export interface DockerTaskLaunch {
+	version: 1;
+	owner: string;
+	cwd: string;
+	host: string;
+	daemonId: string;
+	pid: number;
+	startedAt: string;
+	containerId?: string;
 }
