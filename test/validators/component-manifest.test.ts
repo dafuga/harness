@@ -68,7 +68,10 @@ test('a derived unit names its default target and validation requires readable i
 			'function.rank: contract error Error is a bare Error'
 		])
 	);
+	await assertDeclaredUnknownBoundary(unit);
+});
 
+async function assertDeclaredUnknownBoundary(unit: ComponentManifest): Promise<void> {
 	const boundary = {
 		name: 'rank.value',
 		type: 'unknown',
@@ -121,7 +124,7 @@ test('a derived unit names its default target and validation requires readable i
 			}
 		})
 	).toContain('function.rank: contract input payload has unknown type');
-});
+}
 
 test('a unit may declare every applicable execution target beside its default', async () => {
 	const unit = await manifest();
