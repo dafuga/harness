@@ -49,9 +49,13 @@ const resume = {
 test('plan distinguishes ownership, exclusions, unavailable panes and opt-outs', () => {
 	expect(service.plan({ ...input, item: { ...row, target: 'peer' } })?.action).toBe('other_host');
 	expect(service.plan({ ...input, item: { ...row, target: 'auto' } })?.action).toBe('unassigned');
-	expect(service.plan({ ...input, item: { ...row, target: 'mb2' } })?.computer).toBe(
-		'harbor-mbp-2'
-	);
+	expect(
+		service.plan({
+			...input,
+			item: { ...row, target: 'fixture-alias' },
+			hostAliases: new Map([['fixture-alias', 'fixture-peer']])
+		})?.computer
+	).toBe('fixture-peer');
 	expect(service.plan({ ...input, item: { ...row, scheduleOff: true } })?.action).toBe('opted_out');
 	for (const state of [
 		{ status: 'done' },

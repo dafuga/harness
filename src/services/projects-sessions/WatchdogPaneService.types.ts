@@ -1,3 +1,4 @@
+// @harness-uid u_dakcgp2ade
 export type WatchdogCli = 'codex' | 'claude';
 
 export type StartupPromptKind =

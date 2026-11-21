@@ -1,3 +1,4 @@
+// @harness-uid u_5lrhbf453w
 import type { WatchdogItem, WatchdogPane, WatchdogRun } from './WatchdogPaneService.types';
 
 export interface RecoveryItem extends WatchdogItem {
@@ -24,6 +25,8 @@ export interface PeerWatchdogSample {
 export interface RecoverySnapshot {
 	host: string;
 	node?: string;
+	/** Legacy aliases supplied by the caller for the current fleet. */
+	hostAliases?: ReadonlyMap<string, string>;
 	now: number;
 	item: RecoveryItem;
 	/** Full non-deleted item ID set, including closed items, for manual-prefix resolution. */

@@ -15,12 +15,6 @@ import type {
 } from './WatchdogRecoveryService.types';
 
 const restartCooldown = 1_800_000;
-const hostAliases = new Map([
-	['mac', 'daniel-primary-mbp'],
-	['mb2', 'harbor-mbp-2'],
-	['box', 'grok-box']
-]);
-
 function eligibleItem(item: RecoveryItem): boolean {
 	return (
 		!item.deleted &&
@@ -34,7 +28,7 @@ function eligibleItem(item: RecoveryItem): boolean {
 function recoveryOwner(input: RecoverySnapshot): string | null {
 	const { target } = input.item;
 	const owner = target && target !== 'auto' ? target : input.history.at(-1)?.node;
-	return owner ? (hostAliases.get(owner) ?? owner) : null;
+	return owner ? (input.hostAliases?.get(owner) ?? owner) : null;
 }
 
 function refusesLaunch(

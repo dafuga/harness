@@ -1,3 +1,4 @@
+// @harness-uid u_yz3ar5ts6w
 import type {
 	StartupPromptKind,
 	WatchdogItem,
