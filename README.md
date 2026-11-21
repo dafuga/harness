@@ -1063,11 +1063,14 @@ must provide the selected provider command as a synthetic executable on its
 PATH. Run the pilot as a non-root user against a local Docker Unix socket.
 
 Each Docker generation reserves 2 CPUs and 6 GiB through Harness and applies
-matching container limits. It uses a read-only image, a temporary home, and
-one writable mount at `/workspace`. Use a disposable, credential-free
-workspace. Networking, host login files, and the Docker socket are outside
-the container. Harness removes the task container before returning the
-result. Git operations on linked worktree metadata run on the host.
+matching container limits. Use Docker Engine 26 or later and a disposable,
+credential-free worktree reserved for the task. Harness copies the worktree into
+a task-owned Docker volume at `/workspace`. Guest `node_modules` and the Bun
+install cache use the volume, and `/tmp` supplies bounded tmpfs for `HOME` and
+`TMPDIR`. The image root is read-only and the guest runs without networking or
+host mounts. When the guest stops, Harness copies worktree edits, deletions, and
+checkpoints back to the host and removes the containers and volume. Git metadata,
+host dependencies, and caches stay out of the worktree exchange.
 
 Set `--platform macos` (or `"platform": "macos"` in the task JSON) for Xcode,
 simulators, computer use, Apple signing, and other tasks that require a Mac.

@@ -97,11 +97,11 @@ async function taskContainerIds() {
 
 async function inspectGuest(id: string, marker: string) {
 	const result = await $`docker inspect ${id}`.quiet().nothrow();
-	if (result.exitCode !== 0) return;
+	if (result.exitCode !== 0) return undefined;
 	const [guest] = JSON.parse(result.text());
-	if (!guest.Config.Cmd.includes(marker) || !guest.State.Running) return;
+	if (!guest.Config.Cmd?.includes(marker) || !guest.State.Running) return undefined;
 	const ready = await $`docker exec ${id} test -f /workspace/ready`.quiet().nothrow();
-	if (ready.exitCode !== 0) return;
+	if (ready.exitCode !== 0) return undefined;
 	const { HostConfig: host, Mounts: mounts } = guest;
 	assert.match(guest.Config.User, /^[1-9]\d*:\d+$/);
 	assert.equal(host.NetworkMode, 'none');
@@ -110,10 +110,9 @@ async function inspectGuest(id: string, marker: string) {
 	assert.deepEqual(host.CapDrop, ['ALL']);
 	assert.deepEqual(host.SecurityOpt, ['no-new-privileges']);
 	assert.equal(host.Tmpfs['/tmp'], 'rw,nosuid,nodev,size=256m');
-	assert.deepEqual(
-		mounts.map(({ Type, Destination }) => [Type, Destination]),
-		[['volume', '/workspace']]
-	);
+	assert.equal(mounts.length, 1);
+	assert.equal(mounts[0].Type, 'volume');
+	assert.equal(mounts[0].Destination, '/workspace');
 	return { id, volume: mounts[0].Name };
 }
 

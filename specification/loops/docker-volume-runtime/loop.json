@@ -2,7 +2,7 @@
 	"name": "docker-volume-runtime",
 	"goal": "Run offline Linux tasks from Docker-owned workspace and Bun cache storage with bounded tmpfs, preserving task output, workspace edits and cleanup.",
 	"createdAt": "2026-11-21T20:32:49.189Z",
-	"updatedAt": "2026-11-21T20:33:30.634Z",
+	"updatedAt": "2026-11-21T20:43:31.537Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T20:43:29.645Z",
+			"evidence": "Harness regression receipt c65480c358: exact existing adapter argv assertion was red because it received target=/workspace,bind-recursive=disabled."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T20:43:31.537Z",
+			"evidence": "Stage the disposable worktree through the local Docker Unix socket into a task-owned volume. Run the original non-root entrypoint in a writable volume subdirectory with bounded tmpfs, then recover worktree edits, including deletions and interrupted checkpoints, before scoped teardown."
 		},
 		{
 			"id": "green",
