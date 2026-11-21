@@ -2,6 +2,7 @@
 status: planned
 shippedIn: null
 unitIds:
+  - command.projects-sessions-harbor-inspection
   - entry.command-help
   - entry.command-loaders
 owner: null
