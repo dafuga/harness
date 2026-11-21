@@ -26,7 +26,10 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 	try {
 		const runtime = new TrackerNativeRuntimeService(
 			database,
-			trackerNodeRuntime(foregroundConfig(root, config))
+			trackerNodeRuntime(foregroundConfig(root, config), (scope) => {
+				expect(scope).toMatchObject({ itemId, runId: 1, apiPort: 49281 });
+				writeFileSync(scope.path, 'synthetic host-signer fixture', { flag: 'wx', mode: 0o600 });
+			})
 		);
 		runtime.store.appendLocal({
 			itemId,
@@ -46,7 +49,10 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 			.trim()
 			.split('\n');
 		expect(outputs).toHaveLength(1);
-		expect(JSON.parse(outputs[0]).brief).toContain('tracker done abc123');
+		expect(JSON.parse(outputs[0])).toMatchObject({
+			brief: expect.stringContaining('tracker done abc123'),
+			guestAuthFile: expect.stringMatching(/\/effects\/[a-f0-9]{64}\/guest-auth\.json$/)
+		});
 	} finally {
 		database.close();
 	}

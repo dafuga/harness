@@ -55,6 +55,7 @@ appendFileSync(join(process.env.HOME, 'invoked.ndjson'), JSON.stringify({
 	argv, cwd: process.cwd(), image: process.env.HARNESS_TASK_DOCKER_IMAGE ?? null,
 	secret: Boolean(process.env.FIXTURE_SECRET), brief: briefPath && readFileSync(briefPath, 'utf8'),
 	client: JSON.parse(readFileSync(process.env.HARNESS_TRACKER_CONFIG, 'utf8')),
-	legacy: process.env.HARNESS_TRACKER_LEGACY_BIN
+	legacy: process.env.HARNESS_TRACKER_LEGACY_BIN,
+	guestAuthFile: process.env.HARNESS_TRACKER_GUEST_AUTH_FILE ?? null
 }) + '\\n');
 `;
