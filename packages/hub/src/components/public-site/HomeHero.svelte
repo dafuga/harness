@@ -13,6 +13,8 @@
 		projects = '/projects',
 		entry = 'Log in'
 	}: { download: string; iosReady?: boolean; projects?: string; entry?: string } = $props();
+	/** Until the archive is published the hero leads to the download section and says so. */
+	const macLabel = $derived(download.startsWith('#') ? 'Mac app coming soon' : 'Download for Mac');
 	const loop = [
 		{ label: 'Spec: customers can check out', state: 'spec' },
 		{ label: 'Failing test recorded first', state: 'red' },
@@ -34,7 +36,7 @@
 		</hx-p>
 		<hx-div class="home-actions">
 			<hx-a class="home-button home-button-primary home-button-large" href={download}
-				>Download for Mac</hx-a
+				>{macLabel}</hx-a
 			>
 			<hx-a class="home-button home-button-large" href={projects} data-sveltekit-reload
 				>{entry}</hx-a

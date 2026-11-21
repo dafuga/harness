@@ -25,7 +25,7 @@
 				type="button"
 				class="home-button home-button-primary home-button-large"
 				disabled
-				aria-describedby="home-mac-pending">Download for Mac</hx-button
+				aria-describedby="home-mac-pending">Mac app coming soon</hx-button
 			>
 			<hx-p class="home-fine" id="home-mac-pending">
 				The Mac build is being prepared and will be posted here.
