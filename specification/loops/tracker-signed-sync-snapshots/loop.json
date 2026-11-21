@@ -1,0 +1,45 @@
+{
+	"name": "tracker-signed-sync-snapshots",
+	"goal": "Match pinned Tracker HMAC wire behavior in both directions and compare standalone SQLite snapshots without exposing row values.",
+	"createdAt": "2026-11-21T14:44:10.050Z",
+	"updatedAt": "2026-11-21T14:53:02.349Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T14:44:49.729Z",
+			"evidence": "Pinned Tracker 2ccd8982 defines header/body signing and cursor semantics. Proof uses synthetic data and fixture requests. The comparator reports schema and table hashes/counts, including complete ops and metadata. CLI routing, deployment and live fleet access are outside this slice."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-21T14:52:58.638Z",
+			"evidence": "Added scoped native auth and SQLite comparator with typed hashing, integrity checks, read-only immutable copies and optional pending push fingerprints."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-21T14:53:02.349Z",
+			"evidence": "The two focused Vitest files failed all seven cases on checkpoint fa50ab3060 with missing module behavior and passed the same seven cases with implementation."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
