@@ -1,0 +1,663 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.projects-sessions-hub-home-presentation",
+	"uid": "u_okueohjk4j",
+	"kind": "function",
+	"title": "hubHomePresentation",
+	"responsibility": "Owns the hubHomePresentation shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/hubHomePresentation.ts"],
+		"symbols": [
+			"sections",
+			"agentLabels",
+			"agentGroups",
+			"planLabels",
+			"planStates",
+			"providerNames",
+			"usageLinks",
+			"count",
+			"homeHeadline",
+			"currentAgent",
+			"soonestWork",
+			"workSummary",
+			"warningFor",
+			"lowestLimit",
+			"staleReading",
+			"warningLabel",
+			"runDay",
+			"runTime",
+			"when",
+			"quotaReset",
+			"initials",
+			"overviewTone",
+			"summaryLine",
+			"relativeWhen",
+			"workEta"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "count.value",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "count.singular",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "count.plural",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "homeHeadline.agents",
+				"type": "HomeAgent[]",
+				"required": true
+			},
+			{
+				"name": "currentAgent.agents",
+				"type": "HomeAgent[]",
+				"required": true
+			},
+			{
+				"name": "soonestWork.snapshot",
+				"type": "OverviewSnapshot | null",
+				"required": true
+			},
+			{
+				"name": "workSummary.work",
+				"type": "ReturnType<typeof soonestWork>",
+				"required": true
+			},
+			{
+				"name": "warningFor.left",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "lowestLimit.subscriptions",
+				"type": "HomeSubscription[]",
+				"required": true
+			},
+			{
+				"name": "staleReading.readAt",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "staleReading.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "warningLabel.limit",
+				"type": "HomeLimit",
+				"required": true
+			},
+			{
+				"name": "runDay.at",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "runDay.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "runTime.at",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "when.time",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "quotaReset.time",
+				"type": "string | null",
+				"required": true
+			},
+			{
+				"name": "quotaReset.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "initials.name",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "overviewTone.state",
+				"type": "HomeAgentState",
+				"required": true
+			},
+			{
+				"name": "summaryLine.work",
+				"type": "ReturnType<typeof soonestWork>",
+				"required": true
+			},
+			{
+				"name": "summaryLine.scheduled",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "relativeWhen.time",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "relativeWhen.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "workEta.due",
+				"type": "string | null",
+				"required": true
+			},
+			{
+				"name": "workEta.now",
+				"type": "number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "sections",
+				"type": "unknown"
+			},
+			{
+				"name": "agentLabels",
+				"type": "Record<HomeAgentState, string>"
+			},
+			{
+				"name": "agentGroups",
+				"type": "unknown"
+			},
+			{
+				"name": "planLabels",
+				"type": "Record<HomePlanState, string>"
+			},
+			{
+				"name": "planStates",
+				"type": "unknown"
+			},
+			{
+				"name": "providerNames",
+				"type": "unknown"
+			},
+			{
+				"name": "usageLinks",
+				"type": "unknown"
+			},
+			{
+				"name": "count",
+				"type": "unknown"
+			},
+			{
+				"name": "homeHeadline",
+				"type": "unknown"
+			},
+			{
+				"name": "currentAgent",
+				"type": "unknown"
+			},
+			{
+				"name": "soonestWork",
+				"type": "unknown"
+			},
+			{
+				"name": "workSummary",
+				"type": "unknown"
+			},
+			{
+				"name": "warningFor",
+				"type": "unknown"
+			},
+			{
+				"name": "lowestLimit",
+				"type": "unknown"
+			},
+			{
+				"name": "staleReading",
+				"type": "unknown"
+			},
+			{
+				"name": "warningLabel",
+				"type": "unknown"
+			},
+			{
+				"name": "runDay",
+				"type": "unknown"
+			},
+			{
+				"name": "runTime",
+				"type": "unknown"
+			},
+			{
+				"name": "when",
+				"type": "unknown"
+			},
+			{
+				"name": "quotaReset",
+				"type": "unknown"
+			},
+			{
+				"name": "initials",
+				"type": "unknown"
+			},
+			{
+				"name": "overviewTone",
+				"type": "unknown"
+			},
+			{
+				"name": "summaryLine",
+				"type": "unknown"
+			},
+			{
+				"name": "relativeWhen",
+				"type": "unknown"
+			},
+			{
+				"name": "workEta",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "count",
+				"inputs": [
+					{
+						"name": "count.value",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "count.singular",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "count.plural",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "count",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "homeHeadline",
+				"inputs": [
+					{
+						"name": "homeHeadline.agents",
+						"type": "HomeAgent[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "homeHeadline",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "currentAgent",
+				"inputs": [
+					{
+						"name": "currentAgent.agents",
+						"type": "HomeAgent[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "currentAgent",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "soonestWork",
+				"inputs": [
+					{
+						"name": "soonestWork.snapshot",
+						"type": "OverviewSnapshot | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "soonestWork",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "workSummary",
+				"inputs": [
+					{
+						"name": "workSummary.work",
+						"type": "ReturnType<typeof soonestWork>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "workSummary",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "warningFor",
+				"inputs": [
+					{
+						"name": "warningFor.left",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "warningFor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "lowestLimit",
+				"inputs": [
+					{
+						"name": "lowestLimit.subscriptions",
+						"type": "HomeSubscription[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "lowestLimit",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "staleReading",
+				"inputs": [
+					{
+						"name": "staleReading.readAt",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "staleReading.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "staleReading",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "warningLabel",
+				"inputs": [
+					{
+						"name": "warningLabel.limit",
+						"type": "HomeLimit",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "warningLabel",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "runDay",
+				"inputs": [
+					{
+						"name": "runDay.at",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "runDay.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runDay",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "runTime",
+				"inputs": [
+					{
+						"name": "runTime.at",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runTime",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "when",
+				"inputs": [
+					{
+						"name": "when.time",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "when",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "quotaReset",
+				"inputs": [
+					{
+						"name": "quotaReset.time",
+						"type": "string | null",
+						"required": true
+					},
+					{
+						"name": "quotaReset.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "quotaReset",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "initials",
+				"inputs": [
+					{
+						"name": "initials.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "initials",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "overviewTone",
+				"inputs": [
+					{
+						"name": "overviewTone.state",
+						"type": "HomeAgentState",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "overviewTone",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "summaryLine",
+				"inputs": [
+					{
+						"name": "summaryLine.work",
+						"type": "ReturnType<typeof soonestWork>",
+						"required": true
+					},
+					{
+						"name": "summaryLine.scheduled",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "summaryLine",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "relativeWhen",
+				"inputs": [
+					{
+						"name": "relativeWhen.time",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "relativeWhen.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "relativeWhen",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "workEta",
+				"inputs": [
+					{
+						"name": "workEta.due",
+						"type": "string | null",
+						"required": true
+					},
+					{
+						"name": "workEta.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "workEta",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/hubHomePresentation.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/hubHomePresentation.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

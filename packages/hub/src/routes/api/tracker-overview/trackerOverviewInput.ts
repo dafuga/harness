@@ -20,18 +20,20 @@ const MAX_COUNT = 1_000_000;
 const REDACTED = '[redacted]';
 
 /** Reads the body, refusing as soon as it passes the byte limit. Only a JSON body is accepted. */
-export async function readOverviewText(request: Request): Promise<string> {
+export async function readOverviewText(
+	request: Request,
+	maximum: number = MAX_BODY_BYTES
+): Promise<string> {
 	if (!request.headers.get('Content-Type')?.startsWith('application/json')) invalid();
 	const declared = request.headers.get('Content-Length');
-	if (declared !== null && (!/^\d+$/.test(declared) || Number(declared) > MAX_BODY_BYTES))
-		tooLarge();
+	if (declared !== null && (!/^\d+$/.test(declared) || Number(declared) > maximum)) tooLarge();
 	const reader = request.body?.getReader();
 	if (!reader) return invalid();
 	const chunks: Uint8Array[] = [];
 	let size = 0;
 	for (let part = await reader.read(); !part.done; part = await reader.read()) {
 		size += part.value.byteLength;
-		if (size > MAX_BODY_BYTES) {
+		if (size > maximum) {
 			await reader.cancel();
 			tooLarge();
 		}

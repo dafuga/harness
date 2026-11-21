@@ -1,0 +1,105 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-row",
+	"uid": "u_kgwre755vx",
+	"kind": "component",
+	"title": "HubHomeRow",
+	"responsibility": "Owns the HubHomeRow Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-span"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeRow.svelte"],
+		"symbols": ["HubHomeRow"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HubHomeRow.title",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "HubHomeRow.meta",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)"
+			},
+			{
+				"name": "HubHomeRow.extra",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
+				"name": "HubHomeRow.wide",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
+				"name": "HubHomeRow.lead",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)"
+			},
+			{
+				"name": "HubHomeRow.trailing",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeRow",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/HubHomeRow.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/HubHomeRow.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

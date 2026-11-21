@@ -9,7 +9,11 @@
 	"status": "active",
 	"composition": {
 		"level": "page",
-		"uses": ["hub.component.public-site-home-page"]
+		"uses": [
+			"hub.component.projects-sessions-hub-home",
+			"hub.component.public-site-home-page",
+			"reports.component.shared-primitives-atoms-html-main"
+		]
 	},
 	"owns": {
 		"source": ["packages/hub/src/routes/+page.svelte"],
@@ -22,23 +26,32 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The page renders the shared-projects route, showing sign-in when no actor is present and project creation with the project list, loading, or error state when signed in. Its GitHub connection message appears only when the query string has `github=connected` or `github=failed`."
+				"description": "Renders the public marketing home for a visitor and the six-section Hub home after a verified sign-in."
 			}
 		],
-		"errors": [
-			{
-				"name": "unknown",
-				"type": "thrown",
-				"description": "The refresh callback can reject with the reason from `session.check()` because it awaits that call without a catch or narrowing the rejection. The implementation does not specify the rejection value or its runtime name."
-			}
-		],
-		"errorStatus": "declared",
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
 	"dependencies": [
 		{
+			"unit": "hub.component.projects-sessions-hub-home",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.component.public-site-home-page",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-main",
 			"via": "import",
 			"origin": "derived"
 		}

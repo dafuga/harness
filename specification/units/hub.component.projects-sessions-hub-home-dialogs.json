@@ -1,0 +1,170 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-dialogs",
+	"uid": "u_6kpzjxqlbp",
+	"kind": "component",
+	"title": "HubHomeDialogs",
+	"responsibility": "Owns the HubHomeDialogs Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"hub.component.projects-sessions-hub-home-agents",
+			"hub.component.projects-sessions-hub-home-plans",
+			"hub.component.projects-sessions-hub-home-projects",
+			"hub.component.projects-sessions-hub-home-quota",
+			"hub.component.projects-sessions-hub-home-schedule",
+			"hub.component.projects-sessions-hub-home-work",
+			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-button"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte"],
+		"symbols": ["HubHomeDialogs", "HubHomeDialogs.actions"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HubHomeDialogs.selected",
+				"type": "HomeSection",
+				"required": true
+			},
+			{
+				"name": "HubHomeDialogs.view",
+				"type": "HomeView",
+				"required": true
+			},
+			{
+				"name": "HubHomeDialogs.agentId",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)"
+			},
+			{
+				"name": "HubHomeDialogs.open",
+				"type": "OpenHomeSection",
+				"required": true
+			},
+			{
+				"name": "HubHomeDialogs.send",
+				"type": "SendHomeChat",
+				"required": true
+			},
+			{
+				"name": "HubHomeDialogs.receipt",
+				"type": "(id: string) => Promise<HomeChatReceipt>",
+				"required": true
+			},
+			{
+				"name": "HubHomeDialogs.readProject",
+				"type": "ReadHomeProject",
+				"required": true
+			},
+			{
+				"name": "HubHomeDialogs.reload",
+				"type": "() => void",
+				"required": true
+			},
+			{
+				"name": "HubHomeDialogs.close",
+				"type": "() => void",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeDialogs",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "HubHomeDialogs.actions",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeDialogs.actions",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-agents",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-plans",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-projects",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-quota",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-schedule",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

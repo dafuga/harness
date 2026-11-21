@@ -96,6 +96,11 @@
 				"required": true
 			},
 			{
+				"name": "readOverviewText.maximum",
+				"type": "number",
+				"required": false
+			},
+			{
 				"name": "parseOverviewPayload.text",
 				"type": "string",
 				"required": true
@@ -246,6 +251,11 @@
 						"name": "readOverviewText.request",
 						"type": "Request",
 						"required": true
+					},
+					{
+						"name": "readOverviewText.maximum",
+						"type": "number",
+						"required": false
 					}
 				],
 				"outputs": [

@@ -1,0 +1,257 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-cards",
+	"uid": "u_koj2sfjf7g",
+	"kind": "component",
+	"title": "HubHomeCards",
+	"responsibility": "Owns the HubHomeCards Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"hub.component.projects-sessions-hub-home-card",
+			"hub.component.projects-sessions-hub-home-composer",
+			"hub.component.projects-sessions-hub-home-row",
+			"hub.component.projects-sessions-hub-home-skeleton",
+			"hub.component.projects-sessions-hub-home-work-cards",
+			"hub.component.projects-sessions-hub-quota-subscription",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeCards.svelte"],
+		"symbols": [
+			"HubHomeCards",
+			"HubHomeCards.empty",
+			"HubHomeCards.children",
+			"HubHomeCards.lead",
+			"HubHomeCards.trailing",
+			"HubHomeCards.badge",
+			"HubHomeCards.footer",
+			"HubHomeCards.badge",
+			"HubHomeCards.children"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HubHomeCards.view",
+				"type": "HomeView",
+				"required": true
+			},
+			{
+				"name": "HubHomeCards.open",
+				"type": "OpenHomeSection",
+				"required": true
+			},
+			{
+				"name": "HubHomeCards.send",
+				"type": "SendHomeChat",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeCards",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "HubHomeCards.empty",
+				"inputs": [
+					{
+						"name": "HubHomeCards.empty.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubHomeCards.empty",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeCards.children",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeCards.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeCards.lead",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeCards.lead",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeCards.trailing",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeCards.trailing",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeCards.badge",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeCards.badge",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeCards.footer",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeCards.footer",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeCards.badge",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeCards.badge",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeCards.children",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeCards.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-composer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-row",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-skeleton",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-work-cards",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-quota-subscription",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/HubHomeCards.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/HubHomeCards.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

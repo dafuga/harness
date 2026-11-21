@@ -43,19 +43,27 @@ test('a visitor reads the public homepage and Log in opens /projects', async ({ 
 	expect(state.calls.map((call) => call.path)).toEqual(['/api/auth/status']);
 });
 
-test('a signed-in person also gets the public homepage, with Your projects', async ({ page }) => {
+test('a signed-in person gets the six-section Hub home', async ({ page }) => {
 	await hostedFixture(page);
 	await macRelease(page, 'page');
-	const reached = await projectsPage(page);
+	await page.route('**/api/tracker-overview', (route) =>
+		route.fulfill({ json: { status: 'ready', projects: [], machines: [], liveSessions: 0 } })
+	);
+	await page.route('**/api/hub-home', (route) =>
+		route.fulfill({ json: { agents: [], plans: [], scheduled: [], quota: [] } })
+	);
 	await page.goto('/');
-	const entries = page.getByRole('link', { name: 'Your projects', exact: true });
-	await expect(entries).toHaveCount(3);
-	await expect(hero(page)).toBeVisible();
-	await expect(page.getByRole('link', { name: 'Open Atlas' })).toHaveCount(0);
-	await expect(page.getByRole('link', { name: 'Log in', exact: true })).toHaveCount(0);
-	await page.getByRole('main').getByRole('link', { name: 'Your projects' }).click();
-	await expect(page).toHaveURL(/\/projects$/);
-	expect(reached).toEqual(['/projects']);
+	await expect(page).toHaveTitle('Harness · Home');
+	for (const name of ['Agents', 'Quota', 'Plans', 'Scheduled', 'Projects', 'Work in progress']) {
+		const card = page.getByRole('region', { name, exact: true });
+		await expect(card).toBeVisible();
+		const more = card.getByRole('button', { name: /see all/i });
+		await more.click();
+		await expect(page.getByRole('dialog', { name, exact: true })).toBeVisible();
+		await page.keyboard.press('Escape');
+		await expect(more).toBeFocused();
+	}
+	await expect(hero(page)).toHaveCount(0);
 });
 
 test('a published Mac archive becomes the download link', async ({ page }) => {
