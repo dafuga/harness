@@ -14,16 +14,13 @@ export class TrackerCommand {
 			.description('Use the shared Tracker service.')
 			.allowUnknownOption()
 			.action(async (args: string[]) => {
-				if (args[0] === 'rehearse') {
-					process.exitCode = await new TrackerRehearsalCommand().run(args.slice(1));
-					return;
-				}
-				process.exitCode = this.run(args);
+				process.exitCode = await this.run(args);
 			});
 	}
 
-	run(args: string[]): number {
+	run(args: string[]): number | Promise<number> {
 		if (args[0] === 'verify-cutover') return new TrackerCutoverCommand().run(args.slice(1));
+		if (args[0] === 'rehearse') return new TrackerRehearsalCommand().run(args.slice(1));
 		if (process.env.HARNESS_TRACKER_FORWARD_PARENT === String(process.ppid)) {
 			console.error('tracker: the shim needs a retained legacy client.');
 			return 126;
