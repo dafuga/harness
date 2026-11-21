@@ -11,7 +11,7 @@ import {
 import { commandOutput } from './bounded-command-adapter/commandOutput';
 
 const owned = new Set<ChildProcessWithoutNullStreams>();
-const signalHandlers = new Map<NodeJS.Signals, () => void>();
+const signalHandlers = new Map<'SIGINT' | 'SIGTERM', () => void>();
 
 function registerForSignals(child: ChildProcessWithoutNullStreams): () => void {
 	if (process.platform === 'win32') return () => undefined;
