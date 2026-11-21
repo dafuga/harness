@@ -41,6 +41,7 @@ export function registerVerifyCommand(program: Command): void {
 			'Verify this entity and automatically attach complete screenshots; never a full-commit pass.'
 		)
 		.option('--json', 'Print the record and its directory.')
+		.option('--retain-artifact <path>', 'Retain a declared generated file with a passing record.')
 		.description('Run the affected checks and scenarios and store the record, pass or fail.')
 		.action(runVerification);
 	registerPlan(verify);

@@ -56,4 +56,27 @@ export const budgetEventSchema = z.discriminatedUnion('type', [
 	})
 ]);
 
+export const budgetFindingSchema = z.strictObject({
+	unit: z.string().regex(unitIdPattern),
+	metric: z.string().min(1),
+	status: z.enum([
+		'passed',
+		'exceeded',
+		'missing-baseline',
+		'missing-measurement',
+		'incomplete',
+		'incompatible',
+		/** It cannot be measured, and its reviewed baseline says so too: stated, not judged. */
+		'unavailable'
+	]),
+	/** Null whenever the measurement was not compared with a baseline. */
+	baseline: z.number().nullable(),
+	measured: z.number().nullable(),
+	/** The execution target whose emitted size this is; other findings name none. */
+	target: z.enum(runtimeKinds).optional(),
+	detail: z.string().optional(),
+	/** Why an incomplete or incompatible measurement could not be compared. */
+	differences: z.array(text).optional()
+});
+
 export type { BudgetEvent, PerformanceBaselineEntry } from './budgetTypes.types';

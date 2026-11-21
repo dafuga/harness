@@ -14,11 +14,12 @@
 			"src/core/verificationTypes.ts"
 		],
 		"symbols": [
+			"budgetFindingSchema",
 			"captureRegionSchema",
 			"captureSchema",
 			"scenarioResultSchema",
 			"profileSchema",
-			"budgetFindingSchema",
+			"retainedArtifactPath",
 			"componentVersionSchema",
 			"measurementSchema",
 			"verificationRecordSchema",
@@ -82,7 +83,7 @@
 			{
 				"name": "verificationRecordSchema",
 				"type": "unknown",
-				"description": "Zod strict-object schema for validating a complete verification record against its source revision, profile, evidence, and gates. It fixes schemaVersion at 1, permits optional componentSchemaVersion 2, requires source commit/tree and tested revisions to be 40-character lowercase hashes, requires a profile and the components, measurements, impact, tests, scenarios, budgets, reasons, and failures sections, and constrains status values and nested objects as declared by their schemas; tools, builds, gates, and componentSchemaVersion are optional, and test browserErrors is an optional array validated by browserDiagnosticSchema."
+				"description": "Validates a sealed verification record. Optional retainedArtifact identifies the original generated path, fixed evidence path, byte count and SHA-256."
 			}
 		],
 		"errors": [],
@@ -93,6 +94,11 @@
 	"dependencies": [
 		{
 			"unit": "function.browser-diagnostics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.budget-types",
 			"via": "import",
 			"origin": "derived"
 		},

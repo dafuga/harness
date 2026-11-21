@@ -24,6 +24,7 @@ export interface VerifyContext {
 	testTimeoutMs?: number;
 	/** One entity to verify alone: only its scenario states run, and the record is partial. */
 	entity?: string;
+	retainArtifact?: string;
 	env: Record<string, string | undefined>;
 	/** Whether every change since the base is explained, directly or step by step. */
 	explained: () => Promise<ReasonReport>;

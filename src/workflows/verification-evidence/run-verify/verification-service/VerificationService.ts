@@ -4,6 +4,10 @@ export type { VerifyContext } from './VerificationService.types';
 
 import type { ScenarioManifest } from '../../../../core/development-tooling/unitTypes';
 import type { ScenarioResult } from '../../../../core/verification-evidence/verificationTypes';
+import { retainedArtifactPath } from '../../../../core/verification-evidence/verificationTypes';
+import { randomUUID } from 'node:crypto';
+import { rm } from 'node:fs/promises';
+import { join } from 'node:path';
 import type { PlannedCheck } from '../../../../utils/verification-evidence/verifyPlan';
 
 import {
@@ -34,7 +38,15 @@ export class VerificationService {
 	async run(): Promise<StoredRecord> {
 		const { context } = this;
 		const startedAt = new Date().toISOString();
-		const directory = this.store.directoryFor(context.commit, startedAt);
+		const plannedDirectory = this.store.directoryFor(context.commit, startedAt);
+		if (context.retainArtifact === undefined) return this.runAt(plannedDirectory, startedAt);
+		return runWithRetainedArtifact(plannedDirectory, (directory) =>
+			this.runAt(directory, startedAt)
+		);
+	}
+
+	private async runAt(directory: string, startedAt: string): Promise<StoredRecord> {
+		const { context } = this;
 		const { plan, referenced, rerun } = this.selection();
 		const needed = context.entity ? neededBuilds(rerun) : undefined;
 		const executed = await this.snapshotRun(directory, needed).execute(plan, this.artifactPaths());
@@ -57,7 +69,7 @@ export class VerificationService {
 	private selection() {
 		const { context } = this;
 		const { entity } = context;
-		const referenced = entity ? [] : this.referenced();
+		const referenced = entity ? [] : referencedScenarios(context, this.store);
 		const kept = new Set(referenced.map((scenario) => scenario.id));
 		const rerun = entity
 			? scopedScenarios(context.head.scenarios, entity)
@@ -84,23 +96,9 @@ export class VerificationService {
 
 	/** A scoped run passes the builds its scenarios need; a full run passes none. */
 	private snapshotRun(directory: string, needed?: ReadonlySet<string> | 'all'): SnapshotRunService {
-		const { root, config, commit, tree, env } = this.context;
+		const { root, config, commit, tree, env, retainArtifact } = this.context;
 		const context = { directory, commit, tree, profile: this.profile.id, env };
-		return new SnapshotRunService({ root, config, context, needed });
-	}
-
-	/**
-	 * Unaffected scenarios keep the evidence of the revision that last tested them, but only when
-	 * the base commit itself has a record; otherwise nothing proves they were unaffected since.
-	 */
-	private referenced(): ScenarioResult[] {
-		const { baseRecord, impact, head } = this.context;
-		const prior = baseRecord ? this.store.load(baseRecord)?.record : undefined;
-		const affected = new Set(impact.scenarios.affected);
-		if (!prior) return [];
-		return head.scenarios.flatMap((scenario) =>
-			affected.has(scenario.id) ? [] : (referencedScenario(prior, scenario.id) ?? [])
-		);
+		return new SnapshotRunService({ root, config, context, needed, retainArtifact });
 	}
 
 	private judge(
@@ -137,4 +135,36 @@ export class VerificationService {
 			failures: [...failures, ...(this.context.entity ? [scopeFailure(this.context.entity)] : [])]
 		};
 	}
+}
+
+async function runWithRetainedArtifact(
+	plannedDirectory: string,
+	run: (directory: string) => Promise<StoredRecord>
+): Promise<StoredRecord> {
+	const directory = `${plannedDirectory}-export-${randomUUID()}`;
+	let retained = false;
+	try {
+		const result = await run(directory);
+		retained = result.record.status === 'passed' && result.record.retainedArtifact !== undefined;
+		return result;
+	} finally {
+		if (!retained) await rm(join(directory, retainedArtifactPath), { force: true });
+	}
+}
+
+/**
+ * Unaffected scenarios keep the evidence of the revision that last tested them, but only when
+ * the base commit itself has a record; otherwise nothing proves they were unaffected since.
+ */
+function referencedScenarios(
+	context: VerifyContext,
+	store: VerificationStoreRepository
+): ScenarioResult[] {
+	const { baseRecord, impact, head } = context;
+	const prior = baseRecord ? store.load(baseRecord)?.record : undefined;
+	const affected = new Set(impact.scenarios.affected);
+	if (!prior) return [];
+	return head.scenarios.flatMap((scenario) =>
+		affected.has(scenario.id) ? [] : (referencedScenario(prior, scenario.id) ?? [])
+	);
 }

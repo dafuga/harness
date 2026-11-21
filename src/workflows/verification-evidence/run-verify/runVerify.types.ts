@@ -27,6 +27,8 @@ export interface VerifyOptions {
 	runtime?: string;
 	/** Verify only this entity's scenario states; the record is partial and never passes. */
 	entity?: string;
+	/** A declared generated file to retain from a passing full verification. */
+	retainArtifact?: string;
 	testTimeout?: string;
 	record?: string;
 }

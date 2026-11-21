@@ -34,7 +34,6 @@ function outcome(failures: string[]): 'passed' | 'failed' {
 /** Turns what a run observed into one sealed record, with every gate judged. */
 export class RecordAssemblyService {
 	constructor(private readonly context: AssemblyContext) {}
-	// eslint-disable-next-line harness/max-method-lines -- this service definition is ownership-reviewed
 	async assemble(input: AssemblyInput): Promise<VerificationRecord> {
 		const { context } = this;
 		const measurements = this.measurements(input.executed);
@@ -59,15 +58,7 @@ export class RecordAssemblyService {
 			),
 			measurements,
 			impact: recordedImpact(context.impact),
-			tests: input.executed.outcomes
-				.filter((item) => !item.check.id.startsWith('setup-'))
-				.map((item) => item.entry),
-			scenarios: judgedScenarios(input),
-			// Only a run that skipped a declared build names one; every other record is unchanged.
-			...recordedBuilds(
-				input.executed.builds,
-				input.executed.skippedBuilds?.length ? input.executed.skippedBuilds : undefined
-			),
+			...recordedObservations(input, failures.length === 0),
 			budgets: { status: outcome(budgets.report.failures), findings: budgets.report.findings },
 			reasons: recordedReasons(reasons),
 			gates: Object.fromEntries(Object.entries(gates).map(([gate, list]) => [gate, outcome(list)])),
@@ -90,6 +81,7 @@ export class RecordAssemblyService {
 				? { performance: profileFailures(this.context, judged.measurements) }
 				: {}),
 			snapshot: snapshotFailures(input.executed),
+			...(input.executed.artifactFailures ? { artifact: input.executed.artifactFailures } : {}),
 			registry: registryGate(this.context.base, this.context.head),
 			ledger: judged.budgets.ledger,
 			tests: outcomes.filter((item) => !item.check.scenario).flatMap((item) => item.failures),
@@ -209,4 +201,14 @@ function profileFailures(context: AssemblyContext, measurements: Measurement[]):
 		commit,
 		profile: profile.id
 	});
+}
+
+function recordedObservations(input: AssemblyInput, passed: boolean) {
+	const { outcomes, builds, skippedBuilds, retainedArtifact } = input.executed;
+	return {
+		tests: outcomes.filter((item) => !item.check.id.startsWith('setup-')).map((item) => item.entry),
+		scenarios: judgedScenarios(input),
+		...recordedBuilds(builds, skippedBuilds?.length ? skippedBuilds : undefined),
+		...(passed && retainedArtifact ? { retainedArtifact } : {})
+	};
 }

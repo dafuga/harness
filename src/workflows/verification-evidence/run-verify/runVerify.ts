@@ -56,6 +56,8 @@ async function provenBase(git: GitAdapter, commit: string, base: string | undefi
 
 /** Verifies one exact commit in a clean snapshot; the record is stored even when it fails. */
 export async function verifyRun(options: VerifyOptions = {}): Promise<VerifyResult> {
+	if (options.entity && options.retainArtifact !== undefined)
+		return fail('Artifact retention requires full commit verification.');
 	const root = resolve(options.root ?? process.cwd());
 	const git = new GitAdapter(root);
 	if (!(await git.isRepository())) return fail('harness verify needs a Git repository.');
@@ -96,9 +98,9 @@ async function verifyFull(git: GitAdapter, commit: string, options: VerifyOption
 		sourceHashes,
 		impact,
 		config,
+		retainArtifact: options.retainArtifact,
 		requirePerformance: requiresPerformance(options, config),
 		testTimeoutMs: options.testTimeout ? Number(options.testTimeout) : undefined,
-		entity: options.entity,
 		env: verifyEnv(options),
 		// What was written about the range is held to the writing limits: its reasons, and the
 		// stored messages of its commits, so a commit made past the hook does not pass.
