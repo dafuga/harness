@@ -64,13 +64,17 @@ link.click();
 link.remove();
 return 'opened';`;
 
+class NativeOverviewAccountUnavailable extends Error {}
+
 /** Captures the cards in native WebKit after pairing, and proves an owner refusal clears them. */
 export async function pairedOverview(run: Acceptance): Promise<void> {
 	const { record, page } = run;
 	record.begin('Project Overview on the paired iOS app');
 	try {
 		if ((await page.evaluate(overviewAccount)) !== 'opened')
-			throw new Error('The paired iOS shell did not expose its account plugin.');
+			throw new NativeOverviewAccountUnavailable(
+				'The paired iOS shell did not expose its account plugin.'
+			);
 		await seen(
 			run,
 			"return text('main');",

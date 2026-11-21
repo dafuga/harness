@@ -17,7 +17,8 @@
 			{
 				"name": "pairedOverview.run",
 				"type": "Acceptance",
-				"required": true
+				"required": true,
+				"description": "The paired test-only simulator, inspector, acceptance record and screenshot directory. The Hub account response is synthetic."
 			},
 			{
 				"name": "workspace.run",
@@ -40,6 +41,11 @@
 		],
 		"outputs": [
 			{
+				"name": "pairedOverview",
+				"type": "Promise<void>",
+				"description": "Records the ready and refused overview states and verifies that native account requests are fixed reads. It restores the account bridge before resolving."
+			},
+			{
 				"name": "workspace",
 				"type": "Promise<void>",
 				"description": "Resolves with no value after checking the shared workspace address and design, conversation modes and models, and computer lock and unlock state."
@@ -57,6 +63,11 @@
 		],
 		"errors": [
 			{
+				"name": "NativeOverviewAccountUnavailable",
+				"type": "thrown",
+				"description": "The paired simulator did not expose the HarnessAccount plugin needed to drive the test."
+			},
+			{
 				"name": "error",
 				"type": "thrown",
 				"description": "An awaited page or run action can reject the async flow; when seen catches a failed page.until check, it records a failed check and rethrows the same error."
@@ -70,22 +81,30 @@
 					{
 						"name": "pairedOverview.run",
 						"type": "Acceptance",
-						"required": true
+						"required": true,
+						"description": "The paired test-only simulator, inspector, acceptance record and screenshot directory. The Hub account response is synthetic."
 					}
 				],
 				"outputs": [
 					{
 						"name": "pairedOverview",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Records the ready and refused overview states and verifies that native account requests are fixed reads. It restores the account bridge before resolving."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "NativeOverviewAccountUnavailable",
+						"type": "thrown",
+						"description": "The paired simulator did not expose the HarnessAccount plugin needed to drive the test."
+					},
+					{
+						"name": "overview-observation-failed",
+						"type": "rejection",
+						"description": "The inspector, screenshot command or settled-state wait failed. A failed state assertion is recorded before it is rethrown."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "workspace",

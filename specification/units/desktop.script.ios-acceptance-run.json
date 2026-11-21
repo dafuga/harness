@@ -60,7 +60,9 @@
 				"required": false,
 				"default": "undefined",
 				"description": "Optional object JSON-encoded as the request body, with an application/json content-type header. Its fields are not validated by this function.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "offered.run",
@@ -88,7 +90,10 @@
 				"required": false,
 				"default": [],
 				"description": "Scan answers for this launch, joined with | and passed after scanArgument only when the array is nonempty. Only the TEST ONLY fixture copy understands these answers.",
-				"examples": [[], ["fixture-scan-payload-001", "fixture-scan-payload-002"]]
+				"examples": [
+					[],
+					["fixture-scan-payload-001", "fixture-scan-payload-002"]
+				]
 			},
 			{
 				"name": "scanPressed.run",
@@ -259,7 +264,9 @@
 						"required": false,
 						"default": "undefined",
 						"description": "Optional object JSON-encoded as the request body, with an application/json content-type header. Its fields are not validated by this function.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
@@ -353,7 +360,10 @@
 						"required": false,
 						"default": [],
 						"description": "Scan answers for this launch, joined with | and passed after scanArgument only when the array is nonempty. Only the TEST ONLY fixture copy understands these answers.",
-						"examples": [[], ["fixture-scan-payload-001", "fixture-scan-payload-002"]]
+						"examples": [
+							[],
+							["fixture-scan-payload-001", "fixture-scan-payload-002"]
+						]
 					}
 				],
 				"outputs": [
