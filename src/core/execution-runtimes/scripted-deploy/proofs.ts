@@ -1,8 +1,7 @@
+import type { Issuer } from './proofs.types';
 import { createPublicKey, verify } from 'node:crypto';
 import { hash, canonical, type Journal, type Plan, type Proof } from './contracts';
 import type { DeployRegistry } from '../../../validators/execution-runtimes/DeployManifestValidator';
-
-type Issuer = DeployRegistry['daniel'];
 
 export function verifyProof(
 	proof: Proof,

@@ -1,3 +1,4 @@
+import type { DeployOptions, Operation } from './runDeploy.types';
 import { signoffScope } from '../../core/execution-runtimes/scripted-deploy/proofs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
@@ -16,23 +17,7 @@ import {
 	readJson
 } from '../../validators/execution-runtimes/DeployManifestValidator';
 
-export interface DeployOptions {
-	registry?: string;
-	ref?: string;
-	release?: string;
-	from?: string;
-	receipt?: string;
-	plan?: boolean;
-	scope?: boolean;
-}
-
-type Operation =
-	| { kind: 'deploy'; project: string; environment: string }
-	| { kind: 'prepare'; project: string }
-	| { kind: 'rollback'; project: string; environment: string; run: string }
-	| { kind: 'status'; run: string }
-	| { kind: 'signoff'; run: string }
-	| { kind: 'resume'; run: string };
+export type { DeployOptions } from './runDeploy.types';
 
 export async function deployOperation(operation: Operation, options: DeployOptions): Promise<void> {
 	try {

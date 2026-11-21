@@ -1,0 +1,196 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-scripted-deploy-deploy-verification",
+	"kind": "service",
+	"title": "DeployVerification",
+	"responsibility": "Owns the DeployVerification service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/execution-runtimes/scripted-deploy/DeployVerification.ts"],
+		"symbols": [
+			"DeployVerification",
+			"DeployVerification.constructor",
+			"DeployVerification.verify",
+			"DeployVerification.cleanup"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "DeployVerification.constructor.config",
+				"type": "DeployProject",
+				"required": true
+			},
+			{
+				"name": "DeployVerification.constructor.store",
+				"type": "DeployRunRepository",
+				"required": true
+			},
+			{
+				"name": "DeployVerification.constructor.broker",
+				"type": "DeployBroker",
+				"required": true
+			},
+			{
+				"name": "DeployVerification.verify.record",
+				"type": "Journal",
+				"required": true
+			},
+			{
+				"name": "DeployVerification.cleanup.record",
+				"type": "Journal",
+				"required": true
+			},
+			{
+				"name": "DeployVerification.cleanup.route",
+				"type": "unknown",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "DeployVerification.verify",
+				"type": "Promise<Journal>"
+			},
+			{
+				"name": "DeployVerification.cleanup",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "DeployVerification.verify",
+				"inputs": [
+					{
+						"name": "DeployVerification.verify.record",
+						"type": "Journal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployVerification.verify",
+						"type": "Promise<Journal>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeployVerification.cleanup",
+				"inputs": [
+					{
+						"name": "DeployVerification.cleanup.record",
+						"type": "Journal",
+						"required": true
+					},
+					{
+						"name": "DeployVerification.cleanup.route",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployVerification.cleanup",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "DeployVerification.constructor",
+				"inputs": [
+					{
+						"name": "DeployVerification.constructor.config",
+						"type": "DeployProject",
+						"required": true
+					},
+					{
+						"name": "DeployVerification.constructor.store",
+						"type": "DeployRunRepository",
+						"required": true
+					},
+					{
+						"name": "DeployVerification.constructor.broker",
+						"type": "DeployBroker",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployVerification.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-deploy-docker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-broker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.execution-runtimes-deploy-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.execution-runtimes-deploy-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/scripted-deploy/DeployVerification.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/scripted-deploy/DeployVerification.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,9 +1,10 @@
+import type { Build } from './releaseFiles.types';
 import { createHash } from 'node:crypto';
 import { createReadStream, lstatSync, mkdirSync, mkdtempSync, renameSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { z } from 'zod';
-import { hash, sha, type Release } from './contracts';
-import { runProcess } from './runProcess';
+import { hash, migrations, type Release } from './contracts';
+import { prepareDeployInputs, exportSource } from './sourceInputs';
 import { DeployDockerAdapter } from '../../../adapters/execution-runtimes/DeployDockerAdapter';
 import {
 	atomicWrite,
@@ -12,13 +13,12 @@ import {
 import type { DeployProject } from '../../../validators/execution-runtimes/DeployManifestValidator';
 
 const built = z.strictObject({
-	node: z.string(),
-	bun: z.string(),
-	wrangler: z.string(),
-	gcloud: z.string()
+	node: z.string().regex(/^v[0-9.]+$/),
+	bun: z.string().regex(/^[0-9.]+$/),
+	wrangler: z.string().regex(/^[0-9.]+$/),
+	gcloud: z.string().regex(/^[0-9.]+$/),
+	migrations
 });
-type Build = { project: string; source: string; manifest: string };
-
 export async function buildRelease(
 	store: DeployRunRepository,
 	config: DeployProject,
@@ -32,13 +32,20 @@ export async function buildRelease(
 		const output = join(work, 'out');
 		mkdirSync(output, { mode: 0o700 });
 		await exportSource(config, spec.source, source);
+		const inputs = await prepareDeployInputs(config, work);
 		const docker = new DeployDockerAdapter({ project: config });
-		const versions = built.parse(
-			await docker.run('build', { '/source': source, '/out': output }, { source: spec.source })
+		const { migrations, ...versions } = built.parse(
+			await docker.run(
+				'build',
+				{ '/source': source, '/out': output, '/deps': inputs },
+				{ source: spec.source }
+			)
 		);
 		if (hash(versions) !== hash(config.toolchain))
-			throw new Error('Built release used an unexpected deploy toolchain.');
-		return await preserveRelease(store, output, { ...spec, image: config.image });
+			throw new Error(
+				'Built release used an unexpected deploy toolchain: ' + JSON.stringify(versions)
+			);
+		return await preserveRelease(store, output, { ...spec, image: config.image, migrations });
 	} finally {
 		rmSync(work, { recursive: true, force: true });
 	}
@@ -83,26 +90,4 @@ async function hashFile(file: string): Promise<string> {
 	const hashing = createHash('sha256');
 	for await (const bytes of createReadStream(file)) hashing.update(bytes);
 	return hashing.digest('hex');
-}
-
-async function exportSource(config: DeployProject, source: string, output: string): Promise<void> {
-	await validateSource(config, source);
-	await git(config, ['archive', '--format=tar', '--output=' + output, source]);
-}
-
-export async function validateSource(config: DeployProject, source: string): Promise<void> {
-	const remote = (
-		await git(config, ['ls-remote', '--exit-code', config.repository, config.sourceRef])
-	).trim();
-	const commit = sha.parse(remote.split('\t')[0]);
-	if (remote.split('\t')[1] !== config.sourceRef)
-		throw new Error('Unexpected release source branch.');
-	await git(config, ['merge-base', '--is-ancestor', sha.parse(source), commit]);
-}
-
-function git(config: DeployProject, args: string[]): Promise<string> {
-	return runProcess('git', args, {
-		cwd: config.checkout,
-		description: 'Release source verification'
-	});
 }

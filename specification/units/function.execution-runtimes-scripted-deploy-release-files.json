@@ -1,0 +1,170 @@
+{
+	"schemaVersion": 1,
+	"id": "function.execution-runtimes-scripted-deploy-release-files",
+	"kind": "function",
+	"title": "releaseFiles",
+	"responsibility": "Owns the releaseFiles shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/core/execution-runtimes/scripted-deploy/releaseFiles.ts",
+			"src/core/execution-runtimes/scripted-deploy/releaseFiles.types.ts"
+		],
+		"symbols": ["buildRelease", "verifyArtifact", "Build"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "buildRelease.store",
+				"type": "DeployRunRepository",
+				"required": true
+			},
+			{
+				"name": "buildRelease.config",
+				"type": "DeployProject",
+				"required": true
+			},
+			{
+				"name": "buildRelease.spec",
+				"type": "Build",
+				"required": true
+			},
+			{
+				"name": "verifyArtifact.store",
+				"type": "DeployRunRepository",
+				"required": true
+			},
+			{
+				"name": "verifyArtifact.value",
+				"type": "Release",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "buildRelease",
+				"type": "Promise<Release>"
+			},
+			{
+				"name": "verifyArtifact",
+				"type": "Promise<string>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "buildRelease",
+				"inputs": [
+					{
+						"name": "buildRelease.store",
+						"type": "DeployRunRepository",
+						"required": true
+					},
+					{
+						"name": "buildRelease.config",
+						"type": "DeployProject",
+						"required": true
+					},
+					{
+						"name": "buildRelease.spec",
+						"type": "Build",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "buildRelease",
+						"type": "Promise<Release>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "verifyArtifact",
+				"inputs": [
+					{
+						"name": "verifyArtifact.store",
+						"type": "DeployRunRepository",
+						"required": true
+					},
+					{
+						"name": "verifyArtifact.value",
+						"type": "Release",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyArtifact",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-deploy-docker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-source-inputs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.execution-runtimes-deploy-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.execution-runtimes-deploy-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/execution-runtimes/scripted-deploy/releaseFiles.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/execution-runtimes/scripted-deploy/releaseFiles.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

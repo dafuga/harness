@@ -2,9 +2,7 @@
 import { randomUUID } from 'node:crypto';
 import { runProcess } from '../../core/execution-runtimes/scripted-deploy/runProcess';
 import { scriptFile } from '../../validators/execution-runtimes/DeployManifestValidator';
-import type { DeployDockerAdapterConfig } from './DeployDockerAdapter.types';
-
-type LocalPhase = 'build' | 'smoke' | 'cleanup';
+import type { DeployDockerAdapterConfig, LocalPhase } from './DeployDockerAdapter.types';
 
 export class DeployDockerAdapter {
 	constructor(private readonly config: DeployDockerAdapterConfig) {}
@@ -14,14 +12,21 @@ export class DeployDockerAdapter {
 		const { project } = this.config;
 		const script = scriptFile(project.root, project.scripts[phase]);
 		const argv = containerArguments({ container, phase, mounts, script }, this.config);
+		const controller = new AbortController();
+		const interrupt = () => controller.abort();
+		process.once('SIGINT', interrupt);
+		process.once('SIGTERM', interrupt);
 		try {
 			const output = await runProcess('docker', argv, {
 				stdin: input,
+				signal: controller.signal,
 				timeout: phase === 'build' ? 900_000 : 60_000,
 				description: 'Docker ' + phase
 			});
 			return JSON.parse(output) as unknown;
 		} finally {
+			process.off('SIGINT', interrupt);
+			process.off('SIGTERM', interrupt);
 			await removeContainer(container);
 		}
 	}

@@ -4,7 +4,10 @@
 	"broker": "/absolute/trusted/credential-vault-deploy-bridge",
 	"tracker": "/absolute/trusted/tracker",
 	"reviewers": [
-		{ "id": "release-reviewer", "publicKey": "REPLACE_WITH_REVIEWER_ED25519_PUBLIC_KEY" }
+		{
+			"id": "release-reviewer",
+			"publicKey": "REPLACE_WITH_REVIEWER_ED25519_PUBLIC_KEY"
+		}
 	],
 	"stageAuthority": {
 		"id": "stage-authority",
@@ -46,7 +49,9 @@
 						},
 						"secretNames": [],
 						"migrations": [],
-						"runtimes": { "compatibility_date": "2026-10-01" },
+						"runtimes": {
+							"compatibility_date": "2026-10-01"
+						},
 						"flags": {
 							"nodejs_compat_v2": "enabled",
 							"schema": "REPLACE_WITH_REVIEWED_D1_SCHEMA_HASH",
@@ -56,7 +61,15 @@
 				}
 			},
 			"differences": {},
-			"item": "56x4kx"
+			"item": "56x4kx",
+			"inputs": {
+				"conversation-engine": {
+					"repository": "https://github.com/dafuga/conversation-engine.git",
+					"sourceRef": "refs/heads/main",
+					"checkout": "/absolute/reviewed/conversation-engine",
+					"revision": "50c58efc6838e691596856a1ecce0b653a4f0abf"
+				}
+			}
 		}
 	}
 }

@@ -1,0 +1,239 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-scripted-deploy-deploy-planning",
+	"kind": "service",
+	"title": "DeployPlanning",
+	"responsibility": "Owns the DeployPlanning service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/execution-runtimes/scripted-deploy/DeployPlanning.ts",
+			"src/services/execution-runtimes/scripted-deploy/DeployPlanning.types.ts"
+		],
+		"symbols": [
+			"DeployRequest",
+			"DeployPlanning",
+			"DeployPlanning.constructor",
+			"DeployPlanning.plan",
+			"DeployPlanning.inventory",
+			"DeployPlanning.predecessor",
+			"DeployRequest"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "DeployPlanning.constructor.context",
+				"type": "{ config: DeployProject; project: string; registry: DeployRegistry }",
+				"required": true
+			},
+			{
+				"name": "DeployPlanning.constructor.store",
+				"type": "DeployRunRepository",
+				"required": true
+			},
+			{
+				"name": "DeployPlanning.constructor.broker",
+				"type": "DeployBroker",
+				"required": true
+			},
+			{
+				"name": "DeployPlanning.plan.input",
+				"type": "DeployRequest",
+				"required": true
+			},
+			{
+				"name": "DeployPlanning.inventory.manifest",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "DeployPlanning.predecessor.input",
+				"type": "DeployRequest",
+				"required": true
+			},
+			{
+				"name": "DeployPlanning.predecessor.live",
+				"type": "Partial<Record<Environment, Observation>>",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "DeployPlanning.plan",
+				"type": "unknown"
+			},
+			{
+				"name": "DeployPlanning.inventory",
+				"type": "Promise<Partial<Record<Environment, Observation>>>"
+			},
+			{
+				"name": "DeployPlanning.predecessor",
+				"type": "Journal | null"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "DeployPlanning.plan",
+				"inputs": [
+					{
+						"name": "DeployPlanning.plan.input",
+						"type": "DeployRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployPlanning.plan",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeployPlanning.inventory",
+				"inputs": [
+					{
+						"name": "DeployPlanning.inventory.manifest",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployPlanning.inventory",
+						"type": "Promise<Partial<Record<Environment, Observation>>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeployPlanning.predecessor",
+				"inputs": [
+					{
+						"name": "DeployPlanning.predecessor.input",
+						"type": "DeployRequest",
+						"required": true
+					},
+					{
+						"name": "DeployPlanning.predecessor.live",
+						"type": "Partial<Record<Environment, Observation>>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployPlanning.predecessor",
+						"type": "Journal | null"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "DeployPlanning.constructor",
+				"inputs": [
+					{
+						"name": "DeployPlanning.constructor.context",
+						"type": "{ config: DeployProject; project: string; registry: DeployRegistry }",
+						"required": true
+					},
+					{
+						"name": "DeployPlanning.constructor.store",
+						"type": "DeployRunRepository",
+						"required": true
+					},
+					{
+						"name": "DeployPlanning.constructor.broker",
+						"type": "DeployBroker",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployPlanning.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-broker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-parity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-proofs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-source-inputs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.execution-runtimes-deploy-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.execution-runtimes-deploy-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/scripted-deploy/DeployPlanning.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/scripted-deploy/DeployPlanning.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

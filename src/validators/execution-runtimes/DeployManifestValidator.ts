@@ -2,23 +2,38 @@
 import { constants, accessSync, lstatSync, readFileSync, realpathSync, statSync } from 'node:fs';
 import { isAbsolute, relative, resolve } from 'node:path';
 import { z } from 'zod';
+import type { DeployRegistry, DeployProject } from './DeployManifestValidator.types';
 import {
 	digest,
 	hash,
 	name,
 	pathFromRoot,
 	profile,
-	reference
+	reference,
+	sha
 } from '../../core/execution-runtimes/scripted-deploy/contracts';
 
 const absolute = z.string().refine(isAbsolute);
 const image = z.string().regex(/^(?:sha256:[a-f0-9]{64}|[a-zA-Z0-9./:_-]+@sha256:[a-f0-9]{64})$/);
-const target = z.strictObject({ id: reference, route: z.url().startsWith('https://'), profile });
+const httpsRoute = z
+	.url()
+	.startsWith('https://')
+	.refine((route) => !/[?#]/.test(route) && !new URL(route).username && !new URL(route).password);
+const target = z.strictObject({ id: reference, route: httpsRoute, profile });
 const script = pathFromRoot.refine((value) => value.startsWith('scripts/'));
-const project = z.strictObject({
-	repository: z.string().regex(/^https:\/\/github\.com\/[\w.-]+\/[\w.-]+\.git$/),
+const githubRepository = z.string().regex(/^https:\/\/github\.com\/[\w.-]+\/[\w.-]+\.git$/);
+const branch = z.string().regex(/^refs\/heads\/[\w/-]+$/);
+const input = z.strictObject({
+	repository: githubRepository,
+	sourceRef: branch,
 	checkout: absolute,
-	sourceRef: z.string().regex(/^refs\/heads\/[\w/-]+$/),
+	revision: sha
+});
+export const project = z.strictObject({
+	repository: githubRepository,
+	checkout: absolute,
+	inputs: z.record(name, input).optional(),
+	sourceRef: branch,
 	image,
 	root: absolute,
 	toolchain: z.strictObject({
@@ -35,7 +50,15 @@ const project = z.strictObject({
 		rollback: script,
 		cleanup: script
 	}),
-	targets: z.strictObject({ staging: target, preprod: target.optional(), prod: target.optional() }),
+	targets: z
+		.strictObject({ staging: target, preprod: target.optional(), prod: target.optional() })
+		.refine((targets) => {
+			const declared = Object.values(targets);
+			return (
+				new Set(declared.map(({ id }) => id)).size === declared.length &&
+				new Set(declared.map(({ route }) => route)).size === declared.length
+			);
+		}, 'Environments must use distinct targets and routes.'),
 	differences: z.record(
 		z.string().regex(/^(bindings|secretNames|migrations|runtimes|flags)\.[\w.:-]+$/),
 		z.string().trim().min(1).max(240)
@@ -43,7 +66,7 @@ const project = z.strictObject({
 	item: reference
 });
 const issuer = z.strictObject({ id: reference, publicKey: z.string().min(32).max(256) });
-const registry = z
+export const registry = z
 	.strictObject({
 		schema: z.literal(1),
 		state: absolute,
@@ -62,8 +85,7 @@ const registry = z
 		);
 	}, 'Approval and reviewer keys must be distinct.');
 
-export type DeployRegistry = z.infer<typeof registry>;
-export type DeployProject = z.infer<typeof project>;
+export type { DeployRegistry, DeployProject } from './DeployManifestValidator.types';
 
 export class DeployManifestValidator {
 	read(file: string): DeployRegistry {
@@ -125,7 +147,10 @@ export function scriptFile(root: string, path: string): string {
 }
 
 export function manifestDigest(config: DeployProject): string {
-	const portable = { ...config, root: null, checkout: null };
+	const inputs = Object.fromEntries(
+		Object.entries(config.inputs ?? {}).map(([key, value]) => [key, { ...value, checkout: null }])
+	);
+	const portable = { ...config, root: null, checkout: null, inputs };
 	const scripts = Object.fromEntries(
 		Object.entries(config.scripts).map(([phase, path]) => [
 			phase,

@@ -1,0 +1,254 @@
+{
+	"schemaVersion": 1,
+	"id": "function.execution-runtimes-scripted-deploy-proofs",
+	"kind": "function",
+	"title": "proofs",
+	"responsibility": "Owns the proofs shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/core/execution-runtimes/scripted-deploy/proofs.ts",
+			"src/core/execution-runtimes/scripted-deploy/proofs.types.ts"
+		],
+		"symbols": ["verifyProof", "verifyApproval", "signoffScope", "verifySignoff", "Issuer"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "verifyProof.proof",
+				"type": "Proof",
+				"required": true
+			},
+			{
+				"name": "verifyProof.expected",
+				"type": "{ kind: Proof['payload']['kind']; scope: string; after: number }",
+				"required": true
+			},
+			{
+				"name": "verifyProof.trusted",
+				"type": "Issuer[]",
+				"required": true
+			},
+			{
+				"name": "verifyProof.now",
+				"type": "unknown",
+				"required": false
+			},
+			{
+				"name": "verifyApproval.record",
+				"type": "Plan",
+				"required": true
+			},
+			{
+				"name": "verifyApproval.proof",
+				"type": "Proof",
+				"required": true
+			},
+			{
+				"name": "verifyApproval.registry",
+				"type": "DeployRegistry",
+				"required": true
+			},
+			{
+				"name": "signoffScope.record",
+				"type": "Journal",
+				"required": true
+			},
+			{
+				"name": "verifySignoff.record",
+				"type": "Journal",
+				"required": true
+			},
+			{
+				"name": "verifySignoff.proof",
+				"type": "Proof",
+				"required": true
+			},
+			{
+				"name": "verifySignoff.registry",
+				"type": "DeployRegistry",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "verifyProof",
+				"type": "void"
+			},
+			{
+				"name": "verifyApproval",
+				"type": "void"
+			},
+			{
+				"name": "signoffScope",
+				"type": "string"
+			},
+			{
+				"name": "verifySignoff",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "verifyProof",
+				"inputs": [
+					{
+						"name": "verifyProof.proof",
+						"type": "Proof",
+						"required": true
+					},
+					{
+						"name": "verifyProof.expected",
+						"type": "{ kind: Proof['payload']['kind']; scope: string; after: number }",
+						"required": true
+					},
+					{
+						"name": "verifyProof.trusted",
+						"type": "Issuer[]",
+						"required": true
+					},
+					{
+						"name": "verifyProof.now",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyProof",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "verifyApproval",
+				"inputs": [
+					{
+						"name": "verifyApproval.record",
+						"type": "Plan",
+						"required": true
+					},
+					{
+						"name": "verifyApproval.proof",
+						"type": "Proof",
+						"required": true
+					},
+					{
+						"name": "verifyApproval.registry",
+						"type": "DeployRegistry",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyApproval",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "signoffScope",
+				"inputs": [
+					{
+						"name": "signoffScope.record",
+						"type": "Journal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "signoffScope",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "verifySignoff",
+				"inputs": [
+					{
+						"name": "verifySignoff.record",
+						"type": "Journal",
+						"required": true
+					},
+					{
+						"name": "verifySignoff.proof",
+						"type": "Proof",
+						"required": true
+					},
+					{
+						"name": "verifySignoff.registry",
+						"type": "DeployRegistry",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifySignoff",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.execution-runtimes-deploy-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/execution-runtimes/scripted-deploy/proofs.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/execution-runtimes/scripted-deploy/proofs.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

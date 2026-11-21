@@ -1,11 +1,11 @@
+import type { DeployRequest } from './DeployPlanning.types';
 import { randomUUID } from 'node:crypto';
 import {
 	hash,
 	type Environment,
 	type Journal,
 	type Observation,
-	type Plan,
-	type Release
+	type Plan
 } from '../../../core/execution-runtimes/scripted-deploy/contracts';
 import {
 	assertObservation,
@@ -14,7 +14,7 @@ import {
 	sameVersion
 } from '../../../core/execution-runtimes/scripted-deploy/parity';
 import { verifySignoff } from '../../../core/execution-runtimes/scripted-deploy/proofs';
-import { validateSource } from '../../../core/execution-runtimes/scripted-deploy/releaseFiles';
+import { validateSource } from '../../../core/execution-runtimes/scripted-deploy/sourceInputs';
 import type { DeployBroker } from '../../../core/execution-runtimes/scripted-deploy/broker';
 import type { DeployRunRepository } from '../../../repositories/execution-runtimes/DeployRunRepository';
 import {
@@ -23,13 +23,8 @@ import {
 	type DeployRegistry
 } from '../../../validators/execution-runtimes/DeployManifestValidator';
 
-export type DeployRequest = {
-	environment: Environment;
-	release: Release | null;
-	source?: string;
-	from?: string;
-	rollback?: string;
-};
+export type { DeployRequest } from './DeployPlanning.types';
+
 const environments = ['staging', 'preprod', 'prod'] as const;
 export class DeployPlanning {
 	constructor(
@@ -48,7 +43,11 @@ export class DeployPlanning {
 		const previous = current[environment]!;
 		const chain = this.predecessor(input, current);
 		const restore = rollback ? this.restoreTarget(rollback, previous) : null;
-		const parity = parityReport(this.context.config, current);
+		const parity = parityReport(
+			this.context.config,
+			current,
+			release ? { release, target: environment } : undefined
+		);
 		const plan: Plan = {
 			id: randomUUID(),
 			project: this.context.project,

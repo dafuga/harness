@@ -1,0 +1,205 @@
+{
+	"schemaVersion": 1,
+	"id": "function.execution-runtimes-scripted-deploy-contracts",
+	"kind": "function",
+	"title": "contracts",
+	"responsibility": "Owns the contracts shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/core/execution-runtimes/scripted-deploy/contracts.ts",
+			"src/core/execution-runtimes/scripted-deploy/contracts.types.ts"
+		],
+		"symbols": [
+			"name",
+			"sha",
+			"digest",
+			"runId",
+			"reference",
+			"environment",
+			"action",
+			"pathFromRoot",
+			"migrations",
+			"profile",
+			"observation",
+			"release",
+			"plan",
+			"signedProof",
+			"deployment",
+			"smoke",
+			"journal",
+			"Environment",
+			"Observation",
+			"Profile",
+			"Release",
+			"Plan",
+			"Journal",
+			"Proof",
+			"Deployment",
+			"Smoke",
+			"canonical",
+			"hash",
+			"Environment",
+			"Observation",
+			"Profile",
+			"Release",
+			"Plan",
+			"Journal",
+			"Proof",
+			"Deployment",
+			"Smoke"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "canonical.value",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "hash.value",
+				"type": "unknown",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "name",
+				"type": "unknown"
+			},
+			{
+				"name": "sha",
+				"type": "unknown"
+			},
+			{
+				"name": "digest",
+				"type": "unknown"
+			},
+			{
+				"name": "runId",
+				"type": "unknown"
+			},
+			{
+				"name": "reference",
+				"type": "unknown"
+			},
+			{
+				"name": "environment",
+				"type": "unknown"
+			},
+			{
+				"name": "action",
+				"type": "unknown"
+			},
+			{
+				"name": "pathFromRoot",
+				"type": "unknown"
+			},
+			{
+				"name": "migrations",
+				"type": "unknown"
+			},
+			{
+				"name": "profile",
+				"type": "unknown"
+			},
+			{
+				"name": "observation",
+				"type": "unknown"
+			},
+			{
+				"name": "release",
+				"type": "unknown"
+			},
+			{
+				"name": "plan",
+				"type": "unknown"
+			},
+			{
+				"name": "signedProof",
+				"type": "unknown"
+			},
+			{
+				"name": "deployment",
+				"type": "unknown"
+			},
+			{
+				"name": "smoke",
+				"type": "unknown"
+			},
+			{
+				"name": "journal",
+				"type": "unknown"
+			},
+			{
+				"name": "canonical",
+				"type": "string"
+			},
+			{
+				"name": "hash",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "canonical",
+				"inputs": [
+					{
+						"name": "canonical.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "canonical",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hash",
+				"inputs": [
+					{
+						"name": "hash.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hash",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/execution-runtimes/scripted-deploy/contracts.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/execution-runtimes/scripted-deploy/contracts.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

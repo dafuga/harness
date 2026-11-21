@@ -1,0 +1,149 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-scripted-deploy-deploy-recovery",
+	"kind": "service",
+	"title": "DeployRecovery",
+	"responsibility": "Owns the DeployRecovery service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/execution-runtimes/scripted-deploy/DeployRecovery.ts"],
+		"symbols": ["DeployRecovery", "DeployRecovery.constructor", "DeployRecovery.resume"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "DeployRecovery.constructor.store",
+				"type": "DeployRunRepository",
+				"required": true
+			},
+			{
+				"name": "DeployRecovery.constructor.broker",
+				"type": "DeployBroker",
+				"required": true
+			},
+			{
+				"name": "DeployRecovery.constructor.verify",
+				"type": "DeployVerification",
+				"required": true
+			},
+			{
+				"name": "DeployRecovery.resume.id",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "DeployRecovery.resume",
+				"type": "Promise<Journal>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "DeployRecovery.resume",
+				"inputs": [
+					{
+						"name": "DeployRecovery.resume.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployRecovery.resume",
+						"type": "Promise<Journal>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "DeployRecovery.constructor",
+				"inputs": [
+					{
+						"name": "DeployRecovery.constructor.store",
+						"type": "DeployRunRepository",
+						"required": true
+					},
+					{
+						"name": "DeployRecovery.constructor.broker",
+						"type": "DeployBroker",
+						"required": true
+					},
+					{
+						"name": "DeployRecovery.constructor.verify",
+						"type": "DeployVerification",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployRecovery.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-broker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-parity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.execution-runtimes-deploy-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-scripted-deploy-deploy-verification",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/scripted-deploy/DeployRecovery.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/scripted-deploy/DeployRecovery.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

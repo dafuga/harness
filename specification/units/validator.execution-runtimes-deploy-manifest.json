@@ -1,0 +1,242 @@
+{
+	"schemaVersion": 1,
+	"id": "validator.execution-runtimes-deploy-manifest",
+	"kind": "validator",
+	"title": "DeployManifestValidator",
+	"responsibility": "Owns the DeployManifestValidator input validation.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/validators/execution-runtimes/DeployManifestValidator.ts",
+			"src/validators/execution-runtimes/DeployManifestValidator.types.ts"
+		],
+		"symbols": [
+			"project",
+			"registry",
+			"DeployRegistry",
+			"DeployProject",
+			"DeployManifestValidator",
+			"DeployManifestValidator.read",
+			"privateFile",
+			"readJson",
+			"scriptFile",
+			"manifestDigest",
+			"DeployRegistry",
+			"DeployProject"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "DeployManifestValidator.read.file",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "privateFile.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readJson.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "scriptFile.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "scriptFile.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "manifestDigest.config",
+				"type": "DeployProject",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "project",
+				"type": "unknown"
+			},
+			{
+				"name": "registry",
+				"type": "unknown"
+			},
+			{
+				"name": "DeployManifestValidator.read",
+				"type": "DeployRegistry"
+			},
+			{
+				"name": "privateFile",
+				"type": "string"
+			},
+			{
+				"name": "readJson",
+				"type": "unknown"
+			},
+			{
+				"name": "scriptFile",
+				"type": "string"
+			},
+			{
+				"name": "manifestDigest",
+				"type": "string"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "DeployManifestValidator.read",
+				"inputs": [
+					{
+						"name": "DeployManifestValidator.read.file",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployManifestValidator.read",
+						"type": "DeployRegistry"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "privateFile",
+				"inputs": [
+					{
+						"name": "privateFile.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "privateFile",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readJson",
+				"inputs": [
+					{
+						"name": "readJson.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readJson",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scriptFile",
+				"inputs": [
+					{
+						"name": "scriptFile.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "scriptFile.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scriptFile",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "manifestDigest",
+				"inputs": [
+					{
+						"name": "manifestDigest.config",
+						"type": "DeployProject",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "manifestDigest",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/validators/execution-runtimes/DeployManifestValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/validators/execution-runtimes/DeployManifestValidator.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

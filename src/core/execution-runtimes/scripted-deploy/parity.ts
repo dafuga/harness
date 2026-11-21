@@ -1,21 +1,14 @@
+import type { Fields, Difference } from './parity.types';
 import {
 	canonical,
 	hash,
 	type Environment,
 	type Observation,
 	type Profile,
+	type Release,
 	type Plan
 } from './contracts';
 import type { DeployProject } from '../../../validators/execution-runtimes/DeployManifestValidator';
-
-type Fields = Record<string, unknown>;
-type Difference = {
-	environment: Environment;
-	field: string;
-	expected: unknown;
-	observed: unknown;
-	reason: string | null;
-};
 
 function fields(profile: Profile): Fields {
 	return Object.fromEntries([
@@ -57,7 +50,8 @@ export function assertTargetProfile(expected: Profile, actual: Observation): voi
 
 export function parityReport(
 	config: DeployProject,
-	observations: Partial<Record<Environment, Observation>>
+	observations: Partial<Record<Environment, Observation>>,
+	candidate?: { release: Release; target: Environment }
 ) {
 	const baseline = fields(config.targets.staging.profile);
 	const environments = ['staging', 'preprod', 'prod'] as const;
@@ -71,6 +65,10 @@ export function parityReport(
 			...(actual ? diff(env, desired, fields(actual.profile), {}) : [])
 		];
 	});
+	if (candidate)
+		differences.push(
+			...migrationDrift(candidate.release, observations[candidate.target], candidate.target)
+		);
 	const coverage = Object.fromEntries(
 		environments.map((env) => [env, coverageFor(observations[env], config.targets[env])])
 	);
@@ -125,4 +123,27 @@ export function assertResult(plan: Plan, actual: Observation): void {
 function wrongVersion(plan: Plan, actual: Observation): boolean {
 	if (plan.restore) return !sameVersion(plan.restore, actual);
 	return actual.version === plan.previous.version;
+}
+
+function migrationDrift(
+	candidate: Release,
+	observation: Observation | undefined,
+	environment: Environment
+): Difference[] {
+	const applied = new Map(
+		observation?.profile.migrations.map(({ name, digest }) => [name, digest])
+	);
+	return candidate.migrations.flatMap(({ name, digest }) =>
+		applied.get(name) === digest
+			? []
+			: [
+					{
+						environment,
+						field: 'migrations.' + name,
+						expected: digest,
+						observed: applied.get(name) ?? null,
+						reason: null
+					}
+				]
+	);
 }

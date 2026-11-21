@@ -1,0 +1,189 @@
+{
+	"schemaVersion": 1,
+	"id": "function.execution-runtimes-scripted-deploy-source-inputs",
+	"kind": "function",
+	"title": "sourceInputs",
+	"responsibility": "Owns the sourceInputs shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/execution-runtimes/scripted-deploy/sourceInputs.ts"],
+		"symbols": ["prepareDeployInputs", "exportSource", "validateSource"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "prepareDeployInputs.config",
+				"type": "DeployProject",
+				"required": true
+			},
+			{
+				"name": "prepareDeployInputs.work",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "exportSource.config",
+				"type": "DeployProject",
+				"required": true
+			},
+			{
+				"name": "exportSource.source",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "exportSource.output",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "validateSource.config",
+				"type": "Pick<DeployProject, 'checkout' | 'repository' | 'sourceRef'>",
+				"required": true
+			},
+			{
+				"name": "validateSource.source",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "prepareDeployInputs",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "exportSource",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "validateSource",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "prepareDeployInputs",
+				"inputs": [
+					{
+						"name": "prepareDeployInputs.config",
+						"type": "DeployProject",
+						"required": true
+					},
+					{
+						"name": "prepareDeployInputs.work",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "prepareDeployInputs",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "exportSource",
+				"inputs": [
+					{
+						"name": "exportSource.config",
+						"type": "DeployProject",
+						"required": true
+					},
+					{
+						"name": "exportSource.source",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "exportSource.output",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "exportSource",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "validateSource",
+				"inputs": [
+					{
+						"name": "validateSource.config",
+						"type": "Pick<DeployProject, 'checkout' | 'repository' | 'sourceRef'>",
+						"required": true
+					},
+					{
+						"name": "validateSource.source",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateSource",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-run-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.execution-runtimes-deploy-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/execution-runtimes/scripted-deploy/sourceInputs.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/execution-runtimes/scripted-deploy/sourceInputs.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

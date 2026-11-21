@@ -1,0 +1,139 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.execution-runtimes-deploy-docker",
+	"uid": "u_f77zx26wcb",
+	"kind": "adapter",
+	"title": "DeployDockerAdapter",
+	"responsibility": "Owns the DeployDockerAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/execution-runtimes/DeployDockerAdapter.ts",
+			"src/adapters/execution-runtimes/DeployDockerAdapter.types.ts"
+		],
+		"symbols": [
+			"DeployDockerAdapter",
+			"DeployDockerAdapter.constructor",
+			"DeployDockerAdapter.run",
+			"DeployDockerAdapterConfig",
+			"LocalPhase"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "DeployDockerAdapter.constructor.config",
+				"type": "DeployDockerAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "DeployDockerAdapter.run.phase",
+				"type": "LocalPhase",
+				"required": true
+			},
+			{
+				"name": "DeployDockerAdapter.run.mounts",
+				"type": "Record<string, string>",
+				"required": true
+			},
+			{
+				"name": "DeployDockerAdapter.run.input",
+				"type": "unknown",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "DeployDockerAdapter.run",
+				"type": "Promise<unknown>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "DeployDockerAdapter.run",
+				"inputs": [
+					{
+						"name": "DeployDockerAdapter.run.phase",
+						"type": "LocalPhase",
+						"required": true
+					},
+					{
+						"name": "DeployDockerAdapter.run.mounts",
+						"type": "Record<string, string>",
+						"required": true
+					},
+					{
+						"name": "DeployDockerAdapter.run.input",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployDockerAdapter.run",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "DeployDockerAdapter.constructor",
+				"inputs": [
+					{
+						"name": "DeployDockerAdapter.constructor.config",
+						"type": "DeployDockerAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployDockerAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-run-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.execution-runtimes-deploy-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/execution-runtimes/DeployDockerAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/execution-runtimes/DeployDockerAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

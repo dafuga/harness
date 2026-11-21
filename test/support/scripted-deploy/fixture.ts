@@ -134,6 +134,7 @@ function fixtureArtifact(store: DeployRunRepository, project: DeployProject): Re
 		image: project.image,
 		manifest: manifestDigest(project),
 		size: Buffer.byteLength(artifact),
+		migrations: [],
 		artifact: createHash('sha256').update(artifact).digest('hex')
 	};
 	const release = { id: hash(body), ...body };

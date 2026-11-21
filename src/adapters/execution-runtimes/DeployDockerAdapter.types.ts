@@ -3,3 +3,5 @@ import type { DeployProject } from '../../validators/execution-runtimes/DeployMa
 export interface DeployDockerAdapterConfig {
 	project: DeployProject;
 }
+
+export type LocalPhase = 'build' | 'smoke' | 'cleanup';

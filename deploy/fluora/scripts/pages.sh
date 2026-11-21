@@ -43,14 +43,14 @@ observe() {
     '{"sql":"SELECT name FROM d1_migrations ORDER BY id"}' "$api/d1/database/$database/query" | jq -ec '.[0].results | map(.name)')
   lookup=$(jq -er '.migrationDigests' <<<"$input")
   migrations=$(jq -cn --argjson list "$ledger" --argjson hashes "$lookup" \
-    '$list | map(. as $name | {name:$name,digest:($hashes[$name] // error("Unknown applied migration"))})')
+    '$list | map({name:.,digest:($hashes[.] // error("Unknown applied migration"))})')
   jq -cn --argjson config "$config" --argjson dep "$deployment" --arg target "$project" \
     --arg source "$source_sha" --arg artifact "$marker" --arg schema "$schema" --argjson migrations "$migrations" \
     --argjson now "$(date +%s%3N)" '
      def binding($type): to_entries | map({key,value:($type + ":" + (.value.id // .value.name // error("Missing binding target")))}) | from_entries;
-     $config.deployment_configs.production as $profile
-     | if $dep.environment != "production" or $dep.latest_stage.status != "success"
-          or $config.production_branch != "main" then error("Invalid canonical deployment") else . end
+     ($config.deployment_configs.production) as$profile
+     | if ($dep.environment) != "production" or ($dep.latest_stage.status) != "success"
+          or ($config.production_branch) != "main" then error("Invalid canonical deployment") else . end
      | {target:$target,version:$dep.id,source:$source,artifact:($artifact | if . == "" then null else . end),observedAt:$now,
         profile:{bindings:(($profile.d1_databases // {} | binding("d1")) + ($profile.r2_buckets // {} | binding("r2"))),
          secretNames:(($profile.env_vars // {}) | to_entries | map(select(.value.type == "secret_text").key) | sort),
@@ -72,6 +72,10 @@ case "$operation" in
     tar -xf /artifact -C /tmp/upload --no-same-owner --no-same-permissions
     test "$(cat /tmp/upload/source)" = "$source_sha"
     jq -cn --arg source "$source_sha" --arg artifact "$artifact" '{source:$source,artifact:$artifact}' >/tmp/upload/site/_harness-release.json
+    if [ -f /tmp/upload/site/_routes.json ]; then
+      jq -ec 'select(.version == 1) | .exclude += ["/_harness-release.json"]'         /tmp/upload/site/_routes.json >/tmp/harness-routes.json
+      mv /tmp/harness-routes.json /tmp/upload/site/_routes.json
+    fi
     cd /tmp/upload
     # Generate the exact staging resource mapping. Only the reviewed artifact site is uploaded.
     cat >wrangler.toml <<CONFIG

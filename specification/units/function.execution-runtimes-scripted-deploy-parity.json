@@ -1,0 +1,289 @@
+{
+	"schemaVersion": 1,
+	"id": "function.execution-runtimes-scripted-deploy-parity",
+	"kind": "function",
+	"title": "parity",
+	"responsibility": "Owns the parity shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/core/execution-runtimes/scripted-deploy/parity.ts",
+			"src/core/execution-runtimes/scripted-deploy/parity.types.ts"
+		],
+		"symbols": [
+			"assertObservation",
+			"assertTargetProfile",
+			"parityReport",
+			"sameVersion",
+			"assertResult",
+			"Fields",
+			"Difference"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "assertObservation.target",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "assertObservation.actual",
+				"type": "Observation",
+				"required": true
+			},
+			{
+				"name": "assertObservation.now",
+				"type": "unknown",
+				"required": false
+			},
+			{
+				"name": "assertTargetProfile.expected",
+				"type": "Profile",
+				"required": true
+			},
+			{
+				"name": "assertTargetProfile.actual",
+				"type": "Observation",
+				"required": true
+			},
+			{
+				"name": "parityReport.config",
+				"type": "DeployProject",
+				"required": true
+			},
+			{
+				"name": "parityReport.observations",
+				"type": "Partial<Record<Environment, Observation>>",
+				"required": true
+			},
+			{
+				"name": "parityReport.candidate",
+				"type": "{ release: Release; target: Environment }",
+				"required": false
+			},
+			{
+				"name": "sameVersion.left",
+				"type": "Observation",
+				"required": true
+			},
+			{
+				"name": "sameVersion.right",
+				"type": "Observation",
+				"required": true
+			},
+			{
+				"name": "assertResult.plan",
+				"type": "Plan",
+				"required": true
+			},
+			{
+				"name": "assertResult.actual",
+				"type": "Observation",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "assertObservation",
+				"type": "void"
+			},
+			{
+				"name": "assertTargetProfile",
+				"type": "void"
+			},
+			{
+				"name": "parityReport",
+				"type": "unknown"
+			},
+			{
+				"name": "sameVersion",
+				"type": "boolean"
+			},
+			{
+				"name": "assertResult",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "assertObservation",
+				"inputs": [
+					{
+						"name": "assertObservation.target",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "assertObservation.actual",
+						"type": "Observation",
+						"required": true
+					},
+					{
+						"name": "assertObservation.now",
+						"type": "unknown",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "assertObservation",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
+			},
+			{
+				"name": "assertTargetProfile",
+				"inputs": [
+					{
+						"name": "assertTargetProfile.expected",
+						"type": "Profile",
+						"required": true
+					},
+					{
+						"name": "assertTargetProfile.actual",
+						"type": "Observation",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assertTargetProfile",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parityReport",
+				"inputs": [
+					{
+						"name": "parityReport.config",
+						"type": "DeployProject",
+						"required": true
+					},
+					{
+						"name": "parityReport.observations",
+						"type": "Partial<Record<Environment, Observation>>",
+						"required": true
+					},
+					{
+						"name": "parityReport.candidate",
+						"type": "{ release: Release; target: Environment }",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "parityReport",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sameVersion",
+				"inputs": [
+					{
+						"name": "sameVersion.left",
+						"type": "Observation",
+						"required": true
+					},
+					{
+						"name": "sameVersion.right",
+						"type": "Observation",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sameVersion",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "assertResult",
+				"inputs": [
+					{
+						"name": "assertResult.plan",
+						"type": "Plan",
+						"required": true
+					},
+					{
+						"name": "assertResult.actual",
+						"type": "Observation",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assertResult",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.execution-runtimes-deploy-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/execution-runtimes/scripted-deploy/parity.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/execution-runtimes/scripted-deploy/parity.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

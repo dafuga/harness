@@ -22,3 +22,30 @@ test('records missing environment coverage and blocks unexpected differences', (
 		fixture.dispose();
 	}
 });
+
+test('blocks an unapplied candidate migration even when the current baseline matches', () => {
+	const fixture = deployFixture();
+	try {
+		const profile = fixture.project.targets.staging.profile;
+		const observed = {
+			target: 'staging',
+			version: 'current',
+			source: fixture.release.source,
+			artifact: null,
+			observedAt: Date.now(),
+			profile
+		};
+		const release = {
+			...fixture.release,
+			migrations: [{ name: 'next.sql', digest: 'a'.repeat(64) }]
+		};
+		expect(
+			parityReport(fixture.project, { staging: observed }, { release, target: 'staging' })
+		).toMatchObject({
+			blocked: true,
+			differences: [{ field: 'migrations.next.sql', observed: null, reason: null }]
+		});
+	} finally {
+		fixture.dispose();
+	}
+});

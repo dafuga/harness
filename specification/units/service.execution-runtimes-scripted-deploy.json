@@ -1,0 +1,250 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-scripted-deploy",
+	"uid": "u_hknoug3rur",
+	"kind": "service",
+	"title": "ScriptedDeployService",
+	"responsibility": "Owns the ScriptedDeployService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/execution-runtimes/ScriptedDeployService.ts"],
+		"symbols": [
+			"ScriptedDeployService",
+			"ScriptedDeployService.constructor",
+			"ScriptedDeployService.prepare",
+			"ScriptedDeployService.deploy",
+			"ScriptedDeployService.signoff"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ScriptedDeployService.constructor.registry",
+				"type": "DeployRegistry",
+				"required": true
+			},
+			{
+				"name": "ScriptedDeployService.constructor.project",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "ScriptedDeployService.constructor.config",
+				"type": "DeployProject",
+				"required": true
+			},
+			{
+				"name": "ScriptedDeployService.prepare.source",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "ScriptedDeployService.deploy.input",
+				"type": "DeployRequest",
+				"required": true
+			},
+			{
+				"name": "ScriptedDeployService.signoff.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "ScriptedDeployService.signoff.proof",
+				"type": "Proof",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "ScriptedDeployService.prepare",
+				"type": "Promise<Release>"
+			},
+			{
+				"name": "ScriptedDeployService.deploy",
+				"type": "Promise<Journal>"
+			},
+			{
+				"name": "ScriptedDeployService.signoff",
+				"type": "Promise<Journal>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ScriptedDeployService.prepare",
+				"inputs": [
+					{
+						"name": "ScriptedDeployService.prepare.source",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ScriptedDeployService.prepare",
+						"type": "Promise<Release>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ScriptedDeployService.deploy",
+				"inputs": [
+					{
+						"name": "ScriptedDeployService.deploy.input",
+						"type": "DeployRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ScriptedDeployService.deploy",
+						"type": "Promise<Journal>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ScriptedDeployService.signoff",
+				"inputs": [
+					{
+						"name": "ScriptedDeployService.signoff.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ScriptedDeployService.signoff.proof",
+						"type": "Proof",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ScriptedDeployService.signoff",
+						"type": "Promise<Journal>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ScriptedDeployService.constructor",
+				"inputs": [
+					{
+						"name": "ScriptedDeployService.constructor.registry",
+						"type": "DeployRegistry",
+						"required": true
+					},
+					{
+						"name": "ScriptedDeployService.constructor.project",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ScriptedDeployService.constructor.config",
+						"type": "DeployProject",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ScriptedDeployService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-broker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-parity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-proofs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-release-files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.execution-runtimes-deploy-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-scripted-deploy-deploy-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-scripted-deploy-deploy-recovery",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-scripted-deploy-deploy-verification",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.execution-runtimes-deploy-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/ScriptedDeployService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/ScriptedDeployService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

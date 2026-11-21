@@ -1,19 +1,18 @@
+import type { RunProcessOptions } from './runProcess.types';
 import { execFile, type ExecFileOptions } from 'node:child_process';
 
-type Options = {
-	description: string;
-	timeout?: number;
-	stdin?: unknown;
-	cwd?: string;
-};
-
-export function runProcess(file: string, args: string[], options: Options): Promise<string> {
+export function runProcess(
+	file: string,
+	args: string[],
+	options: RunProcessOptions
+): Promise<string> {
 	const config: ExecFileOptions = {
 		encoding: 'utf8',
 		cwd: options.cwd,
 		timeout: options.timeout ?? 30_000,
 		maxBuffer: 1024 * 1024,
 		killSignal: 'SIGKILL',
+		signal: options.signal,
 		env: { PATH: process.env.PATH, HOME: process.env.HOME, GIT_TERMINAL_PROMPT: '0', NO_COLOR: '1' }
 	};
 	return new Promise((resolve, reject) => {

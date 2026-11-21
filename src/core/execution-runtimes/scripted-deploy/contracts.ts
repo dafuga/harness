@@ -15,10 +15,12 @@ export const pathFromRoot = z
 const names = z.array(reference).max(250);
 const values = z.record(reference, z.string().max(180));
 
+export const migrations = z.array(z.strictObject({ name: reference, digest })).max(250);
+
 export const profile = z.strictObject({
 	bindings: values,
 	secretNames: names,
-	migrations: z.array(z.strictObject({ name: reference, digest })).max(250),
+	migrations,
 	runtimes: values,
 	flags: values
 });
@@ -39,7 +41,8 @@ export const release = z.strictObject({
 	artifact: digest,
 	manifest: digest,
 	image: z.string(),
-	size: z.number().int().positive()
+	size: z.number().int().positive(),
+	migrations
 });
 
 export const plan = z.strictObject({
@@ -95,15 +98,17 @@ export const journal = z.strictObject({
 	signoff: signedProof.optional()
 });
 
-export type Environment = z.infer<typeof environment>;
-export type Observation = z.infer<typeof observation>;
-export type Profile = z.infer<typeof profile>;
-export type Release = z.infer<typeof release>;
-export type Plan = z.infer<typeof plan>;
-export type Journal = z.infer<typeof journal>;
-export type Proof = z.infer<typeof signedProof>;
-export type Deployment = z.infer<typeof deployment>;
-export type Smoke = z.infer<typeof smoke>;
+export type {
+	Environment,
+	Observation,
+	Profile,
+	Release,
+	Plan,
+	Journal,
+	Proof,
+	Deployment,
+	Smoke
+} from './contracts.types';
 
 export function canonical(value: unknown): string {
 	if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']';

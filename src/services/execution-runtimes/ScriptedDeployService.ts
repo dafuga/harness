@@ -103,6 +103,7 @@ export class ScriptedDeployService {
 		const approval = await this.broker.authorize(plan);
 		await this.revalidate(plan, approval, input);
 		if (artifact) await verifyPreparedArtifact(this.store, plan, this.config.image);
+		verifyApproval(plan, approval, this.registry);
 		record.approval = approval;
 		record.phase = 'applying';
 		this.store.save(record);
@@ -117,7 +118,11 @@ export class ScriptedDeployService {
 	private async revalidate(plan: Plan, approval: Proof, input: DeployRequest): Promise<void> {
 		verifyApproval(plan, approval, this.registry);
 		const current = await this.planning.inventory(plan.manifest);
-		const parity = parityReport(this.config, current);
+		const parity = parityReport(
+			this.config,
+			current,
+			plan.release ? { release: plan.release, target: plan.environment } : undefined
+		);
 		if (
 			parity.blocked ||
 			parity.digest !== plan.parity ||

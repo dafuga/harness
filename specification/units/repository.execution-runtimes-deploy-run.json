@@ -1,0 +1,392 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.execution-runtimes-deploy-run",
+	"kind": "repository",
+	"title": "DeployRunRepository",
+	"responsibility": "Owns the DeployRunRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/execution-runtimes/DeployRunRepository.ts",
+			"src/repositories/execution-runtimes/DeployRunRepository.types.ts"
+		],
+		"symbols": [
+			"DeployRunRepository",
+			"DeployRunRepository.constructor",
+			"DeployRunRepository.artifact",
+			"DeployRunRepository.releaseDirectory",
+			"DeployRunRepository.getRelease",
+			"DeployRunRepository.get",
+			"DeployRunRepository.save",
+			"DeployRunRepository.lock",
+			"DeployRunRepository.active",
+			"DeployRunRepository.unlock",
+			"atomicWrite",
+			"Journal",
+			"Release"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "DeployRunRepository.constructor.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "DeployRunRepository.artifact.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "DeployRunRepository.releaseDirectory.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "DeployRunRepository.getRelease.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "DeployRunRepository.get.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "DeployRunRepository.save.record",
+				"type": "Journal",
+				"required": true
+			},
+			{
+				"name": "DeployRunRepository.lock.project",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "DeployRunRepository.lock.target",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "DeployRunRepository.lock.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "DeployRunRepository.active.project",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "DeployRunRepository.active.target",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "DeployRunRepository.unlock.record",
+				"type": "Journal",
+				"required": true
+			},
+			{
+				"name": "atomicWrite.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "atomicWrite.input",
+				"type": "unknown",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "DeployRunRepository.artifact",
+				"type": "string"
+			},
+			{
+				"name": "DeployRunRepository.releaseDirectory",
+				"type": "string"
+			},
+			{
+				"name": "DeployRunRepository.getRelease",
+				"type": "Release"
+			},
+			{
+				"name": "DeployRunRepository.get",
+				"type": "Journal"
+			},
+			{
+				"name": "DeployRunRepository.save",
+				"type": "void"
+			},
+			{
+				"name": "DeployRunRepository.lock",
+				"type": "void"
+			},
+			{
+				"name": "DeployRunRepository.active",
+				"type": "string | null"
+			},
+			{
+				"name": "DeployRunRepository.unlock",
+				"type": "void"
+			},
+			{
+				"name": "atomicWrite",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "DeployRunRepository.artifact",
+				"inputs": [
+					{
+						"name": "DeployRunRepository.artifact.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployRunRepository.artifact",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeployRunRepository.releaseDirectory",
+				"inputs": [
+					{
+						"name": "DeployRunRepository.releaseDirectory.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployRunRepository.releaseDirectory",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeployRunRepository.getRelease",
+				"inputs": [
+					{
+						"name": "DeployRunRepository.getRelease.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployRunRepository.getRelease",
+						"type": "Release"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeployRunRepository.get",
+				"inputs": [
+					{
+						"name": "DeployRunRepository.get.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployRunRepository.get",
+						"type": "Journal"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeployRunRepository.save",
+				"inputs": [
+					{
+						"name": "DeployRunRepository.save.record",
+						"type": "Journal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployRunRepository.save",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeployRunRepository.lock",
+				"inputs": [
+					{
+						"name": "DeployRunRepository.lock.project",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "DeployRunRepository.lock.target",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "DeployRunRepository.lock.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployRunRepository.lock",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeployRunRepository.active",
+				"inputs": [
+					{
+						"name": "DeployRunRepository.active.project",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "DeployRunRepository.active.target",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployRunRepository.active",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeployRunRepository.unlock",
+				"inputs": [
+					{
+						"name": "DeployRunRepository.unlock.record",
+						"type": "Journal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployRunRepository.unlock",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "atomicWrite",
+				"inputs": [
+					{
+						"name": "atomicWrite.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "atomicWrite.input",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "atomicWrite",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "DeployRunRepository.constructor",
+				"inputs": [
+					{
+						"name": "DeployRunRepository.constructor.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployRunRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/execution-runtimes/DeployRunRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/execution-runtimes/DeployRunRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

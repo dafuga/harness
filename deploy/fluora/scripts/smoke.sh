@@ -25,5 +25,5 @@ expect 401 '/api/admin/vocabulary?language=pt'
 expect 200 /fonts/inter/v20/inter-latin-wght-normal.woff2
 expect 200 /adventure-assets/sets/pt-pt/rita-happy.webp
 jq -n --arg version "$version" --arg source "$source_sha" --arg artifact "$artifact" \
-  '{version:$version,source:$source,artifact:(if $artifact == "" then null else $artifact end),
+  '{version:$version,source:$source,artifact:(if ($artifact) == "" then null else ($artifact) end),
     checks:["canonical-release","home","signin","auth-config","admin-denied","font","adventure-art"]}'
