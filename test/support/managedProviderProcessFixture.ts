@@ -2,14 +2,19 @@ import { $ } from 'bun';
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { mkdir, readFile, realpath, writeFile } from 'node:fs/promises';
-import { basename, dirname, join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { ManagedProviderDockerAdapter } from '../../src/adapters/agents-providers/ManagedProviderDockerAdapter';
 import { taskProcess } from '../../src/adapters/agents-providers/module-task-runner-adapter/taskProcess';
 import type { TaskRunInput } from '../../src/repositories/agents-providers/ModuleTaskRepository.types';
-import { abandonLegacyBind } from './managedProviderLegacyDockerFixture';
-
-const taskLabel = 'org.harness.managed-provider-task';
-const storageLabel = 'org.harness.managed-provider-storage';
+import {
+	abandonLegacyBind,
+	guestRemoved,
+	running,
+	storageContainers,
+	taskContainerIds,
+	volumeExists,
+	waitForReady
+} from './managedProviderDockerFixtureState';
 
 async function run(cwd: string) {
 	cwd = join(await realpath(cwd), 'workspace, with "quotes"');
@@ -87,7 +92,9 @@ async function exerciseRestart(
 		const recovered = await guestRemoved(abandoned.guest);
 		const legacyRecovered = !(await taskContainerIds()).includes(legacy);
 		const liveBystanderPreserved =
-			(await running(bystander.guest.id)) && !(await guestRemoved(bystander.guest));
+			(await running(bystander.guest.id)) &&
+			(await volumeExists(bystander.guest.volume)) &&
+			!!(await storageContainers(bystander.guest.owner));
 		await $`docker exec ${bystander.guest.id} touch /workspace/finish`.quiet();
 		assert.equal(await bystander.child.exited, 0);
 		const cachedImage =
@@ -179,74 +186,6 @@ async function cancelRunningContainer(input: Omit<TaskRunInput, 'signal'>) {
 		interrupted: stop,
 		removed: await guestRemoved(guest)
 	};
-}
-
-async function waitForReady(marker: string, cwd: string) {
-	const deadline = Date.now() + 12000;
-	do {
-		for (const id of await taskContainerIds()) {
-			const guest = await inspectGuest(id, marker, basename(cwd));
-			if (guest) return guest;
-		}
-		await Bun.sleep(50);
-	} while (Date.now() < deadline);
-	throw new Error('Linux child did not become ready for cancellation.');
-}
-
-async function taskContainerIds() {
-	const result = await $`docker ps --all --quiet --no-trunc --filter label=${taskLabel}`
-		.quiet()
-		.text();
-	return result.trim().split(/\s+/).filter(Boolean);
-}
-
-async function storageContainers(owner: string) {
-	return (
-		await $`docker ps -aq --no-trunc --filter label=${storageLabel}=${owner}`.quiet().text()
-	).trim();
-}
-
-async function volumeExists(volume: string) {
-	const observed = await $`docker volume ls -q --filter name=${volume}`.quiet().text();
-	return observed.trim().split('\n').includes(volume);
-}
-
-async function guestRemoved(guest: { id: string; owner: string; volume: string }) {
-	return (
-		!(await taskContainerIds()).includes(guest.id) &&
-		!(await storageContainers(guest.owner)) &&
-		!(await volumeExists(guest.volume))
-	);
-}
-
-async function running(id: string) {
-	const state = await $`docker inspect --format '{{.State.Running}}' ${id}`.quiet().nothrow();
-	return state.exitCode === 0 && state.text().trim() === 'true';
-}
-
-async function inspectGuest(id: string, marker: string, subpath: string) {
-	const result = await $`docker inspect ${id}`.quiet().nothrow();
-	if (result.exitCode !== 0) return undefined;
-	const [guest] = JSON.parse(result.text());
-	if (!guest.Config.Cmd?.includes(marker) || !guest.State.Running) return undefined;
-	const ready = await $`docker exec ${id} test -f /workspace/ready`.quiet().nothrow();
-	if (ready.exitCode !== 0) return undefined;
-	const { HostConfig: host, Mounts: mounts } = guest;
-	assert.match(guest.Config.User, /^[1-9]\d*:\d+$/);
-	assert.equal(host.NetworkMode, 'none');
-	assert.equal(host.ReadonlyRootfs, true);
-	assert.equal(host.Privileged, false);
-	assert.deepEqual(host.CapDrop, ['ALL']);
-	assert.deepEqual(host.SecurityOpt, ['no-new-privileges']);
-	assert.equal(host.Tmpfs['/tmp'], 'rw,nosuid,nodev,size=256m');
-	assert.equal(mounts.length, 1);
-	assert.equal(mounts[0].Type, 'volume');
-	assert.equal(mounts[0].Destination, '/workspace');
-	const owner = guest.Config.Labels[taskLabel];
-	assert.equal(mounts[0].Name, `harness-task-${owner}`);
-	assert.match(owner, /^[a-f0-9-]{36}$/);
-	assert.equal(host.Mounts[0].VolumeOptions.Subpath, subpath);
-	return { id, owner, volume: mounts[0].Name as string };
 }
 
 if (process.argv[3] === 'hold') await hold(process.argv[2], process.argv[4]);
