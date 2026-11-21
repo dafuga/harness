@@ -80,6 +80,7 @@ export function brokenDocLinks(
 ): string[] {
 	const problems: string[] = [];
 	const pending = [...documents];
+	const traversal = { pending, problems };
 	const checked = new Set<string>();
 	while (pending.length) {
 		const document = pending.shift()!;
@@ -92,27 +93,37 @@ export function brokenDocLinks(
 		const source = files.read(document);
 		for (const { line, target } of pathChecked.includes(document) ? codePaths(source) : [])
 			if (!files.exists(target)) problems.push(`${document}:${line}: \`${target}\` does not exist`);
-		for (const { line, target } of markdownLinks(source)) {
-			if (/^[a-z][a-z0-9+.-]*:/i.test(target) || target.startsWith('//')) continue;
-			const [file = '', anchor] = target.split('#', 2);
-			const path = file
-				? normalize(file.startsWith('/') ? file.slice(1) : join(dirname(document), decoded(file)))
-				: document;
-			if (path.startsWith('..')) {
-				problems.push(`${document}:${line}: ${target} leaves the repository`);
-				continue;
-			}
-			if (!files.exists(path)) {
-				problems.push(`${document}:${line}: ${target} does not exist`);
-				continue;
-			}
-			if (!path.endsWith('.md')) continue;
-			if (anchor && !headingAnchors(files.read(path)).has(decoded(anchor).toLowerCase()))
-				problems.push(`${document}:${line}: ${target} has no such heading`);
-			if (path !== document) pending.push(path);
-		}
+		for (const link of markdownLinks(source)) checkMarkdownLink(document, link, files, traversal);
 	}
 	return problems.sort();
+}
+
+function checkMarkdownLink(
+	document: string,
+	{ line, target }: DocLink,
+	files: DocFiles,
+	{ pending, problems }: { pending: string[]; problems: string[] }
+): void {
+	if (/^[a-z][a-z0-9+.-]*:/i.test(target) || target.startsWith('//')) return;
+	const [file = '', anchor] = target.split('#', 2);
+	const path = resolveDocPath(document, file);
+	if (path.startsWith('..')) {
+		problems.push(`${document}:${line}: ${target} leaves the repository`);
+		return;
+	}
+	if (!files.exists(path)) {
+		problems.push(`${document}:${line}: ${target} does not exist`);
+		return;
+	}
+	if (!path.endsWith('.md')) return;
+	if (anchor && !headingAnchors(files.read(path)).has(decoded(anchor).toLowerCase()))
+		problems.push(`${document}:${line}: ${target} has no such heading`);
+	if (path !== document) pending.push(path);
+}
+
+function resolveDocPath(document: string, file: string): string {
+	if (!file) return document;
+	return normalize(file.startsWith('/') ? file.slice(1) : join(dirname(document), decoded(file)));
 }
 
 function main(): void {

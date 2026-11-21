@@ -15,8 +15,8 @@ import { mintUid } from './mintUid';
 export async function backfillUids(options: BackfillOptions = {}): Promise<BackfillReport> {
 	const loaded = await loadUnits(options.root);
 	const taken = new Set([
-		...loaded.stored.flatMap((unit) => (unit.uid ? [unit.uid] : [])),
-		...[...loaded.index.files.values()].flatMap((file) => (file.uid ? [file.uid] : []))
+		...loaded.stored.map((unit) => unit.uid).filter(assignedUid),
+		...[...loaded.index.files.values()].map((file) => file.uid).filter(assignedUid)
 	]);
 	const report: BackfillReport = {
 		units: 0,
@@ -30,7 +30,7 @@ export async function backfillUids(options: BackfillOptions = {}): Promise<Backf
 	for (const unit of active.sort((left, right) => (left.id < right.id ? -1 : 1))) {
 		report.units += 1;
 		const files = unit.owns.source.flatMap((path) => loaded.index.files.get(path) ?? []);
-		const announced = [...new Set(files.flatMap((file) => (file.uid ? [file.uid] : [])))];
+		const announced = [...new Set(files.map((file) => file.uid).filter(assignedUid))];
 		const conflict = disagreement(unit, announced);
 		if (conflict) {
 			report.conflicts.push({ id: unit.id, reason: conflict });
@@ -50,6 +50,10 @@ export async function backfillUids(options: BackfillOptions = {}): Promise<Backf
 			);
 	}
 	return report;
+}
+
+function assignedUid(uid: string | undefined): uid is string {
+	return Boolean(uid);
 }
 
 function disagreement(unit: ComponentManifest, announced: string[]): string | undefined {

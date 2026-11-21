@@ -33,16 +33,8 @@ export function selectRatchetBase(
 	const head = commitOf(git, 'HEAD');
 	if (!head) return { commit: null, message: 'No HEAD commit: debt ratchets have no base.' };
 	const notes: string[] = [];
-	const override = env[ratchetBaseVariable]?.trim();
-	// A push that creates a branch reports an all-zero previous commit.
-	if (override && !/^0+$/.test(override)) {
-		const commit = commitOf(git, override);
-		if (commit) {
-			const shared = read(git, ['merge-base', commit, head]) ?? commit;
-			return { commit: shared, message: `Ratchet base: ${ratchetBaseVariable}=${override}.` };
-		}
-		notes.push(`${ratchetBaseVariable}=${override} is not a commit in this checkout.`);
-	}
+	const override = overrideBase(git, head, env[ratchetBaseVariable]?.trim(), notes);
+	if (override) return override;
 	const pullRequestBase = env.GITHUB_BASE_REF?.trim();
 	const candidates = [...(pullRequestBase ? [`origin/${pullRequestBase}`] : []), ...protectedRefs];
 	for (const candidate of new Set(candidates)) {
@@ -73,4 +65,21 @@ export function selectRatchetBase(
 		commit: null,
 		message: [...notes, `HEAD has no parent: debt ratchets have no base. ${widen}`].join(' ')
 	};
+}
+
+function overrideBase(
+	git: GitRead,
+	head: string,
+	override: string | undefined,
+	notes: string[]
+): RatchetBase | undefined {
+	// A push that creates a branch reports an all-zero previous commit.
+	if (!override || /^0+$/.test(override)) return undefined;
+	const commit = commitOf(git, override);
+	if (!commit) {
+		notes.push(`${ratchetBaseVariable}=${override} is not a commit in this checkout.`);
+		return undefined;
+	}
+	const shared = read(git, ['merge-base', commit, head]) ?? commit;
+	return { commit: shared, message: `Ratchet base: ${ratchetBaseVariable}=${override}.` };
 }
