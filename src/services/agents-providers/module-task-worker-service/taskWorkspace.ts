@@ -7,6 +7,8 @@ import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { ModuleTaskWorktreeAdapter } from '../../../adapters/agents-providers/ModuleTaskWorktreeAdapter';
 import { resolve } from 'node:path';
 import { pendingTaskResult, taskWrites } from './taskClaim';
+import { completeModule, moduleCompletionContext } from '../completion-hooks/moduleCompletion';
+import type { ModuleCompletionContext } from '../completion-hooks/moduleCompletion.types';
 export async function taskWorkspace(root: string, task: ModuleTask, selection: TaskSelection) {
 	const common = await new GitAdapter(root).run(['rev-parse', '--git-common-dir']);
 	const worktree = resolve(root, common, '..', '.cache/harness/task-worktrees', task.claim!.token);
@@ -17,6 +19,22 @@ export async function taskWorkspace(root: string, task: ModuleTask, selection: T
 	};
 }
 export async function snapshotTaskWork(
+	root: string,
+	task: ModuleTask,
+	result: NonNullable<ModuleTask['result']> & {
+		[moduleCompletionContext]?: ModuleCompletionContext;
+	}
+) {
+	const context = result[moduleCompletionContext];
+	delete result[moduleCompletionContext];
+	try {
+		if (context) await completeModule({ owner: new GitAdapter(root), task, result, context });
+	} finally {
+		await preserveTaskWork(root, task, result);
+	}
+}
+
+async function preserveTaskWork(
 	root: string,
 	task: ModuleTask,
 	result: NonNullable<ModuleTask['result']>
