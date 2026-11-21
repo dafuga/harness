@@ -33,6 +33,19 @@ test('the hero download goes to the build when there is one, else to the downloa
 	expect(ready.body).not.toContain('coming soon');
 });
 
-test('no build is linked until it is published', () => {
-	expect(homeDownloadConfig).toEqual({ mac: null, ios: null });
+test('the Mac archive is asked for at its Hub path and the iPhone app stays pending', () => {
+	expect(homeDownloadConfig).toEqual({
+		mac: { path: '/downloads/Harness-mac-arm64.zip', mediaType: 'application/zip' },
+		ios: null
+	});
+});
+
+test('the hero leads to sign-in and projects under the name that fits the visitor', () => {
+	const visitor = render(HomeHero, { props: { download: '#download' } }).body;
+	expect(visitor).toMatch(/<a[^>]*href="\/projects"[^>]*>Log in/);
+	const member = render(HomeHero, {
+		props: { download: '#download', projects: '/projects', entry: 'Your projects' }
+	}).body;
+	expect(member).toMatch(/<a[^>]*href="\/projects"[^>]*>Your projects/);
+	expect(member).not.toContain('#sign-in');
 });

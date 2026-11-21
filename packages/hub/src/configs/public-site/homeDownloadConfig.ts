@@ -2,11 +2,12 @@
 import type { HomeDownloads } from './homeDownloadConfig.types';
 
 /**
- * The homepage's download links. A build is linked only once it is published; until then the page
- * says it is coming instead of offering a link that goes nowhere.
+ * The homepage's download links. The Mac archive is asked for on each visit, so publishing the
+ * release switches the button on without rebuilding the site. The iPhone app stays pending until
+ * a verified store address is set here.
  */
 export const homeDownloadConfig: HomeDownloads = {
-	mac: null,
+	mac: { path: '/downloads/Harness-mac-arm64.zip', mediaType: 'application/zip' },
 	ios: null
 };
 

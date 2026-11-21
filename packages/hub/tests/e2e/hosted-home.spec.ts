@@ -1,58 +1,93 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { hostedFixture } from './hosted-fixture';
-import { backgroundLightness, box, capture, contrast } from './hosted-home';
+import {
+	backgroundLightness,
+	box,
+	capture,
+	contrast,
+	macRelease,
+	projectsPage
+} from './hosted-home';
 
+const archive = '/downloads/Harness-mac-arm64.zip';
 const hero = (page: Page) => page.getByRole('heading', { level: 1, name: /Build with agents/ });
-const signIn = (page: Page) => page.getByRole('button', { name: 'Sign in with Google' });
 const download = (page: Page) => page.getByRole('region', { name: 'Get Harness on your Mac' });
+const missing = {
+	type: 'console' as const,
+	message: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
+	reason: 'The homepage asks whether the Mac archive is published; before release it is not.'
+};
 const views = [
 	{ name: 'phone', width: 390, height: 844 },
 	{ name: 'desktop', width: 1280, height: 800 }
 ] as const;
 
-test('a visitor reads what Harness is, then finds the download and the way in', async ({
-	page
-}) => {
+test('a visitor reads the public homepage and Log in opens /projects', async ({ page }) => {
 	const state = await hostedFixture(page, { signedIn: false });
+	await macRelease(page, 'page');
+	const reached = await projectsPage(page);
 	await page.goto('/');
 	await expect(hero(page)).toBeVisible();
 	await expect(page).toHaveTitle('Harness · Build with agents');
 	await expect(page.getByRole('heading', { name: 'Shared projects' })).toHaveCount(0);
-	await expect(page.getByRole('region', { name: 'Log in' }).getByRole('button')).toHaveText(
-		'Sign in with Google'
-	);
-	const steps = page.getByRole('region', { name: /three steps/ }).getByRole('listitem');
-	await expect(steps).toHaveCount(3);
-	await page.getByRole('link', { name: 'Download for Mac' }).click();
-	await expect(page).toHaveURL(/#download$/);
-	await expect(download(page)).toBeInViewport();
-	const pending = download(page).getByRole('button', { name: 'Download for Mac' });
-	await expect(pending).toBeDisabled();
-	await expect(pending).toHaveAccessibleDescription(/Mac build is being prepared/);
-	await expect(download(page).getByText('iPhone app · Coming soon')).toBeVisible();
-	expect(state.calls.map((call) => call.path)).toEqual(['/api/auth/status', '/api/auth/challenge']);
-});
-
-test('Log in signs the visitor in and opens their projects', async ({ page }) => {
-	await hostedFixture(page, { signedIn: false });
-	await page.goto('/');
+	await expect(page.getByRole('button', { name: 'Sign in with Google' })).toHaveCount(0);
+	const entries = page.getByRole('link', { name: 'Log in', exact: true });
+	await expect(entries).toHaveCount(3);
+	for (const entry of await entries.all()) await expect(entry).toHaveAttribute('href', '/projects');
 	await page.getByRole('banner').getByRole('link', { name: 'Log in' }).click();
-	await expect(page).toHaveURL(/#sign-in$/);
-	await expect(signIn(page)).toBeInViewport();
-	await signIn(page).click();
-	await expect(page.getByRole('heading', { level: 1, name: 'Shared projects' })).toBeVisible();
-	await expect(page.getByRole('link', { name: 'Open Atlas', exact: true })).toBeVisible();
-	await expect(hero(page)).toHaveCount(0);
-	await expect(page).toHaveTitle('Harness · Shared projects');
+	await expect(page).toHaveURL(/\/projects$/);
+	expect(reached).toEqual(['/projects']);
+	expect(state.calls.map((call) => call.path)).toEqual(['/api/auth/status']);
 });
 
-test('a person who is signed in goes straight to their projects', async ({ page }) => {
+test('a signed-in person also gets the public homepage, with Your projects', async ({ page }) => {
 	await hostedFixture(page);
+	await macRelease(page, 'page');
+	const reached = await projectsPage(page);
 	await page.goto('/');
-	await expect(page.getByRole('link', { name: 'Open Atlas', exact: true })).toBeVisible();
-	await expect(hero(page)).toHaveCount(0);
-	await expect(page.getByRole('button', { name: 'Download for Mac' })).toHaveCount(0);
+	const entries = page.getByRole('link', { name: 'Your projects', exact: true });
+	await expect(entries).toHaveCount(3);
+	await expect(hero(page)).toBeVisible();
+	await expect(page.getByRole('link', { name: 'Open Atlas' })).toHaveCount(0);
+	await expect(page.getByRole('link', { name: 'Log in', exact: true })).toHaveCount(0);
+	await page.getByRole('main').getByRole('link', { name: 'Your projects' }).click();
+	await expect(page).toHaveURL(/\/projects$/);
+	expect(reached).toEqual(['/projects']);
 });
+
+test('a published Mac archive becomes the download link', async ({ page }) => {
+	await hostedFixture(page, { signedIn: false });
+	const asked = await macRelease(page, 'zip');
+	await page.goto('/');
+	const link = download(page).getByRole('link', { name: 'Download for Mac' });
+	await expect(link).toHaveAttribute('href', archive);
+	await expect(link).toHaveAttribute('download', '');
+	await expect(
+		page.getByRole('main').getByRole('link', { name: 'Download for Mac' }).first()
+	).toHaveAttribute('href', archive);
+	await expect(download(page).getByRole('button', { name: 'Download for Mac' })).toHaveCount(0);
+	await expect(download(page).getByText('iPhone app · Coming soon')).toBeVisible();
+	expect(asked).toEqual(['HEAD']);
+	await capture(page, 'home-desktop-mac-available');
+});
+
+for (const answer of ['missing', 'page'] as const)
+	test(`a ${answer} Mac archive keeps the download pending`, async ({ page, browserErrors }) => {
+		if (answer === 'missing') browserErrors.expectError(missing);
+		await hostedFixture(page, { signedIn: false });
+		const asked = await macRelease(page, answer);
+		await page.goto('/');
+		await expect.poll(() => asked.length).toBe(1);
+		const pending = download(page).getByRole('button', { name: 'Download for Mac' });
+		await expect(pending).toBeDisabled();
+		await expect(pending).toHaveAccessibleDescription(/Mac build is being prepared/);
+		await expect(page.getByRole('link', { name: 'Download for Mac' })).toHaveAttribute(
+			'href',
+			'#download'
+		);
+		await expect(page.locator(`a[href="${archive}"]`)).toHaveCount(0);
+		await expect(download(page).getByText('iPhone app · Coming soon')).toBeVisible();
+	});
 
 for (const view of views)
 	for (const scheme of ['light', 'dark'] as const)
@@ -60,8 +95,9 @@ for (const view of views)
 			await page.emulateMedia({ colorScheme: scheme });
 			await page.setViewportSize({ width: view.width, height: view.height });
 			await hostedFixture(page, { signedIn: false });
+			await macRelease(page, 'page');
 			await page.goto('/');
-			await expect(signIn(page)).toBeVisible();
+			await expect(download(page).getByRole('button', { name: 'Download for Mac' })).toBeVisible();
 			expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 				view.width
 			);

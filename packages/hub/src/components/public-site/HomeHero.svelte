@@ -3,8 +3,16 @@
 <!-- @harness-uid u_fef6uljonw -->
 <script lang="ts">
 	import '../../lib/styles/home-hero.css';
-	/** `download` is the Mac build, or the download section while that build is not published. */
-	let { download, iosReady = false }: { download: string; iosReady?: boolean } = $props();
+	/**
+	 * `download` is the Mac build, or the download section while that build is not published.
+	 * `projects` is sign-in and the projects page; `entry` names it for who is looking.
+	 */
+	let {
+		download,
+		iosReady = false,
+		projects = '/projects',
+		entry = 'Log in'
+	}: { download: string; iosReady?: boolean; projects?: string; entry?: string } = $props();
 	const loop = [
 		{ label: 'Spec: customers can check out', state: 'spec' },
 		{ label: 'Failing test recorded first', state: 'red' },
@@ -28,7 +36,9 @@
 			<hx-a class="home-button home-button-primary home-button-large" href={download}
 				>Download for Mac</hx-a
 			>
-			<hx-a class="home-button home-button-large" href="#sign-in">Log in</hx-a>
+			<hx-a class="home-button home-button-large" href={projects} data-sveltekit-reload
+				>{entry}</hx-a
+			>
 		</hx-div>
 		<hx-p class="home-fine">
 			Mac app · Shared projects in any browser · {iosReady
