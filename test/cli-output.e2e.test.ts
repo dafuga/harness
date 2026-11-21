@@ -11,7 +11,7 @@ import { withTempDir } from './support/temporary';
 const root = resolve(import.meta.dirname, '..');
 
 test(
-	'Tracker rehearsal owns one loopback endpoint and persists across restart',
+	'Tracker rehearsal owns one loopback endpoint and persists through shutdown',
 	() =>
 		withTempDir('harness-tracker-rehearsal-', async (home) => {
 			const database = join(home, 'copy.sqlite');
@@ -48,6 +48,14 @@ test(
 					env
 				);
 				expect(duplicate.exitCode).toBe(1);
+				const livePort = await runHarness([...args, '--port', '7701'], home, false, env);
+				expect(livePort.exitCode).toBe(2);
+				const crossOrigin = await fetch(base + '/items', {
+					method: 'POST',
+					headers: { origin: 'https://fixture.invalid' },
+					body: JSON.stringify({ title: 'Rejected cross-origin request' })
+				});
+				expect(crossOrigin.status).toBe(403);
 				const response = await fetch(base + '/items', {
 					method: 'POST',
 					body: JSON.stringify({ title: 'Rehearsal journal canary' })

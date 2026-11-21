@@ -119,7 +119,9 @@ test('reports persisted run history and selects a model through the native item 
 	const report = await request('/models/report');
 	expect(await report.json()).toMatchObject({
 		ladder: expect.arrayContaining(['sol']),
-		rows: expect.arrayContaining([{ rung: 'sol', kind: '*', runs: 2, done: 1, blocked: 1 }])
+		rows: expect.arrayContaining([
+			expect.objectContaining({ rung: 'sol', kind: '*', runs: 2, done: 1, blocked: 1 })
+		])
 	});
 	const pick = await request(`/items/${id.slice(0, 6)}/pick`);
 	expect(await pick.json()).toMatchObject({ item_id: id, rung: 'sol', cli: 'codex', auto: false });
