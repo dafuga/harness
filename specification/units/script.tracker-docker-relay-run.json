@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "script.tracker-docker-relay-run",
+	"uid": "u_5kukrjjivz",
+	"kind": "script",
+	"title": "run",
+	"responsibility": "Owns the run build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/tracker-docker-relay/run.mjs"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "script.tracker-docker-relay-docker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "script.tracker-docker-relay-scope",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/tracker-docker-relay/run.mjs",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/tracker-docker-relay/run.mjs"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

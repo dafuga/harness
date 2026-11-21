@@ -1,3 +1,4 @@
+// @harness-uid u_ytbtrpmwmw
 import { isDeepStrictEqual } from 'node:util';
 
 export const spokeNode = 'fixture-linux';
