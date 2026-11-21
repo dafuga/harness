@@ -175,7 +175,15 @@
 			"TrackerOperationRepository",
 			"TrackerSchemaAdapter",
 			"nextTrackerClock",
-			"TrackerPersistenceService"
+			"TrackerPersistenceService",
+			"planGithubIssueIntake",
+			"TrackerAdapterPollService",
+			"TrackerAdapterIntakePolicy",
+			"TrackerAdapterLease",
+			"TrackerAdapterPollDependencies",
+			"TrackerAdapterPollOptions",
+			"TrackerAdapterPollResult",
+			"TrackerGithubAdapterProvider"
 		]
 	},
 	"contract": {
@@ -524,6 +532,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "helper.planning-collaboration-plan-github-issue-intake",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "model.adapters-sqlite",
 			"via": "reexport",
 			"origin": "derived"
@@ -760,6 +773,11 @@
 		},
 		{
 			"unit": "service.picker-preview",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-adapter-poll",
 			"via": "reexport",
 			"origin": "derived"
 		},
