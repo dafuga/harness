@@ -21,16 +21,18 @@
 			"TrackerItemMatches",
 			"TrackerDuplicateDetails",
 			"TrackerCandidateRow",
+			"TrackerItemRequestError",
 			"trackerItemError"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "checkTrackerItem.rows",
 				"type": "readonly TrackerMatchRow[]",
-				"required": true
+				"required": true,
+				"description": "The raw item rows, in the order supplied by the caller. Ignored and open results are sorted separately and capped at five."
 			},
 			{
 				"name": "checkTrackerItem.text",
@@ -64,14 +66,16 @@
 			{
 				"name": "checkTrackerItem",
 				"type": "TrackerItemMatches"
-			},
-			{
-				"name": "trackerItemError",
-				"type": "unknown"
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TrackerItemRequestError",
+				"type": "thrown",
+				"description": "A request with invalid Tracker input carries status 400 and a compatibility message."
+			}
+		],
+		"errorStatus": "found",
 		"operations": [
 			{
 				"name": "checkTrackerItem",
@@ -79,7 +83,8 @@
 					{
 						"name": "checkTrackerItem.rows",
 						"type": "readonly TrackerMatchRow[]",
-						"required": true
+						"required": true,
+						"description": "The raw item rows, in the order supplied by the caller. Ignored and open results are sorted separately and capped at five."
 					},
 					{
 						"name": "checkTrackerItem.text",
@@ -125,7 +130,7 @@
 				"outputs": [
 					{
 						"name": "trackerItemError",
-						"type": "unknown"
+						"type": "TrackerItemRequestError"
 					}
 				],
 				"errors": [],

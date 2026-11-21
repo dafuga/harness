@@ -1,4 +1,5 @@
-import type { TrackerItemInput } from './normalizeTrackerItemFields.types';
+// @harness-uid u_4pgfvaopdt
+import type { TrackerItemInput, TrackerItemValue } from './normalizeTrackerItemFields.types';
 import type {
 	TrackerItemAction,
 	TrackerItemChange,
@@ -40,7 +41,7 @@ export const trackerItemTransitions: Record<
 
 function appendText(
 	action: 'note' | 'progress',
-	text: unknown,
+	text: TrackerItemValue,
 	fields: TrackerItemInput
 ): TrackerItemChange {
 	if (!text) throw trackerItemError(`${action} text required`);

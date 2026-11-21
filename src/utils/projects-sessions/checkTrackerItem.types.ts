@@ -1,3 +1,4 @@
+// @harness-uid u_gfp6bkgz67
 export interface TrackerMatchRow {
 	readonly id: string;
 	readonly title: string | null;
@@ -47,3 +48,8 @@ export interface TrackerDuplicateDetails {
 }
 
 export type TrackerCandidateRow = TrackerMatchRow & { title: string; status: string };
+
+export interface TrackerItemRequestError extends Error {
+	status: number;
+	body?: TrackerDuplicateDetails;
+}

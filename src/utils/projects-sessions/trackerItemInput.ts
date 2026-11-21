@@ -1,6 +1,7 @@
+// @harness-uid u_4pgfvaopdt
 import { checkTrackerItem } from './checkTrackerItem';
 import { clearsTrackerRecurrence, requestsTrackerLaunch } from './normalizeTrackerItemFields';
-import type { TrackerItemInput } from './normalizeTrackerItemFields.types';
+import type { TrackerItemInput, TrackerItemValue } from './normalizeTrackerItemFields.types';
 import type {
 	TrackerDuplicateProbe,
 	TrackerItemMutationContext,
@@ -36,7 +37,7 @@ export function trackerItemInput(
 	context: TrackerItemMutationContext,
 	current?: TrackerItemSnapshot
 ): TrackerItemInput {
-	const fields: Record<string, unknown> = {};
+	const fields: Record<string, TrackerItemValue> = {};
 	for (const key of apiFields) {
 		if (body[key] !== undefined) fields[key] = body[key];
 	}
@@ -74,7 +75,7 @@ function requiresDuplicateCheck(fields: TrackerItemInput, current?: TrackerItemS
 }
 
 function applyRecurrenceFields(
-	fields: Record<string, unknown>,
+	fields: Record<string, TrackerItemValue>,
 	current?: TrackerItemSnapshot
 ): void {
 	const { every, kind, every_tz: timeZone } = fields;
@@ -96,7 +97,10 @@ function requireRecurringSchedule(kind: unknown, schedule: string | null | undef
 	}
 }
 
-function clearRecurrence(fields: Record<string, unknown>, current?: TrackerItemSnapshot): void {
+function clearRecurrence(
+	fields: Record<string, TrackerItemValue>,
+	current?: TrackerItemSnapshot
+): void {
 	Object.assign(fields, { every: null, occurrence: null, missed: null });
 	if (fields.kind === undefined && current?.kind === 'recurring') fields.kind = 'task';
 }
@@ -121,7 +125,11 @@ function validateNamedModel(
 	}
 }
 
-function applyAliases(fields: Record<string, unknown>, body: TrackerItemInput, node: string): void {
+function applyAliases(
+	fields: Record<string, TrackerItemValue>,
+	body: TrackerItemInput,
+	node: string
+): void {
 	if (body.callback !== undefined) fields.callback = body.callback;
 	if (body.callback_url) fields.callback = { url: body.callback_url, node };
 	if (body.callback_cmd) fields.callback = { cmd: body.callback_cmd, node };

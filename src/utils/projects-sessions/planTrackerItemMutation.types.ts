@@ -1,8 +1,10 @@
+// @harness-uid u_4pgfvaopdt
 import type { TrackerMatchRow } from './checkTrackerItem.types';
 import type {
 	TrackerItemClock,
 	TrackerItemFields,
-	TrackerItemInput
+	TrackerItemInput,
+	TrackerItemValue
 } from './normalizeTrackerItemFields.types';
 
 /** The resolved, undeleted Store row and its original field values. */
@@ -63,7 +65,7 @@ export interface TrackerItemMutationPlan<Receipt extends object = object> {
 
 export interface TrackerItemChange {
 	fields: TrackerItemInput;
-	appendNote?: unknown;
+	appendNote?: TrackerItemValue;
 }
 
 export type TrackerItemTransition = (

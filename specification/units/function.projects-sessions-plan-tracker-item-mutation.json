@@ -34,17 +34,19 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "planTrackerItemMutation.request",
 				"type": "TrackerItemMutation<Receipt>",
-				"required": true
+				"required": true,
+				"description": "A reserved ID for add or a resolved raw row for a transition, plus the command body and optional receipt intent."
 			},
 			{
 				"name": "planTrackerItemMutation.context",
 				"type": "TrackerItemMutationContext",
-				"required": true
+				"required": true,
+				"description": "The caller supplies the node, epoch milliseconds and applicable policy or time-zone inputs."
 			},
 			{
 				"name": "trackerItemInput.body",
@@ -76,27 +78,16 @@
 			{
 				"name": "planTrackerItemMutation",
 				"type": "TrackerItemMutationPlan<Receipt>"
-			},
-			{
-				"name": "trackerItemInput",
-				"type": "TrackerItemInput"
-			},
-			{
-				"name": "guardTrackerDuplicate",
-				"type": "void"
-			},
-			{
-				"name": "trackerItemTransitions",
-				"type": "Record< Exclude<TrackerItemAction, 'update'>, TrackerItemTransition >"
 			}
 		],
 		"errors": [
 			{
-				"name": "TypeError",
-				"type": "thrown"
+				"name": "TrackerItemRequestError",
+				"type": "thrown",
+				"description": "Legacy validation status and message. Duplicate refusals include the 409 code and ranked matches."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "found",
 		"operations": [
 			{
 				"name": "planTrackerItemMutation",
@@ -104,12 +95,14 @@
 					{
 						"name": "planTrackerItemMutation.request",
 						"type": "TrackerItemMutation<Receipt>",
-						"required": true
+						"required": true,
+						"description": "A reserved ID for add or a resolved raw row for a transition, plus the command body and optional receipt intent."
 					},
 					{
 						"name": "planTrackerItemMutation.context",
 						"type": "TrackerItemMutationContext",
-						"required": true
+						"required": true,
+						"description": "The caller supplies the node, epoch milliseconds and applicable policy or time-zone inputs."
 					}
 				],
 				"outputs": [
