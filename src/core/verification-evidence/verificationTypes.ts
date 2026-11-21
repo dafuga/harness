@@ -1,5 +1,7 @@
 // @harness-uid u_d27vkdvynl
 import { z } from 'zod';
+import { budgetFindingSchema } from './budgetTypes';
+export { budgetFindingSchema } from './budgetTypes';
 import { browserDiagnosticSchema } from '../development-tooling/browserDiagnostics';
 import { comparisonSchema } from '../development-tooling/comparisonTypes';
 import { explanationSchema } from '../development-tooling/explanationTypes';
@@ -64,34 +66,13 @@ export const profileSchema = z.strictObject({
 	runtime: text
 });
 
-export const budgetFindingSchema = z.strictObject({
-	unit: identifier,
-	metric: text,
-	status: z.enum([
-		'passed',
-		'exceeded',
-		'missing-baseline',
-		'missing-measurement',
-		'incomplete',
-		'incompatible',
-		/** It cannot be measured, and its reviewed baseline says so too: stated, not judged. */
-		'unavailable'
-	]),
-	/** Null whenever the measurement was not compared with a baseline. */
-	baseline: z.number().nullable(),
-	measured: z.number().nullable(),
-	/** The execution target whose emitted size this is; other findings name none. */
-	target: z.enum(runtimeKinds).optional(),
-	detail: z.string().optional(),
-	/** Why an incomplete or incompatible measurement could not be compared. */
-	differences: z.array(text).optional()
-});
-
 const artifactSchema = z.strictObject({
 	path: text,
 	sha256,
 	bytes: z.number().int().nonnegative()
 });
+
+export const retainedArtifactPath = 'artifacts/export';
 
 /** The exact version of one unit that a record observed. */
 export const componentVersionSchema = z.strictObject({
@@ -179,6 +160,14 @@ export const verificationRecordSchema = z.strictObject({
 		})
 	),
 	scenarios: z.array(scenarioResultSchema),
+	retainedArtifact: z
+		.strictObject({
+			sourcePath: text,
+			path: z.literal(retainedArtifactPath),
+			sha256,
+			bytes: z.number().int().positive()
+		})
+		.optional(),
 	/** Identity of each declared build as compiled in the snapshot of this exact tree. */
 	builds: z
 		.array(

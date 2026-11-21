@@ -41,6 +41,7 @@ export function registerVerifyCommand(program: Command): void {
 			'Verify this entity and automatically attach complete screenshots; never a full-commit pass.'
 		)
 		.option('--json', 'Print the record and its directory.')
+		.option('--retain-artifact <path>', 'Retain a declared generated file with a passing record.')
 		.description('Run the affected checks and scenarios and store the record, pass or fail.')
 		.action(runVerification);
 	registerPlan(verify);
@@ -105,6 +106,23 @@ function renderPlan(report: Awaited<ReturnType<typeof verifyPlan>>): string {
 }
 
 async function runVerification(flags: Flags): Promise<void> {
+	if (flags.retainArtifact === undefined) {
+		await printVerification(flags);
+		return;
+	}
+	const abort = new AbortController();
+	const cancel = () => abort.abort(new Error('Verification cancelled.'));
+	process.on('SIGINT', cancel);
+	process.on('SIGTERM', cancel);
+	try {
+		await printVerification({ ...flags, signal: abort.signal });
+	} finally {
+		process.removeListener('SIGINT', cancel);
+		process.removeListener('SIGTERM', cancel);
+	}
+}
+
+async function printVerification(flags: Flags): Promise<void> {
 	const stored = await verifyRun(flags);
 	console.log(flags.json ? JSON.stringify(stored, null, 2) : renderVerify(stored));
 	if (['failed', 'skipped'].includes(stored.attachment?.status ?? stored.record.status))

@@ -39,7 +39,7 @@
 				"type": "VerifyOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional settings for one verification: `commit` is the revision to verify (default `HEAD`; uncommitted changes are never part of it), `root` the repository directory (default: the current directory), `base` the revision to compare against (default: the first parent, used only when a passing record proves it, otherwise the nearest proven ancestor or nothing), `runtime` the impact kernel (`default`, `module`, `wasm`, `process`, or `http`; default: the kernel chosen from this machine's recorded measurements), `testTimeout` the per-check timeout in milliseconds as a string for checks that declare none, `requirePerformance` requires performance evidence, `entity` a unit id that limits the run to the scenario states that show that unit, and `priority` one of `agent-test`, `coding`, or `environment` (default: HARNESS_RESOURCE_PRIORITY, then `environment`). The `base` and `requirePerformance` options apply only to full runs, and an entity run's record is partial and never a full pass.",
+				"description": "Selects an exact source commit, optional trusted base or entity and check settings. Artifact retention selects a declared output and requires full verification.",
 				"examples": [
 					{
 						"commit": "3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b",
@@ -362,7 +362,7 @@
 			{
 				"name": "verifyRun",
 				"type": "Promise<VerifyResult>",
-				"description": "The stored result of one verification: its sealed record and the directory holding its `record.json`. A failing verification still resolves, with a record whose status is `failed`, and an entity run always includes an `attachment` whose status is `attached`, `unchanged`, or `skipped`.",
+				"description": "Returns the record and its directory. An opted-in passing full record identifies the retained generated file, its source path, byte count and SHA-256.",
 				"examples": [
 					{
 						"record": {
@@ -796,7 +796,7 @@
 						"type": "VerifyOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional settings for one verification: `commit` is the revision to verify (default `HEAD`; uncommitted changes are never part of it), `root` the repository directory (default: the current directory), `base` the revision to compare against (default: the first parent, used only when a passing record proves it, otherwise the nearest proven ancestor or nothing), `runtime` the impact kernel (`default`, `module`, `wasm`, `process`, or `http`; default: the kernel chosen from this machine's recorded measurements), `testTimeout` the per-check timeout in milliseconds as a string for checks that declare none, `requirePerformance` requires performance evidence, `entity` a unit id that limits the run to the scenario states that show that unit, and `priority` one of `agent-test`, `coding`, or `environment` (default: HARNESS_RESOURCE_PRIORITY, then `environment`). The `base` and `requirePerformance` options apply only to full runs, and an entity run's record is partial and never a full pass.",
+						"description": "Selects an exact source commit, optional trusted base or entity and check settings. Artifact retention selects a declared output and requires full verification.",
 						"examples": [
 							{
 								"commit": "3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b",
@@ -821,7 +821,7 @@
 					{
 						"name": "verifyRun",
 						"type": "Promise<VerifyResult>",
-						"description": "The stored result of one verification: its sealed record and the directory holding its `record.json`. A failing verification still resolves, with a record whose status is `failed`, and an entity run always includes an `attachment` whose status is `attached`, `unchanged`, or `skipped`.",
+						"description": "Returns the record and its directory. An opted-in passing full record identifies the retained generated file, its source path, byte count and SHA-256.",
 						"examples": [
 							{
 								"record": {
@@ -1524,6 +1524,16 @@
 		},
 		{
 			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-work",
 			"via": "import",
 			"origin": "derived"
 		},

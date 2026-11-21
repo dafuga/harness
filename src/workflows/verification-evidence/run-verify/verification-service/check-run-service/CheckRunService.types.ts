@@ -13,6 +13,7 @@ export interface RunContext {
 	tree: string;
 	profile: string;
 	env: Record<string, string | undefined>;
+	signal?: AbortSignal;
 	/** Byte caps on what the checks may capture; none when absent. */
 	limits?: CaptureLimits;
 }

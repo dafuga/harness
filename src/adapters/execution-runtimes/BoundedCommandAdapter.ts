@@ -11,21 +11,24 @@ import {
 import { commandOutput } from './bounded-command-adapter/commandOutput';
 
 const owned = new Set<ChildProcessWithoutNullStreams>();
-const signalHandlers = new Map<NodeJS.Signals, () => void>();
+const signalHandlers = new Map<'SIGINT' | 'SIGTERM', () => void>();
 
 function registerForSignals(child: ChildProcessWithoutNullStreams): () => void {
 	if (process.platform === 'win32') return () => undefined;
 	owned.add(child);
 	for (const signal of ['SIGINT', 'SIGTERM'] as const) {
-		if (signalHandlers.has(signal)) continue;
+		// Bun can restore the default signal action when a second listener is removed.
+		if (process.listenerCount(signal) > 0) continue;
 		const handler = () => {
+			// A caller with its own handler must be able to finish its shutdown.
+			if (process.listenerCount(signal) > 1) return;
 			for (const running of owned) killGroup(running);
 			process.removeListener(signal, handler);
 			signalHandlers.delete(signal);
 			process.kill(process.pid, signal);
 		};
 		signalHandlers.set(signal, handler);
-		process.on(signal, handler);
+		process.prependListener(signal, handler);
 	}
 	return () => {
 		owned.delete(child);

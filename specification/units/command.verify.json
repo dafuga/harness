@@ -18,7 +18,7 @@
 				"name": "registerVerifyCommand.program",
 				"type": "Command",
 				"required": true,
-				"description": "The Commander program that receives the verify command and its run, plan, check, identity, and stamp subcommands. It must be a Command instance."
+				"description": "Registers verify run, plan, check, identity and stamp. Run can retain one declared generated file with a passing full record."
 			}
 		],
 		"outputs": [
@@ -44,7 +44,7 @@
 						"name": "registerVerifyCommand.program",
 						"type": "Command",
 						"required": true,
-						"description": "The Commander program that receives the verify command and its run, plan, check, identity, and stamp subcommands. It must be a Command instance."
+						"description": "Registers verify run, plan, check, identity and stamp. Run can retain one declared generated file with a passing full record."
 					}
 				],
 				"outputs": [
