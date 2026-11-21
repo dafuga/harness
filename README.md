@@ -71,6 +71,32 @@ replacing a live client with the shim, retain a link to its versioned executable
 reach the same service. The retained executable must point to the client
 release. Keep the previous CLI target available for rollback.
 
+Compare quiesced SQLite backup copies before changing a Tracker service.
+`--node` is the spoke's configured name. Add `--hub-relay-ops` when the spoke
+relays other nodes' operations to the hub and `--peer-relay-ops` when it uses a
+peer link.
+
+```bash
+harness tracker verify-cutover before.sqlite after.sqlite --node my-spoke
+```
+
+The command emits JSON with schema, table, and pending-operation fingerprints.
+It exits with 0 when the copies match, 1 when they differ, and 2 when a copy
+cannot be verified or the arguments are invalid.
+
+Run the native item API on a disposable SQLite copy for migration rehearsal.
+Put the copy in the system temporary directory with mode 0600. The command
+prints the loopback port and PID. Stop it with SIGTERM or Ctrl+C before
+comparing the database fingerprints.
+
+```bash
+harness tracker rehearse /path/to/disposable-copy.sqlite --node fixture-spoke
+```
+
+The rehearsal serves core items, duplicate checks, digest requests, and run
+reads. The installed daemon continues to own fleet configuration, sync, jobs,
+adapters, and notifications.
+
 ## API access from the CLI
 
 `harness api` calls the same HTTP APIs as the app. It works from any directory;

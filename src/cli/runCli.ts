@@ -12,7 +12,7 @@ export async function runCli(entry: string): Promise<void> {
 	// The legacy parser owns every Tracker flag, including --help, --version and --.
 	if (args[0] === 'tracker') {
 		const { TrackerCommand } = await import('../commands/projects-sessions/TrackerCommand');
-		process.exitCode = new TrackerCommand().run(args.slice(1));
+		process.exitCode = await new TrackerCommand().run(args.slice(1));
 		return;
 	}
 	pipedOutput();

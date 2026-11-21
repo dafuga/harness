@@ -32,7 +32,7 @@
 			},
 			{
 				"name": "TrackerCommand.run",
-				"type": "number"
+				"type": "number | Promise<number>"
 			}
 		],
 		"errors": [],
@@ -68,7 +68,7 @@
 				"outputs": [
 					{
 						"name": "TrackerCommand.run",
-						"type": "number"
+						"type": "number | Promise<number>"
 					}
 				],
 				"errors": [],
@@ -77,7 +77,18 @@
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "command.projects-sessions-tracker-cutover",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-rehearsal",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/commands/projects-sessions/TrackerCommand.ts",

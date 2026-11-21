@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/usagePreviewStyle.ts"],
-		"symbols": ["usagePreviewStyle"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/usagePreviewStyle.ts",
+			"packages/reports/src/components/explorer-ui/usagePreviewStyle.types.ts"
+		],
+		"symbols": ["usagePreviewStyle", "Place"]
 	},
 	"contract": {
 		"origin": "declared",

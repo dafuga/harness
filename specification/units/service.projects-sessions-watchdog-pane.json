@@ -1,0 +1,286 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-watchdog-pane",
+	"uid": "u_dakcgp2ade",
+	"kind": "service",
+	"title": "WatchdogPaneService",
+	"responsibility": "Interprets verified snapshots of Tracker panes and identifies their live run or manual item.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/WatchdogPaneService.ts",
+			"src/services/projects-sessions/WatchdogPaneService.types.ts"
+		],
+		"symbols": [
+			"WatchdogPaneService",
+			"WatchdogPaneService.startupPrompt",
+			"WatchdogPaneService.idlePrompt",
+			"WatchdogPaneService.isManual",
+			"WatchdogPaneService.manualItem",
+			"WatchdogPaneService.isStopped",
+			"WatchdogPaneService.matchesRun",
+			"WatchdogCli",
+			"StartupPromptKind",
+			"StartupDialog",
+			"WatchdogPane",
+			"WatchdogNote",
+			"WatchdogItem",
+			"WatchdogRun",
+			"WatchdogScan"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "WatchdogPaneService.startupPrompt.pane",
+				"type": "WatchdogPane",
+				"required": true
+			},
+			{
+				"name": "WatchdogPaneService.idlePrompt.pane",
+				"type": "WatchdogPane",
+				"required": true
+			},
+			{
+				"name": "WatchdogPaneService.isManual.pane",
+				"type": "WatchdogPane",
+				"required": true
+			},
+			{
+				"name": "WatchdogPaneService.manualItem.pane",
+				"type": "WatchdogPane",
+				"required": true
+			},
+			{
+				"name": "WatchdogPaneService.manualItem.items",
+				"type": "readonly WatchdogItem[]",
+				"required": true
+			},
+			{
+				"name": "WatchdogPaneService.isStopped.pane",
+				"type": "WatchdogPane",
+				"required": true
+			},
+			{
+				"name": "WatchdogPaneService.isStopped.notes",
+				"type": "readonly WatchdogNote[]",
+				"required": true
+			},
+			{
+				"name": "WatchdogPaneService.isStopped.host",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "WatchdogPaneService.isStopped.cli",
+				"type": "WatchdogCli | null",
+				"required": true
+			},
+			{
+				"name": "WatchdogPaneService.matchesRun.pane",
+				"type": "WatchdogPane",
+				"required": true
+			},
+			{
+				"name": "WatchdogPaneService.matchesRun.run",
+				"type": "WatchdogRun",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "WatchdogPaneService.startupPrompt",
+				"type": "StartupDialog | null | undefined",
+				"description": "Classifies only the active startup prompt. Undefined means unreadable and null means no current startup prompt."
+			},
+			{
+				"name": "WatchdogPaneService.idlePrompt",
+				"type": "WatchdogCli | null",
+				"description": "Provider of the empty composer at the captured cursor, or null when a nudge could interfere."
+			},
+			{
+				"name": "WatchdogPaneService.isManual",
+				"type": "boolean",
+				"description": "True for a manual Tracker session name without a managed run suffix."
+			},
+			{
+				"name": "WatchdogPaneService.manualItem",
+				"type": "WatchdogItem | undefined",
+				"description": "Resolves the exact item ID or a unique non-deleted prefix. Undefined means ambiguous or missing."
+			},
+			{
+				"name": "WatchdogPaneService.isStopped",
+				"type": "boolean",
+				"description": "True for a quiet handoff pane whose latest local stop and legacy nudge history support ignoring it."
+			},
+			{
+				"name": "WatchdogPaneService.matchesRun",
+				"type": "boolean",
+				"description": "True for a live pane with the exact run session name on the runner socket."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "WatchdogPaneService.startupPrompt",
+				"inputs": [
+					{
+						"name": "WatchdogPaneService.startupPrompt.pane",
+						"type": "WatchdogPane",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WatchdogPaneService.startupPrompt",
+						"type": "StartupDialog | null | undefined",
+						"description": "Classifies only the active startup prompt. Undefined means unreadable and null means no current startup prompt."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WatchdogPaneService.idlePrompt",
+				"inputs": [
+					{
+						"name": "WatchdogPaneService.idlePrompt.pane",
+						"type": "WatchdogPane",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WatchdogPaneService.idlePrompt",
+						"type": "WatchdogCli | null",
+						"description": "Provider of the empty composer at the captured cursor, or null when a nudge could interfere."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WatchdogPaneService.isManual",
+				"inputs": [
+					{
+						"name": "WatchdogPaneService.isManual.pane",
+						"type": "WatchdogPane",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WatchdogPaneService.isManual",
+						"type": "boolean",
+						"description": "True for a manual Tracker session name without a managed run suffix."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WatchdogPaneService.manualItem",
+				"inputs": [
+					{
+						"name": "WatchdogPaneService.manualItem.pane",
+						"type": "WatchdogPane",
+						"required": true
+					},
+					{
+						"name": "WatchdogPaneService.manualItem.items",
+						"type": "readonly WatchdogItem[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WatchdogPaneService.manualItem",
+						"type": "WatchdogItem | undefined",
+						"description": "Resolves the exact item ID or a unique non-deleted prefix. Undefined means ambiguous or missing."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WatchdogPaneService.isStopped",
+				"inputs": [
+					{
+						"name": "WatchdogPaneService.isStopped.pane",
+						"type": "WatchdogPane",
+						"required": true
+					},
+					{
+						"name": "WatchdogPaneService.isStopped.notes",
+						"type": "readonly WatchdogNote[]",
+						"required": true
+					},
+					{
+						"name": "WatchdogPaneService.isStopped.host",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "WatchdogPaneService.isStopped.cli",
+						"type": "WatchdogCli | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WatchdogPaneService.isStopped",
+						"type": "boolean",
+						"description": "True for a quiet handoff pane whose latest local stop and legacy nudge history support ignoring it."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "WatchdogPaneService.matchesRun",
+				"inputs": [
+					{
+						"name": "WatchdogPaneService.matchesRun.pane",
+						"type": "WatchdogPane",
+						"required": true
+					},
+					{
+						"name": "WatchdogPaneService.matchesRun.run",
+						"type": "WatchdogRun",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WatchdogPaneService.matchesRun",
+						"type": "boolean",
+						"description": "True for a live pane with the exact run session name on the runner socket."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/WatchdogPaneService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/WatchdogPaneService.ts"
+			}
+		]
+	},
+	"scenarios": ["tracker-watchdog-parity"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

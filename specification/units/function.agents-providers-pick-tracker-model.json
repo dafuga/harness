@@ -1,0 +1,164 @@
+{
+	"schemaVersion": 1,
+	"id": "function.agents-providers-pick-tracker-model",
+	"uid": "u_gs5pnxnxt4",
+	"kind": "function",
+	"title": "pickTrackerModel",
+	"responsibility": "Select the earliest eligible Tracker model, honor valid pins, and escalate from measured outcomes.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/agents-providers/pickTrackerModel.ts",
+			"src/utils/agents-providers/pickTrackerModel.types.ts"
+		],
+		"symbols": [
+			"pickTrackerModel",
+			"retryTrackerModel",
+			"TrackerModelHistory",
+			"TrackerModelSelectionOptions",
+			"TrackerModelSelection",
+			"TrackerRetryRun"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "pickTrackerModel.item",
+				"type": "TrackerModelItem",
+				"required": true,
+				"description": "Tracker item with its text, optional model pin and eligibility information."
+			},
+			{
+				"name": "pickTrackerModel.options",
+				"type": "TrackerModelSelectionOptions",
+				"required": false,
+				"default": {},
+				"description": "Optional ladder configuration and outcomes from similar prior work."
+			},
+			{
+				"name": "retryTrackerModel.item",
+				"type": "TrackerModelItem",
+				"required": true,
+				"description": "Tracker item to use when selecting a retry model."
+			},
+			{
+				"name": "retryTrackerModel.run",
+				"type": "TrackerRetryRun",
+				"required": true,
+				"description": "Previous attempt's model, effort, ladder position and pin status."
+			},
+			{
+				"name": "retryTrackerModel.cfg",
+				"type": "TrackerLadderConfig",
+				"required": false,
+				"description": "Optional configuration for the current model ladder and eligibility rules."
+			}
+		],
+		"outputs": [
+			{
+				"name": "pickTrackerModel",
+				"type": "TrackerModelSelection",
+				"description": "Selected model and effort with the work type and reason for the choice."
+			},
+			{
+				"name": "retryTrackerModel",
+				"type": "TrackerModelRung",
+				"description": "Pinned retry model or escalated Sol reasoning effort for another attempt."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "pickTrackerModel",
+				"inputs": [
+					{
+						"name": "pickTrackerModel.item",
+						"type": "TrackerModelItem",
+						"required": true,
+						"description": "Tracker item with its text, optional model pin and eligibility information."
+					},
+					{
+						"name": "pickTrackerModel.options",
+						"type": "TrackerModelSelectionOptions",
+						"required": false,
+						"default": {},
+						"description": "Optional ladder configuration and outcomes from similar prior work."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pickTrackerModel",
+						"type": "TrackerModelSelection",
+						"description": "Selected model and effort with the work type and reason for the choice."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "retryTrackerModel",
+				"inputs": [
+					{
+						"name": "retryTrackerModel.item",
+						"type": "TrackerModelItem",
+						"required": true,
+						"description": "Tracker item to use when selecting a retry model."
+					},
+					{
+						"name": "retryTrackerModel.run",
+						"type": "TrackerRetryRun",
+						"required": true,
+						"description": "Previous attempt's model, effort, ladder position and pin status."
+					},
+					{
+						"name": "retryTrackerModel.cfg",
+						"type": "TrackerLadderConfig",
+						"required": false,
+						"description": "Optional configuration for the current model ladder and eligibility rules."
+					}
+				],
+				"outputs": [
+					{
+						"name": "retryTrackerModel",
+						"type": "TrackerModelRung",
+						"description": "Pinned retry model or escalated Sol reasoning effort for another attempt."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-classify-tracker-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-parse-tracker-model-spec",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/agents-providers/pickTrackerModel.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/agents-providers/pickTrackerModel.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

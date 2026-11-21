@@ -1,0 +1,60 @@
+{
+	"name": "tracker-notification-delivery",
+	"goal": "Prove legacy callback identity, durable webhook retry, send-time eligibility, grouped quiet-hour delivery and reminder transitions using synthetic destinations.",
+	"createdAt": "2026-11-21T15:45:05.782Z",
+	"updatedAt": "2026-11-21T16:20:34.249Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:46:01.022Z",
+			"evidence": "Pinned Tracker 122e190 notifier.js, deliver.js and webhook.js. Prove event keys and delivery envelopes, local callbacks, hub outbox, backoff, stale-event drops, quiet-hour batches and durable replay on synthetic actors."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-21T15:46:02.969Z",
+			"evidence": "New delivery service declares method states for scanning, send, retry, pause and restart; the timing helpers do not cover its injected storage and destination boundary."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-21T16:16:13.547Z",
+			"evidence": "Sealed 466ff13d93 with all scenario registrations and the matcher recorder. Delivery cases fail on the scaffold with the expected missing delivery assertion."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-21T16:16:15.817Z",
+			"evidence": "Ported completion callbacks, webhook outbox, flag and due reminders and Chief of Staff batches. Queue transactions preserve issued requests and receipts."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T16:20:34.249Z",
+			"evidence": "c4a9f64c1e passed all 12 unchanged cases. MB2 retained output and matcher assertions for the four declared delivery states and matched 19 pinned legacy payloads. SQLite replay preserved one receipt after a rolled-back acknowledgement."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

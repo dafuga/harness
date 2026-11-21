@@ -1,0 +1,101 @@
+{
+	"schemaVersion": 1,
+	"id": "helper.attention-timing-next-reminder-at",
+	"uid": "u_76axmevkmg",
+	"kind": "helper",
+	"title": "nextReminderAt",
+	"responsibility": "Owns the nextReminderAt helper unit.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/helpers/attention-timing/nextReminderAt.ts"],
+		"symbols": ["nextReminderAt"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "nextReminderAt.lastPingMs",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "nextReminderAt.intervalMs",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "nextReminderAt.quiet",
+				"type": "QuietHours | null | undefined",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "nextReminderAt",
+				"type": "number"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "nextReminderAt",
+				"inputs": [
+					{
+						"name": "nextReminderAt.lastPingMs",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "nextReminderAt.intervalMs",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "nextReminderAt.quiet",
+						"type": "QuietHours | null | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nextReminderAt",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "helper.attention-timing-attention-timing-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-quiet-hour-boundary",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/helpers/attention-timing/nextReminderAt.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/helpers/attention-timing/nextReminderAt.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
