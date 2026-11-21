@@ -4,45 +4,56 @@
 	"uid": "u_rkbdpu2tbn",
 	"kind": "function",
 	"title": "nextTrackerClock",
-	"responsibility": "Owns the nextTrackerClock shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Read and issue the durable hybrid logical clock used to order Tracker operations.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/projects-sessions/nextTrackerClock.ts"],
-		"symbols": ["trackerClockMilliseconds", "nextTrackerClock"]
+		"source": [
+			"src/utils/projects-sessions/nextTrackerClock.ts"
+		],
+		"symbols": [
+			"trackerClockMilliseconds",
+			"nextTrackerClock"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "trackerClockMilliseconds.value",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Stored Tracker hybrid logical clock to parse."
 			},
 			{
 				"name": "nextTrackerClock.node",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Local node name appended as the final clock segment."
 			},
 			{
 				"name": "nextTrackerClock.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Wall-clock reading in epoch milliseconds."
 			},
 			{
 				"name": "nextTrackerClock.floor",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "Last durable clock, or null when there is no previous operation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "trackerClockMilliseconds",
-				"type": "number"
+				"type": "number",
+				"description": "Epoch milliseconds from the clock, or zero for a malformed value."
 			},
 			{
 				"name": "nextTrackerClock",
-				"type": "string"
+				"type": "string",
+				"description": "Fixed-width clock that sorts after the last durable clock for this node."
 			}
 		],
 		"errors": [],
@@ -54,13 +65,15 @@
 					{
 						"name": "trackerClockMilliseconds.value",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored Tracker hybrid logical clock to parse."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerClockMilliseconds",
-						"type": "number"
+						"type": "number",
+						"description": "Epoch milliseconds from the clock, or zero for a malformed value."
 					}
 				],
 				"errors": [],
@@ -72,23 +85,27 @@
 					{
 						"name": "nextTrackerClock.node",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Local node name appended as the final clock segment."
 					},
 					{
 						"name": "nextTrackerClock.now",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Wall-clock reading in epoch milliseconds."
 					},
 					{
 						"name": "nextTrackerClock.floor",
 						"type": "string | null",
-						"required": true
+						"required": true,
+						"description": "Last durable clock, or null when there is no previous operation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "nextTrackerClock",
-						"type": "string"
+						"type": "string",
+						"description": "Fixed-width clock that sorts after the last durable clock for this node."
 					}
 				],
 				"errors": [],
