@@ -170,7 +170,8 @@
 			"staleBuild",
 			"scenarioHealth",
 			"TaskOrchestrationCommand",
-			"ProviderSessionAdapter"
+			"ProviderSessionAdapter",
+			"TrackerCommand"
 		]
 	},
 	"contract": {
@@ -290,6 +291,11 @@
 		},
 		{
 			"unit": "command.networking-security-permissions",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker",
 			"via": "reexport",
 			"origin": "derived"
 		},
