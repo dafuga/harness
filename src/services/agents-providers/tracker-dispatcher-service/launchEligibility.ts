@@ -14,6 +14,7 @@ const fleetAliases = new Map([
 	['mb2', 'harbor-mbp-2'],
 	['box', 'grok-box']
 ]);
+export const trackerFleetNodes = [...fleetAliases.values()];
 const nonWorkAgent =
 	/^(?:(?:cos|chief[-_ ]of[-_ ]staff|personal|brainstorm(?:ing)?)(?:$|[-_ ])|(?:daniel|dad|coach|claire|boating|doc|email-router|recruiting)$)/i;
 const nonWorkTitle = /^\s*(?:decision|reminder|brainstorm(?:ing)?)(?::|\s+for\b)/i;
@@ -29,7 +30,7 @@ export function canonicalNode(
 }
 
 export function knownNode(name: string, policy: TrackerDispatchPolicy): boolean {
-	const known = [...fleetAliases.keys(), ...fleetAliases.values(), policy.node];
+	const known = [...fleetAliases.keys(), ...trackerFleetNodes, policy.node];
 	return known.includes(name) || Boolean(policy.resolveHost?.(name));
 }
 

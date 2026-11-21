@@ -10,16 +10,24 @@
 	"owns": {
 		"source": [
 			"src/repositories/projects-sessions/TrackerRunReadRepository.ts",
-			"src/repositories/projects-sessions/TrackerRunReadRepository.types.ts"
+			"src/repositories/projects-sessions/TrackerRunReadRepository.types.ts",
+			"src/repositories/projects-sessions/tracker-run-read-repository/trackerRunReplication.ts"
 		],
 		"symbols": [
 			"TrackerRunReadRepository",
 			"TrackerRunReadRepository.constructor",
 			"TrackerRunReadRepository.list",
 			"TrackerRunReadRepository.finished",
+			"TrackerRunReadRepository.exportLocal",
+			"TrackerRunReadRepository.historyRowsFor",
+			"TrackerRunReadRepository.importRemote",
+			"TrackerRunReadRepository.importHubHistory",
 			"TrackerRunFilters",
 			"TrackerListedRun",
-			"TrackerRunTable"
+			"TrackerRunTable",
+			"localTrackerRunHistory",
+			"relayedTrackerRunHistory",
+			"importTrackerRunHistory"
 		]
 	},
 	"contract": {
@@ -40,6 +48,61 @@
 				"type": "TrackerRunFilters",
 				"required": false,
 				"default": {}
+			},
+			{
+				"name": "TrackerRunReadRepository.historyRowsFor.peer",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerRunReadRepository.importRemote.peer",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerRunReadRepository.importRemote.rows",
+				"type": "readonly unknown[]",
+				"required": true
+			},
+			{
+				"name": "TrackerRunReadRepository.importHubHistory.rows",
+				"type": "readonly unknown[]",
+				"required": true
+			},
+			{
+				"name": "localTrackerRunHistory.db",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "localTrackerRunHistory.limit",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "relayedTrackerRunHistory.db",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "relayedTrackerRunHistory.peer",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "importTrackerRunHistory.db",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "importTrackerRunHistory.rows",
+				"type": "readonly unknown[]",
+				"required": true
+			},
+			{
+				"name": "importTrackerRunHistory.nodeFor",
+				"type": "(row: Record<string, unknown>) => string | undefined",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -50,6 +113,34 @@
 			{
 				"name": "TrackerRunReadRepository.finished",
 				"type": "TrackerListedRun[]"
+			},
+			{
+				"name": "TrackerRunReadRepository.exportLocal",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerRunReadRepository.historyRowsFor",
+				"type": "readonly unknown[]"
+			},
+			{
+				"name": "TrackerRunReadRepository.importRemote",
+				"type": "void"
+			},
+			{
+				"name": "TrackerRunReadRepository.importHubHistory",
+				"type": "void"
+			},
+			{
+				"name": "localTrackerRunHistory",
+				"type": "Record<string, SqliteValue>[]"
+			},
+			{
+				"name": "relayedTrackerRunHistory",
+				"type": "unknown[]"
+			},
+			{
+				"name": "importTrackerRunHistory",
+				"type": "void"
 			}
 		],
 		"errors": [],
@@ -85,6 +176,151 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRunReadRepository.exportLocal",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerRunReadRepository.exportLocal",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRunReadRepository.historyRowsFor",
+				"inputs": [
+					{
+						"name": "TrackerRunReadRepository.historyRowsFor.peer",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerRunReadRepository.historyRowsFor",
+						"type": "readonly unknown[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRunReadRepository.importRemote",
+				"inputs": [
+					{
+						"name": "TrackerRunReadRepository.importRemote.peer",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerRunReadRepository.importRemote.rows",
+						"type": "readonly unknown[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerRunReadRepository.importRemote",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRunReadRepository.importHubHistory",
+				"inputs": [
+					{
+						"name": "TrackerRunReadRepository.importHubHistory.rows",
+						"type": "readonly unknown[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerRunReadRepository.importHubHistory",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "localTrackerRunHistory",
+				"inputs": [
+					{
+						"name": "localTrackerRunHistory.db",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "localTrackerRunHistory.limit",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "localTrackerRunHistory",
+						"type": "Record<string, SqliteValue>[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "relayedTrackerRunHistory",
+				"inputs": [
+					{
+						"name": "relayedTrackerRunHistory.db",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "relayedTrackerRunHistory.peer",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "relayedTrackerRunHistory",
+						"type": "unknown[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "importTrackerRunHistory",
+				"inputs": [
+					{
+						"name": "importTrackerRunHistory.db",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "importTrackerRunHistory.rows",
+						"type": "readonly unknown[]",
+						"required": true
+					},
+					{
+						"name": "importTrackerRunHistory.nodeFor",
+						"type": "(row: Record<string, unknown>) => string | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "importTrackerRunHistory",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -114,6 +350,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.sqlite",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.agents-providers-tracker-run-report",
 			"via": "import",

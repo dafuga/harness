@@ -1,6 +1,7 @@
 import { DatabaseSync } from 'node:sqlite';
 import { afterEach, beforeEach, expect, test } from 'vitest';
 import { TrackerItemReadRepository } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository';
+import { TrackerRecurringRepository } from '../../../src/repositories/projects-sessions/TrackerRecurringRepository';
 import { TrackerRunReadRepository } from '../../../src/repositories/projects-sessions/TrackerRunReadRepository';
 import { TrackerLocalApiService } from '../../../src/services/projects-sessions/TrackerLocalApiService';
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
@@ -14,9 +15,12 @@ beforeEach(() => {
 	store = new TrackerPersistenceService(database, 'fixture-mac', {
 		now: () => Date.UTC(2026, 10, 21, 12)
 	});
+	const recurring = new TrackerRecurringRepository(store);
 	api = new TrackerLocalApiService(store, new TrackerItemReadRepository(database), {
 		now: () => Date.UTC(2026, 10, 21, 12),
-		runs: new TrackerRunReadRepository(database, store.node)
+		planLaunch: (fields) => fields,
+		runs: new TrackerRunReadRepository(database, store.node),
+		recurring: { role: 'hub', history: (id, limit) => recurring.history(id, limit) }
 	});
 });
 
@@ -35,11 +39,13 @@ function request(path: string, method = 'GET', payload?: object | string) {
 test('commits item and notes under the actor, serves the overview feed and returns tombstones', async () => {
 	const created = await request('/items', 'POST', {
 		title: 'Fixture bridge rollout',
-		due: 'today'
+		due: 'today',
+		auto: true
 	});
 	expect(created.status).toBe(201);
-	const { id } = await created.json();
+	const { id, auto } = await created.json();
 	expect(id).toMatch(/^[0-9a-z]{10}$/);
+	expect(auto).toMatch(/^fixture-mac@2026-11-21T12:00:00(?:\.000)?Z#[0-9a-z-]+$/);
 	const prefix = id.slice(0, 6);
 	const noted = await request(`/items/${prefix}/progress`, 'POST', { text: 'Synthetic note' });
 	expect(noted.status).toBe(200);
@@ -111,6 +117,16 @@ test('reports persisted run history and selects a model through the native item 
 			"INSERT INTO remote_runs VALUES ('fixture-peer', 1, ?, 200, 'finished', 'sol', 'blocked')"
 		)
 		.run(id);
+	const occurrence = '2026-11-21T12:00:00.000Z';
+	database
+		.prepare(
+			"INSERT INTO occurrences(item_id, occurrence, status, fired_at) VALUES (?, ?, 'pending', ?)"
+		)
+		.run(id, occurrence, Date.parse(occurrence));
+	const history = await request(`/items/${id.slice(0, 6)}/history?limit=1`);
+	expect(await history.json()).toEqual([
+		{ occurrence, status: 'pending', fired_at: occurrence, result_at: null, note: null, by: null }
+	]);
 	const runs = await request(`/runs?item=${id.slice(0, 6)}`);
 	expect(await runs.json()).toMatchObject([
 		{ id: 1, node: 'fixture-mac' },

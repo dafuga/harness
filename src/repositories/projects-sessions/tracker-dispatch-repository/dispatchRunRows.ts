@@ -42,6 +42,19 @@ const columns = [
 ] as const;
 const reservationPrefix = 'harness_dispatch_run:';
 
+export function assertLegacyDispatchRollbackSafe(database: SqliteDatabase): void {
+	const blocker = database
+		.prepare(
+			`SELECT r.id, r.state FROM runs r
+		JOIN meta m ON m.k = '${reservationPrefix}' || r.id
+		WHERE r.state IN ('queued','running','verifying')
+		OR (r.outcome = 'blocked' AND r.session_id IS NOT NULL)
+		ORDER BY r.id LIMIT 1`
+		)
+		.get() as { id: number; state: string } | undefined;
+	if (blocker) throw new Error(`Tracker rollback blocked by run ${blocker.id} (${blocker.state})`);
+}
+
 export function dispatchRunRows(
 	database: SqliteDatabase,
 	node: string,

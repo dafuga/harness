@@ -59,7 +59,11 @@ export class TrackerPersistenceService {
 	}
 
 	countLocalOpsSince(seq: number): number {
-		return this.journal.countOpsSince(seq, this.node);
+		return this.countOpsSince(seq, this.node);
+	}
+
+	countOpsSince(seq: number, node?: string): number {
+		return this.journal.countOpsSince(seq, node);
 	}
 
 	applyOps(operations: readonly TrackerOperation[]): number {

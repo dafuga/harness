@@ -10,6 +10,7 @@ export interface TrackerDestination {
 
 export interface TrackerItemCallback extends TrackerDestination {
 	node: string;
+	legacyTarget?: string;
 }
 
 export interface TrackerNotificationItem {
@@ -49,7 +50,11 @@ export interface TrackerNotificationSource {
 	createdAt: number;
 	items(): readonly TrackerNotificationItem[];
 	item(id: string): TrackerNotificationItem | undefined;
-	agent(name: string): { name: string; target: TrackerDestination; createdAt: number } | undefined;
+	agent(
+		name: string
+	):
+		| { name: string; target: TrackerDestination; createdAt: number; legacyTarget?: string }
+		| undefined;
 	maxSeq(): number;
 	/** Return up to limit operations in ascending sequence order. */
 	opsSince(seq: number, limit: number): readonly TrackerNotificationOp[];

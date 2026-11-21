@@ -28,6 +28,7 @@
 			"src/services/projects-sessions/tracker-notification-service/notificationTick.ts",
 			"src/services/projects-sessions/tracker-notification-service/outboxRouting.ts",
 			"src/services/projects-sessions/tracker-notification-service/outboxRouting.types.ts",
+			"src/services/projects-sessions/tracker-notification-service/trackerNotificationStatus.ts",
 			"src/services/projects-sessions/tracker-notification-service/webhookBatch.ts",
 			"src/services/projects-sessions/tracker-notification-service/webhookEvents.ts",
 			"src/services/projects-sessions/tracker-notification-service/webhookReminders.ts"
@@ -47,6 +48,7 @@
 			"TrackerWebhookOptions",
 			"TrackerNotificationService",
 			"TrackerNotificationService.constructor",
+			"TrackerNotificationService.status",
 			"TrackerNotificationService.tick",
 			"TrackerNotificationService.enqueue",
 			"TrackerNotificationService.pause",
@@ -114,6 +116,7 @@
 			"nextOutbox",
 			"OutboxRecipient",
 			"OutboxGroup",
+			"trackerNotificationStatus",
 			"outboxBatch",
 			"outboxSingle",
 			"enqueueEvent",
@@ -584,6 +587,11 @@
 				"description": "Epoch milliseconds from the injected clock for this scan or send."
 			},
 			{
+				"name": "trackerNotificationStatus.options",
+				"type": "TrackerNotificationOptions",
+				"required": true
+			},
+			{
 				"name": "outboxBatch.rows",
 				"type": "OutboxRow[]",
 				"required": true,
@@ -980,6 +988,18 @@
 		],
 		"errorStatus": "declared",
 		"operations": [
+			{
+				"name": "TrackerNotificationService.status",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerNotificationService.status",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "TrackerNotificationService.tick",
 				"inputs": [
@@ -2013,6 +2033,24 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "trackerNotificationStatus",
+				"inputs": [
+					{
+						"name": "trackerNotificationStatus.options",
+						"type": "TrackerNotificationOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerNotificationStatus",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "outboxBatch",

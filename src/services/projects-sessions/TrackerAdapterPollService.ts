@@ -50,6 +50,30 @@ export class TrackerAdapterPollService {
 		this.now = dependencies.now ?? Date.now;
 	}
 
+	status(): { runner: string; active: boolean } {
+		const runner = this.dependencies.lease.owner;
+		return {
+			runner,
+			active:
+				runner === this.store.node &&
+				(!this.sources.isInitialized() || this.sources.isOwner(runner, false))
+		};
+	}
+
+	async tick(signal: AbortSignal): Promise<void> {
+		if (!this.status().active || !this.sources.isInitialized()) return;
+		const errors: unknown[] = [];
+		for (const id of this.sources.dueSourceIds(this.now())) {
+			signal.throwIfAborted();
+			try {
+				await this.poll(id, { signal });
+			} catch (error) {
+				errors.push(error);
+			}
+		}
+		if (errors.length) throw new AggregateError(errors, 'Tracker adapters failed to poll');
+	}
+
 	async poll(
 		id: string,
 		options: TrackerAdapterPollOptions = {}

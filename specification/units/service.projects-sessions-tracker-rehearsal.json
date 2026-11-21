@@ -28,6 +28,11 @@
 				"name": "TrackerRehearsalService.start.port",
 				"type": "number",
 				"required": true
+			},
+			{
+				"name": "TrackerRehearsalService.start.options",
+				"type": "Omit<TrackerNativeRuntimeOptions, 'node'>",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -61,6 +66,11 @@
 						"name": "TrackerRehearsalService.start.port",
 						"type": "number",
 						"required": true
+					},
+					{
+						"name": "TrackerRehearsalService.start.options",
+						"type": "Omit<TrackerNativeRuntimeOptions, 'node'>",
+						"required": false
 					}
 				],
 				"outputs": [

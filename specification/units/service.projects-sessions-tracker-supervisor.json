@@ -11,16 +11,19 @@
 		"source": [
 			"src/services/projects-sessions/TrackerSupervisorService.ts",
 			"src/services/projects-sessions/TrackerSupervisorService.types.ts",
+			"src/services/projects-sessions/tracker-supervisor-service/assertTrackerLegacyRollbackSafe.ts",
 			"src/services/projects-sessions/tracker-supervisor-service/trackerSupervisorStatus.ts"
 		],
 		"symbols": [
 			"TrackerSupervisorService",
 			"TrackerSupervisorService.constructor",
 			"TrackerSupervisorService.status",
+			"TrackerSupervisorService.assertLegacyRollbackSafe",
 			"TrackerSupervisorService.run",
 			"TrackerSupervisorWorker",
 			"TrackerSupervisorOptions",
 			"TrackerSupervisorViews",
+			"assertTrackerLegacyRollbackSafe",
 			"trackerSupervisorStatus"
 		]
 	},
@@ -41,6 +44,11 @@
 			{
 				"name": "TrackerSupervisorService.run.signal",
 				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "assertTrackerLegacyRollbackSafe.database",
+				"type": "SqliteDatabase",
 				"required": true
 			},
 			{
@@ -65,8 +73,16 @@
 				"type": "unknown"
 			},
 			{
+				"name": "TrackerSupervisorService.assertLegacyRollbackSafe",
+				"type": "void"
+			},
+			{
 				"name": "TrackerSupervisorService.run",
 				"type": "Promise<void>"
+			},
+			{
+				"name": "assertTrackerLegacyRollbackSafe",
+				"type": "void"
 			},
 			{
 				"name": "trackerSupervisorStatus",
@@ -74,6 +90,10 @@
 			}
 		],
 		"errors": [
+			{
+				"name": "DOMException",
+				"type": "thrown"
+			},
 			{
 				"name": "TypeError",
 				"type": "thrown"
@@ -94,6 +114,23 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "TrackerSupervisorService.assertLegacyRollbackSafe",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerSupervisorService.assertLegacyRollbackSafe",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "DOMException",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "TrackerSupervisorService.run",
 				"inputs": [
 					{
@@ -111,6 +148,29 @@
 				"errors": [
 					{
 						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "assertTrackerLegacyRollbackSafe",
+				"inputs": [
+					{
+						"name": "assertTrackerLegacyRollbackSafe.database",
+						"type": "SqliteDatabase",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assertTrackerLegacyRollbackSafe",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "DOMException",
 						"type": "thrown"
 					}
 				],
@@ -179,6 +239,21 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.projects-sessions-tracker-dispatch",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-recurring",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-tracker-dispatcher",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-native-runtime",
 			"via": "import",
 			"origin": "derived"
@@ -194,7 +269,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["tracker-supervised-workers"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
