@@ -4,8 +4,8 @@
 	"uid": "u_gtrdllvpk7",
 	"kind": "component",
 	"title": "HubHomeSchedule",
-	"responsibility": "Owns the HubHomeSchedule Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Groups upcoming Tracker due items and Claude cloud routines by schedule day.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -25,33 +25,43 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeSchedule.svelte"],
-		"symbols": ["HubHomeSchedule"]
+		"source": [
+			"packages/hub/src/components/projects-sessions/HubHomeSchedule.svelte"
+		],
+		"symbols": [
+			"HubHomeSchedule"
+		]
 	},
 	"contract": {
-		"origin": "derived",
-		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
+		"origin": "declared",
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-empty-state"
+		],
 		"inputs": [
 			{
 				"name": "HubHomeSchedule.runs",
 				"type": "HomeRun[] | null",
-				"required": true
+				"required": true,
+				"description": "Scheduled Tracker items and Claude routines. Null indicates loading."
 			},
 			{
 				"name": "HubHomeSchedule.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Current time in milliseconds since the Unix epoch."
 			},
 			{
 				"name": "HubHomeSchedule.connected",
 				"type": "boolean",
-				"required": true
+				"required": true,
+				"description": "Whether the section can read its external data source."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeSchedule",
-				"type": "markup"
+				"type": "markup",
+				"description": "Groups upcoming Tracker due items and Claude cloud routines by schedule day."
 			}
 		],
 		"errors": [],

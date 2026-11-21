@@ -4,8 +4,8 @@
 	"uid": "u_yclqwrgobq",
 	"kind": "component",
 	"title": "HubHomeProjects",
-	"responsibility": "Owns the HubHomeProjects Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Lists shared projects and displays their published catalog inventory and recent changes.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -29,33 +29,44 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeProjects.svelte"],
-		"symbols": ["HubHomeProjects", "HubHomeProjects.tags"]
+		"source": [
+			"packages/hub/src/components/projects-sessions/HubHomeProjects.svelte"
+		],
+		"symbols": [
+			"HubHomeProjects",
+			"HubHomeProjects.tags"
+		]
 	},
 	"contract": {
-		"origin": "derived",
-		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
+		"origin": "declared",
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-empty-state"
+		],
 		"inputs": [
 			{
 				"name": "HubHomeProjects.projects",
 				"type": "ProjectSummary[] | null",
-				"required": true
+				"required": true,
+				"description": "Hosted projects available to the account. Null indicates loading."
 			},
 			{
 				"name": "HubHomeProjects.snapshots",
 				"type": "Record<string, ProjectSnapshot>",
-				"required": true
+				"required": true,
+				"description": "Previously retrieved catalog snapshots, indexed by hosted project identifier."
 			},
 			{
 				"name": "HubHomeProjects.readProject",
 				"type": "ReadHomeProject",
-				"required": true
+				"required": true,
+				"description": "Retrieves a hosted project snapshot by its identifier."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeProjects",
-				"type": "markup"
+				"type": "markup",
+				"description": "Lists shared projects and displays their published catalog inventory and recent changes."
 			}
 		],
 		"errors": [],

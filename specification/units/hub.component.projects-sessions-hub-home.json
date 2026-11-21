@@ -4,8 +4,8 @@
 	"uid": "u_mqkhzvyhou",
 	"kind": "component",
 	"title": "HubHome",
-	"responsibility": "Owns the HubHome Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Loads the signed-in owner projection and hosted projects, refreshes while visible, and opens the corresponding home section dialog.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -19,16 +19,21 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHome.svelte"],
-		"symbols": ["HubHome"]
+		"source": [
+			"packages/hub/src/components/projects-sessions/HubHome.svelte"
+		],
+		"symbols": [
+			"HubHome"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "HubHome",
-				"type": "markup"
+				"type": "markup",
+				"description": "Loads the signed-in owner projection and hosted projects, refreshes while visible, and opens the corresponding home section dialog."
 			}
 		],
 		"errors": [],

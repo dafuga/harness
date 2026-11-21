@@ -4,8 +4,8 @@
 	"uid": "u_bizwcg2fkv",
 	"kind": "component",
 	"title": "HubHomeComposer",
-	"responsibility": "Owns the HubHomeComposer Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Chooses an agent with a current Tracker item and submits a note or an answer to the associated question.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "molecule",
@@ -22,39 +22,48 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeComposer.svelte"],
-		"symbols": ["HubHomeComposer"]
+		"source": [
+			"packages/hub/src/components/projects-sessions/HubHomeComposer.svelte"
+		],
+		"symbols": [
+			"HubHomeComposer"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubHomeComposer.agents",
 				"type": "HomeAgent[]",
-				"required": true
+				"required": true,
+				"description": "Agents and their current Tracker context. A null value indicates loading where supported."
 			},
 			{
 				"name": "HubHomeComposer.agentId",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Optional identifier of the initially selected agent."
 			},
 			{
 				"name": "HubHomeComposer.send",
 				"type": "SendHomeChat",
-				"required": true
+				"required": true,
+				"description": "Submits the agent note or answer to the owner chat queue and returns its receipt."
 			},
 			{
 				"name": "HubHomeComposer.submitted",
 				"type": "(message: HomeChatInput, receipt: HomeChatReceipt) => void",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Optional callback after the queue accepts a message."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeComposer",
-				"type": "markup"
+				"type": "markup",
+				"description": "Chooses an agent with a current Tracker item and submits a note or an answer to the associated question."
 			}
 		],
 		"errors": [],

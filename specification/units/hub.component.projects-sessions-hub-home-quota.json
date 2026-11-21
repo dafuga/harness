@@ -4,8 +4,8 @@
 	"uid": "u_jn5w4wj4m5",
 	"kind": "component",
 	"title": "HubHomeQuota",
-	"responsibility": "Owns the HubHomeQuota Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Displays subscription details, remaining windows, and historical usage for the owner.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -18,38 +18,49 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeQuota.svelte"],
-		"symbols": ["HubHomeQuota"]
+		"source": [
+			"packages/hub/src/components/projects-sessions/HubHomeQuota.svelte"
+		],
+		"symbols": [
+			"HubHomeQuota"
+		]
 	},
 	"contract": {
-		"origin": "derived",
-		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
+		"origin": "declared",
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-empty-state"
+		],
 		"inputs": [
 			{
 				"name": "HubHomeQuota.quota",
 				"type": "HomeSubscription[] | null",
-				"required": true
+				"required": true,
+				"description": "Normalized subscription readings. Null indicates loading."
 			},
 			{
 				"name": "HubHomeQuota.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Current time in milliseconds since the Unix epoch."
 			},
 			{
 				"name": "HubHomeQuota.connected",
 				"type": "boolean",
-				"required": true
+				"required": true,
+				"description": "Whether the section can read its external data source."
 			},
 			{
 				"name": "HubHomeQuota.reload",
 				"type": "() => void",
-				"required": true
+				"required": true,
+				"description": "Requests fresh home data from the connected sources."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeQuota",
-				"type": "markup"
+				"type": "markup",
+				"description": "Displays subscription details, remaining windows, and historical usage for the owner."
 			}
 		],
 		"errors": [],

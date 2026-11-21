@@ -4,8 +4,8 @@
 	"uid": "u_fahyrdozii",
 	"kind": "component",
 	"title": "HubHomeWork",
-	"responsibility": "Owns the HubHomeWork Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Shows work ordered by due date above the existing grouped Project Overview.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -21,33 +21,44 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeWork.svelte"],
-		"symbols": ["HubHomeWork", "HubHomeWork.trailing"]
+		"source": [
+			"packages/hub/src/components/projects-sessions/HubHomeWork.svelte"
+		],
+		"symbols": [
+			"HubHomeWork",
+			"HubHomeWork.trailing"
+		]
 	},
 	"contract": {
-		"origin": "derived",
-		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
+		"origin": "declared",
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-empty-state"
+		],
 		"inputs": [
 			{
 				"name": "HubHomeWork.overview",
 				"type": "OverviewSnapshot | null",
-				"required": true
+				"required": true,
+				"description": "Tracker status and grouped project activity shown under active work."
 			},
 			{
 				"name": "HubHomeWork.work",
 				"type": "ReturnType<typeof soonestWork>",
-				"required": true
+				"required": true,
+				"description": "In-progress and blocked work items enriched with project labels and due dates."
 			},
 			{
 				"name": "HubHomeWork.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Current time in milliseconds since the Unix epoch."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeWork",
-				"type": "markup"
+				"type": "markup",
+				"description": "Shows work ordered by due date above the existing grouped Project Overview."
 			}
 		],
 		"errors": [],

@@ -4,8 +4,8 @@
 	"uid": "u_yynkdbd66b",
 	"kind": "component",
 	"title": "HubHomeCard",
-	"responsibility": "Owns the HubHomeCard Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Presents a home section preview with its heading, count, summary and dialog control.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "molecule",
@@ -19,54 +19,66 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeCard.svelte"],
-		"symbols": ["HubHomeCard"]
+		"source": [
+			"packages/hub/src/components/projects-sessions/HubHomeCard.svelte"
+		],
+		"symbols": [
+			"HubHomeCard"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubHomeCard.section",
 				"type": "HomeSection",
-				"required": true
+				"required": true,
+				"description": "Home section whose heading, count and activation labels are displayed."
 			},
 			{
 				"name": "HubHomeCard.total",
 				"type": "number | undefined",
-				"required": true
+				"required": true,
+				"description": "Number of records represented by the card, or undefined while loading."
 			},
 			{
 				"name": "HubHomeCard.summary",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Short description of the state of the section."
 			},
 			{
 				"name": "HubHomeCard.open",
 				"type": "() => void",
-				"required": true
+				"required": true,
+				"description": "Opens the relevant home section and accepts an agent identifier when applicable."
 			},
 			{
 				"name": "HubHomeCard.children",
 				"type": "Snippet",
-				"required": true
+				"required": true,
+				"description": "Preview content placed under the card heading."
 			},
 			{
 				"name": "HubHomeCard.footer",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Optional action content below the card preview."
 			},
 			{
 				"name": "HubHomeCard.badge",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Optional status element displayed beside the heading."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeCard",
-				"type": "markup"
+				"type": "markup",
+				"description": "Presents a home section preview with its heading, count, summary and dialog control."
 			}
 		],
 		"errors": [],

@@ -4,11 +4,13 @@
 	"uid": "u_okueohjk4j",
 	"kind": "function",
 	"title": "hubHomePresentation",
-	"responsibility": "Owns the hubHomePresentation shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Formats labels, activity totals, dates, subscription state and active work for home previews and dialogs.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/hubHomePresentation.ts"],
+		"source": [
+			"packages/hub/src/components/projects-sessions/hubHomePresentation.ts"
+		],
 		"symbols": [
 			"sections",
 			"agentLabels",
@@ -38,239 +40,290 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "count.value",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Number used to select the singular or plural label."
 			},
 			{
 				"name": "count.singular",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Label used when the count is one."
 			},
 			{
 				"name": "count.plural",
 				"type": "string",
-				"required": false
+				"required": false,
+				"description": "Plural label. Defaults to the singular label followed by s."
 			},
 			{
 				"name": "homeHeadline.agents",
 				"type": "HomeAgent[]",
-				"required": true
+				"required": true,
+				"description": "Agents and their current Tracker context. A null value indicates loading where supported."
 			},
 			{
 				"name": "currentAgent.agents",
 				"type": "HomeAgent[]",
-				"required": true
+				"required": true,
+				"description": "Agents and their current Tracker context. A null value indicates loading where supported."
 			},
 			{
 				"name": "soonestWork.snapshot",
 				"type": "OverviewSnapshot | null",
-				"required": true
+				"required": true,
+				"description": "The current published snapshot, if available for the operation."
 			},
 			{
 				"name": "workSummary.work",
 				"type": "ReturnType<typeof soonestWork>",
-				"required": true
+				"required": true,
+				"description": "In-progress and blocked work items enriched with project labels and due dates."
 			},
 			{
 				"name": "warningFor.left",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Remaining quota as a percentage from 0 to 100."
 			},
 			{
 				"name": "lowestLimit.subscriptions",
 				"type": "HomeSubscription[]",
-				"required": true
+				"required": true,
+				"description": "Normalized provider subscription windows to compare."
 			},
 			{
 				"name": "staleReading.readAt",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "ISO timestamp of the last quota reading."
 			},
 			{
 				"name": "staleReading.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Current time in milliseconds since the Unix epoch."
 			},
 			{
 				"name": "warningLabel.limit",
 				"type": "HomeLimit",
-				"required": true
+				"required": true,
+				"description": "Provider allowance window to label."
 			},
 			{
 				"name": "runDay.at",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "ISO timestamp of a scheduled run."
 			},
 			{
 				"name": "runDay.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Current time in milliseconds since the Unix epoch."
 			},
 			{
 				"name": "runTime.at",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "ISO timestamp of a scheduled run."
 			},
 			{
 				"name": "when.time",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "ISO timestamp for the presentation label, or null when the reset time is unavailable."
 			},
 			{
 				"name": "quotaReset.time",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "ISO timestamp for the presentation label, or null when the reset time is unavailable."
 			},
 			{
 				"name": "quotaReset.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Current time in milliseconds since the Unix epoch."
 			},
 			{
 				"name": "initials.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Display name from which initials are derived."
 			},
 			{
 				"name": "overviewTone.state",
 				"type": "HomeAgentState",
-				"required": true
+				"required": true,
+				"description": "Agent activity state used to choose a presentation tone."
 			},
 			{
 				"name": "summaryLine.work",
 				"type": "ReturnType<typeof soonestWork>",
-				"required": true
+				"required": true,
+				"description": "In-progress and blocked work items enriched with project labels and due dates."
 			},
 			{
 				"name": "summaryLine.scheduled",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Number of upcoming scheduled runs."
 			},
 			{
 				"name": "relativeWhen.time",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "ISO timestamp for the presentation label, or null when the reset time is unavailable."
 			},
 			{
 				"name": "relativeWhen.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Current time in milliseconds since the Unix epoch."
 			},
 			{
 				"name": "workEta.due",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "Due date as an ISO timestamp, or null if the work has no due date."
 			},
 			{
 				"name": "workEta.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Current time in milliseconds since the Unix epoch."
 			}
 		],
 		"outputs": [
 			{
 				"name": "sections",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Display titles and count nouns keyed by home section."
 			},
 			{
 				"name": "agentLabels",
-				"type": "Record<HomeAgentState, string>"
+				"type": "Record<HomeAgentState, string>",
+				"description": "Display labels keyed by agent state."
 			},
 			{
 				"name": "agentGroups",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Agent states in the order shown in the dialog."
 			},
 			{
 				"name": "planLabels",
-				"type": "Record<HomePlanState, string>"
+				"type": "Record<HomePlanState, string>",
+				"description": "Display labels keyed by plan state."
 			},
 			{
 				"name": "planStates",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Plan states in the order shown in the dialog."
 			},
 			{
 				"name": "providerNames",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Display names of supported subscription providers."
 			},
 			{
 				"name": "usageLinks",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Account usage links keyed by provider."
 			},
 			{
 				"name": "count",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Count and an appropriately inflected label."
 			},
 			{
 				"name": "homeHeadline",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Dashboard headline summarizing working agents and outstanding questions."
 			},
 			{
 				"name": "currentAgent",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Eligible agent who needs a response, otherwise the first eligible agent or undefined."
 			},
 			{
 				"name": "soonestWork",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Active tasks sorted by deadline, with undated work last and titles breaking ties."
 			},
 			{
 				"name": "workSummary",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Number of active tasks and unique projects."
 			},
 			{
 				"name": "warningFor",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Critical below 10 percent, low below 25 percent, otherwise null."
 			},
 			{
 				"name": "lowestLimit",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Subscription window with the lowest remaining percentage among warnings, if any."
 			},
 			{
 				"name": "staleReading",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Whether the last subscription reading is over one hour old."
 			},
 			{
 				"name": "warningLabel",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Short label for the severity of a quota warning."
 			},
 			{
 				"name": "runDay",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Today, Tomorrow or the calendar date in Lisbon."
 			},
 			{
 				"name": "runTime",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Scheduled time in Lisbon in 24-hour notation."
 			},
 			{
 				"name": "when",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Local short calendar date."
 			},
 			{
 				"name": "quotaReset",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Rounded countdown or current availability of the reset time."
 			},
 			{
 				"name": "initials",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Up to two uppercase initials from the display name."
 			},
 			{
 				"name": "overviewTone",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Visual tone for the agent activity state."
 			},
 			{
 				"name": "summaryLine",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Short headline summary of active tasks, projects and scheduled runs."
 			},
 			{
 				"name": "relativeWhen",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Relative age for recent records or their calendar date."
 			},
 			{
 				"name": "workEta",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Deadline label and its urgency tone."
 			}
 		],
 		"errors": [],

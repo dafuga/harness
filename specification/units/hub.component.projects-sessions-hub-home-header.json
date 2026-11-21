@@ -4,8 +4,8 @@
 	"uid": "u_pkjntjini6",
 	"kind": "component",
 	"title": "HubHomeHeader",
-	"responsibility": "Owns the HubHomeHeader Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Shows account navigation, current activity totals and the most urgent subscription warning.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -25,23 +25,31 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeHeader.svelte"],
-		"symbols": ["HubHomeHeader"]
+		"source": [
+			"packages/hub/src/components/projects-sessions/HubHomeHeader.svelte"
+		],
+		"symbols": [
+			"HubHomeHeader"
+		]
 	},
 	"contract": {
-		"origin": "derived",
-		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
+		"origin": "declared",
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-pill"
+		],
 		"inputs": [
 			{
 				"name": "HubHomeHeader.view",
 				"type": "HomeView",
-				"required": true
+				"required": true,
+				"description": "Home data, project snapshots, source availability and clock used for presentation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeHeader",
-				"type": "markup"
+				"type": "markup",
+				"description": "Shows account navigation, current activity totals and the most urgent subscription warning."
 			}
 		],
 		"errors": [],

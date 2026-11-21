@@ -4,8 +4,8 @@
 	"uid": "u_kgwre755vx",
 	"kind": "component",
 	"title": "HubHomeRow",
-	"responsibility": "Owns the HubHomeRow Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Renders a compact dashboard row with title, secondary text and optional content on either end.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "molecule",
@@ -16,52 +16,63 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeRow.svelte"],
-		"symbols": ["HubHomeRow"]
+		"source": [
+			"packages/hub/src/components/projects-sessions/HubHomeRow.svelte"
+		],
+		"symbols": [
+			"HubHomeRow"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubHomeRow.title",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Primary row label."
 			},
 			{
 				"name": "HubHomeRow.meta",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Optional secondary row label."
 			},
 			{
 				"name": "HubHomeRow.extra",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Applies the row emphasis style. Defaults to false."
 			},
 			{
 				"name": "HubHomeRow.wide",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Applies the wide row layout. Defaults to false."
 			},
 			{
 				"name": "HubHomeRow.lead",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Optional snippet placed before the title."
 			},
 			{
 				"name": "HubHomeRow.trailing",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Optional snippet placed after the row content."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeRow",
-				"type": "markup"
+				"type": "markup",
+				"description": "Renders a compact dashboard row with title, secondary text and optional content on either end."
 			}
 		],
 		"errors": [],

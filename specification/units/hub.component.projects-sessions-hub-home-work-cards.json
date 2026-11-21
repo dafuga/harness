@@ -4,8 +4,8 @@
 	"uid": "u_yo3goi2ees",
 	"kind": "component",
 	"title": "HubHomeWorkCards",
-	"responsibility": "Owns the HubHomeWorkCards Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Summarizes plans, scheduled runs, hosted projects and active work in home cards.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -22,7 +22,9 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeWorkCards.svelte"],
+		"source": [
+			"packages/hub/src/components/projects-sessions/HubHomeWorkCards.svelte"
+		],
 		"symbols": [
 			"HubHomeWorkCards",
 			"HubHomeWorkCards.empty",
@@ -33,24 +35,29 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
-		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
+		"origin": "declared",
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-empty-state"
+		],
 		"inputs": [
 			{
 				"name": "HubHomeWorkCards.view",
 				"type": "HomeView",
-				"required": true
+				"required": true,
+				"description": "Home data, project snapshots, source availability and clock used for presentation."
 			},
 			{
 				"name": "HubHomeWorkCards.open",
 				"type": "OpenHomeSection",
-				"required": true
+				"required": true,
+				"description": "Opens the relevant home section and accepts an agent identifier when applicable."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeWorkCards",
-				"type": "markup"
+				"type": "markup",
+				"description": "Summarizes plans, scheduled runs, hosted projects and active work in home cards."
 			}
 		],
 		"errors": [],

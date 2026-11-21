@@ -4,8 +4,8 @@
 	"uid": "u_aigdzmrsfg",
 	"kind": "component",
 	"title": "HubHomeAgents",
-	"responsibility": "Owns the HubHomeAgents Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Groups agents by activity state and opens the selected agent conversation with the current Tracker task.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -29,11 +29,15 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeAgents.svelte"],
-		"symbols": ["HubHomeAgents"]
+		"source": [
+			"packages/hub/src/components/projects-sessions/HubHomeAgents.svelte"
+		],
+		"symbols": [
+			"HubHomeAgents"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"primitives": [
 			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.explorer-ui-explorer-kit-pill"
@@ -42,35 +46,41 @@
 			{
 				"name": "HubHomeAgents.agents",
 				"type": "HomeAgent[] | null",
-				"required": true
+				"required": true,
+				"description": "Agents and their current Tracker context. A null value indicates loading where supported."
 			},
 			{
 				"name": "HubHomeAgents.agentId",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Optional identifier of the initially selected agent."
 			},
 			{
 				"name": "HubHomeAgents.send",
 				"type": "SendHomeChat",
-				"required": true
+				"required": true,
+				"description": "Submits the agent note or answer to the owner chat queue and returns its receipt."
 			},
 			{
 				"name": "HubHomeAgents.receipt",
 				"type": "(id: string) => Promise<HomeChatReceipt>",
-				"required": true
+				"required": true,
+				"description": "Reads the delivery status for the supplied chat command identifier."
 			},
 			{
 				"name": "HubHomeAgents.chatOpen",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Controls whether the selected conversation is open. Defaults to false and supports binding."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeAgents",
-				"type": "markup"
+				"type": "markup",
+				"description": "Groups agents by activity state and opens the selected agent conversation with the current Tracker task."
 			}
 		],
 		"errors": [],

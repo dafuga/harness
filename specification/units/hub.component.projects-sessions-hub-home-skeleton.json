@@ -4,8 +4,8 @@
 	"uid": "u_veojwq4m3c",
 	"kind": "component",
 	"title": "HubHomeSkeleton",
-	"responsibility": "Owns the HubHomeSkeleton Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Keeps a section in place with placeholder rows while its data loads.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "molecule",
@@ -16,23 +16,29 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeSkeleton.svelte"],
-		"symbols": ["HubHomeSkeleton"]
+		"source": [
+			"packages/hub/src/components/projects-sessions/HubHomeSkeleton.svelte"
+		],
+		"symbols": [
+			"HubHomeSkeleton"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubHomeSkeleton.rows",
 				"type": "number",
 				"required": false,
-				"default": 4
+				"default": 4,
+				"description": "Number of placeholder rows. Defaults to four."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeSkeleton",
-				"type": "markup"
+				"type": "markup",
+				"description": "Keeps a section in place with placeholder rows while its data loads."
 			}
 		],
 		"errors": [],

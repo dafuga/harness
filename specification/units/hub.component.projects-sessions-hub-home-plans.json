@@ -4,8 +4,8 @@
 	"uid": "u_jz3ojqls6h",
 	"kind": "component",
 	"title": "HubHomePlans",
-	"responsibility": "Owns the HubHomePlans Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Groups Tracker plans by state and displays their completed and remaining steps.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -24,11 +24,15 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomePlans.svelte"],
-		"symbols": ["HubHomePlans"]
+		"source": [
+			"packages/hub/src/components/projects-sessions/HubHomePlans.svelte"
+		],
+		"symbols": [
+			"HubHomePlans"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"primitives": [
 			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.explorer-ui-explorer-kit-pill"
@@ -37,23 +41,27 @@
 			{
 				"name": "HubHomePlans.plans",
 				"type": "HomePlan[] | null",
-				"required": true
+				"required": true,
+				"description": "Tracker plans with their steps and status. Null indicates loading."
 			},
 			{
 				"name": "HubHomePlans.agents",
 				"type": "HomeAgent[]",
-				"required": true
+				"required": true,
+				"description": "Agents and their current Tracker context. A null value indicates loading where supported."
 			},
 			{
 				"name": "HubHomePlans.discuss",
 				"type": "(id: string) => void",
-				"required": true
+				"required": true,
+				"description": "Opens the conversation for the agent associated with the selected plan."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomePlans",
-				"type": "markup"
+				"type": "markup",
+				"description": "Groups Tracker plans by state and displays their completed and remaining steps."
 			}
 		],
 		"errors": [],

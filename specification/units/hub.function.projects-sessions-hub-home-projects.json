@@ -4,35 +4,44 @@
 	"uid": "u_xdo57l4rk2",
 	"kind": "function",
 	"title": "hubHomeProjects",
-	"responsibility": "Owns the hubHomeProjects shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Groups hosted catalog entries by kind and collects recent phases for the home project preview.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/hubHomeProjects.ts"],
-		"symbols": ["projectInventory", "inventorySummary"]
+		"source": [
+			"packages/hub/src/components/projects-sessions/hubHomeProjects.ts"
+		],
+		"symbols": [
+			"projectInventory",
+			"inventorySummary"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "projectInventory.snapshot",
 				"type": "ProjectSnapshot",
-				"required": true
+				"required": true,
+				"description": "The current published snapshot, if available for the operation."
 			},
 			{
 				"name": "inventorySummary.inventory",
 				"type": "ReturnType<typeof projectInventory>",
-				"required": true
+				"required": true,
+				"description": "Grouped counts and changes from a published catalog."
 			}
 		],
 		"outputs": [
 			{
 				"name": "projectInventory",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Counts of published apps, pages and components and the sorted recent changes."
 			},
 			{
 				"name": "inventorySummary",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Compact sentence listing the three catalog counts."
 			}
 		],
 		"errors": [],

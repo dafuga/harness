@@ -4,15 +4,23 @@
 	"uid": "u_u3mne4fgyr",
 	"kind": "function",
 	"title": "hubHomeView",
-	"responsibility": "Owns the hubHomeView shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Defines the data and callback contracts shared by the Hub home cards and dialogs.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/hubHomeView.types.ts"],
-		"symbols": ["HomeView", "OpenHomeSection", "SendHomeChat", "ReadHomeProject", "ReadHomeResult"]
+		"source": [
+			"packages/hub/src/components/projects-sessions/hubHomeView.types.ts"
+		],
+		"symbols": [
+			"HomeView",
+			"OpenHomeSection",
+			"SendHomeChat",
+			"ReadHomeProject",
+			"ReadHomeResult"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": [],

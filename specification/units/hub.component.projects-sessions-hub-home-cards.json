@@ -4,8 +4,8 @@
 	"uid": "u_koj2sfjf7g",
 	"kind": "component",
 	"title": "HubHomeCards",
-	"responsibility": "Owns the HubHomeCards Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Builds the six dashboard previews from the current data and sends messages from the compact agent composer.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -26,7 +26,9 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeCards.svelte"],
+		"source": [
+			"packages/hub/src/components/projects-sessions/HubHomeCards.svelte"
+		],
 		"symbols": [
 			"HubHomeCards",
 			"HubHomeCards.empty",
@@ -38,7 +40,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"primitives": [
 			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.explorer-ui-explorer-kit-pill"
@@ -47,23 +49,27 @@
 			{
 				"name": "HubHomeCards.view",
 				"type": "HomeView",
-				"required": true
+				"required": true,
+				"description": "Home data, project snapshots, source availability and clock used for presentation."
 			},
 			{
 				"name": "HubHomeCards.open",
 				"type": "OpenHomeSection",
-				"required": true
+				"required": true,
+				"description": "Opens the relevant home section and accepts an agent identifier when applicable."
 			},
 			{
 				"name": "HubHomeCards.send",
 				"type": "SendHomeChat",
-				"required": true
+				"required": true,
+				"description": "Submits the agent note or answer to the owner chat queue and returns its receipt."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeCards",
-				"type": "markup"
+				"type": "markup",
+				"description": "Builds the six dashboard previews from the current data and sends messages from the compact agent composer."
 			}
 		],
 		"errors": [],
