@@ -24,6 +24,11 @@
 			"builds": ["hub"]
 		},
 		{
+			"command": "bun src/index.ts verify stamp packages/hub/.svelte-kit",
+			"timeoutMs": 60000,
+			"builds": ["hub"]
+		},
+		{
 			"command": "cd packages/reports && ENTITY_PREVIEW_HOME=output/entity-preview bun -e \"import setup from './test/entityPreviewSetup'; await setup()\"",
 			"timeoutMs": 300000,
 			"builds": ["entity-preview"]
