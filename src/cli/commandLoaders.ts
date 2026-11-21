@@ -22,6 +22,10 @@ export const commandLoaders = {
 		const m = await import('./program/ActivityCommand');
 		m.registerActivityCommand(program);
 	},
+	projects: async (program: Command) => {
+		const { ProjectListCommand } = await import('../commands/projects-sessions/ProjectListCommand');
+		new ProjectListCommand().register(program);
+	},
 	report: async (program: Command) => {
 		const m = await import('./program/ReportCommand');
 		m.registerReportCommand(program);
