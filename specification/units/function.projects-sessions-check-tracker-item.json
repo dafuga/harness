@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-check-tracker-item",
+	"uid": "u_gfp6bkgz67",
+	"kind": "function",
+	"title": "checkTrackerItem",
+	"responsibility": "Find and rank open or ignored Tracker item matches from supplied item rows.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/projects-sessions/checkTrackerItem.ts"],
+		"symbols": ["checkTrackerItem"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "checkTrackerItem.value",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "checkTrackerItem",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "checkTrackerItem",
+				"inputs": [
+					{
+						"name": "checkTrackerItem.value",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkTrackerItem",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/checkTrackerItem.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/checkTrackerItem.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
