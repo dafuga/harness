@@ -92,10 +92,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The run id that start returned, a random UUID; cancel aborts only when it equals the id of the active run. Any other value, including the id of a run that has already ended, returns false and aborts nothing.",
-				"examples": [
-					"6f1c2a9e-4b7d-4e3a-8c51-9d0e7b2f4a16",
-					"0b9e4d27-7a13-4c8f-b5e6-2f81a9d03c74"
-				]
+				"examples": ["6f1c2a9e-4b7d-4e3a-8c51-9d0e7b2f4a16", "0b9e4d27-7a13-4c8f-b5e6-2f81a9d03c74"]
 			}
 		],
 		"outputs": [
@@ -121,10 +118,7 @@
 				"name": "DesktopRunService.cancel",
 				"type": "boolean",
 				"description": "True when runId matched the active run and its controller was aborted, false otherwise. True means the abort was requested, not that the run has already stopped.",
-				"examples": [
-					true,
-					false
-				]
+				"examples": [true, false]
 			}
 		],
 		"errors": [
@@ -286,10 +280,7 @@
 						"name": "DesktopRunService.cancel",
 						"type": "boolean",
 						"description": "True when runId matched the active run and its controller was aborted, false otherwise. True means the abort was requested, not that the run has already stopped.",
-						"examples": [
-							true,
-							false
-						]
+						"examples": [true, false]
 					}
 				],
 				"errors": [],

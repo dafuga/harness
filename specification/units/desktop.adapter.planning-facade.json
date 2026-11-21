@@ -46,9 +46,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Git commit or other revision used to pin the plan snapshot; it is passed to the planning API and must resolve in the repository.",
-				"examples": [
-					"0123456789abcdef0123456789abcdef01234567"
-				]
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "PlanningFacadeAdapter.createPlan.draft",
@@ -82,9 +80,7 @@
 							"source": [
 								"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts"
 							],
-							"symbols": [
-								"planningMessage"
-							]
+							"symbols": ["planningMessage"]
 						},
 						"contract": {
 							"origin": "declared",
@@ -103,9 +99,7 @@
 								}
 							]
 						},
-						"scenarios": [
-							"desktop-project-runs"
-						],
+						"scenarios": ["desktop-project-runs"],
 						"budgets": {
 							"size": "frozen",
 							"complexity": "frozen",
@@ -156,27 +150,21 @@
 				"type": "string",
 				"required": true,
 				"description": "Unit id whose plan is read for the requested thread; the thread must belong to this entity.",
-				"examples": [
-					"desktop.function.planning-message"
-				]
+				"examples": ["desktop.function.planning-message"]
 			},
 			{
 				"name": "PlanningFacadeAdapter.messages.threadId",
 				"type": "string",
 				"required": true,
 				"description": "Generated thread record id used to select messages; it must be present in the entity's plan.",
-				"examples": [
-					"550e8400-e29b-41d4-a716-446655440000"
-				]
+				"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 			},
 			{
 				"name": "PlanningFacadeAdapter.messages.revision",
 				"type": "string",
 				"required": true,
 				"description": "Git revision at which the entity and its thread are read; it must resolve in the repository.",
-				"examples": [
-					"0123456789abcdef0123456789abcdef01234567"
-				]
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "PlanningFacadeAdapter.appendMessage.draft",
@@ -206,9 +194,7 @@
 					{
 						"entityId": "desktop.function.planning-message",
 						"version": "v001",
-						"imageHashes": [
-							"abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"
-						],
+						"imageHashes": ["abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"],
 						"contractHash": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"
 					}
 				]
@@ -228,13 +214,8 @@
 				]
 			},
 			{
-				"name": "PlanningFacadeAdapter.images.entityId",
-				"type": "unknown",
-				"required": true
-			},
-			{
 				"name": "PlanningFacadeAdapter.images.query",
-				"type": "unknown",
+				"type": "PlanImagesQuery",
 				"required": true
 			},
 			{
@@ -242,18 +223,14 @@
 				"type": "string",
 				"required": true,
 				"description": "Unit id whose planning history is read at the requested revision.",
-				"examples": [
-					"desktop.function.planning-message"
-				]
+				"examples": ["desktop.function.planning-message"]
 			},
 			{
 				"name": "PlanningFacadeAdapter.history.revision",
 				"type": "string",
 				"required": true,
 				"description": "Git revision used to read the entity's commit history; it must resolve in the repository.",
-				"examples": [
-					"0123456789abcdef0123456789abcdef01234567"
-				]
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			}
 		],
 		"outputs": [
@@ -414,9 +391,7 @@
 					{
 						"id": "8e12c0f4-557b-4d1d-a823-45a6b38c9f02",
 						"version": "v001",
-						"imageHashes": [
-							"abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"
-						],
+						"imageHashes": ["abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"],
 						"contractHash": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567",
 						"approvedAt": "2026-11-15T12:00:00.000Z",
 						"current": true
@@ -493,9 +468,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Git commit or other revision used to pin the plan snapshot; it is passed to the planning API and must resolve in the repository.",
-						"examples": [
-							"0123456789abcdef0123456789abcdef01234567"
-						]
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
@@ -607,9 +580,7 @@
 									"source": [
 										"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts"
 									],
-									"symbols": [
-										"planningMessage"
-									]
+									"symbols": ["planningMessage"]
 								},
 								"contract": {
 									"origin": "declared",
@@ -628,9 +599,7 @@
 										}
 									]
 								},
-								"scenarios": [
-									"desktop-project-runs"
-								],
+								"scenarios": ["desktop-project-runs"],
 								"budgets": {
 									"size": "frozen",
 									"complexity": "frozen",
@@ -784,27 +753,21 @@
 						"type": "string",
 						"required": true,
 						"description": "Unit id whose plan is read for the requested thread; the thread must belong to this entity.",
-						"examples": [
-							"desktop.function.planning-message"
-						]
+						"examples": ["desktop.function.planning-message"]
 					},
 					{
 						"name": "PlanningFacadeAdapter.messages.threadId",
 						"type": "string",
 						"required": true,
 						"description": "Generated thread record id used to select messages; it must be present in the entity's plan.",
-						"examples": [
-							"550e8400-e29b-41d4-a716-446655440000"
-						]
+						"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 					},
 					{
 						"name": "PlanningFacadeAdapter.messages.revision",
 						"type": "string",
 						"required": true,
 						"description": "Git revision at which the entity and its thread are read; it must resolve in the repository.",
-						"examples": [
-							"0123456789abcdef0123456789abcdef01234567"
-						]
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
@@ -902,9 +865,7 @@
 							{
 								"entityId": "desktop.function.planning-message",
 								"version": "v001",
-								"imageHashes": [
-									"abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"
-								],
+								"imageHashes": ["abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"],
 								"contractHash": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"
 							}
 						]
@@ -919,9 +880,7 @@
 							{
 								"id": "8e12c0f4-557b-4d1d-a823-45a6b38c9f02",
 								"version": "v001",
-								"imageHashes": [
-									"abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"
-								],
+								"imageHashes": ["abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"],
 								"contractHash": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567",
 								"approvedAt": "2026-11-15T12:00:00.000Z",
 								"current": true
@@ -976,13 +935,8 @@
 				"name": "PlanningFacadeAdapter.images",
 				"inputs": [
 					{
-						"name": "PlanningFacadeAdapter.images.entityId",
-						"type": "unknown",
-						"required": true
-					},
-					{
 						"name": "PlanningFacadeAdapter.images.query",
-						"type": "unknown",
+						"type": "PlanImagesQuery",
 						"required": true
 					}
 				],
@@ -1003,18 +957,14 @@
 						"type": "string",
 						"required": true,
 						"description": "Unit id whose planning history is read at the requested revision.",
-						"examples": [
-							"desktop.function.planning-message"
-						]
+						"examples": ["desktop.function.planning-message"]
 					},
 					{
 						"name": "PlanningFacadeAdapter.history.revision",
 						"type": "string",
 						"required": true,
 						"description": "Git revision used to read the entity's commit history; it must resolve in the repository.",
-						"examples": [
-							"0123456789abcdef0123456789abcdef01234567"
-						]
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
@@ -1108,10 +1058,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-project-runs"
-	],
+	"scenarios": ["desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

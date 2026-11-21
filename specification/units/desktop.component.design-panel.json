@@ -31,9 +31,7 @@
 		"source": [
 			"packages/desktop/src/components/planning-collaboration/design-panel/DesignPanel.svelte"
 		],
-		"symbols": [
-			"DesignPanel"
-		]
+		"symbols": ["DesignPanel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -273,10 +271,7 @@
 				"type": "boolean",
 				"required": true,
 				"description": "Whether the shown image and its regions may start a conversation; it is passed to the annotated image as its writable flag, which disables region drawing and the image's comment buttons. When false, the annotation callback is never called, but existing thread pins stay selectable.",
-				"examples": [
-					true,
-					false
-				]
+				"examples": [true, false]
 			},
 			{
 				"name": "DesignPanel.version",
@@ -284,11 +279,7 @@
 				"required": false,
 				"default": "",
 				"description": "Bindable identifier of the design version shown, empty by default and updated when a user selects another version. A value that no version of the entity has, including the empty default, is replaced with the last version's identifier, or with an empty string when the entity has no versions.",
-				"examples": [
-					"",
-					"v001",
-					"v002"
-				]
+				"examples": ["", "v001", "v002"]
 			},
 			{
 				"name": "DesignPanel.option",
@@ -296,11 +287,7 @@
 				"required": false,
 				"default": "",
 				"description": "Bindable identifier of the design option shown, empty by default; the panel never chooses one on its own, so a version with options shows no image until the parent binds an option that the version holds. A version without options ignores this value, and choosing an option in the panel writes its identifier back here.",
-				"examples": [
-					"",
-					"o1",
-					"o2"
-				]
+				"examples": ["", "o1", "o2"]
 			},
 			{
 				"name": "DesignPanel.inline",
@@ -458,10 +445,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-renderer"
-	],
+	"scenarios": ["desktop-native", "desktop-renderer"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

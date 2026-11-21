@@ -11,10 +11,7 @@
 		"source": [
 			"packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts"
 		],
-		"symbols": [
-			"PlanRunService",
-			"PlanRunService.run"
-		]
+		"symbols": ["PlanRunService", "PlanRunService.run"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,11 +28,7 @@
 				"name": "PlanRunService.run",
 				"type": "unknown",
 				"description": "The string run resolves to: the result of planDesign after it has saved the design and appended the agent's message, 'Saved <version> for review.', where <version> is 'v' followed by the plan's existing design count plus one, zero-padded to at least three digits. The design is saved for review only and is not approved, and DesktopRunService reports this string as the summary of the finished run.",
-				"examples": [
-					"Saved v001 for review.",
-					"Saved v002 for review.",
-					"Saved v013 for review."
-				]
+				"examples": ["Saved v001 for review.", "Saved v002 for review.", "Saved v013 for review."]
 			}
 		],
 		"errors": [
@@ -133,10 +126,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-project-runs"
-	],
+	"scenarios": ["desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

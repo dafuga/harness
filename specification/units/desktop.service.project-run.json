@@ -223,10 +223,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"agent-creation",
-		"agent-references"
-	],
+	"scenarios": ["agent-creation", "agent-references"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

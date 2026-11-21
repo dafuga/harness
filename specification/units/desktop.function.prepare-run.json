@@ -80,19 +80,14 @@
 				"type": "'user' | 'agent'",
 				"required": true,
 				"description": "Identifies whether the message author is user or agent.",
-				"examples": [
-					"user",
-					"agent"
-				]
+				"examples": ["user", "agent"]
 			},
 			{
 				"name": "messageFor.text",
 				"type": "string",
 				"required": true,
 				"description": "The message text copied unchanged into the returned draft.",
-				"examples": [
-					"Create a settings page."
-				]
+				"examples": ["Create a settings page."]
 			},
 			{
 				"name": "recordRunFailure.context",
@@ -105,9 +100,7 @@
 				"type": "unknown",
 				"required": true,
 				"description": "The failure value to report. Error instances contribute a message limited to 200 characters; other values use the generic text Run failed.",
-				"examples": [
-					"Provider exited with status 1."
-				]
+				"examples": ["Provider exited with status 1."]
 			}
 		],
 		"outputs": [
@@ -115,9 +108,7 @@
 				"name": "imageModel",
 				"type": "unknown",
 				"description": "Resolves to an empty string unless mode is plan and category is pages, layouts, or components. In those cases it returns the id of the default model listed by an available Codex provider with imageGeneration enabled.",
-				"examples": [
-					""
-				]
+				"examples": [""]
 			},
 			{
 				"name": "prepareRun",
@@ -245,19 +236,14 @@
 						"type": "'user' | 'agent'",
 						"required": true,
 						"description": "Identifies whether the message author is user or agent.",
-						"examples": [
-							"user",
-							"agent"
-						]
+						"examples": ["user", "agent"]
 					},
 					{
 						"name": "messageFor.text",
 						"type": "string",
 						"required": true,
 						"description": "The message text copied unchanged into the returned draft.",
-						"examples": [
-							"Create a settings page."
-						]
+						"examples": ["Create a settings page."]
 					}
 				],
 				"outputs": [
@@ -297,9 +283,7 @@
 						"type": "unknown",
 						"required": true,
 						"description": "The failure value to report. Error instances contribute a message limited to 200 characters; other values use the generic text Run failed.",
-						"examples": [
-							"Provider exited with status 1."
-						]
+						"examples": ["Provider exited with status 1."]
 					}
 				],
 				"outputs": [

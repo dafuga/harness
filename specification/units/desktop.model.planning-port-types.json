@@ -8,9 +8,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/models/planning-collaboration/PlanningPort.types.ts"
-		],
+		"source": ["packages/desktop/src/models/planning-collaboration/PlanningPort.types.ts"],
 		"symbols": [
 			"PlanRecord",
 			"DesignDraft",
@@ -62,10 +60,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-project-runs"
-	],
+	"scenarios": ["desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

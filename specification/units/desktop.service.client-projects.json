@@ -43,9 +43,7 @@
 				"type": "string",
 				"required": true,
 				"description": "projectId is the registry key passed to registry.get() when opening a project. This service does not validate or transform it.",
-				"examples": [
-					"client-project-01"
-				]
+				"examples": ["client-project-01"]
 			}
 		],
 		"outputs": [
@@ -54,13 +52,8 @@
 				"type": "string[]",
 				"description": "roots lists the root path of each project in this client's ready map, in map iteration order. Projects still opening are absent, and a missing session root is stored as an empty string.",
 				"examples": [
-					[
-						"/Users/daniel/projects/client-app"
-					],
-					[
-						"/workspace/projects/client-app",
-						""
-					]
+					["/Users/daniel/projects/client-app"],
+					["/workspace/projects/client-app", ""]
 				]
 			},
 			{
@@ -72,10 +65,7 @@
 				"name": "ClientProjectsService.ended",
 				"type": "boolean",
 				"description": "ended reports whether end() has marked this client ended. The flag starts false and is never reset.",
-				"examples": [
-					false,
-					true
-				]
+				"examples": [false, true]
 			},
 			{
 				"name": "ClientProjectsService.end",
@@ -101,13 +91,8 @@
 						"type": "string[]",
 						"description": "roots lists the root path of each project in this client's ready map, in map iteration order. Projects still opening are absent, and a missing session root is stored as an empty string.",
 						"examples": [
-							[
-								"/Users/daniel/projects/client-app"
-							],
-							[
-								"/workspace/projects/client-app",
-								""
-							]
+							["/Users/daniel/projects/client-app"],
+							["/workspace/projects/client-app", ""]
 						]
 					}
 				],
@@ -122,9 +107,7 @@
 						"type": "string",
 						"required": true,
 						"description": "projectId is the registry key passed to registry.get() when opening a project. This service does not validate or transform it.",
-						"examples": [
-							"client-project-01"
-						]
+						"examples": ["client-project-01"]
 					}
 				],
 				"outputs": [
@@ -151,10 +134,7 @@
 						"name": "ClientProjectsService.ended",
 						"type": "boolean",
 						"description": "ended reports whether end() has marked this client ended. The flag starts false and is never reset.",
-						"examples": [
-							false,
-							true
-						]
+						"examples": [false, true]
 					}
 				],
 				"errors": [],
@@ -259,9 +239,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"remote-desktop-boundaries"
-	],
+	"scenarios": ["remote-desktop-boundaries"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -194,11 +194,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"agent-references",
-		"desktop-native",
-		"desktop-project-runs"
-	],
+	"scenarios": ["agent-references", "desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
