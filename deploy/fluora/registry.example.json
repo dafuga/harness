@@ -1,0 +1,62 @@
+{
+	"schema": 1,
+	"state": "/absolute/private/deploy-state",
+	"broker": "/absolute/trusted/credential-vault-deploy-bridge",
+	"tracker": "/absolute/trusted/tracker",
+	"reviewers": [
+		{ "id": "release-reviewer", "publicKey": "REPLACE_WITH_REVIEWER_ED25519_PUBLIC_KEY" }
+	],
+	"stageAuthority": {
+		"id": "stage-authority",
+		"publicKey": "REPLACE_WITH_STAGE_ED25519_PUBLIC_KEY"
+	},
+	"daniel": {
+		"id": "daniel",
+		"publicKey": "REPLACE_WITH_DANIEL_APPROVAL_ISSUER_ED25519_PUBLIC_KEY"
+	},
+	"projects": {
+		"fluora": {
+			"root": "/absolute/reviewed/harness/deploy/fluora",
+			"checkout": "/absolute/reviewed/fluora",
+			"repository": "https://github.com/dafuga/fluora.git",
+			"sourceRef": "refs/heads/dev",
+			"image": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+			"toolchain": {
+				"node": "v24.22.2",
+				"bun": "1.4.5",
+				"wrangler": "4.156.0",
+				"gcloud": "594.0.0"
+			},
+			"scripts": {
+				"build": "scripts/build.sh",
+				"inspect": "scripts/pages.sh",
+				"deploy": "scripts/pages.sh",
+				"smoke": "scripts/smoke.sh",
+				"rollback": "scripts/pages.sh",
+				"cleanup": "scripts/cleanup.sh"
+			},
+			"targets": {
+				"staging": {
+					"id": "fluora-next-stage",
+					"route": "https://fluora-next-stage.pages.dev",
+					"profile": {
+						"bindings": {
+							"DB": "d1:bc7d3344-dc2f-4e41-ab67-cd80dcae4581",
+							"ADVENTURE_ASSETS": "r2:fluora-adventure-assets-staging"
+						},
+						"secretNames": [],
+						"migrations": [],
+						"runtimes": { "compatibility_date": "2026-10-01" },
+						"flags": {
+							"nodejs_compat_v2": "enabled",
+							"schema": "REPLACE_WITH_REVIEWED_D1_SCHEMA_HASH",
+							"migrationEvidence": "provider-ledger-and-schema"
+						}
+					}
+				}
+			},
+			"differences": {},
+			"item": "56x4kx"
+		}
+	}
+}

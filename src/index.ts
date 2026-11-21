@@ -193,3 +193,8 @@ export { TrackerOperationRepository } from './repositories/projects-sessions/Tra
 export { TrackerSchemaAdapter } from './adapters/projects-sessions/TrackerSchemaAdapter';
 export { nextTrackerClock } from './utils/projects-sessions/nextTrackerClock';
 export { TrackerPersistenceService } from './services/projects-sessions/TrackerPersistenceService';
+export { DeployCommand } from './commands/execution-runtimes/DeployCommand';
+export { DeployDockerAdapter } from './adapters/execution-runtimes/DeployDockerAdapter';
+export { ScriptedDeployService } from './services/execution-runtimes/ScriptedDeployService';
+export { DeployManifestValidator } from './validators/execution-runtimes/DeployManifestValidator';
+export { DeployRunRepository } from './repositories/execution-runtimes/DeployRunRepository';

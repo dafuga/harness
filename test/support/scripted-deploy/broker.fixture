@@ -1,0 +1,66 @@
+#!/usr/bin/env bun
+import { createHash, sign } from 'node:crypto';
+import { appendFileSync, readFileSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+const directory = import.meta.dir;
+const path = (file) => join(directory, file);
+const read = (file) => JSON.parse(readFileSync(path(file), 'utf8'));
+const write = (file, state) => writeFileSync(path(file), JSON.stringify(state));
+const operation = process.argv[2];
+const input = await Bun.stdin.json();
+const mode = read('mode.json');
+const state = read('provider.json');
+const plan = input.plan;
+const env = plan?.environment ?? input.environment;
+
+function canonical(value) {
+	if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']';
+	if (value === null || typeof value !== 'object') return JSON.stringify(value);
+	return '{' + Object.keys(value).sort().map((key) => JSON.stringify(key) + ':' + canonical(value[key])).join(',') + '}';
+}
+function approval() {
+	const issuer = env === 'staging' || mode === 'wrong-issuer' ? 'stage' : 'daniel';
+	const now = Date.now();
+	const scope = createHash('sha256').update(canonical(plan)).digest('hex');
+	const payload = {
+		issuer, scope: mode === 'wrong-scope' ? '0'.repeat(64) : scope,
+		kind: 'approval', issuedAt: mode === 'expired' ? now - 200_000 : now,
+		expiresAt: mode === 'expired' ? now - 1 : now + 100_000, reference: 'grant:' + plan.id
+	};
+	if (mode === 'changed-after-grant') {
+		state[env].version = 'changed-after-grant';
+		write('provider.json', state);
+	}
+	const signature = sign(null, Buffer.from(canonical(payload)), read(issuer + '.json')).toString('base64url');
+	return { payload, signature };
+}
+function observed() {
+	return { ...state[env], observedAt: Date.now() };
+}
+function deploy() {
+	const before = state[env];
+	if (before.version !== plan.previous.version) process.exit(2);
+	const after = plan.restore ?? {
+		...before, source: plan.release.source, artifact: plan.release.artifact, version: 'applied-' + plan.id
+	};
+	state[env] = after;
+	write('provider.json', state);
+	const result = { operation: 'provider:' + plan.id, observed: observed() };
+	write(plan.id + '.json', result);
+	if (mode === 'lost-receipt') {
+		console.error('synthetic-credential-must-not-leak');
+		process.exit(3);
+	}
+	return result;
+}
+appendFileSync(path('operations.log'), operation + '\n');
+let output;
+switch (operation) {
+	case 'inspect': output = observed(); break;
+	case 'authorize': output = approval(); break;
+	case 'apply': output = deploy(); break;
+	case 'reconcile': output = { status: 'applied', result: { ...read(plan.id + '.json'), observed: observed() } }; break;
+	default: process.exit(2);
+}
+console.log(JSON.stringify(output));

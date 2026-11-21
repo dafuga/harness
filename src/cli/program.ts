@@ -1,4 +1,5 @@
 // @harness-uid u_3tibsmkofv
+import { DeployCommand } from '../commands/execution-runtimes/DeployCommand';
 import { PermissionsCommand } from '../commands/networking-security/PermissionsCommand';
 import { registerTaskCommand } from './program/TaskCommand';
 import { TrackerCommand } from '../commands/projects-sessions/TrackerCommand';
@@ -56,6 +57,7 @@ export function buildProgram(): Command {
 	registerVerifyCommand(program);
 	registerTaskCommand(program);
 	new TrackerCommand().register(program);
+	new DeployCommand().register(program);
 	new ModuleCommand().register(program);
 	new ApiCommand().register(program);
 	new PermissionsCommand().register(program);
