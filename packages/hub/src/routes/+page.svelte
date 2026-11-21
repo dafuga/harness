@@ -6,7 +6,7 @@
 	import type { ProjectSummary } from 'collaboration';
 	import { ProjectSyncService } from '$desktop/services/projects-sessions/ProjectSyncService';
 	import HubFrame from '../components/shared-primitives/HubFrame.svelte';
-	import LoginPanel from '../components/accounts-access/login-panel/LoginPanel.svelte';
+	import HomePage from '../components/public-site/HomePage.svelte';
 	import ProjectCreate from '../components/projects-sessions/ProjectCreate.svelte';
 	import ProjectList from '../components/projects-sessions/ProjectList.svelte';
 	import { browserContext } from '../utils/development-tooling/browserContext';
@@ -74,10 +74,14 @@
 	}
 </script>
 
-<svelte:head><title>Harness · Shared projects</title></svelte:head>
-<HubFrame>
-	<hx-h1>Shared projects</hx-h1>
-	{#if !session.actor}<LoginPanel />{:else}{#if owner}<hx-p class="overview-link"
+<svelte:head
+	><title>{session.actor ? 'Harness · Shared projects' : 'Harness · Build with agents'}</title
+	></svelte:head
+>
+<!-- Nobody signed in, or not known yet: the public homepage, with sign-in at its end. -->
+{#if !session.actor}<HomePage />{:else}<HubFrame>
+		<hx-h1>Shared projects</hx-h1>
+		{#if owner}<hx-p class="overview-link"
 				><hx-a href={resolve('/tracker-overview')}>Project overview</hx-a></hx-p
 			>{/if}{#if github === 'connected'}<hx-p role="status">
 				GitHub is connected.
@@ -86,5 +90,5 @@
 			</hx-p>{/if}{#if error}<hx-p class="error" role="alert">{error}</hx-p
 			>{/if}{#if list}<ProjectList projects={list} />{:else if !error}<hx-p class="muted"
 				>Loading projects…</hx-p
-			>{/if}<ProjectCreate created={open} />{/if}
-</HubFrame>
+			>{/if}<ProjectCreate created={open} />
+	</HubFrame>{/if}

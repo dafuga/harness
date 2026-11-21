@@ -22,7 +22,7 @@ GitHub stores source, contracts, designs, notes/evidence and the private collabo
 
 ## Paths
 
-- `/`: sign-in and authorized project list.
+- `/`: the public homepage (what Harness is, download, log in) while signed out; the authorized project list once signed in.
 - `/projects/{projectId}/harness/branch/{encodedBranch}/{pages|components|functions|configs|services}`.
 - The same branch path with `/commit/{fullCommit}` before the category.
 - Append `/{entityId}`, `/{entityId}/history`, or `/{entityId}/details` for an entity; source remains inside Details.
