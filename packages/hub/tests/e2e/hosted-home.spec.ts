@@ -68,7 +68,7 @@ test('a published Mac archive becomes the download link', async ({ page }) => {
 	await expect(download(page).getByRole('button', { name: 'Download for Mac' })).toHaveCount(0);
 	await expect(download(page).getByText('iPhone app · Coming soon')).toBeVisible();
 	expect(asked).toEqual(['HEAD']);
-	await capture(page, 'home-desktop-dark-mac-available');
+	await capture(page, 'home-desktop-mac-available');
 });
 
 for (const answer of ['missing', 'page'] as const)
