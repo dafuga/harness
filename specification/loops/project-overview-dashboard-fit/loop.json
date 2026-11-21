@@ -2,7 +2,7 @@
 	"name": "project-overview-dashboard-fit",
 	"goal": "Keep the signed-in Hub dashboard cards, filters and document inside each supported viewport.",
 	"createdAt": "2026-11-21T10:27:28.580Z",
-	"updatedAt": "2026-11-21T10:27:28.580Z",
+	"updatedAt": "2026-11-21T10:28:16.066Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -13,12 +13,16 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T10:28:13.843Z",
+			"evidence": "The compiled Hub 5154504400 phone capture projects-owner-mobile.png shows the right edge of the signed-in /projects tracker card clipped at 390px. Desktop, tablet and phone retain the full card area and an internally scrollable filter strip."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-21T10:28:16.066Z",
+			"evidence": "Existing account-projects owner state asserted card visibility and saved a viewport screenshot without comparing document width or card bounds. The standalone tracker-overview geometry test exercised another route. The existing owner state now requires both width and card bounds at each viewport."
 		},
 		{
 			"id": "red",
