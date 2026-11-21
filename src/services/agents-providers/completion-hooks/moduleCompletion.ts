@@ -1,4 +1,4 @@
-import { mkdtemp, rm } from 'node:fs/promises';
+import { mkdtemp, realpath, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
@@ -59,7 +59,7 @@ async function withModuleCandidate(
 		result.sourceCommit ?? input.task.sourceCommit
 	);
 	const directory = await mkdtemp(join(tmpdir(), 'harness-module-completion-'));
-	const scratch = new GitAdapter(join(directory, 'worktree'));
+	const scratch = new GitAdapter(join(await realpath(directory), 'worktree'));
 	let added = false;
 	try {
 		await owner.run([

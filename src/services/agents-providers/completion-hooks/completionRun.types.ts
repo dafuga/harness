@@ -4,11 +4,13 @@ import type {
 	TaskSelection
 } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import type { loadCompletionConfig } from './completionConfig';
+import type { completionTurn } from './completionRun';
 
 export type CompletionConfig = Awaited<ReturnType<typeof loadCompletionConfig>>;
 export type CompletionCheck = CompletionConfig['checks'][number];
 export type CompletionScope = CompletionCheck['scope'];
-export type CompletionProvider = (input: TaskRunInput, readOnly: boolean) => Promise<TaskRunResult>;
+export type CompletionTurnInput = TaskRunInput & { [completionTurn]?: boolean };
+export type CompletionProvider = (input: CompletionTurnInput) => Promise<TaskRunResult>;
 
 export interface CompletionRun extends TaskSelection {
 	id: string;
@@ -17,6 +19,7 @@ export interface CompletionRun extends TaskSelection {
 	path: string;
 	checks: CompletionReceipt[];
 	signal: AbortSignal;
+	tracking?: { item: string; status: 'recorded' | 'unavailable' };
 }
 
 export interface CompletionReceipt {

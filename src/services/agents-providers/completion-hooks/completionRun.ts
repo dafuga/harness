@@ -11,6 +11,8 @@ import type {
 } from './completionRun.types';
 import { CompletionCheckError } from './CompletionCheckError';
 
+export const completionTurn = Symbol('completion turn read-only');
+
 export async function completionRecordPath(
 	git: GitAdapter,
 	id: string,
@@ -63,9 +65,9 @@ async function runCheck(
 	}
 }
 
-async function saveCompletion(run: CompletionRun): Promise<void> {
-	const { path, id, scope, revision, provider, model, intelligence, checks } = run;
-	const data = { id, scope, revision, provider, model, intelligence, checks };
+export async function saveCompletion(run: CompletionRun): Promise<void> {
+	const { path, id, scope, revision, provider, model, intelligence, checks, tracking } = run;
+	const data = { id, scope, revision, provider, model, intelligence, checks, tracking };
 	const temporary = `${path}.${randomUUID()}.tmp`;
 	await mkdir(dirname(path), { recursive: true, mode: 0o700 });
 	try {
@@ -92,10 +94,13 @@ export async function askCompletion(
 		'Do not commit, push, land, contact Tracker, change configuration, start workers, or access credentials.',
 		'Return only JSON with status ("passed" or "failed") and summary. Give a short, concrete summary of what you simplified or found. Exclude secrets and raw logs.'
 	].join('\n\n');
-	const reply = await run(
-		{ ...input, prompt: checkPrompt, supervision: undefined, onRotation: undefined },
-		readOnly
-	);
+	const reply = await run({
+		...input,
+		prompt: checkPrompt,
+		supervision: undefined,
+		onRotation: undefined,
+		[completionTurn]: readOnly
+	});
 	input.signal.throwIfAborted();
 	const result = completionReply(reply.text);
 	if (result.status === 'failed')
