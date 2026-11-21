@@ -52,9 +52,11 @@ harness tracker note ITEM "Recorded a milestone"
 harness tracker --help
 ```
 
-`harness tracker` forwards Tracker commands to the retained Tracker client. The
-client uses the local Tracker service and its existing database. Its options,
-output, and exit codes are the same from either entry point.
+`harness tracker` selects the configured native Tracker API when a native
+node configuration is present. See the [native service guide](specification/tracker-native-service.md)
+for role selection, ownership and compatibility. With no native configuration,
+Harness forwards the original options, output and exit codes through the
+retained Tracker client.
 
 Harness looks for `~/.local/libexec/harness/tracker-legacy` first, then
 `~/.local/bin/tracker`. Set `HARNESS_TRACKER_LEGACY_BIN` to an absolute
