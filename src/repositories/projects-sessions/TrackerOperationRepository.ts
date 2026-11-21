@@ -3,7 +3,10 @@ import { trackerItemFields } from '../../adapters/projects-sessions/TrackerSchem
 import type { SqliteDatabase, SqliteValue } from '../../core/development-tooling/sqliteTypes';
 import type {
 	TrackerAppliedOperations,
-	TrackerOperation
+	TrackerOperation,
+	TrackerOperationFilter,
+	TrackerSequencedOperation,
+	TrackerStoredOperation
 } from './TrackerOperationRepository.types';
 
 const itemFields = new Set<string>(trackerItemFields);
@@ -31,6 +34,47 @@ export class TrackerOperationRepository {
 			this.database.exec('ROLLBACK');
 			throw error;
 		}
+	}
+
+	maxSeq(): number {
+		const row = this.database.prepare('SELECT coalesce(max(seq), 0) AS seq FROM ops').get() as {
+			seq: number;
+		};
+		return row.seq;
+	}
+
+	opsSince(
+		seq: number,
+		limit = 1000,
+		{ onlyNode }: TrackerOperationFilter = {}
+	): TrackerSequencedOperation[] {
+		const select = 'SELECT seq, op_id, item_id, fields, hlc, node, actor FROM ops WHERE seq > ?';
+		const rows = (
+			onlyNode
+				? this.database
+						.prepare(select + ' AND node = ? ORDER BY seq LIMIT ?')
+						.all(seq, onlyNode, limit)
+				: this.database.prepare(select + ' ORDER BY seq LIMIT ?').all(seq, limit)
+		) as TrackerStoredOperation[];
+		return rows.map((row) => ({
+			seq: row.seq,
+			op_id: row.op_id,
+			item_id: row.item_id,
+			fields: JSON.parse(row.fields) as TrackerOperation['fields'],
+			hlc: row.hlc,
+			node: row.node,
+			...(row.actor ? { actor: row.actor } : {})
+		}));
+	}
+
+	countOpsSince(seq: number, onlyNode?: string): number {
+		const select = 'SELECT count(*) AS count FROM ops WHERE seq > ?';
+		const row = (
+			onlyNode
+				? this.database.prepare(select + ' AND node = ?').get(seq, onlyNode)
+				: this.database.prepare(select).get(seq)
+		) as { count: number };
+		return row.count;
 	}
 
 	private applyOperation(operation: TrackerOperation): boolean {
@@ -135,5 +179,7 @@ function persistReceipt(persist: (() => void) | undefined): void {
 
 export type {
 	TrackerAppliedOperations,
-	TrackerOperation
+	TrackerOperation,
+	TrackerOperationFilter,
+	TrackerSequencedOperation
 } from './TrackerOperationRepository.types';

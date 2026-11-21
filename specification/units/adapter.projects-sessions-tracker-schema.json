@@ -17,6 +17,8 @@
 			"TrackerSchemaAdapter",
 			"TrackerSchemaAdapter.constructor",
 			"TrackerSchemaAdapter.initialize",
+			"TrackerSchemaAdapter.getMeta",
+			"TrackerSchemaAdapter.setMeta",
 			"TrackerDatabaseIdentity",
 			"TrackerSchemaAdapterConfig",
 			"TrackerSchemaAdapterConfig",
@@ -37,6 +39,21 @@
 				"type": "TrackerSchemaAdapterConfig",
 				"required": false,
 				"default": {}
+			},
+			{
+				"name": "TrackerSchemaAdapter.getMeta.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerSchemaAdapter.setMeta.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerSchemaAdapter.setMeta.value",
+				"type": "string | number",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -47,6 +64,14 @@
 			{
 				"name": "TrackerSchemaAdapter.initialize",
 				"type": "TrackerDatabaseIdentity"
+			},
+			{
+				"name": "TrackerSchemaAdapter.getMeta",
+				"type": "string | null"
+			},
+			{
+				"name": "TrackerSchemaAdapter.setMeta",
+				"type": "void"
 			}
 		],
 		"errors": [],
@@ -59,6 +84,47 @@
 					{
 						"name": "TrackerSchemaAdapter.initialize",
 						"type": "TrackerDatabaseIdentity"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSchemaAdapter.getMeta",
+				"inputs": [
+					{
+						"name": "TrackerSchemaAdapter.getMeta.key",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSchemaAdapter.getMeta",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSchemaAdapter.setMeta",
+				"inputs": [
+					{
+						"name": "TrackerSchemaAdapter.setMeta.key",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerSchemaAdapter.setMeta.value",
+						"type": "string | number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSchemaAdapter.setMeta",
+						"type": "void"
 					}
 				],
 				"errors": [],

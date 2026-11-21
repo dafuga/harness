@@ -110,6 +110,19 @@ export class TrackerSchemaAdapter {
 		}
 	}
 
+	getMeta(key: string): string | null {
+		const row = this.database.prepare('SELECT v FROM meta WHERE k = ?').get(key) as
+			| { v: string | null }
+			| undefined;
+		return row?.v ?? null;
+	}
+
+	setMeta(key: string, value: string | number): void {
+		this.database
+			.prepare('INSERT INTO meta(k, v) VALUES (?, ?) ON CONFLICT(k) DO UPDATE SET v = excluded.v')
+			.run(key, String(value));
+	}
+
 	private migrateColumns(): void {
 		const ops = this.columns('ops');
 		if (!ops.has('actor')) this.database.exec('ALTER TABLE ops ADD COLUMN actor TEXT');
@@ -158,14 +171,10 @@ export class TrackerSchemaAdapter {
 	}
 
 	private metadata(key: string, create: () => string): string {
-		const row = this.database.prepare('SELECT v FROM meta WHERE k = ?').get(key) as
-			| { v: string | null }
-			| undefined;
-		if (row?.v) return row.v;
+		const previous = this.getMeta(key);
+		if (previous) return previous;
 		const value = create();
-		this.database
-			.prepare('INSERT INTO meta(k, v) VALUES (?, ?) ON CONFLICT(k) DO UPDATE SET v = excluded.v')
-			.run(key, value);
+		this.setMeta(key, value);
 		return value;
 	}
 }
