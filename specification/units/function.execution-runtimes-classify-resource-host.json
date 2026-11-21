@@ -12,32 +12,36 @@
 		"symbols": ["classifyResourceHost"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "classifyResourceHost.host",
 				"type": "ResourceHost",
-				"required": true
+				"required": true,
+				"description": "One computer's latest Harness resource snapshot, workload and launcher state; a null snapshot means it never reported."
 			},
 			{
 				"name": "classifyResourceHost.policy",
 				"type": "ResourcePlacementPolicy",
-				"required": true
+				"required": true,
+				"description": "Stale limit and reserve rules; the defaults mirror the Tracker placement thresholds."
 			},
 			{
 				"name": "classifyResourceHost.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Current time in milliseconds, used to age the snapshot."
 			}
 		],
 		"outputs": [
 			{
 				"name": "classifyResourceHost",
-				"type": "ResourceHostClassification"
+				"type": "ResourceHostClassification",
+				"description": "Offline, overloaded, busy or ok, with the reasons and the sample age in milliseconds (null when never reported)."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "classifyResourceHost",
@@ -61,7 +65,8 @@
 				"outputs": [
 					{
 						"name": "classifyResourceHost",
-						"type": "ResourceHostClassification"
+						"type": "ResourceHostClassification",
+						"description": "Offline, overloaded, busy or ok, with the reasons and the sample age in milliseconds (null when never reported)."
 					}
 				],
 				"errors": [],

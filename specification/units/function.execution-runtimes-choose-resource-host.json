@@ -12,22 +12,24 @@
 		"symbols": ["chooseResourceHost"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "chooseResourceHost.input",
 				"type": "{ hosts: ResourceHost[]; work: ResourceWork; reservations: ResourceReservation[]; policy: ResourcePlacementPolicy; now: number; }",
-				"required": true
+				"required": true,
+				"description": "One placement round: computers, work, reservations, policy and the current time."
 			}
 		],
 		"outputs": [
 			{
 				"name": "chooseResourceHost",
-				"type": "ResourceChoice"
+				"type": "ResourceChoice",
+				"description": "The chosen computer with its reasons, or null with the blocking reason for each computer."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "chooseResourceHost",
@@ -41,7 +43,8 @@
 				"outputs": [
 					{
 						"name": "chooseResourceHost",
-						"type": "ResourceChoice"
+						"type": "ResourceChoice",
+						"description": "The chosen computer with its reasons, or null with the blocking reason for each computer."
 					}
 				],
 				"errors": [],

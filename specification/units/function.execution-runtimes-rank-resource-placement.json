@@ -12,37 +12,42 @@
 		"symbols": ["rankResourcePlacement"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "rankResourcePlacement.hosts",
 				"type": "ResourceHost[]",
-				"required": true
+				"required": true,
+				"description": "Every computer to consider for the work."
 			},
 			{
 				"name": "rankResourcePlacement.work",
 				"type": "ResourceWork",
-				"required": true
+				"required": true,
+				"description": "The work request to place."
 			},
 			{
 				"name": "rankResourcePlacement.policy",
 				"type": "ResourcePlacementPolicy",
-				"required": true
+				"required": true,
+				"description": "Stale limit and reserve rules."
 			},
 			{
 				"name": "rankResourcePlacement.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Current time in milliseconds."
 			}
 		],
 		"outputs": [
 			{
 				"name": "rankResourcePlacement",
-				"type": "ResourcePlacement"
+				"type": "ResourcePlacement",
+				"description": "The work kind, memory needed, the recommended computer or null, and every candidate with fitting computers first, then by score."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "rankResourcePlacement",
@@ -71,7 +76,8 @@
 				"outputs": [
 					{
 						"name": "rankResourcePlacement",
-						"type": "ResourcePlacement"
+						"type": "ResourcePlacement",
+						"description": "The work kind, memory needed, the recommended computer or null, and every candidate with fitting computers first, then by score."
 					}
 				],
 				"errors": [],
