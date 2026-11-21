@@ -52,3 +52,36 @@ export async function capture(page: Page, name: string): Promise<void> {
 	await page.evaluate(() => document.fonts.ready);
 	await page.screenshot({ path: join(directory, `${name}.png`), fullPage: true });
 }
+
+const pathIs = (path: string) => (url: URL) => url.pathname === path;
+
+/**
+ * Answers the Mac archive address as the Hub would: a published zip, a missing release, or an
+ * HTML page served in its place. Returns the methods the page used to ask.
+ */
+export async function macRelease(page: Page, answer: 'zip' | 'missing' | 'page') {
+	const asked: string[] = [];
+	await page.route(pathIs('/downloads/Harness-mac-arm64.zip'), (route) => {
+		asked.push(route.request().method());
+		if (answer === 'zip')
+			return route.fulfill({ status: 200, contentType: 'application/zip', body: '' });
+		if (answer === 'missing')
+			return route.fulfill({ status: 404, contentType: 'text/plain', body: 'Not found' });
+		return route.fulfill({ status: 200, contentType: 'text/html', body: '<!doctype html>' });
+	});
+	return asked;
+}
+
+/**
+ * Stands in for the /projects page the parent branch supplies, so the test proves only that the
+ * homepage leads there. Returns each path the browser opened at that address.
+ */
+export async function projectsPage(page: Page) {
+	const reached: string[] = [];
+	await page.route(pathIs('/projects'), (route) => {
+		reached.push(new URL(route.request().url()).pathname);
+		const body = '<!doctype html><title>Projects</title><h1>Projects</h1>';
+		return route.fulfill({ status: 200, contentType: 'text/html', body });
+	});
+	return reached;
+}

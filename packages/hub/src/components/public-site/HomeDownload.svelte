@@ -16,8 +16,11 @@
 		</hx-p>
 	</hx-div>
 	<hx-div class="home-download-actions">
-		{#if mac}<hx-a class="home-button home-button-primary home-button-large" href={mac} download
-				>Download for Mac</hx-a
+		{#if mac}<hx-a
+				class="home-button home-button-primary home-button-large"
+				href={mac}
+				download
+				data-sveltekit-reload>Download for Mac</hx-a
 			>{:else}<hx-button
 				type="button"
 				class="home-button home-button-primary home-button-large"
