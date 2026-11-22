@@ -7,7 +7,7 @@ export async function assertPlatformsRouteReady(component: Locator) {
 	const search = component.getByRole('searchbox', { name: 'Search platforms' });
 	await expect(search).toHaveValue('');
 	await expect(component.getByRole('link', { name: /^View .* configuration$/ })).toHaveCount(4);
-	// Cards may sit below the fold; visibility here checks rendering, not the viewport.
+	// Cards can render below the fold on narrow viewports.
 	for (const name of platformNames)
 		await expect(
 			component.getByRole('link', { name: `View ${name} configuration`, exact: true })

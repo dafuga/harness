@@ -39,8 +39,6 @@ export async function assertCatalogBeforeCapture({
 		await assertPermissionPanelStyles(component);
 	if (unit.id === 'desktop.component.project-agent')
 		await assertAgentPreview(page, component, variant);
-	if (unit.id === 'reports.page.harness-branch-branch-at-platforms' && variant === 'ready')
-		await test.step('Platforms route', () => assertPlatformsRouteReady(component));
 }
 
 async function assertAgentPreview(page: Page, component: Locator, variant: string) {
@@ -78,6 +76,8 @@ async function assertCatalogNames(component: Locator, id: string, variant: strin
 /** Each required prop state joins the normal desktop/tablet/mobile catalog test matrix. */
 async function assertRequiredShellState(component: Locator, id: string, variant: string) {
 	const state = `${id}:${variant}`;
+	if (state === 'reports.page.harness-branch-branch-at-platforms:ready')
+		await test.step('Platforms route', () => assertPlatformsRouteReady(component));
 	if (state === 'reports.component.harness-entity-relations:both') {
 		await expect(component.getByRole('region', { name: 'Used In', exact: true })).toBeVisible();
 		await expect(component.getByRole('region', { name: 'Uses', exact: true })).toBeVisible();

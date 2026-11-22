@@ -1,5 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 import { measurePreviewBounds } from './measurePreviewBounds';
+import { explorerPreviewInteraction } from './explorerCatalogVariants';
 
 const tooltipUnits = new Set([
 	'reports.component.harness-harness-verdict',
@@ -17,7 +18,8 @@ const emptyStates: Record<string, string> = {
 
 /** Frame rendered UI roots, including fragments and fixed surfaces, with a small edge allowance. */
 export async function previewCaptureBounds(page: Page, id: string, variant = '') {
-	if (isPlatformPicker(id, variant)) return platformPickerBounds(page);
+	if (isPlatformPicker(id, explorerPreviewInteraction(id, variant)))
+		return platformPickerBounds(page);
 	if (await reportViewDialog(page, id)) {
 		const viewport = page.viewportSize();
 		if (!viewport) throw new Error('Report dialog capture requires a viewport.');
@@ -36,6 +38,9 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 	});
 	if (id === 'reports.component.replay-controls' && ['speed-open', 'scene-open'].includes(variant))
 		return replayPickerBounds(page, bounds, variant);
+	// Full-page screenshots expand into the vertical scrollbar space after bounds are measured.
+	if (id === 'reports.component.explorer-ui-explorer-platforms' && variant === 'hovered')
+		bounds.width += await page.evaluate(() => innerWidth - document.documentElement.clientWidth);
 	return bounds;
 }
 
@@ -134,7 +139,7 @@ async function previewTarget(content: Locator, id: string, variant: string) {
 		id === 'reports.component.explorer-catalog-items' && variant === 'configs-open';
 	const modal = await previewModal(content, dialog, chatPicker || catalogValue);
 	const projectAgent = id === 'desktop.component.project-agent';
-	const replayFull = id === 'reports.component.gameplay-replay' && variant === 'fullscreen';
+	const replayFull = `${id}:${variant}` === 'reports.component.gameplay-replay:fullscreen';
 	const compact: Record<string, string> = {
 		'reports.component.filter-dialog': '.filter-trigger',
 		'desktop.component.remote-approval': '.remote-request'

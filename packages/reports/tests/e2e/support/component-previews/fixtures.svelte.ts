@@ -116,7 +116,6 @@ function variantProps(id: string, props: PreviewCases[string], variant: string) 
 	if (!previewVariants(id).includes(variant))
 		throw new Error(`Unknown preview variant ${id}:${variant}`);
 	if (!variant || nativeAtomFixture(id)) return props;
-	if (id === 'reports.page.harness-branch-branch-at-platforms') return props;
 	const presentation = presentationVariant(id, props, variant);
 	if (presentation) return presentation;
 	if (id === 'desktop.component.deployment-details') return deploymentVariantProps(props, variant);

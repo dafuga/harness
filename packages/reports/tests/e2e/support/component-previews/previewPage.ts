@@ -140,7 +140,7 @@ export async function capturePreview(
 	await settlePreviewAudio(page.locator(`[data-preview-unit="${id}"]`), id, variant);
 	await frameDesktopCapture(page, id);
 	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS && !nativeOpen) return;
-	const bounds = await previewCaptureBounds(page, id, interaction);
+	const bounds = await previewCaptureBounds(page, id, variant);
 	// A native popup is captured from the visible viewport, so its declared bounds stop there.
 	const clip = captureClip(page, bounds, nativeOpen);
 	const reportDialog = await reportViewDialog(page, id);

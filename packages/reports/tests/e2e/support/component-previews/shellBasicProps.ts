@@ -10,7 +10,8 @@ export const shellBasicProps: Record<
 	'reports.component.shared-primitives-loading-state': loadingStateProps,
 	'reports.component.harness-harness-action': actionProps,
 	'reports.component.harness-harness-icon': iconProps,
-	'reports.component.harness-harness-verdict': verdictProps
+	'reports.component.harness-harness-verdict': verdictProps,
+	'reports.page.harness-branch-branch-at-platforms': (props) => props
 };
 function brandMarkProps(props: PreviewCases[string], variant: string) {
 	if (variant === 'decorative') return { size: 56 };
