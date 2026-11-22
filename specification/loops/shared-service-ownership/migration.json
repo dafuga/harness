@@ -5786,13 +5786,13 @@
 			"unit": "reports.service.console-agent",
 			"from": "packages/reports/src/services/ConsoleAgentService.ts",
 			"to": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
-			"definition": "823fbfcaaf05196e2f5f7ca74ff2608654bc21ff867c34e25ffeaa524f899a25",
+			"definition": "990ebaf94ffcdfdccf44a497662eb6c965450877dd190387b0c40540676ab707",
 			"relocationDefinition": "2a0274757c369262eb9cc7098eb14483461e21fd95c40fc82cb6b5371dcd1695",
 			"review": {
-				"commit": "75e486963e72fac1a0b3765e096743908625abf0",
+				"commit": "92086cbaa5061cec445e557889b28a4578bdd30e",
 				"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
-				"definition": "823fbfcaaf05196e2f5f7ca74ff2608654bc21ff867c34e25ffeaa524f899a25",
-				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 9058fcc15d (reports.service.console-agent); behavior unchanged."
+				"definition": "990ebaf94ffcdfdccf44a497662eb6c965450877dd190387b0c40540676ab707",
+				"reason": "Use the integrated Desktop run event callback and its default visual mockup renderer."
 			},
 			"previousReviews": [
 				{
@@ -5830,6 +5830,12 @@
 					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
 					"definition": "341c9d4798a8c7c701b19718254cafedc1cb06b518575c381d36de20f9715af2",
 					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.service.console-agent, written by haiku); behavior unchanged."
+				},
+				{
+					"commit": "75e486963e72fac1a0b3765e096743908625abf0",
+					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
+					"definition": "823fbfcaaf05196e2f5f7ca74ff2608654bc21ff867c34e25ffeaa524f899a25",
+					"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 9058fcc15d (reports.service.console-agent); behavior unchanged."
 				}
 			]
 		},
