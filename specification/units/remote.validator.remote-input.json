@@ -65,7 +65,8 @@
 					{
 						"projectId": "local-b41e0a7c95d3f6281e7b0c4a92d5f83ec7a09d6b2f148e53a0d7c96b1e4f2a85"
 					}
-				]
+				],
+				"unknownReason": "The validator receives untrusted request data before it can check the object shape and fields."
 			},
 			{
 				"name": "RemoteInputValidator.revision.input",
@@ -85,7 +86,8 @@
 							"commit": "e91d04a7c3b8f26d5e0a19c74b3d8f2e6a05c1b9"
 						}
 					}
-				]
+				],
+				"unknownReason": "The validator receives untrusted request data before it can check the object shape and fields."
 			},
 			{
 				"name": "RemoteInputValidator.approval.input",
@@ -346,7 +348,8 @@
 							{
 								"projectId": "local-b41e0a7c95d3f6281e7b0c4a92d5f83ec7a09d6b2f148e53a0d7c96b1e4f2a85"
 							}
-						]
+						],
+						"unknownReason": "The validator receives untrusted request data before it can check the object shape and fields."
 					}
 				],
 				"outputs": [
@@ -390,7 +393,8 @@
 									"commit": "e91d04a7c3b8f26d5e0a19c74b3d8f2e6a05c1b9"
 								}
 							}
-						]
+						],
+						"unknownReason": "The validator receives untrusted request data before it can check the object shape and fields."
 					}
 				],
 				"outputs": [

@@ -38,7 +38,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CollaborationInputError",
 				"type": "thrown",
 				"description": "Malformed prefixed pointers and declarations above the size limit are rejected directly as invalid-lfs-pointer or lfs-size-limit. Failures during token acquisition, batch parsing, URL validation, download, response handling or integrity checking are caught and rejected as lfs-unavailable."
 			}
@@ -70,7 +70,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CollaborationInputError",
 						"type": "thrown",
 						"description": "Malformed prefixed pointers and declarations above the size limit are rejected directly as invalid-lfs-pointer or lfs-size-limit. Failures during token acquisition, batch parsing, URL validation, download, response handling or integrity checking are caught and rejected as lfs-unavailable."
 					}

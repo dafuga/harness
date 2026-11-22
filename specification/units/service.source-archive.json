@@ -300,9 +300,19 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects when the committed tree cannot be opened or listed, or when the media output directory cannot be created. Individual source-read and media-write failures are retained as unavailable source gaps instead."
+				"description": "The requested revision does not resolve to a commit."
+			},
+			{
+				"name": "GitCommandError",
+				"type": "thrown",
+				"description": "Git cannot list files in the selected commit."
+			},
+			{
+				"name": "BoundedCommandFailure",
+				"type": "thrown",
+				"description": "The Git operation exceeds its deadline. Process launch errors and failures creating the media directory propagate. Individual reads and writes become source gaps."
 			}
 		],
 		"errorStatus": "declared",
@@ -420,9 +430,19 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Rejects when the committed tree cannot be opened or listed, or when the media output directory cannot be created. Individual source-read and media-write failures are retained as unavailable source gaps instead."
+						"description": "The requested revision does not resolve to a commit."
+					},
+					{
+						"name": "GitCommandError",
+						"type": "thrown",
+						"description": "Git cannot list files in the selected commit."
+					},
+					{
+						"name": "BoundedCommandFailure",
+						"type": "thrown",
+						"description": "The Git operation exceeds its deadline. Process launch errors and failures creating the media directory propagate. Individual reads and writes become source gaps."
 					}
 				],
 				"errorStatus": "declared"

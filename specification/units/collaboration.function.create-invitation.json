@@ -140,9 +140,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CollaborationInputError",
 				"type": "thrown",
-				"description": "The implementation throws plain Error objects with codes invalid-input, forbidden, invalid-invitation, or conflict; conflict follows five failed compare-and-swap attempts. Repository and Web Crypto rejections propagate, and creation can throw a RangeError if the configured clock produces an invalid date."
+				"description": "The implementation throws CollaborationInputError instances with codes invalid-input, forbidden, invalid-invitation, or conflict; conflict follows five failed compare-and-swap attempts. Repository and Web Crypto rejections propagate, and creation can throw a RangeError if the configured clock produces an invalid date."
 			}
 		],
 		"errorStatus": "declared",
@@ -211,9 +211,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CollaborationInputError",
 						"type": "thrown",
-						"description": "Throws a plain Error with code invalid-input for invalid actor, invitation input, or stored records, forbidden when the actor is not an owner of the project, and conflict after five failed compare-and-swap attempts. Repository and Web Crypto rejections propagate, and an invalid clock date can make ISO expiry formatting throw a RangeError."
+						"description": "Throws CollaborationInputError with code invalid-input for invalid actor, invitation input, or stored records, forbidden when the actor is not an owner of the project, and conflict after five failed compare-and-swap attempts. Repository and Web Crypto rejections propagate, and an invalid clock date can make ISO expiry formatting throw a RangeError."
 					}
 				],
 				"errorStatus": "declared"
@@ -280,9 +280,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CollaborationInputError",
 						"type": "thrown",
-						"description": "Throws a plain Error with code invalid-input for invalid actor, acceptance input, or stored records, invalid-invitation when no matching usable invitation exists or its code, normalized email, expiry, or project check fails, and conflict after five failed compare-and-swap attempts. Repository and Web Crypto rejections propagate."
+						"description": "Throws CollaborationInputError with code invalid-input for invalid actor, acceptance input, or stored records, invalid-invitation when no matching usable invitation exists or its code, normalized email, expiry, or project check fails, and conflict after five failed compare-and-swap attempts. Repository and Web Crypto rejections propagate."
 					}
 				],
 				"errorStatus": "declared"
