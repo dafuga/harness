@@ -82,7 +82,7 @@ async function preserveExtendedTasks(
 		const base = JSON.parse(JSON.stringify(retained.data));
 		for (const key of ['role', 'assignedFiles', 'dependsOn']) delete base.tasks[0][key];
 		Object.assign(base.tasks[0], extra);
-		expect(claimedTask(base, 'owner', ['service.orders'], owner)).toBeNull();
+		expect(claimedTask(base, 'owner', ['service.orders'], { owner })).toBeNull();
 	}
 }
 

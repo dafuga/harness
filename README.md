@@ -1204,7 +1204,7 @@ directory (EPERM or EACCES), a missing `requiredTools` executable such as
 `ffmpeg`, or a provider whose quota rejected a run until its reported reset
 blocks the dispatch. The default pause is 15 minutes. A blocked worker claims
 nothing, charges no attempt, prints `status: blocked` with the reasons and exits
-with 75 under `--once`. `analytics tasks` reports `runsByModel`. Each row separates
+with 75 under `--once`. `harness analytics tasks` reports `runsByModel`. Each row separates
 infrastructure failures (quota, provider or CLI errors, workspace errors,
 cancellations and abandoned claims) from the model's work: `firstTryRate` counts
 every settled first attempt, and `firstTryRateWhenRan` leaves out attempts that
