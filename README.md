@@ -152,7 +152,7 @@ command and then obtains an independent verdict. Accepted repair tips are
 retained under `refs/harness/sibling-repairs/` for review. The report identifies
 each accepted ref and any rejected or failed attempt.
 
-`loop review-bugs <base>` reads the committed classes from the merge base and
+`harness loop review-bugs <base>` reads the committed classes from the merge base and
 checks sites affected by added or modified lines. The command exits nonzero
 for confirmed findings or incomplete semantic review. Add it to a project loop
 as an evaluator when reviewing a candidate branch. Both commands accept

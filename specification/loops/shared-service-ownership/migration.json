@@ -1632,13 +1632,13 @@
 			"unit": "desktop.service.native-auth",
 			"from": "packages/desktop/src/services/NativeAuthService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
-			"definition": "11320e6d5b82ebd8669a90d972996bc48246dc328a09bd57bceedada92cc671f",
+			"definition": "2b8fb6b67435514d61c1666ed700b7e44eced3e8dbc4846e53f90d960e47fd81",
 			"relocationDefinition": "67a3c6213e0976f629348ba23061f5fa8274ef5c97eb067ee00cba2f8005485f",
 			"review": {
-				"commit": "caea83354142413dd97edae29bdd055924c9847b",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
-				"definition": "11320e6d5b82ebd8669a90d972996bc48246dc328a09bd57bceedada92cc671f",
-				"reason": "Reads the Tracker overview through the current native account and rejects stale sessions."
+				"definition": "2b8fb6b67435514d61c1666ed700b7e44eced3e8dbc4846e53f90d960e47fd81",
+				"reason": "Retains named native-auth errors while checking account freshness and reading Tracker overview."
 			},
 			"previousReviews": [
 				{
@@ -1652,6 +1652,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
 					"definition": "986bf632f2cf84693894b3ada0aa8523c71ecf3d573f5d41504609de5f1c7447",
 					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.native-auth, written by haiku); messages and behavior unchanged."
+				},
+				{
+					"commit": "caea83354142413dd97edae29bdd055924c9847b",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
+					"definition": "11320e6d5b82ebd8669a90d972996bc48246dc328a09bd57bceedada92cc671f",
+					"reason": "Reads the Tracker overview through the current native account and rejects stale sessions."
 				}
 			]
 		},
@@ -1917,13 +1923,13 @@
 			"unit": "service.analytics",
 			"from": "src/services/AnalyticsService.ts",
 			"to": "src/cli/program/AnalyticsService.ts",
-			"definition": "ac38e5a7bad6d23461a544b32c77c7a19a0218e97dd1add14e42637f11d0d21b",
+			"definition": "4abf8d2bbc284cab704efcd97b00193b913f511b786d138bab725f773258b25e",
 			"relocationDefinition": "1a76ce9bc1eb2d33dcb0f216fd0f9861ee67e8a243fc3e8964142c3cb50fb086",
 			"review": {
-				"commit": "106cce18c1586a977ebf54dca9e42c52901937b3",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "src/cli/program/AnalyticsService.ts",
-				"definition": "ac38e5a7bad6d23461a544b32c77c7a19a0218e97dd1add14e42637f11d0d21b",
-				"reason": "Limit shared run records and recommendations to the task analytics command."
+				"definition": "4abf8d2bbc284cab704efcd97b00193b913f511b786d138bab725f773258b25e",
+				"reason": "Retains typed command errors and limits task registry records to task analytics."
 			},
 			"previousReviews": [
 				{
@@ -1961,6 +1967,12 @@
 					"path": "src/cli/program/AnalyticsService.ts",
 					"definition": "96457d46427497e49f8c0d9e4e36eb1215dfa4f3c200909a16c5a98b9e80b62a",
 					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-service.analytics, written by luna); messages and behavior unchanged."
+				},
+				{
+					"commit": "106cce18c1586a977ebf54dca9e42c52901937b3",
+					"path": "src/cli/program/AnalyticsService.ts",
+					"definition": "ac38e5a7bad6d23461a544b32c77c7a19a0218e97dd1add14e42637f11d0d21b",
+					"reason": "Limit shared run records and recommendations to the task analytics command."
 				}
 			]
 		},
@@ -3054,13 +3066,13 @@
 			"unit": "service.verification",
 			"from": "src/services/verification-service/VerificationService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-			"definition": "8fcfadc67cf612f0a9c7f965bdec2e920fa0713ee7df2e1d436b846b0ba4528f",
+			"definition": "9b33eb6188aa0d01bab2189dfbc222263299d04aa235867519dd9e92405930b0",
 			"relocationDefinition": "146b117282696844fcc9506d83b7d30df30482554e3603d38b08b295272e02c9",
 			"review": {
-				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-				"definition": "8fcfadc67cf612f0a9c7f965bdec2e920fa0713ee7df2e1d436b846b0ba4528f",
-				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
+				"definition": "9b33eb6188aa0d01bab2189dfbc222263299d04aa235867519dd9e92405930b0",
+				"reason": "Selects pending video work in full verification and preserves Lite planning, cancellation and artifact retention."
 			},
 			"previousReviews": [
 				{
@@ -3116,6 +3128,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
 					"definition": "a8f2b11c13e2390046b897cb32be52bd0f9c954b13be1e96f6eee179f7b7942e",
 					"reason": "Select and rerun declared video scenarios with pending frame feedback."
+				},
+				{
+					"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+					"definition": "8fcfadc67cf612f0a9c7f965bdec2e920fa0713ee7df2e1d436b846b0ba4528f",
+					"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
 				}
 			]
 		},
@@ -3123,13 +3141,13 @@
 			"unit": "function.scenario-coverage",
 			"from": "src/services/verification-service/scenarioCoverage.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
-			"definition": "c67c831944910df25ccb8b94e586f02d8aa0c0f3dd9b9c1fb6352b7cd9d15dbd",
+			"definition": "62c2c8370b97de2d968cf301d3d80b31b9f5a36a9be903a28d899585c831ee01",
 			"relocationDefinition": "7c6fde05df18fa70a2c12eae9a58acdd175271911693f14df619e73bd8938ffe",
 			"review": {
-				"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
-				"definition": "c67c831944910df25ccb8b94e586f02d8aa0c0f3dd9b9c1fb6352b7cd9d15dbd",
-				"reason": "Judge runnable checks and preserve pending scenario evidence."
+				"definition": "62c2c8370b97de2d968cf301d3d80b31b9f5a36a9be903a28d899585c831ee01",
+				"reason": "Judges admitted video graphs for full runs and reports deferred visual evidence for Lite."
 			},
 			"previousReviews": [
 				{
@@ -3137,6 +3155,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
 					"definition": "22d95fdf68fc2c01a4bc7a9848a46ce8c5dfd11d7026ebc6f111b1ae5cce3a63",
 					"reason": "Judge modular clip graph coverage and active reviewer flags with scenario evidence."
+				},
+				{
+					"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
+					"definition": "c67c831944910df25ccb8b94e586f02d8aa0c0f3dd9b9c1fb6352b7cd9d15dbd",
+					"reason": "Judge runnable checks and preserve pending scenario evidence."
 				}
 			]
 		},
@@ -3163,13 +3187,13 @@
 			"unit": "service.record-assembly",
 			"from": "src/services/record-assembly-service/RecordAssemblyService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"definition": "f10bcc6987f9d8cf238eea574e3a185ceab92936c150364124b378b33a74bddd",
+			"definition": "913db8b72b151bff7f83f900d19a40abc17a1d4bf31c59914c8010f8ab982a0d",
 			"relocationDefinition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936",
 			"review": {
-				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-				"definition": "f10bcc6987f9d8cf238eea574e3a185ceab92936c150364124b378b33a74bddd",
-				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
+				"definition": "913db8b72b151bff7f83f900d19a40abc17a1d4bf31c59914c8010f8ab982a0d",
+				"reason": "Preserves video batch references beside Lite outcomes, artifact digests and recorded builds."
 			},
 			"previousReviews": [
 				{
@@ -3243,6 +3267,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 					"definition": "948149be5e55d9bef494242c498b06500ff32bc1fc85c38c17087059dfebac3a",
 					"reason": "Retain validated video batch pointers in sealed verification records."
+				},
+				{
+					"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "f10bcc6987f9d8cf238eea574e3a185ceab92936c150364124b378b33a74bddd",
+					"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
 				}
 			]
 		},
@@ -4432,13 +4462,13 @@
 			"unit": "desktop.service.project-run",
 			"from": "packages/desktop/src/services/project-run-service/ProjectRunService.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
-			"definition": "2488d72e7e1acbad3d187edfba59d3c91903546bc74b5b9828bac0161e4d2b5c",
+			"definition": "cedffe6f388707b039beea1a66a9703fccfd930591625766fe40a80654e4f553",
 			"relocationDefinition": "1c852abd6f52c52c7ce29c47f3b8477eb7c958547321a94cfef241083068e502",
 			"review": {
-				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
-				"reason": "Use the selected agent for the new unit proposal, then send visual authoring to Sonnet.",
-				"definition": "2488d72e7e1acbad3d187edfba59d3c91903546bc74b5b9828bac0161e4d2b5c"
+				"definition": "cedffe6f388707b039beea1a66a9703fccfd930591625766fe40a80654e4f553",
+				"reason": "Preserves named source guards while separating unit proposal and visual authoring providers."
 			},
 			"previousReviews": [
 				{
@@ -4452,6 +4482,12 @@
 					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
 					"definition": "5b4bed1bb0b683a968769a92480e9696bc3aa211fac816cc8e48915d0ba65b66",
 					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.project-run, written by luna); messages and behavior unchanged."
+				},
+				{
+					"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
+					"reason": "Use the selected agent for the new unit proposal, then send visual authoring to Sonnet.",
+					"definition": "2488d72e7e1acbad3d187edfba59d3c91903546bc74b5b9828bac0161e4d2b5c"
 				}
 			]
 		},
@@ -4620,13 +4656,13 @@
 			"unit": "service.snapshot-run",
 			"from": "src/services/SnapshotRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-			"definition": "5f2e39a1e26144b546fc728986af328b661aa25d29c1debd3593051101770179",
+			"definition": "6b66451c84a3cae66601006017c63814adf0754f247407d0e6f2c0287927cb8f",
 			"relocationDefinition": "6c3ff0bd50e6e2875d27738b036a234a6c7ee208b4687d4a4b94f53319e3e740",
 			"review": {
-				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-				"definition": "5f2e39a1e26144b546fc728986af328b661aa25d29c1debd3593051101770179",
-				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
+				"definition": "6b66451c84a3cae66601006017c63814adf0754f247407d0e6f2c0287927cb8f",
+				"reason": "Freezes video inputs before checks and retains artifacts only after a clean passing snapshot."
 			},
 			"previousReviews": [
 				{
@@ -4670,6 +4706,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
 					"definition": "4f0d5a024af9e69a5b33d01b5700e4c1a65806502f8983d9e8ff342d49765fe0",
 					"reason": "Freeze source clip hashes and pinned references before snapshot execution."
+				},
+				{
+					"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+					"definition": "5f2e39a1e26144b546fc728986af328b661aa25d29c1debd3593051101770179",
+					"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
 				}
 			]
 		},
@@ -4683,13 +4725,13 @@
 			"unit": "service.check-run",
 			"from": "src/services/check-run-service/CheckRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-			"definition": "cd8095a0777c0823d7a95c042b03620d0b0ff56262781d0726ae83465793585c",
+			"definition": "86bf02a4e21bf224ec6258a1c3668ec9130a38ae5c0199853719e6624d0dd1b0",
 			"relocationDefinition": "b4409148ed49b4fe1574ee44790338bbbe23be3b7a6a284687a37ca0b9e8a0c6",
 			"review": {
-				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-				"definition": "cd8095a0777c0823d7a95c042b03620d0b0ff56262781d0726ae83465793585c",
-				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
+				"definition": "86bf02a4e21bf224ec6258a1c3668ec9130a38ae5c0199853719e6624d0dd1b0",
+				"reason": "Carries video proof context, drops timed-out or Lite visual captures and respects cancellation."
 			},
 			"previousReviews": [
 				{
@@ -4739,6 +4781,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
 					"definition": "b051c5fda5af2659e2deec284175f259fe2b81b7d88b657510d3e8097c5524f7",
 					"reason": "Carry frozen video context and admit authenticated reused clip captures."
+				},
+				{
+					"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "cd8095a0777c0823d7a95c042b03620d0b0ff56262781d0726ae83465793585c",
+					"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
 				}
 			]
 		},
@@ -5017,13 +5065,13 @@
 			"unit": "desktop.function.planning-writes",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/planningWrites.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
-			"definition": "0a2033b4ff7ef64fe8a851aaee13adc91340f13e70e30f0e6c883633aef9ee86",
+			"definition": "e68d409bd479c7b619f875b249b78f903d282d1d24c3ec74773655562dd7dbd6",
 			"relocationDefinition": "26c1fa6ed92d6361d09e0804f6eff2b034e8b9315c575142fe22f0a0d30933ac",
 			"review": {
-				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
-				"reason": "Save every responsive image of a design option in a single immutable version.",
-				"definition": "0a2033b4ff7ef64fe8a851aaee13adc91340f13e70e30f0e6c883633aef9ee86"
+				"definition": "e68d409bd479c7b619f875b249b78f903d282d1d24c3ec74773655562dd7dbd6",
+				"reason": "Preserves named planning errors while storing responsive mockup versions together."
 			},
 			"previousReviews": [
 				{
@@ -5037,6 +5085,12 @@
 					"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
 					"definition": "80ddc88f5d160b8b741d15008fe5c93335d826700a5d1f49383435d1647398ee",
 					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-writes, written by haiku); messages and behavior unchanged."
+				},
+				{
+					"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
+					"reason": "Save every responsive image of a design option in a single immutable version.",
+					"definition": "0a2033b4ff7ef64fe8a851aaee13adc91340f13e70e30f0e6c883633aef9ee86"
 				}
 			]
 		},
@@ -5498,13 +5552,13 @@
 			"unit": "desktop.service.plan-run",
 			"from": "packages/desktop/src/services/PlanRunService.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
-			"definition": "8ff720c60d089a3819652c9fe27092f942894d1e7e459246fec94a95362c2018",
+			"definition": "5b9d26ab31918964f905f0a13f03f1ceb9ba4a950373144b7929ec9c9afbbe13",
 			"relocationDefinition": "efa5aeed6c9be2c1a74d7f9a7cf08cbb3b31bf7a61c504518418a0d81d498da8",
 			"review": {
-				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
-				"reason": "Route visual entities to HTML and CSS mockups and preserve the selected runner for behavior notes.",
-				"definition": "8ff720c60d089a3819652c9fe27092f942894d1e7e459246fec94a95362c2018"
+				"definition": "5b9d26ab31918964f905f0a13f03f1ceb9ba4a950373144b7929ec9c9afbbe13",
+				"reason": "Preserves named planning errors while routing visual plan creation through the selected mockup provider."
 			},
 			"previousReviews": [
 				{
@@ -5512,6 +5566,12 @@
 					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
 					"definition": "be088cb3d2b3d03bda1120346c1b948690d710033798626f07d5ed5906479bc3",
 					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.plan-run, written by luna); messages and behavior unchanged."
+				},
+				{
+					"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
+					"reason": "Route visual entities to HTML and CSS mockups and preserve the selected runner for behavior notes.",
+					"definition": "8ff720c60d089a3819652c9fe27092f942894d1e7e459246fec94a95362c2018"
 				}
 			]
 		},
@@ -6428,13 +6488,13 @@
 			"unit": "desktop.service.local-client",
 			"from": "packages/desktop/src/services/LocalClientService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-			"definition": "fc4ac939b6401690b8183751141ab5a92f1b3b260a9096025bea4fa1a83e96b0",
+			"definition": "847078af0e445e4bb00c33609c5959a641ac8cc6769a8e9a80e4ea2e2b542447",
 			"relocationDefinition": "db0ec4b62e6922c297169687608d262d5d27c0fbea6e3b27da2a52def20bb765",
 			"review": {
-				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-				"reason": "Give local windows the same headless rendering workflow as remote clients.",
-				"definition": "fc4ac939b6401690b8183751141ab5a92f1b3b260a9096025bea4fa1a83e96b0"
+				"definition": "847078af0e445e4bb00c33609c5959a641ac8cc6769a8e9a80e4ea2e2b542447",
+				"reason": "Retains typed client failures and uses main’s visual mockup runner when opening local projects."
 			},
 			"previousReviews": [
 				{
@@ -6460,6 +6520,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
 					"definition": "eb6cae1949145f9b58555a4d60ed9ca862b477f7e4db6df371fc20079ba94f92",
 					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.local-client, written by haiku); behavior unchanged."
+				},
+				{
+					"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+					"reason": "Give local windows the same headless rendering workflow as remote clients.",
+					"definition": "fc4ac939b6401690b8183751141ab5a92f1b3b260a9096025bea4fa1a83e96b0"
 				}
 			]
 		},
@@ -6467,13 +6533,13 @@
 			"unit": "desktop.service.local-operations",
 			"from": "packages/desktop/src/services/LocalOperationsService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-			"definition": "24abc5d2f2cb8a71536125e8a723d22be51876df584e9d9b8ff577877c4c59de",
+			"definition": "99a5afd915176506e32bbf0c7c0352db1ce862a3cca43c1871f72226e2a5aa81",
 			"relocationDefinition": "6c93c210df9a0612e8b374298b009646d8cc776940b82b610c6aa2edf7a6f2b4",
 			"review": {
-				"commit": "caea83354142413dd97edae29bdd055924c9847b",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-				"definition": "24abc5d2f2cb8a71536125e8a723d22be51876df584e9d9b8ff577877c4c59de",
-				"reason": "Dispatches the zero-argument project overview operation."
+				"definition": "99a5afd915176506e32bbf0c7c0352db1ce862a3cca43c1871f72226e2a5aa81",
+				"reason": "Retains typed local operation errors and main’s visual mockup runner wiring."
 			},
 			"previousReviews": [
 				{
@@ -6487,6 +6553,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
 					"definition": "6fb689a2ebd20a1a1bf5c2b17218bf0dc19ac9534b94d10c69c6d708efa61da3",
 					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.local-operations, written by luna); messages and behavior unchanged."
+				},
+				{
+					"commit": "caea83354142413dd97edae29bdd055924c9847b",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "24abc5d2f2cb8a71536125e8a723d22be51876df584e9d9b8ff577877c4c59de",
+					"reason": "Dispatches the zero-argument project overview operation."
 				}
 			]
 		},
@@ -6583,13 +6655,13 @@
 			"unit": "desktop.service.client-projects",
 			"from": "packages/desktop/src/services/ClientProjectsService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.ts",
-			"definition": "e33e2814bb995021dd73731aa44b096ceece36666bbc1eff23182d29ebabca58",
+			"definition": "2eec45df27bbd4b0606ecd327b331d895968afdb69b378ee1260108eab975741",
 			"relocationDefinition": "e7b1ac7d1e24d5fb3626b6072183bfc29bf27d362eca39ba35c3a254b3da4f42",
 			"review": {
-				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.ts",
-				"reason": "Use the same mockup authoring and renderer in an authorized remote project session.",
-				"definition": "e33e2814bb995021dd73731aa44b096ceece36666bbc1eff23182d29ebabca58"
+				"definition": "2eec45df27bbd4b0606ecd327b331d895968afdb69b378ee1260108eab975741",
+				"reason": "Preserves the typed stale-session error and provides the responsive mockup runner to remote clients."
 			},
 			"previousReviews": [
 				{
@@ -6603,6 +6675,12 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.ts",
 					"definition": "97a9d5e3ee7a98c2b67bc0d75f49d92e21d19c3a8203accfaa8b03930e3dbcd3",
 					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.client-projects, written by luna); messages and behavior unchanged."
+				},
+				{
+					"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.ts",
+					"reason": "Use the same mockup authoring and renderer in an authorized remote project session.",
+					"definition": "e33e2814bb995021dd73731aa44b096ceece36666bbc1eff23182d29ebabca58"
 				}
 			]
 		},
@@ -6685,13 +6763,13 @@
 			"unit": "workflow.create-project",
 			"from": "src/workflows/create-project/createProject.ts",
 			"to": "src/cli/program/create-project/createProject.ts",
-			"definition": "42e9bf2ed78903f643705f75d3593a332bc3e8e4d953ee86c77cd2dece3d4fa9",
+			"definition": "510ad64c095c87c65a33c574be7f047435085c9cf643455be28dbf8a4b763daf",
 			"relocationDefinition": "079d03bf5f45ed18001faf540c6fe2ea44ec45252b43225525d9e377022a84d1",
 			"review": {
-				"commit": "d07eac3753950f0f30df3242830668d4c3bcbfc8",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "src/cli/program/create-project/createProject.ts",
-				"definition": "42e9bf2ed78903f643705f75d3593a332bc3e8e4d953ee86c77cd2dece3d4fa9",
-				"reason": "Validates and forwards the optional game engine for project generation."
+				"definition": "510ad64c095c87c65a33c574be7f047435085c9cf643455be28dbf8a4b763daf",
+				"reason": "Keeps the expected dimension error and passes static app adapters and game engines into scaffold generation."
 			},
 			"previousReviews": [
 				{
@@ -6711,6 +6789,12 @@
 					"path": "src/cli/program/create-project/createProject.ts",
 					"definition": "4d7ca85277a9378e2953b14ae5872cc691d87a51af224736fa5a0c2a63b057b1",
 					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-workflow.create-project, written by haiku); messages and behavior unchanged."
+				},
+				{
+					"commit": "d07eac3753950f0f30df3242830668d4c3bcbfc8",
+					"path": "src/cli/program/create-project/createProject.ts",
+					"definition": "42e9bf2ed78903f643705f75d3593a332bc3e8e4d953ee86c77cd2dece3d4fa9",
+					"reason": "Validates and forwards the optional game engine for project generation."
 				}
 			]
 		},

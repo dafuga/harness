@@ -6491,6 +6491,20 @@
 			"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
 			"reason": "Verify all approved captures in the pinned immutable plan read and bind the source digest.",
 			"definition": "cccc29d9017ea8eb55f03bb81a10c3a88aa186d38f02fe07d9aa8ef06948f205"
+		},
+		{
+			"unit": "desktop.function.prepare-run",
+			"name": "prepareRun",
+			"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+			"reason": "Use the selected mockup workflow while retaining named preparation failures.",
+			"definition": "0c662de9e24bbe25944e0d55dbd7fcf05f7bcefe96bcf11546c94d3ad67265c5"
+		},
+		{
+			"unit": "function.scenario-coverage",
+			"name": "scenarioCoverage",
+			"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+			"reason": "Validate video graphs in full verification and defer visual evidence in Lite.",
+			"definition": "d883e835ab25c02a1d3e9496c9b81d53e81c0deae9ad5b0967a762f4032699b2"
 		}
 	],
 	"retiredOwners": [
