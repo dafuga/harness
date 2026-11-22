@@ -77,12 +77,13 @@ test('a new parent keeps original clip metadata and admits only successful exact
 	await withTempRepo(async ({ root, git }) => {
 		const f = await videoReferenceFixture(root, git),
 			attach = new EvidenceAttachService(root);
+		const scope = scopeFailure(f.capture.video!.unit);
 		const scoped = referenceRecord({
 			source: f.record.source,
 			capture: f.capture,
 			pointers: f.pointers,
 			components: f.record.components,
-			failures: [scopeFailure(f.capture.video!.unit)]
+			failures: [scope, scope]
 		});
 		await attach.attach(scoped.source.commit, await saveVideoParent(root, scoped));
 		const child = await reusedVideoParent(root, git, scoped);
