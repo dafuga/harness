@@ -2,7 +2,7 @@
 	"name": "tracker-native-piped-json",
 	"goal": "Native harness tracker --json output reaches a piped reader whole (no truncation at the 64 KiB pipe buffer), so tracker-alert.py and agents can parse list --flagged --json after the cutover",
 	"createdAt": "2026-11-22T01:18:44.591Z",
-	"updatedAt": "2026-11-22T01:18:44.591Z",
+	"updatedAt": "2026-11-22T01:25:42.772Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -11,12 +11,16 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-22T01:25:41.653Z",
+			"evidence": "Failing: native 'harness tracker list --flagged --json' read through a pipe stops at 64 KiB multiples (294912/262145/360449/98304 of 418376 bytes against a staged hub copy, 01:17Z); file redirect is whole. Expected: whole JSON for piped readers such as ~/chief-of-staff/bin/tracker-alert.py. Repro: compiled harness cf47b4ea37 against a native hub rehearsal copy."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-22T01:25:42.772Z",
+			"evidence": "The existing piped-JSON case in test/cli-output.e2e.test.ts covers 'units graph' only, which goes through the commander path after pipedOutput(). The tracker fast path in runCli returned before pipedOutput(), and the native tracker tests (tracker-node e2e) read short outputs, so none crossed 64 KiB through a pipe. Added: native tracker case with a loopback API fixture (test/support/trackerNativeJsonFixture.ts) returning >256 KiB."
 		},
 		{
 			"id": "red",
