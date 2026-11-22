@@ -1,0 +1,1 @@
+{"event":"loop.created","timestamp":"2026-11-22T01:18:44.591Z","name":"tracker-native-piped-json","goal":"Native harness tracker --json output reaches a piped reader whole (no truncation at the 64 KiB pipe buffer), so tracker-alert.py and agents can parse list --flagged --json after the cutover","template":"bug-fix","templateLineage":["bug-fix"]}
