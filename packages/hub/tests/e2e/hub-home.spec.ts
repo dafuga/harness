@@ -100,7 +100,7 @@ async function dialogs(page: Page, position: CapturePosition, fixture: HomeFixtu
 }
 
 async function agentChat(page: Page, position: CapturePosition, fixture: HomeFixture) {
-	const dialog = page.getByRole('dialog', { name: 'Agents', exact: true });
+	const dialog = page.getByRole('dialog'); // titled by the agent once the phone chat opens
 	await dialog
 		.getByRole('button', { name: /Chief of Staff/ })
 		.first()
