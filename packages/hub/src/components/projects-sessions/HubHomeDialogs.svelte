@@ -3,12 +3,12 @@
 <!-- @harness-uid u_6kpzjxqlbp -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import Modal from '../../../../reports/src/components/Modal.svelte';
-	import HarnessIcon from '../../../../reports/src/components/explorer-ui/HarnessIcon.svelte';
+	import Modal from '$reports/components/Modal.svelte';
+	import HarnessIcon from '$reports/components/explorer-ui/HarnessIcon.svelte';
 	import type {
 		HomeChatReceipt,
 		HomeSection
-	} from '../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
+	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { sections, workSummary, count } from './hubHomePresentation';
 	import type {
 		HomeView,

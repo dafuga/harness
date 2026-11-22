@@ -9,8 +9,8 @@ import type {
 	HomeSection,
 	HomeSubscription,
 	OwnerHomeSnapshot
-} from '../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
-import type { OverviewSnapshot } from '../../../../reports/src/lib/projects-sessions/project-overview/projectOverview.types';
+} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
 import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
 import type { soonestWork } from './hubHomePresentation';
 

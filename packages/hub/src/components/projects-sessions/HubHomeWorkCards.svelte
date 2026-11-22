@@ -2,10 +2,10 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_yo3goi2ees -->
 <script lang="ts">
-	import { shortCommit } from '../../../../reports/src/helpers/strings/shortCommit';
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 	import { resolve } from '$app/paths';
-	import EmptyState from '../../../../reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte';
-	import { statusLabel } from '../../../../reports/src/components/projects-sessions/project-overview/projectOverviewPresentation';
+	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
+	import { statusLabel } from '$reports/components/projects-sessions/project-overview/projectOverviewPresentation';
 	import {
 		count,
 		planLabels,

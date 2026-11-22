@@ -3,8 +3,8 @@
 <!-- @harness-uid u_gtrdllvpk7 -->
 <script lang="ts">
 	import { SvelteMap } from 'svelte/reactivity';
-	import EmptyState from '../../../../reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte';
-	import type { HomeRun } from '../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
+	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
+	import type { HomeRun } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { runDay, runTime } from './hubHomePresentation';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 

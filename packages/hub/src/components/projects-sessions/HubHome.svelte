@@ -9,7 +9,7 @@
 		HomeChatInput,
 		HomeChatReceipt,
 		HomeSection
-	} from '../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
+	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { onMount, tick } from 'svelte';
 	import { browserContext } from '../../utils/development-tooling/browserContext';
 	import { watchWhileVisible } from '../../routes/tracker-overview/overviewClient';

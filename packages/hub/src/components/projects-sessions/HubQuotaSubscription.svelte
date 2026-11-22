@@ -2,7 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_lulgtb22gp -->
 <script lang="ts">
-	import type { HomeSubscription } from '../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
+	import type { HomeSubscription } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import {
 		providerNames,
 		relativeWhen,

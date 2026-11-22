@@ -1,4 +1,4 @@
-import type { OwnerHomeSnapshot } from '../../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
+import type { OwnerHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import {
 	overviewKey,
 	OVERVIEW_TTL_MS,

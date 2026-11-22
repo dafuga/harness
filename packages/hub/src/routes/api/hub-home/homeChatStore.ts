@@ -2,7 +2,7 @@ import type {
 	HomeChatInput,
 	HomeChatReceipt,
 	HomeChatStatus
-} from '../../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
+} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 
 const expiry = 2 * 60 * 1000;
 const retain = 24 * 60 * 60 * 1000;

@@ -1,7 +1,7 @@
 import type {
 	HomeAgent,
 	HomeChatInput
-} from '../../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
+} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { ZodError } from 'zod';
 import { hubHttpFailure } from '../[...path]/hub-api-controller/hubHttp';
 import { readOverviewText } from '../tracker-overview/trackerOverviewInput';

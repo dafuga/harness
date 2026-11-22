@@ -2,8 +2,8 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_jn5w4wj4m5 -->
 <script lang="ts">
-	import EmptyState from '../../../../reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte';
-	import type { HomeSubscription } from '../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
+	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
+	import type { HomeSubscription } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 	import HubQuotaSubscription from './HubQuotaSubscription.svelte';
 	let {

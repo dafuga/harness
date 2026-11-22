@@ -3,12 +3,12 @@
 <!-- @harness-uid u_yclqwrgobq -->
 <script lang="ts">
 	import { untrack } from 'svelte';
-	import { shortCommit } from '../../../../reports/src/helpers/strings/shortCommit';
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 	import type { ProjectSummary } from 'collaboration';
 	import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
 	import type { CatalogEntity } from '../../../../desktop/src/models/development-tooling/DesktopEntity.types';
 	import { resolve } from '$app/paths';
-	import EmptyState from '../../../../reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte';
+	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import { inventorySummary, projectInventory } from './hubHomeProjects';
 	import { count, when } from './hubHomePresentation';
 	import type { ReadHomeProject } from './hubHomeView.types';

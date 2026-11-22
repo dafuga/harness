@@ -2,9 +2,9 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_fahyrdozii -->
 <script lang="ts">
-	import EmptyState from '../../../../reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte';
-	import ProjectOverview from '../../../../reports/src/components/projects-sessions/project-overview/ProjectOverview.svelte';
-	import { statusLabel } from '../../../../reports/src/components/projects-sessions/project-overview/projectOverviewPresentation';
+	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
+	import ProjectOverview from '$reports/components/projects-sessions/project-overview/ProjectOverview.svelte';
+	import { statusLabel } from '$reports/components/projects-sessions/project-overview/projectOverviewPresentation';
 	import { workEta } from './hubHomePresentation';
 	import type { HomeView } from './hubHomeView.types';
 	import HubHomeRow from './HubHomeRow.svelte';
