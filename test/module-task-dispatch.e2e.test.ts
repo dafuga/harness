@@ -12,7 +12,8 @@ test('a Claude quota rejection pauses the next dispatch with exit 75 and no prov
 		await f.cli(['add', '--input', await f.input(explicit)]);
 		await f.cli(['add', '--input', await f.input({ ...explicit, id: 'orders-retry' })]);
 		await writeFile(join(f.root, 'mode'), 'quota');
-		expect((await f.cli(['worker', '--worker', 'owner', '--once'], false)).exitCode).toBe(1);
+		const rejected = await f.cli(['worker', '--worker', 'owner', '--once', '--json'], false);
+		expect(JSON.parse(rejected.stdout).result.error).toBe('Claude quota exhausted.');
 		await writeFile(join(f.root, 'mode'), '');
 		const blocked = await f.cli(['worker', '--worker', 'owner', '--once', '--json'], false);
 		expect(blocked.exitCode).toBe(75);
