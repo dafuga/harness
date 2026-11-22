@@ -7,9 +7,39 @@ const minimumFirstTryRate = 0.8;
 export function taskRunReport(runRecords: RunRecord[]) {
 	return {
 		runRecords,
+		runsByModel: modelRuns(runRecords),
 		byModelTaskDifficulty: groupedRuns(runRecords, true),
 		recommendations: recommendModels(runRecords)
 	};
+}
+
+/** Failures caused by the machine or provider account, not by the model's work. */
+const infraCauses = new Set([
+	'quota',
+	'provider-error',
+	'workspace-error',
+	'cancelled',
+	'abandoned'
+]);
+
+function infraFailure(run: RunRecord): boolean {
+	return run.outcome !== 'done' && infraCauses.has(run.rejectionCause ?? '');
+}
+
+function modelRuns(runRecords: RunRecord[]) {
+	const groups = new Map<string, RunRecord[]>();
+	for (const run of runRecords) {
+		const key = JSON.stringify([run.provider, run.model, run.effort]);
+		groups.set(key, [...(groups.get(key) ?? []), run]);
+	}
+	return [...groups.entries()]
+		.sort(([a], [b]) => a.localeCompare(b))
+		.map(([, group]) => ({
+			provider: group[0].provider,
+			model: group[0].model,
+			effort: group[0].effort,
+			...summarize(group)
+		}));
 }
 
 function groupedRuns(runRecords: RunRecord[], byMeasuredDifficulty: boolean) {
@@ -45,6 +75,8 @@ function summarize(group: RunRecord[]) {
 	const accepted = settled.filter((run) => run.outcome === 'done');
 	const firstTry = accepted.filter((run) => run.firstTry).length;
 	const firstRuns = settled.filter((run) => run.attempt === 1).length;
+	const infra = settled.filter(infraFailure);
+	const ranFirst = settled.filter((run) => run.attempt === 1 && !infraFailure(run)).length;
 	const allCost = costs(group);
 	const settledCost = costs(settled);
 	return {
@@ -52,7 +84,11 @@ function summarize(group: RunRecord[]) {
 		accepted: accepted.length,
 		firstTry,
 		firstTryRate: firstRuns ? firstTry / firstRuns : null,
+		firstTryRateWhenRan: ranFirst ? firstTry / ranFirst : null,
 		acceptanceRate: settled.length ? accepted.length / settled.length : null,
+		infraFailures: infra.length,
+		infraFailureRate: settled.length ? infra.length / settled.length : null,
+		infraFailuresByCause: frequencies(infra.map((run) => run.rejectionCause!)),
 		retryRuns: group.filter((run) => (run.retries ?? 0) > 0).length,
 		reworked: accepted.filter((run) => run.reworked).length,
 		outcomes: frequencies(group.map((run) => run.outcome)),

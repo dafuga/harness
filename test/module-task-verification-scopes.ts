@@ -40,8 +40,14 @@ export const moduleTaskVerificationScopes: Record<string, VerificationScope> = {
 					'contract-admission',
 				'app projects include SvelteKit and specification files': 'contract-admission',
 				'library projects include Bun TypeScript test structure': 'contract-admission',
-				'generated app code and configuration obey their formatter settings': 'contract-admission',
-				'generated lib code and configuration obey their formatter settings': 'contract-admission'
+				'static apps scaffold a prerendered build while default apps use adapter-auto':
+					'contract-admission',
+				'project creation writes a static app and rejects unsupported adapter requests before writing':
+					'contract-admission',
+				'generated app code and testing foundations obey their formatter and lint settings':
+					'contract-admission',
+				'generated lib code and testing foundations obey their formatter and lint settings':
+					'contract-admission'
 			},
 			'test/adapters/agents-providers/module-task-runner.test.ts': {
 				'Claude and Codex launch exact models and intelligence without shell interpolation':
@@ -53,11 +59,24 @@ export const moduleTaskVerificationScopes: Record<string, VerificationScope> = {
 				'a completed CLI run that reports another model is rejected': 'contract-admission',
 				'public claude usage is retained without guessing absent counters': 'usage-pricing',
 				'public codex usage is retained without guessing absent counters': 'usage-pricing',
-				'failed turns preserve available usage for cost attribution': 'usage-pricing'
+				'failed turns preserve available usage for cost attribution': 'usage-pricing',
+				'"Claude task failed" is a named ModuleTaskRunError': 'contract-admission',
+				'"Claude quota exhausted." is a named ModuleTaskRunError': 'contract-admission',
+				'"Claude was denied a required tool" is a named ModuleTaskRunError': 'contract-admission',
+				'"Claude ran a different model." is a named ModuleTaskRunError': 'contract-admission',
+				'"Codex task failed" is a named ModuleTaskRunError': 'contract-admission',
+				'"Codex ran a different model." is a named ModuleTaskRunError': 'contract-admission'
+			},
+			'test/adapters/agents-providers/managed-provider-docker.test.ts': {
+				'Docker command preserves argv and uses a task-owned workspace volume and bounded tmpfs':
+					'provider-platform',
+				'only explicit Linux uses a pinned local image, and macOS tooling requires Darwin':
+					'provider-platform'
 			},
 			'test/adapters/agents-providers/module-task-worktree-adapter.test.ts': {
 				'submission checkpoint preserves source HEAD and both staged and unstaged work':
-					'contract-admission'
+					'contract-admission',
+				'a task worktree whose HEAD moved is refused with its named error': 'contract-admission'
 			},
 			'test/commands/agents-providers/module-task.test.ts': {
 				'module task commands retain the existing evidence-based task check': 'contract-admission'
@@ -112,6 +131,31 @@ export const moduleTaskVerificationScopes: Record<string, VerificationScope> = {
 				'explicit Claude quota failure never silently substitutes another model': 'quota-fallback',
 				'competing workers claim once and writes outside the module require review as failed':
 					'owner-recovery'
+			},
+			'test/services/agents-providers/module-task-acceptance.test.ts': {
+				'acceptance refuses a submission without a passing record of a commit that carries it':
+					'verified-acceptance',
+				'a verified submission is accepted once and a resent verdict replays the recorded one':
+					'verified-acceptance'
+			},
+			'test/services/agents-providers/module-task-preflight.test.ts': {
+				'an exhausted provider quota blocks dispatch until its reset without charging an attempt':
+					'dispatch-preflight',
+				'a cooldown without a reported reset pauses for the default window only':
+					'dispatch-preflight',
+				'missing required tools block only the tasks that need them': 'dispatch-preflight',
+				'an unwritable task worktree directory blocks before any claim (EPERM, EACCES)':
+					'dispatch-preflight',
+				'a task queued after the preflight read is not claimed until its own preflight':
+					'dispatch-preflight'
+			},
+			'test/services/agents-providers/module-task-run-metrics.test.ts': {
+				'per-model metrics separate machine and quota failures from the model quality rate':
+					'run-records'
+			},
+			'test/module-task-dispatch.e2e.test.ts': {
+				'a Claude quota rejection pauses the next dispatch with exit 75 and no provider call':
+					'dispatch-preflight'
 			},
 			'test/analytics-attribution.e2e.test.ts': {
 				'failed commands and incomplete checks are recorded without supplied text':

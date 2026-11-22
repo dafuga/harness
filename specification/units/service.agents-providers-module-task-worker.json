@@ -10,16 +10,31 @@
 	"owns": {
 		"source": [
 			"src/services/agents-providers/ModuleTaskWorkerService.ts",
-			"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+			"src/services/agents-providers/module-task-worker-service/preflightClaim.ts",
+			"src/services/agents-providers/module-task-worker-service/providerCooldown.ts",
+			"src/services/agents-providers/module-task-worker-service/providerCooldown.types.ts",
+			"src/services/agents-providers/module-task-worker-service/taskClaim.ts",
+			"src/services/agents-providers/module-task-worker-service/taskClaim.types.ts",
+			"src/services/agents-providers/module-task-worker-service/taskPreflight.ts"
 		],
 		"symbols": [
 			"ModuleTaskWorkerService",
 			"ModuleTaskWorkerService.constructor",
 			"ModuleTaskWorkerService.once",
+			"preflightClaim",
+			"defaultQuotaPauseMs",
+			"cooldownFile",
+			"readCooldowns",
+			"recordCooldown",
+			"ProviderCooldowns",
 			"pendingTaskResult",
+			"claimable",
 			"claimedTask",
 			"finishTask",
-			"taskWrites"
+			"taskWrites",
+			"TaskClaimOptions",
+			"workspacePreflight",
+			"taskBlockers"
 		]
 	},
 	"contract": {
@@ -69,6 +84,61 @@
 				"description": "Abort signal given to the runner as TaskRunInput.signal; the quota fallback checks it with throwIfAborted() before dispatching again. Defaults to AbortSignal.timeout(900000), which aborts after 900000 ms (15 minutes)."
 			},
 			{
+				"name": "preflightClaim.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "preflightClaim.repository",
+				"type": "ModuleTaskRepository",
+				"required": true
+			},
+			{
+				"name": "preflightClaim.worker",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "preflightClaim.modules",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "cooldownFile.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readCooldowns.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readCooldowns.now",
+				"type": "number",
+				"required": false
+			},
+			{
+				"name": "recordCooldown.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordCooldown.provider",
+				"type": "'claude' | 'codex'",
+				"required": true
+			},
+			{
+				"name": "recordCooldown.resetsAt",
+				"type": "number",
+				"required": false
+			},
+			{
+				"name": "recordCooldown.now",
+				"type": "number",
+				"required": false
+			},
+			{
 				"name": "pendingTaskResult.selection",
 				"type": "TaskSelection",
 				"required": true,
@@ -95,6 +165,21 @@
 					"/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
 					"/srv/harness/checkout/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0"
 				]
+			},
+			{
+				"name": "claimable.task",
+				"type": "ModuleTask",
+				"required": true
+			},
+			{
+				"name": "claimable.worker",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "claimable.modules",
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "claimedTask.queue",
@@ -199,6 +284,11 @@
 						"startedAt": "Sun Nov 15 08:47:10 2026"
 					}
 				]
+			},
+			{
+				"name": "claimedTask.runnable",
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "finishTask.queue",
@@ -488,6 +578,26 @@
 						"attempts": []
 					}
 				]
+			},
+			{
+				"name": "workspacePreflight.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "taskBlockers.task",
+				"type": "ModuleTask",
+				"required": true
+			},
+			{
+				"name": "taskBlockers.cooldowns",
+				"type": "ProviderCooldowns",
+				"required": true
+			},
+			{
+				"name": "taskBlockers.path",
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -772,6 +882,113 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "preflightClaim",
+				"inputs": [
+					{
+						"name": "preflightClaim.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "preflightClaim.repository",
+						"type": "ModuleTaskRepository",
+						"required": true
+					},
+					{
+						"name": "preflightClaim.worker",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "preflightClaim.modules",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "preflightClaim",
+						"type": "Promise<{ claim?: { value: ModuleTask | null; commit?: string }; blocked: string[] }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "cooldownFile",
+				"inputs": [
+					{
+						"name": "cooldownFile.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "cooldownFile",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readCooldowns",
+				"inputs": [
+					{
+						"name": "readCooldowns.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readCooldowns.now",
+						"type": "number",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "readCooldowns",
+						"type": "Promise<ProviderCooldowns>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordCooldown",
+				"inputs": [
+					{
+						"name": "recordCooldown.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordCooldown.provider",
+						"type": "'claude' | 'codex'",
+						"required": true
+					},
+					{
+						"name": "recordCooldown.resetsAt",
+						"type": "number",
+						"required": false
+					},
+					{
+						"name": "recordCooldown.now",
+						"type": "number",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordCooldown",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "pendingTaskResult",
 				"inputs": [
 					{
@@ -826,6 +1043,34 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "claimable",
+				"inputs": [
+					{
+						"name": "claimable.task",
+						"type": "ModuleTask",
+						"required": true
+					},
+					{
+						"name": "claimable.worker",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "claimable.modules",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "claimable",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "claimedTask",
@@ -933,6 +1178,11 @@
 								"startedAt": "Sun Nov 15 08:47:10 2026"
 							}
 						]
+					},
+					{
+						"name": "claimedTask.runnable",
+						"type": "unknown",
+						"required": true
 					}
 				],
 				"outputs": [
@@ -1341,6 +1591,52 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "workspacePreflight",
+				"inputs": [
+					{
+						"name": "workspacePreflight.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "workspacePreflight",
+						"type": "Promise<string[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "taskBlockers",
+				"inputs": [
+					{
+						"name": "taskBlockers.task",
+						"type": "ModuleTask",
+						"required": true
+					},
+					{
+						"name": "taskBlockers.cooldowns",
+						"type": "ProviderCooldowns",
+						"required": true
+					},
+					{
+						"name": "taskBlockers.path",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "taskBlockers",
+						"type": "Promise<string[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [

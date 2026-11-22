@@ -75,11 +75,18 @@ export class ModuleTaskCommand {
 				'Rejection cause: contract, verification, scope, quality, user-correction or other.'
 			)
 			.option('--reviewer <id>', 'Reviewer attribution, otherwise unattributed.')
+			.option(
+				'--evidence <commit>',
+				'Required to accept: a commit carrying the submission that a verify record proves.'
+			)
 			.option('--json')
-			.description('Accept a submission or preserve its work and requeue it with repair feedback.')
+			.description(
+				'Accept a verified submission or requeue it with repair feedback; resending a verdict replays it.'
+			)
 			.action(async (id, flags) => {
-				const { attempt, verdict, feedback, reviewer, cause } = flags;
-				print(await this.service.review(id, { attempt, verdict, feedback, reviewer, cause }));
+				const { attempt, verdict, feedback, reviewer, cause, evidence } = flags;
+				const input = { attempt, verdict, feedback, reviewer, cause, evidence };
+				print(await this.service.review(id, input));
 			});
 	}
 	private operations(task: Command): void {
@@ -104,10 +111,16 @@ export class ModuleTaskCommand {
 			.option('--watch')
 			.option('--json')
 			.description(
-				'Pick up matching assignments in isolated worktrees; watch polls until interrupted.'
+				'Preflight, then pick up matching assignments in isolated worktrees; exit 75 when blocked.'
 			)
 			.action(worker);
 	}
+}
+/** EX_TEMPFAIL: nothing was claimed because this machine cannot run the queued work now. */
+const blockedExit = 75;
+function setWorkerExit(status: string, watching: boolean): void {
+	if (status === 'failed') process.exitCode = 1;
+	else if (status === 'blocked' && !watching) process.exitCode = blockedExit;
 }
 function print(value: unknown): void {
 	console.log(JSON.stringify(value, null, 2));
@@ -132,7 +145,7 @@ async function worker(flags: WorkerFlags): Promise<void> {
 				controller.signal
 			);
 			print(result);
-			if (result.status === 'failed') process.exitCode = 1;
+			setWorkerExit(result.status, flags.watch === true);
 			if (!flags.watch || controller.signal.aborted) break;
 			await setTimeout(5000, undefined, { signal: controller.signal }).catch(() => {});
 		} while (!controller.signal.aborted);

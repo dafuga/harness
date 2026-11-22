@@ -6,6 +6,7 @@ import { z } from 'zod';
 import runRecordSchema from '../specification/loops/module-job-model-analytics/run-record-v1.schema.json';
 import { expect } from './verificationExpect';
 import { runHarness } from './support/cli';
+import { verifiedSubmission, verifiedTaskBaseline } from './support/moduleTaskEvidence';
 import { moduleTaskFixture } from './support/moduleTaskFixture';
 test('failed commands and incomplete checks are recorded without supplied text', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-attribution-'));
@@ -151,6 +152,7 @@ const expectedReviewedRuns = [
 ];
 
 async function reviewedTask(f: Awaited<ReturnType<typeof moduleTaskFixture>>) {
+	await verifiedTaskBaseline(f);
 	await f.feature();
 	await f.cli([
 		'add',
@@ -177,8 +179,11 @@ async function reviewedTask(f: Awaited<ReturnType<typeof moduleTaskFixture>>) {
 		'Private repair note marker'
 	];
 	await f.cli(reject);
-	await f.cli(reject, false);
+	expect(JSON.parse((await f.cli(reject)).stdout).replayed).toBe(true);
 	await f.cli(['worker', '--worker', 'owner', '--once']);
 	task = JSON.parse((await f.cli(['show', 'orders-validation'])).stdout).task;
-	await f.cli(['review', task.id, '--attempt', task.claim.token, '--verdict', 'accepted']);
+	const accept = ['review', task.id, '--attempt', task.claim.token, '--verdict', 'accepted'];
+	await f.cli(accept, false);
+	const evidence = await verifiedSubmission(f, task);
+	await f.cli([...accept, '--evidence', evidence.commit]);
 }

@@ -70,6 +70,7 @@ export class CheckRunService {
 					this.context.env.HARNESS_RESOURCE_PRIORITY ?? 'environment'
 				),
 				...(this.context.lite ? { cpus: 0.25, memoryMiB: 256 } : {}),
+				...(check.memoryMiB ? { memoryMiB: check.memoryMiB } : {}),
 				...(this.context.env.HARNESS_VERIFY_ENTITY ? { label: scopedVerificationLabel } : {})
 			},
 			(context) =>

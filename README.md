@@ -1129,11 +1129,32 @@ counters and charges are null. The price basis distinguishes a CLI-reported
 equivalent from a standard-rate estimate.
 
 Review a submitted claim with `harness task review TASK --attempt CLAIM_TOKEN
---verdict accepted`, or use `--verdict incomplete --cause verification
---feedback 'Repair needed'`.
+--verdict accepted --evidence COMMIT`, or use `--verdict incomplete --cause
+verification --feedback 'Repair needed'`.
+Acceptance needs proof from the start. `--evidence` names a commit that carries
+every file the submission changed, byte for byte, and that a stored, intact
+`harness verify run` record proves. The record must be a full pass, or a pass
+scoped with `--entity` to the task's own module. The review keeps the commit,
+record id and scope. One full record of a batch commit that carries several
+submissions can accept each of them, so a batch needs only one verification
+environment.
 An incomplete review commits the submitted work as the next attempt's repair base.
 Bounce rate is incomplete reviews divided by all accepted and incomplete reviews;
-execution failures count separately. Stale or duplicate reviews are refused.
+execution failures count separately. Stale reviews are refused. Resending the
+recorded verdict for an attempt returns it with `replayed: true`, so a driver that
+stopped after Harness recorded a verdict can read it back. A different verdict for
+a reviewed attempt is refused.
+
+Workers check the machine before they claim. An unwritable task worktree
+directory (EPERM or EACCES), a missing `requiredTools` executable such as
+`ffmpeg`, or a provider whose quota rejected a run until its reported reset
+blocks the dispatch. The default pause is 15 minutes. A blocked worker claims
+nothing, charges no attempt, prints `status: blocked` with the reasons and exits
+with 75 under `--once`. `analytics tasks` reports `runsByModel`. Each row separates
+infrastructure failures (quota, provider or CLI errors, workspace errors,
+cancellations and abandoned claims) from the model's work: `firstTryRate` counts
+every settled first attempt, and `firstTryRateWhenRan` leaves out attempts that
+failed because of infrastructure.
 
 Run a Phase 4 orchestration brief from its assigned worktree with Harness:
 

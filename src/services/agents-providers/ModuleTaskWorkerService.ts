@@ -15,7 +15,9 @@ import type { TaskRunInput } from '../../repositories/agents-providers/ModuleTas
 import { trackerHandoff } from '../../adapters/agents-providers/module-task-runner-adapter/trackerHandoff';
 import { ModuleTaskRepository } from '../../repositories/agents-providers/ModuleTaskRepository';
 import { ModuleTaskService } from './ModuleTaskService';
-import { claimedTask, finishTask } from './module-task-worker-service/taskClaim';
+import { finishTask } from './module-task-worker-service/taskClaim';
+import { preflightClaim } from './module-task-worker-service/preflightClaim';
+import { recordCooldown } from './module-task-worker-service/providerCooldown';
 /** Foreground workers claim atomically in a shared Git repository and preserve isolated review work. */
 export class ModuleTaskWorkerService {
 	private readonly repository: ModuleTaskRepository;
@@ -29,11 +31,11 @@ export class ModuleTaskWorkerService {
 	async once(worker: string, modules: string[] = [], signal = AbortSignal.timeout(900000)) {
 		if (!/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/.test(worker))
 			throw new Error('Worker must be a lowercase dotted or dashed identifier.');
-		const owner = await this.repository.owner();
-		const claim = await this.repository.update((queue) =>
-			claimedTask(queue, worker, modules, owner)
-		);
-		if (!claim.value) return { status: 'idle' as const };
+		const { claim, blocked } = await preflightClaim(this.root, this.repository, worker, modules);
+		if (!claim?.value)
+			return blocked.length
+				? { status: 'blocked' as const, problems: blocked }
+				: { status: 'idle' as const };
 		return this.execute(claim.value, claim.commit!, signal);
 	}
 	private async execute(task: ModuleTask, commit: string, signal: AbortSignal) {
@@ -95,14 +97,9 @@ export class ModuleTaskWorkerService {
 		try {
 			return { ...(await dispatchTaskAttempt(this.runner, input, executions)), fallback: false };
 		} catch (error) {
-			if (
-				task.model !== 'auto' ||
-				!error ||
-				typeof error !== 'object' ||
-				!('quotaRejected' in error) ||
-				error.quotaRejected !== true
-			)
-				throw error;
+			const quota = quotaRejection(error);
+			if (quota) await recordCooldown(this.root, input.provider, quota.resetsAt);
+			if (task.model !== 'auto' || !quota) throw error;
 			input.signal.throwIfAborted();
 			const choice: TaskSelection = { provider: 'codex', model: 'gpt-6-luna', intelligence: 'max' };
 			onFallback(choice);
@@ -119,4 +116,12 @@ export class ModuleTaskWorkerService {
 			};
 		}
 	}
+}
+
+/** A structured provider quota rejection, with the reset time the provider reported. */
+function quotaRejection(error: unknown): { resetsAt?: number } | undefined {
+	if (!error || typeof error !== 'object' || !('quotaRejected' in error)) return undefined;
+	if (error.quotaRejected !== true) return undefined;
+	const resetsAt = 'quotaResetsAt' in error ? error.quotaResetsAt : undefined;
+	return { resetsAt: typeof resetsAt === 'number' ? resetsAt : undefined };
 }
