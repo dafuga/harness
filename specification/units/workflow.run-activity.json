@@ -44,10 +44,7 @@
 				"type": "string",
 				"required": false,
 				"description": "The directory the checkout is found from, as a path. Defaults to process.cwd(), the directory the command runs in: Git gives the top level of the checkout there, and when Git gives none, the resolved directory itself is used.",
-				"examples": [
-					"/work/harness",
-					"/work/harness/src/workflows"
-				]
+				"examples": ["/work/harness", "/work/harness/src/workflows"]
 			},
 			{
 				"name": "showActivity.options",
@@ -89,10 +86,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The id of an agent registered in any checkout of this repository, as registerAgent returned it: it must match letters, digits, underscores, dots or dashes, and a malformed id, an unregistered one and one that has finished are all refused.",
-				"examples": [
-					"6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13",
-					"reviewer-evidence"
-				]
+				"examples": ["6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13", "reviewer-evidence"]
 			},
 			{
 				"name": "beatAgent.input",
@@ -112,10 +106,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The id of the registered agent that is ending, as registerAgent returned it: it is checked as the beatAgent id is, and an agent that has already finished is refused.",
-				"examples": [
-					"0b9e4d27-5a1f-4c3e-8d60-7f2a9c1b5e84",
-					"reviewer-evidence"
-				]
+				"examples": ["0b9e4d27-5a1f-4c3e-8d60-7f2a9c1b5e84", "reviewer-evidence"]
 			},
 			{
 				"name": "finishAgent.options",
@@ -173,9 +164,7 @@
 								"branch": "feature/activity-roster",
 								"task": "Writing the evidence grid tests",
 								"loop": "sol-12-cli-startup",
-								"units": [
-									"reports.component.evidence-grid"
-								],
+								"units": ["reports.component.evidence-grid"],
 								"unknownUnits": [],
 								"registeredAt": "2026-11-15T08:57:03.114Z",
 								"heartbeatAt": "2026-11-15T09:12:44.318Z",
@@ -214,9 +203,7 @@
 									"complete": 0,
 									"open": 1,
 									"lastUsedAt": "2026-11-02T00:17:26.223Z",
-									"names": [
-										"sol-12-cli-startup"
-									]
+									"names": ["sol-12-cli-startup"]
 								}
 							]
 						},
@@ -226,12 +213,8 @@
 								"subject": "Show agents in the activity roster",
 								"author": "Sam Rivera",
 								"committedAt": "2026-11-14T16:22:08+01:00",
-								"branches": [
-									"main"
-								],
-								"units": [
-									"workflow.run-activity"
-								],
+								"branches": ["main"],
+								"units": ["workflow.run-activity"],
 								"unitCount": 1,
 								"reasons": [
 									{
@@ -247,12 +230,8 @@
 								"subject": "Refuse a limit outside 1 to 200",
 								"author": "Sam Rivera",
 								"committedAt": "2026-11-13T10:04:51+01:00",
-								"branches": [
-									"main"
-								],
-								"units": [
-									"workflow.run-activity"
-								],
+								"branches": ["main"],
+								"units": ["workflow.run-activity"],
 								"unitCount": 1,
 								"reasons": [],
 								"reasonCount": 0,
@@ -263,9 +242,7 @@
 							{
 								"path": "src/workflows/projects-sessions/runActivity.ts",
 								"status": "modified",
-								"units": [
-									"workflow.run-activity"
-								],
+								"units": ["workflow.run-activity"],
 								"commit": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
 								"committedAt": "2026-11-14T16:22:08+01:00"
 							}
@@ -291,9 +268,7 @@
 									{
 										"path": "src/workflows/projects-sessions/runActivity.ts",
 										"status": "modified",
-										"units": [
-											"workflow.run-activity"
-										]
+										"units": ["workflow.run-activity"]
 									}
 								],
 								"truncated": false
@@ -321,9 +296,7 @@
 									"branch": "feature/activity-roster",
 									"task": "Writing the evidence grid tests",
 									"loop": "sol-12-cli-startup",
-									"units": [
-										"reports.component.evidence-grid"
-									],
+									"units": ["reports.component.evidence-grid"],
 									"unknownUnits": [],
 									"registeredAt": "2026-11-15T08:57:03.114Z",
 									"heartbeatAt": "2026-11-15T09:12:44.318Z",
@@ -342,10 +315,7 @@
 				"name": "activityRoot",
 				"type": "Promise<string>",
 				"description": "The absolute path of the checkout a command runs in: the top level of its Git checkout, or the resolved directory when it is outside Git.",
-				"examples": [
-					"/work/harness",
-					"/work/notes/inbox"
-				]
+				"examples": ["/work/harness", "/work/notes/inbox"]
 			},
 			{
 				"name": "showActivity",
@@ -374,9 +344,7 @@
 										"complete": 0,
 										"open": 1,
 										"lastUsedAt": "2026-11-02T00:17:26.223Z",
-										"names": [
-											"sol-12-cli-startup"
-										]
+										"names": ["sol-12-cli-startup"]
 									}
 								]
 							},
@@ -386,12 +354,8 @@
 									"subject": "Show agents in the activity roster",
 									"author": "Sam Rivera",
 									"committedAt": "2026-11-14T16:22:08+01:00",
-									"branches": [
-										"main"
-									],
-									"units": [
-										"workflow.run-activity"
-									],
+									"branches": ["main"],
+									"units": ["workflow.run-activity"],
 									"unitCount": 1,
 									"reasons": [
 										{
@@ -407,12 +371,8 @@
 									"subject": "Refuse a limit outside 1 to 200",
 									"author": "Sam Rivera",
 									"committedAt": "2026-11-13T10:04:51+01:00",
-									"branches": [
-										"main"
-									],
-									"units": [
-										"workflow.run-activity"
-									],
+									"branches": ["main"],
+									"units": ["workflow.run-activity"],
 									"unitCount": 1,
 									"reasons": [],
 									"reasonCount": 0,
@@ -423,9 +383,7 @@
 								{
 									"path": "src/workflows/projects-sessions/runActivity.ts",
 									"status": "modified",
-									"units": [
-										"workflow.run-activity"
-									],
+									"units": ["workflow.run-activity"],
 									"commit": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
 									"committedAt": "2026-11-14T16:22:08+01:00"
 								}
@@ -443,9 +401,7 @@
 										{
 											"path": "src/workflows/projects-sessions/runActivity.ts",
 											"status": "modified",
-											"units": [
-												"workflow.run-activity"
-											]
+											"units": ["workflow.run-activity"]
 										}
 									],
 									"truncated": false
@@ -473,9 +429,7 @@
 										"branch": "feature/activity-roster",
 										"task": "Writing the evidence grid tests",
 										"loop": "sol-12-cli-startup",
-										"units": [
-											"reports.component.evidence-grid"
-										],
+										"units": ["reports.component.evidence-grid"],
 										"unknownUnits": [],
 										"registeredAt": "2026-11-15T08:57:03.114Z",
 										"heartbeatAt": "2026-11-15T09:12:44.318Z",
@@ -519,9 +473,7 @@
 						"branch": "feature/activity-roster",
 						"task": "Writing the evidence grid tests",
 						"loop": "sol-12-cli-startup",
-						"units": [
-							"reports.component.evidence-grid"
-						]
+						"units": ["reports.component.evidence-grid"]
 					}
 				]
 			},
@@ -570,9 +522,7 @@
 								"branch": "feature/activity-roster",
 								"task": "Writing the evidence grid tests",
 								"loop": "sol-12-cli-startup",
-								"units": [
-									"reports.component.evidence-grid"
-								],
+								"units": ["reports.component.evidence-grid"],
 								"unknownUnits": [],
 								"registeredAt": "2026-11-15T08:57:03.114Z",
 								"heartbeatAt": "2026-11-15T09:12:44.318Z",
@@ -619,10 +569,7 @@
 						"type": "string",
 						"required": false,
 						"description": "The directory the checkout is found from, as a path. Defaults to process.cwd(), the directory the command runs in: Git gives the top level of the checkout there, and when Git gives none, the resolved directory itself is used.",
-						"examples": [
-							"/work/harness",
-							"/work/harness/src/workflows"
-						]
+						"examples": ["/work/harness", "/work/harness/src/workflows"]
 					}
 				],
 				"outputs": [
@@ -630,10 +577,7 @@
 						"name": "activityRoot",
 						"type": "Promise<string>",
 						"description": "The absolute path of the checkout a command runs in: the top level of its Git checkout, or the resolved directory when it is outside Git.",
-						"examples": [
-							"/work/harness",
-							"/work/notes/inbox"
-						]
+						"examples": ["/work/harness", "/work/notes/inbox"]
 					}
 				],
 				"errors": [],
@@ -684,9 +628,7 @@
 												"complete": 0,
 												"open": 1,
 												"lastUsedAt": "2026-11-02T00:17:26.223Z",
-												"names": [
-													"sol-12-cli-startup"
-												]
+												"names": ["sol-12-cli-startup"]
 											}
 										]
 									},
@@ -696,12 +638,8 @@
 											"subject": "Show agents in the activity roster",
 											"author": "Sam Rivera",
 											"committedAt": "2026-11-14T16:22:08+01:00",
-											"branches": [
-												"main"
-											],
-											"units": [
-												"workflow.run-activity"
-											],
+											"branches": ["main"],
+											"units": ["workflow.run-activity"],
 											"unitCount": 1,
 											"reasons": [
 												{
@@ -717,12 +655,8 @@
 											"subject": "Refuse a limit outside 1 to 200",
 											"author": "Sam Rivera",
 											"committedAt": "2026-11-13T10:04:51+01:00",
-											"branches": [
-												"main"
-											],
-											"units": [
-												"workflow.run-activity"
-											],
+											"branches": ["main"],
+											"units": ["workflow.run-activity"],
 											"unitCount": 1,
 											"reasons": [],
 											"reasonCount": 0,
@@ -733,9 +667,7 @@
 										{
 											"path": "src/workflows/projects-sessions/runActivity.ts",
 											"status": "modified",
-											"units": [
-												"workflow.run-activity"
-											],
+											"units": ["workflow.run-activity"],
 											"commit": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
 											"committedAt": "2026-11-14T16:22:08+01:00"
 										}
@@ -753,9 +685,7 @@
 												{
 													"path": "src/workflows/projects-sessions/runActivity.ts",
 													"status": "modified",
-													"units": [
-														"workflow.run-activity"
-													]
+													"units": ["workflow.run-activity"]
 												}
 											],
 											"truncated": false
@@ -783,9 +713,7 @@
 												"branch": "feature/activity-roster",
 												"task": "Writing the evidence grid tests",
 												"loop": "sol-12-cli-startup",
-												"units": [
-													"reports.component.evidence-grid"
-												],
+												"units": ["reports.component.evidence-grid"],
 												"unknownUnits": [],
 												"registeredAt": "2026-11-15T08:57:03.114Z",
 												"heartbeatAt": "2026-11-15T09:12:44.318Z",
@@ -873,10 +801,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The id of an agent registered in any checkout of this repository, as registerAgent returned it: it must match letters, digits, underscores, dots or dashes, and a malformed id, an unregistered one and one that has finished are all refused.",
-						"examples": [
-							"6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13",
-							"reviewer-evidence"
-						]
+						"examples": ["6f1c2a9e-3b7d-4e8a-9c41-2d5b8e7f0a13", "reviewer-evidence"]
 					},
 					{
 						"name": "beatAgent.input",
@@ -904,9 +829,7 @@
 								"branch": "feature/activity-roster",
 								"task": "Writing the evidence grid tests",
 								"loop": "sol-12-cli-startup",
-								"units": [
-									"reports.component.evidence-grid"
-								]
+								"units": ["reports.component.evidence-grid"]
 							}
 						]
 					}
@@ -928,10 +851,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The id of the registered agent that is ending, as registerAgent returned it: it is checked as the beatAgent id is, and an agent that has already finished is refused.",
-						"examples": [
-							"0b9e4d27-5a1f-4c3e-8d60-7f2a9c1b5e84",
-							"reviewer-evidence"
-						]
+						"examples": ["0b9e4d27-5a1f-4c3e-8d60-7f2a9c1b5e84", "reviewer-evidence"]
 					},
 					{
 						"name": "finishAgent.options",
@@ -1033,9 +953,7 @@
 										"branch": "feature/activity-roster",
 										"task": "Writing the evidence grid tests",
 										"loop": "sol-12-cli-startup",
-										"units": [
-											"reports.component.evidence-grid"
-										],
+										"units": ["reports.component.evidence-grid"],
 										"unknownUnits": [],
 										"registeredAt": "2026-11-15T08:57:03.114Z",
 										"heartbeatAt": "2026-11-15T09:12:44.318Z",
@@ -1080,9 +998,7 @@
 										"branch": "feature/activity-roster",
 										"task": "Writing the evidence grid tests",
 										"loop": "sol-12-cli-startup",
-										"units": [
-											"reports.component.evidence-grid"
-										],
+										"units": ["reports.component.evidence-grid"],
 										"unknownUnits": [],
 										"registeredAt": "2026-11-15T08:57:03.114Z",
 										"heartbeatAt": "2026-11-15T09:12:44.318Z",
@@ -1139,9 +1055,7 @@
 											"complete": 0,
 											"open": 1,
 											"lastUsedAt": "2026-11-02T00:17:26.223Z",
-											"names": [
-												"sol-12-cli-startup"
-											]
+											"names": ["sol-12-cli-startup"]
 										}
 									]
 								},
@@ -1151,12 +1065,8 @@
 										"subject": "Show agents in the activity roster",
 										"author": "Sam Rivera",
 										"committedAt": "2026-11-14T16:22:08+01:00",
-										"branches": [
-											"main"
-										],
-										"units": [
-											"workflow.run-activity"
-										],
+										"branches": ["main"],
+										"units": ["workflow.run-activity"],
 										"unitCount": 1,
 										"reasons": [
 											{
@@ -1172,12 +1082,8 @@
 										"subject": "Refuse a limit outside 1 to 200",
 										"author": "Sam Rivera",
 										"committedAt": "2026-11-13T10:04:51+01:00",
-										"branches": [
-											"main"
-										],
-										"units": [
-											"workflow.run-activity"
-										],
+										"branches": ["main"],
+										"units": ["workflow.run-activity"],
 										"unitCount": 1,
 										"reasons": [],
 										"reasonCount": 0,
@@ -1188,9 +1094,7 @@
 									{
 										"path": "src/workflows/projects-sessions/runActivity.ts",
 										"status": "modified",
-										"units": [
-											"workflow.run-activity"
-										],
+										"units": ["workflow.run-activity"],
 										"commit": "3f9a1c7e5b2d84f60a1c9e3d7b5f2a08c4e61d9b",
 										"committedAt": "2026-11-14T16:22:08+01:00"
 									}
@@ -1216,9 +1120,7 @@
 											{
 												"path": "src/workflows/projects-sessions/runActivity.ts",
 												"status": "modified",
-												"units": [
-													"workflow.run-activity"
-												]
+												"units": ["workflow.run-activity"]
 											}
 										],
 										"truncated": false
@@ -1246,9 +1148,7 @@
 											"branch": "feature/activity-roster",
 											"task": "Writing the evidence grid tests",
 											"loop": "sol-12-cli-startup",
-											"units": [
-												"reports.component.evidence-grid"
-											],
+											"units": ["reports.component.evidence-grid"],
 											"unknownUnits": [],
 											"registeredAt": "2026-11-15T08:57:03.114Z",
 											"heartbeatAt": "2026-11-15T09:12:44.318Z",

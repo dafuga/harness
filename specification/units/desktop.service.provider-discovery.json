@@ -16,9 +16,9 @@
 			"ProviderDiscoveryService",
 			"ProviderDiscoveryService.constructor",
 			"ProviderDiscoveryService.list",
+			"ProviderDiscoveryService.mockupRunner",
 			"ProviderDiscoveryService.select",
-			"ProviderUnavailableError",
-			"ProviderDiscoveryService.mockupRunner"
+			"ProviderUnavailableError"
 		]
 	},
 	"contract": {
@@ -35,29 +35,21 @@
 				"type": "ProviderId",
 				"required": true,
 				"description": "The ProviderId key used to choose a stored runner and discover its state. The type permits only codex or claude.",
-				"examples": [
-					"codex",
-					"claude"
-				]
+				"examples": ["codex", "claude"]
 			},
 			{
 				"name": "ProviderDiscoveryService.select.model",
 				"type": "string",
 				"required": true,
 				"description": "The model identifier matched exactly against an entry in the selected runner's discovered models. Selection throws if no discovered model has this ID.",
-				"examples": [
-					"claude-opus-5-5"
-				]
+				"examples": ["claude-opus-5-5"]
 			},
 			{
 				"name": "ProviderDiscoveryService.select.effort",
 				"type": "string | null",
 				"required": true,
 				"description": "The requested effort passed to validateModel for the selected model. Null or the empty string skips effort membership checking; any other truthy value must occur in that model's efforts.",
-				"examples": [
-					"xhigh",
-					null
-				]
+				"examples": ["xhigh", null]
 			}
 		],
 		"outputs": [
@@ -92,13 +84,28 @@
 				"name": "ProviderDiscoveryService.select",
 				"type": "Promise<AgentRunner>",
 				"description": "Returns the stored AgentRunner for the selected provider after discover() reports it available and validateModel accepts the model and effort. The value is a runner instance, not the discovered state."
+			},
+			{
+				"name": "ProviderDiscoveryService.mockupRunner",
+				"type": "Promise<AgentRunner>",
+				"description": "Resolves to the Claude runner after discovery reports it available for visual mockup authoring."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Runner discovery rejections propagate from list() or select(); select also throws when discovery reports an unavailable provider or model validation fails. Unavailable state uses state.reason ?? 'CLI unavailable.'; validation messages are 'The selected model is not available from this CLI.' and 'The selected model does not support this effort.'"
+				"description": "Runner discovery failures propagate without wrapping. mockupRunner also rejects if Claude is unavailable."
+			},
+			{
+				"name": "ProviderUnavailableError",
+				"type": "thrown",
+				"description": "The selected provider is unavailable. The message uses the discovery reason or “CLI unavailable.”"
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The requested model is unavailable or the selected model does not support the supplied effort."
 			}
 		],
 		"errorStatus": "declared",
@@ -145,6 +152,25 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "ProviderDiscoveryService.mockupRunner",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProviderDiscoveryService.mockupRunner",
+						"type": "Promise<AgentRunner>",
+						"description": "Resolves to the Claude runner after discovery reports it available for visual mockup authoring."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the discovery error, or with the reported reason when the Claude CLI is unavailable. Uses “Claude CLI is unavailable.” if discovery gives no reason."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
 				"name": "ProviderDiscoveryService.select",
 				"inputs": [
 					{
@@ -152,29 +178,21 @@
 						"type": "ProviderId",
 						"required": true,
 						"description": "The ProviderId key used to choose a stored runner and discover its state. The type permits only codex or claude.",
-						"examples": [
-							"codex",
-							"claude"
-						]
+						"examples": ["codex", "claude"]
 					},
 					{
 						"name": "ProviderDiscoveryService.select.model",
 						"type": "string",
 						"required": true,
 						"description": "The model identifier matched exactly against an entry in the selected runner's discovered models. Selection throws if no discovered model has this ID.",
-						"examples": [
-							"claude-opus-5-5"
-						]
+						"examples": ["claude-opus-5-5"]
 					},
 					{
 						"name": "ProviderDiscoveryService.select.effort",
 						"type": "string | null",
 						"required": true,
 						"description": "The requested effort passed to validateModel for the selected model. Null or the empty string skips effort membership checking; any other truthy value must occur in that model's efforts.",
-						"examples": [
-							"xhigh",
-							null
-						]
+						"examples": ["xhigh", null]
 					}
 				],
 				"outputs": [
@@ -186,29 +204,22 @@
 				],
 				"errors": [
 					{
+						"name": "ProviderUnavailableError",
+						"type": "thrown",
+						"description": "The selected provider is unavailable. The message uses the discovery reason or “CLI unavailable.”"
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The requested model is unavailable or the selected model does not support the supplied effort."
+					},
+					{
 						"name": "Error",
 						"type": "thrown",
-						"description": "select throws an Error with state.reason ?? 'CLI unavailable.' when discovery reports an unavailable provider. It also throws the exact model-not-found or unsupported-effort Error from validateModel; rejected discovery promises propagate from the runner."
+						"description": "Rejections from the selected runner’s discovery propagate without wrapping."
 					}
 				],
 				"errorStatus": "declared"
-			},
-			{
-				"name": "ProviderDiscoveryService.mockupRunner",
-				"inputs": [],
-				"outputs": [
-					{
-						"name": "ProviderDiscoveryService.mockupRunner",
-						"type": "unknown"
-					}
-				],
-				"errors": [
-					{
-						"name": "Error",
-						"type": "thrown"
-					}
-				],
-				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -261,10 +272,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-project-runs"
-	],
+	"scenarios": ["desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -1,1299 +1,1231 @@
 {
-  "schemaVersion": 1,
-  "id": "adapter.source-profile",
-  "uid": "u_bn7p57ftpt",
-  "kind": "adapter",
-  "title": "SourceProfileAdapter",
-  "responsibility": "Observes registered source operations in supported test runners while preserving call semantics, startup isolation and uninstrumented production builds.",
-  "responsibilityOrigin": "declared",
-  "status": "active",
-  "owns": {
-    "source": [
-      "src/adapters/verification-evidence/source-profile-adapter/SourceProfileAdapter.ts",
-      "src/adapters/verification-evidence/source-profile-adapter/SourceProfileAdapter.types.ts",
-      "src/adapters/verification-evidence/source-profile-adapter/bunPreload.ts",
-      "src/adapters/verification-evidence/source-profile-adapter/instrumentSource.ts",
-      "src/adapters/verification-evidence/source-profile-adapter/instrumentSource.types.ts",
-      "src/adapters/verification-evidence/source-profile-adapter/moduleInitialization.ts",
-      "src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts",
-      "src/adapters/verification-evidence/source-profile-adapter/profileRuntime.types.ts",
-      "src/adapters/verification-evidence/source-profile-adapter/runnerConfig.ts",
-      "src/adapters/verification-evidence/source-profile-adapter/runnerPlugins.js",
-      "src/adapters/verification-evidence/source-profile-adapter/runnerSelection.ts",
-      "src/adapters/verification-evidence/source-profile-adapter/vitestSetup.ts"
-    ],
-    "symbols": [
-      "SourceProfileAdapterConfig",
-      "SourceProfileAdapter",
-      "SourceProfileAdapter.constructor",
-      "SourceProfileAdapter.transform",
-      "SourceProfileAdapterConfig",
-      "Callable",
-      "Context",
-      "Edit",
-      "instrumentSource",
-      "Edit",
-      "Callable",
-      "Context",
-      "initializationEdits",
-      "Boundary",
-      "beginSourceScope",
-      "watchOperation",
-      "watchMethod",
-      "flushSourceProfiles",
-      "Boundary",
-      "sourceProfilePlugin",
-      "runnerConfiguration",
-      "nativeProfilePlugins",
-      "profileSelection",
-      "profileEnvironment"
-    ]
-  },
-  "contract": {
-    "origin": "declared",
-    "inputs": [
-      {
-        "name": "SourceProfileAdapter.constructor.config",
-        "type": "SourceProfileAdapterConfig",
-        "required": true,
-        "description": "Project root and registered unit manifests used to map realpaths of owned source files to eligible units. Only active units with a module target and a kind other than component, page, shell or layout are indexed, the fixed list of adapter and schema bootstrap ids is excluded, and a file owned by more than one eligible unit is never instrumented.",
-        "examples": [
-          {
-            "root": "/workspace/harness-app",
-            "units": [
-              {
-                "schemaVersion": 1,
-                "id": "service.evidence-ledger",
-                "uid": "u_q4m2v9tbhc",
-                "kind": "service",
-                "title": "EvidenceLedger",
-                "responsibility": "Appends verified evidence entries to the project ledger.",
-                "responsibilityOrigin": "declared",
-                "status": "active",
-                "owns": {
-                  "source": [
-                    "src/services/verification-evidence/EvidenceLedger.ts"
-                  ],
-                  "symbols": [
-                    "EvidenceLedger",
-                    "EvidenceLedger.append",
-                    "EvidenceLedger.count",
-                    "hashEvidence"
-                  ]
-                },
-                "contract": {
-                  "origin": "declared",
-                  "inputs": [],
-                  "outputs": [],
-                  "errors": [],
-                  "errorStatus": "declared",
-                  "operations": [],
-                  "initialization": []
-                },
-                "dependencies": [],
-                "runtime": {
-                  "kind": "module",
-                  "entry": "src/services/verification-evidence/EvidenceLedger.ts",
-                  "targets": [
-                    {
-                      "kind": "module",
-                      "entry": "src/services/verification-evidence/EvidenceLedger.ts"
-                    }
-                  ]
-                },
-                "scenarios": [
-                  "module-tasks"
-                ],
-                "budgets": {
-                  "size": "frozen",
-                  "complexity": "frozen",
-                  "performance": []
-                }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "SourceProfileAdapter.transform.source",
-        "type": "string",
-        "required": true,
-        "description": "Original module source text handed to the transform; instrumentation only inserts an observer import and wrapper calls, so authored bodies, call order and evaluation count are unchanged. The text is inspected only when the id resolves to exactly one eligible owner.",
-        "examples": [
-          "export function hashEvidence(text: string): string {\n\treturn text.trim();\n}\n",
-          "export const LEDGER_VERSION = 3;\n"
-        ]
-      },
-      {
-        "name": "SourceProfileAdapter.transform.id",
-        "type": "string",
-        "required": true,
-        "description": "Module address for the file: a file: URL, an /@fs/ path or a plain path with an optional query suffix, which is removed before the realpath lookup. Addresses that do not resolve to an existing file, resolve outside the project root or into node_modules, or do not end in .ts, .mts, .tsx, .js, .mjs or .jsx are not instrumented.",
-        "examples": [
-          "/workspace/harness-app/src/services/verification-evidence/EvidenceLedger.ts",
-          "file:///workspace/harness-app/src/services/verification-evidence/EvidenceLedger.ts?v=8f3c2a1d"
-        ]
-      },
-      {
-        "name": "instrumentSource.source",
-        "type": "string",
-        "required": true,
-        "description": "Original module source text to inspect; the result keeps authored bodies, call order and evaluation count, and it is null when no supported call, method or initialization boundary exists.",
-        "examples": [
-          "export function hashEvidence(text: string): string {\n\treturn text.trim();\n}\n",
-          "export const LEDGER_VERSION = 3;\n"
-        ]
-      },
-      {
-        "name": "instrumentSource.path",
-        "type": "string",
-        "required": true,
-        "description": "Absolute source filename passed to the TypeScript parser; its SHA-256 digest seeds the observer identifier, and initialization edits require it to end with one of the unit's owned source paths.",
-        "examples": [
-          "/workspace/harness-app/src/services/verification-evidence/EvidenceLedger.ts",
-          "/srv/ci/harness-app/src/services/verification-evidence/EvidenceLedger.ts"
-        ]
-      },
-      {
-        "name": "instrumentSource.unit",
-        "type": "ComponentManifest",
-        "required": true,
-        "description": "Registered unit whose owned source list, runtime module target, contract outputs and symbols decide which declarations are wrapped and which unit id and callable name each observation records.",
-        "examples": [
-          {
-            "schemaVersion": 1,
-            "id": "service.evidence-ledger",
-            "uid": "u_q4m2v9tbhc",
-            "kind": "service",
-            "title": "EvidenceLedger",
-            "responsibility": "Appends verified evidence entries to the project ledger.",
-            "responsibilityOrigin": "declared",
-            "status": "active",
-            "owns": {
-              "source": [
-                "src/services/verification-evidence/EvidenceLedger.ts"
-              ],
-              "symbols": [
-                "EvidenceLedger",
-                "EvidenceLedger.append",
-                "EvidenceLedger.count",
-                "hashEvidence"
-              ]
-            },
-            "contract": {
-              "origin": "declared",
-              "inputs": [],
-              "outputs": [],
-              "errors": [],
-              "errorStatus": "declared",
-              "operations": [],
-              "initialization": []
-            },
-            "dependencies": [],
-            "runtime": {
-              "kind": "module",
-              "entry": "src/services/verification-evidence/EvidenceLedger.ts",
-              "targets": [
-                {
-                  "kind": "module",
-                  "entry": "src/services/verification-evidence/EvidenceLedger.ts"
-                }
-              ]
-            },
-            "scenarios": [
-              "module-tasks"
-            ],
-            "budgets": {
-              "size": "frozen",
-              "complexity": "frozen",
-              "performance": []
-            }
-          }
-        ]
-      },
-      {
-        "name": "initializationEdits.file",
-        "type": "ts.SourceFile",
-        "required": true,
-        "description": "Parsed TypeScript source file whose top-level variable initializers must all be literal data and which must contain no functions or classes. Its file name must end with one of the unit's owned source paths for an initialization edit to be emitted."
-      },
-      {
-        "name": "initializationEdits.unit",
-        "type": "ComponentManifest",
-        "required": true,
-        "description": "Registered unit whose owned source paths and id define the initialize metadata; a unit with helper contracts or a bootstrap id produces no initialization edit.",
-        "examples": [
-          {
-            "schemaVersion": 1,
-            "id": "service.evidence-ledger",
-            "uid": "u_q4m2v9tbhc",
-            "kind": "service",
-            "title": "EvidenceLedger",
-            "responsibility": "Appends verified evidence entries to the project ledger.",
-            "responsibilityOrigin": "declared",
-            "status": "active",
-            "owns": {
-              "source": [
-                "src/services/verification-evidence/EvidenceLedger.ts"
-              ],
-              "symbols": [
-                "EvidenceLedger",
-                "EvidenceLedger.append",
-                "EvidenceLedger.count",
-                "hashEvidence"
-              ]
-            },
-            "contract": {
-              "origin": "declared",
-              "inputs": [],
-              "outputs": [],
-              "errors": [],
-              "errorStatus": "declared",
-              "operations": [],
-              "initialization": []
-            },
-            "dependencies": [],
-            "runtime": {
-              "kind": "module",
-              "entry": "src/services/verification-evidence/EvidenceLedger.ts",
-              "targets": [
-                {
-                  "kind": "module",
-                  "entry": "src/services/verification-evidence/EvidenceLedger.ts"
-                }
-              ]
-            },
-            "scenarios": [
-              "module-tasks"
-            ],
-            "budgets": {
-              "size": "frozen",
-              "complexity": "frozen",
-              "performance": []
-            }
-          }
-        ]
-      },
-      {
-        "name": "initializationEdits.watch",
-        "type": "string",
-        "required": true,
-        "description": "Generated identifier base that names the Begin and Finish observer locals; instrumentSource derives it from the first 12 hex digits of the source path's SHA-256 digest and appends underscores until the source text does not contain it.",
-        "examples": [
-          "__harnessWatch_9c41e0a7f5d2",
-          "__harnessWatch_9c41e0a7f5d2_"
-        ]
-      },
-      {
-        "name": "beginSourceScope.boundary",
-        "type": "Boundary",
-        "required": true,
-        "description": "Registered unit, operation name and async boundary metadata for an initialization scope; the collector receives the unit, a SHA-256 digest of the operation and the callable name, and argument values and results are never captured.",
-        "examples": [
-          {
-            "unit": "service.evidence-ledger",
-            "operation": "initialize:src/services/verification-evidence/EvidenceLedger.ts",
-            "asynchronous": false
-          }
-        ]
-      },
-      {
-        "name": "watchOperation.args",
-        "type": "never[]",
-        "required": false,
-        "default": "undefined (omitted)",
-        "description": "Argument list of a call to the wrapped operation; the proxy forwards it unchanged and records no argument values.",
-        "examples": [
-          []
-        ]
-      },
-      {
-        "name": "watchMethod.owner",
-        "type": "object",
-        "required": true,
-        "description": "Object or prototype whose own method descriptor will be observed; only an own data property holding a function is replaced, and accessor properties are never evaluated."
-      },
-      {
-        "name": "watchMethod.name",
-        "type": "string",
-        "required": true,
-        "description": "Method property name selected on the supplied owner; names that are absent, accessors or not own function-valued data properties are skipped without replacement.",
-        "examples": [
-          "append",
-          "count"
-        ]
-      },
-      {
-        "name": "watchMethod.boundary",
-        "type": "Boundary",
-        "required": true,
-        "description": "Registered unit, operation name and async boundary metadata for the replaced method; argument values and results are never captured.",
-        "examples": [
-          {
-            "unit": "service.evidence-ledger",
-            "operation": "EvidenceLedger.append",
-            "asynchronous": true
-          },
-          {
-            "unit": "service.evidence-ledger",
-            "operation": "EvidenceLedger.count",
-            "asynchronous": false
-          }
-        ]
-      },
-      {
-        "name": "sourceProfilePlugin.root",
-        "type": "string",
-        "required": true,
-        "description": "Project root whose realpath, specification/units registry and specification/scenarios manifest decide whether source profiling is selected; the plugin reads it only in Vite test mode.",
-        "examples": [
-          "/workspace/harness-app",
-          "/srv/ci/harness-app"
-        ]
-      },
-      {
-        "name": "runnerConfiguration.environment",
-        "type": "{ profileRoot: string }",
-        "required": true,
-        "description": "Runner context whose profileRoot names the project for the test-mode observer; the observer installs nothing unless Vite runs in test mode and a profile is selected.",
-        "examples": [
-          {
-            "profileRoot": "/workspace/harness-app"
-          },
-          {
-            "profileRoot": "/srv/ci/harness-app"
-          }
-        ]
-      },
-      {
-        "name": "nativeProfilePlugins.root",
+	"schemaVersion": 1,
+	"id": "adapter.source-profile",
+	"uid": "u_bn7p57ftpt",
+	"kind": "adapter",
+	"title": "SourceProfileAdapter",
+	"responsibility": "Observes registered source operations in supported test runners while preserving call semantics, startup isolation and uninstrumented production builds.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/verification-evidence/source-profile-adapter/SourceProfileAdapter.ts",
+			"src/adapters/verification-evidence/source-profile-adapter/SourceProfileAdapter.types.ts",
+			"src/adapters/verification-evidence/source-profile-adapter/bunPreload.ts",
+			"src/adapters/verification-evidence/source-profile-adapter/instrumentSource.ts",
+			"src/adapters/verification-evidence/source-profile-adapter/instrumentSource.types.ts",
+			"src/adapters/verification-evidence/source-profile-adapter/moduleInitialization.ts",
+			"src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts",
+			"src/adapters/verification-evidence/source-profile-adapter/profileRuntime.types.ts",
+			"src/adapters/verification-evidence/source-profile-adapter/runnerConfig.ts",
+			"src/adapters/verification-evidence/source-profile-adapter/runnerPlugins.js",
+			"src/adapters/verification-evidence/source-profile-adapter/runnerSelection.ts",
+			"src/adapters/verification-evidence/source-profile-adapter/vitestSetup.ts"
+		],
+		"symbols": [
+			"SourceProfileAdapterConfig",
+			"SourceProfileAdapter",
+			"SourceProfileAdapter.constructor",
+			"SourceProfileAdapter.transform",
+			"SourceProfileAdapterConfig",
+			"Callable",
+			"Context",
+			"Edit",
+			"instrumentSource",
+			"Edit",
+			"Callable",
+			"Context",
+			"initializationEdits",
+			"Boundary",
+			"beginSourceScope",
+			"watchOperation",
+			"watchMethod",
+			"flushSourceProfiles",
+			"Boundary",
+			"sourceProfilePlugin",
+			"runnerConfiguration",
+			"nativeProfilePlugins",
+			"profileSelection",
+			"profileEnvironment"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "SourceProfileAdapter.constructor.config",
+				"type": "SourceProfileAdapterConfig",
+				"required": true,
+				"description": "Project root and registered unit manifests used to map realpaths of owned source files to eligible units. Only active units with a module target and a kind other than component, page, shell or layout are indexed, the fixed list of adapter and schema bootstrap ids is excluded, and a file owned by more than one eligible unit is never instrumented.",
+				"examples": [
+					{
+						"root": "/workspace/harness-app",
+						"units": [
+							{
+								"schemaVersion": 1,
+								"id": "service.evidence-ledger",
+								"uid": "u_q4m2v9tbhc",
+								"kind": "service",
+								"title": "EvidenceLedger",
+								"responsibility": "Appends verified evidence entries to the project ledger.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": ["src/services/verification-evidence/EvidenceLedger.ts"],
+									"symbols": [
+										"EvidenceLedger",
+										"EvidenceLedger.append",
+										"EvidenceLedger.count",
+										"hashEvidence"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"errorStatus": "declared",
+									"operations": [],
+									"initialization": []
+								},
+								"dependencies": [],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/services/verification-evidence/EvidenceLedger.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/services/verification-evidence/EvidenceLedger.ts"
+										}
+									]
+								},
+								"scenarios": ["module-tasks"],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"name": "SourceProfileAdapter.transform.source",
 				"type": "string",
-        "required": true,
-        "description": "Project root path passed as the Vite config root and as profileRoot for the test runner configuration; the loader uses it without validating it first.",
-        "examples": [
-          "/workspace/harness-app",
-          "/srv/ci/harness-app"
-        ]
-      },
-      {
-        "name": "profileSelection.root",
-        "type": "string",
-        "required": true,
-        "description": "Project root whose specification/units registry must exist and whose realpath becomes the selected root. A missing registry, no profile or evidence directory, or an explicit benchmark boundary yields null instead of an error.",
-        "examples": [
-          "/workspace/harness-app",
-          "/srv/ci/harness-app"
-        ]
-      },
-      {
-        "name": "profileEnvironment.root",
-        "type": "string",
-        "required": true,
-        "description": "Canonical selected project root that is written to HARNESS_RUNTIME_PROFILE_ROOT for the runner and its native children.",
-        "examples": [
-          "/workspace/harness-app"
-        ]
-      },
-      {
-        "name": "profileEnvironment.directory",
-        "type": "string",
-        "required": true,
-        "description": "Profile directory from HARNESS_RUNTIME_PROFILE_DIR or the evidence directory, copied into the environment for immutable runtime capture chunks; the value is not created or checked here.",
-        "examples": [
-          "/workspace/harness-app/.harness/evidence/runtime-profile",
-          "/workspace/harness-app/.harness/evidence/run-2026-11-14"
-        ]
-      }
-    ],
-    "outputs": [
-      {
-        "name": "SourceProfileAdapter.transform",
-        "type": "string | null",
-        "description": "Instrumented module text for the single eligible owner of the resolved id, or null when the id has no unique owner inside the project root, uses an unsupported extension, or has no supported observation boundary.",
-        "examples": [
-          null,
-          "\nimport { watchOperation as __harnessWatch_9c41e0a7f5d2, watchMethod as __harnessWatch_9c41e0a7f5d2Method, beginSourceScope as __harnessWatch_9c41e0a7f5d2Begin } from \"file:///workspace/harness-app/src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts\";\nexport function hashEvidence(text: string): string {\n\treturn text.trim();\n}\nhashEvidence = __harnessWatch_9c41e0a7f5d2(hashEvidence, {\"unit\":\"service.evidence-ledger\",\"operation\":\"hashEvidence\",\"asynchronous\":false});\n"
-        ]
-      },
-      {
-        "name": "instrumentSource",
-        "type": "string | null",
-        "description": "Full source text after the observer import header and the wrapper or initialization edits are applied, or null when the module has no supported call, method or initialization boundary.",
-        "examples": [
-          null,
-          "\nimport { watchOperation as __harnessWatch_9c41e0a7f5d2, watchMethod as __harnessWatch_9c41e0a7f5d2Method, beginSourceScope as __harnessWatch_9c41e0a7f5d2Begin } from \"file:///workspace/harness-app/src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts\";\nexport function hashEvidence(text: string): string {\n\treturn text.trim();\n}\nhashEvidence = __harnessWatch_9c41e0a7f5d2(hashEvidence, {\"unit\":\"service.evidence-ledger\",\"operation\":\"hashEvidence\",\"asynchronous\":false});\n"
-        ]
-      },
-      {
-        "name": "initializationEdits",
-        "type": "{ start: number; end: number; text: string; }[]",
-        "description": "Ordered Edit objects that place the Begin call after any shebang and the Finish call at the end of the file, or an empty array when the module is not a data-only scope.",
-        "examples": [
-          [],
-          [
-            {
-              "start": 0,
-              "end": 0,
-              "text": "\nconst __harnessWatch_9c41e0a7f5d2Finish = __harnessWatch_9c41e0a7f5d2Begin({\"unit\":\"service.evidence-ledger\",\"operation\":\"initialize:src/services/verification-evidence/EvidenceLedger.ts\",\"asynchronous\":false});\n"
-            },
-            {
-              "start": 33,
-              "end": 33,
-              "text": "\n__harnessWatch_9c41e0a7f5d2Finish();\n"
-            }
-          ]
-        ]
-      },
-      {
-        "name": "beginSourceScope",
-        "type": "() => void",
-        "description": "Finishing callback from the collector's beginScope when profiling is enabled, or a no-op when HARNESS_RUNTIME_PROFILE_DIR is unset or a flush is running. A scope whose finish call never runs emits no successful observation."
-      },
-      {
-        "name": "watchOperation",
-        "type": "T",
-        "description": "Returns the operation unchanged when HARNESS_RUNTIME_PROFILE_DIR is unset; otherwise a Proxy that keeps the receiver, arguments and return value, stops sampling after ten pending or successful calls, and stops sampling when a synchronous call returns a promise."
-      },
-      {
-        "name": "watchMethod",
-        "type": "void",
-        "description": "Installs watchOperation on the selected own method descriptor and returns nothing, leaving the property's writability, enumerability and configurability unchanged. It does nothing when the owner has no such own function-valued data property."
-      },
-      {
-        "name": "flushSourceProfiles",
-        "type": "void",
-        "description": "Flushes completed observations through the collector when HARNESS_RUNTIME_PROFILE_DIR is set and no flush is already running, temporarily setting the evidence variables to that directory and restoring them afterwards. While a flush runs, watched operations and scopes bypass observation, which prevents recursive profiling of the collector."
-      },
-      {
-        "name": "sourceProfilePlugin",
-        "type": "{ name: string; enforce: \"pre\"; config(_config: unknown, environment: { mode: string; }): { test: { env: { HARNESS_RUNTIME_PROFILE_ROOT: string; HARNESS_RUNTIME_PROFILE_DIR: string; HARNESS_RUNTIME_PROFILE_CONTEXT: string; BUN_OPTIONS: string; }; setupFiles: string[]; }; } | undefined; transform(source: string, id: string): { code: string; map: null; } | null; }",
-        "description": "Vite plugin object for test-mode runs: its config hook assigns the profile environment to process.env, adds vitestSetup.ts and returns a test configuration, and its transform hook delegates to SourceProfileAdapter. The config hook returns nothing outside test mode or when no profile is selected."
-      },
-      {
-        "name": "runnerConfiguration",
-        "type": "{ plugins: ReturnType<typeof sourceProfilePlugin>[] }",
-        "description": "Vite configuration object whose only plugin is the source-profile plugin created for environment.profileRoot."
-      },
-      {
-        "name": "nativeProfilePlugins",
-        "type": "Promise<PluginOption[]>",
-        "description": "Promise that resolves to the plugins of the runner configuration loaded in test mode, or to an empty array when HARNESS_COLLECT_FILES is set; it rejects when Vite loads no configuration.",
-        "examples": [
-          []
-        ]
-      },
-      {
-        "name": "profileSelection",
-        "type": "{ root: string; directory: string; units: ComponentManifest[] } | null",
-        "description": "Canonical project root, selected profile directory and validated unit registry, or null outside an eligible evidence run or inside an explicit benchmark boundary. Each registry file is parsed with componentManifestSchema before it is returned.",
-        "examples": [
-          null,
-          {
-            "root": "/workspace/harness-app",
-            "directory": "/workspace/harness-app/.harness/evidence/runtime-profile",
-            "units": [
-              {
-                "schemaVersion": 1,
-                "id": "service.evidence-ledger",
-                "uid": "u_q4m2v9tbhc",
-                "kind": "service",
-                "title": "EvidenceLedger",
-                "responsibility": "Appends verified evidence entries to the project ledger.",
-                "responsibilityOrigin": "declared",
-                "status": "active",
-                "owns": {
-                  "source": [
-                    "src/services/verification-evidence/EvidenceLedger.ts"
-                  ],
-                  "symbols": [
-                    "EvidenceLedger",
-                    "EvidenceLedger.append",
-                    "EvidenceLedger.count",
-                    "hashEvidence"
-                  ]
-                },
-                "contract": {
-                  "origin": "declared",
-                  "inputs": [],
-                  "outputs": [],
-                  "errors": [],
-                  "errorStatus": "declared",
-                  "operations": [],
-                  "initialization": []
-                },
-                "dependencies": [],
-                "runtime": {
-                  "kind": "module",
-                  "entry": "src/services/verification-evidence/EvidenceLedger.ts",
-                  "targets": [
-                    {
-                      "kind": "module",
-                      "entry": "src/services/verification-evidence/EvidenceLedger.ts"
-                    }
-                  ]
-                },
-                "scenarios": [
-                  "module-tasks"
-                ],
-                "budgets": {
-                  "size": "frozen",
-                  "complexity": "frozen",
-                  "performance": []
-                }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "profileEnvironment",
-        "type": "{ HARNESS_RUNTIME_PROFILE_ROOT: string; HARNESS_RUNTIME_PROFILE_DIR: string; HARNESS_RUNTIME_PROFILE_CONTEXT: string; BUN_OPTIONS: string; }",
-        "description": "Environment object containing the canonical root, profile directory, runtime context (default standard-runner) and a single deduplicated --preload option for the bunPreload module.",
-        "examples": [
-          {
-            "HARNESS_RUNTIME_PROFILE_ROOT": "/workspace/harness-app",
-            "HARNESS_RUNTIME_PROFILE_DIR": "/workspace/harness-app/.harness/evidence/runtime-profile",
-            "HARNESS_RUNTIME_PROFILE_CONTEXT": "standard-runner",
-            "BUN_OPTIONS": "--preload=/workspace/harness-app/src/adapters/verification-evidence/source-profile-adapter/bunPreload.ts"
-          },
-          {
-            "HARNESS_RUNTIME_PROFILE_ROOT": "/srv/ci/harness-app",
-            "HARNESS_RUNTIME_PROFILE_DIR": "/srv/ci/harness-app/.harness/evidence/run-2026-11-14",
-            "HARNESS_RUNTIME_PROFILE_CONTEXT": "ci-shard-2",
-            "BUN_OPTIONS": "--smol --preload=/srv/ci/harness-app/src/adapters/verification-evidence/source-profile-adapter/bunPreload.ts"
-          }
-        ]
-      }
-    ],
-    "errors": [
-      {
-        "name": "Error",
-        "type": "thrown",
-        "description": "Registry validation failures, unreadable registry or scenario files, failed Vite runner configuration loads and failed runner-module imports reject or throw; the adapter never substitutes observations for them. Bun preload load hooks also reject when a project source file cannot be read or transpiled."
-      },
-      {
-        "name": "SyntaxError",
-        "type": "thrown",
-        "description": "Malformed JSON in a registry unit file or in a benchmark scenario manifest throws from profileSelection, so no profile is selected."
-      },
-      {
-        "name": "TypeError",
-        "type": "thrown",
-        "description": "The adapter constructor throws when units is not an array or an active unit lacks runtime.targets or owns.source, and watchMethod throws when its owner is null or undefined or its method is non-writable and non-configurable."
-      }
-    ],
-    "errorStatus": "declared",
-    "operations": [
-      {
-        "name": "SourceProfileAdapter.transform",
-        "inputs": [
-          {
-            "name": "SourceProfileAdapter.transform.source",
-            "type": "string",
-            "required": true,
-            "description": "Original module source text handed to the transform; instrumentation only inserts an observer import and wrapper calls, so authored bodies, call order and evaluation count are unchanged. The text is inspected only when the id resolves to exactly one eligible owner.",
-            "examples": [
-              "export function hashEvidence(text: string): string {\n\treturn text.trim();\n}\n",
-              "export const LEDGER_VERSION = 3;\n"
-            ]
-          },
-          {
-            "name": "SourceProfileAdapter.transform.id",
-            "type": "string",
-            "required": true,
-            "description": "Module address for the file: a file: URL, an /@fs/ path or a plain path with an optional query suffix, which is removed before the realpath lookup. Addresses that do not resolve to an existing file, resolve outside the project root or into node_modules, or do not end in .ts, .mts, .tsx, .js, .mjs or .jsx are not instrumented.",
-            "examples": [
-              "/workspace/harness-app/src/services/verification-evidence/EvidenceLedger.ts",
-              "file:///workspace/harness-app/src/services/verification-evidence/EvidenceLedger.ts?v=8f3c2a1d"
-            ]
-          }
-        ],
-        "outputs": [
-          {
-            "name": "SourceProfileAdapter.transform",
-            "type": "string | null",
-            "description": "Instrumented module text for the single eligible owner of the resolved id, or null when the id has no unique owner inside the project root, uses an unsupported extension, or has no supported observation boundary.",
-            "examples": [
-              null,
-              "\nimport { watchOperation as __harnessWatch_9c41e0a7f5d2, watchMethod as __harnessWatch_9c41e0a7f5d2Method, beginSourceScope as __harnessWatch_9c41e0a7f5d2Begin } from \"file:///workspace/harness-app/src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts\";\nexport function hashEvidence(text: string): string {\n\treturn text.trim();\n}\nhashEvidence = __harnessWatch_9c41e0a7f5d2(hashEvidence, {\"unit\":\"service.evidence-ledger\",\"operation\":\"hashEvidence\",\"asynchronous\":false});\n"
-            ]
-          }
-        ],
-        "errors": [],
-        "errorStatus": "declared"
-      },
-      {
-        "name": "instrumentSource",
-        "inputs": [
-          {
-            "name": "instrumentSource.source",
-            "type": "string",
-            "required": true,
-            "description": "Original module source text to inspect; the result keeps authored bodies, call order and evaluation count, and it is null when no supported call, method or initialization boundary exists.",
-            "examples": [
-              "export function hashEvidence(text: string): string {\n\treturn text.trim();\n}\n",
-              "export const LEDGER_VERSION = 3;\n"
-            ]
-          },
-          {
-            "name": "instrumentSource.path",
-            "type": "string",
-            "required": true,
-            "description": "Absolute source filename passed to the TypeScript parser; its SHA-256 digest seeds the observer identifier, and initialization edits require it to end with one of the unit's owned source paths.",
-            "examples": [
-              "/workspace/harness-app/src/services/verification-evidence/EvidenceLedger.ts",
-              "/srv/ci/harness-app/src/services/verification-evidence/EvidenceLedger.ts"
-            ]
-          },
-          {
-            "name": "instrumentSource.unit",
-            "type": "ComponentManifest",
-            "required": true,
-            "description": "Registered unit whose owned source list, runtime module target, contract outputs and symbols decide which declarations are wrapped and which unit id and callable name each observation records.",
-            "examples": [
-              {
-                "schemaVersion": 1,
-                "id": "service.evidence-ledger",
-                "uid": "u_q4m2v9tbhc",
-                "kind": "service",
-                "title": "EvidenceLedger",
-                "responsibility": "Appends verified evidence entries to the project ledger.",
-                "responsibilityOrigin": "declared",
-                "status": "active",
-                "owns": {
-                  "source": [
-                    "src/services/verification-evidence/EvidenceLedger.ts"
-                  ],
-                  "symbols": [
-                    "EvidenceLedger",
-                    "EvidenceLedger.append",
-                    "EvidenceLedger.count",
-                    "hashEvidence"
-                  ]
-                },
-                "contract": {
-                  "origin": "declared",
-                  "inputs": [],
-                  "outputs": [],
-                  "errors": [],
-                  "errorStatus": "declared",
-                  "operations": [],
-                  "initialization": []
-                },
-                "dependencies": [],
-                "runtime": {
-                  "kind": "module",
-                  "entry": "src/services/verification-evidence/EvidenceLedger.ts",
-                  "targets": [
-                    {
-                      "kind": "module",
-                      "entry": "src/services/verification-evidence/EvidenceLedger.ts"
-                    }
-                  ]
-                },
-                "scenarios": [
-                  "module-tasks"
-                ],
-                "budgets": {
-                  "size": "frozen",
-                  "complexity": "frozen",
-                  "performance": []
-                }
-              }
-            ]
-          }
-        ],
-        "outputs": [
-          {
-            "name": "instrumentSource",
-            "type": "string | null",
-            "description": "Full source text after the observer import header and the wrapper or initialization edits are applied, or null when the module has no supported call, method or initialization boundary.",
-            "examples": [
-              null,
-              "\nimport { watchOperation as __harnessWatch_9c41e0a7f5d2, watchMethod as __harnessWatch_9c41e0a7f5d2Method, beginSourceScope as __harnessWatch_9c41e0a7f5d2Begin } from \"file:///workspace/harness-app/src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts\";\nexport function hashEvidence(text: string): string {\n\treturn text.trim();\n}\nhashEvidence = __harnessWatch_9c41e0a7f5d2(hashEvidence, {\"unit\":\"service.evidence-ledger\",\"operation\":\"hashEvidence\",\"asynchronous\":false});\n"
-            ]
-          }
-        ],
-        "errors": [],
-        "errorStatus": "declared"
-      },
-      {
-        "name": "initializationEdits",
-        "inputs": [
-          {
-            "name": "initializationEdits.file",
-            "type": "ts.SourceFile",
-            "required": true,
-            "description": "Parsed TypeScript source file whose top-level variable initializers must all be literal data and which must contain no functions or classes. Its file name must end with one of the unit's owned source paths for an initialization edit to be emitted."
-          },
-          {
-            "name": "initializationEdits.unit",
-            "type": "ComponentManifest",
-            "required": true,
-            "description": "Registered unit whose owned source paths and id define the initialize metadata; a unit with helper contracts or a bootstrap id produces no initialization edit.",
-            "examples": [
-              {
-                "schemaVersion": 1,
-                "id": "service.evidence-ledger",
-                "uid": "u_q4m2v9tbhc",
-                "kind": "service",
-                "title": "EvidenceLedger",
-                "responsibility": "Appends verified evidence entries to the project ledger.",
-                "responsibilityOrigin": "declared",
-                "status": "active",
-                "owns": {
-                  "source": [
-                    "src/services/verification-evidence/EvidenceLedger.ts"
-                  ],
-                  "symbols": [
-                    "EvidenceLedger",
-                    "EvidenceLedger.append",
-                    "EvidenceLedger.count",
-                    "hashEvidence"
-                  ]
-                },
-                "contract": {
-                  "origin": "declared",
-                  "inputs": [],
-                  "outputs": [],
-                  "errors": [],
-                  "errorStatus": "declared",
-                  "operations": [],
-                  "initialization": []
-                },
-                "dependencies": [],
-                "runtime": {
-                  "kind": "module",
-                  "entry": "src/services/verification-evidence/EvidenceLedger.ts",
-                  "targets": [
-                    {
-                      "kind": "module",
-                      "entry": "src/services/verification-evidence/EvidenceLedger.ts"
-                    }
-                  ]
-                },
-                "scenarios": [
-                  "module-tasks"
-                ],
-                "budgets": {
-                  "size": "frozen",
-                  "complexity": "frozen",
-                  "performance": []
-                }
-              }
-            ]
-          },
-          {
-            "name": "initializationEdits.watch",
-            "type": "string",
-            "required": true,
-            "description": "Generated identifier base that names the Begin and Finish observer locals; instrumentSource derives it from the first 12 hex digits of the source path's SHA-256 digest and appends underscores until the source text does not contain it.",
-            "examples": [
-              "__harnessWatch_9c41e0a7f5d2",
-              "__harnessWatch_9c41e0a7f5d2_"
-            ]
-          }
-        ],
-        "outputs": [
-          {
-            "name": "initializationEdits",
-            "type": "{ start: number; end: number; text: string; }[]",
-            "description": "Ordered Edit objects that place the Begin call after any shebang and the Finish call at the end of the file, or an empty array when the module is not a data-only scope.",
-            "examples": [
-              [],
-              [
-                {
-                  "start": 0,
-                  "end": 0,
-                  "text": "\nconst __harnessWatch_9c41e0a7f5d2Finish = __harnessWatch_9c41e0a7f5d2Begin({\"unit\":\"service.evidence-ledger\",\"operation\":\"initialize:src/services/verification-evidence/EvidenceLedger.ts\",\"asynchronous\":false});\n"
-                },
-                {
-                  "start": 33,
-                  "end": 33,
-                  "text": "\n__harnessWatch_9c41e0a7f5d2Finish();\n"
-                }
-              ]
-            ]
-          }
-        ],
-        "errors": [],
-        "errorStatus": "declared"
-      },
-      {
-        "name": "beginSourceScope",
-        "inputs": [
-          {
-            "name": "beginSourceScope.boundary",
-            "type": "Boundary",
-            "required": true,
-            "description": "Registered unit, operation name and async boundary metadata for an initialization scope; the collector receives the unit, a SHA-256 digest of the operation and the callable name, and argument values and results are never captured.",
-            "examples": [
-              {
-                "unit": "service.evidence-ledger",
-                "operation": "initialize:src/services/verification-evidence/EvidenceLedger.ts",
-                "asynchronous": false
-              }
-            ]
-          }
-        ],
-        "outputs": [
-          {
-            "name": "beginSourceScope",
-            "type": "() => void",
-            "description": "Finishing callback from the collector's beginScope when profiling is enabled, or a no-op when HARNESS_RUNTIME_PROFILE_DIR is unset or a flush is running. A scope whose finish call never runs emits no successful observation."
-          }
-        ],
-        "errors": [
-          {
-            "name": "Error",
-            "type": "thrown",
-            "description": "Errors from creating the collector or starting its scope propagate unchanged, because the unit adds no catch around them."
-          }
-        ],
-        "errorStatus": "declared"
-      },
-      {
-        "name": "watchOperation",
-        "inputs": [
-          {
-            "name": "watchOperation.args",
-            "type": "never[]",
-            "required": false,
-            "default": "undefined (omitted)",
-            "description": "Argument list of a call to the wrapped operation; the proxy forwards it unchanged and records no argument values.",
-            "examples": [
-              []
-            ]
-          }
-        ],
-        "outputs": [
-          {
-            "name": "watchOperation",
-            "type": "T",
-            "description": "Returns the operation unchanged when HARNESS_RUNTIME_PROFILE_DIR is unset; otherwise a Proxy that keeps the receiver, arguments and return value, stops sampling after ten pending or successful calls, and stops sampling when a synchronous call returns a promise."
-          }
-        ],
-        "errors": [
-          {
-            "name": "Error",
-            "type": "thrown",
-            "description": "The wrapped operation's own error or rejection is rethrown unchanged, and collector errors propagate, after the pending sample count is decremented."
-          }
-        ],
-        "errorStatus": "declared"
-      },
-      {
-        "name": "watchMethod",
-        "inputs": [
-          {
-            "name": "watchMethod.owner",
-            "type": "object",
-            "required": true,
-            "description": "Object or prototype whose own method descriptor will be observed; only an own data property holding a function is replaced, and accessor properties are never evaluated."
-          },
-          {
-            "name": "watchMethod.name",
-            "type": "string",
-            "required": true,
-            "description": "Method property name selected on the supplied owner; names that are absent, accessors or not own function-valued data properties are skipped without replacement.",
-            "examples": [
-              "append",
-              "count"
-            ]
-          },
-          {
-            "name": "watchMethod.boundary",
-            "type": "Boundary",
-            "required": true,
-            "description": "Registered unit, operation name and async boundary metadata for the replaced method; argument values and results are never captured.",
-            "examples": [
-              {
-                "unit": "service.evidence-ledger",
-                "operation": "EvidenceLedger.append",
-                "asynchronous": true
-              },
-              {
-                "unit": "service.evidence-ledger",
-                "operation": "EvidenceLedger.count",
-                "asynchronous": false
-              }
-            ]
-          }
-        ],
-        "outputs": [
-          {
-            "name": "watchMethod",
-            "type": "void",
-            "description": "Installs watchOperation on the selected own method descriptor and returns nothing, leaving the property's writability, enumerability and configurability unchanged. It does nothing when the owner has no such own function-valued data property."
-          }
-        ],
-        "errors": [
-          {
-            "name": "TypeError",
-            "type": "thrown",
-            "description": "Throws when owner is null or undefined, or when the selected own method is non-writable and non-configurable so Object.defineProperty rejects the replacement."
-          }
-        ],
-        "errorStatus": "declared"
-      },
-      {
-        "name": "flushSourceProfiles",
-        "inputs": [],
-        "outputs": [
-          {
-            "name": "flushSourceProfiles",
-            "type": "void",
-            "description": "Flushes completed observations through the collector when HARNESS_RUNTIME_PROFILE_DIR is set and no flush is already running, temporarily setting the evidence variables to that directory and restoring them afterwards. While a flush runs, watched operations and scopes bypass observation, which prevents recursive profiling of the collector."
-          }
-        ],
-        "errors": [
-          {
-            "name": "Error",
-            "type": "thrown",
-            "description": "Errors from the collector flush propagate after the evidence environment variables are restored in a finally block."
-          }
-        ],
-        "errorStatus": "declared"
-      },
-      {
-        "name": "sourceProfilePlugin",
-        "inputs": [
-          {
-            "name": "sourceProfilePlugin.root",
-            "type": "string",
-            "required": true,
-            "description": "Project root whose realpath, specification/units registry and specification/scenarios manifest decide whether source profiling is selected; the plugin reads it only in Vite test mode.",
-            "examples": [
-              "/workspace/harness-app",
-              "/srv/ci/harness-app"
-            ]
-          }
-        ],
-        "outputs": [
-          {
-            "name": "sourceProfilePlugin",
-            "type": "{ name: string; enforce: \"pre\"; config(_config: unknown, environment: { mode: string; }): { test: { env: { HARNESS_RUNTIME_PROFILE_ROOT: string; HARNESS_RUNTIME_PROFILE_DIR: string; HARNESS_RUNTIME_PROFILE_CONTEXT: string; BUN_OPTIONS: string; }; setupFiles: string[]; }; } | undefined; transform(source: string, id: string): { code: string; map: null; } | null; }",
-            "description": "Vite plugin object for test-mode runs: its config hook assigns the profile environment to process.env, adds vitestSetup.ts and returns a test configuration, and its transform hook delegates to SourceProfileAdapter. The config hook returns nothing outside test mode or when no profile is selected."
-          }
-        ],
-        "errors": [],
-        "errorStatus": "declared"
-      },
-      {
-        "name": "runnerConfiguration",
-        "inputs": [
-          {
-            "name": "runnerConfiguration.environment",
-            "type": "{ profileRoot: string }",
-            "required": true,
-            "description": "Runner context whose profileRoot names the project for the test-mode observer; the observer installs nothing unless Vite runs in test mode and a profile is selected.",
-            "examples": [
-              {
-                "profileRoot": "/workspace/harness-app"
-              },
-              {
-                "profileRoot": "/srv/ci/harness-app"
-              }
-            ]
-          }
-        ],
-        "outputs": [
-          {
-            "name": "runnerConfiguration",
-            "type": "{ plugins: ReturnType<typeof sourceProfilePlugin>[] }",
-            "description": "Vite configuration object whose only plugin is the source-profile plugin created for environment.profileRoot."
-          }
-        ],
-        "errors": [],
-        "errorStatus": "declared"
-      },
-      {
-        "name": "nativeProfilePlugins",
-        "inputs": [
-          {
-            "name": "nativeProfilePlugins.root",
+				"required": true,
+				"description": "Original module source text handed to the transform; instrumentation only inserts an observer import and wrapper calls, so authored bodies, call order and evaluation count are unchanged. The text is inspected only when the id resolves to exactly one eligible owner.",
+				"examples": [
+					"export function hashEvidence(text: string): string {\n\treturn text.trim();\n}\n",
+					"export const LEDGER_VERSION = 3;\n"
+				]
+			},
+			{
+				"name": "SourceProfileAdapter.transform.id",
+				"type": "string",
+				"required": true,
+				"description": "Module address for the file: a file: URL, an /@fs/ path or a plain path with an optional query suffix, which is removed before the realpath lookup. Addresses that do not resolve to an existing file, resolve outside the project root or into node_modules, or do not end in .ts, .mts, .tsx, .js, .mjs or .jsx are not instrumented.",
+				"examples": [
+					"/workspace/harness-app/src/services/verification-evidence/EvidenceLedger.ts",
+					"file:///workspace/harness-app/src/services/verification-evidence/EvidenceLedger.ts?v=8f3c2a1d"
+				]
+			},
+			{
+				"name": "instrumentSource.source",
+				"type": "string",
+				"required": true,
+				"description": "Original module source text to inspect; the result keeps authored bodies, call order and evaluation count, and it is null when no supported call, method or initialization boundary exists.",
+				"examples": [
+					"export function hashEvidence(text: string): string {\n\treturn text.trim();\n}\n",
+					"export const LEDGER_VERSION = 3;\n"
+				]
+			},
+			{
+				"name": "instrumentSource.path",
+				"type": "string",
+				"required": true,
+				"description": "Absolute source filename passed to the TypeScript parser; its SHA-256 digest seeds the observer identifier, and initialization edits require it to end with one of the unit's owned source paths.",
+				"examples": [
+					"/workspace/harness-app/src/services/verification-evidence/EvidenceLedger.ts",
+					"/srv/ci/harness-app/src/services/verification-evidence/EvidenceLedger.ts"
+				]
+			},
+			{
+				"name": "instrumentSource.unit",
+				"type": "ComponentManifest",
+				"required": true,
+				"description": "Registered unit whose owned source list, runtime module target, contract outputs and symbols decide which declarations are wrapped and which unit id and callable name each observation records.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "service.evidence-ledger",
+						"uid": "u_q4m2v9tbhc",
+						"kind": "service",
+						"title": "EvidenceLedger",
+						"responsibility": "Appends verified evidence entries to the project ledger.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": ["src/services/verification-evidence/EvidenceLedger.ts"],
+							"symbols": [
+								"EvidenceLedger",
+								"EvidenceLedger.append",
+								"EvidenceLedger.count",
+								"hashEvidence"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"errorStatus": "declared",
+							"operations": [],
+							"initialization": []
+						},
+						"dependencies": [],
+						"runtime": {
+							"kind": "module",
+							"entry": "src/services/verification-evidence/EvidenceLedger.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/services/verification-evidence/EvidenceLedger.ts"
+								}
+							]
+						},
+						"scenarios": ["module-tasks"],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
+			},
+			{
+				"name": "initializationEdits.file",
+				"type": "ts.SourceFile",
+				"required": true,
+				"description": "Parsed TypeScript source file whose top-level variable initializers must all be literal data and which must contain no functions or classes. Its file name must end with one of the unit's owned source paths for an initialization edit to be emitted."
+			},
+			{
+				"name": "initializationEdits.unit",
+				"type": "ComponentManifest",
+				"required": true,
+				"description": "Registered unit whose owned source paths and id define the initialize metadata; a unit with helper contracts or a bootstrap id produces no initialization edit.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "service.evidence-ledger",
+						"uid": "u_q4m2v9tbhc",
+						"kind": "service",
+						"title": "EvidenceLedger",
+						"responsibility": "Appends verified evidence entries to the project ledger.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": ["src/services/verification-evidence/EvidenceLedger.ts"],
+							"symbols": [
+								"EvidenceLedger",
+								"EvidenceLedger.append",
+								"EvidenceLedger.count",
+								"hashEvidence"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"errorStatus": "declared",
+							"operations": [],
+							"initialization": []
+						},
+						"dependencies": [],
+						"runtime": {
+							"kind": "module",
+							"entry": "src/services/verification-evidence/EvidenceLedger.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/services/verification-evidence/EvidenceLedger.ts"
+								}
+							]
+						},
+						"scenarios": ["module-tasks"],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
+			},
+			{
+				"name": "initializationEdits.watch",
+				"type": "string",
+				"required": true,
+				"description": "Generated identifier base that names the Begin and Finish observer locals; instrumentSource derives it from the first 12 hex digits of the source path's SHA-256 digest and appends underscores until the source text does not contain it.",
+				"examples": ["__harnessWatch_9c41e0a7f5d2", "__harnessWatch_9c41e0a7f5d2_"]
+			},
+			{
+				"name": "beginSourceScope.boundary",
+				"type": "Boundary",
+				"required": true,
+				"description": "Registered unit, operation name and async boundary metadata for an initialization scope; the collector receives the unit, a SHA-256 digest of the operation and the callable name, and argument values and results are never captured.",
+				"examples": [
+					{
+						"unit": "service.evidence-ledger",
+						"operation": "initialize:src/services/verification-evidence/EvidenceLedger.ts",
+						"asynchronous": false
+					}
+				]
+			},
+			{
+				"name": "watchOperation.args",
+				"type": "never[]",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Argument list of a call to the wrapped operation; the proxy forwards it unchanged and records no argument values.",
+				"examples": [
+					[]
+				]
+			},
+			{
+				"name": "watchMethod.owner",
+				"type": "object",
+				"required": true,
+				"description": "Object or prototype whose own method descriptor will be observed; only an own data property holding a function is replaced, and accessor properties are never evaluated."
+			},
+			{
+				"name": "watchMethod.name",
+				"type": "string",
+				"required": true,
+				"description": "Method property name selected on the supplied owner; names that are absent, accessors or not own function-valued data properties are skipped without replacement.",
+				"examples": ["append", "count"]
+			},
+			{
+				"name": "watchMethod.boundary",
+				"type": "Boundary",
+				"required": true,
+				"description": "Registered unit, operation name and async boundary metadata for the replaced method; argument values and results are never captured.",
+				"examples": [
+					{
+						"unit": "service.evidence-ledger",
+						"operation": "EvidenceLedger.append",
+						"asynchronous": true
+					},
+					{
+						"unit": "service.evidence-ledger",
+						"operation": "EvidenceLedger.count",
+						"asynchronous": false
+					}
+				]
+			},
+			{
+				"name": "sourceProfilePlugin.root",
+				"type": "string",
+				"required": true,
+				"description": "Project root whose realpath, specification/units registry and specification/scenarios manifest decide whether source profiling is selected; the plugin reads it only in Vite test mode.",
+				"examples": ["/workspace/harness-app", "/srv/ci/harness-app"]
+			},
+			{
+				"name": "runnerConfiguration.environment",
+				"type": "{ profileRoot: string }",
+				"required": true,
+				"description": "Runner context whose profileRoot names the project for the test-mode observer; the observer installs nothing unless Vite runs in test mode and a profile is selected.",
+				"examples": [
+					{
+						"profileRoot": "/workspace/harness-app"
+					},
+					{
+						"profileRoot": "/srv/ci/harness-app"
+					}
+				]
+			},
+			{
+				"name": "nativeProfilePlugins.root",
+				"type": "string",
+				"required": true,
+				"description": "Project root path passed as the Vite config root and as profileRoot for the test runner configuration; the loader uses it without validating it first.",
+				"examples": ["/workspace/harness-app", "/srv/ci/harness-app"]
+			},
+			{
+				"name": "profileSelection.root",
+				"type": "string",
+				"required": true,
+				"description": "Project root whose specification/units registry must exist and whose realpath becomes the selected root. A missing registry, no profile or evidence directory, or an explicit benchmark boundary yields null instead of an error.",
+				"examples": ["/workspace/harness-app", "/srv/ci/harness-app"]
+			},
+			{
+				"name": "profileEnvironment.root",
+				"type": "string",
+				"required": true,
+				"description": "Canonical selected project root that is written to HARNESS_RUNTIME_PROFILE_ROOT for the runner and its native children.",
+				"examples": ["/workspace/harness-app"]
+			},
+			{
+				"name": "profileEnvironment.directory",
+				"type": "string",
+				"required": true,
+				"description": "Profile directory from HARNESS_RUNTIME_PROFILE_DIR or the evidence directory, copied into the environment for immutable runtime capture chunks; the value is not created or checked here.",
+				"examples": [
+					"/workspace/harness-app/.harness/evidence/runtime-profile",
+					"/workspace/harness-app/.harness/evidence/run-2026-11-14"
+				]
+			}
+		],
+		"outputs": [
+			{
+				"name": "SourceProfileAdapter.transform",
+				"type": "string | null",
+				"description": "Instrumented module text for the single eligible owner of the resolved id, or null when the id has no unique owner inside the project root, uses an unsupported extension, or has no supported observation boundary.",
+				"examples": [
+					null,
+					"\nimport { watchOperation as __harnessWatch_9c41e0a7f5d2, watchMethod as __harnessWatch_9c41e0a7f5d2Method, beginSourceScope as __harnessWatch_9c41e0a7f5d2Begin } from \"file:///workspace/harness-app/src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts\";\nexport function hashEvidence(text: string): string {\n\treturn text.trim();\n}\nhashEvidence = __harnessWatch_9c41e0a7f5d2(hashEvidence, {\"unit\":\"service.evidence-ledger\",\"operation\":\"hashEvidence\",\"asynchronous\":false});\n"
+				]
+			},
+			{
+				"name": "instrumentSource",
+				"type": "string | null",
+				"description": "Full source text after the observer import header and the wrapper or initialization edits are applied, or null when the module has no supported call, method or initialization boundary.",
+				"examples": [
+					null,
+					"\nimport { watchOperation as __harnessWatch_9c41e0a7f5d2, watchMethod as __harnessWatch_9c41e0a7f5d2Method, beginSourceScope as __harnessWatch_9c41e0a7f5d2Begin } from \"file:///workspace/harness-app/src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts\";\nexport function hashEvidence(text: string): string {\n\treturn text.trim();\n}\nhashEvidence = __harnessWatch_9c41e0a7f5d2(hashEvidence, {\"unit\":\"service.evidence-ledger\",\"operation\":\"hashEvidence\",\"asynchronous\":false});\n"
+				]
+			},
+			{
+				"name": "initializationEdits",
+				"type": "{ start: number; end: number; text: string; }[]",
+				"description": "Ordered Edit objects that place the Begin call after any shebang and the Finish call at the end of the file, or an empty array when the module is not a data-only scope.",
+				"examples": [
+					[],
+					[
+						{
+							"start": 0,
+							"end": 0,
+							"text": "\nconst __harnessWatch_9c41e0a7f5d2Finish = __harnessWatch_9c41e0a7f5d2Begin({\"unit\":\"service.evidence-ledger\",\"operation\":\"initialize:src/services/verification-evidence/EvidenceLedger.ts\",\"asynchronous\":false});\n"
+						},
+						{
+							"start": 33,
+							"end": 33,
+							"text": "\n__harnessWatch_9c41e0a7f5d2Finish();\n"
+						}
+					]
+				]
+			},
+			{
+				"name": "beginSourceScope",
+				"type": "() => void",
+				"description": "Finishing callback from the collector's beginScope when profiling is enabled, or a no-op when HARNESS_RUNTIME_PROFILE_DIR is unset or a flush is running. A scope whose finish call never runs emits no successful observation."
+			},
+			{
+				"name": "watchOperation",
+				"type": "T",
+				"description": "Returns the operation unchanged when HARNESS_RUNTIME_PROFILE_DIR is unset; otherwise a Proxy that keeps the receiver, arguments and return value, stops sampling after ten pending or successful calls, and stops sampling when a synchronous call returns a promise."
+			},
+			{
+				"name": "watchMethod",
+				"type": "void",
+				"description": "Installs watchOperation on the selected own method descriptor and returns nothing, leaving the property's writability, enumerability and configurability unchanged. It does nothing when the owner has no such own function-valued data property."
+			},
+			{
+				"name": "flushSourceProfiles",
+				"type": "void",
+				"description": "Flushes completed observations through the collector when HARNESS_RUNTIME_PROFILE_DIR is set and no flush is already running, temporarily setting the evidence variables to that directory and restoring them afterwards. While a flush runs, watched operations and scopes bypass observation, which prevents recursive profiling of the collector."
+			},
+			{
+				"name": "sourceProfilePlugin",
+				"type": "{ name: string; enforce: \"pre\"; config(_config: unknown, environment: { mode: string; }): { test: { env: { HARNESS_RUNTIME_PROFILE_ROOT: string; HARNESS_RUNTIME_PROFILE_DIR: string; HARNESS_RUNTIME_PROFILE_CONTEXT: string; BUN_OPTIONS: string; }; setupFiles: string[]; }; } | undefined; transform(source: string, id: string): { code: string; map: null; } | null; }",
+				"description": "Vite plugin object for test-mode runs: its config hook assigns the profile environment to process.env, adds vitestSetup.ts and returns a test configuration, and its transform hook delegates to SourceProfileAdapter. The config hook returns nothing outside test mode or when no profile is selected."
+			},
+			{
+				"name": "runnerConfiguration",
+				"type": "{ plugins: ReturnType<typeof sourceProfilePlugin>[] }",
+				"description": "Vite configuration object whose only plugin is the source-profile plugin created for environment.profileRoot."
+			},
+			{
+				"name": "nativeProfilePlugins",
+				"type": "Promise<PluginOption[]>",
+				"description": "Promise that resolves to the plugins of the runner configuration loaded in test mode, or to an empty array when HARNESS_COLLECT_FILES is set; it rejects when Vite loads no configuration.",
+				"examples": [
+					[]
+				]
+			},
+			{
+				"name": "profileSelection",
+				"type": "{ root: string; directory: string; units: ComponentManifest[] } | null",
+				"description": "Canonical project root, selected profile directory and validated unit registry, or null outside an eligible evidence run or inside an explicit benchmark boundary. Each registry file is parsed with componentManifestSchema before it is returned.",
+				"examples": [
+					null,
+					{
+						"root": "/workspace/harness-app",
+						"directory": "/workspace/harness-app/.harness/evidence/runtime-profile",
+						"units": [
+							{
+								"schemaVersion": 1,
+								"id": "service.evidence-ledger",
+								"uid": "u_q4m2v9tbhc",
+								"kind": "service",
+								"title": "EvidenceLedger",
+								"responsibility": "Appends verified evidence entries to the project ledger.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": ["src/services/verification-evidence/EvidenceLedger.ts"],
+									"symbols": [
+										"EvidenceLedger",
+										"EvidenceLedger.append",
+										"EvidenceLedger.count",
+										"hashEvidence"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"errorStatus": "declared",
+									"operations": [],
+									"initialization": []
+								},
+								"dependencies": [],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/services/verification-evidence/EvidenceLedger.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/services/verification-evidence/EvidenceLedger.ts"
+										}
+									]
+								},
+								"scenarios": ["module-tasks"],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"name": "profileEnvironment",
+				"type": "{ HARNESS_RUNTIME_PROFILE_ROOT: string; HARNESS_RUNTIME_PROFILE_DIR: string; HARNESS_RUNTIME_PROFILE_CONTEXT: string; BUN_OPTIONS: string; }",
+				"description": "Environment object containing the canonical root, profile directory, runtime context (default standard-runner) and a single deduplicated --preload option for the bunPreload module.",
+				"examples": [
+					{
+						"HARNESS_RUNTIME_PROFILE_ROOT": "/workspace/harness-app",
+						"HARNESS_RUNTIME_PROFILE_DIR": "/workspace/harness-app/.harness/evidence/runtime-profile",
+						"HARNESS_RUNTIME_PROFILE_CONTEXT": "standard-runner",
+						"BUN_OPTIONS": "--preload=/workspace/harness-app/src/adapters/verification-evidence/source-profile-adapter/bunPreload.ts"
+					},
+					{
+						"HARNESS_RUNTIME_PROFILE_ROOT": "/srv/ci/harness-app",
+						"HARNESS_RUNTIME_PROFILE_DIR": "/srv/ci/harness-app/.harness/evidence/run-2026-11-14",
+						"HARNESS_RUNTIME_PROFILE_CONTEXT": "ci-shard-2",
+						"BUN_OPTIONS": "--smol --preload=/srv/ci/harness-app/src/adapters/verification-evidence/source-profile-adapter/bunPreload.ts"
+					}
+				]
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Registry validation failures, unreadable registry or scenario files, failed Vite runner configuration loads and failed runner-module imports reject or throw; the adapter never substitutes observations for them. Bun preload load hooks also reject when a project source file cannot be read or transpiled."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Malformed JSON in a registry unit file or in a benchmark scenario manifest throws from profileSelection, so no profile is selected."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "The adapter constructor throws when units is not an array or an active unit lacks runtime.targets or owns.source, and watchMethod throws when its owner is null or undefined or its method is non-writable and non-configurable."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "SourceProfileAdapter.transform",
+				"inputs": [
+					{
+						"name": "SourceProfileAdapter.transform.source",
 						"type": "string",
-            "required": true,
-            "description": "Project root path passed as the Vite config root and as profileRoot for the test runner configuration; the loader uses it without validating it first.",
-            "examples": [
-              "/workspace/harness-app",
-              "/srv/ci/harness-app"
-            ]
-          }
-        ],
-        "outputs": [
-          {
-            "name": "nativeProfilePlugins",
-            "type": "Promise<import('vite').PluginOption[]>",
-            "description": "Promise that resolves to the plugins of the runner configuration loaded in test mode, or to an empty array when HARNESS_COLLECT_FILES is set; it rejects when Vite loads no configuration.",
-            "examples": [
-              []
-            ]
-          }
-        ],
-        "errors": [
-          {
-            "name": "Error",
-            "type": "thrown",
-            "description": "Rejects with 'Harness source-profile runner configuration did not load.' when Vite returns no configuration, and propagates vite import or configuration load failures."
-          }
-        ],
-        "errorStatus": "declared"
-      },
-      {
-        "name": "profileSelection",
-        "inputs": [
-          {
-            "name": "profileSelection.root",
-            "type": "string",
-            "required": true,
-            "description": "Project root whose specification/units registry must exist and whose realpath becomes the selected root. A missing registry, no profile or evidence directory, or an explicit benchmark boundary yields null instead of an error.",
-            "examples": [
-              "/workspace/harness-app",
-              "/srv/ci/harness-app"
-            ]
-          }
-        ],
-        "outputs": [
-          {
-            "name": "profileSelection",
-            "type": "{ root: string; directory: string; units: import('../../../core/development-tooling/unitTypes').ComponentManifest[] } | null",
-            "description": "Canonical project root, selected profile directory and validated unit registry, or null outside an eligible evidence run or inside an explicit benchmark boundary. Each registry file is parsed with componentManifestSchema before it is returned.",
-            "examples": [
-              null,
-              {
-                "root": "/workspace/harness-app",
-                "directory": "/workspace/harness-app/.harness/evidence/runtime-profile",
-                "units": [
-                  {
-                    "schemaVersion": 1,
-                    "id": "service.evidence-ledger",
-                    "uid": "u_q4m2v9tbhc",
-                    "kind": "service",
-                    "title": "EvidenceLedger",
-                    "responsibility": "Appends verified evidence entries to the project ledger.",
-                    "responsibilityOrigin": "declared",
-                    "status": "active",
-                    "owns": {
-                      "source": [
-                        "src/services/verification-evidence/EvidenceLedger.ts"
-                      ],
-                      "symbols": [
-                        "EvidenceLedger",
-                        "EvidenceLedger.append",
-                        "EvidenceLedger.count",
-                        "hashEvidence"
-                      ]
-                    },
-                    "contract": {
-                      "origin": "declared",
-                      "inputs": [],
-                      "outputs": [],
-                      "errors": [],
-                      "errorStatus": "declared",
-                      "operations": [],
-                      "initialization": []
-                    },
-                    "dependencies": [],
-                    "runtime": {
-                      "kind": "module",
-                      "entry": "src/services/verification-evidence/EvidenceLedger.ts",
-                      "targets": [
-                        {
-                          "kind": "module",
-                          "entry": "src/services/verification-evidence/EvidenceLedger.ts"
-                        }
-                      ]
-                    },
-                    "scenarios": [
-                      "module-tasks"
-                    ],
-                    "budgets": {
-                      "size": "frozen",
-                      "complexity": "frozen",
-                      "performance": []
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "errors": [
-          {
-            "name": "Error",
-            "type": "thrown",
-            "description": "Throws when the registry cannot be read or when componentManifestSchema rejects a registry unit."
-          },
-          {
-            "name": "SyntaxError",
-            "type": "thrown",
-            "description": "Throws when a registry unit or a benchmark scenario file contains malformed JSON."
-          }
-        ],
-        "errorStatus": "declared"
-      },
-      {
-        "name": "profileEnvironment",
-        "inputs": [
-          {
-            "name": "profileEnvironment.root",
-            "type": "string",
-            "required": true,
-            "description": "Canonical selected project root that is written to HARNESS_RUNTIME_PROFILE_ROOT for the runner and its native children.",
-            "examples": [
-              "/workspace/harness-app"
-            ]
-          },
-          {
-            "name": "profileEnvironment.directory",
-            "type": "string",
-            "required": true,
-            "description": "Profile directory from HARNESS_RUNTIME_PROFILE_DIR or the evidence directory, copied into the environment for immutable runtime capture chunks; the value is not created or checked here.",
-            "examples": [
-              "/workspace/harness-app/.harness/evidence/runtime-profile",
-              "/workspace/harness-app/.harness/evidence/run-2026-11-14"
-            ]
-          }
-        ],
-        "outputs": [
-          {
-            "name": "profileEnvironment",
-            "type": "{ HARNESS_RUNTIME_PROFILE_ROOT: string; HARNESS_RUNTIME_PROFILE_DIR: string; HARNESS_RUNTIME_PROFILE_CONTEXT: string; BUN_OPTIONS: string; }",
-            "description": "Environment object containing the canonical root, profile directory, runtime context (default standard-runner) and a single deduplicated --preload option for the bunPreload module.",
-            "examples": [
-              {
-                "HARNESS_RUNTIME_PROFILE_ROOT": "/workspace/harness-app",
-                "HARNESS_RUNTIME_PROFILE_DIR": "/workspace/harness-app/.harness/evidence/runtime-profile",
-                "HARNESS_RUNTIME_PROFILE_CONTEXT": "standard-runner",
-                "BUN_OPTIONS": "--preload=/workspace/harness-app/src/adapters/verification-evidence/source-profile-adapter/bunPreload.ts"
-              },
-              {
-                "HARNESS_RUNTIME_PROFILE_ROOT": "/srv/ci/harness-app",
-                "HARNESS_RUNTIME_PROFILE_DIR": "/srv/ci/harness-app/.harness/evidence/run-2026-11-14",
-                "HARNESS_RUNTIME_PROFILE_CONTEXT": "ci-shard-2",
-                "BUN_OPTIONS": "--smol --preload=/srv/ci/harness-app/src/adapters/verification-evidence/source-profile-adapter/bunPreload.ts"
-              }
-            ]
-          }
-        ],
-        "errors": [],
-        "errorStatus": "declared"
-      }
-    ],
-    "initialization": [
-      {
-        "name": "SourceProfileAdapter.constructor",
-        "inputs": [
-          {
-            "name": "SourceProfileAdapter.constructor.config",
-            "type": "SourceProfileAdapterConfig",
-            "required": true,
-            "description": "Project root and registered unit manifests used to map realpaths of owned source files to eligible units. Only active units with a module target and a kind other than component, page, shell or layout are indexed, the fixed list of adapter and schema bootstrap ids is excluded, and a file owned by more than one eligible unit is never instrumented.",
-            "examples": [
-              {
-                "root": "/workspace/harness-app",
-                "units": [
-                  {
-                    "schemaVersion": 1,
-                    "id": "service.evidence-ledger",
-                    "uid": "u_q4m2v9tbhc",
-                    "kind": "service",
-                    "title": "EvidenceLedger",
-                    "responsibility": "Appends verified evidence entries to the project ledger.",
-                    "responsibilityOrigin": "declared",
-                    "status": "active",
-                    "owns": {
-                      "source": [
-                        "src/services/verification-evidence/EvidenceLedger.ts"
-                      ],
-                      "symbols": [
-                        "EvidenceLedger",
-                        "EvidenceLedger.append",
-                        "EvidenceLedger.count",
-                        "hashEvidence"
-                      ]
-                    },
-                    "contract": {
-                      "origin": "declared",
-                      "inputs": [],
-                      "outputs": [],
-                      "errors": [],
-                      "errorStatus": "declared",
-                      "operations": [],
-                      "initialization": []
-                    },
-                    "dependencies": [],
-                    "runtime": {
-                      "kind": "module",
-                      "entry": "src/services/verification-evidence/EvidenceLedger.ts",
-                      "targets": [
-                        {
-                          "kind": "module",
-                          "entry": "src/services/verification-evidence/EvidenceLedger.ts"
-                        }
-                      ]
-                    },
-                    "scenarios": [
-                      "module-tasks"
-                    ],
-                    "budgets": {
-                      "size": "frozen",
-                      "complexity": "frozen",
-                      "performance": []
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "outputs": [
-          {
-            "name": "SourceProfileAdapter.constructor",
-            "type": "SourceProfileAdapter",
-            "description": "Adapter instance whose owners map holds the eligible units for each resolvable realpath of their owned sources; sources that cannot be resolved are skipped."
-          }
-        ],
-        "errors": [
-          {
-            "name": "TypeError",
-            "type": "thrown",
-            "description": "Throws when units is not an array or an active unit lacks runtime.targets or owns.source."
-          }
-        ],
-        "errorStatus": "declared"
-      }
-    ]
-  },
-  "dependencies": [
-    {
-      "unit": "function.unit-types",
-      "via": "import",
-      "origin": "derived"
-    },
-    {
-      "unit": "service.performance-profile",
-      "via": "import",
-      "origin": "derived"
-    }
-  ],
-  "runtime": {
-    "kind": "module",
-    "entry": "src/adapters/verification-evidence/source-profile-adapter/SourceProfileAdapter.ts",
-    "targets": [
-      {
-        "kind": "module",
-        "entry": "src/adapters/verification-evidence/source-profile-adapter/SourceProfileAdapter.ts"
-      }
-    ]
-  },
-  "scenarios": [
-    "module-tasks"
-  ],
-  "budgets": {
-    "size": "frozen",
-    "complexity": "frozen",
-    "performance": []
-  }
+						"required": true,
+						"description": "Original module source text handed to the transform; instrumentation only inserts an observer import and wrapper calls, so authored bodies, call order and evaluation count are unchanged. The text is inspected only when the id resolves to exactly one eligible owner.",
+						"examples": [
+							"export function hashEvidence(text: string): string {\n\treturn text.trim();\n}\n",
+							"export const LEDGER_VERSION = 3;\n"
+						]
+					},
+					{
+						"name": "SourceProfileAdapter.transform.id",
+						"type": "string",
+						"required": true,
+						"description": "Module address for the file: a file: URL, an /@fs/ path or a plain path with an optional query suffix, which is removed before the realpath lookup. Addresses that do not resolve to an existing file, resolve outside the project root or into node_modules, or do not end in .ts, .mts, .tsx, .js, .mjs or .jsx are not instrumented.",
+						"examples": [
+							"/workspace/harness-app/src/services/verification-evidence/EvidenceLedger.ts",
+							"file:///workspace/harness-app/src/services/verification-evidence/EvidenceLedger.ts?v=8f3c2a1d"
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "SourceProfileAdapter.transform",
+						"type": "string | null",
+						"description": "Instrumented module text for the single eligible owner of the resolved id, or null when the id has no unique owner inside the project root, uses an unsupported extension, or has no supported observation boundary.",
+						"examples": [
+							null,
+							"\nimport { watchOperation as __harnessWatch_9c41e0a7f5d2, watchMethod as __harnessWatch_9c41e0a7f5d2Method, beginSourceScope as __harnessWatch_9c41e0a7f5d2Begin } from \"file:///workspace/harness-app/src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts\";\nexport function hashEvidence(text: string): string {\n\treturn text.trim();\n}\nhashEvidence = __harnessWatch_9c41e0a7f5d2(hashEvidence, {\"unit\":\"service.evidence-ledger\",\"operation\":\"hashEvidence\",\"asynchronous\":false});\n"
+						]
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "instrumentSource",
+				"inputs": [
+					{
+						"name": "instrumentSource.source",
+						"type": "string",
+						"required": true,
+						"description": "Original module source text to inspect; the result keeps authored bodies, call order and evaluation count, and it is null when no supported call, method or initialization boundary exists.",
+						"examples": [
+							"export function hashEvidence(text: string): string {\n\treturn text.trim();\n}\n",
+							"export const LEDGER_VERSION = 3;\n"
+						]
+					},
+					{
+						"name": "instrumentSource.path",
+						"type": "string",
+						"required": true,
+						"description": "Absolute source filename passed to the TypeScript parser; its SHA-256 digest seeds the observer identifier, and initialization edits require it to end with one of the unit's owned source paths.",
+						"examples": [
+							"/workspace/harness-app/src/services/verification-evidence/EvidenceLedger.ts",
+							"/srv/ci/harness-app/src/services/verification-evidence/EvidenceLedger.ts"
+						]
+					},
+					{
+						"name": "instrumentSource.unit",
+						"type": "ComponentManifest",
+						"required": true,
+						"description": "Registered unit whose owned source list, runtime module target, contract outputs and symbols decide which declarations are wrapped and which unit id and callable name each observation records.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "service.evidence-ledger",
+								"uid": "u_q4m2v9tbhc",
+								"kind": "service",
+								"title": "EvidenceLedger",
+								"responsibility": "Appends verified evidence entries to the project ledger.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": ["src/services/verification-evidence/EvidenceLedger.ts"],
+									"symbols": [
+										"EvidenceLedger",
+										"EvidenceLedger.append",
+										"EvidenceLedger.count",
+										"hashEvidence"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"errorStatus": "declared",
+									"operations": [],
+									"initialization": []
+								},
+								"dependencies": [],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/services/verification-evidence/EvidenceLedger.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/services/verification-evidence/EvidenceLedger.ts"
+										}
+									]
+								},
+								"scenarios": ["module-tasks"],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "instrumentSource",
+						"type": "string | null",
+						"description": "Full source text after the observer import header and the wrapper or initialization edits are applied, or null when the module has no supported call, method or initialization boundary.",
+						"examples": [
+							null,
+							"\nimport { watchOperation as __harnessWatch_9c41e0a7f5d2, watchMethod as __harnessWatch_9c41e0a7f5d2Method, beginSourceScope as __harnessWatch_9c41e0a7f5d2Begin } from \"file:///workspace/harness-app/src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts\";\nexport function hashEvidence(text: string): string {\n\treturn text.trim();\n}\nhashEvidence = __harnessWatch_9c41e0a7f5d2(hashEvidence, {\"unit\":\"service.evidence-ledger\",\"operation\":\"hashEvidence\",\"asynchronous\":false});\n"
+						]
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "initializationEdits",
+				"inputs": [
+					{
+						"name": "initializationEdits.file",
+						"type": "ts.SourceFile",
+						"required": true,
+						"description": "Parsed TypeScript source file whose top-level variable initializers must all be literal data and which must contain no functions or classes. Its file name must end with one of the unit's owned source paths for an initialization edit to be emitted."
+					},
+					{
+						"name": "initializationEdits.unit",
+						"type": "ComponentManifest",
+						"required": true,
+						"description": "Registered unit whose owned source paths and id define the initialize metadata; a unit with helper contracts or a bootstrap id produces no initialization edit.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "service.evidence-ledger",
+								"uid": "u_q4m2v9tbhc",
+								"kind": "service",
+								"title": "EvidenceLedger",
+								"responsibility": "Appends verified evidence entries to the project ledger.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": ["src/services/verification-evidence/EvidenceLedger.ts"],
+									"symbols": [
+										"EvidenceLedger",
+										"EvidenceLedger.append",
+										"EvidenceLedger.count",
+										"hashEvidence"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"errorStatus": "declared",
+									"operations": [],
+									"initialization": []
+								},
+								"dependencies": [],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/services/verification-evidence/EvidenceLedger.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/services/verification-evidence/EvidenceLedger.ts"
+										}
+									]
+								},
+								"scenarios": ["module-tasks"],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
+					},
+					{
+						"name": "initializationEdits.watch",
+						"type": "string",
+						"required": true,
+						"description": "Generated identifier base that names the Begin and Finish observer locals; instrumentSource derives it from the first 12 hex digits of the source path's SHA-256 digest and appends underscores until the source text does not contain it.",
+						"examples": ["__harnessWatch_9c41e0a7f5d2", "__harnessWatch_9c41e0a7f5d2_"]
+					}
+				],
+				"outputs": [
+					{
+						"name": "initializationEdits",
+						"type": "{ start: number; end: number; text: string; }[]",
+						"description": "Ordered Edit objects that place the Begin call after any shebang and the Finish call at the end of the file, or an empty array when the module is not a data-only scope.",
+						"examples": [
+							[],
+							[
+								{
+									"start": 0,
+									"end": 0,
+									"text": "\nconst __harnessWatch_9c41e0a7f5d2Finish = __harnessWatch_9c41e0a7f5d2Begin({\"unit\":\"service.evidence-ledger\",\"operation\":\"initialize:src/services/verification-evidence/EvidenceLedger.ts\",\"asynchronous\":false});\n"
+								},
+								{
+									"start": 33,
+									"end": 33,
+									"text": "\n__harnessWatch_9c41e0a7f5d2Finish();\n"
+								}
+							]
+						]
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "beginSourceScope",
+				"inputs": [
+					{
+						"name": "beginSourceScope.boundary",
+						"type": "Boundary",
+						"required": true,
+						"description": "Registered unit, operation name and async boundary metadata for an initialization scope; the collector receives the unit, a SHA-256 digest of the operation and the callable name, and argument values and results are never captured.",
+						"examples": [
+							{
+								"unit": "service.evidence-ledger",
+								"operation": "initialize:src/services/verification-evidence/EvidenceLedger.ts",
+								"asynchronous": false
+							}
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "beginSourceScope",
+						"type": "()",
+						"description": "Finishing callback from the collector's beginScope when profiling is enabled, or a no-op when HARNESS_RUNTIME_PROFILE_DIR is unset or a flush is running. A scope whose finish call never runs emits no successful observation."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Errors from creating the collector or starting its scope propagate unchanged, because the unit adds no catch around them."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "watchOperation",
+				"inputs": [
+					{
+						"name": "watchOperation.args",
+						"type": "never[]",
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "Argument list of a call to the wrapped operation; the proxy forwards it unchanged and records no argument values.",
+						"examples": [
+							[]
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "watchOperation",
+						"type": "T",
+						"description": "Returns the operation unchanged when HARNESS_RUNTIME_PROFILE_DIR is unset; otherwise a Proxy that keeps the receiver, arguments and return value, stops sampling after ten pending or successful calls, and stops sampling when a synchronous call returns a promise."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The wrapped operation's own error or rejection is rethrown unchanged, and collector errors propagate, after the pending sample count is decremented."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "watchMethod",
+				"inputs": [
+					{
+						"name": "watchMethod.owner",
+						"type": "object",
+						"required": true,
+						"description": "Object or prototype whose own method descriptor will be observed; only an own data property holding a function is replaced, and accessor properties are never evaluated."
+					},
+					{
+						"name": "watchMethod.name",
+						"type": "string",
+						"required": true,
+						"description": "Method property name selected on the supplied owner; names that are absent, accessors or not own function-valued data properties are skipped without replacement.",
+						"examples": ["append", "count"]
+					},
+					{
+						"name": "watchMethod.boundary",
+						"type": "Boundary",
+						"required": true,
+						"description": "Registered unit, operation name and async boundary metadata for the replaced method; argument values and results are never captured.",
+						"examples": [
+							{
+								"unit": "service.evidence-ledger",
+								"operation": "EvidenceLedger.append",
+								"asynchronous": true
+							},
+							{
+								"unit": "service.evidence-ledger",
+								"operation": "EvidenceLedger.count",
+								"asynchronous": false
+							}
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "watchMethod",
+						"type": "void",
+						"description": "Installs watchOperation on the selected own method descriptor and returns nothing, leaving the property's writability, enumerability and configurability unchanged. It does nothing when the owner has no such own function-valued data property."
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Throws when owner is null or undefined, or when the selected own method is non-writable and non-configurable so Object.defineProperty rejects the replacement."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "flushSourceProfiles",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "flushSourceProfiles",
+						"type": "void",
+						"description": "Flushes completed observations through the collector when HARNESS_RUNTIME_PROFILE_DIR is set and no flush is already running, temporarily setting the evidence variables to that directory and restoring them afterwards. While a flush runs, watched operations and scopes bypass observation, which prevents recursive profiling of the collector."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Errors from the collector flush propagate after the evidence environment variables are restored in a finally block."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "sourceProfilePlugin",
+				"inputs": [
+					{
+						"name": "sourceProfilePlugin.root",
+						"type": "string",
+						"required": true,
+						"description": "Project root whose realpath, specification/units registry and specification/scenarios manifest decide whether source profiling is selected; the plugin reads it only in Vite test mode.",
+						"examples": ["/workspace/harness-app", "/srv/ci/harness-app"]
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceProfilePlugin",
+						"type": "{ name: string; enforce: \"pre\"; config(_config: unknown, environment: { mode: string; }): { test: { env: { HARNESS_RUNTIME_PROFILE_ROOT: string; HARNESS_RUNTIME_PROFILE_DIR: string; HARNESS_RUNTIME_PROFILE_CONTEXT: string; BUN_OPTIONS: string; }; setupFiles: string[]; }; } | undefined; transform(source: string, id: string): { code: string; map: null; } | null; }",
+						"description": "Vite plugin object for test-mode runs: its config hook assigns the profile environment to process.env, adds vitestSetup.ts and returns a test configuration, and its transform hook delegates to SourceProfileAdapter. The config hook returns nothing outside test mode or when no profile is selected."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "runnerConfiguration",
+				"inputs": [
+					{
+						"name": "runnerConfiguration.environment",
+						"type": "{ profileRoot: string }",
+						"required": true,
+						"description": "Runner context whose profileRoot names the project for the test-mode observer; the observer installs nothing unless Vite runs in test mode and a profile is selected.",
+						"examples": [
+							{
+								"profileRoot": "/workspace/harness-app"
+							},
+							{
+								"profileRoot": "/srv/ci/harness-app"
+							}
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "runnerConfiguration",
+						"type": "{ plugins: ReturnType<typeof sourceProfilePlugin>[] }",
+						"description": "Vite configuration object whose only plugin is the source-profile plugin created for environment.profileRoot."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "nativeProfilePlugins",
+				"inputs": [
+					{
+						"name": "nativeProfilePlugins.root",
+						"type": "string",
+						"required": true,
+						"description": "Project root path passed as the Vite config root and as profileRoot for the test runner configuration; the loader uses it without validating it first.",
+						"examples": ["/workspace/harness-app", "/srv/ci/harness-app"]
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeProfilePlugins",
+						"type": "Promise<import('vite').PluginOption[]>",
+						"description": "Promise that resolves to the plugins of the runner configuration loaded in test mode, or to an empty array when HARNESS_COLLECT_FILES is set; it rejects when Vite loads no configuration.",
+						"examples": [
+							[]
+						]
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with 'Harness source-profile runner configuration did not load.' when Vite returns no configuration, and propagates vite import or configuration load failures."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "profileSelection",
+				"inputs": [
+					{
+						"name": "profileSelection.root",
+						"type": "string",
+						"required": true,
+						"description": "Project root whose specification/units registry must exist and whose realpath becomes the selected root. A missing registry, no profile or evidence directory, or an explicit benchmark boundary yields null instead of an error.",
+						"examples": ["/workspace/harness-app", "/srv/ci/harness-app"]
+					}
+				],
+				"outputs": [
+					{
+						"name": "profileSelection",
+						"type": "{ root: string; directory: string; units: import('../../../core/development-tooling/unitTypes').ComponentManifest[] } | null",
+						"description": "Canonical project root, selected profile directory and validated unit registry, or null outside an eligible evidence run or inside an explicit benchmark boundary. Each registry file is parsed with componentManifestSchema before it is returned.",
+						"examples": [
+							null,
+							{
+								"root": "/workspace/harness-app",
+								"directory": "/workspace/harness-app/.harness/evidence/runtime-profile",
+								"units": [
+									{
+										"schemaVersion": 1,
+										"id": "service.evidence-ledger",
+										"uid": "u_q4m2v9tbhc",
+										"kind": "service",
+										"title": "EvidenceLedger",
+										"responsibility": "Appends verified evidence entries to the project ledger.",
+										"responsibilityOrigin": "declared",
+										"status": "active",
+										"owns": {
+											"source": ["src/services/verification-evidence/EvidenceLedger.ts"],
+											"symbols": [
+												"EvidenceLedger",
+												"EvidenceLedger.append",
+												"EvidenceLedger.count",
+												"hashEvidence"
+											]
+										},
+										"contract": {
+											"origin": "declared",
+											"inputs": [],
+											"outputs": [],
+											"errors": [],
+											"errorStatus": "declared",
+											"operations": [],
+											"initialization": []
+										},
+										"dependencies": [],
+										"runtime": {
+											"kind": "module",
+											"entry": "src/services/verification-evidence/EvidenceLedger.ts",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "src/services/verification-evidence/EvidenceLedger.ts"
+												}
+											]
+										},
+										"scenarios": ["module-tasks"],
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										}
+									}
+								]
+							}
+						]
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws when the registry cannot be read or when componentManifestSchema rejects a registry unit."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Throws when a registry unit or a benchmark scenario file contains malformed JSON."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "profileEnvironment",
+				"inputs": [
+					{
+						"name": "profileEnvironment.root",
+						"type": "string",
+						"required": true,
+						"description": "Canonical selected project root that is written to HARNESS_RUNTIME_PROFILE_ROOT for the runner and its native children.",
+						"examples": ["/workspace/harness-app"]
+					},
+					{
+						"name": "profileEnvironment.directory",
+						"type": "string",
+						"required": true,
+						"description": "Profile directory from HARNESS_RUNTIME_PROFILE_DIR or the evidence directory, copied into the environment for immutable runtime capture chunks; the value is not created or checked here.",
+						"examples": [
+							"/workspace/harness-app/.harness/evidence/runtime-profile",
+							"/workspace/harness-app/.harness/evidence/run-2026-11-14"
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "profileEnvironment",
+						"type": "{ HARNESS_RUNTIME_PROFILE_ROOT: string; HARNESS_RUNTIME_PROFILE_DIR: string; HARNESS_RUNTIME_PROFILE_CONTEXT: string; BUN_OPTIONS: string; }",
+						"description": "Environment object containing the canonical root, profile directory, runtime context (default standard-runner) and a single deduplicated --preload option for the bunPreload module.",
+						"examples": [
+							{
+								"HARNESS_RUNTIME_PROFILE_ROOT": "/workspace/harness-app",
+								"HARNESS_RUNTIME_PROFILE_DIR": "/workspace/harness-app/.harness/evidence/runtime-profile",
+								"HARNESS_RUNTIME_PROFILE_CONTEXT": "standard-runner",
+								"BUN_OPTIONS": "--preload=/workspace/harness-app/src/adapters/verification-evidence/source-profile-adapter/bunPreload.ts"
+							},
+							{
+								"HARNESS_RUNTIME_PROFILE_ROOT": "/srv/ci/harness-app",
+								"HARNESS_RUNTIME_PROFILE_DIR": "/srv/ci/harness-app/.harness/evidence/run-2026-11-14",
+								"HARNESS_RUNTIME_PROFILE_CONTEXT": "ci-shard-2",
+								"BUN_OPTIONS": "--smol --preload=/srv/ci/harness-app/src/adapters/verification-evidence/source-profile-adapter/bunPreload.ts"
+							}
+						]
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SourceProfileAdapter.constructor",
+				"inputs": [
+					{
+						"name": "SourceProfileAdapter.constructor.config",
+						"type": "SourceProfileAdapterConfig",
+						"required": true,
+						"description": "Project root and registered unit manifests used to map realpaths of owned source files to eligible units. Only active units with a module target and a kind other than component, page, shell or layout are indexed, the fixed list of adapter and schema bootstrap ids is excluded, and a file owned by more than one eligible unit is never instrumented.",
+						"examples": [
+							{
+								"root": "/workspace/harness-app",
+								"units": [
+									{
+										"schemaVersion": 1,
+										"id": "service.evidence-ledger",
+										"uid": "u_q4m2v9tbhc",
+										"kind": "service",
+										"title": "EvidenceLedger",
+										"responsibility": "Appends verified evidence entries to the project ledger.",
+										"responsibilityOrigin": "declared",
+										"status": "active",
+										"owns": {
+											"source": ["src/services/verification-evidence/EvidenceLedger.ts"],
+											"symbols": [
+												"EvidenceLedger",
+												"EvidenceLedger.append",
+												"EvidenceLedger.count",
+												"hashEvidence"
+											]
+										},
+										"contract": {
+											"origin": "declared",
+											"inputs": [],
+											"outputs": [],
+											"errors": [],
+											"errorStatus": "declared",
+											"operations": [],
+											"initialization": []
+										},
+										"dependencies": [],
+										"runtime": {
+											"kind": "module",
+											"entry": "src/services/verification-evidence/EvidenceLedger.ts",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "src/services/verification-evidence/EvidenceLedger.ts"
+												}
+											]
+										},
+										"scenarios": ["module-tasks"],
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										}
+									}
+								]
+							}
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "SourceProfileAdapter.constructor",
+						"type": "SourceProfileAdapter",
+						"description": "Adapter instance whose owners map holds the eligible units for each resolvable realpath of their owned sources; sources that cannot be resolved are skipped."
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Throws when units is not an array or an active unit lacks runtime.targets or owns.source."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.performance-profile",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/verification-evidence/source-profile-adapter/SourceProfileAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/verification-evidence/source-profile-adapter/SourceProfileAdapter.ts"
+			}
+		]
+	},
+	"scenarios": ["module-tasks"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
 }

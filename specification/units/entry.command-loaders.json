@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/cli/commandLoaders.ts"
-		],
-		"symbols": [
-			"commandLoaders"
-		]
+		"source": ["src/cli/commandLoaders.ts"],
+		"symbols": ["commandLoaders"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -39,6 +35,11 @@
 	"dependencies": [
 		{
 			"unit": "command.activity",
+			"via": "dynamic-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.agents-providers-provider-sign-in",
 			"via": "dynamic-import",
 			"origin": "derived"
 		},
@@ -74,6 +75,11 @@
 		},
 		{
 			"unit": "command.development-tooling-contracts",
+			"via": "dynamic-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.execution-runtimes-deploy",
 			"via": "dynamic-import",
 			"origin": "derived"
 		},
@@ -143,6 +149,21 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.projects-sessions-harbor-inspection",
+			"via": "dynamic-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-project-list",
+			"via": "dynamic-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker",
+			"via": "dynamic-import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.report",
 			"via": "dynamic-import",
 			"origin": "derived"
@@ -174,31 +195,6 @@
 		},
 		{
 			"unit": "command.verify",
-			"via": "dynamic-import",
-			"origin": "derived"
-		},
-		{
-			"unit": "command.agents-providers-provider-sign-in",
-			"via": "dynamic-import",
-			"origin": "derived"
-		},
-		{
-			"unit": "command.execution-runtimes-deploy",
-			"via": "dynamic-import",
-			"origin": "derived"
-		},
-		{
-			"unit": "command.projects-sessions-harbor-inspection",
-			"via": "dynamic-import",
-			"origin": "derived"
-		},
-		{
-			"unit": "command.projects-sessions-project-list",
-			"via": "dynamic-import",
-			"origin": "derived"
-		},
-		{
-			"unit": "command.projects-sessions-tracker",
 			"via": "dynamic-import",
 			"origin": "derived"
 		}

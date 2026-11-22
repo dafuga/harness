@@ -20,16 +20,18 @@
 		"symbols": [
 			"VerificationService",
 			"VerifyContext",
+			"VerificationService",
 			"VerificationService.constructor",
 			"VerificationService.run",
 			"VerificationService.plan",
+			"VerificationService.planWithPending",
+			"ProfiledPlan",
+			"VerifyContext",
 			"pendingVideoScenarioIds",
 			"pendingVideoSelection",
 			"PendingVideoSelection",
 			"verificationScenarioCoverage",
-			"VerificationScenarioCoverage",
-			"VerificationService.planWithPending",
-			"ProfiledPlan"
+			"VerificationScenarioCoverage"
 		]
 	},
 	"contract": {
@@ -89,6 +91,13 @@
 				"type": "Executed",
 				"required": true,
 				"description": "Snapshot outcomes and original-repository reviewer requirements, build identities and source slot hashes collected by this run."
+			},
+			{
+				"name": "verificationScenarioCoverage.deferred",
+				"type": "number",
+				"required": false,
+				"default": 0,
+				"description": "Number of this scenario’s checks deferred by Lite verification. Defaults to zero for full verification and scenarios whose checks all ran."
 			}
 		],
 		"outputs": [
@@ -335,6 +344,19 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "VerificationService.planWithPending",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "VerificationService.planWithPending",
+						"type": "ProfiledPlan",
+						"description": "Runnable checks and deferred checks in plan order."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
 				"name": "pendingVideoScenarioIds",
 				"inputs": [
 					{
@@ -425,6 +447,13 @@
 						"type": "Executed",
 						"required": true,
 						"description": "Snapshot outcomes and original-repository reviewer requirements, build identities and source slot hashes collected by this run."
+					},
+					{
+						"name": "verificationScenarioCoverage.deferred",
+						"type": "number",
+						"required": false,
+						"default": 0,
+						"description": "Number of this scenario’s checks deferred by Lite verification. Defaults to zero for full verification and scenarios whose checks all ran."
 					}
 				],
 				"outputs": [
@@ -432,19 +461,6 @@
 						"name": "verificationScenarioCoverage",
 						"type": "VerificationScenarioCoverage",
 						"description": "Owning check outcomes and ordinary scenario coverage using current source, build, media and reviewer inputs."
-					}
-				],
-				"errors": [],
-				"errorStatus": "declared"
-			},
-			{
-				"name": "VerificationService.planWithPending",
-				"inputs": [],
-				"outputs": [
-					{
-						"name": "VerificationService.planWithPending",
-						"type": "ProfiledPlan",
-						"description": "Runnable checks and deferred checks in plan order."
 					}
 				],
 				"errors": [],
@@ -497,6 +513,11 @@
 		},
 		{
 			"unit": "function.unit-measurements",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
 			"via": "import",
 			"origin": "derived"
 		},

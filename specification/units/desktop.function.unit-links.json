@@ -1,157 +1,146 @@
 {
-  "schemaVersion": 1,
-  "id": "desktop.function.unit-links",
-  "uid": "u_nlbjg7kxwd",
-  "kind": "function",
-  "title": "Resolve unit references",
-  "responsibility": "Create links for registered or currently viewed units within the captured workspace scope.",
-  "responsibilityOrigin": "declared",
-  "status": "active",
-  "owns": {
-    "source": [
-      "packages/desktop/src/components/explorer-ui/reference-text/unitLinks.ts",
-      "packages/desktop/src/components/explorer-ui/reference-text/unitLinks.types.ts",
-      "packages/desktop/src/utils/explorer-ui/unitLinks.ts"
-    ],
-    "symbols": [
-      "unitLinks",
-      "View",
-      "UnitLink",
-      "unitLinks"
-    ]
-  },
-  "contract": {
-    "origin": "declared",
-    "inputs": [
-      {
-        "name": "unitLinks.workspace",
-        "type": "Workspace",
-        "required": true,
-        "description": "Supplies the snapshot, selected entity, busy state, pin state and route scope used to resolve references. Without a snapshot the resolver always returns null; busy state or a changed project, branch, commit or pin state prevents resolution."
-      },
-      {
-        "name": "unitLinks.current",
-        "type": "CatalogEntity | null",
-        "required": false,
-        "default": null,
-        "description": "Defaults to null. The entity is used only when it matches the workspace selected entity, and only as a fallback when the requested ID is not in the snapshot catalog.",
-        "examples": [
-          null
-        ]
-      },
-      {
-        "name": "unitLinks.options",
-        "type": "{ history?: boolean }",
-        "required": false,
-        "default": {},
-        "description": "Defaults to an empty object. When history is true, generated routes use the history suffix; omitted or false history uses no suffix.",
-        "examples": [
-          {
-            "history": true
-          },
-          {}
-        ]
-      }
-    ],
-    "outputs": [
-      {
-        "name": "unitLinks",
-        "type": "(id: string) => UnitLink | null",
-        "description": "Returns a resolver that finds IDs in the snapshot catalog, falling back only to the matching loaded entity, and yields a link with to, name and category or null. It yields null for non-unit or missing IDs, while the workspace is busy, or after the shown project, branch, commit or pin state changes; routes include a commit only for pinned views."
-      }
-    ],
-    "errors": [],
-    "errorStatus": "none-found",
-    "operations": [
-      {
-        "name": "unitLinks",
-        "inputs": [
-          {
-            "name": "unitLinks.workspace",
-            "type": "Workspace",
-            "required": true,
-            "description": "Supplies the snapshot, selected entity, busy state, pin state and route scope used to resolve references. Without a snapshot the resolver always returns null; busy state or a changed project, branch, commit or pin state prevents resolution."
-          },
-          {
-            "name": "unitLinks.current",
-            "type": "CatalogEntity | null",
-            "required": false,
-            "default": null,
-            "description": "Defaults to null. The entity is used only when it matches the workspace selected entity, and only as a fallback when the requested ID is not in the snapshot catalog.",
-            "examples": [
-              null
-            ]
-          },
-          {
-            "name": "unitLinks.options",
-            "type": "{ history?: boolean }",
-            "required": false,
-            "default": {},
-            "description": "Defaults to an empty object. When history is true, generated routes use the history suffix; omitted or false history uses no suffix.",
-            "examples": [
-              {
-                "history": true
-              },
-              {}
-            ]
-          }
-        ],
-        "outputs": [
-          {
-            "name": "unitLinks",
-            "type": "(id: string) => UnitLink | null",
-            "description": "Returns a resolver that finds IDs in the snapshot catalog, falling back only to the matching loaded entity, and yields a link with to, name and category or null. It yields null for non-unit or missing IDs, while the workspace is busy, or after the shown project, branch, commit or pin state changes; routes include a commit only for pinned views."
-          }
-        ],
-        "errors": [],
-        "errorStatus": "declared"
-      }
-    ],
-    "initialization": []
-  },
-  "dependencies": [
-    {
-      "unit": "desktop.function.entity-references",
-      "via": "import",
-      "origin": "derived"
-    },
-    {
-      "unit": "desktop.function.workspace-route",
-      "via": "import",
-      "origin": "derived"
-    },
-    {
-      "unit": "desktop.model.desktop-types",
-      "via": "import",
-      "origin": "derived"
-    },
-    {
-      "unit": "desktop.store.workspace",
-      "via": "import",
-      "origin": "derived"
-    },
-    {
-      "unit": "reports.function.explorer-name",
-      "via": "import",
-      "origin": "derived"
-    }
-  ],
-  "runtime": {
-    "kind": "module",
-    "entry": "packages/desktop/src/utils/explorer-ui/unitLinks.ts",
-    "targets": [
-      {
-        "kind": "module",
-        "entry": "packages/desktop/src/utils/explorer-ui/unitLinks.ts"
-      }
-    ]
-  },
-  "scenarios": [
-    "agent-references"
-  ],
-  "budgets": {
-    "size": "frozen",
-    "complexity": "frozen",
-    "performance": []
-  }
+	"schemaVersion": 1,
+	"id": "desktop.function.unit-links",
+	"uid": "u_nlbjg7kxwd",
+	"kind": "function",
+	"title": "Resolve unit references",
+	"responsibility": "Create links for registered or currently viewed units within the captured workspace scope.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/components/explorer-ui/reference-text/unitLinks.ts",
+			"packages/desktop/src/components/explorer-ui/reference-text/unitLinks.types.ts",
+			"packages/desktop/src/utils/explorer-ui/unitLinks.ts"
+		],
+		"symbols": ["unitLinks", "View", "UnitLink", "unitLinks"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "unitLinks.workspace",
+				"type": "Workspace",
+				"required": true,
+				"description": "Supplies the snapshot, selected entity, busy state, pin state and route scope used to resolve references. Without a snapshot the resolver always returns null; busy state or a changed project, branch, commit or pin state prevents resolution."
+			},
+			{
+				"name": "unitLinks.current",
+				"type": "CatalogEntity | null",
+				"required": false,
+				"default": null,
+				"description": "Defaults to null. The entity is used only when it matches the workspace selected entity, and only as a fallback when the requested ID is not in the snapshot catalog.",
+				"examples": [null]
+			},
+			{
+				"name": "unitLinks.options",
+				"type": "{ history?: boolean }",
+				"required": false,
+				"default": {},
+				"description": "Defaults to an empty object. When history is true, generated routes use the history suffix; omitted or false history uses no suffix.",
+				"examples": [
+					{
+						"history": true
+					},
+					{}
+				]
+			}
+		],
+		"outputs": [
+			{
+				"name": "unitLinks",
+				"type": "(id: string) => UnitLink | null",
+				"description": "Returns a resolver that finds IDs in the snapshot catalog, falling back only to the matching loaded entity, and yields a link with to, name and category or null. It yields null for non-unit or missing IDs, while the workspace is busy, or after the shown project, branch, commit or pin state changes; routes include a commit only for pinned views."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "unitLinks",
+				"inputs": [
+					{
+						"name": "unitLinks.workspace",
+						"type": "Workspace",
+						"required": true,
+						"description": "Supplies the snapshot, selected entity, busy state, pin state and route scope used to resolve references. Without a snapshot the resolver always returns null; busy state or a changed project, branch, commit or pin state prevents resolution."
+					},
+					{
+						"name": "unitLinks.current",
+						"type": "CatalogEntity | null",
+						"required": false,
+						"default": null,
+						"description": "Defaults to null. The entity is used only when it matches the workspace selected entity, and only as a fallback when the requested ID is not in the snapshot catalog.",
+						"examples": [null]
+					},
+					{
+						"name": "unitLinks.options",
+						"type": "{ history?: boolean }",
+						"required": false,
+						"default": {},
+						"description": "Defaults to an empty object. When history is true, generated routes use the history suffix; omitted or false history uses no suffix.",
+						"examples": [
+							{
+								"history": true
+							},
+							{}
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "unitLinks",
+						"type": "(id: string)",
+						"description": "Returns a resolver that finds IDs in the snapshot catalog, falling back only to the matching loaded entity, and yields a link with to, name and category or null. It yields null for non-unit or missing IDs, while the workspace is busy, or after the shown project, branch, commit or pin state changes; routes include a commit only for pinned views."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.entity-references",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.workspace-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/explorer-ui/unitLinks.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/explorer-ui/unitLinks.ts"
+			}
+		]
+	},
+	"scenarios": ["agent-references"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
 }

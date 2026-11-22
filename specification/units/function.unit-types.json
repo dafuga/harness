@@ -97,12 +97,7 @@
 				"type": "readonly [\"module\", \"wasm\", \"process\", \"http\"]",
 				"description": "The complete set of execution kinds accepted by executionTargetSchema and performance-budget targets. A target kind must be module, wasm, process, or http.",
 				"examples": [
-					[
-						"module",
-						"wasm",
-						"process",
-						"http"
-					]
+					["module", "wasm", "process", "http"]
 				]
 			},
 			{
@@ -123,9 +118,7 @@
 				"name": "performanceTolerance",
 				"type": "0.05",
 				"description": "Maximum allowed tolerance for a performance budget without a recorded reviewer approval. The schema accepts values from zero through 0.05 inclusive.",
-				"examples": [
-					0.05
-				]
+				"examples": [0.05]
 			},
 			{
 				"name": "contractItemSchema",

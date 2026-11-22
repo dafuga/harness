@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/routes/api/reports/[id]/[type]/[file]/+server.ts"
-		],
-		"symbols": [
-			"GET"
-		]
+		"source": ["packages/reports/src/routes/api/reports/[id]/[type]/[file]/+server.ts"],
+		"symbols": ["GET"]
 	},
 	"contract": {
 		"origin": "declared",

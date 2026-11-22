@@ -137,18 +137,9 @@
 									"type": "Component"
 								}
 							],
-							"errors": [
-								"empty-report"
-							],
-							"states": [
-								"default",
-								"empty"
-							],
-							"viewports": [
-								"desktop",
-								"tablet",
-								"mobile"
-							]
+							"errors": ["empty-report"],
+							"states": ["default", "empty"],
+							"viewports": ["desktop", "tablet", "mobile"]
 						},
 						"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
 						"revises": null,
@@ -201,10 +192,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Image filename to locate, matched exactly against the file names of each option's images.",
-				"examples": [
-					"o1-default-desktop.png",
-					"o2-default-desktop.png"
-				]
+				"examples": ["o1-default-desktop.png", "o2-default-desktop.png"]
 			},
 			{
 				"name": "heldBy.wanted",
@@ -212,10 +200,7 @@
 				"required": false,
 				"default": "undefined (omitted)",
 				"description": "Optional option ID the caller expects to own the file, such as o1. When it is given, a file owned by another option, or by no option, is refused with not-found.",
-				"examples": [
-					"o1",
-					"o2"
-				]
+				"examples": ["o1", "o2"]
 			},
 			{
 				"name": "checkOptions.version",
@@ -275,18 +260,9 @@
 									"type": "Component"
 								}
 							],
-							"errors": [
-								"empty-report"
-							],
-							"states": [
-								"default",
-								"empty"
-							],
-							"viewports": [
-								"desktop",
-								"tablet",
-								"mobile"
-							]
+							"errors": ["empty-report"],
+							"states": ["default", "empty"],
+							"viewports": ["desktop", "tablet", "mobile"]
 						},
 						"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
 						"revises": null,
@@ -373,18 +349,9 @@
 									"type": "Component"
 								}
 							],
-							"errors": [
-								"empty-report"
-							],
-							"states": [
-								"default",
-								"empty"
-							],
-							"viewports": [
-								"desktop",
-								"tablet",
-								"mobile"
-							]
+							"errors": ["empty-report"],
+							"states": ["default", "empty"],
+							"viewports": ["desktop", "tablet", "mobile"]
 						},
 						"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
 						"revises": null,
@@ -397,21 +364,14 @@
 				"type": "number",
 				"required": true,
 				"description": "Zero-based option position; id adds one and prefixes o, so 0 gives o1 and 9 gives o10, the most options allowed.",
-				"examples": [
-					0,
-					1,
-					9
-				]
+				"examples": [0, 1, 9]
 			},
 			{
 				"name": "binding.file",
 				"type": "string",
 				"required": true,
 				"description": "Image file name to retain in the returned ImageBinding, copied unchanged without validation.",
-				"examples": [
-					"o1-default-desktop.png",
-					"o2-default-desktop.png"
-				]
+				"examples": ["o1-default-desktop.png", "o2-default-desktop.png"]
 			},
 			{
 				"name": "binding.sha256",
@@ -497,18 +457,9 @@
 									"type": "Component"
 								}
 							],
-							"errors": [
-								"empty-report"
-							],
-							"states": [
-								"default",
-								"empty"
-							],
-							"viewports": [
-								"desktop",
-								"tablet",
-								"mobile"
-							]
+							"errors": ["empty-report"],
+							"states": ["default", "empty"],
+							"viewports": ["desktop", "tablet", "mobile"]
 						},
 						"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
 						"revises": null,
@@ -561,10 +512,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Image filename to locate among the option images of the version; a file that no option holds yields undefined.",
-				"examples": [
-					"o1-default-desktop.png",
-					"o2-default-desktop.png"
-				]
+				"examples": ["o1-default-desktop.png", "o2-default-desktop.png"]
 			},
 			{
 				"name": "approvable.version",
@@ -624,18 +572,9 @@
 									"type": "Component"
 								}
 							],
-							"errors": [
-								"empty-report"
-							],
-							"states": [
-								"default",
-								"empty"
-							],
-							"viewports": [
-								"desktop",
-								"tablet",
-								"mobile"
-							]
+							"errors": ["empty-report"],
+							"states": ["default", "empty"],
+							"viewports": ["desktop", "tablet", "mobile"]
 						},
 						"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
 						"revises": null,
@@ -722,18 +661,9 @@
 									"type": "Component"
 								}
 							],
-							"errors": [
-								"empty-report"
-							],
-							"states": [
-								"default",
-								"empty"
-							],
-							"viewports": [
-								"desktop",
-								"tablet",
-								"mobile"
-							]
+							"errors": ["empty-report"],
+							"states": ["default", "empty"],
+							"viewports": ["desktop", "tablet", "mobile"]
 						},
 						"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
 						"revises": null,
@@ -747,10 +677,7 @@
 				"required": false,
 				"default": "undefined (omitted)",
 				"description": "Option ID to approve, such as o1; an optioned version needs one, and an omitted or unmatched ID yields null. A single design must leave it out, because any ID yields null.",
-				"examples": [
-					"o1",
-					"o2"
-				]
+				"examples": ["o1", "o2"]
 			}
 		],
 		"outputs": [
@@ -851,10 +778,7 @@
 				"name": "optionOf",
 				"type": "string | undefined",
 				"description": "Owning option ID, such as o2, when an option of the version holds the file; undefined for a single design or when no option holds the file.",
-				"examples": [
-					"o1",
-					"o2"
-				]
+				"examples": ["o1", "o2"]
 			},
 			{
 				"name": "heldBy",
@@ -1095,18 +1019,9 @@
 											"type": "Component"
 										}
 									],
-									"errors": [
-										"empty-report"
-									],
-									"states": [
-										"default",
-										"empty"
-									],
-									"viewports": [
-										"desktop",
-										"tablet",
-										"mobile"
-									]
+									"errors": ["empty-report"],
+									"states": ["default", "empty"],
+									"viewports": ["desktop", "tablet", "mobile"]
 								},
 								"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
 								"revises": null,
@@ -1159,10 +1074,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Image filename to locate, matched exactly against the file names of each option's images.",
-						"examples": [
-							"o1-default-desktop.png",
-							"o2-default-desktop.png"
-						]
+						"examples": ["o1-default-desktop.png", "o2-default-desktop.png"]
 					},
 					{
 						"name": "heldBy.wanted",
@@ -1170,10 +1082,7 @@
 						"required": false,
 						"default": "undefined (omitted)",
 						"description": "Optional option ID the caller expects to own the file, such as o1. When it is given, a file owned by another option, or by no option, is refused with not-found.",
-						"examples": [
-							"o1",
-							"o2"
-						]
+						"examples": ["o1", "o2"]
 					}
 				],
 				"outputs": [
@@ -1259,18 +1168,9 @@
 											"type": "Component"
 										}
 									],
-									"errors": [
-										"empty-report"
-									],
-									"states": [
-										"default",
-										"empty"
-									],
-									"viewports": [
-										"desktop",
-										"tablet",
-										"mobile"
-									]
+									"errors": ["empty-report"],
+									"states": ["default", "empty"],
+									"viewports": ["desktop", "tablet", "mobile"]
 								},
 								"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
 								"revises": null,
@@ -1357,18 +1257,9 @@
 											"type": "Component"
 										}
 									],
-									"errors": [
-										"empty-report"
-									],
-									"states": [
-										"default",
-										"empty"
-									],
-									"viewports": [
-										"desktop",
-										"tablet",
-										"mobile"
-									]
+									"errors": ["empty-report"],
+									"states": ["default", "empty"],
+									"viewports": ["desktop", "tablet", "mobile"]
 								},
 								"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
 								"revises": null,
@@ -1401,11 +1292,7 @@
 						"type": "number",
 						"required": true,
 						"description": "Zero-based option position; id adds one and prefixes o, so 0 gives o1 and 9 gives o10, the most options allowed.",
-						"examples": [
-							0,
-							1,
-							9
-						]
+						"examples": [0, 1, 9]
 					}
 				],
 				"outputs": [
@@ -1413,11 +1300,7 @@
 						"name": "id",
 						"type": "string",
 						"description": "The one-based option identifier: o followed by the position plus one, such as o1 for position 0.",
-						"examples": [
-							"o1",
-							"o2",
-							"o10"
-						]
+						"examples": ["o1", "o2", "o10"]
 					}
 				],
 				"errors": [],
@@ -1431,10 +1314,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Image file name to retain in the returned ImageBinding, copied unchanged without validation.",
-						"examples": [
-							"o1-default-desktop.png",
-							"o2-default-desktop.png"
-						]
+						"examples": ["o1-default-desktop.png", "o2-default-desktop.png"]
 					},
 					{
 						"name": "binding.sha256",
@@ -1574,18 +1454,9 @@
 											"type": "Component"
 										}
 									],
-									"errors": [
-										"empty-report"
-									],
-									"states": [
-										"default",
-										"empty"
-									],
-									"viewports": [
-										"desktop",
-										"tablet",
-										"mobile"
-									]
+									"errors": ["empty-report"],
+									"states": ["default", "empty"],
+									"viewports": ["desktop", "tablet", "mobile"]
 								},
 								"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
 								"revises": null,
@@ -1638,10 +1509,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Image filename to locate among the option images of the version; a file that no option holds yields undefined.",
-						"examples": [
-							"o1-default-desktop.png",
-							"o2-default-desktop.png"
-						]
+						"examples": ["o1-default-desktop.png", "o2-default-desktop.png"]
 					}
 				],
 				"outputs": [
@@ -1649,10 +1517,7 @@
 						"name": "optionOf",
 						"type": "string | undefined",
 						"description": "Owning option ID, such as o2, when an option of the version holds the file; undefined for a single design or when no option holds the file.",
-						"examples": [
-							"o1",
-							"o2"
-						]
+						"examples": ["o1", "o2"]
 					}
 				],
 				"errors": [],
@@ -1719,18 +1584,9 @@
 											"type": "Component"
 										}
 									],
-									"errors": [
-										"empty-report"
-									],
-									"states": [
-										"default",
-										"empty"
-									],
-									"viewports": [
-										"desktop",
-										"tablet",
-										"mobile"
-									]
+									"errors": ["empty-report"],
+									"states": ["default", "empty"],
+									"viewports": ["desktop", "tablet", "mobile"]
 								},
 								"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
 								"revises": null,
@@ -1817,18 +1673,9 @@
 											"type": "Component"
 										}
 									],
-									"errors": [
-										"empty-report"
-									],
-									"states": [
-										"default",
-										"empty"
-									],
-									"viewports": [
-										"desktop",
-										"tablet",
-										"mobile"
-									]
+									"errors": ["empty-report"],
+									"states": ["default", "empty"],
+									"viewports": ["desktop", "tablet", "mobile"]
 								},
 								"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
 								"revises": null,
@@ -1842,10 +1689,7 @@
 						"required": false,
 						"default": "undefined (omitted)",
 						"description": "Option ID to approve, such as o1; an optioned version needs one, and an omitted or unmatched ID yields null. A single design must leave it out, because any ID yields null.",
-						"examples": [
-							"o1",
-							"o2"
-						]
+						"examples": ["o1", "o2"]
 					}
 				],
 				"outputs": [
@@ -1913,10 +1757,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"plan-fixture-contracts",
-		"hosted-design-options"
-	],
+	"scenarios": ["plan-fixture-contracts", "hosted-design-options"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

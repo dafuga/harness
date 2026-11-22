@@ -8,10 +8,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/cli/index.ts",
-			"src/index.ts"
-		],
+		"source": ["src/cli/index.ts", "src/index.ts"],
 		"symbols": [
 			"registerCodexCommand",
 			"ClaudeGatewayAdapter",
@@ -100,21 +97,9 @@
 			"CatalogRevisionEntityCreateInput",
 			"CatalogRevisionEntityUpdateInput",
 			"CatalogDependency",
-			"CatalogDependencyAttributes",
-			"CatalogDependencyCreateInput",
-			"CatalogDependencyUpdateInput",
 			"CatalogBranch",
-			"CatalogBranchAttributes",
-			"CatalogBranchCreateInput",
-			"CatalogBranchUpdateInput",
 			"CatalogRecord",
-			"CatalogRecordAttributes",
-			"CatalogRecordCreateInput",
-			"CatalogRecordUpdateInput",
 			"CatalogMetadata",
-			"CatalogMetadataAttributes",
-			"CatalogMetadataCreateInput",
-			"CatalogMetadataUpdateInput",
 			"AnalyticsEvent",
 			"AnalyticsEventAttributes",
 			"AnalyticsEventCreateInput",
@@ -237,6 +222,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.agents-providers-provider-session",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.claude-benchmark",
 			"via": "reexport",
 			"origin": "derived"
@@ -282,6 +272,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.projects-sessions-tracker-adapter-lease",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-schema",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.provider-catalog",
 			"via": "reexport",
 			"origin": "derived"
@@ -298,6 +298,11 @@
 		},
 		{
 			"unit": "command.agents-providers-module-task",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.agents-providers-task-orchestration",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -338,6 +343,16 @@
 		},
 		{
 			"unit": "command.networking-security-permissions",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-cutover",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -383,6 +398,31 @@
 		},
 		{
 			"unit": "function.development-tooling-stale-build",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-admit-resource-host",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-choose-resource-host",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-classify-resource-host",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-rank-resource-placement",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-score-resource-host",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -487,6 +527,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-next-tracker-clock",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.read-tree-texts",
 			"via": "reexport",
 			"origin": "derived"
@@ -552,7 +597,62 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "helper.attention-timing-clock-minutes",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-group-attention-lines",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-is-quiet-hour",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-next-attention-batch-at",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-next-reminder-at",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-next-reminder-slot-at",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-plan-digest-alert-tick",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-quiet-hour-boundary",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-wall-clock-to-epoch-ms",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-zoned-wall-clock",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "helper.module-system-module-resource-location",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.planning-collaboration-plan-github-issue-intake",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -637,6 +737,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.projects-sessions-tracker-dispatch",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-operation",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.provider-switch",
 			"via": "reexport",
 			"origin": "derived"
@@ -673,6 +783,11 @@
 		},
 		{
 			"unit": "service.agents-providers-module-task-worker",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-tracker-dispatcher",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -812,6 +927,31 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-adapter-poll",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-dispatch-scheduler",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-spoke-loop",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-supervisor",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.provider-switch",
 			"via": "reexport",
 			"origin": "derived"
@@ -905,161 +1045,6 @@
 			"unit": "validator.performance-evidence",
 			"via": "reexport",
 			"origin": "derived"
-		},
-		{
-			"unit": "adapter.agents-providers-provider-session",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "adapter.projects-sessions-tracker-adapter-lease",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "adapter.projects-sessions-tracker-schema",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "command.agents-providers-task-orchestration",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "command.projects-sessions-tracker",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "command.projects-sessions-tracker-cutover",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.execution-runtimes-admit-resource-host",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.execution-runtimes-choose-resource-host",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.execution-runtimes-classify-resource-host",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.execution-runtimes-rank-resource-placement",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.execution-runtimes-score-resource-host",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.projects-sessions-next-tracker-clock",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "helper.attention-timing-clock-minutes",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "helper.attention-timing-group-attention-lines",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "helper.attention-timing-is-quiet-hour",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "helper.attention-timing-next-attention-batch-at",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "helper.attention-timing-next-reminder-at",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "helper.attention-timing-next-reminder-slot-at",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "helper.attention-timing-plan-digest-alert-tick",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "helper.attention-timing-quiet-hour-boundary",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "helper.attention-timing-wall-clock-to-epoch-ms",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "helper.attention-timing-zoned-wall-clock",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "helper.planning-collaboration-plan-github-issue-intake",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "repository.projects-sessions-tracker-dispatch",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "repository.projects-sessions-tracker-operation",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.agents-providers-tracker-dispatcher",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.projects-sessions-tracker-adapter-poll",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.projects-sessions-tracker-dispatch-scheduler",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.projects-sessions-tracker-native-runtime",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.projects-sessions-tracker-spoke-loop",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.projects-sessions-tracker-supervisor",
-			"via": "reexport",
-			"origin": "derived"
 		}
 	],
 	"runtime": {
@@ -1072,9 +1057,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"module-tasks"
-	],
+	"scenarios": ["module-tasks"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

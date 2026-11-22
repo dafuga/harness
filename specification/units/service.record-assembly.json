@@ -19,8 +19,11 @@
 			"RecordAssemblyService",
 			"AssemblyContext",
 			"AssemblyInput",
+			"RecordAssemblyService",
 			"RecordAssemblyService.constructor",
 			"RecordAssemblyService.assemble",
+			"AssemblyContext",
+			"AssemblyInput",
 			"recordVideoBatches",
 			"outcome",
 			"recordedOutcome"
@@ -389,6 +392,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.scenario-coverage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.seal-record",
 			"via": "import",
 			"origin": "derived"
@@ -460,11 +468,6 @@
 		},
 		{
 			"unit": "workflow.load-revisions",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.scenario-coverage",
 			"via": "import",
 			"origin": "derived"
 		}

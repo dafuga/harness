@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/agents-providers/module-task-worker-service/dispatchTaskAttempt.ts"
-		],
-		"symbols": [
-			"dispatchTaskAttempt"
-		]
+		"source": ["src/services/agents-providers/module-task-worker-service/dispatchTaskAttempt.ts"],
+		"symbols": ["dispatchTaskAttempt"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -145,9 +141,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"module-tasks"
-	],
+	"scenarios": ["module-tasks"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

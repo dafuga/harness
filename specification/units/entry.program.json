@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/cli/program.ts"
-		],
-		"symbols": [
-			"buildProgram"
-		]
+		"source": ["src/cli/program.ts"],
+		"symbols": ["buildProgram"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -51,6 +47,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.agents-providers-provider-sign-in",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.analytics",
 			"via": "import",
 			"origin": "derived"
@@ -82,6 +83,11 @@
 		},
 		{
 			"unit": "command.development-tooling-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.execution-runtimes-deploy",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -151,6 +157,21 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.projects-sessions-harbor-inspection",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-project-list",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.report",
 			"via": "import",
 			"origin": "derived"
@@ -187,31 +208,6 @@
 		},
 		{
 			"unit": "function.build-stamp",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "command.agents-providers-provider-sign-in",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "command.execution-runtimes-deploy",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "command.projects-sessions-harbor-inspection",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "command.projects-sessions-project-list",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "command.projects-sessions-tracker",
 			"via": "import",
 			"origin": "derived"
 		}

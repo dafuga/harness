@@ -7,6 +7,14 @@
 	"responsibility": "Execute exact-model Claude Code or Codex CLI module tasks, exposing public results and structured quota rejection without transporting provider keys.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"configControls": [
+		{
+			"source": "src/adapters/agents-providers/module-task-runner-adapter/taskProcess.ts",
+			"name": "HARNESS_TASK_DOCKER_IMAGE",
+			"audience": "operator",
+			"purpose": "Select the locally installed fixture image by full SHA-256 image ID for explicitly Linux managed tasks."
+		}
+	],
 	"owns": {
 		"source": [
 			"src/adapters/agents-providers/ModuleTaskRunnerAdapter.ts",
@@ -38,14 +46,12 @@
 			"TaskProcessExecutor",
 			"TaskPublicEvent",
 			"ModuleTaskRunError",
-			"taskProcess",
-			"parsePositiveIntegerEnvironmentValue",
-			"parsePositiveNumberEnvironmentValue",
-			"TaskOutputOverflowError",
+			"ModuleTaskRunError",
 			"ProviderRequestGate",
 			"ProviderRequestGate.constructor",
 			"ProviderRequestGate.origin",
 			"ProviderRequestGate.close",
+			"TaskOutputOverflowError",
 			"managedTaskSessions",
 			"LaunchGeneration",
 			"CompleteGeneration",
@@ -69,8 +75,12 @@
 			"contextThreshold",
 			"contextStop",
 			"runGeneration",
+			"taskProcess",
 			"dockerTaskImage",
+			"parsePositiveIntegerEnvironmentValue",
+			"parsePositiveNumberEnvironmentValue",
 			"TaskChild",
+			"TaskOutputOverflowError",
 			"processMonitor",
 			"killGroup",
 			"trackerHandoff",
@@ -107,57 +117,6 @@
 				"type": "TaskRunInput",
 				"required": true,
 				"description": "Provider selection plus the task working directory, prompt and abort signal needed to execute and cancel one CLI run."
-			},
-			{
-				"name": "taskProcess.command",
-				"type": "string[]",
-				"required": true,
-				"description": "Executable and argument strings for the selected provider CLI, launched as one admitted task process.",
-				"examples": [
-					[
-						"codex",
-						"exec",
-						"--json",
-						"--ephemeral",
-						"--sandbox",
-						"workspace-write",
-						"-m",
-						"gpt-6-luna",
-						"-c",
-						"model_reasoning_effort=\"high\"",
-						"-c",
-						"model_provider=\"openai\"",
-						"-c",
-						"approval_policy=\"never\"",
-						"-"
-					]
-				]
-			},
-			{
-				"name": "taskProcess.input",
-				"type": "TaskRunInput",
-				"required": true,
-				"description": "Run context supplying the selected provider and model, child working directory, prompt for stdin and signal for cancellation."
-			},
-			{
-				"name": "parsePositiveIntegerEnvironmentValue.value",
-				"type": "string | undefined",
-				"required": true
-			},
-			{
-				"name": "parsePositiveIntegerEnvironmentValue.fallback",
-				"type": "number",
-				"required": true
-			},
-			{
-				"name": "parsePositiveNumberEnvironmentValue.value",
-				"type": "string | undefined",
-				"required": true
-			},
-			{
-				"name": "parsePositiveNumberEnvironmentValue.fallback",
-				"type": "number",
-				"required": true
 			},
 			{
 				"name": "ProviderRequestGate.constructor.provider",
@@ -290,6 +249,37 @@
 				"required": true
 			},
 			{
+				"name": "taskProcess.command",
+				"type": "string[]",
+				"required": true,
+				"description": "Executable and argument strings for the selected provider CLI, launched as one admitted task process.",
+				"examples": [
+					[
+						"codex",
+						"exec",
+						"--json",
+						"--ephemeral",
+						"--sandbox",
+						"workspace-write",
+						"-m",
+						"gpt-6-luna",
+						"-c",
+						"model_reasoning_effort=\"high\"",
+						"-c",
+						"model_provider=\"openai\"",
+						"-c",
+						"approval_policy=\"never\"",
+						"-"
+					]
+				]
+			},
+			{
+				"name": "taskProcess.input",
+				"type": "TaskRunInput",
+				"required": true,
+				"description": "Run context supplying the selected provider and model, child working directory, prompt for stdin and signal for cancellation."
+			},
+			{
 				"name": "dockerTaskImage.platform",
 				"type": "TaskPlatform | undefined",
 				"required": true
@@ -303,6 +293,26 @@
 				"name": "dockerTaskImage.image",
 				"type": "string",
 				"required": false
+			},
+			{
+				"name": "parsePositiveIntegerEnvironmentValue.value",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "parsePositiveIntegerEnvironmentValue.fallback",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "parsePositiveNumberEnvironmentValue.value",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "parsePositiveNumberEnvironmentValue.fallback",
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "processMonitor.child",
@@ -650,124 +660,6 @@
 				"errorStatus": "declared"
 			},
 			{
-				"name": "taskProcess",
-				"inputs": [
-					{
-						"name": "taskProcess.command",
-						"type": "string[]",
-						"required": true,
-						"description": "Executable and argument strings for the selected provider CLI, launched as one admitted task process.",
-						"examples": [
-							[
-								"codex",
-								"exec",
-								"--json",
-								"--ephemeral",
-								"--sandbox",
-								"workspace-write",
-								"-m",
-								"gpt-6-luna",
-								"-c",
-								"model_reasoning_effort=\"high\"",
-								"-c",
-								"model_provider=\"openai\"",
-								"-c",
-								"approval_policy=\"never\"",
-								"-"
-							]
-						]
-					},
-					{
-						"name": "taskProcess.input",
-						"type": "TaskRunInput",
-						"required": true,
-						"description": "Run context supplying the selected provider and model, child working directory, prompt for stdin and signal for cancellation."
-					}
-				],
-				"outputs": [
-					{
-						"name": "taskProcess",
-						"type": "Promise<TaskProcessResult>",
-						"description": "Resolves with the child CLI exit code and captured stdout after the admitted process closes; stderr is discarded.",
-						"examples": [
-							{
-								"code": 0,
-								"stdout": "{\"type\":\"turn.completed\",\"model\":\"gpt-6-luna\"}\n"
-							}
-						]
-					}
-				],
-				"errors": [
-					{
-						"name": "AbortSignal.reason",
-						"type": "propagated",
-						"description": "input.signal's reason (a DOMException named AbortError unless abort() was given another reason) when the signal is aborted before the CLI starts or while it runs; an abort kills the CLI's process group first."
-					},
-					{
-						"name": "TaskOutputOverflowError",
-						"type": "thrown",
-						"description": "Rejected with the message 'Task CLI output exceeded its bound.' when the CLI's stdout passes 8,000,000 characters; the process group is killed first."
-					},
-					{
-						"name": "NodeJS.ErrnoException",
-						"type": "propagated",
-						"description": "The spawn error when the CLI cannot be started, for example ENOENT when claude or codex is not on PATH."
-					},
-					{
-						"name": "resourceWork rejection",
-						"type": "propagated",
-						"description": "Rejections from resourceWork while it reserves the 2048 MiB coding slot pass through, for example 'Resource queue is full', a wait timeout, 'Resource request exceeds usable capacity after reserves', or a SyntaxError from an invalid queue config.json."
-					}
-				],
-				"errorStatus": "declared"
-			},
-			{
-				"name": "parsePositiveIntegerEnvironmentValue",
-				"inputs": [
-					{
-						"name": "parsePositiveIntegerEnvironmentValue.value",
-						"type": "string | undefined",
-						"required": true
-					},
-					{
-						"name": "parsePositiveIntegerEnvironmentValue.fallback",
-						"type": "number",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "parsePositiveIntegerEnvironmentValue",
-						"type": "number"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "parsePositiveNumberEnvironmentValue",
-				"inputs": [
-					{
-						"name": "parsePositiveNumberEnvironmentValue.value",
-						"type": "string | undefined",
-						"required": true
-					},
-					{
-						"name": "parsePositiveNumberEnvironmentValue.fallback",
-						"type": "number",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "parsePositiveNumberEnvironmentValue",
-						"type": "number"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
 				"name": "ProviderRequestGate.origin",
 				"inputs": [],
 				"outputs": [
@@ -1059,6 +951,78 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "taskProcess",
+				"inputs": [
+					{
+						"name": "taskProcess.command",
+						"type": "string[]",
+						"required": true,
+						"description": "Executable and argument strings for the selected provider CLI, launched as one admitted task process.",
+						"examples": [
+							[
+								"codex",
+								"exec",
+								"--json",
+								"--ephemeral",
+								"--sandbox",
+								"workspace-write",
+								"-m",
+								"gpt-6-luna",
+								"-c",
+								"model_reasoning_effort=\"high\"",
+								"-c",
+								"model_provider=\"openai\"",
+								"-c",
+								"approval_policy=\"never\"",
+								"-"
+							]
+						]
+					},
+					{
+						"name": "taskProcess.input",
+						"type": "TaskRunInput",
+						"required": true,
+						"description": "Run context supplying the selected provider and model, child working directory, prompt for stdin and signal for cancellation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "taskProcess",
+						"type": "Promise<TaskProcessResult>",
+						"description": "Resolves with the child CLI exit code and captured stdout after the admitted process closes; stderr is discarded.",
+						"examples": [
+							{
+								"code": 0,
+								"stdout": "{\"type\":\"turn.completed\",\"model\":\"gpt-6-luna\"}\n"
+							}
+						]
+					}
+				],
+				"errors": [
+					{
+						"name": "AbortSignal.reason",
+						"type": "propagated",
+						"description": "input.signal's reason (a DOMException named AbortError unless abort() was given another reason) when the signal is aborted before the CLI starts or while it runs; an abort kills the CLI's process group first."
+					},
+					{
+						"name": "TaskOutputOverflowError",
+						"type": "thrown",
+						"description": "Rejected with the message 'Task CLI output exceeded its bound.' when the CLI's stdout passes 8,000,000 characters; the process group is killed first."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "propagated",
+						"description": "The spawn error when the CLI cannot be started, for example ENOENT when claude or codex is not on PATH."
+					},
+					{
+						"name": "resourceWork rejection",
+						"type": "propagated",
+						"description": "Rejections from resourceWork while it reserves the 2048 MiB coding slot pass through, for example 'Resource queue is full', a wait timeout, 'Resource request exceeds usable capacity after reserves', or a SyntaxError from an invalid queue config.json."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
 				"name": "dockerTaskImage",
 				"inputs": [
 					{
@@ -1089,6 +1053,52 @@
 						"type": "thrown"
 					}
 				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parsePositiveIntegerEnvironmentValue",
+				"inputs": [
+					{
+						"name": "parsePositiveIntegerEnvironmentValue.value",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "parsePositiveIntegerEnvironmentValue.fallback",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parsePositiveIntegerEnvironmentValue",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parsePositiveNumberEnvironmentValue",
+				"inputs": [
+					{
+						"name": "parsePositiveNumberEnvironmentValue.value",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "parsePositiveNumberEnvironmentValue.fallback",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parsePositiveNumberEnvironmentValue",
+						"type": "number"
+					}
+				],
+				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{
@@ -1331,20 +1341,10 @@
 			}
 		]
 	},
-	"scenarios": [
-		"module-tasks"
-	],
+	"scenarios": ["module-tasks"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"configControls": [
-		{
-			"source": "src/adapters/agents-providers/module-task-runner-adapter/taskProcess.ts",
-			"name": "HARNESS_TASK_DOCKER_IMAGE",
-			"audience": "operator",
-			"purpose": "Select the locally installed fixture image by full SHA-256 image ID for explicitly Linux managed tasks."
-		}
-	]
+	}
 }
