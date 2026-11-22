@@ -1,4 +1,4 @@
-import { chmodSync, existsSync, realpathSync, unlinkSync } from 'node:fs';
+import { chmodSync, existsSync, readFileSync, realpathSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import { once } from 'node:events';
 import { connect, createServer } from 'node:net';
@@ -101,10 +101,11 @@ test('startup refuses a journal its owner cannot write instead of serving failed
 		await fixtureTrackerJson(hub, ['add', 'Journal initialized before it turns read-only']);
 		expect((await first.stop()).code).toBe(0);
 		chmodSync(hub.config.database, 0o400);
+		const journal = readFileSync(hub.config.database);
 		const result = await finishedTrackerProcess(hub, serveTrackerArgs(hub));
 		expect(result.code).toBe(1);
 		expect(result.stderr).toContain('writable');
-		expect(existsSync(hub.config.database + '.supervisor-lock.sqlite')).toBe(false);
+		expect(readFileSync(hub.config.database).equals(journal)).toBe(true);
 	});
 }, 25_000);
 
