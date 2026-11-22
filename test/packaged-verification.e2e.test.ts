@@ -92,7 +92,7 @@ console.log(JSON.stringify({
 		compare({ ...measured, value: 0.001, comparison: cheaper }),
 		compare(labelOnly)
 	],
-	required: scenarioRequirements(scenario).required.length,
+	required: scenarioRequirements(scenario).required,
 	requested: evidenceRequested(),
 	recorded: recordCapture(captureLineSchema.parse(line), 'hello'),
 	media: mediaFacts(Buffer.from('nope'), 'image/png'),
@@ -108,7 +108,10 @@ const expected = {
 		issue: 'Run harness verify run; no verification record proves the task commit.'
 	},
 	comparable: ['passed', 'incompatible', 'incompatible', 'incomplete'],
-	required: 1,
+	required: [
+		{ evidence: 'consumer-output', kind: 'output', state: 'packed' },
+		{ evidence: 'packed-assertions', kind: 'assertions', state: 'packed' }
+	],
 	requested: true,
 	recorded: true,
 	media: { error: 'missing PNG signature' },

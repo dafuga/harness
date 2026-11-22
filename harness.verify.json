@@ -293,6 +293,10 @@
 		{
 			"path": "packages/reports/test/entity-preview-platforms.spec.ts",
 			"profile": "entity-preview-playwright"
+		},
+		{
+			"path": "packages/reports/test/entity-preview-unrecorded-measures.spec.ts",
+			"profile": "entity-preview-playwright"
 		}
 	],
 	"tools": [

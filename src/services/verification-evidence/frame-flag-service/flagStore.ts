@@ -134,11 +134,7 @@ async function applyResolution(
 		flag.clip.record === event.replacement.record
 	)
 		throw new ExpectedCliError('Frame resolution does not explicitly address its owning flag.');
-	for (const id of event.addressedFlags) {
-		const addressed = flags.find((candidate) => candidate.id === id);
-		if (!addressed || !sameFrameSlot(addressed.clip, event.replacement))
-			throw new ExpectedCliError('Frame resolution cites unknown or wrong-owner flags.');
-	}
+	for (const id of event.addressedFlags) addressedFlag(flags, id, event);
 	if (context.unit && flag.clip.unit !== context.unit) return;
 	const clip = await load(event.replacement);
 	validateReplacement(clip, event, flags);
@@ -158,12 +154,17 @@ function validateReplacement(
 	)
 		throw new ExpectedCliError('Frame resolution differs from its verified attached replacement.');
 	for (const id of event.addressedFlags) {
-		const addressed = flags.find((candidate) => candidate.id === id);
-		if (!addressed || !sameFrameSlot(addressed.clip, event.replacement))
-			throw new ExpectedCliError('Frame resolution cites unknown or wrong-owner flags.');
+		const addressed = addressedFlag(flags, id, event);
 		if (Date.parse(clip.capturedAt) <= Date.parse(addressed.createdAt))
 			throw new ExpectedCliError('Frame resolution replacement must be newer than its flag.');
 	}
+}
+
+function addressedFlag(flags: FrameFlag[], id: string, event: FrameResolution): FrameFlag {
+	const flag = flags.find((candidate) => candidate.id === id);
+	if (!flag || !sameFrameSlot(flag.clip, event.replacement))
+		throw new ExpectedCliError('Frame resolution cites unknown or wrong-owner flags.');
+	return flag;
 }
 
 function validateEvidencePath(path: string, flags: FrameFlag[]): void {
