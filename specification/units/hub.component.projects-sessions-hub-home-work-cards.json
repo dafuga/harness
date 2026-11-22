@@ -15,6 +15,7 @@
 			"hub.component.projects-sessions-hub-home-skeleton",
 			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-code",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
@@ -68,6 +69,11 @@
 						"name": "HubHomeWorkCards.empty.text",
 						"type": "string",
 						"required": true
+					},
+					{
+						"name": "HubHomeWorkCards.empty.action",
+						"type": "string",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -167,6 +173,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
 			"via": "import",
 			"origin": "derived"
 		},

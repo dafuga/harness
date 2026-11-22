@@ -42,6 +42,9 @@
 	align-items: center;
 	color: var(--hx-color-text-supporting);
 }
+.hh-home .hh-q-add-title {
+	display: block;
+}
 .hh-home .hh-q-add {
 	flex-direction: row;
 	align-items: center;
@@ -120,4 +123,9 @@
 
 .hh-home .hh-q-day {
 	white-space: nowrap;
+}
+.hh-home .hh-q-plan > .hh-q-sub-head {
+	flex-wrap: nowrap;
+	align-items: flex-start;
+	justify-content: space-between;
 }

@@ -70,6 +70,13 @@
 				"required": false,
 				"default": false,
 				"description": "Controls whether the selected conversation is open. Defaults to false and supports binding."
+			},
+			{
+				"name": "HubHomeAgents.chatName",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "Name of the agent whose conversation is shown. Defaults to an empty string and supports binding."
 			}
 		],
 		"outputs": [
