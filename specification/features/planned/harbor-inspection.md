@@ -34,9 +34,16 @@ Harbor app development uses the same Harness executable through the installed SD
 - `harness harbor check [dir]` validates the app bundle.
 - `harness harbor pack [dir] [output]` writes a bundle to a new file.
 - `harness harbor stage-android <bundle> <dir>` stages a Godot Web bundle for an Android app.
+- `harness harbor mcp <workspace>` serves the SDK MCP authoring tools over stdio.
 
 Set `HARNESS_HARBOR_APP_SDK_PATH` to the installed SDK entry for these commands.
 The SDK supplies the default bundle path, validates the same bytes and owns the Android asset layout.
+
+An MCP client starts `harness harbor mcp /absolute/path/to/app-projects` and exchanges messages
+over stdin and stdout. SDK diagnostics remain on stderr. The session inherits the SDK app tooling
+environment and gives the SDK the running Harness CLI path for nested scaffolds. Stdin EOF closes
+an idle session. On SIGINT or SIGTERM, Harness forwards the signal to the SDK child, waits for it
+to close and forces that child to stop after 1.5 seconds if necessary.
 
 `harness harbor publish <project> --commit <sha> --artifact <path> --profile <file>`
 uses its own verification command and the installed Harbor App SDK. It returns the
