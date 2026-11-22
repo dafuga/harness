@@ -58,7 +58,7 @@ export class HarborInspectionCommand {
 				'Set HARNESS_HARBOR_CLI_PATH to the installed Harbor package entry.'
 			);
 		}
-		const node = process.env.HARNESS_HARBOR_NODE_PATH || Bun.which('node');
+		const node = unsetIfEmpty(process.env.HARNESS_HARBOR_NODE_PATH) ?? Bun.which('node');
 		if (!node || !isAbsolute(node) || /\.(?:bat|cmd)$/i.test(node)) {
 			throw new ExpectedCliError('Set HARNESS_HARBOR_NODE_PATH to an absolute Node executable.');
 		}
@@ -73,7 +73,7 @@ export class HarborInspectionCommand {
 			});
 			console.log(result.stdout.replace(/\r?\n$/, ''));
 		} catch (error) {
-			const code = (error as NodeJS.ErrnoException).code;
+			const code = (error as { code?: unknown }).code;
 			if (typeof code === 'number') {
 				console.error('The installed Harbor CLI reported an inspection error.');
 				process.exitCode = code;
@@ -85,7 +85,7 @@ export class HarborInspectionCommand {
 }
 
 function rpcArgs(raw: string | undefined): string[] {
-	const value = raw || process.env.HARBOR_API_URL;
+	const value = unsetIfEmpty(raw) ?? unsetIfEmpty(process.env.HARBOR_API_URL);
 	if (!value) return [];
 	try {
 		const url = new URL(value);
@@ -101,4 +101,9 @@ function rpcArgs(raw: string | undefined): string[] {
 		// Keep connection settings and any embedded values out of diagnostics.
 	}
 	throw new ExpectedCliError('Use a Harbor RPC URL without credentials, a query or a fragment.');
+}
+
+// Empty values count as unset, matching the earlier `||` fallback.
+function unsetIfEmpty(value: string | undefined): string | undefined {
+	return value === '' ? undefined : value;
 }
