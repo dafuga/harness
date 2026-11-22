@@ -34,16 +34,21 @@ export const homeSubscriptionPayload = z.object({
 	readAt: time,
 	limits: z.array(limit).max(10),
 	credits: short.nullable(),
-	history: z
-		.array(z.object({ day: z.string().regex(/^\d{4}-\d{2}-\d{2}$/), used: percent }))
-		.max(7),
+	history: z.array(z.object({ day: z.string().date(), used: percent })).max(7),
 	agents: z.array(z.object({ name: short, description: short })).max(10)
 });
 
 export const homeProviders = z.object({
+	routinesReadAt: time.nullable().optional(),
 	routines: z
 		.array(homeRunPayload.extend({ source: z.literal('claude') }))
 		.max(200)
 		.nullable(),
 	quota: z.array(homeSubscriptionPayload).max(20).nullable()
 });
+
+/** Provider readings are current for one hour. Missing or future timestamps are unknown. */
+export function homeProviderReadingIsStale(readAt: string | null | undefined, now: number) {
+	const age = now - Date.parse(readAt ?? '');
+	return !Number.isFinite(age) || age < 0 || age > 3_600_000;
+}

@@ -9,11 +9,27 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/lib/projects-sessions/hub-home/homeProviderPayload.ts"],
-		"symbols": ["homeRunPayload", "homeSubscriptionPayload", "homeProviders"]
+		"symbols": [
+			"homeRunPayload",
+			"homeSubscriptionPayload",
+			"homeProviders",
+			"homeProviderReadingIsStale"
+		]
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "homeProviderReadingIsStale.readAt",
+				"type": "string | null | undefined",
+				"required": true
+			},
+			{
+				"name": "homeProviderReadingIsStale.now",
+				"type": "number",
+				"required": true
+			}
+		],
 		"outputs": [
 			{
 				"name": "homeRunPayload",
@@ -26,11 +42,39 @@
 			{
 				"name": "homeProviders",
 				"type": "unknown"
+			},
+			{
+				"name": "homeProviderReadingIsStale",
+				"type": "unknown"
 			}
 		],
 		"errors": [],
-		"errorStatus": "none-found",
-		"operations": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "homeProviderReadingIsStale",
+				"inputs": [
+					{
+						"name": "homeProviderReadingIsStale.readAt",
+						"type": "string | null | undefined",
+						"required": true
+					},
+					{
+						"name": "homeProviderReadingIsStale.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "homeProviderReadingIsStale",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
 		"initialization": []
 	},
 	"dependencies": [

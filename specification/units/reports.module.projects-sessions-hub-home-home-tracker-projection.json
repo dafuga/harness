@@ -76,6 +76,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.module.projects-sessions-hub-home-home-provider-payload",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.module.projects-sessions-hub-home-home-tracker-agents",
 			"via": "import",
 			"origin": "derived"
