@@ -16,10 +16,11 @@ export function videoRecordPassed(record: VideoOriginRecord, unit: string): bool
 	)
 		return false;
 	if (record.status === 'passed' && record.failures.length === 0) return true;
+	// The report carries the same scope marker for each scenario it ran.
+	const scope = `Scoped to ${unit}: only its scenario states ran, so this record is partial and never a full pass.`;
 	return (
-		record.failures.length === 1 &&
-		record.failures[0] ===
-			`Scoped to ${unit}: only its scenario states ran, so this record is partial and never a full pass.` &&
+		record.failures.length > 0 &&
+		record.failures.every((failure) => failure === scope) &&
 		record.tests.length > 0 &&
 		record.tests.every((test) => test.status === 'passed') &&
 		record.scenarios.length > 0 &&
