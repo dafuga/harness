@@ -105,7 +105,7 @@ async function observeRegression(
 	scenarios: ScenarioManifest[]
 ): Promise<Observation> {
 	const startedAt = new Date().toISOString(),
-		profile = environmentProfile();
+		profile = environmentProfile(input.env);
 	if (input.red && profile !== input.red.profile)
 		fail('Use the same regression environment and runtime.');
 	const result = await runIsolated({
@@ -113,7 +113,7 @@ async function observeRegression(
 		args: ['-c', input.command],
 		cwd: snapshot.directory,
 		env: {
-			...process.env,
+			...(input.env ?? process.env),
 			HARNESS_ANALYTICS_DISABLED: '1',
 			HARNESS_EVIDENCE_DIR: directory,
 			TAKE_SCREENSHOT: '1',

@@ -4,12 +4,16 @@
 	"uid": "u_bupajbnjit",
 	"kind": "command",
 	"title": "loop",
-	"responsibility": "Registers loop lifecycle, regression-recording, create, step, status, search, next, and evaluation commands.",
+	"responsibility": "Registers loop lifecycle, regression proof, sibling sweeps, changed-code review, and evaluator commands.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/loop.ts"],
-		"symbols": ["registerLoopCommand"]
+		"source": [
+			"src/cli/program/loop.ts",
+			"src/cli/program/loopSiblings.ts",
+			"src/cli/program/loopSiblings.types.ts"
+		],
+		"symbols": ["registerLoopCommand", "registerLoopSiblingCommands", "SiblingFlags", "ReviewFlags"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -19,13 +23,19 @@
 				"type": "Command",
 				"required": true,
 				"description": "The Commander program that receives the `loop` command, which the function adds with `program.command('loop')`. The function keeps no reference to it, so it matters only while registration runs, and it must be a Commander `Command` because `.command()` is the only method the function calls on it."
+			},
+			{
+				"name": "registerLoopSiblingCommands.parent",
+				"type": "Command",
+				"required": true,
+				"description": "The Commander loop command that receives the siblings and review-bugs subcommands."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerLoopCommand",
 				"type": "void",
-				"description": "The function returns nothing and is synchronous, so its result is the side effect of adding the `loop` command to the program with its subcommands registered under it; no subcommand action runs during registration. The subcommands are whatever registerLoopLifecycleCommands adds plus `record <loop>`, `create <name>`, `add <loop> <step>`, `complete <loop> <step>`, `status <loop>`, `search [query]`, `next <loop>`, and `evaluate <loop>`, and they matter when the CLI parses a command line."
+				"description": "Registers the loop lifecycle commands and record, create, add, complete, status, search, next, evaluate, siblings, and review-bugs. Registration runs no subcommand."
 			}
 		],
 		"errors": [],
@@ -45,18 +55,48 @@
 					{
 						"name": "registerLoopCommand",
 						"type": "void",
-						"description": "The function returns nothing and is synchronous, so its result is the side effect of adding the `loop` command to the program with its subcommands registered under it; no subcommand action runs during registration. The subcommands are whatever registerLoopLifecycleCommands adds plus `record <loop>`, `create <name>`, `add <loop> <step>`, `complete <loop> <step>`, `status <loop>`, `search [query]`, `next <loop>`, and `evaluate <loop>`, and they matter when the CLI parses a command line."
+						"description": "Registers the loop lifecycle commands and record, create, add, complete, status, search, next, evaluate, siblings, and review-bugs. Registration runs no subcommand."
 					}
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "registerLoopSiblingCommands",
+				"inputs": [
+					{
+						"name": "registerLoopSiblingCommands.parent",
+						"type": "Command",
+						"required": true,
+						"description": "The Commander loop command that receives the siblings and review-bugs subcommands."
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerLoopSiblingCommands",
+						"type": "void",
+						"description": "Registers sibling search and changed-code review without executing an action."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "entry.program-loop-lifecycle",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.development-tooling-sibling-bug-sweep",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -77,6 +117,11 @@
 		},
 		{
 			"unit": "workflow.loop-search",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.loop-state",
 			"via": "import",
 			"origin": "derived"
 		},

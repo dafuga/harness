@@ -1668,15 +1668,21 @@
 			"unit": "service.regression-proof",
 			"from": "src/services/RegressionProofService.ts",
 			"to": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
-			"definition": "8e44c013f1f5f068dd40974d5a94f7f6a103ab7c2cb8e343fb9a18b9908af4ff",
+			"definition": "90865f9262155f7818cdb5acd5bbb4306b7debff974d9087de23ca938db324a2",
 			"relocationDefinition": "fe7669ca45e2a0ea78e302821cd1fb8a23eb10a79522d1afd2e7f95d093c865c",
 			"review": {
-				"commit": "b0fc91c011ea2c787af5280b660f6fa03a6cc77b",
+				"commit": "6a64ad41350d11e2360f6d8b4f01a85035fcd927",
 				"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
-				"definition": "8e44c013f1f5f068dd40974d5a94f7f6a103ab7c2cb8e343fb9a18b9908af4ff",
-				"reason": "Pass exact selected-revision registry IDs into scoped actual screenshot admission, rejecting unknown bindings while preserving registered retired and unscoped attachments."
+				"definition": "90865f9262155f7818cdb5acd5bbb4306b7debff974d9087de23ca938db324a2",
+				"reason": "Run regression proofs with an explicitly supplied environment, falling back to the process environment, so sibling repair workers use their own checkout settings."
 			},
 			"previousReviews": [
+				{
+					"commit": "b0fc91c011ea2c787af5280b660f6fa03a6cc77b",
+					"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
+					"definition": "8e44c013f1f5f068dd40974d5a94f7f6a103ab7c2cb8e343fb9a18b9908af4ff",
+					"reason": "Pass exact selected-revision registry IDs into scoped actual screenshot admission, rejecting unknown bindings while preserving registered retired and unscoped attachments."
+				},
 				{
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "src/services/RegressionProofService.ts",
@@ -2069,15 +2075,21 @@
 			"unit": "command.loop",
 			"from": "src/commands/loop.ts",
 			"to": "src/cli/program/loop.ts",
-			"definition": "392baa3e941129dd03a8e6c4f66c16635cefb4f1a3a3cdaac8496752ac216391",
+			"definition": "2de34a44084c28ef32c0fc5da7bfa238cd36cf909bfede891f0140e08f1857ec",
 			"relocationDefinition": "f4704c6ab8a779e681e90ae7d8f18e9606693fc44eded629342354c860663bf2",
 			"review": {
-				"commit": "ea51bbcbf69c324dd7913254e50715cdf24e6278",
+				"commit": "6a64ad41350d11e2360f6d8b4f01a85035fcd927",
 				"path": "src/cli/program/loop.ts",
-				"definition": "392baa3e941129dd03a8e6c4f66c16635cefb4f1a3a3cdaac8496752ac216391",
-				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				"definition": "2de34a44084c28ef32c0fc5da7bfa238cd36cf909bfede891f0140e08f1857ec",
+				"reason": "Register the loop siblings and review-bugs commands alongside the existing loop commands."
 			},
 			"previousReviews": [
+				{
+					"commit": "ea51bbcbf69c324dd7913254e50715cdf24e6278",
+					"path": "src/cli/program/loop.ts",
+					"definition": "392baa3e941129dd03a8e6c4f66c16635cefb4f1a3a3cdaac8496752ac216391",
+					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
 				{
 					"commit": "48e4a8b9b892e15735c51c20710bafcf0304f4bb",
 					"path": "src/cli/program/loop.ts",
@@ -2108,15 +2120,21 @@
 			"unit": "workflow.loop-evaluate",
 			"from": "src/workflows/loopEvaluate.ts",
 			"to": "src/cli/program/loopEvaluate.ts",
-			"definition": "4cab7352c461aef4aa700f3e3e2344f5e38aaebe7a0429633d370f120cbbc08a",
+			"definition": "064f36c05846c93418971acc8f7f5f90a0325a225503adcb06817866b0d7fa8d",
 			"relocationDefinition": "93b1bdbb716a8569108453b267b0843f66f570e9076fcdbb7ea203eb2adf31e3",
 			"review": {
-				"commit": "58a619d02e4cb955fe0db11ad18c1ff3348e2ff0",
+				"commit": "6a64ad41350d11e2360f6d8b4f01a85035fcd927",
 				"path": "src/cli/program/loopEvaluate.ts",
-				"definition": "4cab7352c461aef4aa700f3e3e2344f5e38aaebe7a0429633d370f120cbbc08a",
-				"reason": "Retain bounded evaluator output and process trees, workload-aware deadlines, refusal of mutations after explicit loop closure, owner-scoped child credentials and preserved bounded command diagnostics."
+				"definition": "064f36c05846c93418971acc8f7f5f90a0325a225503adcb06817866b0d7fa8d",
+				"reason": "Run project evaluators through the shared bounded evaluator process helper with the same resource lease, environment and failure reporting."
 			},
 			"previousReviews": [
+				{
+					"commit": "58a619d02e4cb955fe0db11ad18c1ff3348e2ff0",
+					"path": "src/cli/program/loopEvaluate.ts",
+					"definition": "4cab7352c461aef4aa700f3e3e2344f5e38aaebe7a0429633d370f120cbbc08a",
+					"reason": "Retain bounded evaluator output and process trees, workload-aware deadlines, refusal of mutations after explicit loop closure, owner-scoped child credentials and preserved bounded command diagnostics."
+				},
 				{
 					"commit": "43dacd3706aa93cc8cda40db9d6a802fde185562",
 					"path": "src/cli/program/loopEvaluate.ts",
@@ -3159,7 +3177,14 @@
 			"unit": "workflow.built-in-loop-templates",
 			"from": "src/workflows/builtInLoopTemplates.ts",
 			"to": "src/workflows/development-tooling/loop-templates/builtInLoopTemplates.ts",
-			"definition": "6d566c8a153e181fbd3af7dde6f990633736ff57decf81b50cceda8c16a4a55f"
+			"definition": "b66f973f5d2dabe713d47248ce86d8633853949ddc4752296a412bace66ee8f9",
+			"relocationDefinition": "6d566c8a153e181fbd3af7dde6f990633736ff57decf81b50cceda8c16a4a55f",
+			"review": {
+				"commit": "6a64ad41350d11e2360f6d8b4f01a85035fcd927",
+				"path": "src/workflows/development-tooling/loop-templates/builtInLoopTemplates.ts",
+				"definition": "b66f973f5d2dabe713d47248ce86d8633853949ddc4752296a412bace66ee8f9",
+				"reason": "Add the sibling search step to the bug-fix template after the passing checkpoint."
+			}
 		},
 		{
 			"unit": "reports.adapter.playwright-report",
@@ -4528,15 +4553,21 @@
 			"unit": "workflow.manage-loop",
 			"from": "src/workflows/manageLoop.ts",
 			"to": "src/cli/program/manageLoop.ts",
-			"definition": "4913a036b605c659838b9413e228f85b9fca3e05e02d26a12aa7c0cbeafb7d4f",
+			"definition": "aef240feabd564a16e292598244d851ace901f4b14b079db9e873df4da8077e1",
 			"relocationDefinition": "e95f68a7587b306a9f99bd633dad2b68e60c3f5c138bcbb7af1e4c5ee767a3fe",
 			"review": {
-				"commit": "745253c6258eb6a90ae59b9758562ec322ba8665",
+				"commit": "6a64ad41350d11e2360f6d8b4f01a85035fcd927",
 				"path": "src/cli/program/manageLoop.ts",
-				"definition": "4913a036b605c659838b9413e228f85b9fca3e05e02d26a12aa7c0cbeafb7d4f",
-				"reason": "Retain stale-loop listing with recorded abandoned closure, preserved stored loop evidence with named schema fields, and refusal of mutations after explicit loop closure."
+				"definition": "aef240feabd564a16e292598244d851ace901f4b14b079db9e873df4da8077e1",
+				"reason": "Require a sibling report before completing the siblings step of a bug-fix loop."
 			},
 			"previousReviews": [
+				{
+					"commit": "745253c6258eb6a90ae59b9758562ec322ba8665",
+					"path": "src/cli/program/manageLoop.ts",
+					"definition": "4913a036b605c659838b9413e228f85b9fca3e05e02d26a12aa7c0cbeafb7d4f",
+					"reason": "Retain stale-loop listing with recorded abandoned closure, preserved stored loop evidence with named schema fields, and refusal of mutations after explicit loop closure."
+				},
 				{
 					"commit": "48e4a8b9b892e15735c51c20710bafcf0304f4bb",
 					"path": "src/cli/program/manageLoop.ts",
