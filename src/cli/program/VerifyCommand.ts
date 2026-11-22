@@ -1,7 +1,10 @@
 // @harness-uid u_5hbkzkvulq
 import type { Flags } from './VerifyCommand.types';
 import type { Command } from 'commander';
+import { Option } from 'commander';
 import { fail } from '../../core/development-tooling/errors';
+import { verificationModes } from '../../core/verification-evidence/verifyTypes';
+import { capturePage } from '../../workflows/verification-evidence/run-verify/capturePage';
 import {
 	renderVerify,
 	verifyCheck,
@@ -17,6 +20,7 @@ export function registerVerifyCommand(program: Command): void {
 		.description('Verify an exact commit in a clean snapshot and gate on its record.');
 	verify
 		.command('run')
+		.addOption(profileOption())
 		.option('--priority <kind>', 'agent-test, coding or environment; default environment.')
 		.option(
 			'--commit <revision>',
@@ -59,11 +63,25 @@ export function registerVerifyCommand(program: Command): void {
 				console.log(`Commit ${report.commit} is verified by ${report.record.slice(0, 12)}.`);
 		});
 	registerIdentity(verify);
+	registerCapture(verify);
+}
+
+function registerCapture(verify: Command): void {
+	verify
+		.command('capture <url>')
+		.requiredOption('--output <file>', 'Destination for one PNG.')
+		.option('--browser <path>', 'Chrome Headless Shell executable.', 'chrome-headless-shell')
+		.option('--viewport <size>', 'Width and height in pixels.', '1280x720')
+		.description('Capture one page in an isolated browser profile.')
+		.action(async (url: string, options: Parameters<typeof capturePage>[1]) => {
+			console.log(await capturePage(url, options));
+		});
 }
 
 function registerPlan(verify: Command): void {
 	verify
 		.command('plan')
+		.addOption(profileOption())
 		.option(
 			'--commit <revision>',
 			'Commit to plan; uncommitted changes are never included.',
@@ -87,12 +105,19 @@ function registerPlan(verify: Command): void {
 		});
 }
 
+function profileOption(): Option {
+	return new Option('--profile <profile>', 'Full verification or browser-free Lite checks.')
+		.choices([...verificationModes])
+		.default('full');
+}
+
 function renderPlan(report: Awaited<ReturnType<typeof verifyPlan>>): string {
 	return [
 		`Verification plan for ${report.source.commit} (${report.mode}; checks executed: 0).`,
 		`Base: ${report.source.baseResolution}. ${report.source.selectionNote}`,
 		report.sideEffects,
 		`Selected ${report.plannedChecks} checks; ${report.candidateGroups} candidate groups cover ${report.candidateChecks} checks.`,
+		...(report.pendingChecks ?? []).map((check) => `  pending full verification: ${check}`),
 		`${report.singletons} singletons; ${report.ineligible} checks could not be grouped safely.`,
 		...report.candidates.map(
 			(candidate) =>
@@ -107,8 +132,8 @@ function renderPlan(report: Awaited<ReturnType<typeof verifyPlan>>): string {
 async function runVerification(flags: Flags): Promise<void> {
 	const stored = await verifyRun(flags);
 	console.log(flags.json ? JSON.stringify(stored, null, 2) : renderVerify(stored));
-	if (['failed', 'skipped'].includes(stored.attachment?.status ?? stored.record.status))
-		process.exitCode = 1;
+	const status = stored.attachment?.status ?? stored.record.lite?.status ?? stored.record.status;
+	if (['failed', 'skipped'].includes(status)) process.exitCode = 1;
 }
 
 function registerIdentity(verify: Command): void {

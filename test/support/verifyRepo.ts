@@ -3,6 +3,7 @@ import { cp, mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { VerificationRecord } from '../../src/core/verificationTypes';
+import type { ScenarioManifest } from '../../src/core/development-tooling/unitTypes';
 import { runCommand, runHarness } from './cli';
 import { projectAt, unitProject } from './unitProject';
 import { fixtureScenarios, fixtureSources } from './verifyFixture';
@@ -130,3 +131,19 @@ export async function cloneRepo(source: VerifyRepo): Promise<VerifyRepo> {
 }
 
 export type { VerifyOutcome, VerifyRepo } from './verifyRepo.types';
+
+export function scenarioOf(record: VerificationRecord, id: string) {
+	const found = record.scenarios.find((scenario) => scenario.id === id);
+	if (!found) throw new Error(`scenario ${id} missing from record`);
+	return found;
+}
+
+export async function declareLitePageLogic(repo: VerifyRepo): Promise<string> {
+	const path = 'specification/scenarios/titles-page.json';
+	const scenario = await repo.json<ScenarioManifest>(path);
+	const command =
+		'test "$TAKE_SCREENSHOT" = "$(if [ "$HARNESS_VERIFY_MODE" = lite ]; then echo 0; else echo 1; fi)"';
+	scenario.tests.unshift({ id: 'logic', kind: 'integration', runner: 'command', target: command });
+	await repo.write(path, JSON.stringify(scenario));
+	return repo.commit('feat: declare a mixed page scenario');
+}

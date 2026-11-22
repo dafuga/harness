@@ -1,9 +1,10 @@
 // @harness-uid u_srtmrphmgz
-import { scopedVerify, timer, verifyEnv, renderAttachment } from './scopedVerify';
+import { scopedVerify, timer, verifyEnv } from './scopedVerify';
 import type { VerifyOptions, VerifyResult } from './runVerify.types';
 export type { VerifyOptions } from './runVerify.types';
 export type { VerifyPlanReport } from './verification-service/verifyPlanReport.types';
 export { verifyPlan } from './verifyPlanWorkflow';
+export { renderVerify } from './renderVerify';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { fail } from '../../../core/development-tooling/errors';
@@ -96,6 +97,7 @@ async function verifyFull(git: GitAdapter, commit: string, options: VerifyOption
 		sourceHashes,
 		impact,
 		config,
+		verificationProfile: options.profile,
 		requirePerformance: requiresPerformance(options, config),
 		testTimeoutMs: options.testTimeout ? Number(options.testTimeout) : undefined,
 		entity: options.entity,
@@ -191,25 +193,6 @@ export async function verifyStamp(
 ): Promise<IdentifiedBuild & { directory: string }> {
 	const target = resolve(directory);
 	return { directory: target, ...(await new BuildIdentityService().stamp(target)) };
-}
-
-export function renderVerify(stored: VerifyResult): string {
-	const { record } = stored;
-	const ran = record.scenarios.filter((scenario) => scenario.status !== 'referenced').length;
-	const { base, requestedBase } = record.source;
-	const widened = requestedBase
-		? [
-				`Compared with ${base ?? 'an empty tree'}: ${requestedBase} has no passing record, so everything since the last verified revision was checked.`
-			]
-		: [];
-	return [
-		`Verification ${record.status} for ${record.source.commit}.`,
-		...widened,
-		`Tests: ${record.tests.length} run. Scenarios: ${ran} verified, ${record.scenarios.length - ran} referenced.`,
-		...record.failures.map((failure) => `  ${failure}`),
-		`Record ${record.id.slice(0, 12)} in ${stored.directory}`,
-		...renderAttachment(stored.attachment)
-	].join('\n');
 }
 
 function requiresPerformance(options: VerifyOptions, config: VerifyConfig): boolean {

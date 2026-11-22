@@ -1,8 +1,7 @@
 // @harness-uid u_k23ebybqw2
-import type { VerifyContext } from './VerificationService.types';
+import type { ProfiledPlan, VerifyContext } from './VerificationService.types';
 export type { VerifyContext } from './VerificationService.types';
 
-import type { ScenarioManifest } from '../../../../core/development-tooling/unitTypes';
 import type { ScenarioResult } from '../../../../core/verification-evidence/verificationTypes';
 import type { PlannedCheck } from '../../../../utils/verification-evidence/verifyPlan';
 
@@ -16,11 +15,11 @@ import { emittedTargets } from '../../../../utils/development-tooling/unitMeasur
 
 import { neededBuilds } from './buildScope';
 import { RecordAssemblyService } from './record-assembly-service/RecordAssemblyService';
-import { scenarioCoverage } from './scenarioCoverage';
-import { scopedCheck, scopedScenarios, scopeFailure } from './entityScope';
+import { judgeScenario } from './scenarioCoverage';
+import { scopedCheck, scopedScenarios } from './entityScope';
 import { referencedScenario } from './sealRecord';
-import { SnapshotRunService, type Executed } from './SnapshotRunService';
-import { verifyPlan } from './verifyPlan';
+import { SnapshotRunService } from './SnapshotRunService';
+import { deferredInLite, deferredLiteCheck, verifyPlan } from './verifyPlan';
 
 /** Verifies one exact commit in a clean snapshot and writes the record, whatever the outcome. */
 export class VerificationService {
@@ -35,16 +34,22 @@ export class VerificationService {
 		const { context } = this;
 		const startedAt = new Date().toISOString();
 		const directory = this.store.directoryFor(context.commit, startedAt);
-		const { plan, referenced, rerun } = this.selection();
-		const needed = context.entity ? neededBuilds(rerun) : undefined;
+		const { plan, pendingChecks, referenced, rerun } = this.selection();
+		const active = this.lite
+			? rerun.filter((scenario) => plan.some((check) => check.scenario === scenario.id))
+			: rerun;
+		const needed = context.entity ? neededBuilds(active) : undefined;
 		const executed = await this.snapshotRun(directory, needed).execute(plan, this.artifactPaths());
-		const scenarios = rerun.map((scenario) => this.judge(scenario, executed));
+		const scenarios = rerun.map((scenario) =>
+			judgeScenario(context, scenario, executed, pendingChecks)
+		);
 		const assembly = new RecordAssemblyService({
 			...context,
 			profile: this.profile,
 			store: this.store
 		});
-		const record = await assembly.assemble({ startedAt, executed, scenarios, referenced });
+		const lite = this.lite ? this.litePending(pendingChecks) : undefined;
+		const record = await assembly.assemble({ startedAt, executed, scenarios, referenced, lite });
 		await this.store.save(record, directory);
 		return { record, directory };
 	}
@@ -52,6 +57,16 @@ export class VerificationService {
 	/** Builds exactly the check list used by run(), without creating a snapshot or executing it. */
 	plan(): PlannedCheck[] {
 		return this.selection().plan;
+	}
+
+	/** Plans the runnable checks and lists the work deferred by Lite. */
+	planWithPending(): ProfiledPlan {
+		const { plan, pendingChecks } = this.selection();
+		return { plan, pendingChecks };
+	}
+
+	private get lite(): boolean {
+		return this.context.verificationProfile === 'lite';
 	}
 
 	private selection() {
@@ -62,17 +77,25 @@ export class VerificationService {
 		const rerun = entity
 			? scopedScenarios(context.head.scenarios, entity)
 			: context.head.scenarios.filter((scenario) => !kept.has(scenario.id));
-		const planned = verifyPlan({
+		const checks = verifyPlan({
 			selectedTests: entity ? [] : context.impact.tests.selected,
 			scenarios: rerun,
 			config: context.config,
 			unitsConfig: context.head.config,
 			testTimeoutMs: context.testTimeoutMs
 		});
+		const scoped = entity ? checks.map((check) => scopedCheck(check, entity)) : checks;
+		const pendingChecks = this.lite ? scoped.filter(deferredLiteCheck) : [];
+		const plan = this.lite ? scoped.filter((check) => !deferredLiteCheck(check)) : scoped;
+		return { plan, pendingChecks, referenced, rerun };
+	}
+
+	private litePending(pending: PlannedCheck[]) {
+		const { setup, tools } = this.context.config;
 		return {
-			plan: entity ? planned.map((check) => scopedCheck(check, entity)) : planned,
-			referenced,
-			rerun
+			pendingChecks: pending.map((check) => check.id),
+			pendingSetup: setup.filter(deferredInLite).map((step) => step.command),
+			pendingTools: tools.filter(deferredInLite).map((tool) => tool.id)
 		};
 	}
 
@@ -85,7 +108,7 @@ export class VerificationService {
 	/** A scoped run passes the builds its scenarios need; a full run passes none. */
 	private snapshotRun(directory: string, needed?: ReadonlySet<string> | 'all'): SnapshotRunService {
 		const { root, config, commit, tree, env } = this.context;
-		const context = { directory, commit, tree, profile: this.profile.id, env };
+		const context = { directory, commit, tree, profile: this.profile.id, env, lite: this.lite };
 		return new SnapshotRunService({ root, config, context, needed });
 	}
 
@@ -101,40 +124,5 @@ export class VerificationService {
 		return head.scenarios.flatMap((scenario) =>
 			affected.has(scenario.id) ? [] : (referencedScenario(prior, scenario.id) ?? [])
 		);
-	}
-
-	private judge(
-		scenario: ScenarioManifest,
-		executed: Executed
-	): { result: ScenarioResult; failures: string[] } {
-		const own = executed.outcomes.filter((outcome) => outcome.check.scenario === scenario.id);
-		const compiled = (executed.builds ?? []).map((build) => [build.id, build.buildId] as const);
-		const builds = {
-			declared: this.context.config.builds.map((build) => build.id),
-			compiled: new Map(compiled),
-			skipped: new Set(executed.skippedBuilds ?? [])
-		};
-		const coverage = scenarioCoverage({
-			scenario,
-			commit: this.context.commit,
-			gathered: own.flatMap((outcome) => outcome.gathered),
-			checkFailed: own.some((outcome) => !outcome.passed),
-			builds
-		});
-		const ran = own.length === scenario.tests.length;
-		const failures = [
-			...own.flatMap((outcome) => outcome.failures),
-			...coverage.failures,
-			...(ran ? [] : [`${scenario.id}: its checks did not run`])
-		];
-		return {
-			result: {
-				id: scenario.id,
-				status: failures.length === 0 ? 'passed' : 'failed',
-				testedRevision: this.context.commit,
-				states: coverage.states
-			},
-			failures: [...failures, ...(this.context.entity ? [scopeFailure(this.context.entity)] : [])]
-		};
 	}
 }

@@ -314,10 +314,12 @@
 		},
 		{
 			"id": "playwright",
+			"fullOnly": true,
 			"command": "bun x playwright --version"
 		},
 		{
 			"id": "chromium",
+			"fullOnly": true,
 			"command": "node -e \"const fs=require('node:fs');const found=JSON.parse(fs.readFileSync('node_modules/playwright-core/browsers.json','utf8')).browsers.find((browser)=>browser.name==='chromium');console.log('chromium '+found.browserVersion+' revision '+found.revision)\""
 		},
 		{

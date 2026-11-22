@@ -22,11 +22,13 @@
 			"CoverageResult",
 			"CoverageInput",
 			"CoverageResult",
+			"ScenarioJudgement",
 			"Evidence",
 			"Viewport",
 			"scenarioCoverage",
 			"problem",
-			"scenarioCoverage"
+			"scenarioCoverage",
+			"judgeScenario"
 		]
 	},
 	"contract": {
@@ -292,6 +294,30 @@
 						"checkFailed": false
 					}
 				]
+			},
+			{
+				"name": "judgeScenario.context",
+				"type": "VerifyContext",
+				"required": true,
+				"description": "The exact commit, verify configuration, profile and optional entity scope."
+			},
+			{
+				"name": "judgeScenario.scenario",
+				"type": "ScenarioManifest",
+				"required": true,
+				"description": "The unchanged scenario contract with its states, tests and evidence."
+			},
+			{
+				"name": "judgeScenario.executed",
+				"type": "Executed",
+				"required": true,
+				"description": "Test outcomes, gathered captures and build identities from the snapshot."
+			},
+			{
+				"name": "judgeScenario.pendingChecks",
+				"type": "PlannedCheck[]",
+				"required": true,
+				"description": "The planned checks deferred by Lite."
 			}
 		],
 		"outputs": [
@@ -717,6 +743,44 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "judgeScenario",
+				"inputs": [
+					{
+						"name": "judgeScenario.context",
+						"type": "VerifyContext",
+						"required": true,
+						"description": "The exact commit, verify configuration, profile and optional entity scope."
+					},
+					{
+						"name": "judgeScenario.scenario",
+						"type": "ScenarioManifest",
+						"required": true,
+						"description": "The unchanged scenario contract with its states, tests and evidence."
+					},
+					{
+						"name": "judgeScenario.executed",
+						"type": "Executed",
+						"required": true,
+						"description": "Test outcomes, gathered captures and build identities from the snapshot."
+					},
+					{
+						"name": "judgeScenario.pendingChecks",
+						"type": "PlannedCheck[]",
+						"required": true,
+						"description": "The planned checks deferred by Lite."
+					}
+				],
+				"outputs": [
+					{
+						"name": "judgeScenario",
+						"type": "ScenarioJudgement",
+						"description": "Scenario result, actual check failures and capture slots remaining for full verification."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
@@ -748,7 +812,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.verify-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.verify-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.snapshot-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.verification-evidence-run-verify-verification-service-entity-scope",
 			"via": "import",
 			"origin": "derived"
 		}

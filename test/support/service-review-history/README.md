@@ -83,4 +83,5 @@ bare repository that holds the previous pack and borrows the checkout's objects:
 `objects/info/alternates`, then run the script and `git pack-objects` with `GIT_DIR` set to it.
 Every object of the previous pack must still be listed.
 
+Lite verification retains implementation commit `41db0c528` for the rebased record assembly, and the earlier Lite and component snapshot reviews remain present.
 The sibling bug sweep retains implementation commit `6a64ad413` for the loop siblings command, the bug-fix sibling step, evaluator process reuse and regression proof environments.

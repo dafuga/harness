@@ -94,6 +94,13 @@
 						"selectionNote": "Entity planning uses the same scoped scenario selection as verify run --entity."
 					}
 				]
+			},
+			{
+				"name": "verifyPlanReport.pendingChecks",
+				"type": "PlannedCheck[]",
+				"required": false,
+				"default": [],
+				"description": "Checks deferred by Lite, reported by stable check ID."
 			}
 		],
 		"outputs": [
@@ -269,6 +276,13 @@
 								"selectionNote": "Entity planning uses the same scoped scenario selection as verify run --entity."
 							}
 						]
+					},
+					{
+						"name": "verifyPlanReport.pendingChecks",
+						"type": "PlannedCheck[]",
+						"required": false,
+						"default": [],
+						"description": "Checks deferred by Lite, reported by stable check ID."
 					}
 				],
 				"outputs": [
