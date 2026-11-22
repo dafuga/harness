@@ -10,10 +10,16 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
 
 test('Counts comma-separated parameters from a source line', () => {
-	const lines = ['function combine(left, right) {', 'run()'];
+	const lines = [
+		'function combine(left, right) {',
+		'run()',
+		'const rows = values.map(({ name, kind, id }, index) => ({',
+		'function seed(row: Record<string, unknown> = { id: 1, kind: "note" }, ...rest: string[]) {',
+		'output(a: string, b: string, c: string, d: string, e = "one,two") {'
+	];
 	const outputs = lines.map(parameterCount);
 
-	expect(outputs).toEqual([2, 0]);
+	expect(outputs).toEqual([2, 0, 2, 2, 5]);
 	recordExampleCases(
 		{
 			unitId: 'audit.block-metrics',
@@ -22,10 +28,7 @@ test('Counts comma-separated parameters from a source line', () => {
 			evidence: 'examples-cases',
 			file: 'counts-comma-separated-parameters-from-a-source-line.json'
 		},
-		[
-			{ name: 'two parameters in a function declaration', input: lines[0], output: outputs[0] },
-			{ name: 'empty parameter list', input: lines[1], output: outputs[1] }
-		]
+		lines.map((input, index) => ({ name: input, input, output: outputs[index] }))
 	);
 });
 
