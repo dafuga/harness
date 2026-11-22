@@ -2,6 +2,7 @@
 import { parseArgs } from 'node:util';
 import { TrackerNodeService } from '../../services/projects-sessions/TrackerNodeService';
 import type { TrackerNodeOwner } from '../../services/projects-sessions/TrackerNodeService.types';
+import { TrackerNodeStartupError } from '../../services/projects-sessions/tracker-node-service/TrackerNodeStartupError';
 import { loadTrackerNodeConfig } from '../../services/projects-sessions/tracker-node-service/trackerNodeConfig';
 
 const usage = 'Usage: harness tracker serve --config <private absolute path> --role hub|spoke';
@@ -27,7 +28,8 @@ export class TrackerServeCommand {
 			const owner = await new TrackerNodeService().start(config);
 			await superviseTrackerNode(owner, stop.signal);
 			return 0;
-		} catch {
+		} catch (error) {
+			if (error instanceof TrackerNodeStartupError) console.error(`tracker: ${error.message}`);
 			console.error('tracker: native service startup, drain, or rollback check failed');
 			return 1;
 		} finally {

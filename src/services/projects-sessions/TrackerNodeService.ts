@@ -7,6 +7,7 @@ import { TrackerSupervisorService } from './TrackerSupervisorService';
 import {
 	trackerSyncPort,
 	verifyTrackerDatabasePath,
+	verifyTrackerJournalWritable,
 	verifyTrackerLegacyFence
 } from './tracker-node-service/trackerNodeConfig';
 import type { TrackerNodeConfig } from './tracker-node-service/trackerNodeConfig.types';
@@ -26,6 +27,7 @@ export class TrackerNodeService {
 	async start(config: TrackerNodeConfig): Promise<TrackerNodeOwner> {
 		const checkpoint = verifyTrackerLegacyFence(config);
 		verifyTrackerDatabasePath(config.database);
+		verifyTrackerJournalWritable(config.database);
 		const options = trackerNodeRuntime(config);
 		const release = tryAcquireTrackerSqliteLease(config.database + '.supervisor-lock.sqlite');
 		if (!release) throw new TrackerNodeStartupError('Tracker journal is already owned');
