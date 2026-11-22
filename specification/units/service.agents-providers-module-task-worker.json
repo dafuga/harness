@@ -286,9 +286,9 @@
 				]
 			},
 			{
-				"name": "claimedTask.blocked",
-				"type": "ReadonlySet<string>",
-				"required": false
+				"name": "claimedTask.runnable",
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "finishTask.queue",
@@ -1180,9 +1180,9 @@
 						]
 					},
 					{
-						"name": "claimedTask.blocked",
-						"type": "ReadonlySet<string>",
-						"required": false
+						"name": "claimedTask.runnable",
+						"type": "unknown",
+						"required": true
 					}
 				],
 				"outputs": [

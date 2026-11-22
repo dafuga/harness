@@ -11,6 +11,7 @@ import {
 } from '../../../src/services/agents-providers/module-task-worker-service/providerCooldown';
 import type { TaskRunInput } from '../../../src/repositories/agents-providers/ModuleTaskRepository.types';
 import { moduleTaskFixture } from '../../support/moduleTaskFixture';
+import { claimedTask } from '../../../src/services/agents-providers/module-task-worker-service/taskClaim';
 
 async function queued(extra: Record<string, unknown> = {}) {
 	const f = await moduleTaskFixture();
@@ -96,6 +97,25 @@ test('an unwritable task worktree directory blocks before any claim (EPERM, EACC
 		expect(await task()).toMatchObject({ status: 'queued', claimHistory: [] });
 	} finally {
 		await chmod(directory, 0o700);
+		await f.dispose();
+	}
+});
+
+test('a task queued after the preflight read is not claimed until its own preflight', async () => {
+	const { f, task } = await queued();
+	try {
+		const repository = new ModuleTaskService(f.root).repository;
+		const owner = await repository.owner();
+		const unchecked = await repository.update((queue) =>
+			claimedTask(queue, 'owner', [], { owner, runnable: new Set() })
+		);
+		expect(unchecked.value).toBeNull();
+		expect((await task()).status).toBe('queued');
+		const checked = await repository.update((queue) =>
+			claimedTask(queue, 'owner', [], { owner, runnable: new Set(['orders-validation']) })
+		);
+		expect(checked.value?.status).toBe('running');
+	} finally {
 		await f.dispose();
 	}
 });

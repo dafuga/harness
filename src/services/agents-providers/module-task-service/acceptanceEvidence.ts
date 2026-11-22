@@ -88,8 +88,13 @@ async function provenBy(
 	const { record } = stored;
 	const { scope, problem } = recordScope(record, module);
 	if (!scope) return problem;
-	const integrity = await new VerificationCheckService(root).integrity(commit, stored);
-	if (integrity.length) return integrity.join(', ');
+	// A full pass is checked as `verify check` does, lineage included; a scoped record inherits nothing.
+	const checks = new VerificationCheckService(root);
+	const problems =
+		scope === 'full'
+			? (await checks.check(commit, stored)).problems
+			: await checks.integrity(commit, stored);
+	if (problems.length) return problems.join(', ');
 	return { commit, record: record.id, scope, checks: record.tests.length };
 }
 

@@ -126,6 +126,8 @@ export const moduleTaskVerificationScopes: Record<string, VerificationScope> = {
 					'dispatch-preflight',
 				'missing required tools block only the tasks that need them': 'dispatch-preflight',
 				'an unwritable task worktree directory blocks before any claim (EPERM, EACCES)':
+					'dispatch-preflight',
+				'a task queued after the preflight read is not claimed until its own preflight':
 					'dispatch-preflight'
 			},
 			'test/services/agents-providers/module-task-run-metrics.test.ts': {

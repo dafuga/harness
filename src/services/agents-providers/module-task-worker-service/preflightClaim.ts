@@ -20,13 +20,16 @@ export async function preflightClaim(
 	const cooldowns = await readCooldowns(root);
 	const queue = (await repository.read()).data;
 	const blocked = new Map<string, string[]>();
+	const runnable = new Set<string>();
 	for (const task of queue.tasks.filter((item) => claimable(item, worker, modules))) {
 		const problems = await taskBlockers(task, cooldowns);
 		if (problems.length) blocked.set(task.id, problems);
+		else runnable.add(task.id);
 	}
 	const owner = await repository.owner();
+	// A task queued after the preflight read waits for the next poll's preflight.
 	const claim = await repository.update((current) =>
-		claimedTask(current, worker, modules, { owner, blocked: new Set(blocked.keys()) })
+		claimedTask(current, worker, modules, { owner, runnable })
 	);
 	return {
 		claim,

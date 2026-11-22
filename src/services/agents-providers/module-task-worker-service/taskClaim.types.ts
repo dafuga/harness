@@ -3,6 +3,6 @@ import type { ModuleTask } from '../../../repositories/agents-providers/ModuleTa
 
 export interface TaskClaimOptions {
 	owner: NonNullable<ModuleTask['claim']>['owner'];
-	/** Tasks this machine cannot run now; they stay queued for another worker. */
-	blocked?: ReadonlySet<string>;
+	/** Tasks that passed this machine's preflight; others stay queued. All tasks when omitted. */
+	runnable?: ReadonlySet<string>;
 }

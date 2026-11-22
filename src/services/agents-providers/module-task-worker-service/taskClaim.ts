@@ -35,11 +35,11 @@ export function claimedTask(
 	queue: ModuleTaskQueue,
 	worker: string,
 	modules: string[],
-	{ owner, blocked = new Set() }: TaskClaimOptions
+	{ owner, runnable }: TaskClaimOptions
 ) {
 	const busy = new Set(queue.tasks.filter((t) => t.status === 'running').map((t) => t.module.id));
 	const task = queue.tasks.find(
-		(t) => claimable(t, worker, modules) && !busy.has(t.module.id) && !blocked.has(t.id)
+		(t) => claimable(t, worker, modules) && !busy.has(t.module.id) && (runnable?.has(t.id) ?? true)
 	);
 	if (!task) return null;
 	task.status = 'running';
