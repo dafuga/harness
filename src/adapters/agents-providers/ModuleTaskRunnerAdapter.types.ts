@@ -20,7 +20,7 @@ export interface TaskPublicEvent {
 	is_error?: boolean;
 	result?: string;
 	error?: string | { type?: string; code?: string };
-	rate_limit_info?: { status?: string };
+	rate_limit_info?: { status?: string; resetsAt?: number };
 	item?: { type?: string; text?: string };
 	modelUsage?: Record<string, unknown>;
 	permission_denials?: unknown[];

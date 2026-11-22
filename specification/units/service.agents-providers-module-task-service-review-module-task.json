@@ -8,12 +8,48 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/agents-providers/module-task-service/reviewModuleTask.ts"],
-		"symbols": ["reviewModuleTask"]
+		"source": [
+			"src/services/agents-providers/module-task-service/acceptanceEvidence.ts",
+			"src/services/agents-providers/module-task-service/acceptanceEvidence.types.ts",
+			"src/services/agents-providers/module-task-service/recordedReview.ts",
+			"src/services/agents-providers/module-task-service/reviewModuleTask.ts"
+		],
+		"symbols": [
+			"acceptanceEvidence",
+			"TaskAcceptanceEvidence",
+			"EvidenceScope",
+			"recordedReview",
+			"reviewModuleTask"
+		]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "acceptanceEvidence.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "acceptanceEvidence.task",
+				"type": "ModuleTask",
+				"required": true
+			},
+			{
+				"name": "acceptanceEvidence.revision",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordedReview.task",
+				"type": "ModuleTask | undefined",
+				"required": true
+			},
+			{
+				"name": "recordedReview.review",
+				"type": "{ attempt: string; verdict: 'accepted' | 'incomplete' }",
+				"required": true
+			},
 			{
 				"name": "reviewModuleTask.root",
 				"type": "string",
@@ -78,6 +114,67 @@
 		],
 		"errorStatus": "declared",
 		"operations": [
+			{
+				"name": "acceptanceEvidence",
+				"inputs": [
+					{
+						"name": "acceptanceEvidence.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "acceptanceEvidence.task",
+						"type": "ModuleTask",
+						"required": true
+					},
+					{
+						"name": "acceptanceEvidence.revision",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "acceptanceEvidence",
+						"type": "Promise<TaskAcceptanceEvidence>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordedReview",
+				"inputs": [
+					{
+						"name": "recordedReview.task",
+						"type": "ModuleTask | undefined",
+						"required": true
+					},
+					{
+						"name": "recordedReview.review",
+						"type": "{ attempt: string; verdict: 'accepted' | 'incomplete' }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordedReview",
+						"type": "ModuleTask['reviews'][number] | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "reviewModuleTask",
 				"inputs": [
@@ -170,12 +267,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.verification-store",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.agents-providers-module-task-analytics",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "service.agents-providers-module-task-worker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-check",
 			"via": "import",
 			"origin": "derived"
 		}

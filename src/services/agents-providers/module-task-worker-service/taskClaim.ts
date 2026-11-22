@@ -1,6 +1,7 @@
 // @harness-uid u_b4uzqkb2i6
 import { randomUUID } from 'node:crypto';
 import type { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
+import type { TaskClaimOptions } from './taskClaim.types';
 import { TaskWorktreeChangedError } from '../../../adapters/agents-providers/TaskWorktreeChangedError';
 import type {
 	ModuleTask,
@@ -22,19 +23,23 @@ export function pendingTaskResult(
 		finishedAt: new Date().toISOString()
 	};
 }
+/** A queued task this worker may pick up, before machine preflight. */
+export function claimable(task: ModuleTask, worker: string, modules: string[]): boolean {
+	return (
+		task.status === 'queued' &&
+		(!task.assignee || task.assignee === worker) &&
+		(!modules.length || modules.includes(task.module.id))
+	);
+}
 export function claimedTask(
 	queue: ModuleTaskQueue,
 	worker: string,
 	modules: string[],
-	owner: NonNullable<ModuleTask['claim']>['owner']
+	{ owner, blocked = new Set() }: TaskClaimOptions
 ) {
 	const busy = new Set(queue.tasks.filter((t) => t.status === 'running').map((t) => t.module.id));
 	const task = queue.tasks.find(
-		(t) =>
-			t.status === 'queued' &&
-			(!t.assignee || t.assignee === worker) &&
-			(!modules.length || modules.includes(t.module.id)) &&
-			!busy.has(t.module.id)
+		(t) => claimable(t, worker, modules) && !busy.has(t.module.id) && !blocked.has(t.id)
 	);
 	if (!task) return null;
 	task.status = 'running';

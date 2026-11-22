@@ -57,11 +57,16 @@ export const reviewInputSchema = z
 		verdict: z.enum(['accepted', 'incomplete']),
 		cause: reviewCause.optional(),
 		reviewer: z.string().trim().min(1).max(150).default('unattributed'),
-		feedback: z.string().trim().max(16000).default('')
+		feedback: z.string().trim().max(16000).default(''),
+		evidence: z.string().trim().min(1).max(200).optional()
 	})
 	.refine(
 		(value) => value.verdict === 'accepted' || value.feedback.length > 0,
 		'Incomplete review requires feedback.'
+	)
+	.refine(
+		(value) => value.verdict === 'incomplete' || value.evidence !== undefined,
+		'Accepted review requires --evidence: a verified commit that carries the submission.'
 	)
 	.refine(
 		(value) => value.verdict === 'incomplete' || value.cause === undefined,
@@ -77,5 +82,13 @@ export const taskReviewSchema = z.strictObject({
 	provider: z.enum(['claude', 'codex']),
 	model: z.string(),
 	intelligence: z.string(),
-	reportedModel: z.string().nullable()
+	reportedModel: z.string().nullable(),
+	evidence: z
+		.strictObject({
+			commit: z.string().regex(/^[a-f0-9]{40}$/),
+			record: z.string().min(1),
+			scope: z.enum(['full', 'entity']),
+			checks: z.number().int().nonnegative()
+		})
+		.optional()
 });

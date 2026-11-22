@@ -113,6 +113,29 @@ export const moduleTaskVerificationScopes: Record<string, VerificationScope> = {
 				'competing workers claim once and writes outside the module require review as failed':
 					'owner-recovery'
 			},
+			'test/services/agents-providers/module-task-acceptance.test.ts': {
+				'acceptance refuses a submission without a passing record of a commit that carries it':
+					'verified-acceptance',
+				'a verified submission is accepted once and a resent verdict replays the recorded one':
+					'verified-acceptance'
+			},
+			'test/services/agents-providers/module-task-preflight.test.ts': {
+				'an exhausted provider quota blocks dispatch until its reset without charging an attempt':
+					'dispatch-preflight',
+				'a cooldown without a reported reset pauses for the default window only':
+					'dispatch-preflight',
+				'missing required tools block only the tasks that need them': 'dispatch-preflight',
+				'an unwritable task worktree directory blocks before any claim (EPERM, EACCES)':
+					'dispatch-preflight'
+			},
+			'test/services/agents-providers/module-task-run-metrics.test.ts': {
+				'per-model metrics separate machine and quota failures from the model quality rate':
+					'run-records'
+			},
+			'test/module-task-dispatch.e2e.test.ts': {
+				'a Claude quota rejection pauses the next dispatch with exit 75 and no provider call':
+					'dispatch-preflight'
+			},
 			'test/analytics-attribution.e2e.test.ts': {
 				'failed commands and incomplete checks are recorded without supplied text':
 					'contract-admission',
