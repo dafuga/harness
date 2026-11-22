@@ -1,0 +1,17 @@
+The bundle contains this ref:
+f1d00852d515b3681558dbb82df8332b36900f47 HEAD
+The bundle records a complete history.
+The bundle uses this hash algorithm: sha1
+/Users/danielfugere/harness-z5jp8p-evidence/overnight-8303ae615/linux-ui-snapshot-declared-f1d00852d-20261122T094900
+{"scenario":"component-catalog-previews","test":"previews","command":"bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts explorer-shell-component-catalog.spec.ts --grep '(^| )(reports\\.component\\.shared-primitives-loading-state:loading|reports\\.component\\.explorer-ui-explorer-platforms:hovered|reports\\.component\\.explorer-ui-explorer-platforms:picker-open|reports\\.page\\.harness-branch-branch-at-platforms:ready)(:[^ ]+)? at '","exit":0,"signal":null}
+{
+  "revision": "f1d00852d515b3681558dbb82df8332b36900f47",
+  "tree": "7fbad02508818c535471aa29ef07fdfd662f9251",
+  "chromium": "Google Chrome for Testing 153.0.8010.12",
+  "electron": "44.7.0",
+  "sealedNativeRecord": false,
+  "passedRegisteredCommands": 1,
+  "failedRegisteredCommands": 0,
+  "passingCasesInSuccessfulCommands": 12,
+  "verifiedScreenshots": 12
+}
