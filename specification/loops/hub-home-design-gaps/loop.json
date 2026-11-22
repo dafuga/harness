@@ -2,7 +2,7 @@
 	"name": "hub-home-design-gaps",
 	"goal": "The signed-in Hub home matches the approved hub-home designs: empty-state panels with next steps, CS initials, counted quota warnings with one almost-out callout, quota dialog status and add-subscription tile, quick replies, phone chat header, counted dialog summaries, weekday headings and plan state pills.",
 	"createdAt": "2026-11-22T13:01:27.602Z",
-	"updatedAt": "2026-11-22T13:09:10.887Z",
+	"updatedAt": "2026-11-22T13:12:06.739Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,17 +32,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-22T13:11:16.209Z",
+			"evidence": "01e5fa6af5: Hub home components, presentation helpers and two CSS rules; unit manifests reindexed with descriptions. No changes to Tracker, Desktop or shared Reports code."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-22T13:11:18.358Z",
+			"evidence": "loop record --phase green passed at 01e5fa6af5 with the unchanged unit command. Browser: hub-home-design.spec.ts 5/5, hub-home.spec.ts 32/32 and hosted-home.spec.ts pass (46/46 dev server); 37/37 against the built Cloudflare worker (HARNESS_VERIFY=1)."
 		},
 		{
 			"id": "siblings",
 			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-22T13:12:06.739Z",
+			"evidence": "siblings-18dabaaa-6037-4a80-9f07-52ae1e58f93f.json"
 		},
 		{
 			"id": "verify",
