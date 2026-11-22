@@ -2967,15 +2967,27 @@
 			"unit": "service.record-assembly",
 			"from": "src/services/record-assembly-service/RecordAssemblyService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"definition": "50f9f685616a346bc63595ea505496ab7825cb9096e057aed5c8f737cd6c4c63",
+			"definition": "3ba8f924316602c3d500219211db8612d9dac691ea892c3ccb75931bd6f7c06d",
 			"relocationDefinition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936",
 			"review": {
-				"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+				"commit": "41db0c5289110d6ec9cd696a87614cb98f78c173",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-				"definition": "50f9f685616a346bc63595ea505496ab7825cb9096e057aed5c8f737cd6c4c63",
-				"reason": "Seal Lite outcomes with a separate full-proof gate."
+				"definition": "3ba8f924316602c3d500219211db8612d9dac691ea892c3ccb75931bd6f7c06d",
+				"reason": "Seal Lite outcomes with a separate full-proof gate while keeping component snapshot assembly extracted so the record assembly method meets the length rule."
 			},
 			"previousReviews": [
+				{
+					"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "50f9f685616a346bc63595ea505496ab7825cb9096e057aed5c8f737cd6c4c63",
+					"reason": "Seal Lite outcomes with a separate full-proof gate."
+				},
+				{
+					"commit": "e3191b248640e223bc34a92c8e973da3d60ba742",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "9cf207e2c0d91cb1b71431b0e95187f0da34afa36a9c4c39b0d643b0d229af8e",
+					"reason": "Extract the component snapshot assembly so the record assembly method meets the length rule. Preserve the order, inputs, and fields used to seal the verification record."
+				},
 				{
 					"commit": "ecf3fe78354597ca168b43168d96ff4bc1ce5ab0",
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
