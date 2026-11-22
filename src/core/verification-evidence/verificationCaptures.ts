@@ -1,5 +1,9 @@
 // @harness-uid u_d27vkdvynl
-import { videoCaptureSchema, videoReferenceSchema, videoCoverageSchema } from '../../utils/verification-evidence/videoClipSchema';
+import {
+	videoCaptureSchema,
+	videoReferenceSchema,
+	videoCoverageSchema
+} from '../../utils/verification-evidence/videoClipSchema';
 import { z } from 'zod';
 import { unitIdPattern } from '../development-tooling/unitTypes';
 

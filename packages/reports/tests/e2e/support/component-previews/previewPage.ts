@@ -59,13 +59,13 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 	// Freeze calendar labels alone: Playwright's clock also erases NavigationTiming entries.
 	await page.addInitScript(
 		(now) => {
-		const NativeDate = Date;
-		window.Date = new Proxy(NativeDate, {
-			construct: (target, args, type) =>
-				Reflect.construct(target, args.length ? args : [now], type),
-			apply: () => new NativeDate(now).toString(),
-			get: (target, name) => (name === 'now' ? () => now : Reflect.get(target, name))
-		});
+			const NativeDate = Date;
+			window.Date = new Proxy(NativeDate, {
+				construct: (target, args, type) =>
+					Reflect.construct(target, args.length ? args : [now], type),
+				apply: () => new NativeDate(now).toString(),
+				get: (target, name) => (name === 'now' ? () => now : Reflect.get(target, name))
+			});
 		},
 		id === 'hub.page.root' ||
 			isHubHomePreview(id) ||

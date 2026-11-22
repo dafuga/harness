@@ -44,7 +44,13 @@ export function processMonitor(
 	input.signal.addEventListener('abort', abort, { once: true });
 	if (input.signal.aborted) abort();
 	const poll = setInterval(sample, contextPollMs);
-	const timer = setTimeout(() => halt('timeout'), parsePositiveIntegerEnvironmentValue(process.env.HARNESS_TASK_TIMEOUT_MS, input.supervision ? 21_600_000 : 900_000));
+	const timer = setTimeout(
+		() => halt('timeout'),
+		parsePositiveIntegerEnvironmentValue(
+			process.env.HARNESS_TASK_TIMEOUT_MS,
+			input.supervision ? 21_600_000 : 900_000
+		)
+	);
 	child.once('exit', () => {
 		exited = true;
 		killGroup(child);
