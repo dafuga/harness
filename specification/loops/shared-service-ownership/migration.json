@@ -4656,13 +4656,13 @@
 			"unit": "service.snapshot-run",
 			"from": "src/services/SnapshotRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-			"definition": "6b66451c84a3cae66601006017c63814adf0754f247407d0e6f2c0287927cb8f",
+			"definition": "59aa7c81f4357b8882800b7a6ddd10b692a03e54e3e0edfdb1f98ff8607af7aa",
 			"relocationDefinition": "6c3ff0bd50e6e2875d27738b036a234a6c7ee208b4687d4a4b94f53319e3e740",
 			"review": {
-				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+				"commit": "fe2a3effbe6a5337bd0f580d66267a869e34365c",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-				"definition": "6b66451c84a3cae66601006017c63814adf0754f247407d0e6f2c0287927cb8f",
-				"reason": "Freezes video inputs before checks and retains artifacts only after a clean passing snapshot."
+				"definition": "59aa7c81f4357b8882800b7a6ddd10b692a03e54e3e0edfdb1f98ff8607af7aa",
+				"reason": "Keep video inputs, identified builds and retained artifacts in the same clean snapshot result."
 			},
 			"previousReviews": [
 				{
@@ -4712,6 +4712,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
 					"definition": "5f2e39a1e26144b546fc728986af328b661aa25d29c1debd3593051101770179",
 					"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
+				},
+				{
+					"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+					"definition": "6b66451c84a3cae66601006017c63814adf0754f247407d0e6f2c0287927cb8f",
+					"reason": "Freezes video inputs before checks and retains artifacts only after a clean passing snapshot."
 				}
 			]
 		},
@@ -4725,13 +4731,13 @@
 			"unit": "service.check-run",
 			"from": "src/services/check-run-service/CheckRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-			"definition": "86bf02a4e21bf224ec6258a1c3668ec9130a38ae5c0199853719e6624d0dd1b0",
+			"definition": "a50a8bb94de67b2ff5525c23b9f915d887e1c0c2a2ef16bda1a412552ead2f90",
 			"relocationDefinition": "b4409148ed49b4fe1574ee44790338bbbe23be3b7a6a284687a37ca0b9e8a0c6",
 			"review": {
-				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+				"commit": "fe2a3effbe6a5337bd0f580d66267a869e34365c",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-				"definition": "86bf02a4e21bf224ec6258a1c3668ec9130a38ae5c0199853719e6624d0dd1b0",
-				"reason": "Carries video proof context, drops timed-out or Lite visual captures and respects cancellation."
+				"definition": "a50a8bb94de67b2ff5525c23b9f915d887e1c0c2a2ef16bda1a412552ead2f90",
+				"reason": "Keep browser diagnostics bounded to the completed check and preserve capture admission."
 			},
 			"previousReviews": [
 				{
@@ -4787,6 +4793,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
 					"definition": "cd8095a0777c0823d7a95c042b03620d0b0ff56262781d0726ae83465793585c",
 					"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
+				},
+				{
+					"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "86bf02a4e21bf224ec6258a1c3668ec9130a38ae5c0199853719e6624d0dd1b0",
+					"reason": "Carries video proof context, drops timed-out or Lite visual captures and respects cancellation."
 				}
 			]
 		},
