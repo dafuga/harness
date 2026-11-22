@@ -3,8 +3,8 @@ import type {
 	HomeChatInput,
 	HomeChatReceipt,
 	HomeAgent
-} from '../../../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
-import { sanitizeText } from '../../../../../../reports/src/lib/projects-sessions/project-overview/projectOverviewPrivacy';
+} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
 
 const trackerOrigin = 'http://127.0.0.1:7701';
 

@@ -3,8 +3,8 @@ import { createHash } from 'node:crypto';
 import type {
 	HomeLimit,
 	HomeSubscription
-} from '../../../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
-import { homeText } from '../../../../../../reports/src/lib/projects-sessions/hub-home/homeTrackerText';
+} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+import { homeText } from '$reports/lib/projects-sessions/hub-home/homeTrackerText';
 import { codexRpc } from '../../../../utils/agents-providers/codex-rpc/codexRpc';
 import type { CodexAccount, CodexUsage, CodexUsageWindow } from './homeCodexUsage.types';
 

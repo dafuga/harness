@@ -5,12 +5,12 @@ import { randomUUID } from 'node:crypto';
 import type {
 	HomeProviderReadings,
 	HomeSubscription
-} from '../../../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
+} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import {
 	homeProviders,
 	homeSubscriptionPayload
-} from '../../../../../../reports/src/lib/projects-sessions/hub-home/homeProviderPayload';
-import { noProviders } from '../../../../../../reports/src/lib/projects-sessions/hub-home/homeTrackerProjection';
+} from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
+import { noProviders } from '$reports/lib/projects-sessions/hub-home/homeTrackerProjection';
 import { readCodexUsage } from './homeCodexUsage';
 
 const every = 5 * 60 * 1000;
