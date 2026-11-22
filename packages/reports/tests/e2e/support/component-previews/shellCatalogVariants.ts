@@ -166,5 +166,11 @@ export const shellCatalogVariants: Record<string, string[]> = {
 		'run',
 		'run-idle'
 	],
-	'reports.component.shared-primitives-loading-state': ['default-label', 'long', 'inline']
+	// The loading variant keeps normal motion; the default captures the reduced-motion ring.
+	'reports.component.shared-primitives-loading-state': [
+		'default-label',
+		'long',
+		'inline',
+		'loading'
+	]
 };

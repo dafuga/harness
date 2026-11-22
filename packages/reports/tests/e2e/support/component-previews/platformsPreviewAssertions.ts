@@ -1,4 +1,19 @@
 import { expect, type Locator } from '@playwright/test';
+import { platformNames, resetPlatformBoundary } from './platformVideoCheckpoint';
+
+/** The compiled platforms route opens as the approved pilot checkpoint: empty search, every card, focus. */
+export async function assertPlatformsRouteReady(component: Locator) {
+	await expect(component.getByRole('heading', { name: 'Platforms', exact: true })).toBeVisible();
+	const search = component.getByRole('searchbox', { name: 'Search platforms' });
+	await expect(search).toHaveValue('');
+	await expect(component.getByRole('link', { name: /^View .* configuration$/ })).toHaveCount(4);
+	// Cards may sit below the fold; visibility here checks rendering, not the viewport.
+	for (const name of platformNames)
+		await expect(
+			component.getByRole('link', { name: `View ${name} configuration`, exact: true })
+		).toBeVisible();
+	await resetPlatformBoundary(component.page());
+}
 
 /** Apply search and status filters through the platform screen's real controls. */
 export async function preparePlatforms(component: Locator, variant: string) {

@@ -8,6 +8,7 @@ import { assertModuleCardPreview as assertCard } from './moduleCardPreviewAssert
 import { assertProjectAgentState } from './projectAgentStateAssertions';
 import type { ProjectAgentState } from './projectAgentStateFixtures.types';
 import { assertReportPreviewState } from './reportPreviewAssertions';
+import { assertPlatformsRouteReady } from './platformsPreviewAssertions';
 import type { Page, Locator } from '@playwright/test';
 
 export async function assertCatalogBeforeCapture({
@@ -38,6 +39,8 @@ export async function assertCatalogBeforeCapture({
 		await assertPermissionPanelStyles(component);
 	if (unit.id === 'desktop.component.project-agent')
 		await assertAgentPreview(page, component, variant);
+	if (unit.id === 'reports.page.harness-branch-branch-at-platforms' && variant === 'ready')
+		await test.step('Platforms route', () => assertPlatformsRouteReady(component));
 }
 
 async function assertAgentPreview(page: Page, component: Locator, variant: string) {

@@ -15,6 +15,7 @@ import { assertCatalogPresentation } from './support/component-previews/catalogP
 import { assertCatalogControls } from './support/component-previews/catalogControlsChecks';
 import { catalogExpectedErrors } from './support/component-previews/catalogExpectedErrors';
 import { captureCatalogBeforeActions } from './support/component-previews/catalogCaptureTiming';
+import { explorerPreviewInteraction } from './support/component-previews/explorerCatalogVariants';
 // This task's explicitly authorized recording run retains its focused browser video.
 test.use({
 	video: process.env.HARNESS_VIDEO_RECORD_TASK === 'video-build-20261115' ? 'on' : 'off'
@@ -78,9 +79,10 @@ for (const viewport of catalogViewports) {
 	}
 }
 for (const viewport of catalogViewports) {
-	for (const { unit, variant } of catalogCases) {
+	for (const { unit, variant: state } of catalogCases) {
+		const variant = explorerPreviewInteraction(unit.id, state);
 		const isProjectAgent = unit.id === 'desktop.component.project-agent';
-		const title = `${unit.id}${variant ? `:${variant}` : ''} at ${viewport.id}`;
+		const title = `${unit.id}${state ? `:${state}` : ''} at ${viewport.id}`;
 		test(title, async ({ page, browserErrors }) => {
 			const projectErrors = catalogExpectedErrors(page, browserErrors, unit.id, {
 				variant,
@@ -90,7 +92,7 @@ for (const viewport of catalogViewports) {
 			await preview.openPreview(page, home, unit.id, variant);
 			await expect(page.locator('#preview-title')).toHaveText(unit.title);
 			const component = await preview.readyPreview(page, unit.id, variant);
-			const target = { viewport: viewport.id, variant };
+			const target = { viewport: viewport.id, variant: state };
 			const context = { page, component, unit, variant, viewport };
 			const early = await captureCatalogBeforeActions(context, home);
 			await test.step('Prepare state', () => prepareCatalogState(component, unit.id, variant));

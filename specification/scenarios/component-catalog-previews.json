@@ -3994,6 +3994,18 @@
 			"units": ["reports.component.explorer-ui-explorer-platforms"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-platforms-hovered",
+			"title": "Platform card hovered",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-picker-open",
+			"title": "Native platform status picker open",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-translations-screen",
 			"units": ["reports.component.explorer-ui-explorer-translations-screen"],
 			"coverage": "required",
@@ -7636,6 +7648,12 @@
 			"units": ["reports.component.shared-primitives-loading-state"]
 		},
 		{
+			"id": "reports-component-shared-primitives-loading-state-loading",
+			"title": "Loading with the animated indicator",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-loading-state"]
+		},
+		{
 			"id": "reports-component-source-code-action",
 			"title": "SourceCodeAction",
 			"coverage": "required",
@@ -8184,6 +8202,12 @@
 		{
 			"id": "reports-page-harness-branch-branch-at-platforms",
 			"title": "/harness/branch/[branch]/[...at]/platforms",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-platforms"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-platforms-ready",
+			"title": "Platforms ready for search",
 			"coverage": "required",
 			"units": ["reports.page.harness-branch-branch-at-platforms"]
 		},
@@ -8863,6 +8887,8 @@
 				"reports-component-explorer-ui-explorer-platforms-card-hovered",
 				"reports-component-explorer-ui-explorer-platforms-filter-active-open",
 				"reports-component-explorer-ui-explorer-platforms-status-options-open",
+				"reports-component-explorer-ui-explorer-platforms-hovered",
+				"reports-component-explorer-ui-explorer-platforms-picker-open",
 				"reports-component-explorer-ui-explorer-translations-screen",
 				"reports-component-explorer-ui-explorer-translations-screen-unindexed",
 				"reports-component-explorer-ui-explorer-translations-screen-empty",
@@ -9470,6 +9496,7 @@
 				"reports-component-shared-primitives-loading-state-default-label",
 				"reports-component-shared-primitives-loading-state-long",
 				"reports-component-shared-primitives-loading-state-inline",
+				"reports-component-shared-primitives-loading-state-loading",
 				"reports-component-source-code-action",
 				"reports-component-source-code-action-unavailable",
 				"reports-component-source-content",
@@ -9562,6 +9589,7 @@
 				"reports-page-harness-branch-branch-at-pages-entity",
 				"reports-page-harness-branch-branch-at-pages-entity-history",
 				"reports-page-harness-branch-branch-at-platforms",
+				"reports-page-harness-branch-branch-at-platforms-ready",
 				"reports-page-harness-branch-branch-at-platforms-entity",
 				"reports-page-harness-branch-branch-at-services",
 				"reports-page-harness-branch-branch-at-services-entity",
