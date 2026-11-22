@@ -1,10 +1,10 @@
 // @harness-uid u_s7u2mjlzu4
-import type { HomeChatInput } from '../../../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
+import type { HomeChatInput } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import {
 	buildHomeSnapshot,
 	noProviders
-} from '../../../../../../reports/src/lib/projects-sessions/hub-home/homeTrackerProjection';
-import { readTrackerSources } from '../../../../../../reports/src/lib/projects-sessions/project-overview/projectOverviewTracker';
+} from '$reports/lib/projects-sessions/hub-home/homeTrackerProjection';
+import { readTrackerSources } from '$reports/lib/projects-sessions/project-overview/projectOverviewTracker';
 import type { NativeHostedCredential } from '../remote-http-project-adapter/RemoteHttpProjectAdapter';
 import { HostedHttpAdapter } from '../../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 import { createHomeProviderReader } from './homeProviderReader';
