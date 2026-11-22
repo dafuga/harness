@@ -4,9 +4,9 @@ import { extname, isAbsolute, resolve } from 'node:path';
 import { promisify } from 'node:util';
 import type { Command } from 'commander';
 import { ExpectedCliError } from '../../core/development-tooling/errors';
+import type { PublishOptions } from './HarborInspectionCommand.types';
 
 const execute = promisify(execFile);
-type Execution = ReturnType<typeof execute>;
 const CANCEL_GRACE_MS = 35_000;
 const RUNTIME_ENV = [
 	'PATH',
@@ -22,8 +22,6 @@ const RUNTIME_ENV = [
 	'LC_ALL',
 	'HARBOR_HOME'
 ];
-
-type PublishOptions = { commit: string; artifact: string; profile: string; approve?: string };
 
 export class HarborInspectionCommand {
 	register(program: Command): void {
@@ -152,7 +150,7 @@ function runtimeEnv(publish: boolean, node: string): Record<string, string | und
 	};
 }
 
-async function waitForPublication(child: Execution) {
+async function waitForPublication(child: ReturnType<typeof execute>) {
 	let grace: ReturnType<typeof setTimeout> | undefined;
 	const cancel = (signal: 'SIGINT' | 'SIGTERM') => {
 		child.child.kill(signal);

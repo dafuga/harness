@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/commands/projects-sessions/HarborInspectionCommand.ts"],
-		"symbols": ["HarborInspectionCommand", "HarborInspectionCommand.register"]
+		"source": [
+			"src/commands/projects-sessions/HarborInspectionCommand.ts",
+			"src/commands/projects-sessions/HarborInspectionCommand.types.ts"
+		],
+		"symbols": ["HarborInspectionCommand", "HarborInspectionCommand.register", "PublishOptions"]
 	},
 	"contract": {
 		"origin": "declared",
