@@ -3174,14 +3174,22 @@
 			"unit": "function.verify-plan",
 			"from": "src/services/verification-service/verifyPlan.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlan.ts",
-			"definition": "ca5ff9cf3bc611a84844b0d19d47df2e0bf954f30ad08ea5283e612368bb0681",
+			"definition": "b18e6b92a5c3bd71f49d7dbf0423723782f0118f48cdd3bf4dcab737abea2d7d",
 			"relocationDefinition": "cc38e30b15727c2dd750d0ae3d269be515091dd8d0f675c442f1f6ffbaa9acdf",
 			"review": {
-				"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+				"commit": "28a1d24cacec44c0b2dc88871be3a6e42fc6f8d3",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlan.ts",
-				"definition": "ca5ff9cf3bc611a84844b0d19d47df2e0bf954f30ad08ea5283e612368bb0681",
-				"reason": "Plan Godot headlessly and identify full-only commands."
-			}
+				"definition": "b18e6b92a5c3bd71f49d7dbf0423723782f0118f48cdd3bf4dcab737abea2d7d",
+				"reason": "Carry declared host resource requirements into verification while preserving Lite selection."
+			},
+			"previousReviews": [
+				{
+					"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlan.ts",
+					"definition": "ca5ff9cf3bc611a84844b0d19d47df2e0bf954f30ad08ea5283e612368bb0681",
+					"reason": "Plan Godot headlessly and identify full-only commands."
+				}
+			]
 		},
 		{
 			"unit": "service.record-assembly",
@@ -4731,13 +4739,13 @@
 			"unit": "service.check-run",
 			"from": "src/services/check-run-service/CheckRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-			"definition": "a50a8bb94de67b2ff5525c23b9f915d887e1c0c2a2ef16bda1a412552ead2f90",
+			"definition": "644ed0ebb87e0840147fc3ee694d503fc96bdbd65e1fb1ffe631c4c98d591c69",
 			"relocationDefinition": "b4409148ed49b4fe1574ee44790338bbbe23be3b7a6a284687a37ca0b9e8a0c6",
 			"review": {
-				"commit": "fe2a3effbe6a5337bd0f580d66267a869e34365c",
+				"commit": "28a1d24cacec44c0b2dc88871be3a6e42fc6f8d3",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-				"definition": "a50a8bb94de67b2ff5525c23b9f915d887e1c0c2a2ef16bda1a412552ead2f90",
-				"reason": "Keep browser diagnostics bounded to the completed check and preserve capture admission."
+				"definition": "644ed0ebb87e0840147fc3ee694d503fc96bdbd65e1fb1ffe631c4c98d591c69",
+				"reason": "Pass declared minimum host resources into scheduling while retaining evidence and timeout guards."
 			},
 			"previousReviews": [
 				{
@@ -4799,6 +4807,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
 					"definition": "86bf02a4e21bf224ec6258a1c3668ec9130a38ae5c0199853719e6624d0dd1b0",
 					"reason": "Carries video proof context, drops timed-out or Lite visual captures and respects cancellation."
+				},
+				{
+					"commit": "fe2a3effbe6a5337bd0f580d66267a869e34365c",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "a50a8bb94de67b2ff5525c23b9f915d887e1c0c2a2ef16bda1a412552ead2f90",
+					"reason": "Keep browser diagnostics bounded to the completed check and preserve capture admission."
 				}
 			]
 		},

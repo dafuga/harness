@@ -6505,6 +6505,13 @@
 			"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 			"reason": "Validate video graphs in full verification and defer visual evidence in Lite.",
 			"definition": "d883e835ab25c02a1d3e9496c9b81d53e81c0deae9ad5b0967a762f4032699b2"
+		},
+		{
+			"unit": "function.verify-plan",
+			"name": "verifyPlan",
+			"commit": "28a1d24cacec44c0b2dc88871be3a6e42fc6f8d3",
+			"reason": "Carry declared host resource requirements into the check admissions plan.",
+			"definition": "2dafa9cade7870e6cc38c98e9963bbc224f75429952b909af116d2d9351ed904"
 		}
 	],
 	"retiredOwners": [
