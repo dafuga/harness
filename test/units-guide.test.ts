@@ -143,7 +143,6 @@ test('guide counts verified shots per state and viewport and reaches DONE', asyn
 	);
 	const text = await runHarness(['units', 'guide', entity], root);
 	expect(text.stdout).toContain('ALL DONE');
-	expect(text.stdout).toContain('DONE');
 	await enrollGuidanceVideo(root);
 	await commitGuidance(root);
 	await attachGuidanceShots(root, ['default', 'loading']);

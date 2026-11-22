@@ -51,10 +51,7 @@ export class CheckRunService {
 		});
 		const prefix = check.scenario ? `${check.scenario}: ` : '';
 		const written = captures.failures.map((failure) => `${prefix}check ${check.name} ${failure}`);
-		const diagnostics =
-			result.timedOut || evidenceDirectoryFailure(join(directory, evidencePath), directory)
-				? {}
-				: readBrowserDiagnostics(join(directory, evidencePath));
+		const diagnostics = checkDiagnostics(result, join(directory, evidencePath), directory);
 		if (diagnostics.failure) written.push(`${prefix}check ${check.name}: ${diagnostics.failure}`);
 		const failures = [
 			...outcomeFailures(check, result).map((failure) => prefix + failure),
@@ -202,4 +199,10 @@ function checkEntry(
 		durationMs: Math.round(result.durationMs),
 		log: { ...result.log, path: relative(directory, result.log.path) }
 	};
+}
+
+function checkDiagnostics(result: IsolatedResult, evidence: string, root: string) {
+	return result.timedOut || evidenceDirectoryFailure(evidence, root)
+		? {}
+		: readBrowserDiagnostics(evidence);
 }

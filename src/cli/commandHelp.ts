@@ -10,27 +10,9 @@ export const commandHelp = [
 	},
 	plainHelp('provider', 'Open the installed provider sign-in tools.'),
 	plainHelp('harbor', 'Use Harbor capabilities from its installed CLI and SDK.'),
-	{
-		name: 'benchmark',
-		signature: 'benchmark',
-		description: 'Compare subagents against fixed component contracts.',
-		term: 'benchmark',
-		aliases: []
-	},
-	{
-		name: 'resources',
-		signature: 'resources',
-		description: 'Shared CPU and memory admission for managed work.',
-		term: 'resources',
-		aliases: []
-	},
-	{
-		name: 'jobs',
-		signature: 'jobs',
-		description: 'Record job durations and estimate queued work.',
-		term: 'jobs',
-		aliases: []
-	},
+	plainHelp('benchmark', 'Compare subagents against fixed component contracts.'),
+	plainHelp('resources', 'Shared CPU and memory admission for managed work.'),
+	plainHelp('jobs', 'Record job durations and estimate queued work.'),
 	{
 		name: 'analytics',
 		signature: 'analytics',

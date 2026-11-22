@@ -217,5 +217,4 @@ test.each<[string, 'claude' | 'codex', number, object[]]>([
 });
 test('the process executor seam is typed, never unknown or any', () => {
 	expectTypeOf<Seam>().toEqualTypeOf<TaskProcessExecutor | undefined>();
-	expect(new ModuleTaskRunnerAdapter()).toBeInstanceOf(ModuleTaskRunnerAdapter);
 });

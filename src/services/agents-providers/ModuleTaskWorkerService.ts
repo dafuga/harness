@@ -80,17 +80,18 @@ export class ModuleTaskWorkerService {
 						? 'scope'
 						: 'workspace-error';
 		}
+		return this.finish(task, result);
+	}
+
+	private async finish(task: ModuleTask, result: Awaited<ReturnType<typeof taskWorkspace>>) {
 		result.finishedAt = new Date().toISOString();
 		await this.repository.update(
 			(queue) => finishTask(queue, task, result),
 			result.checkpointCommit
 		);
 		await new ModuleTaskAnalyticsService().sync(this.root);
-		return {
-			status: result.error ? ('failed' as const) : ('review' as const),
-			task: task.id,
-			result
-		};
+		const status = result.error ? ('failed' as const) : ('review' as const);
+		return { status, task: task.id, result };
 	}
 	private handoff(task: ModuleTask, cwd: string): TaskRunInput['onRotation'] {
 		const tracker = this.tracker;

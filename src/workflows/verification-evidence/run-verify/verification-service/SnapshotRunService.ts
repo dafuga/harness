@@ -47,13 +47,8 @@ export class SnapshotRunService {
 			const buildFailures = [...compiled.failures, ...moved];
 			const observed = { outcomes, ...drift.paths(), setupFailures, tools, artifacts };
 			const exported = await retainedArtifact(this.run, snapshot, observed, buildFailures);
-			return {
-				...observed,
-				...videoInputs,
-				...recordedBuilds(config, needed, compiled.found),
-				buildFailures,
-				...exported
-			};
+			const builds = recordedBuilds(config, needed, compiled.found);
+			return { ...observed, ...videoInputs, ...builds, buildFailures, ...exported };
 		} finally {
 			await snapshot.remove();
 		}

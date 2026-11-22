@@ -97,29 +97,13 @@ export type {
 	CatalogRevisionEntityUpdateInput
 } from './models/git-source-history/CatalogRevisionEntity.types';
 export { CatalogDependency } from './models/git-source-history/CatalogDependency';
-export type {
-	CatalogDependencyAttributes,
-	CatalogDependencyCreateInput,
-	CatalogDependencyUpdateInput
-} from './models/git-source-history/CatalogDependency.types';
+export type * from './models/git-source-history/CatalogDependency.types';
 export { CatalogBranch } from './models/git-source-history/CatalogBranch';
-export type {
-	CatalogBranchAttributes,
-	CatalogBranchCreateInput,
-	CatalogBranchUpdateInput
-} from './models/git-source-history/CatalogBranch.types';
+export type * from './models/git-source-history/CatalogBranch.types';
 export { CatalogRecord } from './models/git-source-history/CatalogRecord';
-export type {
-	CatalogRecordAttributes,
-	CatalogRecordCreateInput,
-	CatalogRecordUpdateInput
-} from './models/git-source-history/CatalogRecord.types';
+export type * from './models/git-source-history/CatalogRecord.types';
 export { CatalogMetadata } from './models/git-source-history/CatalogMetadata';
-export type {
-	CatalogMetadataAttributes,
-	CatalogMetadataCreateInput,
-	CatalogMetadataUpdateInput
-} from './models/git-source-history/CatalogMetadata.types';
+export type * from './models/git-source-history/CatalogMetadata.types';
 export { AnalyticsEvent } from './models/reports-media/AnalyticsEvent';
 export type {
 	AnalyticsEventAttributes,

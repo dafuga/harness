@@ -9,10 +9,7 @@ import { ImpactService } from '../src/services/reports-media/impact-service/Impa
 import { SourceGraphService } from '../src/services/SourceGraphService';
 import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
 import { readBuildAliases, readSelectImports } from './utils/shared-select-impact/imports';
-import {
-	loadUnits,
-	type LoadedUnits
-} from '../src/workflows/development-tooling/load-units/loadUnits';
+import { loadUnits } from '../src/workflows/development-tooling/load-units/loadUnits';
 const select = 'packages/reports/src/components/Select.svelte';
 const canonicalSelect = 'packages/reports/src/components/shared-primitives/Select.svelte';
 const shared = '$shared';
@@ -20,7 +17,7 @@ const selectTest = 'packages/reports/test/components/select.test.ts';
 const indexer = new sourceIndex.SourceIndexService();
 const analysis = new ImpactService(new HandlerRuntimeAdapter(impactKernel));
 const reports = new Map<string, Promise<ImpactReport>>();
-let loaded: LoadedUnits;
+let loaded: Awaited<ReturnType<typeof loadUnits>>;
 let builds: Record<string, Record<string, string>>;
 let written: Written[];
 beforeAll(async () => {

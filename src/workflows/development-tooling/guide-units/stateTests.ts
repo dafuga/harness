@@ -39,7 +39,7 @@ export async function stateTests(
 		if (!context.testSyntax.has(file))
 			context.testSyntax.set(file, authoredTest(await guidanceText(context, file)));
 		const syntax = context.testSyntax.get(file)!;
-		if (coversState(syntax, state, viewports.size, video.has(file), options.headless))
+		if (coversState(syntax, state, viewports.size, { ...options, video: video.has(file) }))
 			found.push({ file, viewports: [...viewports] });
 	}
 	return found;
@@ -48,16 +48,14 @@ export async function stateTests(
 /** A declared recording factory needs actual assertions and state marks, not just fixture strings. */
 function videoTestPaths(context: GuidanceContext, unit: string, state: string) {
 	const paths = new Map<string, Set<string>>();
-	for (const scenario of context.loaded.scenarios) {
-		if (!scenario.units.includes(unit)) continue;
-		for (const clip of scenario.video?.clips ?? []) {
-			if (clip.unit !== unit || unitStateName(unit, clip.state) !== state) continue;
-			if (context.loaded.index.files.get(clip.script.path)?.classification !== 'test') continue;
-			paths.set(
-				clip.script.path,
-				new Set([...(paths.get(clip.script.path) ?? []), ...clip.viewports])
-			);
-		}
+	const clips = context.loaded.scenarios
+		.filter((scenario) => scenario.units.includes(unit))
+		.flatMap((scenario) => scenario.video?.clips ?? []);
+	for (const clip of clips) {
+		if (clip.unit !== unit || unitStateName(unit, clip.state) !== state) continue;
+		const path = clip.script.path;
+		if (context.loaded.index.files.get(path)?.classification !== 'test') continue;
+		paths.set(path, new Set([...(paths.get(path) ?? []), ...clip.viewports]));
 	}
 	return paths;
 }
@@ -66,8 +64,7 @@ function coversState(
 	syntax: NonNullable<ReturnType<GuidanceContext['testSyntax']['get']>>,
 	state: string,
 	viewports: number,
-	video: boolean,
-	headless = false
+	{ video, headless = false }: { video: boolean; headless?: boolean }
 ): boolean {
 	return (
 		(syntax.test || (video && syntax.motion === true)) &&
