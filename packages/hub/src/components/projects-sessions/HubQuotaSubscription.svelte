@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_lulgtb22gp -->
 <script lang="ts">
+	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import type { HomeSubscription } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import {
 		providerNames,
@@ -32,13 +33,20 @@
 			Math.ceil(Math.max(...subscription.history.map((reading) => reading.used)) / 20) * 20
 		)
 	);
-	const warnings = $derived(
-		subscription.limits.filter((limit) => warningFor(limit.left) === 'critical')
+	const worst = $derived(
+		subscription.limits.filter((limit) => warningFor(limit.left)).sort((a, b) => a.left - b.left)[0]
+	);
+	const status = $derived(
+		!worst
+			? { tone: 'done', label: 'OK' }
+			: warningFor(worst.left) === 'critical'
+				? { tone: 'blocked', label: 'Almost out' }
+				: { tone: 'needs-you', label: 'Low' }
 	);
 </script>
 
 <hx-section
-	class={detailed ? 'po-card hh-q-plan' : 'hh-q-sub'}
+	class={detailed ? `po-card hh-q-plan ${stale ? '' : `po-${status.tone}`}` : 'hh-q-sub'}
 	aria-label={providerNames[subscription.provider]}
 >
 	<hx-header class="hh-q-sub-head">
@@ -54,19 +62,24 @@
 					.join(' · ')}</hx-p
 			>
 		</hx-div>
-		{#if stale}<hx-span class="hh-q-stale">Unknown</hx-span>{/if}
+		{#if stale}<hx-span class="hh-q-stale">Unknown</hx-span>
+		{:else if detailed}<Pill tone={`hh-tone po-state po-${status.tone}`} state={status.tone}
+				><hx-span class="po-mark" aria-hidden="true"></hx-span>{status.label}</Pill
+			>{/if}
 	</hx-header>
 	{#if stale}
 		<hx-p class="po-sessions">The last reading is out of date.</hx-p>
 	{:else}
-		{#each warnings as limit (limit.id)}
-			<hx-p class="hh-q-callout" data-level="critical"
-				><hx-strong>Almost out</hx-strong> · {limit.label} · {limit.left}% left · {quotaReset(
-					limit.resetsAt,
-					now
-				)}</hx-p
-			>
-		{/each}
+		{#if detailed && worst && warningFor(worst.left) === 'critical'}
+			<hx-div class="po-callout hh-q-callout" data-kind="blocked" data-level="critical">
+				<hx-div class="po-callout-head"
+					><hx-span class="po-callout-label">Almost out</hx-span><hx-span class="po-callout-meta"
+						>{quotaReset(worst.resetsAt, now)}</hx-span
+					></hx-div
+				>
+				<hx-p class="po-callout-text">{worst.label}: {worst.left}% left.</hx-p>
+			</hx-div>
+		{/if}
 		<hx-div class={detailed ? 'hh-q-panel-grid' : ''}>
 			<hx-div class="hh-q-meters">
 				{#if !subscription.limits.length}
@@ -101,8 +114,10 @@
 						</hx-div>
 					</hx-div>
 				{/each}
-				{#if subscription.credits}<hx-p class="hh-q-credits"
-						>Credits <hx-strong>{subscription.credits}</hx-strong></hx-p
+				{#if subscription.credits}<hx-div class="hh-q-line hh-q-credits"
+						><hx-span class="hh-q-label">Credits</hx-span><hx-span class="hh-q-value"
+							><hx-strong>{subscription.credits}</hx-strong></hx-span
+						></hx-div
 					>{/if}
 			</hx-div>
 			{#if detailed}

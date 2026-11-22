@@ -17,6 +17,13 @@
 		agents,
 		discuss
 	}: { plans: HomePlan[] | null; agents: HomeAgent[]; discuss: (id: string) => void } = $props();
+	const planTones: Record<HomePlanState, string> = {
+		draft: 'quiet',
+		'in-review': 'needs-you',
+		approved: 'active',
+		'in-progress': 'active',
+		done: 'done'
+	};
 	let filter = $state<HomePlanState | 'all'>('all');
 	let opened = $state<string>();
 	const visible = $derived(
@@ -27,7 +34,7 @@
 {#if plans === null}
 	<HubHomeSkeleton rows={6} />
 {:else if !plans.length}
-	<EmptyState as="div" className="hh-empty">No plans are on the Tracker.</EmptyState>
+	<EmptyState as="div" className="po-empty hh-empty">No plans are on the Tracker.</EmptyState>
 {:else}
 	<hx-div class="po-filters hh-filters" role="group" aria-label="Plan status">
 		<hx-button
@@ -51,13 +58,14 @@
 			</hx-button>
 		{/each}
 	</hx-div>
-	{#if !visible.length}<EmptyState as="div" className="hh-empty"
+	{#if !visible.length}<EmptyState as="div" className="po-empty hh-empty"
 			>No plans match this status.</EmptyState
 		>{/if}
 	<hx-div class="po-grid hh-plan-grid">
 		{#each visible as plan (plan.id)}
 			{@const agent = agents.find((agent) => agent.name === plan.project && agent.itemId)}
-			<hx-article class="po-card hh-plan">
+			{@const tone = planTones[plan.state]}
+			<hx-article class={`po-card po-${tone} hh-plan`}>
 				<hx-div class="po-card-head">
 					<hx-div class="po-card-title">
 						<hx-h3 class="po-name">{plan.title}</hx-h3>
@@ -65,8 +73,8 @@
 							>{[plan.project, `updated ${when(plan.updatedAt)}`].filter(Boolean).join(' · ')}</hx-p
 						>
 					</hx-div>
-					<Pill tone="hh-agent-pill" state={plan.state === 'done' ? 'idle' : 'working'}
-						>{planLabels[plan.state]}</Pill
+					<Pill tone={`hh-tone po-state po-${tone}`} state={tone}
+						><hx-span class="po-mark" aria-hidden="true"></hx-span>{planLabels[plan.state]}</Pill
 					>
 				</hx-div>
 				<hx-span class="hh-progress" aria-label={`${plan.done} of ${plan.total} steps`}>

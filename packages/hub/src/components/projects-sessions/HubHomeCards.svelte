@@ -12,6 +12,8 @@
 		lowestLimit,
 		missingQuotaProviders,
 		providerNames,
+		quotaReset,
+		staleReading,
 		warningFor
 	} from './hubHomePresentation';
 	import HubHomeWorkCards from './HubHomeWorkCards.svelte';
@@ -21,18 +23,29 @@
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 	import HubHomeComposer from './HubHomeComposer.svelte';
 	import HubQuotaSubscription from './HubQuotaSubscription.svelte';
+	import { homeDownloadConfig } from '../../configs/public-site/homeDownloadConfig';
 
 	let { view, open, send }: { view: HomeView; open: OpenHomeSection; send: SendHomeChat } =
 		$props();
 	const working = $derived(view.agents?.filter((agent) => agent.state === 'working').length ?? 0);
 	const warning = $derived(lowestLimit(view.quota ?? [], view.now));
+	const lows = $derived(
+		(view.quota ?? [])
+			.filter((subscription) => !staleReading(subscription.readAt, view.now))
+			.flatMap((subscription) => subscription.limits.filter((limit) => warningFor(limit.left)))
+	);
+	const level = $derived(warning ? warningFor(warning.limit.left) : null);
 	const attention = $derived(
 		view.agents?.filter((agent) => agent.state === 'needs-you').length ?? 0
 	);
 </script>
 
-{#snippet empty(text: string)}
-	<EmptyState as="div" className="hh-empty">{text}</EmptyState>
+{#snippet empty(text: string, action?: string, act?: () => void)}
+	<EmptyState as="div" className="po-empty hh-empty"
+		><hx-p>{text}</hx-p>
+		{#if action && act}<hx-button type="button" class="po-action" onclick={act}>{action}</hx-button
+			>{/if}
+	</EmptyState>
 {/snippet}
 
 <hx-div class="hh-grid">
@@ -41,7 +54,9 @@
 		total={view.agents?.length}
 		summary={view.agents === null
 			? 'Loading agents…'
-			: `${working} working · ${view.agents.length - working - attention} idle or offline`}
+			: !view.agents.length
+				? 'No agents yet'
+				: `${working} working · ${view.agents.length - working - attention} idle or offline`}
 		open={() => open('agents')}
 	>
 		{#if view.agents === null}
@@ -72,12 +87,15 @@
 					</HubHomeRow>
 				{/each}
 			</hx-ul>
+		{:else if view.trackerConnected}
+			<EmptyState as="div" className="po-empty hh-empty"
+				><hx-p>No agents are connected. Start a session on any computer and it appears here.</hx-p>
+				<hx-a class="po-action" href={homeDownloadConfig.mac.path} data-sveltekit-reload
+					>Connect a computer</hx-a
+				>
+			</EmptyState>
 		{:else}
-			{@render empty(
-				view.trackerConnected
-					? 'No agents are connected.'
-					: 'Tracker is unavailable for this account.'
-			)}
+			{@render empty('Tracker is unavailable for this account.')}
 		{/if}
 		{#snippet badge()}
 			{#if attention}<Pill tone="hh-tone po-state po-needs-you" state="needs-you"
@@ -105,19 +123,29 @@
 	>
 		{#snippet badge()}
 			{#if warning}
-				<hx-span class="hh-q-flag" data-level={warningFor(warning.limit.left)}>
-					<hx-span class="hh-q-mark" aria-hidden="true"></hx-span>{warningFor(
-						warning.limit.left
-					) === 'critical'
-						? 'Almost out'
-						: 'Running low'}
-				</hx-span>
+				{@const tone = level === 'critical' ? 'blocked' : 'needs-you'}
+				<Pill tone={`hh-tone po-state po-${tone}`} state={tone}
+					><hx-span class="po-mark" aria-hidden="true"></hx-span>{lows.length} running low</Pill
+				>
 			{/if}
 		{/snippet}
 		{#if view.quota === null}
 			<HubHomeSkeleton rows={2} />
 		{:else if view.quota.length}
 			<hx-div class="hh-q-preview">
+				{#if warning && level === 'critical'}
+					<hx-div class="po-callout hh-q-callout" data-kind="blocked" data-level="critical">
+						<hx-div class="po-callout-head"
+							><hx-span class="po-callout-label">Almost out</hx-span><hx-span
+								class="po-callout-meta">{quotaReset(warning.limit.resetsAt, view.now)}</hx-span
+							></hx-div
+						>
+						<hx-p class="po-callout-text"
+							>{providerNames[warning.subscription.provider]}
+							{warning.limit.label.toLowerCase()}: {warning.limit.left}% left.</hx-p
+						>
+					</hx-div>
+				{/if}
 				{#each view.quota.slice(0, 2) as subscription (subscription.id)}
 					<HubQuotaSubscription {subscription} now={view.now} />
 				{/each}
@@ -130,7 +158,11 @@
 			{/each}
 		{:else}
 			{@render empty(
-				view.quotaConnected ? 'No subscriptions connected.' : 'Provider quota is unknown.'
+				view.quotaConnected
+					? 'No subscriptions connected. Connect Claude Code or Codex to see how much usage is left.'
+					: 'Provider quota is unknown.',
+				'Connect a subscription',
+				() => open('quota')
 			)}
 		{/if}
 	</HubHomeCard>

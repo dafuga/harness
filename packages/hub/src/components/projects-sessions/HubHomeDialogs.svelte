@@ -9,7 +9,9 @@
 		HomeChatReceipt,
 		HomeSection
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-	import { sections, workSummary, count } from './hubHomePresentation';
+	import { MediaQuery } from 'svelte/reactivity';
+	import { sections, workSummary, count, quotaSummary } from './hubHomePresentation';
+	import { projectInventory } from './hubHomeProjects';
 	import type {
 		HomeView,
 		OpenHomeSection,
@@ -44,22 +46,52 @@
 		close: () => void;
 	} = $props();
 	let chatOpen = $derived(Boolean(agentId));
+	let chatName = $state('');
+	const phone = new MediaQuery('max-width: 560px');
+	const chatStep = $derived(selected === 'agents' && chatOpen && phone.current && chatName);
+	const plans = $derived(view.plans ?? []);
+	const runs = $derived(view.schedule ?? []);
+	const projects = $derived(view.projects ?? []);
+	const snapshots = $derived(projects.map((project) => view.projectSnapshots[project.id]));
 	const summary = $derived(
 		{
 			agents:
 				view.agents === null
 					? 'Loading agents…'
 					: `${view.agents.filter((agent) => agent.state === 'working').length} working · ${count(view.agents.length, 'agent')} on ${count(view.overview?.status === 'ready' ? view.overview.machines.length : 0, 'computer')}`,
-			plans: 'Progress and next steps from Tracker.',
-			scheduled: 'Tracker due items and Claude scheduled routines.',
-			projects: 'Apps, pages, components and changes.',
+			plans:
+				view.plans === null
+					? 'Loading plans…'
+					: `${plans.filter((plan) => plan.state !== 'done').length} open · ${plans.filter((plan) => plan.state === 'done').length} done`,
+			scheduled:
+				view.schedule === null
+					? 'Loading schedule…'
+					: `${runs.length} upcoming · ${runs.filter((run) => run.recurring).length} repeating`,
+			projects:
+				view.projects === null
+					? 'Loading projects…'
+					: snapshots.every(Boolean)
+						? `${count(projects.length, 'project')} · ${count(
+								snapshots.reduce(
+									(total, snapshot) => total + projectInventory(snapshot!).apps.length,
+									0
+								),
+								'app'
+							)}`
+						: count(projects.length, 'project'),
 			wip: workSummary(view.work),
-			quota: 'Remaining allowance across subscriptions.'
+			quota: view.quota === null ? 'Reading usage…' : quotaSummary(view.quota, view.now)
 		}[selected]
 	);
 </script>
 
-<Modal isOpen title={sections[selected].title} {summary} variant="section" onClose={close}>
+<Modal
+	isOpen
+	title={chatStep ? chatName : sections[selected].title}
+	summary={chatStep ? 'Chat · replies go to its current Tracker item' : summary}
+	variant="section"
+	onClose={close}
+>
 	{#snippet actions()}
 		{#if selected === 'agents' && chatOpen}
 			<hx-button
@@ -76,7 +108,7 @@
 	{/snippet}
 	{#key selected}
 		{#if selected === 'agents'}
-			<HubHomeAgents agents={view.agents} {agentId} {send} {receipt} bind:chatOpen />
+			<HubHomeAgents agents={view.agents} {agentId} {send} {receipt} bind:chatOpen bind:chatName />
 		{:else if selected === 'plans'}
 			<HubHomePlans
 				plans={view.plans}

@@ -110,6 +110,7 @@ export function warningLabel(limit: HomeLimit) {
 
 const scheduleZone = 'Europe/Lisbon';
 const scheduleDay = new Intl.DateTimeFormat('en-GB', {
+	weekday: 'short',
 	day: 'numeric',
 	month: 'short',
 	timeZone: scheduleZone
@@ -121,9 +122,9 @@ const scheduleTime = new Intl.DateTimeFormat('en-GB', {
 });
 
 export function runDay(at: string, now: number) {
-	const day = scheduleDay.format(new Date(at));
-	if (day === scheduleDay.format(now)) return 'Today';
-	return day === scheduleDay.format(now + 86400000) ? 'Tomorrow' : day;
+	const day = scheduleDay.format(new Date(at)).replace(',', '');
+	if (day === scheduleDay.format(now).replace(',', '')) return 'Today';
+	return day === scheduleDay.format(now + 86400000).replace(',', '') ? 'Tomorrow' : day;
 }
 
 export function runTime(at: string) {
@@ -142,15 +143,22 @@ export function quotaReset(time: string | null, now: number) {
 	if (!minutes) return 'Reset due';
 	const hours = Math.floor(minutes / 60);
 	const days = Math.floor(hours / 24);
-	if (days) return `Resets in ${days}d ${hours % 24}h`;
-	return hours ? `Resets in ${hours}h ${minutes % 60}m` : `Resets in ${minutes}m`;
+	let span = `${minutes}m`;
+	if (hours) span = days ? `${days}d ${hours % 24}h` : `${hours}h ${minutes % 60}m`;
+	const clock = days ? `${scheduleWeekday.format(new Date(time))} ${runTime(time)}` : runTime(time);
+	return `Resets ${clock} · in ${span}`;
 }
+
+const scheduleWeekday = new Intl.DateTimeFormat('en-GB', {
+	weekday: 'short',
+	timeZone: scheduleZone
+});
 
 export function initials(name: string) {
 	return name
 		.trim()
 		.split(/\s+/)
-		.slice(0, 2)
+		.filter((_, index, parts) => index === 0 || index === parts.length - 1)
 		.map((part) => part.charAt(0))
 		.join('')
 		.toUpperCase();
@@ -183,4 +191,20 @@ export function workEta(due: string | null, now: number) {
 	if (minutes < 0) return { tone: 'overdue', text: `overdue ${span}` };
 	if (minutes < 1440) return { tone: 'soon', text: `in ${span}` };
 	return { tone: 'scheduled', text: when(due) };
+}
+
+export function quotaSummary(subscriptions: HomeSubscription[], now: number) {
+	if (!subscriptions.length) return 'No subscriptions yet';
+	const low = subscriptions
+		.filter((subscription) => !staleReading(subscription.readAt, now))
+		.flatMap((subscription) => subscription.limits.filter((limit) => warningFor(limit.left)));
+	return `${count(subscriptions.length, 'subscription')} · ${low.length ? `${low.length} running low` : 'all OK'}`;
+}
+
+/** Two one-tap answers for a yes-or-no question; open questions get none. */
+export function quickReplies(question: string | null) {
+	const text = question?.trim() ?? '';
+	if (!text.endsWith('?') || /\bor\b/i.test(text)) return [];
+	if (/^(approve|merge|deploy|ship|release)\b/i.test(text)) return ['Approve', 'Not yet'];
+	return /^(should|can|may|shall|do|does|did|is|are|will|would)\b/i.test(text) ? ['Yes', 'No'] : [];
 }
