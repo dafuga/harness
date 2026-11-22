@@ -70,57 +70,58 @@ test('Throws ExpectedCliError when the requested unit is unknown', async () => {
 	);
 });
 
-test('Attributes a direct runtime test and matching scenario', () => {
-	const source = 'src/cli/program/inspectUnits.ts';
-	const testFile = 'src/cli/program/inspectUnits.test.ts';
-	const manifest = {
+const source = 'src/cli/program/inspectUnits.ts';
+const testFile = 'src/cli/program/inspectUnits.test.ts';
+const manifest = {
+	schemaVersion: 1 as const,
+	id: 'workflow.inspect-units',
+	uid: 'u_76b76sztpq',
+	kind: 'workflow',
+	title: 'inspectUnits',
+	responsibility: 'Owns the inspectUnits command workflow.',
+	responsibilityOrigin: 'derived' as const,
+	status: 'active' as const,
+	owns: { source: [source], symbols: ['unitSchema'] },
+	contract: { origin: 'declared' as const, inputs: [], outputs: [], errors: [] },
+	dependencies: [],
+	runtime: {
+		kind: 'module' as const,
+		entry: source,
+		targets: [{ kind: 'module' as const, entry: source }]
+	},
+	scenarios: [],
+	budgets: { size: 'frozen' as const, complexity: 'frozen' as const, performance: [] }
+};
+const graph = {
+	nodes: [
+		{ id: `file:${testFile}`, kind: 'test' as const },
+		{ id: `file:${source}`, kind: 'source' as const }
+	],
+	edges: [{ from: `file:${testFile}`, to: `file:${source}`, via: 'import', typeOnly: false }],
+	uncertain: []
+};
+const scenarios = [
+	{
 		schemaVersion: 1 as const,
-		id: 'workflow.inspect-units',
-		uid: 'u_76b76sztpq',
-		kind: 'workflow',
-		title: 'inspectUnits',
-		responsibility: 'Owns the inspectUnits command workflow.',
-		responsibilityOrigin: 'derived' as const,
-		status: 'active' as const,
-		owns: { source: [source], symbols: ['unitSchema'] },
-		contract: { origin: 'declared' as const, inputs: [], outputs: [], errors: [] },
-		dependencies: [],
-		runtime: {
-			kind: 'module' as const,
-			entry: source,
-			targets: [{ kind: 'module' as const, entry: source }]
-		},
-		scenarios: [],
-		budgets: { size: 'frozen' as const, complexity: 'frozen' as const, performance: [] }
-	};
-	const graph = {
-		nodes: [
-			{ id: `file:${testFile}`, kind: 'test' as const },
-			{ id: `file:${source}`, kind: 'source' as const }
+		id: 'scenario.inspect-units',
+		title: 'Inspect units',
+		kind: 'headless' as const,
+		units: ['workflow.inspect-units'],
+		states: [{ id: 'state.default', title: 'Default', coverage: 'required' as const }],
+		viewports: [],
+		tests: [
+			{
+				id: 'test.inspect-units',
+				kind: 'unit' as const,
+				runner: 'vitest' as const,
+				target: testFile
+			}
 		],
-		edges: [{ from: `file:${testFile}`, to: `file:${source}`, via: 'import', typeOnly: false }],
-		uncertain: []
-	};
-	const scenarios = [
-		{
-			schemaVersion: 1 as const,
-			id: 'scenario.inspect-units',
-			title: 'Inspect units',
-			kind: 'headless' as const,
-			units: ['workflow.inspect-units'],
-			states: [{ id: 'state.default', title: 'Default', coverage: 'required' as const }],
-			viewports: [],
-			tests: [
-				{
-					id: 'test.inspect-units',
-					kind: 'unit' as const,
-					runner: 'vitest' as const,
-					target: testFile
-				}
-			],
-			evidence: []
-		}
-	];
+		evidence: []
+	}
+];
+
+test('Attributes a direct runtime test and matching scenario', () => {
 	const result = testAttribution(graph, manifest, scenarios);
 	expect(result.directImports.map((entry) => entry.file)).toEqual([testFile]);
 	recordExampleCases(
