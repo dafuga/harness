@@ -1,0 +1,333 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.accounts-access-vault-device",
+	"uid": "u_dbz3ravmb5",
+	"kind": "repository",
+	"title": "VaultDeviceRepository",
+	"responsibility": "Holds enrolled Credential Vault phone devices and their roles, issues single-use challenges and verifies signed device proofs.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/accounts-access/VaultDeviceRepository.ts",
+			"src/repositories/accounts-access/VaultDeviceRepository.types.ts"
+		],
+		"symbols": [
+			"vaultChallengeMs",
+			"VaultDeviceRepository",
+			"VaultDeviceRepository.constructor",
+			"VaultDeviceRepository.issue",
+			"VaultDeviceRepository.authenticate",
+			"VaultDeviceRepository.authenticateDecision",
+			"VaultChallenge",
+			"VaultDevice",
+			"VaultDevice",
+			"VaultChallenge"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "VaultDeviceRepository.constructor.devices",
+				"type": "readonly VaultDevice[]",
+				"required": true,
+				"description": "Enrolled phones with role and P-256 signing key."
+			},
+			{
+				"name": "VaultDeviceRepository.constructor.origin",
+				"type": "string",
+				"required": true,
+				"description": "Approval origin the phones sign for."
+			},
+			{
+				"name": "VaultDeviceRepository.constructor.seal",
+				"type": "VaultSealAdapter",
+				"required": false,
+				"description": "Signature adapter; defaults to a new VaultSealAdapter."
+			},
+			{
+				"name": "VaultDeviceRepository.constructor.now",
+				"type": "() => number",
+				"required": false,
+				"description": "Clock in Unix milliseconds; defaults to Date.now."
+			},
+			{
+				"name": "VaultDeviceRepository.issue.deviceId",
+				"type": "string",
+				"required": true,
+				"description": "Enrolled approver device id."
+			},
+			{
+				"name": "VaultDeviceRepository.authenticate.path",
+				"type": "string",
+				"required": true,
+				"description": "Device route the proof was signed for."
+			},
+			{
+				"name": "VaultDeviceRepository.authenticate.proof",
+				"type": "VaultProof",
+				"required": true,
+				"description": "Device id, challenge nonce, payload and signature."
+			},
+			{
+				"name": "VaultDeviceRepository.authenticateDecision.proof",
+				"type": "VaultProof",
+				"required": true,
+				"description": "Decision proof signed with CB-DEVICE-V2."
+			},
+			{
+				"name": "VaultDeviceRepository.authenticateDecision.binding",
+				"type": "VaultApprovalBinding",
+				"required": true,
+				"description": "The scope the broker recorded for the request."
+			}
+		],
+		"outputs": [
+			{
+				"name": "vaultChallengeMs",
+				"type": "number",
+				"description": "Challenge lifetime: 30000 ms."
+			},
+			{
+				"name": "VaultDeviceRepository.issue",
+				"type": "VaultChallenge",
+				"description": "A single-use base64url nonce and its expiry, 30 s ahead."
+			},
+			{
+				"name": "VaultDeviceRepository.authenticate",
+				"type": "void",
+				"description": "Returns nothing when the V1 proof verifies; the nonce is consumed either way."
+			},
+			{
+				"name": "VaultDeviceRepository.authenticateDecision",
+				"type": "void",
+				"description": "Returns nothing when the V2 proof verifies; the nonce is consumed either way."
+			}
+		],
+		"errors": [
+			{
+				"name": "VaultBrokerError",
+				"type": "thrown",
+				"description": "401 'Device is not enrolled.' when the proof's device id is not pinned."
+			},
+			{
+				"name": "VaultBrokerError",
+				"type": "thrown",
+				"description": "403 'The device role does not allow approvals.' for a recovery device."
+			},
+			{
+				"name": "VaultBrokerError",
+				"type": "thrown",
+				"description": "429 'Too many device challenges.' when 64 unexpired challenges are outstanding."
+			},
+			{
+				"name": "VaultBrokerError",
+				"type": "thrown",
+				"description": "401 'Device proof is invalid or expired.' when the nonce was not issued to this device, was already used, is past its 30 s window, or the signature does not verify."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "'Invalid device key.' when an enrolled signing key is not a 65-byte uncompressed P-256 point."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "VaultDeviceRepository.issue",
+				"inputs": [
+					{
+						"name": "VaultDeviceRepository.issue.deviceId",
+						"type": "string",
+						"required": true,
+						"description": "Enrolled approver device id."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultDeviceRepository.issue",
+						"type": "VaultChallenge",
+						"description": "A single-use base64url nonce and its expiry, 30 s ahead."
+					}
+				],
+				"errors": [
+					{
+						"name": "VaultBrokerError",
+						"type": "thrown",
+						"description": "401 'Device is not enrolled.' when the proof's device id is not pinned."
+					},
+					{
+						"name": "VaultBrokerError",
+						"type": "thrown",
+						"description": "403 'The device role does not allow approvals.' for a recovery device."
+					},
+					{
+						"name": "VaultBrokerError",
+						"type": "thrown",
+						"description": "429 'Too many device challenges.' when 64 unexpired challenges are outstanding."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VaultDeviceRepository.authenticate",
+				"inputs": [
+					{
+						"name": "VaultDeviceRepository.authenticate.path",
+						"type": "string",
+						"required": true,
+						"description": "Device route the proof was signed for."
+					},
+					{
+						"name": "VaultDeviceRepository.authenticate.proof",
+						"type": "VaultProof",
+						"required": true,
+						"description": "Device id, challenge nonce, payload and signature."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultDeviceRepository.authenticate",
+						"type": "void",
+						"description": "Returns nothing when the V1 proof verifies; the nonce is consumed either way."
+					}
+				],
+				"errors": [
+					{
+						"name": "VaultBrokerError",
+						"type": "thrown",
+						"description": "401 'Device is not enrolled.' when the proof's device id is not pinned."
+					},
+					{
+						"name": "VaultBrokerError",
+						"type": "thrown",
+						"description": "403 'The device role does not allow approvals.' for a recovery device."
+					},
+					{
+						"name": "VaultBrokerError",
+						"type": "thrown",
+						"description": "401 'Device proof is invalid or expired.' when the nonce was not issued to this device, was already used, is past its 30 s window, or the signature does not verify."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VaultDeviceRepository.authenticateDecision",
+				"inputs": [
+					{
+						"name": "VaultDeviceRepository.authenticateDecision.proof",
+						"type": "VaultProof",
+						"required": true,
+						"description": "Decision proof signed with CB-DEVICE-V2."
+					},
+					{
+						"name": "VaultDeviceRepository.authenticateDecision.binding",
+						"type": "VaultApprovalBinding",
+						"required": true,
+						"description": "The scope the broker recorded for the request."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultDeviceRepository.authenticateDecision",
+						"type": "void",
+						"description": "Returns nothing when the V2 proof verifies; the nonce is consumed either way."
+					}
+				],
+				"errors": [
+					{
+						"name": "VaultBrokerError",
+						"type": "thrown",
+						"description": "401 'Device is not enrolled.' when the proof's device id is not pinned."
+					},
+					{
+						"name": "VaultBrokerError",
+						"type": "thrown",
+						"description": "403 'The device role does not allow approvals.' for a recovery device."
+					},
+					{
+						"name": "VaultBrokerError",
+						"type": "thrown",
+						"description": "401 'Device proof is invalid or expired.' when the nonce was not issued to this device, was already used, is past its 30 s window, or the signature does not verify."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "VaultDeviceRepository.constructor",
+				"inputs": [
+					{
+						"name": "VaultDeviceRepository.constructor.devices",
+						"type": "readonly VaultDevice[]",
+						"required": true,
+						"description": "Enrolled phones with role and P-256 signing key."
+					},
+					{
+						"name": "VaultDeviceRepository.constructor.origin",
+						"type": "string",
+						"required": true,
+						"description": "Approval origin the phones sign for."
+					},
+					{
+						"name": "VaultDeviceRepository.constructor.seal",
+						"type": "VaultSealAdapter",
+						"required": false,
+						"description": "Signature adapter; defaults to a new VaultSealAdapter."
+					},
+					{
+						"name": "VaultDeviceRepository.constructor.now",
+						"type": "() => number",
+						"required": false,
+						"description": "Clock in Unix milliseconds; defaults to Date.now."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultDeviceRepository.constructor",
+						"type": "unknown",
+						"description": "A repository with every device key pinned."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "'Invalid device key.' when an enrolled signing key is not a 65-byte uncompressed P-256 point."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.accounts-access-vault-seal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.accounts-access-vault-wire",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/accounts-access/VaultDeviceRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/accounts-access/VaultDeviceRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

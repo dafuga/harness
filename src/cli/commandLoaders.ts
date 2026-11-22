@@ -112,6 +112,10 @@ export const commandLoaders = {
 		const m = await import('./../commands/networking-security/ApiCommand');
 		new m.ApiCommand().register(program);
 	},
+	credential: async (program: Command) => {
+		const m = await import('./../commands/accounts-access/CredentialCommand');
+		new m.CredentialCommand().register(program);
+	},
 	permissions: async (program: Command) => {
 		const m = await import('./../commands/networking-security/PermissionsCommand');
 		new m.PermissionsCommand().register(program);

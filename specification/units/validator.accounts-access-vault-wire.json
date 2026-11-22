@@ -1,0 +1,342 @@
+{
+	"schemaVersion": 1,
+	"id": "validator.accounts-access-vault-wire",
+	"uid": "u_23xwb3xbkg",
+	"kind": "validator",
+	"title": "VaultWireValidator",
+	"responsibility": "Validates Credential Vault broker wire messages: session requests, device proofs, V2 approval decisions and lease calls.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/validators/accounts-access/VaultBrokerError.ts",
+			"src/validators/accounts-access/VaultWireValidator.ts",
+			"src/validators/accounts-access/VaultWireValidator.types.ts"
+		],
+		"symbols": [
+			"VaultBrokerError",
+			"VaultBrokerError.constructor",
+			"binary",
+			"vaultMaxPlaintext",
+			"vaultSessionRequest",
+			"vaultTicket",
+			"vaultProof",
+			"vaultSealed",
+			"vaultDecision",
+			"vaultChallenge",
+			"vaultLeaseCall",
+			"vaultLeaseIssue",
+			"VaultWireValidator",
+			"VaultWireValidator.parse",
+			"VaultWireValidator.json",
+			"VaultSessionRequest",
+			"VaultTicket",
+			"VaultProof",
+			"VaultSealed",
+			"VaultDecision",
+			"VaultApproval"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "VaultBrokerError.constructor.status",
+				"type": "number",
+				"required": true,
+				"description": "HTTP status the broker answers with."
+			},
+			{
+				"name": "VaultBrokerError.constructor.message",
+				"type": "string",
+				"required": true,
+				"description": "Refusal text with no secret detail."
+			},
+			{
+				"name": "binary.min",
+				"type": "number",
+				"required": true,
+				"description": "Minimum decoded length in bytes."
+			},
+			{
+				"name": "binary.max",
+				"type": "number",
+				"required": false,
+				"description": "Maximum decoded length in bytes; defaults to min."
+			},
+			{
+				"name": "VaultWireValidator.parse.schema",
+				"type": "z.ZodType<T>",
+				"required": true,
+				"description": "One of the wire schemas."
+			},
+			{
+				"name": "VaultWireValidator.parse.input",
+				"type": "unknown",
+				"required": true,
+				"description": "Untrusted decoded value.",
+				"unknownReason": "The value is untrusted until the schema accepts it."
+			},
+			{
+				"name": "VaultWireValidator.parse.label",
+				"type": "string",
+				"required": true,
+				"description": "Message name used in the refusal, such as request or decision."
+			},
+			{
+				"name": "VaultWireValidator.json.schema",
+				"type": "z.ZodType<T>",
+				"required": true,
+				"description": "One of the wire schemas."
+			},
+			{
+				"name": "VaultWireValidator.json.bytes",
+				"type": "Uint8Array",
+				"required": true,
+				"description": "Untrusted message bytes."
+			},
+			{
+				"name": "VaultWireValidator.json.label",
+				"type": "string",
+				"required": true,
+				"description": "Message name used in the refusal."
+			}
+		],
+		"outputs": [
+			{
+				"name": "binary",
+				"type": "z.ZodType<string>",
+				"description": "A schema for unpadded base64url decoding to min..max bytes."
+			},
+			{
+				"name": "vaultMaxPlaintext",
+				"type": "number",
+				"description": "Largest sealed plaintext: 8192 bytes."
+			},
+			{
+				"name": "vaultSessionRequest",
+				"type": "z.ZodType<VaultSessionRequest>",
+				"description": "Strict schema of a session request: item, session, project, environment, site, action, account, mode, method, recipe ref, host, runner key, origins, lease length and reason."
+			},
+			{
+				"name": "vaultTicket",
+				"type": "z.ZodType<VaultTicket>",
+				"description": "Strict schema of a request id and receipt."
+			},
+			{
+				"name": "vaultProof",
+				"type": "z.ZodType<VaultProof>",
+				"description": "Strict schema of a device proof: device id, nonce, payload and P-256 signature."
+			},
+			{
+				"name": "vaultSealed",
+				"type": "z.ZodType<VaultSealed>",
+				"description": "Strict schema of a sealed envelope."
+			},
+			{
+				"name": "vaultDecision",
+				"type": "z.ZodType<VaultDecision>",
+				"description": "Approve, restating the full scope and a nullable sealed credential, or deny."
+			},
+			{
+				"name": "vaultChallenge",
+				"type": "z.ZodType",
+				"description": "Strict schema of a challenge request: device id."
+			},
+			{
+				"name": "vaultLeaseCall",
+				"type": "z.ZodType",
+				"description": "Strict schema of a lease id and session."
+			},
+			{
+				"name": "vaultLeaseIssue",
+				"type": "z.ZodType",
+				"description": "A ticket plus the verified identity and teardown paths."
+			},
+			{
+				"name": "VaultWireValidator.parse",
+				"type": "T",
+				"description": "The parsed value."
+			},
+			{
+				"name": "VaultWireValidator.json",
+				"type": "T",
+				"description": "The parsed value."
+			}
+		],
+		"errors": [
+			{
+				"name": "VaultBrokerError",
+				"type": "thrown",
+				"description": "400 'Invalid <label> at <field path>.' when the input fails the schema; the value is never echoed."
+			},
+			{
+				"name": "VaultBrokerError",
+				"type": "thrown",
+				"description": "400 'Invalid <label>: not UTF-8 JSON.' when the bytes are not UTF-8 JSON."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "binary",
+				"inputs": [
+					{
+						"name": "binary.min",
+						"type": "number",
+						"required": true,
+						"description": "Minimum decoded length in bytes."
+					},
+					{
+						"name": "binary.max",
+						"type": "number",
+						"required": false,
+						"description": "Maximum decoded length in bytes; defaults to min."
+					}
+				],
+				"outputs": [
+					{
+						"name": "binary",
+						"type": "z.ZodType<string>",
+						"description": "A schema for unpadded base64url decoding to min..max bytes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VaultWireValidator.parse",
+				"inputs": [
+					{
+						"name": "VaultWireValidator.parse.schema",
+						"type": "z.ZodType<T>",
+						"required": true,
+						"description": "One of the wire schemas."
+					},
+					{
+						"name": "VaultWireValidator.parse.input",
+						"type": "unknown",
+						"required": true,
+						"description": "Untrusted decoded value.",
+						"unknownReason": "The value is untrusted until the schema accepts it."
+					},
+					{
+						"name": "VaultWireValidator.parse.label",
+						"type": "string",
+						"required": true,
+						"description": "Message name used in the refusal, such as request or decision."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultWireValidator.parse",
+						"type": "T",
+						"description": "The parsed value."
+					}
+				],
+				"errors": [
+					{
+						"name": "VaultBrokerError",
+						"type": "thrown",
+						"description": "400 'Invalid <label> at <field path>.' when the input fails the schema; the value is never echoed."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VaultWireValidator.json",
+				"inputs": [
+					{
+						"name": "VaultWireValidator.json.schema",
+						"type": "z.ZodType<T>",
+						"required": true,
+						"description": "One of the wire schemas."
+					},
+					{
+						"name": "VaultWireValidator.json.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Untrusted message bytes."
+					},
+					{
+						"name": "VaultWireValidator.json.label",
+						"type": "string",
+						"required": true,
+						"description": "Message name used in the refusal."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultWireValidator.json",
+						"type": "T",
+						"description": "The parsed value."
+					}
+				],
+				"errors": [
+					{
+						"name": "VaultBrokerError",
+						"type": "thrown",
+						"description": "400 'Invalid <label>: not UTF-8 JSON.' when the bytes are not UTF-8 JSON."
+					},
+					{
+						"name": "VaultBrokerError",
+						"type": "thrown",
+						"description": "400 'Invalid <label> at <field path>.' when the input fails the schema; the value is never echoed."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "VaultBrokerError.constructor",
+				"inputs": [
+					{
+						"name": "VaultBrokerError.constructor.status",
+						"type": "number",
+						"required": true,
+						"description": "HTTP status the broker answers with."
+					},
+					{
+						"name": "VaultBrokerError.constructor.message",
+						"type": "string",
+						"required": true,
+						"description": "Refusal text with no secret detail."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultBrokerError.constructor",
+						"type": "unknown",
+						"description": "An ExpectedCliError carrying the status."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/validators/accounts-access/VaultWireValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/validators/accounts-access/VaultWireValidator.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
