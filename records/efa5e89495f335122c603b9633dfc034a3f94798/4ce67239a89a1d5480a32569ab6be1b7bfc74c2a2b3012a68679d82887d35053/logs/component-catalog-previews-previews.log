@@ -1,0 +1,13 @@
+
+Running 6 tests using 1 worker
+
+(node:34261) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.page.harness-branch-branch-at-platforms at desktop (1.1s)
+  ✓  2 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.page.harness-branch-branch-at-platforms:ready at desktop (1.0s)
+  ✓  3 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.page.harness-branch-branch-at-platforms at tablet (616ms)
+  ✓  4 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.page.harness-branch-branch-at-platforms:ready at tablet (672ms)
+  ✓  5 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.page.harness-branch-branch-at-platforms at mobile (659ms)
+  ✓  6 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.page.harness-branch-branch-at-platforms:ready at mobile (694ms)
+
+  6 passed (7.1s)
