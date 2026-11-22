@@ -10,17 +10,31 @@
 	"owns": {
 		"source": [
 			"src/services/agents-providers/ModuleTaskWorkerService.ts",
+			"src/services/agents-providers/module-task-worker-service/preflightClaim.ts",
+			"src/services/agents-providers/module-task-worker-service/providerCooldown.ts",
+			"src/services/agents-providers/module-task-worker-service/providerCooldown.types.ts",
 			"src/services/agents-providers/module-task-worker-service/taskClaim.ts",
-			"src/services/agents-providers/module-task-worker-service/taskClaim.types.ts"
+			"src/services/agents-providers/module-task-worker-service/taskClaim.types.ts",
+			"src/services/agents-providers/module-task-worker-service/taskPreflight.ts"
 		],
 		"symbols": [
 			"ModuleTaskWorkerService",
 			"ModuleTaskWorkerService.constructor",
 			"ModuleTaskWorkerService.once",
+			"preflightClaim",
+			"defaultQuotaPauseMs",
+			"cooldownFile",
+			"readCooldowns",
+			"recordCooldown",
+			"ProviderCooldowns",
 			"pendingTaskResult",
+			"claimable",
 			"claimedTask",
 			"finishTask",
 			"taskWrites",
+			"TaskClaimOptions",
+			"workspacePreflight",
+			"taskBlockers",
 			"WorkerOutsideModuleError"
 		]
 	},
@@ -32,7 +46,10 @@
 				"type": "string",
 				"required": false,
 				"description": "Repository root that Git commands, the task queue, task worktrees and the analytics sync are bound to. Defaults to process.cwd(), read when the worker is constructed without a root.",
-				"examples": ["/workspace/project", "/srv/harness/checkout"]
+				"examples": [
+					"/workspace/project",
+					"/srv/harness/checkout"
+				]
 			},
 			{
 				"name": "ModuleTaskWorkerService.constructor.runner",
@@ -50,7 +67,10 @@
 				"type": "string",
 				"required": true,
 				"description": "Name recorded as the claim's worker and matched against task assignees; once() throws before touching the queue unless it matches ^[a-z0-9]+(?:[.-][a-z0-9]+)*$. Only queued tasks with no assignee or with this exact assignee can be claimed.",
-				"examples": ["luna-worker-1", "codex.luna-2"]
+				"examples": [
+					"luna-worker-1",
+					"codex.luna-2"
+				]
 			},
 			{
 				"name": "ModuleTaskWorkerService.once.modules",
@@ -60,8 +80,13 @@
 				"description": "Restricts the claim to queued tasks whose module.id is listed; the default empty list leaves every module eligible. A module that already has a running task is skipped whatever this list contains.",
 				"examples": [
 					[],
-					["service.agents-providers-module-task-worker"],
-					["adapter.agents-providers-module-task-runner", "adapter.git"]
+					[
+						"service.agents-providers-module-task-worker"
+					],
+					[
+						"adapter.agents-providers-module-task-runner",
+						"adapter.git"
+					]
 				]
 			},
 			{
@@ -69,6 +94,61 @@
 				"type": "AbortSignal",
 				"required": false,
 				"description": "Abort signal given to the runner as TaskRunInput.signal; the quota fallback checks it with throwIfAborted() before dispatching again. Defaults to AbortSignal.timeout(900000), which aborts after 900000 ms (15 minutes)."
+			},
+			{
+				"name": "preflightClaim.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "preflightClaim.repository",
+				"type": "ModuleTaskRepository",
+				"required": true
+			},
+			{
+				"name": "preflightClaim.worker",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "preflightClaim.modules",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "cooldownFile.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readCooldowns.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readCooldowns.now",
+				"type": "number",
+				"required": false
+			},
+			{
+				"name": "recordCooldown.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordCooldown.provider",
+				"type": "'claude' | 'codex'",
+				"required": true
+			},
+			{
+				"name": "recordCooldown.resetsAt",
+				"type": "number",
+				"required": false
+			},
+			{
+				"name": "recordCooldown.now",
+				"type": "number",
+				"required": false
 			},
 			{
 				"name": "pendingTaskResult.selection",
@@ -97,6 +177,21 @@
 					"/workspace/project/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
 					"/srv/harness/checkout/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0"
 				]
+			},
+			{
+				"name": "claimable.task",
+				"type": "ModuleTask",
+				"required": true
+			},
+			{
+				"name": "claimable.worker",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "claimable.modules",
+				"type": "string[]",
+				"required": true
 			},
 			{
 				"name": "claimedTask.queue",
@@ -171,7 +266,10 @@
 				"type": "string",
 				"required": true,
 				"description": "Worker name matched against each task's assignee and written into the new claim. The queue schema requires it to match the unit id pattern, so a name that does not match fails the queue update.",
-				"examples": ["luna-worker-1", "codex.luna-2"]
+				"examples": [
+					"luna-worker-1",
+					"codex.luna-2"
+				]
 			},
 			{
 				"name": "claimedTask.modules",
@@ -180,8 +278,13 @@
 				"description": "Module ids a claim may take; an empty array leaves every module eligible. A module that already has a running task is skipped whatever this array contains.",
 				"examples": [
 					[],
-					["service.agents-providers-module-task-worker"],
-					["adapter.agents-providers-module-task-runner", "adapter.git"]
+					[
+						"service.agents-providers-module-task-worker"
+					],
+					[
+						"adapter.agents-providers-module-task-runner",
+						"adapter.git"
+					]
 				]
 			},
 			{
@@ -201,6 +304,11 @@
 						"startedAt": "Sun Nov 15 08:47:10 2026"
 					}
 				]
+			},
+			{
+				"name": "claimedTask.runnable",
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "finishTask.queue",
@@ -490,6 +598,26 @@
 						"attempts": []
 					}
 				]
+			},
+			{
+				"name": "workspacePreflight.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "taskBlockers.task",
+				"type": "ModuleTask",
+				"required": true
+			},
+			{
+				"name": "taskBlockers.cooldowns",
+				"type": "ProviderCooldowns",
+				"required": true
+			},
+			{
+				"name": "taskBlockers.path",
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -677,7 +805,10 @@
 						"type": "string",
 						"required": true,
 						"description": "Name recorded as the claim's worker and matched against task assignees; once() throws before touching the queue unless it matches ^[a-z0-9]+(?:[.-][a-z0-9]+)*$. Only queued tasks with no assignee or with this exact assignee can be claimed.",
-						"examples": ["luna-worker-1", "codex.luna-2"]
+						"examples": [
+							"luna-worker-1",
+							"codex.luna-2"
+						]
 					},
 					{
 						"name": "ModuleTaskWorkerService.once.modules",
@@ -687,8 +818,13 @@
 						"description": "Restricts the claim to queued tasks whose module.id is listed; the default empty list leaves every module eligible. A module that already has a running task is skipped whatever this list contains.",
 						"examples": [
 							[],
-							["service.agents-providers-module-task-worker"],
-							["adapter.agents-providers-module-task-runner", "adapter.git"]
+							[
+								"service.agents-providers-module-task-worker"
+							],
+							[
+								"adapter.agents-providers-module-task-runner",
+								"adapter.git"
+							]
 						]
 					},
 					{
@@ -774,6 +910,113 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "preflightClaim",
+				"inputs": [
+					{
+						"name": "preflightClaim.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "preflightClaim.repository",
+						"type": "ModuleTaskRepository",
+						"required": true
+					},
+					{
+						"name": "preflightClaim.worker",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "preflightClaim.modules",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "preflightClaim",
+						"type": "Promise<{ claim?: { value: ModuleTask | null; commit?: string }; blocked: string[] }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "cooldownFile",
+				"inputs": [
+					{
+						"name": "cooldownFile.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "cooldownFile",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readCooldowns",
+				"inputs": [
+					{
+						"name": "readCooldowns.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readCooldowns.now",
+						"type": "number",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "readCooldowns",
+						"type": "Promise<ProviderCooldowns>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordCooldown",
+				"inputs": [
+					{
+						"name": "recordCooldown.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordCooldown.provider",
+						"type": "'claude' | 'codex'",
+						"required": true
+					},
+					{
+						"name": "recordCooldown.resetsAt",
+						"type": "number",
+						"required": false
+					},
+					{
+						"name": "recordCooldown.now",
+						"type": "number",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordCooldown",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "pendingTaskResult",
 				"inputs": [
 					{
@@ -828,6 +1071,34 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "claimable",
+				"inputs": [
+					{
+						"name": "claimable.task",
+						"type": "ModuleTask",
+						"required": true
+					},
+					{
+						"name": "claimable.worker",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "claimable.modules",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "claimable",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "claimedTask",
@@ -905,7 +1176,10 @@
 						"type": "string",
 						"required": true,
 						"description": "Worker name matched against each task's assignee and written into the new claim. The queue schema requires it to match the unit id pattern, so a name that does not match fails the queue update.",
-						"examples": ["luna-worker-1", "codex.luna-2"]
+						"examples": [
+							"luna-worker-1",
+							"codex.luna-2"
+						]
 					},
 					{
 						"name": "claimedTask.modules",
@@ -914,8 +1188,13 @@
 						"description": "Module ids a claim may take; an empty array leaves every module eligible. A module that already has a running task is skipped whatever this array contains.",
 						"examples": [
 							[],
-							["service.agents-providers-module-task-worker"],
-							["adapter.agents-providers-module-task-runner", "adapter.git"]
+							[
+								"service.agents-providers-module-task-worker"
+							],
+							[
+								"adapter.agents-providers-module-task-runner",
+								"adapter.git"
+							]
 						]
 					},
 					{
@@ -935,6 +1214,11 @@
 								"startedAt": "Sun Nov 15 08:47:10 2026"
 							}
 						]
+					},
+					{
+						"name": "claimedTask.runnable",
+						"type": "unknown",
+						"required": true
 					}
 				],
 				"outputs": [
@@ -1343,6 +1627,52 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "workspacePreflight",
+				"inputs": [
+					{
+						"name": "workspacePreflight.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "workspacePreflight",
+						"type": "Promise<string[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "taskBlockers",
+				"inputs": [
+					{
+						"name": "taskBlockers.task",
+						"type": "ModuleTask",
+						"required": true
+					},
+					{
+						"name": "taskBlockers.cooldowns",
+						"type": "ProviderCooldowns",
+						"required": true
+					},
+					{
+						"name": "taskBlockers.path",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "taskBlockers",
+						"type": "Promise<string[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -1354,7 +1684,10 @@
 						"type": "string",
 						"required": false,
 						"description": "Repository root that Git commands, the task queue, task worktrees and the analytics sync are bound to. Defaults to process.cwd(), read when the worker is constructed without a root.",
-						"examples": ["/workspace/project", "/srv/harness/checkout"]
+						"examples": [
+							"/workspace/project",
+							"/srv/harness/checkout"
+						]
 					},
 					{
 						"name": "ModuleTaskWorkerService.constructor.runner",
@@ -1443,7 +1776,9 @@
 			}
 		]
 	},
-	"scenarios": ["module-tasks"],
+	"scenarios": [
+		"module-tasks"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

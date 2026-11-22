@@ -31,6 +31,10 @@ export const taskInputSchema = z.strictObject({
 		.optional(),
 	instructions: text,
 	wantedContract: wantedContractSchema,
+	requiredTools: z
+		.array(z.string().regex(/^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$/))
+		.max(16)
+		.optional(),
 	taskType: id.optional(),
 	estimatedDifficulty: z.enum(['small', 'medium', 'large']).optional(),
 	model: z.string().trim().min(1).max(150).default('auto'),

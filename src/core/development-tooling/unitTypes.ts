@@ -182,7 +182,9 @@ export const scenarioManifestSchema = z.strictObject({
 				target: text,
 				cwd: z.string().optional(),
 				/** Hard limit for this check; the configured default applies when omitted. */
-				timeoutMs: z.number().int().positive().optional()
+				timeoutMs: z.number().int().positive().optional(),
+				/** Memory the check reserves, so nested work it starts (a task CLI) fits its lease. */
+				memoryMiB: z.number().int().positive().max(65536).optional()
 			})
 		)
 		.min(1),

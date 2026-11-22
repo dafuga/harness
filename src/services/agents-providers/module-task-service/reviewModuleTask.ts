@@ -1,5 +1,6 @@
 // @harness-uid u_mzypaxxnyu
 import type { ModuleTaskRepository } from '../../../repositories/agents-providers/ModuleTaskRepository';
+import type { ModuleTask } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { reviewInputSchema } from '../../../repositories/agents-providers/module-task-repository/taskUsage';
 import { ModuleTaskWorktreeAdapter } from '../../../adapters/agents-providers/ModuleTaskWorktreeAdapter';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
@@ -9,7 +10,12 @@ import { StaleTaskReviewError } from './reviewModuleTask.types';
 export class TaskNotAwaitingAttemptReviewError extends Error {
 	override name = 'TaskNotAwaitingAttemptReviewError';
 }
-/** A review is bound to one submitted claim; duplicate or stale reviews cannot bounce it twice. */
+import { acceptanceEvidence } from './acceptanceEvidence';
+import { recordedReview } from './recordedReview';
+/**
+ * A review is bound to one submitted claim; duplicate or stale reviews cannot bounce it twice.
+ * Acceptance requires verification evidence, and resending a recorded verdict returns it.
+ */
 export async function reviewModuleTask(
 	root: string,
 	repository: ModuleTaskRepository,
@@ -17,22 +23,17 @@ export async function reviewModuleTask(
 	input: unknown
 ) {
 	const review = reviewInputSchema.parse(input);
-	const before = (await repository.read()).data.tasks.find((task) => task.id === id);
+	const snapshot = await repository.read();
+	const before = snapshot.data.tasks.find((task) => task.id === id);
+	const replay = recordedReview(before, review);
+	if (replay) return { commit: snapshot.commit, task: before!, replayed: true };
 	if (before?.status !== 'review' || before.claim?.token !== review.attempt || !before.result)
 		throw new TaskNotAwaitingAttemptReviewError('Task is not awaiting this attempt review.');
-	let checkpoint = before.result.checkpointCommit;
-	if (review.verdict === 'incomplete' && !checkpoint) {
-		const source = before.result.sourceCommit ?? before.sourceCommit;
-		const paths = await taskWrites(new GitAdapter(before.result.worktree), {
-			...before,
-			sourceCommit: source
-		});
-		checkpoint = await new ModuleTaskWorktreeAdapter(root).checkpoint({
-			cwd: before.result.worktree,
-			source,
-			paths
-		});
-	}
+	const evidence =
+		review.verdict === 'accepted'
+			? await acceptanceEvidence(root, before, review.evidence!)
+			: undefined;
+	const checkpoint = await repairCheckpoint(root, before, review.verdict);
 	const result = await repository.update((queue) => {
 		const task = queue.tasks.find((item) => item.id === id);
 		if (
@@ -42,8 +43,10 @@ export async function reviewModuleTask(
 			!task.result
 		)
 			throw new StaleTaskReviewError('Task review is stale; no result was overwritten.');
+		const { attempt, verdict, cause, reviewer, feedback } = review;
 		task.reviews.push({
-			...review,
+			...{ attempt, verdict, reviewer, feedback, ...(cause ? { cause } : {}) },
+			...(evidence ? { evidence } : {}),
 			at: new Date().toISOString(),
 			provider: task.result.provider,
 			model: task.result.model,
@@ -62,5 +65,20 @@ export async function reviewModuleTask(
 		return task;
 	}, checkpoint);
 	await new ModuleTaskAnalyticsService().sync(root);
-	return { commit: result.commit, task: result.value };
+	return { commit: result.commit, task: result.value, replayed: false };
+}
+
+async function repairCheckpoint(root: string, task: ModuleTask, verdict: string) {
+	const result = task.result!;
+	if (verdict !== 'incomplete' || result.checkpointCommit) return result.checkpointCommit;
+	const source = result.sourceCommit ?? task.sourceCommit;
+	const paths = await taskWrites(new GitAdapter(result.worktree), {
+		...task,
+		sourceCommit: source
+	});
+	return new ModuleTaskWorktreeAdapter(root).checkpoint({
+		cwd: result.worktree,
+		source,
+		paths
+	});
 }

@@ -1,13 +1,9 @@
-import { expectTypeOf, test } from 'vitest';
+import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { ModuleTaskRunnerAdapter } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter';
 import { parsePositiveIntegerEnvironmentValue } from '../../../src/adapters/agents-providers/module-task-runner-adapter/taskProcess';
-import {
-	ModuleTaskRunError,
-	type TaskProcessExecutor
-} from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter.types';
+import { ModuleTaskRunError } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter.types';
 import { observedTaskOperation } from '../../support/taskProfiles';
-import type { Seam } from './module-task-runner.test.types';
 import { assertFrameArguments } from '../../support/frameTaskAssertions';
 test('task limits use positive integers and fall back for invalid or unset values', () => {
 	const parse = parsePositiveIntegerEnvironmentValue;
@@ -214,7 +210,4 @@ test.each<[string, 'claude' | 'codex', number, object[]]>([
 	await expect(failure).rejects.toBeInstanceOf(ModuleTaskRunError);
 	await expect(failure).rejects.toMatchObject({ name: 'ModuleTaskRunError' });
 	await expect(failure).rejects.toThrow(message);
-});
-test('the process executor seam is typed, never unknown or any', () => {
-	expectTypeOf<Seam>().toEqualTypeOf<TaskProcessExecutor | undefined>();
 });

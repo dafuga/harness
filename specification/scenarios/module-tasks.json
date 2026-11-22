@@ -80,6 +80,16 @@
 			"id": "run-records",
 			"title": "Shared run records and cost-aware model recommendations",
 			"coverage": "required"
+		},
+		{
+			"id": "verified-acceptance",
+			"title": "Acceptance cites a verified commit carrying the submission; resent verdicts replay",
+			"coverage": "required"
+		},
+		{
+			"id": "dispatch-preflight",
+			"title": "Workers block on unwritable worktrees, missing tools and exhausted quota before claiming",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -174,14 +184,45 @@
 			"kind": "e2e",
 			"runner": "command",
 			"target": "bun test/verification-output.ts vitest test/module-tasks.e2e.test.ts",
-			"timeoutMs": 240000
+			"timeoutMs": 240000,
+			"memoryMiB": 2560
 		},
 		{
 			"id": "analytics-attribution",
 			"kind": "e2e",
 			"runner": "command",
 			"target": "bun test/verification-output.ts vitest test/analytics-attribution.e2e.test.ts",
-			"timeoutMs": 240000
+			"timeoutMs": 240000,
+			"memoryMiB": 2560
+		},
+		{
+			"id": "module-task-acceptance",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/agents-providers/module-task-acceptance.test.ts",
+			"timeoutMs": 120000
+		},
+		{
+			"id": "module-task-preflight",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/agents-providers/module-task-preflight.test.ts",
+			"timeoutMs": 120000
+		},
+		{
+			"id": "module-task-run-metrics",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/agents-providers/module-task-run-metrics.test.ts",
+			"timeoutMs": 120000
+		},
+		{
+			"id": "module-task-dispatch",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/module-task-dispatch.e2e.test.ts",
+			"timeoutMs": 240000,
+			"memoryMiB": 2560
 		}
 	],
 	"evidence": [
@@ -197,7 +238,9 @@
 				"owner-recovery",
 				"usage-pricing",
 				"reviewed-repairs",
-				"run-records"
+				"run-records",
+				"verified-acceptance",
+				"dispatch-preflight"
 			],
 			"viewports": [],
 			"required": true
@@ -214,7 +257,9 @@
 				"owner-recovery",
 				"usage-pricing",
 				"reviewed-repairs",
-				"run-records"
+				"run-records",
+				"verified-acceptance",
+				"dispatch-preflight"
 			],
 			"viewports": [],
 			"required": true

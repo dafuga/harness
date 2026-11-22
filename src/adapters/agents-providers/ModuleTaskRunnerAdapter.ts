@@ -74,7 +74,7 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 						? 'Claude quota exhausted.'
 						: 'Claude task failed; inspect CLI authentication, permissions or model access.'
 				),
-				{ quotaRejected }
+				{ quotaRejected, quotaResetsAt: quotaReset(events) }
 			);
 		}
 		return completedClaudeTask(events, result, input);
@@ -144,6 +144,10 @@ function claudeTaskCommand(selection: TaskSelection): string[] {
 		'Read,Edit,Write,Glob,Grep,Bash',
 		'--no-session-persistence'
 	];
+}
+function quotaReset(events: TaskPublicEvent[]): number | undefined {
+	return events.find((event) => typeof event.rate_limit_info?.resetsAt === 'number')
+		?.rate_limit_info?.resetsAt;
 }
 function rejectedQuotaEvent(event: TaskPublicEvent): boolean {
 	if (event.type === 'rate_limit_event' && event.rate_limit_info?.status === 'rejected')

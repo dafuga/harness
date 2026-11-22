@@ -17,6 +17,8 @@ export interface PlannedCheck {
 	cwd: string;
 	command: string;
 	timeoutMs: number;
+	/** Memory reserved for the check, when its scenario declares more than the default. */
+	memoryMiB?: number;
 }
 
 export interface PlanInput {

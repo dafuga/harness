@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import { WorkerOutsideModuleError } from './taskClaim.types';
 import type { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
+import type { TaskClaimOptions } from './taskClaim.types';
 import { TaskWorktreeChangedError } from '../../../adapters/agents-providers/TaskWorktreeChangedError';
 import type {
 	ModuleTask,
@@ -24,20 +25,24 @@ export function pendingTaskResult(
 		finishedAt: new Date().toISOString()
 	};
 }
+/** A queued task this worker may pick up, before machine preflight. */
+export function claimable(task: ModuleTask, worker: string, modules: string[]): boolean {
+	return (
+		task.status === 'queued' &&
+		!['role', 'assignedFiles', 'dependsOn'].some((key) => Object.hasOwn(task, key)) &&
+		(!task.assignee || task.assignee === worker) &&
+		(!modules.length || modules.includes(task.module.id))
+	);
+}
 export function claimedTask(
 	queue: ModuleTaskQueue,
 	worker: string,
 	modules: string[],
-	owner: NonNullable<ModuleTask['claim']>['owner']
+	{ owner, runnable }: TaskClaimOptions
 ) {
 	const busy = new Set(queue.tasks.filter((t) => t.status === 'running').map((t) => t.module.id));
 	const task = queue.tasks.find(
-		(t) =>
-			t.status === 'queued' &&
-			!['role', 'assignedFiles', 'dependsOn'].some((key) => Object.hasOwn(t, key)) &&
-			(!t.assignee || t.assignee === worker) &&
-			(!modules.length || modules.includes(t.module.id)) &&
-			!busy.has(t.module.id)
+		(t) => claimable(t, worker, modules) && !busy.has(t.module.id) && (runnable?.has(t.id) ?? true)
 	);
 	if (!task) return null;
 	task.status = 'running';

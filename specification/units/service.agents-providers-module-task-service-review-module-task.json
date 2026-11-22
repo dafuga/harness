@@ -9,20 +9,58 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/agents-providers/module-task-service/acceptanceEvidence.ts",
+			"src/services/agents-providers/module-task-service/acceptanceEvidence.types.ts",
+			"src/services/agents-providers/module-task-service/recordedReview.ts",
 			"src/services/agents-providers/module-task-service/reviewModuleTask.ts",
 			"src/services/agents-providers/module-task-service/reviewModuleTask.types.ts"
 		],
-		"symbols": ["TaskNotAwaitingAttemptReviewError", "reviewModuleTask", "StaleTaskReviewError"]
+		"symbols": [
+			"acceptanceEvidence",
+			"TaskAcceptanceEvidence",
+			"EvidenceScope",
+			"recordedReview",
+			"reviewModuleTask",
+			"TaskNotAwaitingAttemptReviewError",
+			"StaleTaskReviewError"
+		]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "acceptanceEvidence.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "acceptanceEvidence.task",
+				"type": "ModuleTask",
+				"required": true
+			},
+			{
+				"name": "acceptanceEvidence.revision",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordedReview.task",
+				"type": "ModuleTask | undefined",
+				"required": true
+			},
+			{
+				"name": "recordedReview.review",
+				"type": "{ attempt: string; verdict: 'accepted' | 'incomplete' }",
+				"required": true
+			},
+			{
 				"name": "reviewModuleTask.root",
 				"type": "string",
 				"required": true,
 				"description": "The repository root passed to worktree checkpointing and module-task analytics sync. It is used when an incomplete review needs a checkpoint and after the repository update.",
-				"examples": ["/workspace/project"]
+				"examples": [
+					"/workspace/project"
+				]
 			},
 			{
 				"name": "reviewModuleTask.repository",
@@ -35,7 +73,9 @@
 				"type": "string",
 				"required": true,
 				"description": "The task identifier matched against task.id in the initial read and again during the update. It must identify the same task in both queue snapshots.",
-				"examples": ["module-task-17"]
+				"examples": [
+					"module-task-17"
+				]
 			},
 			{
 				"name": "reviewModuleTask.input",
@@ -80,6 +120,67 @@
 		"errorStatus": "declared",
 		"operations": [
 			{
+				"name": "acceptanceEvidence",
+				"inputs": [
+					{
+						"name": "acceptanceEvidence.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "acceptanceEvidence.task",
+						"type": "ModuleTask",
+						"required": true
+					},
+					{
+						"name": "acceptanceEvidence.revision",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "acceptanceEvidence",
+						"type": "Promise<TaskAcceptanceEvidence>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordedReview",
+				"inputs": [
+					{
+						"name": "recordedReview.task",
+						"type": "ModuleTask | undefined",
+						"required": true
+					},
+					{
+						"name": "recordedReview.review",
+						"type": "{ attempt: string; verdict: 'accepted' | 'incomplete' }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordedReview",
+						"type": "ModuleTask['reviews'][number] | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "reviewModuleTask",
 				"inputs": [
 					{
@@ -87,7 +188,9 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository root passed to worktree checkpointing and module-task analytics sync. It is used when an incomplete review needs a checkpoint and after the repository update.",
-						"examples": ["/workspace/project"]
+						"examples": [
+							"/workspace/project"
+						]
 					},
 					{
 						"name": "reviewModuleTask.repository",
@@ -100,7 +203,9 @@
 						"type": "string",
 						"required": true,
 						"description": "The task identifier matched against task.id in the initial read and again during the update. It must identify the same task in both queue snapshots.",
-						"examples": ["module-task-17"]
+						"examples": [
+							"module-task-17"
+						]
 					},
 					{
 						"name": "reviewModuleTask.input",
@@ -169,12 +274,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.verification-store",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.agents-providers-module-task-analytics",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "service.agents-providers-module-task-worker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-check",
 			"via": "import",
 			"origin": "derived"
 		}
@@ -189,7 +304,9 @@
 			}
 		]
 	},
-	"scenarios": ["module-tasks"],
+	"scenarios": [
+		"module-tasks"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
