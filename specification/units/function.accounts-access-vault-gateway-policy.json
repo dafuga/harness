@@ -8,44 +8,171 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/accounts-access/vaultGatewayPolicy.ts"],
-		"symbols": ["vaultGatewayPolicy"]
+		"source": [
+			"src/utils/accounts-access/vaultGatewayPolicy.ts",
+			"src/utils/accounts-access/vaultGatewayPolicy.types.ts"
+		],
+		"symbols": [
+			"readOperations",
+			"writeOperations",
+			"vaultGatewayPolicy",
+			"vaultUrlPolicy",
+			"pathMatches",
+			"VaultReadOperation",
+			"VaultWriteOperation",
+			"VaultOperationName",
+			"VaultGatewayScope",
+			"VaultOperation",
+			"VaultDecision"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "vaultGatewayPolicy.value",
+				"name": "vaultGatewayPolicy.scope",
+				"type": "VaultGatewayScope",
+				"required": true,
+				"description": "The lease scope from the approved recipe action: origins, redirect origins, read or write mode, allowed and denied path patterns and download file types."
+			},
+			{
+				"name": "vaultGatewayPolicy.operation",
+				"type": "VaultOperation",
+				"required": true,
+				"description": "The requested gateway call: its operation name, an optional target URL and an optional download file type."
+			},
+			{
+				"name": "vaultUrlPolicy.scope",
+				"type": "VaultGatewayScope",
+				"required": true,
+				"description": "The lease scope from the approved recipe action."
+			},
+			{
+				"name": "vaultUrlPolicy.target",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Absolute URL of a navigation, redirect or form target."
+			},
+			{
+				"name": "pathMatches.pattern",
+				"type": "string",
+				"required": true,
+				"description": "Recipe path pattern; * matches one segment and a trailing /** matches any remainder."
+			},
+			{
+				"name": "pathMatches.path",
+				"type": "string",
+				"required": true,
+				"description": "URL path to test."
 			}
 		],
 		"outputs": [
 			{
+				"name": "readOperations",
+				"type": "readonly VaultReadOperation[]",
+				"description": "Gateway operations a read-only lease may call."
+			},
+			{
+				"name": "writeOperations",
+				"type": "readonly VaultWriteOperation[]",
+				"description": "Gateway operations that need a lease approved with write mode."
+			},
+			{
 				"name": "vaultGatewayPolicy",
-				"type": "string"
+				"type": "VaultDecision",
+				"description": "Allowed, or refused with a reason the session can show."
+			},
+			{
+				"name": "vaultUrlPolicy",
+				"type": "VaultDecision",
+				"description": "Allowed when the target is on an approved origin, outside the protected key, token, recovery, 2FA and session pages, not denied and on an allowed path; otherwise refused with a reason."
+			},
+			{
+				"name": "pathMatches",
+				"type": "boolean",
+				"description": "True when the path matches the pattern."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "vaultGatewayPolicy",
 				"inputs": [
 					{
-						"name": "vaultGatewayPolicy.value",
-						"type": "string",
-						"required": true
+						"name": "vaultGatewayPolicy.scope",
+						"type": "VaultGatewayScope",
+						"required": true,
+						"description": "The lease scope from the approved recipe action: origins, redirect origins, read or write mode, allowed and denied path patterns and download file types."
+					},
+					{
+						"name": "vaultGatewayPolicy.operation",
+						"type": "VaultOperation",
+						"required": true,
+						"description": "The requested gateway call: its operation name, an optional target URL and an optional download file type."
 					}
 				],
 				"outputs": [
 					{
 						"name": "vaultGatewayPolicy",
-						"type": "string"
+						"type": "VaultDecision",
+						"description": "Allowed, or refused with a reason the session can show."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
+			},
+			{
+				"name": "vaultUrlPolicy",
+				"inputs": [
+					{
+						"name": "vaultUrlPolicy.scope",
+						"type": "VaultGatewayScope",
+						"required": true,
+						"description": "The lease scope from the approved recipe action."
+					},
+					{
+						"name": "vaultUrlPolicy.target",
+						"type": "string",
+						"required": true,
+						"description": "Absolute URL of a navigation, redirect or form target."
+					}
+				],
+				"outputs": [
+					{
+						"name": "vaultUrlPolicy",
+						"type": "VaultDecision",
+						"description": "Allowed when the target is on an approved origin, outside the protected key, token, recovery, 2FA and session pages, not denied and on an allowed path; otherwise refused with a reason."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "pathMatches",
+				"inputs": [
+					{
+						"name": "pathMatches.pattern",
+						"type": "string",
+						"required": true,
+						"description": "Recipe path pattern; * matches one segment and a trailing /** matches any remainder."
+					},
+					{
+						"name": "pathMatches.path",
+						"type": "string",
+						"required": true,
+						"description": "URL path to test."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pathMatches",
+						"type": "boolean",
+						"description": "True when the path matches the pattern."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

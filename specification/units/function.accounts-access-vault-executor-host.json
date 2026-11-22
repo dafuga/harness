@@ -8,44 +8,51 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/accounts-access/vaultExecutorHost.ts"],
-		"symbols": ["vaultExecutorHost"]
+		"source": [
+			"src/utils/accounts-access/vaultExecutorHost.ts",
+			"src/utils/accounts-access/vaultExecutorHost.types.ts"
+		],
+		"symbols": ["vaultExecutorHost", "VaultHostProbe", "VaultHostVerdict"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "vaultExecutorHost.value",
-				"type": "string",
-				"required": true
+				"name": "vaultExecutorHost.probe",
+				"type": "VaultHostProbe",
+				"required": true,
+				"description": "Preflight facts about the host: isolation kind, shared-sudo flag, the agent user groups, sudo, Docker socket and executor home access, the executor user and the Chromium sandbox result."
 			}
 		],
 		"outputs": [
 			{
 				"name": "vaultExecutorHost",
-				"type": "string"
+				"type": "VaultHostVerdict",
+				"description": "Eligible with its isolation kind, or ineligible with every reason found."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "vaultExecutorHost",
 				"inputs": [
 					{
-						"name": "vaultExecutorHost.value",
-						"type": "string",
-						"required": true
+						"name": "vaultExecutorHost.probe",
+						"type": "VaultHostProbe",
+						"required": true,
+						"description": "Preflight facts about the host: isolation kind, shared-sudo flag, the agent user groups, sudo, Docker socket and executor home access, the executor user and the Chromium sandbox result."
 					}
 				],
 				"outputs": [
 					{
 						"name": "vaultExecutorHost",
-						"type": "string"
+						"type": "VaultHostVerdict",
+						"description": "Eligible with its isolation kind, or ineligible with every reason found."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

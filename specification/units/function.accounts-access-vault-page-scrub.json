@@ -8,44 +8,51 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/accounts-access/vaultPageScrub.ts"],
-		"symbols": ["vaultPageScrub"]
+		"source": [
+			"src/utils/accounts-access/vaultPageScrub.ts",
+			"src/utils/accounts-access/vaultPageScrub.types.ts"
+		],
+		"symbols": ["vaultPageScrub", "VaultPageNode", "VaultPageSnapshot", "VaultScrubResult"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "vaultPageScrub.value",
-				"type": "string",
-				"required": true
+				"name": "vaultPageScrub.snapshot",
+				"type": "VaultPageSnapshot",
+				"required": true,
+				"description": "Gateway page snapshot: URL, title and element tree."
 			}
 		],
 		"outputs": [
 			{
 				"name": "vaultPageScrub",
-				"type": "string"
+				"type": "VaultScrubResult",
+				"description": "The cleaned snapshot and how many fields were removed or blanked."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "vaultPageScrub",
 				"inputs": [
 					{
-						"name": "vaultPageScrub.value",
-						"type": "string",
-						"required": true
+						"name": "vaultPageScrub.snapshot",
+						"type": "VaultPageSnapshot",
+						"required": true,
+						"description": "Gateway page snapshot: URL, title and element tree."
 					}
 				],
 				"outputs": [
 					{
 						"name": "vaultPageScrub",
-						"type": "string"
+						"type": "VaultScrubResult",
+						"description": "The cleaned snapshot and how many fields were removed or blanked."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

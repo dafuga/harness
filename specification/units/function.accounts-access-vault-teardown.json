@@ -8,44 +8,56 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/accounts-access/vaultTeardown.ts"],
-		"symbols": ["vaultTeardown"]
+		"source": [
+			"src/utils/accounts-access/vaultTeardown.ts",
+			"src/utils/accounts-access/vaultTeardown.types.ts"
+		],
+		"symbols": ["vaultTeardownLimits", "vaultTeardown", "VaultTeardownStep", "VaultTeardownInput"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "vaultTeardown.value",
-				"type": "string",
-				"required": true
+				"name": "vaultTeardown.input",
+				"type": "VaultTeardownInput",
+				"required": true,
+				"description": "Recipe teardown settings, whether a browser was used, and the lease start and end times."
 			}
 		],
 		"outputs": [
 			{
+				"name": "vaultTeardownLimits",
+				"type": "object",
+				"description": "Time allowed to finish teardown and the delay of the second security log check."
+			},
+			{
 				"name": "vaultTeardown",
-				"type": "string"
+				"type": "VaultTeardownStep[]",
+				"description": "Ordered teardown steps with deadlines, ending in two security log checks or an unverifiable flag."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "vaultTeardown",
 				"inputs": [
 					{
-						"name": "vaultTeardown.value",
-						"type": "string",
-						"required": true
+						"name": "vaultTeardown.input",
+						"type": "VaultTeardownInput",
+						"required": true,
+						"description": "Recipe teardown settings, whether a browser was used, and the lease start and end times."
 					}
 				],
 				"outputs": [
 					{
 						"name": "vaultTeardown",
-						"type": "string"
+						"type": "VaultTeardownStep[]",
+						"description": "Ordered teardown steps with deadlines, ending in two security log checks or an unverifiable flag."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

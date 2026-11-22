@@ -8,44 +8,69 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/accounts-access/vaultSecurityAudit.ts"],
-		"symbols": ["vaultSecurityAudit"]
+		"source": [
+			"src/utils/accounts-access/vaultSecurityAudit.ts",
+			"src/utils/accounts-access/vaultSecurityAudit.types.ts"
+		],
+		"symbols": [
+			"vaultSecurityAudit",
+			"VaultSecurityEventKind",
+			"VaultSecurityEvent",
+			"VaultSecurityWindow",
+			"VaultSecurityVerdict"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "vaultSecurityAudit.value",
-				"type": "string",
-				"required": true
+				"name": "vaultSecurityAudit.events",
+				"type": "VaultSecurityEvent[] | null",
+				"required": true,
+				"description": "Provider security log entries reduced to kind, time and session, or null when the log could not be read."
+			},
+			{
+				"name": "vaultSecurityAudit.window",
+				"type": "VaultSecurityWindow",
+				"required": true,
+				"description": "Lease start and end and the provider sessions the scripted login created."
 			}
 		],
 		"outputs": [
 			{
 				"name": "vaultSecurityAudit",
-				"type": "string"
+				"type": "VaultSecurityVerdict",
+				"description": "Clean with the number of events checked, an alert with the findings, or unverifiable with the reason."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "vaultSecurityAudit",
 				"inputs": [
 					{
-						"name": "vaultSecurityAudit.value",
-						"type": "string",
-						"required": true
+						"name": "vaultSecurityAudit.events",
+						"type": "VaultSecurityEvent[] | null",
+						"required": true,
+						"description": "Provider security log entries reduced to kind, time and session, or null when the log could not be read."
+					},
+					{
+						"name": "vaultSecurityAudit.window",
+						"type": "VaultSecurityWindow",
+						"required": true,
+						"description": "Lease start and end and the provider sessions the scripted login created."
 					}
 				],
 				"outputs": [
 					{
 						"name": "vaultSecurityAudit",
-						"type": "string"
+						"type": "VaultSecurityVerdict",
+						"description": "Clean with the number of events checked, an alert with the findings, or unverifiable with the reason."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

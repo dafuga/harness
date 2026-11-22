@@ -8,49 +8,97 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/accounts-access/vaultMethod.ts"],
-		"symbols": ["vaultMethod"]
+		"source": [
+			"src/utils/accounts-access/vaultMethod.ts",
+			"src/utils/accounts-access/vaultMethod.types.ts"
+		],
+		"symbols": [
+			"vaultMethodOrder",
+			"vaultMethod",
+			"VaultMethod",
+			"VaultMethodReadiness",
+			"VaultMethodChoice"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "vaultMethod.value",
+				"name": "vaultMethod.recipe",
+				"type": "VaultRecipe",
+				"required": true,
+				"description": "Normalized, reviewed site recipe."
+			},
+			{
+				"name": "vaultMethod.action",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Requested recipe action id."
+			},
+			{
+				"name": "vaultMethod.readiness",
+				"type": "VaultMethodReadiness",
+				"required": true,
+				"description": "For each method kind, true when it can run now or a reason it cannot; a missing kind is not ready."
 			}
 		],
 		"outputs": [
 			{
+				"name": "vaultMethodOrder",
+				"type": "readonly VaultMethodKind[]",
+				"description": "The fixed preference order: api-token, oauth-device, browser."
+			},
+			{
 				"name": "vaultMethod",
-				"type": "string"
+				"type": "VaultMethodChoice",
+				"description": "The selected method, a block naming the preferred method and why it is not ready, or unsupported when no method covers the action."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "vaultMethod",
 				"inputs": [
 					{
-						"name": "vaultMethod.value",
+						"name": "vaultMethod.recipe",
+						"type": "VaultRecipe",
+						"required": true,
+						"description": "Normalized, reviewed site recipe."
+					},
+					{
+						"name": "vaultMethod.action",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Requested recipe action id."
+					},
+					{
+						"name": "vaultMethod.readiness",
+						"type": "VaultMethodReadiness",
+						"required": true,
+						"description": "For each method kind, true when it can run now or a reason it cannot; a missing kind is not ready."
 					}
 				],
 				"outputs": [
 					{
 						"name": "vaultMethod",
-						"type": "string"
+						"type": "VaultMethodChoice",
+						"description": "The selected method, a block naming the preferred method and why it is not ready, or unsupported when no method covers the action."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.accounts-access-vault-recipe",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/utils/accounts-access/vaultMethod.ts",

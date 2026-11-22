@@ -8,49 +8,79 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/accounts-access/vaultOtpRoute.ts"],
-		"symbols": ["vaultOtpRoute"]
+		"source": [
+			"src/utils/accounts-access/vaultOtpRoute.ts",
+			"src/utils/accounts-access/vaultOtpRoute.types.ts"
+		],
+		"symbols": ["vaultOtpLimits", "vaultOtpRoute", "VaultOtpChallenge", "VaultOtpPlan"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "vaultOtpRoute.value",
-				"type": "string",
-				"required": true
+				"name": "vaultOtpRoute.channels",
+				"type": "VaultOtpChannel[]",
+				"required": true,
+				"description": "OTP channels the recipe allows."
+			},
+			{
+				"name": "vaultOtpRoute.challenge",
+				"type": "VaultOtpChallenge",
+				"required": true,
+				"description": "The challenge kind the site presented and when it was issued."
 			}
 		],
 		"outputs": [
 			{
+				"name": "vaultOtpLimits",
+				"type": "object",
+				"description": "TOTP step length, the phone entry window and the attempt limit."
+			},
+			{
 				"name": "vaultOtpRoute",
-				"type": "string"
+				"type": "VaultOtpPlan",
+				"description": "Phone TOTP, a sealed phone entry for SMS or email, a trusted-device confirmation, or a stop with its reason."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "vaultOtpRoute",
 				"inputs": [
 					{
-						"name": "vaultOtpRoute.value",
-						"type": "string",
-						"required": true
+						"name": "vaultOtpRoute.channels",
+						"type": "VaultOtpChannel[]",
+						"required": true,
+						"description": "OTP channels the recipe allows."
+					},
+					{
+						"name": "vaultOtpRoute.challenge",
+						"type": "VaultOtpChallenge",
+						"required": true,
+						"description": "The challenge kind the site presented and when it was issued."
 					}
 				],
 				"outputs": [
 					{
 						"name": "vaultOtpRoute",
-						"type": "string"
+						"type": "VaultOtpPlan",
+						"description": "Phone TOTP, a sealed phone entry for SMS or email, a trusted-device confirmation, or a stop with its reason."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.accounts-access-vault-recipe",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/utils/accounts-access/vaultOtpRoute.ts",

@@ -196,7 +196,18 @@
 			"TrackerAdapterLeaseAdapter",
 			"TrackerDispatchRepository",
 			"TrackerDispatchSchedulerService",
-			"TrackerSupervisorService"
+			"TrackerSupervisorService",
+			"vaultRecipe",
+			"vaultMethod",
+			"vaultGatewayPolicy",
+			"vaultPageScrub",
+			"vaultLease",
+			"vaultExecutorHost",
+			"vaultEgressRules",
+			"vaultOtpRoute",
+			"vaultTeardown",
+			"vaultSecurityAudit",
+			"vaultPhoneView"
 		]
 	},
 	"contract": {
@@ -357,6 +368,61 @@
 		{
 			"unit": "entry.run-cli",
 			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.accounts-access-vault-egress-rules",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.accounts-access-vault-executor-host",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.accounts-access-vault-gateway-policy",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.accounts-access-vault-lease",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.accounts-access-vault-method",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.accounts-access-vault-otp-route",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.accounts-access-vault-page-scrub",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.accounts-access-vault-phone-view",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.accounts-access-vault-recipe",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.accounts-access-vault-security-audit",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.accounts-access-vault-teardown",
+			"via": "reexport",
 			"origin": "derived"
 		},
 		{

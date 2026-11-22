@@ -8,49 +8,68 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/accounts-access/vaultEgressRules.ts"],
-		"symbols": ["vaultEgressRules"]
+		"source": [
+			"src/utils/accounts-access/vaultEgressRules.ts",
+			"src/utils/accounts-access/vaultEgressRules.types.ts"
+		],
+		"symbols": ["vaultEgressRules", "VaultEgressInput", "VaultEgressRules"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "vaultEgressRules.value",
-				"type": "string",
-				"required": true
+				"name": "vaultEgressRules.input",
+				"type": "VaultEgressInput",
+				"required": true,
+				"description": "Recipe origins and redirects, the distinct nonroot proxy and browser user IDs, the loopback proxy port and the IPv4 resolver."
 			}
 		],
 		"outputs": [
 			{
 				"name": "vaultEgressRules",
-				"type": "string"
+				"type": "VaultEgressRules",
+				"description": "An nftables ruleset for the container network namespace, dropping output by default, and the sorted hostnames the proxy may CONNECT to."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Thrown when the users, port, resolver or origins are invalid."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "vaultEgressRules",
 				"inputs": [
 					{
-						"name": "vaultEgressRules.value",
-						"type": "string",
-						"required": true
+						"name": "vaultEgressRules.input",
+						"type": "VaultEgressInput",
+						"required": true,
+						"description": "Recipe origins and redirects, the distinct nonroot proxy and browser user IDs, the loopback proxy port and the IPv4 resolver."
 					}
 				],
 				"outputs": [
 					{
 						"name": "vaultEgressRules",
-						"type": "string"
+						"type": "VaultEgressRules",
+						"description": "An nftables ruleset for the container network namespace, dropping output by default, and the sorted hostnames the proxy may CONNECT to."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/utils/accounts-access/vaultEgressRules.ts",

@@ -8,44 +8,56 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/accounts-access/vaultPhoneView.ts"],
-		"symbols": ["vaultPhoneView"]
+		"source": [
+			"src/utils/accounts-access/vaultPhoneView.ts",
+			"src/utils/accounts-access/vaultPhoneView.types.ts"
+		],
+		"symbols": ["vaultPhoneViewMs", "vaultPhoneView", "VaultPhoneViewInput", "VaultPhoneViewPlan"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "vaultPhoneView.value",
-				"type": "string",
-				"required": true
+				"name": "vaultPhoneView.input",
+				"type": "VaultPhoneViewInput",
+				"required": true,
+				"description": "Request phase, Harness relay and Access tunnel availability, and the current time."
 			}
 		],
 		"outputs": [
 			{
+				"name": "vaultPhoneViewMs",
+				"type": "number",
+				"description": "How long a private view lasts: 10 minutes."
+			},
+			{
 				"name": "vaultPhoneView",
-				"type": "string"
+				"type": "VaultPhoneViewPlan",
+				"description": "The Harness relay or Access tunnel transport with its expiry, or no view with the reason."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "vaultPhoneView",
 				"inputs": [
 					{
-						"name": "vaultPhoneView.value",
-						"type": "string",
-						"required": true
+						"name": "vaultPhoneView.input",
+						"type": "VaultPhoneViewInput",
+						"required": true,
+						"description": "Request phase, Harness relay and Access tunnel availability, and the current time."
 					}
 				],
 				"outputs": [
 					{
 						"name": "vaultPhoneView",
-						"type": "string"
+						"type": "VaultPhoneViewPlan",
+						"description": "The Harness relay or Access tunnel transport with its expiry, or no view with the reason."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

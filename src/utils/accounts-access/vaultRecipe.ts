@@ -6,6 +6,7 @@ import { canonical, hash } from '../../core/execution-runtimes/scripted-deploy/c
 import type {
 	RecipeReviewer,
 	VaultRecipe,
+	VaultRecipeInput,
 	VaultRecipeReview,
 	VerifiedRecipe
 } from './vaultRecipe.types';
@@ -79,10 +80,10 @@ export const recipeReview = z.strictObject({
 	signature: z.string().regex(/^[A-Za-z0-9_-]{86}$/u)
 });
 
-/** Parses a recipe and its review envelope, and accepts it only with a current trusted signature over its digest. */
+/** Parses an untrusted recipe and review envelope (both validated at runtime), and accepts it only with a current trusted signature over its digest. */
 export function vaultRecipe(
-	input: unknown,
-	signed: unknown,
+	input: VaultRecipeInput,
+	signed: VaultRecipeReview,
 	reviewers: RecipeReviewer[],
 	now: number = Date.now()
 ): VerifiedRecipe {
