@@ -53,9 +53,9 @@ export class GithubConnectionController {
 			const input = this.input.githubCallback(new URL(request.url));
 			if (!input) return authFail('github-not-connected');
 			await this.github().grants.complete(session, input);
-			return authRedirect(`${origin}/?github=connected`);
+			return authRedirect(`${origin}/projects?github=connected`);
 		} catch {
-			return authRedirect(`${origin}/?github=failed`);
+			return authRedirect(`${origin}/projects?github=failed`);
 		}
 	}
 

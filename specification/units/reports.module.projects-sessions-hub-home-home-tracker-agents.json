@@ -1,0 +1,101 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-hub-home-home-tracker-agents",
+	"uid": "u_gphcvgm7gv",
+	"kind": "module",
+	"title": "homeTrackerAgents",
+	"responsibility": "Owns the homeTrackerAgents library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/projects-sessions/hub-home/homeTrackerAgents.ts"],
+		"symbols": ["buildHomeAgents"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "buildHomeAgents.overview",
+				"type": "OverviewSnapshot",
+				"required": true
+			},
+			{
+				"name": "buildHomeAgents.sources",
+				"type": "TrackerSources",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "buildHomeAgents",
+				"type": "HomeAgent[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "buildHomeAgents",
+				"inputs": [
+					{
+						"name": "buildHomeAgents.overview",
+						"type": "OverviewSnapshot",
+						"required": true
+					},
+					{
+						"name": "buildHomeAgents.sources",
+						"type": "TrackerSources",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "buildHomeAgents",
+						"type": "HomeAgent[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-tracker-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-tracker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeTrackerAgents.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeTrackerAgents.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

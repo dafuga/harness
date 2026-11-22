@@ -8,8 +8,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program.ts"],
-		"symbols": ["buildProgram"]
+		"source": [
+			"src/cli/program.ts"
+		],
+		"symbols": [
+			"buildProgram"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -183,6 +187,31 @@
 		},
 		{
 			"unit": "function.build-stamp",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.agents-providers-provider-sign-in",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.execution-runtimes-deploy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-harbor-inspection",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-project-list",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker",
 			"via": "import",
 			"origin": "derived"
 		}

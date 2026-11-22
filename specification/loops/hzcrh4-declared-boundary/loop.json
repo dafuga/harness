@@ -1,0 +1,60 @@
+{
+	"name": "hzcrh4-declared-boundary",
+	"goal": "Accept justified unknown contract inputs and reject undeclared unknowns.",
+	"createdAt": "2026-11-21T18:33:16.821Z",
+	"updatedAt": "2026-11-21T18:45:18.536Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-21T18:34:08.788Z",
+			"evidence": "Both exact installed API runs reject the reviewed unknown formatter input. A declared reason should admit it."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-21T18:34:10.355Z",
+			"evidence": "The standard manifest case covered missing types but had no reviewed-unknown case. It now covers persistence and strict rejection."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-21T18:45:03.931Z",
+			"evidence": "Sealed red at 130c077974 fails the declared-unknown input assertion."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-21T18:45:05.859Z",
+			"evidence": "Declared contract inputs now require a nonblank reason for unknown types."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T18:45:18.536Z",
+			"evidence": "Matched regression passes on the product fix commit."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

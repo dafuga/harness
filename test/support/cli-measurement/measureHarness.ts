@@ -91,6 +91,21 @@ const benchmarkRunUnits = [
 ];
 
 const measuredWorkloads: Record<string, string[]> = {
+	'task:orchestrate': [
+		'command.task',
+		'command.agents-providers-task-orchestration',
+		'adapter.agents-providers-module-task-runner',
+		'adapter.agents-providers-provider-session',
+		'entry.index'
+	],
+	'task:worker': [
+		'command.agents-providers-module-task',
+		'service.agents-providers-module-task-worker',
+		'service.agents-providers-module-task-worker-service-dispatch-task-attempt',
+		'adapter.agents-providers-module-task-runner-adapter-task-usage',
+		'repository.agents-providers-module-task',
+		'repository.agents-providers-module-task-repository-task-usage'
+	],
 	'history:attach': ['command.history', 'service.evidence-attach'],
 	'history:status': ['command.history', 'service.attached-record'],
 	'history:reasons': ['command.history', 'workflow.persist-reasons'],
@@ -149,7 +164,6 @@ const measuredWorkloads: Record<string, string[]> = {
 		'service.check-run',
 		'function.resource-work'
 	],
-
 	'info:benchmark': ['guide.benchmark', 'guide.guide', 'entry.program', 'entry.index'],
 	'benchmark:run': benchmarkRunUnits,
 	'analytics:benchmarks': [

@@ -1,0 +1,424 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.projects-sessions-tracker-run-read",
+	"uid": "u_lahmutfc24",
+	"kind": "repository",
+	"title": "TrackerRunReadRepository",
+	"responsibility": "Owns the TrackerRunReadRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/projects-sessions/TrackerRunReadRepository.ts",
+			"src/repositories/projects-sessions/TrackerRunReadRepository.types.ts",
+			"src/repositories/projects-sessions/tracker-run-read-repository/trackerRunReplication.ts"
+		],
+		"symbols": [
+			"TrackerRunReadRepository",
+			"TrackerRunReadRepository.constructor",
+			"TrackerRunReadRepository.list",
+			"TrackerRunReadRepository.finished",
+			"TrackerRunReadRepository.activeLocal",
+			"TrackerRunReadRepository.pendingEvents",
+			"TrackerRunReadRepository.exportLocal",
+			"TrackerRunReadRepository.historyRowsFor",
+			"TrackerRunReadRepository.importRemote",
+			"TrackerRunReadRepository.importHubHistory",
+			"TrackerRunFilters",
+			"TrackerListedRun",
+			"TrackerRunTable",
+			"localTrackerRunHistory",
+			"relayedTrackerRunHistory",
+			"importTrackerRunHistory"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerRunReadRepository.constructor.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "TrackerRunReadRepository.constructor.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerRunReadRepository.list.filters",
+				"type": "TrackerRunFilters",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "TrackerRunReadRepository.historyRowsFor.peer",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerRunReadRepository.importRemote.peer",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerRunReadRepository.importRemote.rows",
+				"type": "readonly TrackerWireValue[]",
+				"required": true
+			},
+			{
+				"name": "TrackerRunReadRepository.importHubHistory.rows",
+				"type": "readonly TrackerWireValue[]",
+				"required": true
+			},
+			{
+				"name": "localTrackerRunHistory.db",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "localTrackerRunHistory.limit",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "relayedTrackerRunHistory.db",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "relayedTrackerRunHistory.peer",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "importTrackerRunHistory.db",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "importTrackerRunHistory.rows",
+				"type": "readonly TrackerWireValue[]",
+				"required": true
+			},
+			{
+				"name": "importTrackerRunHistory.nodeFor",
+				"type": "(row: TrackerWireObject) => string | undefined",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerRunReadRepository.list",
+				"type": "TrackerListedRun[]"
+			},
+			{
+				"name": "TrackerRunReadRepository.finished",
+				"type": "TrackerListedRun[]"
+			},
+			{
+				"name": "TrackerRunReadRepository.activeLocal",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerRunReadRepository.pendingEvents",
+				"type": "number | undefined"
+			},
+			{
+				"name": "TrackerRunReadRepository.exportLocal",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerRunReadRepository.historyRowsFor",
+				"type": "readonly unknown[]"
+			},
+			{
+				"name": "TrackerRunReadRepository.importRemote",
+				"type": "void"
+			},
+			{
+				"name": "TrackerRunReadRepository.importHubHistory",
+				"type": "void"
+			},
+			{
+				"name": "localTrackerRunHistory",
+				"type": "TrackerWireObject[]"
+			},
+			{
+				"name": "relayedTrackerRunHistory",
+				"type": "unknown[]"
+			},
+			{
+				"name": "importTrackerRunHistory",
+				"type": "void"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerRunReadRepository.list",
+				"inputs": [
+					{
+						"name": "TrackerRunReadRepository.list.filters",
+						"type": "TrackerRunFilters",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerRunReadRepository.list",
+						"type": "TrackerListedRun[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRunReadRepository.finished",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerRunReadRepository.finished",
+						"type": "TrackerListedRun[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRunReadRepository.activeLocal",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerRunReadRepository.activeLocal",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRunReadRepository.pendingEvents",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerRunReadRepository.pendingEvents",
+						"type": "number | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRunReadRepository.exportLocal",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerRunReadRepository.exportLocal",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRunReadRepository.historyRowsFor",
+				"inputs": [
+					{
+						"name": "TrackerRunReadRepository.historyRowsFor.peer",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerRunReadRepository.historyRowsFor",
+						"type": "readonly unknown[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRunReadRepository.importRemote",
+				"inputs": [
+					{
+						"name": "TrackerRunReadRepository.importRemote.peer",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerRunReadRepository.importRemote.rows",
+						"type": "readonly TrackerWireValue[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerRunReadRepository.importRemote",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRunReadRepository.importHubHistory",
+				"inputs": [
+					{
+						"name": "TrackerRunReadRepository.importHubHistory.rows",
+						"type": "readonly TrackerWireValue[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerRunReadRepository.importHubHistory",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "localTrackerRunHistory",
+				"inputs": [
+					{
+						"name": "localTrackerRunHistory.db",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "localTrackerRunHistory.limit",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "localTrackerRunHistory",
+						"type": "TrackerWireObject[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "relayedTrackerRunHistory",
+				"inputs": [
+					{
+						"name": "relayedTrackerRunHistory.db",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "relayedTrackerRunHistory.peer",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "relayedTrackerRunHistory",
+						"type": "unknown[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "importTrackerRunHistory",
+				"inputs": [
+					{
+						"name": "importTrackerRunHistory.db",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "importTrackerRunHistory.rows",
+						"type": "readonly TrackerWireValue[]",
+						"required": true
+					},
+					{
+						"name": "importTrackerRunHistory.nodeFor",
+						"type": "(row: TrackerWireObject) => string | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "importTrackerRunHistory",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerRunReadRepository.constructor",
+				"inputs": [
+					{
+						"name": "TrackerRunReadRepository.constructor.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "TrackerRunReadRepository.constructor.node",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerRunReadRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.sqlite",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-tracker-run-report",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-hub-sync",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/projects-sessions/TrackerRunReadRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/projects-sessions/TrackerRunReadRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

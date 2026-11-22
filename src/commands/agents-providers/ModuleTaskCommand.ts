@@ -1,11 +1,13 @@
 // @harness-uid u_gop636dbcf
 import { readFile } from 'node:fs/promises';
 import { setTimeout } from 'node:timers/promises';
-import type { Command } from 'commander';
-import { ExpectedCliError } from '../../core/errors';
+import { type Command, Option } from 'commander';
 import { ModuleTaskService } from '../../services/agents-providers/ModuleTaskService';
 import { ModuleTaskWorkerService } from '../../services/agents-providers/ModuleTaskWorkerService';
 import { TaskWorkerInterruptedError, type WorkerFlags } from './ModuleTaskCommand.types';
+import { validateTrackerId } from '../../adapters/agents-providers/module-task-runner-adapter/trackerHandoff';
+import { taskPlatformSchema } from '../../repositories/agents-providers/module-task-repository/taskSchemas';
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 /** Task admission, discovery and foreground worker wiring; task check keeps its completion gate. */
 export class ModuleTaskCommand {
 	constructor(private readonly service: ModuleTaskService = new ModuleTaskService()) {}
@@ -31,13 +33,16 @@ export class ModuleTaskCommand {
 			.option('--model <id>')
 			.option('--intelligence <level>')
 			.option('--assignee <worker>')
+			.addOption(
+				new Option('--platform <os>', 'Provider task platform.').choices(taskPlatformSchema.options)
+			)
 			.option('--json')
 			.description('Validate and Git-commit a module task and its required wantedContract.')
 			.action(async (flags) => {
 				const text = await readFile(flags.input, 'utf8');
 				if (text.length > 1000000) throw new ExpectedCliError('Task input exceeds 1 MB.');
 				const input = JSON.parse(text);
-				for (const key of ['model', 'intelligence', 'assignee'])
+				for (const key of ['model', 'intelligence', 'assignee', 'platform'])
 					if (flags[key] !== undefined) input[key] = flags[key];
 				print(await this.service.add(input));
 			});
@@ -66,12 +71,16 @@ export class ModuleTaskCommand {
 			.requiredOption('--attempt <token>', 'Submitted claim token being reviewed.')
 			.requiredOption('--verdict <verdict>', 'accepted or incomplete.')
 			.option('--feedback <text>', 'Required repair instructions for an incomplete review.')
+			.option(
+				'--cause <cause>',
+				'Rejection cause: contract, verification, scope, quality, user-correction or other.'
+			)
 			.option('--reviewer <id>', 'Reviewer attribution, otherwise unattributed.')
 			.option('--json')
 			.description('Accept a submission or preserve its work and requeue it with repair feedback.')
 			.action(async (id, flags) => {
-				const { attempt, verdict, feedback, reviewer } = flags;
-				print(await this.service.review(id, { attempt, verdict, feedback, reviewer }));
+				const { attempt, verdict, feedback, reviewer, cause } = flags;
+				print(await this.service.review(id, { attempt, verdict, feedback, reviewer, cause }));
 			});
 	}
 	private operations(task: Command): void {
@@ -90,6 +99,7 @@ export class ModuleTaskCommand {
 		task
 			.command('worker')
 			.requiredOption('--worker <id>')
+			.option('--tracker <id>', 'Record worker context handoffs on this Tracker item.')
 			.option('--modules <ids>')
 			.option('--once')
 			.option('--watch')
@@ -105,12 +115,14 @@ function print(value: unknown): void {
 }
 async function worker(flags: WorkerFlags): Promise<void> {
 	if (flags.once && flags.watch) throw new ExpectedCliError('Choose --once or --watch.');
+	const tracker = flags.tracker ?? process.env.HARNESS_ORCHESTRATION_TRACKER;
+	if (tracker !== undefined) validateTrackerId(tracker);
 	const controller = new AbortController(),
 		stop = () => controller.abort(new TaskWorkerInterruptedError('Task worker interrupted.'));
 	process.once('SIGINT', stop);
 	process.once('SIGTERM', stop);
 	try {
-		const service = new ModuleTaskWorkerService();
+		const service = new ModuleTaskWorkerService(undefined, undefined, tracker);
 		do {
 			const result = await service.once(
 				flags.worker,

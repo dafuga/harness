@@ -1,3 +1,4 @@
+import { allStatesSnapshot } from '../projectOverviewFixture';
 import { exampleDocument } from '../../../../../game/src/index';
 import type { DesktopBridge } from '../../../../../desktop/src/models/DesktopBridge.types';
 import type { ProjectSnapshot } from '../../../../../desktop/src/models/development-tooling/Desktop.types';
@@ -14,6 +15,7 @@ const workspace = `/projects/${project}${tip}`;
 export const desktopRoutes: Record<string, { route: string; path: string }> = {
 	// No project is chosen yet: the gate lists the one the bridge remembers.
 	'desktop.page.root': { route: '/', path: '/' },
+	'desktop.page.projects': { route: '/projects', path: '/projects' },
 	// An address that names no project; once read, the workspace names the project it shows.
 	'desktop.page.harness-path': { route: '/harness/[...path]', path: tip },
 	'desktop.page.projects-project-id-harness-path': {
@@ -49,6 +51,7 @@ function routeBridge(desktop: DesktopData): DesktopBridge {
 	};
 	return {
 		...desktop.bridge,
+		projectOverview: async () => allStatesSnapshot(),
 		listProjects: async () => [{ id, name, kind: 'local', root }],
 		selectProject: async (input) => own(input),
 		snapshot: async (input) => own(input),

@@ -1,11 +1,22 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
+import { moduleCategoryFindings } from '../src/audit/development-tooling/structure-rules/moduleCategoryFindings';
+import registry from '../scripts/verification-forward-registry.json';
 import { checkVerificationForwards } from '../scripts/check-verification-forwards';
 import { withTempDir } from './support/temporary';
 
 test('registered public forwards resolve to canonical files and retain their registered IDs', () => {
 	expect(checkVerificationForwards(process.cwd())).toEqual([]);
+	expect(
+		moduleCategoryFindings({
+			root: process.cwd(),
+			profile: 'lib',
+			files: registry.forwards.map(({ path }) => path),
+			dirs: []
+		}),
+		'Registered verification forwards pass the module category audit'
+	).toEqual([]);
 });
 
 test('the guard catches a forward that stops resolving to its registered canonical target', async () => {

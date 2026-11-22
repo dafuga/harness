@@ -6,10 +6,13 @@
 	"units": [
 		"command.task",
 		"command.agents-providers-module-task",
+		"command.agents-providers-task-orchestration",
+		"adapter.agents-providers-provider-session",
 		"repository.agents-providers-module-task",
 		"service.agents-providers-module-task",
 		"service.agents-providers-module-task-worker",
 		"adapter.agents-providers-module-task-runner",
+		"adapter.agents-providers-managed-provider-docker",
 		"template.project-guidance",
 		"entry.index",
 		"service.agents-providers-module-task-analytics",
@@ -26,9 +29,18 @@
 		"repository.agents-providers-module-task-repository-task-usage",
 		"service.agents-providers-module-task-analytics-service-task-events",
 		"adapter.source-profile",
-		"service.agents-providers-module-task-worker-service-dispatch-task-attempt"
+		"service.agents-providers-module-task-worker-service-dispatch-task-attempt",
+		"service.agents-providers-module-task-analytics-service-model-run-record",
+		"service.agents-providers-module-task-analytics-service-model-run-pricing",
+		"service.agents-providers-module-task-analytics-service-task-run-records",
+		"service.agents-providers-module-task-analytics-service-task-run-report"
 	],
 	"states": [
+		{
+			"id": "context-rotation",
+			"title": "Harness stops over-threshold sessions and resumes from a bounded checkpoint",
+			"coverage": "required"
+		},
 		{
 			"id": "contract-admission",
 			"title": "Only wanted-contract tasks enter the committed queue",
@@ -37,6 +49,11 @@
 		{
 			"id": "assigned-worker",
 			"title": "Assigned model and intelligence run in isolated worktrees",
+			"coverage": "required"
+		},
+		{
+			"id": "provider-platform",
+			"title": "Explicit Linux task commands use the offline Docker policy and macOS commands use the native runtime",
 			"coverage": "required"
 		},
 		{
@@ -58,11 +75,30 @@
 			"id": "reviewed-repairs",
 			"title": "Incomplete reviews retain work and requeue once before acceptance",
 			"coverage": "required"
+		},
+		{
+			"id": "run-records",
+			"title": "Shared run records and cost-aware model recommendations",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
 	"builds": [],
 	"tests": [
+		{
+			"id": "provider-session-context",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/adapters/agents-providers/provider-session.test.ts",
+			"timeoutMs": 120000
+		},
+		{
+			"id": "commands-agents-providers-task-orchestration",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/commands/agents-providers/task-orchestration.test.ts",
+			"timeoutMs": 120000
+		},
 		{
 			"id": "analytics",
 			"kind": "integration",
@@ -82,6 +118,13 @@
 			"kind": "integration",
 			"runner": "command",
 			"target": "bun test/verification-output.ts vitest test/adapters/agents-providers/module-task-runner.test.ts",
+			"timeoutMs": 120000
+		},
+		{
+			"id": "adapters-agents-providers-managed-provider-docker",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/adapters/agents-providers/managed-provider-docker.test.ts",
 			"timeoutMs": 120000
 		},
 		{
@@ -146,12 +189,15 @@
 			"id": "module-task-output",
 			"kind": "output",
 			"states": [
+				"context-rotation",
 				"contract-admission",
 				"assigned-worker",
+				"provider-platform",
 				"quota-fallback",
 				"owner-recovery",
 				"usage-pricing",
-				"reviewed-repairs"
+				"reviewed-repairs",
+				"run-records"
 			],
 			"viewports": [],
 			"required": true
@@ -160,12 +206,15 @@
 			"id": "module-task-assertions",
 			"kind": "assertions",
 			"states": [
+				"context-rotation",
 				"contract-admission",
 				"assigned-worker",
+				"provider-platform",
 				"quota-fallback",
 				"owner-recovery",
 				"usage-pricing",
-				"reviewed-repairs"
+				"reviewed-repairs",
+				"run-records"
 			],
 			"viewports": [],
 			"required": true

@@ -56,6 +56,20 @@
 				"required": true,
 				"description": "Title used as the image alt text when the resolved URL is non-empty. It is not shown in the fallback message.",
 				"examples": ["Earlier kitchen elevation"]
+			},
+			{
+				"name": "PriorImage.caption",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "Text of the comparison caption. Defaults to the historical version label."
+			},
+			{
+				"name": "PriorImage.note",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "Text shown when no before capture exists. Defaults to an empty string."
 			}
 		],
 		"outputs": [

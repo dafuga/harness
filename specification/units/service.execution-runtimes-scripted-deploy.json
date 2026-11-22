@@ -1,0 +1,279 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-scripted-deploy",
+	"uid": "u_hknoug3rur",
+	"kind": "service",
+	"title": "ScriptedDeployService",
+	"responsibility": "Prepares immutable release artifacts and executes one guarded deploy or rollback through the trusted broker.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/execution-runtimes/ScriptedDeployService.ts"],
+		"symbols": [
+			"ScriptedDeployService",
+			"ScriptedDeployService.constructor",
+			"ScriptedDeployService.prepare",
+			"ScriptedDeployService.deploy",
+			"ScriptedDeployService.signoff"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ScriptedDeployService.constructor.registry",
+				"type": "DeployRegistry",
+				"required": true,
+				"description": "Trusted deploy registry, including approved targets, executable paths and signer public keys."
+			},
+			{
+				"name": "ScriptedDeployService.constructor.project",
+				"type": "string",
+				"required": true,
+				"description": "Project name registered on the trusted deploy host."
+			},
+			{
+				"name": "ScriptedDeployService.constructor.config",
+				"type": "DeployProject",
+				"required": true,
+				"description": "Reviewed project or target settings for this operation."
+			},
+			{
+				"name": "ScriptedDeployService.prepare.source",
+				"type": "string",
+				"required": true,
+				"description": "Full Git commit expected to be reachable from the configured remote branch."
+			},
+			{
+				"name": "ScriptedDeployService.deploy.input",
+				"type": "DeployRequest",
+				"required": true,
+				"description": "Typed request or persisted JSON payload for this operation."
+			},
+			{
+				"name": "ScriptedDeployService.signoff.id",
+				"type": "string",
+				"required": true,
+				"description": "Opaque identity of the stored release or deployment run requested."
+			},
+			{
+				"name": "ScriptedDeployService.signoff.proof",
+				"type": "Proof",
+				"required": true,
+				"description": "Signed approval or sign-off envelope to verify."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ScriptedDeployService.prepare",
+				"type": "Promise<Release>",
+				"description": "Prepares immutable release artifacts and executes one guarded deploy or rollback through the trusted broker."
+			},
+			{
+				"name": "ScriptedDeployService.deploy",
+				"type": "Promise<Journal>",
+				"description": "Prepares immutable release artifacts and executes one guarded deploy or rollback through the trusted broker."
+			},
+			{
+				"name": "ScriptedDeployService.signoff",
+				"type": "Promise<Journal>",
+				"description": "Prepares immutable release artifacts and executes one guarded deploy or rollback through the trusted broker."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The operation could not verify its input, target identity, or expected result."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "ScriptedDeployService.prepare",
+				"inputs": [
+					{
+						"name": "ScriptedDeployService.prepare.source",
+						"type": "string",
+						"required": true,
+						"description": "Full Git commit expected to be reachable from the configured remote branch."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ScriptedDeployService.prepare",
+						"type": "Promise<Release>",
+						"description": "Prepares immutable release artifacts and executes one guarded deploy or rollback through the trusted broker."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ScriptedDeployService.deploy",
+				"inputs": [
+					{
+						"name": "ScriptedDeployService.deploy.input",
+						"type": "DeployRequest",
+						"required": true,
+						"description": "Typed request or persisted JSON payload for this operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ScriptedDeployService.deploy",
+						"type": "Promise<Journal>",
+						"description": "Prepares immutable release artifacts and executes one guarded deploy or rollback through the trusted broker."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "ScriptedDeployService.signoff",
+				"inputs": [
+					{
+						"name": "ScriptedDeployService.signoff.id",
+						"type": "string",
+						"required": true,
+						"description": "Opaque identity of the stored release or deployment run requested."
+					},
+					{
+						"name": "ScriptedDeployService.signoff.proof",
+						"type": "Proof",
+						"required": true,
+						"description": "Signed approval or sign-off envelope to verify."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ScriptedDeployService.signoff",
+						"type": "Promise<Journal>",
+						"description": "Prepares immutable release artifacts and executes one guarded deploy or rollback through the trusted broker."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ScriptedDeployService.constructor",
+				"inputs": [
+					{
+						"name": "ScriptedDeployService.constructor.registry",
+						"type": "DeployRegistry",
+						"required": true,
+						"description": "Trusted deploy registry, including approved targets, executable paths and signer public keys."
+					},
+					{
+						"name": "ScriptedDeployService.constructor.project",
+						"type": "string",
+						"required": true,
+						"description": "Project name registered on the trusted deploy host."
+					},
+					{
+						"name": "ScriptedDeployService.constructor.config",
+						"type": "DeployProject",
+						"required": true,
+						"description": "Reviewed project or target settings for this operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ScriptedDeployService.constructor",
+						"type": "unknown",
+						"description": "Prepares immutable release artifacts and executes one guarded deploy or rollback through the trusted broker."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-broker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-parity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-proofs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-release-files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.execution-runtimes-deploy-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-scripted-deploy-deploy-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-scripted-deploy-deploy-recovery",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-scripted-deploy-deploy-verification",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.execution-runtimes-deploy-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/ScriptedDeployService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/ScriptedDeployService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

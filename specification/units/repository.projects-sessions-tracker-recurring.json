@@ -1,0 +1,504 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.projects-sessions-tracker-recurring",
+	"uid": "u_7ryrqak22k",
+	"kind": "repository",
+	"title": "TrackerRecurringRepository",
+	"responsibility": "Owns the TrackerRecurringRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/projects-sessions/TrackerRecurringRepository.ts",
+			"src/repositories/projects-sessions/TrackerRecurringRepository.types.ts",
+			"src/repositories/projects-sessions/tracker-recurring-repository/recurringHistory.ts"
+		],
+		"symbols": [
+			"TrackerRecurringRepository",
+			"TrackerRecurringRepository.constructor",
+			"TrackerRecurringRepository.activeItemIds",
+			"TrackerRecurringRepository.advance",
+			"TrackerRecurringRepository.work",
+			"TrackerRecurringRepository.claim",
+			"TrackerRecurringRepository.settle",
+			"TrackerRecurringRepository.history",
+			"TrackerRecurringRepository.jobStatus",
+			"TrackerRecurringRepository.assertLegacyRollbackSafe",
+			"assertLegacyRecurringRollbackSafe",
+			"TrackerRecurringItem",
+			"TrackerRecurringWake",
+			"TrackerRecurringResult",
+			"TrackerOccurrenceRow",
+			"TrackerRecurringPlan",
+			"TrackerRecurringJob",
+			"TrackerRecurringWork",
+			"TrackerClaimedJob",
+			"TrackerCurrentOccurrence",
+			"TrackerRecurringSettlement",
+			"trackerRecurringSchema",
+			"readRecurringResult",
+			"syncRecurringResult",
+			"writeOccurrence"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerRecurringRepository.constructor.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "TrackerRecurringRepository.advance.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerRecurringRepository.advance.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "TrackerRecurringRepository.advance.plan",
+				"type": "(item: TrackerRecurringItem, spec?: string) => TrackerRecurringPlan | undefined",
+				"required": true
+			},
+			{
+				"name": "TrackerRecurringRepository.claim.work",
+				"type": "TrackerRecurringWork",
+				"required": true
+			},
+			{
+				"name": "TrackerRecurringRepository.settle.work",
+				"type": "TrackerRecurringWork",
+				"required": true
+			},
+			{
+				"name": "TrackerRecurringRepository.settle.outcome",
+				"type": "TrackerRecurringSettlement",
+				"required": false
+			},
+			{
+				"name": "TrackerRecurringRepository.history.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerRecurringRepository.history.limit",
+				"type": "number",
+				"required": false,
+				"default": 50
+			},
+			{
+				"name": "assertLegacyRecurringRollbackSafe.database",
+				"type": "TrackerPersistenceService['database']",
+				"required": true
+			},
+			{
+				"name": "readRecurringResult.value",
+				"type": "string | null",
+				"required": true
+			},
+			{
+				"name": "syncRecurringResult.db",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "syncRecurringResult.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "syncRecurringResult.result",
+				"type": "TrackerRecurringResult",
+				"required": true
+			},
+			{
+				"name": "writeOccurrence.db",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "writeOccurrence.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "writeOccurrence.occurrence",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "writeOccurrence.at",
+				"type": "number | null",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerRecurringRepository.activeItemIds",
+				"type": "string[]"
+			},
+			{
+				"name": "TrackerRecurringRepository.advance",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerRecurringRepository.work",
+				"type": "TrackerRecurringWork[]"
+			},
+			{
+				"name": "TrackerRecurringRepository.claim",
+				"type": "boolean"
+			},
+			{
+				"name": "TrackerRecurringRepository.settle",
+				"type": "boolean"
+			},
+			{
+				"name": "TrackerRecurringRepository.history",
+				"type": "TrackerOccurrenceRow[]"
+			},
+			{
+				"name": "TrackerRecurringRepository.jobStatus",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerRecurringRepository.assertLegacyRollbackSafe",
+				"type": "void"
+			},
+			{
+				"name": "assertLegacyRecurringRollbackSafe",
+				"type": "void"
+			},
+			{
+				"name": "trackerRecurringSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "readRecurringResult",
+				"type": "TrackerRecurringResult | null"
+			},
+			{
+				"name": "syncRecurringResult",
+				"type": "unknown"
+			},
+			{
+				"name": "writeOccurrence",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "DOMException",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerRecurringRepository.activeItemIds",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerRecurringRepository.activeItemIds",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRecurringRepository.advance",
+				"inputs": [
+					{
+						"name": "TrackerRecurringRepository.advance.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerRecurringRepository.advance.now",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "TrackerRecurringRepository.advance.plan",
+						"type": "(item: TrackerRecurringItem, spec?: string) => TrackerRecurringPlan | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerRecurringRepository.advance",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRecurringRepository.work",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerRecurringRepository.work",
+						"type": "TrackerRecurringWork[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRecurringRepository.claim",
+				"inputs": [
+					{
+						"name": "TrackerRecurringRepository.claim.work",
+						"type": "TrackerRecurringWork",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerRecurringRepository.claim",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRecurringRepository.settle",
+				"inputs": [
+					{
+						"name": "TrackerRecurringRepository.settle.work",
+						"type": "TrackerRecurringWork",
+						"required": true
+					},
+					{
+						"name": "TrackerRecurringRepository.settle.outcome",
+						"type": "TrackerRecurringSettlement",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerRecurringRepository.settle",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRecurringRepository.history",
+				"inputs": [
+					{
+						"name": "TrackerRecurringRepository.history.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerRecurringRepository.history.limit",
+						"type": "number",
+						"required": false,
+						"default": 50
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerRecurringRepository.history",
+						"type": "TrackerOccurrenceRow[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRecurringRepository.jobStatus",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerRecurringRepository.jobStatus",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRecurringRepository.assertLegacyRollbackSafe",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerRecurringRepository.assertLegacyRollbackSafe",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "assertLegacyRecurringRollbackSafe",
+				"inputs": [
+					{
+						"name": "assertLegacyRecurringRollbackSafe.database",
+						"type": "TrackerPersistenceService['database']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assertLegacyRecurringRollbackSafe",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "DOMException",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readRecurringResult",
+				"inputs": [
+					{
+						"name": "readRecurringResult.value",
+						"type": "string | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readRecurringResult",
+						"type": "TrackerRecurringResult | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "syncRecurringResult",
+				"inputs": [
+					{
+						"name": "syncRecurringResult.db",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "syncRecurringResult.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "syncRecurringResult.result",
+						"type": "TrackerRecurringResult",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "syncRecurringResult",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeOccurrence",
+				"inputs": [
+					{
+						"name": "writeOccurrence.db",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "writeOccurrence.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "writeOccurrence.occurrence",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "writeOccurrence.at",
+						"type": "number | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeOccurrence",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerRecurringRepository.constructor",
+				"inputs": [
+					{
+						"name": "TrackerRecurringRepository.constructor.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerRecurringRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-notification",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/projects-sessions/TrackerRecurringRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/projects-sessions/TrackerRecurringRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

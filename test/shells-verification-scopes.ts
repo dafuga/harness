@@ -15,7 +15,7 @@ export const shellsVerificationScopes: Record<string, VerificationScope> = {
 					'shells-routing',
 				'at a commit that recorded it as a component, its Components address stays':
 					'shells-routing',
-				'plans and agent requests may name Shells, and a shell plan needs the image capability':
+				'plans and agent requests may name Shells, and a shell receives the visual Plan workflow':
 					'shells-routing'
 			},
 			'test/shells-planning.test.ts': {

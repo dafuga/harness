@@ -90,14 +90,10 @@ export function boundProps(
 			(entry) => (entry.propertyName?.getText() ?? entry.name.getText()) === item.name
 		);
 		const fallback = binding?.initializer ? bindableValue(binding.initializer) : undefined;
-		let optional: Pick<ContractItem, 'required' | 'default'> = {};
-		if (fallback) optional = { required: false, ...parameterDefault(fallback) };
-		else if (item.required === false) optional = { default: 'undefined (omitted)' };
-		return {
-			...item,
-			name: `${owner}.${item.name}`,
-			...optional
-		};
+		const named = { ...item, name: `${owner}.${item.name}` };
+		if (fallback) return { ...named, required: false, ...parameterDefault(fallback) };
+		if (item.required === false) return { ...named, default: 'undefined (omitted)' };
+		return named;
 	});
 }
 

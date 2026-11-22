@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"src/core/development-tooling/contractSchemas.ts",
+			"src/core/development-tooling/unitRegistryValues.ts",
 			"src/core/development-tooling/unitTypes.ts",
 			"src/core/development-tooling/unitTypes.types.ts",
 			"src/core/unitTypes.ts"
@@ -63,7 +64,7 @@
 				"name": "sourceContractSchema.item",
 				"type": "typeof contractItemSchema",
 				"required": true,
-				"description": "A Zod contract-item schema supplied to parameterize the builder; contract input, output, error, and storage-field entries are validated against it, with storage fields additionally allowing nullable, primaryKey, validation, and relations. Base items require trimmed nonempty name and type, permit required, default, description, and examples, and reject undeclared keys."
+				"description": "A Zod contract-item schema supplied to parameterize the builder; contract input, output, error, and storage-field entries are validated against it, with storage fields additionally allowing nullable, primaryKey, validation, and relations. Base items require trimmed nonempty name and type, permit required, default, description, examples, and a trimmed nonempty unknownReason, and reject undeclared keys."
 			}
 		],
 		"outputs": [
@@ -96,7 +97,12 @@
 				"type": "readonly [\"module\", \"wasm\", \"process\", \"http\"]",
 				"description": "The complete set of execution kinds accepted by executionTargetSchema and performance-budget targets. A target kind must be module, wasm, process, or http.",
 				"examples": [
-					["module", "wasm", "process", "http"]
+					[
+						"module",
+						"wasm",
+						"process",
+						"http"
+					]
 				]
 			},
 			{
@@ -117,12 +123,14 @@
 				"name": "performanceTolerance",
 				"type": "0.05",
 				"description": "Maximum allowed tolerance for a performance budget without a recorded reviewer approval. The schema accepts values from zero through 0.05 inclusive.",
-				"examples": [0.05]
+				"examples": [
+					0.05
+				]
 			},
 			{
 				"name": "contractItemSchema",
 				"type": "typeof contractItemSchema",
-				"description": "A strict Zod schema for contract items with trimmed nonempty name and type, plus optional required, JSON default, description, and JSON examples fields. Extra fields are rejected."
+				"description": "A strict Zod schema for contract items with trimmed nonempty name and type, plus optional required, JSON default, description, JSON examples, and a trimmed nonempty unknownReason. Extra fields are rejected."
 			},
 			{
 				"name": "unitDependencySchema",
@@ -166,7 +174,7 @@
 						"name": "sourceContractSchema.item",
 						"type": "typeof contractItemSchema",
 						"required": true,
-						"description": "A Zod contract-item schema supplied to parameterize the builder; contract input, output, error, and storage-field entries are validated against it, with storage fields additionally allowing nullable, primaryKey, validation, and relations. Base items require trimmed nonempty name and type, permit required, default, description, and examples, and reject undeclared keys."
+						"description": "A Zod contract-item schema supplied to parameterize the builder; contract input, output, error, and storage-field entries are validated against it, with storage fields additionally allowing nullable, primaryKey, validation, and relations. Base items require trimmed nonempty name and type, permit required, default, description, examples, and a trimmed nonempty unknownReason, and reject undeclared keys."
 					}
 				],
 				"outputs": [

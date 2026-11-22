@@ -1,0 +1,108 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.page.projects",
+	"uid": "u_hubproj222",
+	"kind": "page",
+	"title": "Private Hub projects and Google sign-in",
+	"responsibility": "Present the existing account project list, Google sign-in and owner overview at /projects.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": [
+			"hub.component.hub-frame",
+			"hub.component.login-panel",
+			"hub.component.project-create",
+			"hub.component.project-list",
+			"reports.component.projects-sessions-project-overview-project-overview",
+			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-h1",
+			"reports.component.shared-primitives-atoms-html-p"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/routes/projects/+page.svelte"],
+		"symbols": ["+page"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.service.project-sync",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.hub-frame",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.login-panel",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.project-create",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.project-list",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.page.tracker-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-project-overview-project-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h1",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/routes/projects/+page.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/routes/projects/+page.svelte"
+			}
+		]
+	},
+	"scenarios": ["project-overview-hub-projects"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

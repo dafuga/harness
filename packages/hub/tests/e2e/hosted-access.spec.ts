@@ -1,11 +1,12 @@
 import { expect, test } from '../../../../test/support/browserTest';
 import { atlas, clientId, code, credential, hostedFixture, invitation } from './hosted-fixture';
+import { macRelease } from './hosted-home';
 
 const signIn = { name: 'Sign in with Google' };
 
 test('without configured sign-in the page says so and offers no login', async ({ page }) => {
 	const state = await hostedFixture(page, { configured: false, signedIn: false });
-	await page.goto('/');
+	await page.goto('/projects');
 	await expect(page.getByRole('heading', { name: 'Sign-in is not configured' })).toBeVisible();
 	await expect(page.getByText(/Google client ID\s+and a session secret/)).toBeVisible();
 	await expect(page.getByRole('button', signIn)).toHaveCount(0);
@@ -18,7 +19,7 @@ test('Google sign-in uses the challenge nonce and posts the credential in a body
 	page
 }) => {
 	const state = await hostedFixture(page, { signedIn: false });
-	await page.goto('/');
+	await page.goto('/projects');
 	await expect(page.getByRole('button', signIn)).toBeVisible();
 	if (process.env.TAKE_SCREENSHOT === 'true') {
 		await page.evaluate(() => document.fonts.ready);
@@ -45,7 +46,7 @@ test('Google sign-in uses the challenge nonce and posts the credential in a body
 test('signed in without projects, the page explains how a project appears', async ({ page }) => {
 	const github = { configured: true, connected: false, login: null };
 	await hostedFixture(page, { empty: true, github });
-	await page.goto('/');
+	await page.goto('/projects');
 	await expect(page.getByRole('heading', { name: 'No shared projects yet' })).toBeVisible();
 	await expect(page.getByText(/invitation link\s+and its code/)).toBeVisible();
 	await expect(page.getByRole('link', { name: 'Connect GitHub', exact: true })).toHaveAttribute(
@@ -58,7 +59,7 @@ test('signed in without projects, the page explains how a project appears', asyn
 
 test('a project is created from a repository the server listed', async ({ page }) => {
 	const state = await hostedFixture(page);
-	await page.goto('/');
+	await page.goto('/projects');
 	await page.getByLabel('Repository', { exact: true }).selectOption('42');
 	await page.getByRole('textbox', { name: 'Project name', exact: true }).fill('Atlas docs');
 	await page.getByRole('button', { name: 'Create project', exact: true }).click();
@@ -128,16 +129,21 @@ test('an invitation asks for sign-in and the code, then opens the project', asyn
 test('the same Google account automatically discovers owned and joined projects on another open device', async ({
 	page,
 	browser,
+	browserErrors,
 	baseURL
 }) => {
 	const state = await hostedFixture(page);
 	const joined = state.data.projects.pop()!;
 	const context = await browser.newContext({ baseURL });
+	browserErrors.watch(context);
 	try {
 		const other = await context.newPage();
 		const second = await hostedFixture(other, { data: state.data });
-		await page.goto('/');
+		await macRelease(other, 'page');
+		await page.goto('/projects');
 		await other.goto('/');
+		await other.getByRole('main').getByRole('link', { name: 'Your projects' }).click();
+		await expect(other).toHaveURL(/\/projects$/);
 		await expect(other.getByRole('link', { name: 'Open Atlas', exact: true })).toBeVisible();
 		state.data.projects.push(joined, {
 			...state.data.projects[0],
@@ -177,7 +183,7 @@ test('an account changed in another tab replaces the identity and never retains 
 	page
 }) => {
 	const state = await hostedFixture(page);
-	await page.goto('/');
+	await page.goto('/projects');
 	await expect(page.getByRole('link', { name: 'Open Atlas', exact: true })).toBeVisible();
 	state.actor = {
 		...state.actor,

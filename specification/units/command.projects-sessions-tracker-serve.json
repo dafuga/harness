@@ -1,0 +1,81 @@
+{
+	"schemaVersion": 1,
+	"id": "command.projects-sessions-tracker-serve",
+	"uid": "u_fqfcxer6ml",
+	"kind": "command",
+	"title": "TrackerServeCommand",
+	"responsibility": "Owns the TrackerServeCommand command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/projects-sessions/TrackerServeCommand.ts"],
+		"symbols": ["TrackerServeCommand", "TrackerServeCommand.run"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerServeCommand.run.args",
+				"type": "string[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerServeCommand.run",
+				"type": "Promise<number>"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerServeCommand.run",
+				"inputs": [
+					{
+						"name": "TrackerServeCommand.run.args",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerServeCommand.run",
+						"type": "Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-node",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/projects-sessions/TrackerServeCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/projects-sessions/TrackerServeCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

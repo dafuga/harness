@@ -1,0 +1,109 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.projects-sessions-project-overview-project-overview-item",
+	"uid": "u_et5rodvng6",
+	"kind": "component",
+	"title": "ProjectOverviewItem",
+	"responsibility": "Shows a tracker task title and due state with an action to inspect the item.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-span"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/project-overview/ProjectOverviewItem.svelte",
+			"packages/reports/src/components/projects-sessions/project-overview/ProjectOverviewItem.types.ts"
+		],
+		"symbols": ["ProjectOverviewItem", "ProjectOverviewItemProps"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ProjectOverviewItem.item",
+				"type": "OverviewItem",
+				"required": true,
+				"description": "The tracker item being visited or checked for display."
+			},
+			{
+				"name": "ProjectOverviewItem.now",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds used to compare tracker timestamps."
+			},
+			{
+				"name": "ProjectOverviewItem.onOpen",
+				"type": "(item: OverviewItem) => void",
+				"required": true,
+				"description": "Opens the work item provided by the card or action."
+			},
+			{
+				"name": "ProjectOverviewItem.extra",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Whether this item follows the first in-progress item and is hidden in the narrow layout."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ProjectOverviewItem",
+				"type": "markup",
+				"description": "A read-only open action labelled with the item title and its due state."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-project-overview-project-overview-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/project-overview/ProjectOverviewItem.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/project-overview/ProjectOverviewItem.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

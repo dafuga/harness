@@ -106,7 +106,6 @@
 			}
 		],
 		"errors": [],
-		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reportFilter",
@@ -219,7 +218,8 @@
 				"errorStatus": "declared"
 			}
 		],
-		"initialization": []
+		"initialization": [],
+		"errorStatus": "declared"
 	},
 	"dependencies": [
 		{

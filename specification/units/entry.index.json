@@ -8,7 +8,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/index.ts", "src/index.ts"],
+		"source": [
+			"src/cli/index.ts",
+			"src/index.ts"
+		],
 		"symbols": [
 			"registerCodexCommand",
 			"ClaudeGatewayAdapter",
@@ -182,7 +185,35 @@
 			"QueueEtaService",
 			"DriverQueueAdapter",
 			"JobBackfillService",
-			"JobsCommand"
+			"JobsCommand",
+			"TaskOrchestrationCommand",
+			"ProviderSessionAdapter",
+			"TrackerCommand",
+			"TrackerOperationRepository",
+			"TrackerSchemaAdapter",
+			"nextTrackerClock",
+			"TrackerCutoverCommand",
+			"classifyResourceHost",
+			"scoreResourceHost",
+			"rankResourcePlacement",
+			"admitResourceHost",
+			"chooseResourceHost",
+			"TrackerSpokeLoopService",
+			"quietHourBoundary",
+			"isQuietHour",
+			"zonedWallClock",
+			"wallClockToEpochMs",
+			"nextReminderAt",
+			"nextReminderSlotAt",
+			"nextAttentionBatchAt",
+			"groupAttentionLines",
+			"clockMinutes",
+			"planDigestAlertTick",
+			"planGithubIssueIntake",
+			"TrackerAdapterLeaseAdapter",
+			"TrackerDispatchRepository",
+			"TrackerDispatchSchedulerService",
+			"TrackerSupervisorService"
 		]
 	},
 	"contract": {
@@ -874,6 +905,161 @@
 			"unit": "validator.performance-evidence",
 			"via": "reexport",
 			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-provider-session",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-adapter-lease",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-schema",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.agents-providers-task-orchestration",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-cutover",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-admit-resource-host",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-choose-resource-host",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-classify-resource-host",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-rank-resource-placement",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-score-resource-host",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-next-tracker-clock",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-clock-minutes",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-group-attention-lines",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-is-quiet-hour",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-next-attention-batch-at",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-next-reminder-at",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-next-reminder-slot-at",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-plan-digest-alert-tick",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-quiet-hour-boundary",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-wall-clock-to-epoch-ms",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-zoned-wall-clock",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.planning-collaboration-plan-github-issue-intake",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-dispatch",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-operation",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-tracker-dispatcher",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-adapter-poll",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-dispatch-scheduler",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-spoke-loop",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-supervisor",
+			"via": "reexport",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
@@ -886,7 +1072,9 @@
 			}
 		]
 	},
-	"scenarios": ["module-tasks"],
+	"scenarios": [
+		"module-tasks"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

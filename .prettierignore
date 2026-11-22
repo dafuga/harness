@@ -13,6 +13,9 @@ build
 
 work
 
+# Harness writes these records with canonical JSON and checks their bytes.
+/specification/units/**/*.json
+
 target
 **/src/pages/*/plan.json
 **/src/pages/*/designs/v*/design.json

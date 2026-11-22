@@ -8,8 +8,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/agents-providers/module-task-worker-service/dispatchTaskAttempt.ts"],
-		"symbols": ["dispatchTaskAttempt"]
+		"source": [
+			"src/services/agents-providers/module-task-worker-service/dispatchTaskAttempt.ts"
+		],
+		"symbols": [
+			"dispatchTaskAttempt"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -40,7 +44,7 @@
 			{
 				"name": "dispatchTaskAttempt",
 				"type": "Promise<TaskRunResult>",
-				"description": "The TaskRunResult resolved by runner.run(input), returned unchanged after its success record is appended. If the run or attempt processing rejects, this function produces no output.",
+				"description": "Provider result fields with the run context used by the module completion stage. The success record is appended before this function returns.",
 				"examples": [
 					{
 						"provider": "codex",
@@ -90,7 +94,7 @@
 					{
 						"name": "dispatchTaskAttempt",
 						"type": "Promise<import('../../../repositories/agents-providers/ModuleTaskRepository.types').TaskRunResult>",
-						"description": "The TaskRunResult resolved by runner.run(input), returned unchanged after its success record is appended. If the run or attempt processing rejects, this function produces no output.",
+						"description": "Provider result fields with the run context used by the module completion stage. The success record is appended before this function returns.",
 						"examples": [
 							{
 								"provider": "codex",
@@ -121,6 +125,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.agents-providers-completion-hooks",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.agents-providers-module-task-analytics",
 			"via": "import",
 			"origin": "derived"
@@ -136,7 +145,9 @@
 			}
 		]
 	},
-	"scenarios": ["module-tasks"],
+	"scenarios": [
+		"module-tasks"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

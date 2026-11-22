@@ -45,14 +45,18 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root passed directly to the source-impact service created for the shared context. This function does not normalize or validate the path.",
-				"examples": ["/workspace/project"]
+				"examples": [
+					"/workspace/project"
+				]
 			},
 			{
 				"name": "RevisionDetailService.constructor.root",
 				"type": "string",
 				"required": true,
 				"description": "Repository root used to construct the Git adapter and, when no shared context is supplied, the default source context. The constructor does not normalize or validate the path.",
-				"examples": ["/workspace/project"]
+				"examples": [
+					"/workspace/project"
+				]
 			},
 			{
 				"name": "RevisionDetailService.constructor.history",
@@ -64,15 +68,17 @@
 				"name": "RevisionDetailService.constructor.kept",
 				"type": "ReturnType<typeof revisionSources>",
 				"required": false,
-				"default": "revisionSources(root)",
-				"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map. The documented default is the source expression revisionSources(root), evaluated at construction; it is not a literal collaborator value."
+				"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map. The documented default is the source expression revisionSources(root), evaluated at construction; it is not a literal collaborator value.",
+				"default": "revisionSources(root)"
 			},
 			{
 				"name": "RevisionDetailService.build.commit",
 				"type": "string",
 				"required": true,
 				"description": "Commit revision string used to load history and inspect the selected Git tree for revision metadata, evidence, source impact, and reasons. Registry reuse is keyed by the resolved tree when available and otherwise by this string.",
-				"examples": ["9f86d081884c7d659a2feaa0c55ad015a3bf4f1b"]
+				"examples": [
+					"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b"
+				]
 			},
 			{
 				"name": "RevisionDetailService.build.media",
@@ -119,7 +125,9 @@
 							"commit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b",
 							"projectDependencies": {
 								"entries": [],
-								"gaps": ["No package manifests are recorded at this revision."]
+								"gaps": [
+									"No package manifests are recorded at this revision."
+								]
 							},
 							"registry": {
 								"available": false,
@@ -202,7 +210,9 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root passed directly to the source-impact service created for the shared context. This function does not normalize or validate the path.",
-						"examples": ["/workspace/project"]
+						"examples": [
+							"/workspace/project"
+						]
 					}
 				],
 				"outputs": [
@@ -229,7 +239,9 @@
 						"type": "string",
 						"required": true,
 						"description": "Commit revision string used to load history and inspect the selected Git tree for revision metadata, evidence, source impact, and reasons. Registry reuse is keyed by the resolved tree when available and otherwise by this string.",
-						"examples": ["9f86d081884c7d659a2feaa0c55ad015a3bf4f1b"]
+						"examples": [
+							"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b"
+						]
 					},
 					{
 						"name": "RevisionDetailService.build.media",
@@ -250,7 +262,9 @@
 									"commit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b",
 									"projectDependencies": {
 										"entries": [],
-										"gaps": ["No package manifests are recorded at this revision."]
+										"gaps": [
+											"No package manifests are recorded at this revision."
+										]
 									},
 									"registry": {
 										"available": false,
@@ -375,7 +389,9 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root used to construct the Git adapter and, when no shared context is supplied, the default source context. The constructor does not normalize or validate the path.",
-						"examples": ["/workspace/project"]
+						"examples": [
+							"/workspace/project"
+						]
 					},
 					{
 						"name": "RevisionDetailService.constructor.history",
@@ -387,8 +403,8 @@
 						"name": "RevisionDetailService.constructor.kept",
 						"type": "ReturnType<typeof revisionSources>",
 						"required": false,
-						"default": "revisionSources(root)",
-						"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map. The documented default is the source expression revisionSources(root), evaluated at construction; it is not a literal collaborator value."
+						"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map. The documented default is the source expression revisionSources(root), evaluated at construction; it is not a literal collaborator value.",
+						"default": "revisionSources(root)"
 					}
 				],
 				"outputs": [
@@ -566,7 +582,9 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-recorded-evidence"],
+	"scenarios": [
+		"desktop-recorded-evidence"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

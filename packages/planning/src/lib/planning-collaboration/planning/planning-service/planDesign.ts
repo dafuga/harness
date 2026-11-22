@@ -30,6 +30,7 @@ import {
 import { fail, hash, json, now, planData } from '../../../../utils/planning-collaboration/planData';
 import {
 	contractHash,
+	planViewport,
 	region,
 	slug,
 	text
@@ -43,8 +44,7 @@ function imageFiles(
 ): DesignImage[] {
 	return images.map((image) => {
 		slug(image.state);
-		if (!['desktop', 'tablet', 'mobile', 'diagram'].includes(image.viewport))
-			fail('invalid-input', 'Invalid viewport');
+		if (!planViewport(image.viewport)) fail('invalid-input', 'Invalid viewport');
 		const file = `${prefix}${image.state}-${image.viewport}.png`;
 		if (files[`${base}/${file}`]) fail('invalid-input', 'Duplicate image');
 		const size = decode(image.bytes);
@@ -175,8 +175,11 @@ export async function approve(git: Git, input: ApproveDesignInput) {
 	};
 	if (!Array.isArray(input.images) || !approvalMatches(value as ApprovalRecord, latest))
 		fail('approval-mismatch', 'Approval does not bind exact current design');
-	for (const image of bound)
-		await readImage(git, { unitId: input.unitId, version: latest.version, file: image.file });
+	const present = new Set(
+		latest.images.filter((image) => image.content === 'present').map((image) => image.file)
+	);
+	if (bound.some((image) => !present.has(image.file)))
+		fail('artifact-missing', 'An approved screenshot is missing from Git LFS');
 	const committed = await commitFiles(
 		git,
 		{ [`${path}/designs/approvals/${value.id}.json`]: json(value) },

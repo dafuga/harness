@@ -23,6 +23,16 @@
 			"builds": ["shell-fixture"]
 		},
 		{
+			"command": "bun run --cwd packages/hub build",
+			"timeoutMs": 600000,
+			"builds": ["hub"]
+		},
+		{
+			"command": "bun src/index.ts verify stamp packages/hub/.svelte-kit",
+			"timeoutMs": 60000,
+			"builds": ["hub"]
+		},
+		{
 			"command": "cd packages/reports && ENTITY_PREVIEW_HOME=output/entity-preview bun -e \"import setup from './test/entityPreviewSetup'; await setup()\"",
 			"timeoutMs": 300000,
 			"builds": ["entity-preview"]
@@ -107,7 +117,9 @@
 		"packages/hub/.svelte-kit/",
 		"packages/hub/test-results/",
 		"packages/hub/playwright-report/",
+		"packages/hub/.wrangler/cache/",
 		"packages/hub/.wrangler/state/",
+		"packages/hub/.wrangler/tmp/",
 		"packages/game/.cache/",
 		"packages/game/coverage/",
 		"packages/game/node_modules/",
@@ -308,10 +320,12 @@
 		},
 		{
 			"id": "playwright",
+			"fullOnly": true,
 			"command": "bun x playwright --version"
 		},
 		{
 			"id": "chromium",
+			"fullOnly": true,
 			"command": "node -e \"const fs=require('node:fs');const found=JSON.parse(fs.readFileSync('node_modules/playwright-core/browsers.json','utf8')).browsers.find((browser)=>browser.name==='chromium');console.log('chromium '+found.browserVersion+' revision '+found.revision)\""
 		},
 		{
@@ -326,6 +340,10 @@
 		{
 			"id": "reports",
 			"directory": "packages/reports/build"
+		},
+		{
+			"id": "hub",
+			"directory": "packages/hub/.svelte-kit"
 		},
 		{
 			"id": "planning",

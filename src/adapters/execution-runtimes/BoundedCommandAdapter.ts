@@ -15,6 +15,7 @@ import {
 	commandLabel,
 	timeoutFailure
 } from './bounded-command-adapter/commandFailure';
+import { commandEnvironment } from './bounded-command-adapter/commandEnvironment';
 import { commandOutput } from './bounded-command-adapter/commandOutput';
 
 const owned = new Set<ChildProcessWithoutNullStreams>();
@@ -24,15 +25,18 @@ function registerForSignals(child: ChildProcessWithoutNullStreams): () => void {
 	if (process.platform === 'win32') return () => undefined;
 	owned.add(child);
 	for (const signal of ['SIGINT', 'SIGTERM'] as const) {
-		if (signalHandlers.has(signal)) continue;
+		// Bun can restore the default signal action when a second listener is removed.
+		if (process.listenerCount(signal) > 0) continue;
 		const handler = () => {
+			// A caller with its own handler must be able to finish its shutdown.
+			if (process.listenerCount(signal) > 1) return;
 			for (const running of owned) killGroup(running);
 			process.removeListener(signal, handler);
 			signalHandlers.delete(signal);
 			process.kill(process.pid, signal);
 		};
 		signalHandlers.set(signal, handler);
-		process.on(signal, handler);
+		process.prependListener(signal, handler);
 	}
 	return () => {
 		owned.delete(child);
@@ -42,44 +46,6 @@ function registerForSignals(child: ChildProcessWithoutNullStreams): () => void {
 	};
 }
 
-/** Explicit child environment; callers may supply task-specific keys deliberately. */
-export function commandEnvironment(
-	extra: Record<string, string | undefined> = {}
-): Record<string, string | undefined> {
-	const result: Record<string, string | undefined> = {};
-	for (const key of [
-		'PATH',
-		'HOME',
-		'USER',
-		'LOGNAME',
-		'SHELL',
-		'TMPDIR',
-		'TEMP',
-		'TMP',
-		'LANG',
-		'LC_ALL',
-		'TZ',
-		'SYSTEMROOT',
-		'CI',
-		'NODE_OPTIONS',
-		'NODE_PATH',
-		'BUN_INSTALL',
-		'BUN_OPTIONS',
-		'SSL_CERT_FILE',
-		'SSL_CERT_DIR',
-		'HTTP_PROXY',
-		'HTTPS_PROXY',
-		'ALL_PROXY',
-		'NO_PROXY',
-		'http_proxy',
-		'https_proxy',
-		'all_proxy',
-		'no_proxy',
-		'XDG_CONFIG_HOME'
-	])
-		if (process.env[key] !== undefined) result[key] = process.env[key];
-	return { ...result, ...extra };
-}
 function killGroup(child: ChildProcessWithoutNullStreams): void {
 	if (!child.pid) return;
 	try {
@@ -226,3 +192,4 @@ export class BoundedCommandAdapter {
 }
 export type { BoundedCommandOptions, BoundedCommandResult } from './BoundedCommandAdapter.types';
 export { commandDeadlines } from './bounded-command-adapter/commandDeadlines';
+export { commandEnvironment } from './bounded-command-adapter/commandEnvironment';

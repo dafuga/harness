@@ -2,6 +2,8 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'vitest';
+import { z } from 'zod';
+import runRecordSchema from '../specification/loops/module-job-model-analytics/run-record-v1.schema.json';
 import { expect } from './verificationExpect';
 import { runHarness } from './support/cli';
 import { moduleTaskFixture } from './support/moduleTaskFixture';
@@ -81,6 +83,7 @@ test('module task CLI reviews preserve one bounce and reconcile token costs idem
 			bounces: 1,
 			reviewed: 2,
 			bounceRate: 0.5,
+			runRecords: expectedReviewedRuns,
 			byModel: [
 				{
 					model: 'claude-haiku-5-5',
@@ -98,6 +101,12 @@ test('module task CLI reviews preserve one bounce and reconcile token costs idem
 		);
 		expect(events.events.filter((e: { kind: string }) => e.kind === 'task')).toHaveLength(6);
 		expect(JSON.stringify(events.events)).not.toContain('Private repair note marker');
+		expect(JSON.stringify(first.tasks.runRecords)).not.toContain('Private repair note marker');
+		const schema = z.fromJSONSchema(runRecordSchema as Parameters<typeof z.fromJSONSchema>[0]);
+		expect(schema.array().safeParse(first.tasks.runRecords).success).toBe(true);
+		const until = first.tasks.runRecords[0].finishedAt;
+		const filtered = JSON.parse((await runHarness([...query, '--until', until], f.root)).stdout);
+		expect(filtered.tasks.runRecords).toMatchObject([expectedReviewedRuns[0]]);
 	} finally {
 		if (previous === undefined) delete process.env.HARNESS_ANALYTICS_HOME;
 		else process.env.HARNESS_ANALYTICS_HOME = previous;
@@ -105,12 +114,53 @@ test('module task CLI reviews preserve one bounce and reconcile token costs idem
 	}
 }, 60000);
 
+const expectedReviewedRuns = [
+	{
+		schemaVersion: 1,
+		source: 'harness',
+		taskId: 'orders-validation',
+		taskType: 'implementation',
+		moduleId: 'service.orders',
+		model: 'claude-haiku-5-5',
+		effort: 'medium',
+		estimatedDifficulty: 'medium',
+		measuredDifficulty: 'small',
+		filesTouched: 1,
+		linesChanged: 2,
+		attempt: 1,
+		retries: 0,
+		outcome: 'rejected',
+		firstTry: false,
+		rejectionCause: 'verification',
+		inputTokens: 100,
+		outputTokens: 20,
+		wallTimeMs: expect.any(Number),
+		apiEquivalentUsd: 0.002,
+		actualUsd: null,
+		codexCredits: null
+	},
+	{
+		attempt: 2,
+		retries: 1,
+		outcome: 'done',
+		firstTry: false,
+		rejectionCause: null,
+		rejectedBefore: true,
+		reworked: true
+	}
+];
+
 async function reviewedTask(f: Awaited<ReturnType<typeof moduleTaskFixture>>) {
 	await f.feature();
 	await f.cli([
 		'add',
 		'--input',
-		await f.input({ model: 'claude-haiku-5-5', intelligence: 'medium' })
+		await f.input({
+			model: 'claude-haiku-5-5',
+			intelligence: 'medium',
+			taskType: 'implementation',
+			estimatedDifficulty: 'medium'
+		})
 	]);
 	await f.cli(['worker', '--worker', 'owner', '--once']);
 	let task = JSON.parse((await f.cli(['show', 'orders-validation'])).stdout).task;
@@ -121,6 +171,8 @@ async function reviewedTask(f: Awaited<ReturnType<typeof moduleTaskFixture>>) {
 		task.claim.token,
 		'--verdict',
 		'incomplete',
+		'--cause',
+		'verification',
 		'--feedback',
 		'Private repair note marker'
 	];

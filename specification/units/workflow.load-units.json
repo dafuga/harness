@@ -12,7 +12,12 @@
 			"src/workflows/development-tooling/load-units/loadUnits.ts",
 			"src/workflows/development-tooling/load-units/loadUnits.types.ts"
 		],
-		"symbols": ["loadUnits", "graphOf", "LoadedUnits", "LoadedUnits"]
+		"symbols": [
+			"loadUnits",
+			"graphOf",
+			"LoadedUnits",
+			"LoadedUnits"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -22,7 +27,9 @@
 				"type": "string",
 				"required": false,
 				"description": "Repository root used to resolve the source tree and registry paths for this load. Defaults to process.cwd(); resolve() turns it into an absolute path.",
-				"examples": ["/workspace/project"]
+				"examples": [
+					"/workspace/project"
+				]
 			},
 			{
 				"name": "loadUnits.tree",
@@ -89,7 +96,9 @@
 						"type": "string",
 						"required": false,
 						"description": "The repository root that loadUnits resolves to an absolute path before creating the registry repositories and selecting a working-tree source. It matters when loading a repository other than the process working directory; omission uses process.cwd().",
-						"examples": ["/workspace/project"]
+						"examples": [
+							"/workspace/project"
+						]
 					},
 					{
 						"name": "loadUnits.tree",

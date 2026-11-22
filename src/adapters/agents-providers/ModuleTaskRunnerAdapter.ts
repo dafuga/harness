@@ -8,7 +8,14 @@ import type {
 import type { TaskProcessExecutor, TaskPublicEvent } from './ModuleTaskRunnerAdapter.types';
 import { ModuleTaskRunError } from './ModuleTaskRunnerAdapter.types';
 import { taskProcess } from './module-task-runner-adapter/taskProcess';
-import { taskUsage } from './module-task-runner-adapter/taskUsage';
+import { managedTaskSessions } from './module-task-runner-adapter/managedTaskSessions';
+import { completeOrchestration } from '../../services/agents-providers/completion-hooks/orchestratorCompletion';
+import { completionTurn } from '../../services/agents-providers/completion-hooks/completionRun';
+import type { CompletionTurnInput } from '../../services/agents-providers/completion-hooks/completionRun.types';
+import {
+	hardContextTokens,
+	providerCompactionTokens
+} from './module-task-runner-adapter/sessionPolicy';
 /** Run the installed CLIs with saved login, exact model/effort and public output only. */
 export class ModuleTaskRunnerAdapter implements TaskRunner {
 	constructor(private readonly execute: TaskProcessExecutor = taskProcess) {}
@@ -18,7 +25,6 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 			'codex',
 			'exec',
 			'--json',
-			'--ephemeral',
 			'--sandbox',
 			'workspace-write',
 			'-m',
@@ -29,32 +35,34 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 			'model_provider="openai"',
 			'-c',
 			'approval_policy="never"',
+			'-c',
+			`model_context_window=${hardContextTokens}`,
+			'-c',
+			`model_auto_compact_token_limit=${providerCompactionTokens}`,
+			'-c',
+			'tool_output_token_limit=12000',
 			...(selection.images ?? []).flatMap((path) => ['-i', path]),
 			'-'
 		];
 	}
 	async run(input: TaskRunInput): Promise<TaskRunResult> {
-		const process = await this.execute(this.command(input), taskImageInput(input));
-		const events = process.stdout
-			.trim()
-			.split('\n')
-			.filter(Boolean)
-			.map((line) => JSON.parse(line) as TaskPublicEvent);
-		const usage = taskUsage(input.provider, events);
-		try {
-			const result =
-				input.provider === 'claude'
-					? this.claude(events, process.code, input)
-					: this.codex(events, process.code, input);
-			return { ...result, usage };
-		} catch (error) {
-			const reportedModel =
-				events.find((e) => e.type === 'system' && e.subtype === 'init')?.model ?? null;
-			throw Object.assign(
-				error instanceof Error ? error : new ModuleTaskRunError('Task execution failed.'),
-				{ usage, reportedModel }
-			);
-		}
+		if (input.supervision) return completeOrchestration(input, (task) => this.runProvider(task));
+		return this.runProvider(input);
+	}
+	private runProvider(input: CompletionTurnInput): Promise<TaskRunResult> {
+		const completion = input[completionTurn];
+		return managedTaskSessions(
+			input,
+			(current) =>
+				this.execute(
+					completionCommand(this.command(current), current.provider, completion === true),
+					taskImageInput(current)
+				),
+			(events, code, current) =>
+				current.provider === 'claude'
+					? this.claude(events, code, current)
+					: this.codex(events, code, current, completion !== undefined)
+		);
 	}
 	private claude(events: TaskPublicEvent[], code: number, input: TaskRunInput): TaskRunResult {
 		const result = [...events].reverse().find((e) => e.type === 'result');
@@ -71,7 +79,12 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 		}
 		return completedClaudeTask(events, result, input);
 	}
-	private codex(events: TaskPublicEvent[], code: number, input: TaskRunInput): TaskRunResult {
+	private codex(
+		events: TaskPublicEvent[],
+		code: number,
+		input: TaskRunInput,
+		finalMessageOnly: boolean
+	): TaskRunResult {
 		const result = [...events].reverse().find((e) => e.type === 'turn.completed');
 		if (code !== 0 || !result || events.some((e) => ['turn.failed', 'error'].includes(e.type)))
 			throw new ModuleTaskRunError(
@@ -79,16 +92,15 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 			);
 		if (result.model && result.model !== input.model)
 			throw new ModuleTaskRunError('Codex ran a different model.');
+		const messages = events
+			.filter((e) => e.type === 'item.completed' && e.item?.type === 'agent_message')
+			.map((e) => e.item!.text ?? '');
 		return {
 			provider: input.provider,
 			model: input.model,
 			intelligence: input.intelligence,
 			reportedModel: result.model ?? null,
-			text: events
-				.filter((e) => e.type === 'item.completed' && e.item?.type === 'agent_message')
-				.map((e) => e.item!.text ?? '')
-				.join('\n')
-				.slice(-16000)
+			text: (finalMessageOnly ? (messages.at(-1) ?? '') : messages.join('\n')).slice(-16000)
 		};
 	}
 }
@@ -102,6 +114,16 @@ function taskImageInput(input: TaskRunInput): TaskRunInput {
 			input.images.map((path) => JSON.stringify(path)).join('\n')
 	};
 }
+function completionCommand(
+	command: string[],
+	provider: TaskSelection['provider'],
+	readOnly: boolean
+): string[] {
+	if (!readOnly) return command;
+	const flags = provider === 'claude' ? ['--tools', '--allowedTools'] : ['--sandbox'];
+	const setting = provider === 'claude' ? 'Read,Glob,Grep' : 'read-only';
+	return command.map((part, index) => (flags.includes(command[index - 1]) ? setting : part));
+}
 function claudeTaskCommand(selection: TaskSelection): string[] {
 	return [
 		'claude',
@@ -109,6 +131,7 @@ function claudeTaskCommand(selection: TaskSelection): string[] {
 		'--verbose',
 		'--output-format',
 		'stream-json',
+		'--include-partial-messages',
 		'--model',
 		selection.model,
 		'--effort',

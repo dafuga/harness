@@ -25,9 +25,15 @@ enum HubAccountPolicy {
         return text == "https://\(host)\(port)" ? url : nil
     }
 
+    /// The one owner-only tracker overview: a plain GET with no query and no body. Only this exact
+    /// path is admitted, so no alias of it (trailing slash, escape, query text) is.
+    private static let overview = "/api/tracker-overview"
+
     /// The project list, the reads, media and evidence of one project, and its comments and
-    /// agent calls. Sign-in, sign-out and every other route of the Hub are never asked for the page.
+    /// agent calls, with the tracker overview. Sign-in, sign-out and every other route of the Hub
+    /// are never asked for the page.
     static func allowed(_ call: HubAccountCall) -> Bool {
+        if call.path == overview { return call.method == "GET" && call.query.isEmpty && call.body == nil }
         let parts = call.path.components(separatedBy: "/")
         guard parts.count == 3 || parts.count == 5, parts[0].isEmpty, parts[1] == "api", parts[2] == "projects",
             fields(call.query), (call.body?.count ?? 0) <= HubAccountLimits.bodyBytes

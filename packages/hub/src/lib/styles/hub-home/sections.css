@@ -1,0 +1,201 @@
+/* @harness-uid u_khdcd553av */
+/* Section cards and their preview rows. A section is an n79x63 .po-card; rows are .po-item. */
+/* Gold text needs the scheme's accent: home-scheme.css darkens it on paper, dark keeps primary. */
+.hh-home .po-needs-you {
+	--po-accent: var(--home-accent);
+	--po-wash: var(--hx-color-primary-wash);
+}
+.hh-home .po-kicker {
+	color: var(--home-accent);
+}
+.hh-home .hh-tone.po-active {
+	--po-accent: var(--hx-color-info);
+	--po-wash: var(--hx-color-info-soft);
+}
+.hh-home .hh-tone.po-quiet {
+	--po-accent: var(--hx-color-text-muted);
+	--po-wash: transparent;
+}
+.hh-home .hh-section .po-name {
+	font-size: var(--hx-type-size-lg);
+}
+.hh-home .hh-section-body {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-6);
+	min-width: 0;
+}
+.hh-home .hh-section-foot {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: auto;
+}
+.hh-home .hh-see-all,
+.hh-home .hh-primary,
+.hh-home .hh-talk {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--hx-space-8);
+	white-space: nowrap;
+}
+.hh-home .hh-primary {
+	border-color: var(--hx-color-primary);
+	background: var(--hx-color-primary);
+	color: var(--hx-color-primary-contrast);
+}
+.hh-home .hh-talk {
+	min-height: var(--hx-space-32);
+	padding: 0 var(--hx-space-12);
+	font-size: var(--hx-type-size-compact);
+}
+.hh-home .hh-agent {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-12);
+	padding: var(--hx-space-10) 0;
+	min-width: 0;
+}
+.hh-home .hh-agent .po-item-text {
+	flex: 1;
+}
+.hh-home .hh-agent .po-item-meta {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 1;
+	overflow: hidden;
+}
+.hh-home .hh-agent-side {
+	display: flex;
+	flex: none;
+	align-items: center;
+	gap: var(--hx-space-10);
+}
+.hh-home .hh-avatar {
+	display: grid;
+	flex: none;
+	place-items: center;
+	width: var(--hx-space-36);
+	height: var(--hx-space-36);
+	border: var(--hx-border-thick) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-round);
+	background: var(--hx-color-surface-raised);
+	color: var(--hx-color-text-supporting);
+	font-size: var(--hx-type-size-xs);
+	font-weight: var(--hx-style-weight-semibold);
+}
+.hh-home .hh-avatar[data-state='working'] {
+	border-color: var(--hx-color-info);
+}
+.hh-home .hh-avatar[data-state='needs-you'] {
+	border-color: var(--hx-color-primary);
+	color: var(--hx-color-text);
+}
+.hh-home .hh-avatar[data-state='offline'] {
+	border-style: dashed;
+	opacity: var(--hx-opacity-dim);
+}
+.hh-home .hh-avatar-me {
+	width: var(--hx-space-32);
+	height: var(--hx-space-32);
+	border-color: var(--hx-color-primary-line);
+}
+/* The composer (Agents card and chat pane) lives in modal-chat.css. */
+.hh-home .hh-progress {
+	display: inline-flex;
+	flex: none;
+	align-items: center;
+	gap: var(--hx-space-8);
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-xs);
+	font-variant-numeric: var(--hx-style-numeric-tabular);
+}
+.hh-home .hh-progress-bar {
+	width: var(--hx-space-64);
+	height: var(--hx-space-6);
+	overflow: hidden;
+	border-radius: var(--hx-radius-pill);
+	background: var(--hx-color-border);
+}
+.hh-home .hh-progress-bar > span {
+	display: block;
+	height: 100%;
+	background: var(--hx-color-primary);
+}
+/* A minimum, not a width: a longer day label (another locale) widens its row, never overlaps. */
+.hh-home .hh-when {
+	display: flex;
+	flex: none;
+	flex-direction: column;
+	min-width: var(--hx-space-70);
+}
+.hh-home .hh-when-day,
+.hh-home .hh-change {
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-xs);
+	white-space: nowrap;
+}
+.hh-home .hh-when-time {
+	font-size: var(--hx-type-size-sm);
+	font-weight: var(--hx-style-weight-semibold);
+	font-variant-numeric: var(--hx-style-numeric-tabular);
+}
+.hh-home .hh-run .po-item-open {
+	justify-content: flex-start;
+}
+.hh-home [data-paused] {
+	opacity: var(--hx-opacity-dim);
+}
+.hh-home .hh-wip-line {
+	font-size: var(--hx-type-size-2xl);
+	font-weight: var(--hx-style-weight-semibold);
+	letter-spacing: var(--hx-style-tracking-tight);
+}
+@media (max-width: 560px) {
+	.hh-home .hh-section .hh-talk {
+		display: none;
+	}
+}
+
+.hh-home .hh-row {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-12);
+	min-width: 0;
+	width: 100%;
+	padding: var(--hx-space-6) 0;
+}
+
+.hh-home .hh-row .po-item-text {
+	flex: 1;
+	min-width: 0;
+}
+
+.hh-home .hh-row .po-item-title,
+.hh-home .hh-row .po-item-meta {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow-wrap: anywhere;
+}
+
+.hh-home .hh-agent-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--hx-space-6);
+	white-space: nowrap;
+	padding: var(--hx-space-4) var(--hx-space-8);
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-pill);
+	font-size: var(--hx-type-size-2xs);
+}
+
+.hh-home .hh-agent-pill[data-state='working'] {
+	color: var(--hx-color-info);
+	background: var(--hx-color-info-soft);
+}
+
+.hh-home .hh-agent-pill[data-state='needs-you'] {
+	color: var(--home-accent);
+	background: var(--hx-color-primary-soft);
+}

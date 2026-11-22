@@ -1,7 +1,11 @@
 // @harness-uid u_lnqhwcablp
 import type { ScenarioManifest } from '../../core/development-tooling/unitTypes';
 import type { Gathered } from './gatherCaptures';
-import type { ScenarioResult } from '../../core/verification-evidence/verificationTypes';
+import type {
+	ScenarioResult,
+	VerificationRecord
+} from '../../core/verification-evidence/verificationTypes';
+import type { RequiredCapture } from './scenarioRequirements';
 
 export interface CoverageInput {
 	scenario: ScenarioManifest;
@@ -14,6 +18,7 @@ export interface CoverageInput {
 	/** Reviewer obligations read from the original Git evidence before this run. */
 	pendingVideoFlags?: PendingVideoFlags;
 	videoSlots?: { unit: string; clipId: string; viewport: string; inputHash: string }[];
+	lite?: { deferredChecks: boolean };
 	/** The builds the project declares, and the identity of each one setup compiled. */
 	builds?: { declared: string[]; compiled: Map<string, string> };
 }
@@ -22,6 +27,13 @@ export interface CoverageResult {
 	videoCoverage?: VideoCoverageSummary[];
 	states: ScenarioResult['states'];
 	failures: string[];
+	pending?: RequiredCapture[];
+}
+
+export interface ScenarioJudgement {
+	result: ScenarioResult;
+	failures: string[];
+	pending?: NonNullable<VerificationRecord['lite']>['pendingEvidence'];
 }
 
 export type Evidence = ScenarioManifest['evidence'][number];

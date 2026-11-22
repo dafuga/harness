@@ -38,10 +38,10 @@ export class VerificationStoreRepository {
 		return undefined;
 	}
 
-	/** The most recent record of a commit, whatever its outcome. */
+	/** The most recent full-profile record of a commit, whatever its outcome. */
 	latest(commit: string): StoredRecord | undefined {
 		return this.all()
-			.filter((stored) => stored.record.source.commit === commit)
+			.filter((stored) => stored.record.source.commit === commit && !stored.record.lite)
 			.sort((left, right) => (left.record.startedAt < right.record.startedAt ? 1 : -1))[0];
 	}
 

@@ -1,0 +1,216 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-plan-tracker-item-mutation",
+	"uid": "u_4pgfvaopdt",
+	"kind": "function",
+	"title": "planTrackerItemMutation",
+	"responsibility": "Plan Tracker item writes and their atomic receipt intent from a caller-supplied snapshot.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/projects-sessions/planTrackerItemMutation.ts",
+			"src/utils/projects-sessions/planTrackerItemMutation.types.ts",
+			"src/utils/projects-sessions/trackerItemInput.ts",
+			"src/utils/projects-sessions/trackerItemTransitions.ts"
+		],
+		"symbols": [
+			"TrackerItemMutation",
+			"TrackerItemMutationContext",
+			"TrackerItemMutationPlan",
+			"TrackerItemSnapshot",
+			"planTrackerItemMutation",
+			"TrackerItemSnapshot",
+			"TrackerItemAction",
+			"TrackerItemMutation",
+			"TrackerItemMutationContext",
+			"TrackerItemMutationPlan",
+			"TrackerItemChange",
+			"TrackerItemTransition",
+			"TrackerDuplicateProbe",
+			"trackerItemInput",
+			"guardTrackerDuplicate",
+			"trackerItemTransitions"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "planTrackerItemMutation.request",
+				"type": "TrackerItemMutation<Receipt>",
+				"required": true,
+				"description": "A reserved ID for add or a resolved raw row for a transition, plus the command body and optional receipt intent."
+			},
+			{
+				"name": "planTrackerItemMutation.context",
+				"type": "TrackerItemMutationContext",
+				"required": true,
+				"description": "The caller supplies the node, epoch milliseconds and applicable policy or time-zone inputs."
+			},
+			{
+				"name": "trackerItemInput.body",
+				"type": "TrackerItemInput",
+				"required": true,
+				"description": "Incoming fields and aliases from the Tracker API request."
+			},
+			{
+				"name": "trackerItemInput.context",
+				"type": "TrackerItemMutationContext",
+				"required": true,
+				"description": "Clock, source node, candidates and optional launch planner."
+			},
+			{
+				"name": "trackerItemInput.current",
+				"type": "TrackerItemSnapshot",
+				"required": false,
+				"description": "Existing item when updating, omitted for creation."
+			},
+			{
+				"name": "guardTrackerDuplicate.context",
+				"type": "TrackerItemMutationContext",
+				"required": true,
+				"description": "Mutation context containing candidate items to compare."
+			},
+			{
+				"name": "guardTrackerDuplicate.probe",
+				"type": "TrackerDuplicateProbe",
+				"required": true,
+				"description": "Duplicate search text, scope, and optional force setting."
+			}
+		],
+		"outputs": [
+			{
+				"name": "planTrackerItemMutation",
+				"type": "TrackerItemMutationPlan<Receipt>",
+				"description": "Target item ID, journal fields and the original receipt when supplied."
+			}
+		],
+		"errors": [
+			{
+				"name": "TrackerItemRequestError",
+				"type": "thrown",
+				"description": "Legacy validation status and message. Duplicate refusals include the 409 code and ranked matches."
+			}
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "planTrackerItemMutation",
+				"inputs": [
+					{
+						"name": "planTrackerItemMutation.request",
+						"type": "TrackerItemMutation<Receipt>",
+						"required": true,
+						"description": "A reserved ID for add or a resolved raw row for a transition, plus the command body and optional receipt intent."
+					},
+					{
+						"name": "planTrackerItemMutation.context",
+						"type": "TrackerItemMutationContext",
+						"required": true,
+						"description": "The caller supplies the node, epoch milliseconds and applicable policy or time-zone inputs."
+					}
+				],
+				"outputs": [
+					{
+						"name": "planTrackerItemMutation",
+						"type": "TrackerItemMutationPlan<Receipt>",
+						"description": "Target item ID, journal fields and the original receipt when supplied."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerItemInput",
+				"inputs": [
+					{
+						"name": "trackerItemInput.body",
+						"type": "TrackerItemInput",
+						"required": true,
+						"description": "Incoming fields and aliases from the Tracker API request."
+					},
+					{
+						"name": "trackerItemInput.context",
+						"type": "TrackerItemMutationContext",
+						"required": true,
+						"description": "Clock, source node, candidates and optional launch planner."
+					},
+					{
+						"name": "trackerItemInput.current",
+						"type": "TrackerItemSnapshot",
+						"required": false,
+						"description": "Existing item when updating, omitted for creation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerItemInput",
+						"type": "TrackerItemInput"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "guardTrackerDuplicate",
+				"inputs": [
+					{
+						"name": "guardTrackerDuplicate.context",
+						"type": "TrackerItemMutationContext",
+						"required": true,
+						"description": "Mutation context containing candidate items to compare."
+					},
+					{
+						"name": "guardTrackerDuplicate.probe",
+						"type": "TrackerDuplicateProbe",
+						"required": true,
+						"description": "Duplicate search text, scope, and optional force setting."
+					}
+				],
+				"outputs": [
+					{
+						"name": "guardTrackerDuplicate",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-normalize-tracker-item-fields",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/planTrackerItemMutation.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/planTrackerItemMutation.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

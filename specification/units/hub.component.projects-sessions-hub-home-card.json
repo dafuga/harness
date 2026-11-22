@@ -1,0 +1,143 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-card",
+	"uid": "u_yynkdbd66b",
+	"kind": "component",
+	"title": "HubHomeCard",
+	"responsibility": "Presents a home section preview with its heading, count, summary and dialog control.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.harness-harness-icon",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h2",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeCard.svelte"],
+		"symbols": ["HubHomeCard"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HubHomeCard.section",
+				"type": "HomeSection",
+				"required": true,
+				"description": "Home section whose heading, count and activation labels are displayed."
+			},
+			{
+				"name": "HubHomeCard.total",
+				"type": "number | undefined",
+				"required": true,
+				"description": "Number of records represented by the card, or undefined while loading."
+			},
+			{
+				"name": "HubHomeCard.summary",
+				"type": "string",
+				"required": true,
+				"description": "Short description of the state of the section."
+			},
+			{
+				"name": "HubHomeCard.open",
+				"type": "() => void",
+				"required": true,
+				"description": "Opens the relevant home section and accepts an agent identifier when applicable."
+			},
+			{
+				"name": "HubHomeCard.children",
+				"type": "Snippet",
+				"required": true,
+				"description": "Preview content placed under the card heading."
+			},
+			{
+				"name": "HubHomeCard.footer",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional action content below the card preview."
+			},
+			{
+				"name": "HubHomeCard.badge",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional status element displayed beside the heading."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeCard",
+				"type": "markup",
+				"description": "Presents a home section preview with its heading, count, summary and dialog control."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/HubHomeCard.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/HubHomeCard.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

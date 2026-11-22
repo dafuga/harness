@@ -18,6 +18,7 @@
 			"budgetEventSchema",
 			"performanceBaselineSchema",
 			"budgetEventSchema",
+			"budgetFindingSchema",
 			"BudgetEvent",
 			"PerformanceBaselineEntry",
 			"BudgetEvent",
@@ -37,6 +38,11 @@
 				"name": "budgetEventSchema",
 				"type": "typeof budgetEventSchema",
 				"description": "One line of the append-only budget ledger, discriminated by type: a baseline freezes a new unit's limits in metrics, and an approval records a reviewed change with before and after limits, where metrics, before and after map metric names to numbers. Each strict object requires a unit matching unitIdPattern, a record with a nonblank id and 40-character lowercase hex commit and tree SHAs, a nonblank reviewer, reason and at time, and a performance array of performanceBaselineSchema entries; either kind may add unmeasured, mapping metric names to the nonblank reason each was not measured."
+			},
+			{
+				"name": "budgetFindingSchema",
+				"type": "z.ZodType",
+				"description": "Validates the measured and baseline values and diagnostic status of a verification budget finding."
 			}
 		],
 		"errors": [],

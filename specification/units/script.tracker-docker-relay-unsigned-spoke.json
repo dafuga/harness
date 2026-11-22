@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "script.tracker-docker-relay-unsigned-spoke",
+	"uid": "u_uz2dxyllyb",
+	"kind": "script",
+	"title": "unsigned-spoke",
+	"responsibility": "Owns the unsigned-spoke build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/tracker-docker-relay/unsigned-spoke.patch"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/tracker-docker-relay/unsigned-spoke.patch",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/tracker-docker-relay/unsigned-spoke.patch"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

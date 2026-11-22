@@ -13,7 +13,7 @@ const asked = (state: HostedState, path: string) =>
 test('the email input follows the server code contract', async ({ page }) => {
 	const proof = { ...unsent, sent: true, expiresAt: '2026-10-12T12:10:00.000Z' };
 	await hostedFixture(page, { signedIn: false, email: { proof, delivery: true } });
-	await page.goto('/');
+	await page.goto('/projects');
 	const code = serverEmailCode();
 	expect(await field(page).getAttribute('maxlength')).toBe(String(code.length));
 	await field(page).fill(code.slice(0, -1));
@@ -25,7 +25,7 @@ test('the email input follows the server code contract', async ({ page }) => {
 /** Signs in with a Google account whose address Google does not vouch for. */
 async function thirdParty(page: Page) {
 	const state = await hostedFixture(page, { signedIn: false });
-	await page.goto('/');
+	await page.goto('/projects');
 	await page.evaluate(
 		(value) => Object.assign(window, { __credential: value }),
 		thirdPartyCredential
@@ -123,7 +123,7 @@ test('a deployment that cannot send email says so and marks nothing as sent', as
 	});
 	const email = { proof: unsent, delivery: false };
 	await hostedFixture(page, { signedIn: false, email });
-	await page.goto('/');
+	await page.goto('/projects');
 	await button(page, 'Send code').click();
 	await expect(page.getByRole('alert')).toContainText(/cannot send email yet/);
 	await expect(button(page, 'Send code')).toBeVisible();

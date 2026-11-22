@@ -1,0 +1,45 @@
+{
+	"name": "completion-hooks",
+	"goal": "Run configured completion checks after successful managed orchestration and module execution, keep refused changes out of handoff, and preserve measured and Tracker-linked receipts.",
+	"createdAt": "2026-11-21T19:43:37.420Z",
+	"updatedAt": "2026-11-21T20:07:26.292Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T19:45:11.439Z",
+			"evidence": "Per-project named checks, provider-independent automatic gates, disposable module candidate, fresh test and LCOV receipts, real managed worker and orchestrator proof."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-21T20:07:25.160Z",
+			"evidence": "Named project checks now run automatically at managed handoff. Candidate source and tests are gated by fresh byte, exit-code, coverage and scope proof."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-21T20:07:26.292Z",
+			"evidence": "Sealed CLI red 4948226a182d and green ac2e8c906a71. Six completion cases and 45 nearby cases passed on harbor-mbp-2. Both real Codex demonstrations passed on a32e1d0456."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

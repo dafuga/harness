@@ -4,6 +4,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { ProviderState } from '../../models/development-tooling/Desktop.types';
+	import { mockupModels } from '../../utils/explorer-ui/composeModes';
 	import type { AgentChoice, ComposeMode, RunDraft } from '../../utils/explorer-ui/composeModes';
 	import { agentSettings } from '../../lib/agents-providers/agent-settings/agentSettings.svelte';
 	import AgentControls from '../agents-providers/AgentControls.svelte';
@@ -17,6 +18,7 @@
 		failureReported = false,
 		placeholder = '',
 		visual = false,
+		fixedVisual = false,
 		compact = false,
 		comment,
 		send
@@ -31,8 +33,10 @@
 		failureReported?: boolean;
 		/** What an agent request is asked to describe here, where it is not the next design. */
 		placeholder?: string;
-		/** Whether a Plan here makes images, so it asks for the device's number of design options. */
+		/** Whether a Plan here asks for the device's number of visual design options. */
 		visual?: boolean;
+		/** Direct entity Plans use the mockup authoring models. */
+		fixedVisual?: boolean;
 		/** Whether its agent choices are icons that open pickers, where the request has little room. */
 		compact?: boolean;
 		comment: (text: string) => Promise<boolean>;
@@ -49,7 +53,10 @@
 	const request = $derived(mode && mode !== 'comment' ? mode : null);
 	/** Only a Plan of a visual unit has a count; Ask and Change ask for none, nor does a comment. */
 	const counted = $derived(request === 'plan' && visual);
-	const unready = $derived(Boolean(request) && (!agent || (request === 'change' && !approved)));
+	const fixed = $derived(counted && fixedVisual);
+	const author: AgentChoice = { provider: 'claude', model: mockupModels.author, effort: null };
+	const selected = $derived(fixed ? author : agent);
+	const unready = $derived(Boolean(request) && (!selected || (request === 'change' && !approved)));
 	const blocked = $derived(!mode || running || !text.trim() || unready);
 	const hint = $derived(notice || (mode ? 'For people. A comment never starts an agent.' : ''));
 	const prompt = $derived.by(() => {
@@ -62,8 +69,8 @@
 		const body = text.trim();
 		const asked = counted ? { designOptions: agentSettings.designOptions } : {};
 		const sent =
-			request && agent
-				? await send({ text: body, mode: request, ...agent, ...asked })
+			request && selected
+				? await send({ text: body, mode: request, ...selected, ...asked })
 				: await comment(body);
 		failed = !sent;
 		if (sent) text = '';
@@ -109,10 +116,15 @@
 			aria-label={`Send ${mode === 'ask' ? 'question' : (mode ?? 'message')}`}
 			disabled={blocked}>➤</hx-button
 		>{/snippet}
-	{#if request}<AgentControls {providers} bind:choice={agent} {compact} {action} />{:else}<hx-div
-			class="composer-bottom"
-		>
-			<hx-small class="composer-hint">{hint}</hx-small>{@render action()}
+	{#if request && !fixed}<AgentControls
+			{providers}
+			bind:choice={agent}
+			{compact}
+			{action}
+		/>{:else}<hx-div class="composer-bottom">
+			<hx-small class="composer-hint"
+				>{fixed ? 'Sonnet mockups · Haiku sizes and states' : hint}</hx-small
+			>{@render action()}
 		</hx-div>{/if}
 </hx-form>
 

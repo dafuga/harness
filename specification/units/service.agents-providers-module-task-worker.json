@@ -41,6 +41,11 @@
 				"description": "The runner whose run(input) executes each attempt with its provider, model, intelligence, worktree cwd, prompt and signal. Defaults to new ModuleTaskRunnerAdapter(), which runs the installed provider CLIs with saved login."
 			},
 			{
+				"name": "ModuleTaskWorkerService.constructor.tracker",
+				"type": "string",
+				"required": false
+			},
+			{
 				"name": "ModuleTaskWorkerService.once.worker",
 				"type": "string",
 				"required": true,
@@ -1356,6 +1361,11 @@
 						"type": "TaskRunner",
 						"required": false,
 						"description": "The runner whose run(input) executes each attempt with its provider, model, intelligence, worktree cwd, prompt and signal. Defaults to new ModuleTaskRunnerAdapter(), which runs the installed provider CLIs with saved login."
+					},
+					{
+						"name": "ModuleTaskWorkerService.constructor.tracker",
+						"type": "string",
+						"required": false
 					}
 				],
 				"outputs": [

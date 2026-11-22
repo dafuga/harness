@@ -29,7 +29,18 @@ export function recordFiles(record: VerificationRecord): RecordFile[] {
 		bytes: log.bytes
 	}));
 	const seen = new Set<string>();
-	return [...captures, ...logs].filter((file) => !seen.has(file.path) && seen.add(file.path));
+	const retained = record.retainedArtifact
+		? [
+				{
+					path: record.retainedArtifact.path,
+					bytes: record.retainedArtifact.bytes,
+					sha256: record.retainedArtifact.sha256
+				}
+			]
+		: [];
+	return [...captures, ...logs, ...retained].filter(
+		(file) => !seen.has(file.path) && seen.add(file.path)
+	);
 }
 
 export { evidenceManifest } from '../../services/verification-evidence/evidence-attach-service/evidenceManifest';

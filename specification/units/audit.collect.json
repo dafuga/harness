@@ -35,7 +35,7 @@
 			{
 				"name": "collectAuditedFiles",
 				"type": "Promise<CollectedFiles>",
-				"description": "The resolved CollectedFiles object contains files with a joined path and lower-case extension for each non-directory, non-symlink entry, dirs with visited paths relative to the root ending in /, and ignoredPaths for symbolic links and skipped directories. Skipped directory names come from a fixed ignore set, and their paths end in /.",
+				"description": "The resolved CollectedFiles object contains files with a joined path and lower-case extension for each non-directory, non-symlink entry, dirs with visited paths relative to the root ending in /, and ignoredPaths for symbolic links and skipped directories. Skipped directory names come from a fixed ignore set, and their paths end in /. Godot editor caches named .godot are skipped.",
 				"examples": [
 					{
 						"files": [
@@ -49,7 +49,7 @@
 							}
 						],
 						"dirs": ["src/", "src/audit/"],
-						"ignoredPaths": ["node_modules/", "src/current-link"]
+						"ignoredPaths": [".godot/", "node_modules/", "src/current-link"]
 					}
 				]
 			}
@@ -78,7 +78,7 @@
 					{
 						"name": "collectAuditedFiles",
 						"type": "Promise<CollectedFiles>",
-						"description": "The resolved CollectedFiles object contains files with a joined path and lower-case extension for each non-directory, non-symlink entry, dirs with visited paths relative to the root ending in /, and ignoredPaths for symbolic links and skipped directories. Skipped directory names come from a fixed ignore set, and their paths end in /.",
+						"description": "The resolved CollectedFiles object contains files with a joined path and lower-case extension for each non-directory, non-symlink entry, dirs with visited paths relative to the root ending in /, and ignoredPaths for symbolic links and skipped directories. Skipped directory names come from a fixed ignore set, and their paths end in /. Godot editor caches named .godot are skipped.",
 						"examples": [
 							{
 								"files": [
@@ -92,7 +92,7 @@
 									}
 								],
 								"dirs": ["src/", "src/audit/"],
-								"ignoredPaths": ["node_modules/", "src/current-link"]
+								"ignoredPaths": [".godot/", "node_modules/", "src/current-link"]
 							}
 						]
 					}

@@ -7,6 +7,7 @@ import {
 	type TaskProcessExecutor
 } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter.types';
 import { observedTaskOperation } from '../../support/taskProfiles';
+import type { Seam } from './module-task-runner.test.types';
 import { assertFrameArguments } from '../../support/frameTaskAssertions';
 test('task limits use positive integers and fall back for invalid or unset values', () => {
 	const parse = parsePositiveIntegerEnvironmentValue;
@@ -215,7 +216,6 @@ test.each<[string, 'claude' | 'codex', number, object[]]>([
 	await expect(failure).rejects.toThrow(message);
 });
 test('the process executor seam is typed, never unknown or any', () => {
-	type Seam = ConstructorParameters<typeof ModuleTaskRunnerAdapter>[0];
 	expectTypeOf<Seam>().toEqualTypeOf<TaskProcessExecutor | undefined>();
 	expect(new ModuleTaskRunnerAdapter()).toBeInstanceOf(ModuleTaskRunnerAdapter);
 });

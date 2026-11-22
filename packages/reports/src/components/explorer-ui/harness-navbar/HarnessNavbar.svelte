@@ -40,6 +40,14 @@
 	</hx-a>
 	{#if input.repository}<hx-span class="hx-repository">{input.repository}</hx-span>{/if}
 	<hx-nav class="hx-categories" aria-label="Harness categories">
+		{#if input.projects}
+			<hx-a
+				class="hx-projects"
+				href={input.projects.href}
+				aria-current={input.projects.active ? 'page' : undefined}
+				><HarnessIcon name="gauge" size={24} /><hx-span>Projects</hx-span></hx-a
+			>
+		{/if}
 		{#each view.categories as item (item.id)}
 			{#if item.href}
 				<hx-a

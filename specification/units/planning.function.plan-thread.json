@@ -10,10 +10,19 @@
 	"owns": {
 		"source": [
 			"packages/planning/src/lib/planning-collaboration/planning/planning-service/planThread.ts",
+			"packages/planning/src/lib/planning-collaboration/planning/planning-service/validateThreadReference.ts",
 			"packages/planning/src/lib/planning/planning-service/planThread.ts",
 			"packages/planning/src/utils/planThread.ts"
 		],
-		"symbols": ["planThread", "append", "planThread", "append", "planThread", "append"]
+		"symbols": [
+			"planThread",
+			"append",
+			"validateThreadReference",
+			"planThread",
+			"append",
+			"planThread",
+			"append"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -148,6 +157,18 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "validateThreadReference.reference",
+				"type": "ThreadMessage['references'][number]",
+				"required": true,
+				"description": "Thread reference that identifies the exact saved notes or screenshot of the design version."
+			},
+			{
+				"name": "validateThreadReference.plan",
+				"type": "PlanDetail",
+				"required": true,
+				"description": "Pinned plan with the committed versions and artifacts against which the reference is checked."
 			}
 		],
 		"outputs": [
@@ -681,6 +702,36 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "validateThreadReference",
+				"inputs": [
+					{
+						"name": "validateThreadReference.reference",
+						"type": "ThreadMessage['references'][number]",
+						"required": true,
+						"description": "Thread reference that identifies the exact saved notes or screenshot of the design version."
+					},
+					{
+						"name": "validateThreadReference.plan",
+						"type": "PlanDetail",
+						"required": true,
+						"description": "Pinned plan with the committed versions and artifacts against which the reference is checked."
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateThreadReference",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []

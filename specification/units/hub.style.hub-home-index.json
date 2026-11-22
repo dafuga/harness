@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.style.hub-home-index",
+	"uid": "u_u34iep2sxo",
+	"kind": "style",
+	"title": "index",
+	"responsibility": "Owns the index stylesheet.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/lib/styles/hub-home/index.css"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.style.hub-home-base",
+			"via": "style-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.style.hub-home-home",
+			"via": "style-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.style.hub-home-modal",
+			"via": "style-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.style.hub-home-modal-chat",
+			"via": "style-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.style.hub-home-modal-panes",
+			"via": "style-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.style.hub-home-quota",
+			"via": "style-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.style.hub-home-quota-modal",
+			"via": "style-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.style.hub-home-sections",
+			"via": "style-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.style.hub-home-states",
+			"via": "style-import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/lib/styles/hub-home/index.css",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/lib/styles/hub-home/index.css"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -5,7 +5,7 @@ import type { ProjectSessionService } from '../../services/projects-sessions/pro
 import type { Preparation } from './prepareRun';
 
 /** A creation run before anything exists: the project, the chosen runner and the request. */
-export interface ProjectRunContext extends Omit<RunContext, 'request' | 'entity' | 'imageModel'> {
+export interface ProjectRunContext extends Omit<RunContext, 'request' | 'entity'> {
 	request: ProjectRunRequest;
 	preparation: Preparation;
 	project: Awaited<ReturnType<ProjectSessionService['mutable']>>;

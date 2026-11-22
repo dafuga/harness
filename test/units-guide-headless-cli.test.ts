@@ -6,47 +6,8 @@ import {
 	headlessOnly,
 	headlessStateNames
 } from '../src/workflows/development-tooling/guide-units/guidanceContext';
-import {
-	commitGuidance,
-	entity,
-	guidanceJson,
-	guidanceProject,
-	writeGuidanceFile
-} from './support/unitsGuidanceProject';
-
-const recordedScenario = {
-	schemaVersion: 1,
-	id: 'widget-recorded',
-	title: 'Widget recorded assertions',
-	kind: 'headless',
-	units: [entity],
-	states: [
-		{
-			id: 'component-widget-recorded',
-			title: 'Recorded',
-			coverage: 'required',
-			units: [entity]
-		}
-	],
-	viewports: [],
-	tests: [
-		{
-			id: 'recorded',
-			kind: 'unit',
-			runner: 'command',
-			target: 'bun test/verification-output.ts vitest test/recorded.test.ts'
-		}
-	],
-	evidence: [
-		{
-			id: 'assertions',
-			kind: 'assertions',
-			states: ['component-widget-recorded'],
-			viewports: [],
-			required: true
-		}
-	]
-};
+import { entity, guidanceJson, guidanceProject } from './support/unitsGuidanceProject';
+import { addGuidanceRecording } from './support/unitsGuidanceRecording';
 
 const roots: string[] = [];
 afterEach(async () => {
@@ -87,17 +48,12 @@ test('the desktop agent HTTP adapter has headless boundary coverage', () => {
 test('guide CLI gives a headless state no devices and keeps devices on UI states', async () => {
 	const root = await guidanceProject(['default', 'loading']);
 	roots.push(root);
-	await writeGuidanceFile(
-		root,
-		'specification/scenarios/widget-recorded.json',
-		JSON.stringify(recordedScenario)
-	);
-	await writeGuidanceFile(
+	await addGuidanceRecording(
 		root,
 		'test/recorded.test.ts',
-		"test('recorded', () => expect(true).toBe(true));"
+		'command',
+		'bun test/verification-output.ts vitest test/recorded.test.ts'
 	);
-	await commitGuidance(root);
 
 	const { exitCode, report } = await guidanceJson(root, ['guide', entity]);
 	const state = (name: string) =>

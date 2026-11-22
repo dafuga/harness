@@ -1,0 +1,596 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-completion-hooks",
+	"uid": "u_xghv2ih7cg",
+	"kind": "service",
+	"title": "Managed completion checks",
+	"responsibility": "Evaluate configured orchestration and module completion checks and preserve verified results.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/completion-hooks/CompletionCheckError.ts",
+			"src/services/agents-providers/completion-hooks/completionConfig.ts",
+			"src/services/agents-providers/completion-hooks/completionRun.ts",
+			"src/services/agents-providers/completion-hooks/completionRun.types.ts",
+			"src/services/agents-providers/completion-hooks/lcovCoverage.ts",
+			"src/services/agents-providers/completion-hooks/moduleCompletion.ts",
+			"src/services/agents-providers/completion-hooks/moduleCompletion.types.ts",
+			"src/services/agents-providers/completion-hooks/moduleCompletionMeasurement.ts",
+			"src/services/agents-providers/completion-hooks/moduleCompletionMeasurement.types.ts",
+			"src/services/agents-providers/completion-hooks/orchestratorCompletion.ts"
+		],
+		"symbols": [
+			"CompletionCheckError",
+			"loadCompletionConfig",
+			"completionTurn",
+			"completionRecordPath",
+			"evaluateCompletion",
+			"saveCompletion",
+			"askCompletion",
+			"CompletionConfig",
+			"CompletionCheck",
+			"CompletionScope",
+			"CompletionTurnInput",
+			"CompletionProvider",
+			"CompletionRun",
+			"CompletionReceipt",
+			"CoverageMetric",
+			"FileCoverage",
+			"ModuleMeasurement",
+			"lcovCoverage",
+			"requireNondecreasingCoverage",
+			"moduleCompletionContext",
+			"completeModule",
+			"ModuleCompletionInput",
+			"ModuleCompletionContext",
+			"ModuleCandidate",
+			"moduleCompletionMeasurement",
+			"ModuleCompletionMeasurement",
+			"completeOrchestration"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "loadCompletionConfig.git",
+				"type": "GitAdapter",
+				"required": true
+			},
+			{
+				"name": "loadCompletionConfig.revision",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "completionRecordPath.git",
+				"type": "GitAdapter",
+				"required": true
+			},
+			{
+				"name": "completionRecordPath.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "completionRecordPath.scope",
+				"type": "CompletionRun['scope']",
+				"required": true
+			},
+			{
+				"name": "evaluateCompletion.run",
+				"type": "CompletionRun",
+				"required": true
+			},
+			{
+				"name": "evaluateCompletion.checks",
+				"type": "CompletionCheck[]",
+				"required": true
+			},
+			{
+				"name": "evaluateCompletion.evaluate",
+				"type": "(check: CompletionCheck, receipt: CompletionReceipt) => Promise<void>",
+				"required": true
+			},
+			{
+				"name": "saveCompletion.run",
+				"type": "CompletionRun",
+				"required": true
+			},
+			{
+				"name": "askCompletion.run",
+				"type": "CompletionProvider",
+				"required": true
+			},
+			{
+				"name": "askCompletion.input",
+				"type": "TaskRunInput",
+				"required": true
+			},
+			{
+				"name": "askCompletion.check",
+				"type": "CompletionCheck",
+				"required": true
+			},
+			{
+				"name": "askCompletion.readOnly",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "lcovCoverage.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "lcovCoverage.cwd",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "lcovCoverage.source",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "requireNondecreasingCoverage.before",
+				"type": "Record<string, FileCoverage>",
+				"required": true
+			},
+			{
+				"name": "requireNondecreasingCoverage.after",
+				"type": "Record<string, FileCoverage>",
+				"required": true
+			},
+			{
+				"name": "requireNondecreasingCoverage.changedSource",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "completeModule.input",
+				"type": "ModuleCompletionInput",
+				"required": true
+			},
+			{
+				"name": "moduleCompletionMeasurement.input",
+				"type": "ModuleCompletionMeasurement",
+				"required": true
+			},
+			{
+				"name": "moduleCompletionMeasurement.commit",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "moduleCompletionMeasurement.reportDir",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "moduleCompletionMeasurement.record",
+				"type": "(reading: ModuleMeasurement) => void",
+				"required": true
+			},
+			{
+				"name": "completeOrchestration.input",
+				"type": "TaskRunInput",
+				"required": true
+			},
+			{
+				"name": "completeOrchestration.runProvider",
+				"type": "CompletionProvider",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "loadCompletionConfig",
+				"type": "unknown"
+			},
+			{
+				"name": "completionTurn",
+				"type": "unknown"
+			},
+			{
+				"name": "completionRecordPath",
+				"type": "unknown"
+			},
+			{
+				"name": "evaluateCompletion",
+				"type": "Promise<boolean>"
+			},
+			{
+				"name": "saveCompletion",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "askCompletion",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "lcovCoverage",
+				"type": "unknown"
+			},
+			{
+				"name": "requireNondecreasingCoverage",
+				"type": "unknown"
+			},
+			{
+				"name": "moduleCompletionContext",
+				"type": "unknown"
+			},
+			{
+				"name": "completeModule",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "moduleCompletionMeasurement",
+				"type": "unknown"
+			},
+			{
+				"name": "completeOrchestration",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "CompletionCheckError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "loadCompletionConfig",
+				"inputs": [
+					{
+						"name": "loadCompletionConfig.git",
+						"type": "GitAdapter",
+						"required": true
+					},
+					{
+						"name": "loadCompletionConfig.revision",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "loadCompletionConfig",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "CompletionCheckError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "completionRecordPath",
+				"inputs": [
+					{
+						"name": "completionRecordPath.git",
+						"type": "GitAdapter",
+						"required": true
+					},
+					{
+						"name": "completionRecordPath.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "completionRecordPath.scope",
+						"type": "CompletionRun['scope']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "completionRecordPath",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "evaluateCompletion",
+				"inputs": [
+					{
+						"name": "evaluateCompletion.run",
+						"type": "CompletionRun",
+						"required": true
+					},
+					{
+						"name": "evaluateCompletion.checks",
+						"type": "CompletionCheck[]",
+						"required": true
+					},
+					{
+						"name": "evaluateCompletion.evaluate",
+						"type": "(check: CompletionCheck, receipt: CompletionReceipt) => Promise<void>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "evaluateCompletion",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "saveCompletion",
+				"inputs": [
+					{
+						"name": "saveCompletion.run",
+						"type": "CompletionRun",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "saveCompletion",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "askCompletion",
+				"inputs": [
+					{
+						"name": "askCompletion.run",
+						"type": "CompletionProvider",
+						"required": true
+					},
+					{
+						"name": "askCompletion.input",
+						"type": "TaskRunInput",
+						"required": true
+					},
+					{
+						"name": "askCompletion.check",
+						"type": "CompletionCheck",
+						"required": true
+					},
+					{
+						"name": "askCompletion.readOnly",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "askCompletion",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [
+					{
+						"name": "CompletionCheckError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "lcovCoverage",
+				"inputs": [
+					{
+						"name": "lcovCoverage.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "lcovCoverage.cwd",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "lcovCoverage.source",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "lcovCoverage",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "CompletionCheckError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "requireNondecreasingCoverage",
+				"inputs": [
+					{
+						"name": "requireNondecreasingCoverage.before",
+						"type": "Record<string, FileCoverage>",
+						"required": true
+					},
+					{
+						"name": "requireNondecreasingCoverage.after",
+						"type": "Record<string, FileCoverage>",
+						"required": true
+					},
+					{
+						"name": "requireNondecreasingCoverage.changedSource",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "requireNondecreasingCoverage",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "CompletionCheckError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "completeModule",
+				"inputs": [
+					{
+						"name": "completeModule.input",
+						"type": "ModuleCompletionInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "completeModule",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "CompletionCheckError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "moduleCompletionMeasurement",
+				"inputs": [
+					{
+						"name": "moduleCompletionMeasurement.input",
+						"type": "ModuleCompletionMeasurement",
+						"required": true
+					},
+					{
+						"name": "moduleCompletionMeasurement.commit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "moduleCompletionMeasurement.reportDir",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "moduleCompletionMeasurement.record",
+						"type": "(reading: ModuleMeasurement) => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "moduleCompletionMeasurement",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "CompletionCheckError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "completeOrchestration",
+				"inputs": [
+					{
+						"name": "completeOrchestration.input",
+						"type": "TaskRunInput",
+						"required": true
+					},
+					{
+						"name": "completeOrchestration.runProvider",
+						"type": "CompletionProvider",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "completeOrchestration",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "CompletionCheckError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-module-task-runner",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-module-task-worktree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "config.agents-providers-completion-hooks",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-worker",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/completion-hooks/completionRun.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/completion-hooks/completionRun.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

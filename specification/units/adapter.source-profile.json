@@ -367,7 +367,7 @@
       },
       {
         "name": "nativeProfilePlugins.root",
-        "type": "unknown",
+				"type": "string",
         "required": true,
         "description": "Project root path passed as the Vite config root and as profileRoot for the test runner configuration; the loader uses it without validating it first.",
         "examples": [
@@ -1012,7 +1012,7 @@
         "inputs": [
           {
             "name": "nativeProfilePlugins.root",
-            "type": "unknown",
+						"type": "string",
             "required": true,
             "description": "Project root path passed as the Vite config root and as profileRoot for the test runner configuration; the loader uses it without validating it first.",
             "examples": [

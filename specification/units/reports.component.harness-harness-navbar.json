@@ -43,6 +43,13 @@
 				]
 			},
 			{
+				"name": "HarnessNavbar.projects",
+				"type": "HarnessProjectsLink",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "An optional local overview link and its active state. The hosted and embedded shells omit it."
+			},
+			{
 				"name": "HarnessNavbar.base",
 				"type": "string",
 				"required": true,

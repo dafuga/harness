@@ -1,0 +1,112 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-row",
+	"uid": "u_kgwre755vx",
+	"kind": "component",
+	"title": "HubHomeRow",
+	"responsibility": "Renders a compact dashboard row with title, secondary text and optional content on either end.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-span"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeRow.svelte"],
+		"symbols": ["HubHomeRow"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HubHomeRow.title",
+				"type": "string",
+				"required": true,
+				"description": "Primary row label."
+			},
+			{
+				"name": "HubHomeRow.meta",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional secondary row label."
+			},
+			{
+				"name": "HubHomeRow.extra",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Applies the row emphasis style. Defaults to false."
+			},
+			{
+				"name": "HubHomeRow.wide",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Applies the wide row layout. Defaults to false."
+			},
+			{
+				"name": "HubHomeRow.lead",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional snippet placed before the title."
+			},
+			{
+				"name": "HubHomeRow.trailing",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional snippet placed after the row content."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeRow",
+				"type": "markup",
+				"description": "Renders a compact dashboard row with title, secondary text and optional content on either end."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/HubHomeRow.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/HubHomeRow.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

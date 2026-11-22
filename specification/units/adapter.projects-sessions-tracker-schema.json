@@ -1,0 +1,184 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.projects-sessions-tracker-schema",
+	"uid": "u_tzqekyfiyf",
+	"kind": "adapter",
+	"title": "TrackerSchemaAdapter",
+	"responsibility": "Owns the TrackerSchemaAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/projects-sessions/TrackerSchemaAdapter.ts",
+			"src/adapters/projects-sessions/TrackerSchemaAdapter.types.ts"
+		],
+		"symbols": [
+			"trackerItemFields",
+			"TrackerSchemaAdapter",
+			"TrackerSchemaAdapter.constructor",
+			"TrackerSchemaAdapter.initialize",
+			"TrackerSchemaAdapter.getMeta",
+			"TrackerSchemaAdapter.setMeta",
+			"TrackerDatabaseIdentity",
+			"TrackerSchemaAdapterConfig",
+			"TrackerSchemaAdapterConfig",
+			"TrackerDatabaseIdentity",
+			"TrackerReplayOperation"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerSchemaAdapter.constructor.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "TrackerSchemaAdapter.constructor.config",
+				"type": "TrackerSchemaAdapterConfig",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "TrackerSchemaAdapter.getMeta.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerSchemaAdapter.setMeta.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerSchemaAdapter.setMeta.value",
+				"type": "string | number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerItemFields",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerSchemaAdapter.initialize",
+				"type": "TrackerDatabaseIdentity"
+			},
+			{
+				"name": "TrackerSchemaAdapter.getMeta",
+				"type": "string | null"
+			},
+			{
+				"name": "TrackerSchemaAdapter.setMeta",
+				"type": "void"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerSchemaAdapter.initialize",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerSchemaAdapter.initialize",
+						"type": "TrackerDatabaseIdentity"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSchemaAdapter.getMeta",
+				"inputs": [
+					{
+						"name": "TrackerSchemaAdapter.getMeta.key",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSchemaAdapter.getMeta",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSchemaAdapter.setMeta",
+				"inputs": [
+					{
+						"name": "TrackerSchemaAdapter.setMeta.key",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerSchemaAdapter.setMeta.value",
+						"type": "string | number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSchemaAdapter.setMeta",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerSchemaAdapter.constructor",
+				"inputs": [
+					{
+						"name": "TrackerSchemaAdapter.constructor.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "TrackerSchemaAdapter.constructor.config",
+						"type": "TrackerSchemaAdapterConfig",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSchemaAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/projects-sessions/TrackerSchemaAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/projects-sessions/TrackerSchemaAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

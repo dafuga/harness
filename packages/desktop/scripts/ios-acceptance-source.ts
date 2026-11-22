@@ -23,6 +23,7 @@ export const rendererSources = [
 	'packages/collaboration/src',
 	'packages/planning/src',
 	'packages/reports/src/components',
+	'packages/reports/src/lib/projects-sessions/project-overview',
 	'bun.lock'
 ];
 /** What the native shell is built from, beside the renderer that is copied into it. */
@@ -31,6 +32,7 @@ export const nativeSources = ['packages/desktop/ios', 'packages/desktop/capacito
 export const computerSources = [
 	'packages/desktop/src',
 	'packages/desktop/scripts',
+	'packages/desktop/tests/e2e/support/projectOverviewNativeFixture.ts',
 	'packages/remote/src',
 	'packages/relay/src'
 ];

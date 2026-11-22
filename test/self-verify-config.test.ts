@@ -1,6 +1,6 @@
 import type { Manifest } from './self-verify-config.test.types';
 import { measureWorkload } from './support/measureWorkload';
-import checksBaseline from './fixtures/verify-checks-baseline.json';
+import checksBaseline from './support/fixtures/verify-checks-baseline.json';
 import { spawnSync } from 'node:child_process';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';

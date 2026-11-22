@@ -1,7 +1,9 @@
 // @harness-uid u_b4uzqkb2i6
+import { WorkerOutsideModuleError } from './module-task-worker-service/taskClaim.types';
 import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import { ModuleTaskRunnerAdapter } from '../../adapters/agents-providers/ModuleTaskRunnerAdapter';
+import { TaskWorktreeChangedError } from '../../adapters/agents-providers/TaskWorktreeChangedError';
 import { ModuleTaskAnalyticsService } from './ModuleTaskAnalyticsService';
 import { dispatchTaskAttempt } from './module-task-worker-service/dispatchTaskAttempt';
 import {
@@ -16,6 +18,8 @@ import type {
 	TaskSelection,
 	TaskExecution
 } from '../../repositories/agents-providers/ModuleTaskRepository.types';
+import type { TaskRunInput } from '../../repositories/agents-providers/ModuleTaskRepository.types';
+import { trackerHandoff } from '../../adapters/agents-providers/module-task-runner-adapter/trackerHandoff';
 import { ModuleTaskRepository } from '../../repositories/agents-providers/ModuleTaskRepository';
 import { ModuleTaskService } from './ModuleTaskService';
 import { claimedTask, finishTask } from './module-task-worker-service/taskClaim';
@@ -24,7 +28,8 @@ export class ModuleTaskWorkerService {
 	private readonly repository: ModuleTaskRepository;
 	constructor(
 		private readonly root = process.cwd(),
-		private readonly runner: TaskRunner = new ModuleTaskRunnerAdapter()
+		private readonly runner: TaskRunner = new ModuleTaskRunnerAdapter(),
+		private readonly tracker?: string
 	) {
 		this.repository = new ModuleTaskRepository(root);
 	}
@@ -52,7 +57,14 @@ export class ModuleTaskWorkerService {
 			const inputs = await taskFrameInputs(this.root, task, worktree, prompt);
 			const execution = await this.run(
 				task,
-				{ ...selection, cwd: worktree, ...inputs, signal },
+				{
+					...selection,
+					cwd: worktree,
+					...inputs,
+					signal,
+					platform: task.platform,
+					onRotation: this.handoff(task, worktree)
+				},
 				(choice) => {
 					result = { ...result, ...choice, fallback: true };
 				},
@@ -62,6 +74,11 @@ export class ModuleTaskWorkerService {
 			await snapshotTaskWork(this.root, task, result);
 		} catch (error) {
 			result.error = error instanceof Error ? error.message : 'Task worker failed.';
+			if (result.executions.at(-1)?.status !== 'failed')
+				result.failureCause =
+					error instanceof TaskWorktreeChangedError || error instanceof WorkerOutsideModuleError
+						? 'scope'
+						: 'workspace-error';
 		}
 		result.finishedAt = new Date().toISOString();
 		await this.repository.update(
@@ -75,9 +92,24 @@ export class ModuleTaskWorkerService {
 			result
 		};
 	}
+	private handoff(task: ModuleTask, cwd: string): TaskRunInput['onRotation'] {
+		const tracker = this.tracker;
+		if (!tracker) return undefined;
+		return (checkpoint, session) =>
+			trackerHandoff(
+				cwd,
+				{
+					tracker,
+					checkpoint,
+					role: 'module worker',
+					evidence: `harness task show ${task.id}`
+				},
+				session
+			);
+	}
 	private async run(
 		task: ModuleTask,
-		input: TaskSelection & { cwd: string; prompt: string; images?: string[]; signal: AbortSignal },
+		input: TaskRunInput,
 		onFallback: (selection: TaskSelection) => void,
 		executions: TaskExecution[]
 	) {

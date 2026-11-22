@@ -1,7 +1,10 @@
 // @harness-uid u_3tibsmkofv
+import { DeployCommand } from '../commands/execution-runtimes/DeployCommand';
 import { PermissionsCommand } from '../commands/networking-security/PermissionsCommand';
 import { ContractsCommand } from '../commands/development-tooling/ContractsCommand';
+import { ProviderSignInCommand } from '../commands/agents-providers/ProviderSignInCommand';
 import { registerTaskCommand } from './program/TaskCommand';
+import { TrackerCommand } from '../commands/projects-sessions/TrackerCommand';
 import { ModuleCommand } from '../commands/module-system/ModuleCommand';
 import { ApiCommand } from '../commands/networking-security/ApiCommand';
 import { sdkPackage } from '../utils/development-tooling/buildStamp';
@@ -9,6 +12,8 @@ import { registerCodexCommand } from './program/CodexCommand';
 import { registerBenchmarkCommand } from './program/BenchmarkCommand';
 import { registerAnalyticsCommand } from './program/AnalyticsCommand';
 import { registerActivityCommand } from './program/ActivityCommand';
+import { ProjectListCommand } from '../commands/projects-sessions/ProjectListCommand';
+import { HarborInspectionCommand } from '../commands/projects-sessions/HarborInspectionCommand';
 import { registerReportCommand } from './program/ReportCommand';
 import { registerResourcesCommand } from './program/ResourcesCommand';
 import { Command } from 'commander';
@@ -39,11 +44,14 @@ export function buildProgram(): Command {
 		.version(sdkPackage.version);
 
 	registerCodexCommand(program);
+	new ProviderSignInCommand().register(program);
+	new HarborInspectionCommand().register(program);
 	registerBenchmarkCommand(program);
 	registerResourcesCommand(program);
 	new JobsCommand().register(program);
 	registerAnalyticsCommand(program);
 	registerActivityCommand(program);
+	new ProjectListCommand().register(program);
 	registerReportCommand(program);
 	registerNewCommand(program);
 	registerGenerateCommand(program);
@@ -58,6 +66,8 @@ export function buildProgram(): Command {
 	registerBudgetCommand(program);
 	registerVerifyCommand(program);
 	registerTaskCommand(program);
+	new TrackerCommand().register(program);
+	new DeployCommand().register(program);
 	new ModuleCommand().register(program);
 	new ApiCommand().register(program);
 	new PermissionsCommand().register(program);

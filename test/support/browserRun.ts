@@ -7,6 +7,9 @@ import { runFailures, type RunReport } from './runFailures';
 import { teardownGate } from './runGate';
 import { freePort } from './workers';
 
+// Match the normal Reports Playwright web-server startup deadline.
+export const reportsBrowserStartupSeconds = 420;
+
 const runControls = ['--reporter=json', '--max-failures=1'];
 const reports = resolve(import.meta.dirname, '../../packages/reports');
 const ports = [
@@ -113,17 +116,29 @@ export async function runPassed(run: Ended, name: string): Promise<void> {
 	throw new Error(`The ${name} run exited ${code}.\n${told}\n\n${ending}`);
 }
 
-/** Resolves once the application server at `url` answers; fails when it never does. */
-export async function serving(url: string, seconds = 300): Promise<void> {
+/** Wait for the app without polling for five minutes after its browser runner has exited. */
+export async function serving(
+	run: BrowserRun,
+	seconds = reportsBrowserStartupSeconds
+): Promise<void> {
+	let exitCode: number | undefined;
+	void run.finished.then((code) => (exitCode = code));
 	for (let attempt = 0; attempt < seconds * 2; attempt += 1) {
-		const ready = await fetch(`${url}/api/health`, { signal: AbortSignal.timeout(2_000) }).then(
+		if (exitCode !== undefined)
+			throw startupError(run, `Browser runner exited ${exitCode} before serving ${run.url}.`);
+		const ready = await fetch(`${run.url}/api/health`, { signal: AbortSignal.timeout(2_000) }).then(
 			(answer) => answer.ok,
 			() => false
 		);
 		if (ready) return;
 		await new Promise((done) => setTimeout(done, 500));
 	}
-	throw new Error(`Nothing answered at ${url} within ${seconds} s.`);
+	throw startupError(run, `Nothing answered at ${run.url} within ${seconds} s.`);
+}
+
+function startupError(run: BrowserRun, message: string): Error {
+	const output = run.output().trim().slice(-2_000);
+	return new Error(output ? `${message}\n\nBrowser runner output:\n${output}` : message);
 }
 
 /** Files named `meta.json` a few levels below a directory; whatever vanishes meanwhile is skipped. */

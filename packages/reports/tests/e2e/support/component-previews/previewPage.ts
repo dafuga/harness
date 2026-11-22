@@ -1,3 +1,5 @@
+import { isHubHomePreview } from './hubHomeCatalogData';
+import { allStatesSnapshot, NOW } from '../projectOverviewFixture';
 import { previewMountMarkup } from './previewMountMarkup';
 import { recordPreviewCapture } from './recordPreviewCapture';
 import { captureClip, usesNativePopup } from './previewCapturePolicy';
@@ -49,12 +51,14 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 	}
 	const markup = await previewMountMarkup(id, variant);
 	await page.route('**/*', (route) => servePreview(route, home, markup));
+	await routeProjectOverview(page, id);
 	await routeLoadingZoom(page, id, variant);
 	await routeShellCatalog(page, id, variant);
 	// The real Hub layout creates its own API/session, answered by the existing isolated fixture.
 	if (id === 'hub.layout.root') await hostedFixture(page);
 	// Freeze calendar labels alone: Playwright's clock also erases NavigationTiming entries.
-	await page.addInitScript((now) => {
+	await page.addInitScript(
+		(now) => {
 		const NativeDate = Date;
 		window.Date = new Proxy(NativeDate, {
 			construct: (target, args, type) =>
@@ -62,7 +66,14 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 			apply: () => new NativeDate(now).toString(),
 			get: (target, name) => (name === 'now' ? () => now : Reflect.get(target, name))
 		});
-	}, Date.parse('2026-10-20T10:00:05Z'));
+		},
+		id === 'hub.page.root' ||
+			isHubHomePreview(id) ||
+			overviewPreviews.has(id) ||
+			id.includes('project-overview-project-overview')
+			? NOW
+			: Date.parse('2026-10-20T10:00:05Z')
+	);
 	await page.goto(
 		`${previewOrigin}/?unit=${encodeURIComponent(id)}${variant ? `&variant=${encodeURIComponent(variant)}` : ''}`,
 		{
@@ -73,6 +84,8 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 export async function readyPreview(page: Page, id: string, variant = '') {
 	const content = page.locator(`[data-preview-unit="${id}"]`);
 	await expect(content).toBeAttached();
+	if (id === 'hub.component.projects-sessions-hub-home-dialogs')
+		await expect(content.getByRole('dialog', { name: 'Plans' })).toBeVisible();
 	if (isBrokenPreviewImage(id, variant))
 		await expect(content.locator('.image-button').first()).toBeDisabled();
 	await applyActivityPreviewContext(page, content, id);
@@ -98,6 +111,10 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 }
 /** Wait for the real route store, rather than its earlier gate or loading frame. */
 async function readyRoute(page: Page, id: string) {
+	if (overviewPreviews.has(id))
+		await expect(page.getByText('Atlas', { exact: true })).toBeVisible();
+	if (id === 'hub.component.public-site-home-page')
+		await expect(page.getByRole('link', { name: 'Download for Mac' }).first()).toBeVisible();
 	const headings: Record<string, string> = {
 		'desktop.page.root': 'Recent projects',
 		'desktop.page.harness-path': 'Pages',
@@ -117,9 +134,29 @@ async function readyRoute(page: Page, id: string) {
 		await expect(
 			page.getByRole('cell', { name: 'ada@example.invalid', exact: true })
 		).toBeVisible();
-	if (id === 'hub.page.root')
-		await expect(page.getByRole('region', { name: 'Owned by you', exact: true })).toBeVisible();
+	if (id === 'hub.page.root' || id === 'hub.component.projects-sessions-hub-home')
+		await expect(page.getByRole('heading', { name: /working, .* need[s]? you/ })).toBeVisible();
+	else if (isHubHomePreview(id))
+		await expect(page.locator('[data-catalog-home-part]')).toBeAttached();
 }
+const overviewPreviews = new Set([
+	'desktop.page.projects',
+	'hub.page.projects',
+	'hub.page.tracker-overview',
+	'reports.page.harness-projects'
+]);
+
+async function routeProjectOverview(page: Page, id: string) {
+	if (overviewPreviews.has(id) && id !== 'desktop.page.projects') {
+		const path = id === 'reports.page.harness-projects' ? 'project-overview' : 'tracker-overview';
+		await page.route(`**/api/${path}`, (route) => route.fulfill({ json: allStatesSnapshot() }));
+	}
+	if (id === 'hub.component.public-site-home-page')
+		await page.route('**/downloads/Harness-mac-arm64.zip', (route) =>
+			route.fulfill({ status: 200, contentType: 'application/zip' })
+		);
+}
+
 function isBrokenPreviewImage(id: string, variant: string) {
 	return (
 		variant === 'image-error' &&

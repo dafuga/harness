@@ -118,8 +118,11 @@ async function looked(alive: FollowedProcess[], work: Work): Promise<Judged[]> {
 async function lingering(work: Work, settleMs: number): Promise<Judged[] | null> {
 	const began = Date.now();
 	for (let rest: Judged[] = []; ; ) {
-		const alive = await work.deadline.within(work.watch.alive(), null);
-		if (!alive || work.deadline.expired()) return null;
+		let alive = await work.deadline.within(work.watch.alive(), null);
+		// Retry the read within the existing cleanup deadline before making any ownership decision.
+		if (alive === null && !work.deadline.expired())
+			alive = await work.deadline.within(work.watch.alive(), null);
+		if (alive === null || work.deadline.expired()) return null;
 		const due = Date.now() - began >= settleMs;
 		if (due && alive.every((item) => rest.some(same(item))))
 			return rest.filter((item) => alive.some(same(item)));

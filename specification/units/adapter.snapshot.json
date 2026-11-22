@@ -21,8 +21,9 @@
 			"SnapshotAdapter.artifact",
 			"SnapshotAdapter.remove",
 			"SnapshotDrift",
-			"SnapshotDrift",
-			"TarExtractError"
+			"TarExtractError",
+			"SnapshotAdapter.retainArtifact",
+			"RetainedArtifact"
 		]
 	},
 	"contract": {
@@ -33,14 +34,18 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository root passed to the Git archive and commit-tree adapters. It matters when exporting the selected commit and loading its tracked tree.",
-				"examples": ["/workspace/project"]
+				"examples": [
+					"/workspace/project"
+				]
 			},
 			{
 				"name": "SnapshotAdapter.create.commit",
 				"type": "string",
 				"required": true,
 				"description": "The revision passed to git archive and CommitTreeAdapter.open so the exported files and tracked tree refer to the same commit. The adapter passes the string through without rewriting it.",
-				"examples": ["a6b90d3c5f71284e90ab1234567890abcdef1234"]
+				"examples": [
+					"a6b90d3c5f71284e90ab1234567890abcdef1234"
+				]
 			},
 			{
 				"name": "SnapshotAdapter.create.outputs",
@@ -48,8 +53,13 @@
 				"required": true,
 				"description": "Path patterns checked against tracked files and used to exclude covered additions from drift results. Each pattern is passed to pathMatches.",
 				"examples": [
-					["dist/**"],
-					["coverage/**", "reports/**"]
+					[
+						"dist/**"
+					],
+					[
+						"coverage/**",
+						"reports/**"
+					]
 				]
 			},
 			{
@@ -57,21 +67,41 @@
 				"type": "string",
 				"required": true,
 				"description": "The checkout root used to locate the source path for a shared link. The source must exist under this root for a link to be created.",
-				"examples": ["/workspace/project"]
+				"examples": [
+					"/workspace/project"
+				]
 			},
 			{
 				"name": "SnapshotAdapter.link.path",
 				"type": "string",
 				"required": true,
 				"description": "The path joined under the checkout and snapshot directories for the shared symlink. The operation returns false if the source is absent, the snapshot target exists, or its parent directory is absent.",
-				"examples": ["node_modules", "vendor/cache"]
+				"examples": [
+					"node_modules",
+					"vendor/cache"
+				]
 			},
 			{
 				"name": "SnapshotAdapter.artifact.path",
 				"type": "string",
 				"required": true,
 				"description": "The path resolved against the snapshot directory before reading an artifact's byte count and SHA-256. The result is undefined when the resolved path is outside the snapshot or cannot be read.",
-				"examples": ["package.json", "dist/manifest.json"]
+				"examples": [
+					"package.json",
+					"dist/manifest.json"
+				]
+			},
+			{
+				"name": "SnapshotAdapter.retainArtifact.sourcePath",
+				"type": "string",
+				"required": true,
+				"description": "The canonical relative path of a declared generated output inside the snapshot."
+			},
+			{
+				"name": "SnapshotAdapter.retainArtifact.runDirectory",
+				"type": "string",
+				"required": true,
+				"description": "The private verification run directory chosen by Harness."
 			}
 		],
 		"outputs": [
@@ -84,7 +114,10 @@
 				"name": "SnapshotAdapter.link",
 				"type": "Promise<boolean>",
 				"description": "Whether a symlink was created in the snapshot. It is false when the source is missing, the target already exists, or the target parent is absent.",
-				"examples": [true, false]
+				"examples": [
+					true,
+					false
+				]
 			},
 			{
 				"name": "SnapshotAdapter.misdeclared",
@@ -105,8 +138,12 @@
 				"description": "The result lists tracked paths or shared links that changed or disappeared, plus uncovered files added to the snapshot. Mutated paths include tracked files whose contents changed and shared links replaced from their original targets.",
 				"examples": [
 					{
-						"mutated": ["src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.ts"],
-						"added": ["tmp/check.log"]
+						"mutated": [
+							"src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.ts"
+						],
+						"added": [
+							"tmp/check.log"
+						]
 					}
 				]
 			},
@@ -125,6 +162,11 @@
 				"name": "SnapshotAdapter.remove",
 				"type": "Promise<void>",
 				"description": "The operation resolves after recursively removing the snapshot directory with force enabled."
+			},
+			{
+				"name": "SnapshotAdapter.retainArtifact",
+				"type": "Promise<RetainedArtifact | undefined>",
+				"description": "Returns the relative evidence path, original path, exact bytes count and SHA-256 for a regular file of 1 byte to 64 MiB. Returns undefined if the file is missing or ineligible."
 			}
 		],
 		"errors": [
@@ -132,6 +174,11 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "The adapter propagates failures from awaited filesystem, Git, and snapshot-scanning operations. Tar process errors are forwarded, and a nonzero tar exit is converted to an Error containing captured stderr."
+			},
+			{
+				"name": "Destination write failure",
+				"type": "thrown",
+				"description": "An unexpected error opening or writing the new artifact file rejects the promise."
 			}
 		],
 		"errorStatus": "declared",
@@ -144,14 +191,18 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository root passed to the Git archive and commit-tree adapters. It matters when exporting the selected commit and loading its tracked tree.",
-						"examples": ["/workspace/project"]
+						"examples": [
+							"/workspace/project"
+						]
 					},
 					{
 						"name": "SnapshotAdapter.create.commit",
 						"type": "string",
 						"required": true,
 						"description": "The revision passed to git archive and CommitTreeAdapter.open so the exported files and tracked tree refer to the same commit. The adapter passes the string through without rewriting it.",
-						"examples": ["a6b90d3c5f71284e90ab1234567890abcdef1234"]
+						"examples": [
+							"a6b90d3c5f71284e90ab1234567890abcdef1234"
+						]
 					},
 					{
 						"name": "SnapshotAdapter.create.outputs",
@@ -159,8 +210,13 @@
 						"required": true,
 						"description": "Path patterns checked against tracked files and used to exclude covered additions from drift results. Each pattern is passed to pathMatches.",
 						"examples": [
-							["dist/**"],
-							["coverage/**", "reports/**"]
+							[
+								"dist/**"
+							],
+							[
+								"coverage/**",
+								"reports/**"
+							]
 						]
 					}
 				],
@@ -188,14 +244,19 @@
 						"type": "string",
 						"required": true,
 						"description": "The checkout root used to locate the source path for a shared link. The source must exist under this root for a link to be created.",
-						"examples": ["/workspace/project"]
+						"examples": [
+							"/workspace/project"
+						]
 					},
 					{
 						"name": "SnapshotAdapter.link.path",
 						"type": "string",
 						"required": true,
 						"description": "The path joined under the checkout and snapshot directories for the shared symlink. The operation returns false if the source is absent, the snapshot target exists, or its parent directory is absent.",
-						"examples": ["node_modules", "vendor/cache"]
+						"examples": [
+							"node_modules",
+							"vendor/cache"
+						]
 					}
 				],
 				"outputs": [
@@ -203,7 +264,10 @@
 						"name": "SnapshotAdapter.link",
 						"type": "Promise<boolean>",
 						"description": "Whether a symlink was created in the snapshot. It is false when the source is missing, the target already exists, or the target parent is absent.",
-						"examples": [true, false]
+						"examples": [
+							true,
+							false
+						]
 					}
 				],
 				"errors": [
@@ -249,7 +313,9 @@
 								"mutated": [
 									"src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.ts"
 								],
-								"added": ["tmp/check.log"]
+								"added": [
+									"tmp/check.log"
+								]
 							}
 						]
 					}
@@ -271,7 +337,10 @@
 						"type": "string",
 						"required": true,
 						"description": "The path resolved against the snapshot directory before reading an artifact's byte count and SHA-256. The result is undefined when the resolved path is outside the snapshot or cannot be read.",
-						"examples": ["package.json", "dist/manifest.json"]
+						"examples": [
+							"package.json",
+							"dist/manifest.json"
+						]
 					}
 				],
 				"outputs": [
@@ -305,6 +374,38 @@
 						"name": "Error",
 						"type": "thrown",
 						"description": "The operation rejects if recursive removal fails."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "SnapshotAdapter.retainArtifact",
+				"inputs": [
+					{
+						"name": "SnapshotAdapter.retainArtifact.sourcePath",
+						"type": "string",
+						"required": true,
+						"description": "The canonical relative path of a declared generated output inside the snapshot."
+					},
+					{
+						"name": "SnapshotAdapter.retainArtifact.runDirectory",
+						"type": "string",
+						"required": true,
+						"description": "The private verification run directory chosen by Harness."
+					}
+				],
+				"outputs": [
+					{
+						"name": "SnapshotAdapter.retainArtifact",
+						"type": "Promise<RetainedArtifact | undefined>",
+						"description": "Returns the relative evidence path, original path, exact bytes count and SHA-256 for a regular file of 1 byte to 64 MiB. Returns undefined if the file is missing or ineligible."
+					}
+				],
+				"errors": [
+					{
+						"name": "Destination write failure",
+						"type": "thrown",
+						"description": "An unexpected error opening or writing the new artifact file rejects the promise."
 					}
 				],
 				"errorStatus": "declared"

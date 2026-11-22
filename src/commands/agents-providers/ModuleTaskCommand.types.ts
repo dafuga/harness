@@ -5,6 +5,7 @@ export class TaskWorkerInterruptedError extends Error {
 
 export interface WorkerFlags {
 	worker: string;
+	tracker?: string;
 	modules?: string;
 	once?: boolean;
 	watch?: boolean;

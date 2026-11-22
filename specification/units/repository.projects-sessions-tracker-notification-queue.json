@@ -1,0 +1,552 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.projects-sessions-tracker-notification-queue",
+	"uid": "u_e7x5dhawh4",
+	"kind": "repository",
+	"title": "TrackerNotificationQueueRepository",
+	"responsibility": "Owns the TrackerNotificationQueueRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/projects-sessions/TrackerNotificationQueueRepository.ts",
+			"src/repositories/projects-sessions/TrackerNotificationQueueRepository.types.ts",
+			"src/repositories/projects-sessions/tracker-notification-queue-repository/TrackerNotificationQueueError.ts",
+			"src/repositories/projects-sessions/tracker-notification-queue-repository/legacyQueueSchema.ts",
+			"src/repositories/projects-sessions/tracker-notification-queue-repository/legacyQueueTables.ts",
+			"src/repositories/projects-sessions/tracker-notification-queue-repository/legacyQueueTables.types.ts",
+			"src/repositories/projects-sessions/tracker-notification-queue-repository/queueExclusivity.ts",
+			"src/repositories/projects-sessions/tracker-notification-queue-repository/queueMetadata.ts",
+			"src/repositories/projects-sessions/tracker-notification-queue-repository/queueTable.ts",
+			"src/repositories/projects-sessions/tracker-notification-queue-repository/queueTable.types.ts"
+		],
+		"symbols": [
+			"TrackerNotificationQueueRepository",
+			"TrackerNotificationQueueRepository.constructor",
+			"TrackerNotificationQueueRepository.update",
+			"TrackerNotificationQueueOptions",
+			"TrackerNotificationQueueOptions",
+			"TrackerNotificationQueueError",
+			"initializeQueueSchema",
+			"validateQueueTable",
+			"callbackTable",
+			"outboxTable",
+			"reminderTable",
+			"flagTable",
+			"attentionTable",
+			"attentionItemsTable",
+			"StoredCallback",
+			"StoredOutbox",
+			"StoredReminder",
+			"StoredFlag",
+			"StoredAttention",
+			"StoredAttentionItem",
+			"notificationExclusivity",
+			"readQueueMetadata",
+			"writeQueueMetadata",
+			"validateTable",
+			"readQueueTable",
+			"writeQueueTable",
+			"QueueTable"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerNotificationQueueRepository.constructor.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "TrackerNotificationQueueRepository.constructor.options",
+				"type": "TrackerNotificationQueueOptions",
+				"required": true
+			},
+			{
+				"name": "TrackerNotificationQueueRepository.update.change",
+				"type": "(state: TrackerNotificationState) => T",
+				"required": true
+			},
+			{
+				"name": "initializeQueueSchema.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "validateQueueTable.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "validateQueueTable.table",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "validateQueueTable.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "validateQueueTable.columns",
+				"type": "readonly string[]",
+				"required": true
+			},
+			{
+				"name": "callbackTable.resolve",
+				"type": "TrackerNotificationSourceOptions['resolveDestination']",
+				"required": true
+			},
+			{
+				"name": "notificationExclusivity.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "readQueueMetadata.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "writeQueueMetadata.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "writeQueueMetadata.before",
+				"type": "TrackerNotificationState",
+				"required": true
+			},
+			{
+				"name": "writeQueueMetadata.after",
+				"type": "TrackerNotificationState",
+				"required": true
+			},
+			{
+				"name": "writeQueueMetadata.now",
+				"type": "() => number",
+				"required": true
+			},
+			{
+				"name": "validateTable.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "validateTable.table",
+				"type": "QueueTable<Row, Stored>",
+				"required": true
+			},
+			{
+				"name": "readQueueTable.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "readQueueTable.table",
+				"type": "QueueTable<Row, Stored>",
+				"required": true
+			},
+			{
+				"name": "writeQueueTable.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "writeQueueTable.table",
+				"type": "QueueTable<Row, Stored>",
+				"required": true
+			},
+			{
+				"name": "writeQueueTable.previous",
+				"type": "ReadonlyMap<string, Row>",
+				"required": true
+			},
+			{
+				"name": "writeQueueTable.draft",
+				"type": "ReadonlyMap<string, Row>",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerNotificationQueueRepository.update",
+				"type": "T"
+			},
+			{
+				"name": "initializeQueueSchema",
+				"type": "void"
+			},
+			{
+				"name": "validateQueueTable",
+				"type": "void"
+			},
+			{
+				"name": "callbackTable",
+				"type": "QueueTable<CallbackRow, StoredCallback>"
+			},
+			{
+				"name": "outboxTable",
+				"type": "QueueTable<OutboxRow, StoredOutbox>"
+			},
+			{
+				"name": "reminderTable",
+				"type": "QueueTable<ReminderRow, StoredReminder>"
+			},
+			{
+				"name": "flagTable",
+				"type": "QueueTable<FlagRow, StoredFlag>"
+			},
+			{
+				"name": "attentionTable",
+				"type": "QueueTable<AttentionRow, StoredAttention>"
+			},
+			{
+				"name": "attentionItemsTable",
+				"type": "QueueTable<AttentionItemState, StoredAttentionItem>"
+			},
+			{
+				"name": "notificationExclusivity",
+				"type": "TrackerNotificationQueue['exclusive']"
+			},
+			{
+				"name": "readQueueMetadata",
+				"type": "unknown"
+			},
+			{
+				"name": "writeQueueMetadata",
+				"type": "void"
+			},
+			{
+				"name": "validateTable",
+				"type": "void"
+			},
+			{
+				"name": "readQueueTable",
+				"type": "Map<string, Row>"
+			},
+			{
+				"name": "writeQueueTable",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "TrackerNotificationQueueError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerNotificationQueueRepository.update",
+				"inputs": [
+					{
+						"name": "TrackerNotificationQueueRepository.update.change",
+						"type": "(state: TrackerNotificationState) => T",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNotificationQueueRepository.update",
+						"type": "T"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "initializeQueueSchema",
+				"inputs": [
+					{
+						"name": "initializeQueueSchema.database",
+						"type": "SqliteDatabase",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "initializeQueueSchema",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "validateQueueTable",
+				"inputs": [
+					{
+						"name": "validateQueueTable.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "validateQueueTable.table",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "validateQueueTable.key",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "validateQueueTable.columns",
+						"type": "readonly string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateQueueTable",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerNotificationQueueError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "callbackTable",
+				"inputs": [
+					{
+						"name": "callbackTable.resolve",
+						"type": "TrackerNotificationSourceOptions['resolveDestination']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "callbackTable",
+						"type": "QueueTable<CallbackRow, StoredCallback>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "notificationExclusivity",
+				"inputs": [
+					{
+						"name": "notificationExclusivity.database",
+						"type": "SqliteDatabase",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "notificationExclusivity",
+						"type": "TrackerNotificationQueue['exclusive']"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readQueueMetadata",
+				"inputs": [
+					{
+						"name": "readQueueMetadata.database",
+						"type": "SqliteDatabase",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readQueueMetadata",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeQueueMetadata",
+				"inputs": [
+					{
+						"name": "writeQueueMetadata.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "writeQueueMetadata.before",
+						"type": "TrackerNotificationState",
+						"required": true
+					},
+					{
+						"name": "writeQueueMetadata.after",
+						"type": "TrackerNotificationState",
+						"required": true
+					},
+					{
+						"name": "writeQueueMetadata.now",
+						"type": "() => number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeQueueMetadata",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "validateTable",
+				"inputs": [
+					{
+						"name": "validateTable.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "validateTable.table",
+						"type": "QueueTable<Row, Stored>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateTable",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readQueueTable",
+				"inputs": [
+					{
+						"name": "readQueueTable.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "readQueueTable.table",
+						"type": "QueueTable<Row, Stored>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readQueueTable",
+						"type": "Map<string, Row>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeQueueTable",
+				"inputs": [
+					{
+						"name": "writeQueueTable.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "writeQueueTable.table",
+						"type": "QueueTable<Row, Stored>",
+						"required": true
+					},
+					{
+						"name": "writeQueueTable.previous",
+						"type": "ReadonlyMap<string, Row>",
+						"required": true
+					},
+					{
+						"name": "writeQueueTable.draft",
+						"type": "ReadonlyMap<string, Row>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeQueueTable",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerNotificationQueueRepository.constructor",
+				"inputs": [
+					{
+						"name": "TrackerNotificationQueueRepository.constructor.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "TrackerNotificationQueueRepository.constructor.options",
+						"type": "TrackerNotificationQueueOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNotificationQueueRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.projects-sessions-tracker-adapter-lease",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.sqlite",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-notification-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-notification",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/projects-sessions/TrackerNotificationQueueRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/projects-sessions/TrackerNotificationQueueRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,9 +1,13 @@
 // @harness-uid u_d27vkdvynl
 import { z } from 'zod';
-import { videoCaptureSchema, videoBatchPointerSchema, videoReferenceSchema, videoCoverageSchema } from '../../utils/verification-evidence/videoClipSchema';
+import { budgetFindingSchema } from './budgetTypes';
+export { budgetFindingSchema } from './budgetTypes';
+import { videoBatchPointerSchema } from '../../utils/verification-evidence/videoClipSchema';
 import { browserDiagnosticSchema } from '../development-tooling/browserDiagnostics';
 import { comparisonSchema } from '../development-tooling/comparisonTypes';
 import { explanationSchema } from '../development-tooling/explanationTypes';
+import { scenarioResultSchema } from './verificationCaptures';
+export { captureRegionSchema, captureSchema, scenarioResultSchema } from './verificationCaptures';
 import { runtimeKinds, unitIdPattern } from '../development-tooling/unitTypes';
 
 const identifier = z.string().regex(unitIdPattern);
@@ -11,52 +15,6 @@ const text = z.string().min(1);
 const commit = z.string().regex(/^[0-9a-f]{40}$/, 'must be a full commit or tree hash');
 const sha256 = z.string().regex(/^[0-9a-f]{64}$/, 'must be a sha256 hex digest');
 const outcome = z.enum(['passed', 'failed']);
-
-/** CSS-pixel bounds of an element screenshot within the rendered document. */
-export const captureRegionSchema = z.strictObject({
-	x: z.number().int().nonnegative(),
-	y: z.number().int().nonnegative(),
-	width: z.number().int().positive(),
-	height: z.number().int().positive()
-});
-
-export const captureSchema = z.strictObject({
-	video: videoCaptureSchema.optional(),
-	videoReference: videoReferenceSchema.optional(),
-	evidence: identifier,
-	kind: z.enum(['screenshot', 'video', 'audio', 'output', 'assertions', 'trace', 'benchmark']),
-	state: identifier,
-	viewport: identifier.optional(),
-	clip: captureRegionSchema.optional(),
-	status: outcome,
-	path: text,
-	sha256,
-	bytes: z.number().int().nonnegative(),
-	mediaType: text,
-	capturedAt: text,
-	provenance: z.enum(['fixture', 'actual-capture']).optional(),
-	transcript: z.string().optional(),
-	durationSeconds: z.number().positive().optional(),
-	server: z.strictObject({ buildId: text, revision: commit }).optional(),
-	note: z.string().optional()
-});
-
-export const scenarioResultSchema = z.strictObject({
-	videoCoverage: videoCoverageSchema.optional(),
-	id: identifier,
-	status: z.enum(['passed', 'failed', 'referenced']),
-	/** Revision whose code produced the captures; differs from the source only when referenced. */
-	testedRevision: commit,
-	referencedRecord: text.optional(),
-	states: z.array(
-		z.strictObject({
-			id: identifier,
-			coverage: z.enum(['required', 'missing', 'inapplicable']),
-			reason: z.string().optional(),
-			captures: z.array(captureSchema)
-		})
-	)
-});
 
 export const profileSchema = z.strictObject({
 	id: text,
@@ -68,34 +26,13 @@ export const profileSchema = z.strictObject({
 	runtime: text
 });
 
-export const budgetFindingSchema = z.strictObject({
-	unit: identifier,
-	metric: text,
-	status: z.enum([
-		'passed',
-		'exceeded',
-		'missing-baseline',
-		'missing-measurement',
-		'incomplete',
-		'incompatible',
-		/** It cannot be measured, and its reviewed baseline says so too: stated, not judged. */
-		'unavailable'
-	]),
-	/** Null whenever the measurement was not compared with a baseline. */
-	baseline: z.number().nullable(),
-	measured: z.number().nullable(),
-	/** The execution target whose emitted size this is; other findings name none. */
-	target: z.enum(runtimeKinds).optional(),
-	detail: z.string().optional(),
-	/** Why an incomplete or incompatible measurement could not be compared. */
-	differences: z.array(text).optional()
-});
-
 const artifactSchema = z.strictObject({
 	path: text,
 	sha256,
 	bytes: z.number().int().nonnegative()
 });
+
+export const retainedArtifactPath = 'artifacts/export';
 
 /** The exact version of one unit that a record observed. */
 export const componentVersionSchema = z.strictObject({
@@ -134,7 +71,7 @@ export const measurementSchema = z.strictObject({
 	artifacts: z.array(artifactSchema)
 });
 
-export const verificationRecordSchema = z.strictObject({
+const verificationRecordObject = z.strictObject({
 	videoBatches: z.array(videoBatchPointerSchema).optional(),
 	schemaVersion: z.literal(1),
 	/** Source-rederived component contracts; absent legacy formats come from the source registry. */
@@ -157,6 +94,23 @@ export const verificationRecordSchema = z.strictObject({
 	startedAt: text,
 	finishedAt: text,
 	status: outcome,
+	/** Lite receipts carry their own outcome while the whole-commit status remains failed. */
+	lite: z
+		.strictObject({
+			status: outcome,
+			pendingChecks: z.array(text),
+			pendingSetup: z.array(text),
+			pendingTools: z.array(identifier),
+			pendingEvidence: z.array(
+				z.strictObject({
+					scenario: identifier,
+					evidence: identifier,
+					state: identifier,
+					viewport: identifier.optional()
+				})
+			)
+		})
+		.optional(),
 	components: z.array(componentVersionSchema),
 	measurements: z.array(measurementSchema),
 	impact: z.strictObject({
@@ -175,7 +129,7 @@ export const verificationRecordSchema = z.strictObject({
 		z.strictObject({
 			id: text,
 			kind: z.enum(['unit', 'integration', 'e2e']),
-			runner: z.enum(['vitest', 'playwright', 'command']),
+			runner: z.enum(['vitest', 'playwright', 'command', 'godot']),
 			target: text,
 			status: outcome,
 			durationMs: z.number().nonnegative(),
@@ -184,6 +138,14 @@ export const verificationRecordSchema = z.strictObject({
 		})
 	),
 	scenarios: z.array(scenarioResultSchema),
+	retainedArtifact: z
+		.strictObject({
+			sourcePath: text,
+			path: z.literal(retainedArtifactPath),
+			sha256,
+			bytes: z.number().int().positive()
+		})
+		.optional(),
 	/** Identity of each declared build as compiled in the snapshot of this exact tree. */
 	builds: z
 		.array(
@@ -217,12 +179,12 @@ export const verificationRecordSchema = z.strictObject({
 	failures: z.array(text)
 });
 
-export type {
-	Capture,
-	ScenarioResult,
-	VerificationProfile,
-	BudgetFinding,
-	RecordedComponent,
-	Measurement,
-	VerificationRecord
-} from './verificationTypes.types';
+export const verificationRecordSchema = verificationRecordObject.refine(
+	(record) => !record.lite || record.status === 'failed',
+	{
+		path: ['status'],
+		message: 'Lite verification cannot prove a full commit.'
+	}
+);
+
+export type * from './verificationTypes.types';

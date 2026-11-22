@@ -1,42 +1,49 @@
 // @harness-uid u_v4r6unildz
 import { separateTypeDeclarations } from '../development-tooling/separateTypeDeclarations';
-import type { ProjectTemplateInput } from './project.types';
+import type { AppAdapter, ProjectTemplateInput } from './project.types';
 import { appTestFiles } from './projectTests';
 import type { PlannedFile } from '../../core/development-tooling/files';
 import { auditConfigFiles } from '../development-tooling/auditConfig';
 import { auditRunnerFiles } from '../development-tooling/auditRunner';
 import { formatConfigFiles } from '../development-tooling/formatConfig';
 import { lintConfigFiles } from '../development-tooling/lintConfig';
-import { agentRules, skillRules } from './projectGuidance';
+import { agentRules, skillRules, specificationReadme } from './projectGuidance';
 import { gameFiles } from '../game-authoring/gameProject';
+import { godotProjectFiles } from '../game-authoring/godotProject';
 import { atomicComponentFiles } from '../development-tooling/atomicComponents';
 import { atomicProjectFiles } from '../development-tooling/atomicMarkup';
 
 export function projectFiles(input: ProjectTemplateInput): PlannedFile[] {
 	if (input.kind === 'lib') return separateTypeDeclarations(libFiles(input.name));
-	const app = appFiles(input.name);
+	if (input.kind === 'game' && input.engine === 'godot') return godotProjectFiles(input);
+	const app = appFiles(input.name, input.kind === 'app' ? input.adapter : undefined);
 	const files = input.kind === 'game' ? gameFiles(input, app) : app;
 	return separateTypeDeclarations(atomicProjectFiles(files));
 }
 
-function appFiles(name: string): PlannedFile[] {
+function appFiles(name: string, adapter: AppAdapter = 'auto'): PlannedFile[] {
 	return [
-		...appConfigFiles(name),
+		...appConfigFiles(name, adapter),
 		...formatConfigFiles(),
 		...auditConfigFiles(),
 		...lintConfigFiles(),
 		...auditRunnerFiles('app'),
 		...appSourceFiles(name),
 		...atomicComponentFiles(),
-		...appTestFiles()
+		...appTestFiles(),
+		...(adapter === 'static'
+			? [{ path: 'src/routes/+layout.ts', contents: 'export const prerender = true;\n' }]
+			: [])
 	];
 }
 
-function appConfigFiles(name: string): PlannedFile[] {
+function appConfigFiles(name: string, adapter: AppAdapter): PlannedFile[] {
+	const pkg = `@sveltejs/adapter-${adapter}`;
+	const call = adapter === 'static' ? "adapter({ pages: 'build', assets: 'build' })" : 'adapter()';
 	return [
 		{
 			path: 'package.json',
-			contents: JSON.stringify(appPackage(name), null, '\t') + '\n'
+			contents: JSON.stringify(appPackage(name, adapter), null, '\t') + '\n'
 		},
 		{
 			path: 'README.md',
@@ -44,8 +51,7 @@ function appConfigFiles(name: string): PlannedFile[] {
 		},
 		{
 			path: 'svelte.config.js',
-			contents:
-				"import adapter from '@sveltejs/adapter-auto';\nimport { vitePreprocess } from '@sveltejs/vite-plugin-svelte';\nimport { atomicComponents } from './scripts/atomicComponents.js';\n\nexport default {\n\tkit: {\n\t\tadapter: adapter()\n\t},\n\tpreprocess: [atomicComponents(), vitePreprocess()]\n};\n"
+			contents: `import adapter from '${pkg}';\nimport { vitePreprocess } from '@sveltejs/vite-plugin-svelte';\nimport { atomicComponents } from './scripts/atomicComponents.js';\n\nexport default {\n\tkit: {\n\t\tadapter: ${call}\n\t},\n\tpreprocess: [atomicComponents(), vitePreprocess()]\n};\n`
 		},
 		{
 			path: 'vite.config.ts',
@@ -82,7 +88,7 @@ function appSourceFiles(name: string): PlannedFile[] {
 		},
 		{
 			path: 'specification/README.md',
-			contents: specificationReadme()
+			contents: specificationReadme
 		},
 		{
 			path: 'src/routes/+page.svelte',
@@ -134,7 +140,7 @@ function libFiles(name: string): PlannedFile[] {
 	];
 }
 
-function appPackage(name: string): Record<string, unknown> {
+function appPackage(name: string, adapter: AppAdapter): Record<string, unknown> {
 	return {
 		name,
 		version: '0.1.0',
@@ -158,7 +164,7 @@ function appPackage(name: string): Record<string, unknown> {
 		devDependencies: {
 			'@playwright/test': '^1.28.1',
 			'@eslint/js': '^9.25.1',
-			'@sveltejs/adapter-auto': '^4.0.0',
+			[`@sveltejs/adapter-${adapter}`]: adapter === 'static' ? '3.0.10' : '^4.0.0',
 			'@sveltejs/kit': '^2.16.1',
 			'@sveltejs/vite-plugin-svelte': '^5.0.0',
 			'@typescript-eslint/eslint-plugin': '^8.31.1',
@@ -208,8 +214,4 @@ function libPackage(name: string): Record<string, unknown> {
 	};
 }
 
-function specificationReadme(): string {
-	return `# Specification\n\nFeature files define delivery scope.\n\nRequired sections:\n\n1. # Feature: <name>\n2. ## Overview\n3. ## Acceptance Criteria\n4. ## Future Enhancements\n`;
-}
-
-export type { ProjectKind, ProjectTemplateInput } from './project.types';
+export type { AppAdapter, GameEngine, ProjectKind, ProjectTemplateInput } from './project.types';

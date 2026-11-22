@@ -1,0 +1,277 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.projects-sessions-project-overview-project-overview",
+	"uid": "u_n72w2an74r",
+	"kind": "component",
+	"title": "ProjectOverview",
+	"responsibility": "Shows projects grouped by status, filters the cards, and opens read-only tracker item details.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.brand-mark",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.explorer-ui-explorer-kit-notice",
+			"reports.component.explorer-ui-explorer-kit-pill",
+			"reports.component.modal",
+			"reports.component.projects-sessions-project-overview-project-overview-card",
+			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h1",
+			"reports.component.shared-primitives-atoms-html-h2",
+			"reports.component.shared-primitives-atoms-html-header",
+			"reports.component.shared-primitives-atoms-html-main",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-ul",
+			"reports.component.shared-primitives-detail-list"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/project-overview/ProjectOverview.svelte",
+			"packages/reports/src/components/projects-sessions/project-overview/ProjectOverview.types.ts"
+		],
+		"symbols": [
+			"ProjectOverview",
+			"ProjectOverview.page",
+			"ProjectOverview.label",
+			"ProjectOverview.children",
+			"ProjectOverviewProps",
+			"ProjectOverviewDetailRow"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.explorer-ui-explorer-kit-notice",
+			"reports.component.explorer-ui-explorer-kit-pill",
+			"reports.component.shared-primitives-detail-list"
+		],
+		"inputs": [
+			{
+				"name": "ProjectOverview.snapshot",
+				"type": "OverviewSnapshot | null",
+				"required": true,
+				"description": "A display-ready tracker snapshot. Null keeps the loading state visible."
+			},
+			{
+				"name": "ProjectOverview.homeHref",
+				"type": "string",
+				"required": false,
+				"default": "/harness",
+				"description": "The Harness home link for a view rendered without the host frame."
+			},
+			{
+				"name": "ProjectOverview.standalone",
+				"type": "boolean",
+				"required": false,
+				"default": true,
+				"description": "Whether to render the main landmark and the Harness home link."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ProjectOverview",
+				"type": "markup",
+				"description": "Project cards, a status filter, and details for the selected tracker item."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ProjectOverview.page",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProjectOverview.page",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ProjectOverview.label",
+				"inputs": [
+					{
+						"name": "ProjectOverview.label.row",
+						"type": "ProjectOverviewDetailRow",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectOverview.label",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ProjectOverview.children",
+				"inputs": [
+					{
+						"name": "ProjectOverview.children.row",
+						"type": "ProjectOverviewDetailRow",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectOverview.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.brand-mark",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-project-overview-project-overview-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h1",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-main",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-detail-list",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-project-overview-project-overview-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.project-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.project-overview-cards",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.project-overview-controls",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.project-overview-responsive",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/project-overview/ProjectOverview.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/project-overview/ProjectOverview.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -3,10 +3,39 @@ import { expect } from './verificationExpect';
 import { readFile, writeFile, mkdtemp, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
+import { verifyOrchestratorRotation } from './support/moduleTaskContextFixture';
 import { moduleTaskFixture } from './support/moduleTaskFixture';
 import { runHarness } from './support/cli';
 import { GitAdapter } from '../src/adapters/git-source-history/GitAdapter';
+import {
+	verifyDockerWorker,
+	verifyDockerOrchestrator,
+	verifyDockerProcess
+} from './support/moduleTaskDockerFixture';
 
+const dockerBase = process.env.HARNESS_TEST_DOCKER_BASE;
+test.skipIf(!dockerBase)(
+	'Linux worker runs the provider fixture in Docker',
+	() => verifyDockerWorker(dockerBase!),
+	60000
+);
+test.skipIf(!dockerBase)(
+	'Linux orchestrator uses the same Docker provider fixture',
+	() => verifyDockerOrchestrator(dockerBase!),
+	60000
+);
+test.skipIf(!dockerBase)(
+	'Linux process preserves its exit and recovers scoped containers after cancellation and restart',
+	() => verifyDockerProcess(dockerBase!),
+	60000
+);
+
+test('Harness owns and rotates the orchestrator before a fresh session resumes its checkpoint', async () => {
+	await verifyOrchestratorRotation('context-orchestrator');
+}, 30000);
+test('Harness hands off before the next request could cross 190000 tokens', async () => {
+	await verifyOrchestratorRotation('context-preflight');
+}, 30000);
 test('module task creation requires a wanted contract and leaves source HEAD and edits intact', async () => {
 	const f = await moduleTaskFixture();
 	try {
@@ -30,7 +59,6 @@ test('module task creation requires a wanted contract and leaves source HEAD and
 		await f.dispose();
 	}
 }, 30000);
-
 test('tasks share a stable goal-first prompt and keep their wanted contracts after a fresh fetch', async () => {
 	const f = await moduleTaskFixture();
 	const clone = await mkdtemp(join(tmpdir(), 'harness-task-clone-'));
@@ -68,20 +96,34 @@ test.each([
 		const f = await moduleTaskFixture();
 		try {
 			await f.feature();
-			await f.cli(['add', '--input', await f.input({ model, intelligence, assignee: 'owner' })]);
+			const platform = process.platform === 'darwin' ? 'macos' : undefined;
+			await f.cli([
+				'add',
+				'--input',
+				await f.input({ model, intelligence, assignee: 'owner', platform })
+			]);
 			await f.cli(['worker', '--worker', 'someone-else', '--once']);
 			expect(
 				JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task.status
 			).toBe('queued');
+			if (provider === 'claude') await writeFile(join(f.root, 'mode'), 'context-worker');
 			await f.cli(['worker', '--worker', 'owner', '--once', '--json']);
 			const shown = JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task;
 			expect(shown.status).toBe('review');
+			expect(shown.platform).toBe(platform);
 			expect(shown.result).toMatchObject({ provider, model, intelligence });
 			const calls = (await readFile(join(f.root, 'calls.ndjson'), 'utf8'))
 				.trim()
 				.split('\n')
 				.map((x) => JSON.parse(x));
-			expect(calls).toHaveLength(1);
+			expect(calls).toHaveLength(provider === 'claude' ? 2 : 1);
+			if (provider === 'claude') {
+				expect(calls[1].cwd).toBe(calls[0].cwd);
+				expect(shown.result.executions[0].sessions).toMatchObject([
+					{ status: 'rotated', peakContextTokens: 155000 },
+					{ status: 'succeeded' }
+				]);
+			}
 			expect(calls[0].provider).toBe(provider);
 			expect(calls[0].args).toContain(model);
 			expect(calls[0].args.join(' ')).toContain(intelligence);
@@ -166,6 +208,10 @@ test('competing workers claim once and writes outside the module require review 
 		const task = JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task;
 		expect(task.status).toBe('failed');
 		expect(task.result.error).toContain('outside');
+		const report = JSON.parse(
+			(await runHarness(['analytics', 'tasks', '--project', f.root, '--json'], f.root)).stdout
+		);
+		expect(report.tasks.runRecords).toMatchObject([{ outcome: 'failed', rejectionCause: 'scope' }]);
 	} finally {
 		await f.dispose();
 	}

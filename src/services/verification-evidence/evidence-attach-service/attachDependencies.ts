@@ -1,7 +1,8 @@
 // @harness-uid u_q33nfdq3id
-const scopedPrefix = 'Scoped to ';
 import type { DependentRecord } from './attachDependencies.types';
 import { clipParentRecords } from '../../../utils/development-tooling/record-lineage/recordDependencies';
+
+const scopedPrefix = 'Scoped to ';
 
 /** A scoped (--entity) record proves only its own entity; it inherits and cites no other record. */
 export function isScopedRecord(record: Pick<DependentRecord, 'failures'>): boolean {

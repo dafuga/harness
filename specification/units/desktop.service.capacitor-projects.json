@@ -17,6 +17,7 @@
 			"CapacitorProjectsService.constructor",
 			"CapacitorProjectsService.connect",
 			"CapacitorProjectsServiceConfig",
+			"PairingState",
 			"CapacitorProjectsServiceConfig",
 			"Key",
 			"Input",
@@ -102,6 +103,11 @@
 		},
 		{
 			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
 			"via": "import",
 			"origin": "derived"
 		}

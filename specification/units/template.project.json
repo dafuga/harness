@@ -14,9 +14,13 @@
 		],
 		"symbols": [
 			"projectFiles",
+			"AppAdapter",
+			"GameEngine",
 			"ProjectKind",
 			"ProjectTemplateInput",
 			"ProjectKind",
+			"AppAdapter",
+			"GameEngine",
 			"ProjectTemplateInput"
 		]
 	},
@@ -27,7 +31,7 @@
 				"name": "projectFiles.input",
 				"type": "ProjectTemplateInput",
 				"required": true,
-				"description": "`ProjectTemplateInput` supplies the project name and kind used to plan scaffold files. `kind` is `app`, `lib`, or `game`; optional `dimension` is `2d` or `3d` and is passed to game scaffolding only when `kind` is `game`.",
+				"description": "Supplies the project kind and name. Games accept dimension 2d or 3d and engine sveltekit or godot. Apps accept adapter auto or static.",
 				"examples": [
 					{
 						"name": "inventory-app",
@@ -41,6 +45,12 @@
 						"name": "terrain-demo",
 						"kind": "game",
 						"dimension": "3d"
+					},
+					{
+						"name": "godot-demo",
+						"kind": "game",
+						"dimension": "2d",
+						"engine": "godot"
 					}
 				]
 			}
@@ -49,7 +59,7 @@
 			{
 				"name": "projectFiles",
 				"type": "PlannedFile[]",
-				"description": "The result is the planned file list for the selected project scaffold; source-created entries have a repository-relative `path` and `contents`. The file set depends on `kind`: libraries follow a separate branch, while apps and games start from the app scaffold.",
+				"description": "Returns planned paths and contents for the selected scaffold. SvelteKit games extend the app scaffold. Godot games have their own scene, tests and export scripts. Libraries use the Bun TypeScript scaffold.",
 				"examples": [
 					[
 						{
@@ -70,7 +80,7 @@
 						"name": "projectFiles.input",
 						"type": "ProjectTemplateInput",
 						"required": true,
-						"description": "`ProjectTemplateInput` supplies the project name and kind used to plan scaffold files. `kind` is `app`, `lib`, or `game`; optional `dimension` is `2d` or `3d` and is passed to game scaffolding only when `kind` is `game`.",
+						"description": "Supplies the project kind and name. Games accept dimension 2d or 3d and engine sveltekit or godot. Apps accept adapter auto or static.",
 						"examples": [
 							{
 								"name": "inventory-app",
@@ -84,6 +94,12 @@
 								"name": "terrain-demo",
 								"kind": "game",
 								"dimension": "3d"
+							},
+							{
+								"name": "godot-demo",
+								"kind": "game",
+								"dimension": "2d",
+								"engine": "godot"
 							}
 						]
 					}
@@ -92,7 +108,7 @@
 					{
 						"name": "projectFiles",
 						"type": "PlannedFile[]",
-						"description": "The result is the planned file list for the selected project scaffold; source-created entries have a repository-relative `path` and `contents`. The file set depends on `kind`: libraries follow a separate branch, while apps and games start from the app scaffold.",
+						"description": "Returns planned paths and contents for the selected scaffold. SvelteKit games extend the app scaffold. Godot games have their own scene, tests and export scripts. Libraries use the Bun TypeScript scaffold.",
 						"examples": [
 							[
 								{
@@ -142,6 +158,11 @@
 		},
 		{
 			"unit": "template.format-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.game-authoring-godot-project",
 			"via": "import",
 			"origin": "derived"
 		},

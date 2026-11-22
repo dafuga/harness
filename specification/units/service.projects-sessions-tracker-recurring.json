@@ -1,0 +1,246 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-recurring",
+	"uid": "u_adwgoryfne",
+	"kind": "service",
+	"title": "TrackerRecurringService",
+	"responsibility": "Owns the TrackerRecurringService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/TrackerRecurringService.ts",
+			"src/services/projects-sessions/TrackerRecurringService.types.ts",
+			"src/services/projects-sessions/tracker-recurring-service/planRecurringOccurrence.ts",
+			"src/services/projects-sessions/tracker-recurring-service/recurringJobOutcome.ts"
+		],
+		"symbols": [
+			"TrackerRecurringService",
+			"TrackerRecurringService.constructor",
+			"TrackerRecurringService.status",
+			"TrackerRecurringService.tick",
+			"TrackerRecurringJobRequest",
+			"TrackerRecurringJobReceipt",
+			"TrackerRecurringJobRunner",
+			"TrackerRecurringOptions",
+			"planRecurringOccurrence",
+			"recurringJobOutcome"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerRecurringService.constructor.repository",
+				"type": "TrackerRecurringRepository",
+				"required": true
+			},
+			{
+				"name": "TrackerRecurringService.constructor.options",
+				"type": "TrackerRecurringOptions",
+				"required": true
+			},
+			{
+				"name": "TrackerRecurringService.tick.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "planRecurringOccurrence.item",
+				"type": "TrackerRecurringItem",
+				"required": true
+			},
+			{
+				"name": "planRecurringOccurrence.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "planRecurringOccurrence.previous",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "recurringJobOutcome.work",
+				"type": "TrackerClaimedJob",
+				"required": true
+			},
+			{
+				"name": "recurringJobOutcome.receipt",
+				"type": "TrackerRecurringJobReceipt",
+				"required": true
+			},
+			{
+				"name": "recurringJobOutcome.now",
+				"type": "number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerRecurringService.status",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerRecurringService.tick",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "planRecurringOccurrence",
+				"type": "TrackerRecurringPlan | undefined"
+			},
+			{
+				"name": "recurringJobOutcome",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "AggregateError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerRecurringService.status",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerRecurringService.status",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRecurringService.tick",
+				"inputs": [
+					{
+						"name": "TrackerRecurringService.tick.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerRecurringService.tick",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "planRecurringOccurrence",
+				"inputs": [
+					{
+						"name": "planRecurringOccurrence.item",
+						"type": "TrackerRecurringItem",
+						"required": true
+					},
+					{
+						"name": "planRecurringOccurrence.now",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "planRecurringOccurrence.previous",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "planRecurringOccurrence",
+						"type": "TrackerRecurringPlan | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recurringJobOutcome",
+				"inputs": [
+					{
+						"name": "recurringJobOutcome.work",
+						"type": "TrackerClaimedJob",
+						"required": true
+					},
+					{
+						"name": "recurringJobOutcome.receipt",
+						"type": "TrackerRecurringJobReceipt",
+						"required": true
+					},
+					{
+						"name": "recurringJobOutcome.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recurringJobOutcome",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerRecurringService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerRecurringService.constructor.repository",
+						"type": "TrackerRecurringRepository",
+						"required": true
+					},
+					{
+						"name": "TrackerRecurringService.constructor.options",
+						"type": "TrackerRecurringOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerRecurringService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-normalize-tracker-item-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-recurring",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerRecurringService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerRecurringService.ts"
+			}
+		]
+	},
+	"scenarios": ["tracker-supervised-workers"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

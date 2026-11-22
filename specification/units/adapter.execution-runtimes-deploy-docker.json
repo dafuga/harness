@@ -1,0 +1,156 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.execution-runtimes-deploy-docker",
+	"uid": "u_f77zx26wcb",
+	"kind": "adapter",
+	"title": "DeployDockerAdapter",
+	"responsibility": "Runs one reviewed deployment phase in an isolated, task-labeled Docker container and removes that container when the phase ends.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/execution-runtimes/DeployDockerAdapter.ts",
+			"src/adapters/execution-runtimes/DeployDockerAdapter.types.ts"
+		],
+		"symbols": [
+			"DeployDockerAdapter",
+			"DeployDockerAdapter.constructor",
+			"DeployDockerAdapter.run",
+			"DeployDockerAdapterConfig",
+			"LocalPhase"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "DeployDockerAdapter.constructor.config",
+				"type": "DeployDockerAdapterConfig",
+				"required": true,
+				"description": "Reviewed project or target settings for this operation."
+			},
+			{
+				"name": "DeployDockerAdapter.run.phase",
+				"type": "LocalPhase",
+				"required": true,
+				"description": "The single reviewed Docker build, smoke, or cleanup phase."
+			},
+			{
+				"name": "DeployDockerAdapter.run.mounts",
+				"type": "Record<string, string>",
+				"required": true,
+				"description": "Host paths keyed by approved container destinations."
+			},
+			{
+				"name": "DeployDockerAdapter.run.input",
+				"type": "object",
+				"required": true,
+				"description": "Typed request or persisted JSON payload for this operation."
+			}
+		],
+		"outputs": [
+			{
+				"name": "DeployDockerAdapter.run",
+				"type": "Promise<unknown>",
+				"description": "Runs one reviewed deployment phase in an isolated, task-labeled Docker container and removes that container when the phase ends."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The operation could not verify its input, target identity, or expected result."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "DeployDockerAdapter.run",
+				"inputs": [
+					{
+						"name": "DeployDockerAdapter.run.phase",
+						"type": "LocalPhase",
+						"required": true,
+						"description": "The single reviewed Docker build, smoke, or cleanup phase."
+					},
+					{
+						"name": "DeployDockerAdapter.run.mounts",
+						"type": "Record<string, string>",
+						"required": true,
+						"description": "Host paths keyed by approved container destinations."
+					},
+					{
+						"name": "DeployDockerAdapter.run.input",
+						"type": "object",
+						"required": true,
+						"description": "Typed request or persisted JSON payload for this operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployDockerAdapter.run",
+						"type": "Promise<unknown>",
+						"description": "Runs one reviewed deployment phase in an isolated, task-labeled Docker container and removes that container when the phase ends."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "DeployDockerAdapter.constructor",
+				"inputs": [
+					{
+						"name": "DeployDockerAdapter.constructor.config",
+						"type": "DeployDockerAdapterConfig",
+						"required": true,
+						"description": "Reviewed project or target settings for this operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployDockerAdapter.constructor",
+						"type": "unknown",
+						"description": "Runs one reviewed deployment phase in an isolated, task-labeled Docker container and removes that container when the phase ends."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-run-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.execution-runtimes-deploy-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/execution-runtimes/DeployDockerAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/execution-runtimes/DeployDockerAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

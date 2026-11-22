@@ -9,7 +9,7 @@ import { recordCapture } from '../../../../../src/utils/reports-media/record-cap
 export const explorer = (): SeededExplorer =>
 	JSON.parse(readFileSync(join(home, 'meta.json'), 'utf8')) as SeededExplorer;
 
-export const categories = ['Pages', 'Code', 'Translations', 'Platforms'];
+export const categories = ['Projects', 'Pages', 'Code', 'Translations', 'Platforms'];
 export const nav = (page: Page) => page.getByRole('navigation', { name: 'Harness categories' });
 export const branch = (page: Page) => page.getByRole('combobox', { name: 'Branch' });
 export const commit = (page: Page) => page.getByRole('combobox', { name: 'Commit' });

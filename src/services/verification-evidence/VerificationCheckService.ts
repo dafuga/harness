@@ -1,7 +1,6 @@
 // @harness-uid u_a7rs3z4f6t
 import { videoFlagProofFailures } from './verification-check-service/videoFlagProof';
 import { videoReferenceIntegrity } from './verification-check-service/videoReferenceIntegrity';
-import { recordFiles } from '../../utils/verification-evidence/evidenceManifest';
 import type { CheckReport } from './VerificationCheckService.types';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
@@ -16,6 +15,7 @@ import type { VerificationRecord } from '../../core/verification-evidence/verifi
 import { componentVersion } from '../../utils/development-tooling/componentVersion';
 import { recordLineage } from '../../utils/development-tooling/recordLineage';
 import { recordIntact } from '../../utils/verification-evidence/sealRecord';
+import { recordFiles } from '../../utils/verification-evidence/evidenceManifest';
 import { loadSide } from '../../workflows/development-tooling/loadRevisions';
 import { SourceIndexService } from '../development-tooling/source-index-service/SourceIndexService';
 
@@ -128,8 +128,7 @@ export class VerificationCheckService {
 
 	/** Every file this run produced must still exist with the hash the record states. */
 	private evidence(record: VerificationRecord, directory: string): string[] {
-		const files = recordFiles(record);
-		return files.flatMap((file) => {
+		return recordFiles(record).flatMap((file) => {
 			const path = join(directory, file.path);
 			if (!existsSync(path)) return [`evidence ${file.path} is missing`];
 			const hash = createHash('sha256').update(readFileSync(path)).digest('hex');

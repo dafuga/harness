@@ -1572,15 +1572,21 @@
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-			"definition": "97d9f4a4a730affc84f1a186d3778d40a16b08239e3852c6d7b6fea181cc4fd7",
+			"definition": "2614a2836542c1817abf93a513d2074f87bdb7dea539d3c994586e7d0ff93bbe",
 			"relocationDefinition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b",
 			"review": {
-				"commit": "07511ea946a971e687682ff5c8abf43e93e0cac8",
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-				"definition": "97d9f4a4a730affc84f1a186d3778d40a16b08239e3852c6d7b6fea181cc4fd7",
-				"reason": "Moves remote controls and the project chooser into sibling modules; behavior unchanged."
+				"reason": "Compose the local Desktop and remote clients with the responsive mockup renderer.",
+				"definition": "2614a2836542c1817abf93a513d2074f87bdb7dea539d3c994586e7d0ff93bbe"
 			},
 			"previousReviews": [
+				{
+					"commit": "07511ea946a971e687682ff5c8abf43e93e0cac8",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "97d9f4a4a730affc84f1a186d3778d40a16b08239e3852c6d7b6fea181cc4fd7",
+					"reason": "Moves remote controls and the project chooser into sibling modules; behavior unchanged."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
@@ -1592,6 +1598,12 @@
 					"path": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 					"definition": "e17905e36b16d1ea9acad4df5deda52208ca85268d2d9b86f88fceae26872ef2",
 					"reason": "Retain the game branch’s unload confirmation and quit-time window and backend guards."
+				},
+				{
+					"commit": "caea83354142413dd97edae29bdd055924c9847b",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "fc327936981eb1ef64eef693127c67f1a5e77c8807ef9b7a93914cbe55fdc4df",
+					"reason": "Keeps the Tracker overview publisher in the desktop backend lifecycle."
 				}
 			]
 		},
@@ -1599,26 +1611,34 @@
 			"unit": "desktop.service.native-connection",
 			"from": "packages/desktop/src/services/NativeConnectionService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
-			"definition": "35091df5a8f74b97d97a0396da7d31c5fe8b14aa38a812d54d8c8ee3129f0b81",
+			"definition": "f95a39e59fd26b8ff9fc17f70cf265ecef85c0481be8a4eeee6443ef7e27abbe",
 			"relocationDefinition": "d2e47f584c82ec1dc1ee8b2633bfda9fd0b18e23c0d7bea61f4d3eccc4347133",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "caea83354142413dd97edae29bdd055924c9847b",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
-				"definition": "35091df5a8f74b97d97a0396da7d31c5fe8b14aa38a812d54d8c8ee3129f0b81",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "f95a39e59fd26b8ff9fc17f70cf265ecef85c0481be8a4eeee6443ef7e27abbe",
+				"reason": "Exposes the fixed Tracker overview operation through native session authority."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
+					"definition": "35091df5a8f74b97d97a0396da7d31c5fe8b14aa38a812d54d8c8ee3129f0b81",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.native-auth",
 			"from": "packages/desktop/src/services/NativeAuthService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
-			"definition": "986bf632f2cf84693894b3ada0aa8523c71ecf3d573f5d41504609de5f1c7447",
+			"definition": "11320e6d5b82ebd8669a90d972996bc48246dc328a09bd57bceedada92cc671f",
 			"relocationDefinition": "67a3c6213e0976f629348ba23061f5fa8274ef5c97eb067ee00cba2f8005485f",
 			"review": {
-				"commit": "951e64f7516801d34db84011556adfde799e30ae",
+				"commit": "caea83354142413dd97edae29bdd055924c9847b",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
-				"definition": "986bf632f2cf84693894b3ada0aa8523c71ecf3d573f5d41504609de5f1c7447",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.native-auth, written by haiku); messages and behavior unchanged."
+				"definition": "11320e6d5b82ebd8669a90d972996bc48246dc328a09bd57bceedada92cc671f",
+				"reason": "Reads the Tracker overview through the current native account and rejects stale sessions."
 			},
 			"previousReviews": [
 				{
@@ -1626,6 +1646,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
 					"definition": "0435f4b7a85e042232cfe12ae825a7b3c48895b3cbd315b0bc63df1e47a3e41b",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "951e64f7516801d34db84011556adfde799e30ae",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
+					"definition": "986bf632f2cf84693894b3ada0aa8523c71ecf3d573f5d41504609de5f1c7447",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.native-auth, written by haiku); messages and behavior unchanged."
 				}
 			]
 		},
@@ -1654,15 +1680,21 @@
 			"unit": "service.regression-proof",
 			"from": "src/services/RegressionProofService.ts",
 			"to": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
-			"definition": "8e44c013f1f5f068dd40974d5a94f7f6a103ab7c2cb8e343fb9a18b9908af4ff",
+			"definition": "90865f9262155f7818cdb5acd5bbb4306b7debff974d9087de23ca938db324a2",
 			"relocationDefinition": "fe7669ca45e2a0ea78e302821cd1fb8a23eb10a79522d1afd2e7f95d093c865c",
 			"review": {
-				"commit": "b0fc91c011ea2c787af5280b660f6fa03a6cc77b",
+				"commit": "6a64ad41350d11e2360f6d8b4f01a85035fcd927",
 				"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
-				"definition": "8e44c013f1f5f068dd40974d5a94f7f6a103ab7c2cb8e343fb9a18b9908af4ff",
-				"reason": "Pass exact selected-revision registry IDs into scoped actual screenshot admission, rejecting unknown bindings while preserving registered retired and unscoped attachments."
+				"definition": "90865f9262155f7818cdb5acd5bbb4306b7debff974d9087de23ca938db324a2",
+				"reason": "Run regression proofs with an explicitly supplied environment, falling back to the process environment, so sibling repair workers use their own checkout settings."
 			},
 			"previousReviews": [
+				{
+					"commit": "b0fc91c011ea2c787af5280b660f6fa03a6cc77b",
+					"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
+					"definition": "8e44c013f1f5f068dd40974d5a94f7f6a103ab7c2cb8e343fb9a18b9908af4ff",
+					"reason": "Pass exact selected-revision registry IDs into scoped actual screenshot admission, rejecting unknown bindings while preserving registered retired and unscoped attachments."
+				},
 				{
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "src/services/RegressionProofService.ts",
@@ -1885,13 +1917,13 @@
 			"unit": "service.analytics",
 			"from": "src/services/AnalyticsService.ts",
 			"to": "src/cli/program/AnalyticsService.ts",
-			"definition": "96457d46427497e49f8c0d9e4e36eb1215dfa4f3c200909a16c5a98b9e80b62a",
+			"definition": "ac38e5a7bad6d23461a544b32c77c7a19a0218e97dd1add14e42637f11d0d21b",
 			"relocationDefinition": "1a76ce9bc1eb2d33dcb0f216fd0f9861ee67e8a243fc3e8964142c3cb50fb086",
 			"review": {
-				"commit": "8e1531e356256c5b834292aade04f14a16cdd180",
+				"commit": "106cce18c1586a977ebf54dca9e42c52901937b3",
 				"path": "src/cli/program/AnalyticsService.ts",
-				"definition": "96457d46427497e49f8c0d9e4e36eb1215dfa4f3c200909a16c5a98b9e80b62a",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-service.analytics, written by luna); messages and behavior unchanged."
+				"definition": "ac38e5a7bad6d23461a544b32c77c7a19a0218e97dd1add14e42637f11d0d21b",
+				"reason": "Limit shared run records and recommendations to the task analytics command."
 			},
 			"previousReviews": [
 				{
@@ -1923,6 +1955,12 @@
 					"path": "src/cli/program/AnalyticsService.ts",
 					"definition": "f802cac7b431bf473de8afb3cd8f471f5d02f5eecb01e4447b317fd3b9f99578",
 					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
+				{
+					"commit": "8e1531e356256c5b834292aade04f14a16cdd180",
+					"path": "src/cli/program/AnalyticsService.ts",
+					"definition": "96457d46427497e49f8c0d9e4e36eb1215dfa4f3c200909a16c5a98b9e80b62a",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-service.analytics, written by luna); messages and behavior unchanged."
 				}
 			]
 		},
@@ -1930,7 +1968,7 @@
 			"unit": "workflow.analytics-metrics",
 			"from": "src/workflows/analyticsMetrics.ts",
 			"to": "src/cli/program/analyticsMetrics.ts",
-			"definition": "f92c88037b94e173af02733113239e8c7a3128617f8c47ff96835df0f1f9a0d0",
+			"definition": "f92d3831ea48a7773152fb293f66f0365d51d7b35749870b09044dc4926bb983",
 			"previousReviews": [
 				{
 					"commit": "9425223b3263c3adbfd268eb67d49a2e01ad2f46",
@@ -1943,13 +1981,19 @@
 					"path": "src/cli/program/analyticsMetrics.ts",
 					"definition": "e85c70c0d468b0abd38a1535394a9045e14fb55c242096ebedafef7878fa59b5",
 					"reason": "Retain additive benchmark registration, aggregation and rendering alongside current sibling type companions."
+				},
+				{
+					"commit": "344f3f46efa5cd8b7279d3e374ebdcf53bedc02f",
+					"path": "src/cli/program/analyticsMetrics.ts",
+					"definition": "f92c88037b94e173af02733113239e8c7a3128617f8c47ff96835df0f1f9a0d0",
+					"reason": "Retain committed task usage, explicit review outcomes and additive analytics queries without changing existing analytics ownership."
 				}
 			],
 			"review": {
-				"commit": "344f3f46efa5cd8b7279d3e374ebdcf53bedc02f",
+				"commit": "106cce18c1586a977ebf54dca9e42c52901937b3",
 				"path": "src/cli/program/analyticsMetrics.ts",
-				"definition": "f92c88037b94e173af02733113239e8c7a3128617f8c47ff96835df0f1f9a0d0",
-				"reason": "Retain committed task usage, explicit review outcomes and additive analytics queries without changing existing analytics ownership."
+				"definition": "f92d3831ea48a7773152fb293f66f0365d51d7b35749870b09044dc4926bb983",
+				"reason": "Join reviews to provider runs and add task difficulty, cost and model-choice metrics."
 			},
 			"relocationDefinition": "ec2621dc9a41ead5584d56839f61c0d5c65a534d0c6e915a8b59c4b2f2d9d044"
 		},
@@ -2089,15 +2133,21 @@
 			"unit": "command.loop",
 			"from": "src/commands/loop.ts",
 			"to": "src/cli/program/loop.ts",
-			"definition": "392baa3e941129dd03a8e6c4f66c16635cefb4f1a3a3cdaac8496752ac216391",
+			"definition": "2de34a44084c28ef32c0fc5da7bfa238cd36cf909bfede891f0140e08f1857ec",
 			"relocationDefinition": "f4704c6ab8a779e681e90ae7d8f18e9606693fc44eded629342354c860663bf2",
 			"review": {
-				"commit": "ea51bbcbf69c324dd7913254e50715cdf24e6278",
+				"commit": "6a64ad41350d11e2360f6d8b4f01a85035fcd927",
 				"path": "src/cli/program/loop.ts",
-				"definition": "392baa3e941129dd03a8e6c4f66c16635cefb4f1a3a3cdaac8496752ac216391",
-				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				"definition": "2de34a44084c28ef32c0fc5da7bfa238cd36cf909bfede891f0140e08f1857ec",
+				"reason": "Register the loop siblings and review-bugs commands alongside the existing loop commands."
 			},
 			"previousReviews": [
+				{
+					"commit": "ea51bbcbf69c324dd7913254e50715cdf24e6278",
+					"path": "src/cli/program/loop.ts",
+					"definition": "392baa3e941129dd03a8e6c4f66c16635cefb4f1a3a3cdaac8496752ac216391",
+					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
 				{
 					"commit": "48e4a8b9b892e15735c51c20710bafcf0304f4bb",
 					"path": "src/cli/program/loop.ts",
@@ -2128,15 +2178,21 @@
 			"unit": "workflow.loop-evaluate",
 			"from": "src/workflows/loopEvaluate.ts",
 			"to": "src/cli/program/loopEvaluate.ts",
-			"definition": "4cab7352c461aef4aa700f3e3e2344f5e38aaebe7a0429633d370f120cbbc08a",
+			"definition": "064f36c05846c93418971acc8f7f5f90a0325a225503adcb06817866b0d7fa8d",
 			"relocationDefinition": "93b1bdbb716a8569108453b267b0843f66f570e9076fcdbb7ea203eb2adf31e3",
 			"review": {
-				"commit": "58a619d02e4cb955fe0db11ad18c1ff3348e2ff0",
+				"commit": "6a64ad41350d11e2360f6d8b4f01a85035fcd927",
 				"path": "src/cli/program/loopEvaluate.ts",
-				"definition": "4cab7352c461aef4aa700f3e3e2344f5e38aaebe7a0429633d370f120cbbc08a",
-				"reason": "Retain bounded evaluator output and process trees, workload-aware deadlines, refusal of mutations after explicit loop closure, owner-scoped child credentials and preserved bounded command diagnostics."
+				"definition": "064f36c05846c93418971acc8f7f5f90a0325a225503adcb06817866b0d7fa8d",
+				"reason": "Run project evaluators through the shared bounded evaluator process helper with the same resource lease, environment and failure reporting."
 			},
 			"previousReviews": [
+				{
+					"commit": "58a619d02e4cb955fe0db11ad18c1ff3348e2ff0",
+					"path": "src/cli/program/loopEvaluate.ts",
+					"definition": "4cab7352c461aef4aa700f3e3e2344f5e38aaebe7a0429633d370f120cbbc08a",
+					"reason": "Retain bounded evaluator output and process trees, workload-aware deadlines, refusal of mutations after explicit loop closure, owner-scoped child credentials and preserved bounded command diagnostics."
+				},
 				{
 					"commit": "43dacd3706aa93cc8cda40db9d6a802fde185562",
 					"path": "src/cli/program/loopEvaluate.ts",
@@ -2555,14 +2611,22 @@
 			"unit": "command.new",
 			"from": "src/commands/new.ts",
 			"to": "src/cli/program/new.ts",
-			"definition": "d75850024742dc2f26d08b564d099efc61f57c5ce29b82312aa1bde4180ac3d8",
+			"definition": "1fb111ad72677cdcfa6446840eaeeb6ddddac9650848f7991e4bbffdfb67a527",
 			"relocationDefinition": "5b23218644999fd41e1610c4f710030dfce37b2977a2c3b8e31db18a8c97a2ee",
 			"review": {
-				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
-				"path": "src/commands/new.ts",
-				"definition": "d75850024742dc2f26d08b564d099efc61f57c5ce29b82312aa1bde4180ac3d8",
-				"reason": "Retain the game branch’s game project command and dimension option."
-			}
+				"commit": "d07eac3753950f0f30df3242830668d4c3bcbfc8",
+				"path": "src/cli/program/new.ts",
+				"definition": "1fb111ad72677cdcfa6446840eaeeb6ddddac9650848f7991e4bbffdfb67a527",
+				"reason": "Registers and forwards the game engine option in the CLI."
+			},
+			"previousReviews": [
+				{
+					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+					"path": "src/commands/new.ts",
+					"definition": "d75850024742dc2f26d08b564d099efc61f57c5ce29b82312aa1bde4180ac3d8",
+					"reason": "Retain the game branch’s game project command and dimension option."
+				}
+			]
 		},
 		{
 			"unit": "hub.service.hub-projection",
@@ -2897,13 +2961,13 @@
 			"unit": "workflow.run-verify",
 			"from": "src/workflows/runVerify.ts",
 			"to": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-			"definition": "a2e278d182469096dbace16fc9c02992d19254af4c73a9c81b9352f02013f77c",
+			"definition": "8d42d21ef83523bf91b08d8eea9982b54d0e3cf64460f47853da3b330346baba",
 			"relocationDefinition": "e0409b5f004bb8a3d911c1b43ea9f69717d3d9f5ba894bfc7c741da424850a38",
 			"review": {
-				"commit": "2ac7147eec73a3948bd95cb3cf8eb473b3b099ea",
+				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
 				"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-				"definition": "a2e278d182469096dbace16fc9c02992d19254af4c73a9c81b9352f02013f77c",
-				"reason": "Return automatic entity attachment results without changing whole-commit verification."
+				"definition": "8d42d21ef83523bf91b08d8eea9982b54d0e3cf64460f47853da3b330346baba",
+				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
 			},
 			"previousReviews": [
 				{
@@ -2953,6 +3017,36 @@
 					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
 					"definition": "52242a062d31ccfb295d263aff09bdf1eddb419254c83e487acefcc7d0e82d83",
 					"reason": "Record main’s scoped entity verification path, preserving full verification behavior and priority handling."
+				},
+				{
+					"commit": "2ac7147eec73a3948bd95cb3cf8eb473b3b099ea",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "a2e278d182469096dbace16fc9c02992d19254af4c73a9c81b9352f02013f77c",
+					"reason": "Return automatic entity attachment results without changing whole-commit verification."
+				},
+				{
+					"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "bde1aa75ef73a0eacbea88652b6fd1bc8e2350e20960032ad0be4d18181b872c",
+					"reason": "Route profile selection through exact-commit verification."
+				},
+				{
+					"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "39760d24d34ed1909950c97bf6ee8dcdd3b786f47c2cd2ed01c4635e6ceac498",
+					"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
+				},
+				{
+					"commit": "59e4c64d62fd82b587f00ad9b9c6b23daac0bcc4",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "787fd5c22cfcb530d783eb4f871fa294625b4df4dde9b4b555e322f12389fa0b",
+					"reason": "Propagate cancellation to admitted setup and check processes so verification can clean up before exiting."
+				},
+				{
+					"commit": "cdc50273156f82fd9534f192aa42bb60d5d62e3e",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "e2e23861135811c330ef084a52fb4966b29b2e8e039c0090151408baee19b801",
+					"reason": "Preserve exact artifact verification and current Harness record assembly in the reconciled source."
 				}
 			]
 		},
@@ -2960,13 +3054,13 @@
 			"unit": "service.verification",
 			"from": "src/services/verification-service/VerificationService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-			"definition": "a8f2b11c13e2390046b897cb32be52bd0f9c954b13be1e96f6eee179f7b7942e",
+			"definition": "8fcfadc67cf612f0a9c7f965bdec2e920fa0713ee7df2e1d436b846b0ba4528f",
 			"relocationDefinition": "146b117282696844fcc9506d83b7d30df30482554e3603d38b08b295272e02c9",
 			"review": {
-				"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-				"definition": "a8f2b11c13e2390046b897cb32be52bd0f9c954b13be1e96f6eee179f7b7942e",
-				"reason": "Select and rerun declared video scenarios with pending frame feedback."
+				"definition": "8fcfadc67cf612f0a9c7f965bdec2e920fa0713ee7df2e1d436b846b0ba4528f",
+				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
 			},
 			"previousReviews": [
 				{
@@ -2998,6 +3092,30 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
 					"definition": "95c001160c34bf95bcf7242ecb31190f2f9624511ad8afe02fc69fb5031e3622",
 					"reason": "Retain the reviewed change: entity-scoped verify computes the needed builds; skipped builds are not 'not produced' failures."
+				},
+				{
+					"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+					"definition": "157e286f15bbf557ef77da666603b8f02583a3d80a97bc4e95cd14b58b1ee367",
+					"reason": "Partition runnable checks and record deferred work."
+				},
+				{
+					"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+					"definition": "23dfd0980a8a12620e8cc8f32380158792eef707e221c4f9dc8f899160d9c762",
+					"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
+				},
+				{
+					"commit": "59e4c64d62fd82b587f00ad9b9c6b23daac0bcc4",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+					"definition": "c0842801d54d6023c0bcdcaf23c238a416ee29387c2debdb00aa30130c1ab933",
+					"reason": "Propagate cancellation to admitted setup and check processes so verification can clean up before exiting."
+				},
+				{
+					"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+					"definition": "a8f2b11c13e2390046b897cb32be52bd0f9c954b13be1e96f6eee179f7b7942e",
+					"reason": "Select and rerun declared video scenarios with pending frame feedback."
 				}
 			]
 		},
@@ -3005,14 +3123,22 @@
 			"unit": "function.scenario-coverage",
 			"from": "src/services/verification-service/scenarioCoverage.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
-			"definition": "22d95fdf68fc2c01a4bc7a9848a46ce8c5dfd11d7026ebc6f111b1ae5cce3a63",
+			"definition": "c67c831944910df25ccb8b94e586f02d8aa0c0f3dd9b9c1fb6352b7cd9d15dbd",
 			"relocationDefinition": "7c6fde05df18fa70a2c12eae9a58acdd175271911693f14df619e73bd8938ffe",
 			"review": {
-				"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+				"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
-				"definition": "22d95fdf68fc2c01a4bc7a9848a46ce8c5dfd11d7026ebc6f111b1ae5cce3a63",
-				"reason": "Judge modular clip graph coverage and active reviewer flags with scenario evidence."
-			}
+				"definition": "c67c831944910df25ccb8b94e586f02d8aa0c0f3dd9b9c1fb6352b7cd9d15dbd",
+				"reason": "Judge runnable checks and preserve pending scenario evidence."
+			},
+			"previousReviews": [
+				{
+					"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
+					"definition": "22d95fdf68fc2c01a4bc7a9848a46ce8c5dfd11d7026ebc6f111b1ae5cce3a63",
+					"reason": "Judge modular clip graph coverage and active reviewer flags with scenario evidence."
+				}
+			]
 		},
 		{
 			"unit": "function.seal-record",
@@ -3024,19 +3150,26 @@
 			"unit": "function.verify-plan",
 			"from": "src/services/verification-service/verifyPlan.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlan.ts",
-			"definition": "cc38e30b15727c2dd750d0ae3d269be515091dd8d0f675c442f1f6ffbaa9acdf"
+			"definition": "ca5ff9cf3bc611a84844b0d19d47df2e0bf954f30ad08ea5283e612368bb0681",
+			"relocationDefinition": "cc38e30b15727c2dd750d0ae3d269be515091dd8d0f675c442f1f6ffbaa9acdf",
+			"review": {
+				"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+				"path": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlan.ts",
+				"definition": "ca5ff9cf3bc611a84844b0d19d47df2e0bf954f30ad08ea5283e612368bb0681",
+				"reason": "Plan Godot headlessly and identify full-only commands."
+			}
 		},
 		{
 			"unit": "service.record-assembly",
 			"from": "src/services/record-assembly-service/RecordAssemblyService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"definition": "948149be5e55d9bef494242c498b06500ff32bc1fc85c38c17087059dfebac3a",
+			"definition": "f10bcc6987f9d8cf238eea574e3a185ceab92936c150364124b378b33a74bddd",
 			"relocationDefinition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936",
 			"review": {
-				"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-				"definition": "948149be5e55d9bef494242c498b06500ff32bc1fc85c38c17087059dfebac3a",
-				"reason": "Retain validated video batch pointers in sealed verification records."
+				"definition": "f10bcc6987f9d8cf238eea574e3a185ceab92936c150364124b378b33a74bddd",
+				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
 			},
 			"previousReviews": [
 				{
@@ -3074,6 +3207,42 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 					"definition": "d2c41ff73865a9c2c9c3a94e5de16153c26ef52ee57ce2c04ccc3a70e6dd2e7c",
 					"reason": "Retain the reviewed change: record assembly writes skippedBuilds from the snapshot run."
+				},
+				{
+					"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "50f9f685616a346bc63595ea505496ab7825cb9096e057aed5c8f737cd6c4c63",
+					"reason": "Seal Lite outcomes with a separate full-proof gate."
+				},
+				{
+					"commit": "e3191b248640e223bc34a92c8e973da3d60ba742",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "9cf207e2c0d91cb1b71431b0e95187f0da34afa36a9c4c39b0d643b0d229af8e",
+					"reason": "Extract the component snapshot assembly so the record assembly method meets the length rule. Preserve the order, inputs, and fields used to seal the verification record."
+				},
+				{
+					"commit": "41db0c5289110d6ec9cd696a87614cb98f78c173",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "3ba8f924316602c3d500219211db8612d9dac691ea892c3ccb75931bd6f7c06d",
+					"reason": "Seal Lite outcomes with a separate full-proof gate while keeping component snapshot assembly extracted so the record assembly method meets the length rule."
+				},
+				{
+					"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "8033d686762a5793b2494eaeceb0633d45505ac72a71b4e3b11803ddda5ba09f",
+					"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
+				},
+				{
+					"commit": "cdc50273156f82fd9534f192aa42bb60d5d62e3e",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "6578dca87e7e83d246f09169aef0b7752094b3d171b804cc83f4ff6226f578f3",
+					"reason": "Preserve exact artifact verification and current Harness record assembly in the reconciled source."
+				},
+				{
+					"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "948149be5e55d9bef494242c498b06500ff32bc1fc85c38c17087059dfebac3a",
+					"reason": "Retain validated video batch pointers in sealed verification records."
 				}
 			]
 		},
@@ -3254,7 +3423,14 @@
 			"unit": "workflow.built-in-loop-templates",
 			"from": "src/workflows/builtInLoopTemplates.ts",
 			"to": "src/workflows/development-tooling/loop-templates/builtInLoopTemplates.ts",
-			"definition": "6d566c8a153e181fbd3af7dde6f990633736ff57decf81b50cceda8c16a4a55f"
+			"definition": "b66f973f5d2dabe713d47248ce86d8633853949ddc4752296a412bace66ee8f9",
+			"relocationDefinition": "6d566c8a153e181fbd3af7dde6f990633736ff57decf81b50cceda8c16a4a55f",
+			"review": {
+				"commit": "6a64ad41350d11e2360f6d8b4f01a85035fcd927",
+				"path": "src/workflows/development-tooling/loop-templates/builtInLoopTemplates.ts",
+				"definition": "b66f973f5d2dabe713d47248ce86d8633853949ddc4752296a412bace66ee8f9",
+				"reason": "Add the sibling search step to the bug-fix template after the passing checkpoint."
+			}
 		},
 		{
 			"unit": "reports.adapter.playwright-report",
@@ -3569,14 +3745,22 @@
 			"unit": "service.trusted-base",
 			"from": "src/services/TrustedBaseService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/TrustedBaseService.ts",
-			"definition": "45ed3c809ac9fd9d5ae0ac0c5dd94f90aa0ce524d375a58a422858be34d63a7a",
+			"definition": "5a3d437f2979abe95289f8fbd229ce2985a7aa438ba45b9f36019b3d2aa3d866",
 			"relocationDefinition": "3c9a45f9e9bfa8e96815bc7b3b3d345b36de174df513e57643a1f2fe5231f73d",
 			"review": {
-				"commit": "802badfc20f8129b78eabe725acecbab58a2932b",
+				"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
 				"path": "src/workflows/verification-evidence/run-verify/TrustedBaseService.ts",
-				"definition": "45ed3c809ac9fd9d5ae0ac0c5dd94f90aa0ce524d375a58a422858be34d63a7a",
-				"reason": "Scan record metadata incrementally while preserving trusted ancestry and evidence checks."
-			}
+				"definition": "5a3d437f2979abe95289f8fbd229ce2985a7aa438ba45b9f36019b3d2aa3d866",
+				"reason": "Keep Lite receipts out of trusted base selection."
+			},
+			"previousReviews": [
+				{
+					"commit": "802badfc20f8129b78eabe725acecbab58a2932b",
+					"path": "src/workflows/verification-evidence/run-verify/TrustedBaseService.ts",
+					"definition": "45ed3c809ac9fd9d5ae0ac0c5dd94f90aa0ce524d375a58a422858be34d63a7a",
+					"reason": "Scan record metadata incrementally while preserving trusted ancestry and evidence checks."
+				}
+			]
 		},
 		{
 			"unit": "relay.adapter.host-sockets",
@@ -3826,27 +4010,43 @@
 			"unit": "desktop.adapter.capacitor-environment",
 			"from": "packages/desktop/src/adapters/CapacitorEnvironmentAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-			"definition": "05e7b0ad0818cc4c6310d6a56abf0b26d62435fdd0fc85b3f6dcea083893b9dd",
+			"definition": "f81e499329ad2ba79d16593299b0cae12ff92d3f7baf5b5a46c261a90de70950",
 			"relocationDefinition": "a8686e0c6a99b21cf67d3b48283b7791fe3c0230f56e99b01fb0a072a81d2c94",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "caea83354142413dd97edae29bdd055924c9847b",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-				"definition": "05e7b0ad0818cc4c6310d6a56abf0b26d62435fdd0fc85b3f6dcea083893b9dd",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "f81e499329ad2ba79d16593299b0cae12ff92d3f7baf5b5a46c261a90de70950",
+				"reason": "Maintains pairing generations when the phone changes computer or goes offline."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
+					"definition": "05e7b0ad0818cc4c6310d6a56abf0b26d62435fdd0fc85b3f6dcea083893b9dd",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.capacitor-projects",
 			"from": "packages/desktop/src/services/CapacitorProjectsService.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
-			"definition": "d32f1355839ee8dd8af1ebc9e107dc17ced5aac289db63c84c25fb1286b22ef7",
+			"definition": "0c2876d496326aa0f2560fb39c4b8243508b42f5ee4bb5ae554041303e443e79",
 			"relocationDefinition": "fe30761246bf612fad1c8e18fa34c681a39a90ba14d7460dd78b469ebc5651f8",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "caea83354142413dd97edae29bdd055924c9847b",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
-				"definition": "d32f1355839ee8dd8af1ebc9e107dc17ced5aac289db63c84c25fb1286b22ef7",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "0c2876d496326aa0f2560fb39c4b8243508b42f5ee4bb5ae554041303e443e79",
+				"reason": "Gates the paired overview read on the phone account and current pairing."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
+					"definition": "d32f1355839ee8dd8af1ebc9e107dc17ced5aac289db63c84c25fb1286b22ef7",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "service.console-install",
@@ -4232,13 +4432,13 @@
 			"unit": "desktop.service.project-run",
 			"from": "packages/desktop/src/services/project-run-service/ProjectRunService.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
-			"definition": "5b4bed1bb0b683a968769a92480e9696bc3aa211fac816cc8e48915d0ba65b66",
+			"definition": "2488d72e7e1acbad3d187edfba59d3c91903546bc74b5b9828bac0161e4d2b5c",
 			"relocationDefinition": "1c852abd6f52c52c7ce29c47f3b8477eb7c958547321a94cfef241083068e502",
 			"review": {
-				"commit": "6d19cf4d669e6a1820a1997e36406a0b189a5cd9",
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
 				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
-				"definition": "5b4bed1bb0b683a968769a92480e9696bc3aa211fac816cc8e48915d0ba65b66",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.project-run, written by luna); messages and behavior unchanged."
+				"reason": "Use the selected agent for the new unit proposal, then send visual authoring to Sonnet.",
+				"definition": "2488d72e7e1acbad3d187edfba59d3c91903546bc74b5b9828bac0161e4d2b5c"
 			},
 			"previousReviews": [
 				{
@@ -4246,6 +4446,12 @@
 					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
 					"definition": "c0c8e938ebe7537ff6697610d106e55e70bbc9243489cf608b69027423e25ee4",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "6d19cf4d669e6a1820a1997e36406a0b189a5cd9",
+					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
+					"definition": "5b4bed1bb0b683a968769a92480e9696bc3aa211fac816cc8e48915d0ba65b66",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.project-run, written by luna); messages and behavior unchanged."
 				}
 			]
 		},
@@ -4414,13 +4620,13 @@
 			"unit": "service.snapshot-run",
 			"from": "src/services/SnapshotRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-			"definition": "4f0d5a024af9e69a5b33d01b5700e4c1a65806502f8983d9e8ff342d49765fe0",
+			"definition": "5f2e39a1e26144b546fc728986af328b661aa25d29c1debd3593051101770179",
 			"relocationDefinition": "6c3ff0bd50e6e2875d27738b036a234a6c7ee208b4687d4a4b94f53319e3e740",
 			"review": {
-				"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-				"definition": "4f0d5a024af9e69a5b33d01b5700e4c1a65806502f8983d9e8ff342d49765fe0",
-				"reason": "Freeze source clip hashes and pinned references before snapshot execution."
+				"definition": "5f2e39a1e26144b546fc728986af328b661aa25d29c1debd3593051101770179",
+				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
 			},
 			"previousReviews": [
 				{
@@ -4440,6 +4646,30 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
 					"definition": "c0083e8dd28bf5e0abc9724719de679fdb12b452e2586e14443630668a638656",
 					"reason": "Retain the reviewed change: snapshot run: skip setup steps and builds a scoped run does not need."
+				},
+				{
+					"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+					"definition": "e2f439c3195528a3465791d2de50a3875dd1d6061cfa9efe192198b3731d8753",
+					"reason": "Defer full-only setup and tools in Lite snapshots."
+				},
+				{
+					"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+					"definition": "c62d507d7ae396d54b30acbaf032f14020f0cdc72839b48f7553d07ab0b49ea7",
+					"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
+				},
+				{
+					"commit": "59e4c64d62fd82b587f00ad9b9c6b23daac0bcc4",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+					"definition": "da687ac46f3f8b25ae6bbf5e3dc6064f39d90c66b4992d1aa4a13f7005e08062",
+					"reason": "Propagate cancellation to admitted setup and check processes so verification can clean up before exiting."
+				},
+				{
+					"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+					"definition": "4f0d5a024af9e69a5b33d01b5700e4c1a65806502f8983d9e8ff342d49765fe0",
+					"reason": "Freeze source clip hashes and pinned references before snapshot execution."
 				}
 			]
 		},
@@ -4453,13 +4683,13 @@
 			"unit": "service.check-run",
 			"from": "src/services/check-run-service/CheckRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-			"definition": "b051c5fda5af2659e2deec284175f259fe2b81b7d88b657510d3e8097c5524f7",
+			"definition": "cd8095a0777c0823d7a95c042b03620d0b0ff56262781d0726ae83465793585c",
 			"relocationDefinition": "b4409148ed49b4fe1574ee44790338bbbe23be3b7a6a284687a37ca0b9e8a0c6",
 			"review": {
-				"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-				"definition": "b051c5fda5af2659e2deec284175f259fe2b81b7d88b657510d3e8097c5524f7",
-				"reason": "Carry frozen video context and admit authenticated reused clip captures."
+				"definition": "cd8095a0777c0823d7a95c042b03620d0b0ff56262781d0726ae83465793585c",
+				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
 			},
 			"previousReviews": [
 				{
@@ -4491,6 +4721,24 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
 					"definition": "673199522b2f06180d8ba2b6d078005fc88f4e11ae827b920e38f1ade36f1dec",
 					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
+				{
+					"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "5a040549e7d4c4c62e442e47490dcbc12579491ac41769192ff108755c06e8e0",
+					"reason": "Admit fractional Lite work and reject screenshot evidence."
+				},
+				{
+					"commit": "59e4c64d62fd82b587f00ad9b9c6b23daac0bcc4",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "97ebd97204897e4a258f2bf687c888785d24456b030b4127e86d6c7d29fc7bc2",
+					"reason": "Propagate cancellation to admitted setup and check processes so verification can clean up before exiting."
+				},
+				{
+					"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "b051c5fda5af2659e2deec284175f259fe2b81b7d88b657510d3e8097c5524f7",
+					"reason": "Carry frozen video context and admit authenticated reused clip captures."
 				}
 			]
 		},
@@ -4538,13 +4786,13 @@
 			"unit": "command.verify",
 			"from": "src/commands/VerifyCommand.ts",
 			"to": "src/cli/program/VerifyCommand.ts",
-			"definition": "c7edca0fd25fc68ba3b4dd2e638dceacc4dfa7d4cb05930ef04bab7d04bfb6ad",
+			"definition": "f97a222768648bf95be6bb7323bc9b7e6d0402765504d0c653970e4e9d41db20",
 			"relocationDefinition": "9bdae348aa1c461f5189e3ab3900c11dec68f78ec4a82c0d9c7986c56cfabbfc",
 			"review": {
-				"commit": "ae524672e7e16f8c98f5809aa9ae64716eacf0a3",
+				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
 				"path": "src/cli/program/VerifyCommand.ts",
-				"definition": "c7edca0fd25fc68ba3b4dd2e638dceacc4dfa7d4cb05930ef04bab7d04bfb6ad",
-				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				"definition": "f97a222768648bf95be6bb7323bc9b7e6d0402765504d0c653970e4e9d41db20",
+				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
 			},
 			"previousReviews": [
 				{
@@ -4594,6 +4842,30 @@
 					"path": "src/cli/program/VerifyCommand.ts",
 					"definition": "1f7f5d31e2fb879f78b853cc1706fdd7936408b953c804de6620fca6dd679a80",
 					"reason": "Keep verification action logic separate so registration stays within complexity limits."
+				},
+				{
+					"commit": "ae524672e7e16f8c98f5809aa9ae64716eacf0a3",
+					"path": "src/cli/program/VerifyCommand.ts",
+					"definition": "c7edca0fd25fc68ba3b4dd2e638dceacc4dfa7d4cb05930ef04bab7d04bfb6ad",
+					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
+				{
+					"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+					"path": "src/cli/program/VerifyCommand.ts",
+					"definition": "a2a84093e1340498ab9096ddac0b1aeac32a7806025d49a2580d28844caa59e0",
+					"reason": "Expose Lite profile and independent page capture commands."
+				},
+				{
+					"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
+					"path": "src/cli/program/VerifyCommand.ts",
+					"definition": "e5a9cf22a3638e998edb3885810edad89285d7dd42b1e6b39587cb024b41ac97",
+					"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
+				},
+				{
+					"commit": "59e4c64d62fd82b587f00ad9b9c6b23daac0bcc4",
+					"path": "src/cli/program/VerifyCommand.ts",
+					"definition": "552a65eecde95fc0a4654a6b055c92ea0a93f3a44f280fbec96d95dd82da8e86",
+					"reason": "Propagate cancellation to admitted setup and check processes so verification can clean up before exiting."
 				}
 			]
 		},
@@ -4706,7 +4978,14 @@
 			"unit": "desktop.adapter.planning-facade",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/PlanningFacadeAdapter.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
-			"definition": "afff4002416783534f5046ec92099d8a29b37ef726ad3bfdef6e4529d145b47b"
+			"definition": "9ac0c7c803504e36b3f86bdf38c2d192a6076e8e10429f7141a96e6014aa031a",
+			"relocationDefinition": "afff4002416783534f5046ec92099d8a29b37ef726ad3bfdef6e4529d145b47b",
+			"review": {
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
+				"reason": "Resolve the approved option’s screenshots together under one pinned version read.",
+				"definition": "9ac0c7c803504e36b3f86bdf38c2d192a6076e8e10429f7141a96e6014aa031a"
+			}
 		},
 		{
 			"unit": "desktop.function.planning-message",
@@ -4738,13 +5017,13 @@
 			"unit": "desktop.function.planning-writes",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/planningWrites.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
-			"definition": "80ddc88f5d160b8b741d15008fe5c93335d826700a5d1f49383435d1647398ee",
+			"definition": "0a2033b4ff7ef64fe8a851aaee13adc91340f13e70e30f0e6c883633aef9ee86",
 			"relocationDefinition": "26c1fa6ed92d6361d09e0804f6eff2b034e8b9315c575142fe22f0a0d30933ac",
 			"review": {
-				"commit": "2b58142449f6daa844c3f9269bbe9d912ad59359",
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
-				"definition": "80ddc88f5d160b8b741d15008fe5c93335d826700a5d1f49383435d1647398ee",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-writes, written by haiku); messages and behavior unchanged."
+				"reason": "Save every responsive image of a design option in a single immutable version.",
+				"definition": "0a2033b4ff7ef64fe8a851aaee13adc91340f13e70e30f0e6c883633aef9ee86"
 			},
 			"previousReviews": [
 				{
@@ -4752,6 +5031,12 @@
 					"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
 					"definition": "d892b3f0b451c59f8046bff249122c9fca3f3f7733d5cd3baddb8fbe2c29d029",
 					"reason": "Create layout plans with screen viewports while retaining shell plan compatibility."
+				},
+				{
+					"commit": "2b58142449f6daa844c3f9269bbe9d912ad59359",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
+					"definition": "80ddc88f5d160b8b741d15008fe5c93335d826700a5d1f49383435d1647398ee",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-writes, written by haiku); messages and behavior unchanged."
 				}
 			]
 		},
@@ -4805,15 +5090,21 @@
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-			"definition": "1321a44da2dd99384ed21498d8618cfb9bab01e0e6389ebb89ad8ad0d4a05fc6",
+			"definition": "795fd28ae7e4feffe99c57fea4a02ed05dca03049b0dd37e70b752647da05988",
 			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
 			"review": {
-				"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
+				"commit": "caea83354142413dd97edae29bdd055924c9847b",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-				"definition": "1321a44da2dd99384ed21498d8618cfb9bab01e0e6389ebb89ad8ad0d4a05fc6",
-				"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
+				"definition": "795fd28ae7e4feffe99c57fea4a02ed05dca03049b0dd37e70b752647da05988",
+				"reason": "Includes the fixed project overview call on the preload bridge."
 			},
 			"previousReviews": [
+				{
+					"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "1321a44da2dd99384ed21498d8618cfb9bab01e0e6389ebb89ad8ad0d4a05fc6",
+					"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
+				},
 				{
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "packages/desktop/src/initializers/initializePreload.ts",
@@ -4896,15 +5187,21 @@
 			"unit": "workflow.manage-loop",
 			"from": "src/workflows/manageLoop.ts",
 			"to": "src/cli/program/manageLoop.ts",
-			"definition": "4913a036b605c659838b9413e228f85b9fca3e05e02d26a12aa7c0cbeafb7d4f",
+			"definition": "aef240feabd564a16e292598244d851ace901f4b14b079db9e873df4da8077e1",
 			"relocationDefinition": "e95f68a7587b306a9f99bd633dad2b68e60c3f5c138bcbb7af1e4c5ee767a3fe",
 			"review": {
-				"commit": "745253c6258eb6a90ae59b9758562ec322ba8665",
+				"commit": "6a64ad41350d11e2360f6d8b4f01a85035fcd927",
 				"path": "src/cli/program/manageLoop.ts",
-				"definition": "4913a036b605c659838b9413e228f85b9fca3e05e02d26a12aa7c0cbeafb7d4f",
-				"reason": "Retain stale-loop listing with recorded abandoned closure, preserved stored loop evidence with named schema fields, and refusal of mutations after explicit loop closure."
+				"definition": "aef240feabd564a16e292598244d851ace901f4b14b079db9e873df4da8077e1",
+				"reason": "Require a sibling report before completing the siblings step of a bug-fix loop."
 			},
 			"previousReviews": [
+				{
+					"commit": "745253c6258eb6a90ae59b9758562ec322ba8665",
+					"path": "src/cli/program/manageLoop.ts",
+					"definition": "4913a036b605c659838b9413e228f85b9fca3e05e02d26a12aa7c0cbeafb7d4f",
+					"reason": "Retain stale-loop listing with recorded abandoned closure, preserved stored loop evidence with named schema fields, and refusal of mutations after explicit loop closure."
+				},
 				{
 					"commit": "48e4a8b9b892e15735c51c20710bafcf0304f4bb",
 					"path": "src/cli/program/manageLoop.ts",
@@ -5201,14 +5498,22 @@
 			"unit": "desktop.service.plan-run",
 			"from": "packages/desktop/src/services/PlanRunService.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
-			"definition": "be088cb3d2b3d03bda1120346c1b948690d710033798626f07d5ed5906479bc3",
+			"definition": "8ff720c60d089a3819652c9fe27092f942894d1e7e459246fec94a95362c2018",
 			"relocationDefinition": "efa5aeed6c9be2c1a74d7f9a7cf08cbb3b31bf7a61c504518418a0d81d498da8",
 			"review": {
-				"commit": "fca04b06558193eb8b5bc5f5ac601b7126e76277",
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
 				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
-				"definition": "be088cb3d2b3d03bda1120346c1b948690d710033798626f07d5ed5906479bc3",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.plan-run, written by luna); messages and behavior unchanged."
-			}
+				"reason": "Route visual entities to HTML and CSS mockups and preserve the selected runner for behavior notes.",
+				"definition": "8ff720c60d089a3819652c9fe27092f942894d1e7e459246fec94a95362c2018"
+			},
+			"previousReviews": [
+				{
+					"commit": "fca04b06558193eb8b5bc5f5ac601b7126e76277",
+					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
+					"definition": "be088cb3d2b3d03bda1120346c1b948690d710033798626f07d5ed5906479bc3",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.plan-run, written by luna); messages and behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "relay.service.device-revocation",
@@ -5528,20 +5833,35 @@
 			"unit": "planning.service.planning",
 			"from": "packages/planning/src/services/planning-service/PlanningService.ts",
 			"to": "packages/planning/src/lib/planning-collaboration/planning/planning-service/PlanningService.ts",
-			"definition": "842a0a7f0eb280629e529e8d7254acb460115bebe524bfb4c0d6506f5da0de02"
+			"definition": "0627673aa3b4f0c622486eedf8417c66025ac79d4a84bb45831196034189db39",
+			"relocationDefinition": "842a0a7f0eb280629e529e8d7254acb460115bebe524bfb4c0d6506f5da0de02",
+			"review": {
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/PlanningService.ts",
+				"reason": "Provide ordered version and option screenshot reads for the Change handoff.",
+				"definition": "0627673aa3b4f0c622486eedf8417c66025ac79d4a84bb45831196034189db39"
+			}
 		},
 		{
 			"unit": "planning.function.plan-design",
 			"from": "packages/planning/src/services/planning-service/planDesign.ts",
 			"to": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planDesign.ts",
-			"definition": "c672dcfeee6c5b04ce74d2888b22ce01eab310a2ccb562e08226b315ea3f0953",
+			"definition": "a54e042d79b4fe604bb06c59a4c0ce2026d9850bc167ed8ddd9e176df6a402b7",
 			"relocationDefinition": "802e22cb4d88e4925e9f496afe4ff18f479eed8f2ae40f0d9b7f300b164ae1fe",
 			"review": {
-				"commit": "ae9e653255f830ee4d47f84bab200245efa52b8f",
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
 				"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planDesign.ts",
-				"definition": "c672dcfeee6c5b04ce74d2888b22ce01eab310a2ccb562e08226b315ea3f0953",
-				"reason": "Treat reusable layouts as visual designs requiring images."
-			}
+				"reason": "Validate sized captures and require all the bytes an exact design approval binds.",
+				"definition": "a54e042d79b4fe604bb06c59a4c0ce2026d9850bc167ed8ddd9e176df6a402b7"
+			},
+			"previousReviews": [
+				{
+					"commit": "ae9e653255f830ee4d47f84bab200245efa52b8f",
+					"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planDesign.ts",
+					"definition": "c672dcfeee6c5b04ce74d2888b22ce01eab310a2ccb562e08226b315ea3f0953",
+					"reason": "Treat reusable layouts as visual designs requiring images."
+				}
+			]
 		},
 		{
 			"unit": "planning.function.plan-history",
@@ -5578,7 +5898,14 @@
 			"unit": "planning.function.plan-thread",
 			"from": "packages/planning/src/services/planning-service/planThread.ts",
 			"to": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planThread.ts",
-			"definition": "0a13f3b5a49de66de9dbc81704035afa1b07304ce676f8c71965b29da872292f"
+			"definition": "474f9d9504da5422268d9a072524b5d8612ad6526c6bc3cb102b411d21ec0e0c",
+			"relocationDefinition": "0a13f3b5a49de66de9dbc81704035afa1b07304ce676f8c71965b29da872292f",
+			"review": {
+				"commit": "f99a4dd918922d2644a677644ded1398a4136627",
+				"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planThread.ts",
+				"reason": "Retain the planning thread validation and reference binding already committed on main.",
+				"definition": "474f9d9504da5422268d9a072524b5d8612ad6526c6bc3cb102b411d21ec0e0c"
+			}
 		},
 		{
 			"unit": "planning.function.plan-write",
@@ -5877,14 +6204,22 @@
 			"unit": "hub.controller.github-connection",
 			"from": "packages/hub/src/controllers/github-connection-controller/GithubConnectionController.ts",
 			"to": "packages/hub/src/lib/verification-evidence/server/auth/github-connection-controller/GithubConnectionController.ts",
-			"definition": "fc956083b52bb70b6f65063933d2a7aadccef4073c727ef6487e1b7893acfdaa",
+			"definition": "3345af2c137cf6b451b9c29052376eb1240ae22c9175fc0fd1d1c87b175422bb",
 			"relocationDefinition": "b9d251c80caa2bd7338394371b892f1a3e5a1a1a68125864a9285274e4505d7b",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "caea83354142413dd97edae29bdd055924c9847b",
 				"path": "packages/hub/src/lib/verification-evidence/server/auth/github-connection-controller/GithubConnectionController.ts",
-				"definition": "fc956083b52bb70b6f65063933d2a7aadccef4073c727ef6487e1b7893acfdaa",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "3345af2c137cf6b451b9c29052376eb1240ae22c9175fc0fd1d1c87b175422bb",
+				"reason": "Returns GitHub connection results to the projects page."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/hub/src/lib/verification-evidence/server/auth/github-connection-controller/GithubConnectionController.ts",
+					"definition": "fc956083b52bb70b6f65063933d2a7aadccef4073c727ef6487e1b7893acfdaa",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "hub.function.auth-http",
@@ -6093,13 +6428,13 @@
 			"unit": "desktop.service.local-client",
 			"from": "packages/desktop/src/services/LocalClientService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-			"definition": "eb6cae1949145f9b58555a4d60ed9ca862b477f7e4db6df371fc20079ba94f92",
+			"definition": "fc4ac939b6401690b8183751141ab5a92f1b3b260a9096025bea4fa1a83e96b0",
 			"relocationDefinition": "db0ec4b62e6922c297169687608d262d5d27c0fbea6e3b27da2a52def20bb765",
 			"review": {
-				"commit": "5335b4805da23435b714d1946548347ad02c33ac",
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-				"definition": "eb6cae1949145f9b58555a4d60ed9ca862b477f7e4db6df371fc20079ba94f92",
-				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.local-client, written by haiku); behavior unchanged."
+				"reason": "Give local windows the same headless rendering workflow as remote clients.",
+				"definition": "fc4ac939b6401690b8183751141ab5a92f1b3b260a9096025bea4fa1a83e96b0"
 			},
 			"previousReviews": [
 				{
@@ -6113,6 +6448,18 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
 					"definition": "1f8781d596660ae51c109384f6efb74834a9e19cfa93c319f71ee6dc8b668d1e",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "caea83354142413dd97edae29bdd055924c9847b",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+					"definition": "bbd255f3b64af1587a08a456291b5d1cd00fc621d404a1699a41382700f83b50",
+					"reason": "Uses the configured native Hub account as the overview source."
+				},
+				{
+					"commit": "5335b4805da23435b714d1946548347ad02c33ac",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+					"definition": "eb6cae1949145f9b58555a4d60ed9ca862b477f7e4db6df371fc20079ba94f92",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.local-client, written by haiku); behavior unchanged."
 				}
 			]
 		},
@@ -6120,13 +6467,13 @@
 			"unit": "desktop.service.local-operations",
 			"from": "packages/desktop/src/services/LocalOperationsService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-			"definition": "6fb689a2ebd20a1a1bf5c2b17218bf0dc19ac9534b94d10c69c6d708efa61da3",
+			"definition": "24abc5d2f2cb8a71536125e8a723d22be51876df584e9d9b8ff577877c4c59de",
 			"relocationDefinition": "6c93c210df9a0612e8b374298b009646d8cc776940b82b610c6aa2edf7a6f2b4",
 			"review": {
-				"commit": "b90a174f4df61047264912cd3135bf0174ed9fd3",
+				"commit": "caea83354142413dd97edae29bdd055924c9847b",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-				"definition": "6fb689a2ebd20a1a1bf5c2b17218bf0dc19ac9534b94d10c69c6d708efa61da3",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.local-operations, written by luna); messages and behavior unchanged."
+				"definition": "24abc5d2f2cb8a71536125e8a723d22be51876df584e9d9b8ff577877c4c59de",
+				"reason": "Dispatches the zero-argument project overview operation."
 			},
 			"previousReviews": [
 				{
@@ -6134,6 +6481,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
 					"definition": "a820511343a29c7edeb5ba96bd48a84e12615a4275e20d64f45f1054258db559",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "b90a174f4df61047264912cd3135bf0174ed9fd3",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "6fb689a2ebd20a1a1bf5c2b17218bf0dc19ac9534b94d10c69c6d708efa61da3",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.local-operations, written by luna); messages and behavior unchanged."
 				}
 			]
 		},
@@ -6230,13 +6583,13 @@
 			"unit": "desktop.service.client-projects",
 			"from": "packages/desktop/src/services/ClientProjectsService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.ts",
-			"definition": "97a9d5e3ee7a98c2b67bc0d75f49d92e21d19c3a8203accfaa8b03930e3dbcd3",
+			"definition": "e33e2814bb995021dd73731aa44b096ceece36666bbc1eff23182d29ebabca58",
 			"relocationDefinition": "e7b1ac7d1e24d5fb3626b6072183bfc29bf27d362eca39ba35c3a254b3da4f42",
 			"review": {
-				"commit": "8996007893c305f6bd5459b0e549f0fa5b7c4c77",
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.ts",
-				"definition": "97a9d5e3ee7a98c2b67bc0d75f49d92e21d19c3a8203accfaa8b03930e3dbcd3",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.client-projects, written by luna); messages and behavior unchanged."
+				"reason": "Use the same mockup authoring and renderer in an authorized remote project session.",
+				"definition": "e33e2814bb995021dd73731aa44b096ceece36666bbc1eff23182d29ebabca58"
 			},
 			"previousReviews": [
 				{
@@ -6244,6 +6597,12 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.ts",
 					"definition": "d826b63ecb38d784b43182a19686c1db3fb408da0ea4a3637f949fe4af08d6fa",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "8996007893c305f6bd5459b0e549f0fa5b7c4c77",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.ts",
+					"definition": "97a9d5e3ee7a98c2b67bc0d75f49d92e21d19c3a8203accfaa8b03930e3dbcd3",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.client-projects, written by luna); messages and behavior unchanged."
 				}
 			]
 		},
@@ -6272,13 +6631,13 @@
 			"unit": "desktop.adapter.capacitor-account",
 			"from": "packages/desktop/src/adapters/capacitor-account-adapter/CapacitorAccountAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-			"definition": "28418e2a350f2be7f85874f88cb640e98e4ca1f334c4ce53548e0588d470ee3c",
+			"definition": "e5347496d8defb1eda4eb3857a3321acb2869cd58ceb5c0df7f88132bd2cb1fd",
 			"relocationDefinition": "f54f1586b418a653ad39961751f61e977322b2dfa5d0ab7c8f660f3bb3cdd01a",
 			"review": {
-				"commit": "a9ac44a3810a40ffae7c91c2aa9888a2c52574fd",
+				"commit": "caea83354142413dd97edae29bdd055924c9847b",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-				"definition": "28418e2a350f2be7f85874f88cb640e98e4ca1f334c4ce53548e0588d470ee3c",
-				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 80802304f8 (desktop.adapter.capacitor-account); behavior unchanged."
+				"definition": "e5347496d8defb1eda4eb3857a3321acb2869cd58ceb5c0df7f88132bd2cb1fd",
+				"reason": "Exposes the owner overview through the phone account adapter and keeps its denial separate from project access."
 			},
 			"previousReviews": [
 				{
@@ -6292,6 +6651,12 @@
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
 					"definition": "90c49bf638dd8ae45b616d797d3b186a746159b844784334cf64f807e6b5ef75",
 					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.adapter.capacitor-account, written by haiku); behavior unchanged."
+				},
+				{
+					"commit": "a9ac44a3810a40ffae7c91c2aa9888a2c52574fd",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
+					"definition": "28418e2a350f2be7f85874f88cb640e98e4ca1f334c4ce53548e0588d470ee3c",
+					"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 80802304f8 (desktop.adapter.capacitor-account); behavior unchanged."
 				}
 			]
 		},
@@ -6320,13 +6685,13 @@
 			"unit": "workflow.create-project",
 			"from": "src/workflows/create-project/createProject.ts",
 			"to": "src/cli/program/create-project/createProject.ts",
-			"definition": "4d7ca85277a9378e2953b14ae5872cc691d87a51af224736fa5a0c2a63b057b1",
+			"definition": "42e9bf2ed78903f643705f75d3593a332bc3e8e4d953ee86c77cd2dece3d4fa9",
 			"relocationDefinition": "079d03bf5f45ed18001faf540c6fe2ea44ec45252b43225525d9e377022a84d1",
 			"review": {
-				"commit": "1a8f8ea070bdec7b258cd9143559f780e7f1f49a",
+				"commit": "d07eac3753950f0f30df3242830668d4c3bcbfc8",
 				"path": "src/cli/program/create-project/createProject.ts",
-				"definition": "4d7ca85277a9378e2953b14ae5872cc691d87a51af224736fa5a0c2a63b057b1",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-workflow.create-project, written by haiku); messages and behavior unchanged."
+				"definition": "42e9bf2ed78903f643705f75d3593a332bc3e8e4d953ee86c77cd2dece3d4fa9",
+				"reason": "Validates and forwards the optional game engine for project generation."
 			},
 			"previousReviews": [
 				{
@@ -6340,6 +6705,12 @@
 					"path": "src/cli/program/create-project/createProject.ts",
 					"definition": "1e96e6ce8d029b320a828135312efef03142585dae49afe7f84970097d62aaed",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "1a8f8ea070bdec7b258cd9143559f780e7f1f49a",
+					"path": "src/cli/program/create-project/createProject.ts",
+					"definition": "4d7ca85277a9378e2953b14ae5872cc691d87a51af224736fa5a0c2a63b057b1",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-workflow.create-project, written by haiku); messages and behavior unchanged."
 				}
 			]
 		},
@@ -6406,7 +6777,14 @@
 			"unit": "desktop.function.change-execute",
 			"from": "packages/desktop/src/services/change-run-service/changeExecute.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/change-run-service/changeExecute.ts",
-			"definition": "8868058332251dc94177b77eff212cd8160482724a686ee437713773a8fa6f61"
+			"definition": "62cea8af8117355699f738df67403cdcb83563fbeb3457b7a0d16b645e90c200",
+			"relocationDefinition": "8868058332251dc94177b77eff212cd8160482724a686ee437713773a8fa6f61",
+			"review": {
+				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/change-run-service/changeExecute.ts",
+				"reason": "Give the Change runner the exact approved option source and screenshot references.",
+				"definition": "62cea8af8117355699f738df67403cdcb83563fbeb3457b7a0d16b645e90c200"
+			}
 		},
 		{
 			"unit": "reports.store.console-workspace",

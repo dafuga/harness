@@ -111,6 +111,16 @@
 			"unit": "service.agents-providers-module-task-worker",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-module-task-runner",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
@@ -123,7 +133,9 @@
 			}
 		]
 	},
-	"scenarios": ["module-tasks"],
+	"scenarios": [
+		"module-tasks"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

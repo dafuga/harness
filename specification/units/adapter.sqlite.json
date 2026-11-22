@@ -27,7 +27,8 @@
 			"SqliteAdapter.transaction",
 			"SqliteAdapter.assertModels",
 			"createSqliteAdapter",
-			"SqliteAdapterError"
+			"SqliteAdapterError",
+			"SqliteFieldValue"
 		]
 	},
 	"contract": {
@@ -76,21 +77,28 @@
 				"type": "string",
 				"required": true,
 				"description": "The registered model table whose row is looked up by its primary key. A table without a registered model cannot be used.",
-				"examples": ["tasks"]
+				"examples": [
+					"tasks"
+				]
 			},
 			{
 				"name": "SqliteAdapter.find.id",
 				"type": "number | string",
 				"required": true,
 				"description": "The number or string compared with the model primary key, which defaults to id, to find one row.",
-				"examples": [17, "task-17"]
+				"examples": [
+					17,
+					"task-17"
+				]
 			},
 			{
 				"name": "SqliteAdapter.findBy.table",
 				"type": "string",
 				"required": true,
 				"description": "The registered model table whose rows are filtered by the supplied model fields.",
-				"examples": ["tasks"]
+				"examples": [
+					"tasks"
+				]
 			},
 			{
 				"name": "SqliteAdapter.findBy.fields",
@@ -112,7 +120,9 @@
 				"type": "string",
 				"required": true,
 				"description": "The registered model table into which the input row is inserted.",
-				"examples": ["tasks"]
+				"examples": [
+					"tasks"
+				]
 			},
 			{
 				"name": "SqliteAdapter.create.input",
@@ -135,14 +145,19 @@
 				"type": "string",
 				"required": true,
 				"description": "The registered model table containing the row to update.",
-				"examples": ["tasks"]
+				"examples": [
+					"tasks"
+				]
 			},
 			{
 				"name": "SqliteAdapter.update.id",
 				"type": "number | string",
 				"required": true,
 				"description": "The number or string compared with the model primary key, which defaults to id, to choose the row to update.",
-				"examples": [17, "task-17"]
+				"examples": [
+					17,
+					"task-17"
+				]
 			},
 			{
 				"name": "SqliteAdapter.update.input",
@@ -164,21 +179,28 @@
 				"type": "string",
 				"required": true,
 				"description": "The registered model table from which a row is removed.",
-				"examples": ["tasks"]
+				"examples": [
+					"tasks"
+				]
 			},
 			{
 				"name": "SqliteAdapter.delete.id",
 				"type": "number | string",
 				"required": true,
 				"description": "The number or string compared with the model primary key, which defaults to id, to choose the row to remove.",
-				"examples": [17, "task-17"]
+				"examples": [
+					17,
+					"task-17"
+				]
 			},
 			{
 				"name": "SqliteAdapter.insert.table",
 				"type": "string",
 				"required": true,
 				"description": "The registered model table into which the input row is inserted synchronously. This method can be used from a transaction callback.",
-				"examples": ["tasks"]
+				"examples": [
+					"tasks"
+				]
 			},
 			{
 				"name": "SqliteAdapter.insert.input",
@@ -201,7 +223,10 @@
 				"type": "string",
 				"required": true,
 				"description": "The SQL prepared on the supplied database and executed with all(). Use this for caller-defined read queries that are not expressed by the model-based lookup methods.",
-				"examples": ["SELECT id, name FROM tasks WHERE id = ?", "SELECT id, name FROM tasks"]
+				"examples": [
+					"SELECT id, name FROM tasks WHERE id = ?",
+					"SELECT id, name FROM tasks"
+				]
 			},
 			{
 				"name": "SqliteAdapter.query.bindings",
@@ -210,7 +235,9 @@
 				"default": [],
 				"description": "Values bound positionally to the query SQL placeholders. SqliteValue supports strings, numbers, bigints, Uint8Array values, and null; omitted bindings use an empty array.",
 				"examples": [
-					[17],
+					[
+						17
+					],
 					[]
 				]
 			},
@@ -232,8 +259,13 @@
 				"default": [],
 				"description": "Values bound positionally to the execute SQL placeholders. SqliteValue supports strings, numbers, bigints, Uint8Array values, and null; omitted bindings use an empty array.",
 				"examples": [
-					[0, 17],
-					[17],
+					[
+						0,
+						17
+					],
+					[
+						17
+					],
 					[]
 				]
 			},
@@ -307,7 +339,10 @@
 				"name": "SqliteAdapter.delete",
 				"type": "Promise<boolean>",
 				"description": "True when SQLite reports that at least one row was removed; otherwise false.",
-				"examples": [true, false]
+				"examples": [
+					true,
+					false
+				]
 			},
 			{
 				"name": "SqliteAdapter.insert",
@@ -348,7 +383,9 @@
 				"name": "SqliteAdapter.transaction",
 				"type": "T",
 				"description": "The exact value returned by the synchronous callback after the savepoint is released.",
-				"examples": [42]
+				"examples": [
+					42
+				]
 			},
 			{
 				"name": "SqliteAdapter.assertModels",
@@ -378,14 +415,19 @@
 						"type": "string",
 						"required": true,
 						"description": "The registered model table whose row is looked up by its primary key. A table without a registered model cannot be used.",
-						"examples": ["tasks"]
+						"examples": [
+							"tasks"
+						]
 					},
 					{
 						"name": "SqliteAdapter.find.id",
 						"type": "number | string",
 						"required": true,
 						"description": "The number or string compared with the model primary key, which defaults to id, to find one row.",
-						"examples": [17, "task-17"]
+						"examples": [
+							17,
+							"task-17"
+						]
 					}
 				],
 				"outputs": [
@@ -417,7 +459,9 @@
 						"type": "string",
 						"required": true,
 						"description": "The registered model table whose rows are filtered by the supplied model fields.",
-						"examples": ["tasks"]
+						"examples": [
+							"tasks"
+						]
 					},
 					{
 						"name": "SqliteAdapter.findBy.fields",
@@ -464,7 +508,9 @@
 						"type": "string",
 						"required": true,
 						"description": "The registered model table into which the input row is inserted.",
-						"examples": ["tasks"]
+						"examples": [
+							"tasks"
+						]
 					},
 					{
 						"name": "SqliteAdapter.create.input",
@@ -512,14 +558,19 @@
 						"type": "string",
 						"required": true,
 						"description": "The registered model table containing the row to update.",
-						"examples": ["tasks"]
+						"examples": [
+							"tasks"
+						]
 					},
 					{
 						"name": "SqliteAdapter.update.id",
 						"type": "number | string",
 						"required": true,
 						"description": "The number or string compared with the model primary key, which defaults to id, to choose the row to update.",
-						"examples": [17, "task-17"]
+						"examples": [
+							17,
+							"task-17"
+						]
 					},
 					{
 						"name": "SqliteAdapter.update.input",
@@ -571,14 +622,19 @@
 						"type": "string",
 						"required": true,
 						"description": "The registered model table from which a row is removed.",
-						"examples": ["tasks"]
+						"examples": [
+							"tasks"
+						]
 					},
 					{
 						"name": "SqliteAdapter.delete.id",
 						"type": "number | string",
 						"required": true,
 						"description": "The number or string compared with the model primary key, which defaults to id, to choose the row to remove.",
-						"examples": [17, "task-17"]
+						"examples": [
+							17,
+							"task-17"
+						]
 					}
 				],
 				"outputs": [
@@ -586,7 +642,10 @@
 						"name": "SqliteAdapter.delete",
 						"type": "Promise<boolean>",
 						"description": "True when SQLite reports that at least one row was removed; otherwise false.",
-						"examples": [true, false]
+						"examples": [
+							true,
+							false
+						]
 					}
 				],
 				"errors": [
@@ -611,7 +670,9 @@
 						"type": "string",
 						"required": true,
 						"description": "The registered model table into which the input row is inserted synchronously. This method can be used from a transaction callback.",
-						"examples": ["tasks"]
+						"examples": [
+							"tasks"
+						]
 					},
 					{
 						"name": "SqliteAdapter.insert.input",
@@ -659,7 +720,10 @@
 						"type": "string",
 						"required": true,
 						"description": "The SQL prepared on the supplied database and executed with all(). Use this for caller-defined read queries that are not expressed by the model-based lookup methods.",
-						"examples": ["SELECT id, name FROM tasks WHERE id = ?", "SELECT id, name FROM tasks"]
+						"examples": [
+							"SELECT id, name FROM tasks WHERE id = ?",
+							"SELECT id, name FROM tasks"
+						]
 					},
 					{
 						"name": "SqliteAdapter.query.bindings",
@@ -668,7 +732,9 @@
 						"default": [],
 						"description": "Values bound positionally to the query SQL placeholders. SqliteValue supports strings, numbers, bigints, Uint8Array values, and null; omitted bindings use an empty array.",
 						"examples": [
-							[17],
+							[
+								17
+							],
 							[]
 						]
 					}
@@ -719,8 +785,13 @@
 						"default": [],
 						"description": "Values bound positionally to the execute SQL placeholders. SqliteValue supports strings, numbers, bigints, Uint8Array values, and null; omitted bindings use an empty array.",
 						"examples": [
-							[0, 17],
-							[17],
+							[
+								0,
+								17
+							],
+							[
+								17
+							],
 							[]
 						]
 					}
@@ -781,7 +852,9 @@
 						"name": "SqliteAdapter.transaction",
 						"type": "T",
 						"description": "The exact value returned by the synchronous callback after the savepoint is released.",
-						"examples": [42]
+						"examples": [
+							42
+						]
 					}
 				],
 				"errors": [

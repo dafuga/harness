@@ -3,9 +3,11 @@ import type {
 	TaskExecution,
 	TaskRunInput,
 	TaskRunner,
+	TaskSessionMetric,
 	TaskUsage
 } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { ModuleTaskAnalyticsService } from '../ModuleTaskAnalyticsService';
+import { moduleCompletionContext } from '../completion-hooks/moduleCompletion';
 /** Keep every provider call, including failed or quota-rejected calls before fallback. */
 export async function dispatchTaskAttempt(
 	runner: TaskRunner,
@@ -21,26 +23,39 @@ export async function dispatchTaskAttempt(
 	};
 	const analytics = new ModuleTaskAnalyticsService();
 	try {
-		const result = await runner.run(input);
+		const { sessions, ...result } = await runner.run(input);
 		executions.push({
 			...base,
 			reportedModel: result.reportedModel,
 			usage: result.usage,
+			sessions,
 			apiCost: analytics.quote(result.reportedModel ?? input.model, result.usage),
 			status: 'succeeded',
 			finishedAt: new Date().toISOString()
 		});
-		return result;
+		return { ...result, [moduleCompletionContext]: { runner, signal: input.signal } };
 	} catch (error) {
-		const failure = error as { usage?: TaskUsage; reportedModel?: string | null };
+		const failure = (error ?? {}) as {
+			usage?: TaskUsage;
+			sessions?: TaskSessionMetric[];
+			reportedModel?: string | null;
+			quotaRejected?: boolean;
+		};
 		executions.push({
 			...base,
-			reportedModel: failure?.reportedModel ?? null,
-			usage: failure?.usage,
-			apiCost: analytics.quote(failure?.reportedModel ?? input.model, failure?.usage),
+			reportedModel: failure.reportedModel ?? null,
+			usage: failure.usage,
+			sessions: failure.sessions,
+			apiCost: analytics.quote(failure.reportedModel ?? input.model, failure.usage),
 			status: 'failed',
+			failureCause: rejectionCause(input.signal, failure.quotaRejected === true),
 			finishedAt: new Date().toISOString()
 		});
 		throw error;
 	}
+}
+
+function rejectionCause(signal: AbortSignal, quota: boolean): TaskExecution['failureCause'] {
+	if (signal.aborted) return signal.reason?.name === 'TimeoutError' ? 'timeout' : 'cancelled';
+	return quota ? 'quota' : 'provider-error';
 }

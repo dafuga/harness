@@ -1,0 +1,45 @@
+{
+	"name": "hub-home-redesign",
+	"goal": "Prove the signed-in Hub home and six responsive dialogs, owner-only Tracker actions, account isolation, and matching 390/834/1440/1920 design evidence.",
+	"createdAt": "2026-11-21T22:42:24.357Z",
+	"updatedAt": "2026-11-22T08:19:30.038Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T22:43:52.248Z",
+			"evidence": "Signed-in Hub specification linked to PR #203 and tracker v055hs. The six cards/dialogs, device matrix, and actor and host boundaries are explicit."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-22T08:19:30.038Z",
+			"evidence": "Daniel selected the owner-managed Claude and Codex JSON source. Desktop red/green checkpoint records ff09bbcb and 5efc366c prove timestamp preservation and no live lookup. The unchanged browser assertions failed for missing and stale data at 608dc03e7a and passed at 1925db69c8. Exact build 27c24ac1c8 passed 41 browser and 52 catalog cases with 146 design pairs."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-21T23:47:37.479Z",
+			"evidence": "Red: signed-in hosted-home assertion failed against the old root; quota chart assertion failed before bars were visible. Green: 41 compiled Hub Playwright cases passed in the isolated app on harbor-mbp-2 at 2837efc555, paired against all 146 approved screens. At 76a1bd8c13, 52 isolated catalog cases passed and 51 catalog screenshots were captured. Owner access, private chat claim and receipt, and provider projections have focused integration coverage."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

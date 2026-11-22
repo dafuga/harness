@@ -1,0 +1,350 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.projects-sessions-tracker-adapter-source",
+	"uid": "u_vglplkno45",
+	"kind": "repository",
+	"title": "TrackerAdapterSourceRepository",
+	"responsibility": "Owns the TrackerAdapterSourceRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/repositories/projects-sessions/TrackerAdapterSourceRepository.ts"],
+		"symbols": [
+			"TrackerAdapterSourceRepository",
+			"TrackerAdapterSourceRepository.constructor",
+			"TrackerAdapterSourceRepository.initialize",
+			"TrackerAdapterSourceRepository.isInitialized",
+			"TrackerAdapterSourceRepository.isOwner",
+			"TrackerAdapterSourceRepository.runner",
+			"TrackerAdapterSourceRepository.list",
+			"TrackerAdapterSourceRepository.dueSourceIds",
+			"TrackerAdapterSourceRepository.source",
+			"TrackerAdapterSourceRepository.advance",
+			"TrackerAdapterSourceRepository.recordRun"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerAdapterSourceRepository.constructor.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.isOwner.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.isOwner.register",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.list.runner",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.dueSourceIds.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.source.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.advance.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.advance.startedAt",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.recordRun.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.recordRun.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.recordRun.error",
+				"type": "string | null",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerAdapterSourceRepository.initialize",
+				"type": "void"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.isInitialized",
+				"type": "boolean"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.isOwner",
+				"type": "boolean"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.runner",
+				"type": "string | undefined"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.list",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.dueSourceIds",
+				"type": "string[]"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.source",
+				"type": "TrackerAdapterSource | undefined"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.advance",
+				"type": "void"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.recordRun",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerAdapterSourceRepository.initialize",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.initialize",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.isInitialized",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.isInitialized",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.isOwner",
+				"inputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.isOwner.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerAdapterSourceRepository.isOwner.register",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.isOwner",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.runner",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.runner",
+						"type": "string | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.list",
+				"inputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.list.runner",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.list",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.dueSourceIds",
+				"inputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.dueSourceIds.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.dueSourceIds",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.source",
+				"inputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.source.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.source",
+						"type": "TrackerAdapterSource | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.advance",
+				"inputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.advance.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerAdapterSourceRepository.advance.startedAt",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.advance",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.recordRun",
+				"inputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.recordRun.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerAdapterSourceRepository.recordRun.now",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "TrackerAdapterSourceRepository.recordRun.error",
+						"type": "string | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.recordRun",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerAdapterSourceRepository.constructor",
+				"inputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.constructor.database",
+						"type": "SqliteDatabase",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-adapter",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/projects-sessions/TrackerAdapterSourceRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/projects-sessions/TrackerAdapterSourceRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

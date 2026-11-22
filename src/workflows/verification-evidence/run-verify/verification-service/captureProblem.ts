@@ -191,18 +191,13 @@ function buildProblem(
 		return `names build ${named}, which ${verifyConfigFile} does not declare`;
 	}
 	const compiled = builds?.compiled.get(named);
-	return compiledBuildProblem(compiled, served, named, builds?.skipped?.has(named));
-}
-function compiledBuildProblem(
-	compiled: string | undefined,
-	served: string,
-	named: string,
-	skipped?: boolean
-): string | undefined {
-	if (!compiled && skipped) {
-		return `names build ${named}, which this scoped run skipped`;
-	}
-	if (!compiled) return `names build ${named}, which setup did not produce`;
+	if (!compiled) return uncompiledBuildProblem(named, builds?.skipped);
 	if (served === compiled) return undefined;
 	return `was served by build ${served.slice(0, 12)}, not the ${named} build ${compiled.slice(0, 12)} compiled from this revision`;
+}
+
+function uncompiledBuildProblem(named: string, skipped?: ReadonlySet<string>): string {
+	return skipped?.has(named)
+		? `names build ${named}, which this scoped run skipped`
+		: `names build ${named}, which setup did not produce`;
 }

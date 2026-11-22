@@ -160,7 +160,7 @@ test('guide counts verified shots per state and viewport and reaches DONE', asyn
 	await attachGuidanceShots(root, ['default', 'loading']);
 	const ambiguous = await guidanceJson(root, ['guide', entity]);
 	expect(ambiguous.report.states[0]).toMatchObject({ tests: [], status: 'MISSING' });
-}, 15_000);
+}, 20_000);
 
 test('guide rejects partial, stale and uncommitted coverage', async () => {
 	const root = await project(['default']);

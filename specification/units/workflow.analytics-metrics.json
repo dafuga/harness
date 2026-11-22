@@ -38,6 +38,12 @@
 				]
 			},
 			{
+				"name": "analyticsSnapshot.includeTaskRuns",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
 				"name": "counts.items",
 				"type": "T[]",
 				"required": true,
@@ -175,6 +181,12 @@
 								"until": "2026-11-14T23:59:59.999Z"
 							}
 						]
+					},
+					{
+						"name": "analyticsSnapshot.includeTaskRuns",
+						"type": "boolean",
+						"required": false,
+						"default": false
 					}
 				],
 				"outputs": [
@@ -309,6 +321,16 @@
 		},
 		{
 			"unit": "service.agents-providers-module-task-analytics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-analytics-service-task-run-records",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-analytics-service-task-run-report",
 			"via": "import",
 			"origin": "derived"
 		},

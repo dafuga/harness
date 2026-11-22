@@ -25,6 +25,7 @@
 			"PlanningFacadeAdapter.appendMessage",
 			"PlanningFacadeAdapter.approve",
 			"PlanningFacadeAdapter.image",
+			"PlanningFacadeAdapter.images",
 			"PlanningFacadeAdapter.history"
 		]
 	},
@@ -209,6 +210,11 @@
 						"revision": "0123456789abcdef0123456789abcdef01234567"
 					}
 				]
+			},
+			{
+				"name": "PlanningFacadeAdapter.images.query",
+				"type": "PlanImagesQuery",
+				"required": true
 			},
 			{
 				"name": "PlanningFacadeAdapter.history.entityId",
@@ -920,6 +926,24 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "PlanningFacadeAdapter.images",
+				"inputs": [
+					{
+						"name": "PlanningFacadeAdapter.images.query",
+						"type": "PlanImagesQuery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PlanningFacadeAdapter.images",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "PlanningFacadeAdapter.history",

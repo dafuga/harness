@@ -212,7 +212,7 @@
 			{
 				"name": "VerificationCheckService.integrity",
 				"type": "Promise<string[]>",
-				"description": "Promise resolves to problem strings for the record's source identity and tree, seal, component versions, and evidence files, regardless of outcome. It does not inspect lineage or apply the record's outcome failures; an empty list means these identity and integrity checks found no problems.",
+				"description": "Checks the source and stored record seal, component versions, and hashes of the stored evidence including any retained artifact.",
 				"examples": [
 					[],
 					[
@@ -396,7 +396,7 @@
 					{
 						"name": "VerificationCheckService.integrity",
 						"type": "Promise<string[]>",
-						"description": "Promise resolves to problem strings for the record's source identity and tree, seal, component versions, and evidence files, regardless of outcome. It does not inspect lineage or apply the record's outcome failures; an empty list means these identity and integrity checks found no problems.",
+						"description": "Checks the source and stored record seal, component versions, and hashes of the stored evidence including any retained artifact.",
 						"examples": [
 							[],
 							[

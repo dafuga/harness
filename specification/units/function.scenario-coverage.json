@@ -24,21 +24,18 @@
 			"scenarioCoverage",
 			"CoverageInput",
 			"CoverageResult",
-			"CoverageInput",
-			"CoverageResult",
 			"Evidence",
 			"Viewport",
 			"VideoFrameFlagIdentity",
 			"PendingVideoFlags",
 			"VideoCoverageSummary",
-			"scenarioCoverage",
-			"problem",
-			"scenarioCoverage",
 			"videoCoverageFailures",
 			"videoCoverageReport",
 			"VideoCoverageReport",
 			"videoFlagCoverageFailure",
-			"videoMetadataProblem"
+			"videoMetadataProblem",
+			"ScenarioJudgement",
+			"judgeScenario"
 		]
 	},
 	"contract": {
@@ -56,7 +53,10 @@
 							"id": "runtime-evidence-ui",
 							"title": "Compiled runtime evidence viewer over explicit synthetic history fixtures",
 							"kind": "ui",
-							"units": ["desktop.component.runtime-pane", "desktop.component.runtime-screens"],
+							"units": [
+								"desktop.component.runtime-pane",
+								"desktop.component.runtime-screens"
+							],
 							"states": [
 								{
 									"id": "current",
@@ -85,8 +85,12 @@
 								{
 									"id": "runtime-screens-desktop",
 									"kind": "screenshot",
-									"states": ["current"],
-									"viewports": ["desktop"],
+									"states": [
+										"current"
+									],
+									"viewports": [
+										"desktop"
+									],
 									"provenance": "actual-capture",
 									"capture": "full-page",
 									"required": true
@@ -224,7 +228,10 @@
 							"id": "runtime-evidence-ui",
 							"title": "Compiled runtime evidence viewer over explicit synthetic history fixtures",
 							"kind": "ui",
-							"units": ["desktop.component.runtime-pane", "desktop.component.runtime-screens"],
+							"units": [
+								"desktop.component.runtime-pane",
+								"desktop.component.runtime-screens"
+							],
 							"states": [
 								{
 									"id": "current",
@@ -253,8 +260,12 @@
 								{
 									"id": "runtime-screens-desktop",
 									"kind": "screenshot",
-									"states": ["current"],
-									"viewports": ["desktop"],
+									"states": [
+										"current"
+									],
+									"viewports": [
+										"desktop"
+									],
 									"provenance": "actual-capture",
 									"capture": "full-page",
 									"required": true
@@ -358,6 +369,30 @@
 				"type": "Gathered['line']",
 				"required": true,
 				"description": "Original capture line whose duration and asserted state must agree with the video metadata."
+			},
+			{
+				"name": "judgeScenario.context",
+				"type": "VerifyContext",
+				"required": true,
+				"description": "The exact commit, verify configuration, profile and optional entity scope."
+			},
+			{
+				"name": "judgeScenario.scenario",
+				"type": "ScenarioManifest",
+				"required": true,
+				"description": "The unchanged scenario contract with its states, tests and evidence."
+			},
+			{
+				"name": "judgeScenario.executed",
+				"type": "Executed",
+				"required": true,
+				"description": "Test outcomes, gathered captures and build identities from the snapshot."
+			},
+			{
+				"name": "judgeScenario.pendingChecks",
+				"type": "PlannedCheck[]",
+				"required": true,
+				"description": "The planned checks deferred by Lite."
 			}
 		],
 		"outputs": [
@@ -445,7 +480,10 @@
 									"id": "runtime-evidence-ui",
 									"title": "Compiled runtime evidence viewer over explicit synthetic history fixtures",
 									"kind": "ui",
-									"units": ["desktop.component.runtime-pane", "desktop.component.runtime-screens"],
+									"units": [
+										"desktop.component.runtime-pane",
+										"desktop.component.runtime-screens"
+									],
 									"states": [
 										{
 											"id": "current",
@@ -474,8 +512,12 @@
 										{
 											"id": "runtime-screens-desktop",
 											"kind": "screenshot",
-											"states": ["current"],
-											"viewports": ["desktop"],
+											"states": [
+												"current"
+											],
+											"viewports": [
+												"desktop"
+											],
 											"provenance": "actual-capture",
 											"capture": "full-page",
 											"required": true
@@ -632,7 +674,10 @@
 									"id": "runtime-evidence-ui",
 									"title": "Compiled runtime evidence viewer over explicit synthetic history fixtures",
 									"kind": "ui",
-									"units": ["desktop.component.runtime-pane", "desktop.component.runtime-screens"],
+									"units": [
+										"desktop.component.runtime-pane",
+										"desktop.component.runtime-screens"
+									],
 									"states": [
 										{
 											"id": "current",
@@ -661,8 +706,12 @@
 										{
 											"id": "runtime-screens-desktop",
 											"kind": "screenshot",
-											"states": ["current"],
-											"viewports": ["desktop"],
+											"states": [
+												"current"
+											],
+											"viewports": [
+												"desktop"
+											],
 											"provenance": "actual-capture",
 											"capture": "full-page",
 											"required": true
@@ -893,6 +942,44 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "judgeScenario",
+				"inputs": [
+					{
+						"name": "judgeScenario.context",
+						"type": "VerifyContext",
+						"required": true,
+						"description": "The exact commit, verify configuration, profile and optional entity scope."
+					},
+					{
+						"name": "judgeScenario.scenario",
+						"type": "ScenarioManifest",
+						"required": true,
+						"description": "The unchanged scenario contract with its states, tests and evidence."
+					},
+					{
+						"name": "judgeScenario.executed",
+						"type": "Executed",
+						"required": true,
+						"description": "Test outcomes, gathered captures and build identities from the snapshot."
+					},
+					{
+						"name": "judgeScenario.pendingChecks",
+						"type": "PlannedCheck[]",
+						"required": true,
+						"description": "The planned checks deferred by Lite."
+					}
+				],
+				"outputs": [
+					{
+						"name": "judgeScenario",
+						"type": "ScenarioJudgement",
+						"description": "Scenario result, actual check failures and capture slots remaining for full verification."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
@@ -935,6 +1022,26 @@
 		},
 		{
 			"unit": "service.verification-evidence-video-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verify-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.snapshot-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.verification-evidence-run-verify-verification-service-entity-scope",
 			"via": "import",
 			"origin": "derived"
 		}

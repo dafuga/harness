@@ -83,6 +83,7 @@
 		"desktop.component.workspace-shell",
 		"desktop.page.game",
 		"desktop.page.harness-path",
+		"desktop.page.projects",
 		"desktop.page.projects-project-id-harness-path",
 		"desktop.page.root",
 		"desktop.page.settings",
@@ -97,11 +98,34 @@
 		"hub.component.native-approval",
 		"hub.component.project-create",
 		"hub.component.project-list",
+		"hub.component.projects-sessions-hub-home",
+		"hub.component.projects-sessions-hub-home-agents",
+		"hub.component.projects-sessions-hub-home-card",
+		"hub.component.projects-sessions-hub-home-cards",
+		"hub.component.projects-sessions-hub-home-composer",
+		"hub.component.projects-sessions-hub-home-dialogs",
+		"hub.component.projects-sessions-hub-home-header",
+		"hub.component.projects-sessions-hub-home-plans",
+		"hub.component.projects-sessions-hub-home-projects",
+		"hub.component.projects-sessions-hub-home-quota",
+		"hub.component.projects-sessions-hub-home-row",
+		"hub.component.projects-sessions-hub-home-schedule",
+		"hub.component.projects-sessions-hub-home-skeleton",
+		"hub.component.projects-sessions-hub-home-work",
+		"hub.component.projects-sessions-hub-home-work-cards",
+		"hub.component.projects-sessions-hub-quota-subscription",
+		"hub.component.public-site-home-download",
+		"hub.component.public-site-home-features",
+		"hub.component.public-site-home-hero",
+		"hub.component.public-site-home-page",
+		"hub.component.public-site-home-steps",
 		"hub.page.invite-project-id-invitation-id",
 		"hub.page.native-handoff-id",
+		"hub.page.projects",
 		"hub.page.projects-project-id-harness-path",
 		"hub.page.projects-project-id-members",
 		"hub.page.root",
+		"hub.page.tracker-overview",
 		"reports.component.activity-list",
 		"reports.component.audio-comparison",
 		"reports.component.audio-comparison-viewer",
@@ -191,6 +215,10 @@
 		"reports.component.module-system-plugins-plugin-state-pills",
 		"reports.component.module-system-plugins-plugin-steps",
 		"reports.component.networking-security-explorer-permissions-screen",
+		"reports.component.projects-sessions-project-overview-project-overview",
+		"reports.component.projects-sessions-project-overview-project-overview-card",
+		"reports.component.projects-sessions-project-overview-project-overview-item",
+		"reports.component.projects-sessions-project-overview-project-overview-state",
 		"reports.component.provider-picker",
 		"reports.component.provider-picker-cards",
 		"reports.component.recorded-value",
@@ -335,7 +363,8 @@
 		"reports.page.harness-branch-branch-at-translations",
 		"reports.page.harness-branch-branch-at-types",
 		"reports.page.harness-branch-branch-at-types-entity",
-		"reports.page.harness-branch-branch-at-types-entity-history"
+		"reports.page.harness-branch-branch-at-types-entity-history",
+		"reports.page.harness-projects"
 	],
 	"builds": ["shell-fixture"],
 	"states": [
@@ -1924,6 +1953,12 @@
 			"units": ["desktop.page.harness-path"]
 		},
 		{
+			"id": "desktop-page-projects",
+			"title": "Project Overview",
+			"coverage": "required",
+			"units": ["desktop.page.projects"]
+		},
+		{
 			"id": "desktop-page-projects-project-id-harness-path",
 			"title": "/projects/[projectId]/harness/[...path]",
 			"coverage": "required",
@@ -2008,6 +2043,132 @@
 			"units": ["hub.component.project-list"]
 		},
 		{
+			"id": "hub-component-projects-sessions-hub-home",
+			"title": "HubHome",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-agents",
+			"title": "HubHomeAgents",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-agents"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-card",
+			"title": "HubHomeCard",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-card"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-cards",
+			"title": "HubHomeCards",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-cards"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-composer",
+			"title": "HubHomeComposer",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-composer"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-dialogs",
+			"title": "HubHomeDialogs",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-dialogs"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-header",
+			"title": "HubHomeHeader",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-header"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-plans",
+			"title": "HubHomePlans",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-plans"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-projects",
+			"title": "HubHomeProjects",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-projects"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-quota",
+			"title": "HubHomeQuota",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-quota"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-row",
+			"title": "HubHomeRow",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-row"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-schedule",
+			"title": "HubHomeSchedule",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-schedule"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-skeleton",
+			"title": "HubHomeSkeleton",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-skeleton"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-work",
+			"title": "HubHomeWork",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-work"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-work-cards",
+			"title": "HubHomeWorkCards",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-work-cards"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-quota-subscription",
+			"title": "HubQuotaSubscription",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-quota-subscription"]
+		},
+		{
+			"id": "hub-component-public-site-home-download",
+			"title": "HomeDownload",
+			"coverage": "required",
+			"units": ["hub.component.public-site-home-download"]
+		},
+		{
+			"id": "hub-component-public-site-home-features",
+			"title": "HomeFeatures",
+			"coverage": "required",
+			"units": ["hub.component.public-site-home-features"]
+		},
+		{
+			"id": "hub-component-public-site-home-hero",
+			"title": "HomeHero",
+			"coverage": "required",
+			"units": ["hub.component.public-site-home-hero"]
+		},
+		{
+			"id": "hub-component-public-site-home-page",
+			"title": "HomePage",
+			"coverage": "required",
+			"units": ["hub.component.public-site-home-page"]
+		},
+		{
+			"id": "hub-component-public-site-home-steps",
+			"title": "HomeSteps",
+			"coverage": "required",
+			"units": ["hub.component.public-site-home-steps"]
+		},
+		{
 			"id": "hub-page-invite-project-id-invitation-id",
 			"title": "/invite/[projectId]/[invitationId]",
 			"coverage": "required",
@@ -2018,6 +2179,12 @@
 			"title": "/native/[handoffId]",
 			"coverage": "required",
 			"units": ["hub.page.native-handoff-id"]
+		},
+		{
+			"id": "hub-page-projects",
+			"title": "Private Hub projects and Google sign-in",
+			"coverage": "required",
+			"units": ["hub.page.projects"]
 		},
 		{
 			"id": "hub-page-projects-project-id-harness-path",
@@ -2036,6 +2203,12 @@
 			"title": "/",
 			"coverage": "required",
 			"units": ["hub.page.root"]
+		},
+		{
+			"id": "hub-page-tracker-overview",
+			"title": "/tracker-overview",
+			"coverage": "required",
+			"units": ["hub.page.tracker-overview"]
 		},
 		{
 			"id": "reports-component-activity-list",
@@ -5873,7 +6046,7 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-module-resources-screen-playwright",
-			"title": "ExplorerModuleResourcesScreen \u00b7 Playwright empty",
+			"title": "ExplorerModuleResourcesScreen · Playwright empty",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-module-resources-screen"]
 		},
@@ -5927,13 +6100,13 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-playwright",
-			"title": "ExplorerModulesScreen \u00b7 playwright",
+			"title": "ExplorerModulesScreen · playwright",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-headless-audio",
-			"title": "ExplorerModulesScreen \u00b7 headless-audio",
+			"title": "ExplorerModulesScreen · headless-audio",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
@@ -6206,6 +6379,30 @@
 			"title": "ExplorerPermissionsScreen: focused data access",
 			"coverage": "required",
 			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "reports-component-projects-sessions-project-overview-project-overview",
+			"title": "ProjectOverview",
+			"coverage": "required",
+			"units": ["reports.component.projects-sessions-project-overview-project-overview"]
+		},
+		{
+			"id": "reports-component-projects-sessions-project-overview-project-overview-card",
+			"title": "ProjectOverviewCard",
+			"coverage": "required",
+			"units": ["reports.component.projects-sessions-project-overview-project-overview-card"]
+		},
+		{
+			"id": "reports-component-projects-sessions-project-overview-project-overview-item",
+			"title": "ProjectOverviewItem",
+			"coverage": "required",
+			"units": ["reports.component.projects-sessions-project-overview-project-overview-item"]
+		},
+		{
+			"id": "reports-component-projects-sessions-project-overview-project-overview-state",
+			"title": "ProjectOverviewState",
+			"coverage": "required",
+			"units": ["reports.component.projects-sessions-project-overview-project-overview-state"]
 		},
 		{
 			"id": "reports-component-provider-picker",
@@ -8264,6 +8461,12 @@
 			"title": "/harness/branch/[branch]/[...at]/types/[entity]/history",
 			"coverage": "required",
 			"units": ["reports.page.harness-branch-branch-at-types-entity-history"]
+		},
+		{
+			"id": "reports-page-harness-projects",
+			"title": "Project Overview",
+			"coverage": "required",
+			"units": ["reports.page.harness-projects"]
 		}
 	],
 	"viewports": [
@@ -8468,6 +8671,7 @@
 				"desktop-component-plan-badge",
 				"desktop-component-prior-image",
 				"desktop-component-project-agent",
+
 				"desktop-component-project-gate",
 				"desktop-component-project-gate-available",
 				"desktop-component-project-gate-busy",
@@ -8542,6 +8746,7 @@
 				"desktop-component-workspace-shell",
 				"desktop-page-game",
 				"desktop-page-harness-path",
+				"desktop-page-projects",
 				"desktop-page-projects-project-id-harness-path",
 				"desktop-page-root",
 				"desktop-page-settings",
@@ -8556,11 +8761,34 @@
 				"hub-component-native-approval",
 				"hub-component-project-create",
 				"hub-component-project-list",
+				"hub-component-projects-sessions-hub-home",
+				"hub-component-projects-sessions-hub-home-agents",
+				"hub-component-projects-sessions-hub-home-card",
+				"hub-component-projects-sessions-hub-home-cards",
+				"hub-component-projects-sessions-hub-home-composer",
+				"hub-component-projects-sessions-hub-home-dialogs",
+				"hub-component-projects-sessions-hub-home-header",
+				"hub-component-projects-sessions-hub-home-plans",
+				"hub-component-projects-sessions-hub-home-projects",
+				"hub-component-projects-sessions-hub-home-quota",
+				"hub-component-projects-sessions-hub-home-row",
+				"hub-component-projects-sessions-hub-home-schedule",
+				"hub-component-projects-sessions-hub-home-skeleton",
+				"hub-component-projects-sessions-hub-home-work",
+				"hub-component-projects-sessions-hub-home-work-cards",
+				"hub-component-projects-sessions-hub-quota-subscription",
+				"hub-component-public-site-home-download",
+				"hub-component-public-site-home-features",
+				"hub-component-public-site-home-hero",
+				"hub-component-public-site-home-page",
+				"hub-component-public-site-home-steps",
 				"hub-page-invite-project-id-invitation-id",
 				"hub-page-native-handoff-id",
+				"hub-page-projects",
 				"hub-page-projects-project-id-harness-path",
 				"hub-page-projects-project-id-members",
 				"hub-page-root",
+				"hub-page-tracker-overview",
 				"reports-component-activity-list",
 				"reports-component-activity-list-empty",
 				"reports-component-activity-list-short",
@@ -9256,6 +9484,10 @@
 				"reports-component-networking-security-explorer-permissions-screen-index-link-focused",
 				"reports-component-networking-security-explorer-permissions-screen-index-link-hovered",
 				"reports-component-networking-security-explorer-permissions-screen-data-focused",
+				"reports-component-projects-sessions-project-overview-project-overview",
+				"reports-component-projects-sessions-project-overview-project-overview-card",
+				"reports-component-projects-sessions-project-overview-project-overview-item",
+				"reports-component-projects-sessions-project-overview-project-overview-state",
 				"reports-component-provider-picker",
 				"reports-component-provider-picker-loading",
 				"reports-component-provider-picker-connection-error",
@@ -9598,7 +9830,8 @@
 				"reports-page-harness-branch-branch-at-translations",
 				"reports-page-harness-branch-branch-at-types",
 				"reports-page-harness-branch-branch-at-types-entity",
-				"reports-page-harness-branch-branch-at-types-entity-history"
+				"reports-page-harness-branch-branch-at-types-entity-history",
+				"reports-page-harness-projects"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",

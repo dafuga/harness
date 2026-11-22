@@ -9,11 +9,17 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/scripts/build-main.ts"],
-		"symbols": ["desktopNodeOptions"]
+		"symbols": ["desktopNodeOptions", "releaseDefine"]
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "releaseDefine.env",
+				"type": "Record<string, string | undefined>",
+				"required": true
+			}
+		],
 		"outputs": [
 			{
 				"name": "desktopNodeOptions",
@@ -29,7 +35,26 @@
 			}
 		],
 		"errorStatus": "declared",
-		"operations": [],
+		"operations": [
+			{
+				"name": "releaseDefine",
+				"inputs": [
+					{
+						"name": "releaseDefine.env",
+						"type": "Record<string, string | undefined>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "releaseDefine",
+						"type": "Record<string, string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
 		"initialization": []
 	},
 	"dependencies": [

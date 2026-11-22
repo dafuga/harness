@@ -37,8 +37,8 @@ export async function hostMemory(): Promise<Memory> {
 		const execute = (command: string, args: string[]) =>
 			new BoundedCommandAdapter().checked(command, args, options);
 		const [vm, pressure] = await Promise.all([
-			execute('vm_stat', []),
-			execute('sysctl', ['-n', 'kern.memorystatus_vm_pressure_level'])
+			execute('/usr/bin/vm_stat', []),
+			execute('/usr/sbin/sysctl', ['-n', 'kern.memorystatus_vm_pressure_level'])
 		]);
 		return macMemory(vm.toString('utf8'), pressure.toString('utf8'), totalmem());
 	}

@@ -11,8 +11,23 @@
 		"source": [
 			"src/adapters/agents-providers/ModuleTaskRunnerAdapter.ts",
 			"src/adapters/agents-providers/ModuleTaskRunnerAdapter.types.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/ModuleTaskRunError.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/ProviderRequestGate.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/TaskOutputOverflowError.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/managedTaskSessions.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/managedTaskSessions.types.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/provider-request-gate/providerDestination.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/provider-request-gate/providerUsageStream.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/provider-request-gate/providerUsageStream.types.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/provider-request-gate/requestContext.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/provider-request-gate/requestContext.types.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/sessionPolicy.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/taskGeneration.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/taskProcess.ts",
-			"src/adapters/agents-providers/module-task-runner-adapter/taskProcess.types.ts"
+			"src/adapters/agents-providers/module-task-runner-adapter/taskProcess.types.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/taskProcessMonitor.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/trackerHandoff.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/trackerHandoff.types.ts"
 		],
 		"symbols": [
 			"ModuleTaskRunnerAdapter",
@@ -26,7 +41,42 @@
 			"taskProcess",
 			"parsePositiveIntegerEnvironmentValue",
 			"parsePositiveNumberEnvironmentValue",
-			"TaskOutputOverflowError"
+			"TaskOutputOverflowError",
+			"ProviderRequestGate",
+			"ProviderRequestGate.constructor",
+			"ProviderRequestGate.origin",
+			"ProviderRequestGate.close",
+			"managedTaskSessions",
+			"LaunchGeneration",
+			"CompleteGeneration",
+			"GenerationResult",
+			"providerDestination",
+			"guardedProviderCommand",
+			"relayHeaders",
+			"measureResponse",
+			"ProviderUsageFrame",
+			"requestContext",
+			"pendingInputTokens",
+			"inputTokenCounter",
+			"InputPart",
+			"RequestContext",
+			"CountInputTokens",
+			"defaultContextTokens",
+			"hardContextTokens",
+			"providerCompactionTokens",
+			"contextPollMs",
+			"telemetryTimeoutMs",
+			"contextThreshold",
+			"contextStop",
+			"runGeneration",
+			"dockerTaskImage",
+			"TaskChild",
+			"processMonitor",
+			"killGroup",
+			"trackerHandoff",
+			"recordTrackerNote",
+			"validateTrackerId",
+			"TrackerHandoff"
 		]
 	},
 	"contract": {
@@ -108,6 +158,211 @@
 				"name": "parsePositiveNumberEnvironmentValue.fallback",
 				"type": "number",
 				"required": true
+			},
+			{
+				"name": "ProviderRequestGate.constructor.provider",
+				"type": "TaskSelection['provider']",
+				"required": true
+			},
+			{
+				"name": "ProviderRequestGate.constructor.observation",
+				"type": "() => number | null",
+				"required": true
+			},
+			{
+				"name": "ProviderRequestGate.constructor.forward",
+				"type": "typeof globalThis.fetch",
+				"required": false
+			},
+			{
+				"name": "managedTaskSessions.input",
+				"type": "TaskRunInput",
+				"required": true
+			},
+			{
+				"name": "managedTaskSessions.launch",
+				"type": "LaunchGeneration",
+				"required": true
+			},
+			{
+				"name": "managedTaskSessions.complete",
+				"type": "CompleteGeneration",
+				"required": true
+			},
+			{
+				"name": "providerDestination.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "providerDestination.provider",
+				"type": "TaskSelection['provider']",
+				"required": true
+			},
+			{
+				"name": "guardedProviderCommand.command",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "guardedProviderCommand.provider",
+				"type": "TaskSelection['provider']",
+				"required": true
+			},
+			{
+				"name": "guardedProviderCommand.origin",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "relayHeaders.original",
+				"type": "Headers",
+				"required": true
+			},
+			{
+				"name": "measureResponse.response",
+				"type": "Response",
+				"required": true
+			},
+			{
+				"name": "measureResponse.provider",
+				"type": "TaskSelection['provider']",
+				"required": true
+			},
+			{
+				"name": "measureResponse.observed",
+				"type": "(tokens: number) => void",
+				"required": true
+			},
+			{
+				"name": "requestContext.body",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "requestContext.prior",
+				"type": "RequestContext | undefined",
+				"required": true
+			},
+			{
+				"name": "requestContext.count",
+				"type": "CountInputTokens",
+				"required": true
+			},
+			{
+				"name": "pendingInputTokens.next",
+				"type": "RequestContext",
+				"required": true
+			},
+			{
+				"name": "pendingInputTokens.prior",
+				"type": "RequestContext",
+				"required": false
+			},
+			{
+				"name": "contextThreshold.value",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "contextStop.peak",
+				"type": "number | null",
+				"required": true
+			},
+			{
+				"name": "contextStop.threshold",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "runGeneration.input",
+				"type": "TaskRunInput",
+				"required": true
+			},
+			{
+				"name": "runGeneration.launch",
+				"type": "LaunchGeneration",
+				"required": true
+			},
+			{
+				"name": "runGeneration.complete",
+				"type": "CompleteGeneration",
+				"required": true
+			},
+			{
+				"name": "dockerTaskImage.platform",
+				"type": "TaskPlatform | undefined",
+				"required": true
+			},
+			{
+				"name": "dockerTaskImage.host",
+				"type": "typeof process.platform",
+				"required": true
+			},
+			{
+				"name": "dockerTaskImage.image",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "processMonitor.child",
+				"type": "TaskChild",
+				"required": true
+			},
+			{
+				"name": "processMonitor.input",
+				"type": "TaskRunInput",
+				"required": true
+			},
+			{
+				"name": "processMonitor.meter",
+				"type": "ProviderSessionAdapter",
+				"required": true
+			},
+			{
+				"name": "processMonitor.gate",
+				"type": "ProviderRequestGate",
+				"required": false
+			},
+			{
+				"name": "killGroup.child",
+				"type": "TaskChild",
+				"required": true
+			},
+			{
+				"name": "trackerHandoff.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerHandoff.report",
+				"type": "TrackerHandoff",
+				"required": true
+			},
+			{
+				"name": "trackerHandoff.session",
+				"type": "TaskSessionMetric",
+				"required": true
+			},
+			{
+				"name": "recordTrackerNote.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordTrackerNote.tracker",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordTrackerNote.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "validateTrackerId.id",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -171,6 +426,102 @@
 				"name": "taskProcess",
 				"type": "Promise<TaskProcessResult>",
 				"description": "Resolves with the child CLI exit code and captured stdout after the admitted process closes; stderr is discarded."
+			},
+			{
+				"name": "ProviderRequestGate.origin",
+				"type": "unknown"
+			},
+			{
+				"name": "ProviderRequestGate.close",
+				"type": "unknown"
+			},
+			{
+				"name": "managedTaskSessions",
+				"type": "unknown"
+			},
+			{
+				"name": "providerDestination",
+				"type": "URL | undefined"
+			},
+			{
+				"name": "guardedProviderCommand",
+				"type": "unknown"
+			},
+			{
+				"name": "relayHeaders",
+				"type": "Headers"
+			},
+			{
+				"name": "measureResponse",
+				"type": "unknown"
+			},
+			{
+				"name": "requestContext",
+				"type": "RequestContext | undefined"
+			},
+			{
+				"name": "pendingInputTokens",
+				"type": "number"
+			},
+			{
+				"name": "inputTokenCounter",
+				"type": "Promise<CountInputTokens>"
+			},
+			{
+				"name": "defaultContextTokens",
+				"type": "unknown"
+			},
+			{
+				"name": "hardContextTokens",
+				"type": "unknown"
+			},
+			{
+				"name": "providerCompactionTokens",
+				"type": "unknown"
+			},
+			{
+				"name": "contextPollMs",
+				"type": "unknown"
+			},
+			{
+				"name": "telemetryTimeoutMs",
+				"type": "unknown"
+			},
+			{
+				"name": "contextThreshold",
+				"type": "number"
+			},
+			{
+				"name": "contextStop",
+				"type": "unknown"
+			},
+			{
+				"name": "runGeneration",
+				"type": "Promise<GenerationResult>"
+			},
+			{
+				"name": "dockerTaskImage",
+				"type": "string | undefined"
+			},
+			{
+				"name": "processMonitor",
+				"type": "unknown"
+			},
+			{
+				"name": "killGroup",
+				"type": "void"
+			},
+			{
+				"name": "trackerHandoff",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "recordTrackerNote",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "validateTrackerId",
+				"type": "string"
 			}
 		],
 		"errors": [
@@ -415,6 +766,460 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProviderRequestGate.origin",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProviderRequestGate.origin",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProviderRequestGate.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProviderRequestGate.close",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "managedTaskSessions",
+				"inputs": [
+					{
+						"name": "managedTaskSessions.input",
+						"type": "TaskRunInput",
+						"required": true
+					},
+					{
+						"name": "managedTaskSessions.launch",
+						"type": "LaunchGeneration",
+						"required": true
+					},
+					{
+						"name": "managedTaskSessions.complete",
+						"type": "CompleteGeneration",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "managedTaskSessions",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "providerDestination",
+				"inputs": [
+					{
+						"name": "providerDestination.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "providerDestination.provider",
+						"type": "TaskSelection['provider']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "providerDestination",
+						"type": "URL | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "guardedProviderCommand",
+				"inputs": [
+					{
+						"name": "guardedProviderCommand.command",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "guardedProviderCommand.provider",
+						"type": "TaskSelection['provider']",
+						"required": true
+					},
+					{
+						"name": "guardedProviderCommand.origin",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "guardedProviderCommand",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "relayHeaders",
+				"inputs": [
+					{
+						"name": "relayHeaders.original",
+						"type": "Headers",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "relayHeaders",
+						"type": "Headers"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "measureResponse",
+				"inputs": [
+					{
+						"name": "measureResponse.response",
+						"type": "Response",
+						"required": true
+					},
+					{
+						"name": "measureResponse.provider",
+						"type": "TaskSelection['provider']",
+						"required": true
+					},
+					{
+						"name": "measureResponse.observed",
+						"type": "(tokens: number) => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "measureResponse",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "requestContext",
+				"inputs": [
+					{
+						"name": "requestContext.body",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "requestContext.prior",
+						"type": "RequestContext | undefined",
+						"required": true
+					},
+					{
+						"name": "requestContext.count",
+						"type": "CountInputTokens",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "requestContext",
+						"type": "RequestContext | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "pendingInputTokens",
+				"inputs": [
+					{
+						"name": "pendingInputTokens.next",
+						"type": "RequestContext",
+						"required": true
+					},
+					{
+						"name": "pendingInputTokens.prior",
+						"type": "RequestContext",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "pendingInputTokens",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "inputTokenCounter",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "inputTokenCounter",
+						"type": "Promise<CountInputTokens>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "contextThreshold",
+				"inputs": [
+					{
+						"name": "contextThreshold.value",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "contextThreshold",
+						"type": "number"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "contextStop",
+				"inputs": [
+					{
+						"name": "contextStop.peak",
+						"type": "number | null",
+						"required": true
+					},
+					{
+						"name": "contextStop.threshold",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "contextStop",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "runGeneration",
+				"inputs": [
+					{
+						"name": "runGeneration.input",
+						"type": "TaskRunInput",
+						"required": true
+					},
+					{
+						"name": "runGeneration.launch",
+						"type": "LaunchGeneration",
+						"required": true
+					},
+					{
+						"name": "runGeneration.complete",
+						"type": "CompleteGeneration",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runGeneration",
+						"type": "Promise<GenerationResult>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "dockerTaskImage",
+				"inputs": [
+					{
+						"name": "dockerTaskImage.platform",
+						"type": "TaskPlatform | undefined",
+						"required": true
+					},
+					{
+						"name": "dockerTaskImage.host",
+						"type": "typeof process.platform",
+						"required": true
+					},
+					{
+						"name": "dockerTaskImage.image",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "dockerTaskImage",
+						"type": "string | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "processMonitor",
+				"inputs": [
+					{
+						"name": "processMonitor.child",
+						"type": "TaskChild",
+						"required": true
+					},
+					{
+						"name": "processMonitor.input",
+						"type": "TaskRunInput",
+						"required": true
+					},
+					{
+						"name": "processMonitor.meter",
+						"type": "ProviderSessionAdapter",
+						"required": true
+					},
+					{
+						"name": "processMonitor.gate",
+						"type": "ProviderRequestGate",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "processMonitor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "killGroup",
+				"inputs": [
+					{
+						"name": "killGroup.child",
+						"type": "TaskChild",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "killGroup",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerHandoff",
+				"inputs": [
+					{
+						"name": "trackerHandoff.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerHandoff.report",
+						"type": "TrackerHandoff",
+						"required": true
+					},
+					{
+						"name": "trackerHandoff.session",
+						"type": "TaskSessionMetric",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHandoff",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordTrackerNote",
+				"inputs": [
+					{
+						"name": "recordTrackerNote.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordTrackerNote.tracker",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordTrackerNote.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordTrackerNote",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "validateTrackerId",
+				"inputs": [
+					{
+						"name": "validateTrackerId.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateTrackerId",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -438,12 +1243,55 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "ProviderRequestGate.constructor",
+				"inputs": [
+					{
+						"name": "ProviderRequestGate.constructor.provider",
+						"type": "TaskSelection['provider']",
+						"required": true
+					},
+					{
+						"name": "ProviderRequestGate.constructor.observation",
+						"type": "() => number | null",
+						"required": true
+					},
+					{
+						"name": "ProviderRequestGate.constructor.forward",
+						"type": "typeof globalThis.fetch",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProviderRequestGate.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		]
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.agents-providers-managed-provider-docker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.agents-providers-module-task-runner-adapter-task-usage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-provider-session",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.git",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -461,6 +1309,16 @@
 			"unit": "repository.agents-providers-module-task",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-completion-hooks",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-analytics-service-model-run-pricing",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
@@ -473,10 +1331,20 @@
 			}
 		]
 	},
-	"scenarios": ["module-tasks"],
+	"scenarios": [
+		"module-tasks"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	}
+	},
+	"configControls": [
+		{
+			"source": "src/adapters/agents-providers/module-task-runner-adapter/taskProcess.ts",
+			"name": "HARNESS_TASK_DOCKER_IMAGE",
+			"audience": "operator",
+			"purpose": "Select the locally installed fixture image by full SHA-256 image ID for explicitly Linux managed tasks."
+		}
+	]
 }

@@ -61,7 +61,7 @@ test('the callback stores a sealed grant and lands on a fixed page without a cre
 	const { callback } = await roundTrip(hub, browser, ADA_GITHUB);
 	const done = await browser.get(callback);
 	expect(done.status).toBe(303);
-	expect(done.headers.get('location')).toBe(`${ORIGIN}/?github=connected`);
+	expect(done.headers.get('location')).toBe(`${ORIGIN}/projects?github=connected`);
 	expect(hub.store.dump()).not.toMatch(/gh[ur]_/);
 	const status = await browser.get('/api/github/status');
 	expect(await status.json()).toEqual({ configured: true, connected: true, login: 'ada-hub' });
@@ -77,7 +77,7 @@ test('a callback in another browser, replayed, refused or unsigned connects noth
 	const victim = await signedIn(hub);
 	const attacker = await signedIn(hub, graceClaims);
 	const stolen = await roundTrip(hub, attacker, GRACE_GITHUB);
-	const failed = `${ORIGIN}/?github=failed`;
+	const failed = `${ORIGIN}/projects?github=failed`;
 	expect((await victim.get(stolen.callback)).headers.get('location')).toBe(failed);
 	expect((await attacker.get(stolen.callback)).headers.get('location')).toBe(failed);
 	const own = await roundTrip(hub, victim, ADA_GITHUB);
@@ -147,7 +147,7 @@ test('a provider outage on the callback is a failed connection, never provider t
 	const { callback } = await roundTrip(hub, browser, ADA_GITHUB);
 	hub.github.state.outage = true;
 	const done = await browser.get(callback);
-	expect(done.headers.get('location')).toBe(`${ORIGIN}/?github=failed`);
+	expect(done.headers.get('location')).toBe(`${ORIGIN}/projects?github=failed`);
 	expect(await done.text()).toBe('');
 });
 

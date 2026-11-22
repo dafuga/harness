@@ -12,6 +12,7 @@ import {
 } from '../../workflows/development-tooling/loop-state/loopState';
 import type { Flags } from './TaskCommand.types';
 import { ModuleTaskCommand } from '../../commands/agents-providers/ModuleTaskCommand';
+import { TaskOrchestrationCommand } from '../../commands/agents-providers/TaskOrchestrationCommand';
 export type { Flags } from './TaskCommand.types';
 
 /** The CLI delegates all completion decisions to the shared Harness service. */
@@ -46,6 +47,7 @@ export function registerTaskCommand(program: Command): void {
 		.command('task')
 		.description('Committed module tasks, assigned workers and evidence-based completion.');
 	new ModuleTaskCommand().register(task);
+	new TaskOrchestrationCommand().register(task);
 	task
 		.command('check')
 		.option('--loop <name>', 'Audit the declared loop task.')

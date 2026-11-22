@@ -8,8 +8,14 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/templates/game-authoring/gamePieces.ts"],
-		"symbols": ["gameViewFiles", "mechanicFiles", "checkpointFiles"]
+		"source": [
+			"src/templates/game-authoring/gamePieces.ts"
+		],
+		"symbols": [
+			"gameViewFiles",
+			"mechanicFiles",
+			"checkpointFiles"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -19,28 +25,37 @@
 				"type": "string",
 				"required": true,
 				"description": "The name used to derive the view config's symbol, id, and title. It is case-converted for those generated values, with no additional validation in this function.",
-				"examples": ["inventory"]
+				"examples": [
+					"inventory"
+				]
 			},
 			{
 				"name": "gameViewFiles.dimension",
 				"type": "PieceContext['dimension']",
 				"required": false,
 				"description": "The view dimension inserted into the config; a falsy value causes fail to throw ExpectedCliError. The failure message asks for harness.dimension of 2d or 3d, but the function only checks truthiness and does not whitelist those values.",
-				"examples": ["2d", "3d"]
+				"examples": [
+					"2d",
+					"3d"
+				]
 			},
 			{
 				"name": "mechanicFiles.name",
 				"type": "string",
 				"required": true,
 				"description": "The mechanic name used to derive its kebab-case file and test id and camelCase function symbol. This function passes it through case-conversion helpers without additional validation.",
-				"examples": ["dash"]
+				"examples": [
+					"dash"
+				]
 			},
 			{
 				"name": "checkpointFiles.name",
 				"type": "string",
 				"required": true,
 				"description": "The checkpoint name used to derive the config symbol, kebab-case id, and PascalCase title. The function uses case conversion without additional validation.",
-				"examples": ["spawn"]
+				"examples": [
+					"spawn"
+				]
 			}
 		],
 		"outputs": [
@@ -105,14 +120,19 @@
 						"type": "string",
 						"required": true,
 						"description": "The name used to derive the view config's symbol, id, and title. It is case-converted for those generated values, with no additional validation in this function.",
-						"examples": ["inventory"]
+						"examples": [
+							"inventory"
+						]
 					},
 					{
 						"name": "gameViewFiles.dimension",
 						"type": "PieceContext['dimension']",
 						"required": false,
 						"description": "The view dimension inserted into the config; a falsy value causes fail to throw ExpectedCliError. The failure message asks for harness.dimension of 2d or 3d, but the function only checks truthiness and does not whitelist those values.",
-						"examples": ["2d", "3d"]
+						"examples": [
+							"2d",
+							"3d"
+						]
 					}
 				],
 				"outputs": [
@@ -147,7 +167,9 @@
 						"type": "string",
 						"required": true,
 						"description": "The mechanic name used to derive its kebab-case file and test id and camelCase function symbol. This function passes it through case-conversion helpers without additional validation.",
-						"examples": ["dash"]
+						"examples": [
+							"dash"
+						]
 					}
 				],
 				"outputs": [
@@ -180,7 +202,9 @@
 						"type": "string",
 						"required": true,
 						"description": "The checkpoint name used to derive the config symbol, kebab-case id, and PascalCase title. The function uses case conversion without additional validation.",
-						"examples": ["spawn"]
+						"examples": [
+							"spawn"
+						]
 					}
 				],
 				"outputs": [

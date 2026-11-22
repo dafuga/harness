@@ -1,13 +1,9 @@
 // @harness-uid u_ttba2jnp37
+import type { UidFlags } from './unitsUid.types';
 import type { Command } from 'commander';
 import { renameUnit } from '../../workflows/development-tooling/rename-unit/renameUnit';
 import { backfillUids } from '../../workflows/development-tooling/backfill-uids/backfillUids';
 import type { BackfillReport } from '../../workflows/development-tooling/backfill-uids/backfillUids.types';
-
-interface UidFlags {
-	write?: boolean;
-	json?: boolean;
-}
 
 export function registerUnitsUid(units: Command): void {
 	units

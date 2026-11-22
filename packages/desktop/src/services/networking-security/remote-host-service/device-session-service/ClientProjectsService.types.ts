@@ -3,7 +3,7 @@ import type { ProjectRegistryService } from '../../../projects-sessions/ProjectR
 import type { CommentOutboxService } from '../../../projects-sessions/CommentOutboxService';
 import type { RepositoryArbiterService } from '../../../projects-sessions/RepositoryArbiterService';
 import type { ProviderDiscoveryService } from '../../../agents-providers/provider-discovery-service/ProviderDiscoveryService';
-import type { ImageGenerator } from '../../../../models/agents-providers/AgentRunner.types';
+import type { RenderMockups } from '../../../../utils/planning-collaboration/mockupSource.types';
 import type { RunEvent } from '../../../../models/development-tooling/DesktopBridge.types';
 import type { DesktopBridge } from '../../../../models/development-tooling/DesktopBridge.types';
 import type { ProjectionCacheService } from '../../../../lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService';
@@ -19,7 +19,7 @@ export interface ClientProjectsOptions {
 	outbox: CommentOutboxService;
 	arbiter: RepositoryArbiterService;
 	providers: ProviderDiscoveryService;
-	generator: ImageGenerator;
+	renderMockups?: RenderMockups;
 	/** Run events of this client and of nobody else. */
 	emit: (event: RunEvent) => void;
 	cache?: ProjectionCacheService;

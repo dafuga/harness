@@ -1,9 +1,11 @@
 // @harness-uid u_qnsxtzzzdq
-import type { AgentRunner, ImageGenerator } from '../agents-providers/AgentRunner.types';
+import type { AgentRunner } from '../agents-providers/AgentRunner.types';
 import type { Category, DesignImage, SourceChange, EntityDetail, Revision } from './Desktop.types';
 import type { RunRequest } from './DesktopBridge.types';
 import type { ProjectSessionService } from '../../services/projects-sessions/project-session-service/ProjectSessionService';
 import type { PlanningPort } from '../planning-collaboration/PlanningPort.types';
+import type { RenderMockups } from '../../utils/planning-collaboration/mockupSource.types';
+
 export interface RunContext {
 	id: string;
 	request: RunRequest;
@@ -13,8 +15,8 @@ export interface RunContext {
 	entity: EntityDetail;
 	planning: PlanningPort;
 	runner: AgentRunner;
-	generator: ImageGenerator;
-	imageModel: string;
+	mockupRunner?: AgentRunner;
+	renderMockups: RenderMockups;
 	signal: AbortSignal;
 	emit: (event: RunEvent) => void;
 	failureRecorded?: boolean;

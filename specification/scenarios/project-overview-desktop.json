@@ -1,0 +1,53 @@
+{
+	"schemaVersion": 1,
+	"id": "project-overview-desktop",
+	"title": "Project Overview in the bundled Harness renderer",
+	"kind": "ui",
+	"units": ["desktop.page.projects"],
+	"states": [
+		{
+			"id": "overview",
+			"title": "Read-only projects from the desktop bridge",
+			"coverage": "required",
+			"units": ["desktop.page.projects"]
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 900
+		},
+		{
+			"id": "tablet",
+			"width": 920,
+			"height": 800
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "overview",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test tests/e2e/project-overview-native.spec.ts --project=chromium --workers=1",
+			"cwd": "packages/desktop"
+		}
+	],
+	"evidence": [
+		{
+			"id": "screens",
+			"kind": "screenshot",
+			"states": ["overview"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"capture": "viewport",
+			"build": "desktop-renderer",
+			"required": true
+		}
+	]
+}

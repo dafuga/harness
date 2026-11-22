@@ -12,7 +12,8 @@ import {
 } from '../../../utils/projects-sessions/repositoryLease';
 import { designCount } from '../../../utils/planning-collaboration/designCount';
 import type { RunContext } from '../../../models/development-tooling/RunContext.types';
-import type { ImageGenerator } from '../../../models/agents-providers/AgentRunner.types';
+import type { RenderMockups } from '../../../utils/planning-collaboration/mockupSource.types';
+import { mockupCapture } from '../../../utils/planning-collaboration/mockupCapture';
 import { RunCancelled } from '../../../models/agents-providers/AgentRunner.types';
 import type { ProjectSessionService } from '../../projects-sessions/project-session-service/ProjectSessionService';
 import type { ProviderDiscoveryService } from '../provider-discovery-service/ProviderDiscoveryService';
@@ -39,8 +40,8 @@ export class DesktopRunService {
 	constructor(
 		private session: ProjectSessionService,
 		private providers: ProviderDiscoveryService,
-		private generator: ImageGenerator,
-		private emit: (event: RunEvent) => void
+		private emit: (event: RunEvent) => void,
+		private renderMockups: RenderMockups = mockupCapture
 	) {}
 	async start(
 		request: RunRequest | ProjectRunRequest | ProjectTaskRequest
@@ -96,8 +97,8 @@ export class DesktopRunService {
 		request: RunRequest | ProjectRunRequest | ProjectTaskRequest,
 		controller: AbortController
 	): Promise<Prepared> {
-		const { session, providers, generator, emit } = this;
-		const given = { session, providers, generator, emit };
+		const { session, providers, renderMockups, emit } = this;
+		const given = { session, providers, renderMockups, emit };
 		const prepare = (): Promise<Prepared> => {
 			if (!('intent' in request)) return prepareRun(given, request, controller);
 			if (request.intent === 'task') return prepareProjectTask(given, request, controller);

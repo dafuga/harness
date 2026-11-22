@@ -1,17 +1,15 @@
 // @harness-uid u_wwu3xgisul
 import type { VerifyConfig } from './verifyTypes.types';
 import { z } from 'zod';
-import { videoCaptureSchema, videoReferenceSchema } from '../../utils/verification-evidence/videoClipSchema';
 import { posix } from 'node:path';
-import { comparisonSchema } from '../development-tooling/comparisonTypes';
-import { runtimeKinds, unitIdPattern } from '../development-tooling/unitTypes';
-import { captureRegionSchema } from './verificationTypes';
+import { unitIdPattern } from '../development-tooling/unitTypes';
 
 export const verifyConfigFile = 'harness.verify.json';
 /** Scratch store for verification drafts until they are persisted as Git evidence. */
 export const verificationsDirectory = '.cache/harness/verifications';
 export const snapshotsDirectory = '.cache/harness/snapshots';
 export const captureIndex = 'captures.ndjson';
+export const verificationModes = ['full', 'lite'] as const;
 
 const text = z.string().min(1);
 const identifier = z.string().regex(unitIdPattern);
@@ -21,6 +19,7 @@ const checkProfileSchema = z.strictObject({
 });
 const checkSchema = z.strictObject({
 	path: text,
+	fullOnly: z.literal(true).optional(),
 	profile: text.min(1).optional(),
 	command: text.optional(),
 	timeoutMs: z.number().int().positive().optional()
@@ -44,6 +43,7 @@ const verifyConfigInputSchema = z.strictObject({
 	setup: z.array(
 		z.strictObject({
 			command: text,
+			fullOnly: z.literal(true).optional(),
 			timeoutMs: z.number().int().positive().optional(),
 			builds: z.array(text).optional()
 		})
@@ -65,7 +65,9 @@ const verifyConfigInputSchema = z.strictObject({
 	 * Tools the checks depend on. Each command runs in the snapshot after setup and the first
 	 * line it prints is recorded, so a record says which versions produced it.
 	 */
-	tools: z.array(z.strictObject({ id: identifier, command: text })).default([]),
+	tools: z
+		.array(z.strictObject({ id: identifier, command: text, fullOnly: z.literal(true).optional() }))
+		.default([]),
 	/** Command templates per runner; `{target}` is replaced by the test file. */
 	runners: z.record(z.string(), text),
 	/**
@@ -102,60 +104,74 @@ function matchesCheckPath(literal: string, checkPath: string): boolean {
 	return actual === workspaceRelative;
 }
 
-export const verifyConfigSchema = verifyConfigInputSchema
-	.superRefine((config, context) => {
-		for (const [index, step] of config.setup.entries()) {
-			for (const id of step.builds ?? []) {
-				if (!config.builds.some((build) => build.id === id)) {
-					context.addIssue({
-						code: 'custom',
-						path: ['setup', index, 'builds'],
-						message:
-							`Unknown verify build "${id}" named by a setup step. ` +
-							'Declare it in builds or remove it from the step.'
-					});
-				}
-			}
-		}
-		for (const [name, profile] of Object.entries(config.profiles)) {
-			const inherited = config.checks.filter((check) => check.profile === name && !check.command);
-			if (profile.command && !profile.command.includes('{target}') && inherited.length > 1)
+function validateSetupAndProfiles(
+	config: z.output<typeof verifyConfigInputSchema>,
+	context: z.RefinementCtx
+) {
+	for (const [index, step] of config.setup.entries()) {
+		for (const id of step.builds ?? []) {
+			if (!config.builds.some((build) => build.id === id)) {
 				context.addIssue({
 					code: 'custom',
-					path: ['profiles', name, 'command'],
+					path: ['setup', index, 'builds'],
 					message:
-						`Profile "${name}" has no {target} in its command and ${inherited.length} checks inherit it, ` +
-						'so each would run the same command. Add {target} or give each check its own command.'
-				});
-		}
-		for (const [index, check] of config.checks.entries()) {
-			const profile = check.profile ? config.profiles[check.profile] : undefined;
-			if (check.profile && !profile) {
-				context.addIssue({
-					code: 'custom',
-					path: ['checks', index, 'profile'],
-					message: `Unknown verify check profile "${check.profile}".`
+						`Unknown verify build "${id}" named by a setup step. ` +
+						'Declare it in builds or remove it from the step.'
 				});
 			}
-			const command = check.command ?? profile?.command;
-			if (!command) {
+		}
+	}
+	for (const [name, profile] of Object.entries(config.profiles)) {
+		const inherited = config.checks.filter((check) => check.profile === name && !check.command);
+		if (profile.command && !profile.command.includes('{target}') && inherited.length > 1)
+			context.addIssue({
+				code: 'custom',
+				path: ['profiles', name, 'command'],
+				message:
+					`Profile "${name}" has no {target} in its command and ${inherited.length} checks inherit it, ` +
+					'so each would run the same command. Add {target} or give each check its own command.'
+			});
+	}
+}
+
+function validateCheckCommands(
+	config: z.output<typeof verifyConfigInputSchema>,
+	context: z.RefinementCtx
+) {
+	for (const [index, check] of config.checks.entries()) {
+		const profile = check.profile ? config.profiles[check.profile] : undefined;
+		if (check.profile && !profile) {
+			context.addIssue({
+				code: 'custom',
+				path: ['checks', index, 'profile'],
+				message: `Unknown verify check profile "${check.profile}".`
+			});
+		}
+		const command = check.command ?? profile?.command;
+		if (!command) {
+			context.addIssue({
+				code: 'custom',
+				path: ['checks', index, 'command'],
+				message: 'A check command or profile command is required.'
+			});
+			continue;
+		}
+		for (const literal of literalTestPaths(command)) {
+			if (!matchesCheckPath(literal, check.path)) {
 				context.addIssue({
 					code: 'custom',
 					path: ['checks', index, 'command'],
-					message: 'A check command or profile command is required.'
+					message: `Command test path "${literal}" does not match check path "${check.path}".`
 				});
-				continue;
-			}
-			for (const literal of literalTestPaths(command)) {
-				if (!matchesCheckPath(literal, check.path)) {
-					context.addIssue({
-						code: 'custom',
-						path: ['checks', index, 'command'],
-						message: `Command test path "${literal}" does not match check path "${check.path}".`
-					});
-				}
 			}
 		}
+	}
+}
+
+export const verifyConfigSchema = verifyConfigInputSchema
+	.superRefine((config, context) => {
+		validateSetupAndProfiles(config, context);
+		validateCheckCommands(config, context);
 	})
 	.transform((config) => ({
 		...config,
@@ -180,59 +196,13 @@ export const defaultVerifyConfig: VerifyConfig = {
 	checks: [],
 	runners: {
 		vitest: 'bun x vitest run {target}',
-		playwright: 'bun x playwright test {target}'
+		playwright: 'bun x playwright test {target}',
+		godot: 'godot --headless --path . {target}'
 	},
 	timeouts: { test: 600_000 }
 };
 
-/** One line a check writes to `captures.ndjson` in `HARNESS_EVIDENCE_DIR`. */
-export const captureLineSchema = z.strictObject({
-	video: videoCaptureSchema.optional(),
-	videoReference: videoReferenceSchema.optional(),
-	evidence: identifier,
-	kind: z.enum(['screenshot', 'video', 'audio', 'output', 'assertions', 'trace', 'benchmark']),
-	state: identifier,
-	viewport: identifier.optional(),
-	clip: captureRegionSchema.optional(),
-	/** File name inside the evidence directory. */
-	file: z.string().regex(/^[\w.-]+$/, 'must be a plain file name'),
-	mediaType: text,
-	provenance: z.enum(['fixture', 'actual-capture']).optional(),
-	transcript: z.string().optional(),
-	durationSeconds: z.number().positive().optional(),
-	server: z.strictObject({ buildId: text, revision: text }).optional(),
-	note: z.string().optional()
-});
+export { captureLineSchema } from './verifyCaptureTypes';
+export * from './benchmarkCaptureSchemas';
 
-/** One measurement a benchmark capture reports; the run adds its profile and revision. */
-export const reportedMeasurementSchema = z.object({
-	unit: text,
-	/** Selected exported callable when a module contains several helpers. */
-	callable: text.optional(),
-	metric: text,
-	unitOfMeasure: text,
-	value: z.number().nullable(),
-	unavailable: z.string().optional(),
-	method: text,
-	workload: z.string().nullable(),
-	target: z.enum(runtimeKinds).optional(),
-	samples: z.number().int().positive().optional(),
-	/** Explicit and validated: a budget never compares a measurement that only has a label. */
-	comparison: comparisonSchema.optional()
-});
-
-/** The file a benchmark capture names: its measurements, plus whatever else the check adds. */
-export const benchmarkCaptureSchema = z.object({
-	measurements: z.array(reportedMeasurementSchema)
-});
-
-/** A request to send repeatedly through a unit's declared execution target. */
-export const workloadSchema = z.strictObject({
-	schemaVersion: z.literal(1),
-	id: identifier,
-	request: z.strictObject({ operation: text, input: z.unknown().optional() }),
-	rounds: z.number().int().min(1).max(50),
-	iterations: z.number().int().min(1).max(100_000)
-});
-
-export type { VerifyConfig, CaptureLine, Workload } from './verifyTypes.types';
+export type { VerifyConfig, CaptureLine, Workload, VerificationMode } from './verifyTypes.types';

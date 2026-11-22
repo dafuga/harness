@@ -21,11 +21,8 @@
 			"ThreadNotInEntityError",
 			"CodexImageGenerationCapabilityError",
 			"DefaultImageOrchestrationModelMissingError",
-			"imageModel",
 			"messageFor",
 			"recordRunFailure",
-			"prepareRun",
-			"Preparation",
 			"Preparation"
 		]
 	},
@@ -63,30 +60,6 @@
 				"description": "Supplies the signal stored in the run context. After context preparation, an aborted signal causes RunCancelled before the user message is appended."
 			},
 			{
-				"name": "imageModel.preparation",
-				"type": "Preparation",
-				"required": true,
-				"description": "Provides provider discovery used to list providers. It is queried only for Plan requests in the supported visual categories."
-			},
-			{
-				"name": "imageModel.request",
-				"type": "Pick<RunRequest, 'mode'>",
-				"required": true,
-				"description": "Only the mode is read. Any mode other than plan resolves to an empty model id without listing providers.",
-				"examples": [
-					{
-						"mode": "plan"
-					}
-				]
-			},
-			{
-				"name": "imageModel.category",
-				"type": "string",
-				"required": true,
-				"description": "The entity category checked together with mode. Only pages, layouts, and components require a Codex image model for Plan.",
-				"examples": ["pages", "layouts", "components"]
-			},
-			{
 				"name": "messageFor.context",
 				"type": "Pick<RunContext, 'request'>",
 				"required": true,
@@ -111,14 +84,19 @@
 				"type": "'user' | 'agent'",
 				"required": true,
 				"description": "Identifies whether the message author is user or agent.",
-				"examples": ["user", "agent"]
+				"examples": [
+					"user",
+					"agent"
+				]
 			},
 			{
 				"name": "messageFor.text",
 				"type": "string",
 				"required": true,
 				"description": "The message text copied unchanged into the returned draft.",
-				"examples": ["Create a settings page."]
+				"examples": [
+					"Create a settings page."
+				]
 			},
 			{
 				"name": "recordRunFailure.context",
@@ -131,7 +109,9 @@
 				"type": "unknown",
 				"required": true,
 				"description": "The failure value to report. Error instances contribute a message limited to 200 characters; other values use the generic text Run failed.",
-				"examples": ["Provider exited with status 1."]
+				"examples": [
+					"Provider exited with status 1."
+				]
 			}
 		],
 		"outputs": [
@@ -139,7 +119,9 @@
 				"name": "imageModel",
 				"type": "Promise<string>",
 				"description": "Resolves to an empty string unless mode is plan and category is pages, layouts, or components. In those cases it returns the id of the default model listed by an available Codex provider with imageGeneration enabled.",
-				"examples": [""]
+				"examples": [
+					""
+				]
 			},
 			{
 				"name": "prepareRun",
@@ -240,51 +222,6 @@
 				"errorStatus": "declared"
 			},
 			{
-				"name": "imageModel",
-				"inputs": [
-					{
-						"name": "imageModel.preparation",
-						"type": "Preparation",
-						"required": true,
-						"description": "Provides provider discovery used to list providers. It is queried only for Plan requests in the supported visual categories."
-					},
-					{
-						"name": "imageModel.request",
-						"type": "Pick<RunRequest, 'mode'>",
-						"required": true,
-						"description": "Only the mode is read. Any mode other than plan resolves to an empty model id without listing providers.",
-						"examples": [
-							{
-								"mode": "plan"
-							}
-						]
-					},
-					{
-						"name": "imageModel.category",
-						"type": "string",
-						"required": true,
-						"description": "The entity category checked together with mode. Only pages, layouts, and components require a Codex image model for Plan.",
-						"examples": ["pages", "layouts", "components"]
-					}
-				],
-				"outputs": [
-					{
-						"name": "imageModel",
-						"type": "Promise<string>",
-						"description": "Resolves to an empty string unless mode is plan and category is pages, layouts, or components. In those cases it returns the id of the default model listed by an available Codex provider with imageGeneration enabled.",
-						"examples": [""]
-					}
-				],
-				"errors": [
-					{
-						"name": "Error",
-						"type": "thrown",
-						"description": "Thrown when the listed Codex provider is unavailable, lacks imageGeneration, or has no model marked as default. Rejections from listing providers also propagate."
-					}
-				],
-				"errorStatus": "declared"
-			},
-			{
 				"name": "messageFor",
 				"inputs": [
 					{
@@ -312,14 +249,19 @@
 						"type": "'user' | 'agent'",
 						"required": true,
 						"description": "Identifies whether the message author is user or agent.",
-						"examples": ["user", "agent"]
+						"examples": [
+							"user",
+							"agent"
+						]
 					},
 					{
 						"name": "messageFor.text",
 						"type": "string",
 						"required": true,
 						"description": "The message text copied unchanged into the returned draft.",
-						"examples": ["Create a settings page."]
+						"examples": [
+							"Create a settings page."
+						]
 					}
 				],
 				"outputs": [
@@ -359,7 +301,9 @@
 						"type": "unknown",
 						"required": true,
 						"description": "The failure value to report. Error instances contribute a message limited to 200 characters; other values use the generic text Run failed.",
-						"examples": ["Provider exited with status 1."]
+						"examples": [
+							"Provider exited with status 1."
+						]
 					}
 				],
 				"outputs": [
@@ -384,6 +328,16 @@
 	"dependencies": [
 		{
 			"unit": "desktop.function.approval-match",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.planning-collaboration-mockup-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.planning-collaboration-mockup-source",
 			"via": "import",
 			"origin": "derived"
 		},

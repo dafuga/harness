@@ -5,8 +5,10 @@ import { runContext } from '../../../utils/projects-sessions/runContext';
 import { sourceSnapshot } from '../../../utils/verification-evidence/sourceSnapshot';
 import { sourceChanges } from '../../../utils/git-source-history/sourceChanges';
 import { planDesign } from '../../../utils/planning-collaboration/plan-design/planDesign';
+import { visualPlan } from '../../../utils/planning-collaboration/mockupPlan';
 export class PlanRunService {
 	async run(context: RunContext) {
+		if (visualPlan(context.entity.category)) return planDesign(context, await runContext(context));
 		const { request, runner, signal, emit, id } = context;
 		emit({
 			runId: id,
@@ -21,7 +23,7 @@ export class PlanRunService {
 			cwd: context.root,
 			prompt:
 				(await runContext(context)) +
-				'\nPlan only. Return a precise design prompt or headless behavior proposal. Do not write project source.',
+				'\nPlan only. Return a precise behavior proposal. Do not write project source.',
 			access: 'read-only',
 			signal,
 			onText: (text) => emit({ runId: id, kind: 'text', text }),

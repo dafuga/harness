@@ -7,18 +7,26 @@ import type { GatherResult } from '../../../../../utils/verification-evidence/ga
 import { gatherVerificationCaptures } from './gatherVideoReferences';
 import { checkVideoContext } from './checkVideoContext';
 
-export function checkCaptures(
+export async function checkCaptures(
 	context: RunContext,
 	check: PlannedCheck,
 	budget: RecordBudget,
 	result: { timedOut: boolean; evidencePath: string }
 ): Promise<GatherResult> {
-	return result.timedOut
-		? Promise.resolve({ gathered: [], failures: [] })
-		: gatherVerificationCaptures(
-				join(context.directory, result.evidencePath),
-				result.evidencePath,
-				context.limits,
-				{ budget, root: context.directory, video: checkVideoContext(context, check) }
-			);
+	if (result.timedOut) return { gathered: [], failures: [] };
+	const captures = await gatherVerificationCaptures(
+		join(context.directory, result.evidencePath),
+		result.evidencePath,
+		context.limits,
+		{ budget, root: context.directory, video: checkVideoContext(context, check) }
+	);
+	if (!context.lite) return captures;
+	const gathered = captures.gathered.filter(
+		({ line }) => line.kind !== 'screenshot' && line.kind !== 'video'
+	);
+	if (gathered.length === captures.gathered.length) return captures;
+	return {
+		gathered,
+		failures: [...captures.failures, 'captured screenshots in Lite; declare it fullOnly.']
+	};
 }

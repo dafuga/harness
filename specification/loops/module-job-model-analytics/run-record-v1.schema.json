@@ -1,0 +1,239 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"title": "Tracker and Harness run record v1",
+	"type": "object",
+	"additionalProperties": false,
+	"required": [
+		"schemaVersion",
+		"source",
+		"id",
+		"taskId",
+		"chainId",
+		"taskType",
+		"project",
+		"provider",
+		"model",
+		"effort",
+		"startedAt",
+		"finishedAt",
+		"wallTimeMs",
+		"outcome",
+		"attempt",
+		"retries",
+		"escalations",
+		"firstTry",
+		"estimatedDifficulty",
+		"measuredDifficulty",
+		"filesTouched",
+		"danielCorrections",
+		"inputTokens",
+		"outputTokens",
+		"cacheReadTokens",
+		"cacheWriteTokens",
+		"apiEquivalentUsd",
+		"apiEquivalentMinUsd",
+		"apiEquivalentMaxUsd",
+		"apiEquivalentBasis",
+		"rateCard",
+		"actualUsd",
+		"codexCredits",
+		"rejectedBefore",
+		"reworked"
+	],
+	"properties": {
+		"schemaVersion": {
+			"const": 1
+		},
+		"source": {
+			"enum": ["harness", "tracker"]
+		},
+		"id": {
+			"$ref": "#/$defs/id"
+		},
+		"taskId": {
+			"$ref": "#/$defs/id"
+		},
+		"chainId": {
+			"$ref": "#/$defs/id"
+		},
+		"taskType": {
+			"$ref": "#/$defs/id"
+		},
+		"project": {
+			"$ref": "#/$defs/nullableId"
+		},
+		"provider": {
+			"$ref": "#/$defs/nullableId"
+		},
+		"model": {
+			"$ref": "#/$defs/nullableId"
+		},
+		"effort": {
+			"$ref": "#/$defs/nullableId"
+		},
+		"startedAt": {
+			"$ref": "#/$defs/nullableTimestamp"
+		},
+		"finishedAt": {
+			"$ref": "#/$defs/timestamp"
+		},
+		"wallTimeMs": {
+			"$ref": "#/$defs/nullableCount"
+		},
+		"outcome": {
+			"enum": ["done", "failed", "rejected", "timed_out", "blocked", "abandoned", "pending_review"]
+		},
+		"attempt": {
+			"anyOf": [
+				{
+					"type": "integer",
+					"minimum": 1
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
+		"retries": {
+			"$ref": "#/$defs/nullableCount"
+		},
+		"escalations": {
+			"$ref": "#/$defs/nullableCount"
+		},
+		"firstTry": {
+			"type": "boolean"
+		},
+		"estimatedDifficulty": {
+			"$ref": "#/$defs/nullableDifficulty"
+		},
+		"measuredDifficulty": {
+			"$ref": "#/$defs/nullableDifficulty"
+		},
+		"filesTouched": {
+			"$ref": "#/$defs/nullableCount"
+		},
+		"danielCorrections": {
+			"$ref": "#/$defs/nullableCount"
+		},
+		"inputTokens": {
+			"$ref": "#/$defs/nullableCount"
+		},
+		"outputTokens": {
+			"$ref": "#/$defs/nullableCount"
+		},
+		"cacheReadTokens": {
+			"$ref": "#/$defs/nullableCount"
+		},
+		"cacheWriteTokens": {
+			"$ref": "#/$defs/nullableCount"
+		},
+		"apiEquivalentUsd": {
+			"$ref": "#/$defs/nullableMoney"
+		},
+		"apiEquivalentMinUsd": {
+			"$ref": "#/$defs/nullableMoney"
+		},
+		"apiEquivalentMaxUsd": {
+			"$ref": "#/$defs/nullableMoney"
+		},
+		"apiEquivalentBasis": {
+			"enum": ["cli-reported", "standard-api-estimate", "unavailable"]
+		},
+		"rateCard": {
+			"$ref": "#/$defs/id"
+		},
+		"actualUsd": {
+			"$ref": "#/$defs/nullableMoney"
+		},
+		"codexCredits": {
+			"$ref": "#/$defs/nullableMoney"
+		},
+		"moduleId": {
+			"$ref": "#/$defs/nullableId"
+		},
+		"linesChanged": {
+			"$ref": "#/$defs/nullableCount"
+		},
+		"rejectionCause": {
+			"anyOf": [
+				{
+					"type": "string",
+					"pattern": "^[a-z][a-z0-9-]*$"
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
+		"rejectedBefore": {
+			"type": ["boolean", "null"]
+		},
+		"reworked": {
+			"type": "boolean"
+		}
+	},
+	"$defs": {
+		"id": {
+			"type": "string",
+			"minLength": 1
+		},
+		"nullableId": {
+			"anyOf": [
+				{
+					"type": "string",
+					"minLength": 1
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
+		"timestamp": {
+			"type": "string",
+			"format": "date-time"
+		},
+		"nullableTimestamp": {
+			"anyOf": [
+				{
+					"type": "string",
+					"format": "date-time"
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
+		"nullableCount": {
+			"anyOf": [
+				{
+					"type": "integer",
+					"minimum": 0
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
+		"nullableDifficulty": {
+			"anyOf": [
+				{
+					"enum": ["small", "medium", "large"]
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
+		"nullableMoney": {
+			"anyOf": [
+				{
+					"type": "number",
+					"minimum": 0
+				},
+				{
+					"type": "null"
+				}
+			]
+		}
+	}
+}

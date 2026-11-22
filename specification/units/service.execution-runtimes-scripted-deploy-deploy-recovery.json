@@ -1,0 +1,168 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-scripted-deploy-deploy-recovery",
+	"uid": "u_ak2bjzfju3",
+	"kind": "service",
+	"title": "DeployRecovery",
+	"responsibility": "Reconciles an interrupted provider operation without submitting it a second time and resumes route smoke and cleanup.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/execution-runtimes/scripted-deploy/DeployRecovery.ts"],
+		"symbols": ["DeployRecovery", "DeployRecovery.constructor", "DeployRecovery.resume"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "DeployRecovery.constructor.store",
+				"type": "DeployRunRepository",
+				"required": true,
+				"description": "Owner-only deployment state directory and its artifact index."
+			},
+			{
+				"name": "DeployRecovery.constructor.broker",
+				"type": "DeployBroker",
+				"required": true,
+				"description": "Reconciles an interrupted provider operation without submitting it a second time and resumes route smoke and cleanup."
+			},
+			{
+				"name": "DeployRecovery.constructor.verify",
+				"type": "DeployVerification",
+				"required": true,
+				"description": "Reconciles an interrupted provider operation without submitting it a second time and resumes route smoke and cleanup."
+			},
+			{
+				"name": "DeployRecovery.resume.id",
+				"type": "string",
+				"required": true,
+				"description": "Opaque identity of the stored release or deployment run requested."
+			}
+		],
+		"outputs": [
+			{
+				"name": "DeployRecovery.resume",
+				"type": "Promise<Journal>",
+				"description": "Reconciles an interrupted provider operation without submitting it a second time and resumes route smoke and cleanup."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The operation could not verify its input, target identity, or expected result."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "DeployRecovery.resume",
+				"inputs": [
+					{
+						"name": "DeployRecovery.resume.id",
+						"type": "string",
+						"required": true,
+						"description": "Opaque identity of the stored release or deployment run requested."
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployRecovery.resume",
+						"type": "Promise<Journal>",
+						"description": "Reconciles an interrupted provider operation without submitting it a second time and resumes route smoke and cleanup."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "DeployRecovery.constructor",
+				"inputs": [
+					{
+						"name": "DeployRecovery.constructor.store",
+						"type": "DeployRunRepository",
+						"required": true,
+						"description": "Owner-only deployment state directory and its artifact index."
+					},
+					{
+						"name": "DeployRecovery.constructor.broker",
+						"type": "DeployBroker",
+						"required": true,
+						"description": "Reconciles an interrupted provider operation without submitting it a second time and resumes route smoke and cleanup."
+					},
+					{
+						"name": "DeployRecovery.constructor.verify",
+						"type": "DeployVerification",
+						"required": true,
+						"description": "Reconciles an interrupted provider operation without submitting it a second time and resumes route smoke and cleanup."
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployRecovery.constructor",
+						"type": "unknown",
+						"description": "Reconciles an interrupted provider operation without submitting it a second time and resumes route smoke and cleanup."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-broker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-parity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.execution-runtimes-deploy-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-scripted-deploy-deploy-verification",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/scripted-deploy/DeployRecovery.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/scripted-deploy/DeployRecovery.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

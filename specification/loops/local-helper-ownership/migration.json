@@ -6449,6 +6449,48 @@
 			"commit": "665a1f4b57ea2a4c9f2c0e7b7b2d8df564e2fbba",
 			"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change c8c99cb59f (reports.function.recorded-value); behavior unchanged.",
 			"definition": "0cb089bb628b220b2a314ee652ed9cd119bbf7f07fe4926088dc6a6c771f858c"
+		},
+		{
+			"unit": "function.record-capture",
+			"name": "evidenceRequested",
+			"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+			"reason": "Request Lite nonvisual evidence with screenshots disabled.",
+			"definition": "79827b5746203cb94aec2f57930e58abed1358e15a16b258577f93abd979d354"
+		},
+		{
+			"unit": "function.scenario-coverage",
+			"name": "scenarioCoverage",
+			"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+			"reason": "Keep the full scenario contract and report the capture slots deferred by Lite.",
+			"definition": "95ad3a8f12b7c690bab7a5ac5a40ef3ede8e1ec5d59e4d25d3c9a841aa7cf864"
+		},
+		{
+			"unit": "function.verify-plan",
+			"name": "verifyPlan",
+			"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+			"reason": "Plan headless Godot and carry explicit full-only check declarations.",
+			"definition": "e1989ceaf1101c7c077deacc444004af602bc41803fc60f7869d0d7ee2f1791a"
+		},
+		{
+			"unit": "desktop.function.change-execute",
+			"name": "changeExecute",
+			"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+			"reason": "Give the implementation agent the pinned mockup source and approved screenshot set.",
+			"definition": "d87df8b40acbebf5e6b9aeaa687e2562c83a48cddb36619b86c8da8d3398e075"
+		},
+		{
+			"unit": "desktop.function.prepare-run",
+			"name": "prepareRun",
+			"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+			"reason": "Route direct visual Plan authoring to Claude while preserving selected runners for headless Plan and Change.",
+			"definition": "3c4f5df41a34ef4c08f096bc1f49e99513569dfe2989ad016a97620bd557989a"
+		},
+		{
+			"unit": "planning.function.plan-design",
+			"name": "approve",
+			"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+			"reason": "Verify all approved captures in the pinned immutable plan read and bind the source digest.",
+			"definition": "cccc29d9017ea8eb55f03bb81a10c3a88aa186d38f02fe07d9aa8ef06948f205"
 		}
 	],
 	"retiredOwners": [

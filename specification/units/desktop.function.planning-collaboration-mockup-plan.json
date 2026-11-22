@@ -1,0 +1,154 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.planning-collaboration-mockup-plan",
+	"uid": "u_znltg4lq3i",
+	"kind": "function",
+	"title": "mockupPlan",
+	"responsibility": "Author static mockup source with Sonnet and extend requested widths and states with Haiku.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/planning-collaboration/mockupPlan.ts"],
+		"symbols": ["visualPlan", "mockupPlan"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "mockupPlan.context",
+				"type": "RunContext",
+				"required": true,
+				"description": "Prepared visual Plan context with reviewed source revision, request, provider and renderer."
+			},
+			{
+				"name": "mockupPlan.proposal",
+				"type": "string",
+				"required": true,
+				"description": "Design request or proposal text supplied to the mockup author."
+			}
+		],
+		"outputs": [
+			{
+				"name": "mockupPlan",
+				"type": "Promise<MockupPlanDraft>",
+				"description": "Source, provenance, prompts, and screenshot drafts ready to commit together as one version."
+			}
+		],
+		"errors": [
+			{
+				"name": "MockupFailure",
+				"type": "thrown",
+				"description": "Authored output, source provenance, variants, or review limits failed validation."
+			},
+			{
+				"name": "RunCancelled",
+				"type": "thrown",
+				"description": "The owner cancelled the Plan while authoring or rendering was in progress."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "mockupPlan",
+				"inputs": [
+					{
+						"name": "mockupPlan.context",
+						"type": "RunContext",
+						"required": true,
+						"description": "Prepared visual Plan context with reviewed source revision, request, provider and renderer."
+					},
+					{
+						"name": "mockupPlan.proposal",
+						"type": "string",
+						"required": true,
+						"description": "Design request or proposal text supplied to the mockup author."
+					}
+				],
+				"outputs": [
+					{
+						"name": "mockupPlan",
+						"type": "Promise<MockupPlanDraft>",
+						"description": "Source, provenance, prompts, and screenshot drafts ready to commit together as one version."
+					}
+				],
+				"errors": [
+					{
+						"name": "MockupFailure",
+						"type": "thrown",
+						"description": "Authored output, source provenance, variants, or review limits failed validation."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.compose-modes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.design-count",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.design-directions",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.git-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.planning-collaboration-mockup-matrix",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.planning-collaboration-mockup-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.source-changes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.source-snapshot",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.agent-runner-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.run-context-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/planning-collaboration/mockupPlan.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/planning-collaboration/mockupPlan.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

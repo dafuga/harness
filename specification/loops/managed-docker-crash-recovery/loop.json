@@ -1,0 +1,60 @@
+{
+	"name": "managed-docker-crash-recovery",
+	"goal": "Prove that a restarted offline Docker task supervisor reclaims a killed supervisor’s task container with daemon, owner and workspace evidence while concurrent live tasks and shared Docker resources survive.",
+	"createdAt": "2026-11-21T19:08:27.541Z",
+	"updatedAt": "2026-11-21T19:23:13.649Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-21T19:08:52.067Z",
+			"evidence": "Parent run-112 on MB2 proved SIGKILL leaves one running fixture and owner-plus-bind-scoped cleanup preserves the live bystander. On a later managed launch, reclaim the verified orphan automatically."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-21T19:08:53.137Z",
+			"evidence": "Extend the existing module-tasks Linux process lifecycle case beyond exit 37 and cancellation to a SIGKILL with an independent live managed supervisor and another launch. Reuse local pinned image and isolated workspaces."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-21T19:18:02.996Z",
+			"evidence": "MB2 Docker Desktop 29.4.0, one worker and cached no-network image. Commit 46f050ac45 reported recovered:false after the next managed launch. Exit 37, cancellation, live bystander and cached-image assertions passed. Sealed Harness regression 833611546695051f2131398bfd3b4cc0992a635eb920741cd7890e5ed461a2fe."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-21T19:23:12.310Z",
+			"evidence": "The explicit pilot now fsyncs an owner, supervisor start identity, engine and canonical workspace receipt before Docker create; verified full-ID cleanup is shared by normal exit, cancellation and later managed launches."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T19:23:13.649Z",
+			"evidence": "Unchanged MB2 lifecycle test passed at 50d2619b3a, one worker, Docker Desktop 29.4.0 and the cached offline image. Sealed proof 4c2a9a7c910c4334d5d383d3d064a5e981278d5436cc7857e7ae6798c8c7ecff. The exact orphan was removed; cancellation, live bystander, volume canary and cached image were preserved."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

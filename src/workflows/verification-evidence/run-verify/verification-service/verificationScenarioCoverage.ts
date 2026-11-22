@@ -9,7 +9,8 @@ import { scenarioCoverage } from './scenarioCoverage';
 export function verificationScenarioCoverage(
 	context: VerifyContext,
 	scenario: ScenarioManifest,
-	executed: Executed
+	executed: Executed,
+	deferred = 0
 ): VerificationScenarioCoverage {
 	const own = executed.outcomes.filter((outcome) => outcome.check.scenario === scenario.id);
 	const compiled = (executed.builds ?? []).map((build) => [build.id, build.buildId] as const);
@@ -25,7 +26,8 @@ export function verificationScenarioCoverage(
 		checkFailed: own.some((outcome) => !outcome.passed),
 		videoSlots: executed.videoSlots?.[scenario.id],
 		pendingVideoFlags: executed.pendingVideoFlags?.[scenario.id],
-		builds
+		builds,
+		lite: context.verificationProfile === 'lite' ? { deferredChecks: deferred > 0 } : undefined
 	});
 	return { own, coverage };
 }

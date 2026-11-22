@@ -12,6 +12,7 @@ const entries = {
 	runtime: 'runtime',
 	verification: 'verification',
 	history: 'history',
+	projects: 'projects-sessions/projects',
 	resources: 'execution-runtimes/resources',
 	sqlite: 'development-tooling/sqlite',
 	catalog: 'git-source-history/catalog'

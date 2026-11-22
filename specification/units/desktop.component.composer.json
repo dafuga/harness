@@ -142,6 +142,13 @@
 				"examples": [false, true]
 			},
 			{
+				"name": "Composer.fixedVisual",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Use Sonnet and Haiku for direct visual Plan requests. Defaults to false for the project composer."
+			},
+			{
 				"name": "Composer.compact",
 				"type": "boolean",
 				"required": false,

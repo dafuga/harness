@@ -8,20 +8,7 @@ import { runCommand } from './support/cli';
 import { measureProcess } from './support/cli-measurement/measureProcess';
 import { seedConsumerLock } from './support/packagedConsumerLock';
 import { expectPackagedSqlite } from './support/packagedSqliteConsumer';
-import { packagedConsumerSource } from './support/packagedConsumerSource';
-
-const tsconfig = {
-	compilerOptions: {
-		target: 'ES2022',
-		module: 'ESNext',
-		moduleResolution: 'Bundler',
-		strict: true,
-		noEmit: true,
-		skipLibCheck: false,
-		types: ['node']
-	},
-	include: ['consumer.ts']
-};
+import { packedApiConsumer, packedApiConsumerConfig } from './support/packedApiConsumer';
 
 /**
  * Packs Harness and installs the tarball into an empty consumer project, then runs `use` with it.
@@ -45,8 +32,8 @@ async function withPackedConsumer(use: (project: string) => Promise<void>): Prom
 			devDependencies: { typescript: '^5.8.3', '@types/node': '^22.15.3' }
 		};
 		await writeFile(join(project, 'package.json'), JSON.stringify(manifest));
-		await writeFile(join(project, 'tsconfig.json'), JSON.stringify(tsconfig));
-		await writeFile(join(project, 'consumer.ts'), packagedConsumerSource);
+		await writeFile(join(project, 'tsconfig.json'), JSON.stringify(packedApiConsumerConfig));
+		await writeFile(join(project, 'consumer.ts'), packedApiConsumer);
 		await seedConsumerLock({ project, tarball, consumer: manifest });
 		await runCommand(['bun', 'install', '--prefer-offline'], project);
 		await use(project);
@@ -157,7 +144,7 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 		for (const runner of ['bun', 'node']) {
 			const run = await measureProcess(
 				{
-					units: ['module.index', 'module.resources', 'module.verification'],
+					units: ['module.index', 'module.resources', 'module.verification', 'module.projects'],
 					workload: `cold-${runner}-packed-sdk`,
 					target: 'module',
 					command: [runner, 'consumer.ts', manifest, native],
@@ -169,6 +156,7 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 			printed[runner] = result;
 			expect(result, runner).toMatchObject({
 				resources: { request: 'agent-test', reserve: 10 },
+				projects: { schema: 1, status: 'empty', projects: [] },
 				id: 'function.commit-identity',
 				errors: [],
 				invalidErrors: ['function.commit-identity: contract input unsupported has unknown type'],
@@ -177,11 +165,13 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 				tolerance: 0.05,
 				kinds: ['module', 'wasm', 'process', 'http'],
 				responses: [expected, expected, expected, expected],
-				cli: 'undefined'
+				cli: 'undefined',
+				rootExports: expect.arrayContaining([
+					'componentManifestSchema',
+					'impactKernel',
+					'readProjectList'
+				])
 			});
-			expect(result.rootExports).toEqual(
-				expect.arrayContaining(['componentManifestSchema', 'impactKernel'])
-			);
 			expect(run.stdout).not.toContain('Usage: harness');
 		}
 		// Under verification, what the consumer printed is the evidence of the packed state.

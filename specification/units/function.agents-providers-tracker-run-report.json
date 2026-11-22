@@ -1,0 +1,146 @@
+{
+	"schemaVersion": 1,
+	"id": "function.agents-providers-tracker-run-report",
+	"uid": "u_lst54o5ptr",
+	"kind": "function",
+	"title": "trackerRunReport",
+	"responsibility": "Summarize completed Tracker attempts for the legacy model report and historical ladder learning.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/agents-providers/trackerRunReport.ts",
+			"src/utils/agents-providers/trackerRunReport.types.ts"
+		],
+		"symbols": [
+			"trackerModelHistory",
+			"trackerRunReport",
+			"TrackerRunOutcome",
+			"TrackerRunRow",
+			"TrackerHistoryScope"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "trackerModelHistory.rows",
+				"type": "readonly TrackerRunRow[]",
+				"required": true,
+				"description": "Snapshot of run attempts, including model rung, status and outcome."
+			},
+			{
+				"name": "trackerModelHistory.scope",
+				"type": "TrackerHistoryScope",
+				"required": true,
+				"description": "Project and work type used to choose the nearest comparable history."
+			},
+			{
+				"name": "trackerModelHistory.minSamples",
+				"type": "number",
+				"required": false,
+				"default": 3,
+				"description": "Minimum finished success and failure samples required for a comparable group."
+			},
+			{
+				"name": "trackerRunReport.rows",
+				"type": "readonly TrackerRunRow[]",
+				"required": true,
+				"description": "Run attempts from both local and replicated histories, keyed by node and run ID."
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerModelHistory",
+				"type": "TrackerModelHistory",
+				"description": "Success and failure counts by model rung for the best comparable group, or an empty map."
+			},
+			{
+				"name": "trackerRunReport",
+				"type": "unknown",
+				"description": "Sorted aggregates by model rung and work type, including all-type totals."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerModelHistory",
+				"inputs": [
+					{
+						"name": "trackerModelHistory.rows",
+						"type": "readonly TrackerRunRow[]",
+						"required": true,
+						"description": "Snapshot of run attempts, including model rung, status and outcome."
+					},
+					{
+						"name": "trackerModelHistory.scope",
+						"type": "TrackerHistoryScope",
+						"required": true,
+						"description": "Project and work type used to choose the nearest comparable history."
+					},
+					{
+						"name": "trackerModelHistory.minSamples",
+						"type": "number",
+						"required": false,
+						"default": 3,
+						"description": "Minimum finished success and failure samples required for a comparable group."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerModelHistory",
+						"type": "TrackerModelHistory",
+						"description": "Success and failure counts by model rung for the best comparable group, or an empty map."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerRunReport",
+				"inputs": [
+					{
+						"name": "trackerRunReport.rows",
+						"type": "readonly TrackerRunRow[]",
+						"required": true,
+						"description": "Run attempts from both local and replicated histories, keyed by node and run ID."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRunReport",
+						"type": "unknown",
+						"description": "Sorted aggregates by model rung and work type, including all-type totals."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-pick-tracker-model",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/agents-providers/trackerRunReport.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/agents-providers/trackerRunReport.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

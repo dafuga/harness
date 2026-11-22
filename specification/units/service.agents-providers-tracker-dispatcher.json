@@ -1,0 +1,1650 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-tracker-dispatcher",
+	"uid": "u_rzpjc6wqqy",
+	"kind": "service",
+	"title": "TrackerDispatcherService",
+	"responsibility": "Atomically plan Tracker launch intents and claims, admit runner attempts, and reconcile observed sessions and run outcomes.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/TrackerDispatcherService.ts",
+			"src/services/agents-providers/TrackerDispatcherService.types.ts",
+			"src/services/agents-providers/tracker-dispatcher-service/launchEligibility.ts",
+			"src/services/agents-providers/tracker-dispatcher-service/launchIntent.ts",
+			"src/services/agents-providers/tracker-dispatcher-service/runClaim.ts",
+			"src/services/agents-providers/tracker-dispatcher-service/runMonitor.ts",
+			"src/services/agents-providers/tracker-dispatcher-service/runReceipt.ts",
+			"src/services/agents-providers/tracker-dispatcher-service/runReceipt.types.ts",
+			"src/services/agents-providers/tracker-dispatcher-service/runTransition.ts"
+		],
+		"symbols": [
+			"TrackerDispatcherService",
+			"TrackerDispatcherService.constructor",
+			"TrackerDispatcherService.request",
+			"TrackerDispatcherService.claim",
+			"TrackerDispatcherService.prepare",
+			"TrackerDispatcherService.record",
+			"TrackerAttemptVersion",
+			"TrackerDispatchDecision",
+			"TrackerDispatchEvent",
+			"TrackerDispatchItem",
+			"TrackerDispatchPolicy",
+			"TrackerDispatchResult",
+			"TrackerDispatchSnapshot",
+			"TrackerDispatchStore",
+			"TrackerDispatchWrites",
+			"TrackerDueGrant",
+			"TrackerDuePolicy",
+			"TrackerLaunchIntent",
+			"TrackerLaunchOptions",
+			"TrackerLaunchPick",
+			"TrackerLaunchRequest",
+			"TrackerLaunchRung",
+			"TrackerRunReceipt",
+			"TrackerSessionEvidence",
+			"TrackerDispatchEvent",
+			"TrackerReceiptUsage",
+			"TrackerRunReceipt",
+			"TrackerSessionEvidence",
+			"TrackerLaunchSource",
+			"TrackerItemStatus",
+			"TrackerDispatchOutcome",
+			"TrackerLaunchOptions",
+			"TrackerLaunchIntent",
+			"TrackerDispatchItem",
+			"TrackerLaunchRung",
+			"TrackerLaunchPick",
+			"TrackerDispatchPolicy",
+			"TrackerDuePolicy",
+			"TrackerDueGrant",
+			"TrackerDispatchSnapshot",
+			"TrackerDispatchWrites",
+			"TrackerDispatchResult",
+			"TrackerDispatchDecision",
+			"TrackerDispatchStore",
+			"TrackerLaunchRequest",
+			"TrackerAttemptVersion",
+			"trackerFleetNodes",
+			"trackerNodeNames",
+			"minute",
+			"canonicalNode",
+			"knownNode",
+			"ownsLaunch",
+			"activeRun",
+			"inactive",
+			"startable",
+			"skip",
+			"dueOwner",
+			"mayScheduleHere",
+			"dueItemHold",
+			"schedulingHold",
+			"isDueNow",
+			"hasOpenSession",
+			"attemptKey",
+			"matchesRequest",
+			"requestLaunch",
+			"previewDueLaunch",
+			"claimLaunch",
+			"prepareRetry",
+			"monitorRun",
+			"completeRun",
+			"etaFor",
+			"queueRun",
+			"reviseRun",
+			"recordRun",
+			"finishRun",
+			"failRun",
+			"TrackerReceiptUsage",
+			"TrackerRunReceipt",
+			"TrackerSessionEvidence",
+			"TrackerDispatchEvent",
+			"transitionRun"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "TrackerDispatcherService.constructor.store",
+				"type": "TrackerDispatchStore",
+				"required": true,
+				"description": "Atomic store that re-reads item, policy, session evidence and receipt state, reserves a node-local run ID and commits the plan together."
+			},
+			{
+				"name": "TrackerDispatcherService.constructor.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true,
+				"description": "Executor identity, clock, placement, admission and ladder decisions. All callbacks are synchronous and side-effect free."
+			},
+			{
+				"name": "TrackerDispatcherService.request.itemId",
+				"type": "string",
+				"required": true,
+				"description": "Exact Tracker item ID."
+			},
+			{
+				"name": "TrackerDispatcherService.request.request",
+				"type": "TrackerLaunchRequest",
+				"required": true,
+				"description": "Manual options or due intent with a candidate token. Retries of matching manual requests keep the original token."
+			},
+			{
+				"name": "TrackerDispatcherService.claim.itemId",
+				"type": "string",
+				"required": true,
+				"description": "Exact Tracker item ID."
+			},
+			{
+				"name": "TrackerDispatcherService.claim.token",
+				"type": "string",
+				"required": true,
+				"description": "The current intent token. A receipt for the token always fences a second initial claim."
+			},
+			{
+				"name": "TrackerDispatcherService.claim.grant",
+				"type": "TrackerDueGrant",
+				"required": false,
+				"description": "Optional spoke authorization bound to the current token and node. Only an unreachable hub permits configured sole-owner fallback."
+			},
+			{
+				"name": "TrackerDispatcherService.prepare.itemId",
+				"type": "string",
+				"required": true,
+				"description": "Exact Tracker item ID."
+			},
+			{
+				"name": "TrackerDispatcherService.prepare.attempt",
+				"type": "TrackerAttemptVersion",
+				"required": true,
+				"description": "The node-local run ID and expected revision. Old observations and duplicate retry reservations are ignored."
+			},
+			{
+				"name": "TrackerDispatcherService.prepare.grant",
+				"type": "TrackerDueGrant",
+				"required": false,
+				"description": "Optional spoke authorization bound to the current token and node. Only an unreachable hub permits configured sole-owner fallback."
+			},
+			{
+				"name": "TrackerDispatcherService.record.itemId",
+				"type": "string",
+				"required": true,
+				"description": "Exact Tracker item ID."
+			},
+			{
+				"name": "TrackerDispatcherService.record.attempt",
+				"type": "TrackerAttemptVersion",
+				"required": true,
+				"description": "The node-local run ID and expected revision. Old observations and duplicate retry reservations are ignored."
+			},
+			{
+				"name": "TrackerDispatcherService.record.event",
+				"type": "TrackerDispatchEvent",
+				"required": true,
+				"description": "Trusted session, monitor, verification, startup failure, answer or rejection evidence supplied by the caller."
+			},
+			{
+				"name": "trackerNodeNames.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerNodeNames.hub",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "canonicalNode.name",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "canonicalNode.policy",
+				"type": "Pick<TrackerDispatchPolicy, 'resolveHost'>",
+				"required": true
+			},
+			{
+				"name": "knownNode.name",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "knownNode.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "ownsLaunch.intent",
+				"type": "TrackerLaunchIntent",
+				"required": true
+			},
+			{
+				"name": "ownsLaunch.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "activeRun.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "activeRun.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "activeRun.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "inactive.item",
+				"type": "TrackerDispatchItem",
+				"required": true
+			},
+			{
+				"name": "startable.item",
+				"type": "TrackerDispatchItem",
+				"required": true
+			},
+			{
+				"name": "skip.status",
+				"type": "'held' | 'conflict' | 'ignored'",
+				"required": true
+			},
+			{
+				"name": "skip.reason",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "dueOwner.item",
+				"type": "TrackerDispatchItem",
+				"required": true
+			},
+			{
+				"name": "dueOwner.due",
+				"type": "TrackerDuePolicy",
+				"required": true
+			},
+			{
+				"name": "dueOwner.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "mayScheduleHere.item",
+				"type": "TrackerDispatchItem",
+				"required": true
+			},
+			{
+				"name": "mayScheduleHere.due",
+				"type": "TrackerDuePolicy",
+				"required": true
+			},
+			{
+				"name": "mayScheduleHere.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "dueItemHold.item",
+				"type": "TrackerDispatchItem",
+				"required": true
+			},
+			{
+				"name": "dueItemHold.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "dueItemHold.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "schedulingHold.item",
+				"type": "TrackerDispatchItem",
+				"required": true
+			},
+			{
+				"name": "isDueNow.due",
+				"type": "string | null | undefined",
+				"required": true
+			},
+			{
+				"name": "isDueNow.timezone",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "isDueNow.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "hasOpenSession.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "hasOpenSession.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "hasOpenSession.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "hasOpenSession.except",
+				"type": "TrackerRunReceipt",
+				"required": false
+			},
+			{
+				"name": "attemptKey.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "matchesRequest.item",
+				"type": "TrackerDispatchItem | null",
+				"required": true
+			},
+			{
+				"name": "matchesRequest.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "matchesRequest.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "requestLaunch.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "requestLaunch.request",
+				"type": "TrackerLaunchRequest",
+				"required": true
+			},
+			{
+				"name": "requestLaunch.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "requestLaunch.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "previewDueLaunch.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "previewDueLaunch.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "previewDueLaunch.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "claimLaunch.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "claimLaunch.token",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "claimLaunch.grant",
+				"type": "TrackerDueGrant",
+				"required": false
+			},
+			{
+				"name": "claimLaunch.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "claimLaunch.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "prepareRetry.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "prepareRetry.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "prepareRetry.grant",
+				"type": "TrackerDueGrant",
+				"required": false
+			},
+			{
+				"name": "prepareRetry.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "prepareRetry.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "monitorRun.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "monitorRun.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "monitorRun.event",
+				"type": "Extract<TrackerDispatchEvent, { type: 'monitor' }>",
+				"required": true
+			},
+			{
+				"name": "monitorRun.clock",
+				"type": "{ policy: TrackerDispatchPolicy; now: number }",
+				"required": true
+			},
+			{
+				"name": "completeRun.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "completeRun.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "completeRun.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "completeRun.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "completeRun.usage",
+				"type": "TrackerReceiptUsage",
+				"required": false
+			},
+			{
+				"name": "etaFor.item",
+				"type": "TrackerDispatchItem | null",
+				"required": true
+			},
+			{
+				"name": "etaFor.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "etaFor.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "queueRun.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "queueRun.input",
+				"type": "{ item: TrackerDispatchItem; token: string; pick: TrackerLaunchPick | { error: string }; previous?: TrackerRunReceipt; }",
+				"required": true
+			},
+			{
+				"name": "queueRun.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "queueRun.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "reviseRun.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "reviseRun.patch",
+				"type": "Partial<TrackerRunReceipt>",
+				"required": true
+			},
+			{
+				"name": "recordRun.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "recordRun.item",
+				"type": "TrackerDispatchWrites['item']",
+				"required": false
+			},
+			{
+				"name": "finishRun.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "finishRun.outcome",
+				"type": "TrackerDispatchOutcome",
+				"required": true
+			},
+			{
+				"name": "finishRun.reason",
+				"type": "string | null",
+				"required": true
+			},
+			{
+				"name": "finishRun.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "finishRun.exitCode",
+				"type": "number | null",
+				"required": false
+			},
+			{
+				"name": "finishRun.usage",
+				"type": "TrackerReceiptUsage",
+				"required": false
+			},
+			{
+				"name": "failRun.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "failRun.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "failRun.failure",
+				"type": "{ outcome: 'failed' | 'rejected' | 'timed_out' | 'abandoned'; reason: string; exitCode?: number | null; startup?: boolean; reopen?: boolean; usage?: TrackerReceiptUsage; }",
+				"required": true
+			},
+			{
+				"name": "failRun.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "failRun.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "transitionRun.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "transitionRun.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "transitionRun.event",
+				"type": "TrackerDispatchEvent",
+				"required": true
+			},
+			{
+				"name": "transitionRun.clock",
+				"type": "{ policy: TrackerDispatchPolicy; now: number }",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerDispatcherService.request",
+				"type": "Promise<TrackerDispatchResult>",
+				"description": "Returns a new or existing intent, or the hold or conflict reason."
+			},
+			{
+				"name": "TrackerDispatcherService.claim",
+				"type": "Promise<TrackerDispatchResult>",
+				"description": "Returns one committed runner reservation and Harness model selection, a terminal invalid-model receipt, or a hold reason."
+			},
+			{
+				"name": "TrackerDispatcherService.prepare",
+				"type": "Promise<TrackerDispatchResult>",
+				"description": "Returns one committed reservation for a queued retry, a hold reason, or an ignored stale reservation."
+			},
+			{
+				"name": "TrackerDispatcherService.record",
+				"type": "Promise<TrackerDispatchResult>",
+				"description": "Returns the committed receipt and any queued retry, or the hold, conflict or stale-event reason."
+			}
+		],
+		"errors": [
+			{
+				"name": "Store error",
+				"type": "rejection",
+				"description": "A store read, policy callback or transaction failure rejects the operation. A reservation is released only after the store commits."
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerDispatcherService.request",
+				"inputs": [
+					{
+						"name": "TrackerDispatcherService.request.itemId",
+						"type": "string",
+						"required": true,
+						"description": "Exact Tracker item ID."
+					},
+					{
+						"name": "TrackerDispatcherService.request.request",
+						"type": "TrackerLaunchRequest",
+						"required": true,
+						"description": "Manual options or due intent with a candidate token. Retries of matching manual requests keep the original token."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerDispatcherService.request",
+						"type": "Promise<TrackerDispatchResult>",
+						"description": "Returns a new or existing intent, or the hold or conflict reason."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerDispatcherService.claim",
+				"inputs": [
+					{
+						"name": "TrackerDispatcherService.claim.itemId",
+						"type": "string",
+						"required": true,
+						"description": "Exact Tracker item ID."
+					},
+					{
+						"name": "TrackerDispatcherService.claim.token",
+						"type": "string",
+						"required": true,
+						"description": "The current intent token. A receipt for the token always fences a second initial claim."
+					},
+					{
+						"name": "TrackerDispatcherService.claim.grant",
+						"type": "TrackerDueGrant",
+						"required": false,
+						"description": "Optional spoke authorization bound to the current token and node. Only an unreachable hub permits configured sole-owner fallback."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerDispatcherService.claim",
+						"type": "Promise<TrackerDispatchResult>",
+						"description": "Returns one committed runner reservation and Harness model selection, a terminal invalid-model receipt, or a hold reason."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerDispatcherService.prepare",
+				"inputs": [
+					{
+						"name": "TrackerDispatcherService.prepare.itemId",
+						"type": "string",
+						"required": true,
+						"description": "Exact Tracker item ID."
+					},
+					{
+						"name": "TrackerDispatcherService.prepare.attempt",
+						"type": "TrackerAttemptVersion",
+						"required": true,
+						"description": "The node-local run ID and expected revision. Old observations and duplicate retry reservations are ignored."
+					},
+					{
+						"name": "TrackerDispatcherService.prepare.grant",
+						"type": "TrackerDueGrant",
+						"required": false,
+						"description": "Optional spoke authorization bound to the current token and node. Only an unreachable hub permits configured sole-owner fallback."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerDispatcherService.prepare",
+						"type": "Promise<TrackerDispatchResult>",
+						"description": "Returns one committed reservation for a queued retry, a hold reason, or an ignored stale reservation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerDispatcherService.record",
+				"inputs": [
+					{
+						"name": "TrackerDispatcherService.record.itemId",
+						"type": "string",
+						"required": true,
+						"description": "Exact Tracker item ID."
+					},
+					{
+						"name": "TrackerDispatcherService.record.attempt",
+						"type": "TrackerAttemptVersion",
+						"required": true,
+						"description": "The node-local run ID and expected revision. Old observations and duplicate retry reservations are ignored."
+					},
+					{
+						"name": "TrackerDispatcherService.record.event",
+						"type": "TrackerDispatchEvent",
+						"required": true,
+						"description": "Trusted session, monitor, verification, startup failure, answer or rejection evidence supplied by the caller."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerDispatcherService.record",
+						"type": "Promise<TrackerDispatchResult>",
+						"description": "Returns the committed receipt and any queued retry, or the hold, conflict or stale-event reason."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerNodeNames",
+				"inputs": [
+					{
+						"name": "trackerNodeNames.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerNodeNames.hub",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerNodeNames",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "canonicalNode",
+				"inputs": [
+					{
+						"name": "canonicalNode.name",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "canonicalNode.policy",
+						"type": "Pick<TrackerDispatchPolicy, 'resolveHost'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "canonicalNode",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "knownNode",
+				"inputs": [
+					{
+						"name": "knownNode.name",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "knownNode.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "knownNode",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ownsLaunch",
+				"inputs": [
+					{
+						"name": "ownsLaunch.intent",
+						"type": "TrackerLaunchIntent",
+						"required": true
+					},
+					{
+						"name": "ownsLaunch.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ownsLaunch",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "activeRun",
+				"inputs": [
+					{
+						"name": "activeRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "activeRun.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "activeRun.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "activeRun",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "inactive",
+				"inputs": [
+					{
+						"name": "inactive.item",
+						"type": "TrackerDispatchItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "inactive",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "startable",
+				"inputs": [
+					{
+						"name": "startable.item",
+						"type": "TrackerDispatchItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "startable",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "skip",
+				"inputs": [
+					{
+						"name": "skip.status",
+						"type": "'held' | 'conflict' | 'ignored'",
+						"required": true
+					},
+					{
+						"name": "skip.reason",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "skip",
+						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "dueOwner",
+				"inputs": [
+					{
+						"name": "dueOwner.item",
+						"type": "TrackerDispatchItem",
+						"required": true
+					},
+					{
+						"name": "dueOwner.due",
+						"type": "TrackerDuePolicy",
+						"required": true
+					},
+					{
+						"name": "dueOwner.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "dueOwner",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "mayScheduleHere",
+				"inputs": [
+					{
+						"name": "mayScheduleHere.item",
+						"type": "TrackerDispatchItem",
+						"required": true
+					},
+					{
+						"name": "mayScheduleHere.due",
+						"type": "TrackerDuePolicy",
+						"required": true
+					},
+					{
+						"name": "mayScheduleHere.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "mayScheduleHere",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "dueItemHold",
+				"inputs": [
+					{
+						"name": "dueItemHold.item",
+						"type": "TrackerDispatchItem",
+						"required": true
+					},
+					{
+						"name": "dueItemHold.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "dueItemHold.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "dueItemHold",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "schedulingHold",
+				"inputs": [
+					{
+						"name": "schedulingHold.item",
+						"type": "TrackerDispatchItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "schedulingHold",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isDueNow",
+				"inputs": [
+					{
+						"name": "isDueNow.due",
+						"type": "string | null | undefined",
+						"required": true
+					},
+					{
+						"name": "isDueNow.timezone",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "isDueNow.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isDueNow",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hasOpenSession",
+				"inputs": [
+					{
+						"name": "hasOpenSession.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "hasOpenSession.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "hasOpenSession.now",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "hasOpenSession.except",
+						"type": "TrackerRunReceipt",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "hasOpenSession",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "attemptKey",
+				"inputs": [
+					{
+						"name": "attemptKey.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "attemptKey",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "matchesRequest",
+				"inputs": [
+					{
+						"name": "matchesRequest.item",
+						"type": "TrackerDispatchItem | null",
+						"required": true
+					},
+					{
+						"name": "matchesRequest.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "matchesRequest.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "matchesRequest",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "requestLaunch",
+				"inputs": [
+					{
+						"name": "requestLaunch.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "requestLaunch.request",
+						"type": "TrackerLaunchRequest",
+						"required": true
+					},
+					{
+						"name": "requestLaunch.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "requestLaunch.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "requestLaunch",
+						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "previewDueLaunch",
+				"inputs": [
+					{
+						"name": "previewDueLaunch.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "previewDueLaunch.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "previewDueLaunch.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "previewDueLaunch",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "claimLaunch",
+				"inputs": [
+					{
+						"name": "claimLaunch.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "claimLaunch.token",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "claimLaunch.grant",
+						"type": "TrackerDueGrant",
+						"required": false
+					},
+					{
+						"name": "claimLaunch.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "claimLaunch.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "claimLaunch",
+						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "prepareRetry",
+				"inputs": [
+					{
+						"name": "prepareRetry.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "prepareRetry.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "prepareRetry.grant",
+						"type": "TrackerDueGrant",
+						"required": false
+					},
+					{
+						"name": "prepareRetry.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "prepareRetry.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "prepareRetry",
+						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "monitorRun",
+				"inputs": [
+					{
+						"name": "monitorRun.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "monitorRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "monitorRun.event",
+						"type": "Extract<TrackerDispatchEvent, { type: 'monitor' }>",
+						"required": true
+					},
+					{
+						"name": "monitorRun.clock",
+						"type": "{ policy: TrackerDispatchPolicy; now: number }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "monitorRun",
+						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "completeRun",
+				"inputs": [
+					{
+						"name": "completeRun.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "completeRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "completeRun.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "completeRun.now",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "completeRun.usage",
+						"type": "TrackerReceiptUsage",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "completeRun",
+						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "etaFor",
+				"inputs": [
+					{
+						"name": "etaFor.item",
+						"type": "TrackerDispatchItem | null",
+						"required": true
+					},
+					{
+						"name": "etaFor.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "etaFor.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "etaFor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "queueRun",
+				"inputs": [
+					{
+						"name": "queueRun.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "queueRun.input",
+						"type": "{ item: TrackerDispatchItem; token: string; pick: TrackerLaunchPick | { error: string }; previous?: TrackerRunReceipt; }",
+						"required": true
+					},
+					{
+						"name": "queueRun.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "queueRun.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "queueRun",
+						"type": "TrackerRunReceipt"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reviseRun",
+				"inputs": [
+					{
+						"name": "reviseRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "reviseRun.patch",
+						"type": "Partial<TrackerRunReceipt>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reviseRun",
+						"type": "TrackerRunReceipt"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "recordRun",
+				"inputs": [
+					{
+						"name": "recordRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "recordRun.item",
+						"type": "TrackerDispatchWrites['item']",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordRun",
+						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "finishRun",
+				"inputs": [
+					{
+						"name": "finishRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "finishRun.outcome",
+						"type": "TrackerDispatchOutcome",
+						"required": true
+					},
+					{
+						"name": "finishRun.reason",
+						"type": "string | null",
+						"required": true
+					},
+					{
+						"name": "finishRun.now",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "finishRun.exitCode",
+						"type": "number | null",
+						"required": false
+					},
+					{
+						"name": "finishRun.usage",
+						"type": "TrackerReceiptUsage",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "finishRun",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "failRun",
+				"inputs": [
+					{
+						"name": "failRun.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "failRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "failRun.failure",
+						"type": "{ outcome: 'failed' | 'rejected' | 'timed_out' | 'abandoned'; reason: string; exitCode?: number | null; startup?: boolean; reopen?: boolean; usage?: TrackerReceiptUsage; }",
+						"required": true
+					},
+					{
+						"name": "failRun.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "failRun.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "failRun",
+						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "transitionRun",
+				"inputs": [
+					{
+						"name": "transitionRun.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "transitionRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "transitionRun.event",
+						"type": "TrackerDispatchEvent",
+						"required": true
+					},
+					{
+						"name": "transitionRun.clock",
+						"type": "{ policy: TrackerDispatchPolicy; now: number }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "transitionRun",
+						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerDispatcherService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerDispatcherService.constructor.store",
+						"type": "TrackerDispatchStore",
+						"required": true,
+						"description": "Atomic store that re-reads item, policy, session evidence and receipt state, reserves a node-local run ID and commits the plan together."
+					},
+					{
+						"name": "TrackerDispatcherService.constructor.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true,
+						"description": "Executor identity, clock, placement, admission and ladder decisions. All callbacks are synchronous and side-effect free."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerDispatcherService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/TrackerDispatcherService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/TrackerDispatcherService.ts"
+			}
+		]
+	},
+	"scenarios": ["tracker-dispatcher"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

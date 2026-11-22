@@ -12,18 +12,18 @@
 			"src/workflows/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.types.ts",
-			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordVideoBatches.ts"
+			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordVideoBatches.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedOutcome.ts"
 		],
 		"symbols": [
 			"RecordAssemblyService",
 			"AssemblyContext",
 			"AssemblyInput",
-			"RecordAssemblyService",
 			"RecordAssemblyService.constructor",
 			"RecordAssemblyService.assemble",
-			"AssemblyContext",
-			"AssemblyInput",
-			"recordVideoBatches"
+			"recordVideoBatches",
+			"outcome",
+			"recordedOutcome"
 		]
 	},
 	"contract": {
@@ -62,13 +62,31 @@
 				"type": "CheckOutcome[]",
 				"required": true,
 				"description": "Check outcomes whose admitted batch pointers are assembled into the record."
+			},
+			{
+				"name": "outcome.failures",
+				"type": "string[]",
+				"required": true,
+				"description": "Observed failure messages for a check or gate."
+			},
+			{
+				"name": "recordedOutcome.input",
+				"type": "AssemblyInput",
+				"required": true,
+				"description": "Snapshot check results and the optional Lite pending work."
+			},
+			{
+				"name": "recordedOutcome.gates",
+				"type": "Record<string, string[]>",
+				"required": true,
+				"description": "Observed failure messages grouped by gate."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RecordAssemblyService.assemble",
 				"type": "Promise<VerificationRecord>",
-				"description": "Resolves to a sealed verification record for the tested repository revision, containing source identity, profile and tools, component versions, measurements, impact, non-setup tests, sorted scenario results, budget and reason results, gate statuses, and failures. Build details are included when applicable. Assembly generates finishedAt and sets id to the SHA-256 hash of the other record fields.",
+				"description": "Seals the tested revision, non-setup checks, scenarios and gate results. Includes video batch pointers and build identities when present. A passing full run may also bind a retained generated artifact to its digest.",
 				"examples": [
 					{
 						"id": "4727c5bd8473ce5bc3e7b376318425909810beaaf87b8f12f6fd046a1c61c1e0",
@@ -176,7 +194,7 @@
 					{
 						"name": "RecordAssemblyService.assemble",
 						"type": "Promise<VerificationRecord>",
-						"description": "Resolves to a sealed verification record for the tested repository revision, containing source identity, profile and tools, component versions, measurements, impact, non-setup tests, sorted scenario results, budget and reason results, gate statuses, and failures. Build details are included when applicable. Assembly generates finishedAt and sets id to the SHA-256 hash of the other record fields.",
+						"description": "Seals the tested revision, non-setup checks, scenarios and gate results. Includes video batch pointers and build identities when present. A passing full run may also bind a retained generated artifact to its digest.",
 						"examples": [
 							{
 								"id": "4727c5bd8473ce5bc3e7b376318425909810beaaf87b8f12f6fd046a1c61c1e0",
@@ -272,6 +290,52 @@
 						"description": "Two check outcomes name different sealed pointers for one video batch ID."
 					}
 				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "outcome",
+				"inputs": [
+					{
+						"name": "outcome.failures",
+						"type": "string[]",
+						"required": true,
+						"description": "Observed failure messages for a check or gate."
+					}
+				],
+				"outputs": [
+					{
+						"name": "outcome",
+						"type": "'passed' | 'failed'",
+						"description": "Passed when the failure list is empty, failed otherwise."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recordedOutcome",
+				"inputs": [
+					{
+						"name": "recordedOutcome.input",
+						"type": "AssemblyInput",
+						"required": true,
+						"description": "Snapshot check results and the optional Lite pending work."
+					},
+					{
+						"name": "recordedOutcome.gates",
+						"type": "Record<string, string[]>",
+						"required": true,
+						"description": "Observed failure messages grouped by gate."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordedOutcome",
+						"type": "Pick<VerificationRecord, 'status' | 'lite' | 'tests' | 'scenarios' | 'gates' | 'failures'>",
+						"description": "Sealed outcome fields for tests, scenarios and gates, with a separate Lite outcome when applicable."
+					}
+				],
+				"errors": [],
 				"errorStatus": "declared"
 			}
 		],
@@ -396,6 +460,11 @@
 		},
 		{
 			"unit": "workflow.load-revisions",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.scenario-coverage",
 			"via": "import",
 			"origin": "derived"
 		}

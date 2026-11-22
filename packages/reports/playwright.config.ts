@@ -1,10 +1,16 @@
 import { defineConfig } from '@playwright/test';
 import { resolve } from 'node:path';
+import { seedProjectOverview } from './tests/e2e/support/seedProjectOverview';
 import { namedE2eRun, openE2eRun } from './src/utils/e2e-fixtures/e2eFixtures';
 // Every run seeds a directory of its own and listens on ports of its own, so two runs at once,
 // from one checkout or from two verification snapshots, never read or remove each other's
 // fixtures. The first process of a run chooses both; its servers, seeds and specs inherit them.
 const fixtures = openE2eRun();
+const overviewOnly =
+	/^(reports\.page\.harness-projects|reports\.component\.projects-sessions-project-overview-)/.test(
+		process.env.HARNESS_VERIFY_ENTITY ?? ''
+	);
+if (overviewOnly) seedProjectOverview(fixtures.console);
 process.env.PROJECT_REPORTS_HOME = fixtures.reports;
 process.env.HARNESS_ANALYTICS_HOME = fixtures.analytics;
 process.env.HARNESS_ANALYTICS_DISABLED = '1';
@@ -36,8 +42,9 @@ const reports = [
 	`HARNESS_SITE_ROOT=${fixtures.site('alpha-project')}`
 ].join(' ');
 const owner = 'HARNESS_OWNER_MODE=loopback HARNESS_BIND=127.0.0.1';
-const seed =
-	'bun scripts/seed-sites.ts && PROJECT_REPORTS_ASSET_STORAGE=local bun scripts/seed-e2e.ts && bun scripts/seed-harness-console.ts';
+const seed = overviewOnly
+	? 'true'
+	: 'bun scripts/seed-sites.ts && PROJECT_REPORTS_ASSET_STORAGE=local bun scripts/seed-e2e.ts && bun scripts/seed-harness-console.ts';
 // A built server is started as `harness report` starts it: told where the command line is.
 const cli = `HARNESS_CLI_PATH=${resolve('../../src/index.ts')}`;
 // Every server of a run is started from the run's own copy of the finished build: a built
@@ -67,11 +74,15 @@ export default defineConfig({
 	use: { baseURL: `http://127.0.0.1:${port}`, screenshot: 'only-on-failure' },
 	reporter: [['list'], ['json', { outputFile: 'test-results/results.json' }]],
 	webServer: [
-		{
-			command: 'bun scripts/fake-r2.ts',
-			url: `http://127.0.0.1:${storagePort}/health`,
-			reuseExistingServer
-		},
+		...(overviewOnly
+			? []
+			: [
+					{
+						command: 'bun scripts/fake-r2.ts',
+						url: `http://127.0.0.1:${storagePort}/health`,
+						reuseExistingServer
+					}
+				]),
 		{
 			// Seeding and, outside a verification, building both come before the first server
 			// now, so this entry has the time the two had between them and the next has little.
@@ -81,11 +92,15 @@ export default defineConfig({
 			timeout: process.env.HARNESS_EVIDENCE_DIR ? 900_000 : 420_000,
 			reuseExistingServer
 		},
-		{
-			command: `${built('', '127.0.0.1', lockedPort)} & ${built(scale, '127.0.0.1', scalePort)} & ${built(owner, '0.0.0.0', exposedPort)}`,
-			url: `http://127.0.0.1:${exposedPort}/api/health`,
-			timeout: 60_000,
-			reuseExistingServer
-		}
+		...(overviewOnly
+			? []
+			: [
+					{
+						command: `${built('', '127.0.0.1', lockedPort)} & ${built(scale, '127.0.0.1', scalePort)} & ${built(owner, '0.0.0.0', exposedPort)}`,
+						url: `http://127.0.0.1:${exposedPort}/api/health`,
+						timeout: 60_000,
+						reuseExistingServer
+					}
+				])
 	]
 });

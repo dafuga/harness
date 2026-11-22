@@ -43,7 +43,7 @@
 				"name": "SnapshotRunService.constructor.run",
 				"type": "SnapshotRun",
 				"required": true,
-				"description": "Repository root, parsed verification config, and run context for exporting one commit and running checks in isolation. The context excludes the snapshot directory, which this service creates; the config supplies setup, links, declared outputs, builds, tools, runners, checks, and test timeout.",
+				"description": "Supplies the project root, verification configuration, snapshot run context, optional needed builds and optional generated artifact path to retain.",
 				"examples": [
 					{
 						"root": "/workspace/project",
@@ -192,7 +192,7 @@
 			{
 				"name": "SnapshotRunService.execute",
 				"type": "Promise<Executed>",
-				"description": "The resolved report contains check outcomes, sorted tracked-file mutations and added paths, setup/tool failures, readable requested artifacts, and build failures. It includes build identities only when the config declares builds, and artifact entries contain byte length and SHA-256.",
+				"description": "Runs setup and checks in a clean snapshot and reports build identity, drift, failures and measured artifacts. When requested, retains one declared generated file after snapshot checks pass and reports any retention failure.",
 				"examples": [
 					{
 						"outcomes": [],
@@ -258,7 +258,7 @@
 					{
 						"name": "SnapshotRunService.execute",
 						"type": "Promise<Executed>",
-						"description": "The resolved report contains check outcomes, sorted tracked-file mutations and added paths, setup/tool failures, readable requested artifacts, and build failures. It includes build identities only when the config declares builds, and artifact entries contain byte length and SHA-256.",
+						"description": "Runs setup and checks in a clean snapshot and reports build identity, drift, failures and measured artifacts. When requested, retains one declared generated file after snapshot checks pass and reports any retention failure.",
 						"examples": [
 							{
 								"outcomes": [],

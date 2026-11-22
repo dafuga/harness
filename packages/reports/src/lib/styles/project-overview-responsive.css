@@ -1,0 +1,43 @@
+/* @harness-uid u_kogl2f5i5w */
+@media (max-width: 1000px) {
+	.po-page {
+		padding: var(--hx-space-22) var(--hx-space-22) var(--hx-space-40);
+	}
+	.po-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	.po-grid.po-grid-compact {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+@media (max-width: 560px) {
+	.po-page {
+		padding: var(--hx-space-16) var(--hx-space-16) var(--hx-space-40);
+	}
+	.po-title {
+		font-size: var(--hx-type-size-3xl);
+		line-height: var(--hx-space-36);
+	}
+	.po-filters {
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		margin: 0 calc(var(--hx-space-16) * -1) var(--hx-space-28);
+		padding: 0 var(--hx-space-16);
+	}
+	.po-grid,
+	.po-grid.po-grid-compact {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	/* Phones show the top work item, the callout and the milestone; quiet and done are one row. */
+	.po-item[data-extra],
+	.po-more,
+	.po-counts,
+	.po-compact .po-milestone {
+		display: none;
+	}
+	.po-chip,
+	.po-action,
+	.po-item-open {
+		min-height: 44px;
+	}
+}

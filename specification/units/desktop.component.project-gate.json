@@ -12,6 +12,7 @@
 		"uses": [
 			"desktop.component.game-create",
 			"reports.component.brand-mark",
+			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h1",
@@ -44,6 +45,13 @@
 				"default": true,
 				"description": "Whether projects can be opened from this device; it defaults to true. False is for a phone, whose projects are those of a computer: it hides the Open Project button and the GameCreate component, makes the hint describe projects of a connected computer, and labels non-shared recent projects without a root On your computer.",
 				"examples": [true, false]
+			},
+			{
+				"name": "ProjectGate.overview",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Shows the Project Overview link only when the current desktop or paired account can offer it."
 			},
 			{
 				"name": "ProjectGate.busy",
@@ -141,6 +149,11 @@
 		},
 		{
 			"unit": "reports.component.brand-mark",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
 			"via": "import",
 			"origin": "derived"
 		},

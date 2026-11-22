@@ -30,9 +30,12 @@ export function resourcePressure(
 	return null;
 }
 export function memoryReserve(sample: ResourceSnapshot, config: ResourceConfig): number {
+	const total = sample.memoryTotalBytes;
+	const floor = config.minMemoryReserveMiB * mib;
 	return Math.max(
-		(sample.memoryTotalBytes * config.memoryReservePercent) / 100,
-		config.minMemoryReserveMiB * mib
+		(total * config.memoryReservePercent) / 100,
+		// A worker smaller than the absolute reserve needs a proportional floor.
+		floor >= total ? total / 4 : floor
 	);
 }
 export function impossibleRequest(

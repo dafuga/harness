@@ -1,0 +1,143 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.page.tracker-overview",
+	"uid": "u_yd5wcp6sz3",
+	"kind": "page",
+	"title": "/tracker-overview",
+	"responsibility": "Owns the /tracker-overview route page.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": [
+			"hub.component.hub-frame",
+			"hub.component.login-panel",
+			"reports.component.explorer-ui-explorer-kit-notice",
+			"reports.component.projects-sessions-project-overview-project-overview"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/hub/src/routes/tracker-overview/+page.svelte",
+			"packages/hub/src/routes/tracker-overview/overviewClient.ts",
+			"packages/hub/src/routes/tracker-overview/overviewClient.types.ts"
+		],
+		"symbols": ["+page", "overviewPath", "readOverview", "watchWhileVisible", "OverviewOutcome"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "+page",
+				"type": "markup",
+				"description": "Shows the Project Overview read from the owner endpoint only after this account is named owner. Sign-in appears when no account is present; a loading state appears until the read answers. A denied read shows a refusal notice, and an unavailable snapshot shows the unavailable notice without project data. The page renders one harness-build meta slot."
+			}
+		],
+		"errors": [
+			{
+				"name": "unknown",
+				"type": "thrown",
+				"description": "The refresh callback awaits `session.check()` without a catch, so its rejection value is not specified by this page."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "readOverview",
+				"inputs": [
+					{
+						"name": "readOverview.fetcher",
+						"type": "typeof fetch",
+						"required": false
+					},
+					{
+						"name": "readOverview.signal",
+						"type": "AbortSignal",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "readOverview",
+						"type": "Promise<OverviewOutcome>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "watchWhileVisible",
+				"inputs": [
+					{
+						"name": "watchWhileVisible.refresh",
+						"type": "() => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "watchWhileVisible",
+						"type": "()"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.hub-frame",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.login-panel",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-project-overview-project-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/routes/tracker-overview/+page.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/routes/tracker-overview/+page.svelte"
+			}
+		]
+	},
+	"scenarios": ["project-overview-hub-page"],
+	"preview": {
+		"scenario": "project-overview-hub-page",
+		"state": "ready",
+		"viewport": "desktop"
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

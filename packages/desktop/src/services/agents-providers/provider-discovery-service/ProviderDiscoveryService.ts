@@ -9,6 +9,13 @@ export class ProviderDiscoveryService {
 	async list() {
 		return Promise.all(Object.values(this.runners).map((runner) => runner.discover()));
 	}
+	/** The authoring models serve the workflow independently of the chat model picker. */
+	async mockupRunner() {
+		const runner = this.runners.claude;
+		const state = await runner.discover();
+		if (!state.available) throw new Error(state.reason ?? 'Claude CLI is unavailable.');
+		return runner;
+	}
 	async select(provider: ProviderId, model: string, effort: string | null) {
 		const runner = this.runners[provider],
 			state = await runner.discover();

@@ -32,7 +32,7 @@ export class AnalyticsService {
 			const events = options.site
 				? repository.events().filter((event) => sameSite(options.site ?? '', event.project))
 				: repository.events();
-			snapshot = analyticsSnapshot(events, filter);
+			snapshot = analyticsSnapshot(events, filter, operation === 'tasks');
 		} finally {
 			repository.close();
 		}

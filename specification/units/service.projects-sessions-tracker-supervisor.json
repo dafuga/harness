@@ -1,0 +1,278 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-supervisor",
+	"uid": "u_46eur7qage",
+	"kind": "service",
+	"title": "TrackerSupervisorService",
+	"responsibility": "Owns the TrackerSupervisorService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/TrackerSupervisorService.ts",
+			"src/services/projects-sessions/TrackerSupervisorService.types.ts",
+			"src/services/projects-sessions/tracker-supervisor-service/assertTrackerLegacyRollbackSafe.ts",
+			"src/services/projects-sessions/tracker-supervisor-service/trackerSupervisorStatus.ts"
+		],
+		"symbols": [
+			"TrackerSupervisorService",
+			"TrackerSupervisorService.constructor",
+			"TrackerSupervisorService.status",
+			"TrackerSupervisorService.assertLegacyRollbackSafe",
+			"TrackerSupervisorService.run",
+			"TrackerSupervisorWorker",
+			"TrackerSupervisorOptions",
+			"TrackerSupervisorViews",
+			"assertTrackerLegacyRollbackSafe",
+			"trackerSupervisorStatus"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerSupervisorService.constructor.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "TrackerSupervisorService.constructor.options",
+				"type": "TrackerSupervisorOptions",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "TrackerSupervisorService.run.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "assertTrackerLegacyRollbackSafe.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "trackerSupervisorStatus.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "trackerSupervisorStatus.startedAt",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerSupervisorStatus.views",
+				"type": "Partial<TrackerSupervisorViews>",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerSupervisorService.status",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerSupervisorService.assertLegacyRollbackSafe",
+				"type": "void"
+			},
+			{
+				"name": "TrackerSupervisorService.run",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "assertTrackerLegacyRollbackSafe",
+				"type": "void"
+			},
+			{
+				"name": "trackerSupervisorStatus",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "DOMException",
+				"type": "thrown"
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerSupervisorService.status",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerSupervisorService.status",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSupervisorService.assertLegacyRollbackSafe",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerSupervisorService.assertLegacyRollbackSafe",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "DOMException",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSupervisorService.run",
+				"inputs": [
+					{
+						"name": "TrackerSupervisorService.run.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSupervisorService.run",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "assertTrackerLegacyRollbackSafe",
+				"inputs": [
+					{
+						"name": "assertTrackerLegacyRollbackSafe.database",
+						"type": "SqliteDatabase",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assertTrackerLegacyRollbackSafe",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "DOMException",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerSupervisorStatus",
+				"inputs": [
+					{
+						"name": "trackerSupervisorStatus.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					},
+					{
+						"name": "trackerSupervisorStatus.startedAt",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerSupervisorStatus.views",
+						"type": "Partial<TrackerSupervisorViews>",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerSupervisorStatus",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerSupervisorService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerSupervisorService.constructor.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					},
+					{
+						"name": "TrackerSupervisorService.constructor.options",
+						"type": "TrackerSupervisorOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSupervisorService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-dispatch",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-recurring",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-tracker-dispatcher",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerSupervisorService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerSupervisorService.ts"
+			}
+		]
+	},
+	"scenarios": ["tracker-supervised-workers"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

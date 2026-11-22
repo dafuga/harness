@@ -1,0 +1,45 @@
+{
+	"name": "responsive-plan-mockups",
+	"goal": "Plan renders responsive HTML comparisons, pins the source and screenshots, and hands the approved option to Change",
+	"createdAt": "2026-11-21T22:42:01.673Z",
+	"updatedAt": "2026-11-21T23:18:36.084Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T22:56:50.529Z",
+			"evidence": "Feature specification and red test recorded at 9c30dabcbef7371b4444cee8add92a21879cd760."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-21T23:18:34.341Z",
+			"evidence": "Sonnet and Haiku produced a validated mockup on disposable project source. Version persistence, Overview review, and the Change handoff are implemented in PR #204."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-21T23:18:36.084Z",
+			"evidence": "The initial Plan reproduced the missing Sonnet source at the committed red checkpoint. Focused Plan and Change tests and the 21-case stamped browser suite passed. The recorder could not pair the two commits because the feature changed shared fixtures and added a runtime dependency."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

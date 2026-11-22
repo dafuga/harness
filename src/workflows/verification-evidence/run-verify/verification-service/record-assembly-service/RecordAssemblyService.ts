@@ -29,20 +29,24 @@ import { recordVideoBatches } from './recordVideoBatches';
 import { benchmarkMeasurements, recordComponents } from './sealRecord';
 import { unmeasured } from './unmeasured';
 import { ledgerGate, registryGate } from './VerificationGates';
-function outcome(failures: string[]): 'passed' | 'failed' {
-	return failures.length === 0 ? 'passed' : 'failed';
+import { outcome, recordedOutcome } from './recordedOutcome';
+function componentSnapshots(context: AssemblyContext, measurements: Measurement[]) {
+	return recordComponents(
+		context.impact,
+		recordSides(context),
+		measurements.map((item) => item.unit)
+	);
 }
+
 /** Turns what a run observed into one sealed record, with every gate judged. */
 export class RecordAssemblyService {
 	constructor(private readonly context: AssemblyContext) {}
-	// eslint-disable-next-line harness/max-method-lines -- this service definition is ownership-reviewed
 	async assemble(input: AssemblyInput): Promise<VerificationRecord> {
 		const { context } = this;
 		const measurements = this.measurements(input.executed);
 		const budgets = await this.budgets(measurements);
 		const reasons = await context.explained();
 		const gates = this.gates(input, { budgets, reasons, measurements });
-		const failures = Object.values(gates).flat();
 		return sealRecord({
 			schemaVersion: 1,
 			componentSchemaVersion: 2,
@@ -52,28 +56,14 @@ export class RecordAssemblyService {
 			tools: [{ id: 'harness', version: sdkPackage.version }, ...input.executed.tools],
 			startedAt: input.startedAt,
 			finishedAt: new Date().toISOString(),
-			status: outcome(failures),
-			components: recordComponents(
-				context.impact,
-				recordSides(context),
-				measurements.map((item) => item.unit)
-			),
+			...recordedOutcome(input, gates),
+			components: componentSnapshots(context, measurements),
 			measurements,
 			impact: recordedImpact(context.impact),
-			tests: input.executed.outcomes
-				.filter((item) => !item.check.id.startsWith('setup-'))
-				.map((item) => item.entry),
-			scenarios: judgedScenarios(input),
+			...recordedObservations(input, Object.values(gates).flat().length === 0),
 			...recordVideoBatches(input.executed.outcomes),
-			// Only a run that skipped a declared build names one; every other record is unchanged.
-			...recordedBuilds(
-				input.executed.builds,
-				input.executed.skippedBuilds?.length ? input.executed.skippedBuilds : undefined
-			),
 			budgets: { status: outcome(budgets.report.failures), findings: budgets.report.findings },
-			reasons: recordedReasons(reasons),
-			gates: Object.fromEntries(Object.entries(gates).map(([gate, list]) => [gate, outcome(list)])),
-			failures
+			reasons: recordedReasons(reasons)
 		});
 	}
 
@@ -92,6 +82,7 @@ export class RecordAssemblyService {
 				? { performance: profileFailures(this.context, judged.measurements) }
 				: {}),
 			snapshot: snapshotFailures(input.executed),
+			...(input.executed.artifactFailures ? { artifact: input.executed.artifactFailures } : {}),
 			registry: registryGate(this.context.base, this.context.head),
 			ledger: judged.budgets.ledger,
 			tests: outcomes.filter((item) => !item.check.scenario).flatMap((item) => item.failures),
@@ -163,11 +154,6 @@ function recordSides(context: AssemblyContext) {
 }
 
 /** The snapshot must stay the exact commit: nothing changed, nothing removed, nothing added. */
-/** Scenarios that ran and scenarios whose evidence is inherited, in one order. */
-function judgedScenarios(input: AssemblyInput): VerificationRecord['scenarios'] {
-	const all = [...input.scenarios.map((scenario) => scenario.result), ...input.referenced];
-	return all.sort((left, right) => (left.id < right.id ? -1 : 1));
-}
 
 function snapshotFailures(executed: Executed): string[] {
 	const changed = executed.mutated.map((path) => `snapshot mutated during verification: ${path}`);
@@ -211,4 +197,13 @@ function profileFailures(context: AssemblyContext, measurements: Measurement[]):
 		commit,
 		profile: profile.id
 	});
+}
+
+function recordedObservations(input: AssemblyInput, passed: boolean) {
+	const { builds, skippedBuilds, retainedArtifact } = input.executed;
+	return {
+		// Only a run that skipped a declared build names one; every other record is unchanged.
+		...recordedBuilds(builds, skippedBuilds?.length ? skippedBuilds : undefined),
+		...(passed && retainedArtifact ? { retainedArtifact } : {})
+	};
 }

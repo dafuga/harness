@@ -1,0 +1,62 @@
+{
+	"name": "project-overview-dashboard-fit",
+	"goal": "Keep the signed-in Hub dashboard cards, filters and document inside each supported viewport.",
+	"createdAt": "2026-11-21T10:27:28.580Z",
+	"updatedAt": "2026-11-21T10:56:27.600Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-21T10:28:13.843Z",
+			"evidence": "The compiled Hub 5154504400 phone capture projects-owner-mobile.png shows the right edge of the signed-in /projects tracker card clipped at 390px. Desktop, tablet and phone retain the full card area and an internally scrollable filter strip."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-21T10:28:16.066Z",
+			"evidence": "Existing account-projects owner state asserted card visibility and saved a viewport screenshot without comparing document width or card bounds. The standalone tracker-overview geometry test exercised another route. The existing owner state now requires both width and card bounds at each viewport."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-21T10:56:20.582Z",
+			"evidence": "At ca2c58e11f Workerd reproduced 236px document overflow and five clipped cards on mobile. Sealed record 4ad38e5ac284. Desktop and tablet passed the unchanged check."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-21T10:56:22.874Z",
+			"evidence": "Haiku put the Hub overview panel inside its grid track. The CSS-only fix is f4e9c19462."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T10:56:25.200Z",
+			"evidence": "The unchanged complete test corpus passed on all three widths. Sealed record ff649563555d retained hash-verified and inspected captures."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "complete",
+			"completedAt": "2026-11-21T10:56:27.600Z",
+			"evidence": "The integrated stamped Workerd Hub 441e8f7108 passed all 70 focused browser cases and retained final state captures and workload readings. Full-root validation is tracked separately."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

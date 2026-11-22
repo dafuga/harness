@@ -54,3 +54,5 @@ export function withUid(path: string, code: string, uid: string): string {
 	lines.splice(at, 0, comment);
 	return lines.join('\n');
 }
+
+export { readUid as unitUid };

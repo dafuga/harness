@@ -1,0 +1,355 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-spoke-sync",
+	"uid": "u_657a3wmun2",
+	"kind": "service",
+	"title": "TrackerSpokeSyncService",
+	"responsibility": "Synchronize one Tracker link with the local spoke journal using signed batches and durable link-specific cursors.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/TrackerSpokeSyncService.ts",
+			"src/services/projects-sessions/TrackerSpokeSyncService.types.ts"
+		],
+		"symbols": [
+			"trackerMetaKeys",
+			"TrackerSpokeSyncService",
+			"TrackerSpokeSyncService.constructor",
+			"TrackerSpokeSyncService.push",
+			"TrackerSpokeSyncService.pull",
+			"TrackerSpokeSyncService.permitDue",
+			"TrackerSpokeSyncService.exchangeMachine",
+			"TrackerSpokeSyncService.#post",
+			"TrackerSpokeSyncService.#acceptIdentity",
+			"TrackerSpokeSyncService.#cursor",
+			"TrackerSpokeOperation",
+			"TrackerSpokeJournalEntry",
+			"TrackerSpokeStore",
+			"TrackerSpokeRequest",
+			"TrackerSpokeTransport",
+			"TrackerSpokeOptions",
+			"TrackerSpokePullResult",
+			"TrackerSpokePostBody"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "trackerMetaKeys.prefix",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerSpokeSyncService.constructor.options",
+				"type": "TrackerSpokeOptions",
+				"required": true,
+				"description": "Injected local journal, transport and signing key. Defaults to the hub link, relaying on a peer only, and a 25-second pull wait."
+			},
+			{
+				"name": "TrackerSpokeSyncService.permitDue.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerSpokeSyncService.permitDue.token",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerSpokeSyncService.exchangeMachine.sample",
+				"type": "TrackerWireValue | undefined",
+				"required": true
+			},
+			{
+				"name": "TrackerSpokeSyncService.exchangeMachine.runs",
+				"type": "readonly TrackerWireValue[]",
+				"required": true
+			},
+			{
+				"name": "TrackerSpokeSyncService.#post.pathAndQuery",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerSpokeSyncService.#post.body",
+				"type": "TrackerSpokePostBody",
+				"required": true
+			},
+			{
+				"name": "TrackerSpokeSyncService.#acceptIdentity.dbId",
+				"type": "string",
+				"required": true,
+				"description": "Database identifier from the validated response."
+			},
+			{
+				"name": "TrackerSpokeSyncService.#cursor.key",
+				"type": "string",
+				"required": true,
+				"description": "Legacy metadata key for the local push or remote pull sequence."
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerSpokeSyncService.push",
+				"type": "Promise<number>",
+				"description": "Count of operations acknowledged during this drain, including duplicates accepted by the receiver."
+			},
+			{
+				"name": "TrackerSpokeSyncService.pull",
+				"type": "Promise<TrackerSpokePullResult>",
+				"description": "Applied page and cursor, a durable identity reset requiring replay and another poll, or a stale reply to discard."
+			},
+			{
+				"name": "TrackerSpokeSyncService.#acceptIdentity",
+				"type": "boolean",
+				"description": "Whether a known database was replaced and its cursors reset."
+			},
+			{
+				"name": "TrackerSpokeSyncService.#cursor",
+				"type": "number",
+				"description": "A nonnegative safe integer cursor, with zero for an absent value."
+			},
+			{
+				"name": "TrackerSpokeSyncService.#request",
+				"type": "Promise<unknown>",
+				"description": "Decoded JSON from the configured transport."
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "A persisted cursor, push receipt or pull page is invalid. Failures from the journal and transport propagate as supplied."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "trackerMetaKeys",
+				"inputs": [
+					{
+						"name": "trackerMetaKeys.prefix",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMetaKeys",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "TrackerSpokeSyncService.push",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerSpokeSyncService.push",
+						"type": "Promise<number>",
+						"description": "Count of operations acknowledged during this drain, including duplicates accepted by the receiver."
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejects a malformed push receipt or stored cursor. Transport and journal failures also reject, leaving the unacknowledged batch eligible for retry."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "TrackerSpokeSyncService.pull",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerSpokeSyncService.pull",
+						"type": "Promise<TrackerSpokePullResult>",
+						"description": "Applied page and cursor, a durable identity reset requiring replay and another poll, or a stale reply to discard."
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejects a malformed pull page or stored cursor. Transport and journal failures also reject, leaving an unapplied page eligible for retry."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "TrackerSpokeSyncService.permitDue",
+				"inputs": [
+					{
+						"name": "TrackerSpokeSyncService.permitDue.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerSpokeSyncService.permitDue.token",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSpokeSyncService.permitDue",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSpokeSyncService.exchangeMachine",
+				"inputs": [
+					{
+						"name": "TrackerSpokeSyncService.exchangeMachine.sample",
+						"type": "TrackerWireValue | undefined",
+						"required": true
+					},
+					{
+						"name": "TrackerSpokeSyncService.exchangeMachine.runs",
+						"type": "readonly TrackerWireValue[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSpokeSyncService.exchangeMachine",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSpokeSyncService.#post",
+				"inputs": [
+					{
+						"name": "TrackerSpokeSyncService.#post.pathAndQuery",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerSpokeSyncService.#post.body",
+						"type": "TrackerSpokePostBody",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSpokeSyncService.#post",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSpokeSyncService.#acceptIdentity",
+				"inputs": [
+					{
+						"name": "TrackerSpokeSyncService.#acceptIdentity.dbId",
+						"type": "string",
+						"required": true,
+						"description": "Database identifier from the validated response."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSpokeSyncService.#acceptIdentity",
+						"type": "boolean",
+						"description": "Whether a known database was replaced and its cursors reset."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSpokeSyncService.#cursor",
+				"inputs": [
+					{
+						"name": "TrackerSpokeSyncService.#cursor.key",
+						"type": "string",
+						"required": true,
+						"description": "Legacy metadata key for the local push or remote pull sequence."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSpokeSyncService.#cursor",
+						"type": "number",
+						"description": "A nonnegative safe integer cursor, with zero for an absent value."
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejects corrupt cursor metadata that is not a nonnegative safe integer."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerSpokeSyncService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerSpokeSyncService.constructor.options",
+						"type": "TrackerSpokeOptions",
+						"required": true,
+						"description": "Injected local journal, transport and signing key. Defaults to the hub link, relaying on a peer only, and a 25-second pull wait."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSpokeSyncService.constructor",
+						"type": "unknown",
+						"description": "A client for one configured link. The caller schedules polls and retries."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "service.networking-security-tracker-sync-auth",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-hub-sync",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerSpokeSyncService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerSpokeSyncService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

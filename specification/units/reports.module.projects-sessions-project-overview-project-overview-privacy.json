@@ -1,0 +1,113 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-project-overview-project-overview-privacy",
+	"uid": "u_na5l2yswov",
+	"kind": "module",
+	"title": "projectOverviewPrivacy",
+	"responsibility": "Excludes sensitive, removed, ignored, and unnamed tracker items and redacts known credential forms from display text.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/lib/projects-sessions/project-overview/projectOverviewPrivacy.ts"
+		],
+		"symbols": ["sanitizeText", "isIncludedItem"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "sanitizeText.text",
+				"type": "string",
+				"required": true,
+				"description": "The text to inspect before displaying it."
+			},
+			{
+				"name": "isIncludedItem.item",
+				"type": "TrackerItemRecord",
+				"required": true,
+				"description": "The tracker item being visited or checked for display."
+			}
+		],
+		"outputs": [
+			{
+				"name": "sanitizeText",
+				"type": "string",
+				"description": "Input text with recognised credential text replaced by the redaction marker."
+			},
+			{
+				"name": "isIncludedItem",
+				"type": "item is IncludedTrackerItem",
+				"description": "Whether the tracker record is eligible for a project card."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sanitizeText",
+				"inputs": [
+					{
+						"name": "sanitizeText.text",
+						"type": "string",
+						"required": true,
+						"description": "The text to inspect before displaying it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sanitizeText",
+						"type": "string",
+						"description": "Input text with recognised credential text replaced by the redaction marker."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isIncludedItem",
+				"inputs": [
+					{
+						"name": "isIncludedItem.item",
+						"type": "TrackerItemRecord",
+						"required": true,
+						"description": "The tracker item being visited or checked for display."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isIncludedItem",
+						"type": "item is IncludedTrackerItem",
+						"description": "Whether the tracker record is eligible for a project card."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-tracker",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewPrivacy.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewPrivacy.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

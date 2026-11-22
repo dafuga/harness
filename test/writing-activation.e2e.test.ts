@@ -1,3 +1,4 @@
+import { shortCommit } from '../packages/reports/src/helpers/strings/shortCommit';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterAll, beforeAll, expect, test } from 'vitest';
@@ -41,7 +42,7 @@ test('a repository that declares writing 2 holds its commit messages, staged and
 	expect((await commit('chore: adopt the second writing version')).exitCode).toBe(0);
 	// Past the hook the commit is made, and the verification of it does not pass.
 	expect((await commit(long, ['--no-verify'])).exitCode).toBe(0);
-	const head = (await repo.git(['rev-parse', 'HEAD'])).slice(0, 12);
+	const head = shortCommit(await repo.git(['rev-parse', 'HEAD']));
 	const verified = await repo.verify();
 	const messages = verified.record.failures.filter((failure) => failure.startsWith('commit '));
 	// The earlier long message was stored before the limits were: only the later one is held.

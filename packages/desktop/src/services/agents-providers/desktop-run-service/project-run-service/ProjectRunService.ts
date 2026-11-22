@@ -2,6 +2,8 @@
 import type { Progress, Host } from './ProjectRunService.types';
 import { AgentChangedFilesError } from './AgentChangedFilesError';
 import { SourceRevisionAdvancedError } from './SourceRevisionAdvancedError';
+import type { AgentRunner } from '../../../../models/agents-providers/AgentRunner.types';
+import { visualPlan } from '../../../../utils/planning-collaboration/mockupPlan';
 import { RunCancelled } from '../../../../models/agents-providers/AgentRunner.types';
 import type {
 	CreatedEntity,
@@ -11,11 +13,7 @@ import type { RunContext } from '../../../../models/development-tooling/RunConte
 import { hostChanges } from '../../../../utils/git-source-history/hostChanges';
 import { planDesign } from '../../../../utils/planning-collaboration/plan-design/planDesign';
 import type { ProjectRunContext } from '../../../../utils/agents-providers/prepareProjectRun';
-import {
-	imageModel,
-	messageFor,
-	recordRunFailure
-} from '../../../../utils/agents-providers/prepareRun';
+import { messageFor, recordRunFailure } from '../../../../utils/agents-providers/prepareRun';
 import { projectProposal, proposalPrompt } from './projectProposal';
 import type { ProjectProposal } from '../../../../utils/agents-providers/projectProposal';
 import { proposalUnits } from './proposalUnits';
@@ -62,13 +60,17 @@ function answered(context: ProjectRunContext, text: string): ProjectProposal {
 export class ProjectRunService {
 	async run(context: ProjectRunContext): Promise<{ summary: string; created: CreatedEntity }> {
 		const proposal = await this.proposed(context);
-		// A page or a component is planned as an image: without that capability nothing is made.
-		const image = await imageModel(context.preparation, context.request, proposal.category);
+		const mockupRunner = visualPlan(proposal.category)
+			? await context.preparation.providers.mockupRunner()
+			: undefined;
 		await this.current(context);
 		const progress: Progress = { created: null, thread: null };
 		try {
-			const planned = await this.planned(context, { proposal, image }, progress);
-			const saved = await planDesign(planned, proposal.proposal);
+			const planned = await this.planned(context, { proposal, mockupRunner }, progress);
+			const instructions = mockupRunner
+				? `${proposal.proposal}\nRequest:\n${context.request.text}`
+				: proposal.proposal;
+			const saved = await planDesign(planned, instructions);
 			return { summary: `Planned ${proposal.title}. ${saved}`, created: progress.created! };
 		} catch (error) {
 			if (progress.thread && progress.created?.requestSaved)
@@ -148,7 +150,7 @@ export class ProjectRunService {
 	/** The plan, its thread and the request as it was written, as a run of that entity. */
 	private async planned(
 		context: ProjectRunContext,
-		made: { proposal: ProjectProposal; image: string },
+		made: { proposal: ProjectProposal; mockupRunner?: AgentRunner },
 		progress: Progress
 	): Promise<RunContext> {
 		const { project, request, emit, id } = context;
@@ -171,7 +173,7 @@ export class ProjectRunService {
 			entityId: plan.id,
 			threadId: thread.id
 		};
-		const draft = { ...context, request: scoped, imageModel: made.image };
+		const draft = { ...context, request: scoped, mockupRunner: made.mockupRunner };
 		progress.thread = draft;
 		await project.planning.appendMessage(messageFor(draft, 'user', text));
 		created.requestSaved = true;

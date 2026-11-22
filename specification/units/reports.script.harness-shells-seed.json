@@ -12,7 +12,13 @@
 			"packages/reports/scripts/harness-shells-seed.ts",
 			"packages/reports/scripts/harness-shells-seed.types.ts"
 		],
-		"symbols": ["shellsBranch", "shellUnit", "seedShells", "ShellsSeed", "ShellsSeed"]
+		"symbols": [
+			"shellsBranch",
+			"shellUnit",
+			"seedShells",
+			"ShellsSeed",
+			"ShellsSeed"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -40,7 +46,9 @@
 				"type": "string",
 				"required": true,
 				"description": "Git revision passed unchanged as the starting point when the script creates feature/shells. It must be a revision accepted by the checkout operation.",
-				"examples": ["abcdef0123456789abcdef0123456789abcdef01"]
+				"examples": [
+					"abcdef0123456789abcdef0123456789abcdef01"
+				]
 			}
 		],
 		"outputs": [
@@ -48,13 +56,17 @@
 				"name": "shellsBranch",
 				"type": "\"feature/shells\"",
 				"description": "Name of the branch on which the frame, baseline, and shell declaration commits are made. It contains a slash.",
-				"examples": ["feature/shells"]
+				"examples": [
+					"feature/shells"
+				]
 			},
 			{
 				"name": "shellUnit",
 				"type": "\"component.title-frame\"",
 				"description": "Unit identifier of the title frame, used to establish the budget and locate its unit manifest. The identifier stays component.title-frame while the manifest kind changes to layout.",
-				"examples": ["component.title-frame"]
+				"examples": [
+					"component.title-frame"
+				]
 			},
 			{
 				"name": "seedShells",
@@ -99,7 +111,9 @@
 						"type": "string",
 						"required": true,
 						"description": "Git revision passed unchanged as the starting point when the script creates feature/shells. It must be a revision accepted by the checkout operation.",
-						"examples": ["abcdef0123456789abcdef0123456789abcdef01"]
+						"examples": [
+							"abcdef0123456789abcdef0123456789abcdef01"
+						]
 					}
 				],
 				"outputs": [

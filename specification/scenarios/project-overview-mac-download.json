@@ -1,0 +1,50 @@
+{
+	"schemaVersion": 1,
+	"id": "project-overview-mac-download",
+	"title": "Public signed Mac download",
+	"kind": "ui",
+	"units": ["hub.endpoint.download-mac"],
+	"states": [
+		{
+			"id": "download",
+			"title": "The compiled homepage offers the verified Mac archive and the browser downloads it",
+			"coverage": "required",
+			"units": ["hub.endpoint.download-mac"]
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 900
+		}
+	],
+	"tests": [
+		{
+			"id": "fixed-route",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun x vitest run test/controllers/download-mac.test.ts",
+			"cwd": "packages/hub"
+		},
+		{
+			"id": "compiled-download",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "env HARNESS_HUB_TEST_MAC_DOWNLOAD=1 bun x playwright test tests/e2e/mac-download-release.spec.ts --workers=1",
+			"cwd": "packages/hub"
+		}
+	],
+	"evidence": [
+		{
+			"id": "download-screen",
+			"kind": "screenshot",
+			"states": ["download"],
+			"viewports": ["desktop"],
+			"provenance": "actual-capture",
+			"capture": "viewport",
+			"build": "hub",
+			"required": true
+		}
+	]
+}

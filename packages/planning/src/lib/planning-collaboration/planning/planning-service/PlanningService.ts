@@ -35,7 +35,10 @@ import { clean, commitFiles } from '../../../../utils/planning-collaboration/pla
 import { planWrite } from './planWrite';
 import { planRead } from '../../../../utils/planning-collaboration/plan-read/planRead';
 import { planDesign, approve } from './planDesign';
-import { readImage } from '../../../../utils/planning-collaboration/plan-design/readImage';
+import {
+	readImage,
+	readImages
+} from '../../../../utils/planning-collaboration/plan-design/readImage';
 import { planThread, append } from './planThread';
 import { commits, revisionInfo } from '../../../../utils/planning-collaboration/planHistory';
 import { planHistory } from './planHistory';
@@ -143,6 +146,7 @@ export function planningService(base: Git): PlanningApi {
 		appendMessage: (input) => op((git) => write(git, input, (value) => append(git, value))),
 		approveDesign: (input) => op((git) => write(git, input, (value) => approve(git, value))),
 		readImage: (input) => op((git) => readImage(git, input)),
+		readImages: (input) => op((git) => readImages(git, input)),
 		entityHistory: (input) => op((git) => planHistory(git, input))
 	};
 }

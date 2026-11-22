@@ -1,0 +1,277 @@
+{
+	"schemaVersion": 1,
+	"id": "validator.execution-runtimes-deploy-manifest",
+	"uid": "u_ovq4nyetm2",
+	"kind": "validator",
+	"title": "DeployManifestValidator",
+	"responsibility": "Loads an owner-only registry, validates project and trust configuration, and hashes the reviewed deployment scripts.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/validators/execution-runtimes/DeployManifestValidator.ts",
+			"src/validators/execution-runtimes/DeployManifestValidator.types.ts"
+		],
+		"symbols": [
+			"project",
+			"registry",
+			"DeployRegistry",
+			"DeployProject",
+			"DeployManifestValidator",
+			"DeployManifestValidator.read",
+			"privateFile",
+			"readJson",
+			"scriptFile",
+			"manifestDigest",
+			"DeployRegistry",
+			"DeployProject"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "DeployManifestValidator.read.file",
+				"type": "string",
+				"required": true,
+				"description": "Executable or local file path used by this operation."
+			},
+			{
+				"name": "privateFile.path",
+				"type": "string",
+				"required": true,
+				"description": "Owner-local file or reviewed relative path used for this operation."
+			},
+			{
+				"name": "readJson.path",
+				"type": "string",
+				"required": true,
+				"description": "Owner-local file or reviewed relative path used for this operation."
+			},
+			{
+				"name": "scriptFile.root",
+				"type": "string",
+				"required": true,
+				"description": "Owner-controlled root directory for the deployment registry, scripts or state."
+			},
+			{
+				"name": "scriptFile.path",
+				"type": "string",
+				"required": true,
+				"description": "Owner-local file or reviewed relative path used for this operation."
+			},
+			{
+				"name": "manifestDigest.config",
+				"type": "DeployProject",
+				"required": true,
+				"description": "Reviewed project or target settings for this operation."
+			}
+		],
+		"outputs": [
+			{
+				"name": "project",
+				"type": "unknown",
+				"description": "Loads an owner-only registry, validates project and trust configuration, and hashes the reviewed deployment scripts."
+			},
+			{
+				"name": "registry",
+				"type": "unknown",
+				"description": "Loads an owner-only registry, validates project and trust configuration, and hashes the reviewed deployment scripts."
+			},
+			{
+				"name": "DeployManifestValidator.read",
+				"type": "DeployRegistry",
+				"description": "Loads an owner-only registry, validates project and trust configuration, and hashes the reviewed deployment scripts."
+			},
+			{
+				"name": "privateFile",
+				"type": "string",
+				"description": "Loads an owner-only registry, validates project and trust configuration, and hashes the reviewed deployment scripts."
+			},
+			{
+				"name": "readJson",
+				"type": "unknown",
+				"description": "Loads an owner-only registry, validates project and trust configuration, and hashes the reviewed deployment scripts."
+			},
+			{
+				"name": "scriptFile",
+				"type": "string",
+				"description": "Loads an owner-only registry, validates project and trust configuration, and hashes the reviewed deployment scripts."
+			},
+			{
+				"name": "manifestDigest",
+				"type": "string",
+				"description": "Loads an owner-only registry, validates project and trust configuration, and hashes the reviewed deployment scripts."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The operation could not verify its input, target identity, or expected result."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "DeployManifestValidator.read",
+				"inputs": [
+					{
+						"name": "DeployManifestValidator.read.file",
+						"type": "string",
+						"required": true,
+						"description": "Executable or local file path used by this operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployManifestValidator.read",
+						"type": "DeployRegistry",
+						"description": "Loads an owner-only registry, validates project and trust configuration, and hashes the reviewed deployment scripts."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "privateFile",
+				"inputs": [
+					{
+						"name": "privateFile.path",
+						"type": "string",
+						"required": true,
+						"description": "Owner-local file or reviewed relative path used for this operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "privateFile",
+						"type": "string",
+						"description": "Loads an owner-only registry, validates project and trust configuration, and hashes the reviewed deployment scripts."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "readJson",
+				"inputs": [
+					{
+						"name": "readJson.path",
+						"type": "string",
+						"required": true,
+						"description": "Owner-local file or reviewed relative path used for this operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readJson",
+						"type": "unknown",
+						"description": "Loads an owner-only registry, validates project and trust configuration, and hashes the reviewed deployment scripts."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "scriptFile",
+				"inputs": [
+					{
+						"name": "scriptFile.root",
+						"type": "string",
+						"required": true,
+						"description": "Owner-controlled root directory for the deployment registry, scripts or state."
+					},
+					{
+						"name": "scriptFile.path",
+						"type": "string",
+						"required": true,
+						"description": "Owner-local file or reviewed relative path used for this operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scriptFile",
+						"type": "string",
+						"description": "Loads an owner-only registry, validates project and trust configuration, and hashes the reviewed deployment scripts."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "manifestDigest",
+				"inputs": [
+					{
+						"name": "manifestDigest.config",
+						"type": "DeployProject",
+						"required": true,
+						"description": "Reviewed project or target settings for this operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "manifestDigest",
+						"type": "string",
+						"description": "Loads an owner-only registry, validates project and trust configuration, and hashes the reviewed deployment scripts."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/validators/execution-runtimes/DeployManifestValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/validators/execution-runtimes/DeployManifestValidator.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

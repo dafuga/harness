@@ -367,7 +367,7 @@
 			{
 				"name": "recordFiles",
 				"type": "RecordFile[]",
-				"description": "The unique files of the record in capture-then-log order: captures of scenarios that are not referenced, then the log of each test. Each entry has path, sha256 and bytes, with mediaType present only on captures, and when two entries share a path only the first is kept.",
+				"description": "Lists the captures and test logs written by this run and any retained artifact, deduplicated by path. Referenced scenario captures stay with their original record.",
 				"examples": [
 					[
 						{
@@ -840,7 +840,7 @@
 					{
 						"name": "recordFiles",
 						"type": "RecordFile[]",
-						"description": "The unique files of the record in capture-then-log order: captures of scenarios that are not referenced, then the log of each test. Each entry has path, sha256 and bytes, with mediaType present only on captures, and when two entries share a path only the first is kept.",
+						"description": "Lists the captures and test logs written by this run and any retained artifact, deduplicated by path. Referenced scenario captures stay with their original record.",
 						"examples": [
 							[
 								{

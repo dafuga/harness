@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-watchdog-idle",
+	"uid": "u_3jxqtek5x2",
+	"kind": "service",
+	"title": "WatchdogIdleService",
+	"responsibility": "Decides which idle Tracker sessions to nudge, escalate, or mark abandoned.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/WatchdogIdleService.ts",
+			"src/services/projects-sessions/WatchdogIdleService.types.ts"
+		],
+		"symbols": [
+			"WatchdogIdleService",
+			"WatchdogIdleService.plan",
+			"IdleScan",
+			"IdleDecision",
+			"IdlePlan"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "WatchdogIdleService.plan.input",
+				"type": "IdleScan",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "WatchdogIdleService.plan",
+				"type": "IdlePlan",
+				"description": "Ordered decisions for one eligible pane per item and IDs of observed runs whose items closed or whose panes ended."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "WatchdogIdleService.plan",
+				"inputs": [
+					{
+						"name": "WatchdogIdleService.plan.input",
+						"type": "IdleScan",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "WatchdogIdleService.plan",
+						"type": "IdlePlan",
+						"description": "Ordered decisions for one eligible pane per item and IDs of observed runs whose items closed or whose panes ended."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-watchdog-pane",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/WatchdogIdleService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/WatchdogIdleService.ts"
+			}
+		]
+	},
+	"scenarios": ["tracker-watchdog-parity"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,193 @@
+{
+	"schemaVersion": 1,
+	"id": "function.execution-runtimes-scripted-deploy-release-files",
+	"uid": "u_wtwd3u5kn3",
+	"kind": "function",
+	"title": "releaseFiles",
+	"responsibility": "Builds a pinned source revision in Docker and verifies the stored artifact against its release identity and SHA-256 before promotion.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/core/execution-runtimes/scripted-deploy/releaseFiles.ts",
+			"src/core/execution-runtimes/scripted-deploy/releaseFiles.types.ts"
+		],
+		"symbols": ["buildRelease", "verifyArtifact", "Build"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "buildRelease.store",
+				"type": "DeployRunRepository",
+				"required": true,
+				"description": "Owner-only deployment state directory and its artifact index."
+			},
+			{
+				"name": "buildRelease.config",
+				"type": "DeployProject",
+				"required": true,
+				"description": "Reviewed project or target settings for this operation."
+			},
+			{
+				"name": "buildRelease.spec",
+				"type": "Build",
+				"required": true,
+				"description": "Project identity, pinned source revision and reviewed manifest digest."
+			},
+			{
+				"name": "verifyArtifact.store",
+				"type": "DeployRunRepository",
+				"required": true,
+				"description": "Owner-only deployment state directory and its artifact index."
+			},
+			{
+				"name": "verifyArtifact.value",
+				"type": "Release",
+				"required": true,
+				"description": "Immutable release manifest with the artifact size, expected digest and release ID."
+			}
+		],
+		"outputs": [
+			{
+				"name": "buildRelease",
+				"type": "Promise<Release>",
+				"description": "The sealed release manifest and digest of the archived Docker build output."
+			},
+			{
+				"name": "verifyArtifact",
+				"type": "Promise<string>",
+				"description": "The path of the stored artifact after its manifest, length and SHA-256 have been verified."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The operation could not verify its input, target identity, or expected result."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "buildRelease",
+				"inputs": [
+					{
+						"name": "buildRelease.store",
+						"type": "DeployRunRepository",
+						"required": true,
+						"description": "Owner-only deployment state directory and its artifact index."
+					},
+					{
+						"name": "buildRelease.config",
+						"type": "DeployProject",
+						"required": true,
+						"description": "Reviewed project or target settings for this operation."
+					},
+					{
+						"name": "buildRelease.spec",
+						"type": "Build",
+						"required": true,
+						"description": "Project identity, pinned source revision and reviewed manifest digest."
+					}
+				],
+				"outputs": [
+					{
+						"name": "buildRelease",
+						"type": "Promise<Release>",
+						"description": "The sealed release manifest and digest of the archived Docker build output."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "verifyArtifact",
+				"inputs": [
+					{
+						"name": "verifyArtifact.store",
+						"type": "DeployRunRepository",
+						"required": true,
+						"description": "Owner-only deployment state directory and its artifact index."
+					},
+					{
+						"name": "verifyArtifact.value",
+						"type": "Release",
+						"required": true,
+						"description": "Immutable release manifest with the artifact size, expected digest and release ID."
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyArtifact",
+						"type": "Promise<string>",
+						"description": "The path of the stored artifact after its manifest, length and SHA-256 have been verified."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-deploy-docker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-source-inputs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.execution-runtimes-deploy-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.execution-runtimes-deploy-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/execution-runtimes/scripted-deploy/releaseFiles.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/execution-runtimes/scripted-deploy/releaseFiles.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

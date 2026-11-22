@@ -7,6 +7,7 @@ import type { BuiltIdentity } from '../../../../services/verification-evidence/B
 import type { ScenarioManifest } from '../../../../core/development-tooling/unitTypes';
 import type { PendingVideoFlags } from '../../../../utils/verification-evidence/scenarioCoverage.types';
 import type { VideoSlot } from '../../../../services/verification-evidence/VideoEvidenceService.types';
+import type { RetainedArtifact } from '../../../../adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.types';
 
 export interface SnapshotRun {
 	root: string;
@@ -20,6 +21,7 @@ export interface SnapshotRun {
 	 */
 	needed?: ReadonlySet<string> | 'all';
 	videos?: ScenarioManifest[];
+	retainArtifact?: string;
 }
 
 export interface Executed {
@@ -35,6 +37,8 @@ export interface Executed {
 	tools: Array<{ id: string; version: string }>;
 	/** Declared artifacts that exist in the snapshot after the run, by path. */
 	artifacts: BuiltArtifacts;
+	retainedArtifact?: RetainedArtifact;
+	artifactFailures?: string[];
 	/**
 	 * Identity of each declared build the run needed, as setup compiled it; undefined when none is
 	 * declared.

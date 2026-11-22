@@ -22,7 +22,8 @@ GitHub stores source, contracts, designs, notes/evidence and the private collabo
 
 ## Paths
 
-- `/`: sign-in and authorized project list.
+- `/`: the public homepage for everyone (what Harness is, the Mac download once published, Log in / Your projects).
+- `/projects`: Google sign-in and the authorized project list.
 - `/projects/{projectId}/harness/branch/{encodedBranch}/{pages|components|functions|configs|services}`.
 - The same branch path with `/commit/{fullCommit}` before the category.
 - Append `/{entityId}`, `/{entityId}/history`, or `/{entityId}/details` for an entity; source remains inside Details.

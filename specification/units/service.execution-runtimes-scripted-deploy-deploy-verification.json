@@ -1,0 +1,222 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-scripted-deploy-deploy-verification",
+	"uid": "u_v7jkpzcx3c",
+	"kind": "service",
+	"title": "DeployVerification",
+	"responsibility": "Verifies the canonical route, runs task-scoped cleanup, and records the verified operation in Tracker.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/execution-runtimes/scripted-deploy/DeployVerification.ts"],
+		"symbols": [
+			"DeployVerification",
+			"DeployVerification.constructor",
+			"DeployVerification.verify",
+			"DeployVerification.cleanup"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "DeployVerification.constructor.config",
+				"type": "DeployProject",
+				"required": true,
+				"description": "Reviewed project or target settings for this operation."
+			},
+			{
+				"name": "DeployVerification.constructor.store",
+				"type": "DeployRunRepository",
+				"required": true,
+				"description": "Owner-only deployment state directory and its artifact index."
+			},
+			{
+				"name": "DeployVerification.constructor.broker",
+				"type": "DeployBroker",
+				"required": true,
+				"description": "Verifies the canonical route, runs task-scoped cleanup, and records the verified operation in Tracker."
+			},
+			{
+				"name": "DeployVerification.verify.record",
+				"type": "Journal",
+				"required": true,
+				"description": "Persisted deployment plan or run being authorized, reconciled, or signed off."
+			},
+			{
+				"name": "DeployVerification.cleanup.record",
+				"type": "Journal",
+				"required": true,
+				"description": "Persisted deployment plan or run being authorized, reconciled, or signed off."
+			},
+			{
+				"name": "DeployVerification.cleanup.route",
+				"type": "string",
+				"required": false,
+				"description": "Canonical HTTPS address that must serve the expected release."
+			}
+		],
+		"outputs": [
+			{
+				"name": "DeployVerification.verify",
+				"type": "Promise<Journal>",
+				"description": "Verifies the canonical route, runs task-scoped cleanup, and records the verified operation in Tracker."
+			},
+			{
+				"name": "DeployVerification.cleanup",
+				"type": "Promise<void>",
+				"description": "Verifies the canonical route, runs task-scoped cleanup, and records the verified operation in Tracker."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The operation could not verify its input, target identity, or expected result."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "DeployVerification.verify",
+				"inputs": [
+					{
+						"name": "DeployVerification.verify.record",
+						"type": "Journal",
+						"required": true,
+						"description": "Persisted deployment plan or run being authorized, reconciled, or signed off."
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployVerification.verify",
+						"type": "Promise<Journal>",
+						"description": "Verifies the canonical route, runs task-scoped cleanup, and records the verified operation in Tracker."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "DeployVerification.cleanup",
+				"inputs": [
+					{
+						"name": "DeployVerification.cleanup.record",
+						"type": "Journal",
+						"required": true,
+						"description": "Persisted deployment plan or run being authorized, reconciled, or signed off."
+					},
+					{
+						"name": "DeployVerification.cleanup.route",
+						"type": "string",
+						"required": false,
+						"description": "Canonical HTTPS address that must serve the expected release."
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployVerification.cleanup",
+						"type": "Promise<void>",
+						"description": "Verifies the canonical route, runs task-scoped cleanup, and records the verified operation in Tracker."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The operation could not verify its input, target identity, or expected result."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "DeployVerification.constructor",
+				"inputs": [
+					{
+						"name": "DeployVerification.constructor.config",
+						"type": "DeployProject",
+						"required": true,
+						"description": "Reviewed project or target settings for this operation."
+					},
+					{
+						"name": "DeployVerification.constructor.store",
+						"type": "DeployRunRepository",
+						"required": true,
+						"description": "Owner-only deployment state directory and its artifact index."
+					},
+					{
+						"name": "DeployVerification.constructor.broker",
+						"type": "DeployBroker",
+						"required": true,
+						"description": "Verifies the canonical route, runs task-scoped cleanup, and records the verified operation in Tracker."
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployVerification.constructor",
+						"type": "unknown",
+						"description": "Verifies the canonical route, runs task-scoped cleanup, and records the verified operation in Tracker."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-deploy-docker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-broker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.execution-runtimes-deploy-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.execution-runtimes-deploy-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/scripted-deploy/DeployVerification.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/scripted-deploy/DeployVerification.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

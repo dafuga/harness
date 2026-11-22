@@ -8,12 +8,25 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/ios-acceptance-workspace.ts"],
-		"symbols": ["workspace", "savedCopies", "reconnection"]
+		"source": [
+			"packages/desktop/scripts/ios-acceptance-workspace.ts"
+		],
+		"symbols": [
+			"pairedOverview",
+			"workspace",
+			"savedCopies",
+			"reconnection"
+		]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "pairedOverview.run",
+				"type": "Acceptance",
+				"required": true,
+				"description": "The paired test-only simulator, inspector, acceptance record and screenshot directory. The Hub account response is synthetic."
+			},
 			{
 				"name": "workspace.run",
 				"type": "Acceptance",
@@ -35,6 +48,11 @@
 		],
 		"outputs": [
 			{
+				"name": "pairedOverview",
+				"type": "Promise<void>",
+				"description": "Records the ready and refused overview states and verifies that native account requests are fixed reads. It restores the account bridge before resolving."
+			},
+			{
 				"name": "workspace",
 				"type": "Promise<void>",
 				"description": "Resolves with no value after checking the shared workspace address and design, conversation modes and models, and computer lock and unlock state."
@@ -55,6 +73,11 @@
 				"name": "Page or run action rejection",
 				"type": "propagated",
 				"description": "An awaited page or run action can reject the async flow; when seen catches a failed page.until check, it records a failed check and rethrows the same error."
+			},
+			{
+				"name": "NativeOverviewAccountUnavailable",
+				"type": "thrown",
+				"description": "The paired simulator did not expose the HarnessAccount plugin needed to drive the test."
 			}
 		],
 		"errorStatus": "declared",
@@ -133,6 +156,37 @@
 						"name": "Page or run action rejection",
 						"type": "propagated",
 						"description": "An awaited page or run action can reject the async flow; when seen catches a failed page.until check, it records a failed check and rethrows the same error."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "pairedOverview",
+				"inputs": [
+					{
+						"name": "pairedOverview.run",
+						"type": "Acceptance",
+						"required": true,
+						"description": "The paired test-only simulator, inspector, acceptance record and screenshot directory. The Hub account response is synthetic."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pairedOverview",
+						"type": "Promise<void>",
+						"description": "Records the ready and refused overview states and verifies that native account requests are fixed reads. It restores the account bridge before resolving."
+					}
+				],
+				"errors": [
+					{
+						"name": "NativeOverviewAccountUnavailable",
+						"type": "thrown",
+						"description": "The paired simulator did not expose the HarnessAccount plugin needed to drive the test."
+					},
+					{
+						"name": "overview-observation-failed",
+						"type": "rejection",
+						"description": "The inspector, screenshot command or settled-state wait failed. A failed state assertion is recorded before it is rethrown."
 					}
 				],
 				"errorStatus": "declared"

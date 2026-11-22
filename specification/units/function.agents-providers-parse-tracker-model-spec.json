@@ -1,0 +1,168 @@
+{
+	"schemaVersion": 1,
+	"id": "function.agents-providers-parse-tracker-model-spec",
+	"uid": "u_b5x7mlx577",
+	"kind": "function",
+	"title": "parseTrackerModelSpec",
+	"responsibility": "Resolve Tracker model pins and preserve the installed catalog, effort defaults, and project allowlist.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/agents-providers/parseTrackerModelSpec.ts",
+			"src/utils/agents-providers/parseTrackerModelSpec.types.ts"
+		],
+		"symbols": [
+			"solEfforts",
+			"ladderFrom",
+			"parseTrackerModelSpec",
+			"TrackerFlatPrice",
+			"TrackerModelRung",
+			"TrackerLadderConfig",
+			"TrackerLearningConfig"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ladderFrom.config",
+				"type": "TrackerLadderConfig",
+				"required": false,
+				"description": "Optional configuration overriding matching default ladder entries."
+			},
+			{
+				"name": "parseTrackerModelSpec.spec",
+				"type": "string",
+				"required": true,
+				"description": "Model name or alias with an optional reasoning effort suffix."
+			},
+			{
+				"name": "parseTrackerModelSpec.ladder",
+				"type": "readonly TrackerModelRung[]",
+				"required": true,
+				"description": "Current ladder entries and their model and effort defaults."
+			},
+			{
+				"name": "parseTrackerModelSpec.project",
+				"type": "string | null",
+				"required": true,
+				"description": "Project name used for model allowlists, or null."
+			},
+			{
+				"name": "parseTrackerModelSpec.config",
+				"type": "TrackerLadderConfig",
+				"required": false,
+				"description": "Optional Tracker configuration with project allowlists."
+			}
+		],
+		"outputs": [
+			{
+				"name": "solEfforts",
+				"type": "unknown",
+				"description": "Supported Sol reasoning efforts in increasing order."
+			},
+			{
+				"name": "ladderFrom",
+				"type": "TrackerModelRung[]",
+				"description": "Default ladder with configured matching overrides and unchanged CLI selections."
+			},
+			{
+				"name": "parseTrackerModelSpec",
+				"type": "TrackerModelRung",
+				"description": "Validated pinned model and effort selected for this project."
+			}
+		],
+		"errors": [
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "The model syntax, model version, named effort, or project is invalid for the requested pin."
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ladderFrom",
+				"inputs": [
+					{
+						"name": "ladderFrom.config",
+						"type": "TrackerLadderConfig",
+						"required": false,
+						"description": "Optional configuration overriding matching default ladder entries."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ladderFrom",
+						"type": "TrackerModelRung[]",
+						"description": "Default ladder with configured matching overrides and unchanged CLI selections."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parseTrackerModelSpec",
+				"inputs": [
+					{
+						"name": "parseTrackerModelSpec.spec",
+						"type": "string",
+						"required": true,
+						"description": "Model name or alias with an optional reasoning effort suffix."
+					},
+					{
+						"name": "parseTrackerModelSpec.ladder",
+						"type": "readonly TrackerModelRung[]",
+						"required": true,
+						"description": "Current ladder entries and their model and effort defaults."
+					},
+					{
+						"name": "parseTrackerModelSpec.project",
+						"type": "string | null",
+						"required": true,
+						"description": "Project name used for model allowlists, or null."
+					},
+					{
+						"name": "parseTrackerModelSpec.config",
+						"type": "TrackerLadderConfig",
+						"required": false,
+						"description": "Optional Tracker configuration with project allowlists."
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseTrackerModelSpec",
+						"type": "TrackerModelRung",
+						"description": "Validated pinned model and effort selected for this project."
+					}
+				],
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/agents-providers/parseTrackerModelSpec.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/agents-providers/parseTrackerModelSpec.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

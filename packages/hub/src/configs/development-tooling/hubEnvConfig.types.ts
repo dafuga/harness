@@ -16,6 +16,8 @@ export interface HubEnv {
 	HARNESS_EMAIL_FROM?: string;
 	/** The relay hosts and phones connect to. With `REMOTE_HOSTS` it enables the remote host API. */
 	HARNESS_RELAY_ORIGIN?: string;
+	/** The canonical Hub actor ID of the one owner allowed to read or publish the Project Overview. Unset disables it. */
+	HARNESS_TRACKER_OVERVIEW_OWNER_ACTOR_ID?: string;
 	DB?: D1Database;
 	CACHE?: R2Bucket;
 	/** The relay's host objects, reachable through this binding only. */

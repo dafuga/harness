@@ -6,8 +6,7 @@ import { categories, type ProjectSnapshot } from '../src/models/development-tool
 import type { DesktopBridge } from '../src/models/DesktopBridge.types';
 import { categoryOf } from '../src/utils/shared-primitives/categoryOf';
 import { ipcPayload } from '../src/utils/ipc-payload/ipcPayload';
-import type { Preparation } from '../src/utils/agents-providers/prepareRun';
-import { imageModel } from '../src/utils/agents-providers/prepareRun';
+import { visualPlan } from '../src/utils/planning-collaboration/mockupPlan';
 import { isWorkspacePath, workspacePath, workspaceRoute } from '../src/utils/workspaceRoute';
 
 /**
@@ -100,7 +99,7 @@ test('at a commit that recorded it as a component, its Components address stays'
 	expect(history.pushState).toHaveBeenCalledWith({}, '', path);
 });
 
-test('plans and agent requests may name Shells, and a shell plan needs the image capability', () =>
+test('plans and agent requests may name Shells, and a shell receives the visual Plan workflow', () =>
 	measureWorkload('desktop.function.prepare-run', 'layout-catalog-behavior', async () => {
 		expect(
 			ipcPayload('plan:create', {
@@ -120,22 +119,6 @@ test('plans and agent requests may name Shells, and a shell plan needs the image
 			text: 'Add a frame for hosts'
 		};
 		expect(ipcPayload('run:start', request)).toMatchObject({ category: 'layouts' });
-		const provider = (imageGeneration: boolean) =>
-			({
-				providers: {
-					list: async () => [
-						{
-							id: 'codex',
-							available: true,
-							imageGeneration,
-							models: [{ id: 'default-model', isDefault: true }]
-						}
-					]
-				}
-			}) as unknown as Preparation;
-		await expect(imageModel(provider(false), { mode: 'plan' }, 'layouts')).rejects.toThrow(
-			/GPT Image/
-		);
-		expect(await imageModel(provider(true), { mode: 'plan' }, 'layouts')).toBe('default-model');
-		expect(await imageModel(provider(false), { mode: 'plan' }, 'functions')).toBe('');
+		expect(visualPlan('layouts')).toBe(true);
+		expect(visualPlan('functions')).toBe(false);
 	}));

@@ -28,6 +28,7 @@ import type { EvidenceArtifactQuery } from '../verification-evidence/DesktopEvid
 import type { EvidenceArtifactResult } from '../verification-evidence/DesktopEvidence.types';
 import type { ProjectTaskRequest } from '../projects-sessions/ProjectTask.types';
 import type { RunEvent } from './RunContext.types';
+import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
 import type { channels } from './DesktopBridgeValues';
 
 export type ChannelName = (typeof channels)[keyof typeof channels];
@@ -141,6 +142,8 @@ export interface DesktopBridge extends GameDesktopBridge, DeploymentBridge {
 	hostedStatus?(): Promise<NativeHostedStatus>;
 	connectHosted?(): Promise<NativeHostedStatus>;
 	disconnectHosted?(): Promise<NativeHostedStatus>;
+	/** The local tracker's read-only overview; takes no input. Absent on hosts without a local tracker. */
+	projectOverview?(): Promise<OverviewSnapshot>;
 	pendingComments?(input?: ProjectContext): Promise<HumanCommentResult[]>;
 	listProjects?(): Promise<DesktopProject[]>;
 	selectProject?(input: { projectId: string }): Promise<ProjectSnapshot>;

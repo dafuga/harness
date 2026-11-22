@@ -2,6 +2,16 @@ import type { VerificationScope } from './verification-targets';
 
 /** Explicit acceptance targets; a different test or package cannot claim these states. */
 export const remoteVerificationScopes: Record<string, VerificationScope> = {
+	'project-overview-ios-native': {
+		package: 'desktop',
+		vitest: {
+			'test/ios-native-profile.test.ts': {
+				'native Debug and Release verify authority, redirects, caching and replay':
+					'overview-admission'
+			}
+		},
+		playwright: {}
+	},
 	'remote-mobile-native': {
 		package: 'desktop',
 		vitest: {

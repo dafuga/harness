@@ -1,3 +1,4 @@
+import { allStatesSnapshot, NOW } from '../projectOverviewFixture';
 import { children, noop, text, example, picker } from './shared';
 import type { PreviewCases } from './shared';
 import {
@@ -20,9 +21,28 @@ import { entitySearch } from '../../../../src/utils/explorer-ui/entitySearch';
 import { contractPreviewUnit } from './reportEntityContractVariants';
 import { resolveStateImage } from './reportEntityStatesVariants';
 const entries = explorerSearchEntries(d.entities, d.shown.head.commit);
+const overview = allStatesSnapshot();
+if (overview.status !== 'ready') throw new Error('The catalog needs a ready overview fixture.');
+const card = overview.projects[0];
 export const reportCases: PreviewCases = {
 	'reports.component.verification-evidence-video-evidence': videoEvidenceProps,
 	'reports.component.verification-evidence-video-graph-navigation': videoGraphNavigationProps,
+	'reports.component.projects-sessions-project-overview-project-overview': {
+		snapshot: overview
+	},
+	'reports.component.projects-sessions-project-overview-project-overview-card': {
+		card,
+		now: NOW,
+		onOpen: noop
+	},
+	'reports.component.projects-sessions-project-overview-project-overview-item': {
+		item: card.items[0],
+		now: NOW,
+		onOpen: noop
+	},
+	'reports.component.projects-sessions-project-overview-project-overview-state': {
+		state: card.state
+	},
 	'reports.component.verification-evidence-audio-icon': {},
 	'reports.component.audio-comparison': {
 		before: baselineNarration,

@@ -1,0 +1,133 @@
+{
+	"schemaVersion": 1,
+	"id": "project-overview-hub-page",
+	"title": "Project Overview on the hosted Hub page for the owner",
+	"kind": "ui",
+	"units": [
+		"hub.page.tracker-overview",
+		"reports.component.projects-sessions-project-overview-project-overview",
+		"reports.component.projects-sessions-project-overview-project-overview-card"
+	],
+	"states": [
+		{
+			"id": "ready",
+			"title": "Owner sees all five project states with synthetic records",
+			"coverage": "required",
+			"units": [
+				"hub.page.tracker-overview",
+				"reports.component.projects-sessions-project-overview-project-overview",
+				"reports.component.projects-sessions-project-overview-project-overview-card"
+			]
+		},
+		{
+			"id": "loading",
+			"title": "The owner read is still in flight",
+			"coverage": "required",
+			"units": ["hub.page.tracker-overview"]
+		},
+		{
+			"id": "empty",
+			"title": "The owner read has no projects",
+			"coverage": "required",
+			"units": ["hub.page.tracker-overview"]
+		},
+		{
+			"id": "unavailable",
+			"title": "The owner is unavailable because no current snapshot exists",
+			"coverage": "required",
+			"units": ["hub.page.tracker-overview"]
+		},
+		{
+			"id": "denied",
+			"title": "A signed-in non-owner is refused and sees no data",
+			"coverage": "required",
+			"units": ["hub.page.tracker-overview"]
+		},
+		{
+			"id": "signed-out",
+			"title": "Signed-out visitors see sign-in and no overview",
+			"coverage": "required",
+			"units": ["hub.page.tracker-overview"]
+		},
+		{
+			"id": "switching",
+			"title": "Switching account clears the previous owner data",
+			"coverage": "required",
+			"units": ["hub.page.tracker-overview"]
+		},
+		{
+			"id": "item-detail",
+			"title": "Open item shows the read-only detail and returns focus on close",
+			"coverage": "required",
+			"units": [
+				"hub.page.tracker-overview",
+				"reports.component.projects-sessions-project-overview-project-overview"
+			]
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 900
+		},
+		{
+			"id": "tablet",
+			"width": 920,
+			"height": 800
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "hub-page",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test tests/e2e/hosted-tracker-overview.spec.ts --workers=1",
+			"cwd": "packages/hub"
+		}
+	],
+	"evidence": [
+		{
+			"id": "hub-overview-screens",
+			"kind": "screenshot",
+			"states": [
+				"ready",
+				"loading",
+				"empty",
+				"unavailable",
+				"denied",
+				"signed-out",
+				"switching",
+				"item-detail"
+			],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"capture": "viewport",
+			"build": "hub",
+			"required": true
+		},
+		{
+			"id": "hub-overview-benchmarks",
+			"kind": "benchmark",
+			"states": [
+				"ready",
+				"loading",
+				"empty",
+				"unavailable",
+				"denied",
+				"signed-out",
+				"switching",
+				"item-detail"
+			],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"build": "hub",
+			"required": true
+		}
+	]
+}

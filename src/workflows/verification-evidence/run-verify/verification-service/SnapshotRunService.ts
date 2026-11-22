@@ -9,6 +9,7 @@ import type { CheckRunService, CheckOutcome } from './check-run-service/CheckRun
 import type { CaptureLimits } from './check-run-service/captureLimits.types';
 import { scopedSetup } from './buildScope';
 import { snapshotDriftObserver, snapshotVideoRun } from './snapshotVideoRun';
+import { deferredInLite } from './verifyPlan';
 
 /**
  * Exports the commit and runs setup and every check inside the export. The export is compared
@@ -21,10 +22,11 @@ export class SnapshotRunService {
 	constructor(private readonly run: SnapshotRun) {}
 
 	async execute(plan: PlannedCheck[], artifactPaths: string[] = []): Promise<Executed> {
-		const { root, config, context, needed = 'all' } = this.run;
+		const { root, config, context } = this.run;
+		const needed = this.buildsToIdentify(this.run.needed ?? 'all');
+		context.signal?.throwIfAborted();
 		const snapshot = await SnapshotAdapter.create(root, context.commit, config.outputs);
-		const seen = { mutated: new Set<string>(), added: new Set<string>() };
-		const observe = snapshotDriftObserver(snapshot, seen);
+		const drift = trackDrift(snapshot);
 		try {
 			for (const path of config.link) await snapshot.link(root, path);
 			const { runner, failures, videoInputs } = await snapshotVideoRun(
@@ -37,23 +39,38 @@ export class SnapshotRunService {
 			const tools = setupFailures.length > 0 ? [] : await this.tools(runner, setupFailures);
 			const wanted = config.builds.filter((build) => needed === 'all' || needed.has(build.id));
 			const compiled = await this.identities.declared(snapshot.directory, wanted);
-			await observe();
-			const outcomes = await checkedSnapshot(runner, plan, setupFailures, observe);
+			await drift.observe();
+			const outcomes = await runChecks(runner, setupFailures.length > 0 ? [] : plan, drift.observe);
+			context.signal?.throwIfAborted();
 			const artifacts = await built(snapshot, artifactPaths);
-			const [mutated, added] = [[...seen.mutated].sort(), [...seen.added].sort()];
 			const moved = await this.identities.changed(snapshot.directory, compiled.found);
-			const builds = config.builds.length > 0 ? { builds: compiled.found } : {};
-			const observed = { outcomes, mutated, added, setupFailures, tools, artifacts };
+			const buildFailures = [...compiled.failures, ...moved];
+			const observed = { outcomes, ...drift.paths(), setupFailures, tools, artifacts };
+			const exported = await retainedArtifact(this.run, snapshot, observed, buildFailures);
 			return {
 				...observed,
 				...videoInputs,
-				...builds,
-				...skippedBuilds(config, needed),
-				buildFailures: [...compiled.failures, ...moved]
+				...recordedBuilds(config, needed, compiled.found),
+				buildFailures,
+				...exported
 			};
 		} finally {
 			await snapshot.remove();
 		}
+	}
+
+	private buildsToIdentify(needed: ReadonlySet<string> | 'all'): ReadonlySet<string> | 'all' {
+		const { config, context } = this.run;
+		if (!context.lite) return needed;
+		const deferred = new Set(
+			config.setup.filter(deferredInLite).flatMap((step) => step.builds ?? [])
+		);
+		if (deferred.size === 0) return needed;
+		return new Set(
+			config.builds
+				.map((build) => build.id)
+				.filter((id) => (needed === 'all' || needed.has(id)) && !deferred.has(id))
+		);
 	}
 
 	/** A declared tool that cannot say what it is counts as failed setup: nothing runs after it. */
@@ -63,6 +80,7 @@ export class SnapshotRunService {
 	): Promise<Array<{ id: string; version: string }>> {
 		const found: Array<{ id: string; version: string }> = [];
 		for (const tool of this.run.config.tools) {
+			if (this.run.context.lite && deferredInLite(tool)) continue;
 			const version = await runner.version(tool);
 			if (version) found.push({ id: tool.id, version });
 			else failures.push(`tool ${tool.id} did not report a version: ${tool.command}`);
@@ -79,6 +97,7 @@ export class SnapshotRunService {
 		const kept = new Set(scopedSetup(this.run.config.setup, needed));
 		for (const [index, step] of this.run.config.setup.entries()) {
 			if (!kept.has(step)) continue;
+			if (this.run.context.lite && deferredInLite(step)) continue;
 			const outcome = await runner.run({
 				id: `setup-${index + 1}`,
 				name: step.command,
@@ -95,6 +114,58 @@ export class SnapshotRunService {
 	}
 }
 
+/** Retains the requested generated file only from a clean snapshot whose checks passed. */
+async function retainedArtifact(
+	run: SnapshotRun,
+	snapshot: SnapshotAdapter,
+	observed: Pick<Executed, 'outcomes' | 'mutated' | 'added' | 'setupFailures'>,
+	buildFailures: string[]
+): Promise<Pick<Executed, 'retainedArtifact' | 'artifactFailures'>> {
+	const { retainArtifact, context } = run;
+	if (retainArtifact === undefined) return {};
+	const { outcomes, mutated, added, setupFailures } = observed;
+	if (
+		mutated.length ||
+		added.length ||
+		setupFailures.length ||
+		buildFailures.length ||
+		outcomes.some((outcome) => !outcome.passed)
+	)
+		return {
+			artifactFailures: ['Artifact retention requires a clean snapshot and passing checks.']
+		};
+	const retained = await snapshot.retainArtifact(retainArtifact, context.directory);
+	return retained
+		? { retainedArtifact: retained, artifactFailures: [] }
+		: {
+				artifactFailures: [
+					'The requested artifact is missing or is not an eligible generated file.'
+				]
+			};
+}
+
+function trackDrift(snapshot: SnapshotAdapter) {
+	const mutated = new Set<string>();
+	const added = new Set<string>();
+	return {
+		observe: snapshotDriftObserver(snapshot, { mutated, added }),
+		paths: () => ({ mutated: [...mutated].sort(), added: [...added].sort() })
+	};
+}
+
+async function runChecks(
+	runner: CheckRunService,
+	plan: PlannedCheck[],
+	observe: () => Promise<void>
+): Promise<CheckOutcome[]> {
+	const outcomes: CheckOutcome[] = [];
+	for (const check of plan) {
+		outcomes.push(await runner.run(check));
+		await observe();
+	}
+	return outcomes;
+}
+
 /** The optional byte caps of the config, leaving out any it does not declare. */
 function captureLimits(config: SnapshotRun['config']): CaptureLimits {
 	const { maxCaptureBytes, maxRecordBytes } = config;
@@ -105,12 +176,16 @@ function captureLimits(config: SnapshotRun['config']): CaptureLimits {
 }
 
 /** The declared builds a scoped run did not need, by id. A run that is not scoped skips none. */
-function skippedBuilds(
+function recordedBuilds(
 	config: SnapshotRun['config'],
-	needed: ReadonlySet<string> | 'all'
-): { skippedBuilds?: string[] } {
+	needed: ReadonlySet<string> | 'all',
+	found: NonNullable<Executed['builds']>
+): Pick<Executed, 'builds' | 'skippedBuilds'> {
 	const skipped = config.builds.filter((build) => needed !== 'all' && !needed.has(build.id));
-	return needed === 'all' ? {} : { skippedBuilds: skipped.map((build) => build.id) };
+	return {
+		...(config.builds.length > 0 ? { builds: found } : {}),
+		...(needed === 'all' ? {} : { skippedBuilds: skipped.map((build) => build.id) })
+	};
 }
 
 /** An output declaration that covers tracked files would hide source, so nothing runs. */
@@ -131,18 +206,3 @@ async function built(snapshot: SnapshotAdapter, paths: string[]): Promise<BuiltA
 }
 
 export type { SnapshotRun, Executed } from './SnapshotRunService.types';
-
-/** Observe drift after each check, including a failing check before another could undo it. */
-async function checkedSnapshot(
-	runner: CheckRunService,
-	plan: PlannedCheck[],
-	failures: string[],
-	observe: () => Promise<void>
-): Promise<CheckOutcome[]> {
-	const outcomes: CheckOutcome[] = [];
-	for (const check of failures.length > 0 ? [] : plan) {
-		outcomes.push(await runner.run(check));
-		await observe();
-	}
-	return outcomes;
-}

@@ -80,6 +80,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "command.projects-sessions-tracker",
+			"via": "dynamic-import",
+			"origin": "derived"
+		},
+		{
 			"unit": "entry.load-cli-program",
 			"via": "import",
 			"origin": "derived"

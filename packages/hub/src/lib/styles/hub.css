@@ -144,3 +144,54 @@
 		flex-wrap: wrap;
 	}
 }
+/* Project Overview: fitted cards and the read-only item dialog. Only this route renders the
+	.po-page panel and its sibling dialog, so other project and login pages keep their column. */
+.hub-main:has(> .po-page) {
+	grid-template-columns: minmax(0, 1fr);
+	max-width: 1520px;
+}
+/* The page's auto margins would size it to its widest chip row and push the cards past the frame. */
+.hub-main > .po-page {
+	width: 100%;
+	min-width: 0;
+}
+.po-page ~ .viewer-dialog {
+	box-sizing: border-box;
+	max-width: min(1500px, calc(100vw - var(--hx-space-40)));
+	padding: 0;
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-xlarge);
+	background: var(--hx-color-surface);
+	color: var(--hx-color-text);
+	box-shadow: var(--hx-shadow-dialog);
+	overflow-y: auto;
+}
+.po-page ~ .viewer-dialog::backdrop {
+	background: var(--hx-color-scrim-strong);
+	backdrop-filter: var(--hx-effect-blur-strong);
+}
+.po-page ~ .viewer-dialog .viewer-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--hx-space-18);
+	padding: var(--hx-space-16) var(--hx-space-22);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.po-page ~ .viewer-dialog .viewer-header h2 {
+	margin: 0;
+	font-size: var(--hx-type-size-base);
+}
+.po-page ~ .viewer-dialog .viewer-header button {
+	display: grid;
+	place-items: center;
+	flex: none;
+	width: 44px;
+	height: 44px;
+	padding: 0;
+}
+.po-page ~ .viewer-dialog .viewer-content {
+	padding: var(--hx-space-8) var(--hx-space-24) var(--hx-space-24);
+	font-size: var(--hx-type-size-base);
+	line-height: var(--hx-style-leading-normal);
+}

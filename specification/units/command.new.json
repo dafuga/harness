@@ -18,7 +18,7 @@
 				"name": "registerNewCommand.program",
 				"type": "Command",
 				"required": true,
-				"description": "The commander Command that the new command is attached to: registerNewCommand calls program.command('new') on it and attaches the app, game and lib subcommands to that new command. The value is read once, when the function runs, and the function does not validate it, so it must already be a commander Command."
+				"description": "Registers app, game and lib commands. Apps support --adapter auto or static. Games support --engine sveltekit or godot and --dimension 2d or 3d."
 			}
 		],
 		"outputs": [
@@ -44,7 +44,7 @@
 						"name": "registerNewCommand.program",
 						"type": "Command",
 						"required": true,
-						"description": "The commander Command that the new command is attached to: registerNewCommand calls program.command('new') on it and attaches the app, game and lib subcommands to that new command. The value is read once, when the function runs, and the function does not validate it, so it must already be a commander Command."
+						"description": "Registers app, game and lib commands. Apps support --adapter auto or static. Games support --engine sveltekit or godot and --dimension 2d or 3d."
 					}
 				],
 				"outputs": [

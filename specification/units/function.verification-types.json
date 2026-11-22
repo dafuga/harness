@@ -9,6 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/core/verification-evidence/verificationCaptures.ts",
 			"src/core/verification-evidence/verificationTypes.ts",
 			"src/core/verification-evidence/verificationTypes.types.ts",
 			"src/core/verificationTypes.ts"
@@ -17,18 +18,15 @@
 			"captureRegionSchema",
 			"captureSchema",
 			"scenarioResultSchema",
-			"profileSchema",
 			"budgetFindingSchema",
+			"captureRegionSchema",
+			"captureSchema",
+			"scenarioResultSchema",
+			"profileSchema",
+			"retainedArtifactPath",
 			"componentVersionSchema",
 			"measurementSchema",
 			"verificationRecordSchema",
-			"Capture",
-			"ScenarioResult",
-			"VerificationProfile",
-			"BudgetFinding",
-			"RecordedComponent",
-			"Measurement",
-			"VerificationRecord",
 			"Capture",
 			"ScenarioResult",
 			"VerificationProfile",
@@ -82,7 +80,7 @@
 			{
 				"name": "verificationRecordSchema",
 				"type": "typeof verificationRecordSchema",
-				"description": "Zod strict-object schema for validating a complete verification record against its source revision, profile, evidence, and gates. It fixes schemaVersion at 1, permits optional componentSchemaVersion 2, requires source commit/tree and tested revisions to be 40-character lowercase hashes, requires a profile and the components, measurements, impact, tests, scenarios, budgets, reasons, and failures sections, and constrains status values and nested objects as declared by their schemas; tools, builds, gates, and componentSchemaVersion are optional, and test browserErrors is an optional array validated by browserDiagnosticSchema."
+				"description": "Validates a sealed verification record. Optional retainedArtifact identifies the original generated path, fixed evidence path, byte count and SHA-256."
 			}
 		],
 		"errors": [],
@@ -113,6 +111,11 @@
 		},
 		{
 			"unit": "function.verification-evidence-video-clip-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.budget-types",
 			"via": "import",
 			"origin": "derived"
 		}

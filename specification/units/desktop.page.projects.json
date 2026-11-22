@@ -1,0 +1,91 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.page.projects",
+	"uid": "u_5ss75lisl2",
+	"kind": "page",
+	"title": "Project Overview",
+	"responsibility": "Loads the local tracker snapshot through the Electron bridge and renders Project Overview in the bundled app.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": ["reports.component.projects-sessions-project-overview-project-overview"]
+	},
+	"owns": {
+		"source": ["packages/desktop/src/routes/projects/+page.svelte"],
+		"symbols": ["+page"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "+page",
+				"type": "markup",
+				"description": "The Project Overview page showing the first read, project list, or unavailable state."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.select-environment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.project-sync",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.style.design",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.style.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-project-overview-project-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/routes/projects/+page.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/routes/projects/+page.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -4,13 +4,13 @@ import {
 } from '../packages/reports/tests/e2e/support/component-previews/catalogVariants';
 import { catalogVisual } from '../packages/reports/tests/e2e/support/component-previews/visualUnits';
 import { readFileSync } from 'node:fs';
+import { getFileInfo } from 'prettier';
 import { join } from 'node:path';
 import { beforeAll, expect, test } from 'vitest';
 import { HandlerRuntimeAdapter } from '../packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter';
 import { WorkingTreeAdapter } from '../src/adapters/git-source-history/WorkingTreeAdapter';
-import type { ImpactSide } from '../src/core/development-tooling/impactTypes';
 import { ImpactService } from '../src/services/reports-media/impact-service/ImpactService';
-import { SourceGraphService } from '../src/services/SourceGraphService';
+import { workspaceImpactSide } from './shared-workspace-impact';
 import {
 	SourceIndexService,
 	type SourceIndex
@@ -47,11 +47,17 @@ beforeAll(async () => {
 	loaded = await loadUnits(process.cwd(), undefined, indexer);
 }, 60_000);
 
-test('cataloged application configs keep their implementation and entries under configs', () => {
+test('cataloged configs keep their source paths and canonical registry records', async () => {
 	const configs = loaded.stored.filter(
 		(unit) => unit.status === 'active' && unit.kind === 'config'
 	);
 	expect(configs.length).toBeGreaterThan(0);
+	const ignorePath = '.prettierignore';
+	const record = await getFileInfo(`specification/units/${configs[0].id}.json`, { ignorePath });
+	expect(record.ignored, 'Canonical unit JSON is excluded from the repository formatter').toBe(
+		true
+	);
+	expect((await getFileInfo('package.json', { ignorePath })).ignored).toBe(false);
 	for (const unit of configs)
 		for (const source of unit.owns.source)
 			expect(source, `${unit.id} config source`).toMatch(/(?:^|\/)src\/configs\//);
@@ -69,18 +75,6 @@ function built(specifier: string): string | undefined {
 	const path = join('packages/hub', target, specifier.slice('$desktop/'.length));
 	return [path, `${path}.ts`].find((candidate) => loaded.index.files.has(candidate));
 }
-/** One tree as the impact analysis reads it, with the registry as it is stored. */
-function side(index: SourceIndex): ImpactSide {
-	return {
-		revision: 'working-tree',
-		config: loaded.config,
-		entries: [...index.files.values()].map(({ path, hash }) => ({ path, hash })),
-		manifests: loaded.stored,
-		scenarios: loaded.scenarios,
-		graph: new SourceGraphService().build(index, loaded.stored, loaded.scenarios)
-	};
-}
-
 test('the source index resolves what the Web workspace imports of the shared workspace', () => {
 	const references = loaded.index.files.get(hosted)?.references ?? [];
 	const reached = references.flatMap((item) => item.path ?? []);
@@ -107,7 +101,7 @@ test('the registry names the Web workspace beside the Electron and iOS one as a 
 }, 60_000);
 
 test('a change of the shared shell reaches the Web workspace and its page, and the Electron and iOS one', async () => {
-	const head = side(loaded.index);
+	const head = workspaceImpactSide(loaded, loaded.index);
 	const shell = shared['desktop.component.workspace-shell'];
 	const entries = head.entries.map((entry) =>
 		entry.path === shell ? { ...entry, hash: '0'.repeat(40) } : entry
@@ -132,7 +126,9 @@ test('declaring those imports changes them alone: no other reference or uncertai
 	// Undeclared, the index takes each of them for a package from outside the repository.
 	const was = undeclared.files.get(hosted)?.references ?? [];
 	expect(was.filter((item) => item.external === '$desktop')).toHaveLength(written().length);
-	expect(side(loaded.index).graph.uncertain).toEqual(side(undeclared).graph.uncertain);
+	expect(workspaceImpactSide(loaded, loaded.index).graph.uncertain).toEqual(
+		workspaceImpactSide(loaded, undeclared).graph.uncertain
+	);
 }, 60_000);
 
 function assertNoNestedHarnessSources() {

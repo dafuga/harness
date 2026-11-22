@@ -24,11 +24,12 @@ export async function scopedVerify(
 		impact: scopedImpact(context.commit, runtime),
 		requirePerformance: false,
 		testTimeoutMs: options.testTimeout ? Number(options.testTimeout) : undefined,
+		verificationProfile: options.profile,
 		entity: options.entity,
 		env,
 		explained: () => Promise.resolve({ required: [], entries: [], overlong: [], failures: [] })
 	}).run();
-	return attachEntity(context.root, options.entity!, stored);
+	return options.profile === 'lite' ? stored : attachEntity(context.root, options.entity!, stored);
 }
 
 /** Publish nothing until every entity check and required slot has passed in the snapshot. */

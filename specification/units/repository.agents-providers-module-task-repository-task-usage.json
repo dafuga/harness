@@ -10,8 +10,10 @@
 	"owns": {
 		"source": ["src/repositories/agents-providers/module-task-repository/taskUsage.ts"],
 		"symbols": [
+			"executionFailureCause",
 			"taskUsageSchema",
 			"taskCostSchema",
+			"taskSessionMetricSchema",
 			"taskExecutionSchema",
 			"reviewInputSchema",
 			"taskReviewSchema"

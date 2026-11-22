@@ -1,6 +1,6 @@
 import { expect } from '../../../test/verificationExpect';
-import { test, vi } from 'vitest';
-import { writeFile, mkdtemp, rm } from 'node:fs/promises';
+import { test } from 'vitest';
+import { writeFile, mkdtemp, readFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { RunCancelled } from '../src/models/agents-providers/AgentRunner.types';
@@ -13,7 +13,7 @@ test('Plan uses read-only CLI and saves a committed immutable version without cl
 	expect(f.run.mock.calls[0][0]).toMatchObject({
 		access: 'read-only',
 		cwd: f.root,
-		model: 'selected'
+		model: 'claude-sonnet-5-5'
 	});
 	expect(f.run.mock.calls[0][0].prompt).toMatch(/why.*existing.*tests.*missed/i);
 	expect(f.run.mock.calls[0][0].prompt).toContain('existing standardized test');
@@ -71,14 +71,14 @@ test('stale approval is rejected before agent execution', async () => {
 	expect(f.run).not.toHaveBeenCalled();
 	expect(f.session.busy).toBe(false);
 }, 60000);
-test('image generation failure creates no invented image or successful completion', async () => {
+test('mockup renderer failure leaves no screenshot or successful completion', async () => {
 	const f = await fixture();
-	vi.mocked(f.generator.generateImage).mockRejectedValue(new Error('Image generation unavailable'));
+	f.renderMockups.mockRejectedValue(new Error('Mockup renderer unavailable'));
 	await settled(f);
 	expect((await f.planning.plans(git(f.root, 'rev-parse', 'HEAD')))[0].versions).toEqual([]);
 	expect(f.events.some((e) => e.kind === 'finished' || e.kind === 'design')).toBe(false);
 	expect(f.events).toContainEqual(
-		expect.objectContaining({ kind: 'failed', message: 'Image generation unavailable' })
+		expect.objectContaining({ kind: 'failed', message: 'Mockup renderer unavailable' })
 	);
 }, 60000);
 test('failed Change never records a completed outcome', async () => {
@@ -145,37 +145,38 @@ test('observed host writes retain actual absolute path and hashes in committed c
 		await rm(directory, { recursive: true, force: true });
 	}
 }, 60000);
-test('visual provenance stores actual image orchestration model and exact full generator prompt', async () => {
-	const f = await fixture();
-	const discover = f.runner.discover;
-	f.runner.discover = async () => {
-		const state = await discover();
-		return {
-			...state,
-			models: [
-				...state.models,
-				{
-					id: 'director',
-					label: 'Director',
-					efforts: ['high'],
-					defaultEffort: 'high',
-					isDefault: false
-				}
-			]
-		};
-	};
-	// A case of one design: it asks for a single design option.
-	await settled(f, { ...f.request, provider: 'claude', model: 'director', designOptions: 1 });
-	const imageCall = vi.mocked(f.generator.generateImage).mock.calls[0][0];
+test('approval pins the design source and all screenshots for the option Change implements', async () => {
+	const f = await fixture(async (turn) => {
+		if (turn.access !== 'write') return;
+		const target = turn.prompt.match(/Read (.+?\/review\.json) and implement/)?.[1];
+		expect(target).toBeTruthy();
+		const receipt = JSON.parse(await readFile(target!, 'utf8'));
+		expect(receipt.option).toBe('o2');
+		expect(receipt.screenshots.map((s: { viewport: string }) => s.viewport)).toEqual([
+			'width-390',
+			'width-834',
+			'width-1440',
+			'width-1920'
+		]);
+		const source = await readFile(join(target!, '..', 'default-after.html'), 'utf8');
+		expect(source).toContain('Fixture option 2');
+		expect(source).not.toContain('Fixture option 1');
+		expect(turn.reference).toBe(join(target!, '..', receipt.screenshots[2].file));
+	});
+	await settled(f, { ...f.request, designOptions: 2 });
 	const plan = (await f.planning.plans(git(f.root, 'rev-parse', 'HEAD')))[0];
 	const version = plan.versions[0];
-	expect(f.run.mock.calls[0][0].model).toBe('director');
-	expect(imageCall.model).toBe('selected');
-	expect(version.generator).toBe('codex · selected');
-	expect(version.prompt).toBe(imageCall.prompt);
-	expect(version.prompt).toContain('Entity: Target');
-	expect(version.prompt).toContain('Precise design direction');
-	expect(version.notes).toContain('claude / director');
+	expect(version.generator).toBe('claude · claude-sonnet-5-5');
+	expect(version.prompt).toBe(f.run.mock.calls[0][0].prompt);
+	const approval = {
+		version: version.version,
+		option: 'o2',
+		contractHash: plan.contract.hash!,
+		imageHashes: version.options![1].imageHashes
+	};
+	await f.planning.approve({ entityId: plan.id, ...approval });
+	await settled(f, { ...f.request, mode: 'change', approval });
+	expect((await records(f)).at(-1)?.status).toBe('completed');
 }, 60000);
 test('Plan refuses a generation whose expected latest version changed while the image was running', async () => {
 	const f = await fixture();
@@ -183,12 +184,12 @@ test('Plan refuses a generation whose expected latest version changed while the 
 	const gate = new Promise<void>((resolve) => {
 		release = resolve;
 	});
-	vi.mocked(f.generator.generateImage).mockImplementation(async () => {
+	f.renderMockups.mockImplementation(async (captures) => {
 		await gate;
-		return { bytes, revisedPrompt: null };
+		return captures.map(() => bytes);
 	});
 	await f.service.start(f.request);
-	await expect.poll(() => vi.mocked(f.generator.generateImage).mock.calls.length).toBe(1);
+	await expect.poll(() => f.renderMockups.mock.calls.length).toBe(1);
 	try {
 		await f.planning.addDesign({
 			entityId: f.request.entityId,
