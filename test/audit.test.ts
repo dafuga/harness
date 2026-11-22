@@ -139,6 +139,7 @@ test('audit rejects files and folders outside the Harness structure', async () =
 	const root = await mkdtemp(join(tmpdir(), 'harness-audit-'));
 	await mkdir(join(root, 'src/random-things'), { recursive: true });
 	await mkdir(join(root, 'test/random-things'), { recursive: true });
+	await mkdir(join(root, 'test/examples'), { recursive: true });
 	await mkdir(join(root, 'db/archive'), { recursive: true });
 	await mkdir(join(root, 'specification/features/Draft'), { recursive: true });
 
@@ -151,6 +152,7 @@ test('audit rejects files and folders outside the Harness structure', async () =
 	await writeFile(join(root, 'db/archive/old.sql'), 'select 1;\n');
 	await writeFile(join(root, 'specification/features/Draft/BadName.md'), '# Feature\n');
 
+	await writeFile(join(root, 'test/examples/command.check.test.ts'), 'export {};\n');
 	const findings = await auditPath(root);
 	const rules = findings.map((finding) => finding.rule);
 
@@ -164,6 +166,9 @@ test('audit rejects files and folders outside the Harness structure', async () =
 			'harness-spec-structure'
 		])
 	);
+	expect(
+		findings.filter(({ rule }) => rule === 'harness-test-structure').map(({ path }) => path)
+	).toEqual(['test/random-things/']);
 	await rm(root, { recursive: true, force: true });
 });
 
