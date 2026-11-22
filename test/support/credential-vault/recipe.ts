@@ -20,8 +20,8 @@ export function syntheticRecipe(overrides: Partial<VaultRecipeInput> = {}): Vaul
 			{ kind: 'browser', actions: ['read-roster'], reason: 'The roster page has no API.' }
 		],
 		actions: [
-			{ id: 'read-usage', mode: 'read', paths: ['/usage'] },
-			{ id: 'read-roster', mode: 'read', paths: ['/orgs/*/members', '/orgs/*/teams/**'] }
+			{ id: 'read-usage', mode: 'read', start: '/usage' },
+			{ id: 'read-roster', mode: 'read', start: '/orgs/acme/members' }
 		],
 		otp: ['totp', 'email'],
 		login: [{ id: 'password', url: '/login' }],

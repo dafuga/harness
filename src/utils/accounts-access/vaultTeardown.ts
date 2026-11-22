@@ -4,12 +4,12 @@ import type { VaultTeardownInput, VaultTeardownStep } from './vaultTeardown.type
 export const vaultTeardownLimits = { completeMs: 120_000, recheckMs: 15 * 60_000 } as const;
 
 /**
- * Orders the end of a lease: stop the gateway, sign out and revoke on the provider, destroy the
+ * Orders the end of a lease: close the session's CDP endpoint, sign out and revoke on the provider, destroy the
  * container, then read the account security log at the end and again 15 minutes later.
  */
 export function vaultTeardown(input: VaultTeardownInput): VaultTeardownStep[] {
 	const by = input.endedAt + vaultTeardownLimits.completeMs;
-	const steps: VaultTeardownStep[] = [{ step: 'close-gateway', by }];
+	const steps: VaultTeardownStep[] = [{ step: 'close-cdp-endpoint', by }];
 	if (input.browser && input.teardown.logout) {
 		steps.push({ step: 'provider-logout', path: input.teardown.logout, by });
 	}

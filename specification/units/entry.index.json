@@ -199,15 +199,14 @@
 			"TrackerSupervisorService",
 			"vaultRecipe",
 			"vaultMethod",
-			"vaultGatewayPolicy",
-			"vaultPageScrub",
 			"vaultLease",
 			"vaultExecutorHost",
 			"vaultEgressRules",
 			"vaultOtpRoute",
 			"vaultTeardown",
 			"vaultSecurityAudit",
-			"vaultPhoneView"
+			"vaultPhoneView",
+			"vaultCdpHandoff"
 		]
 	},
 	"contract": {
@@ -371,17 +370,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.accounts-access-vault-cdp-handoff",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.accounts-access-vault-egress-rules",
 			"via": "reexport",
 			"origin": "derived"
 		},
 		{
 			"unit": "function.accounts-access-vault-executor-host",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.accounts-access-vault-gateway-policy",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -397,11 +396,6 @@
 		},
 		{
 			"unit": "function.accounts-access-vault-otp-route",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.accounts-access-vault-page-scrub",
 			"via": "reexport",
 			"origin": "derived"
 		},

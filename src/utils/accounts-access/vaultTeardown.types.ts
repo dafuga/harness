@@ -1,7 +1,7 @@
 // @harness-uid u_wv57i4bcri
 
 export type VaultTeardownStep =
-	| { step: 'close-gateway'; by: number }
+	| { step: 'close-cdp-endpoint'; by: number }
 	| { step: 'provider-logout'; path: string; by: number }
 	| { step: 'revoke-sessions'; via: string; by: number }
 	| { step: 'remove-container'; by: number }

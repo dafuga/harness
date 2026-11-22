@@ -7,7 +7,7 @@ import {
 const endedAt = 2_000_000;
 const by = endedAt + vaultTeardownLimits.completeMs;
 
-test('closes the gateway, signs out and revokes, destroys the container, then checks the log twice', () => {
+test('closes the CDP endpoint, signs out and revokes, destroys the container, then checks the log twice', () => {
 	const steps = vaultTeardown({
 		teardown: { logout: '/logout', revoke: 'sessions-api', securityLog: 'audit-page' },
 		browser: true,
@@ -15,7 +15,7 @@ test('closes the gateway, signs out and revokes, destroys the container, then ch
 		endedAt
 	});
 	expect(steps).toEqual([
-		{ step: 'close-gateway', by },
+		{ step: 'close-cdp-endpoint', by },
 		{ step: 'provider-logout', path: '/logout', by },
 		{ step: 'revoke-sessions', via: 'sessions-api', by },
 		{ step: 'remove-container', by },
@@ -38,7 +38,7 @@ test('flags an unverifiable lease when the recipe has no security log', () => {
 		endedAt
 	});
 	expect(steps.map(({ step }) => step)).toEqual([
-		'close-gateway',
+		'close-cdp-endpoint',
 		'revoke-sessions',
 		'flag-unverifiable'
 	]);

@@ -42,8 +42,7 @@ const method = z.discriminatedUnion('kind', [
 const action = z.strictObject({
 	id: identifier,
 	mode: z.enum(['read', 'write']),
-	paths: z.array(pathPattern).min(1),
-	downloads: z.array(z.string().regex(/^[a-z0-9]{1,8}$/u)).default([])
+	start: pathPattern
 });
 
 const recipeBase = z.strictObject({
@@ -55,7 +54,6 @@ const recipeBase = z.strictObject({
 	redirects: z.array(origin).max(8).default([]),
 	methods: z.array(method).min(1),
 	actions: z.array(action).min(1),
-	deny: z.array(pathPattern).default([]),
 	otp: z.array(z.enum(['totp', 'sms', 'email', 'push', 'passkey'])).default([]),
 	login: z.array(z.strictObject({ id: identifier, url: pathPattern })).default([]),
 	teardown: z.strictObject({
