@@ -4,12 +4,15 @@
 	"uid": "u_yga4vj5ueo",
 	"kind": "command",
 	"title": "HarborInspectionCommand",
-	"responsibility": "Registers read-only Harbor inspection and delegates each operation to an operator-selected installed Harbor package.",
+	"responsibility": "Registers Harbor inspection and verified testnet publication and delegates each operation to its operator-selected installed Harbor package.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/commands/projects-sessions/HarborInspectionCommand.ts"],
-		"symbols": ["HarborInspectionCommand", "HarborInspectionCommand.register"]
+		"source": [
+			"src/commands/projects-sessions/HarborInspectionCommand.ts",
+			"src/commands/projects-sessions/HarborInspectionCommand.types.ts"
+		],
+		"symbols": ["HarborInspectionCommand", "HarborInspectionCommand.register", "PublishOptions"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -25,7 +28,7 @@
 			{
 				"name": "HarborInspectionCommand.register",
 				"type": "void",
-				"description": "Adds the version, chain info and agent status inspection commands."
+				"description": "Adds Harbor version, chain info, agent status and verified testnet publish commands."
 			}
 		],
 		"errors": [
@@ -50,7 +53,7 @@
 					{
 						"name": "HarborInspectionCommand.register",
 						"type": "void",
-						"description": "Adds the version, chain info and agent status inspection commands."
+						"description": "Adds Harbor version, chain info, agent status and verified testnet publish commands."
 					}
 				],
 				"errors": [],
