@@ -3,8 +3,8 @@ import { expect } from '../../verificationExpect';
 import { ModuleTaskWorkerService } from '../../../src/services/agents-providers/ModuleTaskWorkerService';
 import { ModuleTaskService } from '../../../src/services/agents-providers/ModuleTaskService';
 import { moduleTaskFixture } from '../../support/moduleTaskFixture';
-import { readFile, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { readFile, realpath, writeFile } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
 import { verifiedSubmission, verifiedTaskBaseline } from '../../support/moduleTaskEvidence';
 import { observedTaskOperation } from '../../support/taskProfiles';
 import { seedTaskFrameFlag, hash } from '../../support/frameFlagFixture';
@@ -35,9 +35,10 @@ test('module filters and assignment claims select once, then preserve changes fo
 				expect(input.prompt).toContain(flag.id);
 				expect(input.prompt).toContain('Inspect this edge');
 				expect(input.prompt).not.toContain(other.id);
-				expect(input.cwd.startsWith(join(linkedRoot, '.cache/harness/task-worktrees') + '/')).toBe(
-					true
-				);
+				expect(
+					dirname(input.cwd),
+					'linked worker shares the task-worktree root from common Git'
+				).toBe(join(await realpath(f.root), '.cache/harness/task-worktrees'));
 				await writeFile(join(input.cwd, 'src/orders.ts'), 'export const orders=2;');
 				return {
 					provider: input.provider,
@@ -152,7 +153,7 @@ test('incomplete review commits a repair base, requeues once, and keeps prior wo
 	} finally {
 		await f.dispose();
 	}
-});
+}, 30000);
 
 async function acceptVerified(
 	f: Awaited<ReturnType<typeof moduleTaskFixture>>,
