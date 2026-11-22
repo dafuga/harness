@@ -8,6 +8,8 @@ export const commandHelp = [
 		term: 'codex',
 		aliases: []
 	},
+	plainHelp('provider', 'Open the installed provider sign-in tools.'),
+	plainHelp('harbor', 'Use Harbor capabilities from its installed CLI and SDK.'),
 	{
 		name: 'benchmark',
 		signature: 'benchmark',
@@ -36,13 +38,7 @@ export const commandHelp = [
 		term: 'activity',
 		aliases: []
 	},
-	{
-		name: 'projects',
-		signature: 'projects',
-		description: 'Read local Harness project cards.',
-		term: 'projects',
-		aliases: []
-	},
+	plainHelp('projects', 'Read local Harness project cards.'),
 	{
 		name: 'report',
 		signature: 'report [args...]',
@@ -145,7 +141,7 @@ export const commandHelp = [
 		name: 'deploy',
 		signature: 'deploy [project] [environment]',
 		description: 'Prepare and deploy one project release with reviewed Docker scripts.',
-		term: 'deploy [project] [environment]',
+		term: 'deploy [options] [project] [environment]',
 		aliases: []
 	},
 	{
@@ -214,3 +210,7 @@ export const commandHelp = [
 		aliases: []
 	}
 ];
+
+function plainHelp(name: string, description: string) {
+	return { name, signature: name, description, term: name, aliases: [] };
+}

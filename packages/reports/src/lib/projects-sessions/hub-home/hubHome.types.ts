@@ -69,6 +69,8 @@ export interface HomeSubscription {
 export interface HomeProviderReadings {
 	/** Null means a source has not been connected or its read failed. */
 	routines: HomeRun[] | null;
+	/** Last observation of the routine list. Missing timestamps are treated as unknown. */
+	routinesReadAt?: string | null;
 	quota: HomeSubscription[] | null;
 }
 

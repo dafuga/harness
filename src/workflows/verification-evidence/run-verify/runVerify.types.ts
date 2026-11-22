@@ -1,5 +1,6 @@
 // @harness-uid u_srtmrphmgz
 import type { StoredRecord } from '../../../repositories/verification-evidence/VerificationStoreRepository';
+import type { VerificationMode } from '../../../core/verification-evidence/verifyTypes';
 
 /** Attachment is separate from the sealed record: focused proof is never a full pass. */
 export interface VerifyResult extends StoredRecord {
@@ -13,6 +14,7 @@ export interface VerifyResult extends StoredRecord {
 }
 
 export interface VerifyOptions {
+	profile?: VerificationMode;
 	priority?: string;
 	/** Mandatory for task completion; historical verification contracts remain readable. */
 	requirePerformance?: boolean;
@@ -27,6 +29,9 @@ export interface VerifyOptions {
 	runtime?: string;
 	/** Verify only this entity's scenario states; the record is partial and never passes. */
 	entity?: string;
+	/** A declared generated file to retain from a passing full verification. */
+	retainArtifact?: string;
+	signal?: AbortSignal;
 	testTimeout?: string;
 	record?: string;
 }

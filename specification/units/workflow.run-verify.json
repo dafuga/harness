@@ -10,8 +10,12 @@
 	"owns": {
 		"source": [
 			"src/workflows/run-verify/runVerify.ts",
+			"src/workflows/verification-evidence/run-verify/capturePage.ts",
+			"src/workflows/verification-evidence/run-verify/capturePage.types.ts",
+			"src/workflows/verification-evidence/run-verify/renderVerify.ts",
 			"src/workflows/verification-evidence/run-verify/runVerify.ts",
-			"src/workflows/verification-evidence/run-verify/runVerify.types.ts"
+			"src/workflows/verification-evidence/run-verify/runVerify.types.ts",
+			"src/workflows/verification-evidence/run-verify/verifyAdmission.ts"
 		],
 		"symbols": [
 			"verifyRun",
@@ -19,80 +23,37 @@
 			"verifyIdentity",
 			"verifyStamp",
 			"renderVerify",
+			"capturePage",
+			"PageCaptureOptions",
+			"renderVerify",
 			"VerifyOptions",
 			"VerifyPlanReport",
 			"verifyPlan",
+			"renderVerify",
 			"verifyRun",
 			"verifyCheck",
 			"verifyIdentity",
 			"verifyStamp",
-			"renderVerify",
 			"VerifyResult",
-			"VerifyOptions"
+			"VerifyOptions",
+			"partialRetention",
+			"requiresPerformance"
 		]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "verifyRun.options",
-				"type": "VerifyOptions",
-				"required": false,
-				"default": {},
-				"description": "Optional settings for one verification: `commit` is the revision to verify (default `HEAD`; uncommitted changes are never part of it), `root` the repository directory (default: the current directory), `base` the revision to compare against (default: the first parent, used only when a passing record proves it, otherwise the nearest proven ancestor or nothing), `runtime` the impact kernel (`default`, `module`, `wasm`, `process`, or `http`; default: the kernel chosen from this machine's recorded measurements), `testTimeout` the per-check timeout in milliseconds as a string for checks that declare none, `requirePerformance` requires performance evidence, `entity` a unit id that limits the run to the scenario states that show that unit, and `priority` one of `agent-test`, `coding`, or `environment` (default: HARNESS_RESOURCE_PRIORITY, then `environment`). The `base` and `requirePerformance` options apply only to full runs, and an entity run's record is partial and never a full pass.",
-				"examples": [
-					{
-						"commit": "3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b",
-						"base": "c0e4f9a25d7b13e8a6f0c4d92b5e7a18f3d6b0c2",
-						"runtime": "module",
-						"requirePerformance": true
-					},
-					{
-						"root": "/workspace/app",
-						"testTimeout": "120000",
-						"priority": "coding"
-					},
-					{
-						"commit": "8e61d0b4f27a93c5e10d6b8f4a2c7e95d3b0f1a6",
-						"entity": "reports.component.evidence-grid",
-						"priority": "agent-test"
-					}
-				]
-			},
-			{
-				"name": "verifyCheck.options",
-				"type": "VerifyOptions",
-				"required": false,
-				"default": {},
-				"description": "Optional settings for the check: `commit` is the revision whose record is checked (default `HEAD`), `record` is a record id or a path to a record file (a relative path resolves against `root`; when omitted, the most recent record of the commit, whatever its outcome, is checked), and `root` is the repository directory (default: the current directory).",
-				"examples": [
-					{
-						"commit": "3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b"
-					},
-					{
-						"commit": "3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b",
-						"record": "5d1f0a8c3b7e94f2a61c0d9e4b3872f5a6c1e0d94b2f7a38c5e1d0f9b6a2c437",
-						"root": "/workspace/app"
-					},
-					{
-						"record": ".cache/harness/verifications/8e61d0b4f27a93c5e10d6b8f4a2c7e95d3b0f1a6/20261115110214077/record.json",
-						"root": "/workspace/app"
-					}
-				]
-			},
-			{
-				"name": "verifyIdentity.directory",
+				"name": "capturePage.address",
 				"type": "string",
 				"required": true,
-				"description": "The built directory to identify, resolved against the current directory: every file in it, nested ones included, is hashed, and the call fails when it holds no file.",
-				"examples": ["/workspace/app/dist/web", "dist/web"]
+				"description": "HTTP or HTTPS page URL without embedded credentials."
 			},
 			{
-				"name": "verifyStamp.directory",
-				"type": "string",
+				"name": "capturePage.options",
+				"type": "PageCaptureOptions",
 				"required": true,
-				"description": "The built directory to stamp, resolved against the current directory: each file that holds a `harness-build:` slot of 64 lowercase hex digits (empty or already stamped) is rewritten in place with the directory's build id, and the call fails when no file holds a slot.",
-				"examples": ["/workspace/app/dist/worker", "dist/worker"]
+				"description": "Browser executable, output file and viewport dimensions."
 			},
 			{
 				"name": "renderVerify.stored",
@@ -356,13 +317,88 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "verifyRun.options",
+				"type": "VerifyOptions",
+				"required": false,
+				"default": {},
+				"description": "Selects an exact source commit, optional trusted base or entity and check settings. Artifact retention selects a declared output and requires full verification.",
+				"examples": [
+					{
+						"commit": "3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b",
+						"base": "c0e4f9a25d7b13e8a6f0c4d92b5e7a18f3d6b0c2",
+						"runtime": "module",
+						"requirePerformance": true
+					},
+					{
+						"root": "/workspace/app",
+						"testTimeout": "120000",
+						"priority": "coding"
+					},
+					{
+						"commit": "8e61d0b4f27a93c5e10d6b8f4a2c7e95d3b0f1a6",
+						"entity": "reports.component.evidence-grid",
+						"priority": "agent-test"
+					}
+				]
+			},
+			{
+				"name": "verifyCheck.options",
+				"type": "VerifyOptions",
+				"required": false,
+				"default": {},
+				"description": "Optional settings for the check: `commit` is the revision whose record is checked (default `HEAD`), `record` is a record id or a path to a record file (a relative path resolves against `root`; when omitted, the most recent record of the commit, whatever its outcome, is checked), and `root` is the repository directory (default: the current directory).",
+				"examples": [
+					{
+						"commit": "3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b"
+					},
+					{
+						"commit": "3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b",
+						"record": "5d1f0a8c3b7e94f2a61c0d9e4b3872f5a6c1e0d94b2f7a38c5e1d0f9b6a2c437",
+						"root": "/workspace/app"
+					},
+					{
+						"record": ".cache/harness/verifications/8e61d0b4f27a93c5e10d6b8f4a2c7e95d3b0f1a6/20261115110214077/record.json",
+						"root": "/workspace/app"
+					}
+				]
+			},
+			{
+				"name": "verifyIdentity.directory",
+				"type": "string",
+				"required": true,
+				"description": "The built directory to identify, resolved against the current directory: every file in it, nested ones included, is hashed, and the call fails when it holds no file.",
+				"examples": ["/workspace/app/dist/web", "dist/web"]
+			},
+			{
+				"name": "verifyStamp.directory",
+				"type": "string",
+				"required": true,
+				"description": "The built directory to stamp, resolved against the current directory: each file that holds a `harness-build:` slot of 64 lowercase hex digits (empty or already stamped) is rewritten in place with the directory's build id, and the call fails when no file holds a slot.",
+				"examples": ["/workspace/app/dist/worker", "dist/worker"]
+			},
+			{
+				"name": "partialRetention.options",
+				"type": "VerifyOptions",
+				"required": true
+			},
+			{
+				"name": "requiresPerformance.options",
+				"type": "VerifyOptions",
+				"required": true
+			},
+			{
+				"name": "requiresPerformance.config",
+				"type": "VerifyConfig",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "verifyRun",
 				"type": "Promise<VerifyResult>",
-				"description": "The stored result of one verification: its sealed record and the directory holding its `record.json`. A failing verification still resolves, with a record whose status is `failed`, and an entity run always includes an `attachment` whose status is `attached`, `unchanged`, or `skipped`.",
+				"description": "Returns the record and its directory. An opted-in passing full record identifies the retained generated file, its source path, byte count and SHA-256.",
 				"examples": [
 					{
 						"record": {
@@ -789,6 +825,319 @@
 		"errorStatus": "declared",
 		"operations": [
 			{
+				"name": "capturePage",
+				"inputs": [
+					{
+						"name": "capturePage.address",
+						"type": "string",
+						"required": true,
+						"description": "HTTP or HTTPS page URL without embedded credentials."
+					},
+					{
+						"name": "capturePage.options",
+						"type": "PageCaptureOptions",
+						"required": true,
+						"description": "Browser executable, output file and viewport dimensions."
+					}
+				],
+				"outputs": [
+					{
+						"name": "capturePage",
+						"type": "Promise<string>",
+						"description": "Absolute path to the PNG created by the isolated browser."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid URL or viewport, missing browser, failed capture or output file error."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "renderVerify",
+				"inputs": [
+					{
+						"name": "renderVerify.stored",
+						"type": "VerifyResult",
+						"required": true,
+						"description": "The verification result to render: its record (status, source commit, base and requested base, tests, scenarios, failures, and id) and the directory that stores it, plus the optional attachment, which only entity runs set.",
+						"examples": [
+							{
+								"record": {
+									"schemaVersion": 1,
+									"componentSchemaVersion": 2,
+									"id": "5d1f0a8c3b7e94f2a61c0d9e4b3872f5a6c1e0d94b2f7a38c5e1d0f9b6a2c437",
+									"repository": "/workspace/app",
+									"source": {
+										"commit": "3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b",
+										"tree": "d18e4a6f2c09b7135e8f0a4d6c2b9e71a5f3c084",
+										"base": "4b0d7e9a1f3c6825d0e4b7a9c1f2e6d835a0b7c4",
+										"baseRecord": "9e27b0d4f16c83a5e0b92d7f4c1a6e38d05b9f2c7a4e61d8b3c0f9a2e5d71b64",
+										"requestedBase": "c0e4f9a25d7b13e8a6f0c4d92b5e7a18f3d6b0c2"
+									},
+									"profile": {
+										"id": "9c2e7b41d0a85f36",
+										"platform": "linux",
+										"arch": "x64",
+										"cpu": "Intel(R) Xeon(R) Platinum 8375C CPU @ 2.90GHz",
+										"cores": 8,
+										"memoryBytes": 17179869184,
+										"runtime": "node 22.11.0"
+									},
+									"tools": [
+										{
+											"id": "harness",
+											"version": "0.1.4"
+										}
+									],
+									"startedAt": "2026-11-15T10:20:30.456Z",
+									"finishedAt": "2026-11-15T10:24:52.118Z",
+									"status": "passed",
+									"components": [
+										{
+											"unit": "workflow.run-verify",
+											"change": "modified",
+											"target": "module",
+											"manifest": "c47e0a92d1f83b65e09a4c7d2b1f6e83a5d0c94f7e2b18a6d3c5f09e4b7a1d28",
+											"source": "0f6d3b8a2e91c7d54a08f3e6b1c9d2a7e4f8b05c3d61a9e2f7c4b08d5a3e6f19",
+											"contract": "8b2e5f0c7a19d643e0c8b7f2a5d1e96c3f0a4b82d7e15c9a6f3b0e2d8c4a5170",
+											"runtime": "5e19c7a0d4f2b836c1e9a5d07f3b8c42e6a1d9f05b7c3e8a2d4f6c1b9e0a7d53",
+											"files": [
+												{
+													"path": "src/workflows/run-verify/runVerify.ts",
+													"hash": "1d8f3a62c9e05b4f7a21d6c8e3b09f5a4c72e1d0"
+												},
+												{
+													"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+													"hash": "a6e24c0f9b1d7538e0c4a92f6d3b8e17c5f0a2d9"
+												},
+												{
+													"path": "src/workflows/verification-evidence/run-verify/runVerify.types.ts",
+													"hash": "e90b5d37a1c4f8260db7e1a94c5f3b02d8a6e7c1"
+												}
+											]
+										}
+									],
+									"measurements": [],
+									"impact": {
+										"runtime": "module",
+										"expanded": false,
+										"changed": [
+											{
+												"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+												"status": "modified",
+												"classification": "source"
+											}
+										],
+										"units": {
+											"direct": ["workflow.run-verify"],
+											"indirect": [],
+											"added": [],
+											"removed": []
+										},
+										"uncertain": []
+									},
+									"tests": [
+										{
+											"id": "evidence-grid-states:grid-states",
+											"kind": "e2e",
+											"runner": "playwright",
+											"target": "tests/e2e/evidence-grid.spec.ts",
+											"status": "passed",
+											"durationMs": 9120,
+											"log": {
+												"path": "logs/evidence-grid-states-grid-states.log",
+												"sha256": "2f8a6c1e0b93d7547a0e2c9f16b8d4a3e5c07f9b2d61e8a4c3f0b75d92e1a6c8",
+												"bytes": 4096
+											}
+										}
+									],
+									"scenarios": [
+										{
+											"id": "evidence-grid-states",
+											"status": "passed",
+											"testedRevision": "3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b",
+											"states": [
+												{
+													"id": "populated",
+													"coverage": "required",
+													"captures": [
+														{
+															"evidence": "evidence-grid",
+															"kind": "screenshot",
+															"state": "populated",
+															"viewport": "desktop",
+															"status": "passed",
+															"path": "evidence/3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b/evidence-grid-states/grid-states/populated-desktop.png",
+															"sha256": "b4e9170d3a6c58f2e1d07b9a4c3f6e82d5a1c0b79e4f3d28a6c5b1e0f7d9a342",
+															"bytes": 84213,
+															"mediaType": "image/png",
+															"capturedAt": "2026-11-15T10:23:41.902Z"
+														}
+													]
+												}
+											]
+										}
+									],
+									"budgets": {
+										"status": "passed",
+										"findings": []
+									},
+									"reasons": {
+										"status": "passed",
+										"entries": [],
+										"missing": []
+									},
+									"gates": {
+										"snapshot": "passed",
+										"registry": "passed",
+										"ledger": "passed",
+										"tests": "passed",
+										"scenarios": "passed",
+										"reasons": "passed",
+										"budgets": "passed"
+									},
+									"failures": []
+								},
+								"directory": "/workspace/app/.cache/harness/verifications/3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b/20261115102030456"
+							},
+							{
+								"record": {
+									"schemaVersion": 1,
+									"componentSchemaVersion": 2,
+									"id": "e3b07a5c19d4f8b2a6c0e9d17f54b3a8c2e6d0f91b7a4c58e2d3f0a9b6c14e7d",
+									"repository": "/workspace/app",
+									"source": {
+										"commit": "8e61d0b4f27a93c5e10d6b8f4a2c7e95d3b0f1a6",
+										"tree": "a0c7e5f19b2d84637e1f0c5a9d2b6e48f7c31d05",
+										"base": null
+									},
+									"profile": {
+										"id": "9c2e7b41d0a85f36",
+										"platform": "linux",
+										"arch": "x64",
+										"cpu": "Intel(R) Xeon(R) Platinum 8375C CPU @ 2.90GHz",
+										"cores": 8,
+										"memoryBytes": 17179869184,
+										"runtime": "node 22.11.0"
+									},
+									"tools": [
+										{
+											"id": "harness",
+											"version": "0.1.4"
+										}
+									],
+									"startedAt": "2026-11-15T11:02:14.077Z",
+									"finishedAt": "2026-11-15T11:02:38.519Z",
+									"status": "failed",
+									"components": [],
+									"measurements": [],
+									"impact": {
+										"runtime": "module",
+										"expanded": false,
+										"changed": [],
+										"units": {
+											"direct": [],
+											"indirect": [],
+											"added": [],
+											"removed": []
+										},
+										"uncertain": []
+									},
+									"tests": [
+										{
+											"id": "evidence-grid-states:grid-states",
+											"kind": "e2e",
+											"runner": "playwright",
+											"target": "tests/e2e/evidence-grid.spec.ts",
+											"status": "passed",
+											"durationMs": 8716,
+											"log": {
+												"path": "logs/evidence-grid-states-grid-states.log",
+												"sha256": "c95e2a8f1d07b4e36a9c0f2d8b1e5a74c3d6f09e2b8a1d57c4e0f3a6b9d2c81e",
+												"bytes": 3871
+											}
+										}
+									],
+									"scenarios": [
+										{
+											"id": "evidence-grid-states",
+											"status": "passed",
+											"testedRevision": "8e61d0b4f27a93c5e10d6b8f4a2c7e95d3b0f1a6",
+											"states": [
+												{
+													"id": "populated",
+													"coverage": "required",
+													"captures": [
+														{
+															"evidence": "evidence-grid",
+															"kind": "screenshot",
+															"state": "populated",
+															"viewport": "desktop",
+															"status": "passed",
+															"path": "evidence/8e61d0b4f27a93c5e10d6b8f4a2c7e95d3b0f1a6/evidence-grid-states/grid-states/populated-desktop.png",
+															"sha256": "a31f7e05c4d9b2e86f10a3c7d5e42b9f8c6a01d3e7b5c2f4a9d08e6b1c3f7e25",
+															"bytes": 79566,
+															"mediaType": "image/png",
+															"capturedAt": "2026-11-15T11:02:31.648Z"
+														}
+													]
+												}
+											]
+										}
+									],
+									"budgets": {
+										"status": "passed",
+										"findings": []
+									},
+									"reasons": {
+										"status": "passed",
+										"entries": [],
+										"missing": []
+									},
+									"gates": {
+										"snapshot": "passed",
+										"registry": "passed",
+										"ledger": "passed",
+										"tests": "passed",
+										"scenarios": "failed",
+										"reasons": "passed",
+										"budgets": "passed"
+									},
+									"failures": [
+										"Scoped to reports.component.evidence-grid: only its scenario states ran, so this record is partial and never a full pass."
+									]
+								},
+								"directory": "/workspace/app/.cache/harness/verifications/8e61d0b4f27a93c5e10d6b8f4a2c7e95d3b0f1a6/20261115110214077",
+								"attachment": {
+									"status": "attached",
+									"entity": "reports.component.evidence-grid",
+									"record": "e3b07a5c19d4f8b2a6c0e9d17f54b3a8c2e6d0f91b7a4c58e2d3f0a9b6c14e7d",
+									"states": ["populated"],
+									"viewports": ["desktop"]
+								}
+							}
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderVerify",
+						"type": "string",
+						"description": "The human-readable summary: a `Verification <status> for <commit>.` line, a `Compared with` line when the requested base could not be used, the test and scenario counts, each failure indented by two spaces, the first 12 characters of the record id with the directory that stores it, and an attachment line when there is an attachment.",
+						"examples": [
+							"Verification passed for 3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b.\nCompared with 4b0d7e9a1f3c6825d0e4b7a9c1f2e6d835a0b7c4: c0e4f9a25d7b13e8a6f0c4d92b5e7a18f3d6b0c2 has no passing record, so everything since the last verified revision was checked.\nTests: 1 run. Scenarios: 1 verified, 0 referenced.\nRecord 5d1f0a8c3b7e in /workspace/app/.cache/harness/verifications/3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b/20261115102030456",
+							"Verification failed for 8e61d0b4f27a93c5e10d6b8f4a2c7e95d3b0f1a6.\nTests: 1 run. Scenarios: 1 verified, 0 referenced.\n  Scoped to reports.component.evidence-grid: only its scenario states ran, so this record is partial and never a full pass.\nRecord e3b07a5c19d4 in /workspace/app/.cache/harness/verifications/8e61d0b4f27a93c5e10d6b8f4a2c7e95d3b0f1a6/20261115110214077\nScreenshots attached for reports.component.evidence-grid: states populated; viewports desktop; record e3b07a5c19d4f8b2a6c0e9d17f54b3a8c2e6d0f91b7a4c58e2d3f0a9b6c14e7d."
+						]
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
 				"name": "verifyRun",
 				"inputs": [
 					{
@@ -796,7 +1145,7 @@
 						"type": "VerifyOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional settings for one verification: `commit` is the revision to verify (default `HEAD`; uncommitted changes are never part of it), `root` the repository directory (default: the current directory), `base` the revision to compare against (default: the first parent, used only when a passing record proves it, otherwise the nearest proven ancestor or nothing), `runtime` the impact kernel (`default`, `module`, `wasm`, `process`, or `http`; default: the kernel chosen from this machine's recorded measurements), `testTimeout` the per-check timeout in milliseconds as a string for checks that declare none, `requirePerformance` requires performance evidence, `entity` a unit id that limits the run to the scenario states that show that unit, and `priority` one of `agent-test`, `coding`, or `environment` (default: HARNESS_RESOURCE_PRIORITY, then `environment`). The `base` and `requirePerformance` options apply only to full runs, and an entity run's record is partial and never a full pass.",
+						"description": "Selects an exact source commit, optional trusted base or entity and check settings. Artifact retention selects a declared output and requires full verification.",
 						"examples": [
 							{
 								"commit": "3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b",
@@ -821,7 +1170,7 @@
 					{
 						"name": "verifyRun",
 						"type": "Promise<VerifyResult>",
-						"description": "The stored result of one verification: its sealed record and the directory holding its `record.json`. A failing verification still resolves, with a record whose status is `failed`, and an entity run always includes an `attachment` whose status is `attached`, `unchanged`, or `skipped`.",
+						"description": "Returns the record and its directory. An opted-in passing full record identifies the retained generated file, its source path, byte count and SHA-256.",
 						"examples": [
 							{
 								"record": {
@@ -1233,285 +1582,45 @@
 				"errorStatus": "declared"
 			},
 			{
-				"name": "renderVerify",
+				"name": "partialRetention",
 				"inputs": [
 					{
-						"name": "renderVerify.stored",
-						"type": "VerifyResult",
-						"required": true,
-						"description": "The verification result to render: its record (status, source commit, base and requested base, tests, scenarios, failures, and id) and the directory that stores it, plus the optional attachment, which only entity runs set.",
-						"examples": [
-							{
-								"record": {
-									"schemaVersion": 1,
-									"componentSchemaVersion": 2,
-									"id": "5d1f0a8c3b7e94f2a61c0d9e4b3872f5a6c1e0d94b2f7a38c5e1d0f9b6a2c437",
-									"repository": "/workspace/app",
-									"source": {
-										"commit": "3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b",
-										"tree": "d18e4a6f2c09b7135e8f0a4d6c2b9e71a5f3c084",
-										"base": "4b0d7e9a1f3c6825d0e4b7a9c1f2e6d835a0b7c4",
-										"baseRecord": "9e27b0d4f16c83a5e0b92d7f4c1a6e38d05b9f2c7a4e61d8b3c0f9a2e5d71b64",
-										"requestedBase": "c0e4f9a25d7b13e8a6f0c4d92b5e7a18f3d6b0c2"
-									},
-									"profile": {
-										"id": "9c2e7b41d0a85f36",
-										"platform": "linux",
-										"arch": "x64",
-										"cpu": "Intel(R) Xeon(R) Platinum 8375C CPU @ 2.90GHz",
-										"cores": 8,
-										"memoryBytes": 17179869184,
-										"runtime": "node 22.11.0"
-									},
-									"tools": [
-										{
-											"id": "harness",
-											"version": "0.1.4"
-										}
-									],
-									"startedAt": "2026-11-15T10:20:30.456Z",
-									"finishedAt": "2026-11-15T10:24:52.118Z",
-									"status": "passed",
-									"components": [
-										{
-											"unit": "workflow.run-verify",
-											"change": "modified",
-											"target": "module",
-											"manifest": "c47e0a92d1f83b65e09a4c7d2b1f6e83a5d0c94f7e2b18a6d3c5f09e4b7a1d28",
-											"source": "0f6d3b8a2e91c7d54a08f3e6b1c9d2a7e4f8b05c3d61a9e2f7c4b08d5a3e6f19",
-											"contract": "8b2e5f0c7a19d643e0c8b7f2a5d1e96c3f0a4b82d7e15c9a6f3b0e2d8c4a5170",
-											"runtime": "5e19c7a0d4f2b836c1e9a5d07f3b8c42e6a1d9f05b7c3e8a2d4f6c1b9e0a7d53",
-											"files": [
-												{
-													"path": "src/workflows/run-verify/runVerify.ts",
-													"hash": "1d8f3a62c9e05b4f7a21d6c8e3b09f5a4c72e1d0"
-												},
-												{
-													"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-													"hash": "a6e24c0f9b1d7538e0c4a92f6d3b8e17c5f0a2d9"
-												},
-												{
-													"path": "src/workflows/verification-evidence/run-verify/runVerify.types.ts",
-													"hash": "e90b5d37a1c4f8260db7e1a94c5f3b02d8a6e7c1"
-												}
-											]
-										}
-									],
-									"measurements": [],
-									"impact": {
-										"runtime": "module",
-										"expanded": false,
-										"changed": [
-											{
-												"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-												"status": "modified",
-												"classification": "source"
-											}
-										],
-										"units": {
-											"direct": ["workflow.run-verify"],
-											"indirect": [],
-											"added": [],
-											"removed": []
-										},
-										"uncertain": []
-									},
-									"tests": [
-										{
-											"id": "evidence-grid-states:grid-states",
-											"kind": "e2e",
-											"runner": "playwright",
-											"target": "tests/e2e/evidence-grid.spec.ts",
-											"status": "passed",
-											"durationMs": 9120,
-											"log": {
-												"path": "logs/evidence-grid-states-grid-states.log",
-												"sha256": "2f8a6c1e0b93d7547a0e2c9f16b8d4a3e5c07f9b2d61e8a4c3f0b75d92e1a6c8",
-												"bytes": 4096
-											}
-										}
-									],
-									"scenarios": [
-										{
-											"id": "evidence-grid-states",
-											"status": "passed",
-											"testedRevision": "3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b",
-											"states": [
-												{
-													"id": "populated",
-													"coverage": "required",
-													"captures": [
-														{
-															"evidence": "evidence-grid",
-															"kind": "screenshot",
-															"state": "populated",
-															"viewport": "desktop",
-															"status": "passed",
-															"path": "evidence/3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b/evidence-grid-states/grid-states/populated-desktop.png",
-															"sha256": "b4e9170d3a6c58f2e1d07b9a4c3f6e82d5a1c0b79e4f3d28a6c5b1e0f7d9a342",
-															"bytes": 84213,
-															"mediaType": "image/png",
-															"capturedAt": "2026-11-15T10:23:41.902Z"
-														}
-													]
-												}
-											]
-										}
-									],
-									"budgets": {
-										"status": "passed",
-										"findings": []
-									},
-									"reasons": {
-										"status": "passed",
-										"entries": [],
-										"missing": []
-									},
-									"gates": {
-										"snapshot": "passed",
-										"registry": "passed",
-										"ledger": "passed",
-										"tests": "passed",
-										"scenarios": "passed",
-										"reasons": "passed",
-										"budgets": "passed"
-									},
-									"failures": []
-								},
-								"directory": "/workspace/app/.cache/harness/verifications/3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b/20261115102030456"
-							},
-							{
-								"record": {
-									"schemaVersion": 1,
-									"componentSchemaVersion": 2,
-									"id": "e3b07a5c19d4f8b2a6c0e9d17f54b3a8c2e6d0f91b7a4c58e2d3f0a9b6c14e7d",
-									"repository": "/workspace/app",
-									"source": {
-										"commit": "8e61d0b4f27a93c5e10d6b8f4a2c7e95d3b0f1a6",
-										"tree": "a0c7e5f19b2d84637e1f0c5a9d2b6e48f7c31d05",
-										"base": null
-									},
-									"profile": {
-										"id": "9c2e7b41d0a85f36",
-										"platform": "linux",
-										"arch": "x64",
-										"cpu": "Intel(R) Xeon(R) Platinum 8375C CPU @ 2.90GHz",
-										"cores": 8,
-										"memoryBytes": 17179869184,
-										"runtime": "node 22.11.0"
-									},
-									"tools": [
-										{
-											"id": "harness",
-											"version": "0.1.4"
-										}
-									],
-									"startedAt": "2026-11-15T11:02:14.077Z",
-									"finishedAt": "2026-11-15T11:02:38.519Z",
-									"status": "failed",
-									"components": [],
-									"measurements": [],
-									"impact": {
-										"runtime": "module",
-										"expanded": false,
-										"changed": [],
-										"units": {
-											"direct": [],
-											"indirect": [],
-											"added": [],
-											"removed": []
-										},
-										"uncertain": []
-									},
-									"tests": [
-										{
-											"id": "evidence-grid-states:grid-states",
-											"kind": "e2e",
-											"runner": "playwright",
-											"target": "tests/e2e/evidence-grid.spec.ts",
-											"status": "passed",
-											"durationMs": 8716,
-											"log": {
-												"path": "logs/evidence-grid-states-grid-states.log",
-												"sha256": "c95e2a8f1d07b4e36a9c0f2d8b1e5a74c3d6f09e2b8a1d57c4e0f3a6b9d2c81e",
-												"bytes": 3871
-											}
-										}
-									],
-									"scenarios": [
-										{
-											"id": "evidence-grid-states",
-											"status": "passed",
-											"testedRevision": "8e61d0b4f27a93c5e10d6b8f4a2c7e95d3b0f1a6",
-											"states": [
-												{
-													"id": "populated",
-													"coverage": "required",
-													"captures": [
-														{
-															"evidence": "evidence-grid",
-															"kind": "screenshot",
-															"state": "populated",
-															"viewport": "desktop",
-															"status": "passed",
-															"path": "evidence/8e61d0b4f27a93c5e10d6b8f4a2c7e95d3b0f1a6/evidence-grid-states/grid-states/populated-desktop.png",
-															"sha256": "a31f7e05c4d9b2e86f10a3c7d5e42b9f8c6a01d3e7b5c2f4a9d08e6b1c3f7e25",
-															"bytes": 79566,
-															"mediaType": "image/png",
-															"capturedAt": "2026-11-15T11:02:31.648Z"
-														}
-													]
-												}
-											]
-										}
-									],
-									"budgets": {
-										"status": "passed",
-										"findings": []
-									},
-									"reasons": {
-										"status": "passed",
-										"entries": [],
-										"missing": []
-									},
-									"gates": {
-										"snapshot": "passed",
-										"registry": "passed",
-										"ledger": "passed",
-										"tests": "passed",
-										"scenarios": "failed",
-										"reasons": "passed",
-										"budgets": "passed"
-									},
-									"failures": [
-										"Scoped to reports.component.evidence-grid: only its scenario states ran, so this record is partial and never a full pass."
-									]
-								},
-								"directory": "/workspace/app/.cache/harness/verifications/8e61d0b4f27a93c5e10d6b8f4a2c7e95d3b0f1a6/20261115110214077",
-								"attachment": {
-									"status": "attached",
-									"entity": "reports.component.evidence-grid",
-									"record": "e3b07a5c19d4f8b2a6c0e9d17f54b3a8c2e6d0f91b7a4c58e2d3f0a9b6c14e7d",
-									"states": ["populated"],
-									"viewports": ["desktop"]
-								}
-							}
-						]
+						"name": "partialRetention.options",
+						"type": "VerifyOptions",
+						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "renderVerify",
-						"type": "string",
-						"description": "The human-readable summary: a `Verification <status> for <commit>.` line, a `Compared with` line when the requested base could not be used, the test and scenario counts, each failure indented by two spaces, the first 12 characters of the record id with the directory that stores it, and an attachment line when there is an attachment.",
-						"examples": [
-							"Verification passed for 3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b.\nCompared with 4b0d7e9a1f3c6825d0e4b7a9c1f2e6d835a0b7c4: c0e4f9a25d7b13e8a6f0c4d92b5e7a18f3d6b0c2 has no passing record, so everything since the last verified revision was checked.\nTests: 1 run. Scenarios: 1 verified, 0 referenced.\nRecord 5d1f0a8c3b7e in /workspace/app/.cache/harness/verifications/3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b/20261115102030456",
-							"Verification failed for 8e61d0b4f27a93c5e10d6b8f4a2c7e95d3b0f1a6.\nTests: 1 run. Scenarios: 1 verified, 0 referenced.\n  Scoped to reports.component.evidence-grid: only its scenario states ran, so this record is partial and never a full pass.\nRecord e3b07a5c19d4 in /workspace/app/.cache/harness/verifications/8e61d0b4f27a93c5e10d6b8f4a2c7e95d3b0f1a6/20261115110214077\nScreenshots attached for reports.component.evidence-grid: states populated; viewports desktop; record e3b07a5c19d4f8b2a6c0e9d17f54b3a8c2e6d0f91b7a4c58e2d3f0a9b6c14e7d."
-						]
+						"name": "partialRetention",
+						"type": "boolean"
 					}
 				],
 				"errors": [],
-				"errorStatus": "declared"
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "requiresPerformance",
+				"inputs": [
+					{
+						"name": "requiresPerformance.options",
+						"type": "VerifyOptions",
+						"required": true
+					},
+					{
+						"name": "requiresPerformance.config",
+						"type": "VerifyConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "requiresPerformance",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []
@@ -1524,6 +1633,26 @@
 		},
 		{
 			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.media-facts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.run-isolated",
 			"via": "import",
 			"origin": "derived"
 		},

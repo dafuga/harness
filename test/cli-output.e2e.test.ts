@@ -5,6 +5,7 @@ import { expect, test } from 'vitest';
 import { runCommand, runHarness } from './support/cli';
 import { proveTrackerRehearsal } from './support/proveTrackerRehearsal';
 import { withTempDir } from './support/temporary';
+import { startTrackerNativeJsonFixture } from './support/trackerNativeJsonFixture';
 
 const root = resolve(import.meta.dirname, '..');
 
@@ -21,6 +22,29 @@ test('JSON larger than a pipe buffer reaches a piped reader whole', async () => 
 	expect(parsed.nodes.length).toBeGreaterThan(100);
 	expect(graph.stdout.endsWith('}\n')).toBe(true);
 }, 60_000);
+
+test(
+	'Native Tracker JSON larger than a pipe buffer reaches a piped reader whole',
+	() =>
+		withTempDir('harness-tracker-native-json-', async (home) => {
+			const fixture = await startTrackerNativeJsonFixture(home);
+			try {
+				const env = { HOME: home, HARNESS_TRACKER_CONFIG: fixture.config };
+				const listed = await runHarness(
+					['tracker', 'list', '--flagged', '--json'],
+					home,
+					false,
+					env
+				);
+				expect(listed).toMatchObject({ exitCode: 0, stderr: '' });
+				expect(listed.stdout.length).toBeGreaterThan(4 * 65_536);
+				expect(JSON.parse(listed.stdout)).toHaveLength(fixture.count);
+			} finally {
+				await fixture.close();
+			}
+		}),
+	30_000
+);
 
 test(
 	'Tracker compatibility preserves argv, output, and exit status through both entry points',

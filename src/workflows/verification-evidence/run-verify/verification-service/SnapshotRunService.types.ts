@@ -4,6 +4,7 @@ import type { RunContext } from './check-run-service/CheckRunService';
 import type { CheckOutcome } from './check-run-service/CheckRunService';
 import type { BuiltArtifacts } from '../../../../utils/development-tooling/unitMeasurements';
 import type { BuiltIdentity } from '../../../../services/verification-evidence/BuildIdentityService';
+import type { RetainedArtifact } from '../../../../adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.types';
 
 export interface SnapshotRun {
 	root: string;
@@ -16,6 +17,7 @@ export interface SnapshotRun {
 	 * given, runs and identifies everything.
 	 */
 	needed?: ReadonlySet<string> | 'all';
+	retainArtifact?: string;
 }
 
 export interface Executed {
@@ -29,6 +31,8 @@ export interface Executed {
 	tools: Array<{ id: string; version: string }>;
 	/** Declared artifacts that exist in the snapshot after the run, by path. */
 	artifacts: BuiltArtifacts;
+	retainedArtifact?: RetainedArtifact;
+	artifactFailures?: string[];
 	/**
 	 * Identity of each declared build the run needed, as setup compiled it; undefined when none is
 	 * declared.

@@ -1,0 +1,45 @@
+{
+	"name": "harness-lite",
+	"goal": "Verify SvelteKit and Godot logic in a browser-free 1 GB and 0.5 vCPU run, then add visual proof for the same commit in full mode.",
+	"createdAt": "2026-11-19T09:27:30.631Z",
+	"updatedAt": "2026-11-19T10:13:12.843Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-19T09:29:20.305Z",
+			"evidence": "Exact-commit full remains the default. Lite runs the non-browser checks on the same declared states, records deferred browser checks and visual captures, and cannot prove the full gate. Prove unchanged-commit upgrade plus peak memory, CPU and time in cgroups."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-19T10:00:16.283Z",
+			"evidence": "Browser-free exact-commit Lite, headless Godot, deferred coverage and independent one-page capture implemented. Both constrained fixtures passed and were upgraded to full screenshots on MB2. The captured single page renders in ARM64 Chromium Headless Shell."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-19T10:13:12.843Z",
+			"evidence": "At 71e223d767, 168 focused tests and five verification E2Es passed. Source ownership reviews and typechecking passed. Both real fixtures passed under the capped worker and gained exact-commit full screenshots."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

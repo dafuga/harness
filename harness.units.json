@@ -332,18 +332,6 @@
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
 		},
 		{
-			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeCodexUsage.ts",
-			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
-			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
-			"reason": "Hub Home uses the Reports display contract through the app build alias."
-		},
-		{
-			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeCodexUsage.ts",
-			"specifier": "$reports/lib/projects-sessions/hub-home/homeTrackerText",
-			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeTrackerText.ts",
-			"reason": "Hub Home uses the Reports display contract through the app build alias."
-		},
-		{
 			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeProviderReader.ts",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",

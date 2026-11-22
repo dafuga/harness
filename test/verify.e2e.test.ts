@@ -1,25 +1,14 @@
-import type { Capture } from './verify.e2e.test.types';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
-import { baselineRepo, cloneRepo, type VerifyOutcome, type VerifyRepo } from './support/verifyRepo';
+import { baselineRepo, cloneRepo, declareLitePageLogic, scenarioOf } from './support/verifyRepo';
+import type { VerifyOutcome, VerifyRepo } from './support/verifyRepo';
 
 let baseline: VerifyRepo;
 beforeAll(async () => {
 	baseline = await baselineRepo();
 }, 120_000);
 afterAll(() => baseline.dispose());
-
-const scenarioOf = (record: { scenarios: Array<{ id: string }> }, id: string) => {
-	const found = record.scenarios.find((scenario) => scenario.id === id);
-	if (!found) throw new Error(`scenario ${id} missing from record`);
-	return found as (typeof record.scenarios)[number] & {
-		status: string;
-		testedRevision: string;
-		referencedRecord?: string;
-		states: Array<{ id: string; coverage: string; reason?: string; captures: Capture[] }>;
-	};
-};
 
 test('the fixture baseline verifies clean on an exact commit and tree', async () => {
 	const repo = await cloneRepo(baseline);
@@ -39,6 +28,9 @@ test('the fixture baseline verifies clean on an exact commit and tree', async ()
 		record.scenarios.map(() => ['passed', head])
 	);
 	expect(existsSync(join(directory, 'record.json'))).toBe(true);
+	const lite = await repo.verify(['--base', 'HEAD', '--profile', 'lite']);
+	expect(lite.exitCode).toBe(0);
+	expect(lite.record.lite?.status).toBe('passed');
 	const check = await repo.run(['verify', 'check', '--json']);
 	expect(JSON.parse(check.stdout)).toMatchObject({
 		status: 'passed',
@@ -185,3 +177,43 @@ test('scenario contracts list their states, viewports, tests and evidence', asyn
 	expect((await repo.run(['scenarios', 'check'])).exitCode).toBe(0);
 	await repo.dispose();
 }, 60_000);
+
+test('Lite runs logic and leaves the same committed scenario ready for full screenshots', async () => {
+	const repo = await cloneRepo(baseline);
+	try {
+		const revision = await declareLitePageLogic(repo);
+		const scope = ['--entity', 'page.titles', '--commit', revision];
+		const plan = await repo.run(['verify', 'plan', ...scope, '--profile', 'lite', '--json']);
+		expect(JSON.parse(plan.stdout)).toMatchObject({
+			plannedChecks: 1,
+			pendingChecks: ['titles-page:page']
+		});
+		const lite = await repo.verify([...scope, '--profile', 'lite'], { TAKE_SCREENSHOT: '1' });
+		expect(lite.exitCode).toBe(0);
+		expect(lite.record.lite).toMatchObject({
+			status: 'passed',
+			pendingChecks: ['titles-page:page']
+		});
+		expect(lite.record.lite?.pendingEvidence).toHaveLength(6);
+		expect(lite.record.tests.map(({ id, status }) => [id, status])).toEqual([
+			['titles-page:logic', 'passed']
+		]);
+		const pending = scenarioOf(lite.record, 'titles-page');
+		expect(pending.status).toBe('pending');
+		expect(pending.states.flatMap(({ captures }) => captures)).toEqual([]);
+		const gate = await repo.run(['verify', 'check', '--record', lite.record.id, '--json']);
+		expect(gate.exitCode).toBe(1);
+		expect(JSON.parse(gate.stdout).problems).toContain(
+			'Lite verification is partial. Run the full profile to verify this commit.'
+		);
+		const full = await repo.verify([...scope, '--profile', 'full']);
+		expect(full.exitCode).toBe(0);
+		expect(full.record.source).toEqual(lite.record.source);
+		expect(full.record.lite).toBeUndefined();
+		expect(
+			scenarioOf(full.record, 'titles-page').states.flatMap(({ captures }) => captures)
+		).toHaveLength(6);
+	} finally {
+		await repo.dispose();
+	}
+}, 120_000);

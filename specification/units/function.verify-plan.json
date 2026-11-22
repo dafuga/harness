@@ -14,7 +14,16 @@
 			"src/workflows/run-verify/verification-service/verifyPlan.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/verifyPlan.ts"
 		],
-		"symbols": ["PlannedCheck", "PlanInput", "verifyPlan", "verifyPlan", "verifyPlan", "verifyPlan"]
+		"symbols": [
+			"PlannedCheck",
+			"PlanInput",
+			"verifyPlan",
+			"verifyPlan",
+			"verifyPlan",
+			"verifyPlan",
+			"deferredInLite",
+			"deferredLiteCheck"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -163,6 +172,18 @@
 						"testTimeoutMs": 300000
 					}
 				]
+			},
+			{
+				"name": "deferredInLite.check",
+				"type": "{ command: string; fullOnly?: true }",
+				"required": true,
+				"description": "A configured command and its optional fullOnly marker."
+			},
+			{
+				"name": "deferredLiteCheck.check",
+				"type": "PlannedCheck",
+				"required": true,
+				"description": "A planned check with a test kind, runner and command."
 			}
 		],
 		"outputs": [
@@ -443,6 +464,46 @@
 								}
 							]
 						]
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "deferredInLite",
+				"inputs": [
+					{
+						"name": "deferredInLite.check",
+						"type": "{ command: string; fullOnly?: true }",
+						"required": true,
+						"description": "A configured command and its optional fullOnly marker."
+					}
+				],
+				"outputs": [
+					{
+						"name": "deferredInLite",
+						"type": "boolean",
+						"description": "True for a full-only command or a recognized browser executable invocation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "deferredLiteCheck",
+				"inputs": [
+					{
+						"name": "deferredLiteCheck.check",
+						"type": "PlannedCheck",
+						"required": true,
+						"description": "A planned check with a test kind, runner and command."
+					}
+				],
+				"outputs": [
+					{
+						"name": "deferredLiteCheck",
+						"type": "boolean",
+						"description": "True for E2E, Playwright and other full-only checks."
 					}
 				],
 				"errors": [],

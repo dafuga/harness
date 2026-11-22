@@ -11,7 +11,8 @@
 		"source": [
 			"src/workflows/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.types.ts"
+			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.types.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedOutcome.ts"
 		],
 		"symbols": [
 			"RecordAssemblyService",
@@ -21,7 +22,9 @@
 			"RecordAssemblyService.constructor",
 			"RecordAssemblyService.assemble",
 			"AssemblyContext",
-			"AssemblyInput"
+			"AssemblyInput",
+			"outcome",
+			"recordedOutcome"
 		]
 	},
 	"contract": {
@@ -54,13 +57,31 @@
 						"referenced": []
 					}
 				]
+			},
+			{
+				"name": "outcome.failures",
+				"type": "string[]",
+				"required": true,
+				"description": "Observed failure messages for a check or gate."
+			},
+			{
+				"name": "recordedOutcome.input",
+				"type": "AssemblyInput",
+				"required": true,
+				"description": "Snapshot check results and the optional Lite pending work."
+			},
+			{
+				"name": "recordedOutcome.gates",
+				"type": "Record<string, string[]>",
+				"required": true,
+				"description": "Observed failure messages grouped by gate."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RecordAssemblyService.assemble",
 				"type": "Promise<VerificationRecord>",
-				"description": "Resolves to a sealed verification record containing source identity, profile and tools, component versions, measurements, impact, filtered tests, judged scenarios, optional builds, budget and reason results, gates, and failures. Assembly generates finishedAt, omits setup checks from tests, and sets id to the SHA-256 hash of the other record fields.",
+				"description": "Seals the recorded source, checks, scenarios and gate results. An optional artifact gate binds a passing full run to the retained file and its digest.",
 				"examples": [
 					{
 						"id": "4727c5bd8473ce5bc3e7b376318425909810beaaf87b8f12f6fd046a1c61c1e0",
@@ -162,7 +183,7 @@
 					{
 						"name": "RecordAssemblyService.assemble",
 						"type": "Promise<VerificationRecord>",
-						"description": "Resolves to a sealed verification record containing source identity, profile and tools, component versions, measurements, impact, filtered tests, judged scenarios, optional builds, budget and reason results, gates, and failures. Assembly generates finishedAt, omits setup checks from tests, and sets id to the SHA-256 hash of the other record fields.",
+						"description": "Seals the recorded source, checks, scenarios and gate results. An optional artifact gate binds a passing full run to the retained file and its digest.",
 						"examples": [
 							{
 								"id": "4727c5bd8473ce5bc3e7b376318425909810beaaf87b8f12f6fd046a1c61c1e0",
@@ -233,6 +254,52 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "outcome",
+				"inputs": [
+					{
+						"name": "outcome.failures",
+						"type": "string[]",
+						"required": true,
+						"description": "Observed failure messages for a check or gate."
+					}
+				],
+				"outputs": [
+					{
+						"name": "outcome",
+						"type": "'passed' | 'failed'",
+						"description": "Passed when the failure list is empty, failed otherwise."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recordedOutcome",
+				"inputs": [
+					{
+						"name": "recordedOutcome.input",
+						"type": "AssemblyInput",
+						"required": true,
+						"description": "Snapshot check results and the optional Lite pending work."
+					},
+					{
+						"name": "recordedOutcome.gates",
+						"type": "Record<string, string[]>",
+						"required": true,
+						"description": "Observed failure messages grouped by gate."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordedOutcome",
+						"type": "Pick<VerificationRecord, 'status' | 'lite' | 'tests' | 'scenarios' | 'gates' | 'failures'>",
+						"description": "Sealed outcome fields for tests, scenarios and gates, with a separate Lite outcome when applicable."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -271,6 +338,11 @@
 		},
 		{
 			"unit": "function.recorded-builds",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.scenario-coverage",
 			"via": "import",
 			"origin": "derived"
 		},

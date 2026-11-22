@@ -13,6 +13,7 @@ import type {
 	OwnerHomeSnapshot
 } from './hubHome.types';
 import { buildHomeAgents } from './homeTrackerAgents';
+import { homeProviderReadingIsStale } from './homeProviderPayload';
 
 export const noProviders: HomeProviderReadings = { routines: null, quota: null };
 
@@ -92,7 +93,10 @@ export function buildHomeSnapshot(
 		overview,
 		agents,
 		plans: listPlans(items),
-		scheduled: listSchedule(items, providers.routines ?? []),
+		scheduled: listSchedule(
+			items,
+			homeProviderReadingIsStale(providers.routinesReadAt, now) ? [] : (providers.routines ?? [])
+		),
 		providers
 	};
 }

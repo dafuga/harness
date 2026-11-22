@@ -1,0 +1,41 @@
+{
+	"name": "bug-class-sweep",
+	"goal": "Prove bug classes drive repository-wide search, semantic review, isolated red-green repairs and changed-code checks.",
+	"createdAt": "2026-11-20T18:15:00.817Z",
+	"updatedAt": "2026-11-20T18:15:33.035Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-20T18:15:33.035Z",
+			"evidence": "Specification defines pinned classification, source-wide scan, semantic evidence, report-only mode, isolated red-green repairs, and changed-code review."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

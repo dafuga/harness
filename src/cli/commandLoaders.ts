@@ -6,6 +6,16 @@ export const commandLoaders = {
 		const m = await import('./program/CodexCommand');
 		m.registerCodexCommand(program);
 	},
+	provider: async (program: Command) => {
+		const { ProviderSignInCommand } =
+			await import('../commands/agents-providers/ProviderSignInCommand');
+		new ProviderSignInCommand().register(program);
+	},
+	harbor: async (program: Command) => {
+		const { HarborInspectionCommand } =
+			await import('../commands/projects-sessions/HarborInspectionCommand');
+		new HarborInspectionCommand().register(program);
+	},
 	benchmark: async (program: Command) => {
 		const m = await import('./program/BenchmarkCommand');
 		m.registerBenchmarkCommand(program);

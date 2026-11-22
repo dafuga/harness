@@ -1,4 +1,9 @@
 // @harness-uid u_p43nh5e4yc
+import { mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { codexRpc } from '../../src/utils/agents-providers/codex-rpc/codexRpc';
+import { createHomeProviderReader } from '../../src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeProviderReader';
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import type { OverviewSnapshot } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverview.types';
 import type { TrackerOverviewAuthority } from '../../src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/TrackerOverviewPublisher.types';
@@ -115,4 +120,43 @@ test('re-entry: a refused owner publishes again only after a new connection, wit
 	await vi.advanceTimersByTimeAsync(INTERVAL);
 	publisher.stop();
 	expect(put).toHaveBeenCalledTimes(2);
+});
+
+vi.mock('../../src/utils/agents-providers/codex-rpc/codexRpc', () => ({
+	codexRpc: vi.fn(async () => {
+		throw new Error('Unexpected live provider lookup');
+	})
+}));
+
+test('the owner snapshot validates both subscriptions and routine freshness without a live lookup', async () => {
+	const dir = await mkdtemp(join(tmpdir(), 'hub-home-provider-'));
+	try {
+		const file = join(dir, 'providers.json');
+		const read = createHomeProviderReader(file);
+		const now = Date.parse('2026-11-22T08:00:00Z');
+		const readAt = new Date(now).toISOString();
+		const quota = (['claude', 'codex'] as const).map((provider) => ({
+			id: provider,
+			provider,
+			readAt,
+			plan: null,
+			account: null,
+			limits: [{ id: 'weekly', label: 'Weekly', left: 17, resetsAt: null }],
+			credits: null,
+			history: [],
+			agents: []
+		}));
+		const snapshot = { routinesReadAt: readAt, routines: [], quota };
+		expect(await read(now)).toEqual({ routines: null, quota: null });
+		await writeFile(file, JSON.stringify(snapshot));
+		expect(await read(now + 300_000)).toEqual(snapshot);
+		await writeFile(
+			file,
+			JSON.stringify({ ...snapshot, quota: [{ ...quota[0], readAt: 'invalid' }] })
+		);
+		expect(await read(now + 600_000)).toEqual({ routines: null, quota: null });
+		expect(codexRpc).not.toHaveBeenCalled();
+	} finally {
+		await rm(dir, { recursive: true, force: true });
+	}
 });

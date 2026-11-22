@@ -1,0 +1,128 @@
+{
+	"schemaVersion": 1,
+	"id": "function.execution-runtimes-run-loop-evaluator-process",
+	"uid": "u_skqlji2qgi",
+	"kind": "function",
+	"title": "runLoopEvaluatorProcess",
+	"responsibility": "Runs one bounded evaluator or project-check subprocess under a Harness resource lease, tracking its process and forwarding only the requested environment.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/execution-runtimes/runLoopEvaluatorProcess.ts"],
+		"symbols": ["runLoopEvaluatorProcess"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "runLoopEvaluatorProcess.root",
+				"type": "string",
+				"required": true,
+				"description": "Working directory of the command or isolated semantic evaluation."
+			},
+			{
+				"name": "runLoopEvaluatorProcess.argv",
+				"type": "string[]",
+				"required": true,
+				"description": "Executable followed by arguments. No shell is inserted."
+			},
+			{
+				"name": "runLoopEvaluatorProcess.options",
+				"type": "BoundedCommandOptions",
+				"required": true,
+				"description": "Explicit stdin, environment, elapsed time, and output bounds for the subprocess."
+			},
+			{
+				"name": "runLoopEvaluatorProcess.label",
+				"type": "string",
+				"required": false,
+				"default": "Semantic evaluator",
+				"description": "Name used for the Harness resource lease. Defaults to Semantic evaluator."
+			}
+		],
+		"outputs": [
+			{
+				"name": "runLoopEvaluatorProcess",
+				"type": "Promise<BoundedCommandResult>",
+				"description": "Resolves with exit code and captured streams from the bounded command under a Harness resource lease."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "runLoopEvaluatorProcess",
+				"inputs": [
+					{
+						"name": "runLoopEvaluatorProcess.root",
+						"type": "string",
+						"required": true,
+						"description": "Working directory of the command or isolated semantic evaluation."
+					},
+					{
+						"name": "runLoopEvaluatorProcess.argv",
+						"type": "string[]",
+						"required": true,
+						"description": "Executable followed by arguments. No shell is inserted."
+					},
+					{
+						"name": "runLoopEvaluatorProcess.options",
+						"type": "BoundedCommandOptions",
+						"required": true,
+						"description": "Explicit stdin, environment, elapsed time, and output bounds for the subprocess."
+					},
+					{
+						"name": "runLoopEvaluatorProcess.label",
+						"type": "string",
+						"required": false,
+						"default": "Semantic evaluator",
+						"description": "Name used for the Harness resource lease. Defaults to Semantic evaluator."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runLoopEvaluatorProcess",
+						"type": "Promise<BoundedCommandResult>",
+						"description": "Resolves with exit code and captured streams from the bounded command under a Harness resource lease."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-environment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-work",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/execution-runtimes/runLoopEvaluatorProcess.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/execution-runtimes/runLoopEvaluatorProcess.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

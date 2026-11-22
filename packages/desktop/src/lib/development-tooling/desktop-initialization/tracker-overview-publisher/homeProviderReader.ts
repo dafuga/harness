@@ -1,20 +1,10 @@
 // @harness-uid u_pmptujoqui
-import { resolve } from 'node:path';
-import { open, rename, writeFile } from 'node:fs/promises';
-import { randomUUID } from 'node:crypto';
-import type {
-	HomeProviderReadings,
-	HomeSubscription
-} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-import {
-	homeProviders,
-	homeSubscriptionPayload
-} from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
+import { open } from 'node:fs/promises';
+import type { HomeProviderReadings } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+import { homeProviders } from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
 import { noProviders } from '$reports/lib/projects-sessions/hub-home/homeTrackerProjection';
-import { readCodexUsage } from './homeCodexUsage';
 
 const every = 5 * 60 * 1000;
-const day = 24 * 60 * 60 * 1000;
 
 async function readTelemetry(file: string, byteLimit: number): Promise<unknown> {
 	const handle = await open(file, 'r');
@@ -36,50 +26,13 @@ async function readExternal(file: string | undefined): Promise<HomeProviderReadi
 	}
 }
 
-async function codexHistory(reading: HomeSubscription, file: string, now: number) {
-	const prior = homeSubscriptionPayload.safeParse(
-		await readTelemetry(file, 12 * 1024).catch(() => null)
-	);
-	const history = prior.success && prior.data.id === reading.id ? prior.data.history : [];
-	const at = reading.readAt.slice(0, 10);
-	const since = new Date(now - day * 6).toISOString().slice(0, 10);
-	const fresh = history.filter((sample) => sample.day >= since && sample.day < at);
-	const weekly = reading.limits.find((limit) => limit.label === 'Weekly');
-	const next = {
-		...reading,
-		history: weekly ? [...fresh, { day: at, used: 100 - weekly.left }] : fresh
-	};
-	const tmp = file + '.' + randomUUID() + '.tmp';
-	await writeFile(tmp, JSON.stringify(next), { mode: 0o600 });
-	await rename(tmp, file);
-	return next;
-}
-
-async function historyFile() {
-	const { app } = await import('electron');
-	return app ? resolve(app.getPath('userData'), 'hub-codex-usage.json') : undefined;
-}
-
 export function createHomeProviderReader(file?: string) {
 	let lastRead = -Infinity;
 	let cached: HomeProviderReadings = noProviders;
 	return async (now: number): Promise<HomeProviderReadings> => {
 		if (now - lastRead < every) return cached;
 		lastRead = now;
-		const external = await readExternal(file);
-		const reading = await readCodexUsage(now).catch(() => undefined);
-		const history = reading ? await historyFile().catch(() => undefined) : undefined;
-		const prior =
-			reading === undefined ? cached.quota?.find((sub) => sub.provider === 'codex') : null;
-		const codex =
-			reading && history
-				? await codexHistory(reading, history, now).catch(() => reading)
-				: (reading ?? prior);
-		const quota = (external.quota ?? []).filter((sub) => sub.id !== codex?.id);
-		cached = {
-			routines: external.routines,
-			quota: codex || external.quota ? [...quota, ...(codex ? [codex] : [])].slice(0, 20) : null
-		};
+		cached = await readExternal(file);
 		return cached;
 	};
 }

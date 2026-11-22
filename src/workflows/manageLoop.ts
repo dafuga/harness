@@ -1,9 +1,5 @@
 // @harness-uid u_3b2qhm7yob
 export {
-	LoopEvaluator,
-	LoopState,
-	LoopStatus,
-	LoopStep,
 	createLoop,
 	addLoopStep,
 	completeLoopStep,
@@ -11,6 +7,10 @@ export {
 	renderLoopStatus
 } from '../cli/program/manageLoop';
 export type {
+	LoopEvaluator,
+	LoopState,
+	LoopStatus,
+	LoopStep,
 	CreateLoopInput,
 	AddLoopStepInput,
 	CompleteLoopStepInput,

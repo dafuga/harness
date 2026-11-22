@@ -2,6 +2,7 @@ import { expect, test } from 'vitest';
 import { unitsConfigSchema } from '../../src/core/unitsConfig';
 import { defaultVerifyConfig, verifyConfigSchema } from '../../src/core/verifyTypes';
 import { verifyPlan } from '../../src/workflows/verification-evidence/run-verify/verification-service/verifyPlan';
+import { scenarioManifestSchema } from '../../src/core/development-tooling/unitTypes';
 
 const unitsConfig = unitsConfigSchema.parse({
 	schemaVersion: 1,
@@ -44,6 +45,36 @@ test('a selected test file runs under the runner its name implies, in its worksp
 			command: 'bun x vitest run test/utils/case.test.ts',
 			timeoutMs: 600_000
 		}
+	]);
+});
+
+test('Godot checks choose the headless script or scene entry and keep their project cwd', () => {
+	const scenario = scenarioManifestSchema.parse({
+		schemaVersion: 1,
+		id: 'counter',
+		title: 'Counter scene',
+		kind: 'headless',
+		units: ['game.counter'],
+		states: [{ id: 'default', title: 'Default', coverage: 'required' }],
+		viewports: [],
+		evidence: [],
+		tests: ['test/logic.gd', 'test/counter.tscn'].map((target, index) => ({
+			id: `godot-${index}`,
+			kind: 'integration',
+			runner: 'godot',
+			target,
+			cwd: 'games/counter'
+		}))
+	});
+	const input = {
+		selectedTests: [],
+		scenarios: [scenario],
+		config: defaultVerifyConfig,
+		unitsConfig
+	};
+	expect(verifyPlan(input).map(({ command, cwd }) => ({ command, cwd }))).toEqual([
+		{ command: "godot --headless --path . --scene 'test/counter.tscn'", cwd: 'games/counter' },
+		{ command: "godot --headless --path . --script 'test/logic.gd'", cwd: 'games/counter' }
 	]);
 });
 

@@ -1668,15 +1668,21 @@
 			"unit": "service.regression-proof",
 			"from": "src/services/RegressionProofService.ts",
 			"to": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
-			"definition": "8e44c013f1f5f068dd40974d5a94f7f6a103ab7c2cb8e343fb9a18b9908af4ff",
+			"definition": "90865f9262155f7818cdb5acd5bbb4306b7debff974d9087de23ca938db324a2",
 			"relocationDefinition": "fe7669ca45e2a0ea78e302821cd1fb8a23eb10a79522d1afd2e7f95d093c865c",
 			"review": {
-				"commit": "b0fc91c011ea2c787af5280b660f6fa03a6cc77b",
+				"commit": "6a64ad41350d11e2360f6d8b4f01a85035fcd927",
 				"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
-				"definition": "8e44c013f1f5f068dd40974d5a94f7f6a103ab7c2cb8e343fb9a18b9908af4ff",
-				"reason": "Pass exact selected-revision registry IDs into scoped actual screenshot admission, rejecting unknown bindings while preserving registered retired and unscoped attachments."
+				"definition": "90865f9262155f7818cdb5acd5bbb4306b7debff974d9087de23ca938db324a2",
+				"reason": "Run regression proofs with an explicitly supplied environment, falling back to the process environment, so sibling repair workers use their own checkout settings."
 			},
 			"previousReviews": [
+				{
+					"commit": "b0fc91c011ea2c787af5280b660f6fa03a6cc77b",
+					"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
+					"definition": "8e44c013f1f5f068dd40974d5a94f7f6a103ab7c2cb8e343fb9a18b9908af4ff",
+					"reason": "Pass exact selected-revision registry IDs into scoped actual screenshot admission, rejecting unknown bindings while preserving registered retired and unscoped attachments."
+				},
 				{
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "src/services/RegressionProofService.ts",
@@ -2069,15 +2075,21 @@
 			"unit": "command.loop",
 			"from": "src/commands/loop.ts",
 			"to": "src/cli/program/loop.ts",
-			"definition": "392baa3e941129dd03a8e6c4f66c16635cefb4f1a3a3cdaac8496752ac216391",
+			"definition": "2de34a44084c28ef32c0fc5da7bfa238cd36cf909bfede891f0140e08f1857ec",
 			"relocationDefinition": "f4704c6ab8a779e681e90ae7d8f18e9606693fc44eded629342354c860663bf2",
 			"review": {
-				"commit": "ea51bbcbf69c324dd7913254e50715cdf24e6278",
+				"commit": "6a64ad41350d11e2360f6d8b4f01a85035fcd927",
 				"path": "src/cli/program/loop.ts",
-				"definition": "392baa3e941129dd03a8e6c4f66c16635cefb4f1a3a3cdaac8496752ac216391",
-				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				"definition": "2de34a44084c28ef32c0fc5da7bfa238cd36cf909bfede891f0140e08f1857ec",
+				"reason": "Register the loop siblings and review-bugs commands alongside the existing loop commands."
 			},
 			"previousReviews": [
+				{
+					"commit": "ea51bbcbf69c324dd7913254e50715cdf24e6278",
+					"path": "src/cli/program/loop.ts",
+					"definition": "392baa3e941129dd03a8e6c4f66c16635cefb4f1a3a3cdaac8496752ac216391",
+					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
 				{
 					"commit": "48e4a8b9b892e15735c51c20710bafcf0304f4bb",
 					"path": "src/cli/program/loop.ts",
@@ -2108,15 +2120,21 @@
 			"unit": "workflow.loop-evaluate",
 			"from": "src/workflows/loopEvaluate.ts",
 			"to": "src/cli/program/loopEvaluate.ts",
-			"definition": "4cab7352c461aef4aa700f3e3e2344f5e38aaebe7a0429633d370f120cbbc08a",
+			"definition": "064f36c05846c93418971acc8f7f5f90a0325a225503adcb06817866b0d7fa8d",
 			"relocationDefinition": "93b1bdbb716a8569108453b267b0843f66f570e9076fcdbb7ea203eb2adf31e3",
 			"review": {
-				"commit": "58a619d02e4cb955fe0db11ad18c1ff3348e2ff0",
+				"commit": "6a64ad41350d11e2360f6d8b4f01a85035fcd927",
 				"path": "src/cli/program/loopEvaluate.ts",
-				"definition": "4cab7352c461aef4aa700f3e3e2344f5e38aaebe7a0429633d370f120cbbc08a",
-				"reason": "Retain bounded evaluator output and process trees, workload-aware deadlines, refusal of mutations after explicit loop closure, owner-scoped child credentials and preserved bounded command diagnostics."
+				"definition": "064f36c05846c93418971acc8f7f5f90a0325a225503adcb06817866b0d7fa8d",
+				"reason": "Run project evaluators through the shared bounded evaluator process helper with the same resource lease, environment and failure reporting."
 			},
 			"previousReviews": [
+				{
+					"commit": "58a619d02e4cb955fe0db11ad18c1ff3348e2ff0",
+					"path": "src/cli/program/loopEvaluate.ts",
+					"definition": "4cab7352c461aef4aa700f3e3e2344f5e38aaebe7a0429633d370f120cbbc08a",
+					"reason": "Retain bounded evaluator output and process trees, workload-aware deadlines, refusal of mutations after explicit loop closure, owner-scoped child credentials and preserved bounded command diagnostics."
+				},
 				{
 					"commit": "43dacd3706aa93cc8cda40db9d6a802fde185562",
 					"path": "src/cli/program/loopEvaluate.ts",
@@ -2821,13 +2839,13 @@
 			"unit": "workflow.run-verify",
 			"from": "src/workflows/runVerify.ts",
 			"to": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-			"definition": "a2e278d182469096dbace16fc9c02992d19254af4c73a9c81b9352f02013f77c",
+			"definition": "8d42d21ef83523bf91b08d8eea9982b54d0e3cf64460f47853da3b330346baba",
 			"relocationDefinition": "e0409b5f004bb8a3d911c1b43ea9f69717d3d9f5ba894bfc7c741da424850a38",
 			"review": {
-				"commit": "2ac7147eec73a3948bd95cb3cf8eb473b3b099ea",
+				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
 				"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-				"definition": "a2e278d182469096dbace16fc9c02992d19254af4c73a9c81b9352f02013f77c",
-				"reason": "Return automatic entity attachment results without changing whole-commit verification."
+				"definition": "8d42d21ef83523bf91b08d8eea9982b54d0e3cf64460f47853da3b330346baba",
+				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
 			},
 			"previousReviews": [
 				{
@@ -2877,6 +2895,36 @@
 					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
 					"definition": "52242a062d31ccfb295d263aff09bdf1eddb419254c83e487acefcc7d0e82d83",
 					"reason": "Record main’s scoped entity verification path, preserving full verification behavior and priority handling."
+				},
+				{
+					"commit": "2ac7147eec73a3948bd95cb3cf8eb473b3b099ea",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "a2e278d182469096dbace16fc9c02992d19254af4c73a9c81b9352f02013f77c",
+					"reason": "Return automatic entity attachment results without changing whole-commit verification."
+				},
+				{
+					"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "bde1aa75ef73a0eacbea88652b6fd1bc8e2350e20960032ad0be4d18181b872c",
+					"reason": "Route profile selection through exact-commit verification."
+				},
+				{
+					"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "39760d24d34ed1909950c97bf6ee8dcdd3b786f47c2cd2ed01c4635e6ceac498",
+					"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
+				},
+				{
+					"commit": "59e4c64d62fd82b587f00ad9b9c6b23daac0bcc4",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "787fd5c22cfcb530d783eb4f871fa294625b4df4dde9b4b555e322f12389fa0b",
+					"reason": "Propagate cancellation to admitted setup and check processes so verification can clean up before exiting."
+				},
+				{
+					"commit": "cdc50273156f82fd9534f192aa42bb60d5d62e3e",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "e2e23861135811c330ef084a52fb4966b29b2e8e039c0090151408baee19b801",
+					"reason": "Preserve exact artifact verification and current Harness record assembly in the reconciled source."
 				}
 			]
 		},
@@ -2884,13 +2932,13 @@
 			"unit": "service.verification",
 			"from": "src/services/verification-service/VerificationService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-			"definition": "95c001160c34bf95bcf7242ecb31190f2f9624511ad8afe02fc69fb5031e3622",
+			"definition": "8fcfadc67cf612f0a9c7f965bdec2e920fa0713ee7df2e1d436b846b0ba4528f",
 			"relocationDefinition": "146b117282696844fcc9506d83b7d30df30482554e3603d38b08b295272e02c9",
 			"review": {
-				"commit": "b29d2f723b940748d5ec7b0f64f0fdabd6156be6",
+				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-				"definition": "95c001160c34bf95bcf7242ecb31190f2f9624511ad8afe02fc69fb5031e3622",
-				"reason": "Retain the reviewed change: entity-scoped verify computes the needed builds; skipped builds are not 'not produced' failures."
+				"definition": "8fcfadc67cf612f0a9c7f965bdec2e920fa0713ee7df2e1d436b846b0ba4528f",
+				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
 			},
 			"previousReviews": [
 				{
@@ -2916,6 +2964,30 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
 					"definition": "c9aa478ccf7e7e02411860996eb13858665fa60f1b48cbc491581a6734c4f1dc",
 					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
+				{
+					"commit": "b29d2f723b940748d5ec7b0f64f0fdabd6156be6",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+					"definition": "95c001160c34bf95bcf7242ecb31190f2f9624511ad8afe02fc69fb5031e3622",
+					"reason": "Retain the reviewed change: entity-scoped verify computes the needed builds; skipped builds are not 'not produced' failures."
+				},
+				{
+					"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+					"definition": "157e286f15bbf557ef77da666603b8f02583a3d80a97bc4e95cd14b58b1ee367",
+					"reason": "Partition runnable checks and record deferred work."
+				},
+				{
+					"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+					"definition": "23dfd0980a8a12620e8cc8f32380158792eef707e221c4f9dc8f899160d9c762",
+					"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
+				},
+				{
+					"commit": "59e4c64d62fd82b587f00ad9b9c6b23daac0bcc4",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+					"definition": "c0842801d54d6023c0bcdcaf23c238a416ee29387c2debdb00aa30130c1ab933",
+					"reason": "Propagate cancellation to admitted setup and check processes so verification can clean up before exiting."
 				}
 			]
 		},
@@ -2923,7 +2995,14 @@
 			"unit": "function.scenario-coverage",
 			"from": "src/services/verification-service/scenarioCoverage.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
-			"definition": "7c6fde05df18fa70a2c12eae9a58acdd175271911693f14df619e73bd8938ffe"
+			"definition": "c67c831944910df25ccb8b94e586f02d8aa0c0f3dd9b9c1fb6352b7cd9d15dbd",
+			"relocationDefinition": "7c6fde05df18fa70a2c12eae9a58acdd175271911693f14df619e73bd8938ffe",
+			"review": {
+				"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+				"path": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
+				"definition": "c67c831944910df25ccb8b94e586f02d8aa0c0f3dd9b9c1fb6352b7cd9d15dbd",
+				"reason": "Judge runnable checks and preserve pending scenario evidence."
+			}
 		},
 		{
 			"unit": "function.seal-record",
@@ -2935,21 +3014,40 @@
 			"unit": "function.verify-plan",
 			"from": "src/services/verification-service/verifyPlan.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlan.ts",
-			"definition": "cc38e30b15727c2dd750d0ae3d269be515091dd8d0f675c442f1f6ffbaa9acdf"
+			"definition": "ca5ff9cf3bc611a84844b0d19d47df2e0bf954f30ad08ea5283e612368bb0681",
+			"relocationDefinition": "cc38e30b15727c2dd750d0ae3d269be515091dd8d0f675c442f1f6ffbaa9acdf",
+			"review": {
+				"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+				"path": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlan.ts",
+				"definition": "ca5ff9cf3bc611a84844b0d19d47df2e0bf954f30ad08ea5283e612368bb0681",
+				"reason": "Plan Godot headlessly and identify full-only commands."
+			}
 		},
 		{
 			"unit": "service.record-assembly",
 			"from": "src/services/record-assembly-service/RecordAssemblyService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"definition": "9cf207e2c0d91cb1b71431b0e95187f0da34afa36a9c4c39b0d643b0d229af8e",
+			"definition": "f10bcc6987f9d8cf238eea574e3a185ceab92936c150364124b378b33a74bddd",
 			"relocationDefinition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936",
 			"review": {
-				"commit": "e3191b248640e223bc34a92c8e973da3d60ba742",
+				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-				"definition": "9cf207e2c0d91cb1b71431b0e95187f0da34afa36a9c4c39b0d643b0d229af8e",
-				"reason": "Extract the component snapshot assembly so the record assembly method meets the length rule. Preserve the order, inputs, and fields used to seal the verification record."
+				"definition": "f10bcc6987f9d8cf238eea574e3a185ceab92936c150364124b378b33a74bddd",
+				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
 			},
 			"previousReviews": [
+				{
+					"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "50f9f685616a346bc63595ea505496ab7825cb9096e057aed5c8f737cd6c4c63",
+					"reason": "Seal Lite outcomes with a separate full-proof gate."
+				},
+				{
+					"commit": "e3191b248640e223bc34a92c8e973da3d60ba742",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "9cf207e2c0d91cb1b71431b0e95187f0da34afa36a9c4c39b0d643b0d229af8e",
+					"reason": "Extract the component snapshot assembly so the record assembly method meets the length rule. Preserve the order, inputs, and fields used to seal the verification record."
+				},
 				{
 					"commit": "ecf3fe78354597ca168b43168d96ff4bc1ce5ab0",
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
@@ -2985,6 +3083,24 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 					"definition": "e14baa2aef4dfe2844469c25187534f635897ea8b60bcba78c5bfdc94c4dee4b",
 					"reason": "Mark newly assembled component identities as source-contract schema 2 for explicit historical verification."
+				},
+				{
+					"commit": "41db0c5289110d6ec9cd696a87614cb98f78c173",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "3ba8f924316602c3d500219211db8612d9dac691ea892c3ccb75931bd6f7c06d",
+					"reason": "Seal Lite outcomes with a separate full-proof gate while keeping component snapshot assembly extracted so the record assembly method meets the length rule."
+				},
+				{
+					"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "8033d686762a5793b2494eaeceb0633d45505ac72a71b4e3b11803ddda5ba09f",
+					"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
+				},
+				{
+					"commit": "cdc50273156f82fd9534f192aa42bb60d5d62e3e",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "6578dca87e7e83d246f09169aef0b7752094b3d171b804cc83f4ff6226f578f3",
+					"reason": "Preserve exact artifact verification and current Harness record assembly in the reconciled source."
 				}
 			]
 		},
@@ -3115,7 +3231,14 @@
 			"unit": "workflow.built-in-loop-templates",
 			"from": "src/workflows/builtInLoopTemplates.ts",
 			"to": "src/workflows/development-tooling/loop-templates/builtInLoopTemplates.ts",
-			"definition": "6d566c8a153e181fbd3af7dde6f990633736ff57decf81b50cceda8c16a4a55f"
+			"definition": "b66f973f5d2dabe713d47248ce86d8633853949ddc4752296a412bace66ee8f9",
+			"relocationDefinition": "6d566c8a153e181fbd3af7dde6f990633736ff57decf81b50cceda8c16a4a55f",
+			"review": {
+				"commit": "6a64ad41350d11e2360f6d8b4f01a85035fcd927",
+				"path": "src/workflows/development-tooling/loop-templates/builtInLoopTemplates.ts",
+				"definition": "b66f973f5d2dabe713d47248ce86d8633853949ddc4752296a412bace66ee8f9",
+				"reason": "Add the sibling search step to the bug-fix template after the passing checkpoint."
+			}
 		},
 		{
 			"unit": "reports.adapter.playwright-report",
@@ -3380,14 +3503,22 @@
 			"unit": "service.trusted-base",
 			"from": "src/services/TrustedBaseService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/TrustedBaseService.ts",
-			"definition": "45ed3c809ac9fd9d5ae0ac0c5dd94f90aa0ce524d375a58a422858be34d63a7a",
+			"definition": "5a3d437f2979abe95289f8fbd229ce2985a7aa438ba45b9f36019b3d2aa3d866",
 			"relocationDefinition": "3c9a45f9e9bfa8e96815bc7b3b3d345b36de174df513e57643a1f2fe5231f73d",
 			"review": {
-				"commit": "802badfc20f8129b78eabe725acecbab58a2932b",
+				"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
 				"path": "src/workflows/verification-evidence/run-verify/TrustedBaseService.ts",
-				"definition": "45ed3c809ac9fd9d5ae0ac0c5dd94f90aa0ce524d375a58a422858be34d63a7a",
-				"reason": "Scan record metadata incrementally while preserving trusted ancestry and evidence checks."
-			}
+				"definition": "5a3d437f2979abe95289f8fbd229ce2985a7aa438ba45b9f36019b3d2aa3d866",
+				"reason": "Keep Lite receipts out of trusted base selection."
+			},
+			"previousReviews": [
+				{
+					"commit": "802badfc20f8129b78eabe725acecbab58a2932b",
+					"path": "src/workflows/verification-evidence/run-verify/TrustedBaseService.ts",
+					"definition": "45ed3c809ac9fd9d5ae0ac0c5dd94f90aa0ce524d375a58a422858be34d63a7a",
+					"reason": "Scan record metadata incrementally while preserving trusted ancestry and evidence checks."
+				}
+			]
 		},
 		{
 			"unit": "relay.adapter.host-sockets",
@@ -4054,13 +4185,13 @@
 			"unit": "service.snapshot-run",
 			"from": "src/services/SnapshotRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-			"definition": "c0083e8dd28bf5e0abc9724719de679fdb12b452e2586e14443630668a638656",
+			"definition": "5f2e39a1e26144b546fc728986af328b661aa25d29c1debd3593051101770179",
 			"relocationDefinition": "6c3ff0bd50e6e2875d27738b036a234a6c7ee208b4687d4a4b94f53319e3e740",
 			"review": {
-				"commit": "4d13df49eba238879e7c326676162a68df3fb85a",
+				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-				"definition": "c0083e8dd28bf5e0abc9724719de679fdb12b452e2586e14443630668a638656",
-				"reason": "Retain the reviewed change: snapshot run: skip setup steps and builds a scoped run does not need."
+				"definition": "5f2e39a1e26144b546fc728986af328b661aa25d29c1debd3593051101770179",
+				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
 			},
 			"previousReviews": [
 				{
@@ -4074,6 +4205,30 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
 					"definition": "5b0ec5ba4312b32ffdec01e7fe07b875c29d81bf3cf17d17d12bda29ce34f864",
 					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
+				{
+					"commit": "4d13df49eba238879e7c326676162a68df3fb85a",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+					"definition": "c0083e8dd28bf5e0abc9724719de679fdb12b452e2586e14443630668a638656",
+					"reason": "Retain the reviewed change: snapshot run: skip setup steps and builds a scoped run does not need."
+				},
+				{
+					"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+					"definition": "e2f439c3195528a3465791d2de50a3875dd1d6061cfa9efe192198b3731d8753",
+					"reason": "Defer full-only setup and tools in Lite snapshots."
+				},
+				{
+					"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+					"definition": "c62d507d7ae396d54b30acbaf032f14020f0cdc72839b48f7553d07ab0b49ea7",
+					"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
+				},
+				{
+					"commit": "59e4c64d62fd82b587f00ad9b9c6b23daac0bcc4",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+					"definition": "da687ac46f3f8b25ae6bbf5e3dc6064f39d90c66b4992d1aa4a13f7005e08062",
+					"reason": "Propagate cancellation to admitted setup and check processes so verification can clean up before exiting."
 				}
 			]
 		},
@@ -4087,13 +4242,13 @@
 			"unit": "service.check-run",
 			"from": "src/services/check-run-service/CheckRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-			"definition": "673199522b2f06180d8ba2b6d078005fc88f4e11ae827b920e38f1ade36f1dec",
+			"definition": "cd8095a0777c0823d7a95c042b03620d0b0ff56262781d0726ae83465793585c",
 			"relocationDefinition": "b4409148ed49b4fe1574ee44790338bbbe23be3b7a6a284687a37ca0b9e8a0c6",
 			"review": {
-				"commit": "5885a5eedf04c2cdd0f598e4e52bdd22c51d6294",
+				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-				"definition": "673199522b2f06180d8ba2b6d078005fc88f4e11ae827b920e38f1ade36f1dec",
-				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				"definition": "cd8095a0777c0823d7a95c042b03620d0b0ff56262781d0726ae83465793585c",
+				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
 			},
 			"previousReviews": [
 				{
@@ -4119,6 +4274,24 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
 					"definition": "1063715061bcde25b7974396646e41b64b11ce223c65017ec6479f2a2288a05b",
 					"reason": "Record main’s scoped verification resource label while preserving the admitted execution context."
+				},
+				{
+					"commit": "5885a5eedf04c2cdd0f598e4e52bdd22c51d6294",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "673199522b2f06180d8ba2b6d078005fc88f4e11ae827b920e38f1ade36f1dec",
+					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
+				{
+					"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "5a040549e7d4c4c62e442e47490dcbc12579491ac41769192ff108755c06e8e0",
+					"reason": "Admit fractional Lite work and reject screenshot evidence."
+				},
+				{
+					"commit": "59e4c64d62fd82b587f00ad9b9c6b23daac0bcc4",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "97ebd97204897e4a258f2bf687c888785d24456b030b4127e86d6c7d29fc7bc2",
+					"reason": "Propagate cancellation to admitted setup and check processes so verification can clean up before exiting."
 				}
 			]
 		},
@@ -4158,13 +4331,13 @@
 			"unit": "command.verify",
 			"from": "src/commands/VerifyCommand.ts",
 			"to": "src/cli/program/VerifyCommand.ts",
-			"definition": "c7edca0fd25fc68ba3b4dd2e638dceacc4dfa7d4cb05930ef04bab7d04bfb6ad",
+			"definition": "f97a222768648bf95be6bb7323bc9b7e6d0402765504d0c653970e4e9d41db20",
 			"relocationDefinition": "9bdae348aa1c461f5189e3ab3900c11dec68f78ec4a82c0d9c7986c56cfabbfc",
 			"review": {
-				"commit": "ae524672e7e16f8c98f5809aa9ae64716eacf0a3",
+				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
 				"path": "src/cli/program/VerifyCommand.ts",
-				"definition": "c7edca0fd25fc68ba3b4dd2e638dceacc4dfa7d4cb05930ef04bab7d04bfb6ad",
-				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				"definition": "f97a222768648bf95be6bb7323bc9b7e6d0402765504d0c653970e4e9d41db20",
+				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
 			},
 			"previousReviews": [
 				{
@@ -4214,6 +4387,30 @@
 					"path": "src/cli/program/VerifyCommand.ts",
 					"definition": "1f7f5d31e2fb879f78b853cc1706fdd7936408b953c804de6620fca6dd679a80",
 					"reason": "Keep verification action logic separate so registration stays within complexity limits."
+				},
+				{
+					"commit": "ae524672e7e16f8c98f5809aa9ae64716eacf0a3",
+					"path": "src/cli/program/VerifyCommand.ts",
+					"definition": "c7edca0fd25fc68ba3b4dd2e638dceacc4dfa7d4cb05930ef04bab7d04bfb6ad",
+					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
+				{
+					"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+					"path": "src/cli/program/VerifyCommand.ts",
+					"definition": "a2a84093e1340498ab9096ddac0b1aeac32a7806025d49a2580d28844caa59e0",
+					"reason": "Expose Lite profile and independent page capture commands."
+				},
+				{
+					"commit": "015d1b282f3347b9c09274f12bce2585ba9b5764",
+					"path": "src/cli/program/VerifyCommand.ts",
+					"definition": "e5a9cf22a3638e998edb3885810edad89285d7dd42b1e6b39587cb024b41ac97",
+					"reason": "Retain an explicitly requested generated artifact and record its provenance only after full verification passes."
+				},
+				{
+					"commit": "59e4c64d62fd82b587f00ad9b9c6b23daac0bcc4",
+					"path": "src/cli/program/VerifyCommand.ts",
+					"definition": "552a65eecde95fc0a4654a6b055c92ea0a93f3a44f280fbec96d95dd82da8e86",
+					"reason": "Propagate cancellation to admitted setup and check processes so verification can clean up before exiting."
 				}
 			]
 		},
@@ -4458,15 +4655,21 @@
 			"unit": "workflow.manage-loop",
 			"from": "src/workflows/manageLoop.ts",
 			"to": "src/cli/program/manageLoop.ts",
-			"definition": "4913a036b605c659838b9413e228f85b9fca3e05e02d26a12aa7c0cbeafb7d4f",
+			"definition": "aef240feabd564a16e292598244d851ace901f4b14b079db9e873df4da8077e1",
 			"relocationDefinition": "e95f68a7587b306a9f99bd633dad2b68e60c3f5c138bcbb7af1e4c5ee767a3fe",
 			"review": {
-				"commit": "745253c6258eb6a90ae59b9758562ec322ba8665",
+				"commit": "6a64ad41350d11e2360f6d8b4f01a85035fcd927",
 				"path": "src/cli/program/manageLoop.ts",
-				"definition": "4913a036b605c659838b9413e228f85b9fca3e05e02d26a12aa7c0cbeafb7d4f",
-				"reason": "Retain stale-loop listing with recorded abandoned closure, preserved stored loop evidence with named schema fields, and refusal of mutations after explicit loop closure."
+				"definition": "aef240feabd564a16e292598244d851ace901f4b14b079db9e873df4da8077e1",
+				"reason": "Require a sibling report before completing the siblings step of a bug-fix loop."
 			},
 			"previousReviews": [
+				{
+					"commit": "745253c6258eb6a90ae59b9758562ec322ba8665",
+					"path": "src/cli/program/manageLoop.ts",
+					"definition": "4913a036b605c659838b9413e228f85b9fca3e05e02d26a12aa7c0cbeafb7d4f",
+					"reason": "Retain stale-loop listing with recorded abandoned closure, preserved stored loop evidence with named schema fields, and refusal of mutations after explicit loop closure."
+				},
 				{
 					"commit": "48e4a8b9b892e15735c51c20710bafcf0304f4bb",
 					"path": "src/cli/program/manageLoop.ts",
