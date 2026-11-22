@@ -1,4 +1,4 @@
-import { existsSync, realpathSync, unlinkSync } from 'node:fs';
+import { chmodSync, existsSync, realpathSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import { once } from 'node:events';
 import { connect, createServer } from 'node:net';
@@ -84,6 +84,27 @@ test('startup refuses an unfenced role or competing API, sync or journal owner a
 			expect((await restarted.stop()).code).toBe(0);
 		}
 		expect(existsSync(join(root, 'legacy-used'))).toBe(false);
+	});
+}, 25_000);
+
+test('startup refuses a journal its owner cannot write instead of serving failed writes', async () => {
+	await withTempDir('hnt-', async (temporary) => {
+		const root = realpathSync(temporary);
+		trackerFixtureFiles(root);
+		const [api, sync] = await freeTrackerPorts(2);
+		const hub = writeTrackerFixture(root, {
+			...fixtureConfig(root, 'read-only-hub', api),
+			role: 'hub',
+			syncPort: sync
+		});
+		const first = await startTrackerFixture(hub);
+		await fixtureTrackerJson(hub, ['add', 'Journal initialized before it turns read-only']);
+		expect((await first.stop()).code).toBe(0);
+		chmodSync(hub.config.database, 0o400);
+		const result = await finishedTrackerProcess(hub, serveTrackerArgs(hub));
+		expect(result.code).toBe(1);
+		expect(result.stderr).toContain('writable');
+		expect(existsSync(hub.config.database + '.supervisor-lock.sqlite')).toBe(false);
 	});
 }, 25_000);
 
