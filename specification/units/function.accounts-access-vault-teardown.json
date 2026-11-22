@@ -1,0 +1,82 @@
+{
+	"schemaVersion": 1,
+	"id": "function.accounts-access-vault-teardown",
+	"uid": "u_wv57i4bcri",
+	"kind": "function",
+	"title": "vaultTeardown",
+	"responsibility": "Plans the ordered Credential Vault lease teardown and its security log checks.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/accounts-access/vaultTeardown.ts",
+			"src/utils/accounts-access/vaultTeardown.types.ts"
+		],
+		"symbols": ["vaultTeardownLimits", "vaultTeardown", "VaultTeardownStep", "VaultTeardownInput"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "vaultTeardown.input",
+				"type": "VaultTeardownInput",
+				"required": true,
+				"description": "Recipe teardown settings, whether a browser was used, and the lease start and end times."
+			}
+		],
+		"outputs": [
+			{
+				"name": "vaultTeardownLimits",
+				"type": "object",
+				"description": "Time allowed to finish teardown and the delay of the second security log check."
+			},
+			{
+				"name": "vaultTeardown",
+				"type": "VaultTeardownStep[]",
+				"description": "Ordered teardown steps with deadlines, ending in two security log checks or an unverifiable flag."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "vaultTeardown",
+				"inputs": [
+					{
+						"name": "vaultTeardown.input",
+						"type": "VaultTeardownInput",
+						"required": true,
+						"description": "Recipe teardown settings, whether a browser was used, and the lease start and end times."
+					}
+				],
+				"outputs": [
+					{
+						"name": "vaultTeardown",
+						"type": "VaultTeardownStep[]",
+						"description": "Ordered teardown steps with deadlines, ending in two security log checks or an unverifiable flag."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/accounts-access/vaultTeardown.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/accounts-access/vaultTeardown.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

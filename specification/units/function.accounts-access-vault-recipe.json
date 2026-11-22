@@ -1,0 +1,260 @@
+{
+	"schemaVersion": 1,
+	"id": "function.accounts-access-vault-recipe",
+	"uid": "u_xg3ex7hmhj",
+	"kind": "function",
+	"title": "vaultRecipe",
+	"responsibility": "Validates a signed per-site Credential Vault login recipe and computes its review digest.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/accounts-access/vaultRecipe.ts",
+			"src/utils/accounts-access/vaultRecipe.types.ts"
+		],
+		"symbols": [
+			"recipeReviewMaxAgeMs",
+			"recipeSchema",
+			"recipeReview",
+			"vaultRecipe",
+			"recipeDigest",
+			"digestDisplay",
+			"reviewSigningInput",
+			"VaultRecipe",
+			"VaultRecipeInput",
+			"VaultRecipeReview",
+			"VaultMethodKind",
+			"VaultAction",
+			"VaultOtpChannel",
+			"RecipeReviewer",
+			"VerifiedRecipe"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "vaultRecipe.input",
+				"type": "VaultRecipeInput",
+				"required": true,
+				"description": "Untrusted recipe JSON, validated against the recipe schema."
+			},
+			{
+				"name": "vaultRecipe.signed",
+				"type": "VaultRecipeReview",
+				"required": true,
+				"description": "Untrusted review envelope JSON: site, revision, digest, reviewer, review time and Ed25519 signature."
+			},
+			{
+				"name": "vaultRecipe.reviewers",
+				"type": "RecipeReviewer[]",
+				"required": true,
+				"description": "Trusted reviewer ids with their Ed25519 public keys."
+			},
+			{
+				"name": "vaultRecipe.now",
+				"type": "number",
+				"required": false,
+				"description": "Current time in Unix milliseconds. Defaults to Date.now()."
+			},
+			{
+				"name": "recipeDigest.recipe",
+				"type": "VaultRecipe",
+				"required": true,
+				"description": "Normalized recipe."
+			},
+			{
+				"name": "digestDisplay.digest",
+				"type": "string",
+				"required": true,
+				"description": "Lowercase hex SHA-256 recipe digest."
+			},
+			{
+				"name": "reviewSigningInput.review",
+				"type": "Omit<VaultRecipeReview, 'signature' | 'reviewer'>",
+				"required": true,
+				"description": "Review fields without the signature and reviewer."
+			}
+		],
+		"outputs": [
+			{
+				"name": "recipeReviewMaxAgeMs",
+				"type": "number",
+				"description": "Longest accepted review age: 90 days."
+			},
+			{
+				"name": "recipeSchema",
+				"type": "ZodType",
+				"description": "Zod schema of a site recipe, including the action and browser teardown checks."
+			},
+			{
+				"name": "recipeReview",
+				"type": "ZodType",
+				"description": "Zod schema of a recipe review envelope."
+			},
+			{
+				"name": "vaultRecipe",
+				"type": "VerifiedRecipe",
+				"description": "The normalized recipe, its digest, the grouped digest prefix for Harness iOS and the review."
+			},
+			{
+				"name": "recipeDigest",
+				"type": "string",
+				"description": "Lowercase hex SHA-256 of the canonical recipe JSON."
+			},
+			{
+				"name": "digestDisplay",
+				"type": "string",
+				"description": "The first 16 hex digits in four groups of four."
+			},
+			{
+				"name": "reviewSigningInput",
+				"type": "Buffer",
+				"description": "Canonical JSON bytes of the vault-recipe-review statement that the reviewer signs."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Thrown when the recipe or review is invalid, for another digest, stale, or not signed by a trusted reviewer."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "vaultRecipe",
+				"inputs": [
+					{
+						"name": "vaultRecipe.input",
+						"type": "VaultRecipeInput",
+						"required": true,
+						"description": "Untrusted recipe JSON, validated against the recipe schema."
+					},
+					{
+						"name": "vaultRecipe.signed",
+						"type": "VaultRecipeReview",
+						"required": true,
+						"description": "Untrusted review envelope JSON: site, revision, digest, reviewer, review time and Ed25519 signature."
+					},
+					{
+						"name": "vaultRecipe.reviewers",
+						"type": "RecipeReviewer[]",
+						"required": true,
+						"description": "Trusted reviewer ids with their Ed25519 public keys."
+					},
+					{
+						"name": "vaultRecipe.now",
+						"type": "number",
+						"required": false,
+						"description": "Current time in Unix milliseconds. Defaults to Date.now()."
+					}
+				],
+				"outputs": [
+					{
+						"name": "vaultRecipe",
+						"type": "VerifiedRecipe",
+						"description": "The normalized recipe, its digest, the grouped digest prefix for Harness iOS and the review."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown when the recipe or review is invalid, for another digest, stale, or not signed by a trusted reviewer."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recipeDigest",
+				"inputs": [
+					{
+						"name": "recipeDigest.recipe",
+						"type": "VaultRecipe",
+						"required": true,
+						"description": "Normalized recipe."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recipeDigest",
+						"type": "string",
+						"description": "Lowercase hex SHA-256 of the canonical recipe JSON."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "digestDisplay",
+				"inputs": [
+					{
+						"name": "digestDisplay.digest",
+						"type": "string",
+						"required": true,
+						"description": "Lowercase hex SHA-256 recipe digest."
+					}
+				],
+				"outputs": [
+					{
+						"name": "digestDisplay",
+						"type": "string",
+						"description": "The first 16 hex digits in four groups of four."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "reviewSigningInput",
+				"inputs": [
+					{
+						"name": "reviewSigningInput.review",
+						"type": "Omit<VaultRecipeReview, 'signature' | 'reviewer'>",
+						"required": true,
+						"description": "Review fields without the signature and reviewer."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reviewSigningInput",
+						"type": "Buffer",
+						"description": "Canonical JSON bytes of the vault-recipe-review statement that the reviewer signs."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/accounts-access/vaultRecipe.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/accounts-access/vaultRecipe.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
