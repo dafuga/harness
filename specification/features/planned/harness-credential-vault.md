@@ -19,6 +19,9 @@ unitIds:
   - service.accounts-access-vault-lease-keeper
   - adapter.accounts-access-vault-broker-server
   - adapter.accounts-access-vault-broker-client
+  - adapter.accounts-access-vault-browser-docker
+  - adapter.accounts-access-vault-cdp-relay
+  - adapter.accounts-access-vault-peer
   - validator.accounts-access-vault-wire
   - command.accounts-access-credential
 owner: null
@@ -161,7 +164,7 @@ Later phases, each its own reviewed PR with tests:
 
   `CB-DEVICE-V2` signs the V1 lines with `CB-DEVICE-V2` as the first line, followed by the recipe digest, runner fingerprint, method and `<mode>:<leaseMs>`. An approval restates method, mode, account, session, action, host and lease length, and any difference is refused, so a changed scope needs a fresh approval. Only an `oauth-device` approval carries no sealed credential. A CDP lease is issued only when the broker knows the session's kernel-verified OS user. On macOS the phase 2 socket relies on its owner-only directory and reports no peer, so leases there wait for the phase 3 `getpeereid` check. Tests use a fake phone signer, a fake runner, synthetic canaries and the broker's v1 crypto vector.
 
-- **Phase 3, executor and CDP relay (synthetic site).** `deploy/vault/Dockerfile`, `src/adapters/accounts-access/VaultBrowserDockerAdapter.ts`, the in-container pipe bridge and the host CDP relay. Fixtures prove that no TCP listener exists, another OS user and a wrong token cannot connect to the socket, the nftables ruleset rejects a non-allowlisted host from inside the container, canary passwords and OTPs never reach the session, and teardown leaves no labelled resource. This runs on MB2 as the `harness-vault` user.
+- **Phase 3, executor and CDP relay (synthetic site).** The fixture uses `deploy/vault/Dockerfile`, `VaultBrowserDockerAdapter`, the in-container pipe bridge, and `VaultCdpRelayAdapter`. It accepts synthetic `.test` origins on an internal-only Docker network. `VaultPeerAdapter` reads the kernel UID for the broker and the relay under Node. The first fixture drives a headed browser through the lease, checks the Chromium sandbox and the approved and denied origin paths, and verifies labelled resource removal. The phase also requires scripted login, password and OTP non-disclosure, provider logout and security-log checks, and cross-user isolation with the dedicated MB2 executor. Follow the [browser fixture and account runbook](../../../deploy/vault/README.md) for provisioning and verification.
 - **Phase 4, Harness iOS Vault.** Vault inbox, recipe digest display, the read or write action and lease length, OTP entry with SMS autofill, sealed delivery and the private view, tested on a physical enrolled iPhone.
 - **Phase 5, real sites.** These need Daniel's approval on his phone first, one site at a time, in the order of the migration plan.
 

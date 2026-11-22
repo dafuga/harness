@@ -1,0 +1,119 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.accounts-access-vault-peer",
+	"uid": "u_uw3tnnxzru",
+	"kind": "adapter",
+	"title": "VaultPeerAdapter",
+	"responsibility": "Owns the VaultPeerAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/accounts-access/VaultPeerAdapter.ts",
+			"src/adapters/accounts-access/VaultPeerAdapter.types.ts"
+		],
+		"symbols": [
+			"VaultPeerAdapter",
+			"VaultPeerAdapter.constructor",
+			"VaultPeerAdapter.uid",
+			"VaultPeerAdapterConfig",
+			"VaultPeerBinding"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "VaultPeerAdapter.constructor.config",
+				"type": "VaultPeerAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "VaultPeerAdapter.uid.socket",
+				"type": "Duplex",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "VaultPeerAdapter.uid",
+				"type": "number | null"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "VaultPeerAdapter.uid",
+				"inputs": [
+					{
+						"name": "VaultPeerAdapter.uid.socket",
+						"type": "Duplex",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultPeerAdapter.uid",
+						"type": "number | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "VaultPeerAdapter.constructor",
+				"inputs": [
+					{
+						"name": "VaultPeerAdapter.constructor.config",
+						"type": "VaultPeerAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultPeerAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/accounts-access/VaultPeerAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/accounts-access/VaultPeerAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -5,8 +5,8 @@ import { join } from 'node:path';
 import type { TemporaryRepo } from './temporary.types';
 
 /** Create a unique fixture directory when a test hook owns its cleanup. */
-export function createTempDirectory(prefix: string): Promise<string> {
-	return mkdtemp(join(tmpdir(), prefix));
+export function createTempDirectory(prefix: string, base = tmpdir()): Promise<string> {
+	return mkdtemp(join(base, prefix));
 }
 
 export async function withTempDir<T>(

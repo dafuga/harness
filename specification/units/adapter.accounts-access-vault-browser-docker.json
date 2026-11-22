@@ -1,0 +1,552 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.accounts-access-vault-browser-docker",
+	"uid": "u_bjzxwihuau",
+	"kind": "adapter",
+	"title": "VaultBrowserDockerAdapter",
+	"responsibility": "Owns the VaultBrowserDockerAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/accounts-access/VaultBrowserDockerAdapter.ts",
+			"src/adapters/accounts-access/VaultBrowserDockerAdapter.types.ts",
+			"src/adapters/accounts-access/vault-browser-docker-adapter/browserDockerConfig.ts",
+			"src/adapters/accounts-access/vault-browser-docker-adapter/browserDockerJournal.ts",
+			"src/adapters/accounts-access/vault-browser-docker-adapter/browserDockerJournal.types.ts"
+		],
+		"symbols": [
+			"VaultBrowserDockerAdapter",
+			"VaultBrowserDockerAdapter.constructor",
+			"VaultBrowserDockerAdapter.launch",
+			"VaultBrowserDockerAdapterConfig",
+			"VaultBrowserDockerLaunch",
+			"VaultFixtureNetwork",
+			"VaultBrowserDockerSession",
+			"browserDockerArgs",
+			"browserDockerEgress",
+			"validateFixtureNetwork",
+			"requireInternalNetwork",
+			"vaultDockerLabel",
+			"vaultDockerImage",
+			"receiptSchema",
+			"privateJournal",
+			"newBrowserReceipt",
+			"saveBrowserReceipt",
+			"recoverBrowserFixtures",
+			"removeBrowserFixture",
+			"VaultDockerReceipt"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "VaultBrowserDockerAdapter.constructor.config",
+				"type": "VaultBrowserDockerAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "VaultBrowserDockerAdapter.launch.input",
+				"type": "VaultBrowserDockerLaunch",
+				"required": true
+			},
+			{
+				"name": "browserDockerArgs.config",
+				"type": "VaultBrowserDockerAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "browserDockerArgs.owner",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "browserDockerArgs.egress",
+				"type": "VaultEgressRules",
+				"required": true
+			},
+			{
+				"name": "browserDockerArgs.network",
+				"type": "VaultFixtureNetwork",
+				"required": false
+			},
+			{
+				"name": "browserDockerEgress.origins",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "browserDockerEgress.redirects",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "validateFixtureNetwork.network",
+				"type": "VaultFixtureNetwork",
+				"required": true
+			},
+			{
+				"name": "validateFixtureNetwork.hosts",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "requireInternalNetwork.daemon",
+				"type": "DockerTaskDaemon",
+				"required": true
+			},
+			{
+				"name": "requireInternalNetwork.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "privateJournal.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "newBrowserReceipt.daemon",
+				"type": "DockerTaskDaemon",
+				"required": true
+			},
+			{
+				"name": "newBrowserReceipt.image",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "saveBrowserReceipt.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "saveBrowserReceipt.receipt",
+				"type": "VaultDockerReceipt",
+				"required": true
+			},
+			{
+				"name": "recoverBrowserFixtures.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recoverBrowserFixtures.daemon",
+				"type": "DockerTaskDaemon",
+				"required": true
+			},
+			{
+				"name": "removeBrowserFixture.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "removeBrowserFixture.daemon",
+				"type": "DockerTaskDaemon",
+				"required": true
+			},
+			{
+				"name": "removeBrowserFixture.receipt",
+				"type": "VaultDockerReceipt",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "VaultBrowserDockerAdapter.launch",
+				"type": "Promise<VaultBrowserDockerSession>"
+			},
+			{
+				"name": "browserDockerArgs",
+				"type": "string[]"
+			},
+			{
+				"name": "browserDockerEgress",
+				"type": "VaultEgressRules"
+			},
+			{
+				"name": "validateFixtureNetwork",
+				"type": "void"
+			},
+			{
+				"name": "requireInternalNetwork",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "vaultDockerLabel",
+				"type": "unknown"
+			},
+			{
+				"name": "vaultDockerImage",
+				"type": "unknown"
+			},
+			{
+				"name": "receiptSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "privateJournal",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "newBrowserReceipt",
+				"type": "VaultDockerReceipt"
+			},
+			{
+				"name": "saveBrowserReceipt",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "recoverBrowserFixtures",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "removeBrowserFixture",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "VaultBrowserDockerAdapter.launch",
+				"inputs": [
+					{
+						"name": "VaultBrowserDockerAdapter.launch.input",
+						"type": "VaultBrowserDockerLaunch",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultBrowserDockerAdapter.launch",
+						"type": "Promise<VaultBrowserDockerSession>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "browserDockerArgs",
+				"inputs": [
+					{
+						"name": "browserDockerArgs.config",
+						"type": "VaultBrowserDockerAdapterConfig",
+						"required": true
+					},
+					{
+						"name": "browserDockerArgs.owner",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "browserDockerArgs.egress",
+						"type": "VaultEgressRules",
+						"required": true
+					},
+					{
+						"name": "browserDockerArgs.network",
+						"type": "VaultFixtureNetwork",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "browserDockerArgs",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "browserDockerEgress",
+				"inputs": [
+					{
+						"name": "browserDockerEgress.origins",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "browserDockerEgress.redirects",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "browserDockerEgress",
+						"type": "VaultEgressRules"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "validateFixtureNetwork",
+				"inputs": [
+					{
+						"name": "validateFixtureNetwork.network",
+						"type": "VaultFixtureNetwork",
+						"required": true
+					},
+					{
+						"name": "validateFixtureNetwork.hosts",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateFixtureNetwork",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "requireInternalNetwork",
+				"inputs": [
+					{
+						"name": "requireInternalNetwork.daemon",
+						"type": "DockerTaskDaemon",
+						"required": true
+					},
+					{
+						"name": "requireInternalNetwork.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "requireInternalNetwork",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "privateJournal",
+				"inputs": [
+					{
+						"name": "privateJournal.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "privateJournal",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "newBrowserReceipt",
+				"inputs": [
+					{
+						"name": "newBrowserReceipt.daemon",
+						"type": "DockerTaskDaemon",
+						"required": true
+					},
+					{
+						"name": "newBrowserReceipt.image",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "newBrowserReceipt",
+						"type": "VaultDockerReceipt"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "saveBrowserReceipt",
+				"inputs": [
+					{
+						"name": "saveBrowserReceipt.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "saveBrowserReceipt.receipt",
+						"type": "VaultDockerReceipt",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "saveBrowserReceipt",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recoverBrowserFixtures",
+				"inputs": [
+					{
+						"name": "recoverBrowserFixtures.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recoverBrowserFixtures.daemon",
+						"type": "DockerTaskDaemon",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recoverBrowserFixtures",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "removeBrowserFixture",
+				"inputs": [
+					{
+						"name": "removeBrowserFixture.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "removeBrowserFixture.daemon",
+						"type": "DockerTaskDaemon",
+						"required": true
+					},
+					{
+						"name": "removeBrowserFixture.receipt",
+						"type": "VaultDockerReceipt",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "removeBrowserFixture",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "VaultBrowserDockerAdapter.constructor",
+				"inputs": [
+					{
+						"name": "VaultBrowserDockerAdapter.constructor.config",
+						"type": "VaultBrowserDockerAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultBrowserDockerAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.accounts-access-vault-cdp-relay",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-managed-provider-docker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.process-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.accounts-access-vault-egress-rules",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/accounts-access/VaultBrowserDockerAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/accounts-access/VaultBrowserDockerAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
