@@ -58,7 +58,7 @@ test('a scenario check carries its declared memory reservation and others keep t
 
 test('a check sized for its nested task CLI admits the 2048 MiB run the default lease refuses', async () => {
 	const { service } = resourceQueueFixture(cleanup);
-	const nested = (env: Record<string, string>) =>
+	const nested = (env: Record<string, string | undefined>) =>
 		service.run(resourceRequestSchema.parse({ cpus: 1, memoryMiB: 2048 }), async () => 'ran', {
 			env
 		});

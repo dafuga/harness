@@ -60,7 +60,12 @@ export const moduleTaskVerificationScopes: Record<string, VerificationScope> = {
 				'public claude usage is retained without guessing absent counters': 'usage-pricing',
 				'public codex usage is retained without guessing absent counters': 'usage-pricing',
 				'failed turns preserve available usage for cost attribution': 'usage-pricing',
-				'the process executor seam is typed, never unknown or any': 'contract-admission'
+				'"Claude task failed" is a named ModuleTaskRunError': 'contract-admission',
+				'"Claude quota exhausted." is a named ModuleTaskRunError': 'contract-admission',
+				'"Claude was denied a required tool" is a named ModuleTaskRunError': 'contract-admission',
+				'"Claude ran a different model." is a named ModuleTaskRunError': 'contract-admission',
+				'"Codex task failed" is a named ModuleTaskRunError': 'contract-admission',
+				'"Codex ran a different model." is a named ModuleTaskRunError': 'contract-admission'
 			},
 			'test/adapters/agents-providers/managed-provider-docker.test.ts': {
 				'Docker command preserves argv and uses a task-owned workspace volume and bounded tmpfs':

@@ -78,6 +78,7 @@ const verifyGuide: Guide = {
 		'Entity verification exits successfully when its screenshots attach, while its sealed record remains scoped and never proves a whole-commit pass. Output lists entity, states, viewports and attached record id.',
 		'harness.verify.json configures setup commands, shared paths, outputs, runners and time limits; a test file that needs a command of its own, such as another configuration of its runner, is listed under checks.',
 		'Lite skips Playwright and E2E checks. Mark custom browser commands fullOnly in scenario tests, setup, tools or checks. Keep type checks, lint and builds shared by both profiles.',
+		'A scenario test that starts nested managed work, such as a module task worker and its provider CLI, declares memoryMiB so its check reserves enough for that work; the default lease refuses larger nested requests.',
 		'Lite JSON records contain lite.status and pending check, setup, tool and capture identifiers. They cannot satisfy verify check or approve a budget baseline.',
 		'Use verify capture for a single page PNG with Chrome Headless Shell. Attach registered scenario screenshots with a full verification run.',
 		'A compiled build whose server cannot read its own files, such as a Worker, is stamped after its last build step with harness verify stamp; the server reports the stamp and harness verify identity confirms it belongs to exactly those files.'
