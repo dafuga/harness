@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/core/development-tooling/InvalidSqliteDefinitionError.ts",
 			"src/utils/development-tooling/sqliteTableSql.ts",
 			"src/utils/development-tooling/sqliteTableSql.types.ts"
 		],
 		"symbols": [
+			"InvalidSqliteDefinitionError",
 			"sqliteIdentifier",
 			"sqliteColumn",
 			"sqliteTableSql",

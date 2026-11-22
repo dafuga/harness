@@ -1,4 +1,8 @@
-import { sideEffects, meaningfulNames, loadAssessments } from './audit.clean-code-locations.fixture';
+import {
+	sideEffects,
+	meaningfulNames,
+	loadAssessments
+} from './audit.clean-code-locations.fixture';
 import { test } from 'vitest';
 import {
 	applyReviewLocations,

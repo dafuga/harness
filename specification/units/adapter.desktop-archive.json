@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"scripts/prepare-desktop-experiment/ArchiveDestinationNotSeparateError.ts",
 			"scripts/prepare-desktop-experiment/DesktopArchiveAdapter.ts",
 			"scripts/prepare-desktop-experiment/DesktopArchiveAdapter.types.ts"
 		],
 		"symbols": [
+			"ArchiveDestinationNotSeparateError",
 			"DesktopArchiveAdapter",
 			"DesktopArchiveAdapter.read",
 			"DesktopArchiveAdapter.patch",

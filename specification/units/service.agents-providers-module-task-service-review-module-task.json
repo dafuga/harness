@@ -9,6 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/agents-providers/module-task-service/StaleTaskReviewError.ts",
 			"src/services/agents-providers/module-task-service/acceptanceEvidence.ts",
 			"src/services/agents-providers/module-task-service/acceptanceEvidence.types.ts",
 			"src/services/agents-providers/module-task-service/recordedReview.ts",
@@ -16,6 +17,7 @@
 			"src/services/agents-providers/module-task-service/reviewModuleTask.types.ts"
 		],
 		"symbols": [
+			"StaleTaskReviewError",
 			"acceptanceEvidence",
 			"TaskAcceptanceEvidence",
 			"EvidenceScope",

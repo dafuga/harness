@@ -1,4 +1,10 @@
-import type { Program, Subcommand, Chain, Action, Case } from './entry.program-loop-lifecycle.test.types';
+import type {
+	Program,
+	Subcommand,
+	Chain,
+	Action,
+	Case
+} from './entry.program-loop-lifecycle.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';

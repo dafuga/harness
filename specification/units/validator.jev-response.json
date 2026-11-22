@@ -9,10 +9,16 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/validators/agents-providers/InvalidJevResponseError.ts",
 			"src/validators/agents-providers/JevResponseValidator.ts",
 			"src/validators/agents-providers/JevResponseValidator.types.ts"
 		],
-		"symbols": ["JevResponseValidator", "JevResponseValidator.validate", "InvalidJevResponseError"]
+		"symbols": [
+			"InvalidJevResponseError",
+			"JevResponseValidator",
+			"JevResponseValidator.validate",
+			"InvalidJevResponseError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

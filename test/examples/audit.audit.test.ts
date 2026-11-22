@@ -1,4 +1,10 @@
-import { version, ignoreMoney, twoClasses, libraryCoverage, appCoverage } from './audit.audit.fixture';
+import {
+	version,
+	ignoreMoney,
+	twoClasses,
+	libraryCoverage,
+	appCoverage
+} from './audit.audit.fixture';
 import type { Files, Finding, Options } from './audit.audit.test.types';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';

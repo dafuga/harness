@@ -1,6 +1,5 @@
 import { commitContract } from './command.development-tooling-contracts-command-contract-history-identity.fixture';
 
-
 import { test } from 'vitest';
 import {
 	currentContractIdentity,

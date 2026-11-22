@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
-			"src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.types.ts"
+			"src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.types.ts",
+			"src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelServerStartupError.ts"
 		],
 		"symbols": [
 			"KernelBenchmarkService",
@@ -23,6 +24,7 @@
 			"BenchPlan",
 			"WorkloadRun",
 			"Workload",
+			"KernelServerStartupError",
 			"KernelServerStartupError"
 		]
 	},

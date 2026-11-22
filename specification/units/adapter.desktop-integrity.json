@@ -10,11 +10,13 @@
 	"owns": {
 		"source": [
 			"scripts/prepare-desktop-experiment/DesktopIntegrityAdapter.ts",
-			"scripts/prepare-desktop-experiment/DesktopIntegrityAdapter.types.ts"
+			"scripts/prepare-desktop-experiment/DesktopIntegrityAdapter.types.ts",
+			"scripts/prepare-desktop-experiment/IntegrityDigestVerificationError.ts"
 		],
 		"symbols": [
 			"DesktopIntegrityAdapter",
 			"DesktopIntegrityAdapter.update",
+			"IntegrityDigestVerificationError",
 			"IntegrityDigestVerificationError"
 		]
 	},

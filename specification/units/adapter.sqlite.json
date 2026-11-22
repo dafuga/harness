@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"src/adapters/development-tooling/SqliteAdapter.ts",
-			"src/adapters/development-tooling/SqliteAdapter.types.ts"
+			"src/adapters/development-tooling/SqliteAdapter.types.ts",
+			"src/adapters/development-tooling/SqliteAdapterError.ts"
 		],
 		"symbols": [
 			"SqliteAdapter",
@@ -28,7 +29,8 @@
 			"SqliteAdapter.assertModels",
 			"createSqliteAdapter",
 			"SqliteAdapterError",
-			"SqliteFieldValue"
+			"SqliteFieldValue",
+			"SqliteAdapterError"
 		]
 	},
 	"contract": {

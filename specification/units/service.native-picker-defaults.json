@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/development-tooling/native-picker-bridge-service/InvalidConfigurationEditsError.ts",
 			"src/services/development-tooling/native-picker-bridge-service/NativePickerDefaultsService.ts",
 			"src/services/development-tooling/native-picker-bridge-service/NativePickerDefaultsService.types.ts"
 		],
 		"symbols": [
+			"InvalidConfigurationEditsError",
 			"NativePickerDefaultsService",
 			"NativePickerDefaultsService.constructor",
 			"NativePickerDefaultsService.write",

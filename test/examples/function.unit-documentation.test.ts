@@ -1,4 +1,9 @@
-import { toolbarId, toolbarExamples, toolbarPath, record } from './function.unit-documentation.fixture';
+import {
+	toolbarId,
+	toolbarExamples,
+	toolbarPath,
+	record
+} from './function.unit-documentation.fixture';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { test } from 'vitest';

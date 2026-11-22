@@ -9,10 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"scripts/ExperimentalAppBuildError.ts",
 			"scripts/prepare-desktop-experiment.ts",
 			"scripts/prepare-desktop-experiment.types.ts"
 		],
-		"symbols": ["ExperimentalAppBuildError"]
+		"symbols": ["ExperimentalAppBuildError", "ExperimentalAppBuildError"]
 	},
 	"contract": {
 		"origin": "declared",

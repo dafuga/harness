@@ -1,4 +1,15 @@
-import { file, zod, unit, moduleOnly, revision, noArtifact, open, unread, unitId } from './function.unit-measurements.fixture';
+import {
+	file,
+	indexed,
+	zod,
+	unit,
+	moduleOnly,
+	revision,
+	noArtifact,
+	open,
+	unread,
+	unitId
+} from './function.unit-measurements.fixture';
 import type { Targets, ExampleCase } from './function.unit-measurements.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
@@ -9,14 +20,11 @@ import {
 } from '../../src/utils/development-tooling/unitMeasurements';
 import type { BuiltArtifacts } from '../../src/utils/development-tooling/unitMeasurements';
 
-import type { SourceFile } from '../../src/core/development-tooling/sourceTypes';
 import type { SourceBlock } from '../../src/utils/development-tooling/sourceBlocks';
 const sha = (character: string) => character.repeat(64);
 
 const block = (complexity: number) =>
 	({ name: 'run', kind: 'function', complexity }) as SourceBlock;
-const indexed = (files: SourceFile[]) =>
-	new Map(files.map((item): [string, SourceFile] => [item.path, item]));
 const record = (symbol: string, state: string, cases: ExampleCase[]) =>
 	recordExampleCases(
 		{ unitId, symbol, state, evidence: 'examples-cases', file: `${state}.json` },

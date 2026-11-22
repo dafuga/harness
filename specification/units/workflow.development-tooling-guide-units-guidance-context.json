@@ -8,17 +8,22 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/development-tooling/guide-units/guidanceContext.ts"],
+		"source": [
+			"src/workflows/development-tooling/guide-units/guidanceContext.ts",
+			"src/workflows/development-tooling/guide-units/sourceGuidanceStates.ts"
+		],
 		"symbols": [
+			"guidanceText",
+			"sourceUnitStates",
 			"guidanceContext",
 			"guidanceUnit",
-			"guidanceText",
 			"scenarioStatesFor",
 			"headlessStateNames",
 			"headlessOnly",
 			"namedUnitStates",
-			"sourceUnitStates",
-			"allUnitStates"
+			"allUnitStates",
+			"guidanceText",
+			"sourceUnitStates"
 		]
 	},
 	"contract": {
@@ -62,23 +67,6 @@
 					"workflow.development-tooling-guide-units-guidance-context",
 					"adapter.commit-tree",
 					"function.errors"
-				]
-			},
-			{
-				"name": "guidanceText.context",
-				"type": "GuidanceContext",
-				"required": true,
-				"description": "The context whose tree is read and whose texts map keeps each path's text. That cache lives as long as this context object, so the first stored text for a path is returned on later calls with the same context."
-			},
-			{
-				"name": "guidanceText.path",
-				"type": "string",
-				"required": true,
-				"description": "Repository-relative path passed to context.tree.read, such as a source file a unit owns. A successful read is stored under this path in context.texts, and a rejected read is not stored.",
-				"examples": [
-					"src/workflows/development-tooling/guide-units/guidanceContext.ts",
-					"src/core/development-tooling/errors.ts",
-					"src/workflows/development-tooling/guide-units/contractStates.ts"
 				]
 			},
 			{
@@ -514,16 +502,16 @@
 				]
 			},
 			{
-				"name": "sourceUnitStates.context",
+				"name": "allUnitStates.context",
 				"type": "GuidanceContext",
 				"required": true,
-				"description": "The context that supplies the tree for guidanceText reads and the index references used to find related Notice, Progress and types files. Source text is read through the context's texts cache."
+				"description": "The context that supplies registries and scenarios for named states, index references for related files, and the tree that guidanceText reads through the texts cache."
 			},
 			{
-				"name": "sourceUnitStates.unit",
+				"name": "allUnitStates.unit",
 				"type": "ComponentManifest",
 				"required": true,
-				"description": "The unit whose owns.source files are scanned for branch literals on status, state, phase, mode or variant, together with the Notice or Progress files they reference and the .types.ts files referenced by those. Its contract is not read here.",
+				"description": "The unit whose id, contract and owns.source feed all three state sources: named registry and scenario states, contract-derived guesses, and source-branch guesses.",
 				"examples": [
 					{
 						"schemaVersion": 1,
@@ -598,16 +586,33 @@
 				]
 			},
 			{
-				"name": "allUnitStates.context",
+				"name": "guidanceText.context",
 				"type": "GuidanceContext",
 				"required": true,
-				"description": "The context that supplies registries and scenarios for named states, index references for related files, and the tree that guidanceText reads through the texts cache."
+				"description": "The context whose tree is read and whose texts map keeps each path's text. That cache lives as long as this context object, so the first stored text for a path is returned on later calls with the same context."
 			},
 			{
-				"name": "allUnitStates.unit",
+				"name": "guidanceText.path",
+				"type": "string",
+				"required": true,
+				"description": "Repository-relative path passed to context.tree.read, such as a source file a unit owns. A successful read is stored under this path in context.texts, and a rejected read is not stored.",
+				"examples": [
+					"src/workflows/development-tooling/guide-units/guidanceContext.ts",
+					"src/core/development-tooling/errors.ts",
+					"src/workflows/development-tooling/guide-units/contractStates.ts"
+				]
+			},
+			{
+				"name": "sourceUnitStates.context",
+				"type": "GuidanceContext",
+				"required": true,
+				"description": "The context that supplies the tree for guidanceText reads and the index references used to find related Notice, Progress and types files. Source text is read through the context's texts cache."
+			},
+			{
+				"name": "sourceUnitStates.unit",
 				"type": "ComponentManifest",
 				"required": true,
-				"description": "The unit whose id, contract and owns.source feed all three state sources: named registry and scenario states, contract-derived guesses, and source-branch guesses.",
+				"description": "The unit whose owns.source files are scanned for branch literals on status, state, phase, mode or variant, together with the Notice or Progress files they reference and the .types.ts files referenced by those. Its contract is not read here.",
 				"examples": [
 					{
 						"schemaVersion": 1,
@@ -1025,47 +1030,6 @@
 						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown by fail() with Unknown unit naming the requested id when no stored unit with that exact id has status 'active', so retired units are rejected the same way."
-					}
-				],
-				"errorStatus": "declared"
-			},
-			{
-				"name": "guidanceText",
-				"inputs": [
-					{
-						"name": "guidanceText.context",
-						"type": "GuidanceContext",
-						"required": true,
-						"description": "The context whose tree is read and whose texts map keeps each path's text. That cache lives as long as this context object, so the first stored text for a path is returned on later calls with the same context."
-					},
-					{
-						"name": "guidanceText.path",
-						"type": "string",
-						"required": true,
-						"description": "Repository-relative path passed to context.tree.read, such as a source file a unit owns. A successful read is stored under this path in context.texts, and a rejected read is not stored.",
-						"examples": [
-							"src/workflows/development-tooling/guide-units/guidanceContext.ts",
-							"src/core/development-tooling/errors.ts",
-							"src/workflows/development-tooling/guide-units/contractStates.ts"
-						]
-					}
-				],
-				"outputs": [
-					{
-						"name": "guidanceText",
-						"type": "Promise<string>",
-						"description": "The text of the requested path read from the selected tree, served from context.texts when this path was already read in the same context. A rejected read propagates unchanged, and the text always comes from the context's own tree, never from the other tree.",
-						"examples": [
-							"// @harness-uid u_vywguk6j2s\nexport class ExpectedCliError extends Error {\n\toverride name = 'ExpectedCliError';\n}\n",
-							"// @harness-uid u_7b5ruejirf\nimport type { ComponentManifest, ContractItem } from '../../../core/development-tooling/unitTypes';\n"
-						]
-					}
-				],
-				"errors": [
-					{
-						"name": "Dependency failure",
-						"type": "thrown",
-						"description": "Rejections from context.tree.read propagate unchanged, and a path whose read rejects is not stored in context.texts."
 					}
 				],
 				"errorStatus": "declared"
@@ -1600,121 +1564,6 @@
 				"errorStatus": "declared"
 			},
 			{
-				"name": "sourceUnitStates",
-				"inputs": [
-					{
-						"name": "sourceUnitStates.context",
-						"type": "GuidanceContext",
-						"required": true,
-						"description": "The context that supplies the tree for guidanceText reads and the index references used to find related Notice, Progress and types files. Source text is read through the context's texts cache."
-					},
-					{
-						"name": "sourceUnitStates.unit",
-						"type": "ComponentManifest",
-						"required": true,
-						"description": "The unit whose owns.source files are scanned for branch literals on status, state, phase, mode or variant, together with the Notice or Progress files they reference and the .types.ts files referenced by those. Its contract is not read here.",
-						"examples": [
-							{
-								"schemaVersion": 1,
-								"id": "workflow.development-tooling-guide-units-guidance-context",
-								"uid": "u_bfad3bg4oz",
-								"kind": "workflow",
-								"title": "guidanceContext",
-								"responsibility": "Loads committed or working registry context, caches source text, resolves active identities and combines catalog declarations with contract and source hints.",
-								"responsibilityOrigin": "declared",
-								"status": "active",
-								"owns": {
-									"source": ["src/workflows/development-tooling/guide-units/guidanceContext.ts"],
-									"symbols": [
-										"guidanceContext",
-										"guidanceUnit",
-										"guidanceText",
-										"namedUnitStates",
-										"sourceUnitStates",
-										"allUnitStates"
-									]
-								},
-								"contract": {
-									"origin": "declared",
-									"inputs": [
-										{
-											"name": "guidanceUnit.id",
-											"type": "string",
-											"required": true,
-											"description": "The exact unit id to match against stored units whose status is 'active'."
-										}
-									],
-									"outputs": [
-										{
-											"name": "guidanceUnit",
-											"type": "ComponentManifest",
-											"description": "The stored manifest whose id equals the requested id and whose status is 'active'."
-										}
-									],
-									"errors": [
-										{
-											"name": "ExpectedCliError",
-											"type": "thrown",
-											"description": "Thrown by fail() with a CLI diagnostic."
-										}
-									],
-									"errorStatus": "declared"
-								},
-								"dependencies": [
-									{
-										"unit": "adapter.commit-tree",
-										"via": "import",
-										"origin": "derived"
-									}
-								],
-								"runtime": {
-									"kind": "module",
-									"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts",
-									"targets": [
-										{
-											"kind": "module",
-											"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts"
-										}
-									]
-								},
-								"scenarios": [],
-								"budgets": {
-									"size": "frozen",
-									"complexity": "frozen",
-									"performance": []
-								}
-							}
-						]
-					}
-				],
-				"outputs": [
-					{
-						"name": "sourceUnitStates",
-						"type": "Promise<UnitState[]>",
-						"description": "Guessed states with origin GUESS, read from status, state, phase, mode or variant comparisons, from property annotations listing string literals, and from assignments to names ending in Status, State, Phase or Mode, all in the scanned source. A match that includes complete also adds succeeded, and these hints never establish rendered proof.",
-						"examples": [
-							[
-								{
-									"name": "active",
-									"origin": "GUESS",
-									"reasons": [
-										"Source branch/type in src/workflows/development-tooling/guide-units/guidanceContext.ts."
-									]
-								}
-							]
-						]
-					}
-				],
-				"errors": [
-					{
-						"name": "Dependency failure",
-						"type": "thrown",
-						"description": "Rejections from guidanceText, which reads each scanned path through context.tree.read, propagate unchanged."
-					}
-				],
-				"errorStatus": "declared"
-			},
-			{
 				"name": "allUnitStates",
 				"inputs": [
 					{
@@ -1845,6 +1694,162 @@
 						"name": "Dependency failure",
 						"type": "thrown",
 						"description": "Rejections from sourceUnitStates, which reads source through context.tree.read, propagate unchanged; the named and contract-derived parts contribute no rejection of their own."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "guidanceText",
+				"inputs": [
+					{
+						"name": "guidanceText.context",
+						"type": "GuidanceContext",
+						"required": true,
+						"description": "The context whose tree is read and whose texts map keeps each path's text. That cache lives as long as this context object, so the first stored text for a path is returned on later calls with the same context."
+					},
+					{
+						"name": "guidanceText.path",
+						"type": "string",
+						"required": true,
+						"description": "Repository-relative path passed to context.tree.read, such as a source file a unit owns. A successful read is stored under this path in context.texts, and a rejected read is not stored.",
+						"examples": [
+							"src/workflows/development-tooling/guide-units/guidanceContext.ts",
+							"src/core/development-tooling/errors.ts",
+							"src/workflows/development-tooling/guide-units/contractStates.ts"
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "guidanceText",
+						"type": "Promise<string>",
+						"description": "The text of the requested path read from the selected tree, served from context.texts when this path was already read in the same context. A rejected read propagates unchanged, and the text always comes from the context's own tree, never from the other tree.",
+						"examples": [
+							"// @harness-uid u_vywguk6j2s\nexport class ExpectedCliError extends Error {\n\toverride name = 'ExpectedCliError';\n}\n",
+							"// @harness-uid u_7b5ruejirf\nimport type { ComponentManifest, ContractItem } from '../../../core/development-tooling/unitTypes';\n"
+						]
+					}
+				],
+				"errors": [
+					{
+						"name": "Dependency failure",
+						"type": "thrown",
+						"description": "Rejections from context.tree.read propagate unchanged, and a path whose read rejects is not stored in context.texts."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "sourceUnitStates",
+				"inputs": [
+					{
+						"name": "sourceUnitStates.context",
+						"type": "GuidanceContext",
+						"required": true,
+						"description": "The context that supplies the tree for guidanceText reads and the index references used to find related Notice, Progress and types files. Source text is read through the context's texts cache."
+					},
+					{
+						"name": "sourceUnitStates.unit",
+						"type": "ComponentManifest",
+						"required": true,
+						"description": "The unit whose owns.source files are scanned for branch literals on status, state, phase, mode or variant, together with the Notice or Progress files they reference and the .types.ts files referenced by those. Its contract is not read here.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "workflow.development-tooling-guide-units-guidance-context",
+								"uid": "u_bfad3bg4oz",
+								"kind": "workflow",
+								"title": "guidanceContext",
+								"responsibility": "Loads committed or working registry context, caches source text, resolves active identities and combines catalog declarations with contract and source hints.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": ["src/workflows/development-tooling/guide-units/guidanceContext.ts"],
+									"symbols": [
+										"guidanceContext",
+										"guidanceUnit",
+										"guidanceText",
+										"namedUnitStates",
+										"sourceUnitStates",
+										"allUnitStates"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [
+										{
+											"name": "guidanceUnit.id",
+											"type": "string",
+											"required": true,
+											"description": "The exact unit id to match against stored units whose status is 'active'."
+										}
+									],
+									"outputs": [
+										{
+											"name": "guidanceUnit",
+											"type": "ComponentManifest",
+											"description": "The stored manifest whose id equals the requested id and whose status is 'active'."
+										}
+									],
+									"errors": [
+										{
+											"name": "ExpectedCliError",
+											"type": "thrown",
+											"description": "Thrown by fail() with a CLI diagnostic."
+										}
+									],
+									"errorStatus": "declared"
+								},
+								"dependencies": [
+									{
+										"unit": "adapter.commit-tree",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceUnitStates",
+						"type": "Promise<UnitState[]>",
+						"description": "Guessed states with origin GUESS, read from status, state, phase, mode or variant comparisons, from property annotations listing string literals, and from assignments to names ending in Status, State, Phase or Mode, all in the scanned source. A match that includes complete also adds succeeded, and these hints never establish rendered proof.",
+						"examples": [
+							[
+								{
+									"name": "active",
+									"origin": "GUESS",
+									"reasons": [
+										"Source branch/type in src/workflows/development-tooling/guide-units/guidanceContext.ts."
+									]
+								}
+							]
+						]
+					}
+				],
+				"errors": [
+					{
+						"name": "Dependency failure",
+						"type": "thrown",
+						"description": "Rejections from guidanceText, which reads each scanned path through context.tree.read, propagate unchanged."
 					}
 				],
 				"errorStatus": "declared"

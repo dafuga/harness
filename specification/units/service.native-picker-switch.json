@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/development-tooling/native-picker-bridge-service/NativePickerSwitchError.ts",
 			"src/services/development-tooling/native-picker-bridge-service/NativePickerSwitchService.ts",
 			"src/services/development-tooling/native-picker-bridge-service/NativePickerSwitchService.types.ts"
 		],
 		"symbols": [
+			"NativePickerSwitchError",
 			"NativePickerSwitchService",
 			"NativePickerSwitchService.constructor",
 			"NativePickerSwitchService.apply",

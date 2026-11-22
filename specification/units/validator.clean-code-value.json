@@ -9,10 +9,17 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/validators/development-tooling/InvalidJevValueError.ts",
 			"src/validators/development-tooling/cleanCodeValue.ts",
 			"src/validators/development-tooling/cleanCodeValue.types.ts"
 		],
-		"symbols": ["recordValue", "probabilityValue", "tokenCount", "InvalidJevValueError"]
+		"symbols": [
+			"InvalidJevValueError",
+			"recordValue",
+			"probabilityValue",
+			"tokenCount",
+			"InvalidJevValueError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

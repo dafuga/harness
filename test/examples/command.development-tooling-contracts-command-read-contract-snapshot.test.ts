@@ -1,4 +1,8 @@
-import type { Reader, ExampleCase, IdentityContract } from './command.development-tooling-contracts-command-read-contract-snapshot.test.types';
+import type {
+	Reader,
+	ExampleCase,
+	IdentityContract
+} from './command.development-tooling-contracts-command-read-contract-snapshot.test.types';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { test } from 'vitest';

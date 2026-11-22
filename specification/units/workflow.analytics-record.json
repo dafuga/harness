@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"src/workflows/analyticsRecord.ts",
-			"src/workflows/reports-media/analyticsRecord.ts"
+			"src/workflows/reports-media/analyticsRecord.ts",
+			"src/workflows/reports-media/analyticsRecord.types.ts"
 		],
 		"symbols": [
 			"projectIdentity",
@@ -22,7 +23,8 @@
 			"resolvedContext",
 			"recordAnalytics",
 			"fingerprint",
-			"validateReport"
+			"validateReport",
+			"FingerprintValue"
 		]
 	},
 	"contract": {

@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/validators/agents-providers/CodexRequestValidator.ts"],
-		"symbols": ["CodexRequestValidator", "CodexRequestValidator.parse"]
+		"source": [
+			"src/validators/agents-providers/CodexRequestValidator.ts",
+			"src/validators/agents-providers/CodexRequestValidator.types.ts"
+		],
+		"symbols": ["CodexRequestValidator", "CodexRequestValidator.parse", "JsonValue"]
 	},
 	"contract": {
 		"origin": "declared",

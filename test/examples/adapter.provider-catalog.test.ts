@@ -1,4 +1,10 @@
-import { catalogFiles, listWith, prefix, pathsIn, writeFiles } from './adapter.provider-catalog.fixture';
+import {
+	catalogFiles,
+	listWith,
+	prefix,
+	pathsIn,
+	writeFiles
+} from './adapter.provider-catalog.fixture';
 import type { CatalogPaths, CatalogFiles } from './adapter.provider-catalog.test.types';
 import { existsSync, rmSync } from 'node:fs';
 import { join, relative } from 'node:path';

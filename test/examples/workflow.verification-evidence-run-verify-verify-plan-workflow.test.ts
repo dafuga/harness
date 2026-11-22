@@ -1,4 +1,8 @@
-import { unitId, scenario, examplesCommand } from './workflow.verification-evidence-run-verify-verify-plan-workflow.fixture';
+import {
+	unitId,
+	scenario,
+	examplesCommand
+} from './workflow.verification-evidence-run-verify-verify-plan-workflow.fixture';
 import type { Cases } from './workflow.verification-evidence-run-verify-verify-plan-workflow.test.types';
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';

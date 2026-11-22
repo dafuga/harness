@@ -11,7 +11,8 @@
 		"source": [
 			"src/adapters/JevAdapter.ts",
 			"src/adapters/agents-providers/JevAdapter.ts",
-			"src/adapters/agents-providers/JevAdapter.types.ts"
+			"src/adapters/agents-providers/JevAdapter.types.ts",
+			"src/adapters/agents-providers/JevEvaluationError.ts"
 		],
 		"symbols": [
 			"JevAdapter",
@@ -20,6 +21,7 @@
 			"JevAdapter.evaluate",
 			"JevAdapterConfig",
 			"JevAdapterConfig",
+			"JevEvaluationError",
 			"JevEvaluationError"
 		]
 	},

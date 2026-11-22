@@ -13,9 +13,15 @@
 	"owns": {
 		"source": [
 			"src/commands/module-system/ModuleCommand.ts",
-			"src/commands/module-system/ModuleCommand.types.ts"
+			"src/commands/module-system/ModuleCommand.types.ts",
+			"src/commands/module-system/TestingPluginCancelledError.ts"
 		],
-		"symbols": ["ModuleCommand", "ModuleCommand.register", "TestingPluginCancelledError"]
+		"symbols": [
+			"ModuleCommand",
+			"ModuleCommand.register",
+			"TestingPluginCancelledError",
+			"TestingPluginCancelledError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

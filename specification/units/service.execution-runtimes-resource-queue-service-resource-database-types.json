@@ -8,8 +8,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/execution-runtimes/resource-queue-service/resourceDatabase.types.ts"],
-		"symbols": ["Statement", "ResourceDatabase", "UnsupportedResourceQueueSchemaError"]
+		"source": [
+			"src/services/execution-runtimes/resource-queue-service/UnsupportedResourceQueueSchemaError.ts",
+			"src/services/execution-runtimes/resource-queue-service/resourceDatabase.types.ts"
+		],
+		"symbols": [
+			"UnsupportedResourceQueueSchemaError",
+			"Statement",
+			"ResourceDatabase",
+			"UnsupportedResourceQueueSchemaError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

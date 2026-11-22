@@ -10,14 +10,16 @@
 	"owns": {
 		"source": [
 			"src/commands/agents-providers/ModuleTaskCommand.ts",
-			"src/commands/agents-providers/ModuleTaskCommand.types.ts"
+			"src/commands/agents-providers/ModuleTaskCommand.types.ts",
+			"src/commands/agents-providers/TaskWorkerInterruptedError.ts"
 		],
 		"symbols": [
 			"ModuleTaskCommand",
 			"ModuleTaskCommand.constructor",
 			"ModuleTaskCommand.register",
 			"TaskWorkerInterruptedError",
-			"WorkerFlags"
+			"WorkerFlags",
+			"TaskWorkerInterruptedError"
 		]
 	},
 	"contract": {

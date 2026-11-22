@@ -1,5 +1,11 @@
-import { zeta, flow } from './command.development-tooling-contracts-command-read-contract-catalog.fixture';
-import type { Refusal, Outcome } from './command.development-tooling-contracts-command-read-contract-catalog.test.types';
+import {
+	zeta,
+	flow
+} from './command.development-tooling-contracts-command-read-contract-catalog.fixture';
+import type {
+	Refusal,
+	Outcome
+} from './command.development-tooling-contracts-command-read-contract-catalog.test.types';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { test } from 'vitest';

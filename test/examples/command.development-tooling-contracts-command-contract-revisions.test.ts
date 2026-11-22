@@ -1,4 +1,9 @@
-import type { Result, Row, ExampleCase, Selectors } from './command.development-tooling-contracts-command-contract-revisions.test.types';
+import type {
+	Result,
+	Row,
+	ExampleCase,
+	Selectors
+} from './command.development-tooling-contracts-command-contract-revisions.test.types';
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'vitest';

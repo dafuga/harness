@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"src/services/verification-evidence/TaskCompletionService.ts",
-			"src/services/verification-evidence/TaskCompletionService.types.ts"
+			"src/services/verification-evidence/TaskCompletionService.types.ts",
+			"src/services/verification-evidence/TaskSourceChangedError.ts"
 		],
 		"symbols": [
 			"TaskAudit",
@@ -23,6 +24,7 @@
 			"taskCompletionInstructions",
 			"TaskAuditInput",
 			"TaskAudit",
+			"TaskSourceChangedError",
 			"TaskSourceChangedError"
 		]
 	},

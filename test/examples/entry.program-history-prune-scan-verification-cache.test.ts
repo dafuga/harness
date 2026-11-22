@@ -1,4 +1,7 @@
-import type { Case, Summary } from './entry.program-history-prune-scan-verification-cache.test.types';
+import type {
+	Case,
+	Summary
+} from './entry.program-history-prune-scan-verification-cache.test.types';
 import { mkdir, symlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { test } from 'vitest';

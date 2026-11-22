@@ -33,3 +33,6 @@ export function file(path: string, patch: Partial<SourceFile> = {}): SourceFile 
 }
 
 export const unitId = 'function.unit-measurements';
+
+export const indexed = (files: SourceFile[]) =>
+	new Map(files.map((item): [string, SourceFile] => [item.path, item]));

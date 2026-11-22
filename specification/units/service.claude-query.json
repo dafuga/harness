@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryFailedError.ts",
 			"src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService.ts",
 			"src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService.types.ts"
 		],
 		"symbols": [
+			"ClaudeQueryFailedError",
 			"ClaudeQueryService",
 			"ClaudeQueryService.constructor",
 			"ClaudeQueryService.run",

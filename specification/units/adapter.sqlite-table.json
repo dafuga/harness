@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/adapters/development-tooling/PrimaryKeyUpdateError.ts",
 			"src/adapters/development-tooling/SqliteTableAdapter.ts",
 			"src/adapters/development-tooling/SqliteTableAdapter.types.ts"
 		],
 		"symbols": [
+			"PrimaryKeyUpdateError",
 			"SqliteTableAdapter",
 			"SqliteTableAdapter.constructor",
 			"SqliteTableAdapter.find",
@@ -20,7 +22,8 @@
 			"SqliteTableAdapter.insert",
 			"SqliteTableAdapter.update",
 			"SqliteTableAdapter.delete",
-			"PrimaryKeyUpdateError"
+			"PrimaryKeyUpdateError",
+			"SqliteFieldValue"
 		]
 	},
 	"contract": {

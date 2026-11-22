@@ -12,10 +12,12 @@
 	},
 	"owns": {
 		"source": [
+			"src/services/module-system/ModuleResourceGenerationError.ts",
 			"src/services/module-system/ModuleResourceService.ts",
 			"src/services/module-system/ModuleResourceService.types.ts"
 		],
 		"symbols": [
+			"ModuleResourceGenerationError",
 			"ModuleResourceService",
 			"ModuleResourceService.generate",
 			"ModuleResourceGenerationError"

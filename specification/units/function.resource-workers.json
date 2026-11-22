@@ -9,10 +9,16 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/core/execution-runtimes/InvalidTestWorkerCeilingError.ts",
 			"src/utils/execution-runtimes/resourceWorkers.ts",
 			"src/utils/execution-runtimes/resourceWorkers.types.ts"
 		],
-		"symbols": ["resourceWorkers", "resourceThreads", "InvalidTestWorkerCeilingError"]
+		"symbols": [
+			"InvalidTestWorkerCeilingError",
+			"resourceWorkers",
+			"resourceThreads",
+			"InvalidTestWorkerCeilingError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

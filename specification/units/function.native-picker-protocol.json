@@ -9,11 +9,13 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/core/development-tooling/UnsupportedModelSelectionError.ts",
 			"src/utils/development-tooling/nativePickerProtocol.ts",
 			"src/utils/development-tooling/nativePickerProtocol.types.ts",
 			"src/utils/nativePickerProtocol.ts"
 		],
 		"symbols": [
+			"UnsupportedModelSelectionError",
 			"nativePickerProtocol",
 			"pickerProvider",
 			"nativeOpusModel",

@@ -3,7 +3,6 @@ import type { JsonValue } from './CodexRequestValidator.types';
 import { z } from 'zod';
 import type { GatewayRequest } from '../../utils/development-tooling/gatewayTypes';
 
-
 const schema = z.object({
 	model: z.literal('claude-opus-5-5'),
 	stream: z.literal(true),

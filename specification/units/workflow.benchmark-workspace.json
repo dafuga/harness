@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/cli/program/benchmark-service/BenchmarkWorkspaceError.ts",
 			"src/cli/program/benchmark-service/benchmarkWorkspace.ts",
 			"src/cli/program/benchmark-service/benchmarkWorkspace.types.ts"
 		],
 		"symbols": [
+			"BenchmarkWorkspaceError",
 			"benchmarkGit",
 			"benchmarkFiles",
 			"snapshotBenchmark",

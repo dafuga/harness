@@ -9,9 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/CpuIntervalError.ts",
 			"src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/resourceCpu.types.ts"
 		],
-		"symbols": ["Counters", "CpuIntervalError"]
+		"symbols": ["CpuIntervalError", "Counters", "CpuIntervalError"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"src/repositories/git-source-history/CatalogRepository.ts",
-			"src/repositories/git-source-history/CatalogRepository.types.ts"
+			"src/repositories/git-source-history/CatalogRepository.types.ts",
+			"src/repositories/git-source-history/InvalidCatalogError.ts"
 		],
 		"symbols": [
 			"CatalogRepository",
@@ -24,6 +25,7 @@
 			"CatalogRepository.scenarios",
 			"CatalogQuery",
 			"CatalogQuery",
+			"InvalidCatalogError",
 			"InvalidCatalogError"
 		]
 	},

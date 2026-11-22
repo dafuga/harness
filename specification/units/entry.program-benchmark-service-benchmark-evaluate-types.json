@@ -8,10 +8,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/benchmark-service/benchmarkEvaluate.types.ts"],
+		"source": [
+			"src/cli/program/benchmark-service/BenchmarkSetupError.ts",
+			"src/cli/program/benchmark-service/benchmarkEvaluate.types.ts"
+		],
 		"symbols": [
 			"BenchmarkSetupError",
 			"BenchmarkSetupError.constructor",
+			"BenchmarkSetupError",
 			"BenchmarkEvaluationInput"
 		]
 	},

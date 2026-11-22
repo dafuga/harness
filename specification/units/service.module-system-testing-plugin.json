@@ -13,9 +13,15 @@
 	"owns": {
 		"source": [
 			"src/commands/module-system/module-command/TestingPluginService.ts",
-			"src/commands/module-system/module-command/TestingPluginService.types.ts"
+			"src/commands/module-system/module-command/TestingPluginService.types.ts",
+			"src/commands/module-system/module-command/TestingPluginServiceError.ts"
 		],
-		"symbols": ["TestingPluginService", "TestingPluginService.run", "TestingPluginServiceError"]
+		"symbols": [
+			"TestingPluginService",
+			"TestingPluginService.run",
+			"TestingPluginServiceError",
+			"TestingPluginServiceError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

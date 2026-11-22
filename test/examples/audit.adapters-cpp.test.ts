@@ -2,11 +2,6 @@ import { auditCase } from './audit.adapters-cpp.fixture';
 
 import { test } from 'vitest';
 
-
-
-
-
-
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';

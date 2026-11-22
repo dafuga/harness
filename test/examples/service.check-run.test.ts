@@ -7,7 +7,6 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { CheckRunService, type RunContext } from '../../src/services/CheckRunService';
 
-
 const COMMIT = '0123456789abcdef0123456789abcdef01234567';
 const TREE = '89abcdef0123456789abcdef0123456789abcdef';
 const SCOPED_COMMAND =

@@ -10,12 +10,14 @@
 	"owns": {
 		"source": [
 			"src/cli/program/codex-gateway-service/CodexGatewayService.ts",
-			"src/cli/program/codex-gateway-service/CodexGatewayService.types.ts"
+			"src/cli/program/codex-gateway-service/CodexGatewayService.types.ts",
+			"src/cli/program/codex-gateway-service/InvalidGatewayRequestError.ts"
 		],
 		"symbols": [
 			"CodexGatewayService",
 			"CodexGatewayService.constructor",
 			"CodexGatewayService.fetch",
+			"InvalidGatewayRequestError",
 			"InvalidGatewayRequestError"
 		]
 	},

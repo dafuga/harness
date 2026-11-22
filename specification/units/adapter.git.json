@@ -11,6 +11,7 @@
 		"source": [
 			"src/adapters/git-source-history/GitAdapter.ts",
 			"src/adapters/git-source-history/GitAdapter.types.ts",
+			"src/adapters/git-source-history/GitCommandError.ts",
 			"src/adapters/git-source-history/git-adapter/gitDeadline.ts"
 		],
 		"symbols": [
@@ -25,6 +26,7 @@
 			"GitResult",
 			"GitRunOptions",
 			"GitResult",
+			"GitCommandError",
 			"GitCommandError",
 			"gitVerb",
 			"gitDeadline"

@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"src/cli/program/benchmark-service/benchmark-definition/ClaudeBenchmarkAdapter.ts",
-			"src/cli/program/benchmark-service/benchmark-definition/ClaudeBenchmarkAdapter.types.ts"
+			"src/cli/program/benchmark-service/benchmark-definition/ClaudeBenchmarkAdapter.types.ts",
+			"src/cli/program/benchmark-service/benchmark-definition/ClaudeRunError.ts"
 		],
 		"symbols": [
 			"ClaudeBenchmarkAdapter",
@@ -18,6 +19,7 @@
 			"ClaudeBenchmarkAdapter.preflight",
 			"ClaudeBenchmarkAdapter.run",
 			"ClaudeBenchmarkAdapter.command",
+			"ClaudeRunError",
 			"ClaudeRunError"
 		]
 	},

@@ -1,4 +1,8 @@
-import type { MaskedSource, ExampleCase, TemplateMarkup } from './function.block-complexity.test.types';
+import type {
+	MaskedSource,
+	ExampleCase,
+	TemplateMarkup
+} from './function.block-complexity.test.types';
 import { test } from 'vitest';
 import { blockComplexity } from '../../src/utils/development-tooling/blockComplexity';
 import { templateComplexity } from '../../src/services/development-tooling/source-index-service/blockComplexity';

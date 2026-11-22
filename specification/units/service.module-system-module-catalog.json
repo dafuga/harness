@@ -10,13 +10,15 @@
 	"owns": {
 		"source": [
 			"src/services/module-system/ModuleCatalogService.ts",
-			"src/services/module-system/ModuleCatalogService.types.ts"
+			"src/services/module-system/ModuleCatalogService.types.ts",
+			"src/services/module-system/ModuleCatalogValidationError.ts"
 		],
 		"symbols": [
 			"ModuleCatalogService",
 			"ModuleCatalogService.load",
 			"ModuleCatalogService.at",
 			"ModuleCatalogService.state",
+			"ModuleCatalogValidationError",
 			"ModuleCatalogValidationError"
 		]
 	},

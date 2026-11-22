@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"src/adapters/verification-evidence/EvidenceTreeAdapter.ts",
-			"src/adapters/verification-evidence/EvidenceTreeAdapter.types.ts"
+			"src/adapters/verification-evidence/EvidenceTreeAdapter.types.ts",
+			"src/adapters/verification-evidence/InvalidGitBatchResponseError.ts"
 		],
 		"symbols": [
 			"EvidenceTreeAdapter",
@@ -29,7 +30,8 @@
 			"TreeCommit",
 			"InvalidGitBatchResponseError",
 			"TreeFile",
-			"TreeCommit"
+			"TreeCommit",
+			"InvalidGitBatchResponseError"
 		]
 	},
 	"contract": {

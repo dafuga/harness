@@ -1,4 +1,9 @@
-import type { ExampleCase, Invocation, ScenarioSummary, CheckResult } from './command.scenarios.test.types';
+import type {
+	ExampleCase,
+	Invocation,
+	ScenarioSummary,
+	CheckResult
+} from './command.scenarios.test.types';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { Command } from 'commander';

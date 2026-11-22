@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"src/repositories/agents-providers/BenchmarkRepository.ts",
-			"src/repositories/agents-providers/BenchmarkRepository.types.ts"
+			"src/repositories/agents-providers/BenchmarkRepository.types.ts",
+			"src/repositories/agents-providers/InvalidBenchmarkRunIdError.ts"
 		],
 		"symbols": [
 			"BenchmarkRepository",
@@ -18,6 +19,7 @@
 			"BenchmarkRepository.directory",
 			"BenchmarkRepository.save",
 			"BenchmarkRepository.read",
+			"InvalidBenchmarkRunIdError",
 			"InvalidBenchmarkRunIdError"
 		]
 	},

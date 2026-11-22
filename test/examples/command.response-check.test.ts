@@ -1,5 +1,5 @@
 import { harnessProgram } from './command.response-check.fixture';
-import type { Command} from 'commander';
+import type { Command } from 'commander';
 import { CommanderError, type Option } from 'commander';
 import { test } from 'vitest';
 import { registerResponseCheckCommand } from '../../src/cli/program/ResponseCheckCommand';

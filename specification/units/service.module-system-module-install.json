@@ -12,10 +12,16 @@
 	},
 	"owns": {
 		"source": [
+			"src/services/module-system/ModuleCatalogGapError.ts",
 			"src/services/module-system/ModuleInstallService.ts",
 			"src/services/module-system/ModuleInstallService.types.ts"
 		],
-		"symbols": ["ModuleInstallService", "ModuleInstallService.add", "ModuleCatalogGapError"]
+		"symbols": [
+			"ModuleCatalogGapError",
+			"ModuleInstallService",
+			"ModuleInstallService.add",
+			"ModuleCatalogGapError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

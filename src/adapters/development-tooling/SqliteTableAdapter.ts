@@ -6,7 +6,6 @@ import { sqliteInput } from '../../utils/development-tooling/sqliteInput';
 import { sqliteRow } from '../../utils/development-tooling/sqliteRow';
 import { PrimaryKeyUpdateError } from './SqliteTableAdapter.types';
 
-
 /** Builds only model-declared identifiers; all application values are bound parameters. */
 export class SqliteTableAdapter {
 	private readonly table: string;

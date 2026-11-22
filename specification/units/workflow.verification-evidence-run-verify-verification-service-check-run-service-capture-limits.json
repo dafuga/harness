@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CaptureReadError.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/captureLimits.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/captureLimits.types.ts"
 		],
 		"symbols": [
+			"CaptureReadError",
 			"digestFile",
 			"oversizeCapture",
 			"RecordBudget",

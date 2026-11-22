@@ -1,4 +1,7 @@
-import type { Source, PlanInput } from './workflow.verification-evidence-run-verify-verification-service-verify-plan-report.test.types';
+import type {
+	Source,
+	PlanInput
+} from './workflow.verification-evidence-run-verify-verification-service-verify-plan-report.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';

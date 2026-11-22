@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/execution-runtimes/ResourceQueueService.types.ts"],
-		"symbols": ["RunOptions", "Dependencies", "ResourceQueueError"]
+		"source": [
+			"src/services/execution-runtimes/ResourceQueueError.ts",
+			"src/services/execution-runtimes/ResourceQueueService.types.ts"
+		],
+		"symbols": ["ResourceQueueError", "RunOptions", "Dependencies", "ResourceQueueError"]
 	},
 	"contract": {
 		"origin": "declared",

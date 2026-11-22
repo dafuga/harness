@@ -1,4 +1,10 @@
-import type { Written, Registered, Stopped, Described, ExampleCase } from './command.console.test.types';
+import type {
+	Written,
+	Registered,
+	Stopped,
+	Described,
+	ExampleCase
+} from './command.console.test.types';
 import { Command, CommanderError, type Option } from 'commander';
 import { test } from 'vitest';
 import { registerConsoleCommand } from '../../src/cli/program/ConsoleCommand';
