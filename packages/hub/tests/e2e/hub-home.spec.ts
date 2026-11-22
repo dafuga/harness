@@ -9,7 +9,6 @@ import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { hubHomeFixture } from './hub-home-fixture';
 import type { CapturePosition, HomeFixture } from './hub-home-fixture.types';
 import manifest from '../../../../specification/scenarios/hub-home.json' with { type: 'json' };
-
 const screens = [
 	{ id: 'agents', title: 'Agents' },
 	{ id: 'quota', title: 'Quota' },
@@ -18,9 +17,7 @@ const screens = [
 	{ id: 'projects', title: 'Projects' },
 	{ id: 'wip', title: 'Work in progress' }
 ] as const;
-
 test.setTimeout(90000);
-
 for (const viewport of manifest.viewports) {
 	for (const scheme of ['dark', 'light'] as const) {
 		for (const mode of ['default', 'busy', 'empty', 'loading'] as const) {
