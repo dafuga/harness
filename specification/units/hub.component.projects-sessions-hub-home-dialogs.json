@@ -1,0 +1,197 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-dialogs",
+	"uid": "u_6kpzjxqlbp",
+	"kind": "component",
+	"title": "HubHomeDialogs",
+	"responsibility": "Displays the selected home section in a shared modal with section-specific actions.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"hub.component.projects-sessions-hub-home-agents",
+			"hub.component.projects-sessions-hub-home-plans",
+			"hub.component.projects-sessions-hub-home-projects",
+			"hub.component.projects-sessions-hub-home-quota",
+			"hub.component.projects-sessions-hub-home-schedule",
+			"hub.component.projects-sessions-hub-home-work",
+			"reports.component.harness-harness-icon",
+			"reports.component.modal",
+			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-button"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte"],
+		"symbols": ["HubHomeDialogs", "HubHomeDialogs.actions"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HubHomeDialogs.selected",
+				"type": "HomeSection",
+				"required": true,
+				"description": "Identifier of the currently open home section."
+			},
+			{
+				"name": "HubHomeDialogs.view",
+				"type": "HomeView",
+				"required": true,
+				"description": "Home data, project snapshots, source availability and clock used for presentation."
+			},
+			{
+				"name": "HubHomeDialogs.agentId",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional identifier of the initially selected agent."
+			},
+			{
+				"name": "HubHomeDialogs.open",
+				"type": "OpenHomeSection",
+				"required": true,
+				"description": "Opens the relevant home section and accepts an agent identifier when applicable."
+			},
+			{
+				"name": "HubHomeDialogs.send",
+				"type": "SendHomeChat",
+				"required": true,
+				"description": "Submits the agent note or answer to the owner chat queue and returns its receipt."
+			},
+			{
+				"name": "HubHomeDialogs.receipt",
+				"type": "(id: string) => Promise<HomeChatReceipt>",
+				"required": true,
+				"description": "Reads the delivery status for the supplied chat command identifier."
+			},
+			{
+				"name": "HubHomeDialogs.readProject",
+				"type": "ReadHomeProject",
+				"required": true,
+				"description": "Retrieves a hosted project snapshot by its identifier."
+			},
+			{
+				"name": "HubHomeDialogs.reload",
+				"type": "() => void",
+				"required": true,
+				"description": "Requests fresh home data from the connected sources."
+			},
+			{
+				"name": "HubHomeDialogs.close",
+				"type": "() => void",
+				"required": true,
+				"description": "Dismisses the modal and returns focus to its opener."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeDialogs",
+				"type": "markup",
+				"description": "Displays the selected home section in a shared modal with section-specific actions."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "HubHomeDialogs.actions",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeDialogs.actions",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-agents",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-plans",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-projects",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-quota",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-schedule",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

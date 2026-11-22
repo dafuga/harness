@@ -1,0 +1,121 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.projects-sessions-hub-home-client",
+	"uid": "u_kqbmr6buaf",
+	"kind": "function",
+	"title": "hubHomeClient",
+	"responsibility": "Reads the authenticated Hub Home projection and exposes its snapshot only when the account is granted access.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/hubHomeClient.ts"],
+		"symbols": ["readHome", "homeSnapshot"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "readHome.api",
+				"type": "BrowserApi",
+				"required": true,
+				"description": "Authenticated browser API client that reads the owner projection."
+			},
+			{
+				"name": "homeSnapshot.result",
+				"type": "ReadHomeResult | null",
+				"required": true,
+				"description": "Owner access result or null during loading."
+			}
+		],
+		"outputs": [
+			{
+				"name": "readHome",
+				"type": "Promise<ReadHomeResult>",
+				"description": "Resolves to the owner access result, falling back to unavailable on request failure."
+			},
+			{
+				"name": "homeSnapshot",
+				"type": "OwnerHomeSnapshot | null",
+				"description": "Owner snapshot when access was granted, or null."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "readHome",
+				"inputs": [
+					{
+						"name": "readHome.api",
+						"type": "BrowserApi",
+						"required": true,
+						"description": "Authenticated browser API client that reads the owner projection."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readHome",
+						"type": "Promise<ReadHomeResult>",
+						"description": "Resolves to the owner access result, falling back to unavailable on request failure."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "homeSnapshot",
+				"inputs": [
+					{
+						"name": "homeSnapshot.result",
+						"type": "ReadHomeResult | null",
+						"required": true,
+						"description": "Owner access result or null during loading."
+					}
+				],
+				"outputs": [
+					{
+						"name": "homeSnapshot",
+						"type": "OwnerHomeSnapshot | null",
+						"description": "Owner snapshot when access was granted, or null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.browser-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/hubHomeClient.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/hubHomeClient.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

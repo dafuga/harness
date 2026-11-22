@@ -1,0 +1,78 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-skeleton",
+	"uid": "u_veojwq4m3c",
+	"kind": "component",
+	"title": "HubHomeSkeleton",
+	"responsibility": "Keeps a section in place with placeholder rows while its data loads.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeSkeleton.svelte"],
+		"symbols": ["HubHomeSkeleton"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HubHomeSkeleton.rows",
+				"type": "number",
+				"required": false,
+				"default": 4,
+				"description": "Number of placeholder rows. Defaults to four."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeSkeleton",
+				"type": "markup",
+				"description": "Keeps a section in place with placeholder rows while its data loads."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/HubHomeSkeleton.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/HubHomeSkeleton.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

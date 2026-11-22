@@ -98,6 +98,22 @@
 		"hub.component.native-approval",
 		"hub.component.project-create",
 		"hub.component.project-list",
+		"hub.component.projects-sessions-hub-home",
+		"hub.component.projects-sessions-hub-home-agents",
+		"hub.component.projects-sessions-hub-home-card",
+		"hub.component.projects-sessions-hub-home-cards",
+		"hub.component.projects-sessions-hub-home-composer",
+		"hub.component.projects-sessions-hub-home-dialogs",
+		"hub.component.projects-sessions-hub-home-header",
+		"hub.component.projects-sessions-hub-home-plans",
+		"hub.component.projects-sessions-hub-home-projects",
+		"hub.component.projects-sessions-hub-home-quota",
+		"hub.component.projects-sessions-hub-home-row",
+		"hub.component.projects-sessions-hub-home-schedule",
+		"hub.component.projects-sessions-hub-home-skeleton",
+		"hub.component.projects-sessions-hub-home-work",
+		"hub.component.projects-sessions-hub-home-work-cards",
+		"hub.component.projects-sessions-hub-quota-subscription",
 		"hub.component.public-site-home-download",
 		"hub.component.public-site-home-features",
 		"hub.component.public-site-home-hero",
@@ -2022,6 +2038,102 @@
 			"title": "Project list",
 			"coverage": "required",
 			"units": ["hub.component.project-list"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home",
+			"title": "HubHome",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-agents",
+			"title": "HubHomeAgents",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-agents"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-card",
+			"title": "HubHomeCard",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-card"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-cards",
+			"title": "HubHomeCards",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-cards"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-composer",
+			"title": "HubHomeComposer",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-composer"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-dialogs",
+			"title": "HubHomeDialogs",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-dialogs"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-header",
+			"title": "HubHomeHeader",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-header"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-plans",
+			"title": "HubHomePlans",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-plans"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-projects",
+			"title": "HubHomeProjects",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-projects"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-quota",
+			"title": "HubHomeQuota",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-quota"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-row",
+			"title": "HubHomeRow",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-row"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-schedule",
+			"title": "HubHomeSchedule",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-schedule"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-skeleton",
+			"title": "HubHomeSkeleton",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-skeleton"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-work",
+			"title": "HubHomeWork",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-work"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-work-cards",
+			"title": "HubHomeWorkCards",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-work-cards"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-quota-subscription",
+			"title": "HubQuotaSubscription",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-quota-subscription"]
 		},
 		{
 			"id": "hub-component-public-site-home-download",
@@ -8340,6 +8452,7 @@
 				"desktop-component-plan-badge",
 				"desktop-component-prior-image",
 				"desktop-component-project-agent",
+
 				"desktop-component-project-gate",
 				"desktop-component-project-gate-available",
 				"desktop-component-project-gate-busy",
@@ -8429,6 +8542,22 @@
 				"hub-component-native-approval",
 				"hub-component-project-create",
 				"hub-component-project-list",
+				"hub-component-projects-sessions-hub-home",
+				"hub-component-projects-sessions-hub-home-agents",
+				"hub-component-projects-sessions-hub-home-card",
+				"hub-component-projects-sessions-hub-home-cards",
+				"hub-component-projects-sessions-hub-home-composer",
+				"hub-component-projects-sessions-hub-home-dialogs",
+				"hub-component-projects-sessions-hub-home-header",
+				"hub-component-projects-sessions-hub-home-plans",
+				"hub-component-projects-sessions-hub-home-projects",
+				"hub-component-projects-sessions-hub-home-quota",
+				"hub-component-projects-sessions-hub-home-row",
+				"hub-component-projects-sessions-hub-home-schedule",
+				"hub-component-projects-sessions-hub-home-skeleton",
+				"hub-component-projects-sessions-hub-home-work",
+				"hub-component-projects-sessions-hub-home-work-cards",
+				"hub-component-projects-sessions-hub-quota-subscription",
 				"hub-component-public-site-home-download",
 				"hub-component-public-site-home-features",
 				"hub-component-public-site-home-hero",

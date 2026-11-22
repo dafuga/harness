@@ -1,4 +1,5 @@
 // @harness-uid u_p43nh5e4yc
+import { createHubHomePublisher } from './createHubHomePublisher';
 import type { TrackerOverviewFactoryInput } from './TrackerOverviewPublisher.types';
 import { TrackerOverviewPublisher } from './TrackerOverviewPublisher';
 import { readProjectOverview } from '$reports/lib/projects-sessions/project-overview/readProjectOverview';
@@ -16,6 +17,10 @@ export function createTrackerOverviewPublisher(
 	return new TrackerOverviewPublisher({
 		authority: input.authority,
 		ownerActorId,
-		read: input.read ?? (() => readProjectOverview())
+		read: input.read ?? (() => readProjectOverview()),
+		publishHome:
+			input.env.HARNESS_HUB_HOME_PUBLISH === '1'
+				? createHubHomePublisher(input.env.HARNESS_HUB_HOME_PROVIDER_FILE)
+				: undefined
 	});
 }

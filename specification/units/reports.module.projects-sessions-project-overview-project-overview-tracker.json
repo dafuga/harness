@@ -31,6 +31,12 @@
 				"type": "typeof fetch",
 				"required": true,
 				"description": "The fetch implementation for the fixed loopback GET requests."
+			},
+			{
+				"name": "readTrackerSources.includeHomeFields",
+				"type": "boolean",
+				"required": false,
+				"default": false
 			}
 		],
 		"outputs": [
@@ -57,6 +63,12 @@
 						"type": "typeof fetch",
 						"required": true,
 						"description": "The fetch implementation for the fixed loopback GET requests."
+					},
+					{
+						"name": "readTrackerSources.includeHomeFields",
+						"type": "boolean",
+						"required": false,
+						"default": false
 					}
 				],
 				"outputs": [

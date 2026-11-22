@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.style.hub-home-modal-chat",
+	"uid": "u_gsvocf3i74",
+	"kind": "style",
+	"title": "modal-chat",
+	"responsibility": "Owns the modal-chat stylesheet.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/lib/styles/hub-home/modal-chat.css"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/lib/styles/hub-home/modal-chat.css",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/lib/styles/hub-home/modal-chat.css"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

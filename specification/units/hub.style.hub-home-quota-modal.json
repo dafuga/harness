@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.style.hub-home-quota-modal",
+	"uid": "u_vpwhxgexn3",
+	"kind": "style",
+	"title": "quota-modal",
+	"responsibility": "Owns the quota-modal stylesheet.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/lib/styles/hub-home/quota-modal.css"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/lib/styles/hub-home/quota-modal.css",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/lib/styles/hub-home/quota-modal.css"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

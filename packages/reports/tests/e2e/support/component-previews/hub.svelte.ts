@@ -1,3 +1,4 @@
+import { catalogHome, isHubHomePreview } from './hubHomeCatalogData';
 import { children, done, stamp } from './shared';
 import type { PreviewCases } from './shared';
 import { desktopData } from './sealedData';
@@ -46,14 +47,18 @@ export function hubPreview(id: string, shown: ProjectSnapshot) {
 	// Any other read is answered as the pending sign-in request of a desktop app.
 	const request = { resource: { kind: 'project', projectId: project.id }, status: 'pending' };
 	const api = {
-		get: async (path: string) => hosted.read(path) ?? request,
+		get: async (path: string) => {
+			if (path === '/api/hub-home') return catalogHome;
+			if (path === `/api/projects/${project.id}/snapshot`) return hostedSnapshot(shown);
+			return hosted.read(path) ?? request;
+		},
 		send: async () => ({ resource: `project:${project.id}`, status: 'pending' }),
 		bytes: hosted.bytes
 	};
 
 	return {
 		context: { session, projects, api },
-		cases: hubCases(),
+		cases: isHubHomePreview(id) ? { [id]: {} } : hubCases(),
 		addresses: hosted.addresses,
 		project
 	};

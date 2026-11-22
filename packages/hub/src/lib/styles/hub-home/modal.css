@@ -1,0 +1,134 @@
+/* @harness-uid u_c2ne5xdf3m */
+/* The See all dialog: the shared native <dialog class="viewer-dialog hh-dialog">, opened with
+   showModal(), in the Project Overview dialog's frame at section scale. Where it follows the
+   home's .po-page main, hub.css's `.po-page ~ .viewer-dialog` rules match it too; every rule here
+   outranks them. The top layer holds it over a blurred ::backdrop on tablet and up, and as a
+   full-screen sheet on phones. Nothing locks the page, so the document keeps its own scrolling,
+   and no transform is used, so a shared dialog opened from inside stacks in the top layer. */
+.hh-home dialog.hh-dialog {
+	--po-error-text: color-mix(in srgb, var(--hx-color-error) 82%, var(--hx-color-text));
+	box-sizing: border-box;
+	width: min(1240px, calc(100% - var(--hx-space-40)));
+	max-width: none;
+	max-height: calc(100dvh - var(--hx-space-40) * 2);
+	margin: var(--hx-space-40) auto auto;
+	padding: 0;
+	overflow: hidden;
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-xlarge);
+	background: var(--hx-color-surface);
+	color: var(--hx-color-text);
+	box-shadow: var(--home-shadow);
+}
+/* Only an open dialog is laid out; a closed one keeps the browser's display: none. */
+.hh-home dialog.hh-dialog[open] {
+	display: flex;
+	flex-direction: column;
+}
+.hh-home dialog.hh-dialog::backdrop {
+	background: var(--hx-color-scrim-strong);
+	backdrop-filter: var(--hx-effect-blur-strong);
+}
+@media (min-width: 1650px) {
+	.hh-home dialog.hh-dialog {
+		width: min(1500px, calc(100% - var(--hx-space-96)));
+	}
+}
+.hh-home dialog.hh-dialog > .hh-dialog-head {
+	display: flex;
+	flex: none;
+	align-items: center;
+	gap: var(--hx-space-14);
+	padding: var(--hx-space-16) var(--hx-space-22);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.hh-home .hh-dialog-titles {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: var(--hx-space-2);
+	min-width: 0;
+}
+.hh-home .hh-dialog .hh-dialog-titles .hh-dialog-title {
+	margin: 0;
+	overflow-wrap: anywhere;
+	font-size: var(--hx-type-size-xl);
+	line-height: var(--hx-space-26);
+	font-weight: var(--hx-style-weight-semibold);
+	letter-spacing: var(--hx-style-tracking-tight);
+}
+.hh-home .hh-icon-button {
+	display: grid;
+	flex: none;
+	place-items: center;
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-control);
+	background: transparent;
+	cursor: pointer;
+}
+/* hub.css sizes every header button as a 44px icon; a tool such as New plan keeps its label. */
+.hh-home .hh-dialog .hh-dialog-head .po-action {
+	display: inline-flex;
+	width: auto;
+	height: auto;
+	padding: 0 var(--hx-space-14);
+}
+/* hub.css's .viewer-content padding and type are reset to the mockup's inherited values. */
+.hh-home dialog.hh-dialog > .hh-dialog-body {
+	flex: 1;
+	min-height: 0;
+	overflow: auto;
+	padding: var(--hx-space-20) var(--hx-space-24) var(--hx-space-24);
+	font-size: inherit;
+	line-height: inherit;
+}
+.hh-home .hh-filters.po-filters {
+	margin-bottom: var(--hx-space-20);
+}
+.hh-home .hh-tabs {
+	display: flex;
+	gap: var(--hx-space-4);
+	margin-bottom: var(--hx-space-20);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.hh-home .hh-tab {
+	min-height: 44px;
+	padding: 0 var(--hx-space-16);
+	border: 0;
+	border-bottom: var(--hx-border-thick) solid transparent;
+	background: transparent;
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-sm);
+	cursor: pointer;
+}
+.hh-home .hh-tab[aria-pressed='true'] {
+	border-bottom-color: var(--hx-color-primary);
+	color: var(--hx-color-text);
+	font-weight: var(--hx-style-weight-semibold);
+}
+@media (max-width: 560px) {
+	.hh-home dialog.hh-dialog {
+		width: 100%;
+		height: 100dvh;
+		max-height: 100dvh;
+		margin: 0;
+		border: 0;
+		border-radius: 0;
+	}
+	.hh-home dialog.hh-dialog > .hh-dialog-head {
+		gap: var(--hx-space-10);
+		padding: var(--hx-space-10) var(--hx-space-12) var(--hx-space-10) var(--hx-space-16);
+	}
+	.hh-home .hh-dialog .hh-dialog-head .hh-primary {
+		padding: 0 var(--hx-space-12);
+	}
+	.hh-home dialog.hh-dialog > .hh-dialog-body {
+		padding: var(--hx-space-16);
+	}
+	.hh-home .hh-dialog-body .hh-filters.po-filters {
+		margin-inline: calc(var(--hx-space-16) * -1);
+	}
+}

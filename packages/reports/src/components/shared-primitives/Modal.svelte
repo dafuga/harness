@@ -8,6 +8,8 @@
 		open = false,
 		isOpen,
 		title = '',
+		summary,
+		actions,
 		variant = 'image',
 		onClose,
 		onclose,
@@ -17,13 +19,16 @@
 		open?: boolean;
 		isOpen?: boolean;
 		title?: string;
-		variant?: 'image' | 'text' | 'lightbox';
+		summary?: string;
+		actions?: import('svelte').Snippet;
+		variant?: 'image' | 'text' | 'lightbox' | 'section';
 		onClose?: () => void;
 		onclose?: () => void;
 		children?: import('svelte').Snippet;
 		footer?: import('svelte').Snippet;
 	}>();
 	let dialog = $state<HTMLDialogElement>();
+	const titleId = $props.id();
 	let shown = $derived(isOpen ?? open);
 	$effect(() => {
 		if (shown) dialog?.showModal();
@@ -45,16 +50,26 @@
 		class="viewer-dialog"
 		class:text={variant === 'text'}
 		class:lightbox={variant === 'lightbox'}
+		class:hh-dialog={variant === 'section'}
 		data-harness-component="modal"
-		aria-labelledby="viewer-dialog-title"
+		aria-labelledby={titleId}
 	>
-		<hx-header class="viewer-header">
-			<hx-h2 id="viewer-dialog-title">{title}</hx-h2>
-			<hx-button onclick={close} aria-label={$t('close')}
+
+		<hx-header class="viewer-header" class:hh-dialog-head={variant === 'section'}>
+			{#if variant === 'section'}
+				<hx-div class="hh-dialog-titles">
+					<hx-h2 id={titleId} class="hh-dialog-title">{title}</hx-h2>
+					{#if summary}<hx-p class="po-totals">{summary}</hx-p>{/if}
+				</hx-div>
+				{@render actions?.()}
+			{:else}
+				<hx-h2 id={titleId}>{title}</hx-h2>
+			{/if}
+			<hx-button class:hh-icon-button={variant === 'section'} type="button" onclick={close} aria-label={$t('close')}
 				><HarnessIcon name="close" size={24} /></hx-button
 			>
 		</hx-header>
-		<hx-div class="viewer-content">{@render children?.()}</hx-div>
+		<hx-div class="viewer-content" class:hh-dialog-body={variant === 'section'}>{@render children?.()}</hx-div>
 		{#if footer}<hx-footer>{@render footer()}</hx-footer>{/if}
 	</hx-dialog>
 {/if}

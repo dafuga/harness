@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.style.hub-home-sections",
+	"uid": "u_khdcd553av",
+	"kind": "style",
+	"title": "sections",
+	"responsibility": "Owns the sections stylesheet.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/lib/styles/hub-home/sections.css"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/lib/styles/hub-home/sections.css",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/lib/styles/hub-home/sections.css"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

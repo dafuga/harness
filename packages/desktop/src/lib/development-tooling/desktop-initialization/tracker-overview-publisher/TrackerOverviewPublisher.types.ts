@@ -23,6 +23,7 @@ export interface TrackerOverviewPublisherOptions {
 	ownerActorId: string;
 	/** The fixed local tracker read; it never throws, failures arrive as an unavailable snapshot. */
 	read: () => Promise<OverviewSnapshot>;
+	publishHome?: (credential: NativeHostedCredential, current: () => boolean) => Promise<void>;
 	intervalMs?: number;
 	timers?: TrackerOverviewTimers;
 }

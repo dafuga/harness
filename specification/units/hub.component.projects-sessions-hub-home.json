@@ -1,0 +1,133 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home",
+	"uid": "u_mqkhzvyhou",
+	"kind": "component",
+	"title": "HubHome",
+	"responsibility": "Loads the signed-in owner projection and hosted projects, refreshes while visible, and opens the corresponding home section dialog.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"hub.component.projects-sessions-hub-home-cards",
+			"hub.component.projects-sessions-hub-home-dialogs",
+			"hub.component.projects-sessions-hub-home-header",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-main",
+			"reports.component.shared-primitives-atoms-html-p"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/HubHome.svelte"],
+		"symbols": ["HubHome"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "HubHome",
+				"type": "markup",
+				"description": "Loads the signed-in owner projection and hosted projects, refreshes while visible, and opens the corresponding home section dialog."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-cards",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-dialogs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.public-site-home-page",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-client",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.page.tracker-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.style.hub-home-index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-main",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/HubHome.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
