@@ -145,7 +145,7 @@ export const commandHelp = [
 		name: 'deploy',
 		signature: 'deploy [project] [environment]',
 		description: 'Prepare and deploy one project release with reviewed Docker scripts.',
-		term: 'deploy [project] [environment]',
+		term: 'deploy [options] [project] [environment]',
 		aliases: []
 	},
 	{
