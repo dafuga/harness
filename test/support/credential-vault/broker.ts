@@ -1,5 +1,6 @@
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
+import { afterAll } from 'vitest';
 import { VaultSealAdapter } from '../../../src/adapters/accounts-access/VaultSealAdapter';
 import type { VaultRunnerKey } from '../../../src/adapters/accounts-access/VaultSealAdapter.types';
 import { VaultAuditRepository } from '../../../src/repositories/accounts-access/VaultAuditRepository';
@@ -14,7 +15,9 @@ import type {
 import { createTempDirectory } from '../temporary';
 import { FakePhone } from './phone';
 
-const root = await createTempDirectory('vault-broker-');
+// Keep the full lease socket address within the Unix sockaddr path limit on macOS.
+const root = await createTempDirectory('harness-vault-', '/tmp');
+afterAll(() => rmSync(root, { recursive: true, force: true }));
 let brokers = 0;
 
 export const origin = 'https://vault.example.test';

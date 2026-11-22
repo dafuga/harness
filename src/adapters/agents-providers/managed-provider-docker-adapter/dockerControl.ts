@@ -20,9 +20,10 @@ const volumeSchema = z.object({
 	Labels: z.record(z.string(), z.string())
 });
 
-export async function dockerDaemon(): Promise<DockerTaskDaemon> {
+export async function dockerDaemon(context?: string): Promise<DockerTaskDaemon> {
 	const env = { PATH: process.env.PATH, HOME: process.env.HOME };
 	const args = ['context', 'inspect', '--format', '{{.Endpoints.docker.Host}}'];
+	if (context) args.push('--', context);
 	const host = await control(args, env).catch(() => '');
 	if (!dockerSocketPattern.test(host))
 		throw new ModuleTaskRunError('The Linux Docker pilot requires a local Unix socket context.');

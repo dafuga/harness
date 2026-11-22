@@ -1,13 +1,15 @@
 // @harness-uid u_xg3ex7hmhj
-import { createPublicKey, verify } from 'node:crypto';
+import { createHash, createPublicKey, verify } from 'node:crypto';
 import { z } from 'zod';
 import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { canonical, hash } from '../../core/execution-runtimes/scripted-deploy/contracts';
+import { vaultMethod } from './vaultMethod';
 import type {
 	RecipeReviewer,
 	VaultRecipe,
 	VaultRecipeInput,
 	VaultRecipeReview,
+	VaultScriptApproval,
 	VerifiedRecipe
 } from './vaultRecipe.types';
 
@@ -23,19 +25,30 @@ const origin = z
 	.max(200)
 	.refine(isExactHttpsOrigin, 'Expected an exact https origin without a path or port.');
 const actionIds = z.array(identifier).min(1);
+const scriptSha256 = z
+	.string()
+	.regex(/^[0-9a-f]{64}$/u)
+	.optional();
 
 const method = z.discriminatedUnion('kind', [
-	z.strictObject({ kind: z.literal('api-token'), actions: actionIds, credential: identifier }),
+	z.strictObject({
+		kind: z.literal('api-token'),
+		actions: actionIds,
+		credential: identifier,
+		scriptSha256
+	}),
 	z.strictObject({
 		kind: z.literal('oauth-device'),
 		actions: actionIds,
 		client: identifier,
-		scopes: z.array(z.string().min(1).max(200)).min(1)
+		scopes: z.array(z.string().min(1).max(200)).min(1),
+		scriptSha256
 	}),
 	z.strictObject({
 		kind: z.literal('browser'),
 		actions: actionIds,
-		reason: z.string().min(10).max(300)
+		reason: z.string().min(10).max(300),
+		scriptSha256
 	})
 ]);
 
@@ -108,6 +121,32 @@ export function vaultRecipe(
 /** SHA-256 of the canonical JSON of a normalized recipe. */
 export function recipeDigest(recipe: VaultRecipe): string {
 	return hash(recipe);
+}
+
+/** Verifies script bytes against both the signed recipe and the phone-approved method. */
+export function verifyVaultRecipeScript(
+	verified: VerifiedRecipe,
+	approval: VaultScriptApproval,
+	script: Uint8Array
+): void {
+	if (
+		approval.recipeDigest !== verified.digest ||
+		recipeDigest(verified.recipe) !== verified.digest
+	) {
+		throw new ExpectedCliError('The approved recipe digest changed before script execution.');
+	}
+	const choice = vaultMethod(verified.recipe, approval.action, {
+		'api-token': true,
+		'oauth-device': true,
+		browser: true
+	});
+	if (choice.status !== 'selected' || choice.method.kind !== approval.method) {
+		throw new ExpectedCliError('The approved method is not the recipe method for this action.');
+	}
+	const actual = createHash('sha256').update(script).digest('hex');
+	if (choice.method.scriptSha256 !== actual) {
+		throw new ExpectedCliError('Script bytes do not match the reviewed script digest.');
+	}
 }
 
 /** The digest prefix Harness iOS shows before approval: 16 hex digits in groups of four. */

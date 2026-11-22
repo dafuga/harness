@@ -2,10 +2,9 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { join } from 'node:path';
 import type { VaultAuditRepository } from '../../repositories/accounts-access/VaultAuditRepository';
-import { vaultCdpEndpoint, vaultCdpHandoff } from '../../utils/accounts-access/vaultCdpHandoff';
+import { vaultCdpEndpoint } from '../../utils/accounts-access/vaultCdpHandoff';
 import type { VaultCdpDecision } from '../../utils/accounts-access/vaultCdpHandoff.types';
 import { issueVaultLease, vaultLease } from '../../utils/accounts-access/vaultLease';
-import type { VaultLeaseEvent } from '../../utils/accounts-access/vaultLease.types';
 import { vaultTeardown } from '../../utils/accounts-access/vaultTeardown';
 import { VaultBrokerError } from '../../validators/accounts-access/VaultBrokerError';
 import type { VaultTicket } from '../../validators/accounts-access/VaultWireValidator.types';
@@ -15,8 +14,10 @@ import type {
 	VaultHeldLease,
 	VaultIssued,
 	VaultLeaseEnded,
+	VaultRelayEvent,
 	VaultTeardownPaths
 } from './VaultLeaseKeeperService.types';
+import { admitVaultRelay, updateVaultRelay } from './vault-lease-keeper-service/relayLease';
 
 function digest(text: string): string {
 	return createHash('sha256').update(text).digest('hex');
@@ -68,7 +69,11 @@ export class VaultLeaseKeeperService {
 		if (held.tokenDigest !== null) {
 			throw new VaultBrokerError(409, 'The lease is already attached; reconnect with its token.');
 		}
-		this.apply(held, { type: 'claim', session, at: this.now() });
+		const checked = vaultLease(held.state, { type: 'claim', session, at: this.now() });
+		if (!checked.accepted) {
+			held.state = checked.state;
+			this.refuse(checked.reason ?? 'The lease refused the call.');
+		}
 		const token = randomBytes(32).toString('base64url');
 		held.tokenDigest = digest(token);
 		this.audit.append({ ...vaultAuditFields(held.request), lease }, 'attach');
@@ -82,15 +87,16 @@ export class VaultLeaseKeeperService {
 
 	/** The relay's admission check for one connection on the lease's Unix socket. */
 	admit(lease: string, peerUid: number | null, token: string): VaultCdpDecision {
-		const held = this.leases.get(lease);
-		if (!held?.tokenDigest) return { allowed: false, reason: 'The lease is not attached.' };
-		const handoff = {
-			lease: held.state,
-			sessionUid: held.sessionUid,
-			tokenDigest: held.tokenDigest,
-			socketPath: held.socketPath
-		};
-		return vaultCdpHandoff(handoff, { peerUid, token, at: this.now() });
+		return admitVaultRelay(this.leases.get(lease), peerUid, token, this.now());
+	}
+
+	/** The executor gets the name of the allocated socket without issuing a session token. */
+	relaySocketPath(lease: string): string {
+		return this.leases.get(lease)?.socketPath ?? this.refuse('Lease not found.');
+	}
+
+	relayEvent(lease: string, type: VaultRelayEvent): boolean {
+		return updateVaultRelay(this.leases.get(lease), type, this.now());
 	}
 
 	finish(lease: string, session: string, uid: number | null): VaultLeaseEnded {
@@ -127,12 +133,6 @@ export class VaultLeaseKeeperService {
 			endedAt: this.now()
 		};
 		return { lease: held.state.id, ended, teardown: vaultTeardown(input) };
-	}
-
-	private apply(held: VaultHeldLease, event: VaultLeaseEvent): void {
-		const result = vaultLease(held.state, event);
-		held.state = result.state;
-		if (!result.accepted) this.refuse(result.reason ?? 'The lease refused the call.');
 	}
 
 	private owned(lease: string, session: string, uid: number | null): VaultHeldLease {

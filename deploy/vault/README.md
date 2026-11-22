@@ -1,0 +1,53 @@
+# Credential Vault browser fixture
+
+This image and the `VaultBrowserDockerAdapter` accept synthetic `.test` origins. The fixture
+adapter can use a local `network=none` container or an explicitly selected internal Docker network.
+Build it from this directory and use the resulting local image ID for the opt-in test. No image is
+pushed. The vendored Docker seccomp policy is from [Playwright 1.63.0](https://github.com/microsoft/playwright/blob/v1.63.0/utils/docker/seccomp_profile.json)
+under its [Apache 2.0 license](https://github.com/microsoft/playwright/blob/v1.63.0/LICENSE). It
+allows the user namespaces needed by the Chromium sandbox. This version also permits the `chroot`
+syscall inside Chromium's user namespace. The container does not grant `CAP_SYS_CHROOT` in its
+initial namespace.
+
+```sh
+docker --context "$fixture_context" build -t harness-vault:fixture deploy/vault
+fixture_image=$(docker --context "$fixture_context" image inspect --format '{{.Id}}' harness-vault:fixture)
+HARNESS_TEST_VAULT_DOCKER_IMAGE="$fixture_image" HARNESS_TEST_VAULT_DOCKER_CONTEXT="$fixture_context" \
+  bunx --no-install vitest run test/credential-vault-browser.e2e.test.ts
+```
+
+`recipes/example-console.json` binds the browser script by SHA-256. An ephemeral synthetic reviewer
+signs the recipe during the tests. The private executor consumes a sealed password and a separately
+sealed SMS or email code, verifies the account and action, and closes the login tab before handoff.
+The tests observe provider logout, the security log and its 15-minute recheck on a controlled clock,
+and recovery of a browser left by an interrupted supervisor.
+
+The Node-API peer lookup uses `getpeereid` on macOS and `SO_PEERCRED` on Linux. It requires a
+supported Node runtime with headers and compiler to build `peer.node`. Bun 1.2.18 does not expose
+the accepted socket descriptor. Missing peer credentials fail closed. The fixture runs as one host
+user and checks a private lease socket. Cross-user ACLs and an isolated host account still need
+qualification before use outside this fixture.
+
+## MB2 account provisioning
+
+The provisioning script is for Daniel to review and run on MB2. Its read-only `plan` mode requires
+no sudo. The account is a hidden, non-admin local user with its own group, no login shell or usable
+password and an owner-only home. The script creates a separate Docker context in that home. The
+context points to a private socket for an independently provisioned engine. The script neither
+starts a Docker engine nor points at another account's engine.
+
+```sh
+bash deploy/vault/mb2-executor-account.sh plan
+sudo bash deploy/vault/mb2-executor-account.sh provision
+```
+
+To undo, stop the dedicated engine and executor first. The script verifies the account and journal
+match, removes their Directory Services records and moves the assigned home out of `/Users`. The
+preserved copy is readable only via the root-owned journal at `/var/db/org.harness.vault-executor`.
+If either provisioning or undo stops mid-operation, inspect that journal before changing account
+records by hand. Keep the executor inactive until the dedicated engine and peer-access setup pass
+host preflight.
+
+```sh
+sudo bash deploy/vault/mb2-executor-account.sh undo
+```

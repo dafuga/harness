@@ -20,3 +20,9 @@ export interface VerifiedRecipe {
 	display: string;
 	review: VaultRecipeReview;
 }
+
+export interface VaultScriptApproval {
+	recipeDigest: string;
+	action: string;
+	method: VaultMethodKind;
+}

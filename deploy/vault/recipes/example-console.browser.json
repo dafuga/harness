@@ -1,0 +1,15 @@
+{
+	"steps": [
+		{
+			"path": "/login",
+			"next": "/verify",
+			"field": "password",
+			"input": "#password",
+			"submit": "#continue"
+		},
+		{ "path": "/verify", "next": "/roster", "field": "otp", "input": "#otp", "submit": "#verify" }
+	],
+	"identity": "#identity",
+	"capability": "#capability",
+	"otpPrompt": "#otp-channel"
+}

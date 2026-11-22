@@ -4,7 +4,7 @@
 	"uid": "u_xg3ex7hmhj",
 	"kind": "function",
 	"title": "vaultRecipe",
-	"responsibility": "Validates a signed per-site Credential Vault login recipe and computes its review digest.",
+	"responsibility": "Validates signed Credential Vault recipes and binds script bytes to the approved action and method.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -18,6 +18,7 @@
 			"recipeReview",
 			"vaultRecipe",
 			"recipeDigest",
+			"verifyVaultRecipeScript",
 			"digestDisplay",
 			"reviewSigningInput",
 			"VaultRecipe",
@@ -27,7 +28,8 @@
 			"VaultAction",
 			"VaultOtpChannel",
 			"RecipeReviewer",
-			"VerifiedRecipe"
+			"VerifiedRecipe",
+			"VaultScriptApproval"
 		]
 	},
 	"contract": {
@@ -62,6 +64,24 @@
 				"type": "VaultRecipe",
 				"required": true,
 				"description": "Normalized recipe."
+			},
+			{
+				"name": "verifyVaultRecipeScript.verified",
+				"type": "VerifiedRecipe",
+				"required": true,
+				"description": "The normalized recipe, digest, and review returned after signature and freshness verification."
+			},
+			{
+				"name": "verifyVaultRecipeScript.approval",
+				"type": "VaultScriptApproval",
+				"required": true,
+				"description": "The phone-approved recipe digest, action, and method from the accepted request."
+			},
+			{
+				"name": "verifyVaultRecipeScript.script",
+				"type": "Uint8Array",
+				"required": true,
+				"description": "The original bytes of the script before parsing or running it."
 			},
 			{
 				"name": "digestDisplay.digest",
@@ -101,6 +121,11 @@
 				"name": "recipeDigest",
 				"type": "string",
 				"description": "Lowercase hex SHA-256 of the canonical recipe JSON."
+			},
+			{
+				"name": "verifyVaultRecipeScript",
+				"type": "void",
+				"description": "Returns after the original script bytes match the signed recipe and approved action and method."
 			},
 			{
 				"name": "digestDisplay",
@@ -187,6 +212,44 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "verifyVaultRecipeScript",
+				"inputs": [
+					{
+						"name": "verifyVaultRecipeScript.verified",
+						"type": "VerifiedRecipe",
+						"required": true,
+						"description": "The normalized recipe, digest, and review returned after signature and freshness verification."
+					},
+					{
+						"name": "verifyVaultRecipeScript.approval",
+						"type": "VaultScriptApproval",
+						"required": true,
+						"description": "The phone-approved recipe digest, action, and method from the accepted request."
+					},
+					{
+						"name": "verifyVaultRecipeScript.script",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "The original bytes of the script before parsing or running it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyVaultRecipeScript",
+						"type": "void",
+						"description": "Returns after the original script bytes match the signed recipe and approved action and method."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown when the recipe digest changes, the approval names a different method, or the script digest differs from the signed recipe."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
 				"name": "digestDisplay",
 				"inputs": [
 					{
@@ -230,6 +293,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.accounts-access-vault-method",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.errors",
 			"via": "import",

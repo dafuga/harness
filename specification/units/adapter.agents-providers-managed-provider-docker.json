@@ -112,6 +112,11 @@
 				"required": true
 			},
 			{
+				"name": "dockerDaemon.context",
+				"type": "string",
+				"required": false
+			},
+			{
 				"name": "requireWorkspaceImage.daemon",
 				"type": "DockerTaskDaemon",
 				"required": true
@@ -539,7 +544,13 @@
 			},
 			{
 				"name": "dockerDaemon",
-				"inputs": [],
+				"inputs": [
+					{
+						"name": "dockerDaemon.context",
+						"type": "string",
+						"required": false
+					}
+				],
 				"outputs": [
 					{
 						"name": "dockerDaemon",

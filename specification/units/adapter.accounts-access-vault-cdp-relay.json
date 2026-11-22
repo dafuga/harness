@@ -1,0 +1,242 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.accounts-access-vault-cdp-relay",
+	"uid": "u_xadic2nwwc",
+	"kind": "adapter",
+	"title": "VaultCdpRelayAdapter",
+	"responsibility": "Owns the VaultCdpRelayAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/accounts-access/VaultCdpRelayAdapter.ts",
+			"src/adapters/accounts-access/VaultCdpRelayAdapter.types.ts",
+			"src/adapters/accounts-access/vault-cdp-relay-adapter/VaultCdpPipe.ts",
+			"src/adapters/accounts-access/vault-cdp-relay-adapter/VaultCdpPipe.types.ts"
+		],
+		"symbols": [
+			"VaultCdpRelayAdapter",
+			"VaultCdpRelayAdapter.constructor",
+			"VaultCdpRelayAdapter.listen",
+			"VaultCdpRelayAdapter.close",
+			"VaultCdpRelayAdapterConfig",
+			"maxCdpFrameBytes",
+			"VaultCdpPipe",
+			"VaultCdpPipe.constructor",
+			"VaultCdpPipe.listen",
+			"VaultCdpPipe.send",
+			"VaultCdpPipe.detach",
+			"VaultCdpPipeStreams",
+			"VaultCdpMessage",
+			"VaultCdpReader"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "VaultCdpRelayAdapter.constructor.config",
+				"type": "VaultCdpRelayAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "VaultCdpPipe.constructor.streams",
+				"type": "VaultCdpPipeStreams",
+				"required": true
+			},
+			{
+				"name": "VaultCdpPipe.listen.reader",
+				"type": "VaultCdpReader",
+				"required": true
+			},
+			{
+				"name": "VaultCdpPipe.send.text",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "VaultCdpRelayAdapter.listen",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "VaultCdpRelayAdapter.close",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "maxCdpFrameBytes",
+				"type": "unknown"
+			},
+			{
+				"name": "VaultCdpPipe.listen",
+				"type": "()"
+			},
+			{
+				"name": "VaultCdpPipe.send",
+				"type": "boolean"
+			},
+			{
+				"name": "VaultCdpPipe.detach",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "VaultCdpRelayAdapter.listen",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "VaultCdpRelayAdapter.listen",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VaultCdpRelayAdapter.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "VaultCdpRelayAdapter.close",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VaultCdpPipe.listen",
+				"inputs": [
+					{
+						"name": "VaultCdpPipe.listen.reader",
+						"type": "VaultCdpReader",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultCdpPipe.listen",
+						"type": "()"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
+			},
+			{
+				"name": "VaultCdpPipe.send",
+				"inputs": [
+					{
+						"name": "VaultCdpPipe.send.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultCdpPipe.send",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VaultCdpPipe.detach",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "VaultCdpPipe.detach",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "VaultCdpRelayAdapter.constructor",
+				"inputs": [
+					{
+						"name": "VaultCdpRelayAdapter.constructor.config",
+						"type": "VaultCdpRelayAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultCdpRelayAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VaultCdpPipe.constructor",
+				"inputs": [
+					{
+						"name": "VaultCdpPipe.constructor.streams",
+						"type": "VaultCdpPipeStreams",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultCdpPipe.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.accounts-access-vault-lease-keeper",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/accounts-access/VaultCdpRelayAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/accounts-access/VaultCdpRelayAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

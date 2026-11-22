@@ -20,6 +20,8 @@ export interface VaultHeldLease {
 	planned: boolean;
 }
 
+export type VaultRelayEvent = 'connect' | 'activity' | 'disconnect' | 'tick';
+
 export interface VaultIssued {
 	lease: string;
 	claimBy: number;

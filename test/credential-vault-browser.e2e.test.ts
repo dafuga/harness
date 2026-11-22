@@ -1,0 +1,127 @@
+import { existsSync } from 'node:fs';
+import { once } from 'node:events';
+import { chromium } from 'playwright-core';
+import { expect, test } from 'vitest';
+import WebSocket from 'ws';
+import { VaultCdpRelayAdapter } from '../src/adapters/accounts-access/VaultCdpRelayAdapter';
+import type { VaultBrowserDockerSession } from '../src/adapters/accounts-access/VaultBrowserDockerAdapter.types';
+import type {
+	VaultAttachment,
+	VaultLeaseEnded
+} from '../src/services/accounts-access/VaultLeaseKeeperService.types';
+import { canary } from './support/credential-vault/phone';
+import {
+	approved,
+	assertFixtureIsolated,
+	assertFixtureRemoved,
+	browserFixture,
+	denied,
+	withHttpsFixture
+} from './support/credential-vault/dockerBrowser';
+import { verifyCrashRecovery } from './support/credential-vault/crashFixture';
+import { loginSyntheticFixture } from './support/credential-vault/privateBrowser';
+import { finishSyntheticFixture } from './support/credential-vault/teardownFixture';
+
+const image = process.env.HARNESS_TEST_VAULT_DOCKER_IMAGE;
+
+// A task-owned image and Docker engine are needed to exercise the Chromium namespace sandbox.
+test.skipIf(!image).each(['sms', 'email'] as const)(
+	'a reviewed %s OTP login stays private before scoped CDP handoff and logout',
+	async (channel) => {
+		await withHttpsFixture(image!, channel, async ({ id, ip, securityLog }) => {
+			const run = await browserFixture(image!);
+			try {
+				const hosts = { [new URL(approved).hostname]: ip, [new URL(denied).hostname]: ip };
+				const guest = await run.docker.launch({
+					origins: [approved],
+					redirects: [],
+					network: { id, hosts }
+				});
+				try {
+					await loginSyntheticFixture(run, guest.pipe, channel);
+					await verifyBrowserLease(run, guest, ip, securityLog);
+				} finally {
+					await guest.close();
+					await assertFixtureRemoved(guest.owner);
+				}
+			} finally {
+				await run.close();
+			}
+		});
+	},
+	60_000
+);
+
+test.skipIf(!image)(
+	'a new launch recovers only the interrupted browser receipt and guest',
+	() => verifyCrashRecovery(image!),
+	45_000
+);
+
+async function verifyBrowserLease(
+	run: Awaited<ReturnType<typeof browserFixture>>,
+	guest: VaultBrowserDockerSession,
+	ip: string,
+	securityLog: () => Promise<string>
+) {
+	const { lease } = run.keeper.issue(run.ticket, run.uid, run.recipe.recipe.teardown);
+	const relay = new VaultCdpRelayAdapter({
+		keeper: run.keeper,
+		lease,
+		peerUid: (socket) => run.peer.uid(socket),
+		pipe: guest.pipe
+	});
+	const scope = { lease, session: run.input.session };
+	try {
+		await relay.listen();
+		const attachment = await run.client.call<VaultAttachment>('/v1/session/attach', scope);
+		await expectMissingToken(attachment.endpoint, run.uid);
+		await verifyOriginPolicy(attachment, guest.owner, ip);
+	} finally {
+		const ended = await run.client.call<VaultLeaseEnded>('/v1/session/finish', scope);
+		expect(ended.ended).toBe('finished');
+		await finishSyntheticFixture(
+			ended,
+			guest,
+			async () => {
+				await relay.close();
+				expect(existsSync(run.keeper.relaySocketPath(lease))).toBe(false);
+			},
+			securityLog
+		);
+	}
+}
+
+async function verifyOriginPolicy(attachment: VaultAttachment, owner: string, ip: string) {
+	const browser = await chromium.connectOverCDP(attachment.endpoint, {
+		headers: attachment.headers,
+		timeout: 10_000
+	});
+	try {
+		const [context] = browser.contexts();
+		const [page] = context.pages();
+		expect(context.pages().map((tab) => tab.url())).toEqual([approved + '/roster']);
+		expect(await page.locator('h1').innerText()).toBe('Approved synthetic origin');
+		const observed = JSON.stringify([await page.content(), await context.cookies(), page.url()]);
+		expect(observed).not.toContain(canary.password);
+		expect(observed).not.toContain(canary.otp);
+		const cdp = await context.newCDPSession(page);
+		const history = await cdp.send('Page.getNavigationHistory');
+		expect(history.entries.map(({ url }) => url)).toEqual(['about:blank', approved + '/roster']);
+		await page.goto('chrome://sandbox');
+		expect(await page.locator('body').innerText()).toMatch(/Seccomp-BPF sandbox\s+Yes/u);
+		await expect(page.goto(denied, { timeout: 5_000 })).rejects.toThrow(
+			'ERR_TUNNEL_CONNECTION_FAILED'
+		);
+		await assertFixtureIsolated(owner, ip);
+	} finally {
+		await browser.close();
+	}
+}
+
+async function expectMissingToken(endpoint: string, uid: number): Promise<void> {
+	const copied = new WebSocket(endpoint, { headers: { 'X-Session-Uid': String(uid) } });
+	const [, refused] = await once(copied, 'unexpected-response');
+	refused.resume();
+	expect(refused.statusCode).toBe(403);
+}
