@@ -1,3 +1,4 @@
+// @harness-uid u_yga4vj5ueo
 import type { RunMode, RunProfile } from './HarborInspectionCommand.types';
 
 // SDK-backed modes run the installed Harbor App SDK; scaffold gets extra time for its nested Harness call.

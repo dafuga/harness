@@ -1,3 +1,4 @@
+// @harness-uid u_yga4vj5ueo
 import type { Command } from 'commander';
 import type { RunHarborSdkTool, ScaffoldArguments } from './HarborInspectionCommand.types';
 

@@ -14,7 +14,17 @@
 			"src/commands/projects-sessions/harborRunProfiles.ts",
 			"src/commands/projects-sessions/registerHarborAppTools.ts"
 		],
-		"symbols": ["HarborInspectionCommand", "HarborInspectionCommand.register"]
+		"symbols": [
+			"HarborInspectionCommand",
+			"HarborInspectionCommand.register",
+			"PublishOptions",
+			"RunMode",
+			"RunProfile",
+			"RunHarborSdkTool",
+			"ScaffoldArguments",
+			"HARBOR_RUN_PROFILES",
+			"registerHarborAppTools"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -24,6 +34,16 @@
 				"type": "Command",
 				"required": true,
 				"description": "The root Harness command that receives the Harbor command group."
+			},
+			{
+				"name": "registerHarborAppTools.harbor",
+				"type": "Command",
+				"required": true
+			},
+			{
+				"name": "registerHarborAppTools.run",
+				"type": "RunHarborSdkTool",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -60,6 +80,29 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "registerHarborAppTools",
+				"inputs": [
+					{
+						"name": "registerHarborAppTools.harbor",
+						"type": "Command",
+						"required": true
+					},
+					{
+						"name": "registerHarborAppTools.run",
+						"type": "RunHarborSdkTool",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerHarborAppTools",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
