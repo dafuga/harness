@@ -4,6 +4,7 @@ import { once } from 'node:events';
 import { expect, test } from 'vitest';
 import WebSocket from 'ws';
 import { VaultCdpRelayAdapter } from '../../../src/adapters/accounts-access/VaultCdpRelayAdapter';
+import { VaultCdpPipe } from '../../../src/adapters/accounts-access/vault-cdp-relay-adapter/VaultCdpPipe';
 import {
 	approval,
 	sessionRequest,
@@ -32,7 +33,7 @@ function relayFixture() {
 		keeper: fixture.keeper,
 		lease,
 		peerUid: () => peer.uid,
-		pipe: { writable: toBrowser, readable: fromBrowser }
+		pipe: new VaultCdpPipe({ writable: toBrowser, readable: fromBrowser })
 	});
 	return { ...fixture, input, lease, attachment, toBrowser, fromBrowser, peer, adapter };
 }
@@ -100,6 +101,7 @@ test('a reconnect receives only its replies and remains bounded by the lease win
 		const newId = JSON.parse(newFrame.toString().slice(0, -1)).id;
 		expect(newId).not.toBe(oldId);
 		const reply = once(second, 'message');
+		run.fromBrowser.write('{"sessionId":"old-session","method":"Network.requestWillBeSent"}\0');
 		run.fromBrowser.write(JSON.stringify({ id: oldId, result: { old: true } }) + '\0');
 		run.fromBrowser.write(JSON.stringify({ id: newId, result: { current: true } }) + '\0');
 		expect(JSON.parse((await reply)[0].toString())).toEqual({ id: 1, result: { current: true } });

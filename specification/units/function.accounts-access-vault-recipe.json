@@ -18,6 +18,7 @@
 			"recipeReview",
 			"vaultRecipe",
 			"recipeDigest",
+			"verifyVaultRecipeScript",
 			"digestDisplay",
 			"reviewSigningInput",
 			"VaultRecipe",
@@ -27,7 +28,8 @@
 			"VaultAction",
 			"VaultOtpChannel",
 			"RecipeReviewer",
-			"VerifiedRecipe"
+			"VerifiedRecipe",
+			"VaultScriptApproval"
 		]
 	},
 	"contract": {
@@ -62,6 +64,21 @@
 				"type": "VaultRecipe",
 				"required": true,
 				"description": "Normalized recipe."
+			},
+			{
+				"name": "verifyVaultRecipeScript.verified",
+				"type": "VerifiedRecipe",
+				"required": true
+			},
+			{
+				"name": "verifyVaultRecipeScript.approval",
+				"type": "VaultScriptApproval",
+				"required": true
+			},
+			{
+				"name": "verifyVaultRecipeScript.script",
+				"type": "Uint8Array",
+				"required": true
 			},
 			{
 				"name": "digestDisplay.digest",
@@ -187,6 +204,39 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "verifyVaultRecipeScript",
+				"inputs": [
+					{
+						"name": "verifyVaultRecipeScript.verified",
+						"type": "VerifiedRecipe",
+						"required": true
+					},
+					{
+						"name": "verifyVaultRecipeScript.approval",
+						"type": "VaultScriptApproval",
+						"required": true
+					},
+					{
+						"name": "verifyVaultRecipeScript.script",
+						"type": "Uint8Array",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyVaultRecipeScript",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "digestDisplay",
 				"inputs": [
 					{
@@ -230,6 +280,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.accounts-access-vault-method",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.errors",
 			"via": "import",

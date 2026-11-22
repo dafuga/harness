@@ -14,7 +14,12 @@ import {
 } from '../../../src/adapters/agents-providers/managed-provider-docker-adapter/dockerControl';
 import { vaultDockerLabel } from '../../../src/adapters/accounts-access/vault-browser-docker-adapter/browserDockerJournal';
 import type { VaultCreated } from '../../../src/services/accounts-access/VaultBrokerService.types';
+import { vaultRecipe } from '../../../src/utils/accounts-access/vaultRecipe';
+import type { VaultRecipeInput } from '../../../src/utils/accounts-access/vaultRecipe.types';
+import type { VaultApproval } from '../../../src/validators/accounts-access/VaultWireValidator.types';
 import { approval, sessionRequest, sign, vaultBroker } from './broker';
+import { canary } from './phone';
+import { reviewed } from './recipe';
 
 export const approved = 'https://console.example.test';
 export const denied = 'https://outside.example.test';
@@ -22,12 +27,18 @@ const context = process.env.HARNESS_TEST_VAULT_DOCKER_CONTEXT;
 
 export async function browserFixture(image: string) {
 	const fixture = vaultBroker();
+	fixture.clock.now = Date.now();
+	const { recipe, script } = signedFixtureRecipe();
 	const binary = join(fixture.state, 'peer.node');
 	execFileSync('bash', ['deploy/vault/build-peer.sh', binary]);
 	const peer = new VaultPeerAdapter({ binary });
 	const uid = process.getuid?.();
 	if (uid === undefined) throw new Error('The fixture needs a Unix user.');
-	const input = sessionRequest(fixture.seal.runnerKey(), { origins: [approved] });
+	const runner = fixture.seal.runnerKey();
+	const input = sessionRequest(runner, {
+		origins: [approved],
+		recipe: { site: recipe.recipe.site, revision: recipe.recipe.revision, digest: recipe.digest }
+	});
 	const docker = new VaultBrowserDockerAdapter({
 		image,
 		context,
@@ -43,23 +54,61 @@ export async function browserFixture(image: string) {
 	await server.listen();
 	const client = new VaultBrokerClientAdapter({ socketPath });
 	try {
-		const created = await client.call<VaultCreated>('/v1/session/requests', input);
-		const ticket = { requestId: created.requestId, receipt: created.receipt };
-		await client.call(
-			'/v1/device/decision',
-			sign(fixture, input, approval(input, created, fixture))
-		);
-		fixture.broker.claim(ticket, uid);
-		return { ...fixture, client, docker, input, uid, peer, ticket, close: () => server.close() };
+		const { ticket, approved } = await approveFixture(fixture, client, input, uid);
+		const openSecret = () => runner.open(ticket.requestId, approved.sealed!);
+		return {
+			...fixture,
+			client,
+			docker,
+			input,
+			uid,
+			peer,
+			ticket,
+			openSecret,
+			recipe,
+			script,
+			approved,
+			close: () => server.close()
+		};
 	} catch (error) {
 		await server.close();
 		throw error;
 	}
 }
 
+async function approveFixture(
+	fixture: ReturnType<typeof vaultBroker>,
+	client: VaultBrokerClientAdapter,
+	input: ReturnType<typeof sessionRequest>,
+	uid: number
+) {
+	const created = await client.call<VaultCreated>('/v1/session/requests', input);
+	const ticket = { requestId: created.requestId, receipt: created.receipt };
+	const password = Buffer.from(JSON.stringify({ password: canary.password }));
+	const sealed = fixture.phone.seal.seal(input.runnerPublicKey, ticket.requestId, password);
+	password.fill(0);
+	const decision = approval(input, created, fixture, { sealed, otpIncluded: false });
+	await client.call('/v1/device/decision', sign(fixture, input, decision));
+	const proof = fixture.broker.claim(ticket, uid);
+	const approved = JSON.parse(
+		Buffer.from(proof.approval.payload, 'base64url').toString()
+	) as VaultApproval;
+	return { ticket, approved };
+}
+
+function signedFixtureRecipe() {
+	const input = JSON.parse(
+		readFileSync('deploy/vault/recipes/example-console.json', 'utf8')
+	) as VaultRecipeInput;
+	const script = readFileSync('deploy/vault/recipes/example-console.browser.json');
+	const { review, reviewers } = reviewed(input, Date.now());
+	return { recipe: vaultRecipe(input, review, reviewers), script };
+}
+
 export async function withHttpsFixture(
 	image: string,
-	use: (context: { id: string; ip: string }) => Promise<void>
+	channel: 'sms' | 'email',
+	use: (context: { id: string; ip: string; securityLog(): Promise<string> }) => Promise<void>
 ) {
 	const engine = await dockerDaemon(context);
 	const docker = (args: string[]) => dockerControl(engine, args);
@@ -75,6 +124,7 @@ export async function withHttpsFixture(
 			'--rm',
 			'--pull=never',
 			'--network=' + id,
+			'--env=VAULT_FIXTURE_OTP=' + channel,
 			'--label=' + label,
 			'--entrypoint=/usr/bin/python3',
 			image,
@@ -84,7 +134,13 @@ export async function withHttpsFixture(
 		const format = '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}';
 		const ip = await docker(['inspect', '--format', format, site]);
 		await waitForHttps(docker, site);
-		await use({ id, ip });
+		const readLog =
+			'import ssl, urllib.request; print(urllib.request.urlopen("https://127.0.0.1/security-log", context=ssl._create_unverified_context()).read().decode())';
+		await use({
+			id,
+			ip,
+			securityLog: () => docker(['exec', site, '/usr/bin/python3', '-c', readLog])
+		});
 	} finally {
 		if (site) await docker(['rm', '-f', site]);
 		await docker(['network', 'rm', id]);

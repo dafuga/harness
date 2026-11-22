@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"site": "example-console",
+	"revision": 1,
+	"account": {
+		"alias": "synthetic-owner",
+		"identity": "owner@example.test"
+	},
+	"origins": ["https://console.example.test"],
+	"redirects": [],
+	"methods": [
+		{
+			"kind": "browser",
+			"actions": ["read-roster"],
+			"reason": "The synthetic roster fixture is available in the browser.",
+			"scriptSha256": "4af81b2e563bf74b947444dad18c2d19a30cb936e49902d7e310cb4af7551153"
+		}
+	],
+	"actions": [
+		{
+			"id": "read-roster",
+			"mode": "read",
+			"start": "/roster"
+		}
+	],
+	"otp": ["sms", "email"],
+	"login": [
+		{
+			"id": "password",
+			"url": "/login"
+		},
+		{
+			"id": "code",
+			"url": "/verify"
+		}
+	],
+	"teardown": {
+		"logout": "/logout",
+		"revoke": null,
+		"securityLog": "fixture-security-log"
+	},
+	"timeouts": {
+		"loginMs": 30000,
+		"leaseMs": 90000
+	}
+}

@@ -4,10 +4,12 @@ import { chromium } from 'playwright-core';
 import { expect, test } from 'vitest';
 import WebSocket from 'ws';
 import { VaultCdpRelayAdapter } from '../src/adapters/accounts-access/VaultCdpRelayAdapter';
+import type { VaultBrowserDockerSession } from '../src/adapters/accounts-access/VaultBrowserDockerAdapter.types';
 import type {
 	VaultAttachment,
 	VaultLeaseEnded
 } from '../src/services/accounts-access/VaultLeaseKeeperService.types';
+import { canary } from './support/credential-vault/phone';
 import {
 	approved,
 	assertFixtureIsolated,
@@ -16,17 +18,32 @@ import {
 	denied,
 	withHttpsFixture
 } from './support/credential-vault/dockerBrowser';
+import { verifyCrashRecovery } from './support/credential-vault/crashFixture';
+import { loginSyntheticFixture } from './support/credential-vault/privateBrowser';
+import { finishSyntheticFixture } from './support/credential-vault/teardownFixture';
 
 const image = process.env.HARNESS_TEST_VAULT_DOCKER_IMAGE;
 
-// The task-owned image is opt-in on hosts with a Linux Docker engine and namespace sandboxing.
-test.skipIf(!image)(
-	'a lease drives headed Chromium through its Unix socket and scoped egress',
-	async () => {
-		await withHttpsFixture(image!, async ({ id, ip }) => {
+// A task-owned image and Docker engine are needed to exercise the Chromium namespace sandbox.
+test.skipIf(!image).each(['sms', 'email'] as const)(
+	'a reviewed %s OTP login stays private before scoped CDP handoff and logout',
+	async (channel) => {
+		await withHttpsFixture(image!, channel, async ({ id, ip, securityLog }) => {
 			const run = await browserFixture(image!);
 			try {
-				await verifyBrowserLease(run, id, ip);
+				const hosts = { [new URL(approved).hostname]: ip, [new URL(denied).hostname]: ip };
+				const guest = await run.docker.launch({
+					origins: [approved],
+					redirects: [],
+					network: { id, hosts }
+				});
+				try {
+					await loginSyntheticFixture(run, guest.pipe, channel);
+					await verifyBrowserLease(run, guest, ip, securityLog);
+				} finally {
+					await guest.close();
+					await assertFixtureRemoved(guest.owner);
+				}
 			} finally {
 				await run.close();
 			}
@@ -35,45 +52,43 @@ test.skipIf(!image)(
 	60_000
 );
 
+test.skipIf(!image)(
+	'a new launch recovers only the interrupted browser receipt and guest',
+	() => verifyCrashRecovery(image!),
+	45_000
+);
+
 async function verifyBrowserLease(
 	run: Awaited<ReturnType<typeof browserFixture>>,
-	id: string,
-	ip: string
+	guest: VaultBrowserDockerSession,
+	ip: string,
+	securityLog: () => Promise<string>
 ) {
-	const hosts = { [new URL(approved).hostname]: ip, [new URL(denied).hostname]: ip };
-	const guest = await run.docker.launch({
-		origins: [approved],
-		redirects: [],
-		network: { id, hosts }
+	const { lease } = run.keeper.issue(run.ticket, run.uid, run.recipe.recipe.teardown);
+	const relay = new VaultCdpRelayAdapter({
+		keeper: run.keeper,
+		lease,
+		peerUid: (socket) => run.peer.uid(socket),
+		pipe: guest.pipe
 	});
+	const scope = { lease, session: run.input.session };
 	try {
-		const { lease } = run.keeper.issue(run.ticket, run.uid, {
-			logout: '/logout',
-			revoke: null,
-			securityLog: 'fixture-security-log'
-		});
-		const relay = new VaultCdpRelayAdapter({
-			keeper: run.keeper,
-			lease,
-			peerUid: (socket) => run.peer.uid(socket),
-			pipe: guest.pipe
-		});
-		try {
-			await relay.listen();
-			const scope = { lease, session: run.input.session };
-			const attachment = await run.client.call<VaultAttachment>('/v1/session/attach', scope);
-			await expectMissingToken(attachment.endpoint, run.uid);
-			await verifyOriginPolicy(attachment, guest.owner, ip);
-			const ended = await run.client.call<VaultLeaseEnded>('/v1/session/finish', scope);
-			expect(ended.ended).toBe('finished');
-			await relay.close();
-			expect(existsSync(run.keeper.relaySocketPath(lease))).toBe(false);
-		} finally {
-			await relay.close();
-		}
+		await relay.listen();
+		const attachment = await run.client.call<VaultAttachment>('/v1/session/attach', scope);
+		await expectMissingToken(attachment.endpoint, run.uid);
+		await verifyOriginPolicy(attachment, guest.owner, ip);
 	} finally {
-		await guest.close();
-		await assertFixtureRemoved(guest.owner);
+		const ended = await run.client.call<VaultLeaseEnded>('/v1/session/finish', scope);
+		expect(ended.ended).toBe('finished');
+		await finishSyntheticFixture(
+			ended,
+			guest,
+			async () => {
+				await relay.close();
+				expect(existsSync(run.keeper.relaySocketPath(lease))).toBe(false);
+			},
+			securityLog
+		);
 	}
 }
 
@@ -83,12 +98,18 @@ async function verifyOriginPolicy(attachment: VaultAttachment, owner: string, ip
 		timeout: 10_000
 	});
 	try {
-		const page = await browser.newPage({ ignoreHTTPSErrors: true });
+		const [context] = browser.contexts();
+		const [page] = context.pages();
+		expect(context.pages().map((tab) => tab.url())).toEqual([approved + '/roster']);
+		expect(await page.locator('h1').innerText()).toBe('Approved synthetic origin');
+		const observed = JSON.stringify([await page.content(), await context.cookies(), page.url()]);
+		expect(observed).not.toContain(canary.password);
+		expect(observed).not.toContain(canary.otp);
+		const cdp = await context.newCDPSession(page);
+		const history = await cdp.send('Page.getNavigationHistory');
+		expect(history.entries.map(({ url }) => url)).toEqual(['about:blank', approved + '/roster']);
 		await page.goto('chrome://sandbox');
 		expect(await page.locator('body').innerText()).toMatch(/Seccomp-BPF sandbox\s+Yes/u);
-		await page.goto(approved, { timeout: 8_000 });
-		expect(await page.title()).toBe('Vault fixture');
-		expect(await page.locator('h1').innerText()).toBe('Approved synthetic origin');
 		await expect(page.goto(denied, { timeout: 5_000 })).rejects.toThrow(
 			'ERR_TUNNEL_CONNECTION_FAILED'
 		);

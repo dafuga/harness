@@ -9,4 +9,12 @@ export interface VaultCdpPipeStreams {
 export interface VaultCdpMessage {
 	id?: number;
 	method?: string;
+	sessionId?: string;
+	params?: { sessionId?: string };
+	result?: { sessionId?: string };
+}
+
+export interface VaultCdpReader {
+	message(text: string): void;
+	close(): void;
 }

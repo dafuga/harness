@@ -1,5 +1,5 @@
 // @harness-uid u_bjzxwihuau
-import type { VaultCdpPipeStreams } from './vault-cdp-relay-adapter/VaultCdpPipe.types';
+import type { VaultCdpPipe } from './vault-cdp-relay-adapter/VaultCdpPipe';
 
 export interface VaultBrowserDockerAdapterConfig {
 	image: string;
@@ -21,6 +21,6 @@ export interface VaultFixtureNetwork {
 
 export interface VaultBrowserDockerSession {
 	owner: string;
-	pipe: VaultCdpPipeStreams;
+	pipe: VaultCdpPipe;
 	close(): Promise<void>;
 }

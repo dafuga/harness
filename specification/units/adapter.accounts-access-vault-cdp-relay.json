@@ -23,11 +23,12 @@
 			"maxCdpFrameBytes",
 			"VaultCdpPipe",
 			"VaultCdpPipe.constructor",
+			"VaultCdpPipe.listen",
 			"VaultCdpPipe.send",
-			"VaultCdpPipe.receive",
 			"VaultCdpPipe.detach",
 			"VaultCdpPipeStreams",
-			"VaultCdpMessage"
+			"VaultCdpMessage",
+			"VaultCdpReader"
 		]
 	},
 	"contract": {
@@ -44,18 +45,13 @@
 				"required": true
 			},
 			{
+				"name": "VaultCdpPipe.listen.reader",
+				"type": "VaultCdpReader",
+				"required": true
+			},
+			{
 				"name": "VaultCdpPipe.send.text",
 				"type": "string",
-				"required": true
-			},
-			{
-				"name": "VaultCdpPipe.receive.chunk",
-				"type": "Buffer",
-				"required": true
-			},
-			{
-				"name": "VaultCdpPipe.receive.emit",
-				"type": "(text: string) => void",
 				"required": true
 			}
 		],
@@ -73,11 +69,11 @@
 				"type": "unknown"
 			},
 			{
-				"name": "VaultCdpPipe.send",
-				"type": "boolean"
+				"name": "VaultCdpPipe.listen",
+				"type": "()"
 			},
 			{
-				"name": "VaultCdpPipe.receive",
+				"name": "VaultCdpPipe.send",
 				"type": "boolean"
 			},
 			{
@@ -118,6 +114,29 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "VaultCdpPipe.listen",
+				"inputs": [
+					{
+						"name": "VaultCdpPipe.listen.reader",
+						"type": "VaultCdpReader",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultCdpPipe.listen",
+						"type": "()"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
+			},
+			{
 				"name": "VaultCdpPipe.send",
 				"inputs": [
 					{
@@ -129,29 +148,6 @@
 				"outputs": [
 					{
 						"name": "VaultCdpPipe.send",
-						"type": "boolean"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "VaultCdpPipe.receive",
-				"inputs": [
-					{
-						"name": "VaultCdpPipe.receive.chunk",
-						"type": "Buffer",
-						"required": true
-					},
-					{
-						"name": "VaultCdpPipe.receive.emit",
-						"type": "(text: string) => void",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "VaultCdpPipe.receive",
 						"type": "boolean"
 					}
 				],
@@ -211,7 +207,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			}
 		]
 	},

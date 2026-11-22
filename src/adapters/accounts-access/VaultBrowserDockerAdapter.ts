@@ -32,6 +32,7 @@ import type {
 	VaultBrowserDockerLaunch,
 	VaultBrowserDockerSession
 } from './VaultBrowserDockerAdapter.types';
+import { VaultCdpPipe } from './vault-cdp-relay-adapter/VaultCdpPipe';
 
 /** Launches only an isolated synthetic browser fixture through a local Docker Unix socket. */
 export class VaultBrowserDockerAdapter {
@@ -119,7 +120,7 @@ async function attachPipe(
 	child.stdin.on('error', () => child.stdout.destroy());
 	return {
 		owner,
-		pipe: { readable: child.stdout, writable: child.stdin },
+		pipe: new VaultCdpPipe({ readable: child.stdout, writable: child.stdin }),
 		close: async () => {
 			try {
 				await remove();

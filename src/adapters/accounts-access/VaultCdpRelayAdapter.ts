@@ -6,26 +6,25 @@ import { dirname } from 'node:path';
 import type { Duplex } from 'node:stream';
 import { clearInterval, setInterval } from 'node:timers';
 import { WebSocket, WebSocketServer } from 'ws';
-import { maxCdpFrameBytes, VaultCdpPipe } from './vault-cdp-relay-adapter/VaultCdpPipe';
+import { maxCdpFrameBytes } from './vault-cdp-relay-adapter/VaultCdpPipe';
 import type { VaultCdpRelayAdapterConfig } from './VaultCdpRelayAdapter.types';
 
 /** Connects one active lease to an existing private Chromium pipe. */
 export class VaultCdpRelayAdapter {
 	private readonly ws = new WebSocketServer({ noServer: true, maxPayload: maxCdpFrameBytes });
-	private readonly pipe: VaultCdpPipe;
 	private readonly path: string;
 	private readonly server: Server;
 	private readonly peers = new Set<Duplex>();
 	private active: WebSocket | null = null;
 	private ownsDirectory = false;
 	private timer?: ReturnType<typeof setInterval>;
+	private release?: () => void;
 	private closing?: Promise<void>;
 
 	constructor(private readonly config: VaultCdpRelayAdapterConfig) {
 		this.path = config.keeper.relaySocketPath(config.lease);
 		if (Buffer.byteLength(this.path) > 103)
 			throw new ExpectedCliError('Vault CDP socket path is too long.');
-		this.pipe = new VaultCdpPipe(config.pipe);
 		this.server = createServer((_request, response) => response.writeHead(404).end());
 		this.server.on('upgrade', (request, socket, head) => this.upgrade(request, socket, head));
 		this.server.on('connection', (socket) => trackPeer(this.peers, socket));
@@ -55,10 +54,7 @@ export class VaultCdpRelayAdapter {
 
 	private startReading(): void {
 		const { pipe, keeper, lease } = this.config;
-		pipe.readable.on('data', this.read);
-		pipe.readable.on('end', this.failed);
-		pipe.readable.on('error', this.failed);
-		pipe.writable.on('error', this.failed);
+		this.release = pipe.listen({ message: this.forward, close: this.failed });
 		this.timer = setInterval(() => {
 			if (!keeper.relayEvent(lease, 'tick')) this.failed();
 		}, 250);
@@ -67,11 +63,7 @@ export class VaultCdpRelayAdapter {
 
 	private async stop(): Promise<void> {
 		clearInterval(this.timer);
-		this.config.pipe.readable
-			.off('data', this.read)
-			.off('end', this.failed)
-			.off('error', this.failed);
-		this.config.pipe.writable.off('error', this.failed);
+		this.release?.();
 		this.active?.terminate();
 		for (const peer of this.peers) peer.destroy();
 		await new Promise<void>((resolve) => this.server.close(() => resolve()));
@@ -104,11 +96,11 @@ export class VaultCdpRelayAdapter {
 		socket.on('error', () => socket.terminate());
 		socket.on('message', (data, binary) => {
 			const alive = keeper.relayEvent(lease, 'activity');
-			if (!alive || binary || !this.pipe.send(data.toString())) socket.terminate();
+			if (!alive || binary || !this.config.pipe.send(data.toString())) socket.terminate();
 		});
 		socket.once('close', () => {
 			this.active = null;
-			this.pipe.detach();
+			this.config.pipe.detach();
 			keeper.relayEvent(lease, 'disconnect');
 		});
 	}
@@ -117,17 +109,14 @@ export class VaultCdpRelayAdapter {
 		void this.close().catch(() => undefined);
 	};
 
-	private readonly read = (chunk: Buffer): void => {
+	private readonly forward = (text: string): void => {
 		if (!this.config.keeper.relayEvent(this.config.lease, 'tick')) {
 			this.failed();
 			return;
 		}
-		const ok = this.pipe.receive(chunk, (text) => {
-			if (this.active?.readyState !== WebSocket.OPEN) return;
-			if (this.active.bufferedAmount > maxCdpFrameBytes) this.active.terminate();
-			else this.active.send(text);
-		});
-		if (!ok) this.failed();
+		if (this.active?.readyState !== WebSocket.OPEN) return;
+		if (this.active.bufferedAmount > maxCdpFrameBytes) this.active.terminate();
+		else this.active.send(text);
 	};
 }
 

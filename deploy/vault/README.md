@@ -16,6 +16,12 @@ HARNESS_TEST_VAULT_DOCKER_IMAGE="$fixture_image" HARNESS_TEST_VAULT_DOCKER_CONTE
   bunx --no-install vitest run test/credential-vault-browser.e2e.test.ts
 ```
 
+`recipes/example-console.json` binds the browser script by SHA-256. An ephemeral synthetic reviewer
+signs the recipe during the tests. The private executor consumes a sealed password and a separately
+sealed SMS or email code, verifies the account and action, and closes the login tab before handoff.
+The tests observe provider logout, the security log and its 15-minute recheck on a controlled clock,
+and recovery of a browser left by an interrupted supervisor.
+
 The Node-API peer lookup uses `getpeereid` on macOS and `SO_PEERCRED` on Linux. It requires a
 supported Node runtime with headers and compiler to build `peer.node`. Bun 1.2.18 does not expose
 the accepted socket descriptor. Missing peer credentials fail closed. The fixture runs as one host

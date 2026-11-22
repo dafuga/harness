@@ -1,10 +1,12 @@
+import { createHash } from 'node:crypto';
 import { describe, expect, test } from 'vitest';
 import {
 	digestDisplay,
 	recipeDigest,
 	recipeReviewMaxAgeMs,
 	recipeSchema,
-	vaultRecipe
+	vaultRecipe,
+	verifyVaultRecipeScript
 } from '../../../src/utils/accounts-access/vaultRecipe';
 import { reviewed, syntheticRecipe } from '../../support/credential-vault/recipe';
 
@@ -58,5 +60,38 @@ describe('vaultRecipe', () => {
 			const { review, reviewers } = reviewed(syntheticRecipe(), now);
 			expect(() => vaultRecipe(input, review, reviewers, now)).toThrow(/Invalid recipe/u);
 		}
+	});
+
+	test('only the exact signed script for the approved method and action is executable', () => {
+		const bytes = Buffer.from('export default async () => "synthetic";');
+		const scriptSha256 = createHash('sha256').update(bytes).digest('hex');
+		const input = syntheticRecipe({
+			methods: [
+				{ kind: 'api-token', actions: ['read-usage'], credential: 'usage-token', scriptSha256 },
+				{
+					kind: 'browser',
+					actions: ['read-roster', 'read-usage'],
+					reason: 'A reviewed browser path.',
+					scriptSha256
+				}
+			]
+		});
+		const { review, reviewers } = reviewed(input, now);
+		const verified = vaultRecipe(input, review, reviewers, now);
+		const approved = {
+			recipeDigest: verified.digest,
+			method: 'browser',
+			action: 'read-roster'
+		} as const;
+		expect(() => verifyVaultRecipeScript(verified, approved, bytes)).not.toThrow();
+		expect(() =>
+			verifyVaultRecipeScript(verified, approved, Buffer.concat([bytes, Buffer.from(' ')]))
+		).toThrow(/reviewed script/u);
+		expect(() =>
+			verifyVaultRecipeScript(verified, { ...approved, recipeDigest: 'f'.repeat(64) }, bytes)
+		).toThrow(/recipe digest/u);
+		expect(() =>
+			verifyVaultRecipeScript(verified, { ...approved, action: 'read-usage' }, bytes)
+		).toThrow(/approved method/u);
 	});
 });
