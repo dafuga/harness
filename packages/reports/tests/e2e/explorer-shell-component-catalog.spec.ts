@@ -103,7 +103,7 @@ for (const viewport of catalogViewports) {
 					.soft(component.locator('.viewer-images figcaption').first())
 					.toContainText('After · b56de78 · Checkout after release · Desktop');
 			await assertCatalogAfterCapture({ ...context, capture });
-			await assertCatalogPresentation(context);
+			await assertCatalogPresentation({ ...context, variant: state });
 			await assertCatalogControls(context);
 			if (unit.id === 'reports.component.verification-evidence-video-evidence' && !variant)
 				await assertVideoReviewControls(component);
