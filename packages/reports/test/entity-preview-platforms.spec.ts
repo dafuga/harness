@@ -4,6 +4,7 @@ import { commits } from './entityUnits';
 import { startRoute } from './entityPreviewPlatformEvidence';
 import { exercisePlatformFilters } from './entityPreviewPlatformFilters';
 import {
+	expectUnrecordedPlatforms,
 	exercisePlatformCatalogGaps,
 	exercisePlatformHistory,
 	exercisePlatformRevisionRecovery
@@ -62,7 +63,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 		}
 		await startRoute(page);
 		await page.getByRole('combobox', { name: 'Commit', exact: true }).selectOption(commits.first);
-		await expect(page.getByText('Not recorded', { exact: true })).toHaveCount(4);
+		await expectUnrecordedPlatforms(page);
 		await expect(page.getByRole('main')).not.toContainText('SvelteKit on Cloudflare');
 		await page.getByRole('link', { name: 'View Web configuration', exact: true }).click();
 		await expect(page.getByRole('main')).toContainText(

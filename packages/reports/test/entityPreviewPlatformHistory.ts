@@ -8,6 +8,12 @@ const heading = (page: Page, name: string) =>
 const web = (page: Page) => page.getByRole('link', { name: 'View Web configuration', exact: true });
 const revision = (page: Page) => page.getByRole('combobox', { name: 'Commit', exact: true });
 
+export async function expectUnrecordedPlatforms(page: Page) {
+	const cards = page.getByRole('main').getByRole('article');
+	await expect(cards).toHaveCount(4);
+	await expect(cards.locator('[data-status]')).toHaveText(Array(4).fill('Not recorded'));
+}
+
 export async function exercisePlatformHistory(page: Page, viewport: string) {
 	await open(page, { category: 'platforms' }, 'platforms');
 	await revision(page).selectOption(commits.middle);
@@ -45,7 +51,7 @@ export async function exercisePlatformCatalogGaps(page: Page, viewport: string) 
 			'Platform configuration could not be read at this revision. Check harness.platforms.json.'
 		)
 	).toBeVisible();
-	await expect(page.getByText('Not recorded', { exact: true })).toHaveCount(4);
+	await expectUnrecordedPlatforms(page);
 	await expect(page.getByRole('main')).not.toContainText('SvelteKit on Cloudflare');
 	await capture(page, `platforms-invalid-catalog-${viewport}`);
 	await revision(page).selectOption(commits.tip);

@@ -18,8 +18,8 @@ const emptyStates: Record<string, string> = {
 
 /** Frame rendered UI roots, including fragments and fixed surfaces, with a small edge allowance. */
 export async function previewCaptureBounds(page: Page, id: string, variant = '') {
-	if (isPlatformPicker(id, explorerPreviewInteraction(id, variant)))
-		return platformPickerBounds(page);
+	const interaction = explorerPreviewInteraction(id, variant);
+	if (isPlatformPicker(id, interaction)) return platformPickerBounds(page);
 	if (await reportViewDialog(page, id)) {
 		const viewport = page.viewportSize();
 		if (!viewport) throw new Error('Report dialog capture requires a viewport.');
@@ -39,7 +39,7 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 	if (id === 'reports.component.replay-controls' && ['speed-open', 'scene-open'].includes(variant))
 		return replayPickerBounds(page, bounds, variant);
 	// Full-page screenshots expand into the vertical scrollbar space after bounds are measured.
-	if (id === 'reports.component.explorer-ui-explorer-platforms' && variant === 'hovered')
+	if (id === 'reports.component.explorer-ui-explorer-platforms' && interaction === 'card-hovered')
 		bounds.width += await page.evaluate(() => innerWidth - document.documentElement.clientWidth);
 	return bounds;
 }
