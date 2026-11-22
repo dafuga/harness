@@ -70,7 +70,7 @@ test('named check profiles preserve all existing check IDs, commands and effecti
 	expect(actual).toEqual(checksBaseline);
 });
 
-test('every declared build has a tagged setup step; the catalog scope keeps only install and build:shell', () => {
+test('every declared build has a tagged setup step; the catalog scope keeps install, kit sync and build:shell', () => {
 	const config = verifyConfigSchema.parse(JSON.parse(readFileSync('harness.verify.json', 'utf8')));
 	const produced = config.setup.flatMap((step) => step.builds ?? []);
 	const declared = config.builds.map((build) => build.id);
@@ -83,10 +83,17 @@ test('every declared build has a tagged setup step; the catalog scope keeps only
 	);
 	const needed = neededBuilds([catalog]);
 	expect(needed).toEqual(new Set(['shell-fixture']));
+	// Root Vitest resolves package tsconfigs that extend generated SvelteKit configs, so the sync
+	// step names no build and runs in every scope, including scenarios that need no build.
+	const install = 'bun install --frozen-lockfile --backend=copyfile';
+	const sync =
+		'bun run --cwd packages/reports svelte-kit sync && bun run --cwd packages/desktop svelte-kit sync && bun run --cwd packages/hub svelte-kit sync';
 	expect(scopedSetup(config.setup, needed).map((step) => step.command)).toEqual([
-		'bun install --frozen-lockfile --backend=copyfile',
+		install,
+		sync,
 		'bun run --cwd packages/reports build:shell'
 	]);
+	expect(scopedSetup(config.setup, new Set()).map((step) => step.command)).toEqual([install, sync]);
 });
 
 test('standalone evidence fixtures load outside the test runner', () => {

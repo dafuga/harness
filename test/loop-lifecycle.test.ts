@@ -22,6 +22,7 @@ const now = '2026-11-13T12:00:00.000Z';
 let root = '';
 
 afterEach(() => {
+	vi.useRealTimers();
 	vi.restoreAllMocks();
 });
 
@@ -191,6 +192,9 @@ test('loop list and loop close commands run against the working directory', () =
 		root = directory;
 		await seedFixtures();
 		vi.spyOn(process, 'cwd').mockReturnValue(root);
+		// The commands read the wall clock; pin it so fixture ages do not drift with the real date.
+		vi.useFakeTimers({ toFake: ['Date'] });
+		vi.setSystemTime(new Date(now));
 		const lines: string[] = [];
 		vi.spyOn(console, 'log').mockImplementation((line: string) => void lines.push(line));
 		// Commander keeps option values between parses, so every call gets a fresh program.
