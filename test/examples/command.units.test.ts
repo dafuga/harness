@@ -1,3 +1,5 @@
+import { parse, failure } from './command.units.fixture';
+import type { Subcommand, ExampleCase, Schema } from './command.units.test.types';
 import { Command, CommanderError } from 'commander';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
@@ -7,17 +9,6 @@ import { ExpectedCliError } from '../../src/core/development-tooling/errors';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempRepo } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-/**
- * registerUnitsCommand is called on a program the way buildProgram calls it. A state either
- * dispatches argv through commander, so an action runs only when commander reaches it, or runs an
- * action that reads the registry from the working directory. Those states change into a fresh Git
- * repository and change back before they assert or record, so nothing outside it is written.
- */
-
-type Schema = { type: string; required: string[]; properties: Record<string, unknown> };
-type Subcommand = [name: string, args: string[], options: string[]];
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
 
 const unitsDescription =
 	'Maintain the unit registry: stable identities, contracts and the source graph.';
@@ -40,31 +31,6 @@ const expectedSubcommands: Subcommand[] = [
 afterEach(() => {
 	vi.restoreAllMocks();
 });
-
-/** A program named as buildProgram names it; commander's own output is silenced and exits are thrown. */
-function harnessProgram(): Command {
-	return new Command()
-		.name('harness')
-		.exitOverride()
-		.configureOutput({ writeOut: () => undefined, writeErr: () => undefined });
-}
-
-/** Parses argv against a program that holds the units command, as the CLI does. */
-async function parse(argv: string[]): Promise<void> {
-	const program = harnessProgram();
-	registerUnitsCommand(program);
-	await program.parseAsync(argv, { from: 'user' });
-}
-
-/** The error that stopped argv, or undefined when the dispatch completed. */
-async function failure(argv: string[]): Promise<unknown> {
-	try {
-		await parse(argv);
-	} catch (error) {
-		return error;
-	}
-	return undefined;
-}
 
 /** A thrown error as a plain record of its class name and message. */
 function failed(error: unknown): { name: string; message: string } {

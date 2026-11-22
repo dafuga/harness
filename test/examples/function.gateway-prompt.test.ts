@@ -1,9 +1,8 @@
+import type { GatewayRequestInput } from './function.gateway-prompt.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { gatewayPrompt } from '../../src/cli/program/codex-gateway-service/claude-query-service/gatewayPrompt';
-
-type GatewayRequestInput = Parameters<typeof gatewayPrompt>[0];
 
 const UNIT_ID = 'function.gateway-prompt';
 const PREFIX =

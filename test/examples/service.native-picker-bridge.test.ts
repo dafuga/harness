@@ -1,3 +1,4 @@
+import type { Call } from './service.native-picker-bridge.test.types';
 import { join } from 'node:path';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
@@ -5,8 +6,6 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { NativePickerBridgeService } from '../../src/services/development-tooling/native-picker-bridge-service/NativePickerBridgeService';
 import { NativePickerError } from '../../src/services/development-tooling/native-picker-bridge-service/NativePickerBridgeService.types';
-
-type Call = { method: string; params: Record<string, unknown> };
 
 function fakeRpc(replies: Record<string, unknown>) {
 	const calls: Call[] = [];

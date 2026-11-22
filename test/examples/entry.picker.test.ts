@@ -1,10 +1,9 @@
+import type { Call } from './entry.picker.test.types';
 import { test, vi } from 'vitest';
 import type * as NodeFs from 'node:fs/promises';
 import type * as NodePath from 'node:path';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-
-type Call = { name: string; args: unknown[] };
 
 // src/cli/picker.ts has no exports and runs at import time, with import.meta.dir
 // (absent under vitest). Its collaborators are replaced by recording stand-ins so

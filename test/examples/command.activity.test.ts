@@ -1,27 +1,9 @@
+import type { Written, Stopped, Described, ExampleCase } from './command.activity.test.types';
 import { Command, CommanderError, type Option } from 'commander';
 import { test } from 'vitest';
 import { registerActivityCommand } from '../../src/cli/program/ActivityCommand';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-/**
- * registerActivityCommand is called on a program the way buildProgram calls it. Its subcommands
- * run their actions only when commander dispatches to them, so the examples show what was attached
- * and where commander stops before an action: help and refused input never reach one. No temporary
- * directory is needed: registration stores nothing, and the actions resolve their checkout from the
- * working directory, so they are not dispatched here.
- */
-
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
-type Written = { stdout: string[]; stderr: string[] };
-type Stopped = { written: Written; stop: CommanderError };
-type Described = {
-	name: string;
-	description: string;
-	arguments: Array<{ name: string; required: boolean }>;
-	options: Array<{ flags: string; default?: unknown }>;
-	commands: Described[];
-};
 
 /**
  * A program named as buildProgram names it. Output is captured and exits are thrown rather than

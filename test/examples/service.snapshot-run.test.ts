@@ -1,3 +1,4 @@
+import type { Repository, Failure, Requirements, Scenarios } from './service.snapshot-run.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -6,11 +7,6 @@ import { SnapshotRunService } from '../../src/workflows/verification-evidence/ru
 import type { SnapshotRun } from '../../src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.types';
 import { snapshotCaptureContext } from '../../src/workflows/verification-evidence/run-verify/verification-service/snapshotCaptureContext';
 import { snapshotVideoFlags, pendingVideoEnvironment } from '../../src/workflows/verification-evidence/run-verify/verification-service/snapshotVideoFlags';
-
-type Scenarios = Parameters<typeof snapshotVideoFlags>[1];
-type Requirements = Parameters<typeof pendingVideoEnvironment>[1];
-type Repository = { git: (...args: string[]) => string };
-type Failure = { name: string; message: string } | undefined;
 
 const COMMIT = '0123456789abcdef0123456789abcdef01234567';
 const TREE = '89abcdef0123456789abcdef0123456789abcdef';

@@ -1,9 +1,8 @@
+import type { GatewayOptions } from './function.gateway-options.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { gatewayOptions } from '../../src/cli/program/codex-gateway-service/claude-query-service/gatewayOptions';
-
-type GatewayOptions = ReturnType<typeof gatewayOptions>;
 
 const HOME_ENV = { HOME: '/workspace/user', PATH: '/usr/local/bin:/usr/bin:/bin', SHELL: '/bin/zsh' };
 const DEFAULT_ENV = {

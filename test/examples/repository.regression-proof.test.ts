@@ -1,3 +1,5 @@
+import { sourceAt, focusedShot, unit } from './repository.regression-proof.fixture';
+import type { Source, Phase, Draft, Cases } from './repository.regression-proof.test.types';
 import { writeFileSync } from 'node:fs';
 import { test } from 'vitest';
 import type { RegressionRecord } from '../../src/core/verification-evidence/regressionTypes.types';
@@ -15,13 +17,6 @@ import { withTempRepo } from '../support/temporary';
 import type { TemporaryRepo } from '../support/temporary.types';
 import { expect } from '../verificationExpect';
 
-type Draft = Omit<RegressionRecord, 'id'>;
-type Source = Draft['source'];
-type Phase = Draft['phase'];
-type Shot = NonNullable<Draft['captures']>[number];
-type Cases = Parameters<typeof recordExampleCases>[1];
-
-const unit = 'repository.regression-proof';
 const loop = 'regression-proof-fixture';
 const evidence = 'examples-cases';
 const evidenceRef = 'refs/heads/harness-evidence';
@@ -41,12 +36,6 @@ function commitFile(repo: TemporaryRepo, path: string, contents: string): string
 	repo.git('add', '--', path);
 	repo.git('commit', '-q', '-m', `Update ${path}`);
 	return repo.git('rev-parse', 'HEAD');
-}
-
-/** The commit, its tree and its parent: the source identity a checkpoint is taken from. */
-function sourceAt(repo: TemporaryRepo, commit: string): Source {
-	const tree = repo.git('rev-parse', `${commit}^{tree}`);
-	return { commit, tree, parent: repo.git('rev-parse', `${commit}^`) };
 }
 
 /** A checkpoint whose id is the hash of its canonical JSON, which is what load checks. */
@@ -70,26 +59,6 @@ function checkpoint(source: Source, phase: Phase, extra: Partial<Draft> = {}): R
 		...extra
 	};
 	return { id: regressionHash(canonicalJson(draft)), ...draft };
-}
-
-/** A focused capture of `revision` whose stored bytes are `bytes`. */
-function focusedShot(revision: string, bytes: Buffer): Shot {
-	return {
-		unit,
-		capture: {
-			evidence: 'focused-screenshot',
-			kind: 'screenshot',
-			state: 'focused-proof',
-			status: 'passed',
-			path: 'focused/shot.png',
-			sha256: regressionHash(bytes),
-			bytes: bytes.length,
-			mediaType: 'image/png',
-			capturedAt: '2026-11-14T09:00:02.000Z',
-			provenance: 'actual-capture',
-			server: { buildId: 'fixture-build', revision }
-		}
-	};
 }
 
 /** The note the store holds for a checkpoint, as a caller reads it back from the note ref. */

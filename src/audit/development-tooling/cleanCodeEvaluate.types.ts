@@ -17,7 +17,4 @@ export interface EvaluationInput {
 	onUsage?: (usage: JevUsage) => void;
 }
 
-/** A Jev response reported a model other than the evaluation's or the requested settings.model. */
-export class JevModelMismatchError extends Error {
-	override name = 'JevModelMismatchError';
-}
+export { JevModelMismatchError } from './JevModelMismatchError';

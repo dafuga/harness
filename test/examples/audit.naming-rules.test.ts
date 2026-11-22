@@ -1,3 +1,4 @@
+import type { AuditFile } from './audit.naming-rules.test.types';
 import { test } from 'vitest';
 import {
 	auditSqlNaming,
@@ -5,8 +6,6 @@ import {
 } from '../../src/audit/development-tooling/namingRules';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-type AuditFile = Parameters<typeof auditTypeScriptNaming>[0];
 
 const limits = {
 	maxFileLines: 220,

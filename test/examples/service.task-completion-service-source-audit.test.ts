@@ -1,3 +1,4 @@
+import type { Repo } from './service.task-completion-service-source-audit.test.types';
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -7,8 +8,6 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir, withTempRepo } from '../support/temporary';
 import { sourceAudit } from '../../src/services/verification-evidence/task-completion-service/sourceAudit';
 import { TaskCompletionSourceAuditError } from '../../src/services/verification-evidence/task-completion-service/sourceAudit.types';
-
-type Repo = { root: string; git: (...args: string[]) => string };
 
 const invalidTasks: Array<{ name: string; input: TaskAuditInput }> = [
 	{ name: 'unsupported kind', input: { kind: 'review' as 'coding', goal: 'Review the evidence grid' } },

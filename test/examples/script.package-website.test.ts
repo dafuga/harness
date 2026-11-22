@@ -1,21 +1,12 @@
+import { leftBehind } from './script.package-website.fixture';
+import type { Run } from './script.package-website.test.types';
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { test } from 'vitest';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-/**
- * scripts/package-website.ts exports nothing: it works when it runs, as the build runs it
- * (`bun scripts/package-website.ts`). Each test runs the real script under Bun in a temporary
- * project folder, since its paths are relative to the working directory, then reads back what the
- * folder holds. Bun.build rejects a failed bundle by default, so the branch that throws
- * ReportCliBundleError is reached only through a stub that resolves a result with success false.
- */
-
-type Thrown = { name: string; code?: string; message: string; errors?: string[] };
-type Run = { thrown?: Thrown };
 
 const scriptPath = resolve(import.meta.dirname, '../../scripts/package-website.ts');
 const meta = {
@@ -89,32 +80,6 @@ function writeProject(root: string, files: Record<string, string>): void {
 	for (const folder of ['dist/api', 'dist/types/lib']) {
 		mkdirSync(join(root, folder), { recursive: true });
 	}
-}
-
-/** The files under a folder of the project, as paths from the project root, sorted. */
-function filesUnder(root: string, folder: string): string[] {
-	const base = join(root, folder);
-	if (!existsSync(base)) return [];
-	return readdirSync(base, { encoding: 'utf8', recursive: true })
-		.filter((entry) => statSync(join(base, entry)).isFile())
-		.map((entry) => `${folder}/${entry}`)
-		.sort();
-}
-
-/** The text of a file of the project, or null when the script did not write it. */
-function textOf(root: string, path: string): string | null {
-	const file = join(root, path);
-	return existsSync(file) ? readFileSync(file, 'utf8') : null;
-}
-
-/** What a run left in the project folder: the files under dist and the outputs the script writes. */
-function leftBehind(root: string) {
-	return {
-		distFiles: filesUnder(root, 'dist'),
-		cli: textOf(root, 'dist/reports/cli.js'),
-		consoleUi: textOf(root, 'dist/api/console-ui.js'),
-		declaration: textOf(root, 'dist/types/lib/console-ui.d.ts')
-	};
 }
 
 /** Runs the script once in a new project folder holding `files`, then reads back what it left. */

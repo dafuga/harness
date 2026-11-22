@@ -1,3 +1,4 @@
+import { plannedCheck } from './service.check-run.fixture';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -5,7 +6,7 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { CheckRunService, type RunContext } from '../../src/services/CheckRunService';
-import type { PlannedCheck } from '../../src/utils/verification-evidence/verifyPlan';
+
 
 const COMMIT = '0123456789abcdef0123456789abcdef01234567';
 const TREE = '89abcdef0123456789abcdef0123456789abcdef';
@@ -27,19 +28,6 @@ function contextFor(directory: string, env: Record<string, string | undefined> =
 			HARNESS_VERIFY_ENTITY: undefined,
 			...env
 		}
-	};
-}
-
-function plannedCheck(overrides: Partial<PlannedCheck> & { command: string }): PlannedCheck {
-	return {
-		id: 'src/services/CheckRunService.test.ts',
-		name: 'CheckRunService',
-		kind: 'unit',
-		runner: 'command',
-		target: 'module',
-		cwd: '.',
-		timeoutMs: 30_000,
-		...overrides
 	};
 }
 

@@ -1,3 +1,4 @@
+import type { ExampleCase, Invocation, ScenarioSummary, CheckResult } from './command.scenarios.test.types';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { Command } from 'commander';
@@ -6,14 +7,6 @@ import { registerScenariosCommand } from '../../src/cli/program/ScenariosCommand
 import { withTempDir } from '../support/temporary';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-type ScenarioSummary = { id: string; captures: number; unproven: number; excluded: number };
-type Invocation = { stdout: string[]; error?: unknown };
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
-type CheckResult = {
-	errors: string[];
-	health: { coverage: { missing: number }; noScenario: { total: number } };
-};
 
 function record(state: string, cases: ExampleCase[]): void {
 	recordExampleCases(

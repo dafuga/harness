@@ -2,9 +2,7 @@
 import type { ReviewInputFile } from '../development-tooling/cleanCodeFiles';
 import type { AuditFinding } from '../development-tooling/types';
 
-export class ReviewContextBudgetExceededError extends Error {
-	override name = 'ReviewContextBudgetExceededError';
-}
+export { ReviewContextBudgetExceededError } from './ReviewContextBudgetExceededError';
 
 export interface ReviewSnapshot {
 	target: ReviewInputFile;

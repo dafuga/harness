@@ -1,11 +1,8 @@
+import type { Queue, Groups, Case } from './command.execution-runtimes-jobs-command-jobs-output.test.types';
 import { test, vi } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { jobDuration, printJobEta, printJobStats } from '../../src/commands/execution-runtimes/jobs-command/jobsOutput';
-
-type Queue = Parameters<typeof printJobEta>[0];
-type Groups = Parameters<typeof printJobStats>[0];
-type Case = { name: string; input: unknown; output: unknown };
 
 const UNIT_ID = 'command.execution-runtimes-jobs-command-jobs-output';
 

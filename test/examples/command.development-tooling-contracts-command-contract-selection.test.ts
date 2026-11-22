@@ -1,57 +1,17 @@
+import { contract } from './command.development-tooling-contracts-command-contract-selection.fixture';
+import type { ExampleCase } from './command.development-tooling-contracts-command-contract-selection.test.types';
 import { test } from 'vitest';
 import { ExpectedCliError } from '../../src/core/development-tooling/errors';
-import type { ComponentManifest } from '../../src/core/development-tooling/unitTypes';
+
 import * as selection from '../../src/commands/development-tooling/contracts-command/contractSelection';
 import type * as contracts from '../../src/commands/development-tooling/contracts-command/contracts.types';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
 
-/**
- * The four public operations of contractSelection, called as their callers call them. None of them
- * opens a file: the made-up sources below need not exist, and the project root is only a lexical
- * anchor, so no temporary directory is used. Records are built the way readContractCatalog builds
- * them, with the manifest fields the selection reads and the rest as the schema requires.
- */
-
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
-type Status = 'active' | 'retired';
-
 const UNIT = 'command.development-tooling-contracts-command-contract-selection';
 const ROOT = '/work/harness-example';
 const OUTSIDE = 'Contract paths must stay within the project root; target is outside it.';
 const REFUSED = { name: 'ExpectedCliError', message: OUTSIDE };
-
-/** A stored record as readContractCatalog builds it; the kind is the id's first segment. */
-function contract(id: string, source: string[], title: string, status: Status = 'active') {
-	const kind = id.split('.')[0];
-	const responsibility = `Example responsibility for ${id}.`;
-	const manifest: ComponentManifest = {
-		schemaVersion: 1,
-		id,
-		kind,
-		title,
-		responsibility,
-		responsibilityOrigin: 'declared',
-		status,
-		owns: { source, symbols: [] },
-		contract: { origin: 'declared', inputs: [], outputs: [], errors: [] },
-		dependencies: [],
-		runtime: { kind: 'module', entry: source[0], targets: [{ kind: 'module', entry: source[0] }] },
-		scenarios: [],
-		budgets: { size: 'frozen', complexity: 'frozen', performance: [] }
-	};
-	const contractFile = `specification/units/${id}.json`;
-	return {
-		id,
-		kind,
-		title,
-		path: source[0],
-		contractPath: contractFile,
-		responsibility,
-		manifest,
-		states: []
-	};
-}
 
 const alpha = contract('command.alpha', ['src/alpha/command.ts'], 'Alpha command');
 const beta = contract('model.beta', ['src/alpha/beta.ts', 'src/alpha/schema.ts'], 'Beta model');

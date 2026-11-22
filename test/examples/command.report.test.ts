@@ -1,3 +1,4 @@
+import type { Written, Described, Dispatched, ExampleCase } from './command.report.test.types';
 import { Command, CommanderError } from 'commander';
 import { beforeEach, test, vi } from 'vitest';
 import { registerReportCommand } from '../../src/cli/program/ReportCommand';
@@ -16,17 +17,6 @@ import { expect } from '../verificationExpect';
 vi.mock('../../src/cli/program/run-report/runReport', () => ({
 	runReport: vi.fn(() => Promise.resolve())
 }));
-
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
-type Written = { stdout: string[]; stderr: string[] };
-type Dispatched = { calls: string[][]; stop?: CommanderError; written: Written };
-type Described = {
-	name: string;
-	description: string;
-	arguments: Array<{ name: string; required: boolean; variadic: boolean }>;
-	options: string[];
-	commands: string[];
-};
 
 beforeEach(() => {
 	vi.mocked(runReport).mockClear();

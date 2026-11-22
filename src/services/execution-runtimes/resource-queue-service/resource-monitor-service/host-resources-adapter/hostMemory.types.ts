@@ -5,7 +5,5 @@ export type Memory = Pick<
 	ResourceSnapshot,
 	'memoryTotalBytes' | 'memoryAvailableBytes' | 'memoryPressure'
 >;
-/** Host memory could not be read: its counters were invalid or its platform is unsupported. */
-export class HostMemoryReadError extends Error {
-	override name = 'HostMemoryReadError';
-}
+
+export { HostMemoryReadError } from './HostMemoryReadError';

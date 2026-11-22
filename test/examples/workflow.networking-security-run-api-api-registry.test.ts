@@ -1,3 +1,4 @@
+import type { Replies, Outcome } from './workflow.networking-security-run-api-api-registry.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -17,10 +18,6 @@ const contract = { responsibility: 'Shows evidence rows for a report.' };
 const unit = { id: 'reports.component.evidence-grid', contract };
 const registry = { commit, units: [unit] };
 const savedPlan = { responsibility: 'Plans the weekly evidence export.' };
-
-type Reply = { data: unknown } | Error;
-type Replies = Record<string, Reply>;
-type Outcome = { output: unknown; calls: string[] } | { error: Error; calls: string[] };
 
 // Fake client: answers each read kind from `replies`; an Error reply models a rejected read.
 function fakeClient(replies: Replies, calls: string[]): HarnessApiService {

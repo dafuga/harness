@@ -1,8 +1,8 @@
 // @harness-uid u_6lfbyr35id
+import type { JsonValue } from './CodexRequestValidator.types';
 import { z } from 'zod';
 import type { GatewayRequest } from '../../utils/development-tooling/gatewayTypes';
 
-type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
 
 const schema = z.object({
 	model: z.literal('claude-opus-5-5'),

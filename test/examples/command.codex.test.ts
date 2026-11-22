@@ -1,3 +1,5 @@
+import { summaryOf, ownerFile, outcomeOf, ownerToken } from './command.codex.fixture';
+import type { Served } from './command.codex.test.types';
 import { chmodSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { Command } from 'commander';
@@ -8,21 +10,9 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
 
-/**
- * registerCodexCommand is called on a program the way buildProgram calls it. The `codex serve`
- * action runs only when commander dispatches to it, so the serve states parse argv on a fresh
- * program. Token files live in withTempDir directories. Bun.serve is replaced by a recording stub
- * so that no port is opened; the rest of the action runs as shipped.
- */
-
-type Served = { hostname: string; port: number; fetch: (request: Request) => Promise<Response> };
-
 const unitId = 'command.codex';
 const symbol = 'registerCodexCommand';
 const evidence = 'examples-cases';
-/** A made-up token of 40 characters: long enough for the length check, never a real credential. */
-const ownerToken = 'synthetic-gateway-token-0123456789abcdef';
-const ownerFile = `${ownerToken}\n`;
 
 afterEach(() => {
 	vi.unstubAllGlobals();
@@ -32,17 +22,6 @@ afterEach(() => {
 /** Records one state's cases under its id, in the evidence file named for that id. */
 function recordState(state: string, cases: Parameters<typeof recordExampleCases>[1]): void {
 	recordExampleCases({ unitId, symbol, state, evidence, file: `${state}.json` }, cases);
-}
-
-/** The value `codex serve` rejects with for these arguments, or undefined when it resolves. */
-function outcomeOf(args: string[]): Promise<unknown> {
-	const root = new Command('harness').exitOverride();
-	registerCodexCommand(root);
-	const argv = ['codex', 'serve', ...args];
-	return root.parseAsync(argv, { from: 'user' }).then(
-		() => undefined,
-		(error: unknown) => error
-	);
 }
 
 /** A rejection as plain values; a temporary directory in its message is shown as a placeholder. */
@@ -55,16 +34,6 @@ function failure(error: unknown, directory?: string) {
 /** The names of commands, in order. */
 function namesOf(commands: readonly Command[]): string[] {
 	return commands.map((command) => command.name());
-}
-
-/** A subcommand's name and options: flags, the mandatory marker where set, and the default. */
-function summaryOf(command: Command) {
-	const options = command.options.map((option) => ({
-		flags: option.flags,
-		mandatory: option.mandatory || undefined,
-		default: option.defaultValue
-	}));
-	return { name: command.name(), options };
 }
 
 /** Writes a token file with exactly the given permission bits, which is what the check reads. */

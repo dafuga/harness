@@ -1,3 +1,4 @@
+import { fileChange, recordState } from './service.verification.fixture';
 import { createHash } from 'node:crypto';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -17,13 +18,11 @@ import type { VerifyContext } from '../../src/workflows/verification-evidence/ru
 import { pendingVideoScenarioIds } from '../../src/workflows/verification-evidence/run-verify/verification-service/pendingVideoSelection';
 import { pendingVideoSelection } from '../../src/workflows/verification-evidence/run-verify/verification-service/pendingVideoSelection';
 import { verificationScenarioCoverage } from '../../src/workflows/verification-evidence/run-verify/verification-service/verificationScenarioCoverage';
-import { recordExampleCases } from '../support/recordExampleCases';
+
 import type { TemporaryRepo } from '../support/temporary.types';
 import { withTempDir, withTempRepo } from '../support/temporary';
 import { expect } from '../verificationExpect';
 
-const unitId = 'service.verification';
-const evidence = 'examples-cases';
 // Made-up revisions and paths: no state reads a repository it did not build itself.
 const commit = '9c4e7a1f2b68d03e5a7c9f14d2b8e60a3f5c1d78';
 const tree = 'e2f81b6c0d94a7135f0e8b2d6c9a41f7e3b05d28';
@@ -139,26 +138,8 @@ test('coverage names missing captures and declared missing states', () => {
 	]);
 });
 
-/** The state a test is named for: its title, lowercased, with runs of other characters as "-". */
-function stateOf(title: string): string {
-	const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-	const trimmed = slug.replace(/^-|-$/g, '');
-	return trimmed.slice(0, 60).replace(/-$/, '');
-}
-
-/** Records the running test's named cases, each `[name, input, output]`, as the examples evidence. */
-function recordState(symbol: string, cases: [string, unknown, unknown][]) {
-	const state = stateOf(expect.getState().currentTestName ?? '');
-	const named = cases.map(([name, input, output]) => ({ name, input, output }));
-	recordExampleCases({ unitId, symbol, state, evidence, file: `${state}.json` }, named);
-}
-
 const idsOf = (items: { id: string }[]) => items.map((item) => item.id);
 const digest = (text: string) => createHash('sha256').update(text).digest('hex');
-
-function fileChange(path: string, status: ChangedFile['status']): ChangedFile {
-	return { path, status, classification: 'other' };
-}
 
 function testOf(id: string, kind: 'unit' | 'e2e', target: string) {
 	return { id, kind, runner: kind === 'unit' ? 'vitest' : 'playwright', target };

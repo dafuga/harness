@@ -1,3 +1,4 @@
+import type { Reader, ExampleCase, IdentityContract } from './command.development-tooling-contracts-command-read-contract-snapshot.test.types';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { test } from 'vitest';
@@ -6,10 +7,6 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempRepo } from '../support/temporary';
 import type { TemporaryRepo } from '../support/temporary.types';
 import { expect } from '../verificationExpect';
-
-type Reader = Awaited<ReturnType<typeof createContractHistoryReader>>;
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
-type IdentityContract = { id: string; uid: string; kind: 'command' };
 
 function writeContract(repo: TemporaryRepo, name: string, contract: unknown): string {
 	const path = join(repo.root, 'specification', 'units', `${name}.json`);

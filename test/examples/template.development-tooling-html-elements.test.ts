@@ -1,3 +1,4 @@
+import type { Atom } from './template.development-tooling-html-elements.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -10,8 +11,6 @@ import {
 	nativeAtoms,
 	svgElements
 } from '../../src/templates/development-tooling/htmlElements';
-
-type Atom = { name: string; tag: string; type?: string };
 
 const NULL_TAG = null as unknown as string;
 const NULL_ATOM = null as unknown as Atom;

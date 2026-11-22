@@ -1,3 +1,4 @@
+import type { Cases } from './function.writing-limits.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -16,7 +17,6 @@ import type {
 } from '../../src/utils/git-source-history/writing-limits/writingLimits.types';
 
 const unit = 'function.writing-limits';
-type Cases = Parameters<typeof recordExampleCases>[1];
 
 function record(state: string, symbol: string, cases: Cases): boolean {
 	return recordExampleCases(

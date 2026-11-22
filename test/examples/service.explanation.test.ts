@@ -1,3 +1,4 @@
+import type { Reason, Required } from './service.explanation.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -5,9 +6,6 @@ import {
 	ExplanationService,
 	describe
 } from '../../src/services/development-tooling/ExplanationService';
-
-type Required = Parameters<ExplanationService['report']>[0][number];
-type Reason = Parameters<ExplanationService['report']>[1][number];
 
 const unit = 'service.explanation';
 const file = 'src/services/development-tooling/ExplanationService.ts';

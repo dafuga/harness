@@ -6,7 +6,4 @@ export interface CachedEvaluation {
 	localization?: JevEvaluation;
 }
 
-/** A cache directory or nearest existing ancestor that resolves outside the project root. */
-export class CacheOutsideProjectError extends Error {
-	override name = 'CacheOutsideProjectError';
-}
+export { CacheOutsideProjectError } from './CacheOutsideProjectError';

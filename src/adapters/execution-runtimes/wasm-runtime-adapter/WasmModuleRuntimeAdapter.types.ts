@@ -11,7 +11,4 @@ export type WasmSource = WebAssembly.Module | BufferSource;
 
 export type WasmLoader = () => WasmSource | Promise<WasmSource>;
 
-/** The unit could not be loaded at all: its module lacks the Harness JSON ABI or cannot be read. */
-export class RuntimeUnavailableError extends Error {
-	override name = 'RuntimeUnavailable';
-}
+export { RuntimeUnavailableError } from './RuntimeUnavailableError';

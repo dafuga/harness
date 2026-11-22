@@ -1,10 +1,9 @@
+import type { Row } from './service.execution-runtimes-job-statistics.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { JobStatisticsService } from '../../src/services/execution-runtimes/JobStatisticsService';
 import type { DurationEstimate, DurationSummary } from '../../src/services/execution-runtimes/JobStatisticsService.types';
-
-type Row = ConstructorParameters<typeof JobStatisticsService>[0][number];
 
 function row(type: string, model: string, durationMs: number | undefined, outcome: Row['outcome']): Row {
 	return { type, model, durationMs, outcome } as Row;

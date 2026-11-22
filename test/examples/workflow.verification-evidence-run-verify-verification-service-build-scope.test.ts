@@ -1,3 +1,4 @@
+import type { Scenario } from './workflow.verification-evidence-run-verify-verification-service-build-scope.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -7,8 +8,6 @@ import {
 } from '../../src/workflows/verification-evidence/run-verify/verification-service/buildScope';
 
 const UNIT_ID = 'workflow.verification-evidence-run-verify-verification-service-build-scope';
-
-type Scenario = Parameters<typeof neededBuilds>[0][number];
 
 const BASE = {
 	schemaVersion: 1,

@@ -1,7 +1,8 @@
+import { invoke } from './command.networking-security-permissions.fixture';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { Command } from 'commander';
-import { test, vi } from 'vitest';
+import { test } from 'vitest';
 import { PermissionsCommand } from '../../src/commands/networking-security/PermissionsCommand';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
@@ -43,32 +44,6 @@ async function profileQuery(root: string, ...args: string[]) {
 
 async function apiQuery(root: string, ...args: string[]) {
 	return invoke(apiProgram().api, ['permissions', ...args, '--root', root]);
-}
-
-async function invoke(
-	command: Command,
-	args: string[]
-): Promise<{ output: unknown } | { error: { name: string; message: string } }> {
-	const output: string[] = [];
-	const log = vi.spyOn(console, 'log').mockImplementation((...values) => {
-		output.push(values.map(String).join(' '));
-	});
-	let thrown: unknown;
-	try {
-		await command.parseAsync(args, { from: 'user' });
-	} catch (error) {
-		thrown = error;
-	} finally {
-		log.mockRestore();
-	}
-	if (thrown !== undefined)
-		return {
-			error:
-				thrown instanceof Error
-					? { name: thrown.name, message: thrown.message }
-					: { name: typeof thrown, message: String(thrown) }
-		};
-	return { output: JSON.parse(output[0] ?? 'null') };
 }
 
 function outputOf(result: Awaited<ReturnType<typeof invoke>>) {

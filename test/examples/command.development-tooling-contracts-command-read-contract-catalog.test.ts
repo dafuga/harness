@@ -1,3 +1,5 @@
+import { zeta, flow } from './command.development-tooling-contracts-command-read-contract-catalog.fixture';
+import type { Refusal, Outcome } from './command.development-tooling-contracts-command-read-contract-catalog.test.types';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { test } from 'vitest';
@@ -22,28 +24,6 @@ const evidence = 'examples-cases';
 
 const alpha = contractUnit('command.alpha', 'src/commands/alpha.ts');
 const beta = contractUnit('function.beta', 'src/core/beta.ts');
-const zeta = {
-	...contractUnit('function.zeta', 'src/core/zeta.ts'),
-	owns: { source: [], symbols: [] }
-};
-const flow = {
-	schemaVersion: 1,
-	id: 'flow',
-	title: 'Alpha flow',
-	kind: 'headless',
-	units: ['command.alpha', 'function.beta'],
-	states: [
-		{ id: 'shared', title: 'Both units', coverage: 'required' },
-		{ id: 'beta-only', title: 'Beta only', coverage: 'required', units: ['function.beta'] }
-	],
-	viewports: [],
-	tests: [{ id: 'examples', kind: 'unit', runner: 'vitest', target: 'test/alpha.test.ts' }],
-	evidence: []
-};
-
-type Summary = ReturnType<typeof summary>;
-type Refusal = { expected: boolean; name: string; code: string | null; message: string };
-type Outcome = { output: Summary; error?: never } | { error: Refusal; output?: never };
 
 /** Writes the files into a fresh project, runs use on its root, and removes the project after. */
 function inProject<T>(files: Record<string, unknown>, use: (root: string) => Promise<T>) {
@@ -57,7 +37,7 @@ function inProject<T>(files: Record<string, unknown>, use: (root: string) => Pro
 }
 
 /** The fields a caller reads from each record: its id, source path, contract file and states. */
-function summary(entries: ContractEntry[]) {
+export function summary(entries: ContractEntry[]) {
 	return entries.map(({ id, path, contractPath, states }) => ({ id, path, contractPath, states }));
 }
 

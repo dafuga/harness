@@ -1,13 +1,10 @@
+import type { Units, Tree, Entry } from './function.explorer-ui-translation-catalog.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { translationCatalog } from '../../src/services/explorer-ui/revision-detail-service/translationCatalog';
 import { flattenMessages, translationMessages } from '../../src/services/explorer-ui/revision-detail-service/translationMessages';
 import type { TranslationSource } from '../../src/services/explorer-ui/revision-detail-service/translationMessages.types';
-
-type Tree = Parameters<typeof translationCatalog>[0];
-type Units = Parameters<typeof translationCatalog>[1];
-type Entry = Awaited<ReturnType<Tree['list']>>[number];
 
 const UNIT_ID = 'reports.component.evidence-grid';
 const DISK_ERROR = 'disk unavailable';

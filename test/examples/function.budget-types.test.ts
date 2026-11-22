@@ -1,3 +1,4 @@
+import type { Refusal, Parsed, ExampleCase } from './function.budget-types.test.types';
 import { test } from 'vitest';
 import {
 	budgetEventSchema,
@@ -54,10 +55,6 @@ const approval = {
 	unmeasured: { 'latency-warm-ms': 'The runner did not repeat the warm call.' },
 	performance: []
 };
-
-type Refusal = { issues: ReadonlyArray<{ path: PropertyKey[]; message: string }> };
-type Parsed = { success: true; data: unknown } | { success: false; error: Refusal };
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
 
 /** The path and message of each refusal, in the order zod gives them; the root is named record. */
 function reasons(error: Refusal): string[] {

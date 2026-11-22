@@ -1,3 +1,4 @@
+import type { Run, Cases } from './repository.benchmark.test.types';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -6,9 +7,6 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { BenchmarkRepository } from '../../src/repositories/agents-providers/BenchmarkRepository';
 import { InvalidBenchmarkRunIdError } from '../../src/repositories/agents-providers/BenchmarkRepository.types';
-
-type Run = Parameters<BenchmarkRepository['save']>[0];
-type Cases = Parameters<typeof recordExampleCases>[1];
 
 const RUN_ID = '3f2a9c1e-7b4d-4e8a-9c6f-1a2b3c4d5e6f';
 

@@ -1,3 +1,4 @@
+import type { Report, Cases } from './workflow.development-tooling-check-unit-contracts.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -9,8 +10,6 @@ import {
 const UNIT = 'workflow.development-tooling-check-unit-contracts';
 const SELECTION = 'Select one unit identity or --all.';
 const HEURISTIC = 'Heuristic review; not a completeness proof.';
-
-type Report = Parameters<typeof renderContractCheck>[0];
 
 const cleanReport: Report = {
 	entities: [UNIT],
@@ -28,8 +27,6 @@ const findingReport: Report = {
 	counts: [{ entity: UNIT, findings: 1 }],
 	summary: { entities: 1, findings: 1 }
 };
-
-type Cases = Parameters<typeof recordExampleCases>[1];
 
 function record(state: string, symbol: string, cases: Cases): void {
 	recordExampleCases(

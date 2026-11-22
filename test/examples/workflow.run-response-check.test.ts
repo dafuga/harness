@@ -1,3 +1,4 @@
+import type { Captured, Row } from './workflow.run-response-check.test.types';
 import { createHash } from 'node:crypto';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -7,9 +8,6 @@ import type { ResponseAssessment, ResponseCheckOptions, ResponseCheckReport, Res
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-type Captured = { printed: string; exitCode: typeof process.exitCode; error?: { name: string; message: string } };
-type Row = { name: string; input: ResponseCheckOptions; options: ResponseCheckOptions; status: ResponseCheckStatus; error?: string };
 
 const unit = 'workflow.run-response-check';
 const requestText = 'Summarise the release notes in three bullet points for the support team.';

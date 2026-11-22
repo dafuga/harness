@@ -1,3 +1,4 @@
+import { typescriptAdapter, svelte, sql, shell, findingsAdapters } from './audit.render.fixture';
 import { test } from 'vitest';
 import type {
 	AdapterCoverage,
@@ -33,37 +34,6 @@ const cleanScript: AuditFinding = {
 	rule: 'shell-unsafe-rm',
 	message: 'Avoid broad rm -rf patterns.'
 };
-
-function typescriptAdapter(files: string[]): AdapterCoverage {
-	return {
-		id: 'typescript',
-		label: 'TypeScript and JavaScript',
-		files,
-		extensions: ['.ts', '.tsx', '.js', '.jsx'],
-		optionalTools: ['eslint']
-	};
-}
-const svelte: AdapterCoverage = {
-	id: 'svelte',
-	label: 'Svelte',
-	files: ['src/routes/+page.svelte', 'src/lib/Nav.svelte'],
-	extensions: ['.svelte'],
-	optionalTools: ['svelte-check', 'eslint']
-};
-const sql: AdapterCoverage = {
-	id: 'sql',
-	label: 'SQL',
-	files: [],
-	extensions: ['.sql'],
-	optionalTools: ['sqlfluff']
-};
-const shell: AdapterCoverage = {
-	id: 'shell',
-	label: 'Shell',
-	files: ['scripts/clean.sh', 'scripts/deploy.sh'],
-	extensions: ['.sh'],
-	optionalTools: ['shellcheck']
-};
 /** An adapter with no optional tools, as the real WASM adapter has. */
 const wasm: AdapterCoverage = {
 	id: 'wasm',
@@ -75,12 +45,6 @@ const wasm: AdapterCoverage = {
 
 const cleanAdapters = [
 	typescriptAdapter(['src/lib/format.ts', 'src/lib/money.ts']),
-	svelte,
-	sql,
-	shell
-];
-const findingsAdapters = [
-	typescriptAdapter(['src/services/OrderService.ts', 'src/components/profileCard.tsx']),
 	svelte,
 	sql,
 	shell

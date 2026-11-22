@@ -1,3 +1,4 @@
+import type { Case } from './service.execution-runtimes-queue-eta.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -9,8 +10,6 @@ import type {
 	QueueJob,
 	QueueSnapshot
 } from '../../src/services/execution-runtimes/QueueEtaService.types';
-
-type Case = { name: string; input: unknown } & ({ output: unknown } | { error: unknown });
 
 const NOW = 1_700_000_000_000;
 const DURATIONS = Array.from({ length: 10 }, (_, index) => (index + 1) * 1000);

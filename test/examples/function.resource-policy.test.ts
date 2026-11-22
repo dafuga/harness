@@ -1,3 +1,4 @@
+import type { Config, Snapshot, Job, Request } from './function.resource-policy.test.types';
 import { test } from 'vitest';
 import {
 	impossibleRequest,
@@ -7,11 +8,6 @@ import {
 } from '../../src/services/execution-runtimes/resource-queue-service/resource-policy/resourcePolicy';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-type Snapshot = Parameters<typeof resourcePolicy>[1];
-type Config = Parameters<typeof resourcePolicy>[2];
-type Job = Parameters<typeof resourcePolicy>[0][number];
-type Request = Parameters<typeof impossibleRequest>[0];
 
 const now = 1_000_000;
 const MIB = 1024 * 1024;

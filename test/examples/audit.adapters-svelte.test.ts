@@ -1,3 +1,4 @@
+import type { Audited } from './audit.adapters-svelte.test.types';
 import { test } from 'vitest';
 import { svelteAdapter } from '../../src/audit/development-tooling/adapters/svelte';
 import type { AuditFile } from '../../src/audit/development-tooling/adapters/types';
@@ -5,15 +6,6 @@ import { maskTemplateLiterals, splitLines } from '../../src/audit/development-to
 import { harnessRuleLimits } from '../../src/rules/explorer-ui/catalog';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-/**
- * svelteAdapter.audit is called with each Svelte file the way the audit builds it: the path, the
- * contents and the lines derived from them. Each state records the file it was given (its path,
- * extension and contents, or only its path and line count for the file over the line limit) and
- * the findings the adapter returned, in the order it returned them.
- */
-
-type Audited = { name: string; input: unknown; output: ReturnType<typeof svelteAdapter.audit> };
 
 const component = `<!-- @harness-tier molecule -->
 <script lang="ts">

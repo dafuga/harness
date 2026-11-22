@@ -1,3 +1,4 @@
+import type { Answer, Review, Evaluation } from './audit.clean-code-evaluate.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -5,10 +6,6 @@ import { withTempDir } from '../support/temporary';
 import { evaluateCleanCodeFile } from '../../src/audit/development-tooling/cleanCodeEvaluate';
 import { JevModelMismatchError } from '../../src/audit/development-tooling/cleanCodeEvaluate.types';
 import type { JevEvaluator, EvaluationInput } from '../../src/audit/development-tooling/cleanCodeEvaluate.types';
-
-type Evaluation = Awaited<ReturnType<JevEvaluator>>;
-type Answer = Evaluation['answers'][string];
-type Review = Awaited<ReturnType<typeof evaluateCleanCodeFile>>;
 
 const MODEL = 'jev-1.13.0';
 const TARGET_HASH = '9c2e4f7a1b6d03e8f5a2c9d14b7e60f3a8c5d12e9b4f70a6c3d8e1f5b2a9c047';

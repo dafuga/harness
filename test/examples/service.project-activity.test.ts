@@ -1,3 +1,5 @@
+import { unit, historyOf, subject } from './service.project-activity.fixture';
+import type { History, Repository, Details } from './service.project-activity.test.types';
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -6,14 +8,7 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir, withTempRepo } from '../support/temporary';
 import { ProjectActivityService } from '../../src/services/projects-sessions/project-activity-service/ProjectActivityService';
-
-type Repository = { root: string; git: (...args: string[]) => string };
-type History = Parameters<ProjectActivityService['recorded']>[0];
-type Details = Parameters<ProjectActivityService['recorded']>[1];
-
-const unit = 'service.project-activity';
 const source = 'src/services/projects-sessions/project-activity-service/ProjectActivityService.ts';
-const subject = 'Show the agent roster in project activity';
 const behavior = 'Shows the registered agents of the repository in the live activity.';
 const none: History = { branches: [], revisions: [], truncated: false };
 
@@ -33,27 +28,6 @@ function commitFile(repository: Repository): string {
 		subject
 	);
 	return repository.git('rev-parse', 'HEAD').trim();
-}
-
-/** A history index with one newest revision on main, built from a made-up commit. */
-function historyOf(commit: string): History {
-	return {
-		branches: [{ name: 'main', head: commit }],
-		revisions: [
-			{
-				commit,
-				tree: '2f8a6c0e91b4d7305ac6e8f2d19b74a0c5e3f861',
-				parents: ['b04f8e2d6a17c93e5f0b8d41a6e27c9f3d05b2a6'],
-				subject,
-				author: 'Mira Halvorsen',
-				authoredAt: '2026-11-13T16:20:41+01:00',
-				committedAt: '2026-11-13T16:24:02+01:00',
-				branches: ['main'],
-				retained: false
-			}
-		],
-		truncated: false
-	};
 }
 
 /** The details of that revision: its registry unit, its noted reason and its changed file. */

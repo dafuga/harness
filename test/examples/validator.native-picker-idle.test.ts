@@ -1,13 +1,9 @@
+import type { PickerRpc, RpcCall, PickerData } from './validator.native-picker-idle.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { NativePickerIdleValidator } from '../../src/validators/development-tooling/NativePickerIdleValidator';
 import type { NativePickerIdleValidatorResult } from '../../src/validators/development-tooling/NativePickerIdleValidator.types';
-
-type Validate = NativePickerIdleValidator['validate'];
-type PickerData = Parameters<Validate>[0];
-type PickerRpc = Parameters<Validate>[1];
-type RpcCall = { method: string; params: PickerData };
 
 const UNIT_ID = 'validator.native-picker-idle';
 const THREAD_ID = 'b7e04c9d-2f18-4e63-a5c1-9d8e0f3a7b26';

@@ -1,32 +1,10 @@
-import { Command, CommanderError, type Option } from 'commander';
+import { harnessProgram } from './command.response-check.fixture';
+import type { Command} from 'commander';
+import { CommanderError, type Option } from 'commander';
 import { test } from 'vitest';
 import { registerResponseCheckCommand } from '../../src/cli/program/ResponseCheckCommand';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-/**
- * registerResponseCheckCommand is called on a program named as buildProgram names it. Its action
- * runs only through commander: a pre-action hook on the root records the parsed options and throws,
- * so the real check, which would read files and call JEV, never runs. Help and refused input stop
- * in commander before that hook. Registration stores nothing, so no temporary directory is used.
- */
-
-/** A program whose output is captured and whose exits are thrown instead of made. */
-function harnessProgram(printed: string[]): Command {
-	return new Command()
-		.name('harness')
-		.exitOverride()
-		.configureOutput({
-			writeOut: (text) => {
-				printed.push(text);
-			},
-			writeErr: (text) => {
-				printed.push(text);
-			},
-			getOutHelpWidth: () => 80,
-			getErrHelpWidth: () => 80
-		});
-}
 
 /** Registers the command on a program that already holds the named commands. */
 function registered(existing: string[]) {

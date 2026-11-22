@@ -1,10 +1,9 @@
+import type { Adapter } from './model.catalog-record.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { CatalogRecord } from '../../src/models/git-source-history/CatalogRecord';
 import type { CatalogRecordAttributes } from '../../src/models/git-source-history/CatalogRecord.types';
-
-type Adapter = Parameters<typeof CatalogRecord.find>[0];
 
 const record: CatalogRecordAttributes = {
 	id: 'record-20261114-001',

@@ -1,3 +1,4 @@
+import type { Call } from './service.native-picker-defaults.test.types';
 import { join } from 'node:path';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
@@ -5,12 +6,6 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { NativePickerDefaultsService } from '../../src/services/development-tooling/native-picker-bridge-service/NativePickerDefaultsService';
 import { InvalidConfigurationEditsError } from '../../src/services/development-tooling/native-picker-bridge-service/NativePickerDefaultsService.types';
-
-type Call = {
-	method: string;
-	params: Record<string, unknown>;
-	options?: Record<string, unknown>;
-};
 
 const SANDBOX_EDIT = { keyPath: 'sandbox_mode', value: 'read-only' };
 const MODEL_EDIT = { keyPath: 'model', value: 'gpt-5' };

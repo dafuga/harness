@@ -1,3 +1,4 @@
+import type { ExampleCase } from './function.explorer-legacy.test.types';
 import { test } from 'vitest';
 import { explorerLegacy } from '../../src/utils/projects-sessions/console-canonical/explorerLegacy';
 import type { ConsoleRoute } from '../../src/utils/projects-sessions/consoleRoute';
@@ -14,8 +15,6 @@ const sha = '3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50';
 const base = '9b1e4d7a2c6f0e8b3a5d1c9f7e2b4a6d8c0e3f15';
 const at = { branch: 'feature/kept#1', commit: sha };
 const scope = { branch: at.branch, commit: sha };
-
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
 
 /** Maps one route and keeps the address it gives as the case's output. */
 function mapping(name: string, input: ConsoleRoute): ExampleCase {

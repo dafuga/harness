@@ -1,16 +1,9 @@
+import type { CommandShape } from './command.execution-runtimes-jobs.test.types';
 import { Command, type Option } from 'commander';
 import { test, vi } from 'vitest';
 import { JobsCommand } from '../../src/commands/execution-runtimes/JobsCommand';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-type CommandShape = {
-	name: string;
-	description: string;
-	arguments: Array<{ name: string; required: boolean }>;
-	options: Array<{ flags: string; default: string | null }>;
-	commands: CommandShape[];
-};
 
 function optionShape(option: Option): CommandShape['options'][number] {
 	return {

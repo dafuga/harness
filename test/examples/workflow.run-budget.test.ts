@@ -1,3 +1,4 @@
+import { unitId, runtimePath, manifest } from './workflow.run-budget.fixture';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { test } from 'vitest';
@@ -11,38 +12,7 @@ import {
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-const unitId = 'workflow.run-budget';
-const runtimePath = 'src/workflows/run-budget/runBudget.ts';
 const evidence = 'examples-cases';
-
-const manifest = {
-	schemaVersion: 1,
-	id: unitId,
-	kind: 'workflow',
-	title: 'runBudget',
-	responsibility: 'Reports measurements, limits and ledger history, and benchmarks a unit.',
-	responsibilityOrigin: 'declared',
-	status: 'active',
-	owns: { source: [runtimePath], symbols: ['invoke'] },
-	contract: {
-		origin: 'declared',
-		inputs: [],
-		outputs: [],
-		errors: [],
-		errorStatus: 'none-found',
-		operations: []
-	},
-	dependencies: [],
-	runtime: {
-		kind: 'module',
-		entry: runtimePath,
-		handler: 'invoke',
-		targets: [{ kind: 'module', entry: runtimePath, handler: 'invoke' }]
-	},
-	scenarios: [],
-	budgets: { size: 'frozen', complexity: 'frozen', performance: [] }
-};
 
 function baselineEvent(unit: string, id: string) {
 	return {

@@ -1,3 +1,4 @@
+import { loader, unitId } from './audit.adapters-python.fixture';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, extname, join } from 'node:path';
 import { test } from 'vitest';
@@ -9,15 +10,6 @@ import { harnessRuleLimits } from '../../src/rules/explorer-ui/catalog';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-/**
- * pythonAdapter.audit is called as the audit runner calls it: each Python file is written into a
- * temporary project folder, read back, and given an AuditFile whose limits come from
- * harness.audit.json. The adapter runs no tool (ruff is only declared optional) and reads no file,
- * so no fake executable is needed.
- */
-
-const unitId = 'audit.adapters-python';
 const evidence = 'examples-cases';
 const finding = (path: string, rule: string, message: string) => ({ path, rule, message });
 const auditRecord = (state: string, symbol = 'pythonAdapter.audit') => ({
@@ -27,23 +19,6 @@ const auditRecord = (state: string, symbol = 'pythonAdapter.audit') => ({
 	evidence,
 	file: `${state}.json`
 });
-
-const loader = `import json
-
-
-def load_settings(path, overrides={}):
-    try:
-        return {**json.load(open(path)), **overrides}
-    except:
-        return {}
-
-
-def read_tags(text, seen=set(), extra=[]):
-    try:
-        return text.split(",")
-    except Exception:
-        return []
-`;
 const cache = `def read_cache(path, default=None):
     try:
         return path.read_text()

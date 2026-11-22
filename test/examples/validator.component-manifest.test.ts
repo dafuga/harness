@@ -1,3 +1,4 @@
+import type { Manifest, Result } from './validator.component-manifest.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -6,9 +7,6 @@ import {
 	contractFindings,
 	contractFailureCounts
 } from '../../src/validators/development-tooling/contractFindings';
-
-type Manifest = NonNullable<ReturnType<ComponentManifestValidator['validate']>['value']>;
-type Result = ReturnType<ComponentManifestValidator['validate']>;
 
 const ID = 'validator.component-manifest';
 const FILE = `${ID}.json`;

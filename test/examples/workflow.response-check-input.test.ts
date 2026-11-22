@@ -1,3 +1,4 @@
+import type { ResponseOptions, ErrorCase } from './workflow.response-check-input.test.types';
 import { writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { join } from 'node:path';
@@ -11,9 +12,6 @@ import {
 	readResponseCheckInput,
 	responseInputHashes
 } from '../../src/cli/program/responseCheckInput';
-
-type ResponseOptions = Parameters<typeof responseCheckSettings>[0];
-type ErrorCase = { name: string; input: unknown; error: unknown };
 
 const unitId = 'workflow.response-check-input';
 const sha256 = (text: string) => createHash('sha256').update(text).digest('hex');

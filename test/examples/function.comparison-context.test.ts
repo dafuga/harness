@@ -1,3 +1,4 @@
+import type { ExampleCase } from './function.comparison-context.test.types';
 import { createHash } from 'node:crypto';
 import { test } from 'vitest';
 import {
@@ -11,14 +12,6 @@ import {
 } from '../../src/utils/development-tooling/comparison-context/comparisonContext';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-/**
- * requestDigest and comparisonContext are called the way the benchmark calls them, with a sum
- * request and the sampling it uses. What each was given and what came back, or why it was
- * refused, is asserted and recorded as the cases of its state.
- */
-
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
 
 const sum = { operation: 'sum', input: { values: [2, 3] } };
 const sumKeysReordered = { input: { values: [2, 3] }, operation: 'sum' };

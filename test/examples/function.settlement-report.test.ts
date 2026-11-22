@@ -1,19 +1,10 @@
+import type { Entry } from './function.settlement-report.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { settlementReport } from '../../src/utils/reports-media/run-isolated/settlementReport';
 import { unknownSettlement } from '../../src/utils/reports-media/settlementReport';
 import type { Judged } from '../../src/utils/reports-media/settlementReport.types';
-
-type Standing = Judged['verdict']['standing'];
-
-interface Entry {
-	pid: number;
-	started: string;
-	standing: Standing;
-	reason: string;
-	executable: string;
-}
 
 const COMMAND = { pid: 47110, started: 'Sat Nov 14 21:46:58 2026' };
 const OWN = "the command's own";

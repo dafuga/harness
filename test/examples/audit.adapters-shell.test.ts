@@ -1,10 +1,9 @@
+import type { ShellFile } from './audit.adapters-shell.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { shellAdapter } from '../../src/audit/development-tooling/adapters/shell';
 import { harnessRuleLimits } from '../../src/rules/explorer-ui/catalog';
-
-type ShellFile = Parameters<typeof shellAdapter.audit>[0];
 
 function shellFile(contents: string): ShellFile {
 	const lines = contents.split('\n');

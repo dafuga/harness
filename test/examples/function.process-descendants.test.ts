@@ -1,3 +1,4 @@
+import type { FixtureRow } from './function.process-descendants.test.types';
 import { chmod, mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { test, vi } from 'vitest';
@@ -9,8 +10,6 @@ import {
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-type FixtureRow = { pid: number; parent: number; group: number; started: string };
 
 async function installFakePs(directory: string, rows: FixtureRow[]): Promise<string> {
 	const bin = join(directory, 'bin');

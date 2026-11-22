@@ -1,10 +1,8 @@
+import type { Repository, Session } from './serializer.claude-tools.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { ClaudeToolsSerializer } from '../../src/serializers/agents-providers/claude-tools-serializer/ClaudeToolsSerializer';
-
-type Repository = ConstructorParameters<typeof ClaudeToolsSerializer>[0];
-type Session = Parameters<ClaudeToolsSerializer['server']>[1];
 
 const META = {
 	unitId: 'serializer.claude-tools',

@@ -1,9 +1,8 @@
+import type { Runtime } from './function.runtime-fetch.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { runtimeFetch } from '../../src/utils/execution-runtimes/runtimeFetch';
-
-type Runtime = Parameters<typeof runtimeFetch>[0];
 
 const unitId = 'function.runtime-fetch';
 

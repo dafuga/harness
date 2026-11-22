@@ -7,7 +7,4 @@ export interface TaskClaimOptions {
 	runnable?: ReadonlySet<string>;
 }
 
-/** A worker's changes reached a path outside its module's files, so the worktree is preserved for review. */
-export class WorkerOutsideModuleError extends Error {
-	override name = 'WorkerOutsideModuleError';
-}
+export { WorkerOutsideModuleError } from './WorkerOutsideModuleError';

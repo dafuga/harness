@@ -1,20 +1,12 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { checkProject } from './script.check-verification-forwards.fixture';
+import type { ExampleCase, Tree } from './script.check-verification-forwards.test.types';
+
+
 import { test } from 'vitest';
 import { checkVerificationForwards } from '../../scripts/check-verification-forwards';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { withTempDir } from '../support/temporary';
+
 import { expect } from '../verificationExpect';
-
-/**
- * checkVerificationForwards is called as the script calls it, with a repository root. Each case
- * writes a temporary project folder (a null value in a tree is a folder), runs the check on it and
- * records the registry, the files it was given and what the check returned or threw. Each folder is
- * removed afterwards.
- */
-
-type Tree = Record<string, string | null>;
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
 
 const registryPath = 'scripts/verification-forward-registry.json';
 const uid = 'u_example01';
@@ -52,26 +44,6 @@ function recordState(state: string, cases: ExampleCase[]): void {
 		},
 		cases
 	);
-}
-
-/** Writes each path of the tree under root; a null value makes a folder instead of a file. */
-function writeTree(root: string, tree: Tree): void {
-	for (const [path, text] of Object.entries(tree)) {
-		const full = join(root, path);
-		if (text === null) mkdirSync(full, { recursive: true });
-		else {
-			mkdirSync(dirname(full), { recursive: true });
-			writeFileSync(full, text);
-		}
-	}
-}
-
-/** Runs the check on a new temporary project folder holding the tree; the folder is removed. */
-function checkProject(tree: Tree): Promise<string[]> {
-	return withTempDir('check-verification-forwards-', (root) => {
-		writeTree(root, tree);
-		return checkVerificationForwards(root);
-	});
 }
 
 /** A thrown error as plain values: its name and, for a system error, its code. */

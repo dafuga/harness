@@ -1,22 +1,9 @@
+import type { Index, Fake, Adapter, Row, Case } from './service.catalog-write.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { CatalogWriteService } from '../../src/services/git-source-history/CatalogWriteService';
 import type { CatalogSnapshot } from '../../src/services/git-source-history/CatalogWriteService.types';
-
-type Index = Parameters<CatalogWriteService['replace']>[0];
-type Adapter = ConstructorParameters<typeof CatalogWriteService>[0];
-type Case = { name: string; input: unknown } & ({ output: unknown } | { error: unknown });
-interface Row {
-	table: string;
-	values: Record<string, unknown>;
-}
-interface Fake {
-	adapter: Adapter;
-	executed: string[];
-	rows: Row[];
-	transactions: number;
-}
 
 const commit = 'b71d4e2a9c0f3857d6e1a4b2c8f09e7d3a5b6c14';
 const parent = '4a9e7c10f2d8b35e6a1c7d9f0b24e8c6d3a71f05';

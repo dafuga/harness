@@ -1,5 +1,6 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { commitContract } from './command.development-tooling-contracts-command-contract-history-identity.fixture';
+
+
 import { test } from 'vitest';
 import {
 	currentContractIdentity,
@@ -17,18 +18,6 @@ import type { TemporaryRepo } from '../support/temporary.types';
 import { expect } from '../verificationExpect';
 
 const unitId = 'command.development-tooling-contracts-command-contract-history-identity';
-
-function commitContract(repo: TemporaryRepo, id: string, uid: string): void {
-	const path = `specification/units/${id}.json`;
-	const fullPath = join(repo.root, path);
-	mkdirSync(dirname(fullPath), { recursive: true });
-	writeFileSync(
-		fullPath,
-		JSON.stringify({ id, uid, kind: 'command', owns: { source: ['src/commands/example.ts'] } })
-	);
-	repo.git('add', '--', path);
-	repo.git('commit', '-m', `Add ${id}`);
-}
 
 function summarizeIdentity(identity: ContractHistoryIdentity | undefined): unknown {
 	if (!identity) return null;

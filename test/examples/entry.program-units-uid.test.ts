@@ -1,3 +1,4 @@
+import type { Registered, FakeSub, Action } from './entry.program-units-uid.test.types';
 import { test, vi } from 'vitest';
 import type { Command } from 'commander';
 import { expect } from '../verificationExpect';
@@ -12,21 +13,6 @@ vi.mock('../../src/workflows/development-tooling/backfill-uids/backfillUids', ()
 vi.mock('../../src/workflows/development-tooling/rename-unit/renameUnit', () => ({
 	renameUnit: vi.fn()
 }));
-
-type Action = (...args: unknown[]) => unknown;
-
-interface FakeSub {
-	option(flag: string): FakeSub;
-	description(text: string): FakeSub;
-	action(handler: Action): FakeSub;
-}
-
-interface Registered {
-	name: string;
-	options: string[];
-	description?: string;
-	action?: Action;
-}
 
 function fakeUnits(): { units: Command; registered: Registered[] } {
 	const registered: Registered[] = [];

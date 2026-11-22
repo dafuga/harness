@@ -1,15 +1,8 @@
+import type { ExampleCase } from './function.command-action.test.types';
 import { test } from 'vitest';
 import { commandAction } from '../../src/utils/development-tooling/commandAction';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-/**
- * commandAction is called with the CLI arguments that follow the executable and script names.
- * What each call returned, or the error it threw, is asserted and recorded as the cases of its
- * state.
- */
-
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
 
 /** Calls commandAction with one set of arguments; an error it throws is kept by its name. */
 function labelling(name: string, args: string[]): ExampleCase {

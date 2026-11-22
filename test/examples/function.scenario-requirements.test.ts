@@ -1,9 +1,8 @@
+import type { Manifest } from './function.scenario-requirements.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { scenarioRequirements } from '../../src/utils/verification-evidence/scenarioRequirements';
-
-type Manifest = Parameters<typeof scenarioRequirements>[0];
 
 const activityList = {
 	schemaVersion: 1,

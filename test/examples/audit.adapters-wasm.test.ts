@@ -1,3 +1,4 @@
+import type { ArtifactExample } from './audit.adapters-wasm.test.types';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join, parse } from 'node:path';
 import { test } from 'vitest';
@@ -6,15 +7,6 @@ import type { AuditFile } from '../../src/audit/development-tooling/adapters/typ
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-type ArtifactExample = {
-	name: string;
-	relativePath: string;
-	extension: '.abi' | '.wasm';
-	contents: string;
-	companion?: { extension: '.cpp'; contents: string };
-	expected: ReturnType<typeof wasmAdapter.audit>;
-};
 
 const limits: AuditFile['limits'] = {
 	maxFileLines: 220,

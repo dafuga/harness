@@ -1,3 +1,4 @@
+import type { ExecutionCase } from './service.source-index.test.types';
 import ts from 'typescript';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
@@ -12,7 +13,6 @@ import { scanStorage } from '../../src/services/development-tooling/source-index
 import { sourceExecution } from '../../src/services/development-tooling/source-index-service/sourceExecution';
 import type { SourceFile, SourceTree } from '../../src/core/development-tooling/sourceTypes';
 import type { UnitsConfig } from '../../src/core/development-tooling/unitsConfig';
-import type { SourceLanguage } from '../../src/utils/development-tooling/scanImports.types';
 
 const UNIT = 'service.source-index';
 const GRID_PATH = 'src/lib/components/evidence/EvidenceGrid.svelte';
@@ -41,8 +41,6 @@ const units: UnitsConfig = {
 	ignored: ['**/*.md'],
 	references: []
 };
-
-type ExecutionCase = [name: string, code: string, language: SourceLanguage, path: string, expected: string];
 
 const EXECUTION_CASES: ExecutionCase[] = [
 	['interface-only TypeScript is declarative', 'export interface EvidenceRow {\n\tid: string;\n}\n', 'ts', 'src/lib/reports/evidence.ts', 'declarative'],

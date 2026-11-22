@@ -1,3 +1,4 @@
+import type { Outcome, Cases } from './service.verification-evidence-native-video-recorder.test.types';
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -18,9 +19,6 @@ import {
 const UNIT = 'service.verification-evidence-native-video-recorder';
 const SLOT = 'unit.example-clip.desktop.normal-motion';
 const HASH = recordingHash('example source, contract and fixture inputs');
-
-type Cases = Parameters<typeof recordExampleCases>[1];
-type Outcome = { ok: true; value: unknown } | { ok: false; error: { name: string; message: string } };
 
 function outcome(action: () => unknown): Outcome {
 	try {

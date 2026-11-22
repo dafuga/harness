@@ -1,3 +1,4 @@
+import { toolbarId, toolbarExamples, toolbarPath, record } from './function.unit-documentation.fixture';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { test } from 'vitest';
@@ -8,19 +9,9 @@ import {
 	unitDocumentation
 } from '../../src/utils/explorer-ui/unit-documentation/unitDocumentation';
 import type { UnitDocumentation } from '../../src/utils/explorer-ui/unit-documentation/unitDocumentation.types';
-import { recordExampleCases } from '../support/recordExampleCases';
+
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-/**
- * Each state calls the unit's real code the way its callers do: the parser on committed Markdown,
- * the reader on a temporary project folder standing in for a revision's tree, and the hydration on
- * prebuilt unit views. What it was given and what it returned, summarised to its fields, is asserted
- * and recorded as the cases of its state.
- */
-
-const toolbarId = 'app.component.toolbar';
-const toolbarPath = 'src/components/toolbar/usage.md';
 const menuId = 'app.component.menu';
 const menuPath = 'src/components/menu/usage.md';
 const footerId = 'app.component.footer';
@@ -28,15 +19,6 @@ const footerPath = 'src/components/footer/usage.md';
 const dividerId = 'app.component.divider';
 const notAvailable = 'The document is not available at this commit.';
 const otherEntity = 'The document belongs to another entity.';
-
-const toolbarExamples = [
-	{ name: 'Empty toolbar', input: { items: [] }, output: 'No actions' },
-	{
-		name: 'Disabled save',
-		input: { items: [{ id: 'save', enabled: false }] },
-		error: 'Action is disabled'
-	}
-];
 const menuExamples = [{ name: 'Open the main menu', input: { open: true }, output: 'Menu shown' }];
 
 /** Markdown with one harness-examples block for a unit, as an author commits it beside the unit. */
@@ -92,20 +74,6 @@ async function writeFiles(root: string, files: Record<string, string>): Promise<
 		await mkdir(dirname(join(root, path)), { recursive: true });
 		await writeFile(join(root, path), text);
 	}
-}
-
-/** Records the cases of one state; the file is named by the state id, as the scenario's evidence expects. */
-function record(symbol: string, state: string, cases: Parameters<typeof recordExampleCases>[1]) {
-	recordExampleCases(
-		{
-			unitId: 'function.unit-documentation',
-			symbol,
-			state,
-			evidence: 'examples-cases',
-			file: `${state}.json`
-		},
-		cases
-	);
 }
 
 test('unitDocumentation parsed a block per unit and trimmed setup', () => {

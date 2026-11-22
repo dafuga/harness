@@ -1,15 +1,9 @@
+import type { CommandShape } from './command.benchmark.test.types';
 import { Command, type Option } from 'commander';
 import { test } from 'vitest';
 import { registerBenchmarkCommand } from '../../src/cli/program/BenchmarkCommand';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-type CommandShape = {
-	name: string;
-	arguments: Array<{ name: string; required: boolean }>;
-	options: Array<{ flags: string }>;
-	commands: CommandShape[];
-};
 
 function optionShape(option: Option): { flags: string } {
 	return { flags: option.flags };

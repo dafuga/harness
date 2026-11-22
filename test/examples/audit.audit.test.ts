@@ -1,3 +1,5 @@
+import { version, ignoreMoney, twoClasses, libraryCoverage, appCoverage } from './audit.audit.fixture';
+import type { Files, Finding, Options } from './audit.audit.test.types';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { test } from 'vitest';
@@ -7,21 +9,6 @@ import { isExpectedCliError } from '../../src/core/development-tooling/errors';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir, withTempRepo } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-/**
- * Each public operation is called on a temporary project folder, with the options runAudit passes
- * to auditProject. What it was given and what it returned, or why it refused, is asserted and
- * recorded as the cases of its state. Temporary paths are recorded as the names they stand for,
- * and listings are sorted because directory order differs between file systems.
- */
-
-type Files = Record<string, string>;
-type Options = Parameters<typeof auditPath>[1];
-type Finding = AuditResult['findings'][number];
-
-const version = "export const version = '1.0.0';\n";
-const twoClasses = 'export class Money {}\nexport class Currency {}\n';
-const ignoreMoney = '{"ignore":[{"path":"src/lib/money.ts","rule":"max-classes-per-file"}]}';
 const cutOff = '{ "limits": ';
 const zeroLimit = '{ "limits": { "maxFileLines": 0 } }';
 const badMode = '{ "cleanCode": { "mode": "sometimes" } }';
@@ -37,20 +24,6 @@ const libraryFiles: Files = {
 	'src/index.ts': version,
 	'src/lib/ledger.ts': `${ledger.join('\n')}\n`,
 	'src/lib/money.ts': twoClasses
-};
-const libraryCoverage: Files = {
-	'dist/index.js': 'export {};\n',
-	'node_modules/left-pad/index.js': 'module.exports = {};\n',
-	'src/index.ts': version,
-	'tools/gen/main.go': 'package main\n'
-};
-const appCoverage: Files = {
-	'.svelte-kit/output.js': 'export {};\n',
-	'harness.audit.json': ignoreMoney,
-	'src/lib/Banner.svelte': '<script lang="ts">\n\tlet n = 0;\n</script>\n<p>{n}</p>\n',
-	'src/lib/money.ts': twoClasses,
-	'svelte.config.js': 'export default {};\n',
-	'tools/gen/main.go': 'package main\n'
 };
 const repoFiles: Files = {
 	'.gitignore': 'generated/\n',

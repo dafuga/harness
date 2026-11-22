@@ -11,6 +11,4 @@ export interface ResourceDatabase {
 	close(): void;
 }
 
-export class UnsupportedResourceQueueSchemaError extends Error {
-	override name = 'UnsupportedResourceQueueSchemaError';
-}
+export { UnsupportedResourceQueueSchemaError } from './UnsupportedResourceQueueSchemaError';

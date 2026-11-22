@@ -1,56 +1,18 @@
 import { afterEach, expect, test } from 'vitest';
 import './support/cli-measurement/workloadAssertions';
-import { execFile } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { readFileSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import type { CaptureLine } from '../src/core/verifyTypes';
 import { captureLines } from './utils/verification-observations/captureLines';
 import { scenarioManifestSchema } from '../src/core/unitTypes';
-// Each case runs a whole Vitest process.
-const observationTimeout = 180_000;
+import { observationTimeout, runVerificationObservation } from './support/verificationObservation';
+
 const root = resolve(import.meta.dirname, '..');
 const directories: string[] = [];
 afterEach(() => {
 	for (const directory of directories.splice(0))
 		rmSync(directory, { recursive: true, force: true });
 });
-async function run(scenario: string, cwd: string, targets: string[]) {
-	const directory = mkdtempSync(join(tmpdir(), 'harness-observation-proof-'));
-	directories.push(directory);
-	// Yield while commands run so Vitest can acknowledge its worker's reporting messages.
-	const result = await new Promise<{
-		error: Error | undefined;
-		status: number | null;
-		stdout: string;
-		stderr: string;
-	}>((resolveResult) =>
-		execFile(
-			'bun',
-			[join(root, 'test/verification-output.ts'), 'vitest', ...targets],
-			{
-				cwd,
-				encoding: 'utf8',
-				timeout: observationTimeout,
-				maxBuffer: 8_000_000,
-				env: {
-					...process.env,
-					HARNESS_SCENARIO: scenario,
-					HARNESS_EVIDENCE_DIR: directory,
-					TAKE_SCREENSHOT: '1'
-				}
-			},
-			(error, stdout, stderr) =>
-				resolveResult({
-					error: error && typeof error.code !== 'number' ? error : undefined,
-					status: error ? Number(error.code) || null : 0,
-					stdout,
-					stderr
-				})
-		)
-	);
-	return { directory, result };
-}
 test.each([
 	[
 		'catalog-previews',
@@ -165,7 +127,12 @@ test.each([
 ])(
 	'the %s command records every actual test, not just a passing process',
 	async (_label, { scenario, file, state, count, workspace }) => {
-		const { directory, result } = await run(scenario, join(root, 'packages', workspace), [file]);
+		const { directory, result } = await runVerificationObservation(
+			scenario,
+			join(root, 'packages', workspace),
+			[file],
+			directories
+		);
 		expect(result.error).toBeUndefined();
 		expect(result.status, result.stdout + result.stderr).toBe(0);
 		const lines = captureLines(directory).filter((line) => line.state === state);
@@ -193,7 +160,12 @@ test(
 				const cwd = resolve(root, check.cwd ?? '.');
 				expect([command[0], command[2]]).toEqual(['bun', 'vitest']);
 				expect(resolve(cwd, command[1])).toBe(join(root, 'test/verification-output.ts'));
-				const { directory, result } = await run(scenario.id, cwd, command.slice(3));
+				const { directory, result } = await runVerificationObservation(
+					scenario.id,
+					cwd,
+					command.slice(3),
+					directories
+				);
 				expect(result.error).toBeUndefined();
 				expect(result.status, result.stdout + result.stderr).toBe(0);
 				all.push(...captureLines(directory));
@@ -213,10 +185,12 @@ test(
 );
 
 test('an extra test target is rejected before any runner starts or evidence is recorded', async () => {
-	const { directory, result } = await run('git-evidence-read', root, [
-		'test/evidence-batch.test.ts',
-		'test/utils/read-tree-texts.test.ts'
-	]);
+	const { directory, result } = await runVerificationObservation(
+		'git-evidence-read',
+		root,
+		['test/evidence-batch.test.ts', 'test/utils/read-tree-texts.test.ts'],
+		directories
+	);
 	expect(result.status).not.toBe(0);
 	expect(result.stderr).toContain('Expected exactly one runner and test file');
 	expect(() => captureLines(directory)).toThrow(/ENOENT/);

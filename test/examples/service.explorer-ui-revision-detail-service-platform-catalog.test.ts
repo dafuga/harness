@@ -1,10 +1,9 @@
+import type { ExampleCase } from './service.explorer-ui-revision-detail-service-platform-catalog.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import type { SourceTree } from '../../src/core/development-tooling/sourceTypes';
 import { readPlatformCatalog } from '../../src/services/explorer-ui/revision-detail-service/platformCatalog';
-
-type ExampleCase = { name: string; input: unknown; output: unknown };
 
 const validManifest = JSON.stringify({
 	schemaVersion: 1,

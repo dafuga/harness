@@ -1,3 +1,4 @@
+import type { ScriptRun, SpawnCall } from './game.script.harness-audit.test.types';
 import { fileURLToPath } from 'node:url';
 import { afterEach, test, vi } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
@@ -7,9 +8,6 @@ import { recordExampleCases } from '../../../../test/support/recordExampleCases'
 // process.exit are stubbed so nothing real is started.
 const scriptPath = fileURLToPath(new URL('../../scripts/harness-audit.ts', import.meta.url));
 const fakeCliPath = '/made-up/harness-cli.ts';
-
-type SpawnCall = { command: string[] };
-type ScriptRun = { calls: SpawnCall[]; exits: number[] };
 
 afterEach(() => {
 	vi.unstubAllEnvs();

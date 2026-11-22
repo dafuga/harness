@@ -1,12 +1,9 @@
+import type { Ledger, Manifests, Context } from './service.budget.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { BudgetService } from '../../src/services/verification-evidence/budget-service/BudgetService';
 import type { UnitBaseline } from '../../src/services/verification-evidence/budget-service/BudgetService.types';
-
-type Ledger = Parameters<BudgetService['baselines']>[0];
-type Manifests = Parameters<BudgetService['baselines']>[1];
-type Context = Parameters<BudgetService['evaluate']>[1];
 
 const unitId = 'service.budget';
 const service = new BudgetService();

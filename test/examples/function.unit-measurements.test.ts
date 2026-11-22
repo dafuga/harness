@@ -1,3 +1,5 @@
+import { file, zod, unit, moduleOnly, revision, noArtifact, open, unread, unitId } from './function.unit-measurements.fixture';
+import type { Targets, ExampleCase } from './function.unit-measurements.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -6,43 +8,15 @@ import {
 	unitMeasurements
 } from '../../src/utils/development-tooling/unitMeasurements';
 import type { BuiltArtifacts } from '../../src/utils/development-tooling/unitMeasurements';
-import type { ComponentManifest } from '../../src/core/development-tooling/unitTypes';
+
 import type { SourceFile } from '../../src/core/development-tooling/sourceTypes';
 import type { SourceBlock } from '../../src/utils/development-tooling/sourceBlocks';
-
-type Targets = ComponentManifest['runtime']['targets'];
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
-
-const revision = '0123456789abcdef0123456789abcdef01234567';
 const sha = (character: string) => character.repeat(64);
-const moduleOnly = [{ kind: 'module', entry: 'src/index.ts' }] as Targets;
-const noArtifact = 'A module unit emits no separate artifact.';
-const unread = 'Not measured: src/data.bin was not read.';
-const zod = { via: 'import', typeOnly: false, external: 'zod' } as const;
-const open = {
-	via: 'import',
-	typeOnly: false,
-	uncertain: { reason: 'unresolved-import', detail: './gone' }
-} as const;
-const plain = { bytes: 100, lines: 10, language: 'ts', read: true, decisions: 'counted' } as const;
-
-/** A unit manifest as the measurement reads it: owned source, dependencies and runtime targets. */
-function unit(id: string, source: string[], targets: Targets, dependencies: string[] = []) {
-	const deps = dependencies.map((target) => ({ unit: target, via: 'import', origin: 'derived' }));
-	const manifest = { id, owns: { source, symbols: [] }, dependencies: deps, runtime: { targets } };
-	return manifest as unknown as ComponentManifest;
-}
-
-/** A source file as the index reports it; the facts a case does not name are the ordinary ones. */
-function file(path: string, patch: Partial<SourceFile> = {}): SourceFile {
-	return { path, references: [], blocks: [], ...plain, ...patch } as SourceFile;
-}
 
 const block = (complexity: number) =>
 	({ name: 'run', kind: 'function', complexity }) as SourceBlock;
 const indexed = (files: SourceFile[]) =>
 	new Map(files.map((item): [string, SourceFile] => [item.path, item]));
-const unitId = 'function.unit-measurements';
 const record = (symbol: string, state: string, cases: ExampleCase[]) =>
 	recordExampleCases(
 		{ unitId, symbol, state, evidence: 'examples-cases', file: `${state}.json` },

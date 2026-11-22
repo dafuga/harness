@@ -1,11 +1,10 @@
+import type { ExampleCase } from './template.development-tooling-atomic-markup.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { atomicProjectFiles, atomicMarkup } from '../../src/templates/development-tooling/atomicMarkup';
 
 const UNIT_ID = 'template.development-tooling-atomic-markup';
-
-type ExampleCase = { name: string; input: unknown } & ({ output: unknown } | { error: unknown });
 
 function record(state: string, symbol: string, cases: ExampleCase[]): void {
 	recordExampleCases(

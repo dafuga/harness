@@ -1,10 +1,8 @@
+import type { Request, Queue } from './function.resource-context.test.types';
 import { test } from 'vitest';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
 import { resourceContext } from '../../src/utils/execution-runtimes/resourceContext';
-
-type Queue = Parameters<typeof resourceContext>[3];
-type Request = Parameters<typeof resourceContext>[1];
 
 const leaseId = '3f9b2c1e-8a47-4d6e-9b15-0c7e2a4d8f61';
 const absentPid = 2147483646;

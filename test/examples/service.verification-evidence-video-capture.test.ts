@@ -1,3 +1,5 @@
+import { exampleInput, commit, tree } from './service.verification-evidence-video-capture.fixture';
+import type { Summary } from './service.verification-evidence-video-capture.test.types';
 import { test } from 'vitest';
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -5,12 +7,7 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { VideoCaptureService } from '../../src/services/verification-evidence/VideoCaptureService';
-import type {
-	VideoCaptureInput,
-	VideoCapturePlan,
-	VideoCaptureScript,
-	VideoCaptureScriptInput
-} from '../../src/services/verification-evidence/VideoCaptureService.types';
+import type { VideoCapturePlan, VideoCaptureScript, VideoCaptureScriptInput } from '../../src/services/verification-evidence/VideoCaptureService.types';
 import {
 	captureDigest,
 	captureFile,
@@ -24,11 +21,7 @@ import {
 import { captureReceiptStore } from '../../src/services/verification-evidence/video-capture-service/captureReceiptStore';
 
 const unitId = 'service.verification-evidence-video-capture';
-const commit = 'a'.repeat(40);
-const tree = 'b'.repeat(40);
 const signature = 'd'.repeat(64);
-
-type Summary = { name: string; message: string };
 
 async function failureOf(run: () => unknown): Promise<Summary> {
 	try {
@@ -41,17 +34,6 @@ async function failureOf(run: () => unknown): Promise<Summary> {
 
 function meta(state: string, symbol: string) {
 	return { unitId, symbol, state, evidence: 'examples-cases', file: `${state}.json` };
-}
-
-function exampleInput(directory: string): VideoCaptureInput {
-	return {
-		snapshot: 'snapshot-example',
-		source: { commit, tree },
-		buildId: 'build-example',
-		declaration: {},
-		evidence: 'evidence-example',
-		directory
-	};
 }
 
 function scriptFixture(): { input: VideoCaptureScriptInput; plan: VideoCapturePlan } {

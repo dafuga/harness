@@ -1,12 +1,11 @@
 // @harness-uid u_3fffcewbke
+import type { SqliteFieldValue } from './SqliteTableAdapter.types';
 import type { SqliteDatabase, SqliteModel } from '../../core/development-tooling/sqliteTypes';
 import { sqliteColumn, sqliteIdentifier } from '../../utils/development-tooling/sqliteTableSql';
 import { sqliteInput } from '../../utils/development-tooling/sqliteInput';
 import { sqliteRow } from '../../utils/development-tooling/sqliteRow';
 import { PrimaryKeyUpdateError } from './SqliteTableAdapter.types';
 
-/** A stored field value: a scalar its type accepts, null, or an object for json and blob fields. */
-type SqliteFieldValue = string | number | boolean | null | object;
 
 /** Builds only model-declared identifiers; all application values are bound parameters. */
 export class SqliteTableAdapter {

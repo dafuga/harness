@@ -1,3 +1,4 @@
+import type { Cases, ResolveOptions } from './audit.clean-code-config.test.types';
 import { test } from 'vitest';
 import {
 	cleanCodeDefaults,
@@ -5,9 +6,6 @@ import {
 } from '../../src/audit/development-tooling/cleanCodeConfig';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-type ResolveOptions = Parameters<typeof resolveCleanCodeSettings>[1];
-type Cases = Parameters<typeof recordExampleCases>[1];
 
 const configured = {
 	mode: 'advisory',

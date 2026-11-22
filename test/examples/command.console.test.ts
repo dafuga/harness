@@ -1,27 +1,9 @@
+import type { Written, Registered, Stopped, Described, ExampleCase } from './command.console.test.types';
 import { Command, CommanderError, type Option } from 'commander';
 import { test } from 'vitest';
 import { registerConsoleCommand } from '../../src/cli/program/ConsoleCommand';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-/**
- * registerConsoleCommand is called the way buildProgram calls it. The examples show what it
- * attached and where commander stops before a subcommand action: help and refused input never
- * reach one. The actions read or write a SvelteKit host, so none runs here; registration stores
- * nothing.
- */
-
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
-type Written = { stdout: string[]; stderr: string[] };
-type Stopped = { written: Written; stop: CommanderError };
-type Registered = { root: Command; consoleCommand: Command; written: Written };
-type Described = {
-	name: string;
-	description: string;
-	arguments: Array<{ name: string; required: boolean }>;
-	options: Array<{ flags: string; mandatory: boolean; default?: unknown }>;
-	commands: Described[];
-};
 
 /**
  * A program named as buildProgram names it. Output is captured and exits are thrown rather than
