@@ -9,13 +9,14 @@ import { skipsAnalytics } from '../workflows/reports-media/skipsAnalytics';
 /** Shared executable entry; compatibility imports never call it. */
 export async function runCli(entry: string): Promise<void> {
 	const args = process.argv.slice(2);
+	// Every command, Tracker included, prints JSON that piped readers must receive whole.
+	pipedOutput();
 	// Tracker owns compatibility flags and its role selector.
 	if (args[0] === 'tracker') {
 		const { TrackerCommand } = await import('../commands/projects-sessions/TrackerCommand');
 		process.exitCode = await new TrackerCommand().run(args.slice(1));
 		return;
 	}
-	pipedOutput();
 	const warning = staleBuild(entry);
 	if (warning) console.error(warning);
 	const startedAt = Date.now();
