@@ -1,50 +1,171 @@
 ---
 status: planned
 shippedIn: null
-unitIds: []
+unitIds:
+  - function.accounts-access-vault-recipe
+  - function.accounts-access-vault-method
+  - function.accounts-access-vault-gateway-policy
+  - function.accounts-access-vault-page-scrub
+  - function.accounts-access-vault-lease
+  - function.accounts-access-vault-executor-host
+  - function.accounts-access-vault-egress-rules
+  - function.accounts-access-vault-otp-route
+  - function.accounts-access-vault-teardown
+  - function.accounts-access-vault-security-audit
+  - function.accounts-access-vault-phone-view
 owner: null
 reviewedAt: null
 ---
 
 # Credential Vault in Harness
 
-Proposed on Tracker item `xrmz3f`. Harness iOS becomes the request and approval surface. A reviewed login script uses one fresh headed Chromium container per login. After verification, the originating session can operate the authenticated browser within its approved scope. Passwords, OTPs, provider tokens, cookies and browser profiles stay outside the requesting session. This is a spec and plan. The `m8fkcj` cutover proceeds independently.
+Proposed on Tracker item `xrmz3f`, revised for implementation on `tzqm5r` with the Chief of Staff review of 22 November. Harness iOS becomes the request and approval surface. A login first uses a provider API token or OAuth device grant. A browser login runs only when the reviewed recipe allows no API or device method for the action. That login uses a reviewed, signed script in one fresh headed Chromium container. After verification, the originating session can operate that browser through a mediated gateway within its approved scope. Passwords, OTPs, provider tokens, cookies and browser profiles stay outside the requesting session. Phase 1 code is pure policy and is exercised with synthetic data only. Real site logins and real secrets wait for Daniel's approval on his phone. The `m8fkcj` cutover proceeds independently.
+
+**Pending Daniel decision.** The session gets the mediated gateway described below, not a raw CDP or Playwright endpoint. A raw endpoint lets an agent read cookies and storage. The Chief of Staff recommends accepting the gateway. The decision is flagged on `tzqm5r` and the build continues on the gateway design.
+
+## Method selection rule
+
+For each requested `(site, action)` the recipe declares its methods. Harness picks the first eligible method in this fixed order:
+
+1. `api-token`: a scoped provider credential delivered to a reviewed script, for example a Stripe restricted key or a Cloudflare project token.
+2. `oauth-device`: an OAuth device authorization grant, or another officially supported device flow, approved on the phone.
+3. `browser`: a scripted headed login.
+
+This is a selection rule, not a fallback chain. If the recipe declares an `api-token` or `oauth-device` method for the action, the request uses it. If that method is not ready, for example because no token is enrolled, the request is **blocked** with that reason. It does not fall through to a browser. A browser login is selected only when no API or device method covers the action. The recipe must record a reviewed reason, such as `the provider has no API for this console page`. `vaultMethod` implements this rule.
+
+## What moves from the credential broker into Harness
+
+The private `dafuga/credential-broker` repository (main `b2d83b2`) and `credential-broker-ios` remain the authority until each step of the migration below passes acceptance.
+
+| Broker source                                         | Destination in Harness                                                                                                                    | Phase |
+| ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| `PROTOCOL.md` CB-DEVICE-V1 signing input, envelopes   | Kept byte-compatible. Harness adds `CB-DEVICE-V2` fields for recipe digest, runner fingerprint, method, lease scope.                      | 2     |
+| `src/crypto.ts` X25519/HKDF/ChaCha20-Poly1305 sealing | `src/adapters/accounts-access/VaultSealAdapter.ts`, unchanged algorithms and test vectors.                                                | 2     |
+| `src/device.ts`, `config.ts` device pins and roles    | `src/repositories/accounts-access/VaultDeviceRepository.ts`; Harness iOS pins enrolled through Harness Remote pairing.                    | 2     |
+| `src/broker.ts`, `server.ts` request queue, approval  | `src/services/accounts-access/VaultBrokerService.ts` behind `harness credential`; Unix socket peer checks from `peer.ts`/`peercred.c`.     | 2     |
+| `src/audit.ts` journal and Tracker mirror             | `src/repositories/accounts-access/VaultAuditRepository.ts`, still blind to secret values; receipts noted on the Tracker item.             | 2     |
+| `pairing.ts`, `pair-*.ts` QR pairing                  | Replaced by Harness Remote pairing in `packages/relay` and `packages/remote`. QR v1 stays for the legacy app until it is retired.        | 3     |
+| `workflows/*.mjs`, `scripts/codex-npm-login.sh`       | Rewritten as signed recipes under `deploy/vault/recipes/<site>.json` with their scripts; old workflows become parity fixtures (`yedhbr`). | 3     |
+| `workflows/wrangler.mjs`, `docs/wrangler.md`          | `api-token` method of the Cloudflare recipe, shared with `harness deploy` broker access (`56x4kx`, `8wwrzr`).                             | 3     |
+| `selectionId` environment choice (Daniel 19 Nov)      | Kept. Each eligible executor host arms an offer, and Daniel picks the host on the phone.                                                  | 2     |
+| `credential-broker-ios` vault, Face ID, APNs          | Harness iOS `Vault` feature beside `Account/HubAccountVault.swift`, using fresh device-bound keys and a sealed transfer of entries.        | 4     |
+
+These items stay outside Harness: the Google account, banking and money, and the vault master password (Daniel 18 Nov), and npm publishing through trusted publishing.
 
 ## Components and contract
 
-- **Harness client.** A proposed `harness credential request <site> <action>` or equivalent tool binds the request to the authenticated session, Tracker item, project, environment, account alias, site recipe and intended action. Status returns phases and receipt IDs. A separate attach or finish operation controls an issued handoff. Codex, Claude and Grok use the same protocol and scoped tool surface.
-- **Broker and policy.** Reuse the existing pinned routes, device enrollment, phone-signed approval, ephemeral X25519 delivery and audit concepts in the Credential Broker protocol. Extend the signed payload to identify the exact recipe revision, runner, permitted origins and action, account alias, session audience, nonce and expiry. Keep the relay and audit blind to secret values. Use a single consumer for each request and reject a replay, revoked device, failed runner preflight or changed scope.
-- **Browser executor.** Reuse `zfep7c` container start, resource, stdio, cancellation, ownership and cleanup primitives. Use the reviewed script manifest, pinned tools, broker action and structured receipts from `56x4kx`. A browser-specific pinned image adds real headed Chromium, a display service and Playwright control. Preflight the Chromium sandbox under ordinary confinement. An unavailable supported sandbox makes the host ineligible for automated browser login. Each run is nonroot with read-only image, task-only writable scratch and browser profile, restricted provider egress, no mounted host home or Docker socket, and no agent process.
-- **Site recipe.** A versioned manifest declares account selection, initiator and action policy, exact origins and permitted redirects, ordered login states, 2FA strategy, authenticated identity check, allowed follow-up operations, fallback policy, timeouts and cleanup. Paths and arguments are fixed by the approved recipe. Tests bind to the same recipe and image digest. A changed origin, unfamiliar consent screen or unexpected account causes a structured stop.
+- **Harness client.** `harness credential request <site> <action> --item <id> [--account <alias>] [--json]` binds the request to the authenticated session, Tracker item, project, environment, account alias, recipe digest and action. `harness credential status <request>` returns the phase and receipt IDs. `harness credential attach <lease>` and `harness credential finish <lease>` control a handoff. Codex, Claude and Grok use the same protocol and tool surface.
+- **Broker and policy.** Reuse the broker's pinned routes, device enrollment, phone-signed approval, ephemeral X25519 delivery and audit. The signed approval payload adds `recipe` (site, revision, digest), `method`, `runner` (host, fingerprint), `origins`, `action`, `mode` (`read` or `write`), `account`, `session`, `nonce` and `expiresAt`. A request has one consumer. Replay, a revoked device, a failed preflight or a changed scope is rejected.
+- **Browser executor host.** `vaultExecutorHost` admits a host only if the executor runs as a separate OS user or inside a VM. The agent's OS user must not be root and must not belong to `docker`, `admin`, `wheel` or `sudo`. It also must not have sudo, Docker socket access or write access to the executor's home. Without a passed Chromium sandbox preflight the host is ineligible. Grok's box gives every bot passwordless sudo, so automated logins never run there unless the executor is inside a VM that box users cannot control. The primary Mac and MB2 qualify with a dedicated `harness-vault` user that owns the Docker context and has no login shell.
+- **Container.** Reuse the `zfep7c` lifecycle (`ManagedProviderDockerAdapter`, task-owned volumes, crash recovery) with a separate pinned image: headed Chromium, Xvfb and the gateway process. The container runs nonroot with a read-only image, a task-only writable profile and scratch, no host home, no Docker socket and no agent process. Chromium starts with `--remote-debugging-pipe` and never `--remote-debugging-port`. The image refuses to start if any TCP listener other than the loopback egress proxy is present.
+- **Network allowlist inside the container.** `vaultEgressRules` renders an nftables ruleset that the container entrypoint loads into its own network namespace before Chromium starts, as root with `CAP_NET_ADMIN` dropped afterwards. Only the proxy user may open outbound TCP 443, and only DNS to the configured resolver is allowed. Chromium's user reaches only the loopback proxy, which admits `CONNECT` to the recipe's exact hosts. A host-level Docker network policy is defence in depth, not the enforcement point.
+- **Site recipe.** `deploy/vault/recipes/<site>.json`, validated by `vaultRecipe`. It declares site, revision, account alias and identity check, exact origins and permitted redirects, methods, actions with mode and allowed paths, extra denied paths, OTP channels, ordered login states, teardown and timeouts. A changed origin, an unfamiliar consent screen or an unexpected account causes a structured stop.
+- **Recipe signing and review.** A recipe is usable only with a review envelope `deploy/vault/recipes/<site>.review.json`: `{ site, revision, digest, reviewer, reviewedAt, signature }`. The digest is SHA-256 of the canonical recipe JSON. The signature is Ed25519 over the canonical `{kind:"vault-recipe-review", site, revision, digest, reviewedAt}`, made by a reviewer key on the trust list. Daniel's key is the only reviewer key in phase 1. A review older than 90 days or for another digest is rejected. Harness iOS shows the first 16 hex digits of the digest, grouped in fours, plus site, revision and review date on the approval screen before Face ID. The executor checks the same digest before it consumes the sealed credential.
+
+## TTLs
+
+| Stage                      | Limit                                                                              | Source                     |
+| -------------------------- | ---------------------------------------------------------------------------------- | -------------------------- |
+| Request offer              | 120 s from creation                                                                | Broker v1 parity           |
+| Sealed delivery            | Earlier of request expiry and 60 s after approval, consumed once                   | Broker v1 parity           |
+| TOTP                       | Generated on the phone at approval, current 30 s step only                         | `vaultOtpRoute`            |
+| SMS or email code          | Entered on the phone within 300 s of the challenge, single use, 3 attempts         | `vaultOtpRoute`            |
+| Scripted login             | 180 s from sealed delivery to identity verified, otherwise stop and destroy        | Recipe `timeouts.loginMs`  |
+| Handoff claim              | 60 s after the lease is issued, consumed once by the requesting session            | `vaultLease`               |
+| Lease                      | Default 15 min, recipe maximum up to 60 min, idle timeout 5 min                    | `vaultLease`               |
+| Same-session reconnect     | Within 30 s of a disconnect, at most 3 times per lease                             | `vaultLease`               |
+| Daniel private view        | 10 min, only while the request is pending                                          | `vaultPhoneView`           |
+| Teardown                   | 120 s for logout, revoke and container removal                                     | `vaultTeardown`            |
+| Security log checks        | At lease end and again 15 min later                                                | `vaultSecurityAudit`       |
+| Recipe review              | 90 days, or until the digest changes                                               | `vaultRecipe`              |
 
 ## Request, approval and login
 
-1. **Request and preflight.** Verify session identity and intent, recipe and image, provider route, network readiness and device enrollment. Start one isolated runner and bind its ephemeral recipient key and public fingerprint to the request. The broker stores lifecycle metadata and verifies the runner and request scopes before offering the approval. Failed preflight should never prompt for a secret.
-2. **Review in Harness iOS.** The signed-in owner opens a native Vault inbox or an optional push deep link containing only a request ID. Show requester, host, project/environment, account alias, exact site and action, expected fingerprint and expiry. Daniel selects the matching entry and approves or denies. Approval unlocks the selected item with Face ID using the OS security boundary. Keep signing keys device-bound and vault data in protected iOS storage. Require fresh approval when requested scope, runner, account or destination changes.
-3. **Sealed delivery.** Harness iOS signs the approved envelope and seals the selected credential to the verified runner key. The registered recipe alone can consume it once in a bounded process. For OTP, support the approved entry's fresh TOTP or Daniel entering a current service code into Harness iOS. Use a separate short-lived scoped challenge when the site asks later. Provider push or passkey confirmation remains on the trusted device. Discard buffers and disable authentication-page traces, screenshots, console captures and secret-bearing Chrome launch arguments.
-4. **Execute and verify.** Run the site script without model involvement and confirm the expected provider identity and tenant, logged-in destination and requested capability before handoff. Remove login UI and its history from the handed-off surface, stop the login process and dispose of its payload. Verify proof of readiness through the broker. Wrong account, timeout, lockout or unrecognized page returns a redacted reason and follows the cleanup/fallback policy.
-5. **Operate, then destroy.** Grant a time-limited handoff only to the original authenticated session. Record owner, recipe, operation scope, times, verdict and receipt references in Tracker. End the lease on finish, expiry, revocation or host shutdown. Close controller and browser, remove the labeled container and its ephemeral profile and scratch, revoke any delegated access and verify cleanup. Recover after a crash via the broker receipt and run-owned labels. Retry uncertain cleanup only for the specific owned resources and keep the attachment unavailable meanwhile.
+1. **Request and preflight.** Verify session identity and intent, recipe review and digest, method selection, executor host eligibility, provider route, network readiness and device enrollment. For a browser method, start one isolated runner and bind its ephemeral recipient key and fingerprint to the request. A failed preflight never prompts for a secret.
+2. **Review in Harness iOS.** The owner opens the Vault inbox or a push deep link that carries only the request ID. Show requester, host, project and environment, account alias, site and action, method, read or write mode, the recipe digest group, runner fingerprint and expiry. Daniel picks the matching entry and approves or denies with Face ID. A change of scope, runner, account, recipe digest or destination needs a fresh approval.
+3. **Sealed delivery.** Harness iOS signs the approved envelope and seals the credential to the verified runner key. Only the registered recipe consumes it, once, in a bounded process. Authentication-page traces, screenshots, console captures and secret-bearing Chrome arguments stay off.
+4. **OTP.** `vaultOtpRoute` chooses the challenge path from the recipe's channels:
+   - `totp`: the phone computes the code from the approved entry and seals it with the password.
+   - `sms`: the provider texts Daniel's phone. Harness iOS shows a one-time-code field with iOS SMS autofill and seals the entered code to the runner. SMS is never forwarded through Twilio, the relay or the box.
+   - `email`: Daniel reads the code in his mail app and enters it in Harness iOS, which seals it. A magic link is pasted into the same field and opened only inside the runner. Harness never reads the mailbox in phase 1.
+   - `push` or `passkey`: Daniel confirms on the trusted device. Nothing is sealed.
+     A later challenge during the same login opens a new scoped prompt on the phone with its own 300 s limit.
+5. **Execute and verify.** Run the site script without model involvement. Confirm the provider identity, tenant, logged-in destination and requested capability before handoff. Remove login UI and history from the handed-off surface. Then stop the login process and discard its payload. A wrong account, timeout, lockout or unrecognised page returns a redacted stage and goes to teardown.
+6. **Operate, then destroy.** Issue one lease to the original session and record owner, recipe digest, mode, times, verdict and receipt references on the Tracker item. End the lease on finish, expiry, idle, revocation or host shutdown, then run `vaultTeardown`:
+   1. Close the gateway so no further session operation is accepted.
+   2. Sign out on the provider side with the recipe's logout path, then call the recipe's session revoke API when it declares one.
+   3. Close Chromium, remove the labelled container, profile and scratch, and verify the removal.
+   4. Read the account security log through the recipe's `securityLog` source and run `vaultSecurityAudit` over the lease window. Repeat 15 min later. A new API token, OAuth grant, recovery email or phone change, 2FA change, password change or an unattributed new session raises an alert. The alert goes to the Tracker item and Harness iOS. If the log cannot be read, the verdict is `unverifiable`, which also flags Daniel.
+      Recover after a crash from the broker receipt and run-owned labels. Retry an uncertain cleanup only for those resources and keep the attachment unavailable meanwhile.
 
-## Session attachment
+## Mediated session gateway
 
-The session attaches through an authenticated Harness browser gateway. The gateway owns the private Playwright/CDP connection to the guest. An opaque handle is bound to the requesting session, approved account, origin set, actions and expiry. The client proves the existing session identity, the gateway consumes the attachment claim once and routes permitted browser operations over the lifetime of that lease. Only a bounded same-session reconnect is allowed. A different host, session or action requires a new grant.
+The gateway runs in the container and alone holds the Chromium `--remote-debugging-pipe` file descriptors. It never opens a TCP CDP port. The session reaches the gateway only through `harness credential attach`, over the executor host's Unix socket with peer-credential checks, and presents the lease handle. The handle is bound to the session, account, origins, mode and expiry and is claimed once.
 
-Expose approved navigation, sanitized page state and action-level interactions through the gateway. Browser profiles, cookie APIs, storage reads or exports, arbitrary JavaScript, network inspection, DevTools, arbitrary downloads, clipboard interchange and shell access are outside the session interface. Guard credential, key management and consent surfaces by recipe. Direct CDP or raw Playwright access carries the ability to retrieve session credentials, so only the isolated gateway receives it. Provide no public debugging port. Disable login-page capture and inspect all visible output, errors and allowed downloads for the approved data boundary. Work that needs capabilities beyond the recipe requires a separate authorized scope rather than a wider connection.
+`vaultGatewayPolicy` decides every call. The operation list is explicit:
 
-## Site recipes, fallback and acceptance
+| Operation                                             | Mode                                               |
+| ----------------------------------------------------- | -------------------------------------------------- |
+| `navigate`, `back`, `reload`                          | read                                               |
+| `snapshot` (accessibility tree, scrubbed)             | read                                               |
+| `screenshot` (page area only, never a login state)    | read                                               |
+| `scroll`, `waitFor`, `finish`                         | read                                               |
+| `click`, `fill`, `select`, `press`, `submit`          | write: only on a lease approved with `mode: write` |
+| `download` to the task artifact folder, typed allowed | write: only when the action lists the file type    |
 
-| Site       | Required browser/script proof                                                                                                                           | Preferred alternative when applicable                                                                                                                    |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Google     | Verify the intended account and tenant on the exact site or documented SSO client. Exercise consent, wrong-account, MFA and trusted-device challenges.  | A supported OAuth flow for the requested API scopes. Use a device grant only where the OAuth client and scopes are eligible, with approval on the phone. |
-| Stripe     | Verify the exact account and test/live context. Exercise secondary authentication and confirm a read-only Dashboard target on an approved test account. | A dedicated restricted API credential for the approved account and mode, injected into the script runner.                                                |
-| npm        | Verify the approved account and organization. Exercise current MFA and a read-only roster check. Test the existing npm adapter behavior.                | Use npm trusted publishing for supported release pipelines. [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/)                         |
-| Cloudflare | Verify account and project identity and exercise approved SSO or OTP. Confirm read-only inspection against the intended resource.                       | Use Wrangler with a project-scoped broker token per the existing adapter contract. Keep deploy access subject to `56x4kx` gates.                         |
-| OpenAI     | Verify the approved Platform organization and project. Exercise the exact SSO route and MFA supported by that account.                                  | Use the approved project-scoped API access for a named operation, or an officially supported device flow for the specific client and scope.              |
-| Twilio     | Verify the exact account or subaccount and a nonmutating console operation. Cover the existing approved console adapter, MFA and account selection.     | Use a scoped service credential for a supported and approved API operation.                                                                              |
+Every other call is refused, including cookie, storage, profile, network inspection, DevTools, `evaluate`, clipboard, file upload and shell. A lease is read-only unless Daniel approved `write` for that action.
 
-For a denied login, CAPTCHA, lockout signal, device challenge or site policy restriction, stop retries and surface the exact stage to Daniel in Harness iOS. Where the site permits it, grant Daniel a short-lived private view and control of the same guest during the pending phase. The session gets access only after the script rechecks identity and capability. If the provider requires the trusted phone itself, use its official continuation, passkey, OAuth or device authorization where supported. The phone can complete the approved action and return a secret-free receipt when a browser handoff is unavailable. Use scoped API access through the broker and trusted scripts when that can fulfill the action. Keep the browser request blocked if none of these paths can produce the approved result. Never transfer phone cookies, weaken site controls or change the client's fingerprint to get past a site refusal.
+URL policy is deny by default. A navigation, redirect or form target must be on the recipe's origins and match one of the action's allowed path patterns. A built-in deny list then applies that a recipe cannot override. It blocks paths that create or show API keys, tokens or OAuth apps. It also blocks recovery, 2FA, password, passkey, security-key and session-management settings, for example `/settings/tokens`, `/apikeys`, `/account/security`, `/recovery`, `/two-factor` and `/mfa`. The recipe can add more denied paths. A blocked navigation leaves the page where it was and returns a structured refusal.
 
-Before certifying a site, run deterministic success and failure fixtures for redirects, identity checks, expired and repeated approvals, OTP variants, outages, fallback, lease enforcement, secret non-disclosure and cleanup. Run an authorized, bounded live sign-in and read-only follow-up with the real headed target for each supported site/account mode. One site's success gives no acceptance for another site. Verify support and scopes against the provider's current policy during onboarding. Record exact runner and recipe digests, denial reasons and completed cleanup. Use synthetic canaries to test that auth fields, cookies, token exports, snapshots and diagnostics remain beyond the session interface. Include disconnect and crash, timeout, concurrent attach and host restart cases. For iOS, cover enrollment and recovery, Face ID deny and retry, deep-link and approval replay, QR mismatch, expiration, operation after stopping or switching apps, and a final end-to-end approval on a physical enrolled iPhone.
+`vaultPageScrub` cleans each snapshot before it leaves the gateway. It removes hidden inputs and `<meta>` CSRF tags. It drops inputs and attributes whose names suggest CSRF, nonce, token, secret, session, authenticity, state or password. It also drops values that look like credentials (long base64, hex or JWT-shaped strings). Password fields are reported without a value.
+
+## Daniel's private view and control
+
+During the pending phase, after a CAPTCHA, device challenge or unknown page, Daniel can take over the same guest from his phone for up to 10 min. `vaultPhoneView` selects the transport in this order:
+
+1. **Harness Remote relay** (`packages/relay`, `packages/remote`): the paired Harness iOS device opens an end-to-end encrypted channel to the executor host. The gateway streams screencast frames and accepts touch and key input through the same operation policy in `write` mode, with Daniel as the actor.
+2. **Phone fallback, Cloudflare Tunnel and Access**: if the relay is unreachable, the same encrypted frames go over the executor host's Access-protected origin, like the current `cb-mac` route. Each view uses a one-time view token bound to the device key and request.
+3. Otherwise there is **no view**. The request stays blocked with the stage shown in Harness iOS.
+
+The view never exposes CDP, cookies or the profile. The session gets access only after the script rechecks identity and capability. If the provider requires the trusted phone itself, use its official continuation, passkey, OAuth or device flow. Never move phone cookies, weaken site controls or change the client fingerprint to get past a refusal.
+
+## Code layout
+
+Phase 1 is in this change. All modules are pure and use synthetic data in their tests.
+
+| Unit                                            | Source                                           | Responsibility                                            |
+| ----------------------------------------------- | ------------------------------------------------ | --------------------------------------------------------- |
+| `function.accounts-access-vault-recipe`         | `src/utils/accounts-access/vaultRecipe.ts`       | Recipe schema, canonical digest, review signature check   |
+| `function.accounts-access-vault-method`         | `src/utils/accounts-access/vaultMethod.ts`       | API token, then device grant, then browser selection rule |
+| `function.accounts-access-vault-gateway-policy` | `src/utils/accounts-access/vaultGatewayPolicy.ts` | Operation list, read-only default, URL deny rules         |
+| `function.accounts-access-vault-page-scrub`     | `src/utils/accounts-access/vaultPageScrub.ts`    | Removes hidden token fields from page state               |
+| `function.accounts-access-vault-lease`          | `src/utils/accounts-access/vaultLease.ts`        | Lease state machine and TTLs                              |
+| `function.accounts-access-vault-executor-host`  | `src/utils/accounts-access/vaultExecutorHost.ts` | Separate-user or VM executor eligibility                  |
+| `function.accounts-access-vault-egress-rules`   | `src/utils/accounts-access/vaultEgressRules.ts`  | In-container nftables and proxy allowlist                 |
+| `function.accounts-access-vault-otp-route`      | `src/utils/accounts-access/vaultOtpRoute.ts`     | TOTP, SMS, email and push challenge routing               |
+| `function.accounts-access-vault-teardown`       | `src/utils/accounts-access/vaultTeardown.ts`     | Logout, revoke, removal and audit schedule                |
+| `function.accounts-access-vault-security-audit` | `src/utils/accounts-access/vaultSecurityAudit.ts` | Post-lease security log verdict                           |
+| `function.accounts-access-vault-phone-view`     | `src/utils/accounts-access/vaultPhoneView.ts`    | Relay, then Access tunnel, then no view                   |
+
+Later phases, each its own reviewed PR with tests:
+
+- **Phase 2, broker in Harness (synthetic vault only).** `VaultSealAdapter`, `VaultDeviceRepository`, `VaultAuditRepository`, `VaultBrokerService`, `src/commands/accounts-access/CredentialCommand.ts` (`harness credential request|status|attach|finish|recipe digest|recipe verify`) and `src/workflows/accounts-access/runCredentialRequest.ts`. E2E against a fake vault and fake phone signer, ported from the broker's suite.
+- **Phase 3, executor and gateway (synthetic site).** `deploy/vault/Dockerfile`, `src/adapters/accounts-access/VaultBrowserDockerAdapter.ts` and the pipe gateway. Fixtures prove that no TCP listener exists, the nftables ruleset rejects a non-allowlisted host from inside the container, denied paths and canary tokens stay out of snapshots, and teardown leaves no labelled resource. This runs on MB2 as the `harness-vault` user.
+- **Phase 4, Harness iOS Vault.** Vault inbox, recipe digest display, OTP entry with SMS autofill, sealed delivery and the private view, tested on a physical enrolled iPhone.
+- **Phase 5, real sites.** These need Daniel's approval on his phone first, one site at a time, in the order of the migration plan.
+
+## Site recipes and acceptance
+
+| Site       | Selected method for the first actions                                                        | Browser recipe proof when browser is selected                                                                                 |
+| ---------- | --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Google     | `oauth-device` for eligible API scopes. The Google account itself stays manual (Daniel 18 Nov). | None in this plan.                                                                                                            |
+| Stripe     | `api-token`: a restricted key for the approved account and mode.                             | Read-only Dashboard on an approved test account with secondary authentication, test/live context checked.                     |
+| npm        | Trusted publishing for releases. `browser` for the organization roster, which has no API.    | Approved account and organization, current MFA (TOTP or email), read-only roster check.                                       |
+| Cloudflare | `api-token` through Wrangler with a project-scoped token (`8wwrzr`, `56x4kx` gates).         | Account and project identity, approved SSO or OTP, read-only inspection.                                                      |
+| OpenAI     | `api-token`: project-scoped API access for a named operation.                                 | Platform organization and project, the exact SSO route and MFA.                                                               |
+| Twilio     | `api-token`: a scoped API key for the approved operation.                                     | Exact account or subaccount, SMS or TOTP MFA, a nonmutating console operation.                                                |
+
+Before certifying a site, run deterministic success and failure fixtures for redirects, identity checks, expired and repeated approvals, each OTP channel, outages, lease enforcement, URL deny rules, page scrubbing, secret non-disclosure and teardown with the security log check. Then run one authorized, bounded live sign-in and read-only follow-up per site and account mode. One site's success gives no acceptance for another. Record the exact runner and recipe digests, denial reasons and completed cleanup. Use synthetic canaries to show that auth fields, cookies, token exports, snapshots and diagnostics stay beyond the session interface. Include disconnect and crash, timeout, concurrent attach and host restart cases. For iOS, cover enrollment and recovery, Face ID deny and retry, deep-link and approval replay, digest mismatch, expiration, operation after switching apps, and an end-to-end approval on a physical enrolled iPhone.
 
 ## Migration of the existing Vault work
 
@@ -57,11 +178,11 @@ Before certifying a site, run deterministic success and failure fixtures for red
 | `rma976`     | QR pairing and match code; retain instructions for macOS/Linux and per-host public pins.                            | Check one-time public QR, expiry, mismatch denial, re-enrollment and recovery. No secrets in QR or logs.                                   |
 | `yedhbr`     | Existing primary-Mac Codex login recipes and scope checks as parity fixtures.                                       | Fresh headed guest login and authorized Codex handoff after script exit; preserve the approved fallback during transition.                 |
 | `rw3ngx`     | Claude MCP/browser adapter direction via the same broker contract.                                                  | Claude requests, attaches, performs a permitted operation and finishes without seeing credential material.                                 |
-| `1je8hw`     | Grok/box relay and signed approval parity over the same gateway.                                                    | Verify on an authorized available Linux host. Current box hold is respected.                                                               |
+| `1je8hw`     | Grok/box relay and signed approval parity over the same gateway.                                                    | Approval relay parity only. Automated logins stay off the box unless the executor is in a VM that box users cannot control.               |
 | `8wwrzr`     | Cloudflare/Wrangler sealed scripted token or approved authentication flow with project boundaries.                  | Prove scoped delivery into the approved script, useful redacted receipt, cleanup and compatibility with deployment gates.                  |
 
-1. Inventory pinned broker/app revisions, site recipes, enrolled public identities and existing item/receipt IDs using metadata only. Preserve encrypted recovery and documented rollback. Adopt versioned interfaces so the existing Vault can remain the authority while Harness runs synthetic shadow checks.
-2. Pair Harness iOS using fresh device-bound keys and verify public pins. Transfer approved entries only by a user-authorized sealed device flow or explicit re-entry. App signing and Keychain access groups are a dependency to verify. Preserve prior recovery and validate counts, entry domains, destinations and save/reopen without exposing vault content or exporting signing keys.
-3. Prove one disposable browser recipe and mediated attach on isolated MB2 using synthetic data. Start the real-site pilot with approved npm login/read-only use, then expand to Twilio and OpenAI using the existing recipe contracts, followed by Google, Cloudflare and Stripe. Each site has its own acceptance. Keep Mac-only iOS signing and physical Face ID tests native. Compare start time, CPU/RAM and per-run disk against the `zfep7c` baseline.
-4. Move one host, site and client path at a time after approval and verification. Keep one approval authority per request and current public pins versioned. Drain or expire prior leases and confirm the last legacy and first Harness receipts reconcile. Roll back by routing new requests to the retained verified legacy release and phone app, revoking candidate leases and keeping audited history.
-5. Link all nine items to their verified Harness replacements. Supersede each after its replacement is merged, accepted and operational for the required scope. Keep unresolved platform/site gaps and outstanding approvals visible. The existing vault and `m8fkcj` remain operable throughout the migration. Daniel's review of this spec is the next checkpoint.
+1. Inventory pinned broker/app revisions, site recipes, enrolled public identities and existing item/receipt IDs using metadata only. Preserve encrypted recovery and documented rollback. The existing Vault stays the authority while Harness runs synthetic shadow checks.
+2. Pair Harness iOS using fresh device-bound keys and verify public pins. Transfer approved entries only by a user-authorized sealed device flow or explicit re-entry. Validate counts, entry domains, destinations and save/reopen without exposing vault content or exporting signing keys.
+3. Prove one disposable browser recipe and mediated attach on MB2 as the `harness-vault` user, using synthetic data. Start the real-site pilot with npm's read-only roster, then Twilio and OpenAI, then Google, Cloudflare and Stripe, using API or device methods wherever the selection rule picks them. Compare start time, CPU/RAM and per-run disk against the `zfep7c` baseline.
+4. Move one host, site and client path at a time after approval and verification. Keep one approval authority per request. Roll back by routing new requests to the retained legacy release and phone app, revoking candidate leases and keeping audited history.
+5. Link all nine items to their verified Harness replacements and supersede each after its replacement is merged, accepted and operational. The existing vault and `m8fkcj` remain operable throughout.
