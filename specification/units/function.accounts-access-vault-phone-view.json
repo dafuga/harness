@@ -1,0 +1,82 @@
+{
+	"schemaVersion": 1,
+	"id": "function.accounts-access-vault-phone-view",
+	"uid": "u_dqmcgtq5ga",
+	"kind": "function",
+	"title": "vaultPhoneView",
+	"responsibility": "Selects the transport for Daniel's private Credential Vault view and control.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/accounts-access/vaultPhoneView.ts",
+			"src/utils/accounts-access/vaultPhoneView.types.ts"
+		],
+		"symbols": ["vaultPhoneViewMs", "vaultPhoneView", "VaultPhoneViewInput", "VaultPhoneViewPlan"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "vaultPhoneView.input",
+				"type": "VaultPhoneViewInput",
+				"required": true,
+				"description": "Request phase, Harness relay and Access tunnel availability, and the current time."
+			}
+		],
+		"outputs": [
+			{
+				"name": "vaultPhoneViewMs",
+				"type": "number",
+				"description": "How long a private view lasts: 10 minutes."
+			},
+			{
+				"name": "vaultPhoneView",
+				"type": "VaultPhoneViewPlan",
+				"description": "The Harness relay or Access tunnel transport with its expiry, or no view with the reason."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "vaultPhoneView",
+				"inputs": [
+					{
+						"name": "vaultPhoneView.input",
+						"type": "VaultPhoneViewInput",
+						"required": true,
+						"description": "Request phase, Harness relay and Access tunnel availability, and the current time."
+					}
+				],
+				"outputs": [
+					{
+						"name": "vaultPhoneView",
+						"type": "VaultPhoneViewPlan",
+						"description": "The Harness relay or Access tunnel transport with its expiry, or no view with the reason."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/accounts-access/vaultPhoneView.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/accounts-access/vaultPhoneView.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

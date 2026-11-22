@@ -1,0 +1,187 @@
+{
+	"schemaVersion": 1,
+	"id": "function.accounts-access-vault-cdp-handoff",
+	"uid": "u_g7t5qkhn5t",
+	"kind": "function",
+	"title": "vaultCdpHandoff",
+	"responsibility": "Guards the session's CDP handoff: pipe-only Chromium launch, a Unix socket endpoint, and connections only from the lease's session user with its one-time token.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/accounts-access/vaultCdpHandoff.ts",
+			"src/utils/accounts-access/vaultCdpHandoff.types.ts"
+		],
+		"symbols": [
+			"vaultCdpHandoff",
+			"vaultChromiumArgs",
+			"vaultCdpEndpoint",
+			"VaultCdpLease",
+			"VaultCdpConnection",
+			"VaultCdpDecision"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "vaultCdpHandoff.handoff",
+				"type": "VaultCdpLease",
+				"required": true,
+				"description": "The issued handoff: its lease state, the session OS user ID, the SHA-256 digest of the one-time token and the Unix socket path."
+			},
+			{
+				"name": "vaultCdpHandoff.connection",
+				"type": "VaultCdpConnection",
+				"required": true,
+				"description": "One connection on the CDP socket: kernel-reported peer UID (null when unknown), the presented token and the time."
+			},
+			{
+				"name": "vaultChromiumArgs.args",
+				"type": "readonly string[]",
+				"required": true,
+				"description": "Chromium launch arguments for the login container."
+			},
+			{
+				"name": "vaultCdpEndpoint.socketPath",
+				"type": "string",
+				"required": true,
+				"description": "Absolute path of the lease Unix socket, without colons or spaces."
+			}
+		],
+		"outputs": [
+			{
+				"name": "vaultCdpHandoff",
+				"type": "VaultCdpDecision",
+				"description": "Allowed, or refused with the reason: ended lease, another OS user, or a wrong token."
+			},
+			{
+				"name": "vaultChromiumArgs",
+				"type": "readonly string[]",
+				"description": "The same arguments when they use --remote-debugging-pipe and open no TCP debugging endpoint."
+			},
+			{
+				"name": "vaultCdpEndpoint",
+				"type": "string",
+				"description": "The ws+unix address that Playwright connectOverCDP accepts for the socket."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Thrown when Chromium arguments lack the pipe or open a TCP debugging endpoint, or the socket path is not absolute and plain."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "vaultCdpHandoff",
+				"inputs": [
+					{
+						"name": "vaultCdpHandoff.handoff",
+						"type": "VaultCdpLease",
+						"required": true,
+						"description": "The issued handoff: its lease state, the session OS user ID, the SHA-256 digest of the one-time token and the Unix socket path."
+					},
+					{
+						"name": "vaultCdpHandoff.connection",
+						"type": "VaultCdpConnection",
+						"required": true,
+						"description": "One connection on the CDP socket: kernel-reported peer UID (null when unknown), the presented token and the time."
+					}
+				],
+				"outputs": [
+					{
+						"name": "vaultCdpHandoff",
+						"type": "VaultCdpDecision",
+						"description": "Allowed, or refused with the reason: ended lease, another OS user, or a wrong token."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "vaultChromiumArgs",
+				"inputs": [
+					{
+						"name": "vaultChromiumArgs.args",
+						"type": "readonly string[]",
+						"required": true,
+						"description": "Chromium launch arguments for the login container."
+					}
+				],
+				"outputs": [
+					{
+						"name": "vaultChromiumArgs",
+						"type": "readonly string[]",
+						"description": "The same arguments when they use --remote-debugging-pipe and open no TCP debugging endpoint."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown when Chromium arguments lack the pipe or open a TCP debugging endpoint, or the socket path is not absolute and plain."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "vaultCdpEndpoint",
+				"inputs": [
+					{
+						"name": "vaultCdpEndpoint.socketPath",
+						"type": "string",
+						"required": true,
+						"description": "Absolute path of the lease Unix socket, without colons or spaces."
+					}
+				],
+				"outputs": [
+					{
+						"name": "vaultCdpEndpoint",
+						"type": "string",
+						"description": "The ws+unix address that Playwright connectOverCDP accepts for the socket."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown when Chromium arguments lack the pipe or open a TCP debugging endpoint, or the socket path is not absolute and plain."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.accounts-access-vault-lease",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/accounts-access/vaultCdpHandoff.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/accounts-access/vaultCdpHandoff.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,170 @@
+{
+	"schemaVersion": 1,
+	"id": "function.accounts-access-vault-lease",
+	"uid": "u_gs3dblm5pw",
+	"kind": "function",
+	"title": "vaultLease",
+	"responsibility": "Advances a Credential Vault browser lease through claim, reconnect, idle, expiry and finish.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/accounts-access/vaultLease.ts",
+			"src/utils/accounts-access/vaultLease.types.ts"
+		],
+		"symbols": [
+			"vaultLeaseLimits",
+			"issueVaultLease",
+			"vaultLease",
+			"VaultLeasePhase",
+			"VaultLeaseEnd",
+			"VaultLeaseState",
+			"VaultLeaseEvent",
+			"VaultLeaseResult"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "issueVaultLease.id",
+				"type": "string",
+				"required": true,
+				"description": "Opaque lease handle."
+			},
+			{
+				"name": "issueVaultLease.session",
+				"type": "string",
+				"required": true,
+				"description": "Authenticated session that requested the login; the only session that may claim the lease."
+			},
+			{
+				"name": "issueVaultLease.issuedAt",
+				"type": "number",
+				"required": true,
+				"description": "Issue time in Unix milliseconds."
+			},
+			{
+				"name": "issueVaultLease.leaseMs",
+				"type": "number",
+				"required": false,
+				"description": "Recipe lease length in milliseconds. Defaults to 15 minutes and is clamped between 1 and 60 minutes."
+			},
+			{
+				"name": "vaultLease.current",
+				"type": "VaultLeaseState",
+				"required": true,
+				"description": "Current lease state."
+			},
+			{
+				"name": "vaultLease.event",
+				"type": "VaultLeaseEvent",
+				"required": true,
+				"description": "Claim, reconnect, activity, disconnect, tick, finish, revoke or shutdown, with its time and, for claim and reconnect, the session."
+			}
+		],
+		"outputs": [
+			{
+				"name": "vaultLeaseLimits",
+				"type": "object",
+				"description": "Claim window, default and maximum length, idle timeout, reconnect window and reconnect count."
+			},
+			{
+				"name": "issueVaultLease",
+				"type": "VaultLeaseState",
+				"description": "A new lease in the issued phase with its claim deadline and hard expiry."
+			},
+			{
+				"name": "vaultLease",
+				"type": "VaultLeaseResult",
+				"description": "The next state, whether the event was accepted and, when refused, the reason."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "issueVaultLease",
+				"inputs": [
+					{
+						"name": "issueVaultLease.id",
+						"type": "string",
+						"required": true,
+						"description": "Opaque lease handle."
+					},
+					{
+						"name": "issueVaultLease.session",
+						"type": "string",
+						"required": true,
+						"description": "Authenticated session that requested the login; the only session that may claim the lease."
+					},
+					{
+						"name": "issueVaultLease.issuedAt",
+						"type": "number",
+						"required": true,
+						"description": "Issue time in Unix milliseconds."
+					},
+					{
+						"name": "issueVaultLease.leaseMs",
+						"type": "number",
+						"required": false,
+						"description": "Recipe lease length in milliseconds. Defaults to 15 minutes and is clamped between 1 and 60 minutes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "issueVaultLease",
+						"type": "VaultLeaseState",
+						"description": "A new lease in the issued phase with its claim deadline and hard expiry."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "vaultLease",
+				"inputs": [
+					{
+						"name": "vaultLease.current",
+						"type": "VaultLeaseState",
+						"required": true,
+						"description": "Current lease state."
+					},
+					{
+						"name": "vaultLease.event",
+						"type": "VaultLeaseEvent",
+						"required": true,
+						"description": "Claim, reconnect, activity, disconnect, tick, finish, revoke or shutdown, with its time and, for claim and reconnect, the session."
+					}
+				],
+				"outputs": [
+					{
+						"name": "vaultLease",
+						"type": "VaultLeaseResult",
+						"description": "The next state, whether the event was accepted and, when refused, the reason."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/accounts-access/vaultLease.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/accounts-access/vaultLease.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

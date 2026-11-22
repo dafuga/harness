@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "function.accounts-access-vault-security-audit",
+	"uid": "u_eaaw6eeoc4",
+	"kind": "function",
+	"title": "vaultSecurityAudit",
+	"responsibility": "Judges a provider security log over a Credential Vault lease window.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/accounts-access/vaultSecurityAudit.ts",
+			"src/utils/accounts-access/vaultSecurityAudit.types.ts"
+		],
+		"symbols": [
+			"vaultSecurityAudit",
+			"VaultSecurityEventKind",
+			"VaultSecurityEvent",
+			"VaultSecurityWindow",
+			"VaultSecurityVerdict"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "vaultSecurityAudit.events",
+				"type": "VaultSecurityEvent[] | null",
+				"required": true,
+				"description": "Provider security log entries reduced to kind, time and session, or null when the log could not be read."
+			},
+			{
+				"name": "vaultSecurityAudit.window",
+				"type": "VaultSecurityWindow",
+				"required": true,
+				"description": "Lease start and end and the provider sessions the scripted login created."
+			}
+		],
+		"outputs": [
+			{
+				"name": "vaultSecurityAudit",
+				"type": "VaultSecurityVerdict",
+				"description": "Clean with the number of events checked, an alert with the findings, or unverifiable with the reason."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "vaultSecurityAudit",
+				"inputs": [
+					{
+						"name": "vaultSecurityAudit.events",
+						"type": "VaultSecurityEvent[] | null",
+						"required": true,
+						"description": "Provider security log entries reduced to kind, time and session, or null when the log could not be read."
+					},
+					{
+						"name": "vaultSecurityAudit.window",
+						"type": "VaultSecurityWindow",
+						"required": true,
+						"description": "Lease start and end and the provider sessions the scripted login created."
+					}
+				],
+				"outputs": [
+					{
+						"name": "vaultSecurityAudit",
+						"type": "VaultSecurityVerdict",
+						"description": "Clean with the number of events checked, an alert with the findings, or unverifiable with the reason."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/accounts-access/vaultSecurityAudit.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/accounts-access/vaultSecurityAudit.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
