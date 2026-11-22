@@ -50,7 +50,7 @@ export class ConsoleAgentService {
 		codex: this.codex,
 		claude: new ClaudeCliAdapter()
 	});
-	private runs = new DesktopRunService(this.session, this.providers, this.codex, (value) => {
+	private runs = new DesktopRunService(this.session, this.providers, (value) => {
 		this.events = [...this.events.slice(-511), { sequence: ++this.sequence, value }];
 		const held = this.replay.get(value.runId) ?? { text: '', detail: '' };
 		if (value.kind === 'text') held.text = (held.text + value.text).slice(-128000);

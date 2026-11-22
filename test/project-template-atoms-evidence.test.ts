@@ -1,19 +1,19 @@
 import { existsSync, readFileSync } from 'node:fs';
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { readFile, rm } from 'node:fs/promises';
 import { basename, join } from 'node:path';
 import { test } from 'vitest';
 import { benchmarkCaptureSchema, captureIndex } from '../src/core/verifyTypes';
 import { nativeAtoms } from '../src/templates/development-tooling/htmlElements.js';
 import { projectFiles } from '../src/templates/projects-sessions/project';
 import { expect } from './verificationExpect';
+import { createTempDirectory } from './support/temporary';
 import { assertAtomCompiler } from './support/project-template/atoms';
 
 const registry = join(import.meta.dirname, '../specification/units');
 const owner = 'template.project';
 
 test('generated atom evidence names only active registered units or the template owner', async () => {
-	const evidence = await mkdtemp(join(tmpdir(), 'harness-atom-evidence-'));
+	const evidence = await createTempDirectory('harness-atom-evidence-');
 	const saved = { dir: process.env.HARNESS_EVIDENCE_DIR, take: process.env.TAKE_SCREENSHOT };
 	process.env.HARNESS_EVIDENCE_DIR = evidence;
 	process.env.TAKE_SCREENSHOT = '1';

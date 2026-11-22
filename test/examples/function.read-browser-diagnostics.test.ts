@@ -1,8 +1,8 @@
 import { test } from 'vitest';
-import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { mkdirSync, symlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect } from '../verificationExpect';
+import { withTempDir } from '../support/temporary';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { readBrowserDiagnostics } from '../../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/readBrowserDiagnostics';
 
@@ -49,16 +49,6 @@ const expectedConsole = {
 	]
 };
 
-/** Runs one case in a fresh directory owned by this test and removes it afterwards. */
-function withDirectory<T>(run: (directory: string) => T): T {
-	const directory = mkdtempSync(join(tmpdir(), 'read-browser-diagnostics-'));
-	try {
-		return run(directory);
-	} finally {
-		rmSync(directory, { recursive: true, force: true });
-	}
-}
-
 function writeDiagnostics(directory: string, content: string): void {
 	writeFileSync(join(directory, FILE), content, 'utf8');
 }
@@ -76,13 +66,15 @@ function record(state: string, cases: Parameters<typeof recordExampleCases>[1]):
 	);
 }
 
-test('Returns an empty result when the file is absent or blank', () => {
-	const absent = withDirectory((directory) => readBrowserDiagnostics(directory));
-	const empty = withDirectory((directory) => {
+test('Returns an empty result when the file is absent or blank', async () => {
+	const absent = await withTempDir('read-browser-diagnostics-', (directory) =>
+		readBrowserDiagnostics(directory)
+	);
+	const empty = await withTempDir('read-browser-diagnostics-', (directory) => {
 		writeDiagnostics(directory, '');
 		return readBrowserDiagnostics(directory);
 	});
-	const blank = withDirectory((directory) => {
+	const blank = await withTempDir('read-browser-diagnostics-', (directory) => {
 		writeDiagnostics(directory, '\n   \n\t\n');
 		return readBrowserDiagnostics(directory);
 	});
@@ -96,9 +88,9 @@ test('Returns an empty result when the file is absent or blank', () => {
 	]);
 });
 
-test('Parses each nonblank diagnostic line in order', () => {
+test('Parses each nonblank diagnostic line in order', async () => {
 	const content = `${JSON.stringify(pageError)}\n\n   \n${JSON.stringify(expectedConsole)}\n`;
-	const output = withDirectory((directory) => {
+	const output = await withTempDir('read-browser-diagnostics-', (directory) => {
 		writeDiagnostics(directory, content);
 		return readBrowserDiagnostics(directory);
 	});
@@ -112,12 +104,12 @@ test('Parses each nonblank diagnostic line in order', () => {
 	]);
 });
 
-test('Returns a failure for a nonregular or symlinked entry', () => {
-	const directoryEntry = withDirectory((directory) => {
+test('Returns a failure for a nonregular or symlinked entry', async () => {
+	const directoryEntry = await withTempDir('read-browser-diagnostics-', (directory) => {
 		mkdirSync(join(directory, FILE));
 		return readBrowserDiagnostics(directory);
 	});
-	const symlinked = withDirectory((directory) => {
+	const symlinked = await withTempDir('read-browser-diagnostics-', (directory) => {
 		const target = join(directory, 'target.ndjson');
 		writeFileSync(target, `${JSON.stringify(pageError)}\n`, 'utf8');
 		symlinkSync(target, join(directory, FILE));
@@ -139,13 +131,13 @@ test('Returns a failure for a nonregular or symlinked entry', () => {
 	]);
 });
 
-test('Enforces the 2000000 byte limit exactly', () => {
+test('Enforces the 2000000 byte limit exactly', async () => {
 	const line = `${JSON.stringify(pageError)}\n`;
-	const atLimit = withDirectory((directory) => {
+	const atLimit = await withTempDir('read-browser-diagnostics-', (directory) => {
 		writeDiagnostics(directory, line + ' '.repeat(LIMIT - Buffer.byteLength(line)));
 		return readBrowserDiagnostics(directory);
 	});
-	const overLimit = withDirectory((directory) => {
+	const overLimit = await withTempDir('read-browser-diagnostics-', (directory) => {
 		writeDiagnostics(directory, line + ' '.repeat(LIMIT - Buffer.byteLength(line) + 1));
 		return readBrowserDiagnostics(directory);
 	});
@@ -157,12 +149,12 @@ test('Enforces the 2000000 byte limit exactly', () => {
 	]);
 });
 
-test('Returns a failure without partial records', () => {
-	const invalidJson = withDirectory((directory) => {
+test('Returns a failure without partial records', async () => {
+	const invalidJson = await withTempDir('read-browser-diagnostics-', (directory) => {
 		writeDiagnostics(directory, `${JSON.stringify(pageError)}\n{"test":\n`);
 		return readBrowserDiagnostics(directory);
 	});
-	const schemaViolation = withDirectory((directory) => {
+	const schemaViolation = await withTempDir('read-browser-diagnostics-', (directory) => {
 		writeDiagnostics(
 			directory,
 			`${JSON.stringify(pageError)}\n${JSON.stringify({ ...expectedConsole, extra: true })}\n`
