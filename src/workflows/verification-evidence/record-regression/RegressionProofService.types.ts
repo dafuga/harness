@@ -4,6 +4,7 @@ import type { RegressionRecord } from '../../../core/verification-evidence/regre
 import type { runIsolated } from '../../../utils/reports-media/run-isolated/runIsolated';
 
 export interface RegressionRun {
+	env?: Record<string, string | undefined>;
 	commit: string;
 	loop: string;
 	phase: RegressionPhase;

@@ -82,3 +82,5 @@ bare repository that holds the previous pack and borrows the checkout's objects:
 --stdin < objects.pack` into it, add the checkout's `objects` directory to
 `objects/info/alternates`, then run the script and `git pack-objects` with `GIT_DIR` set to it.
 Every object of the previous pack must still be listed.
+
+The sibling bug sweep retains implementation commit `6a64ad413` for the loop siblings command, the bug-fix sibling step, evaluator process reuse and regression proof environments.

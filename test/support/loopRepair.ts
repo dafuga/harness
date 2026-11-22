@@ -6,6 +6,7 @@ import { expect } from 'vitest';
 import { runCommand, runHarness } from './cli';
 import { HistoryNoteRepository } from '../../src/repositories/git-source-history/history-note-repository/HistoryNoteRepository';
 import { EvidenceTreeAdapter } from '../../src/adapters/verification-evidence/EvidenceTreeAdapter';
+import { expectSiblingProof } from './sibling-bug-sweep/exerciseSiblingCli';
 import { readRegression } from '../../src/utils/regressionHistory';
 
 export async function prepareRepair(root: string, template: string): Promise<void> {
@@ -44,6 +45,10 @@ export async function exerciseRepair(root: string, steps: { id: string }[]): Pro
 		if (step.id === 'implement') {
 			await writeFile(join(root, 'source.ts'), 'export const value = 3;');
 			await commitRepair(root, 'fix: persist the selected value');
+		}
+		if (step.id === 'siblings') {
+			await expectSiblingProof(root);
+			continue;
 		}
 		const evidence = `${step.id}: existing test checked only positivity; strengthen the shared selected-value assertion; bun run check fails at 1 versus 3, passes unchanged after repairing source.`;
 		await runHarness(['loop', 'complete', 'repair', step.id, '--evidence', evidence], root);

@@ -18,7 +18,10 @@ export const loopGuide: Guide = {
 		'Choose bug-fix for failing-test-first repairs; choose regression-prevention for root-cause repairs with enforced guards.',
 		'Record failing and passing proof from the same unchanged regression test; retry repairs and keep verification pending while checks fail.',
 		'For prevention, wire the guard into normal verification and prove reintroducing the original failure makes it fail in isolation, then restore and prove it passes.',
-		'Agents perform retries; Harness evaluators do not launch an AI runner or automatically complete steps.',
+		'Use loop siblings in a bug-fix loop after the green checkpoint. It records the root cause and evaluates similar sites on committed source.',
+		'Use loop siblings --report-only for a read-only sweep, or --repair with a trusted --test-command to dispatch confirmed sites in separate worktrees.',
+		'Commit useful files in specification/bug-classes so loop review-bugs can evaluate later commits against the base branch.',
+		'Agents perform retries. Ordinary project evaluators run their declared checks; sibling repairs use the explicit repair option.',
 		'For affected UI flows, exercise the browser and capture fresh inspected screenshots.',
 		'Use loop record --phase capture for routine or historical screenshot and benchmark collection without a failing checkpoint. A completed failed command keeps its available observations as failed; an empty or unfinished execution is refused.',
 		'Independent capture runs retain their original revision, files and hashes in Git history. They never satisfy red-green regression steps, full verification or budget approval.',
@@ -35,6 +38,8 @@ export const loopGuide: Guide = {
 		'harness loop create newsletter-signup --from feature --goal "Visitors can subscribe"',
 		'harness loop next newsletter-signup',
 		'harness loop evaluate newsletter-signup',
+		'harness loop siblings --report "Heavy JSON parsing during touch interaction" --report-only',
+		'harness loop review-bugs origin/main',
 		'harness loop record newsletter-signup --phase capture --test tests/signup.spec.ts --command "bun run test:signup"'
 	]
 };

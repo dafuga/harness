@@ -99,6 +99,40 @@ The rehearsal serves core items, duplicate checks, digest requests, and run
 reads. The installed daemon continues to own fleet configuration, sync, jobs,
 adapters, and notifications.
 
+## Find sibling bugs
+
+Run a sweep when evidence identifies a reusable bug pattern. For a read-only audit,
+the command prints a ranked JSON report and reads tracked source at the selected commit.
+
+```sh
+harness loop siblings --report 'An interaction parses the entire collection on the browser thread' --report-only
+harness loop siblings repair-plan-viewer --report 'An interaction parses the entire collection on the browser thread'
+harness loop review-bugs origin/main
+```
+
+A new `bug-fix` loop has a sibling step after the passing checkpoint. The named-loop
+command writes a class in `specification/bug-classes/` and a report in the loop
+directory. A later sweep can reuse a committed class with `--class <id>`.
+Use `--origin path:line` to omit the original site. The report includes its
+revision, model, matched patterns, line numbers, evaluator evidence, skipped
+files, and sites beyond the semantic review limit. The evaluator uses an
+authenticated Codex CLI. A source verdict identifies the mechanism visible in
+the supplied context. Runtime impact requires separate measurement.
+
+To authorize repairs, add `--repair --test-command 'bun run test:unit'` to a named
+loop invocation. Supply a test command that exercises the regression each worker
+adds or strengthens. Each confirmed site gets a separate checkout and failing
+test checkpoint before its repair. Harness reruns the same test corpus and
+command and then obtains an independent verdict. Accepted repair tips are
+retained under `refs/harness/sibling-repairs/` for review. The report identifies
+each accepted ref and any rejected or failed attempt.
+
+`loop review-bugs <base>` reads the committed classes from the merge base and
+checks sites affected by added or modified lines. The command exits nonzero
+for confirmed findings or incomplete semantic review. Add it to a project loop
+as an evaluator when reviewing a candidate branch. Both commands accept
+`--project`, `--commit`, `--model`, and `--review-limit` (48 by default).
+
 ## API access from the CLI
 
 `harness api` calls the same HTTP APIs as the app. It works from any directory;
