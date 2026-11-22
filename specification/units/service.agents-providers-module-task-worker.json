@@ -4,7 +4,7 @@
 	"uid": "u_b4uzqkb2i6",
 	"kind": "service",
 	"title": "ModuleTaskWorkerService",
-	"responsibility": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+	"responsibility": "Check machine readiness before claiming queued module work, run each claim in an isolated worktree with quota-only fallback, and preserve its result for review.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -33,9 +33,9 @@
 			"finishTask",
 			"taskWrites",
 			"TaskClaimOptions",
+			"WorkerOutsideModuleError",
 			"workspacePreflight",
-			"taskBlockers",
-			"WorkerOutsideModuleError"
+			"taskBlockers"
 		]
 	},
 	"contract": {
@@ -46,10 +46,7 @@
 				"type": "string",
 				"required": false,
 				"description": "Repository root that Git commands, the task queue, task worktrees and the analytics sync are bound to. Defaults to process.cwd(), read when the worker is constructed without a root.",
-				"examples": [
-					"/workspace/project",
-					"/srv/harness/checkout"
-				]
+				"examples": ["/workspace/project", "/srv/harness/checkout"]
 			},
 			{
 				"name": "ModuleTaskWorkerService.constructor.runner",
@@ -67,10 +64,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Name recorded as the claim's worker and matched against task assignees; once() throws before touching the queue unless it matches ^[a-z0-9]+(?:[.-][a-z0-9]+)*$. Only queued tasks with no assignee or with this exact assignee can be claimed.",
-				"examples": [
-					"luna-worker-1",
-					"codex.luna-2"
-				]
+				"examples": ["luna-worker-1", "codex.luna-2"]
 			},
 			{
 				"name": "ModuleTaskWorkerService.once.modules",
@@ -80,13 +74,8 @@
 				"description": "Restricts the claim to queued tasks whose module.id is listed; the default empty list leaves every module eligible. A module that already has a running task is skipped whatever this list contains.",
 				"examples": [
 					[],
-					[
-						"service.agents-providers-module-task-worker"
-					],
-					[
-						"adapter.agents-providers-module-task-runner",
-						"adapter.git"
-					]
+					["service.agents-providers-module-task-worker"],
+					["adapter.agents-providers-module-task-runner", "adapter.git"]
 				]
 			},
 			{
@@ -266,10 +255,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Worker name matched against each task's assignee and written into the new claim. The queue schema requires it to match the unit id pattern, so a name that does not match fails the queue update.",
-				"examples": [
-					"luna-worker-1",
-					"codex.luna-2"
-				]
+				"examples": ["luna-worker-1", "codex.luna-2"]
 			},
 			{
 				"name": "claimedTask.modules",
@@ -278,13 +264,8 @@
 				"description": "Module ids a claim may take; an empty array leaves every module eligible. A module that already has a running task is skipped whatever this array contains.",
 				"examples": [
 					[],
-					[
-						"service.agents-providers-module-task-worker"
-					],
-					[
-						"adapter.agents-providers-module-task-runner",
-						"adapter.git"
-					]
+					["service.agents-providers-module-task-worker"],
+					["adapter.agents-providers-module-task-runner", "adapter.git"]
 				]
 			},
 			{
@@ -623,11 +604,15 @@
 		"outputs": [
 			{
 				"name": "ModuleTaskWorkerService.once",
-				"type": "Promise<{ status: 'idle' } | { status: 'failed' | 'review'; task: string; result: NonNullable<ModuleTask['result']> }>",
-				"description": "Result of one claim attempt: { status: 'idle' } when no eligible task was claimed; otherwise { status, task, result }, where status is 'failed' if result.error is set and 'review' if not, task is the claimed task's id and result is the final result.",
+				"type": "Promise<{ status: 'idle' } | { status: 'blocked'; problems: string[] } | { status: 'failed' | 'review'; task: string; result: NonNullable<ModuleTask['result']> }>",
+				"description": "Returns idle when no task was claimed and preflight found no blockers, blocked with machine or task problems when preflight prevents a claim, or the claimed task and result with review or failed status.",
 				"examples": [
 					{
 						"status": "idle"
+					},
+					{
+						"status": "blocked",
+						"problems": ["The assigned provider is in cooldown."]
 					},
 					{
 						"status": "review",
@@ -805,10 +790,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Name recorded as the claim's worker and matched against task assignees; once() throws before touching the queue unless it matches ^[a-z0-9]+(?:[.-][a-z0-9]+)*$. Only queued tasks with no assignee or with this exact assignee can be claimed.",
-						"examples": [
-							"luna-worker-1",
-							"codex.luna-2"
-						]
+						"examples": ["luna-worker-1", "codex.luna-2"]
 					},
 					{
 						"name": "ModuleTaskWorkerService.once.modules",
@@ -818,13 +800,8 @@
 						"description": "Restricts the claim to queued tasks whose module.id is listed; the default empty list leaves every module eligible. A module that already has a running task is skipped whatever this list contains.",
 						"examples": [
 							[],
-							[
-								"service.agents-providers-module-task-worker"
-							],
-							[
-								"adapter.agents-providers-module-task-runner",
-								"adapter.git"
-							]
+							["service.agents-providers-module-task-worker"],
+							["adapter.agents-providers-module-task-runner", "adapter.git"]
 						]
 					},
 					{
@@ -837,11 +814,15 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskWorkerService.once",
-						"type": "Promise<{ status: 'idle' } | { status: 'failed' | 'review'; task: string; result: NonNullable<ModuleTask['result']> }>",
-						"description": "Result of one claim attempt: { status: 'idle' } when no eligible task was claimed; otherwise { status, task, result }, where status is 'failed' if result.error is set and 'review' if not, task is the claimed task's id and result is the final result.",
+						"type": "Promise<{ status: 'idle' } | { status: 'blocked'; problems: string[] } | { status: 'failed' | 'review'; task: string; result: NonNullable<ModuleTask['result']> }>",
+						"description": "Returns idle when no task was claimed and preflight found no blockers, blocked with machine or task problems when preflight prevents a claim, or the claimed task and result with review or failed status.",
 						"examples": [
 							{
 								"status": "idle"
+							},
+							{
+								"status": "blocked",
+								"problems": ["The assigned provider is in cooldown."]
 							},
 							{
 								"status": "review",
@@ -1176,10 +1157,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Worker name matched against each task's assignee and written into the new claim. The queue schema requires it to match the unit id pattern, so a name that does not match fails the queue update.",
-						"examples": [
-							"luna-worker-1",
-							"codex.luna-2"
-						]
+						"examples": ["luna-worker-1", "codex.luna-2"]
 					},
 					{
 						"name": "claimedTask.modules",
@@ -1188,13 +1166,8 @@
 						"description": "Module ids a claim may take; an empty array leaves every module eligible. A module that already has a running task is skipped whatever this array contains.",
 						"examples": [
 							[],
-							[
-								"service.agents-providers-module-task-worker"
-							],
-							[
-								"adapter.agents-providers-module-task-runner",
-								"adapter.git"
-							]
+							["service.agents-providers-module-task-worker"],
+							["adapter.agents-providers-module-task-runner", "adapter.git"]
 						]
 					},
 					{
@@ -1684,10 +1657,7 @@
 						"type": "string",
 						"required": false,
 						"description": "Repository root that Git commands, the task queue, task worktrees and the analytics sync are bound to. Defaults to process.cwd(), read when the worker is constructed without a root.",
-						"examples": [
-							"/workspace/project",
-							"/srv/harness/checkout"
-						]
+						"examples": ["/workspace/project", "/srv/harness/checkout"]
 					},
 					{
 						"name": "ModuleTaskWorkerService.constructor.runner",
@@ -1776,9 +1746,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"module-tasks"
-	],
+	"scenarios": ["module-tasks"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
