@@ -51,14 +51,14 @@ test('exhausted Harness CPU or memory reserves make a computer overloaded', () =
 	});
 	expect(classify({ memoryPressure: 'critical' })).toMatchObject({
 		status: 'overloaded',
-		reasons: ['macOS memory pressure critical']
+		reasons: ['Memory pressure is critical']
 	});
 });
 
-test('warning pressure or less than a quarter of cores idle makes a computer busy', () => {
+test('warning pressure overloads the computer while limited idle CPU makes it busy', () => {
 	expect(classify({ memoryPressure: 'warning' })).toEqual({
-		status: 'busy',
-		reasons: ['macOS memory pressure warn'],
+		status: 'overloaded',
+		reasons: ['Memory pressure is warning'],
 		ageMs: 0
 	});
 	expect(classify({ cpuAvailableCores: 2 })).toMatchObject({

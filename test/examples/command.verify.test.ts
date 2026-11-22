@@ -42,6 +42,7 @@ const expectedRegistration = {
 				name: 'run',
 				arguments: [],
 				options: [
+					{ flags: '--profile <profile>', default: 'full' },
 					{ flags: '--priority <kind>' },
 					{ flags: '--commit <revision>', default: 'HEAD' },
 					{ flags: '--base <revision>' },
@@ -49,13 +50,15 @@ const expectedRegistration = {
 					{ flags: '--test-timeout <ms>' },
 					{ flags: '--require-performance' },
 					{ flags: '--entity <id>' },
-					{ flags: '--json' }
+					{ flags: '--json' },
+					{ flags: '--retain-artifact <path>' }
 				]
 			},
 			{
 				name: 'plan',
 				arguments: [],
 				options: [
+					{ flags: '--profile <profile>', default: 'full' },
 					{ flags: '--commit <revision>', default: 'HEAD' },
 					{ flags: '--base <revision>' },
 					{ flags: '--runtime <kind>' },
@@ -82,12 +85,21 @@ const expectedRegistration = {
 				name: 'stamp',
 				arguments: [{ name: 'directory', required: true }],
 				options: [{ flags: '--json' }]
+			},
+			{
+				name: 'capture',
+				arguments: [{ name: 'url', required: true }],
+				options: [
+					{ flags: '--output <file>' },
+					{ flags: '--browser <path>', default: 'chrome-headless-shell' },
+					{ flags: '--viewport <size>', default: '1280x720' }
+				]
 			}
 		]
 	}
 };
 
-test('Registers the verify command and all five subcommands', () => {
+test('Registers the verify command and its subcommands', () => {
 	const program = new Command().name('harness');
 	const returned = registerVerifyCommand(program);
 	const verify = program.commands.find((command) => command.name() === 'verify');

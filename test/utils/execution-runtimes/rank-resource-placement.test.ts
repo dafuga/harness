@@ -34,7 +34,7 @@ test('no fitting computer leaves the recommendation empty but keeps every candid
 	expect(placement.recommended).toBeNull();
 	expect(placement.ranked.every((c) => !c.fits && c.status === 'overloaded')).toBe(true);
 	const primary = placement.ranked.find((c) => c.node === 'mac');
-	expect(primary?.reasons).toContain('overloaded: macOS memory pressure critical');
+	expect(primary?.reasons).toContain('overloaded: Memory pressure is critical');
 });
 
 test('a non-fitting computer ranks below a fitting one even with a higher preference', () => {

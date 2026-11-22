@@ -19,7 +19,8 @@ test('Returns the default verify config with its runner templates', () => {
 	expect(output.checks).toEqual([]);
 	expect(output.runners).toEqual({
 		vitest: 'bun x vitest run {target}',
-		playwright: 'bun x playwright test {target}'
+		playwright: 'bun x playwright test {target}',
+		godot: 'godot --headless --path . {target}'
 	});
 	expect(output.timeouts.test).toBe(600000);
 

@@ -4,7 +4,9 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { gameGuide } from '../../src/guides/game-authoring/game';
 
 const safetyRules = (rules: string[]): string[] =>
-	rules.filter((rule) => rule.includes('AI rendering') || rule.includes('HARNESS_GAME_DECART_API_KEY'));
+	rules.filter(
+		(rule) => rule.includes('AI rendering') || rule.includes('HARNESS_GAME_DECART_API_KEY')
+	);
 
 test('Describes the game authoring guide', () => {
 	const output = {
@@ -17,10 +19,18 @@ test('Describes the game authoring guide', () => {
 	};
 
 	expect(output.topic).toBe('game');
-	expect(output.stepCount).toBe(4);
+	expect(gameGuide.steps).toContain(
+		'For Godot, edit the scene and GDScript, run bun run check and export with bun run build.'
+	);
+	expect(gameGuide.steps).toContain(
+		'For SvelteKit, open the project in the desktop workspace and select Game Views.'
+	);
 	expect(output.ruleCount).toBe(6);
 	expect(output.antiPatternCount).toBe(2);
 	expect(output.exampleCommands).toContain('harness new game adventure --dimension 3d');
+	expect(output.exampleCommands).toContain(
+		'harness new game harbor-lottery --engine godot --dimension 2d'
+	);
 
 	recordExampleCases(
 		{
@@ -37,7 +47,9 @@ test('Describes the game authoring guide', () => {
 test('Keeps AI rendering opt-in and API keys out of the project', () => {
 	const output = safetyRules(gameGuide.rules);
 
-	expect(output).toContain('AI rendering is off by default; keep rendering experiments explicitly opt-in.');
+	expect(output).toContain(
+		'AI rendering is off by default; keep rendering experiments explicitly opt-in.'
+	);
 	expect(output).toContain(
 		'Set HARNESS_GAME_DECART_API_KEY in the project-owned ignored .env.local; never commit it.'
 	);

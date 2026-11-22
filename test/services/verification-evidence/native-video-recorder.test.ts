@@ -13,8 +13,10 @@ import { browserErrorCollector } from '../../support/browserTest';
 
 let browser: Browser;
 const test = baseTest.extend<{ service: NativeVideoRecorderService }>({
-	service: async ({}, use) => {
-		await withTempDir('harness-native-video-', (root) => use(new NativeVideoRecorderService(root)));
+	service: async ({ task }, use) => {
+		await withTempDir(`harness-native-video-${task.id}-`, (root) =>
+			use(new NativeVideoRecorderService(root))
+		);
 	}
 });
 beforeAll(async () => {
