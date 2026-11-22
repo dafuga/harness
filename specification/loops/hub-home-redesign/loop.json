@@ -2,11 +2,9 @@
 	"name": "hub-home-redesign",
 	"goal": "Prove the signed-in Hub home and six responsive dialogs, owner-only Tracker actions, account isolation, and matching 390/834/1440/1920 design evidence.",
 	"createdAt": "2026-11-21T22:42:24.357Z",
-	"updatedAt": "2026-11-21T23:47:37.479Z",
+	"updatedAt": "2026-11-22T08:19:30.038Z",
 	"template": "feature",
-	"templateLineage": [
-		"feature"
-	],
+	"templateLineage": ["feature"],
 	"enforceOrder": false,
 	"steps": [
 		{
@@ -19,7 +17,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-22T08:19:30.038Z",
+			"evidence": "Daniel selected the owner-managed Claude and Codex JSON source. Desktop red/green checkpoint records ff09bbcb and 5efc366c prove timestamp preservation and no live lookup. The unchanged browser assertions failed for missing and stale data at 608dc03e7a and passed at 1925db69c8. Exact build 27c24ac1c8 passed 41 browser and 52 catalog cases with 146 design pairs."
 		},
 		{
 			"id": "test",
