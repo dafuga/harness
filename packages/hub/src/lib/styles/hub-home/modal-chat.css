@@ -54,10 +54,14 @@
 	color: var(--hx-color-text-muted);
 	font-size: var(--hx-type-size-2xs);
 }
-.hh-home .hh-quick {
+.hh-home .hh-quick,
+.hh-home .hh-quick-replies {
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--hx-space-8);
+}
+.hh-home .hh-quick-replies:empty {
+	display: none;
 }
 /* The composer, in the root Agents card and the chat pane. The input draws no ring of its own:
    the whole field takes the focus ring, and any focus inside it turns the border to the accent. */

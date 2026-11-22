@@ -15,7 +15,8 @@
 		currentAgent,
 		runTime,
 		initials,
-		overviewTone
+		overviewTone,
+		quickReplies
 	} from './hubHomePresentation';
 	import type { SendHomeChat } from './hubHomeView.types';
 	import HubHomeComposer from './HubHomeComposer.svelte';
@@ -26,13 +27,15 @@
 		agentId,
 		send,
 		receipt,
-		chatOpen = $bindable(false)
+		chatOpen = $bindable(false),
+		chatName = $bindable('')
 	}: {
 		agents: HomeAgent[] | null;
 		agentId?: string;
 		send: SendHomeChat;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
 		chatOpen?: boolean;
+		chatName?: string;
 	} = $props();
 	let selected = $state<string>();
 	let answer = $state('');
@@ -45,6 +48,7 @@
 			agents?.[0]
 	);
 
+	$effect(() => void (chatName = active?.name ?? ''));
 	function select(id: string) {
 		selected = id;
 		chatOpen = true;
@@ -72,14 +76,18 @@
 
 	async function submitAnswer(event: SubmitEvent) {
 		event.preventDefault();
-		if (!active?.itemId || !active.question || !answer.trim() || answering) return;
+		await answerWith(answer);
+	}
+
+	async function answerWith(text: string) {
+		if (!active?.itemId || !active.question || !text.trim() || answering) return;
 		const message: HomeChatInput = {
 			id: crypto.randomUUID(),
 			agentId: active.id,
 			itemId: active.itemId,
 			kind: 'answer',
 			question: active.question,
-			text: answer.trim()
+			text: text.trim()
 		};
 		answering = true;
 		try {
@@ -97,7 +105,7 @@
 {#if agents === null}
 	<HubHomeSkeleton rows={6} />
 {:else if !agents.length || !active}
-	<EmptyState as="div" className="hh-empty">No agents are available.</EmptyState>
+	<EmptyState as="div" className="po-empty hh-empty">No agents are available.</EmptyState>
 {:else}
 	<hx-div class="hh-split hh-split-agents" class:hh-show-detail={chatOpen}>
 		<hx-div class="hh-split-list">
@@ -176,6 +184,16 @@
 				{/each}
 			</hx-ol>
 			{#if active.question}
+				<hx-div class="hh-quick-replies" role="group" aria-label="Quick replies">
+					{#each quickReplies(active.question) as reply, index (reply)}
+						<hx-button
+							type="button"
+							class={index ? 'po-action' : 'po-action hh-primary'}
+							disabled={answering}
+							onclick={() => answerWith(reply)}>{reply}</hx-button
+						>
+					{/each}
+				</hx-div>
 				<hx-form class="hh-quick" onsubmit={submitAnswer}>
 					<hx-input
 						aria-label="Answer to open question"

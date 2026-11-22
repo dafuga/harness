@@ -51,7 +51,7 @@
 			></hx-p
 		>
 	{/if}
-	{#if !groups.length}<EmptyState as="div" className="hh-empty"
+	{#if !groups.length}<EmptyState as="div" className="po-empty hh-empty"
 			>Nothing is scheduled here.</EmptyState
 		>{/if}
 	<hx-div class="hh-agenda">

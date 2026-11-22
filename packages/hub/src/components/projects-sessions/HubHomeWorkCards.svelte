@@ -33,8 +33,15 @@
 	);
 </script>
 
-{#snippet empty(text: string)}
-	<EmptyState as="div" className="hh-empty">{text}</EmptyState>
+{#snippet empty(text: string, action?: string)}
+	<EmptyState as="div" className="po-empty hh-empty"
+		><hx-p>{text}</hx-p>
+		{#if action && view.agents?.some((agent) => agent.itemId)}<hx-button
+				type="button"
+				class="po-action"
+				onclick={() => open('agents')}>{action}</hx-button
+			>{/if}
+	</EmptyState>
 {/snippet}
 
 <HubHomeCard
@@ -42,7 +49,9 @@
 	total={view.plans?.length}
 	summary={view.plans === null
 		? 'Loading plans…'
-		: `${view.plans.filter((plan) => plan.state !== 'done').length} open · ${view.plans.filter((plan) => plan.state === 'done').length} done`}
+		: !view.plans.length
+			? 'No plans yet'
+			: `${view.plans.filter((plan) => plan.state !== 'done').length} open · ${view.plans.filter((plan) => plan.state === 'done').length} done`}
 	open={() => open('plans')}
 >
 	{#if view.plans === null}
@@ -75,7 +84,10 @@
 			{/each}
 		</hx-ul>
 	{:else}
-		{@render empty('No plans are on the Tracker.')}
+		{@render empty(
+			'No plans yet. Ask an agent to plan something and it is kept here.',
+			'Start a plan'
+		)}
 	{/if}
 </HubHomeCard>
 
@@ -86,7 +98,7 @@
 		? 'Loading schedule…'
 		: view.schedule[0]
 			? `Next: ${runDay(view.schedule[0].at, view.now).toLowerCase()} ${runTime(view.schedule[0].at)}`
-			: 'No upcoming runs'}
+			: 'Nothing scheduled'}
 	open={() => open('scheduled')}
 >
 	{#if view.schedule === null}
@@ -111,7 +123,10 @@
 			{/each}
 		</hx-ul>
 	{:else}
-		{@render empty('Nothing is scheduled.')}
+		{@render empty(
+			'Nothing is scheduled. Routines and one-off runs appear here in time order.',
+			'Schedule a task'
+		)}
 	{/if}
 	{#if view.schedule !== null && !view.routinesConnected}
 		<hx-p class="po-sessions">Claude routine dates are unknown.</hx-p>
@@ -125,7 +140,9 @@
 		? 'Loading projects…'
 		: latest?.commit
 			? `Last change: ${latest.project.name}, ${relativeWhen(latest.commit.authoredAt, view.now)}`
-			: count(view.projects.length, 'shared project')}
+			: view.projects.length
+				? count(view.projects.length, 'shared project')
+				: 'No projects yet'}
 	open={() => open('projects')}
 >
 	{#if view.projects === null}
@@ -153,15 +170,21 @@
 			{/each}
 		</hx-ul>
 	{:else}
-		{@render empty('No shared projects yet.')}
-		<hx-a href={resolve('/projects')} class="po-action">Open projects</hx-a>
+		<EmptyState as="div" className="po-empty hh-empty"
+			><hx-p>No projects yet. Add a repository to see its apps, pages and components.</hx-p>
+			<hx-a href={resolve('/projects')} class="po-action">Add a project</hx-a>
+		</EmptyState>
 	{/if}
 </HubHomeCard>
 
 <HubHomeCard
 	section="wip"
 	total={view.overview ? view.work.length : undefined}
-	summary={view.overview === null ? 'Loading work…' : 'Soonest to finish first'}
+	summary={view.overview === null
+		? 'Loading work…'
+		: view.work.length
+			? 'Soonest to finish first'
+			: 'All clear'}
 	open={() => open('wip')}
 >
 	{#if view.overview === null}
@@ -183,6 +206,8 @@
 			{/each}
 		</hx-ul>
 	{:else}
-		{@render empty('No work is in progress.')}
+		{@render empty(
+			'No work in progress. Tasks agents pick up appear here, soonest to finish first.'
+		)}
 	{/if}
 </HubHomeCard>

@@ -18,6 +18,7 @@
 			"hub.component.projects-sessions-hub-quota-subscription",
 			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.explorer-ui-explorer-kit-pill",
+			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-p",
@@ -82,6 +83,16 @@
 						"name": "HubHomeCards.empty.text",
 						"type": "string",
 						"required": true
+					},
+					{
+						"name": "HubHomeCards.empty.action",
+						"type": "string",
+						"required": false
+					},
+					{
+						"name": "HubHomeCards.empty.act",
+						"type": "() => void",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -187,6 +198,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "hub.config.public-site-home-download",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.function.projects-sessions-hub-home-presentation",
 			"via": "import",
 			"origin": "derived"
@@ -203,6 +219,11 @@
 		},
 		{
 			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
 			"via": "import",
 			"origin": "derived"
 		},

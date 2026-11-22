@@ -46,9 +46,11 @@
 {:else if overview === null}
 	<HubHomeSkeleton rows={6} />
 {:else if overview.status === 'unavailable'}
-	<EmptyState as="div" className="hh-empty">Tracker is unavailable for this account.</EmptyState>
+	<EmptyState as="div" className="po-empty hh-empty"
+		>Tracker is unavailable for this account.</EmptyState
+	>
 {:else if !work.length}
-	<EmptyState as="div" className="hh-empty">No work is in progress.</EmptyState>
+	<EmptyState as="div" className="po-empty hh-empty">No work is in progress.</EmptyState>
 {:else}
 	<hx-ul class="po-items hh-soonest">
 		{#each work as item (item.id)}

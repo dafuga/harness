@@ -1,0 +1,115 @@
+{
+	"schemaVersion": 1,
+	"revision": "01e5fa6af5cd22e4a19f75de2b13b8bc011c3c01",
+	"bugClass": {
+		"id": "dropped-style-class",
+		"title": "Port omits a required style class",
+		"cause": "A UI port preserves one class from a composed class list but drops another class that supplies essential visual properties, leaving a partial or browser-default appearance.",
+		"criteria": "Classify when a rendered component or template omits a source/mockup class that is required alongside a retained class for the intended styling. This includes omitted classes that supply border width or color when a retained class sets only border style. Consider each missing-class styling dependency independently.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "class=\"po-empty hh-empty\"",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "class=\"hh-empty\"",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "border-style: dashed",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "border-width:",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "border-color:",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "class:po-empty",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "class:hh-empty",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "classNames",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "clsx",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "cn",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "classList",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "class=",
+				"weight": 1
+			}
+		],
+		"contextTerms": [
+			"emptystate",
+			"empty-state",
+			"po-empty",
+			"hh-empty",
+			"border-style",
+			"border-width",
+			"border-color"
+		],
+		"pathHints": [
+			{
+				"contains": "packages/hub/",
+				"weight": 5
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 2
+			},
+			{
+				"contains": ".svelte",
+				"weight": 3
+			},
+			{
+				"contains": ".css",
+				"weight": 2
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -1
+			},
+			{
+				"contains": "src/cli/",
+				"weight": -2
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": -2
+			}
+		]
+	}
+}

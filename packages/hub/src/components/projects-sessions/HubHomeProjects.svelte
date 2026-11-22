@@ -74,7 +74,7 @@
 {#if projects === null}
 	<HubHomeSkeleton rows={5} />
 {:else if !projects.length || !current}
-	<EmptyState as="div" className="hh-empty"
+	<EmptyState as="div" className="po-empty hh-empty"
 		>No shared projects yet. <hx-a href={resolve('/projects')}>Open projects</hx-a></EmptyState
 	>
 {:else}

@@ -35,7 +35,9 @@
 			"overviewTone",
 			"summaryLine",
 			"relativeWhen",
-			"workEta"
+			"workEta",
+			"quotaSummary",
+			"quickReplies"
 		]
 	},
 	"contract": {
@@ -208,6 +210,24 @@
 				"type": "number",
 				"required": true,
 				"description": "Current time in milliseconds since the Unix epoch."
+			},
+			{
+				"name": "quotaSummary.subscriptions",
+				"type": "HomeSubscription[]",
+				"required": true,
+				"description": "Subscriptions read for the owner, in display order."
+			},
+			{
+				"name": "quotaSummary.now",
+				"type": "number",
+				"required": true,
+				"description": "Observation time in milliseconds; stale readings are not counted as low."
+			},
+			{
+				"name": "quickReplies.question",
+				"type": "string | null",
+				"required": true,
+				"description": "Open Tracker question for the agent, or null when none is open."
 			}
 		],
 		"outputs": [
@@ -314,7 +334,7 @@
 			{
 				"name": "initials",
 				"type": "unknown",
-				"description": "Up to two uppercase initials from the display name."
+				"description": "First and last initials of the display name, uppercase."
 			},
 			{
 				"name": "overviewTone",
@@ -670,7 +690,7 @@
 					{
 						"name": "initials",
 						"type": "unknown",
-						"description": "Up to two uppercase initials from the display name."
+						"description": "First and last initials of the display name, uppercase."
 					}
 				],
 				"errors": [],
@@ -769,6 +789,52 @@
 						"name": "workEta",
 						"type": "unknown",
 						"description": "Deadline label and its urgency tone."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "quotaSummary",
+				"inputs": [
+					{
+						"name": "quotaSummary.subscriptions",
+						"type": "HomeSubscription[]",
+						"required": true,
+						"description": "Subscriptions read for the owner, in display order."
+					},
+					{
+						"name": "quotaSummary.now",
+						"type": "number",
+						"required": true,
+						"description": "Observation time in milliseconds; stale readings are not counted as low."
+					}
+				],
+				"outputs": [
+					{
+						"name": "quotaSummary",
+						"type": "unknown",
+						"description": "Subscription count with how many readable limits are running low, or all OK."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "quickReplies",
+				"inputs": [
+					{
+						"name": "quickReplies.question",
+						"type": "string | null",
+						"required": true,
+						"description": "Open Tracker question for the agent, or null when none is open."
+					}
+				],
+				"outputs": [
+					{
+						"name": "quickReplies",
+						"type": "unknown",
+						"description": "Two one-tap answers for a yes-or-no question; empty for any other question."
 					}
 				],
 				"errors": [],
