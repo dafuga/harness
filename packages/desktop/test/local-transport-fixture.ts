@@ -127,8 +127,8 @@ export async function localFixture(
 		frames: string[] = [],
 		sockets: SocketClient[] = [];
 	closing.push(() => transport.close());
-	const { registry, arbiter, providers, generator } = f,
-		shared = { registry, arbiter, providers, generator, outbox: new CommentOutboxService() };
+	const { registry, arbiter, providers, renderMockups } = f,
+		shared = { registry, arbiter, providers, renderMockups, outbox: new CommentOutboxService() };
 	/** What the main process keeps for one window. */
 	function window(extra: Partial<LocalClientOptions> = {}) {
 		const base = { shared, choose: async () => f.root, control: control.port };

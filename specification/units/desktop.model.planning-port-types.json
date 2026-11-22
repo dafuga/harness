@@ -15,6 +15,7 @@
 			"DesignOptionDraft",
 			"MessageDraft",
 			"PlanImageQuery",
+			"PlanImagesQuery",
 			"PlanningPort"
 		]
 	},
@@ -28,6 +29,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.function.planning-collaboration-mockup-source",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.model.desktop-bridge-types",
 			"via": "import",

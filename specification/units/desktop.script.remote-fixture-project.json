@@ -141,7 +141,7 @@
 				"outputs": [
 					{
 						"name": "fixtureProviders",
-						"type": "Record<ProviderId, AgentRunner> & { generator: ImageGenerator; }",
+						"type": "Record<ProviderId, AgentRunner> & { renderMockups: RenderMockups; }",
 						"description": "The synthetic runners for codex and claude plus an image generator; they start no process and change no file. Each runner's discover reports one available model and its run returns a canned answer after about 1.2 seconds, while the generator's generateImage returns a 128-pixel fixture picture whose variant starts at 0 and rises by one with each call."
 					}
 				],
@@ -158,6 +158,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.function.planning-collaboration-mockup-source",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.model.agent-runner-types",
 			"via": "import",

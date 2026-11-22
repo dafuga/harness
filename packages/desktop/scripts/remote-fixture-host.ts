@@ -55,7 +55,7 @@ function autoApprove(host: RemoteHostService, projectId: string, log: (line: str
 async function fixtureHost(relay: Relay, state: string, root: string) {
 	const registry = new ProjectRegistryService(join(state, 'projects.json')),
 		{ id, name } = await registry.register(root),
-		{ generator, ...runners } = fixtureProviders(),
+		{ renderMockups, ...runners } = fixtureProviders(),
 		sockets = new RelaySocketAdapter(),
 		screen: { locked?: boolean } = {};
 	const register = async (input: RemoteHostRegisterInput) => {
@@ -76,7 +76,7 @@ async function fixtureHost(relay: Relay, state: string, root: string) {
 			outbox: new CommentOutboxService(join(state, 'outbox.json')),
 			arbiter: new RepositoryArbiterService(),
 			providers: new ProviderDiscoveryService(runners),
-			generator
+			renderMockups
 		},
 		name: () => 'Harness fixture computer',
 		locked: () => screen.locked

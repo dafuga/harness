@@ -10,27 +10,8 @@ import { ProjectSessionService } from '../src/services/projects-sessions/project
 import { ProviderDiscoveryService } from '../src/services/agents-providers/provider-discovery-service/ProviderDiscoveryService';
 import { RepositoryArbiterService } from '../src/services/projects-sessions/RepositoryArbiterService';
 import { desktopBridge } from '../src/lib/development-tooling/desktop-bridge/desktopBridge';
-import { PNG } from 'pngjs';
-import { vi } from 'vitest';
-import { bytes, fixture, git } from './run-fixture';
+import { fixture, git } from './run-fixture';
 
-/**
- * Each image this computer generates is its own valid 2×2 PNG, so the options of one Plan never
- * repeat an image. The first is exactly the shared fixture's image; each later one is opaque and of
- * its own colour. The sequence is per fixture.
- */
-function distinctImages() {
-	let made = 0;
-	return async () => {
-		const at = made++;
-		if (at === 0) return { bytes: Uint8Array.from(bytes), revisedPrompt: null };
-		const png = new PNG({ width: 2, height: 2 });
-		// Opaque and of a colour of its own: a visibly different picture, not a hidden pixel.
-		const colour = [(at * 47) % 256, (at * 89) % 256, (at * 131) % 256, 255];
-		for (let pixel = 0; pixel < 4; pixel++) png.data.set(colour, pixel * 4);
-		return { bytes: PNG.sync.write(png), revisedPrompt: null };
-	};
-}
 export function deferred() {
 	let resolve!: () => void;
 	const promise = new Promise<void>((done) => {
@@ -59,7 +40,6 @@ export async function connect(session: DeviceSessionService) {
  */
 export async function remoteFixture(action: (turn: AgentTurn) => Promise<void> = async () => {}) {
 	const f = await fixture(action);
-	vi.mocked(f.generator.generateImage).mockImplementation(distinctImages());
 	const registry = new ProjectRegistryService(),
 		outbox = new CommentOutboxService(),
 		arbiter = new RepositoryArbiterService();
@@ -73,7 +53,7 @@ export async function remoteFixture(action: (turn: AgentTurn) => Promise<void> =
 		})
 	};
 	const providers = new ProviderDiscoveryService({ codex: f.runner, claude });
-	const shared = { registry, outbox, arbiter, providers, generator: f.generator };
+	const shared = { registry, outbox, arbiter, providers, renderMockups: f.renderMockups };
 	const full = (): RemoteGrant => ({
 		projects: [{ id: project.id, name: project.name }],
 		agents: true
@@ -91,8 +71,11 @@ export async function remoteFixture(action: (turn: AgentTurn) => Promise<void> =
 	function local() {
 		const session = new ProjectSessionService({ registry, outbox, arbiter }),
 			events: RunEvent[] = [];
-		const runs = new DesktopRunService(session, providers, f.generator, (event) =>
-			events.push(event)
+		const runs = new DesktopRunService(
+			session,
+			providers,
+			(event) => events.push(event),
+			f.renderMockups
 		);
 		const bridge = desktopBridge({ session, providers, runs, choose: async () => null });
 		return { session, runs, events, bridge };

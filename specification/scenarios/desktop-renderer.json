@@ -188,6 +188,26 @@
 			"title": "The app navigation stays at the top of the window after scrolling 1000 px",
 			"coverage": "required",
 			"units": ["desktop.style.workspace-0"]
+		},
+		{
+			"id": "planned-design-laptop",
+			"title": "Open plan comparison at laptop width",
+			"coverage": "required"
+		},
+		{
+			"id": "planned-design-wide",
+			"title": "Open plan comparison at wide width and the busy state",
+			"coverage": "required"
+		},
+		{
+			"id": "planned-design-tablet",
+			"title": "Open plan comparison at tablet width and the busy state",
+			"coverage": "required"
+		},
+		{
+			"id": "planned-design-phone",
+			"title": "Open plan comparison at phone width and the busy state",
+			"coverage": "required"
 		}
 	],
 	"viewports": [
@@ -215,6 +235,16 @@
 			"id": "nav-phone",
 			"width": 390,
 			"height": 900
+		},
+		{
+			"id": "mockup-tablet",
+			"width": 834,
+			"height": 1194
+		},
+		{
+			"id": "mockup-wide",
+			"width": 1920,
+			"height": 1080
 		}
 	],
 	"tests": [
@@ -312,7 +342,8 @@
 				"listing-pages-tip",
 				"listing-pages-earlier",
 				"listing-pages-tip-selected",
-				"listing-loader-opened"
+				"listing-loader-opened",
+				"planned-design-laptop"
 			],
 			"viewports": ["desktop"],
 			"provenance": "actual-capture",
@@ -323,7 +354,7 @@
 		{
 			"id": "renderer-screens-mobile",
 			"kind": "screenshot",
-			"states": ["mobile"],
+			"states": ["mobile", "planned-design-phone"],
 			"viewports": ["mobile"],
 			"provenance": "actual-capture",
 			"build": "desktop-renderer",
@@ -426,6 +457,26 @@
 			"required": true,
 			"build": "desktop-renderer",
 			"capture": "viewport"
+		},
+		{
+			"id": "renderer-screens-mockup-tablet",
+			"kind": "screenshot",
+			"states": ["planned-design-tablet"],
+			"viewports": ["mockup-tablet"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "viewport",
+			"required": true
+		},
+		{
+			"id": "renderer-screens-mockup-wide",
+			"kind": "screenshot",
+			"states": ["planned-design-wide"],
+			"viewports": ["mockup-wide"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "viewport",
+			"required": true
 		}
 	]
 }

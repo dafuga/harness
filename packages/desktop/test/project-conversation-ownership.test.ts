@@ -4,7 +4,7 @@ import type { RunRequest } from '../src/models/DesktopBridge.types';
 import { ProjectSessionService } from '../src/services/projects-sessions/project-session-service/ProjectSessionService';
 import { DesktopRunService } from '../src/services/agents-providers/desktop-run-service/DesktopRunService';
 import { ProviderDiscoveryService } from '../src/services/agents-providers/provider-discovery-service/ProviderDiscoveryService';
-import { fixture, git } from './run-fixture';
+import { fixture, git, visualAnswer } from './run-fixture';
 
 const contract = {
 	inputs: [{ name: 'milliseconds', type: 'number' }],
@@ -50,8 +50,8 @@ test('project creation excludes another client until the owning request finishes
 	const service = new DesktopRunService(
 		other,
 		new ProviderDiscoveryService({ codex: f.runner, claude: f.runner }),
-		f.generator,
-		() => {}
+		() => {},
+		f.renderMockups
 	);
 	await f.service.start(request(f));
 	await ready;
@@ -70,16 +70,18 @@ test('project creation excludes another client until the owning request finishes
 	expect(other.busy).toBe(false);
 }, 20000);
 
-test('visual creation reuses GPT Image and saves a reviewable committed version', async () => {
+test('visual creation uses Sonnet HTML/CSS and saves a reviewable committed version', async () => {
 	const f = await fixture();
 	f.run.mockImplementation(async (turn) => ({
-		text: JSON.stringify({
-			category: 'components',
-			title: 'Elapsed badge',
-			goal: 'Display elapsed time',
-			proposal: 'Readable elapsed badge on navy background',
-			contract
-		}),
+		text:
+			visualAnswer(turn) ??
+			JSON.stringify({
+				category: 'components',
+				title: 'Elapsed badge',
+				goal: 'Display elapsed time',
+				proposal: 'Readable elapsed badge on navy background',
+				contract
+			}),
 		model: turn.model
 	}));
 	// A case of one design: it asks for a single design option.
@@ -89,9 +91,9 @@ test('visual creation reuses GPT Image and saves a reviewable committed version'
 		(item) => item.title === 'Elapsed badge'
 	);
 	expect(plan).toMatchObject({ category: 'components', lifecycle: 'review' });
-	expect(plan!.versions[0].images).toHaveLength(1);
+	expect(plan!.versions[0].images).toHaveLength(4);
 	expect(plan!.versions[0].commit).toMatch(/^[a-f0-9]{40}$/);
-	expect(f.generator.generateImage).toHaveBeenCalledOnce();
-	expect(f.run).toHaveBeenCalledOnce();
+	expect(f.renderMockups).toHaveBeenCalledOnce();
+	expect(f.run).toHaveBeenCalledTimes(2);
 	expect(f.events).toContainEqual(expect.objectContaining({ kind: 'finished', verified: false }));
 }, 20000);

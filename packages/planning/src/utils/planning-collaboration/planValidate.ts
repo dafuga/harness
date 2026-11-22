@@ -38,6 +38,13 @@ export function planValidate(unitId: string): string {
 	return `src/${categories[category as keyof typeof categories]}/${name}`;
 }
 
+export function planViewport(value: string): boolean {
+	if (['desktop', 'tablet', 'mobile', 'diagram'].includes(value)) return true;
+	const match = /^width-([1-9][0-9]{2,3})$/.exec(value);
+	const width = Number(match?.[1]);
+	return width >= 240 && width <= 2560;
+}
+
 export function contractHash(contract: PlanContract): string {
 	text(contract?.responsibility);
 	for (const fields of [contract.inputs, contract.outputs]) {
@@ -52,8 +59,7 @@ export function contractHash(contract: PlanContract): string {
 			fail('invalid-input', 'Invalid contract list');
 		values.forEach(text);
 	}
-	if (contract.viewports.some((v) => !['desktop', 'tablet', 'mobile', 'diagram'].includes(v)))
-		fail('invalid-input', 'Invalid viewport');
+	if (contract.viewports.some((v) => !planViewport(v))) fail('invalid-input', 'Invalid viewport');
 	return hash(planData(contract));
 }
 

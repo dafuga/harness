@@ -40,6 +40,8 @@ export interface DesignVersion {
 	generator: string;
 	prompt: string;
 	notes?: string;
+	/** This design records responsive HTML/CSS and its captures in its version. */
+	mockup?: boolean;
 	baseRevision: string;
 	images: DesignImage[];
 	approval: ApprovalInfo | null;

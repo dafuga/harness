@@ -37,16 +37,15 @@
 				"description": "The ProviderDiscoveryService that the prepare steps use to select each run's runner and, for a plan of a pages, layouts or components entity, to list providers for image generation. This file stores it and never calls its methods itself."
 			},
 			{
-				"name": "DesktopRunService.constructor.generator",
-				"type": "ImageGenerator",
-				"required": true,
-				"description": "The ImageGenerator that the prepare steps pass into each run context. This file never calls its generateImage method."
-			},
-			{
 				"name": "DesktopRunService.constructor.emit",
 				"type": "(event: RunEvent) => void",
 				"required": true,
 				"description": "The callback that this client's runs send events to: execute first emits a 'status' event with phase 'queued', then a 'finished', 'cancelled' or 'failed' event when the run ends."
+			},
+			{
+				"name": "DesktopRunService.constructor.renderMockups",
+				"type": "RenderMockups",
+				"required": false
 			},
 			{
 				"name": "DesktopRunService.start.request",
@@ -305,16 +304,15 @@
 						"description": "The ProviderDiscoveryService that the prepare steps use to select each run's runner and, for a plan of a pages, layouts or components entity, to list providers for image generation. This file stores it and never calls its methods itself."
 					},
 					{
-						"name": "DesktopRunService.constructor.generator",
-						"type": "ImageGenerator",
-						"required": true,
-						"description": "The ImageGenerator that the prepare steps pass into each run context. This file never calls its generateImage method."
-					},
-					{
 						"name": "DesktopRunService.constructor.emit",
 						"type": "(event: RunEvent) => void",
 						"required": true,
 						"description": "The callback that this client's runs send events to: execute first emits a 'status' event with phase 'queued', then a 'finished', 'cancelled' or 'failed' event when the run ends."
+					},
+					{
+						"name": "DesktopRunService.constructor.renderMockups",
+						"type": "RenderMockups",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -332,6 +330,16 @@
 	"dependencies": [
 		{
 			"unit": "desktop.function.design-count",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.planning-collaboration-mockup-capture",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.planning-collaboration-mockup-source",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -22,7 +22,8 @@
 			"readImage",
 			"planDesign",
 			"approve",
-			"readImage"
+			"readImage",
+			"readImages"
 		]
 	},
 	"contract": {
@@ -97,6 +98,18 @@
 						"file": "overview-desktop.png"
 					}
 				]
+			},
+			{
+				"name": "readImages.git",
+				"type": "Git",
+				"required": true,
+				"description": "Git reader that pins every image read to the same source revision."
+			},
+			{
+				"name": "readImages.input",
+				"type": "ReadImagesInput",
+				"required": true,
+				"description": "Entity, version, optional option and revision, and ordered screenshot hashes."
 			}
 		],
 		"outputs": [
@@ -352,6 +365,37 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "readImages",
+				"inputs": [
+					{
+						"name": "readImages.git",
+						"type": "Git",
+						"required": true,
+						"description": "Git reader that pins every image read to the same source revision."
+					},
+					{
+						"name": "readImages.input",
+						"type": "ReadImagesInput",
+						"required": true,
+						"description": "Entity, version, optional option and revision, and ordered screenshot hashes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readImages",
+						"type": "unknown",
+						"description": "Verified screenshot bytes and metadata in the requested hash order."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []

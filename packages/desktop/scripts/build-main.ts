@@ -12,7 +12,7 @@ const jsoncParser: Bun.BunPlugin = {
 export const desktopNodeOptions = {
 	target: 'node' as const,
 	format: 'cjs' as const,
-	external: ['electron'],
+	external: ['electron', 'playwright-core'],
 	plugins: [jsoncParser],
 	outdir: 'dist',
 	sourcemap: 'external' as const

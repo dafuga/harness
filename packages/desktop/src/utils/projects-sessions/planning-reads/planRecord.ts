@@ -11,6 +11,7 @@ import type {
 } from '../../../models/development-tooling/Desktop.types';
 import { approvalInfo, threadInfo } from '../planningConvert';
 import { planningConvert } from './planningConvert';
+import { mockupMarker } from '../../planning-collaboration/mockupSource';
 import { gitText } from '../gitRead';
 
 export async function planRecord(
@@ -40,6 +41,9 @@ export async function planVersion(
 	const { version, plan, revision } = data,
 		approval = plan.approvals.filter((a) => a.version === version.version).at(-1);
 	const directory = plan.path + '/designs/' + version.version + '/';
+	const notes = version.notes
+		? await gitText(context.root, revision, directory + version.notes.file)
+		: undefined;
 	return {
 		version: version.version,
 		createdAt: version.createdAt,
@@ -47,9 +51,8 @@ export async function planVersion(
 		generator: version.generator.provider + ' · ' + version.generator.model,
 		prompt: await gitText(context.root, revision, directory + version.prompt.file),
 		baseRevision: version.baseRevision,
-		notes: version.notes
-			? await gitText(context.root, revision, directory + version.notes.file)
-			: undefined,
+		notes,
+		...(notes?.startsWith(mockupMarker) ? { mockup: true } : {}),
 		images: version.images.map((i) => ({
 			state: i.state,
 			viewport: i.viewport,

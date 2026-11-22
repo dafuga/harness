@@ -3,6 +3,7 @@ import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { unitOwners } from '../../../../../../../src/utils/development-tooling/unitOwners';
 import type { RunContext } from '../../../../models/development-tooling/RunContext.types';
+import { approvedMockup } from '../../../../utils/planning-collaboration/approvedMockup';
 import { RunCancelled } from '../../../../models/agents-providers/AgentRunner.types';
 import { changedUnits } from '../../../../utils/git-source-history/changedUnits';
 import { isUnitId } from '../../../../utils/explorer-ui/entityReferences';
@@ -42,7 +43,9 @@ export async function changeExecute(
 	}
 ) {
 	const { request, entity, id, emit } = context;
-	const reference = await approvedImage(context, options.directory);
+	const version = entity.versions.at(-1)!;
+	const mockup = await approvedMockup(context, version, options.directory);
+	const reference = mockup?.reference ?? (await approvedImage(context, options.directory));
 	const named = isUnitId(entity.id) ? `[[unit:${entity.id}]]` : 'the approved design';
 	emit({
 		runId: id,
@@ -50,7 +53,11 @@ export async function changeExecute(
 		phase: 'changing',
 		detail: `Implementing ${named} with ${request.provider} / ${request.model}`
 	});
-	const notes = entity.versions.at(-1)?.notes ?? '';
+	const notes = mockup
+		? 'Read ' +
+			join(mockup.directory, 'review.json') +
+			' and implement the approved *-after.html source in that directory. Use the pinned PNG files as visual references.'
+		: (version.notes ?? '');
 	replies.set(context, '');
 	const result = await context.runner.run({
 		model: request.model,

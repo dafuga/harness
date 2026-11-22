@@ -161,12 +161,14 @@
 			{
 				"name": "validateThreadReference.reference",
 				"type": "ThreadMessage['references'][number]",
-				"required": true
+				"required": true,
+				"description": "Thread reference that identifies the exact saved notes or screenshot of the design version."
 			},
 			{
 				"name": "validateThreadReference.plan",
 				"type": "PlanDetail",
-				"required": true
+				"required": true,
+				"description": "Pinned plan with the committed versions and artifacts against which the reference is checked."
 			}
 		],
 		"outputs": [
@@ -707,12 +709,14 @@
 					{
 						"name": "validateThreadReference.reference",
 						"type": "ThreadMessage['references'][number]",
-						"required": true
+						"required": true,
+						"description": "Thread reference that identifies the exact saved notes or screenshot of the design version."
 					},
 					{
 						"name": "validateThreadReference.plan",
 						"type": "PlanDetail",
-						"required": true
+						"required": true,
+						"description": "Pinned plan with the committed versions and artifacts against which the reference is checked."
 					}
 				],
 				"outputs": [

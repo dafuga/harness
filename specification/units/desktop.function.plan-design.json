@@ -4,7 +4,7 @@
 	"uid": "u_w4s75s2hsf",
 	"kind": "function",
 	"title": "Save a proposed design version",
-	"responsibility": "Generates visual design options or keeps behavior notes, then saves one version for review.",
+	"responsibility": "Save one immutable responsive mockup or behavior proposal for review.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -12,7 +12,7 @@
 			"packages/desktop/src/utils/planning-collaboration/plan-design/planDesign.ts",
 			"packages/desktop/src/utils/planning-collaboration/plan-design/planDesign.types.ts"
 		],
-		"symbols": ["planDesign", "Ask"]
+		"symbols": ["planDesign", "MockupSource", "MockupImage"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -21,25 +21,20 @@
 				"name": "planDesign.context",
 				"type": "RunContext",
 				"required": true,
-				"description": "The prepared Plan run context, which the function reads and never assigns to: the entity (id, category, latestVersion, threads), the request (threadId, provider, model), the revision (commit, branch), imageModel, generator, planning port, session, signal, emit and run id. The entity, selected thread and revision set the draft's entity id, base revision, expected latest version, state and viewport, and the signal is passed to generation and checked after generation and before saving."
+				"description": "Prepared run context with the entity and thread, selected revision, planning port, agent runners, screenshot renderer, cancellation signal, and progress callbacks. The draft binds the current expected version and its source revision."
 			},
 			{
-				"name": "planDesign.prompt",
+				"name": "planDesign.proposal",
 				"type": "string",
 				"required": true,
-				"description": "The proposal text for this version. For pages, layouts and components it is passed to designPrompt to build the image instruction and also appears in the saved notes as the Proposal, while every other category keeps it unchanged as the draft notes and generates no image.",
-				"examples": [
-					"Settings page with a compact header, grouped toggles and a primary Save button.",
-					"Two-column checkout layout with the order summary pinned to the right on desktop.",
-					"Retry failed syncs with exponential backoff and show a banner after three failed attempts."
-				]
+				"description": "Behavior proposal text or instructions for authoring the responsive visual mockup."
 			}
 		],
 		"outputs": [
 			{
 				"name": "planDesign",
 				"type": "unknown",
-				"description": "Resolves to the string 'Saved <version> for review.', where <version> is the version planning.addDesign saved, after its design event is emitted and the thread notice is appended. It rejects instead when RunCancelled is thrown or any generation, branch, save or notice call rejects, and the temporary directory for the run is removed in a finally block that covers those steps.",
+				"description": "Resolves to Saved <version> for review after committing the version and appending the thread notice. Visual design versions include the HTML and CSS source and the rendered screenshots for their options.",
 				"examples": ["Saved v003 for review.", "Saved v001 for review."]
 			}
 		],
@@ -62,15 +57,10 @@
 						"description": "The prepared Plan run context, which the function reads and never assigns to: the entity (id, category, latestVersion, threads), the request (threadId, provider, model), the revision (commit, branch), imageModel, generator, planning port, session, signal, emit and run id. The entity, selected thread and revision set the draft's entity id, base revision, expected latest version, state and viewport, and the signal is passed to generation and checked after generation and before saving."
 					},
 					{
-						"name": "planDesign.prompt",
+						"name": "planDesign.proposal",
 						"type": "string",
 						"required": true,
-						"description": "The proposal text for this version. For pages, layouts and components it is passed to designPrompt to build the image instruction and also appears in the saved notes as the Proposal, while every other category keeps it unchanged as the draft notes and generates no image.",
-						"examples": [
-							"Settings page with a compact header, grouped toggles and a primary Save button.",
-							"Two-column checkout layout with the order summary pinned to the right on desktop.",
-							"Retry failed syncs with exponential backoff and show a banner after three failed attempts."
-						]
+						"description": "Behavior proposal text or instructions for authoring the responsive visual mockup."
 					}
 				],
 				"outputs": [
@@ -95,18 +85,13 @@
 	},
 	"dependencies": [
 		{
-			"unit": "desktop.function.design-count",
+			"unit": "desktop.function.planning-collaboration-mockup-plan",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.function.design-directions",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.function.design-prompt",
-			"via": "import",
+			"unit": "desktop.function.planning-collaboration-mockup-source",
+			"via": "reexport",
 			"origin": "derived"
 		},
 		{

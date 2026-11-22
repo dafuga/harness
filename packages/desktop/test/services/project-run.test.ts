@@ -6,7 +6,7 @@ import { expect, test, vi } from 'vitest';
 import { RunCancelled, type AgentTurn } from '../../src/models/agents-providers/AgentRunner.types';
 import type { ProjectRunRequest } from '../../src/models/DesktopBridge.types';
 import { createPlanning } from '../../../planning/src/lib/planning/index';
-import { fixture, git } from '../run-fixture';
+import { fixture, git, visualAnswer } from '../run-fixture';
 const badge = {
 	category: 'components',
 	title: 'Order badge',
@@ -25,7 +25,7 @@ const asked = (f: Fixture): ProjectRunRequest => ({
 const answers = (f: Fixture, before: (turn: AgentTurn) => Promise<void> | void = () => {}) =>
 	f.run.mockImplementation(async (turn) => {
 		await before(turn);
-		return { text: JSON.stringify(badge), model: turn.model };
+		return { text: visualAnswer(turn) ?? JSON.stringify(badge), model: turn.model };
 	});
 async function settled(f: Fixture, request = asked(f)) {
 	const started = await f.service.start(request);
@@ -58,10 +58,8 @@ test('the agent decides the kind: a component asked for among functions is plann
 		...{ states: ['default'], viewports: ['desktop'] }
 	});
 	expect(plan.contract.hash).toBe(kept.contractHash);
-	expect(plan.versions[0].images).toHaveLength(1);
-	expect(
-		[f.generator.generateImage, f.run].map((mock) => vi.mocked(mock).mock.calls.length)
-	).toEqual([1, 1]);
+	expect(plan.versions[0].images).toHaveLength(4);
+	expect([f.renderMockups, f.run].map((mock) => vi.mocked(mock).mock.calls.length)).toEqual([1, 2]);
 	expect(f.run.mock.calls[0][0].prompt).toContain('Request:\nAdd an order badge');
 	const created = { category: 'components', entityId: plan.id, threadId: plan.threads[0].id };
 	expect(f.events.at(-1)).toEqual({
@@ -74,14 +72,15 @@ test('the agent decides the kind: a component asked for among functions is plann
 test.each([
 	['its thread could not be opened', 'openThread', false],
 	['the request could not be written', 'appendMessage', false],
-	['its image could not be made', 'generateImage', true]
+	['its mockup could not be rendered', 'renderMockups', true]
 ] as const)(
 	'a draft is named when %s, and it is not removed',
 	async (_name, step, requestSaved) => {
 		const f = await fixture();
 		answers(f);
-		const target = step === 'generateImage' ? f.generator : f.planning;
-		vi.spyOn(target as never, step as never).mockRejectedValueOnce(new Error('It failed here.'));
+		const error = new Error('It failed here.');
+		if (step === 'renderMockups') f.renderMockups.mockRejectedValueOnce(error);
+		else vi.spyOn(f.planning, step).mockRejectedValueOnce(error);
 		await settled(f);
 		const plan = (await planned(f))!;
 		const threadId = step === 'openThread' ? null : plan.threads[0].id;

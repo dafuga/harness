@@ -100,7 +100,18 @@ test('the synthetic project is served: a snapshot, its image and a run of the st
 		ask = { ...run, approval: null, projectId, entityId, threadId, text: 'From the stand-in.' };
 	await phone.wire.request('startRun', { ...ask, revision: { branch, commit } });
 	await expect.poll(() => events.at(-1)?.kind, settle).toBe('finished');
-	expect(events.some((event) => event.kind === 'text')).toBe(true);
+	expect(
+		events.find((event) => event.kind === 'status' && event.phase === 'generating')
+	).toMatchObject({
+		detail: 'Preparing HTML mockups with claude-sonnet-5-5'
+	});
+	const design = events.find((event) => event.kind === 'design');
+	expect([...new Set(design?.images.map((image) => image.viewport))]).toEqual([
+		'width-390',
+		'width-834',
+		'width-1440',
+		'width-1920'
+	]);
 }, 60000);
 
 test('the control locks, suspends and resumes the host, for a caller on this machine only', async () => {

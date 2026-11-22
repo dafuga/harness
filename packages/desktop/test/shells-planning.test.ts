@@ -2,11 +2,11 @@ import { measureWorkload } from '../../../test/support/measureWorkload';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { createPlanning } from '../../planning/src/lib/planning/index';
-import { fixture, git } from './run-fixture';
+import { fixture, git, visualAnswer } from './run-fixture';
 
 /**
  * A shell is planned as visual composition: its plan names the desktop viewport, and an agent
- * asked from Shells plans it with an image through the image capability, as a component is.
+ * asked from Shells plans it with responsive HTML mockups, as a component is.
  */
 test('a shell plan is visual: it is planned for the desktop viewport under Shells', async () => {
 	const f = await fixture();
@@ -21,7 +21,7 @@ test('a shell plan is visual: it is planned for the desktop viewport under Shell
 }, 20000);
 
 test(
-	'an agent asked from Shells proposes a shell, and it is planned with an image',
+	'an agent asked from Shells proposes a shell, and it is planned with responsive screenshots',
 	() =>
 		measureWorkload('desktop.function.plan-design', 'layout-catalog-behavior', async () => {
 			const f = await fixture();
@@ -33,7 +33,7 @@ test(
 				contract: { inputs: [{ name: 'workspace', type: 'Workspace' }], outputs: [], errors: [] }
 			};
 			f.run.mockImplementation(async (turn) => ({
-				text: JSON.stringify(proposal),
+				text: visualAnswer(turn) ?? JSON.stringify(proposal),
 				model: turn.model
 			}));
 			await f.service.start({
@@ -52,8 +52,8 @@ test(
 			const plans = await f.planning.plans(git(f.root, 'rev-parse', 'HEAD'));
 			const plan = plans.find((item) => item.title === 'Host frame');
 			expect(plan?.category).toBe('layouts');
-			expect(plan?.versions[0].images).toHaveLength(1);
-			expect(f.generator.generateImage).toHaveBeenCalledOnce();
+			expect(plan?.versions[0].images).toHaveLength(4);
+			expect(f.renderMockups).toHaveBeenCalledOnce();
 			expect(f.events.at(-1)).toMatchObject({ kind: 'finished', created: { category: 'layouts' } });
 		}),
 	20000

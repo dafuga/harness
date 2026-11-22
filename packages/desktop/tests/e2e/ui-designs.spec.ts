@@ -202,3 +202,9 @@ for (const outcome of ['failed', 'cancelled'] as const) {
 		);
 	});
 }
+
+test('the page Overview shows paired mockups at each width and state', async ({ page }) => {
+	test.setTimeout(120000);
+	const { viewPlanMockup } = await import('./ui-plan-mockups-fixture');
+	await viewPlanMockup(page, checkpoint);
+});

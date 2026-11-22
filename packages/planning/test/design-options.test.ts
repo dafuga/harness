@@ -75,6 +75,12 @@ test('approving one option binds that option alone; binding two is refused', asy
 		images: Image[];
 	};
 	expect([approved.option, approved.images]).toEqual([options[1].id, bindings(options[1])]);
+	const subset = { unitId, version: 'v001', option: options[1].id };
+	const [capture] = await api.readImages({ ...subset, hashes: [options[1].images[0].sha256] });
+	expect(capture.sha256).toBe(options[1].images[0].sha256);
+	await expect(
+		api.readImages({ ...subset, hashes: [options[0].images[0].sha256] })
+	).rejects.toMatchObject({ code: 'not-found' });
 }, 30_000);
 
 test.each([0, 11])(

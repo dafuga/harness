@@ -5,11 +5,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { PNG } from 'pngjs';
 import { RunCancelled } from '../src/models/agents-providers/AgentRunner.types';
-import type {
-	AgentRunner,
-	AgentTurn,
-	ImageGenerator
-} from '../src/models/agents-providers/AgentRunner.types';
+import type { AgentRunner, AgentTurn } from '../src/models/agents-providers/AgentRunner.types';
+import type { RenderMockups } from '../src/utils/planning-collaboration/mockupSource.types';
 import type { ProviderId, ProviderState } from '../src/models/development-tooling/Desktop.types';
 import { ProjectSessionService } from '../src/services/projects-sessions/project-session-service/ProjectSessionService';
 
@@ -77,20 +74,33 @@ async function syntheticTurn(turn: AgentTurn) {
 	turn.onText('This answer comes from the fixture, not from a coding agent.');
 	await new Promise((resolve) => setTimeout(resolve, 1200));
 	if (turn.signal.aborted) throw new RunCancelled();
-	return { text: 'Synthetic design direction from the remote fixture.', model: turn.model };
+	return { text: syntheticDesign(turn), model: turn.model };
 }
-/** TEST ONLY. Stands in for the installed CLIs: it starts no process and changes no file. */
+function syntheticDesign(turn: AgentTurn) {
+	if (turn.model !== 'claude-sonnet-5-5')
+		return 'Synthetic design direction from the remote fixture.';
+	const count = Number(/Design option count: (\d+)/.exec(turn.prompt)?.[1] ?? '1');
+	return JSON.stringify({
+		sources: ['src/fixture.ts'],
+		stylesheets: [],
+		before: null,
+		options: Array.from({ length: count }, (_, index) => ({
+			direction: 'Fixture option ' + (index + 1),
+			html: `<main>Fixture option ${index + 1}</main>`,
+			css: ''
+		}))
+	});
+}
+
+/** TEST ONLY. Stands in for the installed CLIs and Playwright. */
 export function fixtureProviders(): Record<ProviderId, AgentRunner> & {
-	generator: ImageGenerator;
+	renderMockups: RenderMockups;
 } {
 	const runner = (id: ProviderId): AgentRunner => ({
 		discover: async () => discovered(id),
 		run: syntheticTurn
 	});
-	// Each generation is a picture of its own, the first the one it always was.
-	let made = 0;
-	const generator: ImageGenerator = {
-		generateImage: async () => ({ bytes: fixtureImage(128, made++), revisedPrompt: null })
-	};
-	return { codex: runner('codex'), claude: runner('claude'), generator };
+	const renderMockups: RenderMockups = async (captures) =>
+		captures.map((capture) => fixtureImage(128, capture.option));
+	return { codex: runner('codex'), claude: runner('claude'), renderMockups };
 }
