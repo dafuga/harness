@@ -1,0 +1,141 @@
+{
+	"schemaVersion": 1,
+	"revision": "fddc60f4c19f5faba4243e5c6e535603c7c8c7ab",
+	"bugClass": {
+		"id": "sqlite-readonly-runtime-writes",
+		"title": "Startup validation misses database writability",
+		"cause": "Startup validates database file privacy and identity properties but does not verify that the process can write to the initialized database or its journal. The database can therefore open read-only and fail on each runtime write; an HTTP error boundary may swallow or fail to log the write error, returning an opaque 500.",
+		"criteria": "Include a site when startup checks database path ownership, permissions, symlink/link count, or existence but omits a write-capability check for the database and relevant journal; the file can consequently be opened read-only and runtime mutations fail. Also include sites where such runtime storage failures are caught by an HTTP handler and converted to an unlogged or opaque 500, even if the permission check is implemented elsewhere.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "SQLITE_READONLY",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "SQLITE_CANTOPEN",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "journal_mode",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "readonly: true",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "mode: 0o400",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "accessSync(",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "statSync(",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "lstatSync(",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "chmodSync(",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "HTTP 500",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "DatabaseSync",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "better-sqlite3",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "openDatabase",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "writeFile",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "catch",
+				"weight": 1
+			}
+		],
+		"contextTerms": [
+			"sqlite",
+			"database",
+			"journal",
+			"readonly",
+			"writable",
+			"permissions",
+			"owner",
+			"mode",
+			"lstat",
+			"stat",
+			"access",
+			"http",
+			"error",
+			"500"
+		],
+		"pathHints": [
+			{
+				"contains": "src/services/",
+				"weight": 5
+			},
+			{
+				"contains": "src/repositories/",
+				"weight": 4
+			},
+			{
+				"contains": "src/adapters/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 2
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "src/cli/",
+				"weight": -1
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": -1
+			}
+		]
+	}
+}

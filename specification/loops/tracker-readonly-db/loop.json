@@ -2,7 +2,7 @@
 	"name": "tracker-readonly-db",
 	"goal": "A native Tracker node refuses to start on a database file its owner cannot write, instead of starting and answering every write with HTTP 500 and no log (found in the ente8j cutover rehearsal)",
 	"createdAt": "2026-11-22T13:53:51.655Z",
-	"updatedAt": "2026-11-22T14:05:11.078Z",
+	"updatedAt": "2026-11-22T14:11:20.045Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -46,7 +46,9 @@
 		{
 			"id": "siblings",
 			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-22T14:11:20.045Z",
+			"evidence": "siblings-0c1ca477-a218-4eb2-94ea-0f5d3501fad8.json"
 		},
 		{
 			"id": "verify",
