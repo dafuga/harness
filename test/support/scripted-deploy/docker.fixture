@@ -1,0 +1,14 @@
+#!/usr/bin/env bun
+const [command, ...args] = process.argv.slice(2);
+if (command === 'ps') process.exit(0);
+if (command !== 'run') process.exit(2);
+const phase = args.find((arg) => arg.includes('destination=/deploy-phase') || arg.includes('dst=/deploy-phase'));
+const input = await Bun.stdin.json();
+if (phase?.includes('/smoke.sh,')) {
+	const { version, source, artifact } = input.observed;
+	console.log(JSON.stringify({ version, source, artifact, checks: ['fixture-route'] }));
+} else if (phase?.includes('/cleanup.sh,')) {
+	console.log(JSON.stringify({ cleaned: true }));
+} else {
+	process.exit(2);
+}

@@ -1,0 +1,167 @@
+/* Inside the dialogs: list + detail splits (Agents, Projects), chat, plans, agenda, history. */
+.hh-split {
+	display: grid;
+	grid-template-columns: minmax(280px, 440px) minmax(0, 1fr);
+	gap: var(--hx-space-24);
+	align-items: start;
+}
+.hh-group {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-4);
+	margin-bottom: var(--hx-space-22);
+}
+.hh-split-list [aria-current='true'] {
+	margin-inline: calc(var(--hx-space-10) * -1);
+	padding-inline: var(--hx-space-10);
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-color-selected);
+	box-shadow: var(--hx-shadow-selected);
+}
+.hh-agent-where {
+	font-size: var(--hx-type-size-2xs);
+}
+.hh-plan-grid .hh-plan {
+	gap: var(--hx-space-14);
+}
+.hh-steps {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-6);
+	color: var(--hx-color-text-supporting);
+	font-size: var(--hx-type-size-compact);
+}
+.hh-step {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-8);
+}
+.hh-step::before {
+	content: '';
+	flex: none;
+	width: var(--hx-space-10);
+	height: var(--hx-space-10);
+	border: var(--hx-border-medium) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-round);
+}
+.hh-step[data-done='true'] {
+	color: var(--hx-color-text-muted);
+}
+.hh-step[data-done='true']::before {
+	border-color: var(--hx-color-success);
+	background: var(--hx-color-success);
+}
+.hh-agenda {
+	max-width: 880px;
+}
+.hh-agenda-time {
+	flex: none;
+	width: var(--hx-space-64);
+	font-size: var(--hx-type-size-sm);
+	font-weight: var(--hx-style-weight-semibold);
+	font-variant-numeric: var(--hx-style-numeric-tabular);
+}
+.hh-agenda-row .po-item-text {
+	flex: 1;
+}
+.hh-repeat {
+	display: inline-flex;
+	flex: none;
+	align-items: center;
+	gap: var(--hx-space-6);
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-xs);
+}
+.hh-repeat .hh-icon {
+	width: 14px;
+	height: 14px;
+}
+.hh-apps {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--hx-space-12);
+}
+.hh-app {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-4);
+	padding: var(--hx-space-14);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-color-surface);
+}
+.hh-app-name {
+	font-size: var(--hx-type-size-base);
+	font-weight: var(--hx-style-weight-semibold);
+}
+.hh-app-counts {
+	font-size: var(--hx-type-size-compact);
+}
+.hh-project-detail > .po-label {
+	margin-top: var(--hx-space-8);
+}
+.hh-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--hx-space-6);
+}
+.hh-tag {
+	padding: var(--hx-space-4) var(--hx-space-10);
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-pill);
+	font-size: var(--hx-type-size-xs);
+}
+.hh-tag-code {
+	font-family: var(--hx-font-family-code);
+}
+.hh-tag-more {
+	border-style: dashed;
+	color: var(--hx-color-text-muted);
+}
+.hh-commit {
+	display: grid;
+	grid-template-columns: var(--hx-space-70) minmax(0, 1fr) auto;
+	gap: var(--hx-space-12);
+	align-items: baseline;
+	padding: var(--hx-space-10) 0;
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.hh-commit code {
+	color: var(--home-accent);
+}
+.hh-overview .po-band {
+	margin-bottom: var(--hx-space-32);
+}
+@media (max-width: 1000px) {
+	.hh-split {
+		grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+		gap: var(--hx-space-16);
+	}
+}
+@media (max-width: 560px) {
+	.hh-split {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.hh-split-agents .hh-chat,
+	.hh-show-detail .hh-split-list {
+		display: none;
+	}
+	.hh-show-detail .hh-chat-head {
+		display: none;
+	}
+	.hh-show-detail .hh-chat {
+		display: flex;
+		padding: 0;
+		border: 0;
+		background: transparent;
+	}
+	.hh-apps {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.hh-commit {
+		grid-template-columns: var(--hx-space-64) minmax(0, 1fr);
+	}
+	.hh-commit .po-item-meta {
+		grid-column: 2;
+	}
+}

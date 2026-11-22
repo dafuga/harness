@@ -6,6 +6,16 @@ export const commandLoaders = {
 		const m = await import('./program/CodexCommand');
 		m.registerCodexCommand(program);
 	},
+	provider: async (program: Command) => {
+		const { ProviderSignInCommand } =
+			await import('../commands/agents-providers/ProviderSignInCommand');
+		new ProviderSignInCommand().register(program);
+	},
+	harbor: async (program: Command) => {
+		const { HarborInspectionCommand } =
+			await import('../commands/projects-sessions/HarborInspectionCommand');
+		new HarborInspectionCommand().register(program);
+	},
 	benchmark: async (program: Command) => {
 		const m = await import('./program/BenchmarkCommand');
 		m.registerBenchmarkCommand(program);
@@ -81,6 +91,10 @@ export const commandLoaders = {
 	tracker: async (program: Command) => {
 		const { TrackerCommand } = await import('../commands/projects-sessions/TrackerCommand');
 		new TrackerCommand().register(program);
+	},
+	deploy: async (program: Command) => {
+		const m = await import('../commands/execution-runtimes/DeployCommand');
+		new m.DeployCommand().register(program);
 	},
 	module: async (program: Command) => {
 		const m = await import('./../commands/module-system/ModuleCommand');

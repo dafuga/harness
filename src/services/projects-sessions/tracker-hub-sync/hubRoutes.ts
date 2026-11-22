@@ -2,7 +2,8 @@
 import type {
 	TrackerHubOperation,
 	TrackerHubOptions,
-	TrackerHubStore
+	TrackerHubStore,
+	TrackerWireObject
 } from '../TrackerHubSyncService.types';
 import { trackerHubResponse } from './hubHttp';
 import { TrackerHubInputError } from './TrackerHubInputError';
@@ -47,7 +48,7 @@ export function recordFleetTelemetry(
 	});
 }
 
-function parseBody(body: string): Record<string, unknown> {
+function parseBody(body: string): TrackerWireObject {
 	let parsed: unknown;
 	try {
 		parsed = JSON.parse(body);
@@ -55,7 +56,7 @@ function parseBody(body: string): Record<string, unknown> {
 		throw new TrackerHubInputError(400, 'invalid JSON body');
 	}
 	if (!isRecord(parsed)) throw new TrackerHubInputError(400, 'expected a JSON object');
-	return parsed;
+	return parsed as TrackerWireObject;
 }
 
 function parseOperation(operation: unknown): TrackerHubOperation {

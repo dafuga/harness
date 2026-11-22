@@ -5,6 +5,7 @@ import type {
 } from './TrackerNotificationService.types';
 import { enqueueWebhook } from './tracker-notification-service/enqueueWebhook';
 import { runNotificationTick } from './tracker-notification-service/notificationTick';
+import { trackerNotificationStatus } from './tracker-notification-service/trackerNotificationStatus';
 
 export type {
 	TrackerDeliveryRequest,
@@ -24,6 +25,10 @@ export type {
 /** Runs Tracker's callback, webhook outbox, and reminder transitions against injected ports. */
 export class TrackerNotificationService {
 	constructor(private readonly options: TrackerNotificationOptions) {}
+
+	status() {
+		return trackerNotificationStatus(this.options);
+	}
 
 	/** Scan item changes and drain eligible work for this node. */
 	tick(itemIds?: readonly string[]): Promise<void> {

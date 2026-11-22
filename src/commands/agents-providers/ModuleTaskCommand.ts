@@ -1,11 +1,12 @@
 // @harness-uid u_gop636dbcf
 import { readFile } from 'node:fs/promises';
 import { setTimeout } from 'node:timers/promises';
-import type { Command } from 'commander';
+import { type Command, Option } from 'commander';
 import { ModuleTaskService } from '../../services/agents-providers/ModuleTaskService';
 import { ModuleTaskWorkerService } from '../../services/agents-providers/ModuleTaskWorkerService';
 import type { WorkerFlags } from './ModuleTaskCommand.types';
 import { validateTrackerId } from '../../adapters/agents-providers/module-task-runner-adapter/trackerHandoff';
+import { taskPlatformSchema } from '../../repositories/agents-providers/module-task-repository/taskSchemas';
 /** Task admission, discovery and foreground worker wiring; task check keeps its completion gate. */
 export class ModuleTaskCommand {
 	constructor(private readonly service = new ModuleTaskService()) {}
@@ -31,13 +32,16 @@ export class ModuleTaskCommand {
 			.option('--model <id>')
 			.option('--intelligence <level>')
 			.option('--assignee <worker>')
+			.addOption(
+				new Option('--platform <os>', 'Provider task platform.').choices(taskPlatformSchema.options)
+			)
 			.option('--json')
 			.description('Validate and Git-commit a module task and its required wantedContract.')
 			.action(async (flags) => {
 				const text = await readFile(flags.input, 'utf8');
 				if (text.length > 1000000) throw new Error('Task input exceeds 1 MB.');
 				const input = JSON.parse(text);
-				for (const key of ['model', 'intelligence', 'assignee'])
+				for (const key of ['model', 'intelligence', 'assignee', 'platform'])
 					if (flags[key] !== undefined) input[key] = flags[key];
 				print(await this.service.add(input));
 			});

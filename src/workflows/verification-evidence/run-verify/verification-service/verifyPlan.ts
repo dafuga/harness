@@ -8,12 +8,7 @@ import { classifyPath } from '../../../../utils/accounts-access/classify-path/cl
 export function verifyPlan(input: PlanInput): PlannedCheck[] {
 	const timeoutMs = input.testTimeoutMs ?? input.config.timeouts.test;
 	const command = (runner: PlannedCheck['runner'], target: string) =>
-		runner === 'command'
-			? target
-			: (input.config.runners[runner] ?? defaultVerifyConfig.runners[runner]).replace(
-					'{target}',
-					target
-				);
+		runnerCommand(input.config, runner, target);
 	const scenarioChecks = input.scenarios.flatMap((scenario) =>
 		scenario.tests.map(
 			(test): PlannedCheck => ({
@@ -22,6 +17,7 @@ export function verifyPlan(input: PlanInput): PlannedCheck[] {
 				name: test.id,
 				kind: test.kind,
 				runner: test.runner,
+				...(test.fullOnly ? { fullOnly: true } : {}),
 				target: test.target,
 				cwd: test.cwd ?? '.',
 				command: command(test.runner, test.target),
@@ -37,6 +33,21 @@ export function verifyPlan(input: PlanInput): PlannedCheck[] {
 	const byTarget = (left: PlannedCheck, right: PlannedCheck) =>
 		left.target < right.target ? -1 : 1;
 	return [...fileChecks, ...scenarioChecks.sort(byTarget)];
+}
+
+function runnerCommand(
+	config: PlanInput['config'],
+	runner: PlannedCheck['runner'],
+	target: string
+) {
+	if (runner === 'command') return target;
+	const template = config.runners[runner] ?? defaultVerifyConfig.runners[runner];
+	return template.replace('{target}', runner === 'godot' ? godotTarget(target) : target);
+}
+
+function godotTarget(target: string): string {
+	const flag = target.endsWith('.tscn') ? '--scene' : '--script';
+	return `${flag} '${target.replaceAll("'", "'\\''")}'`;
 }
 
 /** The check of one selected test file: its own declared command, or the runner its name implies. */
@@ -57,6 +68,7 @@ function fileCheck(
 		name: path,
 		kind: /\.e2e\.|tests\/e2e\//.test(path) ? 'e2e' : 'unit',
 		runner,
+		...(own?.fullOnly ? { fullOnly: true } : {}),
 		target: path,
 		cwd: placed.workspaceRoot,
 		command: own
@@ -64,4 +76,18 @@ function fileCheck(
 			: defaults.command(runner, placed.relative),
 		timeoutMs: own?.timeoutMs ?? defaults.timeoutMs
 	};
+}
+
+/** Ordinary project scripts that hide a renderer declare fullOnly at their command boundary. */
+export function deferredInLite(check: { command: string; fullOnly?: true }): boolean {
+	return (
+		check.fullOnly === true ||
+		/(?:^|[\s/])(?:playwright|cypress|puppeteer|chromium|chrome(?:-headless-shell)?|lightpanda)(?=\s|$)/.test(
+			check.command
+		)
+	);
+}
+
+export function deferredLiteCheck(check: PlannedCheck): boolean {
+	return check.kind === 'e2e' || check.runner === 'playwright' || deferredInLite(check);
 }

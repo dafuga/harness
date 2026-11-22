@@ -24,7 +24,7 @@ export type TrackerDispatchRow = TrackerItemRow & { clocks: string };
 
 export type TrackerStoredDispatchRun = Omit<
 	TrackerRunReceipt,
-	'pinned' | 'revision' | 'launch_source'
+	'pinned' | 'revision' | 'launch_source' | 'host_session_id'
 > & {
 	pinned: number;
 	reservation?: string | null;
@@ -36,4 +36,5 @@ export interface TrackerRunReservation {
 	launch_source: TrackerRunReceipt['launch_source'];
 	dispatch_at?: number;
 	verificationFor?: string;
+	hostSessionId?: string;
 }

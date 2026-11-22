@@ -4,10 +4,12 @@ import type {
 	TrackerDispatchResult,
 	TrackerDispatchSnapshot,
 	TrackerDispatchStore,
-	TrackerRunReceipt
+	TrackerRunReceipt,
+	TrackerSessionEvidence
 } from '../../services/agents-providers/TrackerDispatcherService.types';
 import { canonicalNode } from '../../services/agents-providers/tracker-dispatcher-service/launchEligibility';
 import type { TrackerPersistenceService } from '../../services/projects-sessions/TrackerPersistenceService';
+import { trackerClockMilliseconds } from '../../utils/projects-sessions/nextTrackerClock';
 import type {
 	TrackerDispatchCandidate,
 	TrackerDispatchRepositoryOptions,
@@ -18,13 +20,17 @@ import {
 	dispatchJournalFields
 } from './tracker-dispatch-repository/dispatchItemFields';
 import {
+	adoptLegacyDispatchRun,
+	assertLegacyDispatchRollbackSafe,
 	dispatchRunRows,
+	legacyDispatchRuns,
 	managedDispatchRuns,
 	persistDispatchRun
 } from './tracker-dispatch-repository/dispatchRunRows';
 import { trackerRunSchema } from './tracker-dispatch-repository/trackerRunSchema';
 
-const dueStartKey = 'harness_dispatch_last_due_start';
+const dueStartKey = 'due_scheduler_last_grant';
+const previousDueStartKey = 'harness_dispatch_last_due_start';
 
 /** Share legacy run rows and the item journal while serializing native launch decisions. */
 export class TrackerDispatchRepository implements TrackerDispatchStore {
@@ -43,7 +49,7 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 		decide: (snapshot: TrackerDispatchSnapshot) => TrackerDispatchDecision
 	): Promise<TrackerDispatchResult> {
 		return this.store.commitLocal(() => {
-			const { result, writes } = decide(this.snapshot(itemId));
+			const { result, writes } = decide(this.readSnapshot(itemId));
 			for (const run of writes?.runs ?? []) persistDispatchRun(this.store, run, this.node);
 			if (writes?.lastDueStartAt !== undefined)
 				this.store.writeMeta({ [dueStartKey]: String(writes.lastDueStartAt) });
@@ -56,18 +62,54 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 		return managedDispatchRuns(this.store.database, this.node);
 	}
 
+	legacyRuns(): TrackerRunReceipt[] {
+		return legacyDispatchRuns(this.store.database, this.node);
+	}
+
+	adoptLegacy(run: TrackerRunReceipt, session: TrackerSessionEvidence): void {
+		adoptLegacyDispatchRun(this.store, run, session);
+	}
+
+	/** Call after quiescing the native writer, before starting the legacy dispatcher. */
+	assertLegacyRollbackSafe(): void {
+		assertLegacyDispatchRollbackSafe(this.store.database);
+	}
+
 	candidates(): TrackerDispatchCandidate[] {
 		return this.store.database
 			.prepare(
-				`SELECT id, auto, launch_source, coalesce(launch_target, computer) AS launch_target
-			FROM items WHERE deleted = 0 AND title IS NOT NULL AND needs_daniel = 0
+				`SELECT id, auto, launch_source, nullif(coalesce(launch_target, computer), 'auto') AS launch_target
+			FROM items WHERE deleted = 0 AND title IS NOT NULL AND (needs_daniel = 0 OR resolved = 1)
 			AND status IN ('open','in_progress') AND every IS NULL
 			ORDER BY (due IS NULL), due, created_at, id`
 			)
 			.all() as TrackerDispatchCandidate[];
 	}
 
-	private snapshot(itemId: string): TrackerDispatchSnapshot {
+	stuckRequests() {
+		const now = this.options.now?.() ?? Date.now();
+		const pending = this.store.database
+			.prepare(
+				`SELECT i.id, i.title, i.clocks,
+			nullif(coalesce(i.launch_target, i.computer), 'auto') AS computer
+			FROM items i WHERE i.deleted = 0 AND i.title IS NOT NULL AND i.status IN ('open','in_progress')
+			AND i.auto IS NOT NULL AND NOT EXISTS
+				(SELECT 1 FROM runs r WHERE r.item_id = i.id AND r.auto_token = i.auto AND r.started_at IS NOT NULL)
+			AND NOT EXISTS
+				(SELECT 1 FROM remote_runs r WHERE r.item_id = i.id AND r.auto_token = i.auto AND r.started_at IS NOT NULL)
+			ORDER BY i.id`
+			)
+			.all() as { id: string; title: string; clocks: string; computer: string | null }[];
+		return pending.flatMap(({ clocks, ...item }) => {
+			const clock = (JSON.parse(clocks) as { auto?: string }).auto;
+			const requested = clock && trackerClockMilliseconds(clock);
+			return requested && now - requested >= 300_000
+				? [{ ...item, requested_at: new Date(requested).toISOString() }]
+				: [];
+		});
+	}
+
+	readSnapshot(itemId: string): TrackerDispatchSnapshot {
 		const database = this.store.database;
 		const row = database.prepare('SELECT * FROM items WHERE id = ?').get(itemId) as
 			| TrackerDispatchRow
@@ -79,13 +121,14 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 			)
 			.get() as { id: number };
 		const sessions = this.options.sessions?.(itemId);
-		const lastDueStartAt = this.store.getMeta(dueStartKey);
+		const lastDueStartAt =
+			this.store.getMeta(dueStartKey) ?? this.store.getMeta(previousDueStartKey);
 		return {
 			item: row ? dispatchItem(row, runs) : null,
 			runs,
 			nextRunId: id,
 			activeSessionKeys: sessions?.activeSessionKeys,
-			openSession: sessions?.openSession === true || this.unmanagedSession(itemId),
+			openSession: Boolean(sessions?.openSession) || this.unmanagedSession(itemId),
 			due: this.options.due?.(),
 			lastDueStartAt: lastDueStartAt === null ? undefined : Number(lastDueStartAt)
 		};

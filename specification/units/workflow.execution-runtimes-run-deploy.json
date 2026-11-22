@@ -1,0 +1,126 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.execution-runtimes-run-deploy",
+	"uid": "u_vmj2plxn7l",
+	"kind": "workflow",
+	"title": "runDeploy",
+	"responsibility": "Routes the deploy CLI to its requested operation and returns structured receipts or a bounded error.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/workflows/execution-runtimes/runDeploy.ts",
+			"src/workflows/execution-runtimes/runDeploy.types.ts"
+		],
+		"symbols": ["DeployOptions", "deployOperation", "DeployOptions", "Operation"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "deployOperation.operation",
+				"type": "Operation",
+				"required": true,
+				"description": "Selected deploy subcommand and its requested target or run ID."
+			},
+			{
+				"name": "deployOperation.options",
+				"type": "DeployOptions",
+				"required": true,
+				"description": "Child execution or command options including bounds and optional input."
+			}
+		],
+		"outputs": [
+			{
+				"name": "deployOperation",
+				"type": "Promise<void>",
+				"description": "Routes the deploy CLI to its requested operation and returns structured receipts or a bounded error."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The operation could not verify its input, target identity, or expected result."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "deployOperation",
+				"inputs": [
+					{
+						"name": "deployOperation.operation",
+						"type": "Operation",
+						"required": true,
+						"description": "Selected deploy subcommand and its requested target or run ID."
+					},
+					{
+						"name": "deployOperation.options",
+						"type": "DeployOptions",
+						"required": true,
+						"description": "Child execution or command options including bounds and optional input."
+					}
+				],
+				"outputs": [
+					{
+						"name": "deployOperation",
+						"type": "Promise<void>",
+						"description": "Routes the deploy CLI to its requested operation and returns structured receipts or a bounded error."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-proofs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.execution-runtimes-deploy-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-scripted-deploy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.execution-runtimes-deploy-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/execution-runtimes/runDeploy.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/execution-runtimes/runDeploy.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -28,7 +28,8 @@ export class ScenarioManifestValidator {
 			...this.stateCoverage(scenario),
 			...this.stateUnits(scenario),
 			...this.evidenceReferences(scenario),
-			...this.viewportRules(scenario)
+			...this.viewportRules(scenario),
+			...godotTargets(scenario)
 		];
 		return { value: scenario, errors };
 	}
@@ -98,4 +99,12 @@ export class ScenarioManifestValidator {
 		if (!needsViewports || scenario.viewports.length > 0) return [];
 		return [`${scenario.id}: screenshot evidence requires at least one viewport`];
 	}
+}
+
+function godotTargets(scenario: ScenarioManifest): string[] {
+	return scenario.tests.flatMap((test) =>
+		test.runner === 'godot' && !/\.(?:gd|tscn)$/.test(test.target)
+			? [`${scenario.id}: Godot check ${test.id} must name a .gd script or a .tscn scene`]
+			: []
+	);
 }

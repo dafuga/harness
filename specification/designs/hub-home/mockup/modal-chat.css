@@ -1,0 +1,59 @@
+/* Agents modal: the list + chat split's chat pane and the Projects detail panel frame. */
+.hh-chat,
+.hh-project-detail {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-14);
+	min-width: 0;
+	padding: var(--hx-space-18);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius);
+	background: var(--hx-color-background);
+}
+.hh-chat-head {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-12);
+	padding-bottom: var(--hx-space-14);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.hh-chat-head > div {
+	flex: 1;
+	min-width: 0;
+}
+.hh-thread {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-12);
+}
+.hh-msg {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-4);
+	max-width: 82%;
+}
+.hh-msg p {
+	padding: var(--hx-space-10) var(--hx-space-14);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-large);
+	background: var(--hx-color-surface-raised);
+	font-size: var(--hx-type-size-sm);
+	line-height: var(--hx-style-leading-snug);
+}
+.hh-msg[data-from='me'] {
+	align-self: flex-end;
+	align-items: flex-end;
+}
+.hh-msg[data-from='me'] p {
+	border-color: var(--hx-color-primary-line);
+	background: var(--hx-color-primary-soft);
+}
+.hh-msg-at {
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-2xs);
+}
+.hh-quick {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--hx-space-8);
+}

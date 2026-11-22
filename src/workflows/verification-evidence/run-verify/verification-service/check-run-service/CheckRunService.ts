@@ -35,13 +35,8 @@ export class CheckRunService {
 		const leaf = check.scenario ? check.name : slug;
 		const evidencePath = `evidence/${commit}/${check.scenario ?? 'checks'}/${leaf}`;
 		const result = await this.execute(check, evidencePath, slug);
-		// Nothing a stopped check wrote is trusted: a timeout yields no captures at all.
-		const captures = result.timedOut
-			? { gathered: [], failures: [] }
-			: gatherCaptures(join(directory, evidencePath), evidencePath, this.context.limits, {
-					budget: this.budget,
-					root: directory
-				});
+		this.context.signal?.throwIfAborted();
+		const captures = checkCaptures(this.context, this.budget, result, evidencePath);
 		const prefix = check.scenario ? `${check.scenario}: ` : '';
 		const written = captures.failures.map((failure) => `${prefix}check ${check.name} ${failure}`);
 		const diagnostics =
@@ -68,12 +63,13 @@ export class CheckRunService {
 		evidencePath: string,
 		slug: string
 	): Promise<IsolatedResult> {
-		const { directory } = this.context;
+		const { directory, signal } = this.context;
 		return resourceWork(
 			{
 				priority: resourcePriority.parse(
 					this.context.env.HARNESS_RESOURCE_PRIORITY ?? 'environment'
 				),
+				...(this.context.lite ? { cpus: 0.25, memoryMiB: 256 } : {}),
 				...(this.context.env.HARNESS_VERIFY_ENTITY ? { label: scopedVerificationLabel } : {})
 			},
 			(context) =>
@@ -86,11 +82,13 @@ export class CheckRunService {
 						...resourceEnvironment(context.env)
 					},
 					onSpawn: context.track,
+					signal,
 					timeoutMs: check.timeoutMs,
 					log: join(directory, 'logs', `${slug}.log`),
 					maxLogBytes
 				}),
-			this.context.env
+			this.context.env,
+			{ signal }
 		);
 	}
 
@@ -101,22 +99,24 @@ export class CheckRunService {
 			command: 'sh',
 			args: ['-c', tool.command],
 			cwd: this.context.snapshot,
-			env: { ...this.context.env },
+			env: { ...this.context.env, ...(this.context.lite ? this.captureEnvironment() : {}) },
+			signal: this.context.signal,
 			timeoutMs: 60_000,
 			log,
 			maxLogBytes
 		});
+		this.context.signal?.throwIfAborted();
 		if (result.status !== 'passed') return undefined;
 		const printed = await readFile(log, 'utf8').catch(() => '');
 		return firstPrintedLine(printed);
 	}
 
-	/** `harness verify` always requests captures; ordinary suites opt in with TAKE_SCREENSHOT. */
+	/** Full requests all evidence; Lite only requests nonvisual evidence. */
 	private environment(check: PlannedCheck, evidence: string): Record<string, string | undefined> {
 		return {
 			...this.context.env,
+			...this.captureEnvironment(),
 			HARNESS_VERIFY: '1',
-			TAKE_SCREENSHOT: '1',
 			HARNESS_EVIDENCE_DIR: evidence,
 			HARNESS_VERIFY_REVISION: this.context.commit,
 			HARNESS_VERIFY_TREE: this.context.tree,
@@ -124,6 +124,12 @@ export class CheckRunService {
 			HARNESS_SCENARIO: check.scenario ?? '',
 			HARNESS_ANALYTICS_DISABLED: '1'
 		};
+	}
+
+	private captureEnvironment() {
+		return this.context.lite
+			? { HARNESS_VERIFY_MODE: 'lite', TAKE_SCREENSHOT: '0' }
+			: { HARNESS_VERIFY_MODE: undefined, TAKE_SCREENSHOT: '1' };
 	}
 }
 
@@ -181,5 +187,25 @@ function checkEntry(
 		...(diagnostics.browserErrors ? { browserErrors: diagnostics.browserErrors } : {}),
 		durationMs: Math.round(result.durationMs),
 		log: { ...result.log, path: relative(directory, result.log.path) }
+	};
+}
+
+/** Captures a finished check wrote; a timeout yields none, and Lite drops screenshots. */
+function checkCaptures(
+	context: RunContext,
+	budget: RecordBudget,
+	result: IsolatedResult,
+	evidencePath: string
+) {
+	if (result.timedOut) return { gathered: [], failures: [] };
+	const { directory, limits, lite } = context;
+	const captures = gatherCaptures(join(directory, evidencePath), evidencePath, limits, {
+		budget,
+		root: directory
+	});
+	if (!lite || !captures.gathered.some((item) => item.line.kind === 'screenshot')) return captures;
+	return {
+		gathered: captures.gathered.filter((item) => item.line.kind !== 'screenshot'),
+		failures: [...captures.failures, 'captured screenshots in Lite; declare it fullOnly.']
 	};
 }

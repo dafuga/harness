@@ -7,6 +7,29 @@ import { verifyOrchestratorRotation } from './support/moduleTaskContextFixture';
 import { moduleTaskFixture } from './support/moduleTaskFixture';
 import { runHarness } from './support/cli';
 import { GitAdapter } from '../src/adapters/git-source-history/GitAdapter';
+import {
+	verifyDockerWorker,
+	verifyDockerOrchestrator,
+	verifyDockerProcess
+} from './support/moduleTaskDockerFixture';
+
+const dockerBase = process.env.HARNESS_TEST_DOCKER_BASE;
+test.skipIf(!dockerBase)(
+	'Linux worker runs the provider fixture in Docker',
+	() => verifyDockerWorker(dockerBase!),
+	60000
+);
+test.skipIf(!dockerBase)(
+	'Linux orchestrator uses the same Docker provider fixture',
+	() => verifyDockerOrchestrator(dockerBase!),
+	60000
+);
+test.skipIf(!dockerBase)(
+	'Linux process preserves its exit and recovers scoped containers after cancellation and restart',
+	() => verifyDockerProcess(dockerBase!),
+	60000
+);
+
 test('Harness owns and rotates the orchestrator before a fresh session resumes its checkpoint', async () => {
 	await verifyOrchestratorRotation('context-orchestrator');
 }, 30000);
@@ -73,7 +96,12 @@ test.each([
 		const f = await moduleTaskFixture();
 		try {
 			await f.feature();
-			await f.cli(['add', '--input', await f.input({ model, intelligence, assignee: 'owner' })]);
+			const platform = process.platform === 'darwin' ? 'macos' : undefined;
+			await f.cli([
+				'add',
+				'--input',
+				await f.input({ model, intelligence, assignee: 'owner', platform })
+			]);
 			await f.cli(['worker', '--worker', 'someone-else', '--once']);
 			expect(
 				JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task.status
@@ -82,6 +110,7 @@ test.each([
 			await f.cli(['worker', '--worker', 'owner', '--once', '--json']);
 			const shown = JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task;
 			expect(shown.status).toBe('review');
+			expect(shown.platform).toBe(platform);
 			expect(shown.result).toMatchObject({ provider, model, intelligence });
 			const calls = (await readFile(join(f.root, 'calls.ndjson'), 'utf8'))
 				.trim()

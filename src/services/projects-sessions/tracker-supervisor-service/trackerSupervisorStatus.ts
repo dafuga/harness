@@ -1,5 +1,7 @@
 // @harness-uid u_46eur7qage
+import { z } from 'zod';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
+import { trackerFleetNodes } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerSupervisorViews } from '../TrackerSupervisorService.types';
 
@@ -21,7 +23,7 @@ export function trackerSupervisorStatus(
 		...trackerStatusDefaults(runtime, hub),
 		sync: hub
 			? { hub: sync ? 'configured' : 'disabled (no secret)', peers_last_seen: sync?.peers() ?? {} }
-			: { disabled: true },
+			: runtime.spokeStatus(),
 		...views,
 		deliveries: deliveryCounts(database),
 		active_reminders: count(database, "SELECT count(*) AS n FROM reminders WHERE status = 'active'")
@@ -29,32 +31,119 @@ export function trackerSupervisorStatus(
 }
 
 function trackerStatusDefaults(runtime: TrackerNativeRuntimeService, hub: boolean) {
-	const { store, scheduler } = runtime;
-	const activeRuns = exists(store.database, 'runs')
-		? count(
-				store.database,
-				"SELECT count(*) AS n FROM runs WHERE state IN ('queued','running','verifying')"
-			)
-		: 0;
+	const notification = runtime.notifications?.status();
 	return {
-		chief_of_staff: 'not configured',
+		chief_of_staff: notification?.chiefOfStaff ?? 'not configured',
 		backup: { enabled: false, note: 'backups run on the hub (set backup.enabled to change)' },
 		machines: [],
-		webhook: hub
-			? { sender: false, note: 'webhook sender is disabled' }
-			: { sender: false, note: 'only the hub sends webhook events' },
-		jobs: {
+		webhook: notification?.webhook ?? defaultWebhookStatus(hub),
+		jobs: trackerJobsStatus(runtime),
+		adapters: runtime.adapter?.status() ?? { runner: null, active: false },
+		autolaunch: trackerAutolaunchStatus(runtime),
+		quiet_hours: notification?.quietHours ?? null
+	};
+}
+
+function defaultWebhookStatus(hub: boolean) {
+	return {
+		sender: false,
+		note: hub ? 'webhook sender is disabled' : 'only the hub sends webhook events'
+	};
+}
+
+function trackerJobsStatus({ store, recurring }: TrackerNativeRuntimeService) {
+	return (
+		recurring?.status() ?? {
 			enabled: false,
 			jobs: exists(store.database, 'box_jobs')
 				? count(store.database, 'SELECT count(*) AS n FROM box_jobs')
 				: 0,
 			running: [],
 			queued: 0
-		},
-		adapters: { runner: null, active: Boolean(runtime.adapter) },
-		autolaunch: { enabled: Boolean(scheduler), active_runs: activeRuns, computers: [], stuck: [] },
-		quiet_hours: null
+		}
+	);
+}
+
+function trackerAutolaunchStatus(runtime: TrackerNativeRuntimeService) {
+	const runs = activeRunCounts(runtime.store.database);
+	return {
+		enabled: false,
+		stuck: [],
+		...runtime.scheduler?.status(),
+		active_runs: runs.active,
+		computers: trackerFleetHealth(runtime, runs.started)
 	};
+}
+
+function activeRunCounts(database: SqliteDatabase) {
+	if (!exists(database, 'runs')) return { active: 0, started: 0 };
+	return database
+		.prepare(
+			`SELECT count(*) AS active,
+		count(CASE WHEN state IN ('running','verifying') THEN 1 END) AS started
+		FROM runs WHERE state IN ('queued','running','verifying')`
+		)
+		.get() as {
+		active: number;
+		started: number;
+	};
+}
+
+const machineSample = z.object({ node: z.string().min(1), at: z.string(), runner: z.unknown() });
+const runnerSample = z.object({
+	enabled: z.boolean().nullish(),
+	last_tick_at: z.string().nullish(),
+	last_error: z.string().nullish(),
+	waiting_on: z.string().nullish(),
+	active: z.int().nonnegative().nullish()
+});
+
+function trackerFleetHealth(runtime: TrackerNativeRuntimeService, startedRuns: number) {
+	const { store, scheduler, fleetSamples } = runtime;
+	const now = runtime.now();
+	const samples = machineSamplesByNode(fleetSamples?.() ?? []);
+	const localRunner: z.infer<typeof runnerSample> = scheduler?.runnerStatus() ?? { enabled: false };
+	const nodes = new Set([...trackerFleetNodes, ...samples.keys(), store.node]);
+	return [...nodes].map((computer) => {
+		const local = computer === store.node;
+		const sample = samples.get(computer);
+		const runner = local ? localRunner : runnerSample.safeParse(sample?.runner).data;
+		const offline = !local && Boolean(fleetSamples) && machineOffline(sample?.at, now);
+		return {
+			computer,
+			state: offline ? 'offline' : fleetRunnerState(runner, now),
+			...fleetRunnerDetails(runner, local ? startedRuns : runner?.active)
+		};
+	});
+}
+
+function machineOffline(sampledAt: string | undefined, now: number) {
+	return !sampledAt || now - Date.parse(sampledAt) > 300_000;
+}
+
+function fleetRunnerDetails(
+	{ last_tick_at = null, last_error = null, waiting_on = null }: z.infer<typeof runnerSample> = {},
+	active: number | null | undefined
+) {
+	return { last_tick_at, last_error, waiting_on, active_runs: active ?? null };
+}
+
+function machineSamplesByNode(values: readonly unknown[]) {
+	const samples = new Map<string, z.infer<typeof machineSample>>();
+	for (const value of values) {
+		const sample = machineSample.safeParse(value).data;
+		if (sample && Number.isFinite(Date.parse(sample.at))) samples.set(sample.node, sample);
+	}
+	return samples;
+}
+
+function fleetRunnerState(runner: z.infer<typeof runnerSample> | undefined, now: number) {
+	if (runner?.enabled == null) return 'unknown';
+	if (!runner.enabled) return 'disabled';
+	if (runner.last_error) return 'error';
+	return runner.last_tick_at && now - Date.parse(runner.last_tick_at) <= 120_000
+		? 'polling'
+		: 'stale';
 }
 
 function deliveryCounts(database: SqliteDatabase) {

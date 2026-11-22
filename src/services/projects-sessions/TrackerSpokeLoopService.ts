@@ -1,7 +1,8 @@
 // @harness-uid u_7763mfxmkn
 import { setTimeout as delay } from 'node:timers/promises';
-import type { TrackerSpokeLoopOptions } from './TrackerSpokeLoopService.types';
-import { TrackerSpokeSyncService } from './TrackerSpokeSyncService';
+import type { TrackerWireValue } from './TrackerHubSyncService.types';
+import type { TrackerSpokeLoopOptions, TrackerSpokeStatus } from './TrackerSpokeLoopService.types';
+import { trackerMetaKeys, TrackerSpokeSyncService } from './TrackerSpokeSyncService';
 
 const pushInterval = 30_000;
 const initialBackoff = 1000;
@@ -10,8 +11,27 @@ const maxBackoff = 60_000;
 /** Drives one durable sync link until its owner asks it to stop. */
 export class TrackerSpokeLoopService {
 	private running = false;
+	private hub: string | null = null;
+	private requestPush?: () => void;
+	private readonly state = newSpokeStatus();
 
 	constructor(private readonly options: TrackerSpokeLoopOptions) {}
+
+	get kind() {
+		return this.options.link ?? 'hub';
+	}
+
+	status() {
+		return { ...this.state, pending_push: pendingPushCount(this.options) };
+	}
+
+	upstream() {
+		return this.options.endpoint?.host ?? this.hub;
+	}
+
+	kick(): void {
+		this.requestPush?.();
+	}
 
 	async run(signal: AbortSignal): Promise<void> {
 		if (this.running) throw new TypeError('Tracker spoke loop is already running');
@@ -21,6 +41,7 @@ export class TrackerSpokeLoopService {
 			await this.drive(signal);
 		} finally {
 			this.running = false;
+			this.state.connected = false;
 		}
 	}
 
@@ -30,6 +51,9 @@ export class TrackerSpokeLoopService {
 		const wake = pushWake(this.options.pushIntervalMs ?? pushInterval, lifetime);
 		const link = new TrackerSpokeSyncService({
 			...this.options,
+			onPushAcknowledged: () => {
+				this.state.lastPushOk = this.timestamp();
+			},
 			transport: async (request) => {
 				lifetime.throwIfAborted();
 				const response = await this.options.transport(request, lifetime);
@@ -37,6 +61,7 @@ export class TrackerSpokeLoopService {
 				return response;
 			}
 		});
+		this.requestPush = wake.request;
 		const unsubscribe = this.options.store.subscribe(wake.request);
 		const workers = [this.push(link, wake.wait, lifetime), this.pull(link, lifetime)];
 		try {
@@ -44,6 +69,7 @@ export class TrackerSpokeLoopService {
 		} finally {
 			controller.abort();
 			await Promise.allSettled(workers);
+			this.requestPush = undefined;
 			unsubscribe();
 		}
 	}
@@ -59,7 +85,7 @@ export class TrackerSpokeLoopService {
 			try {
 				await link.push();
 			} catch (error) {
-				if (!signal.aborted) this.options.onError?.('push', error);
+				if (!signal.aborted) this.noteError('push', error);
 			}
 		}
 	}
@@ -70,18 +96,45 @@ export class TrackerSpokeLoopService {
 			try {
 				const result = await link.pull();
 				if (result.status === 'reset') await link.push();
-				if (result.status === 'applied' && result.duePolicy !== undefined) {
-					this.options.onDuePolicy?.(result.duePolicy);
-				}
+				if (result.status === 'applied') this.notePull(result.hub, result.duePolicy);
 				backoff = initialBackoff;
 			} catch (error) {
 				if (signal.aborted) return;
-				this.options.onError?.('pull', error);
+				this.noteError('pull', error);
 				await delay(backoff, undefined, { signal }).catch(() => {});
 				backoff = Math.min(backoff * 2, maxBackoff);
 			}
 		}
 	}
+
+	private notePull(hub: string, duePolicy: TrackerWireValue | undefined): void {
+		if (duePolicy !== undefined) this.options.onDuePolicy?.(duePolicy);
+		this.hub = hub;
+		this.state.connected = true;
+		this.state.lastError = null;
+		this.state.lastPullOk = this.timestamp();
+	}
+
+	private noteError(direction: 'push' | 'pull', error: unknown): void {
+		this.state.connected = false;
+		this.state.lastError = `${direction} failed`;
+		this.options.onError?.(direction, error);
+	}
+
+	private timestamp(): string {
+		return new Date((this.options.now ?? Date.now)()).toISOString();
+	}
+}
+
+function pendingPushCount({ store, relayOps, link }: TrackerSpokeLoopOptions): number {
+	const peer = link === 'peer';
+	const { push, replay } = trackerMetaKeys(peer ? 'peer_' : '');
+	const relayAll = (relayOps ?? peer) || store.getMeta(replay) === '1';
+	return store.countOpsSince(Number(store.getMeta(push)), relayAll ? undefined : store.node);
+}
+
+function newSpokeStatus(): TrackerSpokeStatus {
+	return { connected: false, lastPullOk: null, lastPushOk: null, lastError: null };
 }
 
 function pushWake(interval: number, signal: AbortSignal) {

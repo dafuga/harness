@@ -1,5 +1,7 @@
 // @harness-uid u_3tibsmkofv
+import { DeployCommand } from '../commands/execution-runtimes/DeployCommand';
 import { PermissionsCommand } from '../commands/networking-security/PermissionsCommand';
+import { ProviderSignInCommand } from '../commands/agents-providers/ProviderSignInCommand';
 import { registerTaskCommand } from './program/TaskCommand';
 import { TrackerCommand } from '../commands/projects-sessions/TrackerCommand';
 import { ModuleCommand } from '../commands/module-system/ModuleCommand';
@@ -10,6 +12,7 @@ import { registerBenchmarkCommand } from './program/BenchmarkCommand';
 import { registerAnalyticsCommand } from './program/AnalyticsCommand';
 import { registerActivityCommand } from './program/ActivityCommand';
 import { ProjectListCommand } from '../commands/projects-sessions/ProjectListCommand';
+import { HarborInspectionCommand } from '../commands/projects-sessions/HarborInspectionCommand';
 import { registerReportCommand } from './program/ReportCommand';
 import { registerResourcesCommand } from './program/ResourcesCommand';
 import { Command } from 'commander';
@@ -39,6 +42,8 @@ export function buildProgram(): Command {
 		.version(sdkPackage.version);
 
 	registerCodexCommand(program);
+	new ProviderSignInCommand().register(program);
+	new HarborInspectionCommand().register(program);
 	registerBenchmarkCommand(program);
 	registerResourcesCommand(program);
 	registerAnalyticsCommand(program);
@@ -58,6 +63,7 @@ export function buildProgram(): Command {
 	registerVerifyCommand(program);
 	registerTaskCommand(program);
 	new TrackerCommand().register(program);
+	new DeployCommand().register(program);
 	new ModuleCommand().register(program);
 	new ApiCommand().register(program);
 	new PermissionsCommand().register(program);

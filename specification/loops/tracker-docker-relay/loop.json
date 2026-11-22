@@ -1,0 +1,45 @@
+{
+	"name": "tracker-docker-relay",
+	"goal": "Prove one real Tracker push and pull with host-held synthetic signing through the unchanged offline Docker task adapter, with denied requests, confinement, and task-owned cleanup on MB2.",
+	"createdAt": "2026-11-21T17:35:03.188Z",
+	"updatedAt": "2026-11-21T17:41:04.386Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-21T17:35:04.389Z",
+			"evidence": "Pinned #163 and #157. Real guest journal push and pull over private attached stdio, exact route and request admission, host-only synthetic HMAC, no guest network, and verified task-owned teardown on MB2 with one worker."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-21T17:41:01.601Z",
+			"evidence": "Added an explicit Docker Desktop proof using #163 adapter stdio, a scratch-only unsigned spoke seam, and original #157 HMAC and hub logic over two disposable journals."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-21T17:41:04.386Z",
+			"evidence": "MB2 guest verified one push and pull, matching rows and cursors 1/2, exactly two host HMAC requests, 14 rejected requests, an oversized frame rejected before signing, and both Docker cleanup paths. The first failing isolation probe counted unaddressed kernel tunnel interfaces; the corrected check confirms loopback is the only addressed interface alongside Docker's network-none inspection."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

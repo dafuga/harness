@@ -7,6 +7,7 @@ import {
 import { runTaskOrchestration } from '../../workflows/agents-providers/task-orchestration/runTaskOrchestration';
 import type { OrchestratorFlags } from './TaskOrchestrationCommand.types';
 import { TaskOrchestrationError } from './task-orchestration-command/TaskOrchestrationError';
+import { taskPlatformSchema } from '../../repositories/agents-providers/module-task-repository/taskSchemas';
 
 /** Run an orchestration brief in a supervised foreground provider session. */
 export class TaskOrchestrationCommand {
@@ -17,6 +18,9 @@ export class TaskOrchestrationCommand {
 			.requiredOption('--tracker <id>', 'Tracker item for restart handoffs.')
 			.requiredOption('--brief <file>', 'Path to a short, durable orchestration brief.')
 			.requiredOption('--model <id>', 'Exact Claude or Codex model ID.')
+			.addOption(
+				new Option('--platform <os>', 'Provider task platform.').choices(taskPlatformSchema.options)
+			)
 			.addOption(
 				new Option('--intelligence <level>')
 					.choices(['low', 'medium', 'high', 'xhigh', 'max', 'ultra'])

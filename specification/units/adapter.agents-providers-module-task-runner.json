@@ -7,6 +7,14 @@
 	"responsibility": "Execute exact-model Claude Code or Codex CLI module tasks, exposing public results and structured quota rejection without transporting provider keys.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"configControls": [
+		{
+			"source": "src/adapters/agents-providers/module-task-runner-adapter/taskProcess.ts",
+			"name": "HARNESS_TASK_DOCKER_IMAGE",
+			"audience": "operator",
+			"purpose": "Select the locally installed fixture image by full SHA-256 image ID for explicitly Linux managed tasks."
+		}
+	],
 	"owns": {
 		"source": [
 			"src/adapters/agents-providers/ModuleTaskRunnerAdapter.ts",
@@ -25,6 +33,7 @@
 			"src/adapters/agents-providers/module-task-runner-adapter/taskGeneration.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/taskProcess.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/taskProcess.types.ts",
+			"src/adapters/agents-providers/module-task-runner-adapter/taskProcessMonitor.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/trackerHandoff.ts",
 			"src/adapters/agents-providers/module-task-runner-adapter/trackerHandoff.types.ts"
 		],
@@ -67,8 +76,11 @@
 			"contextStop",
 			"runGeneration",
 			"taskProcess",
+			"dockerTaskImage",
 			"TaskChild",
 			"TaskOutputOverflowError",
+			"processMonitor",
+			"killGroup",
 			"trackerHandoff",
 			"recordTrackerNote",
 			"validateTrackerId",
@@ -234,6 +246,46 @@
 				"required": true
 			},
 			{
+				"name": "dockerTaskImage.platform",
+				"type": "TaskPlatform | undefined",
+				"required": true
+			},
+			{
+				"name": "dockerTaskImage.host",
+				"type": "typeof process.platform",
+				"required": true
+			},
+			{
+				"name": "dockerTaskImage.image",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "processMonitor.child",
+				"type": "TaskChild",
+				"required": true
+			},
+			{
+				"name": "processMonitor.input",
+				"type": "TaskRunInput",
+				"required": true
+			},
+			{
+				"name": "processMonitor.meter",
+				"type": "ProviderSessionAdapter",
+				"required": true
+			},
+			{
+				"name": "processMonitor.gate",
+				"type": "ProviderRequestGate",
+				"required": false
+			},
+			{
+				"name": "killGroup.child",
+				"type": "TaskChild",
+				"required": true
+			},
+			{
 				"name": "trackerHandoff.root",
 				"type": "string",
 				"required": true
@@ -353,6 +405,18 @@
 			{
 				"name": "taskProcess",
 				"type": "Promise<TaskProcessResult>"
+			},
+			{
+				"name": "dockerTaskImage",
+				"type": "string | undefined"
+			},
+			{
+				"name": "processMonitor",
+				"type": "unknown"
+			},
+			{
+				"name": "killGroup",
+				"type": "void"
 			},
 			{
 				"name": "trackerHandoff",
@@ -726,6 +790,90 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "dockerTaskImage",
+				"inputs": [
+					{
+						"name": "dockerTaskImage.platform",
+						"type": "TaskPlatform | undefined",
+						"required": true
+					},
+					{
+						"name": "dockerTaskImage.host",
+						"type": "typeof process.platform",
+						"required": true
+					},
+					{
+						"name": "dockerTaskImage.image",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "dockerTaskImage",
+						"type": "string | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "processMonitor",
+				"inputs": [
+					{
+						"name": "processMonitor.child",
+						"type": "TaskChild",
+						"required": true
+					},
+					{
+						"name": "processMonitor.input",
+						"type": "TaskRunInput",
+						"required": true
+					},
+					{
+						"name": "processMonitor.meter",
+						"type": "ProviderSessionAdapter",
+						"required": true
+					},
+					{
+						"name": "processMonitor.gate",
+						"type": "ProviderRequestGate",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "processMonitor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "killGroup",
+				"inputs": [
+					{
+						"name": "killGroup.child",
+						"type": "TaskChild",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "killGroup",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerHandoff",
 				"inputs": [
 					{
@@ -855,6 +1003,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-managed-provider-docker",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "adapter.agents-providers-module-task-runner-adapter-task-usage",
 			"via": "import",

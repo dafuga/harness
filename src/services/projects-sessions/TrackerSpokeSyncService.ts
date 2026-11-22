@@ -1,17 +1,18 @@
 // @harness-uid u_657a3wmun2
 import { z } from 'zod';
+import type { TrackerWireValue } from './TrackerHubSyncService.types';
 import { TrackerSyncAuthService } from '../networking-security/TrackerSyncAuthService';
 import type {
 	TrackerSpokeOptions,
 	TrackerSpokePullResult,
 	TrackerSpokeRequest,
 	TrackerSpokeStore,
-	TrackerSpokeTransport
+	TrackerSpokePostBody
 } from './TrackerSpokeSyncService.types';
 
 const pushBatchSize = 500;
 
-function trackerMetaKeys(prefix: string) {
+export function trackerMetaKeys(prefix: string) {
 	return {
 		identity: `${prefix}hub_db_id`,
 		pull: `${prefix}pull_cursor`,
@@ -20,31 +21,29 @@ function trackerMetaKeys(prefix: string) {
 	};
 }
 
-function signTrackerSpokeRequest(
-	auth: TrackerSyncAuthService,
-	node: string,
-	request: Omit<TrackerSpokeRequest, 'headers' | 'timeoutMs'>,
-	timeoutMs: number
-): TrackerSpokeRequest {
-	return {
-		...request,
-		timeoutMs,
-		headers: {
-			authorization: auth.authorizationHeader(request),
-			'content-type': 'application/json',
-			'x-tracker-node': node
-		}
-	};
+function createTrackerSpokeRequester(options: TrackerSpokeOptions) {
+	const { store, transport } = options;
+	const auth = new TrackerSyncAuthService(options.secret);
+	return (request: Omit<TrackerSpokeRequest, 'headers' | 'timeoutMs'>, timeoutMs: number) =>
+		transport({
+			...request,
+			timeoutMs,
+			headers: {
+				authorization: auth.authorizationHeader(request),
+				'content-type': 'application/json',
+				'x-tracker-node': store.node
+			}
+		});
 }
 
 /** Syncs one Tracker hub or peer link using the spoke's durable journal. */
 export class TrackerSpokeSyncService {
 	readonly #store: TrackerSpokeStore;
-	readonly #transport: TrackerSpokeTransport;
-	readonly #auth: TrackerSyncAuthService;
+	readonly #request: ReturnType<typeof createTrackerSpokeRequester>;
 	readonly #keys: ReturnType<typeof trackerMetaKeys>;
 	readonly #relayOps: boolean;
 	readonly #wait: number;
+	readonly #onPushAcknowledged?: () => void;
 	#identityVersion = 0;
 	#pushing?: Promise<number>;
 	#pulling?: Promise<TrackerSpokePullResult>;
@@ -52,11 +51,11 @@ export class TrackerSpokeSyncService {
 	constructor(options: TrackerSpokeOptions) {
 		const peer = options.link === 'peer';
 		this.#store = options.store;
-		this.#transport = options.transport;
-		this.#auth = new TrackerSyncAuthService(options.secret);
+		this.#request = createTrackerSpokeRequester(options);
 		this.#keys = trackerMetaKeys(peer ? 'peer_' : '');
 		this.#relayOps = options.relayOps ?? peer;
 		this.#wait = options.pullWaitSeconds ?? 25;
+		this.#onPushAcknowledged = options.onPushAcknowledged;
 	}
 
 	/** Drain pending batches. A failed request leaves its batch eligible for the next call. */
@@ -75,6 +74,21 @@ export class TrackerSpokeSyncService {
 			.finally(() => {
 				this.#pulling = undefined;
 			}));
+	}
+
+	/** A signed, parsed hub decision. Transport or response failures propagate to the owner. */
+	async permitDue(id: string, token: string): Promise<boolean> {
+		const response = await this.#post('/sync/permit-due', { id, token });
+		return duePermit.parse(response).allowed;
+	}
+
+	async exchangeMachine(sample: TrackerWireValue | undefined, runs: readonly TrackerWireValue[]) {
+		const response = await this.#post('/sync/machine', { sample, runs });
+		return telemetryResponse.parse(response);
+	}
+
+	#post(pathAndQuery: string, body: TrackerSpokePostBody) {
+		return this.#request({ method: 'POST', pathAndQuery, body: JSON.stringify(body) }, 30_000);
 	}
 
 	async #drainPush(): Promise<number> {
@@ -98,6 +112,7 @@ export class TrackerSpokeSyncService {
 			if (version !== this.#identityVersion) continue;
 			if (this.#acceptIdentity(decodeTrackerPushReceipt(response))) continue;
 			this.#store.writeMeta({ [push]: String(tail.seq) });
+			this.#onPushAcknowledged?.();
 			acknowledged += ops.length;
 		}
 	}
@@ -141,18 +156,15 @@ export class TrackerSpokeSyncService {
 			throw new TypeError('Invalid Tracker stored cursor');
 		return cursor;
 	}
-
-	#request(
-		request: Omit<TrackerSpokeRequest, 'headers' | 'timeoutMs'>,
-		timeoutMs: number
-	): Promise<unknown> {
-		return this.#transport(
-			signTrackerSpokeRequest(this.#auth, this.#store.node, request, timeoutMs)
-		);
-	}
 }
 
 const identity = z.string().min(1);
+const duePermit = z.object({ allowed: z.boolean() });
+const telemetryResponse = z.object({
+	ok: z.literal(true),
+	machines: z.array(z.unknown()),
+	run_history: z.array(z.json()).optional()
+});
 const sequence = z.int().nonnegative();
 const pushReceipt = z.object({ ok: z.literal(true), db_id: identity });
 const pullPage = z.object({
@@ -160,7 +172,7 @@ const pullPage = z.object({
 	hub: z.string(),
 	last: sequence,
 	max: sequence,
-	due_policy: z.unknown().optional(),
+	due_policy: z.json().optional(),
 	ops: z.array(
 		z.looseObject({
 			seq: sequence,

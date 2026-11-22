@@ -20,7 +20,12 @@
 			"TrackerDispatchRepository.constructor",
 			"TrackerDispatchRepository.update",
 			"TrackerDispatchRepository.managedRuns",
+			"TrackerDispatchRepository.legacyRuns",
+			"TrackerDispatchRepository.adoptLegacy",
+			"TrackerDispatchRepository.assertLegacyRollbackSafe",
 			"TrackerDispatchRepository.candidates",
+			"TrackerDispatchRepository.stuckRequests",
+			"TrackerDispatchRepository.readSnapshot",
 			"TrackerDispatchRepositoryOptions",
 			"TrackerDispatchCandidate",
 			"TrackerDispatchRow",
@@ -28,8 +33,11 @@
 			"TrackerRunReservation",
 			"dispatchItem",
 			"dispatchJournalFields",
+			"assertLegacyDispatchRollbackSafe",
 			"dispatchRunRows",
 			"managedDispatchRuns",
+			"legacyDispatchRuns",
+			"adoptLegacyDispatchRun",
 			"persistDispatchRun",
 			"trackerRunSchema"
 		]
@@ -59,6 +67,21 @@
 				"required": true
 			},
 			{
+				"name": "TrackerDispatchRepository.adoptLegacy.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatchRepository.adoptLegacy.session",
+				"type": "TrackerSessionEvidence",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatchRepository.readSnapshot.itemId",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "dispatchItem.row",
 				"type": "TrackerDispatchRow",
 				"required": true
@@ -71,6 +94,11 @@
 			{
 				"name": "dispatchJournalFields.item",
 				"type": "NonNullable<TrackerDispatchWrites['item']>",
+				"required": true
+			},
+			{
+				"name": "assertLegacyDispatchRollbackSafe.database",
+				"type": "SqliteDatabase",
 				"required": true
 			},
 			{
@@ -99,6 +127,31 @@
 				"required": true
 			},
 			{
+				"name": "legacyDispatchRuns.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "legacyDispatchRuns.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "adoptLegacyDispatchRun.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "adoptLegacyDispatchRun.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "adoptLegacyDispatchRun.session",
+				"type": "TrackerSessionEvidence",
+				"required": true
+			},
+			{
 				"name": "persistDispatchRun.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -124,8 +177,28 @@
 				"type": "TrackerRunReceipt[]"
 			},
 			{
+				"name": "TrackerDispatchRepository.legacyRuns",
+				"type": "TrackerRunReceipt[]"
+			},
+			{
+				"name": "TrackerDispatchRepository.adoptLegacy",
+				"type": "void"
+			},
+			{
+				"name": "TrackerDispatchRepository.assertLegacyRollbackSafe",
+				"type": "void"
+			},
+			{
 				"name": "TrackerDispatchRepository.candidates",
 				"type": "TrackerDispatchCandidate[]"
+			},
+			{
+				"name": "TrackerDispatchRepository.stuckRequests",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerDispatchRepository.readSnapshot",
+				"type": "TrackerDispatchSnapshot"
 			},
 			{
 				"name": "dispatchItem",
@@ -136,12 +209,24 @@
 				"type": "unknown"
 			},
 			{
+				"name": "assertLegacyDispatchRollbackSafe",
+				"type": "void"
+			},
+			{
 				"name": "dispatchRunRows",
 				"type": "TrackerRunReceipt[]"
 			},
 			{
 				"name": "managedDispatchRuns",
 				"type": "TrackerRunReceipt[]"
+			},
+			{
+				"name": "legacyDispatchRuns",
+				"type": "TrackerRunReceipt[]"
+			},
+			{
+				"name": "adoptLegacyDispatchRun",
+				"type": "void"
 			},
 			{
 				"name": "persistDispatchRun",
@@ -196,12 +281,89 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "TrackerDispatchRepository.legacyRuns",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerDispatchRepository.legacyRuns",
+						"type": "TrackerRunReceipt[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerDispatchRepository.adoptLegacy",
+				"inputs": [
+					{
+						"name": "TrackerDispatchRepository.adoptLegacy.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "TrackerDispatchRepository.adoptLegacy.session",
+						"type": "TrackerSessionEvidence",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerDispatchRepository.adoptLegacy",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerDispatchRepository.assertLegacyRollbackSafe",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerDispatchRepository.assertLegacyRollbackSafe",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "TrackerDispatchRepository.candidates",
 				"inputs": [],
 				"outputs": [
 					{
 						"name": "TrackerDispatchRepository.candidates",
 						"type": "TrackerDispatchCandidate[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerDispatchRepository.stuckRequests",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerDispatchRepository.stuckRequests",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerDispatchRepository.readSnapshot",
+				"inputs": [
+					{
+						"name": "TrackerDispatchRepository.readSnapshot.itemId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerDispatchRepository.readSnapshot",
+						"type": "TrackerDispatchSnapshot"
 					}
 				],
 				"errors": [],
@@ -246,6 +408,29 @@
 					}
 				],
 				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "assertLegacyDispatchRollbackSafe",
+				"inputs": [
+					{
+						"name": "assertLegacyDispatchRollbackSafe.database",
+						"type": "SqliteDatabase",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assertLegacyDispatchRollbackSafe",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "DOMException",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			},
 			{
@@ -294,6 +479,57 @@
 					{
 						"name": "managedDispatchRuns",
 						"type": "TrackerRunReceipt[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "legacyDispatchRuns",
+				"inputs": [
+					{
+						"name": "legacyDispatchRuns.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "legacyDispatchRuns.node",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "legacyDispatchRuns",
+						"type": "TrackerRunReceipt[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "adoptLegacyDispatchRun",
+				"inputs": [
+					{
+						"name": "adoptLegacyDispatchRun.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "adoptLegacyDispatchRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "adoptLegacyDispatchRun.session",
+						"type": "TrackerSessionEvidence",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "adoptLegacyDispatchRun",
+						"type": "void"
 					}
 				],
 				"errors": [],

@@ -56,13 +56,19 @@ function groupingPlan(): PlannedCheck[] {
 test('verification plan registration exposes a report-only plan subcommand', () => {
 	const program = new Command();
 	registerVerifyCommand(program);
-	expect(program.commands[0]?.commands.map((command) => command.name())).toEqual([
+	const commands = program.commands[0]?.commands ?? [];
+	expect(commands.map((command) => command.name())).toEqual([
 		'run',
 		'plan',
 		'check',
 		'identity',
-		'stamp'
+		'stamp',
+		'capture'
 	]);
+	for (const name of ['run', 'plan'])
+		expect(commands.find((command) => command.name() === name)?.helpInformation()).toContain(
+			'--profile <profile>'
+		);
 });
 
 test('VerificationService.plan returns the same selected file plan used by run', () => {
@@ -74,11 +80,15 @@ test('VerificationService.plan returns the same selected file plan used by run',
 		expanded: false,
 		changed: [],
 		units: { direct: [], indirect: [], added: [], removed: [] },
-		tests: { selected: ['test/selected.test.ts'], excluded: [], removed: [] },
+		tests: {
+			selected: ['test/selected.test.ts', 'test/visual.spec.ts', 'test/native.e2e.test.ts'],
+			excluded: [],
+			removed: []
+		},
 		scenarios: { affected: [], unaffected: [] },
 		uncertain: []
 	} satisfies ImpactReport;
-	const service = new VerificationService({
+	const context = {
 		root: process.cwd(),
 		commit: 'commit-head',
 		tree: 'tree-head',
@@ -90,13 +100,19 @@ test('VerificationService.plan returns the same selected file plan used by run',
 		config: defaultVerifyConfig,
 		env: {},
 		explained: async () => ({ required: [], entries: [], overlong: [], failures: [] })
-	});
+	};
+	const service = new VerificationService({ ...context, verificationProfile: 'lite' });
 	expect(service.plan().map(({ id, command, timeoutMs }) => ({ id, command, timeoutMs }))).toEqual([
 		{
 			id: 'test/selected.test.ts',
 			command: 'bun x vitest run test/selected.test.ts',
 			timeoutMs: 600_000
 		}
+	]);
+	expect(new VerificationService(context).plan().map(({ id }) => id)).toEqual([
+		'test/native.e2e.test.ts',
+		'test/selected.test.ts',
+		'test/visual.spec.ts'
 	]);
 });
 

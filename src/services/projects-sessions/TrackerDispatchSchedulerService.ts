@@ -11,11 +11,17 @@ import {
 	attemptKey,
 	ownsLaunch
 } from '../agents-providers/tracker-dispatcher-service/launchEligibility';
-import type { TrackerDispatchSchedulerOptions } from './TrackerDispatchSchedulerService.types';
+import type {
+	TrackerDispatchRunner,
+	TrackerDispatchSchedulerOptions
+} from './TrackerDispatchSchedulerService.types';
 
 /** Reconcile committed attempts before reserving new work for the node. */
 export class TrackerDispatchSchedulerService {
 	private ticking = false;
+	private readonly waits = new Map<string, string>();
+	private lastTickAt: string | null = null;
+	private lastError: string | null = null;
 
 	constructor(
 		private readonly repository: TrackerDispatchRepository,
@@ -23,11 +29,41 @@ export class TrackerDispatchSchedulerService {
 		private readonly options: TrackerDispatchSchedulerOptions
 	) {}
 
+	status() {
+		return {
+			enabled: this.options.policy?.enabled !== false,
+			stuck: this.repository.stuckRequests().map((item) => ({
+				...item,
+				computer: item.computer ?? 'box',
+				reason: this.waits.get(item.id) ?? 'ready but has not started'
+			}))
+		};
+	}
+
+	runnerStatus() {
+		return {
+			enabled: this.options.policy?.enabled !== false,
+			last_tick_at: this.lastTickAt,
+			last_error: this.lastError,
+			waiting_on: this.waits.values().next().value ?? null
+		};
+	}
+
 	async tick(signal: AbortSignal): Promise<void> {
 		if (signal.aborted || this.ticking) return;
 		this.ticking = true;
+		this.waits.clear();
 		try {
+			await this.options.runner.refresh?.(signal, this.repository.managedRuns());
+			signal.throwIfAborted();
+			adoptLegacyRuns(this.repository, this.options.runner);
 			if (!(await this.reconcile(signal))) await this.requestWork(signal);
+			if (signal.aborted) return;
+			this.lastTickAt = new Date((this.options.policy?.now ?? Date.now)()).toISOString();
+			this.lastError = null;
+		} catch (error) {
+			if (!signal.aborted) this.lastError = 'dispatch tick failed';
+			throw error;
 		} finally {
 			this.ticking = false;
 		}
@@ -81,14 +117,41 @@ export class TrackerDispatchSchedulerService {
 		const permission =
 			intent.source === 'due' ? await grant?.(id, intent.token, signal) : undefined;
 		signal.throwIfAborted();
-		return this.release(await this.dispatcher.claim(id, intent.token, permission), signal);
+		const decision = await this.dispatcher.claim(id, intent.token, permission);
+		if (decision.status === 'held') this.waits.set(id, decision.reason);
+		return this.release(decision, signal);
 	}
 
 	private async release(result: TrackerDispatchResult, signal: AbortSignal): Promise<boolean> {
 		if (result.status !== 'start') return false;
 		signal.throwIfAborted();
-		const event = await this.options.runner.start(result, signal);
+		const event = await this.options.runner.start(
+			result,
+			signal,
+			launchCompletionInstructions(result.run.item_id)
+		);
 		if (event) await this.dispatcher.record(result.run.item_id, result.run, event);
 		return true;
+	}
+}
+
+function launchCompletionInstructions(itemId: string): string {
+	return [
+		'## Completion and worktree cleanup',
+		'',
+		`After verification passes, run \`tracker done ${itemId.slice(0, 6)} --note "<result, PR link, tests run>"\` first and verify it succeeds.`,
+		'Remove a task-owned worktree only as the final step, after leaving it and only when authorized.',
+		'Never remove your current working directory. Leave cleanup to the launcher or a separate session if you are still in the worktree.'
+	].join('\n');
+}
+
+function adoptLegacyRuns(
+	repository: TrackerDispatchRepository,
+	runner: TrackerDispatchRunner
+): void {
+	if (!runner.legacySession) return;
+	for (const run of repository.legacyRuns()) {
+		const session = runner.legacySession(run);
+		if (session) repository.adoptLegacy(run, session);
 	}
 }

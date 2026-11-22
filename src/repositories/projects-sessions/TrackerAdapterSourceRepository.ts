@@ -1,6 +1,7 @@
 // @harness-uid u_vglplkno45
 import type { SqliteDatabase } from '../../core/development-tooling/sqliteTypes';
 import type {
+	TrackerAdapterListRow,
 	TrackerAdapterSource,
 	TrackerAdapterSourceRow
 } from './TrackerAdapterRepository.types';
@@ -47,10 +48,41 @@ export class TrackerAdapterSourceRepository {
 			this.database
 				.prepare('INSERT OR IGNORE INTO adapter_runner(slot, node) VALUES (1, ?)')
 				.run(node);
+		const runner = this.runner();
+		return !runner || runner === node;
+	}
+
+	runner(): string | undefined {
+		if (!this.isInitialized()) return undefined;
 		const row = this.database.prepare('SELECT node FROM adapter_runner WHERE slot = 1').get() as
 			| { node: string }
 			| undefined;
-		return !row || row.node === node;
+		return row?.node;
+	}
+
+	list(runner: string) {
+		if (!this.isInitialized()) return [];
+		const rows = this.database
+			.prepare(
+				'SELECT id, config, enabled_at, cursor, paused, last_run, last_error FROM adapter_sources WHERE removed = 0 ORDER BY id'
+			)
+			.all() as TrackerAdapterListRow[];
+		return rows.map(({ id, config, paused, ...state }) => ({
+			...readSourceConfig(config),
+			...state,
+			id,
+			runner,
+			paused: Boolean(paused)
+		}));
+	}
+
+	dueSourceIds(now: number): string[] {
+		const rows = this.database
+			.prepare(
+				'SELECT id FROM adapter_sources WHERE removed = 0 AND paused = 0 AND (last_run IS NULL OR last_run <= ?) ORDER BY id'
+			)
+			.all(now - 60_000) as { id: string }[];
+		return rows.map(({ id }) => id);
 	}
 
 	source(id: string): TrackerAdapterSource | undefined {

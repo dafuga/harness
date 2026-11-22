@@ -15,6 +15,9 @@
 			"TrackerAdapterSourceRepository.initialize",
 			"TrackerAdapterSourceRepository.isInitialized",
 			"TrackerAdapterSourceRepository.isOwner",
+			"TrackerAdapterSourceRepository.runner",
+			"TrackerAdapterSourceRepository.list",
+			"TrackerAdapterSourceRepository.dueSourceIds",
 			"TrackerAdapterSourceRepository.source",
 			"TrackerAdapterSourceRepository.advance",
 			"TrackerAdapterSourceRepository.recordRun"
@@ -36,6 +39,16 @@
 			{
 				"name": "TrackerAdapterSourceRepository.isOwner.register",
 				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.list.runner",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.dueSourceIds.now",
+				"type": "number",
 				"required": true
 			},
 			{
@@ -81,6 +94,18 @@
 			{
 				"name": "TrackerAdapterSourceRepository.isOwner",
 				"type": "boolean"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.runner",
+				"type": "string | undefined"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.list",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.dueSourceIds",
+				"type": "string[]"
 			},
 			{
 				"name": "TrackerAdapterSourceRepository.source",
@@ -145,6 +170,54 @@
 					{
 						"name": "TrackerAdapterSourceRepository.isOwner",
 						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.runner",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.runner",
+						"type": "string | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.list",
+				"inputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.list.runner",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.list",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.dueSourceIds",
+				"inputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.dueSourceIds.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.dueSourceIds",
+						"type": "string[]"
 					}
 				],
 				"errors": [],

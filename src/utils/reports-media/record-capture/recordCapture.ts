@@ -4,9 +4,12 @@ import { appendFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { captureIndex, type CaptureLine } from '../../../core/verification-evidence/verifyTypes';
 
-/** True when the run asked for evidence: `harness verify` always does, ordinary runs opt in. */
+/** True when the run asked for any evidence, including nonvisual evidence in Lite. */
 export function evidenceRequested(env: Environment = process.env): boolean {
-	return Boolean(env.HARNESS_EVIDENCE_DIR) && env.TAKE_SCREENSHOT === '1';
+	return (
+		Boolean(env.HARNESS_EVIDENCE_DIR) &&
+		(env.HARNESS_VERIFY_MODE === 'lite' || env.TAKE_SCREENSHOT === '1')
+	);
 }
 
 /**
@@ -20,6 +23,7 @@ export function recordCapture(
 ): boolean {
 	const directory = env.HARNESS_EVIDENCE_DIR;
 	if (!directory || !evidenceRequested(env)) return false;
+	if (env.HARNESS_VERIFY_MODE === 'lite' && line.kind === 'screenshot') return false;
 	mkdirSync(directory, { recursive: true });
 	writeFileSync(join(directory, line.file), bytes);
 	appendFileSync(join(directory, captureIndex), `${JSON.stringify(line)}\n`);

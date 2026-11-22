@@ -42,9 +42,10 @@ export class ModuleTaskWorkerService {
 		const { sourceCommit, worktree } = result;
 		try {
 			await new GitAdapter(this.root).run(['worktree', 'add', '--detach', worktree, sourceCommit]);
+			const input = { ...selection, cwd: worktree, prompt, signal, platform: task.platform };
 			const execution = await this.run(
 				task,
-				{ ...selection, cwd: worktree, prompt, signal, onRotation: this.handoff(task, worktree) },
+				{ ...input, onRotation: this.handoff(task, worktree) },
 				(choice) => {
 					result = { ...result, ...choice, fallback: true };
 				},

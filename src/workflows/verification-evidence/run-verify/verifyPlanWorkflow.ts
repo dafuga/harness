@@ -47,22 +47,26 @@ async function planFull(
 		head: commit
 	});
 	const runtime = new UnitRuntimeService(options.root).kernel(runtimeKind(options.runtime));
-	const plan = await localPlan({
+	const { plan, pendingChecks } = await localPlan({
 		git,
 		commit,
 		options,
 		runtime,
 		context: { baseCommit, baseRecord: proven?.record, requestedBase, base, head }
 	});
-	return verifyPlanReport(plan, {
-		commit,
-		base: baseCommit,
-		requestedBase,
-		runtime: runtime.kind,
-		scope: 'full',
-		baseResolution: localBase.resolution,
-		selectionNote: localBase.note
-	});
+	return verifyPlanReport(
+		plan,
+		{
+			commit,
+			base: baseCommit,
+			requestedBase,
+			runtime: runtime.kind,
+			scope: 'full',
+			baseResolution: localBase.resolution,
+			selectionNote: localBase.note
+		},
+		pendingChecks
+	);
 }
 
 async function localTrustedBase(
@@ -99,7 +103,7 @@ async function planEntity(
 ) {
 	const { head } = await openRange({ root: options.root, base: 'none', head: commit });
 	const runtime = new UnitRuntimeService(options.root).kernel(runtimeKind(options.runtime));
-	const plan = await localPlan({
+	const { plan, pendingChecks } = await localPlan({
 		git,
 		commit,
 		options,
@@ -113,16 +117,21 @@ async function planEntity(
 			entity: options.entity
 		}
 	});
-	return verifyPlanReport(plan, {
-		commit,
-		base: null,
-		requestedBase: null,
-		runtime: runtime.kind,
-		scope: 'entity',
-		entity: options.entity,
-		baseResolution: 'entity',
-		selectionNote: 'Entity planning uses the same scoped scenario selection as verify run --entity.'
-	});
+	return verifyPlanReport(
+		plan,
+		{
+			commit,
+			base: null,
+			requestedBase: null,
+			runtime: runtime.kind,
+			scope: 'entity',
+			entity: options.entity,
+			baseResolution: 'entity',
+			selectionNote:
+				'Entity planning uses the same scoped scenario selection as verify run --entity.'
+		},
+		pendingChecks
+	);
 }
 
 async function localPlan(input: LocalPlanInput) {
@@ -139,11 +148,12 @@ async function localPlan(input: LocalPlanInput) {
 			impact,
 			config: await verifyConfig(context.head),
 			requirePerformance: context.entity ? false : undefined,
+			verificationProfile: options.profile,
 			testTimeoutMs: options.testTimeout ? Number(options.testTimeout) : undefined,
 			entity: context.entity,
 			env: verifyEnv(options),
 			explained: () => Promise.resolve({ required: [], entries: [], overlong: [], failures: [] })
-		}).plan();
+		}).planWithPending();
 	} finally {
 		await runtime.close();
 	}

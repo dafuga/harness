@@ -89,6 +89,11 @@ export const builtInTemplates: LoopTemplate[] = [
 					'Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.'
 			},
 			{
+				id: 'siblings',
+				title:
+					'Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.'
+			},
+			{
 				id: 'verify',
 				title:
 					'Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.'

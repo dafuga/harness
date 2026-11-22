@@ -16,7 +16,7 @@ and retries, leaving verification pending while proof fails.
 
 ## Acceptance Criteria
 
-- `bug-fix` and its `fix` alias order expected behavior, coverage-gap diagnosis, strengthened failing existing standardized test, repair, unchanged passing test, and project verification.
+- `bug-fix` and its `fix` alias order expected behavior, coverage-gap diagnosis, strengthened failing existing standardized test, repair, unchanged passing test, sibling sweep, and project verification.
 - Diagnose why existing tests missed the reported bug before changing product code. Name the responsible scenario, fixture, lifecycle, input or assertion gap.
 - Strengthen existing shared tests, fixtures and scenario coverage in Harness's normal format; do not add a one-off bug-specific test. If no standard covers the behavior, explain the missing coverage category and extend reusable coverage.
 - New repair loops refuse completing a step before its predecessors. Previously recorded loops retain their recorded steps.
@@ -30,5 +30,5 @@ and retries, leaving verification pending while proof fails.
 
 ## Boundaries
 
-No automatic AI runner, retry engine, publication, or deployment. Guards prevent the
-identified failure within their tested scope, not every possible future regression.
+The sibling sweep offers opt-in worker dispatch. Regression proof and project
+verification remain separate steps. Guards cover their tested scope.

@@ -1,0 +1,127 @@
+{
+	"schemaVersion": 1,
+	"id": "script.tracker-docker-relay-docker",
+	"uid": "u_batgn7nwfy",
+	"kind": "script",
+	"title": "docker",
+	"responsibility": "Owns the docker build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/tracker-docker-relay/docker.mjs"],
+		"symbols": ["localDocker", "runGuest"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "runGuest.docker",
+				"type": "(...args: string[]) => string",
+				"required": true
+			},
+			{
+				"name": "runGuest.task",
+				"type": "DockerTaskWorkspace",
+				"required": true
+			},
+			{
+				"name": "runGuest.scope",
+				"type": "ReturnType<typeof relayScope>",
+				"required": true
+			},
+			{
+				"name": "runGuest.args",
+				"type": "string[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "localDocker",
+				"type": "unknown"
+			},
+			{
+				"name": "runGuest",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "localDocker",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "localDocker",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "runGuest",
+				"inputs": [
+					{
+						"name": "runGuest.docker",
+						"type": "(...args: string[]) => string",
+						"required": true
+					},
+					{
+						"name": "runGuest.task",
+						"type": "DockerTaskWorkspace",
+						"required": true
+					},
+					{
+						"name": "runGuest.scope",
+						"type": "ReturnType<typeof relayScope>",
+						"required": true
+					},
+					{
+						"name": "runGuest.args",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runGuest",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-managed-provider-docker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "script.tracker-docker-relay-frames",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/tracker-docker-relay/docker.mjs",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/tracker-docker-relay/docker.mjs"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
