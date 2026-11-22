@@ -8,10 +8,23 @@ const heading = (page: Page, name: string) =>
 const web = (page: Page) => page.getByRole('link', { name: 'View Web configuration', exact: true });
 const revision = (page: Page) => page.getByRole('combobox', { name: 'Commit', exact: true });
 
-export async function expectUnrecordedPlatforms(page: Page) {
+async function expectUnrecordedPlatforms(page: Page) {
 	const cards = page.getByRole('main').getByRole('article');
 	await expect(cards).toHaveCount(4);
 	await expect(cards.locator('[data-status]')).toHaveText(Array(4).fill('Not recorded'));
+}
+
+export async function exercisePlatformWithoutCatalog(page: Page, viewport: string) {
+	await startRoute(page);
+	await revision(page).selectOption(commits.first);
+	await expectUnrecordedPlatforms(page);
+	const main = page.getByRole('main');
+	await expect(main).not.toContainText('SvelteKit on Cloudflare');
+	await web(page).click();
+	await expect(main).toContainText('No platform catalog is indexed at this revision.');
+	await expect(main).toContainText('Nothing from another revision is shown in its place.');
+	await expect(main).not.toContainText('orders-web');
+	await capture(page, `platforms-missing-${viewport}`);
 }
 
 export async function exercisePlatformHistory(page: Page, viewport: string) {

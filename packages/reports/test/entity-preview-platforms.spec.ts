@@ -4,10 +4,10 @@ import { commits } from './entityUnits';
 import { startRoute } from './entityPreviewPlatformEvidence';
 import { exercisePlatformFilters } from './entityPreviewPlatformFilters';
 import {
-	expectUnrecordedPlatforms,
 	exercisePlatformCatalogGaps,
 	exercisePlatformHistory,
-	exercisePlatformRevisionRecovery
+	exercisePlatformRevisionRecovery,
+	exercisePlatformWithoutCatalog
 } from './entityPreviewPlatformHistory';
 
 const platforms = [
@@ -61,19 +61,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await expect(page.getByRole('heading', { level: 1, name, exact: true })).toBeVisible();
 			await page.getByRole('link', { name: 'Platforms', exact: true }).last().click();
 		}
-		await startRoute(page);
-		await page.getByRole('combobox', { name: 'Commit', exact: true }).selectOption(commits.first);
-		await expectUnrecordedPlatforms(page);
-		await expect(page.getByRole('main')).not.toContainText('SvelteKit on Cloudflare');
-		await page.getByRole('link', { name: 'View Web configuration', exact: true }).click();
-		await expect(page.getByRole('main')).toContainText(
-			'No platform catalog is indexed at this revision.'
-		);
-		await expect(page.getByRole('main')).toContainText(
-			'Nothing from another revision is shown in its place.'
-		);
-		await expect(page.getByRole('main')).not.toContainText('orders-web');
-		await capture(page, `platforms-missing-${viewport}`);
+		await exercisePlatformWithoutCatalog(page, viewport);
 	});
 }
 
