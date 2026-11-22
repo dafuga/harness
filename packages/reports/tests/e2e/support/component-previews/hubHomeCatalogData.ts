@@ -69,6 +69,7 @@ const snapshot: OwnerHomeSnapshot = {
 	],
 	providers: {
 		routines: [],
+		routinesReadAt: stamp(-0.25),
 		quota: [
 			{
 				id: 'codex',
