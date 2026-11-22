@@ -241,7 +241,7 @@
 			},
 			{
 				"name": "explorerCoverage",
-				"type": "unknown",
+				"type": "(whole: HarnessScenario) => ExplorerScenarioCoverage",
 				"description": "The returned callback accepts a declared scenario and returns its ExplorerScenarioCoverage for this unit, including applicable state and test findings. Its standing is the worst scenario and state finding, so missing, unrecorded, or unknown evidence cannot establish a pass."
 			}
 		],
@@ -474,7 +474,7 @@
 				"outputs": [
 					{
 						"name": "explorerCoverage",
-						"type": "unknown",
+						"type": "(whole: HarnessScenario) => ExplorerScenarioCoverage",
 						"description": "The returned callback accepts a declared scenario and returns its ExplorerScenarioCoverage for this unit, including applicable state and test findings. Its standing is the worst scenario and state finding, so missing, unrecorded, or unknown evidence cannot establish a pass."
 					}
 				],

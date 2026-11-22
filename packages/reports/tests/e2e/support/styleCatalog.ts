@@ -124,6 +124,13 @@ async function expectSemanticRoles(scope: Locator, palette: Locator): Promise<vo
 		await expect(scope.locator(`[data-style-token="--hx-${name}"]`)).toHaveCount(1);
 }
 
+/** Styles is a tab in the navbar's "Code categories" tablist, selected on the Styles page. */
+export function stylesCategory(page: Page): Locator {
+	return page
+		.getByRole('tablist', { name: 'Code categories', exact: true })
+		.getByRole('tab', { name: 'Styles', exact: true });
+}
+
 /** Changing an assignment must repaint real consumers, not only the Styles specimen. */
 export async function expectRoleAssignments(page: Page): Promise<void> {
 	await page.evaluate(() => {
@@ -133,10 +140,9 @@ export async function expectRoleAssignments(page: Page): Promise<void> {
 		root.setProperty('--hx-space-section', '37px');
 	});
 	try {
-		await expect(page.getByRole('link', { name: 'Styles', exact: true })).toHaveCSS(
-			'color',
-			'rgb(17, 34, 51)'
-		);
+		// The selected tab's text is the primary token (`.hx-tabs [aria-selected='true']`).
+		await expect(stylesCategory(page)).toHaveAttribute('aria-selected', 'true');
+		await expect(stylesCategory(page)).toHaveCSS('color', 'rgb(17, 34, 51)');
 		await expect(page.locator('.hx-shell').first()).toHaveCSS('font-family', 'Georgia, serif');
 		await expect(page.locator('.hx-styles-groups')).toHaveCSS('row-gap', '37px');
 	} finally {

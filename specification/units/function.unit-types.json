@@ -70,12 +70,12 @@
 		"outputs": [
 			{
 				"name": "unitIdPattern",
-				"type": "unknown",
+				"type": "RegExp",
 				"description": "Regular expression for lowercase identifiers made of alphanumeric segments separated by single dots or dashes; it is used to validate unit and related identifiers. It rejects uppercase characters, empty segments, and leading, trailing, or repeated separators."
 			},
 			{
 				"name": "dependencyVias",
-				"type": "unknown",
+				"type": "readonly [\"import\", \"reexport\", \"dynamic-import\", \"require\", \"url\", \"style-import\", \"process\", \"http\", \"wasm\", \"contract\"]",
 				"description": "The complete set of dependency relation strings accepted by unitDependencySchema. Each dependency must use one of these ten values.",
 				"examples": [
 					[
@@ -94,7 +94,7 @@
 			},
 			{
 				"name": "runtimeKinds",
-				"type": "unknown",
+				"type": "readonly [\"module\", \"wasm\", \"process\", \"http\"]",
 				"description": "The complete set of execution kinds accepted by executionTargetSchema and performance-budget targets. A target kind must be module, wasm, process, or http.",
 				"examples": [
 					["module", "wasm", "process", "http"]
@@ -102,7 +102,7 @@
 			},
 			{
 				"name": "performanceMetrics",
-				"type": "unknown",
+				"type": "readonly [\"latency-cold-ms\", \"latency-warm-ms\", \"latency-floor-ms\", \"throughput-ops\", \"memory-bytes\"]",
 				"description": "The complete set of performance-budget metric names accepted by performanceBudgetSchema. Metrics cover cold, warm, and floor latency, throughput, and memory.",
 				"examples": [
 					[
@@ -116,38 +116,38 @@
 			},
 			{
 				"name": "performanceTolerance",
-				"type": "unknown",
+				"type": "0.05",
 				"description": "Maximum allowed tolerance for a performance budget without a recorded reviewer approval. The schema accepts values from zero through 0.05 inclusive.",
 				"examples": [0.05]
 			},
 			{
 				"name": "contractItemSchema",
-				"type": "unknown",
+				"type": "typeof contractItemSchema",
 				"description": "A strict Zod schema for contract items with trimmed nonempty name and type, plus optional required, JSON default, description, JSON examples, and a trimmed nonempty unknownReason. Extra fields are rejected."
 			},
 			{
 				"name": "unitDependencySchema",
-				"type": "unknown",
+				"type": "typeof unitDependencySchema",
 				"description": "A strict dependency schema requiring a lowercase dotted or dashed unit identifier, one allowed dependency via, and declared or derived origin. The contract string is optional."
 			},
 			{
 				"name": "performanceBudgetSchema",
-				"type": "unknown",
+				"type": "typeof performanceBudgetSchema",
 				"description": "A strict schema for a budget with a valid workload identifier, supported metric, and tolerance from zero through 0.05 inclusive. Runtime target is optional and must be one of module, wasm, process, or http."
 			},
 			{
 				"name": "executionTargetSchema",
-				"type": "unknown",
+				"type": "typeof executionTargetSchema",
 				"description": "A strict execution-target schema requiring a supported runtime kind and trimmed nonempty entry, with optional environment and handler strings. The documented handler default is invoke, but this schema does not insert a default when handler is omitted."
 			},
 			{
 				"name": "componentManifestSchema",
-				"type": "unknown",
+				"type": "typeof componentManifestSchema",
 				"description": "A strict version-1 unit-manifest schema used to validate unit identity, responsibility and status, ownership, contract, dependencies, runtime, scenarios, and frozen size and complexity budgets. It also permits constrained optional composition, documentation, catalog visibility, config controls, retirement, lineage, preview, and performance-budget fields."
 			},
 			{
 				"name": "scenarioManifestSchema",
-				"type": "unknown",
+				"type": "typeof scenarioManifestSchema",
 				"description": "A strict version-1 scenario schema for UI, headless, or audio scenarios, requiring at least one unit, state, and test. It validates state coverage, positive integer viewport dimensions, test runner and kind, and evidence declarations; viewports and evidence may be empty."
 			}
 		],
@@ -173,7 +173,7 @@
 				"outputs": [
 					{
 						"name": "sourceContractSchema",
-						"type": "unknown",
+						"type": "ReturnType<typeof sourceContractSchema>",
 						"description": "The strict Zod object schema built for source-declared contract metadata. It requires origin, inputs, outputs, and errors, and optionally accepts primitives, errorStatus, operations, initialization, snippets, and storage; each operation requires name, input/output/error arrays, and errorStatus."
 					}
 				],
@@ -186,6 +186,11 @@
 	"dependencies": [
 		{
 			"unit": "function.development-tooling-composition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-evidence-video-clip-schema",
 			"via": "import",
 			"origin": "derived"
 		}

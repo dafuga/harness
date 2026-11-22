@@ -1,5 +1,6 @@
 // @harness-uid u_d2pmwm5tae
 import { fileURLToPath } from 'node:url';
+import { ExpectedCliError } from '../src/core/errors';
 
 /** Construct the existing resource CLI request without shell interpolation. */
 export function resourceArguments(
@@ -12,7 +13,9 @@ export function resourceArguments(
 		separator !== '--' ||
 		!command.length
 	)
-		throw new Error('Usage: with-resources <coding|agent-test|environment> -- <command...>');
+		throw new ExpectedCliError(
+			'Usage: with-resources <coding|agent-test|environment> -- <command...>'
+		);
 	return [
 		'resources',
 		'run',

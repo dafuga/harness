@@ -7,3 +7,8 @@ export interface TranslationScan {
 	gaps: string[];
 	consumers: Map<string, Set<string>>;
 }
+
+/** A JSON resource path that is not repository-relative or that would leave the repository. */
+export class ResourcePathError extends Error {
+	override name = 'ResourcePathError';
+}

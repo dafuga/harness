@@ -4,15 +4,17 @@ import { moduleTree } from './moduleTree';
 import { moduleStateFile } from './moduleDefinition';
 import { modulePackagePlan, moduleGroupPlan } from './modulePlan';
 import { writeModuleFiles } from './moduleWrites';
+import { ExpectedCliError } from '../../core/development-tooling/errors';
+import { ModuleCatalogGapError } from './ModuleInstallService.types';
 
 /** Installation prepares code and instructions; it never invokes project scripts or providers. */
 export class ModuleInstallService {
 	async add(root: string, id: string): Promise<string[]> {
 		const catalogService = new ModuleCatalogService();
 		const catalog = await catalogService.load(root);
-		if (catalog.gaps.length) throw new Error(catalog.gaps.join('\n'));
+		if (catalog.gaps.length) throw new ModuleCatalogGapError(catalog.gaps.join('\n'));
 		const entry = catalog.modules.find((item) => item.definition.id === id);
-		if (!entry) throw new Error(`Unknown module: ${id}`);
+		if (!entry) throw new ExpectedCliError(`Unknown module: ${id}`);
 		const state = await catalogService.state(moduleTree(root));
 		if (
 			entry.installed &&

@@ -32,7 +32,10 @@ appendFileSync(${JSON.stringify(join(root, 'tracker.ndjson'))}, JSON.stringify(p
 	);
 	await chmod(tracker, 0o755);
 	const cli = (args: string[], success = true) =>
-		runHarness(['task', ...args], root, success, { PATH: `${bin}:${process.env.PATH}` });
+		runHarness(['task', ...args], root, success, {
+			PATH: `${bin}:${process.env.PATH}`,
+			...stubTaskBudget
+		});
 	const input = (extra: Record<string, unknown> = {}) => taskInput(root, extra);
 	const feature = (success = true) =>
 		cli(
@@ -56,6 +59,12 @@ appendFileSync(${JSON.stringify(join(root, 'tracker.ndjson'))}, JSON.stringify(p
 		dispose: () => rm(root, { recursive: true, force: true })
 	};
 }
+
+/**
+ * The fake CLIs only write a few bytes, so they request a budget that fits inside the
+ * smallest stock check lease (1 CPU / 512 MiB). The production default stays 2048 MiB.
+ */
+const stubTaskBudget = { HARNESS_TASK_CPUS: '1', HARNESS_TASK_MEMORY_MIB: '256' };
 
 function fakeRunner(root: string, provider: string): string {
 	return `#!/usr/bin/env bun
@@ -154,6 +163,7 @@ test('orders', () => {
 }
 
 async function writeOrdersModule(root: string): Promise<void> {
+	await writeFile(join(root, '.gitignore'), '.cache/\n');
 	await mkdir(join(root, 'specification/units'), { recursive: true });
 	await mkdir(join(root, 'src'));
 	await writeFile(join(root, 'src/orders.ts'), 'export const orders = 1;\n');

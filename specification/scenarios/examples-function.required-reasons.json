@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.required-reasons",
+	"title": "function.required-reasons examples",
+	"kind": "headless",
+	"units": ["function.required-reasons"],
+	"builds": [],
+	"states": [
+		{
+			"id": "tracks-present-units-and-whole-unit-additions-and-removals",
+			"title": "Tracks present units and whole-unit additions and removals",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.required-reasons.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["tracks-present-units-and-whole-unit-additions-and-removals"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["tracks-present-units-and-whole-unit-additions-and-removals"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["tracks-present-units-and-whole-unit-additions-and-removals"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

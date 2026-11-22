@@ -39,15 +39,13 @@
 				"type": "string",
 				"required": false,
 				"description": "Filesystem root used to load unit manifests and read the budget ledger. Defaults to process.cwd().",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "budgetMeasure.unit",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Exact manifest id used to restrict measurements to one active unit. Defaults to undefined, which includes every active unit.",
 				"examples": ["workflow.run-budget"]
 			},
@@ -56,15 +54,13 @@
 				"type": "string",
 				"required": false,
 				"description": "Working-tree root used to load manifests and their measurement index. Defaults to process.cwd().",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "budgetHistory.unit",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Exact event.unit value used to filter ledger history. Defaults to undefined, which returns all events.",
 				"examples": ["workflow.run-budget"]
 			},
@@ -73,18 +69,14 @@
 				"type": "string",
 				"required": false,
 				"description": "Working-tree root used to load manifests and the budget ledger. Defaults to process.cwd() through loadBudgets.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "budgetStatus.root",
 				"type": "string",
 				"required": false,
 				"description": "Working-tree root used to load active manifests and calculated baselines. Defaults to process.cwd() through loadBudgets.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "budgetBench.input",
@@ -106,9 +98,7 @@
 				"type": "string",
 				"required": false,
 				"description": "Filesystem root used to resolve the unit registry and workload path and to run the benchmark. Defaults to process.cwd().",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-				]
+				"examples": ["/workspace/project"]
 			}
 		],
 		"outputs": [
@@ -119,7 +109,7 @@
 			},
 			{
 				"name": "budgetMeasure",
-				"type": "unknown",
+				"type": "Promise<{ partial?: string | undefined; unavailable?: string | undefined; value: number | null; unitOfMeasure: string; target?: \"process\" | \"http\" | \"wasm\" | \"module\" | undefined; unit: string; metric: string; }[]>",
 				"description": "Returns measurement rows for active manifests, optionally restricted to one exact manifest id. Rows include unit, metric, value, and unitOfMeasure, with target, unavailable, and partial only when present.",
 				"examples": [
 					[]
@@ -135,7 +125,7 @@
 			},
 			{
 				"name": "budgetStatus",
-				"type": "unknown",
+				"type": "Promise<{ baselined: number; inherited: string[]; unbaselined: string[]; unmeasured: { unit: string; metric: string; reason: string; }[]; }>",
 				"description": "Returns active-unit counts and lists for baselined, inherited, unbaselined, and unmeasured units. Each unmeasured entry contains unit, metric, and reason.",
 				"examples": [
 					{
@@ -178,9 +168,7 @@
 						"type": "string",
 						"required": false,
 						"description": "Filesystem root used to load unit manifests and read the budget ledger. Defaults to process.cwd().",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -206,7 +194,7 @@
 						"name": "budgetMeasure.unit",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Exact manifest id used to restrict measurements to one active unit. Defaults to undefined, which includes every active unit.",
 						"examples": ["workflow.run-budget"]
 					},
@@ -215,15 +203,13 @@
 						"type": "string",
 						"required": false,
 						"description": "Working-tree root used to load manifests and their measurement index. Defaults to process.cwd().",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "budgetMeasure",
-						"type": "unknown",
+						"type": "Promise<{ partial?: string | undefined; unavailable?: string | undefined; value: number | null; unitOfMeasure: string; target?: \"process\" | \"http\" | \"wasm\" | \"module\" | undefined; unit: string; metric: string; }[]>",
 						"description": "Returns measurement rows for active manifests, optionally restricted to one exact manifest id. Rows include unit, metric, value, and unitOfMeasure, with target, unavailable, and partial only when present.",
 						"examples": [
 							[]
@@ -240,7 +226,7 @@
 						"name": "budgetHistory.unit",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Exact event.unit value used to filter ledger history. Defaults to undefined, which returns all events.",
 						"examples": ["workflow.run-budget"]
 					},
@@ -249,9 +235,7 @@
 						"type": "string",
 						"required": false,
 						"description": "Working-tree root used to load manifests and the budget ledger. Defaults to process.cwd() through loadBudgets.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -281,15 +265,13 @@
 						"type": "string",
 						"required": false,
 						"description": "Working-tree root used to load active manifests and calculated baselines. Defaults to process.cwd() through loadBudgets.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "budgetStatus",
-						"type": "unknown",
+						"type": "Promise<{ baselined: number; inherited: string[]; unbaselined: string[]; unmeasured: { unit: string; metric: string; reason: string; }[]; }>",
 						"description": "Returns active-unit counts and lists for baselined, inherited, unbaselined, and unmeasured units. Each unmeasured entry contains unit, metric, and reason.",
 						"examples": [
 							{
@@ -333,9 +315,7 @@
 						"type": "string",
 						"required": false,
 						"description": "Filesystem root used to resolve the unit registry and workload path and to run the benchmark. Defaults to process.cwd().",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [

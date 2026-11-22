@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.service.remote-image-cache",
+	"title": "desktop.service.remote-image-cache examples",
+	"kind": "headless",
+	"units": ["desktop.service.remote-image-cache"],
+	"builds": [],
+	"states": [
+		{
+			"id": "reads-and-fills-the-hosted-image-cache",
+			"title": "Reads and fills the hosted image cache",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-mismatched-and-incomplete-hosted-cache-identities",
+			"title": "Rejects mismatched and incomplete hosted cache identities",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.service.remote-image-cache.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"reads-and-fills-the-hosted-image-cache",
+				"rejects-mismatched-and-incomplete-hosted-cache-identities"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"reads-and-fills-the-hosted-image-cache",
+				"rejects-mismatched-and-incomplete-hosted-cache-identities"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"reads-and-fills-the-hosted-image-cache",
+				"rejects-mismatched-and-incomplete-hosted-cache-identities"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -9,10 +9,18 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/networking-security/remote-host-service/PairingOfferCreationError.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/PairingOfferUnsupportedError.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/PairingRequestNotWaitingError.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/ProjectNotOpenedError.ts",
 			"packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
 			"packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.types.ts"
 		],
 		"symbols": [
+			"PairingOfferCreationError",
+			"PairingOfferUnsupportedError",
+			"PairingRequestNotWaitingError",
+			"ProjectNotOpenedError",
 			"RemotePairingControlService",
 			"RemotePairingControlService.constructor",
 			"RemotePairingControlService.createPairing",
@@ -996,7 +1004,7 @@
 				"outputs": [
 					{
 						"name": "RemotePairingControlService.constructor",
-						"type": "unknown",
+						"type": "RemotePairingControlService",
 						"description": "The new service instance, which keeps the host and registry as given and creates its own input validator; construction itself cannot fail."
 					}
 				],

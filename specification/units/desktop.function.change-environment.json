@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/projects-sessions/changeEnvironment.ts"],
-		"symbols": ["changeEnvironment"]
+		"source": [
+			"packages/desktop/src/utils/projects-sessions/changeEnvironment.ts",
+			"packages/desktop/src/utils/projects-sessions/changeEnvironment.types.ts"
+		],
+		"symbols": ["changeEnvironment", "UnknownDeploymentEnvironmentError"]
 	},
 	"contract": {
 		"origin": "declared",

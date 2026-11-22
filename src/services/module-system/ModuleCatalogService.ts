@@ -1,6 +1,7 @@
 // @harness-uid u_d6lx2moqv4
 import type { ModuleCatalog, ModuleDefinition, ModuleState } from './moduleDefinition.types';
 import type { SourceTree } from '../../core/development-tooling/sourceTypes';
+import { ModuleCatalogValidationError } from './ModuleCatalogService.types';
 import { moduleDefinitionSchema, moduleStateFile, moduleStateSchema } from './moduleDefinition';
 import { builtinModules } from '../../templates/module-system/builtinModules';
 import { moduleTree } from './moduleTree';
@@ -57,7 +58,7 @@ export class ModuleCatalogService {
 			try {
 				const definition = moduleDefinitionSchema.parse(JSON.parse(await tree.read(entry.path)));
 				if (definition.id !== match[1] || definitions.has(definition.id))
-					throw new Error('Module identity collision');
+					throw new ModuleCatalogValidationError('Module identity collision');
 				entries.set(definition.id, { definition, source: 'project' });
 			} catch {
 				gaps.push(`Invalid module definition: ${entry.path}`);
@@ -85,10 +86,10 @@ export class ModuleCatalogService {
 		try {
 			const state = moduleStateSchema.parse(JSON.parse(source));
 			if (new Set(state.modules.map((entry) => entry.definition.id)).size !== state.modules.length)
-				throw new Error('Duplicate installation');
+				throw new ModuleCatalogValidationError('Duplicate installation');
 			return state;
 		} catch {
-			if (!gaps) throw new Error('Invalid module installation state.');
+			if (!gaps) throw new ModuleCatalogValidationError('Invalid module installation state.');
 			gaps.push('Invalid module installation state.');
 			return emptyState();
 		}

@@ -26,6 +26,8 @@
 			"FixtureView",
 			"PairingOffer",
 			"Acceptance",
+			"FixtureControlOriginError",
+			"FixtureControlRefusedError",
 			"FixtureView",
 			"PairingOffer",
 			"Acceptance"
@@ -58,7 +60,7 @@
 				"name": "control.body",
 				"type": "object",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional object JSON-encoded as the request body, with an application/json content-type header. Its fields are not validated by this function.",
 				"examples": [
 					{}
@@ -105,7 +107,7 @@
 				"name": "scanPressed.name",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional phone name filled into the Name of this phone field before pressing the scan action. When omitted, no name-fill expression is included.",
 				"examples": ["Harness fixture iPhone"]
 			},
@@ -132,25 +134,25 @@
 		"outputs": [
 			{
 				"name": "computerName",
-				"type": "unknown",
+				"type": "\"Harness fixture computer\"",
 				"description": "Fixture computer name constant used to identify the computer in the acceptance fixture. Its exact value is Harness fixture computer.",
 				"examples": ["Harness fixture computer"]
 			},
 			{
 				"name": "panelText",
-				"type": "unknown",
+				"type": "\"return panel();\"",
 				"description": "Fixture panel script text exposed for the acceptance fixture. Its exact value is return panel();.",
 				"examples": ["return panel();"]
 			},
 			{
 				"name": "footerText",
-				"type": "unknown",
+				"type": "\"return footer();\"",
 				"description": "Fixture footer script text exposed for the acceptance fixture. Its exact value is return footer();.",
 				"examples": ["return footer();"]
 			},
 			{
 				"name": "pause",
-				"type": "unknown",
+				"type": "Promise<unknown>",
 				"description": "A function that resolves after scheduling a setTimeout for the supplied milliseconds. Timer scheduling is subject to runtime timing, and the function resolves without a value."
 			},
 			{
@@ -235,7 +237,7 @@
 				"outputs": [
 					{
 						"name": "pause",
-						"type": "unknown",
+						"type": "Promise<unknown>",
 						"description": "A function that resolves after scheduling a setTimeout for the supplied milliseconds. Timer scheduling is subject to runtime timing, and the function resolves without a value."
 					}
 				],
@@ -262,7 +264,7 @@
 						"name": "control.body",
 						"type": "object",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional object JSON-encoded as the request body, with an application/json content-type header. Its fields are not validated by this function.",
 						"examples": [
 							{}
@@ -389,7 +391,7 @@
 						"name": "scanPressed.name",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional phone name filled into the Name of this phone field before pressing the scan action. When omitted, no name-fill expression is included.",
 						"examples": ["Harness fixture iPhone"]
 					}

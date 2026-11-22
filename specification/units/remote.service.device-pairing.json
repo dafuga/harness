@@ -23,6 +23,7 @@
 			"ScanningDevice",
 			"PendingPairing",
 			"DeviceCredentials",
+			"DevicePairingError",
 			"DevicePairingInput",
 			"ScanningDevice",
 			"PendingPairing",
@@ -115,7 +116,7 @@
 				"name": "DevicePairingService.request.keys",
 				"type": "RemoteKeyPair",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The phone's own P-256 key pair: its public key is sealed into the request and gives the deviceId (the first 40 hex of its SHA-256). When it is omitted (default undefined), request creates a new pair with remoteKeys() and returns it in the PendingPairing."
 			},
 			{
@@ -284,7 +285,7 @@
 						"name": "DevicePairingService.request.keys",
 						"type": "RemoteKeyPair",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The phone's own P-256 key pair: its public key is sealed into the request and gives the deviceId (the first 40 hex of its SHA-256). When it is omitted (default undefined), request creates a new pair with remoteKeys() and returns it in the PendingPairing."
 					}
 				],
@@ -401,7 +402,7 @@
 				"outputs": [
 					{
 						"name": "DevicePairingService.constructor",
-						"type": "unknown",
+						"type": "DevicePairingService",
 						"description": "The DevicePairingService instance that the constructor creates, which keeps options so that every later call uses options.fetch when one is given."
 					}
 				],

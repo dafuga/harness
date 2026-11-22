@@ -2,9 +2,11 @@
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { randomUUID } from 'node:crypto';
+import { InvalidReportOrAssetIdError } from './reportFiles.types';
 
 export function safeId(id: string) {
-	if (!/^[a-zA-Z0-9_-]{1,100}$/.test(id)) throw new Error('Invalid report or asset ID');
+	if (!/^[a-zA-Z0-9_-]{1,100}$/.test(id))
+		throw new InvalidReportOrAssetIdError('Invalid report or asset ID');
 	return id;
 }
 

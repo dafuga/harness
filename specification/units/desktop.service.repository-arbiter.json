@@ -25,9 +25,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository root string used as the run-lock key; only calls with the identical string contend for this lock.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "RepositoryArbiterService.hold.owner",
@@ -43,9 +41,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository root string identifying the run lock to release; it must match the string used to hold that lock.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "RepositoryArbiterService.release.owner",
@@ -61,19 +57,14 @@
 				"type": "string | null",
 				"required": true,
 				"description": "The repository root string whose run-lock state is checked; null always produces false.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6",
-					null
-				]
+				"examples": ["/workspace/project", null]
 			},
 			{
 				"name": "RepositoryArbiterService.exclusive.root",
 				"type": "string",
 				"required": true,
 				"description": "The repository root string used to serialize writes; only identical strings share a write queue.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "RepositoryArbiterService.exclusive.work",
@@ -129,9 +120,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository root string used as the run-lock key; only calls with the identical string contend for this lock.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "RepositoryArbiterService.hold.owner",
@@ -162,9 +151,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository root string identifying the run lock to release; it must match the string used to hold that lock.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "RepositoryArbiterService.release.owner",
@@ -194,10 +181,7 @@
 						"type": "string | null",
 						"required": true,
 						"description": "The repository root string whose run-lock state is checked; null always produces false.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6",
-							null
-						]
+						"examples": ["/workspace/project", null]
 					}
 				],
 				"outputs": [
@@ -219,9 +203,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository root string used to serialize writes; only identical strings share a write queue.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "RepositoryArbiterService.exclusive.work",

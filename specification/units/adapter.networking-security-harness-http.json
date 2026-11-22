@@ -200,7 +200,7 @@
 				"outputs": [
 					{
 						"name": "HarnessHttpAdapter.constructor",
-						"type": "unknown",
+						"type": "HarnessHttpAdapter",
 						"description": "The newly constructed HarnessHttpAdapter instance, whose origin field holds the normalized server origin and whose local field is true for localhost, 127.0.0.1 or [::1]; the configuration stays private to the instance."
 					}
 				],

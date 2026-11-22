@@ -32,7 +32,7 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "PlanningFailure",
 				"type": "thrown",
 				"description": "The plan-creation path can fail during its validation checks or when a plan already exists; the duplicate case is raised as already-exists with the message Plan already exists. Snapshot catches per-plan read failures and records their code and message in rejected instead of rejecting the whole snapshot."
 			}

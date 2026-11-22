@@ -9,6 +9,8 @@ import {
 	verifyConfigFile
 } from '../../../../core/verification-evidence/verifyTypes';
 import type { Gathered } from '../../../../utils/verification-evidence/gatherCaptures';
+import { trustedVideoReference } from './videoReferenceAdmission';
+import { videoMetadataProblem } from './videoMetadataProblem';
 import type { MediaFacts } from '../../../../utils/verification-evidence/mediaFacts';
 
 const durationTolerance = 0.05;
@@ -17,6 +19,7 @@ export /** The first thing wrong with one capture, if anything. */
 function problem(input: CoverageInput, item: Gathered): string | undefined {
 	const evidence = input.scenario.evidence.find((entry) => entry.id === item.line.evidence);
 	if (item.line.kind === 'screenshot') return imageProblem(input, item, evidence);
+	if (item.line.kind === 'video') return videoProblem(input, item, evidence);
 	if (item.line.kind === 'audio') return audioProblem(input, item, evidence);
 	if (item.line.kind === 'benchmark') return benchmarkProblem(item);
 	// An output, assertions or a trace that says it was captured from running software is bound
@@ -24,6 +27,25 @@ function problem(input: CoverageInput, item: Gathered): string | undefined {
 	return item.line.provenance === 'actual-capture'
 		? stampProblem(input, item, evidence)
 		: undefined;
+}
+
+/** Retained video timestamps and decoded facts must describe the same viewport and interval. */
+function videoProblem(
+	input: CoverageInput,
+	item: Gathered,
+	evidence?: Evidence
+): string | undefined {
+	const { facts, line } = item;
+	if (!facts || !('kind' in facts) || facts.kind !== 'video')
+		return `capture ${line.file} is not playable video: ${factsError(facts, 'not video')}`;
+	const video = line.video;
+	if (!video) return `capture ${line.file} has no video provenance`;
+	const viewport = input.scenario.viewports.find((entry) => entry.id === line.viewport);
+	if (facts.width !== viewport?.width || facts.height !== viewport.height)
+		return `capture ${line.file} video dimensions do not match its viewport`;
+	const detail = videoMetadataProblem(video, facts, line);
+	if (detail) return `capture ${line.file} ${detail}`;
+	return stampProblem(input, item, evidence);
 }
 
 /** A benchmark capture must be measurements Harness can read, each context valid if stated. */
@@ -133,11 +155,21 @@ function stampProblem(
 ): string | undefined {
 	const { file, server } = item.line;
 	if (!server?.revision) return `capture ${file} has no build stamp`;
+	if (trustedVideoReference(input, item)) {
+		const failure = originalBuildProblem(input, evidence);
+		return failure ? `capture ${file} ${failure}` : undefined;
+	}
 	if (server.revision !== input.commit) {
 		return `capture ${file} was produced by revision ${server.revision}, not ${input.commit}`;
 	}
 	const problem = buildProblem(input.builds, server.buildId, evidence?.build);
 	return problem ? `capture ${file} ${problem}` : undefined;
+}
+function originalBuildProblem(input: CoverageInput, evidence?: Evidence): string | undefined {
+	const declared = input.builds?.declared ?? [];
+	if (evidence?.build && !declared.includes(evidence.build))
+		return `names an undeclared original build ${evidence.build}`;
+	return declared.length && !evidence?.build ? 'does not name its original build' : undefined;
 }
 
 /**

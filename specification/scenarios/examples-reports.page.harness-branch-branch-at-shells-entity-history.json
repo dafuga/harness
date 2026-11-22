@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.page.harness-branch-branch-at-shells-entity-history",
+	"title": "reports.page.harness-branch-branch-at-shells-entity-history examples",
+	"kind": "headless",
+	"units": ["reports.page.harness-branch-branch-at-shells-entity-history"],
+	"builds": [],
+	"states": [
+		{
+			"id": "renders-the-shell-history-document-title",
+			"title": "Renders the Shell history document title",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.page.harness-branch-branch-at-shells-entity-history.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["renders-the-shell-history-document-title"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["renders-the-shell-history-document-title"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["renders-the-shell-history-document-title"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

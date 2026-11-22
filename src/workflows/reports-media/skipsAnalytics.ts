@@ -1,6 +1,6 @@
 // @harness-uid u_6grsyr7ypn
 /** Commands that only print a lookup; nothing about them is worth a stored event. */
-const lookupCommands = new Set(['help', 'info']);
+const lookupCommands = new Set(['help', 'info', 'contracts']);
 const versionFlags = new Set(['--version', '-V']);
 
 /** True when the arguments only ask for help, the version or an `info` topic. Reads no state. */

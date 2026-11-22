@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.execution-runtimes-driver-queue-render-driver-active",
+	"uid": "u_rel4hbjk7q",
+	"kind": "adapter",
+	"title": "renderDriverActive",
+	"responsibility": "Render the driver active counts, totals and job table in the existing ACTIVE.md format without changing files.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/execution-runtimes/driver-queue/renderDriverActive.ts"],
+		"symbols": ["renderDriverActive"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "renderDriverActive.state",
+				"type": "DriverActive",
+				"required": true,
+				"description": "Active driver snapshot to render. Adapter render defaults to a fresh read; dead PIDs are filtered by active(), not by the formatter."
+			}
+		],
+		"outputs": [
+			{
+				"name": "renderDriverActive",
+				"type": "string",
+				"description": "Markdown counts, totals and ordered active-job table compatible with ACTIVE.md."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "renderDriverActive",
+				"inputs": [
+					{
+						"name": "renderDriverActive.state",
+						"type": "DriverActive",
+						"required": true,
+						"description": "Active driver snapshot to render. Adapter render defaults to a fresh read; dead PIDs are filtered by active(), not by the formatter."
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderDriverActive",
+						"type": "string",
+						"description": "Markdown counts, totals and ordered active-job table compatible with ACTIVE.md."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-driver-queue",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/execution-runtimes/driver-queue/renderDriverActive.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/execution-runtimes/driver-queue/renderDriverActive.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

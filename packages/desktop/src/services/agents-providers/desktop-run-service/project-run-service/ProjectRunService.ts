@@ -1,5 +1,7 @@
 // @harness-uid u_5lbtt7fx6n
 import type { Progress, Host } from './ProjectRunService.types';
+import { AgentChangedFilesError } from './AgentChangedFilesError';
+import { SourceRevisionAdvancedError } from './SourceRevisionAdvancedError';
 import type { AgentRunner } from '../../../../models/agents-providers/AgentRunner.types';
 import { visualPlan } from '../../../../utils/planning-collaboration/mockupPlan';
 import { RunCancelled } from '../../../../models/agents-providers/AgentRunner.types';
@@ -13,7 +15,7 @@ import { planDesign } from '../../../../utils/planning-collaboration/plan-design
 import type { ProjectRunContext } from '../../../../utils/agents-providers/prepareProjectRun';
 import { messageFor, recordRunFailure } from '../../../../utils/agents-providers/prepareRun';
 import { projectProposal, proposalPrompt } from './projectProposal';
-import { type ProjectProposal } from '../../../../utils/agents-providers/projectProposal';
+import type { ProjectProposal } from '../../../../utils/agents-providers/projectProposal';
 import { proposalUnits } from './proposalUnits';
 import { sourceChanges } from '../../../../utils/git-source-history/sourceChanges';
 import {
@@ -87,7 +89,9 @@ export class ProjectRunService {
 		const { branch, commit } = context.revision;
 		const { source } = await context.session.atBranch(branch);
 		if ((await source.revision({ branch, commit: null })).commit !== commit)
-			throw new Error('The source revision advanced during this run; nothing was planned.');
+			throw new SourceRevisionAdvancedError(
+				'The source revision advanced during this run; nothing was planned.'
+			);
 	}
 
 	/** The one read-only question, and its answer once it was checked. */
@@ -113,7 +117,7 @@ export class ProjectRunService {
 		const written = await this.written(context, before, host);
 		if ('failure' in answer) throw this.failed(context, answer.failure, written);
 		if (signal.aborted) throw new RunCancelled();
-		if (written) throw new Error(written);
+		if (written) throw new AgentChangedFilesError(written);
 		return answered(context, answer.result.text);
 	}
 
@@ -121,7 +125,7 @@ export class ProjectRunService {
 	private failed(context: ProjectRunContext, failure: unknown, written: string): unknown {
 		if (failure instanceof RunCancelled || context.signal.aborted || !written) return failure;
 		const said = failure instanceof Error ? failure.message : 'The agent failed.';
-		return new Error(`${said} ${written}`);
+		return new AgentChangedFilesError(`${said} ${written}`);
 	}
 
 	/**

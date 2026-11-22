@@ -25,6 +25,7 @@ import { PerformanceEvidenceValidator } from '../../../../../validators/verifica
 
 import type { Executed } from '../SnapshotRunService';
 import { recordedBuilds } from './recordedBuilds';
+import { recordVideoBatches } from './recordVideoBatches';
 import { benchmarkMeasurements, recordComponents } from './sealRecord';
 import { unmeasured } from './unmeasured';
 import { ledgerGate, registryGate } from './VerificationGates';
@@ -60,6 +61,7 @@ export class RecordAssemblyService {
 			measurements,
 			impact: recordedImpact(context.impact),
 			...recordedObservations(input, Object.values(gates).flat().length === 0),
+			...recordVideoBatches(input.executed.outcomes),
 			budgets: { status: outcome(budgets.report.failures), findings: budgets.report.findings },
 			reasons: recordedReasons(reasons)
 		});

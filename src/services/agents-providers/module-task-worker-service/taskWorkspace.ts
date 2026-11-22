@@ -5,8 +5,11 @@ import type {
 } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { ModuleTaskWorktreeAdapter } from '../../../adapters/agents-providers/ModuleTaskWorktreeAdapter';
-import { resolve } from 'node:path';
+import { resolve, join } from 'node:path';
+import { existsSync } from 'node:fs';
+import { symlink } from 'node:fs/promises';
 import { pendingTaskResult, taskWrites } from './taskClaim';
+import { FrameFlagService } from '../../verification-evidence/FrameFlagService';
 import { completeModule, moduleCompletionContext } from '../completion-hooks/moduleCompletion';
 import type { ModuleCompletionContext } from '../completion-hooks/moduleCompletion.types';
 export async function taskWorkspace(root: string, task: ModuleTask, selection: TaskSelection) {
@@ -16,6 +19,34 @@ export async function taskWorkspace(root: string, task: ModuleTask, selection: T
 		...pendingTaskResult(selection, worktree),
 		attempt: task.claim!.token,
 		sourceCommit: task.repairCommit ?? task.sourceCommit
+	};
+}
+
+/** Share installed dependencies without moving worker output into the common checkout. */
+export async function prepareTaskWorkspace(root: string, worktree: string): Promise<void> {
+	const source = join(root, 'node_modules'),
+		target = join(worktree, 'node_modules');
+	if (existsSync(source) && !existsSync(target)) await symlink(source, target, 'dir');
+}
+
+/** Pending frame feedback follows ownership into each isolated attempt. */
+export async function taskFrameInputs(
+	root: string,
+	task: ModuleTask,
+	worktree: string,
+	prompt: string
+) {
+	const feedback = await new FrameFlagService(root).feedback(
+		task.module.id,
+		join(worktree, '.cache/harness/frame-inputs')
+	);
+	return {
+		images: feedback.images,
+		prompt: feedback.text
+			? prompt +
+				'\n\nReview every flagged frame. Address each pending flag in the replacement recording.\n' +
+				feedback.text
+			: prompt
 	};
 }
 export async function snapshotTaskWork(

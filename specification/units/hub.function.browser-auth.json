@@ -37,7 +37,7 @@
 		"outputs": [
 			{
 				"name": "browserAuth",
-				"type": "unknown",
+				"type": "{ status: () => Promise<AuthStatus>; challenge: () => Promise<LoginChallenge>; google: (credential: string, csrf: string) => Promise<SignInResult>; emailStart: () => Promise<SignInResult>; emailVerify: (code: string) => Promise<SignInResult>; logout: () => Promise<{ ok: boolean; }>; nativeRequest: (handoffId: string) => Promise<NativeRequest>; nativeApprove: (handoffId: string, userCode: string) => Promise<{ approved: boolean; resource: string; }>; }",
 				"description": "A set of seven methods that delegate to BrowserApi for status and challenge requests, Google and email sign-in, logout, and native handoff polling and approval. Each method returns its API call's typed promise, sends the request fields shown in its endpoint call, and leaves identity decisions to the server."
 			}
 		],
@@ -57,7 +57,7 @@
 				"outputs": [
 					{
 						"name": "browserAuth",
-						"type": "unknown",
+						"type": "{ status: () => Promise<AuthStatus>; challenge: () => Promise<LoginChallenge>; google: (credential: string, csrf: string) => Promise<SignInResult>; emailStart: () => Promise<SignInResult>; emailVerify: (code: string) => Promise<SignInResult>; logout: () => Promise<{ ok: boolean; }>; nativeRequest: (handoffId: string) => Promise<NativeRequest>; nativeApprove: (handoffId: string, userCode: string) => Promise<{ approved: boolean; resource: string; }>; }",
 						"description": "A set of seven methods that delegate to BrowserApi for status and challenge requests, Google and email sign-in, logout, and native handoff polling and approval. Each method returns its API call's typed promise, sends the request fields shown in its endpoint call, and leaves identity decisions to the server."
 					}
 				],

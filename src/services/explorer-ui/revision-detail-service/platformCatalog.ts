@@ -2,6 +2,7 @@
 import { z } from 'zod';
 import type { SourceTree } from '../../../core/development-tooling/sourceTypes';
 import { platformIds, type PlatformCatalog } from '../../../core/explorer-ui/Platform.types';
+import { InvalidPlatformCatalogManifestError } from './platformCatalog.types';
 
 const text = z.string().trim().min(1).max(2000);
 const path = text.refine(
@@ -50,9 +51,11 @@ export async function readPlatformCatalog(tree: SourceTree): Promise<PlatformCat
 		return { entries: [], gap: 'No platform configuration is recorded at this revision.' };
 	try {
 		const source = await tree.read(file);
-		if (source.length > 131072) throw new Error('Manifest exceeds 128 KiB.');
+		if (source.length > 131072)
+			throw new InvalidPlatformCatalogManifestError('Manifest exceeds 128 KiB.');
 		const parsed = manifest.safeParse(JSON.parse(source));
-		if (!parsed.success) throw new Error('Manifest does not match the platform schema.');
+		if (!parsed.success)
+			throw new InvalidPlatformCatalogManifestError('Manifest does not match the platform schema.');
 		return { entries: parsed.data.platforms };
 	} catch {
 		return {

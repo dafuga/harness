@@ -1,3 +1,4 @@
+import { existsSync, readFileSync } from 'node:fs';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
@@ -45,15 +46,15 @@ export async function assertAtomCompiler(): Promise<void> {
 		)) {
 			const atom = nativeAtoms.find((atom) => file.path.endsWith('/' + atom.name + '.svelte'))!;
 			const slug = atom.name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
-			await measureWorkload(
-				`reports.component.shared-primitives-atoms-${slug}`,
-				'compile-native-atom',
-				() => {
-					expect(
-						compile(file.contents, { filename: join(root, file.path), dev: false }).js.code.length
-					).toBeGreaterThan(0);
-				}
-			);
+			const unit = `reports.component.shared-primitives-atoms-${slug}`;
+			const attribution = isActiveUnit(unit)
+				? { unit, workload: 'compile-native-atom' }
+				: { unit: owner, workload: `compile-native-atom-${slug}` };
+			await measureWorkload(attribution.unit, attribution.workload, () => {
+				expect(
+					compile(file.contents, { filename: join(root, file.path), dev: false }).js.code.length
+				).toBeGreaterThan(0);
+			});
 		}
 		await assertNativeParity(root);
 		for (const [name, source] of Object.entries(atomicRuntimeSources)) {
@@ -68,6 +69,14 @@ export async function assertAtomCompiler(): Promise<void> {
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
+}
+
+const owner = 'template.project';
+
+/** Only a committed, active Reports manifest may own an atom measurement; others belong to the template. */
+function isActiveUnit(id: string): boolean {
+	const path = join(import.meta.dirname, '../../../specification/units', id + '.json');
+	return existsSync(path) && JSON.parse(readFileSync(path, 'utf8')).status === 'active';
 }
 
 async function assertNativeParity(root: string): Promise<void> {

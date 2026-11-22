@@ -10,25 +10,39 @@ import type {
 	ThreadMessage,
 	HistoryEvent
 } from '../../models/development-tooling/Desktop.types';
+import { HostedActorIdentityError } from './HostedActorIdentityError';
+import { HostedActorRequiredError } from './HostedActorRequiredError';
+import { HostedCommentAnchorMismatchError } from './HostedCommentAnchorMismatchError';
+import { HostedCommentIdentityMismatchError } from './HostedCommentIdentityMismatchError';
+import { HostedCommentNotAcknowledgedError } from './HostedCommentNotAcknowledgedError';
+import { HostedThreadMismatchError } from './HostedThreadMismatchError';
+import { InvalidHostedEntityError } from './InvalidHostedEntityError';
+import { InvalidHostedHistoryEventError } from './InvalidHostedHistoryEventError';
+import { InvalidHostedHistoryPageError } from './InvalidHostedHistoryPageError';
+import { InvalidHostedMessagesError } from './InvalidHostedMessagesError';
+import { InvalidHostedProjectError } from './InvalidHostedProjectError';
+import { InvalidHostedProjectsError } from './InvalidHostedProjectsError';
+import { InvalidHostedResponseRecordError } from './InvalidHostedResponseRecordError';
+import { InvalidHostedSnapshotError } from './InvalidHostedSnapshotError';
 export function responseRecord(value: unknown): Record<string, unknown> {
 	if (!value || typeof value !== 'object' || Array.isArray(value))
-		throw new Error('Invalid hosted response.');
+		throw new InvalidHostedResponseRecordError('Invalid hosted response.');
 	return value as Record<string, unknown>;
 }
 export class RemoteProjectResponseValidator {
 	actor(value: unknown, principalId: string): void {
 		const candidate = responseRecord(value).actor;
-		if (!candidate) throw new Error('A verified hosted session is required.');
+		if (!candidate) throw new HostedActorRequiredError('A verified hosted session is required.');
 		const actor = responseRecord(candidate);
 		if (actor.id !== principalId || actor.emailVerified !== true)
-			throw new Error('Hosted session does not match the signed-in principal.');
+			throw new HostedActorIdentityError('Hosted session does not match the signed-in principal.');
 	}
 	projects(value: unknown): DesktopProject[] {
-		if (!Array.isArray(value)) throw new Error('Invalid hosted projects.');
+		if (!Array.isArray(value)) throw new InvalidHostedProjectsError('Invalid hosted projects.');
 		return value.map((item) => {
 			const project = responseRecord(item);
 			if (typeof project.id !== 'string' || typeof project.name !== 'string')
-				throw new Error('Invalid hosted project.');
+				throw new InvalidHostedProjectError('Invalid hosted project.');
 			return { id: project.id, name: project.name, kind: 'shared' };
 		});
 	}
@@ -45,7 +59,7 @@ export class RemoteProjectResponseValidator {
 			!Array.isArray(snapshot.branches) ||
 			!Array.isArray(snapshot.commits)
 		)
-			throw new Error('Invalid hosted snapshot.');
+			throw new InvalidHostedSnapshotError('Invalid hosted snapshot.');
 		return { ...snapshot, writable: false } as unknown as ProjectSnapshot;
 	}
 	entity(value: unknown, entityId: string): EntityDetail {
@@ -56,7 +70,7 @@ export class RemoteProjectResponseValidator {
 			!Array.isArray(entity.sources) ||
 			!Array.isArray(entity.threads)
 		)
-			throw new Error('Invalid hosted entity.');
+			throw new InvalidHostedEntityError('Invalid hosted entity.');
 		return entity as unknown as EntityDetail;
 	}
 	messages(value: unknown): ThreadMessage[] {
@@ -64,7 +78,7 @@ export class RemoteProjectResponseValidator {
 			!Array.isArray(value) ||
 			value.some((message) => typeof message?.id !== 'string' || typeof message?.text !== 'string')
 		)
-			throw new Error('Invalid hosted messages.');
+			throw new InvalidHostedMessagesError('Invalid hosted messages.');
 		return value as ThreadMessage[];
 	}
 	history(value: unknown): { entries: HistoryEvent[]; complete: boolean; nextPage: number | null } {
@@ -74,8 +88,9 @@ export class RemoteProjectResponseValidator {
 			typeof page.complete !== 'boolean' ||
 			(page.nextPage !== null && (!Number.isInteger(page.nextPage) || Number(page.nextPage) < 1))
 		)
-			throw new Error('Invalid hosted history.');
-		if (!page.entries.every(validHistoryEvent)) throw new Error('Invalid hosted history event.');
+			throw new InvalidHostedHistoryPageError('Invalid hosted history.');
+		if (!page.entries.every(validHistoryEvent))
+			throw new InvalidHostedHistoryEventError('Invalid hosted history event.');
 		return page as unknown as {
 			entries: HistoryEvent[];
 			complete: boolean;
@@ -90,8 +105,9 @@ export class RemoteProjectResponseValidator {
 			!/^[a-f0-9]{40}$/.test(thread.collaborationCommit) ||
 			!Array.isArray(thread.comments)
 		)
-			throw new Error('Hosted comment was not acknowledged.');
-		if (input.threadId && thread.id !== input.threadId) throw new Error('Hosted thread mismatch.');
+			throw new HostedCommentNotAcknowledgedError('Hosted comment was not acknowledged.');
+		if (input.threadId && thread.id !== input.threadId)
+			throw new HostedThreadMismatchError('Hosted thread mismatch.');
 		this.commentIdentity(thread, input, principalId);
 		return thread as unknown as CommittedThread;
 	}
@@ -106,7 +122,7 @@ export class RemoteProjectResponseValidator {
 				JSON.stringify(anchor[key]) !==
 				JSON.stringify(input.anchor[key as keyof typeof input.anchor])
 			)
-				throw new Error('Hosted comment anchor mismatch.');
+				throw new HostedCommentAnchorMismatchError('Hosted comment anchor mismatch.');
 		const message = (thread.comments as CommittedThread['comments']).find(
 			(item) => item.requestId === input.requestId
 		);
@@ -116,7 +132,7 @@ export class RemoteProjectResponseValidator {
 			message.actor?.id !== principalId ||
 			message.actor?.emailVerified !== true
 		)
-			throw new Error('Hosted comment acknowledgment mismatch.');
+			throw new HostedCommentIdentityMismatchError('Hosted comment acknowledgment mismatch.');
 	}
 }
 

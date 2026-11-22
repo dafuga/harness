@@ -48,19 +48,19 @@
 		"outputs": [
 			{
 				"name": "EMAIL_CODE_LENGTH",
-				"type": "unknown",
+				"type": "8",
 				"description": "The length of the email proof code, fixed at 8 characters by the constant in HubAuthValues.ts. It is declared with const, so the value cannot change at runtime.",
 				"examples": [8]
 			},
 			{
 				"name": "NATIVE_AUDIENCE",
-				"type": "unknown",
+				"type": "\"harness-desktop\"",
 				"description": "The audience string 'harness-desktop' defined in HubAuthValues.ts. NativeAuthorization.audience is typed as this constant, so that field can only hold this value.",
 				"examples": ["harness-desktop"]
 			},
 			{
 				"name": "NATIVE_ACTION",
-				"type": "unknown",
+				"type": "\"native-session\"",
 				"description": "The action string 'native-session' defined in HubAuthValues.ts and re-exported by accounts-access/HubAuth.types.ts. No type in these three files references it, so this unit does not show where it applies.",
 				"examples": ["native-session"]
 			}

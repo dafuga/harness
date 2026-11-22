@@ -4,6 +4,7 @@ import type { ComponentManifest } from '../../../core/development-tooling/unitTy
 
 const bootstrap = new Set([
 	'function.unit-types',
+	'function.verification-evidence-video-clip-schema',
 	'function.verify-types',
 	'function.comparison-types'
 ]);

@@ -49,12 +49,12 @@
 		"outputs": [
 			{
 				"name": "hubEvidenceOrigin",
-				"type": "unknown",
+				"type": "Promise<HubAttachedRecord | undefined>",
 				"description": "Loaded attachment for the first verification line whose record ID equals id, but only when the parsed attached record has that same ID. Returns undefined when no such line exists or the loaded record does not match."
 			},
 			{
 				"name": "hubEvidenceViews",
-				"type": "unknown",
+				"type": "Promise<RecordView[]>",
 				"description": "Array of non-null projected record views for statuses whose loaded attachments contain a record; statuses without one are filtered out. It carries status validity and problems, and resolves capture media only when the originating record has the same path, SHA-256, and byte count; unresolved captures retain a gap.",
 				"examples": [
 					[]
@@ -63,8 +63,8 @@
 		],
 		"errors": [
 			{
-				"name": "unknown",
-				"type": "thrown",
+				"name": "History or record load rejection",
+				"type": "propagated",
 				"description": "The asynchronous functions propagate failures from verification-history queries, attached-record loads, and record-view construction without catching or translating them; the rejection reason is not constrained by this implementation."
 			}
 		],
@@ -92,7 +92,7 @@
 				"outputs": [
 					{
 						"name": "hubEvidenceViews",
-						"type": "unknown",
+						"type": "Promise<import('../../../../../../src/utils/development-tooling/recordView.types').RecordView[]>",
 						"description": "Array of non-null projected record views for statuses whose loaded attachments contain a record; statuses without one are filtered out. It carries status validity and problems, and resolves capture media only when the originating record has the same path, SHA-256, and byte count; unresolved captures retain a gap.",
 						"examples": [
 							[]
@@ -101,8 +101,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "Record load rejection",
+						"type": "propagated",
 						"description": "Rejects with a failure from attached-record loading, referenced-origin lookup, or recordView; Promise.all propagates any item rejection without translation."
 					}
 				],
@@ -128,14 +128,14 @@
 				"outputs": [
 					{
 						"name": "hubEvidenceOrigin",
-						"type": "unknown",
+						"type": "Promise<import('./hubAttachedRecord.types').HubAttachedRecord | undefined>",
 						"description": "Loaded attachment for the first verification line whose record ID equals id, but only when the parsed attached record has that same ID. Returns undefined when no such line exists or the loaded record does not match."
 					}
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "History query rejection",
+						"type": "propagated",
 						"description": "Rejects if history.verifications() or the selected history.attached.load() call rejects; the implementation does not catch or translate the rejection."
 					}
 				],

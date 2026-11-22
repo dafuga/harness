@@ -17,7 +17,7 @@
 		"outputs": [
 			{
 				"name": "GET",
-				"type": "unknown",
+				"type": "Promise<Response>",
 				"description": "The resolved value is a SvelteKit JSON Response containing repository.list()'s resolved value, with Cache-Control set to no-store. The route does not specify the response body's schema; repository.list() determines it."
 			}
 		],
@@ -36,7 +36,7 @@
 				"outputs": [
 					{
 						"name": "GET",
-						"type": "unknown",
+						"type": "Promise<Response>",
 						"description": "The resolved value is a SvelteKit JSON Response containing repository.list()'s resolved value, with Cache-Control set to no-store. The route does not specify the response body's schema; repository.list() determines it."
 					}
 				],

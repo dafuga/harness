@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/validators/development-tooling/IpcRequestValidator.ts"],
-		"symbols": ["IpcRequestValidator", "IpcRequestValidator.parse"]
+		"source": [
+			"packages/desktop/src/validators/development-tooling/IpcRequestValidator.ts",
+			"packages/desktop/src/validators/development-tooling/IpcRequestValidator.types.ts"
+		],
+		"symbols": ["IpcRequestValidator", "IpcRequestValidator.parse", "UnknownDesktopOperationError"]
 	},
 	"contract": {
 		"origin": "declared",

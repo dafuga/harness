@@ -45,9 +45,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root used to locate loop state, Git history notes, and recorded regression proof.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "requireRegressionProof.loop",
@@ -68,9 +66,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root used to locate the loop's retained regression evidence.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "enforceRegressionStep.state",
@@ -80,14 +76,17 @@
 				"examples": [
 					{
 						"name": "regression-issue-428",
+						"goal": "Fix issue 428 with a red-green regression proof",
+						"createdAt": "2026-11-10T14:00:00.000Z",
+						"updatedAt": "2026-11-10T14:05:00.000Z",
 						"enforceOrder": true,
 						"steps": [
 							{
 								"id": "red",
+								"title": "Reproduce the bug with a failing test",
 								"status": "pending"
 							}
-						],
-						"regressionCommits": 0
+						]
 					}
 				]
 			},
@@ -101,9 +100,56 @@
 		],
 		"outputs": [
 			{
-				"name": "Result",
-				"type": "Regression result",
-				"description": "A commit-linked result with the observed outcome and immutable evidence"
+				"name": "recordRegression",
+				"type": "Promise<RegressionRecord>",
+				"description": "Resolves to the RegressionRecord that RegressionProofService.run returns for the request, resolved commit, loop, phase, timeout, and any paired red proof: a commit-linked result with the observed outcome and immutable evidence.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "c41e9a073bd6f25e8a0c17d9f4e3b58c2d07a96eb13f84c57e9a2d106c5b08f4",
+						"loop": "loop-regression-types-07",
+						"phase": "red",
+						"status": "failed",
+						"source": {
+							"commit": "3f9a1c07d2b64e58a19c0d7e46b2f83a5c1e9d06",
+							"tree": "9e02d4b7a13c85f60e7d2b9a4c18f3e0d6a57b21",
+							"parent": "5d8b2e61f0a94c7d3e26b15f8a0c9d4e72b13f6a"
+						},
+						"units": ["function.regression-types"],
+						"tests": ["regressionRecordSchema rejects unknown record fields"],
+						"inputs": [
+							{
+								"path": "src/core/verification-evidence/regressionTypes.test.ts",
+								"hash": "b7e2d05a913c4f68e10d2a7c5f9b3e84d61a0c27"
+							},
+							{
+								"path": "package-lock.json",
+								"hash": "0f4a9c3e7b21d58a6e0c94f2b7d13a8e5c60b9d4"
+							}
+						],
+						"command": "npm test -- src/core/verification-evidence/regressionTypes.test.ts",
+						"assertion": "expected unknown record field 'extra' to be rejected",
+						"profile": "focused",
+						"startedAt": "2026-11-10T14:22:05.000Z",
+						"finishedAt": "2026-11-10T14:22:41.000Z",
+						"exitCode": 1,
+						"log": {
+							"path": "output.log",
+							"sha256": "7a1f3c9e0b5d28467c04e9af1d36b8520e9c7f4a2d18b6355e0af93c7d10b2e8",
+							"bytes": 18432
+						}
+					}
+				]
+			},
+			{
+				"name": "requireRegressionProof",
+				"type": "Promise<void>",
+				"description": "Resolves with undefined after required proof checks pass; steps outside red, implement, green, guard, and verify are ignored."
+			},
+			{
+				"name": "enforceRegressionStep",
+				"type": "Promise<void>",
+				"description": "Resolves with undefined when enforcement is not due or the required proof passes; after a successful starting red check it sets state.regressionCommits to 1."
 			}
 		],
 		"errors": [
@@ -135,8 +181,45 @@
 				"outputs": [
 					{
 						"name": "recordRegression",
-						"type": "unknown",
-						"description": "Resolves to the value returned by RegressionProofService.run for the request, resolved commit, loop, phase, timeout, and any paired red proof; this file does not define that value's JSON shape."
+						"type": "Promise<RegressionRecord>",
+						"description": "Resolves to the RegressionRecord that RegressionProofService.run returns for the request, resolved commit, loop, phase, timeout, and any paired red proof: a commit-linked result with the observed outcome and immutable evidence.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "c41e9a073bd6f25e8a0c17d9f4e3b58c2d07a96eb13f84c57e9a2d106c5b08f4",
+								"loop": "loop-regression-types-07",
+								"phase": "red",
+								"status": "failed",
+								"source": {
+									"commit": "3f9a1c07d2b64e58a19c0d7e46b2f83a5c1e9d06",
+									"tree": "9e02d4b7a13c85f60e7d2b9a4c18f3e0d6a57b21",
+									"parent": "5d8b2e61f0a94c7d3e26b15f8a0c9d4e72b13f6a"
+								},
+								"units": ["function.regression-types"],
+								"tests": ["regressionRecordSchema rejects unknown record fields"],
+								"inputs": [
+									{
+										"path": "src/core/verification-evidence/regressionTypes.test.ts",
+										"hash": "b7e2d05a913c4f68e10d2a7c5f9b3e84d61a0c27"
+									},
+									{
+										"path": "package-lock.json",
+										"hash": "0f4a9c3e7b21d58a6e0c94f2b7d13a8e5c60b9d4"
+									}
+								],
+								"command": "npm test -- src/core/verification-evidence/regressionTypes.test.ts",
+								"assertion": "expected unknown record field 'extra' to be rejected",
+								"profile": "focused",
+								"startedAt": "2026-11-10T14:22:05.000Z",
+								"finishedAt": "2026-11-10T14:22:41.000Z",
+								"exitCode": 1,
+								"log": {
+									"path": "output.log",
+									"sha256": "7a1f3c9e0b5d28467c04e9af1d36b8520e9c7f4a2d18b6355e0af93c7d10b2e8",
+									"bytes": 18432
+								}
+							}
+						]
 					}
 				],
 				"errors": [
@@ -156,9 +239,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root used to locate loop state, Git history notes, and recorded regression proof.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "requireRegressionProof.loop",
@@ -178,7 +259,7 @@
 				"outputs": [
 					{
 						"name": "requireRegressionProof",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Resolves with undefined after required proof checks pass; steps outside red, implement, green, guard, and verify are ignored."
 					}
 				],
@@ -199,9 +280,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root used to locate the loop's retained regression evidence.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "enforceRegressionStep.state",
@@ -211,14 +290,17 @@
 						"examples": [
 							{
 								"name": "regression-issue-428",
+								"goal": "Fix issue 428 with a red-green regression proof",
+								"createdAt": "2026-11-10T14:00:00.000Z",
+								"updatedAt": "2026-11-10T14:05:00.000Z",
 								"enforceOrder": true,
 								"steps": [
 									{
 										"id": "red",
+										"title": "Reproduce the bug with a failing test",
 										"status": "pending"
 									}
-								],
-								"regressionCommits": 0
+								]
 							}
 						]
 					},
@@ -233,7 +315,7 @@
 				"outputs": [
 					{
 						"name": "enforceRegressionStep",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Resolves with undefined when enforcement is not due or the required proof passes; after a successful starting red check it sets state.regressionCommits to 1."
 					}
 				],

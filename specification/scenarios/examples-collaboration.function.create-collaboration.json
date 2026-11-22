@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-collaboration.function.create-collaboration",
+	"title": "collaboration.function.create-collaboration examples",
+	"kind": "headless",
+	"units": ["collaboration.function.create-collaboration"],
+	"builds": [],
+	"states": [
+		{
+			"id": "creates-the-nine-operation-api-without-calling-adapters",
+			"title": "Creates the nine-operation API without calling adapters",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-invalid-invitation-when-invitation-does-not-exist",
+			"title": "Throws invalid-invitation when invitation does not exist",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/collaboration.function.create-collaboration.test.ts",
+			"cwd": "packages/collaboration",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"creates-the-nine-operation-api-without-calling-adapters",
+				"throws-invalid-invitation-when-invitation-does-not-exist"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"creates-the-nine-operation-api-without-calling-adapters",
+				"throws-invalid-invitation-when-invitation-does-not-exist"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"creates-the-nine-operation-api-without-calling-adapters",
+				"throws-invalid-invitation-when-invitation-does-not-exist"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

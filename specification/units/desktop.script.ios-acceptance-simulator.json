@@ -24,6 +24,7 @@
 			"inspectorSocket",
 			"keychainGroups",
 			"shutdown",
+			"IosAcceptanceSimulatorError",
 			"Device",
 			"Runtime"
 		]
@@ -122,13 +123,13 @@
 		"outputs": [
 			{
 				"name": "deviceName",
-				"type": "unknown",
+				"type": "string",
 				"description": "Name reserved for the native acceptance simulator.",
 				"examples": ["Harness Native Acceptance"]
 			},
 			{
 				"name": "bundleId",
-				"type": "unknown",
+				"type": "string",
 				"description": "Bundle identifier used when launching the app and changing its camera permission.",
 				"examples": ["com.dafuga.harness"]
 			},

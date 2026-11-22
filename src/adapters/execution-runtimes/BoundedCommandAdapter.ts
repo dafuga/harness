@@ -1,7 +1,14 @@
 // @harness-uid u_34r2rrehaa
 import { spawn, spawnSync, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import { basename } from 'node:path';
-import type { BoundedCommandOptions, BoundedCommandResult } from './BoundedCommandAdapter.types';
+import {
+	type BoundedCommandOptions,
+	type BoundedCommandResult
+} from './BoundedCommandAdapter.types';
+import { CommandAbortedError } from './CommandAbortedError';
+import { CommandBoundsError } from './CommandBoundsError';
+import { CommandOutputLimitError } from './CommandOutputLimitError';
+import { DirectProbeRestrictionError } from './DirectProbeRestrictionError';
 import { commandDeadlines } from './bounded-command-adapter/commandDeadlines';
 import {
 	BoundedCommandFailure,
@@ -55,7 +62,7 @@ function limits(options: BoundedCommandOptions) {
 			(value) => Number.isSafeInteger(value) && value > 0 && value <= 2147483647
 		)
 	)
-		throw new Error('Command bounds must be positive finite integers.');
+		throw new CommandBoundsError('Command bounds must be positive finite integers.');
 	return { timeout, maxBuffer };
 }
 function collect(
@@ -74,11 +81,12 @@ function collect(
 			() => stop(timeoutFailure(commandLabel(child.spawnfile), timeout)),
 			timeout
 		);
-		const abort = () => stop(options.signal?.reason ?? new Error('Command aborted.'));
+		const abort = () => stop(options.signal?.reason ?? new CommandAbortedError('Command aborted.'));
 		options.signal?.addEventListener('abort', abort, { once: true });
 		for (const stream of ['stdout', 'stderr'] as const) {
 			child[stream].on('data', (chunk: Buffer) => {
-				if (!output.append(stream, chunk)) stop(new Error('Command output limit exceeded.'));
+				if (!output.append(stream, chunk))
+					stop(new CommandOutputLimitError('Command output limit exceeded.'));
 			});
 		}
 		child.once('error', (error) => {
@@ -162,7 +170,7 @@ export class BoundedCommandAdapter {
 			timeoutMs: options.timeoutMs ?? commandDeadlines.syncProbeMs
 		});
 		if (!isDirectProbe(command, args))
-			throw new Error(
+			throw new DirectProbeRestrictionError(
 				'Synchronous execution is restricted to direct probes; use run for workloads.'
 			);
 		const result = spawnSync(command, args, {

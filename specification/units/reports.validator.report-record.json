@@ -8,8 +8,35 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/validators/reports-media/ReportRecordValidator.ts"],
-		"symbols": ["ReportRecordValidator", "ReportRecordValidator.validate"]
+		"source": [
+			"packages/reports/src/validators/reports-media/InvalidAcceptanceCriteriaError.ts",
+			"packages/reports/src/validators/reports-media/InvalidAudioDurationError.ts",
+			"packages/reports/src/validators/reports-media/InvalidAudioTranscriptError.ts",
+			"packages/reports/src/validators/reports-media/InvalidEvidencePhaseError.ts",
+			"packages/reports/src/validators/reports-media/InvalidEvidenceStatusError.ts",
+			"packages/reports/src/validators/reports-media/InvalidRecordStatusError.ts",
+			"packages/reports/src/validators/reports-media/MissingEvidencePathError.ts",
+			"packages/reports/src/validators/reports-media/MissingRecordDataError.ts",
+			"packages/reports/src/validators/reports-media/MissingRecordTitleError.ts",
+			"packages/reports/src/validators/reports-media/MissingSummaryTextError.ts",
+			"packages/reports/src/validators/reports-media/ReportRecordValidator.ts",
+			"packages/reports/src/validators/reports-media/UnsupportedRecordKindError.ts"
+		],
+		"symbols": [
+			"InvalidAcceptanceCriteriaError",
+			"InvalidAudioDurationError",
+			"InvalidAudioTranscriptError",
+			"InvalidEvidencePhaseError",
+			"InvalidEvidenceStatusError",
+			"InvalidRecordStatusError",
+			"MissingEvidencePathError",
+			"MissingRecordDataError",
+			"MissingRecordTitleError",
+			"MissingSummaryTextError",
+			"ReportRecordValidator",
+			"ReportRecordValidator.validate",
+			"UnsupportedRecordKindError"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -44,7 +71,7 @@
 		"outputs": [
 			{
 				"name": "ReportRecordValidator.validate",
-				"type": "unknown",
+				"type": "void",
 				"description": "The method has no result payload and returns undefined after the record passes validation."
 			}
 		],
@@ -90,7 +117,7 @@
 				"outputs": [
 					{
 						"name": "ReportRecordValidator.validate",
-						"type": "unknown",
+						"type": "void",
 						"description": "The method has no result payload and returns undefined after the record passes validation."
 					}
 				],

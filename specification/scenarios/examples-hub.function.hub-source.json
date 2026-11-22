@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.function.hub-source",
+	"title": "hub.function.hub-source examples",
+	"kind": "headless",
+	"units": ["hub.function.hub-source"],
+	"builds": [],
+	"states": [
+		{
+			"id": "hubsource-pins-the-requested-ref-and-records-nullable-revisi",
+			"title": "hubSource pins the requested ref and records nullable revisions",
+			"coverage": "required"
+		},
+		{
+			"id": "hubread-rejects-a-path-without-an-eligible-regular-blob",
+			"title": "hubRead rejects a path without an eligible regular blob",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.function.hub-source.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"hubsource-pins-the-requested-ref-and-records-nullable-revisi",
+				"hubread-rejects-a-path-without-an-eligible-regular-blob"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"hubsource-pins-the-requested-ref-and-records-nullable-revisi",
+				"hubread-rejects-a-path-without-an-eligible-regular-blob"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"hubsource-pins-the-requested-ref-and-records-nullable-revisi",
+				"hubread-rejects-a-path-without-an-eligible-regular-blob"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

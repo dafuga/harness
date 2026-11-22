@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.service.request-session",
+	"title": "hub.service.request-session examples",
+	"kind": "headless",
+	"units": ["hub.service.request-session"],
+	"builds": [],
+	"states": [
+		{
+			"id": "resolves-a-live-session-on-its-own-channel-and-scope",
+			"title": "resolves a live session on its own channel and scope",
+			"coverage": "required"
+		},
+		{
+			"id": "browser-resolves-the-cookie-session-and-rejects-bearer",
+			"title": "browser resolves the cookie session and rejects bearer",
+			"coverage": "required"
+		},
+		{
+			"id": "required-resolves-an-in-scope-session-or-throws",
+			"title": "required resolves an in-scope session or throws",
+			"coverage": "required"
+		},
+		{
+			"id": "crossorigin-flags-unsafe-methods-from-another-origin",
+			"title": "crossOrigin flags unsafe methods from another origin",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.service.request-session.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"resolves-a-live-session-on-its-own-channel-and-scope",
+				"browser-resolves-the-cookie-session-and-rejects-bearer",
+				"required-resolves-an-in-scope-session-or-throws",
+				"crossorigin-flags-unsafe-methods-from-another-origin"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"resolves-a-live-session-on-its-own-channel-and-scope",
+				"browser-resolves-the-cookie-session-and-rejects-bearer",
+				"required-resolves-an-in-scope-session-or-throws",
+				"crossorigin-flags-unsafe-methods-from-another-origin"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"resolves-a-live-session-on-its-own-channel-and-scope",
+				"browser-resolves-the-cookie-session-and-rejects-bearer",
+				"required-resolves-an-in-scope-session-or-throws",
+				"crossorigin-flags-unsafe-methods-from-another-origin"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

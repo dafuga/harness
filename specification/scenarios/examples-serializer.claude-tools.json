@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-serializer.claude-tools",
+	"title": "serializer.claude-tools examples",
+	"kind": "headless",
+	"units": ["serializer.claude-tools"],
+	"builds": [],
+	"states": [
+		{
+			"id": "builds-a-codex-sdk-server-from-a-function-definition",
+			"title": "Builds a codex SDK server from a function definition",
+			"coverage": "required"
+		},
+		{
+			"id": "builds-a-codex-sdk-server-from-a-custom-definition",
+			"title": "Builds a codex SDK server from a custom definition",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-definition-whose-type-is-not-function-or-custom",
+			"title": "Rejects a definition whose type is not function or custom",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/serializer.claude-tools.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"builds-a-codex-sdk-server-from-a-function-definition",
+				"builds-a-codex-sdk-server-from-a-custom-definition",
+				"rejects-a-definition-whose-type-is-not-function-or-custom"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"builds-a-codex-sdk-server-from-a-function-definition",
+				"builds-a-codex-sdk-server-from-a-custom-definition",
+				"rejects-a-definition-whose-type-is-not-function-or-custom"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"builds-a-codex-sdk-server-from-a-function-definition",
+				"builds-a-codex-sdk-server-from-a-custom-definition",
+				"rejects-a-definition-whose-type-is-not-function-or-custom"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

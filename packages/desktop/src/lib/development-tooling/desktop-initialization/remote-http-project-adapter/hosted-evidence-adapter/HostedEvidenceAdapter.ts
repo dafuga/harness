@@ -1,5 +1,5 @@
 // @harness-uid u_3gvi5wxxbc
-import type { Query } from './HostedEvidenceAdapter.types';
+import { InvalidHostedEvidenceAnswerError, type Query } from './HostedEvidenceAdapter.types';
 import type { EvidenceArtifactQuery } from '../../../../../models/verification-evidence/DesktopEvidence.types';
 import {
 	HostedHttpAdapter,
@@ -27,7 +27,9 @@ export class HostedEvidenceAdapter {
 		try {
 			return JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
 		} catch {
-			throw new Error('This app does not accept the hosted evidence answer.');
+			throw new InvalidHostedEvidenceAnswerError(
+				'This app does not accept the hosted evidence answer.'
+			);
 		}
 	}
 	artifact(query: EvidenceArtifactQuery & { projectId: string }) {

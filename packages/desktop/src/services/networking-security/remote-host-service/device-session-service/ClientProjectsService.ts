@@ -1,5 +1,9 @@
 // @harness-uid u_6ldic3kgck
-import type { ClientProject, ClientProjectsOptions } from './ClientProjectsService.types';
+import {
+	ClientProjectsSessionEndedError,
+	type ClientProject,
+	type ClientProjectsOptions
+} from './ClientProjectsService.types';
 import { desktopBridge } from '../../../../lib/development-tooling/desktop-bridge/desktopBridge';
 import { DesktopRunService } from '../../../agents-providers/desktop-run-service/DesktopRunService';
 import { ProjectSessionService } from '../../../projects-sessions/project-session-service/ProjectSessionService';
@@ -20,7 +24,7 @@ export class ClientProjectsService {
 	}
 	/** Opens a registered project once for this client; concurrent requests share the opening. */
 	use(projectId: string): Promise<ClientProject> {
-		if (this.over) return Promise.reject(new Error(ended));
+		if (this.over) return Promise.reject(new ClientProjectsSessionEndedError(ended));
 		const known = this.opening.get(projectId);
 		if (known) return known;
 		const opening = this.open(projectId);
@@ -47,7 +51,7 @@ export class ClientProjectsService {
 		 * client ended meanwhile, what was opened is dropped here: no run service, no bridge, no
 		 * entry. A write could not have happened, since nothing was handed out.
 		 */
-		if (this.over) throw new Error(ended);
+		if (this.over) throw new ClientProjectsSessionEndedError(ended);
 		const runs = new DesktopRunService(session, providers, emit, renderMockups);
 		const alive = () => !this.over,
 			bridge = desktopBridge({ session, providers, runs, choose: async () => null, alive });

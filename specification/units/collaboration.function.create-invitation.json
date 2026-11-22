@@ -105,7 +105,7 @@
 		"outputs": [
 			{
 				"name": "createInvitation",
-				"type": "unknown",
+				"type": "Promise<{ id: `${string}-${string}-${string}-${string}-${string}`; projectId: string; expiresAt: string; code: string; }>",
 				"description": "Resolves to an object with a random UUID invitation ID, the project UUID, an ISO expiry exactly 24 hours after the configured or system clock, and the 64-character lowercase hexadecimal plaintext code. The repository stores the code's SHA-256 digest with acceptedBy set to null, so the returned code is needed to accept the invitation.",
 				"examples": [
 					{
@@ -118,7 +118,7 @@
 			},
 			{
 				"name": "acceptInvitation",
-				"type": "unknown",
+				"type": "Promise<ProjectSummary>",
 				"description": "Resolves to the project summary with the actor's role after acceptance. It creates a member only when none exists, retains an existing member's role, and marks the invitation accepted.",
 				"examples": [
 					{
@@ -140,7 +140,7 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "Error",
 				"type": "thrown",
 				"description": "The implementation throws plain Error objects with codes invalid-input, forbidden, invalid-invitation, or conflict; conflict follows five failed compare-and-swap attempts. Repository and Web Crypto rejections propagate, and creation can throw a RangeError if the configured clock produces an invalid date."
 			}
@@ -197,7 +197,7 @@
 				"outputs": [
 					{
 						"name": "createInvitation",
-						"type": "unknown",
+						"type": "Promise<{ id: `${string}-${string}-${string}-${string}-${string}`; projectId: string; expiresAt: string; code: string; }>",
 						"description": "Resolves to an object with a random UUID invitation ID, the project UUID, an ISO expiry exactly 24 hours after the configured or system clock, and the 64-character lowercase hexadecimal plaintext code. The repository stores the code's SHA-256 digest with acceptedBy set to null, so the returned code is needed to accept the invitation.",
 						"examples": [
 							{
@@ -211,7 +211,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "Error",
 						"type": "thrown",
 						"description": "Throws a plain Error with code invalid-input for invalid actor, invitation input, or stored records, forbidden when the actor is not an owner of the project, and conflict after five failed compare-and-swap attempts. Repository and Web Crypto rejections propagate, and an invalid clock date can make ISO expiry formatting throw a RangeError."
 					}
@@ -258,7 +258,7 @@
 				"outputs": [
 					{
 						"name": "acceptInvitation",
-						"type": "unknown",
+						"type": "Promise<import(\"../../../models/planning-collaboration/Collaboration.types\").ProjectSummary>",
 						"description": "Resolves to the project summary with the actor's role after acceptance. It creates a member only when none exists, retains an existing member's role, and marks the invitation accepted.",
 						"examples": [
 							{
@@ -280,7 +280,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "Error",
 						"type": "thrown",
 						"description": "Throws a plain Error with code invalid-input for invalid actor, acceptance input, or stored records, invalid-invitation when no matching usable invitation exists or its code, normalized email, expiry, or project check fails, and conflict after five failed compare-and-swap attempts. Repository and Web Crypto rejections propagate."
 					}

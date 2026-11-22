@@ -13,6 +13,7 @@ import {
 	parse,
 	sha
 } from '../planning-collaboration/parseCollaborationInput';
+import { CorruptCacheError } from './cacheKey.types';
 const reference = z.string().min(1).max(1024);
 const schema = z.strictObject({
 	collaborationRevision: sha.nullable().default(null),
@@ -46,7 +47,7 @@ export async function readCache(
 			(await digest(entry.bytes)) !== entry.sha256 ||
 			(identity.artifactHash && identity.artifactHash !== entry.sha256)
 		)
-			throw new Error('Corrupt cache');
+			throw new CorruptCacheError('Corrupt cache');
 		return new Uint8Array(entry.bytes);
 	} catch {
 		await cache.delete(key);

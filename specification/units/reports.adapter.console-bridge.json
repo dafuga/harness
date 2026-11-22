@@ -17,7 +17,8 @@
 			"ConsoleBridgeAdapter.connect",
 			"ConsoleBridgeAdapter.bridge",
 			"ConsoleBridgeAdapter.close",
-			"EventBatch"
+			"EventBatch",
+			"ConsoleBridgeError"
 		]
 	},
 	"contract": {
@@ -124,7 +125,7 @@
 			},
 			{
 				"name": "ConsoleBridgeAdapter.close",
-				"type": "unknown",
+				"type": "void",
 				"description": "Always undefined, because close() has no return statement. close() advances the generation counter so an in-flight connect rejects, stops run polling, sends a disconnect for the current token without awaiting it, and then clears the token and the memoized connection."
 			}
 		],
@@ -313,7 +314,7 @@
 				"outputs": [
 					{
 						"name": "ConsoleBridgeAdapter.close",
-						"type": "unknown",
+						"type": "void",
 						"description": "Always undefined, because close() has no return statement. close() advances the generation counter so an in-flight connect rejects, stops run polling, sends a disconnect for the current token without awaiting it, and then clears the token and the memoized connection."
 					}
 				],

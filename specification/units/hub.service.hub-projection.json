@@ -352,7 +352,7 @@
 		"outputs": [
 			{
 				"name": "HubProjectionService.evidence",
-				"type": "unknown",
+				"type": "Promise<EntityEvidenceResult>",
 				"description": "Resolves to the recorded scope, cache identity, entity evidence, and behavior projection for the selected entity and revision. Current mode reports the branch tip alone; commit mode compares the selected commit with its exact first parent, and answers over 16 MiB are rejected rather than truncated.",
 				"examples": [
 					{
@@ -441,12 +441,12 @@
 			},
 			{
 				"name": "HubProjectionService.artifact",
-				"type": "unknown",
+				"type": "Promise<EvidenceArtifactResult>",
 				"description": "Resolves to the verified capture bytes, media type, and SHA-256 named by the evidence query. The bytes are binary and limited to 11 MiB, so no JSON example is supplied."
 			},
 			{
 				"name": "HubProjectionService.snapshot",
-				"type": "unknown",
+				"type": "Promise<ProjectSnapshot>",
 				"description": "Resolves to a read-only snapshot containing the selected project revision, branch and commit lists, catalog entities, capabilities, and remote cache provenance. A missing branch or a commit that does not resolve to the requested revision is rejected.",
 				"examples": [
 					{
@@ -509,7 +509,7 @@
 			},
 			{
 				"name": "HubProjectionService.registry",
-				"type": "unknown",
+				"type": "Promise<{ commit: string; units: ComponentManifest[] }>",
 				"description": "Resolves to the source commit and the unit records parsed from that committed tree. Invalid or duplicate unit records are rejected.",
 				"examples": [
 					{
@@ -520,7 +520,7 @@
 			},
 			{
 				"name": "HubProjectionService.entity",
-				"type": "unknown",
+				"type": "Promise<EntityDetail>",
 				"description": "Resolves to the catalog entity detail for a unit or plan, with its contract, documentation, owned source paths, relationships, design versions, threads, and one-page history. Shared thread count is calculated from the collaboration API response for the same entity and commit.",
 				"examples": [
 					{
@@ -582,7 +582,7 @@
 			},
 			{
 				"name": "HubProjectionService.history",
-				"type": "unknown",
+				"type": "Promise<{ entries: HistoryEvent[]; complete: boolean; nextPage: number | null; }>",
 				"description": "Resolves to one page of commit history for the selected unit source paths and plan path, with completeness and next-page metadata. The history adapter supplies at most 20 commits per page.",
 				"examples": [
 					{
@@ -604,7 +604,7 @@
 			},
 			{
 				"name": "HubProjectionService.source",
-				"type": "unknown",
+				"type": "Promise<{ path: string; text: string; }>",
 				"description": "Resolves to the requested owned repository path and the UTF-8 text read from its committed blob. The path is accepted only when it belongs to the selected unit and names a regular blob.",
 				"examples": [
 					{
@@ -615,7 +615,7 @@
 			},
 			{
 				"name": "HubProjectionService.image",
-				"type": "unknown",
+				"type": "Promise<Uint8Array<ArrayBufferLike>>",
 				"description": "Resolves to binary PNG bytes for the requested plan version and image digest after the stored byte length, PNG structure, and dimensions are checked. The decoded scanline limit is 32 MiB, and the binary bytes have no JSON example."
 			},
 			{
@@ -742,7 +742,7 @@
 				"outputs": [
 					{
 						"name": "HubProjectionService.evidence",
-						"type": "unknown",
+						"type": "Promise<import('../../../../../../desktop/src/models/verification-evidence/DesktopEvidence.types').EntityEvidenceResult>",
 						"description": "Resolves to the recorded scope, cache identity, entity evidence, and behavior projection for the selected entity and revision. Current mode reports the branch tip alone; commit mode compares the selected commit with its exact first parent, and answers over 16 MiB are rejected rather than truncated.",
 						"examples": [
 							{
@@ -910,7 +910,7 @@
 				"outputs": [
 					{
 						"name": "HubProjectionService.artifact",
-						"type": "unknown",
+						"type": "Promise<import('../../../../../../desktop/src/models/verification-evidence/DesktopEvidence.types').EvidenceArtifactResult>",
 						"description": "Resolves to the verified capture bytes, media type, and SHA-256 named by the evidence query. The bytes are binary and limited to 11 MiB, so no JSON example is supplied."
 					}
 				],
@@ -993,7 +993,7 @@
 				"outputs": [
 					{
 						"name": "HubProjectionService.snapshot",
-						"type": "unknown",
+						"type": "Promise<import('../../../../../../desktop/src/models/development-tooling/Desktop.types').ProjectSnapshot>",
 						"description": "Resolves to a read-only snapshot containing the selected project revision, branch and commit lists, catalog entities, capabilities, and remote cache provenance. A missing branch or a commit that does not resolve to the requested revision is rejected.",
 						"examples": [
 							{
@@ -1109,7 +1109,7 @@
 				"outputs": [
 					{
 						"name": "HubProjectionService.registry",
-						"type": "unknown",
+						"type": "Promise<{ commit: string; units: ComponentManifest[] }>",
 						"description": "Resolves to the source commit and the unit records parsed from that committed tree. Invalid or duplicate unit records are rejected.",
 						"examples": [
 							{
@@ -1169,7 +1169,7 @@
 				"outputs": [
 					{
 						"name": "HubProjectionService.entity",
-						"type": "unknown",
+						"type": "Promise<EntityDetail>",
 						"description": "Resolves to the catalog entity detail for a unit or plan, with its contract, documentation, owned source paths, relationships, design versions, threads, and one-page history. Shared thread count is calculated from the collaboration API response for the same entity and commit.",
 						"examples": [
 							{
@@ -1291,7 +1291,7 @@
 				"outputs": [
 					{
 						"name": "HubProjectionService.history",
-						"type": "unknown",
+						"type": "Promise<{ entries: import('../../../../../../desktop/src/models/development-tooling/DesktopEntity.types').HistoryEvent[]; complete: boolean; nextPage: number | null; }>",
 						"description": "Resolves to one page of commit history for the selected unit source paths and plan path, with completeness and next-page metadata. The history adapter supplies at most 20 commits per page.",
 						"examples": [
 							{
@@ -1372,7 +1372,7 @@
 				"outputs": [
 					{
 						"name": "HubProjectionService.source",
-						"type": "unknown",
+						"type": "Promise<{ path: string; text: string; }>",
 						"description": "Resolves to the requested owned repository path and the UTF-8 text read from its committed blob. The path is accepted only when it belongs to the selected unit and names a regular blob.",
 						"examples": [
 							{
@@ -1443,7 +1443,7 @@
 				"outputs": [
 					{
 						"name": "HubProjectionService.image",
-						"type": "unknown",
+						"type": "Promise<Uint8Array<ArrayBufferLike>>",
 						"description": "Resolves to binary PNG bytes for the requested plan version and image digest after the stored byte length, PNG structure, and dimensions are checked. The decoded scanline limit is 32 MiB, and the binary bytes have no JSON example."
 					}
 				],
@@ -1547,7 +1547,7 @@
 				"outputs": [
 					{
 						"name": "HubProjectionService.constructor",
-						"type": "unknown",
+						"type": "HubProjectionService",
 						"description": "The constructor returns a HubProjectionService instance that retains the supplied dependencies and creates its HubEvidenceService reader. This class instance is not JSON-serializable, so no JSON example is supplied."
 					}
 				],

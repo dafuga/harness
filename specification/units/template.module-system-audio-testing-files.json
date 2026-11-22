@@ -20,7 +20,7 @@
 		"outputs": [
 			{
 				"name": "audioTestingFiles",
-				"type": "unknown",
+				"type": "{ path: string; contents: string; }[]",
 				"description": "The module's only export: an array of {path, contents} file records built once when the module loads, containing each browserTestFiles() entry with the first 'tests/e2e/support' in its path replaced by 'tests/e2e/plugin-support', followed by three fixed files (the headless audio Playwright config, the HeadlessAudioService types file and the HeadlessAudioService.ts source). It matters to any code that reads this exported list; the path rewrite changes only the first match in each path, and the contents of the browserTestFiles() entries are defined outside this file.",
 				"examples": [
 					[

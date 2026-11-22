@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-11-16T11:21:55.649Z","name":"queue-eta-help","goal":"Keep lazy and compatibility root command help in the same registered order when adding jobs","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-11-16T11:32:57.534Z","loop":"queue-eta-help","step":"spec","evidence":"Root help order differed between lazy metadata and compatibility registration after adding jobs."}
+{"event":"step.completed","timestamp":"2026-11-16T11:32:58.572Z","loop":"queue-eta-help","step":"coverage","evidence":"Existing generic parity guard caught the issue during broad verification. Strengthened the standard jobs CLI case to require parity before lifecycle actions."}

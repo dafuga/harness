@@ -203,7 +203,7 @@
 				"outputs": [
 					{
 						"name": "ProcessRuntimeAdapter.constructor",
-						"type": "unknown",
+						"type": "ProcessRuntimeAdapter",
 						"description": "Creates the adapter with kind process, the configured or default timeout, and an optional persistent line-process session. The persistent child starts on its first exchange."
 					}
 				],

@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.sqlite-table-sql",
+	"title": "function.sqlite-table-sql examples",
+	"kind": "headless",
+	"units": ["function.sqlite-table-sql"],
+	"builds": [],
+	"states": [
+		{
+			"id": "quotes-valid-sqlite-identifiers-and-rejects-unsafe-names",
+			"title": "Quotes valid SQLite identifiers and rejects unsafe names",
+			"coverage": "required"
+		},
+		{
+			"id": "maps-properties-to-sqlite-columns",
+			"title": "Maps properties to SQLite columns",
+			"coverage": "required"
+		},
+		{
+			"id": "builds-ordered-table-sql-with-mapped-types-and-constraints",
+			"title": "Builds ordered table SQL with mapped types and constraints",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.sqlite-table-sql.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"quotes-valid-sqlite-identifiers-and-rejects-unsafe-names",
+				"maps-properties-to-sqlite-columns",
+				"builds-ordered-table-sql-with-mapped-types-and-constraints"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"quotes-valid-sqlite-identifiers-and-rejects-unsafe-names",
+				"maps-properties-to-sqlite-columns",
+				"builds-ordered-table-sql-with-mapped-types-and-constraints"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"quotes-valid-sqlite-identifiers-and-rejects-unsafe-names",
+				"maps-properties-to-sqlite-columns",
+				"builds-ordered-table-sql-with-mapped-types-and-constraints"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

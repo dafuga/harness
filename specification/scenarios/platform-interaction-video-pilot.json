@@ -1,0 +1,166 @@
+{
+	"schemaVersion": 1,
+	"id": "platform-interaction-video-pilot",
+	"title": "platform interaction video pilot",
+	"kind": "ui",
+	"units": ["reports.component.explorer-ui-explorer-platforms"],
+	"states": [
+		{
+			"id": "hovered",
+			"title": "hovered",
+			"coverage": "required",
+			"motion": "required"
+		},
+		{
+			"id": "picker-open",
+			"title": "picker open",
+			"coverage": "required",
+			"motion": "required"
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 920,
+			"height": 700
+		},
+		{
+			"id": "tablet",
+			"width": 768,
+			"height": 900
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "record-video-pilot",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun packages/reports/tests/e2e/record-video-pilot.ts platform-interaction-video-pilot",
+			"timeoutMs": 600000
+		}
+	],
+	"builds": ["reports"],
+	"evidence": [
+		{
+			"id": "motion",
+			"kind": "video",
+			"states": ["hovered", "picker-open"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"build": "reports",
+			"required": true
+		}
+	],
+	"video": {
+		"schemaVersion": 1,
+		"viewports": [
+			{
+				"id": "desktop",
+				"width": 920,
+				"height": 700
+			},
+			{
+				"id": "tablet",
+				"width": 768,
+				"height": 900
+			},
+			{
+				"id": "mobile",
+				"width": 390,
+				"height": 844
+			}
+		],
+		"clips": [
+			{
+				"id": "platform-card-hover",
+				"unit": "reports.component.explorer-ui-explorer-platforms",
+				"state": "hovered",
+				"viewports": ["desktop", "tablet", "mobile"],
+				"inputs": [
+					"packages/reports/src/components/explorer-ui/ExplorerPlatforms.svelte",
+					"packages/reports/tests/e2e/record-video-pilot.ts"
+				],
+				"script": {
+					"path": "packages/reports/tests/e2e/support/component-previews/platformInteractionVideo.ts",
+					"export": "record"
+				},
+				"fixture": "packages/reports/tests/e2e/support/component-previews/video-fixtures/hover.json",
+				"entry": "ready",
+				"exit": "ready",
+				"states": ["ready", "hovered"],
+				"edges": ["hover", "leave"],
+				"durationSeconds": 6,
+				"checkpoints": [
+					{
+						"viewport": "desktop",
+						"entrySignature": "705144c5567b1bd57b5d25fa723cb73d0ffac21cb6272afdf443a34bf697a16c",
+						"exitSignature": "705144c5567b1bd57b5d25fa723cb73d0ffac21cb6272afdf443a34bf697a16c"
+					},
+					{
+						"viewport": "tablet",
+						"entrySignature": "f9da850994d49d6b17c2bcb1b1ce386c3a1b5f20f2916c2e06b32672225a9348",
+						"exitSignature": "f9da850994d49d6b17c2bcb1b1ce386c3a1b5f20f2916c2e06b32672225a9348"
+					},
+					{
+						"viewport": "mobile",
+						"entrySignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b",
+						"exitSignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b"
+					}
+				]
+			},
+			{
+				"id": "platform-native-picker",
+				"unit": "reports.component.explorer-ui-explorer-platforms",
+				"state": "picker-open",
+				"viewports": ["desktop", "tablet", "mobile"],
+				"inputs": [
+					"packages/reports/src/components/explorer-ui/ExplorerPlatforms.svelte",
+					"packages/reports/tests/e2e/record-video-pilot.ts"
+				],
+				"script": {
+					"path": "packages/reports/tests/e2e/support/component-previews/platformInteractionVideo.ts",
+					"export": "record"
+				},
+				"fixture": "packages/reports/tests/e2e/support/component-previews/video-fixtures/picker.json",
+				"entry": "ready",
+				"exit": "ready",
+				"states": ["ready", "picker-open"],
+				"edges": ["open-picker", "close-picker"],
+				"durationSeconds": 6,
+				"checkpoints": [
+					{
+						"viewport": "desktop",
+						"entrySignature": "705144c5567b1bd57b5d25fa723cb73d0ffac21cb6272afdf443a34bf697a16c",
+						"exitSignature": "705144c5567b1bd57b5d25fa723cb73d0ffac21cb6272afdf443a34bf697a16c"
+					},
+					{
+						"viewport": "tablet",
+						"entrySignature": "f9da850994d49d6b17c2bcb1b1ce386c3a1b5f20f2916c2e06b32672225a9348",
+						"exitSignature": "f9da850994d49d6b17c2bcb1b1ce386c3a1b5f20f2916c2e06b32672225a9348"
+					},
+					{
+						"viewport": "mobile",
+						"entrySignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b",
+						"exitSignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b"
+					}
+				]
+			}
+		],
+		"graphs": [],
+		"playlists": [
+			{
+				"id": "platform-card-hover",
+				"clips": ["platform-card-hover"]
+			},
+			{
+				"id": "platform-native-picker",
+				"clips": ["platform-native-picker"]
+			}
+		]
+	}
+}

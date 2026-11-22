@@ -1,0 +1,173 @@
+{
+	"schemaVersion": 1,
+	"id": "command.development-tooling-contracts-command-diff-contract-snapshots",
+	"uid": "u_hstdiffabc",
+	"kind": "command",
+	"title": "diffContractSnapshots",
+	"responsibility": "Reserves stable uid matches before fallback id joins, preserving renames alongside retired old-id tombstones; filters fields and counts material or ignored changes.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["src/commands/development-tooling/contracts-command/diffContractSnapshots.ts"],
+		"symbols": ["diffContractSnapshots", "validateHistoryFields"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "diffContractSnapshots.before",
+				"type": "StoredContract[]",
+				"required": true,
+				"description": "Earlier complete stored-contract snapshot. Stable uid matches take priority over id fallback, including when the later snapshot retains uid-less old-id tombstones."
+			},
+			{
+				"name": "diffContractSnapshots.after",
+				"type": "StoredContract[]",
+				"required": true,
+				"description": "Later complete stored-contract snapshot; its retained uids are reserved before id fallback so file ordering cannot consume a renamed unit earlier in the join."
+			},
+			{
+				"name": "diffContractSnapshots.options",
+				"type": "ContractHistoryOptions",
+				"required": true,
+				"description": "Contract and field filters plus the display row limit. Snapshot selectors are resolved before this comparison; summary counts precede the display limit."
+			},
+			{
+				"name": "validateHistoryFields.field",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "Empty or omitted means no field restriction; otherwise comma-separated type, description, examples, errors and dependencies categories. Unsupported categories are rejected."
+			}
+		],
+		"outputs": [
+			{
+				"name": "diffContractSnapshots",
+				"type": "ContractDiff",
+				"description": "Changes joined by global uid priority then unreserved id fallback, with field-kind counts, ignored files, total and truncation state. UID-less rename tombstones remain separate added records."
+			},
+			{
+				"name": "validateHistoryFields",
+				"type": "void",
+				"description": "No value; accepts omitted or supported comma-separated field categories and throws for any unsupported category."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Unsupported field category or a folder outside the project root is rejected; the comparison itself performs no source or filesystem reads."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "diffContractSnapshots",
+				"inputs": [
+					{
+						"name": "diffContractSnapshots.before",
+						"type": "StoredContract[]",
+						"required": true,
+						"description": "Earlier complete stored-contract snapshot. Stable uid matches take priority over id fallback, including when the later snapshot retains uid-less old-id tombstones."
+					},
+					{
+						"name": "diffContractSnapshots.after",
+						"type": "StoredContract[]",
+						"required": true,
+						"description": "Later complete stored-contract snapshot; its retained uids are reserved before id fallback so file ordering cannot consume a renamed unit earlier in the join."
+					},
+					{
+						"name": "diffContractSnapshots.options",
+						"type": "ContractHistoryOptions",
+						"required": true,
+						"description": "Contract and field filters plus the display row limit. Snapshot selectors are resolved before this comparison; summary counts precede the display limit."
+					}
+				],
+				"outputs": [
+					{
+						"name": "diffContractSnapshots",
+						"type": "ContractDiff",
+						"description": "Changes joined by global uid priority then unreserved id fallback, with field-kind counts, ignored files, total and truncation state. UID-less rename tombstones remain separate added records."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Unsupported field category or a folder outside the project root is rejected; the comparison itself performs no source or filesystem reads."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "validateHistoryFields",
+				"inputs": [
+					{
+						"name": "validateHistoryFields.field",
+						"type": "string",
+						"required": false,
+						"default": "",
+						"description": "Empty or omitted means no field restriction; otherwise comma-separated type, description, examples, errors and dependencies categories. Unsupported categories are rejected."
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateHistoryFields",
+						"type": "void",
+						"description": "No value; accepts omitted or supported comma-separated field categories and throws for any unsupported category."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Unsupported field category or a folder outside the project root is rejected; the comparison itself performs no source or filesystem reads."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.development-tooling-contracts-command-contract-history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-contract-selection",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-contract-semantics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/development-tooling/contracts-command/diffContractSnapshots.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/development-tooling/contracts-command/diffContractSnapshots.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

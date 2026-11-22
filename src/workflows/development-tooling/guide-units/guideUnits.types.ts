@@ -12,7 +12,7 @@ export interface GuidanceOptions {
 export interface StateRegistry {
 	entity: string;
 	where: string;
-	kind: 'catalog' | 'required-states';
+	kind: 'catalog' | 'required-states' | 'video';
 	states: string[];
 }
 
@@ -29,7 +29,10 @@ export interface GuidanceContext {
 	texts: Map<string, string>;
 	graph?: SourceGraph;
 	testAttributions: Map<string, TestAttribution>;
-	testSyntax: Map<string, { test: boolean; states: Set<string>; matrix: boolean }>;
+	testSyntax: Map<
+		string,
+		{ test: boolean; states: Set<string>; matrix: boolean; motion?: boolean }
+	>;
 }
 
 export interface StateTest {

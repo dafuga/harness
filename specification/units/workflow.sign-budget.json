@@ -21,7 +21,7 @@
 				"description": "Repository, verification record, reviewer, reason, and unit selection used to establish baselines. When all is true, the workflow selects measured units without baselines; otherwise it uses units, and the reviewer and reason must be nonblank.",
 				"examples": [
 					{
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+						"root": "/workspace/project",
 						"record": "6e6d8ad8-2914-4f2a-b44c-22f31fb24c8e",
 						"reviewer": "Morgan Lee",
 						"reason": "Reviewed passing verification gates before updating limits",
@@ -29,7 +29,7 @@
 						"units": []
 					},
 					{
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+						"root": "/workspace/project",
 						"record": "6e6d8ad8-2914-4f2a-b44c-22f31fb24c8e",
 						"reviewer": "Morgan Lee",
 						"reason": "Reviewed passing verification gates before updating limits",
@@ -45,7 +45,7 @@
 				"description": "Repository, verification record, reviewer, reason, and units whose baselines are being approved. Each selected unit must already have a baseline, and the reviewer and reason must be nonblank.",
 				"examples": [
 					{
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+						"root": "/workspace/project",
 						"record": "6e6d8ad8-2914-4f2a-b44c-22f31fb24c8e",
 						"reviewer": "Morgan Lee",
 						"reason": "Reviewed passing verification gates before updating limits",
@@ -132,7 +132,7 @@
 						"description": "Repository, verification record, reviewer, reason, and unit selection used to establish baselines. When all is true, the workflow selects measured units without baselines; otherwise it uses units, and the reviewer and reason must be nonblank.",
 						"examples": [
 							{
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+								"root": "/workspace/project",
 								"record": "6e6d8ad8-2914-4f2a-b44c-22f31fb24c8e",
 								"reviewer": "Morgan Lee",
 								"reason": "Reviewed passing verification gates before updating limits",
@@ -140,7 +140,7 @@
 								"units": []
 							},
 							{
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+								"root": "/workspace/project",
 								"record": "6e6d8ad8-2914-4f2a-b44c-22f31fb24c8e",
 								"reviewer": "Morgan Lee",
 								"reason": "Reviewed passing verification gates before updating limits",
@@ -197,7 +197,7 @@
 						"description": "Repository, verification record, reviewer, reason, and units whose baselines are being approved. Each selected unit must already have a baseline, and the reviewer and reason must be nonblank.",
 						"examples": [
 							{
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+								"root": "/workspace/project",
 								"record": "6e6d8ad8-2914-4f2a-b44c-22f31fb24c8e",
 								"reviewer": "Morgan Lee",
 								"reason": "Reviewed passing verification gates before updating limits",

@@ -5,11 +5,14 @@ import { resolve, dirname } from 'node:path';
 import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
 import { macIcon } from './mac-icon/mac-icon';
-if (process.platform !== 'darwin') throw new Error('This package target requires macOS.');
+import { MacPackageError } from './package-mac.types';
+if (process.platform !== 'darwin') throw new MacPackageError('This package target requires macOS.');
 const identity = process.env.HARNESS_MAC_SIGN_IDENTITY;
 if (identity !== undefined) {
 	if (!/^[a-f0-9]{40}$/i.test(identity))
-		throw new Error('HARNESS_MAC_SIGN_IDENTITY must be the exact certificate SHA-1 fingerprint.');
+		throw new MacPackageError(
+			'HARNESS_MAC_SIGN_IDENTITY must be the exact certificate SHA-1 fingerprint.'
+		);
 	const available = execFileSync('security', ['find-identity', '-v', '-p', 'codesigning'], {
 		encoding: 'utf8'
 	});
@@ -17,7 +20,9 @@ if (identity !== undefined) {
 		match[1].toUpperCase()
 	);
 	if (!fingerprints.includes(identity.toUpperCase()))
-		throw new Error('HARNESS_MAC_SIGN_IDENTITY is not an available code-signing identity.');
+		throw new MacPackageError(
+			'HARNESS_MAC_SIGN_IDENTITY is not an available code-signing identity.'
+		);
 }
 const original = resolve(dirname(electron as unknown as string), '../..');
 const output = resolve('dist/mac/Harness.app');

@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.page.harness-reports",
+	"title": "reports.page.harness-reports examples",
+	"kind": "headless",
+	"units": ["reports.page.harness-reports"],
+	"builds": [],
+	"states": [
+		{
+			"id": "redirects-former-report-hub-to-explorer",
+			"title": "Redirects former report hub to explorer",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-redirect-308-when-load-is-invoked",
+			"title": "Throws Redirect 308 when load is invoked",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.page.harness-reports.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"redirects-former-report-hub-to-explorer",
+				"throws-redirect-308-when-load-is-invoked"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"redirects-former-report-hub-to-explorer",
+				"throws-redirect-308-when-load-is-invoked"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"redirects-former-report-hub-to-explorer",
+				"throws-redirect-308-when-load-is-invoked"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

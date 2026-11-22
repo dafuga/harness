@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.piped-output",
+	"title": "function.piped-output examples",
+	"kind": "headless",
+	"units": ["function.piped-output"],
+	"builds": [],
+	"states": [
+		{
+			"id": "console-output-is-formatted-and-written-to-stdout",
+			"title": "Console output is formatted and written to stdout",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.piped-output.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["console-output-is-formatted-and-written-to-stdout"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["console-output-is-formatted-and-written-to-stdout"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["console-output-is-formatted-and-written-to-stdout"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -12,7 +12,7 @@
 			"packages/desktop/scripts/ios-service-observers.ts",
 			"packages/desktop/scripts/ios-service-observers.types.ts"
 		],
-		"symbols": ["observeIosServices", "SeenService", "WatchedService"]
+		"symbols": ["observeIosServices", "SeenService", "WatchedService", "ServiceObservationError"]
 	},
 	"contract": {
 		"origin": "declared",

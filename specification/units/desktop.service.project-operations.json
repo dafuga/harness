@@ -9,16 +9,22 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectOperationsService.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/InvalidProjectDiscussionAnchorError.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectOperationsService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/UnknownCommentImageAnchorError.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/UnknownCommentThreadError.ts"
 		],
 		"symbols": [
+			"InvalidProjectDiscussionAnchorError",
 			"ProjectOperationsService",
 			"ProjectOperationsService.constructor",
 			"ProjectOperationsService.listProjects",
 			"ProjectOperationsService.selectProject",
 			"ProjectOperationsService.capabilities",
 			"ProjectOperationsService.addComment",
-			"ProjectOperationsService.pendingComments"
+			"ProjectOperationsService.pendingComments",
+			"UnknownCommentImageAnchorError",
+			"UnknownCommentThreadError"
 		]
 	},
 	"contract": {
@@ -43,7 +49,7 @@
 				"description": "Identifies a registered local project by the ID used by ProjectRegistryService. If the project is already selected and no switch is underway, the service returns its current snapshot.",
 				"examples": [
 					{
-						"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+						"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad"
 					}
 				]
 			},
@@ -56,7 +62,7 @@
 				"examples": [
 					{},
 					{
-						"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+						"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad"
 					}
 				]
 			},
@@ -67,7 +73,7 @@
 				"description": "Carries requestId, a revision anchor, and comment text; projectId and threadId are optional. The project discussion entity must have no thread or visual anchor details, while other anchors are checked against the project catalog.",
 				"examples": [
 					{
-						"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+						"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 						"requestId": "de7a3f4d-a61a-4d15-8b68-55fbd24e3c17",
 						"anchor": {
 							"branch": "main",
@@ -92,7 +98,7 @@
 				"examples": [
 					{},
 					{
-						"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+						"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad"
 					}
 				]
 			}
@@ -100,30 +106,30 @@
 		"outputs": [
 			{
 				"name": "ProjectOperationsService.listProjects",
-				"type": "unknown",
+				"type": "ReturnType<ProjectSessionService['registry']['list']>",
 				"description": "Returns the registered local projects from session.registry.list(). Each item has a local- ID containing the SHA-256 of its canonical root, its basename, kind local, and the root path; invalid registry data rejects.",
 				"examples": [
 					[],
 					[
 						{
-							"id": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
-							"name": "slot-11",
+							"id": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
+							"name": "project",
 							"kind": "local",
-							"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+							"root": "/workspace/project"
 						}
 					]
 				]
 			},
 			{
 				"name": "ProjectOperationsService.selectProject",
-				"type": "unknown",
+				"type": "ReturnType<ProjectSessionService['open']>",
 				"description": "Resolves to the project snapshot from session.snapshot() or session.open(). An already selected project with no switch in progress is snapshotted using branch null and commit null; otherwise the registered project root is opened.",
 				"examples": [
 					{
 						"project": {
-							"name": "slot-11",
-							"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
-							"id": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+							"name": "project",
+							"root": "/workspace/project",
+							"id": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad"
 						},
 						"capabilities": {
 							"comments": true,
@@ -163,16 +169,16 @@
 			},
 			{
 				"name": "ProjectOperationsService.addComment",
-				"type": "unknown",
+				"type": "ReturnType<ProjectSessionService['outbox']['save']>",
 				"description": "Resolves to the pending comment record saved by the local outbox. Non-discussion anchors are checked against the current revision and catalog, and any referenced image or thread must match.",
 				"examples": [
 					{
 						"kind": "pending",
-						"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+						"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 						"draftId": "92f25f28-7cb0-4f6e-a073-c2da8cbf2ae1",
 						"savedAt": "2026-11-15T12:00:00.000Z",
 						"input": {
-							"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+							"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 							"requestId": "de7a3f4d-a61a-4d15-8b68-55fbd24e3c17",
 							"anchor": {
 								"branch": "main",
@@ -192,18 +198,18 @@
 			},
 			{
 				"name": "ProjectOperationsService.pendingComments",
-				"type": "unknown",
+				"type": "ReturnType<ProjectSessionService['outbox']['list']>",
 				"description": "Resolves to the selected project's pending local comment records from the outbox. It requires a fully open project and does not publish or sync these drafts.",
 				"examples": [
 					[],
 					[
 						{
 							"kind": "pending",
-							"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+							"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 							"draftId": "92f25f28-7cb0-4f6e-a073-c2da8cbf2ae1",
 							"savedAt": "2026-11-15T12:00:00.000Z",
 							"input": {
-								"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+								"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 								"requestId": "de7a3f4d-a61a-4d15-8b68-55fbd24e3c17",
 								"anchor": {
 									"branch": "main",
@@ -238,16 +244,16 @@
 				"outputs": [
 					{
 						"name": "ProjectOperationsService.listProjects",
-						"type": "unknown",
+						"type": "ReturnType<ProjectSessionService['registry']['list']>",
 						"description": "Returns the registered local projects from session.registry.list(). Each item has a local- ID containing the SHA-256 of its canonical root, its basename, kind local, and the root path; invalid registry data rejects.",
 						"examples": [
 							[],
 							[
 								{
-									"id": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
-									"name": "slot-11",
+									"id": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
+									"name": "project",
 									"kind": "local",
-									"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+									"root": "/workspace/project"
 								}
 							]
 						]
@@ -272,7 +278,7 @@
 						"description": "Identifies a registered local project by the ID used by ProjectRegistryService. If the project is already selected and no switch is underway, the service returns its current snapshot.",
 						"examples": [
 							{
-								"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+								"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad"
 							}
 						]
 					}
@@ -280,14 +286,14 @@
 				"outputs": [
 					{
 						"name": "ProjectOperationsService.selectProject",
-						"type": "unknown",
+						"type": "ReturnType<ProjectSessionService['open']>",
 						"description": "Resolves to the project snapshot from session.snapshot() or session.open(). An already selected project with no switch in progress is snapshotted using branch null and commit null; otherwise the registered project root is opened.",
 						"examples": [
 							{
 								"project": {
-									"name": "slot-11",
-									"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
-									"id": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+									"name": "project",
+									"root": "/workspace/project",
+									"id": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad"
 								},
 								"capabilities": {
 									"comments": true,
@@ -332,7 +338,7 @@
 						"examples": [
 							{},
 							{
-								"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+								"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad"
 							}
 						]
 					}
@@ -373,7 +379,7 @@
 						"description": "Carries requestId, a revision anchor, and comment text; projectId and threadId are optional. The project discussion entity must have no thread or visual anchor details, while other anchors are checked against the project catalog.",
 						"examples": [
 							{
-								"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+								"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 								"requestId": "de7a3f4d-a61a-4d15-8b68-55fbd24e3c17",
 								"anchor": {
 									"branch": "main",
@@ -393,16 +399,16 @@
 				"outputs": [
 					{
 						"name": "ProjectOperationsService.addComment",
-						"type": "unknown",
+						"type": "ReturnType<ProjectSessionService['outbox']['save']>",
 						"description": "Resolves to the pending comment record saved by the local outbox. Non-discussion anchors are checked against the current revision and catalog, and any referenced image or thread must match.",
 						"examples": [
 							{
 								"kind": "pending",
-								"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+								"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 								"draftId": "92f25f28-7cb0-4f6e-a073-c2da8cbf2ae1",
 								"savedAt": "2026-11-15T12:00:00.000Z",
 								"input": {
-									"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+									"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 									"requestId": "de7a3f4d-a61a-4d15-8b68-55fbd24e3c17",
 									"anchor": {
 										"branch": "main",
@@ -442,7 +448,7 @@
 						"examples": [
 							{},
 							{
-								"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+								"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad"
 							}
 						]
 					}
@@ -450,18 +456,18 @@
 				"outputs": [
 					{
 						"name": "ProjectOperationsService.pendingComments",
-						"type": "unknown",
+						"type": "ReturnType<ProjectSessionService['outbox']['list']>",
 						"description": "Resolves to the selected project's pending local comment records from the outbox. It requires a fully open project and does not publish or sync these drafts.",
 						"examples": [
 							[],
 							[
 								{
 									"kind": "pending",
-									"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+									"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 									"draftId": "92f25f28-7cb0-4f6e-a073-c2da8cbf2ae1",
 									"savedAt": "2026-11-15T12:00:00.000Z",
 									"input": {
-										"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+										"projectId": "local-e3af8a7251583e76fee1fc45993af40a380512ed7b704d61e7869aa9b57391ad",
 										"requestId": "de7a3f4d-a61a-4d15-8b68-55fbd24e3c17",
 										"anchor": {
 											"branch": "main",
@@ -511,7 +517,7 @@
 				"outputs": [
 					{
 						"name": "ProjectOperationsService.constructor",
-						"type": "unknown",
+						"type": "ProjectOperationsService",
 						"description": "The constructed ProjectOperationsService instance, which retains the supplied session and outbox. The outbox defaults to session.outbox when omitted."
 					}
 				],
@@ -523,6 +529,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.comment-outbox",
 			"via": "import",
 			"origin": "derived"
 		},

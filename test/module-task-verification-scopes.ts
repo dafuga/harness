@@ -50,6 +50,8 @@ export const moduleTaskVerificationScopes: Record<string, VerificationScope> = {
 					'contract-admission'
 			},
 			'test/adapters/agents-providers/module-task-runner.test.ts': {
+				'task limits use positive integers and fall back for invalid or unset values':
+					'assigned-worker',
 				'Claude and Codex launch exact models and intelligence without shell interpolation':
 					'assigned-worker',
 				'successful public Claude CLI events retain requested model and summary': 'assigned-worker',

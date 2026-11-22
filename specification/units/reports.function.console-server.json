@@ -33,9 +33,7 @@
 				"name": "consoleDirectory",
 				"type": "string | undefined",
 				"description": "The absolute path returned by resolve for the trimmed HARNESS_CONSOLE_DATA value, or undefined when that value is unset or blank. It selects the directory for console history reads but is not checked for existence.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/.harness/console"
-				]
+				"examples": ["/workspace/project/.harness/console"]
 			},
 			{
 				"name": "consoleData",
@@ -70,9 +68,7 @@
 						"name": "consoleDirectory",
 						"type": "string | undefined",
 						"description": "The absolute path returned by resolve for the trimmed HARNESS_CONSOLE_DATA value, or undefined when that value is unset or blank. It selects the directory for console history reads but is not checked for existence.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/.harness/console"
-						]
+						"examples": ["/workspace/project/.harness/console"]
 					}
 				],
 				"errors": [],

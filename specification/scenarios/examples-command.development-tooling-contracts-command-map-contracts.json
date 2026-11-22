@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-command.development-tooling-contracts-command-map-contracts",
+	"title": "command.development-tooling-contracts-command-map-contracts examples",
+	"kind": "headless",
+	"units": ["command.development-tooling-contracts-command-map-contracts"],
+	"builds": [],
+	"states": [
+		{
+			"id": "mapcontracts-walked-dependencies-and-dependents-by-depth",
+			"title": "mapContracts walked dependencies and dependents by depth",
+			"coverage": "required"
+		},
+		{
+			"id": "mapcontracts-listed-missing-dependency-ids-as-unresolved",
+			"title": "mapContracts listed missing dependency ids as unresolved",
+			"coverage": "required"
+		},
+		{
+			"id": "mapcontracts-bounded-cycles-and-expanded-repeated-edges-once",
+			"title": "mapContracts bounded cycles and expanded repeated edges once",
+			"coverage": "required"
+		},
+		{
+			"id": "mapcontracts-propagated-getter-iterator-and-species-errors",
+			"title": "mapContracts propagated getter, iterator and species errors",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/command.development-tooling-contracts-command-map-contracts.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"mapcontracts-walked-dependencies-and-dependents-by-depth",
+				"mapcontracts-listed-missing-dependency-ids-as-unresolved",
+				"mapcontracts-bounded-cycles-and-expanded-repeated-edges-once",
+				"mapcontracts-propagated-getter-iterator-and-species-errors"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"mapcontracts-walked-dependencies-and-dependents-by-depth",
+				"mapcontracts-listed-missing-dependency-ids-as-unresolved",
+				"mapcontracts-bounded-cycles-and-expanded-repeated-edges-once",
+				"mapcontracts-propagated-getter-iterator-and-species-errors"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"mapcontracts-walked-dependencies-and-dependents-by-depth",
+				"mapcontracts-listed-missing-dependency-ids-as-unresolved",
+				"mapcontracts-bounded-cycles-and-expanded-repeated-edges-once",
+				"mapcontracts-propagated-getter-iterator-and-species-errors"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

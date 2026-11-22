@@ -1,5 +1,6 @@
 // @harness-uid u_4jvfrzel5f
 import ts from 'typescript';
+import { scenarioManifestSchema } from '../../../core/development-tooling/unitTypes';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import type { SourceTree } from '../../../core/development-tooling/sourceTypes';
@@ -31,12 +32,14 @@ export async function stateRegistries(
 function registryPath(path: string) {
 	return (
 		/required-states[^/]*\.json$/i.test(path) ||
+		scenarioPath(path) ||
 		(/^packages\/[^/]+\/(?:tests|test)\/e2e\/support\//.test(path) &&
 			/(?:variant|preview|scenario|catalog)[^/]*\.[cm]?[tj]s$/i.test(path))
 	);
 }
 
 function parseRegistry(text: string, where: string, required = /required-states/i.test(where)) {
+	if (scenarioPath(where)) return videoRegistries(text, where);
 	const found: StateRegistry[] = [];
 	const add = (entity: string, states: string[]) => {
 		if (!/^[a-z0-9]+(?:[.-][a-z0-9]+)+$/.test(entity)) return;
@@ -115,4 +118,25 @@ function visitRegistry(node: ts.Node, add: (entity: string, states: string[]) =>
 		}
 	}
 	ts.forEachChild(node, (child) => visitRegistry(child, add));
+}
+
+function scenarioPath(path: string): boolean {
+	return /^specification\/scenarios\/.+\.json$/.test(path);
+}
+
+function videoRegistries(text: string, where: string): StateRegistry[] {
+	let data: unknown;
+	try {
+		data = JSON.parse(text);
+	} catch {
+		return fail(`Cannot read scenario video states "${where}".`);
+	}
+	const parsed = scenarioManifestSchema.safeParse(data);
+	if (!parsed.success || !parsed.data.video) return [];
+	return parsed.data.video.clips.map((clip) => ({
+		entity: clip.unit,
+		where: `${where}#video/${clip.id}`,
+		kind: 'video',
+		states: [clip.state]
+	}));
 }

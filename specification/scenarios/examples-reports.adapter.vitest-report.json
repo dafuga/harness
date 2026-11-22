@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.adapter.vitest-report",
+	"title": "reports.adapter.vitest-report examples",
+	"kind": "headless",
+	"units": ["reports.adapter.vitest-report"],
+	"builds": [],
+	"states": [
+		{
+			"id": "ingest-records-each-vitest-assertion-as-a-check",
+			"title": "ingest records each Vitest assertion as a check",
+			"coverage": "required"
+		},
+		{
+			"id": "ingest-records-a-summary-when-no-assertions-are-supplied",
+			"title": "ingest records a summary when no assertions are supplied",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-report-file-cannot-be-read",
+			"title": "Throws Error when the report file cannot be read",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-syntaxerror-when-report-content-is-invalid-json",
+			"title": "Throws SyntaxError when report content is invalid JSON",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-parsed-report-root-is-null",
+			"title": "Throws TypeError when parsed report root is null",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-record-rejection-unchanged-when-repository-rejects",
+			"title": "Throws record rejection unchanged when repository rejects",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.adapter.vitest-report.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"ingest-records-each-vitest-assertion-as-a-check",
+				"ingest-records-a-summary-when-no-assertions-are-supplied",
+				"throws-error-when-the-report-file-cannot-be-read",
+				"throws-syntaxerror-when-report-content-is-invalid-json",
+				"throws-typeerror-when-parsed-report-root-is-null",
+				"throws-record-rejection-unchanged-when-repository-rejects"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"ingest-records-each-vitest-assertion-as-a-check",
+				"ingest-records-a-summary-when-no-assertions-are-supplied",
+				"throws-error-when-the-report-file-cannot-be-read",
+				"throws-syntaxerror-when-report-content-is-invalid-json",
+				"throws-typeerror-when-parsed-report-root-is-null",
+				"throws-record-rejection-unchanged-when-repository-rejects"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"ingest-records-each-vitest-assertion-as-a-check",
+				"ingest-records-a-summary-when-no-assertions-are-supplied",
+				"throws-error-when-the-report-file-cannot-be-read",
+				"throws-syntaxerror-when-report-content-is-invalid-json",
+				"throws-typeerror-when-parsed-report-root-is-null",
+				"throws-record-rejection-unchanged-when-repository-rejects"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

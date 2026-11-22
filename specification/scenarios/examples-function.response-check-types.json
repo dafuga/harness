@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.response-check-types",
+	"title": "function.response-check-types examples",
+	"kind": "headless",
+	"units": ["function.response-check-types"],
+	"builds": [],
+	"states": [
+		{
+			"id": "options-carry-optional-gate-and-dry-run-settings",
+			"title": "Options carry optional gate and dry-run settings",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-keep-the-outcome-status-and-token-usage",
+			"title": "Reports keep the outcome status and token usage",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.response-check-types.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"options-carry-optional-gate-and-dry-run-settings",
+				"reports-keep-the-outcome-status-and-token-usage"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"options-carry-optional-gate-and-dry-run-settings",
+				"reports-keep-the-outcome-status-and-token-usage"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"options-carry-optional-gate-and-dry-run-settings",
+				"reports-keep-the-outcome-status-and-token-usage"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

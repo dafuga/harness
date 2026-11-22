@@ -1,4 +1,9 @@
 // @harness-uid u_d27vkdvynl
+import {
+	videoCaptureSchema,
+	videoReferenceSchema,
+	videoCoverageSchema
+} from '../../utils/verification-evidence/videoClipSchema';
 import { z } from 'zod';
 import { unitIdPattern } from '../development-tooling/unitTypes';
 
@@ -17,8 +22,10 @@ export const captureRegionSchema = z.strictObject({
 });
 
 export const captureSchema = z.strictObject({
+	video: videoCaptureSchema.optional(),
+	videoReference: videoReferenceSchema.optional(),
 	evidence: identifier,
-	kind: z.enum(['screenshot', 'audio', 'output', 'assertions', 'trace', 'benchmark']),
+	kind: z.enum(['screenshot', 'video', 'audio', 'output', 'assertions', 'trace', 'benchmark']),
 	state: identifier,
 	viewport: identifier.optional(),
 	clip: captureRegionSchema.optional(),
@@ -36,6 +43,7 @@ export const captureSchema = z.strictObject({
 });
 
 export const scenarioResultSchema = z.strictObject({
+	videoCoverage: videoCoverageSchema.optional(),
 	id: identifier,
 	status: z.enum(['passed', 'failed', 'referenced', 'pending']),
 	/** Revision whose code produced the captures; differs from the source only when referenced. */

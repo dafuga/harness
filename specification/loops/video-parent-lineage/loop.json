@@ -1,0 +1,47 @@
+{
+	"name": "video-parent-lineage",
+	"goal": "Bind parent video references to original attached clip proof",
+	"createdAt": "2026-11-15T20:28:57.214Z",
+	"updatedAt": "2026-11-15T22:24:09.122Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-15T22:24:06.854Z",
+			"evidence": "BRIEF 17:48 Sol xhigh scope; immutable batch pointers, paired original parent/revision, current input closure independently admitted by Snapshot, graph ratios/checkpoints/discovery gaps; no full verdict from a custom batch."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-15T22:24:08.233Z",
+			"evidence": "Source 56fa49724c plus ad2d926128: parent wire/readers and DTO lineage, selected original clip proof, no parent binary copies, bounded metadata-only reuse. Original batch ancestry, owner UID, source/tree/build/tests/capture metadata and selected bytes are validated; whole-scenario/base proof remains strict."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-15T22:24:09.122Z",
+			"evidence": "35 focused cases/8 files passed; full tsc and changed-source ESLint passed; readable contract 3/3. Retained API red db6770984fb6 -> green 239d5e834a67; context red 006baa744ff7 -> green 6ac9f06976b5 with identical profiles/inputs. C with missing B stays broken; D reusing A attaches and verifies. Two selected clips read twice, parent descriptor once. Full registry baseline 1488 errors and 7 unrelated stale units remain; runtime/browser/E2E forbidden for this slice."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

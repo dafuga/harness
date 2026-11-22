@@ -8,8 +8,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/utils/development-tooling/hubJson.ts"],
-		"symbols": ["hubJson", "hubHash", "hubContractHash", "hubFail", "hubFile"]
+		"source": [
+			"packages/hub/src/utils/development-tooling/hubJson.ts",
+			"packages/hub/src/utils/development-tooling/hubJson.types.ts"
+		],
+		"symbols": [
+			"hubJson",
+			"hubHash",
+			"hubContractHash",
+			"hubFail",
+			"hubFile",
+			"HarnessArtifactUnavailableError"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -29,7 +39,7 @@
 			},
 			{
 				"name": "hubContractHash.value",
-				"type": "unknown",
+				"type": "HubJsonValue",
 				"required": true,
 				"description": "A value passed to canonicalJson so its serialization can be hashed. Accepted shapes and serialization limits follow canonicalJson.",
 				"examples": [
@@ -76,7 +86,7 @@
 			},
 			{
 				"name": "hubContractHash",
-				"type": "unknown",
+				"type": "Promise<string>",
 				"description": "A Promise resolving to the lowercase 64-character hexadecimal SHA-256 digest of canonicalJson(value). Serialization behavior and accepted values follow canonicalJson.",
 				"examples": ["44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"]
 			},
@@ -87,7 +97,7 @@
 			},
 			{
 				"name": "hubFile",
-				"type": "unknown",
+				"type": "string",
 				"description": "The original filename string when the value passes the filename rule. Invalid names throw Error with code invalid-path.",
 				"examples": ["artifact.json", "report_2026-11.txt"]
 			}
@@ -99,13 +109,13 @@
 				"description": "Invalid UTF-8 decoding or JSON parsing throws Error with message Invalid committed artifact and code artifact-corrupt."
 			},
 			{
-				"name": "unknown",
-				"type": "thrown",
+				"name": "crypto.subtle.digest rejection",
+				"type": "propagated",
 				"description": "If crypto.subtle.digest throws or rejects, the returned Promise rejects with that failure unchanged. This implementation does not specify a stable error name or message."
 			},
 			{
-				"name": "unknown",
-				"type": "thrown",
+				"name": "canonicalJson or hubHash error",
+				"type": "propagated",
 				"description": "Errors from canonicalJson(value) or rejection from hubHash propagate through the returned Promise unchanged. This implementation does not specify a stable error name or message."
 			},
 			{
@@ -175,8 +185,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "crypto.subtle.digest rejection",
+						"type": "propagated",
 						"description": "If crypto.subtle.digest throws or rejects, the returned Promise rejects with that failure unchanged. This implementation does not specify a stable error name or message."
 					}
 				],
@@ -187,7 +197,7 @@
 				"inputs": [
 					{
 						"name": "hubContractHash.value",
-						"type": "unknown",
+						"type": "HubJsonValue",
 						"required": true,
 						"description": "A value passed to canonicalJson so its serialization can be hashed. Accepted shapes and serialization limits follow canonicalJson.",
 						"examples": [
@@ -201,15 +211,15 @@
 				"outputs": [
 					{
 						"name": "hubContractHash",
-						"type": "unknown",
+						"type": "Promise<string>",
 						"description": "A Promise resolving to the lowercase 64-character hexadecimal SHA-256 digest of canonicalJson(value). Serialization behavior and accepted values follow canonicalJson.",
 						"examples": ["44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"]
 					}
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "canonicalJson or hubHash error",
+						"type": "propagated",
 						"description": "Errors from canonicalJson(value) or rejection from hubHash propagate through the returned Promise unchanged. This implementation does not specify a stable error name or message."
 					}
 				],
@@ -257,7 +267,7 @@
 				"outputs": [
 					{
 						"name": "hubFile",
-						"type": "unknown",
+						"type": "string",
 						"description": "The original filename string when the value passes the filename rule. Invalid names throw Error with code invalid-path.",
 						"examples": ["artifact.json", "report_2026-11.txt"]
 					}

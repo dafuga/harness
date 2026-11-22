@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.controller.hub-auth",
+	"title": "hub.controller.hub-auth examples",
+	"kind": "headless",
+	"units": ["hub.controller.hub-auth"],
+	"builds": [],
+	"states": [
+		{
+			"id": "handles-outside-and-unknown-auth-routes",
+			"title": "Handles outside and unknown auth routes",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.controller.hub-auth.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["handles-outside-and-unknown-auth-routes"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["handles-outside-and-unknown-auth-routes"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["handles-outside-and-unknown-auth-routes"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -5,6 +5,7 @@
 	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
 	import EmptyState from '../explorer-ui/explorer-kit/EmptyState.svelte';
 	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';
+	import type { ComparisonPane } from '../../helpers/verification-evidence/comparisonPanes.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import {
 		galleryEvidence,
@@ -154,7 +155,7 @@
 	<hx-div class:comparison={view === 'compare'} class="viewer-images">
 		<!-- Keyed by view too: a new view mounts a fresh image zoom state at fit. -->
 		<ComparePanes {panes} visible={view === 'compare' ? 'both' : view} framed={false} contents>
-			{#snippet children(pane)}
+			{#snippet children(pane: ComparisonPane<Evidence>)}
 				{@const item = pane.value}
 				<hx-figure>
 					{#if item?.provenance}<hx-div class="viewer-provenance"

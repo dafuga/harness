@@ -65,9 +65,9 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "CollaborationInputError",
 				"type": "thrown",
-				"description": "Thrown by the package's fail(code) helper as a plain Error with a code property: invalid-input (malformed commit SHA or GitHub response), repository-denied (the access check returned a different repository id), github-unavailable (token, transport, non-404 HTTP or unreadable response), or commit-mismatch (the returned sha differs from the requested commit). It is not an ExpectedCliError instance."
+				"description": "Thrown by the package's fail(code) helper as a CollaborationInputError with a code property: invalid-input (malformed commit SHA or GitHub response), repository-denied (the access check returned a different repository id), github-unavailable (token, transport, non-404 HTTP or unreadable response), or commit-mismatch (the returned sha differs from the requested commit). It is not an ExpectedCliError instance."
 			}
 		],
 		"errorStatus": "declared",
@@ -124,9 +124,9 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "CollaborationInputError",
 						"type": "thrown",
-						"description": "Thrown by the package's fail(code) helper as a plain Error with a code property: invalid-input (malformed commit SHA or GitHub response), repository-denied (the access check returned a different repository id), github-unavailable (token, transport, non-404 HTTP or unreadable response), or commit-mismatch (the returned sha differs from the requested commit). It is not an ExpectedCliError instance."
+						"description": "Thrown by the package's fail(code) helper as a CollaborationInputError with a code property: invalid-input (malformed commit SHA or GitHub response), repository-denied (the access check returned a different repository id), github-unavailable (token, transport, non-404 HTTP or unreadable response), or commit-mismatch (the returned sha differs from the requested commit). It is not an ExpectedCliError instance."
 					}
 				],
 				"errorStatus": "declared"

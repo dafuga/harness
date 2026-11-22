@@ -42,7 +42,7 @@
 						"HARNESS_KERNEL_DIR": "target/kernel"
 					},
 					{
-						"HOME": "/home/ci",
+						"HOME": "/workspace/project",
 						"PATH": "/usr/local/bin:/usr/bin:/bin"
 					}
 				]
@@ -55,9 +55,9 @@
 				"description": "Holds the first candidate directory that contains build.json, the record parsed from that file (cast to KernelBuild without validation), and the paths of impact-kernel.wasm (core Wasm module) and impact-kernel (native JSON process) inside that directory, each undefined when no entry exists there. All four fields are undefined when no candidate contains build.json, and nothing is built or executed.",
 				"examples": [
 					{
-						"directory": "/home/ci/harness/target/kernel",
-						"wasm": "/home/ci/harness/target/kernel/impact-kernel.wasm",
-						"native": "/home/ci/harness/target/kernel/impact-kernel",
+						"directory": "/workspace/project/harness/target/kernel",
+						"wasm": "/workspace/project/harness/target/kernel/impact-kernel.wasm",
+						"native": "/workspace/project/harness/target/kernel/impact-kernel",
 						"build": {
 							"contract": "impact-kernel/1",
 							"rustc": "rustc 1.97.0",
@@ -178,7 +178,7 @@
 								"HARNESS_KERNEL_DIR": "target/kernel"
 							},
 							{
-								"HOME": "/home/ci",
+								"HOME": "/workspace/project",
 								"PATH": "/usr/local/bin:/usr/bin:/bin"
 							}
 						]
@@ -191,9 +191,9 @@
 						"description": "Holds the first candidate directory that contains build.json, the record parsed from that file (cast to KernelBuild without validation), and the paths of impact-kernel.wasm (core Wasm module) and impact-kernel (native JSON process) inside that directory, each undefined when no entry exists there. All four fields are undefined when no candidate contains build.json, and nothing is built or executed.",
 						"examples": [
 							{
-								"directory": "/home/ci/harness/target/kernel",
-								"wasm": "/home/ci/harness/target/kernel/impact-kernel.wasm",
-								"native": "/home/ci/harness/target/kernel/impact-kernel",
+								"directory": "/workspace/project/harness/target/kernel",
+								"wasm": "/workspace/project/harness/target/kernel/impact-kernel.wasm",
+								"native": "/workspace/project/harness/target/kernel/impact-kernel",
 								"build": {
 									"contract": "impact-kernel/1",
 									"rustc": "rustc 1.97.0",

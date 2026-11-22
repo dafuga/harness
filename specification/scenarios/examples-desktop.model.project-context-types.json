@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.model.project-context-types",
+	"title": "desktop.model.project-context-types examples",
+	"kind": "headless",
+	"units": ["desktop.model.project-context-types"],
+	"builds": [],
+	"states": [
+		{
+			"id": "accepts-an-omitted-or-selected-project-context",
+			"title": "accepts an omitted or selected project context",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.model.project-context-types.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["accepts-an-omitted-or-selected-project-context"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["accepts-an-omitted-or-selected-project-context"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["accepts-an-omitted-or-selected-project-context"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

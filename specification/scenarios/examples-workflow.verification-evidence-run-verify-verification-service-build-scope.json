@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.verification-evidence-run-verify-verification-service-build-scope",
+	"title": "workflow.verification-evidence-run-verify-verification-service-build-scope examples",
+	"kind": "headless",
+	"units": ["workflow.verification-evidence-run-verify-verification-service-build-scope"],
+	"builds": [],
+	"states": [
+		{
+			"id": "collects-the-declared-builds-of-each-scenario",
+			"title": "Collects the declared builds of each scenario",
+			"coverage": "required"
+		},
+		{
+			"id": "requires-all-builds-when-evidence-names-no-build",
+			"title": "Requires all builds when evidence names no build",
+			"coverage": "required"
+		},
+		{
+			"id": "keeps-setup-steps-that-name-a-needed-build-or-no-build",
+			"title": "Keeps setup steps that name a needed build or no build",
+			"coverage": "required"
+		},
+		{
+			"id": "keeps-every-setup-step-when-the-needed-builds-are-all",
+			"title": "Keeps every setup step when the needed builds are all",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.verification-evidence-run-verify-verification-service-build-scope.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"collects-the-declared-builds-of-each-scenario",
+				"requires-all-builds-when-evidence-names-no-build",
+				"keeps-setup-steps-that-name-a-needed-build-or-no-build",
+				"keeps-every-setup-step-when-the-needed-builds-are-all"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"collects-the-declared-builds-of-each-scenario",
+				"requires-all-builds-when-evidence-names-no-build",
+				"keeps-setup-steps-that-name-a-needed-build-or-no-build",
+				"keeps-every-setup-step-when-the-needed-builds-are-all"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"collects-the-declared-builds-of-each-scenario",
+				"requires-all-builds-when-evidence-names-no-build",
+				"keeps-setup-steps-that-name-a-needed-build-or-no-build",
+				"keeps-every-setup-step-when-the-needed-builds-are-all"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

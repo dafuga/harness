@@ -1,5 +1,6 @@
 // @harness-uid u_5nixbr5ktz
 import type { RpcState } from './rpcMessages.types';
+import { CodexRpcError } from './rpcMessages.types';
 import type { RpcEvent } from '../rpcMessages';
 
 export function rpcMessages(state: RpcState, line: string): void {
@@ -20,7 +21,7 @@ function answer(state: RpcState, msg: Record<string, unknown>) {
 	clearTimeout(pending.timer);
 	if (msg.error)
 		pending.reject(
-			new Error(String((msg.error as { message?: string }).message ?? 'Codex RPC failed.'))
+			new CodexRpcError(String((msg.error as { message?: string }).message ?? 'Codex RPC failed.'))
 		);
 	else pending.resolve(msg.result);
 }
@@ -42,7 +43,7 @@ export function rpcRequest(
 	return new Promise((resolve, reject) => {
 		const timer = setTimeout(() => {
 			state.pending.delete(frame.id);
-			reject(new Error('Codex ' + frame.method + ' timed out.'));
+			reject(new CodexRpcError('Codex ' + frame.method + ' timed out.'));
 		}, timeoutMs);
 		state.pending.set(frame.id, { resolve, reject, timer });
 		try {

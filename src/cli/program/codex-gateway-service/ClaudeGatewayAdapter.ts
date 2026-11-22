@@ -6,6 +6,7 @@ import type {
 import type { CodexSessionRepository } from './codex-session-repository/CodexSessionRepository';
 import { GatewayContentSerializer } from '../../../serializers/development-tooling/GatewayContentSerializer';
 import { ClaudeQueryService } from './claude-query-service/ClaudeQueryService';
+import { InvalidToolContinuationError } from './ClaudeGatewayAdapter.types';
 
 export class ClaudeGatewayAdapter {
 	constructor(private readonly repository: CodexSessionRepository) {}
@@ -18,7 +19,7 @@ export class ClaudeGatewayAdapter {
 					String(request.input.at(-1)?.type)
 				)
 			)
-				throw new Error('No active query owns this continuation');
+				throw new InvalidToolContinuationError('No active query owns this continuation');
 			return;
 		}
 		const outputs = request.input.filter(
@@ -27,9 +28,9 @@ export class ClaudeGatewayAdapter {
 				session.pending.has(String(item.call_id))
 		);
 		if (new Set(outputs.map((item) => item.call_id)).size !== outputs.length)
-			throw new Error('Duplicate tool outputs');
+			throw new InvalidToolContinuationError('Duplicate tool outputs');
 		if (!outputs.length || outputs.length !== session.pending.size)
-			throw new Error('All pending tool results are required');
+			throw new InvalidToolContinuationError('All pending tool results are required');
 	}
 
 	start(request: GatewayRequest, session: GatewaySession): void {

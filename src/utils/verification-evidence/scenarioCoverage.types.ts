@@ -14,12 +14,17 @@ export interface CoverageInput {
 	gathered: Gathered[];
 	/** True when a check that produced these captures failed or timed out. */
 	checkFailed: boolean;
+	/** Input hashes computed from this run's exact clean snapshot, before checks execute. */
+	/** Reviewer obligations read from the original Git evidence before this run. */
+	pendingVideoFlags?: PendingVideoFlags;
+	videoSlots?: { unit: string; clipId: string; viewport: string; inputHash: string }[];
 	lite?: { deferredChecks: boolean };
 	/** The builds the project declares, and the identity of each one setup compiled. */
 	builds?: { declared: string[]; compiled: Map<string, string> };
 }
 
 export interface CoverageResult {
+	videoCoverage?: VideoCoverageSummary[];
 	states: ScenarioResult['states'];
 	failures: string[];
 	pending?: RequiredCapture[];
@@ -34,3 +39,23 @@ export interface ScenarioJudgement {
 export type Evidence = ScenarioManifest['evidence'][number];
 
 export type Viewport = ScenarioManifest['viewports'][number];
+
+export interface VideoFrameFlagIdentity {
+	id: string;
+	unit: string;
+	clipId: string;
+	viewport: string;
+	createdAt: string;
+}
+export interface PendingVideoFlags {
+	known: VideoFrameFlagIdentity[];
+	pending: (VideoFrameFlagIdentity & { note: string })[];
+}
+
+export interface VideoCoverageSummary {
+	graph: string;
+	states: number;
+	edges: number;
+	complete: boolean;
+	missing: string[];
+}

@@ -10,10 +10,18 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/desktopIpc.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/desktopIpc.types.ts",
 			"packages/desktop/src/utils/agents-providers/desktopIpc.ts",
 			"packages/desktop/src/utils/agents-providers/desktopIpc.types.ts"
 		],
-		"symbols": ["desktopIpc", "bootstrapChannel", "desktopIpc", "DesktopIpcPort", "DesktopIpcPort"]
+		"symbols": [
+			"desktopIpc",
+			"UntrustedRendererError",
+			"bootstrapChannel",
+			"desktopIpc",
+			"DesktopIpcPort",
+			"DesktopIpcPort"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -34,7 +42,7 @@
 		"outputs": [
 			{
 				"name": "bootstrapChannel",
-				"type": "unknown",
+				"type": "\"transport:bootstrap\"",
 				"description": "The one channel the main process answers over IPC: `transport:bootstrap`. It carries the bootstrap for the caller's own loopback socket; project operations and the control port use that socket.",
 				"examples": ["transport:bootstrap"]
 			},

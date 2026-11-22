@@ -30,7 +30,7 @@
 		"outputs": [
 			{
 				"name": "audioPairs",
-				"type": "unknown",
+				"type": "Map<string, Evidence>",
 				"description": "A `Map<string, Evidence>` from each eligible group's after-record `id` to its before record. An entry is made only when the `[comparison, viewport || \"\"]` group contains exactly one before and exactly one after record; incomplete or duplicate groups are omitted."
 			}
 		],
@@ -53,7 +53,7 @@
 				"outputs": [
 					{
 						"name": "audioPairs",
-						"type": "unknown",
+						"type": "Map<string, Evidence>",
 						"description": "A `Map<string, Evidence>` from each eligible group's after-record `id` to its before record. An entry is made only when the `[comparison, viewport || \"\"]` group contains exactly one before and exactly one after record; incomplete or duplicate groups are omitted."
 					}
 				],

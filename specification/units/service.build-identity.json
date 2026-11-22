@@ -35,9 +35,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem root against which each declared build directory is resolved. A build directory must resolve below the resolved root; the root directory itself is treated as outside.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "BuildIdentityService.declared.builds",
@@ -58,9 +56,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem root against which each build directory is resolved for the recheck. A build directory must resolve below the resolved root; the root directory itself is treated as outside.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "BuildIdentityService.changed.builds",
@@ -84,18 +80,14 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem directory whose files are scanned to compute an identity and inspect embedded stamps. A directory scan that returns no files produces undefined; failure to read a discovered file rejects.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/dist/linux-x64"
-				]
+				"examples": ["/workspace/project/dist/linux-x64"]
 			},
 			{
 				"name": "BuildIdentityService.stamp.directory",
 				"type": "string",
 				"required": true,
 				"description": "Filesystem directory whose files are scanned and whose stamp slots receive the computed identity. If no stamp slot exists, the method throws ExpectedCliError; file read or write failures also reject.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/dist/linux-x64"
-				]
+				"examples": ["/workspace/project/dist/linux-x64"]
 			}
 		],
 		"outputs": [
@@ -175,9 +167,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem root against which each declared build directory is resolved. A build directory must resolve below the resolved root; the root directory itself is treated as outside.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "BuildIdentityService.declared.builds",
@@ -232,9 +222,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem root against which each build directory is resolved for the recheck. A build directory must resolve below the resolved root; the root directory itself is treated as outside.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "BuildIdentityService.changed.builds",
@@ -283,9 +271,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem directory whose files are scanned to compute an identity and inspect embedded stamps. A directory scan that returns no files produces undefined; failure to read a discovered file rejects.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/dist/linux-x64"
-						]
+						"examples": ["/workspace/project/dist/linux-x64"]
 					}
 				],
 				"outputs": [
@@ -319,9 +305,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem directory whose files are scanned and whose stamp slots receive the computed identity. If no stamp slot exists, the method throws ExpectedCliError; file read or write failures also reject.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/dist/linux-x64"
-						]
+						"examples": ["/workspace/project/dist/linux-x64"]
 					}
 				],
 				"outputs": [

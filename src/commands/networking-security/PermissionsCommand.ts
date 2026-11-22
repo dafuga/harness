@@ -1,6 +1,7 @@
 // @harness-uid u_mcam3kerc7
 import type { PermissionCatalog } from '../../services/networking-security/PermissionCatalogService.types';
 import type { Command } from 'commander';
+import { ExpectedCliError } from '../../core/errors';
 import { resolve } from 'node:path';
 import { CommitTreeAdapter } from '../../adapters/git-source-history/CommitTreeAdapter';
 import { PermissionCatalogService } from '../../services/networking-security/PermissionCatalogService';
@@ -47,7 +48,8 @@ export class PermissionsCommand {
 			: await service.load(root);
 		const profile =
 			kind === 'show' ? catalog.profiles.find((profile) => profile.id === id) : undefined;
-		if (kind === 'show' && !profile) throw new Error(`Unknown permission profile: ${id}`);
+		if (kind === 'show' && !profile)
+			throw new ExpectedCliError(`Unknown permission profile: ${id}`);
 		let result: unknown = catalog;
 		if (kind === 'show') result = profile;
 		if (kind === 'api') result = this.apiProfiles(catalog, id);

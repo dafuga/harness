@@ -1,5 +1,5 @@
 // @harness-uid u_ypket7tnag
-import type { PromotionContext } from './promoteChange.types';
+import { PromotionError, type PromotionContext } from './promoteChange.types';
 import type { RunRequest } from '../../models/DesktopBridge.types';
 import type { ProjectSessionService } from '../../services/projects-sessions/project-session-service/ProjectSessionService';
 import { DeploymentService } from '../../services/development-tooling/DeploymentService';
@@ -21,14 +21,14 @@ export async function prepareChangeEnvironment(
 	const config = await deploymentConfig(root);
 	const branch = (await gitRead(root, ['symbolic-ref', '--short', 'HEAD'])).trim();
 	if (branch !== config.sourceBranch)
-		throw new Error(
+		throw new PromotionError(
 			'Switch to the configured deployment source branch before requesting an environment change.'
 		);
 	if ((await gitRead(root, ['status', '--porcelain'])).trim())
-		throw new Error('Environment changes require a clean source worktree.');
+		throw new PromotionError('Environment changes require a clean source worktree.');
 	for (const environment of changeEnvironment(request.environment)) {
 		if (!config.targets[environment])
-			throw new Error(
+			throw new PromotionError(
 				`Configure the ${environment} deployment target before requesting this change.`
 			);
 	}
@@ -39,7 +39,7 @@ export async function promoteChange(
 ): Promise<string> {
 	const environment = context.request.environment;
 	if (!environment) return 'Code changes recorded. Verification is still required.';
-	if (context.signal.aborted) throw new Error('Change cancelled before deployment.');
+	if (context.signal.aborted) throw new PromotionError('Change cancelled before deployment.');
 	const { root, emit, id } = context;
 	emit({
 		runId: id,
@@ -49,7 +49,7 @@ export async function promoteChange(
 	});
 	await deploymentCommand({ args: ['bun', 'run', 'check'], cwd: root });
 	await context.session.atBranch(context.revision.branch);
-	if (context.signal.aborted) throw new Error('Change cancelled before deployment.');
+	if (context.signal.aborted) throw new PromotionError('Change cancelled before deployment.');
 	const paths = sourceChanges(before, await sourceSnapshot(root)).map((item) => item.path);
 	if (paths.length) await gitRead(root, ['add', '--', ...paths]);
 	const staged = await gitRead(root, ['diff', '--cached', '--name-only']);

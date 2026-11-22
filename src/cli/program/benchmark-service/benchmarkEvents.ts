@@ -1,5 +1,5 @@
 // @harness-uid u_sukghqxqky
-import type { RunnerEvent } from './benchmarkEvents.types';
+import { IncompleteBenchmarkSubmissionError, type RunnerEvent } from './benchmarkEvents.types';
 export type { RunnerEvent } from './benchmarkEvents.types';
 import type { BenchmarkTurn } from '../../../core/agents-providers/subagentBenchmarkTypes';
 import { z } from 'zod';
@@ -33,7 +33,7 @@ export function codexTurn(events: RunnerEvent[]): BenchmarkTurn {
 	const session = events.find((event) => event.type === 'thread.started')?.thread_id;
 	const completed = [...events].reverse().find((event) => event.type === 'turn.completed');
 	if (!session || !completed || events.some((event) => event.type === 'turn.failed'))
-		throw new Error('Codex did not complete a benchmark submission.');
+		throw new IncompleteBenchmarkSubmissionError('Codex did not complete a benchmark submission.');
 	return {
 		session,
 		reportedModel: completed.model,
@@ -48,7 +48,7 @@ export function claudeTurn(events: RunnerEvent[]): BenchmarkTurn {
 	const init = events.find((event) => event.type === 'system' && event.subtype === 'init');
 	const result = [...events].reverse().find((event) => event.type === 'result');
 	if (!result?.session_id || result.is_error || result.subtype !== 'success')
-		throw new Error('Claude did not complete a benchmark submission.');
+		throw new IncompleteBenchmarkSubmissionError('Claude did not complete a benchmark submission.');
 	return {
 		session: result.session_id,
 		reportedModel: init?.model,

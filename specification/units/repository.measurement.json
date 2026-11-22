@@ -107,7 +107,7 @@
 				"name": "MeasurementRepository.write.file",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional output path passed with the repository root to resolve. If omitted or empty, the destination is derived from benchmark.profile.id; parent directories are created recursively.",
 				"examples": ["specification/measurements/impact-kernel/custom-run.json"]
 			},
@@ -388,7 +388,7 @@
 						"name": "MeasurementRepository.write.file",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional output path passed with the repository root to resolve. If omitted or empty, the destination is derived from benchmark.profile.id; parent directories are created recursively.",
 						"examples": ["specification/measurements/impact-kernel/custom-run.json"]
 					}
@@ -642,7 +642,7 @@
 				"outputs": [
 					{
 						"name": "MeasurementRepository.constructor",
-						"type": "unknown",
+						"type": "MeasurementRepository",
 						"description": "A MeasurementRepository instance retaining the root for subsequent operations. The repository instance is a class instance and cannot be represented as JSON."
 					}
 				],

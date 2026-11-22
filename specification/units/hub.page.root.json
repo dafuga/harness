@@ -29,7 +29,13 @@
 				"description": "Renders the public marketing home for a visitor and the six-section Hub home after a verified sign-in."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "session.check() rejection",
+				"type": "propagated",
+				"description": "The refresh callback can reject with the reason from `session.check()` because it awaits that call without a catch or narrowing the rejection. The implementation does not specify the rejection value or its runtime name."
+			}
+		],
 		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []

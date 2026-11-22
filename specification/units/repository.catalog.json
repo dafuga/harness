@@ -23,7 +23,8 @@
 			"CatalogRepository.records",
 			"CatalogRepository.scenarios",
 			"CatalogQuery",
-			"CatalogQuery"
+			"CatalogQuery",
+			"InvalidCatalogError"
 		]
 	},
 	"contract": {
@@ -410,7 +411,7 @@
 				"name": "CatalogRepository.dependencies.commit",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The commit whose recorded dependency graph is read, as a commit hash. When omitted or empty, the catalog head is used: the head of the main branch (or of the first branch by id when there is no main branch), or the newest stored revision when no such head exists.",
 				"examples": [
 					"8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
@@ -428,7 +429,7 @@
 				"name": "CatalogRepository.consumers.commit",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The commit whose recorded dependency graph is searched for consumers, as a commit hash. When omitted or empty, the catalog head is used: the head of the main branch (or of the first branch by id when there is no main branch), or the newest stored revision when no such head exists.",
 				"examples": [
 					"8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
@@ -446,7 +447,7 @@
 				"name": "CatalogRepository.records.commit",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The commit whose attached verification records are listed, as a commit hash. When omitted or empty, the catalog head is used: the head of the main branch (or of the first branch by id when there is no main branch), or the newest stored revision when no such head exists.",
 				"examples": [
 					"8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
@@ -457,7 +458,7 @@
 				"name": "CatalogRepository.scenarios.commit",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The commit whose declared scenarios are listed, as a commit hash. When omitted or empty, the catalog head is used: the head of the main branch (or of the first branch by id when there is no main branch), or the newest stored revision when no such head exists.",
 				"examples": [
 					"8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
@@ -1395,7 +1396,7 @@
 						"name": "CatalogRepository.dependencies.commit",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The commit whose recorded dependency graph is read, as a commit hash. When omitted or empty, the catalog head is used: the head of the main branch (or of the first branch by id when there is no main branch), or the newest stored revision when no such head exists.",
 						"examples": [
 							"8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
@@ -1456,7 +1457,7 @@
 						"name": "CatalogRepository.consumers.commit",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The commit whose recorded dependency graph is searched for consumers, as a commit hash. When omitted or empty, the catalog head is used: the head of the main branch (or of the first branch by id when there is no main branch), or the newest stored revision when no such head exists.",
 						"examples": [
 							"8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
@@ -1549,7 +1550,7 @@
 						"name": "CatalogRepository.records.commit",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The commit whose attached verification records are listed, as a commit hash. When omitted or empty, the catalog head is used: the head of the main branch (or of the first branch by id when there is no main branch), or the newest stored revision when no such head exists.",
 						"examples": [
 							"8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
@@ -1588,7 +1589,7 @@
 						"name": "CatalogRepository.scenarios.commit",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The commit whose declared scenarios are listed, as a commit hash. When omitted or empty, the catalog head is used: the head of the main branch (or of the first branch by id when there is no main branch), or the newest stored revision when no such head exists.",
 						"examples": [
 							"8c41e2f09a7b3d56c1e4f80a29b7d3e61c5a0f42",
@@ -1669,7 +1670,7 @@
 				"outputs": [
 					{
 						"name": "CatalogRepository.constructor",
-						"type": "unknown",
+						"type": "CatalogRepository",
 						"description": "The new CatalogRepository instance; its readonly adapter property is the SqliteAdapter built over the given connection and the catalog models."
 					}
 				],

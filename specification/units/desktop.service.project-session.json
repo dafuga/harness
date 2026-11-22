@@ -9,9 +9,18 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts"
+			"packages/desktop/src/services/projects-sessions/project-session-service/CheckedOutBranchChangedError.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/ProjectNotOpenError.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/ProjectNotSelectedError.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/ProjectRevisionReadOnlyError.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/ProjectSwitchBlockedError.ts"
 		],
 		"symbols": [
+			"CheckedOutBranchChangedError",
+			"ProjectNotOpenError",
+			"ProjectNotSelectedError",
+			"ProjectRevisionReadOnlyError",
 			"ProjectSessionService",
 			"ProjectSessionService.constructor",
 			"ProjectSessionService.assertProject",
@@ -20,7 +29,8 @@
 			"ProjectSessionService.snapshot",
 			"ProjectSessionService.requireProject",
 			"ProjectSessionService.mutable",
-			"ProjectSessionService.atBranch"
+			"ProjectSessionService.atBranch",
+			"ProjectSwitchBlockedError"
 		]
 	},
 	"contract": {
@@ -40,7 +50,7 @@
 				"name": "ProjectSessionService.assertProject.projectId",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The project id the caller expects to be selected. When it is left out (undefined) no check runs, so the call succeeds even with no project open; when given, it must equal the selected project's id exactly, so any value throws while no project is open.",
 				"examples": [
 					"local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63",
@@ -52,10 +62,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Any directory inside a Git work tree; the session uses that work tree's top-level directory, resolved with realpath, as the project root. A directory outside any work tree makes git fail, and the returned promise rejects with that error.",
-				"examples": [
-					"/Users/dev/projects/harness-app",
-					"/Users/dev/projects/harness-game/packages/desktop"
-				]
+				"examples": ["/workspace/harness-app", "/workspace/harness-game/packages/desktop"]
 			},
 			{
 				"name": "ProjectSessionService.snapshot.query",
@@ -90,7 +97,7 @@
 		"outputs": [
 			{
 				"name": "ProjectSessionService.assertProject",
-				"type": "unknown",
+				"type": "void",
 				"description": "Always undefined: the method returns nothing, and a projectId that does not match the selected project is reported only by throwing."
 			},
 			{
@@ -107,7 +114,7 @@
 					{
 						"project": {
 							"name": "harness-app",
-							"root": "/Users/dev/projects/harness-app",
+							"root": "/workspace/harness-app",
 							"id": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63"
 						},
 						"capabilities": {
@@ -174,7 +181,7 @@
 					{
 						"project": {
 							"name": "harness-game",
-							"root": "/Users/dev/projects/harness-game",
+							"root": "/workspace/harness-game",
 							"id": "local-9e2b7d04c1f8a6e35b0d9c72f4a1e8d6b3c5f0a9e7d2b4c6f1a8e3d5b9c0f7a2",
 							"kind": "game",
 							"dimension": "2d"
@@ -239,7 +246,7 @@
 					{
 						"project": {
 							"name": "harness-app",
-							"root": "/Users/dev/projects/harness-app",
+							"root": "/workspace/harness-app",
 							"id": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63"
 						},
 						"capabilities": {
@@ -306,7 +313,7 @@
 					{
 						"project": {
 							"name": "harness-app",
-							"root": "/Users/dev/projects/harness-app",
+							"root": "/workspace/harness-app",
 							"id": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63"
 						},
 						"capabilities": {
@@ -374,17 +381,17 @@
 			},
 			{
 				"name": "ProjectSessionService.requireProject",
-				"type": "unknown",
+				"type": "{ root: string; source: GitSourceAdapter; planning: PlanningFacadeAdapter; catalog: CatalogService; }",
 				"description": "The open project's root, source, planning and catalog in one new object. It is returned only when all four are set, and open() sets them before it reads the snapshot."
 			},
 			{
 				"name": "ProjectSessionService.mutable",
-				"type": "unknown",
+				"type": "Promise<{ revision: Revision; root: string; source: GitSourceAdapter; planning: PlanningFacadeAdapter; catalog: CatalogService; }>",
 				"description": "The object requireProject returns plus the revision for the stored query, which the last open() or snapshot() call set. It is returned only when that query names no commit, its branch is the checked-out one, the revision is at that branch's tip, and the branch is not harness-evidence."
 			},
 			{
 				"name": "ProjectSessionService.atBranch",
-				"type": "unknown",
+				"type": "Promise<{ root: string; source: GitSourceAdapter; planning: PlanningFacadeAdapter; catalog: CatalogService; }>",
 				"description": "The same value requireProject returns, returned only when the checked-out branch's name equals the branch given."
 			}
 		],
@@ -444,7 +451,7 @@
 						"name": "ProjectSessionService.assertProject.projectId",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The project id the caller expects to be selected. When it is left out (undefined) no check runs, so the call succeeds even with no project open; when given, it must equal the selected project's id exactly, so any value throws while no project is open.",
 						"examples": [
 							"local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63",
@@ -455,7 +462,7 @@
 				"outputs": [
 					{
 						"name": "ProjectSessionService.assertProject",
-						"type": "unknown",
+						"type": "void",
 						"description": "Always undefined: the method returns nothing, and a projectId that does not match the selected project is reported only by throwing."
 					}
 				],
@@ -490,10 +497,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Any directory inside a Git work tree; the session uses that work tree's top-level directory, resolved with realpath, as the project root. A directory outside any work tree makes git fail, and the returned promise rejects with that error.",
-						"examples": [
-							"/Users/dev/projects/harness-app",
-							"/Users/dev/projects/harness-game/packages/desktop"
-						]
+						"examples": ["/workspace/harness-app", "/workspace/harness-game/packages/desktop"]
 					}
 				],
 				"outputs": [
@@ -505,7 +509,7 @@
 							{
 								"project": {
 									"name": "harness-app",
-									"root": "/Users/dev/projects/harness-app",
+									"root": "/workspace/harness-app",
 									"id": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63"
 								},
 								"capabilities": {
@@ -572,7 +576,7 @@
 							{
 								"project": {
 									"name": "harness-game",
-									"root": "/Users/dev/projects/harness-game",
+									"root": "/workspace/harness-game",
 									"id": "local-9e2b7d04c1f8a6e35b0d9c72f4a1e8d6b3c5f0a9e7d2b4c6f1a8e3d5b9c0f7a2",
 									"kind": "game",
 									"dimension": "2d"
@@ -684,7 +688,7 @@
 							{
 								"project": {
 									"name": "harness-app",
-									"root": "/Users/dev/projects/harness-app",
+									"root": "/workspace/harness-app",
 									"id": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63"
 								},
 								"capabilities": {
@@ -751,7 +755,7 @@
 							{
 								"project": {
 									"name": "harness-app",
-									"root": "/Users/dev/projects/harness-app",
+									"root": "/workspace/harness-app",
 									"id": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63"
 								},
 								"capabilities": {
@@ -858,7 +862,7 @@
 				"outputs": [
 					{
 						"name": "ProjectSessionService.requireProject",
-						"type": "unknown",
+						"type": "{ root: string; source: GitSourceAdapter; planning: PlanningFacadeAdapter; catalog: CatalogService; }",
 						"description": "The open project's root, source, planning and catalog in one new object. It is returned only when all four are set, and open() sets them before it reads the snapshot."
 					}
 				],
@@ -877,7 +881,7 @@
 				"outputs": [
 					{
 						"name": "ProjectSessionService.mutable",
-						"type": "unknown",
+						"type": "Promise<{ revision: import(\"../../../models/development-tooling/Desktop.types\").Revision; root: string; source: GitSourceAdapter; planning: PlanningFacadeAdapter; catalog: CatalogService; }>",
 						"description": "The object requireProject returns plus the revision for the stored query, which the last open() or snapshot() call set. It is returned only when that query names no commit, its branch is the checked-out one, the revision is at that branch's tip, and the branch is not harness-evidence."
 					}
 				],
@@ -924,7 +928,7 @@
 				"outputs": [
 					{
 						"name": "ProjectSessionService.atBranch",
-						"type": "unknown",
+						"type": "Promise<{ root: string; source: GitSourceAdapter; planning: PlanningFacadeAdapter; catalog: CatalogService; }>",
 						"description": "The same value requireProject returns, returned only when the checked-out branch's name equals the branch given."
 					}
 				],
@@ -966,7 +970,7 @@
 				"outputs": [
 					{
 						"name": "ProjectSessionService.constructor",
-						"type": "unknown",
+						"type": "ProjectSessionService",
 						"description": "The new session with no project open: root, projectId, source, planning and catalog are null, pending is 0, and busy is false."
 					}
 				],

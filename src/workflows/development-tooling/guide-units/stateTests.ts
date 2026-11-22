@@ -29,6 +29,9 @@ export async function stateTests(
 	options: { headless?: boolean } = {}
 ): Promise<StateTest[]> {
 	const paths = declaredTestPaths(context, unit, state);
+	const video = videoTestPaths(context, unit.id, state);
+	for (const [file, viewports] of video)
+		paths.set(file, new Set([...(paths.get(file) ?? []), ...viewports]));
 	if (!options.headless) addAttributedTests(paths, attributedTests(context, unit));
 	const found: StateTest[] = [];
 	for (const [file, viewports] of paths) {
@@ -36,19 +39,37 @@ export async function stateTests(
 		if (!context.testSyntax.has(file))
 			context.testSyntax.set(file, authoredTest(await guidanceText(context, file)));
 		const syntax = context.testSyntax.get(file)!;
-		if (coversState(syntax, state, viewports.size, options.headless))
+		if (coversState(syntax, state, viewports.size, { ...options, video: video.has(file) }))
 			found.push({ file, viewports: [...viewports] });
 	}
 	return found;
 }
 
+/** A declared recording factory needs actual assertions and state marks, not just fixture strings. */
+function videoTestPaths(context: GuidanceContext, unit: string, state: string) {
+	const paths = new Map<string, Set<string>>();
+	const clips = context.loaded.scenarios
+		.filter((scenario) => scenario.units.includes(unit))
+		.flatMap((scenario) => scenario.video?.clips ?? []);
+	for (const clip of clips) {
+		if (clip.unit !== unit || unitStateName(unit, clip.state) !== state) continue;
+		const path = clip.script.path;
+		if (context.loaded.index.files.get(path)?.classification !== 'test') continue;
+		paths.set(path, new Set([...(paths.get(path) ?? []), ...clip.viewports]));
+	}
+	return paths;
+}
+
 function coversState(
-	syntax: ReturnType<typeof authoredTest>,
+	syntax: NonNullable<ReturnType<GuidanceContext['testSyntax']['get']>>,
 	state: string,
 	viewports: number,
-	headless = false
+	{ video, headless = false }: { video: boolean; headless?: boolean }
 ): boolean {
-	return syntax.test && (headless || syntax.states.has(state) || (viewports > 0 && syntax.matrix));
+	return (
+		(syntax.test || (video && syntax.motion === true)) &&
+		(headless || syntax.states.has(state) || (viewports > 0 && (syntax.matrix || video)))
+	);
 }
 
 function addAttributedTests(paths: Map<string, Set<string>>, files: string[]): void {
@@ -118,12 +139,16 @@ function attributedTests(context: GuidanceContext, unit: ComponentManifest): str
 
 function authoredTest(text: string) {
 	const source = ts.createSourceFile('test.ts', text, ts.ScriptTarget.Latest, true);
-	const found = { test: false, states: new Set<string>(), matrix: false };
+	const found = { test: false, states: new Set<string>(), matrix: false, motion: false };
+	let assertion = false,
+		mark = false;
 	const visit = (node: ts.Node) => {
 		if (ts.isCallExpression(node)) {
 			const called = node.expression.getText(source);
 			if (/^(?:test|it)(?:\.describe)?\.(?:skip|todo)\b/.test(called)) return;
 			if (/^(?:test|it)(?:\.(?:each|only))?$/.test(called)) found.test = true;
+			if (/^expect(?:\.poll)?$/.test(called)) assertion = true;
+			if (stateMark(node, called)) mark = true;
 		}
 		if (ts.isStringLiteralLike(node)) found.states.add(node.text);
 		if (
@@ -134,5 +159,15 @@ function authoredTest(text: string) {
 		ts.forEachChild(node, visit);
 	};
 	visit(source);
+	found.motion = assertion && mark;
 	return found;
+}
+
+function stateMark(node: ts.CallExpression, called: string): boolean {
+	return (
+		called === 'mark' &&
+		node.arguments.length >= 2 &&
+		ts.isStringLiteralLike(node.arguments[0]) &&
+		node.arguments[0].text === 'state'
+	);
 }

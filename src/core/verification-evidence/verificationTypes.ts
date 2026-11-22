@@ -2,6 +2,7 @@
 import { z } from 'zod';
 import { budgetFindingSchema } from './budgetTypes';
 export { budgetFindingSchema } from './budgetTypes';
+import { videoBatchPointerSchema } from '../../utils/verification-evidence/videoClipSchema';
 import { browserDiagnosticSchema } from '../development-tooling/browserDiagnostics';
 import { comparisonSchema } from '../development-tooling/comparisonTypes';
 import { explanationSchema } from '../development-tooling/explanationTypes';
@@ -71,6 +72,7 @@ export const measurementSchema = z.strictObject({
 });
 
 const verificationRecordObject = z.strictObject({
+	videoBatches: z.array(videoBatchPointerSchema).optional(),
 	schemaVersion: z.literal(1),
 	/** Source-rederived component contracts; absent legacy formats come from the source registry. */
 	componentSchemaVersion: z.literal(2).optional(),

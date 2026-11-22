@@ -210,7 +210,7 @@
 				"inputs": [
 					{
 						"name": "RuntimeAudio.heading.pane",
-						"type": "unknown",
+						"type": "ComparisonPane<Evidence>",
 						"required": true
 					}
 				],
@@ -228,7 +228,7 @@
 				"inputs": [
 					{
 						"name": "RuntimeAudio.children.pane",
-						"type": "unknown",
+						"type": "ComparisonPane<Evidence>",
 						"required": true
 					}
 				],
@@ -246,7 +246,7 @@
 				"inputs": [
 					{
 						"name": "RuntimeAudio.gap.pane",
-						"type": "unknown",
+						"type": "ComparisonPane<Evidence>",
 						"required": true
 					}
 				],

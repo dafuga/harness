@@ -1,0 +1,149 @@
+{
+	"schemaVersion": 1,
+	"id": "command.development-tooling-contracts-command-contract-documents",
+	"uid": "u_vjajbndbmw",
+	"kind": "command",
+	"title": "contractDocuments",
+	"responsibility": "Enumerates nested specification JSON files without following symlink entries and parses one document with readable failure labels.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["src/commands/development-tooling/contracts-command/contractDocuments.ts"],
+		"symbols": ["contractFiles", "readContractJson"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "contractFiles.directory",
+				"type": "string",
+				"required": true,
+				"description": "Absolute specification directory to enumerate recursively. Missing directories return an empty list; nested symbolic links are not followed."
+			},
+			{
+				"name": "readContractJson.path",
+				"type": "string",
+				"required": true,
+				"description": "Filesystem path of the JSON contract document to read; callers supply a path discovered in a specification directory."
+			},
+			{
+				"name": "readContractJson.label",
+				"type": "string",
+				"required": true,
+				"description": "Human-readable project-relative contract path included when reading or JSON parsing fails."
+			}
+		],
+		"outputs": [
+			{
+				"name": "contractFiles",
+				"type": "Promise<string[]>",
+				"description": "Sorted JSON file paths from the requested directory tree. A missing directory yields an empty array and symlink entries are omitted."
+			},
+			{
+				"name": "readContractJson",
+				"type": "Promise<unknown>",
+				"description": "The parsed JSON value, including objects, arrays, primitives or null; it is intentionally unvalidated until the caller applies its schema."
+			}
+		],
+		"errors": [
+			{
+				"name": "Filesystem rejection",
+				"type": "NodeJS.ErrnoException",
+				"description": "Original Node filesystem error while listing a specification directory, except ENOENT which is treated as empty. The original code and message are preserved."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Reading or parsing the requested JSON document failed; the supplied display label identifies the file."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "contractFiles",
+				"inputs": [
+					{
+						"name": "contractFiles.directory",
+						"type": "string",
+						"required": true,
+						"description": "Absolute specification directory to enumerate recursively. Missing directories return an empty list; nested symbolic links are not followed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "contractFiles",
+						"type": "Promise<string[]>",
+						"description": "Sorted JSON file paths from the requested directory tree. A missing directory yields an empty array and symlink entries are omitted."
+					}
+				],
+				"errors": [
+					{
+						"name": "Filesystem rejection",
+						"type": "NodeJS.ErrnoException",
+						"description": "Original Node filesystem error while listing a specification directory, except ENOENT which is treated as empty. The original code and message are preserved."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "readContractJson",
+				"inputs": [
+					{
+						"name": "readContractJson.path",
+						"type": "string",
+						"required": true,
+						"description": "Filesystem path of the JSON contract document to read; callers supply a path discovered in a specification directory."
+					},
+					{
+						"name": "readContractJson.label",
+						"type": "string",
+						"required": true,
+						"description": "Human-readable project-relative contract path included when reading or JSON parsing fails."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readContractJson",
+						"type": "Promise<unknown>",
+						"description": "The parsed JSON value, including objects, arrays, primitives or null; it is intentionally unvalidated until the caller applies its schema."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Reading or parsing the requested JSON document failed; the supplied display label identifies the file."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/development-tooling/contracts-command/contractDocuments.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/development-tooling/contracts-command/contractDocuments.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -2,14 +2,15 @@
 import { BoundedCommandAdapter } from '../../../../../adapters/execution-runtimes/BoundedCommandAdapter';
 import { readFile } from 'node:fs/promises';
 import { freemem, platform, totalmem } from 'node:os';
-import type { Memory } from './hostMemory.types';
+import { HostMemoryReadError, type Memory } from './hostMemory.types';
 export type { Memory } from './hostMemory.types';
 export function macMemory(text: string, pressure: string, total: number): Memory {
 	const page = Number(/page size of (\d+) bytes/.exec(text)?.[1]);
 	const count = (name: string) =>
 		Number(new RegExp(`^Pages ${name}:\\s+(\\d+)\\.`, 'm').exec(text)?.[1]);
 	const available = (count('free') + count('inactive') + count('speculative')) * page;
-	if (!page || !Number.isFinite(available)) throw new Error('Cannot read macOS memory counters');
+	if (!page || !Number.isFinite(available))
+		throw new HostMemoryReadError('Cannot read macOS memory counters');
 	const level = pressure.trim();
 	return {
 		memoryTotalBytes: total,
@@ -23,7 +24,7 @@ export function linuxMemory(text: string): Memory {
 	const total = value('MemTotal'),
 		available = value('MemAvailable');
 	if (!Number.isFinite(total) || !Number.isFinite(available) || total <= 0)
-		throw new Error('Cannot read Linux available memory');
+		throw new HostMemoryReadError('Cannot read Linux available memory');
 	return {
 		memoryTotalBytes: total,
 		memoryAvailableBytes: available,
@@ -48,7 +49,7 @@ export async function hostMemory(): Promise<Memory> {
 			memoryAvailableBytes: freemem(),
 			memoryPressure: 'normal'
 		};
-	throw new Error('Unsupported resource platform');
+	throw new HostMemoryReadError('Unsupported resource platform');
 }
 
 function pressureLevel(level: string): Memory['memoryPressure'] {

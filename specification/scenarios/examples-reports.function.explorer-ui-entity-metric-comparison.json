@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.explorer-ui-entity-metric-comparison",
+	"title": "reports.function.explorer-ui-entity-metric-comparison examples",
+	"kind": "headless",
+	"units": ["reports.function.explorer-ui-entity-metric-comparison"],
+	"builds": [],
+	"states": [
+		{
+			"id": "pairs-the-first-parent-page-measure-with-the-head-measure",
+			"title": "Pairs the first parent Page measure with the head measure",
+			"coverage": "required"
+		},
+		{
+			"id": "yields-no-comparison-for-a-first-commit-a-helper-or-a-remove",
+			"title": "Yields no comparison for a first commit, a helper or a removed Page",
+			"coverage": "required"
+		},
+		{
+			"id": "yields-no-comparison-when-a-registry-lacks-the-active-page",
+			"title": "Yields no comparison when a registry lacks the active Page",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.explorer-ui-entity-metric-comparison.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"pairs-the-first-parent-page-measure-with-the-head-measure",
+				"yields-no-comparison-for-a-first-commit-a-helper-or-a-remove",
+				"yields-no-comparison-when-a-registry-lacks-the-active-page"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"pairs-the-first-parent-page-measure-with-the-head-measure",
+				"yields-no-comparison-for-a-first-commit-a-helper-or-a-remove",
+				"yields-no-comparison-when-a-registry-lacks-the-active-page"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"pairs-the-first-parent-page-measure-with-the-head-measure",
+				"yields-no-comparison-for-a-first-commit-a-helper-or-a-remove",
+				"yields-no-comparison-when-a-registry-lacks-the-active-page"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

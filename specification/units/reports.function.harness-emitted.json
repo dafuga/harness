@@ -182,7 +182,7 @@
 				"name": "built.target",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional target name matched exactly against a measurement's target field; omission matches an undefined target. Defaults to undefined.",
 				"examples": ["process", "wasm"]
 			},
@@ -605,7 +605,7 @@
 						"name": "built.target",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional target name matched exactly against a measurement's target field; omission matches an undefined target. Defaults to undefined.",
 						"examples": ["process", "wasm"]
 					}

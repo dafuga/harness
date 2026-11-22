@@ -9,10 +9,7 @@ import { ImpactService } from '../src/services/reports-media/impact-service/Impa
 import { SourceGraphService } from '../src/services/SourceGraphService';
 import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
 import { readBuildAliases, readSelectImports } from './utils/shared-select-impact/imports';
-import {
-	loadUnits,
-	type LoadedUnits
-} from '../src/workflows/development-tooling/load-units/loadUnits';
+import { loadUnits } from '../src/workflows/development-tooling/load-units/loadUnits';
 const select = 'packages/reports/src/components/Select.svelte';
 const canonicalSelect = 'packages/reports/src/components/shared-primitives/Select.svelte';
 const shared = '$shared';
@@ -20,7 +17,7 @@ const selectTest = 'packages/reports/test/components/select.test.ts';
 const indexer = new sourceIndex.SourceIndexService();
 const analysis = new ImpactService(new HandlerRuntimeAdapter(impactKernel));
 const reports = new Map<string, Promise<ImpactReport>>();
-let loaded: LoadedUnits;
+let loaded: Awaited<ReturnType<typeof loadUnits>>;
 let builds: Record<string, Record<string, string>>;
 let written: Written[];
 beforeAll(async () => {
@@ -84,7 +81,10 @@ test('no import written through a build alias of any package is left as a packag
 	const outside = [...loaded.index.files.values()].filter((file) =>
 		file.references.some((item) => names.has(item.external ?? ''))
 	);
-	expect(outside.map((file) => file.path)).toEqual([]);
+	expect(
+		outside.map((file) => file.path),
+		'workspace build aliases must resolve inside their owning package'
+	).toEqual([]);
 });
 test('the registry stores Select as a derived dependency of each of its consumers, and is not stale', () => {
 	expect(loaded.index.files.get(selectTest)?.classification).toBe('test');

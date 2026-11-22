@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.entity-references",
+	"title": "desktop.function.entity-references examples",
+	"kind": "headless",
+	"units": ["desktop.function.entity-references"],
+	"builds": [],
+	"states": [
+		{
+			"id": "reads-complete-markers-as-references-and-keeps-the-text-around-them",
+			"title": "reads complete markers as references and keeps the text around them",
+			"coverage": "required"
+		},
+		{
+			"id": "leaves-malformed-and-unfinished-markers-as-text",
+			"title": "leaves malformed and unfinished markers as text",
+			"coverage": "required"
+		},
+		{
+			"id": "accepts-only-lower-case-dotted-ids-of-at-most-200-characters",
+			"title": "accepts only lower-case dotted ids of at most 200 characters",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.entity-references.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"reads-complete-markers-as-references-and-keeps-the-text-around-them",
+				"leaves-malformed-and-unfinished-markers-as-text",
+				"accepts-only-lower-case-dotted-ids-of-at-most-200-characters"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"reads-complete-markers-as-references-and-keeps-the-text-around-them",
+				"leaves-malformed-and-unfinished-markers-as-text",
+				"accepts-only-lower-case-dotted-ids-of-at-most-200-characters"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"reads-complete-markers-as-references-and-keeps-the-text-around-them",
+				"leaves-malformed-and-unfinished-markers-as-text",
+				"accepts-only-lower-case-dotted-ids-of-at-most-200-characters"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

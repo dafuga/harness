@@ -3,6 +3,7 @@ import './ios-acceptance-quiet';
 import { createRemoteDebugger } from 'appium-remote-debugger';
 import type { RemoteDebugger } from 'appium-remote-debugger';
 import { pagePrelude } from './ios-acceptance-prelude';
+import { SimulatorPageError } from './ios-acceptance-page.types';
 import { errorMessage } from '../../reports/src/helpers/strings/errorMessage';
 
 /** The logger of the package is chosen by now; nothing started from here inherits its mode. */
@@ -44,7 +45,9 @@ export class SimulatorPage {
 				await pause(1500);
 			}
 		}
-		throw new Error(`The page could not be read: ${failure.split('\n')[0].slice(0, 160)}`);
+		throw new SimulatorPageError(
+			`The page could not be read: ${failure.split('\n')[0].slice(0, 160)}`
+		);
 	}
 
 	/** Waits until the expression's value holds the wanted words, and returns the value. */
@@ -57,7 +60,9 @@ export class SimulatorPage {
 			await pause(1000);
 		}
 		const seen = last.replace(/\s+/g, ' ').slice(0, 160);
-		throw new Error(`"${wanted}" did not appear within ${seconds} s; last seen: ${seen}`);
+		throw new SimulatorPageError(
+			`"${wanted}" did not appear within ${seconds} s; last seen: ${seen}`
+		);
 	}
 
 	/** The app was started again or ended: the connection to its old page is given up. */
@@ -83,7 +88,7 @@ export class SimulatorPage {
 		);
 		await inspector.connect(8000);
 		const pages = await inspector.selectApp(null, 20, true);
-		if (!pages.length) throw new Error('No inspectable page of the app was found.');
+		if (!pages.length) throw new SimulatorPageError('No inspectable page of the app was found.');
 		const [app, page] = String(pages[0].id).split('.');
 		await inspector.selectPage(app, Number(page), true);
 		this.inspector = inspector;

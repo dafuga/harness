@@ -97,21 +97,9 @@
 			"CatalogRevisionEntityCreateInput",
 			"CatalogRevisionEntityUpdateInput",
 			"CatalogDependency",
-			"CatalogDependencyAttributes",
-			"CatalogDependencyCreateInput",
-			"CatalogDependencyUpdateInput",
 			"CatalogBranch",
-			"CatalogBranchAttributes",
-			"CatalogBranchCreateInput",
-			"CatalogBranchUpdateInput",
 			"CatalogRecord",
-			"CatalogRecordAttributes",
-			"CatalogRecordCreateInput",
-			"CatalogRecordUpdateInput",
 			"CatalogMetadata",
-			"CatalogMetadataAttributes",
-			"CatalogMetadataCreateInput",
-			"CatalogMetadataUpdateInput",
 			"AnalyticsEvent",
 			"AnalyticsEventAttributes",
 			"AnalyticsEventCreateInput",
@@ -169,6 +157,20 @@
 			"BoundedCommandAdapter",
 			"staleBuild",
 			"scenarioHealth",
+			"ContractsCommand",
+			"VideoEvidenceService",
+			"videoClipSchema",
+			"FrameFlagService",
+			"NativeVideoRecorderService",
+			"VideoArchiveService",
+			"VideoReferenceService",
+			"VideoCaptureService",
+			"JobHistoryRepository",
+			"JobStatisticsService",
+			"QueueEtaService",
+			"DriverQueueAdapter",
+			"JobBackfillService",
+			"JobsCommand",
 			"TaskOrchestrationCommand",
 			"ProviderSessionAdapter",
 			"TrackerCommand",
@@ -260,6 +262,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.execution-runtimes-driver-queue",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.networking-security-harness-http",
 			"via": "reexport",
 			"origin": "derived"
@@ -311,6 +318,16 @@
 		},
 		{
 			"unit": "command.codex-picker",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.execution-runtimes-jobs",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -565,6 +582,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.verification-evidence-video-clip-schema",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.verification-note-identity",
 			"via": "reexport",
 			"origin": "derived"
@@ -710,6 +732,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.execution-runtimes-job-history",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.projects-sessions-tracker-dispatch",
 			"via": "reexport",
 			"origin": "derived"
@@ -806,6 +833,21 @@
 		},
 		{
 			"unit": "service.desktop-experiment",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-job-backfill",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-job-statistics",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-queue-eta",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -931,6 +973,36 @@
 		},
 		{
 			"unit": "service.task-completion",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-frame-flag",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-native-video-recorder",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-archive",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-capture",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-evidence",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-reference",
 			"via": "reexport",
 			"origin": "derived"
 		},

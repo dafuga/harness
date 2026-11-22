@@ -113,7 +113,7 @@
 		"outputs": [
 			{
 				"name": "createProject",
-				"type": "unknown",
+				"type": "Promise<{ collaborationCommit: string; role: \"owner\"; id: `${string}-${string}-${string}-${string}-${string}`; name: string; sourceRepository: { id: number; owner: string; name: string; private: boolean; installationId: number; }; createdAt: string; ownerId: string; }>",
 				"description": "The Promise resolves to the created project with id, name, sourceRepository, createdAt, ownerId and role set to owner, plus collaborationCommit, the revision that compareAndSwap returned for the write.",
 				"examples": [
 					{
@@ -150,13 +150,13 @@
 			},
 			{
 				"name": "removeMember",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "The Promise resolves with no value once the member and the project's invitations for that member's email are removed in the committed transaction. The revision that the transaction commits is not returned to the caller."
 			}
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "Error",
 				"type": "thrown",
 				"description": "The implementation rejects with a plain Error whose name is Error, not ExpectedCliError, and whose code is one of invalid-input, forbidden, not-found, sole-owner or conflict."
 			},
@@ -222,7 +222,7 @@
 				"outputs": [
 					{
 						"name": "createProject",
-						"type": "unknown",
+						"type": "Promise<{ collaborationCommit: string; role: \"owner\"; id: `${string}-${string}-${string}-${string}-${string}`; name: string; sourceRepository: { id: number; owner: string; name: string; private: boolean; installationId: number; }; createdAt: string; ownerId: string; }>",
 						"description": "The Promise resolves to the created project with id, name, sourceRepository, createdAt, ownerId and role set to owner, plus collaborationCommit, the revision that compareAndSwap returned for the write.",
 						"examples": [
 							{
@@ -336,7 +336,7 @@
 				"outputs": [
 					{
 						"name": "removeMember",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "The Promise resolves with no value once the member and the project's invitations for that member's email are removed in the committed transaction. The revision that the transaction commits is not returned to the caller."
 					}
 				],

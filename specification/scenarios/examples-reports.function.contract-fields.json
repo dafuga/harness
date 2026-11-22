@@ -1,0 +1,111 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.contract-fields",
+	"title": "reports.function.contract-fields examples",
+	"kind": "headless",
+	"units": ["reports.function.contract-fields"],
+	"builds": [],
+	"states": [
+		{
+			"id": "type-labels-drop-only-quoted-modules",
+			"title": "Type labels drop only quoted module paths",
+			"coverage": "required"
+		},
+		{
+			"id": "declared-fields-keep-metadata",
+			"title": "Declared fields keep their readable name, trimmed description, default and examples",
+			"coverage": "required"
+		},
+		{
+			"id": "illustrative-and-missing-examples",
+			"title": "Plain data gets one illustrative example, and opaque types stay unshown",
+			"coverage": "required"
+		},
+		{
+			"id": "declared-falsy-examples-are-kept",
+			"title": "Declared falsy examples are kept rather than replaced",
+			"coverage": "required"
+		},
+		{
+			"id": "model-fields-take-optional-flags",
+			"title": "Model fields take requiredness from their optional flag and invent no default",
+			"coverage": "required"
+		},
+		{
+			"id": "callable-parameters-and-returns-keep-names",
+			"title": "Callable parameters and returns keep their declared names and examples",
+			"coverage": "required"
+		},
+		{
+			"id": "void-callables-say-no-value",
+			"title": "Void callables say no value is returned and declare no parameters",
+			"coverage": "required"
+		},
+		{
+			"id": "serializer-errors-reach-the-caller",
+			"title": "Serializer failures reach the caller uncaught",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.contract-fields.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"type-labels-drop-only-quoted-modules",
+				"declared-fields-keep-metadata",
+				"illustrative-and-missing-examples",
+				"declared-falsy-examples-are-kept",
+				"model-fields-take-optional-flags",
+				"callable-parameters-and-returns-keep-names",
+				"void-callables-say-no-value",
+				"serializer-errors-reach-the-caller"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"type-labels-drop-only-quoted-modules",
+				"declared-fields-keep-metadata",
+				"illustrative-and-missing-examples",
+				"declared-falsy-examples-are-kept",
+				"model-fields-take-optional-flags",
+				"callable-parameters-and-returns-keep-names",
+				"void-callables-say-no-value",
+				"serializer-errors-reach-the-caller"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"type-labels-drop-only-quoted-modules",
+				"declared-fields-keep-metadata",
+				"illustrative-and-missing-examples",
+				"declared-falsy-examples-are-kept",
+				"model-fields-take-optional-flags",
+				"callable-parameters-and-returns-keep-names",
+				"void-callables-say-no-value",
+				"serializer-errors-reach-the-caller"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

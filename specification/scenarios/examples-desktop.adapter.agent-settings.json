@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.adapter.agent-settings",
+	"title": "desktop.adapter.agent-settings storage values, failures and writes",
+	"kind": "headless",
+	"units": ["desktop.adapter.agent-settings"],
+	"builds": [],
+	"states": [
+		{
+			"id": "defaults-to-three-without-storage",
+			"title": "Defaults to three without storage and refuses writes",
+			"coverage": "required"
+		},
+		{
+			"id": "persists-each-allowed-count",
+			"title": "Persists each allowed count and reads it back from a fresh adapter",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-unsupported-counts-without-touching-storage",
+			"title": "Refuses unsupported counts without touching storage",
+			"coverage": "required"
+		},
+		{
+			"id": "falls-back-to-three-for-malformed-data",
+			"title": "Falls back to three for malformed or out-of-range stored data",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-storage-failures",
+			"title": "Reports storage failures as the default read and a false write",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.adapter.agent-settings.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"defaults-to-three-without-storage",
+				"persists-each-allowed-count",
+				"refuses-unsupported-counts-without-touching-storage",
+				"falls-back-to-three-for-malformed-data",
+				"reports-storage-failures"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"defaults-to-three-without-storage",
+				"persists-each-allowed-count",
+				"refuses-unsupported-counts-without-touching-storage",
+				"falls-back-to-three-for-malformed-data",
+				"reports-storage-failures"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"defaults-to-three-without-storage",
+				"persists-each-allowed-count",
+				"refuses-unsupported-counts-without-touching-storage",
+				"falls-back-to-three-for-malformed-data",
+				"reports-storage-failures"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

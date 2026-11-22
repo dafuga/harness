@@ -3,10 +3,12 @@ import { expect } from '../../verificationExpect';
 import { ModuleTaskWorkerService } from '../../../src/services/agents-providers/ModuleTaskWorkerService';
 import { ModuleTaskService } from '../../../src/services/agents-providers/ModuleTaskService';
 import { moduleTaskFixture } from '../../support/moduleTaskFixture';
-import { readFile, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { readFile, realpath, writeFile } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
 import { verifiedSubmission, verifiedTaskBaseline } from '../../support/moduleTaskEvidence';
 import { observedTaskOperation } from '../../support/taskProfiles';
+import { seedTaskFrameFlag, hash } from '../../support/frameFlagFixture';
+import { LfsAdapter } from '../../../src/adapters/git-source-history/LfsAdapter';
 test('module filters and assignment claims select once, then preserve changes for review', async () => {
 	const f = await moduleTaskFixture();
 	try {
@@ -18,8 +20,25 @@ test('module filters and assignment claims select once, then preserve changes fo
 		});
 		const input = JSON.parse(await readFile(await f.input({ assignee: 'owner' }), 'utf8'));
 		await service.add(input);
-		const worker = new ModuleTaskWorkerService(f.root, {
+		const flag = await seedTaskFrameFlag(f.root, f.source, 'service.orders');
+		const other = await seedTaskFrameFlag(f.root, f.source, 'service.other');
+		const linkedRoot = join(f.root, 'linked-owner');
+		await f.git.run(['worktree', 'add', '--detach', linkedRoot, f.source]);
+		const worker = new ModuleTaskWorkerService(linkedRoot, {
 			run: async (input) => {
+				const images = (input as typeof input & { images?: string[] }).images;
+				expect(images, 'owning task receives the extracted frame image').toHaveLength(1);
+				expect(hash(await readFile(images![0]))).toBe(flag.frame.sha256);
+				expect(await new LfsAdapter(f.root).read(flag.frame.sha256)).toEqual(
+					await readFile(images![0])
+				);
+				expect(input.prompt).toContain(flag.id);
+				expect(input.prompt).toContain('Inspect this edge');
+				expect(input.prompt).not.toContain(other.id);
+				expect(
+					dirname(input.cwd),
+					'linked worker shares the task-worktree root from common Git'
+				).toBe(join(await realpath(f.root), '.cache/harness/task-worktrees'));
 				await writeFile(join(input.cwd, 'src/orders.ts'), 'export const orders=2;');
 				return {
 					provider: input.provider,
@@ -134,7 +153,7 @@ test('incomplete review commits a repair base, requeues once, and keeps prior wo
 	} finally {
 		await f.dispose();
 	}
-});
+}, 30000);
 
 async function acceptVerified(
 	f: Awaited<ReturnType<typeof moduleTaskFixture>>,

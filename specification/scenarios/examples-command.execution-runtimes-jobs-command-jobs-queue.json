@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-command.execution-runtimes-jobs-command-jobs-queue",
+	"title": "command.execution-runtimes-jobs-command-jobs-queue examples",
+	"kind": "headless",
+	"units": ["command.execution-runtimes-jobs-command-jobs-queue"],
+	"builds": [],
+	"states": [
+		{
+			"id": "replaces-an-explicit-queue-and-merges-capacity-overrides",
+			"title": "Replaces an explicit queue and merges capacity overrides",
+			"coverage": "required"
+		},
+		{
+			"id": "builds-bounded-what-if-queues-without-live-jobs",
+			"title": "Builds bounded what-if queues without live jobs",
+			"coverage": "required"
+		},
+		{
+			"id": "counts-active-units-for-all-modules-what-if-queues",
+			"title": "Counts active units for all-modules what-if queues",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-malformed-queue-json-and-invalid-what-if-flags",
+			"title": "Rejects malformed queue JSON and invalid what-if flags",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/command.execution-runtimes-jobs-command-jobs-queue.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"replaces-an-explicit-queue-and-merges-capacity-overrides",
+				"builds-bounded-what-if-queues-without-live-jobs",
+				"counts-active-units-for-all-modules-what-if-queues",
+				"rejects-malformed-queue-json-and-invalid-what-if-flags"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"replaces-an-explicit-queue-and-merges-capacity-overrides",
+				"builds-bounded-what-if-queues-without-live-jobs",
+				"counts-active-units-for-all-modules-what-if-queues",
+				"rejects-malformed-queue-json-and-invalid-what-if-flags"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"replaces-an-explicit-queue-and-merges-capacity-overrides",
+				"builds-bounded-what-if-queues-without-live-jobs",
+				"counts-active-units-for-all-modules-what-if-queues",
+				"rejects-malformed-queue-json-and-invalid-what-if-flags"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

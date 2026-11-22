@@ -63,7 +63,7 @@
 		"outputs": [
 			{
 				"name": "analyticsSnapshot",
-				"type": "unknown",
+				"type": "ReturnType<typeof analyticsSnapshot>",
 				"description": "A snapshot record containing schemaVersion, generatedAt, filters, summary, loops, jev, models, tasks, benchmarks and events. JEV and task metric details come from imported implementations, so their nested schemas are not defined in this workflow.",
 				"examples": [
 					{
@@ -82,8 +82,28 @@
 						},
 						"loops": [],
 						"jev": {
-							"response": {},
-							"cleanCode": {}
+							"response": {
+								"checks": 0,
+								"outcomes": {},
+								"excluded": 0,
+								"firstTry": {
+									"numerator": 0,
+									"denominator": 0,
+									"rate": null
+								},
+								"tasks": []
+							},
+							"cleanCode": {
+								"checks": 0,
+								"outcomes": {},
+								"excluded": 0,
+								"firstTry": {
+									"numerator": 0,
+									"denominator": 0,
+									"rate": null
+								},
+								"tasks": []
+							}
 						},
 						"models": {
 							"authors": {},
@@ -92,10 +112,29 @@
 							"inputTokens": 0,
 							"outputTokens": 0,
 							"firstTryByAuthor": {},
-							"taskWorkers": {}
+							"taskWorkers": []
 						},
 						"tasks": {
-							"byModel": {}
+							"tasks": 0,
+							"executions": 0,
+							"submissions": 0,
+							"accepted": 0,
+							"bounces": 0,
+							"reviewed": 0,
+							"bounceRate": null,
+							"executionFailures": 0,
+							"inputTokens": null,
+							"outputTokens": null,
+							"cacheReadTokens": null,
+							"cacheWriteTokens": null,
+							"apiCostUsd": null,
+							"apiCostRangeUsd": {
+								"minimum": null,
+								"maximum": null
+							},
+							"unpricedExecutions": 0,
+							"unreportedUsage": 0,
+							"byModel": []
 						},
 						"benchmarks": [],
 						"events": []
@@ -153,7 +192,7 @@
 				"outputs": [
 					{
 						"name": "analyticsSnapshot",
-						"type": "unknown",
+						"type": "ReturnType<typeof analyticsSnapshot>",
 						"description": "A snapshot record containing schemaVersion, generatedAt, filters, summary, loops, jev, models, tasks, benchmarks and events. JEV and task metric details come from imported implementations, so their nested schemas are not defined in this workflow.",
 						"examples": [
 							{
@@ -172,8 +211,28 @@
 								},
 								"loops": [],
 								"jev": {
-									"response": {},
-									"cleanCode": {}
+									"response": {
+										"checks": 0,
+										"outcomes": {},
+										"excluded": 0,
+										"firstTry": {
+											"numerator": 0,
+											"denominator": 0,
+											"rate": null
+										},
+										"tasks": []
+									},
+									"cleanCode": {
+										"checks": 0,
+										"outcomes": {},
+										"excluded": 0,
+										"firstTry": {
+											"numerator": 0,
+											"denominator": 0,
+											"rate": null
+										},
+										"tasks": []
+									}
 								},
 								"models": {
 									"authors": {},
@@ -182,10 +241,29 @@
 									"inputTokens": 0,
 									"outputTokens": 0,
 									"firstTryByAuthor": {},
-									"taskWorkers": {}
+									"taskWorkers": []
 								},
 								"tasks": {
-									"byModel": {}
+									"tasks": 0,
+									"executions": 0,
+									"submissions": 0,
+									"accepted": 0,
+									"bounces": 0,
+									"reviewed": 0,
+									"bounceRate": null,
+									"executionFailures": 0,
+									"inputTokens": null,
+									"outputTokens": null,
+									"cacheReadTokens": null,
+									"cacheWriteTokens": null,
+									"apiCostUsd": null,
+									"apiCostRangeUsd": {
+										"minimum": null,
+										"maximum": null
+									},
+									"unpricedExecutions": 0,
+									"unreportedUsage": 0,
+									"byModel": []
 								},
 								"benchmarks": [],
 								"events": []

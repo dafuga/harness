@@ -1,0 +1,62 @@
+{
+	"name": "video-selected-frame-reader",
+	"goal": "Read verified selected archive clips without hydrating corrupt sibling media",
+	"createdAt": "2026-11-15T22:31:29.947Z",
+	"updatedAt": "2026-11-15T22:45:31.038Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-15T22:33:42.896Z",
+			"evidence": "Task video-selected-frame-reader-20261115 requires healthy archived clip A frame flag/read/feedback despite missing sibling B; C whole-record integrity remains broken. Preserve strict legacy inline reads and pinned note/evidence ancestry."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-15T22:33:45.534Z",
+			"evidence": "Existing default-reader case has only inline single-clip fixtures across full/scoped/failed standings. Add the registered shared archive C:A+B fixture, delete B only, and assert A flag/frame/feedback, B rejection, and broken C history without changing the 8 case names/count."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-15T22:37:42.866Z",
+			"evidence": "Committed test 213c96d858; retained failing checkpoint 23393bf33751d28189bf68d4d75a63034c468f3e611f72665485fa88a7ad1fef. Same 8 cases: 7 pass, default reader rejects healthy A because B media is missing during whole-parent hydration."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-15T22:45:29.190Z",
+			"evidence": "Source 785f14eda8 keeps FrameFlagService/flagStore/flagSchema unchanged. flagMedia delegates metadata selection to owner-private readFrameCapture. Archived clips use exact original VideoReferenceService proof at pinned evidence+notes; legacy inline clips still require complete HistoryStatus integrity."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-15T22:45:31.038Z",
+			"evidence": "Unchanged FrameFlag suite passed all 8 existing cases at 785f14eda8; selected-parent integration passed 6/6. Retained red/green have identical frozen test inputs and environment profile. Healthy A flag/frame/feedback succeeds with only B missing; B and wrong/pinned refs reject; C whole status stays broken."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

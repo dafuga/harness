@@ -109,7 +109,9 @@ async function identicalProof(root: string, entity: string, stored: StoredRecord
 
 /** The screenshot slots when there are screenshots; otherwise the slot of every capture. */
 function proofSlots(stored: StoredRecord): string {
-	const shots = screenshots(stored);
+	const shots = captures(stored).filter(({ capture }) =>
+		['screenshot', 'video'].includes(capture.kind)
+	);
 	if (shots.length > 0)
 		return JSON.stringify(
 			shots
@@ -122,7 +124,8 @@ function proofSlots(stored: StoredRecord): string {
 					capture.bytes,
 					capture.mediaType,
 					capture.server?.revision,
-					capture.server?.buildId
+					capture.server?.buildId,
+					capture.video
 				])
 				.sort()
 		);

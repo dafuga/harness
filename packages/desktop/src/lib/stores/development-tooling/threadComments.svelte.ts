@@ -1,5 +1,8 @@
 // @harness-uid u_s25qff72z4
-import type { CommentInput } from './threadComments.svelte.types';
+import {
+	ThreadCommentProjectMismatchError,
+	type CommentInput
+} from './threadComments.svelte.types';
 import type { Workspace } from '../projects-sessions/workspace.svelte';
 import type { HumanCommentResult } from '../../../models/projects-sessions/ProjectContext.types';
 import type { PendingComment } from '../../../utils/explorer-ui/commentEntries';
@@ -41,7 +44,7 @@ class ThreadCommentsState {
 			if (draft.threadId === undefined) delete draft.threadId;
 			const result = await bridge.addComment(draft);
 			if (context.projectId && result.projectId !== context.projectId)
-				throw new Error('The bridge answered for another project.');
+				throw new ThreadCommentProjectMismatchError('The bridge answered for another project.');
 			this.attempt = null;
 			this.accept(result);
 			return result;

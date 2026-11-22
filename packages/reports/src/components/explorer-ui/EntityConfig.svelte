@@ -18,6 +18,8 @@
 		scope: ExplorerScope;
 		nav: EntityNav;
 	} = $props();
+	// A setting is one of the config unit's contract outputs.
+	type Setting = ExplorerEntity['unit']['contract']['outputs'][number];
 	let current = $derived(scope.mode === 'current');
 	let commit = $derived(
 		entityLens(nav.route, { category: 'configs', entity: entity.id, commit: scope.commit })
@@ -61,8 +63,8 @@
 					rowKey={(_, position) => position}
 					className="ex-rows"
 				>
-					{#snippet label(setting)}{word(setting.name)}{/snippet}
-					{#snippet children(setting)}{kind(setting.type)}{/snippet}
+					{#snippet label(setting: Setting)}{word(setting.name)}{/snippet}
+					{#snippet children(setting: Setting)}{kind(setting.type)}{/snippet}
 				</DetailList>
 			{/if}
 		</hx-div>

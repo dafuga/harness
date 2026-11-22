@@ -1,6 +1,7 @@
 export type PreviewVariant =
 	| 'apis'
 	| 'platforms'
+	| 'platforms-invalid'
 	| 'source'
 	| ''
 	| 'legacy'
@@ -18,4 +19,5 @@ export type PreviewVariant =
 	| 'relations'
 	| 'measurements'
 	| 'focused'
-	| 'viewport-states';
+	| 'viewport-states'
+	| 'unrecorded-measures';

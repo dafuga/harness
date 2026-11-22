@@ -22,7 +22,7 @@
 			},
 			{
 				"name": "hubProjectionCache.projection",
-				"type": "{ profile: string; accept: (value: unknown) => T }",
+				"type": "{ profile: string; accept: (value: HubJsonValue | T) => T }",
 				"required": true,
 				"description": "The profile string is UTF-8 encoded and hashed into the cache identity, so each profile name maps to its own cache identity. The accept callback receives either the parsed cached JSON or a freshly loaded value and returns the value to use; a throw from it on cached data deletes that entry and triggers a reload, while a throw on fresh data propagates unchanged."
 			},
@@ -75,7 +75,7 @@
 					},
 					{
 						"name": "hubProjectionCache.projection",
-						"type": "{ profile: string; accept: (value: unknown) => T }",
+						"type": "{ profile: string; accept: (value: HubJsonValue | T) => T }",
 						"required": true,
 						"description": "The profile string is UTF-8 encoded and hashed into the cache identity, so each profile name maps to its own cache identity. The accept callback receives either the parsed cached JSON or a freshly loaded value and returns the value to use; a throw from it on cached data deletes that entry and triggers a reload, while a throw on fresh data propagates unchanged."
 					},

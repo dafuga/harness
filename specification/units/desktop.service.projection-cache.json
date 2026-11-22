@@ -9,7 +9,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService.types.ts"
 		],
 		"symbols": [
 			"ProjectionCacheService",
@@ -20,7 +21,8 @@
 			"ProjectionCacheService.lookup",
 			"ProjectionCacheService.discard",
 			"ProjectionCacheService.purge",
-			"ProjectionCacheService.clear"
+			"ProjectionCacheService.clear",
+			"CacheWriteRejectedError"
 		]
 	},
 	"contract": {
@@ -31,9 +33,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem directory used as the base for projection and lookup cache files. The constructor stores it without validating or creating it; writes create it recursively when needed.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/packages/desktop/.cache/projection-cache"
-				]
+				"examples": ["/workspace/project/packages/desktop/.cache/projection-cache"]
 			},
 			{
 				"name": "ProjectionCacheService.get.identity",
@@ -171,7 +171,7 @@
 				"name": "ProjectionCacheService.purge.projectId",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional project identifier used to narrow the purge. Omitting it removes entries for the principal across projects; supplying it also removes that project's entries and entries marked for $projects.",
 				"examples": ["project-42"]
 			}
@@ -509,7 +509,7 @@
 						"name": "ProjectionCacheService.purge.projectId",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional project identifier used to narrow the purge. Omitting it removes entries for the principal across projects; supplying it also removes that project's entries and entries marked for $projects.",
 						"examples": ["project-42"]
 					}
@@ -559,15 +559,13 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem directory used as the base for projection and lookup cache files. The constructor stores it without validating or creating it; writes create it recursively when needed.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/packages/desktop/.cache/projection-cache"
-						]
+						"examples": ["/workspace/project/packages/desktop/.cache/projection-cache"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectionCacheService.constructor",
-						"type": "unknown",
+						"type": "ProjectionCacheService",
 						"description": "Constructs a ProjectionCacheService instance with the supplied cache directory and initializes its generation counter to zero."
 					}
 				],

@@ -1,4 +1,5 @@
 // @harness-uid u_ym3ca64mrl
+import { CpuSampleUnavailableError } from './analyticsCpuClient.types';
 import type { CpuState } from '../../../utils/reports-media/analyticsCpuClient';
 import type { CpuSnapshot } from '../../../../../../src/utils/development-tooling/cpuMetrics';
 
@@ -14,7 +15,7 @@ export function analyticsCpuClient(update: (sample: CpuState) => void) {
 				cache: 'no-store',
 				signal: controller.signal
 			});
-			if (!response.ok) throw new Error('CPU sample unavailable.');
+			if (!response.ok) throw new CpuSampleUnavailableError('CPU sample unavailable.');
 			const sample = (await response.json()) as CpuSnapshot;
 			if (active) update(sample);
 		} catch {

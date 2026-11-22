@@ -34,17 +34,15 @@
 				"name": "reportProcess.cwd",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional working directory for the child process. When omitted, the code passes no cwd override and spawn uses the current working directory.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "reportProcess.environment",
 				"type": "NodeJS.ProcessEnv",
 				"required": false,
-				"description": "Optional environment-variable map supplied to the child process. Defaults to process.env when omitted; a supplied map replaces the inherited environment.",
+				"description": "Optional environment passed to spawn. When omitted or null at runtime, the child inherits process.env; an explicit object is passed through without merging.",
 				"examples": [
 					{
 						"NODE_ENV": "test",
@@ -56,7 +54,7 @@
 		"outputs": [
 			{
 				"name": "reportProcess",
-				"type": "unknown",
+				"type": "Promise<{ code: number; output: string; durationMs: number; }>",
 				"description": "The resolved object reports the process exit code, combined stdout and stderr, and elapsed milliseconds for completion and diagnostics. Only the last 2,000,000 JavaScript string code units are retained; a null close code becomes -1, and nonzero codes resolve normally.",
 				"examples": [
 					{
@@ -104,17 +102,15 @@
 						"name": "reportProcess.cwd",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional working directory for the child process. When omitted, the code passes no cwd override and spawn uses the current working directory.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "reportProcess.environment",
 						"type": "NodeJS.ProcessEnv",
 						"required": false,
-						"description": "Optional environment-variable map supplied to the child process. Defaults to process.env when omitted; a supplied map replaces the inherited environment.",
+						"description": "Optional environment passed to spawn. When omitted or null at runtime, the child inherits process.env; an explicit object is passed through without merging.",
 						"examples": [
 							{
 								"NODE_ENV": "test",
@@ -126,7 +122,7 @@
 				"outputs": [
 					{
 						"name": "reportProcess",
-						"type": "unknown",
+						"type": "Promise<{ code: number; output: string; durationMs: number; }>",
 						"description": "The resolved object reports the process exit code, combined stdout and stderr, and elapsed milliseconds for completion and diagnostics. Only the last 2,000,000 JavaScript string code units are retained; a null close code becomes -1, and nonzero codes resolve normally.",
 						"examples": [
 							{

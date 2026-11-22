@@ -3,7 +3,7 @@ import type { CpuProcess, CpuRole } from '../../../../utils/development-tooling/
 import { basename } from 'node:path';
 
 // Arguments are used only for classification and are never returned or persisted.
-export function cpuProcesses(value: string, monitorPid = process.pid): CpuProcess[] {
+export function cpuProcesses(value: string, monitorPid: number = process.pid): CpuProcess[] {
 	return value.split('\n').flatMap((line) => {
 		const match = line.match(/^\s*(\d+)\s+(\d+)\s+([\d:.+-]+)\s+(.+)$/);
 		if (!match) return [];

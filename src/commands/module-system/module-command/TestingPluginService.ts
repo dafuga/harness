@@ -5,17 +5,18 @@ import { ModuleInstallService } from '../../../services/module-system/ModuleInst
 import { resourceWork } from '../../../utils/execution-runtimes/resourceWork';
 import { resourceHome } from '../../../utils/execution-runtimes/resourceConfig';
 import { runIsolated } from '../../../utils/reports-media/run-isolated/runIsolated';
+import { TestingPluginServiceError } from './TestingPluginService.types';
 
 /** Run an installed testing plugin under shared admission and owned-process cleanup. */
 export class TestingPluginService {
 	async run(root: string, id: string, args: string[] = [], signal?: AbortSignal): Promise<number> {
 		const catalog = await new ModuleCatalogService().load(root);
-		if (catalog.gaps.length) throw new Error(catalog.gaps.join('\n'));
+		if (catalog.gaps.length) throw new TestingPluginServiceError(catalog.gaps.join('\n'));
 		const entry = catalog.modules.find((item) => item.definition.id === id);
 		if (!entry?.definition.testing || !entry.installed)
-			throw new Error('Install a testing plugin before running it.');
+			throw new TestingPluginServiceError('Install a testing plugin before running it.');
 		if (args.some((arg) => /^(?:--(?:headed|debug|ui|config)(?:=|$)|-c)/.test(arg)))
-			throw new Error('Testing plugins require their headless configuration.');
+			throw new TestingPluginServiceError('Testing plugins require their headless configuration.');
 		await new ModuleInstallService().add(root, id);
 		return resourceWork(
 			{

@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/utils/explorer-ui/entity-screens/videoCapture.ts",
 			"packages/reports/src/utils/explorer-ui/entityScreens.ts",
 			"packages/reports/src/utils/explorer-ui/entityScreens.types.ts"
 		],
 		"symbols": [
+			"videoCapture",
 			"screenOptions",
 			"screenPick",
 			"entityScreens",
@@ -31,6 +33,24 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "videoCapture.side",
+				"type": "ExplorerSide",
+				"required": true,
+				"description": "Selected explorer side carrying records, source revision and capture standing."
+			},
+			{
+				"name": "videoCapture.found",
+				"type": "ExplorerCapture",
+				"required": true,
+				"description": "One admitted capture with its original scenario and record identity."
+			},
+			{
+				"name": "videoCapture.phase",
+				"type": "Phase",
+				"required": true,
+				"description": "Gallery side being shown: before, after or current."
+			},
 			{
 				"name": "screenOptions.scenarios",
 				"type": "HarnessScenario[]",
@@ -706,7 +726,7 @@
 				"name": "catalogShot.preview",
 				"type": "ScreenPick",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The exact scenario, state and viewport the catalog image must show; when it is absent, any usable screenshot with media qualifies, preferring a capture of the shown commit's build. When it is set and no usable screenshot matches it, the result is null unless allowFocusedDefault permits a focused capture.",
 				"examples": [
 					{
@@ -1372,6 +1392,44 @@
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [
+			{
+				"name": "videoCapture",
+				"inputs": [
+					{
+						"name": "videoCapture.side",
+						"type": "ExplorerSide",
+						"required": true,
+						"description": "Selected explorer side carrying records, source revision and capture standing."
+					},
+					{
+						"name": "videoCapture.found",
+						"type": "ExplorerCapture",
+						"required": true,
+						"description": "One admitted capture with its original scenario and record identity."
+					},
+					{
+						"name": "videoCapture.phase",
+						"type": "Phase",
+						"required": true,
+						"description": "Gallery side being shown: before, after or current."
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoCapture",
+						"type": "EvidenceVideo | undefined",
+						"description": "Projects a typed gallery capture or returns undefined for a non-video capture. It performs no media loading or proof admission."
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "A null or shape-invalid runtime gallery/capture/reference can fail property access or iteration. Typed valid non-video input returns undefined; this projection performs no media loading or admission."
+					}
+				],
+				"errorStatus": "declared"
+			},
 			{
 				"name": "screenOptions",
 				"inputs": [
@@ -2254,7 +2312,7 @@
 						"name": "catalogShot.preview",
 						"type": "ScreenPick",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The exact scenario, state and viewport the catalog image must show; when it is absent, any usable screenshot with media qualifies, preferring a capture of the shown commit's build. When it is set and no usable screenshot matches it, the result is null unless allowFocusedDefault permits a focused capture.",
 						"examples": [
 							{
@@ -2763,6 +2821,11 @@
 		},
 		{
 			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.evidence-media",
 			"via": "import",
 			"origin": "derived"
 		},

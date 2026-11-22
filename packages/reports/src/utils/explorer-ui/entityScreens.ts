@@ -8,9 +8,11 @@ import type {
 } from '../../models/explorer-ui/Explorer.types';
 import type { HarnessScenario } from '../../models/explorer-ui/Harness.types';
 import type { Evidence } from '../../models/reports-media/Report.types';
+import { evidenceMedia } from '../verification-evidence/evidenceMedia';
 import { captureProvenance } from '../reports-media/captureProvenance';
 import { mediaFile } from './harnessEvidence';
-const media = ['screenshot', 'audio'];
+import { videoCapture } from './entity-screens/videoCapture';
+const media = ['screenshot', 'audio', 'video'];
 const title = (id: string) => id.charAt(0).toUpperCase() + id.slice(1);
 /** The scenarios of an entity that are seen: those with a viewport, with what each declares. */
 export function screenOptions(scenarios: HarnessScenario[]): ScreenOption[] {
@@ -68,22 +70,27 @@ function item(side: ExplorerSide, found: ExplorerCapture, phase: Phase): Evidenc
 	const { capture, scenario, state } = found;
 	const origin = told(side, found);
 	const where = capture.viewport ?? capture.kind;
+	const slot = capture.video ? `${where}-${capture.video.clipId}` : where;
 	return {
-		id: `${phase}-${shortCommit(side.commit)}-${scenario}-${state}-${capture.evidence}-${where}`,
-		title: `${scenario} · ${state}`,
+		id: `${phase}-${shortCommit(side.commit)}-${scenario}-${state}-${capture.evidence}-${slot}`,
+		title: capture.video
+			? `${scenario} · ${state} · ${capture.video.clipId}`
+			: `${scenario} · ${state}`,
 		category: scenario,
+		state,
 		file: mediaFile(capture),
 		status: origin.standing === 'unvalidated' ? 'not-proven' : capture.status,
 		source: capture.server?.revision,
 		capturedAt: capture.capturedAt,
 		viewport: capture.viewport,
 		phase,
-		comparison: `${scenario}|${state}|${capture.evidence}|${where}`,
+		comparison: `${scenario}|${state}|${capture.evidence}|${slot}`,
 		standing: origin.label,
 		provenance: origin.facts,
 		note: origin.note,
 		missing: capture.media === null,
-		mediaType: capture.kind === 'audio' ? 'audio' : 'image',
+		mediaType: evidenceMedia({ file: capture.path, mimeType: capture.mediaType }),
+		video: videoCapture(side, found, phase),
 		mimeType: capture.mediaType,
 		durationSeconds: capture.durationSeconds,
 		transcript: capture.transcript
@@ -198,5 +205,4 @@ export function galleryItems(evidence: ExplorerEvidence): Evidence[] {
 	];
 	return items.map((entry, order) => ({ ...entry, order }));
 }
-
 export type { ScreenOption, ScreenPick, EntityScreens } from './entityScreens.types';

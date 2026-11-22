@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-model.catalog-entity",
+	"title": "model.catalog-entity examples",
+	"kind": "headless",
+	"units": ["model.catalog-entity"],
+	"builds": [],
+	"states": [
+		{
+			"id": "finds-catalog-rows-by-id-and-copied-filters",
+			"title": "Finds catalog rows by id and copied filters",
+			"coverage": "required"
+		},
+		{
+			"id": "creates-a-row-from-copied-input-fields",
+			"title": "Creates a row from copied input fields",
+			"coverage": "required"
+		},
+		{
+			"id": "updates-a-row-with-partial-fields",
+			"title": "Updates a row with partial fields",
+			"coverage": "required"
+		},
+		{
+			"id": "deletes-a-row-and-returns-the-adapter-result",
+			"title": "Deletes a row and returns the adapter result",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-caller-field-getter-exception-during-copy",
+			"title": "Throws Caller field getter exception during copy",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-the-adapter-lacks-find",
+			"title": "Throws TypeError when the adapter lacks find",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/model.catalog-entity.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"finds-catalog-rows-by-id-and-copied-filters",
+				"creates-a-row-from-copied-input-fields",
+				"updates-a-row-with-partial-fields",
+				"deletes-a-row-and-returns-the-adapter-result",
+				"throws-caller-field-getter-exception-during-copy",
+				"throws-typeerror-when-the-adapter-lacks-find"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"finds-catalog-rows-by-id-and-copied-filters",
+				"creates-a-row-from-copied-input-fields",
+				"updates-a-row-with-partial-fields",
+				"deletes-a-row-and-returns-the-adapter-result",
+				"throws-caller-field-getter-exception-during-copy",
+				"throws-typeerror-when-the-adapter-lacks-find"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"finds-catalog-rows-by-id-and-copied-filters",
+				"creates-a-row-from-copied-input-fields",
+				"updates-a-row-with-partial-fields",
+				"deletes-a-row-and-returns-the-adapter-result",
+				"throws-caller-field-getter-exception-during-copy",
+				"throws-typeerror-when-the-adapter-lacks-find"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

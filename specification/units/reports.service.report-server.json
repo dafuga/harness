@@ -9,14 +9,16 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.ts"
+			"packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.types.ts"
 		],
 		"symbols": [
 			"reportServerEnvironment",
 			"ReportServerService",
 			"ReportServerService.constructor",
 			"ReportServerService.serve",
-			"ReportServerService.stop"
+			"ReportServerService.stop",
+			"ReportServerUnavailableError"
 		]
 	},
 	"contract": {
@@ -46,9 +48,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository working directory used for HARNESS_SITE_ROOT when base.HARNESS_SITE_ROOT is nullish.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "ReportServerService.constructor.repository",
@@ -86,7 +86,7 @@
 						"PORT": "5588",
 						"ORIGIN": "http://127.0.0.1:5588",
 						"BODY_SIZE_LIMIT": "110M",
-						"HARNESS_SITE_ROOT": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+						"HARNESS_SITE_ROOT": "/workspace/project",
 						"HARNESS_OWNER_MODE": "loopback",
 						"HARNESS_BIND": "127.0.0.1"
 					}
@@ -94,7 +94,7 @@
 			},
 			{
 				"name": "ReportServerService.serve",
-				"type": "unknown",
+				"type": "Promise<{ port: number; reused: boolean; url: string; pid: number | undefined; }>",
 				"description": "Resolves to an object with port, reused, url, and pid; url is the loopback HTTP address and reused indicates whether a matching server was already running. pid is the recorded pid on reuse, or the spawned pid (falling back to -1) on start, and can be undefined when a reused record has no pid.",
 				"examples": [
 					{
@@ -171,9 +171,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository working directory used for HARNESS_SITE_ROOT when base.HARNESS_SITE_ROOT is nullish.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -189,7 +187,7 @@
 								"PORT": "5588",
 								"ORIGIN": "http://127.0.0.1:5588",
 								"BODY_SIZE_LIMIT": "110M",
-								"HARNESS_SITE_ROOT": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+								"HARNESS_SITE_ROOT": "/workspace/project",
 								"HARNESS_OWNER_MODE": "loopback",
 								"HARNESS_BIND": "127.0.0.1"
 							}
@@ -214,7 +212,7 @@
 				"outputs": [
 					{
 						"name": "ReportServerService.serve",
-						"type": "unknown",
+						"type": "Promise<{ port: number; reused: boolean; url: string; pid: number | undefined; }>",
 						"description": "Resolves to an object with port, reused, url, and pid; url is the loopback HTTP address and reused indicates whether a matching server was already running. pid is the recorded pid on reuse, or the spawned pid (falling back to -1) on start, and can be undefined when a reused record has no pid.",
 						"examples": [
 							{
@@ -296,7 +294,7 @@
 				"outputs": [
 					{
 						"name": "ReportServerService.constructor",
-						"type": "unknown",
+						"type": "ReportServerService",
 						"description": "The initialized ReportServerService instance, which uses the supplied repository or creates a ReportRepository when omitted."
 					}
 				],

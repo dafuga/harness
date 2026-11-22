@@ -10,11 +10,13 @@
 	"owns": {
 		"source": [
 			"src/cli/program/console-install-service/consoleHostFiles.ts",
+			"src/cli/program/console-install-service/consoleHostFiles.types.ts",
 			"src/utils/development-tooling/consoleHostFiles.ts",
 			"src/utils/development-tooling/consoleHostFiles.types.ts"
 		],
 		"symbols": [
 			"consoleHostFiles",
+			"MissingConsoleBucketBindingError",
 			"consoleServerDirectory",
 			"consoleHostFiles",
 			"HostFile",
@@ -52,7 +54,7 @@
 		"outputs": [
 			{
 				"name": "consoleServerDirectory",
-				"type": "unknown",
+				"type": "\"src/lib/server/harness\"",
 				"description": "Fixed host-relative directory used for the generated server module and console data modules. Its value is `src/lib/server/harness`.",
 				"examples": ["src/lib/server/harness"]
 			},

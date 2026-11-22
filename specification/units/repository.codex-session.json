@@ -9,14 +9,16 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/cli/program/codex-gateway-service/codex-session-repository/CodexSessionRepository.ts"
+			"src/cli/program/codex-gateway-service/codex-session-repository/CodexSessionRepository.ts",
+			"src/cli/program/codex-gateway-service/codex-session-repository/CodexSessionRepository.types.ts"
 		],
 		"symbols": [
 			"CodexSessionRepository",
 			"CodexSessionRepository.create",
 			"CodexSessionRepository.waitForTool",
 			"CodexSessionRepository.deliver",
-			"CodexSessionRepository.cancel"
+			"CodexSessionRepository.cancel",
+			"CodexSessionError"
 		]
 	},
 	"contract": {

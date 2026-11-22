@@ -23,7 +23,7 @@
 					{
 						"version": 1,
 						"id": "run-001",
-						"project": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+						"project": "/workspace/project",
 						"revision": "0123456789abcdef0123456789abcdef01234567",
 						"fingerprint": "abcdef0123456789abcdef0123456789abcdef01",
 						"seed": "seed-1",
@@ -110,7 +110,7 @@
 		"outputs": [
 			{
 				"name": "benchmarkMetrics",
-				"type": "unknown",
+				"type": "ReturnType<typeof benchmarkMetrics>",
 				"description": "An array of one summary per configured candidate for benchmark reporting, preserving the candidate object as configuration. A rate is null with no trials, successful duration is null without passed trials, and each usage total or reported cost is null when required data is missing or a trial has status error, timeout, interrupted, or running.",
 				"examples": [
 					[
@@ -161,7 +161,7 @@
 							{
 								"version": 1,
 								"id": "run-001",
-								"project": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+								"project": "/workspace/project",
 								"revision": "0123456789abcdef0123456789abcdef01234567",
 								"fingerprint": "abcdef0123456789abcdef0123456789abcdef01",
 								"seed": "seed-1",
@@ -248,7 +248,7 @@
 				"outputs": [
 					{
 						"name": "benchmarkMetrics",
-						"type": "unknown",
+						"type": "ReturnType<typeof benchmarkMetrics>",
 						"description": "An array of one summary per configured candidate for benchmark reporting, preserving the candidate object as configuration. A rate is null with no trials, successful duration is null without passed trials, and each usage total or reported cost is null when required data is missing or a trial has status error, timeout, interrupted, or running.",
 						"examples": [
 							[

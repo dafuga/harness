@@ -1,6 +1,7 @@
 // @harness-uid u_3tibsmkofv
 import { DeployCommand } from '../commands/execution-runtimes/DeployCommand';
 import { PermissionsCommand } from '../commands/networking-security/PermissionsCommand';
+import { ContractsCommand } from '../commands/development-tooling/ContractsCommand';
 import { ProviderSignInCommand } from '../commands/agents-providers/ProviderSignInCommand';
 import { registerTaskCommand } from './program/TaskCommand';
 import { TrackerCommand } from '../commands/projects-sessions/TrackerCommand';
@@ -16,6 +17,7 @@ import { HarborInspectionCommand } from '../commands/projects-sessions/HarborIns
 import { registerReportCommand } from './program/ReportCommand';
 import { registerResourcesCommand } from './program/ResourcesCommand';
 import { Command } from 'commander';
+import { JobsCommand } from '../commands/execution-runtimes/JobsCommand';
 import { registerResponseCheckCommand } from './program/ResponseCheckCommand';
 import { registerAuditCommand } from './program/audit';
 import { registerGenerateCommand } from './program/generate';
@@ -46,6 +48,7 @@ export function buildProgram(): Command {
 	new HarborInspectionCommand().register(program);
 	registerBenchmarkCommand(program);
 	registerResourcesCommand(program);
+	new JobsCommand().register(program);
 	registerAnalyticsCommand(program);
 	registerActivityCommand(program);
 	new ProjectListCommand().register(program);
@@ -55,6 +58,7 @@ export function buildProgram(): Command {
 	registerInfoCommand(program);
 	registerLoopCommand(program);
 	registerUnitsCommand(program);
+	new ContractsCommand().register(program);
 	registerImpactCommand(program);
 	registerKernelCommand(program);
 	registerScenariosCommand(program);

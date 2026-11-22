@@ -6,37 +6,49 @@ and loop driven development that agents can query before making a change.
 
 Game projects retain app pages and add independent mechanics and executable checkpoint graphs. See [the game engine guide](packages/game/README.md) for authoring, AI preview costs and verification.
 
+## Install this checkout's CLI
+
+Run these setup commands from the intended primary checkout, not a task worktree. On Daniel's Mac that checkout is `/Users/danielfugere/projects/harness-integration`:
+
+```sh
+bun run build:cli
+bun link
+chmod 755 dist/index.js
+```
+
+The package's `bin.harness` registration makes `harness` available through the existing package-manager bin directory. The mode step preserves normal executable permissions after linking. Use `harness` from any directory; contract queries can select another project with `--root <project>`.
+
 ## Commands
 
 ```bash
-bun run dev -- new lib my-lib
-bun run dev -- new app my-app
-bun run dev -- new app my-static-app --adapter static
-bun run dev -- new game my-game --dimension 3d
-bun run dev -- generate model Post title:string body:text --adapter sqlite
-bun run dev -- generate mailer Welcome
-bun run dev -- generate resource Article
-bun run dev -- info scaffolds
-bun run dev -- info model
-bun run dev -- info model --json
-bun run dev -- loop search feature
-bun run dev -- loop create checkout-flow --from feature --goal "Customers can check out"
-bun run dev -- loop next checkout-flow
-bun run dev -- loop evaluate checkout-flow
-bun run dev -- audit .
-bun run dev -- audit . --coverage
-bun run dev -- audit . --profile app
-bun run dev -- audit . --profile dapp
-bun run dev -- generate unit PriceQuote
-bun run dev -- units index --write
-bun run dev -- units check
-bun run dev -- units show service.analytics
-bun run dev -- impact
-bun run dev -- kernel parity
-bun run dev -- explain list
-bun run dev -- verify run
-bun run dev -- provider status chatgpt --json
-bun run dev -- provider sign-in chatgpt
+harness new lib my-lib
+harness new app my-app
+harness new app my-static-app --adapter static
+harness new game my-game --dimension 3d
+harness generate model Post title:string body:text --adapter sqlite
+harness generate mailer Welcome
+harness generate resource Article
+harness info scaffolds
+harness info model
+harness info model --json
+harness loop search feature
+harness loop create checkout-flow --from feature --goal "Customers can check out"
+harness loop next checkout-flow
+harness loop evaluate checkout-flow
+harness audit .
+harness audit . --coverage
+harness audit . --profile app
+harness audit . --profile dapp
+harness generate unit PriceQuote
+harness units index --write
+harness units check
+harness units show service.analytics
+harness impact
+harness kernel parity
+harness explain list
+harness verify run
+harness provider status chatgpt --json
+harness provider sign-in chatgpt
 bun run check
 ```
 
@@ -140,7 +152,7 @@ command and then obtains an independent verdict. Accepted repair tips are
 retained under `refs/harness/sibling-repairs/` for review. The report identifies
 each accepted ref and any rejected or failed attempt.
 
-`loop review-bugs <base>` reads the committed classes from the merge base and
+`harness loop review-bugs <base>` reads the committed classes from the merge base and
 checks sites affected by added or modified lines. The command exits nonzero
 for confirmed findings or incomplete semantic review. Add it to a project loop
 as an evaluator when reviewing a candidate branch. Both commands accept
@@ -207,11 +219,11 @@ mode and approval. Defining a contract creates a plan; implementation and design
 approval keep their existing gates. Hosted writes additionally require writer
 access and a bound executor. Historical commits remain read-only.
 
-`get entities` reads the app's catalog. `get units` reads every registered kind,
+`harness api get entities` reads the app's catalog. `harness api get units` reads every registered kind,
 including private backend entries, commands, adapters, policies and workflows;
-`get registry` also returns the pinned commit. `contracts get ID` keeps the
+`harness api get registry` also returns the pinned commit. `harness api contracts get ID` keeps the
 catalog's current planning contract when one exists, and reads the registered
-contract for backend units outside that catalog. `get contracts` lists all
+contract for backend units outside that catalog. `harness api get contracts` lists all
 registered contracts.
 
 Screenshot downloads retrieve recorded verification captures and check their
@@ -220,9 +232,9 @@ the exact capture; the result retains its revision, timestamp and focused or
 inherited provenance. Missing captures require the page's standard capture
 scenario. This command does not start a new browser capture or agent run.
 
-`request METHOD /api/path` and `get /api/path` cover every endpoint the server
+`harness api request METHOD /api/path` and `harness api get /api/path` cover every endpoint the server
 exposes, including future resources. Named resources are conveniences; the server
-can reject unavailable operations. Local-only `activity` and `build` expose the
+can reject unavailable operations. Local-only `harness api get activity` and `harness api get build` expose the
 console's process activity and build identity. Redirects and off-origin request
 paths are refused, and mutations are never retried automatically. Save and reuse
 the printed request id if an agent start's response is lost.
@@ -317,6 +329,49 @@ A unit is one responsibility with a stable identity, owned source and a contract
 live in `specification/units`, one canonical JSON file per unit, and are checked by
 `bun run check` through `harness units check`.
 
+### Fast contract lookup
+
+Start with stored contracts before reading implementation. These commands never index or search source:
+
+```sh
+harness contracts show command.units
+harness contracts show src/cli/program/UnitsCommand.ts --json
+harness contracts list --area development-tooling --kind command
+harness contracts list --folder src/cli/program --limit 10
+harness contracts search 'RangeError|TypeError' --regex -i --limit 10 --json
+harness contracts map src/cli/program --depth 1 --json
+```
+
+`show` accepts an id, owned source file, contract file or folder; text includes the full stored contract and declared scenario states, while JSON returns an array of records with the original manifest. `list` prints one line per contract with id, source path and short responsibility. `search` returns ranked matches with the best field and snippet: id, title, responsibility, inputs/outputs/types, helper contracts, dependencies, scenario ids and stored state declarations. Literal case-sensitive substring matching is the default; `--regex` accepts a JavaScript expression without slash delimiters and `-i` ignores case. Search defaults to 20 results; `--limit` sets a positive maximum. Ties sort by id.
+
+`map` separates owning contracts, dependencies and dependents; missing dependency contracts appear as unresolved ids. It follows stored edges for one hop by default (`--depth 0..10`), handles cycles, and applies `--limit` to owning matches. `--area` matches a source-path segment or dotted id prefix; `--folder` respects path boundaries; `--kind` is exact. Filters combine. Internal units are included, and `--include-retired` adds tombstones. Paths are project-root relative; `--root <project>` works from any directory. JSON list/search empty results are `[]`; show/map fail for unknown targets.
+
+The commands reload the existing JSON registry recursively on every invocation, so moved/nested/edited/deleted contracts need no separate search-index rebuild. They read `specification/units` and, for show/search, `specification/scenarios`; executable catalogs are outside their scope. Contract content can be stale or incomplete: use `harness units check` to verify freshness, and `harness units show` when you need source-derived hashes, graph and test impact. Run `harness info contracts` or `harness contracts <verb> --help` for details.
+
+### Contract changes and committed history
+
+```sh
+harness contracts diff
+harness contracts diff HEAD                    # what HEAD itself changed
+harness contracts diff HEAD~3..HEAD --summary
+harness contracts diff main HEAD --unit command.units --field type,description
+harness contracts diff --since main --folder src/cli --json
+harness contracts diff --staged
+harness contracts log command.units --limit 5
+harness contracts log --folder src/cli --field errors --json
+harness contracts last command.units
+```
+
+`diff` defaults to **HEAD → working tree**, including untracked unit JSON (even Git-ignored JSON in `specification/units`). A single commit means **its first parent → that commit**; a root commit uses an empty base. A two-revision range or two separate revisions compares those snapshots directly. `--since <rev>` compares that commit to the working tree; `--staged` compares HEAD to the Git index, excluding unstaged and untracked changes. Revision arguments, `--since` and `--staged` are mutually exclusive. Only stored unit JSON and Git metadata are read; current schema parsing never strips historical fields. Scenario JSON and source are outside these history commands.
+
+Each contract is added, removed, moved/renamed or changed. Stable uid joins file/id/source moves; unchanged id is the fallback when either side lacks uid. Fields use paths such as `outputs[maxReviewStateBytes].type`, with old and new values. Known metadata collections (inputs, outputs, errors, operations, initialization, snippets, storage/fields, helper contracts and config controls) match items by name. Known set-like metadata, including dependencies, owned paths/symbols, scenario ids and runtime targets, ignores ordering while retaining duplicate records and distinct relations. Examples, their nested business data, and unknown arrays preserve order. Whitespace inside string values remains meaningful.
+
+Formatting-only counts include changed file bytes whose decoded JSON is identical after ignoring object key order. Metadata-reorder-only counts cover otherwise equal known collections whose order changed, optionally with formatting. Identical files count in neither group. Summary contract-kind and field-kind counts cover all filtered changes **before** diff's `--limit`; each displayed contract includes added/removed/changed field counts. Folder/area/kind/unit filters match either snapshot, including retired contracts; folder accepts an owned source or stored-contract subtree. `--field` accepts comma-separated `type`, `description` (including responsibility), `examples`, `errors` (including errorStatus) and `dependencies`. Field filters remove contracts with no matching material fields; a file-only move therefore disappears under a field filter. Ignored-file counts use the contract filters before field filtering.
+
+`log [unit]` lists up to 20 matching material commits with date, author and a per-contract summary; `--limit` changes that commit limit. It includes reachable branch commits in topological order, and describes each merge result against its actual first parent. `last <unit>` returns one latest matching committed change with its field diff, skipping formatting and metadata-order-only commits. Both support `--since` (the revision-exclusive Git range through HEAD), folder/area/kind/field filters and JSON. Stable uid follows id/file renames, with observed unchanged-id fallback before uid introduction. Renames before uid, reused ids without uid and unrelated branch identity can be ambiguous; the output states this limit. Raising log's limit continues through remaining candidate history. Empty log results say no semantic commits; last fails when none match.
+
+Text uses wrapped `+`, `-` and `~` rows, with color on terminals (`NO_COLOR` disables it). `--json` retains complete field values; `--summary` omits field values in both text and JSON while retaining per-contract counts. Each query reloads movable refs, worktree and index; only Git-returned immutable blobs are cached within that invocation. Invalid roots/refs or missing HEAD fail clearly. Invalid JSON, absent ids, duplicate ids/uids, outside-root folder filters and unmerged index stages are rejected. Symlink contract files are excluded, and a symlink worktree unit directory is rejected. No history command writes source, registry, index or Git history.
+
 ```bash
 harness generate unit PriceQuote                 # any scaffold kind, plus its manifest
 harness generate unit Billing --kind service --responsibility "Charges an invoice once."
@@ -346,7 +401,7 @@ reads HEAD, so uncommitted tests cannot complete it.
 Run `harness units check-contract <id>` when writing or changing a contract. It
 reviews the working contract against source props, errors, function/snippet outputs
 and state declarations. Both commands accept `--json` and exit non-zero while gaps
-remain. `check-contract --all` summarises findings per entity. Add external state
+remain. `harness units check-contract --all` summarises findings per entity. Add external state
 inventories with `--required-states path/to/widget-required-states.json`; repository
 `*required-states*.json` files and catalog/preview scenario registries are discovered
 automatically. Findings are heuristic review prompts, not a completeness proof.
@@ -823,7 +878,7 @@ at the selected commit, in the gallery, the viewer or the audio card.
 `HARNESS_OWNER_MODE=loopback`, bound to a loopback address, and only to a peer that connects
 from loopback. `Host` and forwarding headers are never authorization, and owner mode is
 refused behind an address header. Without owner mode every page, API, data and media
-request is answered `403`. `harness report serve` and `bun run dev:reports` start it that
+request is answered `403`. `harness report serve` starts it that
 way. The former `/`, `/reports/<id>` and `/analytics` routes redirect to `/harness/reports`,
 `/harness/reports/<id>` and `/harness/analytics`.
 
@@ -934,12 +989,12 @@ Review is disabled by default; ordinary audits make no API calls.
 
 ```bash
 # Preview exactly which files would be reviewed, without credentials or API calls.
-bun run dev -- audit . --clean-code --dry-run --json
+harness audit . --clean-code --dry-run --json
 # Supply HARNESS_JEV_API_KEY through your project-owned environment, then review.
-bun run dev -- audit . --clean-code --json
+harness audit . --clean-code --json
 # Enforce confident violations after assessing advisory results.
-bun run dev -- audit . --clean-code --gate
-bun run dev -- info clean-code
+harness audit . --clean-code --gate
+harness info clean-code
 ```
 
 Use a dedicated project credential. Keys belong in the environment, never in audit
@@ -1088,8 +1143,7 @@ Project Reports checkout is no longer needed for development or installed report
 From the Harness repository root:
 
 ```sh
-bun run report serve
-bun run dev:reports
+harness report serve
 bun run test:reports
 bun run check:reports
 ```
@@ -1150,7 +1204,7 @@ directory (EPERM or EACCES), a missing `requiredTools` executable such as
 `ffmpeg`, or a provider whose quota rejected a run until its reported reset
 blocks the dispatch. The default pause is 15 minutes. A blocked worker claims
 nothing, charges no attempt, prints `status: blocked` with the reasons and exits
-with 75 under `--once`. `analytics tasks` reports `runsByModel`. Each row separates
+with 75 under `--once`. `harness analytics tasks` reports `runsByModel`. Each row separates
 infrastructure failures (quota, provider or CLI errors, workspace errors,
 cancellations and abandoned claims) from the model's work: `firstTryRate` counts
 every settled first attempt, and `firstTryRateWhenRan` leaves out attempts that
@@ -1299,7 +1353,7 @@ no changes to Codex's defaults or provider catalog:
 ```sh
 mkdir -p .cache/codex-gateway
 (umask 077; openssl rand -hex 32 > .cache/codex-gateway/token)
-bun run dev -- codex serve --token-file .cache/codex-gateway/token
+harness codex serve --token-file .cache/codex-gateway/token
 ```
 
 The default port is 47831; use `--port` when that port is already occupied. Keep
@@ -1393,7 +1447,7 @@ Run `harness module add notes` and `harness module generate notes note Meeting`.
 
 ### CLI startup and compatibility imports
 
-`bun run dev` and the packaged `harness` executable use `src/cli/index.ts`, with command families loaded on demand. Root help uses lightweight metadata checked against the complete command registrations in the unit suite. CLI builds include the generated dynamic chunks; copy the complete `dist` tree when installing a build.
+The installed `harness` executable uses the packaged CLI, with command families loaded on demand. Rebuild and link the chosen primary checkout when developing it; runtime usage remains `harness <command>`. Root help uses lightweight metadata checked against the complete command registrations in the unit suite. CLI builds include the generated dynamic chunks; copy the complete `dist` tree when installing a build.
 
 The historical `src/index.ts` retains source exports and direct execution for compatibility. Importing it does not execute the CLI. New library consumers should use the documented package API (`src/lib` / `dist/api`) rather than a CLI entry. Importing the compatibility barrel still loads its exported dependency graph.
 
@@ -1414,7 +1468,7 @@ fail. Direct consumers can call `browserErrorCollector()`, then `watch(context)`
 
 Loop evaluator entries may declare a positive `timeoutMs`; absent that field, evaluators
 have a six-hour backstop so a full project check is not killed after one minute.
-`loop evaluate --no-run-evaluators` skips repository commands. Bounded async commands
+`harness loop evaluate --no-run-evaluators` skips repository commands. Bounded async commands
 also have a six-hour backstop; synchronous direct probes default to one minute, with
 shorter explicit bounds at probe call sites. Git selects a local or long-running deadline;
 callers can override it explicitly. A failure retains stdout/stderr within the combined

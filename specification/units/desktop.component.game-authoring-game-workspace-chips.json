@@ -30,7 +30,7 @@
 				"name": "GameWorkspaceChips.commit",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The historical commit being shown. A truthy string renders a History chip using shortCommit; an absent or empty string renders no History chip.",
 				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},

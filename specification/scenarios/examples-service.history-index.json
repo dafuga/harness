@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.history-index",
+	"title": "service.history-index examples",
+	"kind": "headless",
+	"units": ["service.history-index"],
+	"builds": [],
+	"states": [
+		{
+			"id": "builds-the-index-of-a-repository-with-one-commit",
+			"title": "Builds the index of a repository with one commit",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-when-the-legacy-reader-rejects",
+			"title": "Rejects when the legacy reader rejects",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.history-index.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"builds-the-index-of-a-repository-with-one-commit",
+				"rejects-when-the-legacy-reader-rejects"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"builds-the-index-of-a-repository-with-one-commit",
+				"rejects-when-the-legacy-reader-rejects"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"builds-the-index-of-a-repository-with-one-commit",
+				"rejects-when-the-legacy-reader-rejects"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

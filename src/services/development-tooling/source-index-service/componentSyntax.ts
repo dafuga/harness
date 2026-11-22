@@ -44,7 +44,7 @@ export function propsType(node: ts.VariableDeclaration): ts.TypeNode | undefined
 export function localProps(
 	type: ts.TypeNode | undefined,
 	file: ts.SourceFile,
-	seen = new Set<string>()
+	seen: Set<string> = new Set<string>()
 ): ContractItem[] {
 	if (!type) return [];
 	if (ts.isParenthesizedTypeNode(type)) return localProps(type.type, file, seen);

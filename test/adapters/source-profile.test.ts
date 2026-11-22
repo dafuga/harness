@@ -2,7 +2,7 @@ import type { Output } from './source-profile.test.types';
 export type { Output } from './source-profile.test.types';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { expect, test } from 'vitest';
 import { SourceProfileAdapter } from '../../src/adapters/verification-evidence/source-profile-adapter/SourceProfileAdapter';
 import { componentManifestSchema } from '../../src/core/development-tooling/unitTypes';
@@ -172,6 +172,25 @@ test('captures never retain operation arguments or returned data', async () => {
 });
 
 test('unregistered source and deferred generator bodies never gain invented profiles', async () => {
+	const root = resolve(import.meta.dirname, '../..');
+	for (const id of [
+		'function.unit-types',
+		'function.verification-evidence-video-clip-schema',
+		'function.verify-types',
+		'function.comparison-types'
+	]) {
+		const unit = componentManifestSchema.parse(
+			JSON.parse(await readFile(join(root, 'specification/units', id + '.json'), 'utf8'))
+		);
+		const schemaAdapter = new SourceProfileAdapter({ root, units: [unit] });
+		for (const source of unit.owns.source.filter((path) => path.endsWith('.ts'))) {
+			const path = join(root, source);
+			expect(
+				schemaAdapter.transform(await readFile(path, 'utf8'), path),
+				'collector schema bootstrap must remain outside its own profiler'
+			).toBeNull();
+		}
+	}
 	const adapter = new SourceProfileAdapter({ root: '/fixture', units: [] });
 	expect(adapter.transform('export const add = () => 1;', '/fixture/other.ts')).toBeNull();
 	const observed = await execute(

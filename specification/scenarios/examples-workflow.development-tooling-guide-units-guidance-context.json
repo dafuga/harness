@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.development-tooling-guide-units-guidance-context",
+	"title": "workflow.development-tooling-guide-units-guidance-context examples",
+	"kind": "headless",
+	"units": ["workflow.development-tooling-guide-units-guidance-context"],
+	"builds": [],
+	"states": [
+		{
+			"id": "finds-the-active-unit-and-rejects-unknown-ids",
+			"title": "Finds the active unit and rejects unknown ids",
+			"coverage": "required"
+		},
+		{
+			"id": "reads-each-path-once-and-serves-later-calls-from-the-cache",
+			"title": "Reads each path once and serves later calls from the cache",
+			"coverage": "required"
+		},
+		{
+			"id": "keeps-only-the-scenario-states-attributed-to-one-unit",
+			"title": "Keeps only the scenario states attributed to one unit",
+			"coverage": "required"
+		},
+		{
+			"id": "lists-headless-states-that-no-registry-declares",
+			"title": "Lists headless states that no registry declares",
+			"coverage": "required"
+		},
+		{
+			"id": "merges-registry-and-scenario-states-with-the-default-state",
+			"title": "Merges registry and scenario states with the default state",
+			"coverage": "required"
+		},
+		{
+			"id": "guesses-states-from-source-branch-literals",
+			"title": "Guesses states from source branch literals",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.development-tooling-guide-units-guidance-context.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"finds-the-active-unit-and-rejects-unknown-ids",
+				"reads-each-path-once-and-serves-later-calls-from-the-cache",
+				"keeps-only-the-scenario-states-attributed-to-one-unit",
+				"lists-headless-states-that-no-registry-declares",
+				"merges-registry-and-scenario-states-with-the-default-state",
+				"guesses-states-from-source-branch-literals"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"finds-the-active-unit-and-rejects-unknown-ids",
+				"reads-each-path-once-and-serves-later-calls-from-the-cache",
+				"keeps-only-the-scenario-states-attributed-to-one-unit",
+				"lists-headless-states-that-no-registry-declares",
+				"merges-registry-and-scenario-states-with-the-default-state",
+				"guesses-states-from-source-branch-literals"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"finds-the-active-unit-and-rejects-unknown-ids",
+				"reads-each-path-once-and-serves-later-calls-from-the-cache",
+				"keeps-only-the-scenario-states-attributed-to-one-unit",
+				"lists-headless-states-that-no-registry-declares",
+				"merges-registry-and-scenario-states-with-the-default-state",
+				"guesses-states-from-source-branch-literals"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.verify-deployment-snapshot",
+	"title": "desktop.function.verify-deployment-snapshot examples",
+	"kind": "headless",
+	"units": ["desktop.function.verify-deployment-snapshot"],
+	"builds": [],
+	"states": [
+		{
+			"id": "rejects-a-reviewed-configuration-that-changed",
+			"title": "Rejects a reviewed configuration that changed",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-later-environment-without-its-predecessor-proof",
+			"title": "Rejects a later environment without its predecessor proof",
+			"coverage": "required"
+		},
+		{
+			"id": "captures-the-dev-target-when-no-receipt-exists",
+			"title": "Captures the dev target when no receipt exists",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.verify-deployment-snapshot.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"rejects-a-reviewed-configuration-that-changed",
+				"rejects-a-later-environment-without-its-predecessor-proof",
+				"captures-the-dev-target-when-no-receipt-exists"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"rejects-a-reviewed-configuration-that-changed",
+				"rejects-a-later-environment-without-its-predecessor-proof",
+				"captures-the-dev-target-when-no-receipt-exists"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"rejects-a-reviewed-configuration-that-changed",
+				"rejects-a-later-environment-without-its-predecessor-proof",
+				"captures-the-dev-target-when-no-receipt-exists"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

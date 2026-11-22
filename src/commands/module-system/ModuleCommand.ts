@@ -1,9 +1,11 @@
 // @harness-uid u_axtb65npsa
 import { TestingPluginService } from './module-command/TestingPluginService';
 import type { Command } from 'commander';
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { ModuleCatalogService } from '../../services/module-system/ModuleCatalogService';
 import { ModuleInstallService } from '../../services/module-system/ModuleInstallService';
 import { ModuleResourceService } from '../../services/module-system/ModuleResourceService';
+import { TestingPluginCancelledError } from './ModuleCommand.types';
 /** Discover module instructions and delegate all mutations to the shared generation boundary. */
 export class ModuleCommand {
 	register(program: Command): void {
@@ -26,7 +28,7 @@ export class ModuleCommand {
 			.description('Install module code, dependencies and instructions.')
 			.action(async (id: string) => {
 				if (!(await this.catalog(module)).modules.some((entry) => entry.definition.id === id))
-					throw new Error(`Unknown plugin: ${id}`);
+					throw new ExpectedCliError(`Unknown plugin: ${id}`);
 				const files = await new ModuleInstallService().add(process.cwd(), id);
 				console.log(
 					files.length
@@ -40,7 +42,7 @@ export class ModuleCommand {
 			.option('--group <group>', 'Responsibility category for the module generator.')
 			.action(async (id: string, type: string, name: string, options: { group?: string }) => {
 				if (!(await this.catalog(module)).modules.some((entry) => entry.definition.id === id))
-					throw new Error(`Unknown plugin: ${id}`);
+					throw new ExpectedCliError(`Unknown plugin: ${id}`);
 				console.log(
 					(
 						await new ModuleResourceService().generate(process.cwd(), id, type, {
@@ -53,7 +55,7 @@ export class ModuleCommand {
 	}
 	private async test(id: string, args: string[]): Promise<void> {
 		const abort = new AbortController();
-		const cancel = () => abort.abort(new Error('Testing plugin cancelled.'));
+		const cancel = () => abort.abort(new TestingPluginCancelledError('Testing plugin cancelled.'));
 		process.once('SIGINT', cancel);
 		process.once('SIGTERM', cancel);
 		try {
@@ -107,7 +109,7 @@ export class ModuleCommand {
 			.action(async (id: string, options: { json?: boolean }) => {
 				const catalog = await this.catalog(module);
 				const entry = catalog.modules.find((item) => item.definition.id === id);
-				if (!entry) throw new Error(`Unknown module: ${id}`);
+				if (!entry) throw new ExpectedCliError(`Unknown module: ${id}`);
 				console.log(
 					options.json
 						? JSON.stringify(entry, null, 2)

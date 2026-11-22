@@ -3,10 +3,19 @@ import { cacheKey, readCache, writeCache } from 'collaboration';
 import type { HubSourceContext } from './hubSource';
 import { hubHash } from './hubJson';
 
+/** Parsed cache entries are JSON; accept also receives freshly loaded values. */
+type HubJsonValue =
+	| null
+	| boolean
+	| number
+	| string
+	| HubJsonValue[]
+	| { [key: string]: HubJsonValue };
+
 /** The caller must resolve current GitHub refs and permissions before consulting this cache. */
 export async function hubProjectionCache<T>(
 	context: HubSourceContext,
-	projection: { profile: string; accept: (value: unknown) => T },
+	projection: { profile: string; accept: (value: HubJsonValue | T) => T },
 	load: () => Promise<T>
 ): Promise<T> {
 	const identity = {

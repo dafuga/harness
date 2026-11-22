@@ -52,7 +52,7 @@
 		"outputs": [
 			{
 				"name": "PlaywrightReportAdapter.ingest",
-				"type": "unknown",
+				"type": "Promise<{ checks: number; }>",
 				"description": "Resolves to an object containing the number of specs with a nonempty tests array that the adapter records. It counts qualifying specs, not individual tests or evidence attachments.",
 				"examples": [
 					{
@@ -115,7 +115,7 @@
 				"outputs": [
 					{
 						"name": "PlaywrightReportAdapter.ingest",
-						"type": "unknown",
+						"type": "Promise<{ checks: number; }>",
 						"description": "Resolves to an object containing the number of specs with a nonempty tests array that the adapter records. It counts qualifying specs, not individual tests or evidence attachments.",
 						"examples": [
 							{

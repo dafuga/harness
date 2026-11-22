@@ -28,11 +28,15 @@
 	onMount(() => {
 		host = (window as unknown as EnvironmentHost).harness;
 	});
+	/** A new game came back without a project id, so there is no game view to open. */
+	class MissingProjectIdError extends Error {
+		override name = 'MissingProjectIdError';
+	}
 	/** A game opens on its own views; an app on the workspace, which shows the backend's selection. */
 	function destination(snapshot: ProjectSnapshot, made: 'app' | 'game') {
 		if (made === 'app') return '/harness';
 		const id = snapshot.project.id;
-		if (!id) throw new Error('The new game came back without a project id.');
+		if (!id) throw new MissingProjectIdError('The new game came back without a project id.');
 		return `/game?projectId=${encodeURIComponent(id)}`;
 	}
 	async function submit(event: SubmitEvent) {

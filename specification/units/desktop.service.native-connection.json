@@ -37,7 +37,7 @@
 		"outputs": [
 			{
 				"name": "NativeConnectionService.create",
-				"type": "unknown",
+				"type": "{ remote?: undefined; auth?: undefined; } | { remote: RemoteHttpProjectAdapter; auth: NativeAuthService; }",
 				"description": "The object that create returns: an empty {} when options.origin is missing or empty, otherwise an object whose remote and auth fields hold a RemoteHttpProjectAdapter and a NativeAuthService. Only the {} form can be written as JSON, because the other form holds class instances.",
 				"examples": [
 					{}
@@ -72,7 +72,7 @@
 				"outputs": [
 					{
 						"name": "NativeConnectionService.create",
-						"type": "unknown",
+						"type": "{ remote?: undefined; auth?: undefined; } | { remote: RemoteHttpProjectAdapter; auth: NativeAuthService; }",
 						"description": "The object that create returns: an empty {} when options.origin is missing or empty, otherwise an object whose remote and auth fields hold a RemoteHttpProjectAdapter and a NativeAuthService. Only the {} form can be written as JSON, because the other form holds class instances.",
 						"examples": [
 							{}

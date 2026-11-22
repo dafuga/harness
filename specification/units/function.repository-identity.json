@@ -38,8 +38,8 @@
 				"description": "The checkout directory whose application identity is computed; Git reads it with `git -C`, so a relative path is taken from the process working directory. A path that is not a Git repository, a checkout with several remotes and no origin, or a checkout whose remote URL is unrecognized, yields null.",
 				"examples": [
 					"/srv/checkouts/billing-web",
-					"/home/build/src/docs-portal",
-					"/home/build/worktrees/billing-web-hotfix"
+					"/workspace/project/src/docs-portal",
+					"/workspace/project/worktrees/billing-web-hotfix"
 				]
 			},
 			{
@@ -47,7 +47,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The first checkout directory to compare, identified before the right one; when its repository identity is null the result is false and the right directory is never identified.",
-				"examples": ["/srv/checkouts/billing-web", "/home/build/src/docs-portal"]
+				"examples": ["/srv/checkouts/billing-web", "/workspace/project/src/docs-portal"]
 			},
 			{
 				"name": "sameRepository.right",
@@ -55,7 +55,7 @@
 				"required": true,
 				"description": "The second checkout directory to compare, identified only when the left identity is non-null; the result is true only when its identity equals the left identity, so a null identity never matches.",
 				"examples": [
-					"/home/build/worktrees/billing-web-hotfix",
+					"/workspace/project/worktrees/billing-web-hotfix",
 					"/srv/checkouts/billing-web-mirror"
 				]
 			},
@@ -71,7 +71,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The candidate directory tested for membership, compared by repository identity when the site has one, or by exact realpath when the site is in no Git repository. A subdirectory of a site in no Git repository is never a member, and so is a path that does not exist.",
-				"examples": ["/home/build/worktrees/billing-web-hotfix", "/srv/sites/status-page"]
+				"examples": ["/workspace/project/worktrees/billing-web-hotfix", "/srv/sites/status-page"]
 			}
 		],
 		"outputs": [
@@ -127,8 +127,8 @@
 						"description": "The checkout directory whose application identity is computed; Git reads it with `git -C`, so a relative path is taken from the process working directory. A path that is not a Git repository, a checkout with several remotes and no origin, or a checkout whose remote URL is unrecognized, yields null.",
 						"examples": [
 							"/srv/checkouts/billing-web",
-							"/home/build/src/docs-portal",
-							"/home/build/worktrees/billing-web-hotfix"
+							"/workspace/project/src/docs-portal",
+							"/workspace/project/worktrees/billing-web-hotfix"
 						]
 					}
 				],
@@ -171,7 +171,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The first checkout directory to compare, identified before the right one; when its repository identity is null the result is false and the right directory is never identified.",
-						"examples": ["/srv/checkouts/billing-web", "/home/build/src/docs-portal"]
+						"examples": ["/srv/checkouts/billing-web", "/workspace/project/src/docs-portal"]
 					},
 					{
 						"name": "sameRepository.right",
@@ -179,7 +179,7 @@
 						"required": true,
 						"description": "The second checkout directory to compare, identified only when the left identity is non-null; the result is true only when its identity equals the left identity, so a null identity never matches.",
 						"examples": [
-							"/home/build/worktrees/billing-web-hotfix",
+							"/workspace/project/worktrees/billing-web-hotfix",
 							"/srv/checkouts/billing-web-mirror"
 						]
 					}
@@ -226,7 +226,10 @@
 						"type": "string",
 						"required": true,
 						"description": "The candidate directory tested for membership, compared by repository identity when the site has one, or by exact realpath when the site is in no Git repository. A subdirectory of a site in no Git repository is never a member, and so is a path that does not exist.",
-						"examples": ["/home/build/worktrees/billing-web-hotfix", "/srv/sites/status-page"]
+						"examples": [
+							"/workspace/project/worktrees/billing-web-hotfix",
+							"/srv/sites/status-page"
+						]
 					}
 				],
 				"outputs": [

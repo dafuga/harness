@@ -4,6 +4,7 @@ import type { ResourceQueueService } from '../../../../../../src/services/execut
 import type { AgentTurn, CliCommand } from '../../../models/agents-providers/AgentRunner.types';
 import { managedAgentTurn } from '../../../utils/agents-providers/managedAgentTurn';
 import { cliProcess } from '../../../utils/agents-providers/cliProcess';
+import { ClaudeRunFailedError } from './claudeTurn.types';
 import { publicCliEvents } from './publicCliEvents';
 export async function claudeTurn(
 	command: CliCommand,
@@ -55,11 +56,12 @@ async function runClaudeTurn(command: CliCommand, turn: AgentTurn, resources: Re
 }
 
 function finalResponse(turn: AgentTurn, actual: string, final: Record<string, unknown> | null) {
-	if (actual !== turn.model) throw new Error('Claude did not run the requested model.');
+	if (actual !== turn.model)
+		throw new ClaudeRunFailedError('Claude did not run the requested model.');
 	if (!final || final.is_error)
-		throw new Error(String(final?.result ?? 'Claude returned no completed result.'));
+		throw new ClaudeRunFailedError(String(final?.result ?? 'Claude returned no completed result.'));
 	if (turn.outputSchema && !final.structured_output)
-		throw new Error('Claude did not return the requested structured mockup.');
+		throw new ClaudeRunFailedError('Claude did not return the requested structured mockup.');
 	const text = turn.outputSchema
 		? JSON.stringify(final.structured_output)
 		: String(final.result ?? '');

@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.report-display",
+	"title": "reports.function.report-display examples",
+	"kind": "headless",
+	"units": ["reports.function.report-display"],
+	"builds": [],
+	"states": [
+		{
+			"id": "formats-elapsed-ages-with-the-first-matching-unit",
+			"title": "Formats elapsed ages with the first matching unit",
+			"coverage": "required"
+		},
+		{
+			"id": "returns-just-now-for-future-and-sub-minute-timestamps",
+			"title": "Returns just now for future and sub-minute timestamps",
+			"coverage": "required"
+		},
+		{
+			"id": "returns-an-empty-string-for-an-unparseable-timestamp",
+			"title": "Returns an empty string for an unparseable timestamp",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.report-display.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"formats-elapsed-ages-with-the-first-matching-unit",
+				"returns-just-now-for-future-and-sub-minute-timestamps",
+				"returns-an-empty-string-for-an-unparseable-timestamp"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"formats-elapsed-ages-with-the-first-matching-unit",
+				"returns-just-now-for-future-and-sub-minute-timestamps",
+				"returns-an-empty-string-for-an-unparseable-timestamp"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"formats-elapsed-ages-with-the-first-matching-unit",
+				"returns-just-now-for-future-and-sub-minute-timestamps",
+				"returns-an-empty-string-for-an-unparseable-timestamp"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -10,11 +10,39 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/validators/RemoteProjectResponseValidator.ts",
+			"packages/desktop/src/validators/projects-sessions/HostedActorIdentityError.ts",
+			"packages/desktop/src/validators/projects-sessions/HostedActorRequiredError.ts",
+			"packages/desktop/src/validators/projects-sessions/HostedCommentAnchorMismatchError.ts",
+			"packages/desktop/src/validators/projects-sessions/HostedCommentIdentityMismatchError.ts",
+			"packages/desktop/src/validators/projects-sessions/HostedCommentNotAcknowledgedError.ts",
+			"packages/desktop/src/validators/projects-sessions/HostedThreadMismatchError.ts",
+			"packages/desktop/src/validators/projects-sessions/InvalidHostedEntityError.ts",
+			"packages/desktop/src/validators/projects-sessions/InvalidHostedHistoryEventError.ts",
+			"packages/desktop/src/validators/projects-sessions/InvalidHostedHistoryPageError.ts",
+			"packages/desktop/src/validators/projects-sessions/InvalidHostedMessagesError.ts",
+			"packages/desktop/src/validators/projects-sessions/InvalidHostedProjectError.ts",
+			"packages/desktop/src/validators/projects-sessions/InvalidHostedProjectsError.ts",
+			"packages/desktop/src/validators/projects-sessions/InvalidHostedResponseRecordError.ts",
+			"packages/desktop/src/validators/projects-sessions/InvalidHostedSnapshotError.ts",
 			"packages/desktop/src/validators/projects-sessions/RemoteProjectResponseValidator.ts"
 		],
 		"symbols": [
 			"responseRecord",
 			"RemoteProjectResponseValidator",
+			"HostedActorIdentityError",
+			"HostedActorRequiredError",
+			"HostedCommentAnchorMismatchError",
+			"HostedCommentIdentityMismatchError",
+			"HostedCommentNotAcknowledgedError",
+			"HostedThreadMismatchError",
+			"InvalidHostedEntityError",
+			"InvalidHostedHistoryEventError",
+			"InvalidHostedHistoryPageError",
+			"InvalidHostedMessagesError",
+			"InvalidHostedProjectError",
+			"InvalidHostedProjectsError",
+			"InvalidHostedResponseRecordError",
+			"InvalidHostedSnapshotError",
 			"responseRecord",
 			"RemoteProjectResponseValidator",
 			"RemoteProjectResponseValidator.actor",
@@ -84,7 +112,7 @@
 					{
 						"project": {
 							"name": "Atlas Web",
-							"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6",
+							"root": "/workspace/project",
 							"id": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921"
 						},
 						"revision": {
@@ -311,7 +339,7 @@
 					{
 						"project": {
 							"name": "Atlas Web",
-							"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6",
+							"root": "/workspace/project",
 							"id": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921"
 						},
 						"revision": {
@@ -592,7 +620,7 @@
 							{
 								"project": {
 									"name": "Atlas Web",
-									"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6",
+									"root": "/workspace/project",
 									"id": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921"
 								},
 								"revision": {
@@ -625,7 +653,7 @@
 							{
 								"project": {
 									"name": "Atlas Web",
-									"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6",
+									"root": "/workspace/project",
 									"id": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921"
 								},
 								"revision": {

@@ -1,4 +1,6 @@
 // @harness-uid u_rfumv65ikl
+import { finalizedVideoAttachment } from './attachedVideoRaw';
+import { attachedClipDependency } from './attachedClipDependencies';
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { Attached } from './EvidenceAttachService.types';
 import { createHash } from 'node:crypto';
@@ -55,7 +57,7 @@ export class EvidenceAttachService {
 	async attach(commit: string, stored: StoredRecord): Promise<Attached> {
 		const { record } = stored;
 		const known = this.done.get(record.id);
-		if (known) return known;
+		if (known) return finalizedVideoAttachment(this.root, stored, known);
 		const problems = await this.checker.integrity(commit, stored);
 		if (problems.length > 0) {
 			return fail(`Record ${short(record.id)} cannot be attached: ${problems.join('\n')}`);
@@ -73,7 +75,7 @@ export class EvidenceAttachService {
 			created
 		};
 		this.done.set(record.id, attached);
-		return attached;
+		return finalizedVideoAttachment(this.root, stored, attached);
 	}
 
 	/** Writes the record directory to the evidence branch and returns where it is. */
@@ -116,8 +118,9 @@ export class EvidenceAttachService {
 		const { record } = stored;
 		for (const id of inheritedRecords(record)) {
 			const subject = `Record ${short(record.id)} cannot be attached`;
-			const dependency =
-				this.store.load(id) ??
+			if (await attachedClipDependency(this.root, record, id)) continue;
+			const dependency = this.store.load(id);
+			if (!dependency)
 				fail(`${subject}: it inherits from record ${short(id)}, which is not available`);
 			await this.attach(dependency.record.source.commit, dependency);
 		}

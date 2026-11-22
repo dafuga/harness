@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.service.github-grant",
+	"title": "hub.service.github-grant examples",
+	"kind": "headless",
+	"units": ["hub.service.github-grant"],
+	"builds": [],
+	"states": [
+		{
+			"id": "begins-a-flow-with-a-hashed-state-and-an-s256-challenge",
+			"title": "Begins a flow with a hashed state and an S256 challenge",
+			"coverage": "required"
+		},
+		{
+			"id": "completes-a-flow-once-and-stores-the-grant-for-its-session",
+			"title": "Completes a flow once and stores the grant for its session",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-authfailure-when-the-state-is-unknown",
+			"title": "Throws AuthFailure when the state is unknown",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-connected-only-while-a-live-grant-exists",
+			"title": "Reports connected only while a live grant exists",
+			"coverage": "required"
+		},
+		{
+			"id": "erases-the-grant-and-leaves-a-tombstone",
+			"title": "Erases the grant and leaves a tombstone",
+			"coverage": "required"
+		},
+		{
+			"id": "returns-a-live-user-token-and-rotates-an-expired-one",
+			"title": "Returns a live user token and rotates an expired one",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.service.github-grant.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"begins-a-flow-with-a-hashed-state-and-an-s256-challenge",
+				"completes-a-flow-once-and-stores-the-grant-for-its-session",
+				"throws-authfailure-when-the-state-is-unknown",
+				"reports-connected-only-while-a-live-grant-exists",
+				"erases-the-grant-and-leaves-a-tombstone",
+				"returns-a-live-user-token-and-rotates-an-expired-one"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"begins-a-flow-with-a-hashed-state-and-an-s256-challenge",
+				"completes-a-flow-once-and-stores-the-grant-for-its-session",
+				"throws-authfailure-when-the-state-is-unknown",
+				"reports-connected-only-while-a-live-grant-exists",
+				"erases-the-grant-and-leaves-a-tombstone",
+				"returns-a-live-user-token-and-rotates-an-expired-one"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"begins-a-flow-with-a-hashed-state-and-an-s256-challenge",
+				"completes-a-flow-once-and-stores-the-grant-for-its-session",
+				"throws-authfailure-when-the-state-is-unknown",
+				"reports-connected-only-while-a-live-grant-exists",
+				"erases-the-grant-and-leaves-a-tombstone",
+				"returns-a-live-user-token-and-rotates-an-expired-one"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

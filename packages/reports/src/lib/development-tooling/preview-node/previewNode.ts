@@ -6,12 +6,13 @@ import { PreviewServerService } from '../../../services/accounts-access/preview-
 import { PreviewWorkerService } from './preview-worker-service/PreviewWorkerService';
 import { previewArguments } from '../../../utils/development-tooling/previewArguments';
 import { previewOwnerPort } from '../../../utils/accounts-access/previewOwner';
+import { ExpectedCliError } from '../../../../../../src/core/development-tooling/errors';
 /** The supervisor owns the stable slot; Vite runs in one replaceable Node worker. */
 export async function previewNode(args: string[]): Promise<number> {
 	const options = previewArguments(args),
 		port = Number(process.env.HARNESS_PREVIEW_OWNER_PORT ?? previewOwnerPort);
 	if (!Number.isInteger(port) || port < 1024 || port > 65535)
-		throw new Error('Invalid preview ownership port.');
+		throw new ExpectedCliError('Invalid preview ownership port.');
 	const owner = new PreviewServerService(port);
 	let directory = '',
 		worker: PreviewWorkerService | undefined;
@@ -61,7 +62,7 @@ async function buildPreviewWorker() {
 	});
 	if (!built.success) {
 		await rm(directory, { recursive: true, force: true });
-		throw new Error('Could not prepare the managed preview runtime.');
+		throw new ExpectedCliError('Could not prepare the managed preview runtime.');
 	}
 	return { directory, entry: resolve(built.outputs[0].path) };
 }

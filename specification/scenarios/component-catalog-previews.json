@@ -329,6 +329,8 @@
 		"reports.component.source-viewer",
 		"reports.component.usage-examples-usage-examples",
 		"reports.component.verification-evidence-audio-icon",
+		"reports.component.verification-evidence-video-evidence",
+		"reports.component.verification-evidence-video-graph-navigation",
 		"reports.layout.explorer-layout",
 		"reports.page.harness-branch-branch-at-apis",
 		"reports.page.harness-branch-branch-at-apis-entity",
@@ -364,6 +366,7 @@
 		"reports.page.harness-branch-branch-at-types-entity-history",
 		"reports.page.harness-projects"
 	],
+	"builds": ["shell-fixture"],
 	"states": [
 		{
 			"id": "desktop-component-agent-controls",
@@ -4164,6 +4167,18 @@
 			"units": ["reports.component.explorer-ui-explorer-platforms"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-platforms-hovered",
+			"title": "Platform card hovered",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-picker-open",
+			"title": "Native platform status picker open",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-translations-screen",
 			"units": ["reports.component.explorer-ui-explorer-translations-screen"],
 			"coverage": "required",
@@ -7830,6 +7845,12 @@
 			"units": ["reports.component.shared-primitives-loading-state"]
 		},
 		{
+			"id": "reports-component-shared-primitives-loading-state-loading",
+			"title": "Loading with the animated indicator",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-loading-state"]
+		},
+		{
 			"id": "reports-component-source-code-action",
 			"title": "SourceCodeAction",
 			"coverage": "required",
@@ -8046,6 +8067,198 @@
 			"units": ["reports.component.verification-evidence-audio-icon"]
 		},
 		{
+			"id": "reports-component-verification-evidence-video-evidence",
+			"title": "VideoEvidence: retained clip and frame feedback",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-evidence"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-evidence-empty-asset-base",
+			"title": "verification-evidence-video-evidence · empty-asset-base",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-evidence"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-evidence-without-initial-flags",
+			"title": "verification-evidence-video-evidence · without-initial-flags",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-evidence"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-evidence-with-initial-flags",
+			"title": "verification-evidence-video-evidence · with-initial-flags",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-evidence"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-evidence-initial-flags-none",
+			"title": "verification-evidence-video-evidence · initial-flags-none",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-evidence"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-evidence-initial-flags-one",
+			"title": "verification-evidence-video-evidence · initial-flags-one",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-evidence"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-evidence-initial-flags-many",
+			"title": "verification-evidence-video-evidence · initial-flags-many",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-evidence"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-evidence-failed",
+			"title": "verification-evidence-video-evidence · failed",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-evidence"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-evidence-error",
+			"title": "verification-evidence-video-evidence · error",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-evidence"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-evidence-empty",
+			"title": "verification-evidence-video-evidence · empty",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-evidence"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-evidence-none",
+			"title": "verification-evidence-video-evidence · none",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-evidence"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-evidence-one",
+			"title": "verification-evidence-video-evidence · one",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-evidence"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-evidence-many",
+			"title": "verification-evidence-video-evidence · many",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-evidence"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-graph-navigation",
+			"title": "VideoGraphNavigation: modular paths and declared coverage",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-graph-navigation-empty-library",
+			"title": "verification-evidence-video-graph-navigation · empty-library",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-graph-navigation-library-none",
+			"title": "verification-evidence-video-graph-navigation · library-none",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-graph-navigation-library-one",
+			"title": "verification-evidence-video-graph-navigation · library-one",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-graph-navigation-library-many",
+			"title": "verification-evidence-video-graph-navigation · library-many",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-graph-navigation-graphs",
+			"title": "verification-evidence-video-graph-navigation · graphs",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-graph-navigation-playlists",
+			"title": "verification-evidence-video-graph-navigation · playlists",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-graph-navigation-without-coverage",
+			"title": "verification-evidence-video-graph-navigation · without-coverage",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-graph-navigation-with-coverage",
+			"title": "verification-evidence-video-graph-navigation · with-coverage",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-graph-navigation-coverage-none",
+			"title": "verification-evidence-video-graph-navigation · coverage-none",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-graph-navigation-coverage-one",
+			"title": "verification-evidence-video-graph-navigation · coverage-one",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-graph-navigation-coverage-many",
+			"title": "verification-evidence-video-graph-navigation · coverage-many",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-graph-navigation-without-selected",
+			"title": "verification-evidence-video-graph-navigation · without-selected",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-graph-navigation-with-selected",
+			"title": "verification-evidence-video-graph-navigation · with-selected",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-graph-navigation-empty-selected",
+			"title": "verification-evidence-video-graph-navigation · empty-selected",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-graph-navigation-empty",
+			"title": "verification-evidence-video-graph-navigation · empty",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-graph-navigation-none",
+			"title": "verification-evidence-video-graph-navigation · none",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-graph-navigation-one",
+			"title": "verification-evidence-video-graph-navigation · one",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
+			"id": "reports-component-verification-evidence-video-graph-navigation-many",
+			"title": "verification-evidence-video-graph-navigation · many",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
 			"id": "reports-layout-explorer-layout",
 			"coverage": "required",
 			"units": ["reports.layout.explorer-layout"],
@@ -8186,6 +8399,12 @@
 		{
 			"id": "reports-page-harness-branch-branch-at-platforms",
 			"title": "/harness/branch/[branch]/[...at]/platforms",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-platforms"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-platforms-ready",
+			"title": "Platforms ready for search",
 			"coverage": "required",
 			"units": ["reports.page.harness-branch-branch-at-platforms"]
 		},
@@ -8896,6 +9115,8 @@
 				"reports-component-explorer-ui-explorer-platforms-card-hovered",
 				"reports-component-explorer-ui-explorer-platforms-filter-active-open",
 				"reports-component-explorer-ui-explorer-platforms-status-options-open",
+				"reports-component-explorer-ui-explorer-platforms-hovered",
+				"reports-component-explorer-ui-explorer-platforms-picker-open",
 				"reports-component-explorer-ui-explorer-translations-screen",
 				"reports-component-explorer-ui-explorer-translations-screen-unindexed",
 				"reports-component-explorer-ui-explorer-translations-screen-empty",
@@ -9507,6 +9728,7 @@
 				"reports-component-shared-primitives-loading-state-default-label",
 				"reports-component-shared-primitives-loading-state-long",
 				"reports-component-shared-primitives-loading-state-inline",
+				"reports-component-shared-primitives-loading-state-loading",
 				"reports-component-source-code-action",
 				"reports-component-source-code-action-unavailable",
 				"reports-component-source-content",
@@ -9543,6 +9765,38 @@
 				"reports-component-usage-examples-usage-examples-void",
 				"reports-component-usage-examples-usage-examples-empty",
 				"reports-component-verification-evidence-audio-icon",
+				"reports-component-verification-evidence-video-evidence",
+				"reports-component-verification-evidence-video-evidence-empty-asset-base",
+				"reports-component-verification-evidence-video-evidence-without-initial-flags",
+				"reports-component-verification-evidence-video-evidence-with-initial-flags",
+				"reports-component-verification-evidence-video-evidence-initial-flags-none",
+				"reports-component-verification-evidence-video-evidence-initial-flags-one",
+				"reports-component-verification-evidence-video-evidence-initial-flags-many",
+				"reports-component-verification-evidence-video-evidence-failed",
+				"reports-component-verification-evidence-video-evidence-error",
+				"reports-component-verification-evidence-video-evidence-empty",
+				"reports-component-verification-evidence-video-evidence-none",
+				"reports-component-verification-evidence-video-evidence-one",
+				"reports-component-verification-evidence-video-evidence-many",
+				"reports-component-verification-evidence-video-graph-navigation",
+				"reports-component-verification-evidence-video-graph-navigation-empty-library",
+				"reports-component-verification-evidence-video-graph-navigation-library-none",
+				"reports-component-verification-evidence-video-graph-navigation-library-one",
+				"reports-component-verification-evidence-video-graph-navigation-library-many",
+				"reports-component-verification-evidence-video-graph-navigation-graphs",
+				"reports-component-verification-evidence-video-graph-navigation-playlists",
+				"reports-component-verification-evidence-video-graph-navigation-without-coverage",
+				"reports-component-verification-evidence-video-graph-navigation-with-coverage",
+				"reports-component-verification-evidence-video-graph-navigation-coverage-none",
+				"reports-component-verification-evidence-video-graph-navigation-coverage-one",
+				"reports-component-verification-evidence-video-graph-navigation-coverage-many",
+				"reports-component-verification-evidence-video-graph-navigation-without-selected",
+				"reports-component-verification-evidence-video-graph-navigation-with-selected",
+				"reports-component-verification-evidence-video-graph-navigation-empty-selected",
+				"reports-component-verification-evidence-video-graph-navigation-empty",
+				"reports-component-verification-evidence-video-graph-navigation-none",
+				"reports-component-verification-evidence-video-graph-navigation-one",
+				"reports-component-verification-evidence-video-graph-navigation-many",
 				"reports-layout-explorer-layout",
 				"reports-page-harness-branch-branch-at-apis",
 				"reports-page-harness-branch-branch-at-apis-entity",
@@ -9567,6 +9821,7 @@
 				"reports-page-harness-branch-branch-at-pages-entity",
 				"reports-page-harness-branch-branch-at-pages-entity-history",
 				"reports-page-harness-branch-branch-at-platforms",
+				"reports-page-harness-branch-branch-at-platforms-ready",
 				"reports-page-harness-branch-branch-at-platforms-entity",
 				"reports-page-harness-branch-branch-at-services",
 				"reports-page-harness-branch-branch-at-services-entity",

@@ -17,7 +17,7 @@
 		"outputs": [
 			{
 				"name": "providerPickerEntry",
-				"type": "unknown",
+				"type": "{ $on?(type: string, callback: (e: any) => void): () => void; $set?(props: Partial<Record<string, any>>): void } & Record<string, any>",
 				"description": "The Svelte mount result for ProviderPicker, mounted into the element with id app and returned as is by providerPickerEntry(). The module calls the function once on import and discards this result, and the element is not checked for null, so a page without an element whose id is app passes null as the target to mount."
 			}
 		],
@@ -30,7 +30,7 @@
 				"outputs": [
 					{
 						"name": "providerPickerEntry",
-						"type": "unknown",
+						"type": "{ $on?(type: string, callback: (e: any) => void): () => void; $set?(props: Partial<Record<string, any>>): void } & Record<string, any>",
 						"description": "The Svelte mount result for ProviderPicker, mounted into the element with id app and returned as is by providerPickerEntry(). The module calls the function once on import and discards this result, and the element is not checked for null, so a page without an element whose id is app passes null as the target to mount."
 					}
 				],

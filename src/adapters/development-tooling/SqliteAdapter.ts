@@ -11,6 +11,7 @@ import {
 	sqliteIdentifier,
 	sqliteTableSql
 } from '../../utils/development-tooling/sqliteTableSql';
+import { SqliteAdapterError } from './SqliteAdapter.types';
 import { SqliteTableAdapter } from './SqliteTableAdapter';
 
 /** A driver-injected adapter: constructing or importing it never opens a database. */
@@ -23,13 +24,14 @@ export class SqliteAdapter implements PersistenceAdapter {
 	) {
 		for (const model of models) {
 			sqliteTableSql(model);
-			if (this.models.has(model.table)) throw new Error(`Duplicate SQLite model: ${model.table}`);
+			if (this.models.has(model.table))
+				throw new SqliteAdapterError(`Duplicate SQLite model: ${model.table}`);
 			this.models.set(model.table, model);
 		}
 	}
 	private table(name: string): SqliteTableAdapter {
 		const model = this.models.get(name);
-		if (!model) throw new Error(`No SQLite model for table: ${name}`);
+		if (!model) throw new SqliteAdapterError(`No SQLite model for table: ${name}`);
 		return new SqliteTableAdapter(this.db, model);
 	}
 	async find<T>(table: string, id: number | string): Promise<T | null> {
@@ -67,13 +69,13 @@ export class SqliteAdapter implements PersistenceAdapter {
 	/** Refuses async callbacks so a transaction cannot commit before its writes finish. */
 	transaction<T>(write: () => T): T {
 		if (Object.prototype.toString.call(write) === '[object AsyncFunction]')
-			throw new Error('SQLite transactions require a synchronous callback');
+			throw new SqliteAdapterError('SQLite transactions require a synchronous callback');
 		const name = `harness_${this.savepoint++}`;
 		this.db.exec(`SAVEPOINT ${name}`);
 		try {
 			const result = write();
 			if (result && typeof (result as { then?: unknown }).then === 'function')
-				throw new Error('SQLite transactions require a synchronous callback');
+				throw new SqliteAdapterError('SQLite transactions require a synchronous callback');
 			this.db.exec(`RELEASE ${name}`);
 			return result;
 		} catch (error) {
@@ -87,7 +89,8 @@ export class SqliteAdapter implements PersistenceAdapter {
 			"SELECT name FROM sqlite_schema WHERE type='table' AND name NOT GLOB 'sqlite_*'"
 		);
 		for (const { name } of tables)
-			if (!this.models.has(name)) throw new Error(`No SQLite model for table: ${name}`);
+			if (!this.models.has(name))
+				throw new SqliteAdapterError(`No SQLite model for table: ${name}`);
 		for (const model of this.models.values()) {
 			const actual = this.query<{ name: string }>(
 				`PRAGMA table_info(${sqliteIdentifier(model.table)})`
@@ -96,7 +99,7 @@ export class SqliteAdapter implements PersistenceAdapter {
 				.map(([property, field]) => sqliteColumn(property, field))
 				.sort();
 			if (JSON.stringify(actual.map(({ name }) => name).sort()) !== JSON.stringify(expected))
-				throw new Error(`SQLite model columns do not match table: ${model.table}`);
+				throw new SqliteAdapterError(`SQLite model columns do not match table: ${model.table}`);
 		}
 	}
 }

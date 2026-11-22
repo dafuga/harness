@@ -13,6 +13,8 @@ import type { StoredSide } from '../../../utils/explorer-ui/sideImpact';
 import type { CommitStatus } from '../../verification-evidence/history-status-service/HistoryStatusService';
 import type { ProjectDependencies } from './projectDependencies.types';
 import type { ModuleCatalog } from '../../module-system/moduleDefinition.types';
+import type { AttachedRecord } from '../../verification-evidence/history-status-service/attached-record-service/AttachedRecordService.types';
+export type OriginRecordReader = (id: string) => Promise<AttachedRecord | undefined>;
 
 export interface RevisionDetail {
 	permissions?: PermissionCatalog;

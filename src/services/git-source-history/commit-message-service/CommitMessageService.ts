@@ -26,7 +26,7 @@ export class CommitMessageService {
 	 * Git tells its hooks that no editor is opened by setting GIT_EDITOR to a colon. A cleanup
 	 * mode given on the command line is not told to a hook; the stored message is measured again.
 	 */
-	async written(file: string, edited = process.env.GIT_EDITOR !== ':'): Promise<string[]> {
+	async written(file: string, edited: boolean = process.env.GIT_EDITOR !== ':'): Promise<string[]> {
 		if (!(await this.held(':'))) return [];
 		const [configured, comment] = await Promise.all(
 			['commit.cleanup', 'core.commentChar'].map((name) => this.git.attempt(['config', name]))

@@ -1,6 +1,7 @@
 // @harness-uid u_5dsgdum6si
 import type { GatewayImage } from './GatewayImageValidator.types';
 import { gatewayContentError } from '../../utils/development-tooling/gatewayContentError';
+import type { GatewayItem } from '../../utils/development-tooling/gatewayTypes';
 const signatures = {
 	'image/png': (bytes: Buffer) =>
 		bytes.subarray(0, 8).equals(Buffer.from('89504e470d0a1a0a', 'hex')),
@@ -11,7 +12,7 @@ const signatures = {
 };
 
 export class GatewayImageValidator {
-	parse(input: Record<string, unknown>): GatewayImage {
+	parse(input: GatewayItem): GatewayImage {
 		const uri = this.dataUri(input.image_url);
 		const source = this.source(input);
 		return this.bytes(uri?.[1] ?? source.mime, uri?.[2] ?? source.data);

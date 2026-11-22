@@ -392,7 +392,7 @@
 			},
 			{
 				"name": "contractFailureCounts",
-				"type": "unknown",
+				"type": "{ entities: number; issues: number; unknownTypes: number; emptyProps: number; missingRequired: number; bareErrors: number; }",
 				"description": "An object of six counts over the given units: entities counts units with at least one finding and issues sums all findings. unknownTypes, emptyProps, missingRequired and bareErrors each count the units with at least one finding of that kind.",
 				"examples": [
 					{
@@ -820,7 +820,7 @@
 				"outputs": [
 					{
 						"name": "contractFailureCounts",
-						"type": "unknown",
+						"type": "{ entities: number; issues: number; unknownTypes: number; emptyProps: number; missingRequired: number; bareErrors: number; }",
 						"description": "An object of six counts over the given units: entities counts units with at least one finding and issues sums all findings. unknownTypes, emptyProps, missingRequired and bareErrors each count the units with at least one finding of that kind.",
 						"examples": [
 							{

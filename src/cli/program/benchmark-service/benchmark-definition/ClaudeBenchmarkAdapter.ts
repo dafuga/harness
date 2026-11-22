@@ -5,8 +5,10 @@ import type {
 	BenchmarkRunnerInput,
 	BenchmarkTurn
 } from '../../../../core/agents-providers/subagentBenchmarkTypes';
+import { ExpectedCliError } from '../../../../core/development-tooling/errors';
 import { benchmarkProcess } from '../benchmarkProcess';
 import { benchmarkEvents, claudeTurn } from '../benchmarkEvents';
+import { ClaudeRunError } from './ClaudeBenchmarkAdapter.types';
 
 export class ClaudeBenchmarkAdapter implements BenchmarkRunner {
 	constructor(private readonly executable = 'claude') {}
@@ -16,7 +18,7 @@ export class ClaudeBenchmarkAdapter implements BenchmarkRunner {
 			cwd: process.cwd(),
 			signal: AbortSignal.timeout(10000)
 		});
-		if (result.exitCode) throw new Error('Claude runner is unavailable.');
+		if (result.exitCode) throw new ExpectedCliError('Claude runner is unavailable.');
 		return result.stdout.trim();
 	}
 	async run(input: BenchmarkRunnerInput): Promise<BenchmarkTurn> {
@@ -27,12 +29,12 @@ export class ClaudeBenchmarkAdapter implements BenchmarkRunner {
 			signal: input.signal
 		});
 		if (result.exitCode)
-			throw new Error(
+			throw new ClaudeRunError(
 				'Claude runner failed; inspect authentication, model access, and local runner availability.'
 			);
 		const turn = claudeTurn(benchmarkEvents(result.stdout));
 		if (turn.reportedModel && turn.reportedModel !== input.candidate.model)
-			throw new Error('Claude reported a different model.');
+			throw new ClaudeRunError('Claude reported a different model.');
 		return turn;
 	}
 	command(input: BenchmarkRunnerInput): string[] {

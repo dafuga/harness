@@ -3,6 +3,10 @@ import type { RemoteDesktopControl } from '../../../../../remote/src/index';
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
 
+export class DesktopOperationUnavailableError extends Error {
+	override name = 'DesktopOperationUnavailableError';
+}
+
 export type LocalControl = Omit<RemoteDesktopControl, 'onStatus'>;
 
 export interface LocalOperationsOptions {

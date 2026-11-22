@@ -5,11 +5,14 @@
 	import EmptyState from '$shared/explorer-ui/explorer-kit/EmptyState.svelte';
 	import DetailList from '$shared/shared-primitives/DetailList.svelte';
 	import { behaviorFacts } from '$reports/helpers/verification-evidence/behaviorFacts';
+	import type { BehaviorFact } from '$reports/helpers/verification-evidence/behaviorFacts.types';
 	import ComparePanes from '$shared/shared-primitives/ComparePanes.svelte';
 	import { comparisonPanes } from '$reports/helpers/verification-evidence/comparisonPanes';
+	import type { ComparisonPane } from '$reports/helpers/verification-evidence/comparisonPanes.types';
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 
 	import { behaviorDuration, entityBehavior } from '$reports/utils/explorer-ui/entityBehavior';
+	import type { EntityBehavior } from '$reports/utils/explorer-ui/entityBehavior';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
 	import type { EntityEvidenceResult } from '../../models/verification-evidence/DesktopEvidence.types';
 	import RuntimeRun from './RuntimeRun.svelte';
@@ -78,7 +81,7 @@
 	{#if shown.groups.length === 0}<EmptyState as="p" className="empty runtime-behavior-empty">
 			No end-to-end result is recorded for this entity at {at}.
 		</EmptyState>{:else}<ComparePanes {panes} className="runtime-panes" framed={false}>
-			{#snippet children(pane)}
+			{#snippet children(pane: ComparisonPane<EntityBehavior>)}
 				<RuntimeRun
 					shown={pane.value!}
 					side={pane.side}
@@ -99,8 +102,8 @@
 		grouped={false}
 		valueClass={(row) => row.className}
 	>
-		{#snippet label(row)}{row.label}{/snippet}
-		{#snippet children(row)}{row.value}{/snippet}
+		{#snippet label(row: BehaviorFact)}{row.label}{/snippet}
+		{#snippet children(row: BehaviorFact)}{row.value}{/snippet}
 	</DetailList>
 </hx-div>
 

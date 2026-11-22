@@ -113,6 +113,8 @@ test('a large history keeps ancestry checks bounded and still rejects damaged li
 		const baseline = await historyMemory('all', four);
 		const verified = await historyMemory('trusted', four);
 		expect(verified.found).toEqual({ commit: four, record: child.id });
+		expect(baseline.fullReads, 'the comparison observes a full materialized read').toBe(1);
+		expect(verified.fullReads, 'trusted ancestry must stream unrelated records').toBe(0);
 		console.log(`History RSS: trusted ${verified.rss}; one full read ${baseline.rss}`);
 		expect(verified.rss).toBeLessThan(baseline.rss * 1.5);
 	} finally {
@@ -168,9 +170,13 @@ async function historyMemory(kind: 'all' | 'trusted', commit: string) {
 			? 'new api.VerificationStoreRepository(root).all()'
 			: 'await new api.TrustedBaseService(root).nearestRecord(commit)';
 	const program = `const api = await import(${JSON.stringify(source)});
+const { VerificationStoreRepository: Store } = await import(${JSON.stringify(resolve('src/repositories/verification-evidence/VerificationStoreRepository.ts'))});
+let fullReads = 0;
+const materialize = Store.prototype.all;
+Store.prototype.all = function () { fullReads++; return materialize.call(this); };
 const [root, commit] = process.argv.slice(1);
 const found = ${operation};
-console.log(JSON.stringify({ found: Array.isArray(found) ? found.length : found, rss: process.memoryUsage().rss }));`;
+console.log(JSON.stringify({ found: Array.isArray(found) ? found.length : found, rss: process.memoryUsage().rss, fullReads }));`;
 	const result = await measureProcess(
 		{
 			units:
@@ -184,5 +190,5 @@ console.log(JSON.stringify({ found: Array.isArray(found) ? found.length : found,
 		},
 		runCommand
 	);
-	return JSON.parse(result.stdout) as { found: unknown; rss: number };
+	return JSON.parse(result.stdout) as { found: unknown; rss: number; fullReads: number };
 }

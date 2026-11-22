@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.entity-catalog",
+	"title": "reports.function.entity-catalog examples",
+	"kind": "headless",
+	"units": ["reports.function.entity-catalog"],
+	"builds": [],
+	"states": [
+		{
+			"id": "entity-catalog-groups-by-name-and-shared-owners",
+			"title": "collections list entities by name and admit only shared owners by default",
+			"coverage": "required"
+		},
+		{
+			"id": "entity-catalog-related-single-owner-pure-callees-and-kinds",
+			"title": "related relationships admit one owner, keep pure callees and only compatible kinds",
+			"coverage": "required"
+		},
+		{
+			"id": "entity-catalog-filter-search-usage-changed-and-order",
+			"title": "a consumer filter narrows rows by search, usage and changes, then orders them",
+			"coverage": "required"
+		},
+		{
+			"id": "entity-catalog-filter-absent-and-unmatched-queries",
+			"title": "unmatched queries, unshared usage, unknown verification and empty input give no rows",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/reports.function.entity-catalog.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"entity-catalog-groups-by-name-and-shared-owners",
+				"entity-catalog-related-single-owner-pure-callees-and-kinds",
+				"entity-catalog-filter-search-usage-changed-and-order",
+				"entity-catalog-filter-absent-and-unmatched-queries"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"entity-catalog-groups-by-name-and-shared-owners",
+				"entity-catalog-related-single-owner-pure-callees-and-kinds",
+				"entity-catalog-filter-search-usage-changed-and-order",
+				"entity-catalog-filter-absent-and-unmatched-queries"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"entity-catalog-groups-by-name-and-shared-owners",
+				"entity-catalog-related-single-owner-pure-callees-and-kinds",
+				"entity-catalog-filter-search-usage-changed-and-order",
+				"entity-catalog-filter-absent-and-unmatched-queries"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

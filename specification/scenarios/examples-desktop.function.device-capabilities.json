@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.device-capabilities",
+	"title": "desktop.function.device-capabilities examples",
+	"kind": "headless",
+	"units": ["desktop.function.device-capabilities"],
+	"builds": [],
+	"states": [
+		{
+			"id": "grants-agents-planning-and-approval-when-comments-are-on",
+			"title": "Grants agents, planning and approval when comments are on",
+			"coverage": "required"
+		},
+		{
+			"id": "limits-a-device-to-read-and-comment-when-agents-are-off",
+			"title": "Limits a device to read and comment when agents are off",
+			"coverage": "required"
+		},
+		{
+			"id": "removes-every-write-permission-when-comments-are-off",
+			"title": "Removes every write permission when comments are off",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.device-capabilities.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"grants-agents-planning-and-approval-when-comments-are-on",
+				"limits-a-device-to-read-and-comment-when-agents-are-off",
+				"removes-every-write-permission-when-comments-are-off"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"grants-agents-planning-and-approval-when-comments-are-on",
+				"limits-a-device-to-read-and-comment-when-agents-are-off",
+				"removes-every-write-permission-when-comments-are-off"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"grants-agents-planning-and-approval-when-comments-are-on",
+				"limits-a-device-to-read-and-comment-when-agents-are-off",
+				"removes-every-write-permission-when-comments-are-off"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

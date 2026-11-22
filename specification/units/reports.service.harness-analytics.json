@@ -16,7 +16,8 @@
 			"HarnessAnalyticsService",
 			"HarnessAnalyticsService.snapshot",
 			"AnalyticsSnapshot",
-			"AnalyticsSnapshot"
+			"AnalyticsSnapshot",
+			"HarnessAnalyticsQueryError"
 		]
 	},
 	"contract": {
@@ -33,7 +34,7 @@
 			{
 				"name": "HarnessAnalyticsService.snapshot",
 				"type": "Promise<AnalyticsSnapshot>",
-				"description": "The resolved AnalyticsSnapshot is the JSON that `analytics events --json` prints on standard output, parsed with JSON.parse and cast to AnalyticsSnapshot without a runtime check. The promise resolves only when the CLI exits with code 0 and its output is valid JSON.",
+				"description": "Returns the AnalyticsSnapshot JSON printed to standard output by the fixed `analytics events --json --site <reportSite().root>` invocation, with nonempty loop, task, model, since and until values forwarded from params. HARNESS_CLI_PATH selects the CLI entry when set; otherwise it resolves `../../src/index.ts` from reportRuntimeRoot(). HARNESS_BUN_PATH selects the executable when set; otherwise `bun` is used. Output is parsed with JSON.parse and cast without runtime validation. The promise resolves only if the child exits with code 0 and stdout is valid JSON.",
 				"examples": [
 					{
 						"schemaVersion": 1,
@@ -57,7 +58,7 @@
 						},
 						"loops": [
 							{
-								"project": "/Users/example/projects/harness-app",
+								"project": "/workspace/projects/harness-app",
 								"name": "analytics-backfill",
 								"agentModel": "claude-sonnet-5-5",
 								"status": "complete",
@@ -129,7 +130,7 @@
 							{
 								"id": "6f1d2c3a-8b4e-4d7f-9a2c-5e8b1f0d3c74",
 								"timestamp": "2026-11-14T09:00:03.418Z",
-								"project": "/Users/example/projects/harness-app",
+								"project": "/workspace/projects/harness-app",
 								"kind": "loop",
 								"action": "created",
 								"loop": "analytics-backfill",
@@ -138,7 +139,7 @@
 							{
 								"id": "c1a0e7b5-3f92-4e6a-b8d4-0a7c2e9f15d3",
 								"timestamp": "2026-11-14T10:23:44.418Z",
-								"project": "/Users/example/projects/harness-app",
+								"project": "/workspace/projects/harness-app",
 								"kind": "loop",
 								"action": "completed",
 								"loop": "analytics-backfill"
@@ -267,7 +268,7 @@
 					{
 						"name": "HarnessAnalyticsService.snapshot",
 						"type": "Promise<AnalyticsSnapshot>",
-						"description": "The resolved AnalyticsSnapshot is the JSON that `analytics events --json` prints on standard output, parsed with JSON.parse and cast to AnalyticsSnapshot without a runtime check. The promise resolves only when the CLI exits with code 0 and its output is valid JSON.",
+						"description": "Returns the AnalyticsSnapshot JSON printed to standard output by the fixed `analytics events --json --site <reportSite().root>` invocation, with nonempty loop, task, model, since and until values forwarded from params. HARNESS_CLI_PATH selects the CLI entry when set; otherwise it resolves `../../src/index.ts` from reportRuntimeRoot(). HARNESS_BUN_PATH selects the executable when set; otherwise `bun` is used. Output is parsed with JSON.parse and cast without runtime validation. The promise resolves only if the child exits with code 0 and stdout is valid JSON.",
 						"examples": [
 							{
 								"schemaVersion": 1,
@@ -291,7 +292,7 @@
 								},
 								"loops": [
 									{
-										"project": "/Users/example/projects/harness-app",
+										"project": "/workspace/projects/harness-app",
 										"name": "analytics-backfill",
 										"agentModel": "claude-sonnet-5-5",
 										"status": "complete",
@@ -363,7 +364,7 @@
 									{
 										"id": "6f1d2c3a-8b4e-4d7f-9a2c-5e8b1f0d3c74",
 										"timestamp": "2026-11-14T09:00:03.418Z",
-										"project": "/Users/example/projects/harness-app",
+										"project": "/workspace/projects/harness-app",
 										"kind": "loop",
 										"action": "created",
 										"loop": "analytics-backfill",
@@ -372,7 +373,7 @@
 									{
 										"id": "c1a0e7b5-3f92-4e6a-b8d4-0a7c2e9f15d3",
 										"timestamp": "2026-11-14T10:23:44.418Z",
-										"project": "/Users/example/projects/harness-app",
+										"project": "/workspace/projects/harness-app",
 										"kind": "loop",
 										"action": "completed",
 										"loop": "analytics-backfill"

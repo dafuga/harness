@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.unit-measurements",
+	"title": "function.unit-measurements examples",
+	"kind": "headless",
+	"units": ["function.unit-measurements"],
+	"builds": [],
+	"states": [
+		{
+			"id": "unitmeasurements-owned-files-and-revision",
+			"title": "unitMeasurements measures owned files, skips unowned ones and copies the revision",
+			"coverage": "required"
+		},
+		{
+			"id": "unitmeasurements-unread-and-unresolved-gaps",
+			"title": "unitMeasurements states what an unread file and unresolved references leave out",
+			"coverage": "required"
+		},
+		{
+			"id": "unitmeasurements-no-number-only-where-nothing-counted",
+			"title": "unitMeasurements gives no number only where nothing can be counted",
+			"coverage": "required"
+		},
+		{
+			"id": "unitmeasurements-wasm-and-process-apart-unbuilt-stated",
+			"title": "unitMeasurements keeps wasm and process sizes apart and states unbuilt targets",
+			"coverage": "required"
+		},
+		{
+			"id": "emittedtargets-wasm-and-process-only-in-order",
+			"title": "emittedTargets returns only wasm and process targets, in order and unchanged",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.unit-measurements.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"unitmeasurements-owned-files-and-revision",
+				"unitmeasurements-unread-and-unresolved-gaps",
+				"unitmeasurements-no-number-only-where-nothing-counted",
+				"unitmeasurements-wasm-and-process-apart-unbuilt-stated",
+				"emittedtargets-wasm-and-process-only-in-order"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"unitmeasurements-owned-files-and-revision",
+				"unitmeasurements-unread-and-unresolved-gaps",
+				"unitmeasurements-no-number-only-where-nothing-counted",
+				"unitmeasurements-wasm-and-process-apart-unbuilt-stated",
+				"emittedtargets-wasm-and-process-only-in-order"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"unitmeasurements-owned-files-and-revision",
+				"unitmeasurements-unread-and-unresolved-gaps",
+				"unitmeasurements-no-number-only-where-nothing-counted",
+				"unitmeasurements-wasm-and-process-apart-unbuilt-stated",
+				"emittedtargets-wasm-and-process-only-in-order"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

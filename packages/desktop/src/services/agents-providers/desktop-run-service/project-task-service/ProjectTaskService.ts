@@ -10,6 +10,7 @@ import { taskUnits } from './proposalUnits';
 import { referencePrompt } from '../../../../utils/agents-providers/referencePrompt';
 import { unitOwners } from '../../../../../../../src/utils/development-tooling/unitOwners';
 import { bugRepairPolicy } from '../../../../../../../src/utils/development-tooling/bugRepairPolicy';
+import { ReadOnlyAgentChangedFilesError } from './ProjectTaskService.types';
 
 /** Executes an explicit project request and reports the registered owners of observed writes. */
 export class ProjectTaskService {
@@ -80,7 +81,7 @@ export class ProjectTaskService {
 			detail: `${named || 'No project files changed.'}${observed.length ? ` ${observed.length} host operations observed.` : ''} Verification is required for changes.`
 		});
 		if (request.mode === 'ask' && (files.length || observed.length))
-			throw new Error('The read-only agent changed files. Changes were preserved for review.');
+			throw new ReadOnlyAgentChangedFilesError();
 	}
 	private prompt(context: ProjectTaskContext, ids: string[]): string {
 		const { request, revision } = context;

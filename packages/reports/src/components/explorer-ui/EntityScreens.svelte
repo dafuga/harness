@@ -8,6 +8,7 @@
 	import Card from './explorer-kit/Card.svelte';
 	import type { ExplorerEvidence, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
+	import type { ComparisonPane } from '../../helpers/verification-evidence/comparisonPanes.types';
 	import { entityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
 	import { shortCommit } from '../../helpers/strings/shortCommit';
 	import type { EntityReasons as Reasons } from '../../utils/explorer-ui/entityReasons';
@@ -120,7 +121,7 @@
 		</Notice>
 	{/if}
 	<ComparePanes {panes} framed={false}>
-		{#snippet children(pane)}
+		{#snippet children(pane: ComparisonPane<Evidence>)}
 			{@const item = pane.value!}
 			{@const named = pane.heading}
 			<hx-figure class="ex-pane" aria-label={named}>

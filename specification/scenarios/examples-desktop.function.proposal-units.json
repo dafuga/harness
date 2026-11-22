@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.proposal-units",
+	"title": "desktop.function.proposal-units ordering, planned entries and naming",
+	"kind": "headless",
+	"units": ["desktop.function.proposal-units"],
+	"builds": [],
+	"states": [
+		{
+			"id": "lists-the-request-category-first-and-skips-planned-entries",
+			"title": "Lists the request category first and skips planned entries",
+			"coverage": "required"
+		},
+		{
+			"id": "puts-request-named-registered-ids-first-and-ignores-unknown-or-planned-names",
+			"title": "Puts request-named registered ids first and ignores unknown or planned names",
+			"coverage": "required"
+		},
+		{
+			"id": "keeps-distinct-ids-in-listed-order-without-a-cap",
+			"title": "Keeps distinct ids in listed order without a cap",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.proposal-units.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"lists-the-request-category-first-and-skips-planned-entries",
+				"puts-request-named-registered-ids-first-and-ignores-unknown-or-planned-names",
+				"keeps-distinct-ids-in-listed-order-without-a-cap"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"lists-the-request-category-first-and-skips-planned-entries",
+				"puts-request-named-registered-ids-first-and-ignores-unknown-or-planned-names",
+				"keeps-distinct-ids-in-listed-order-without-a-cap"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"lists-the-request-category-first-and-skips-planned-entries",
+				"puts-request-named-registered-ids-first-and-ignores-unknown-or-planned-names",
+				"keeps-distinct-ids-in-listed-order-without-a-cap"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

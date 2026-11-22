@@ -2,6 +2,10 @@
 import type { Command } from 'commander';
 /** Each loader registers one command family; no workflow is imported before selection. */
 export const commandLoaders = {
+	jobs: async (program: Command) => {
+		const m = await import('../commands/execution-runtimes/JobsCommand');
+		new m.JobsCommand().register(program);
+	},
 	codex: async (program: Command) => {
 		const m = await import('./program/CodexCommand');
 		m.registerCodexCommand(program);
@@ -59,6 +63,10 @@ export const commandLoaders = {
 	units: async (program: Command) => {
 		const m = await import('./program/UnitsCommand');
 		m.registerUnitsCommand(program);
+	},
+	contracts: async (program: Command) => {
+		const m = await import('../commands/development-tooling/ContractsCommand');
+		new m.ContractsCommand().register(program);
 	},
 	impact: async (program: Command) => {
 		const m = await import('./program/ImpactCommand');

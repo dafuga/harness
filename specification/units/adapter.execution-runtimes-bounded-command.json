@@ -11,9 +11,14 @@
 		"source": [
 			"src/adapters/execution-runtimes/BoundedCommandAdapter.ts",
 			"src/adapters/execution-runtimes/BoundedCommandAdapter.types.ts",
+			"src/adapters/execution-runtimes/CommandAbortedError.ts",
+			"src/adapters/execution-runtimes/CommandBoundsError.ts",
+			"src/adapters/execution-runtimes/CommandOutputLimitError.ts",
+			"src/adapters/execution-runtimes/DirectProbeRestrictionError.ts",
 			"src/adapters/execution-runtimes/bounded-command-adapter/commandDeadlines.ts",
 			"src/adapters/execution-runtimes/bounded-command-adapter/commandEnvironment.ts",
 			"src/adapters/execution-runtimes/bounded-command-adapter/commandFailure.ts",
+			"src/adapters/execution-runtimes/bounded-command-adapter/commandFailure.types.ts",
 			"src/adapters/execution-runtimes/bounded-command-adapter/commandOutput.ts"
 		],
 		"symbols": [
@@ -27,12 +32,17 @@
 			"commandEnvironment",
 			"BoundedCommandOptions",
 			"BoundedCommandResult",
+			"CommandAbortedError",
+			"CommandBoundsError",
+			"CommandOutputLimitError",
+			"DirectProbeRestrictionError",
 			"commandDeadlines",
 			"commandEnvironment",
 			"BoundedCommandFailure",
 			"BoundedCommandFailure.constructor",
 			"commandLabel",
 			"timeoutFailure",
+			"CommandTimeoutError",
 			"commandOutput"
 		]
 	},
@@ -64,7 +74,7 @@
 				"description": "Sets the child's cwd, environment extras, stdin, timeout, combined stdout/stderr cap, abort signal, and optional spawn observer. The async defaults are six hours and 8 MiB; timeoutMs and maxBuffer must be positive safe integers no greater than 2,147,483,647.",
 				"examples": [
 					{
-						"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+						"cwd": "/workspace/project",
 						"env": {
 							"CI": "1"
 						},
@@ -99,7 +109,7 @@
 				"description": "Sets the child's cwd, environment extras, stdin, timeout, combined stdout/stderr cap, abort signal, and optional spawn observer. The async defaults are six hours and 8 MiB; timeoutMs and maxBuffer must be positive safe integers no greater than 2,147,483,647.",
 				"examples": [
 					{
-						"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+						"cwd": "/workspace/project",
 						"env": {
 							"CI": "1"
 						},
@@ -134,7 +144,7 @@
 				"description": "Sets the synchronous child's cwd, environment extras, stdin, timeout, output buffer limit, and abort signal. Defaults are 60 seconds and 8 MiB; timeoutMs and maxBuffer must be positive safe integers no greater than 2,147,483,647, and maxBuffer is passed to spawnSync.",
 				"examples": [
 					{
-						"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+						"cwd": "/workspace/project",
 						"env": {
 							"CI": "1"
 						},
@@ -286,7 +296,7 @@
 						"description": "Sets the child's cwd, environment extras, stdin, timeout, combined stdout/stderr cap, abort signal, and optional spawn observer. The async defaults are six hours and 8 MiB; timeoutMs and maxBuffer must be positive safe integers no greater than 2,147,483,647.",
 						"examples": [
 							{
-								"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+								"cwd": "/workspace/project",
 								"env": {
 									"CI": "1"
 								},
@@ -351,7 +361,7 @@
 						"description": "Sets the child's cwd, environment extras, stdin, timeout, combined stdout/stderr cap, abort signal, and optional spawn observer. The async defaults are six hours and 8 MiB; timeoutMs and maxBuffer must be positive safe integers no greater than 2,147,483,647.",
 						"examples": [
 							{
-								"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+								"cwd": "/workspace/project",
 								"env": {
 									"CI": "1"
 								},
@@ -421,7 +431,7 @@
 						"description": "Sets the synchronous child's cwd, environment extras, stdin, timeout, output buffer limit, and abort signal. Defaults are 60 seconds and 8 MiB; timeoutMs and maxBuffer must be positive safe integers no greater than 2,147,483,647, and maxBuffer is passed to spawnSync.",
 						"examples": [
 							{
-								"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+								"cwd": "/workspace/project",
 								"env": {
 									"CI": "1"
 								},
@@ -545,7 +555,7 @@
 				"outputs": [
 					{
 						"name": "commandOutput",
-						"type": "unknown",
+						"type": "{ append(stream: \"stdout\" | \"stderr\", chunk: Buffer): boolean; read(): { stdout: Buffer; stderr: string } }",
 						"description": "Creates a stateful collector with append(stream, chunk) and read(); stdout is returned as a Buffer and stderr as UTF-8 text, with a shared byte cap."
 					}
 				],
@@ -581,7 +591,7 @@
 				"outputs": [
 					{
 						"name": "BoundedCommandFailure.constructor",
-						"type": "unknown",
+						"type": "BoundedCommandFailure",
 						"description": "Creates an Error named BoundedCommandFailure with the supplied message and captured stdout Buffer and stderr string attached as non-enumerable properties."
 					}
 				],

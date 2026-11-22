@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/db/seed-data/analytics-e2e.ts"],
-		"symbols": ["seedAnalyticsE2e"]
+		"source": [
+			"packages/reports/db/seed-data/analytics-e2e.ts",
+			"packages/reports/db/seed-data/analytics-e2e.types.ts"
+		],
+		"symbols": ["seedAnalyticsE2e", "NonTemporaryAnalyticsStoreError"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -23,9 +26,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "NonTemporaryAnalyticsStoreError",
 				"type": "thrown",
-				"description": "Thrown as a plain Error with the message 'Fixture requires a temporary analytics store.' when the analytics path does not begin with the e2eFixtures() root, '/tmp', or os.tmpdir(), each followed by a slash; this check runs before anything is deleted. Any error raised by rmSync, the AnalyticsRepository constructor, record, or close is not caught here and propagates unchanged."
+				"description": "Thrown as a NonTemporaryAnalyticsStoreError with the message 'Fixture requires a temporary analytics store.' when the analytics path does not begin with the e2eFixtures() root, '/tmp', or os.tmpdir(), each followed by a slash; this check runs before anything is deleted. Any error raised by rmSync, the AnalyticsRepository constructor, record, or close is not caught here and propagates unchanged."
 			}
 		],
 		"errorStatus": "declared",
@@ -42,9 +45,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "NonTemporaryAnalyticsStoreError",
 						"type": "thrown",
-						"description": "Thrown as a plain Error with the message 'Fixture requires a temporary analytics store.' when the analytics path does not begin with the e2eFixtures() root, '/tmp', or os.tmpdir(), each followed by a slash; this check runs before anything is deleted. Any error raised by rmSync, the AnalyticsRepository constructor, record, or close is not caught here and propagates unchanged."
+						"description": "Thrown as a NonTemporaryAnalyticsStoreError with the message 'Fixture requires a temporary analytics store.' when the analytics path does not begin with the e2eFixtures() root, '/tmp', or os.tmpdir(), each followed by a slash; this check runs before anything is deleted. Any error raised by rmSync, the AnalyticsRepository constructor, record, or close is not caught here and propagates unchanged."
 					}
 				],
 				"errorStatus": "declared"

@@ -26,7 +26,7 @@
 		"outputs": [
 			{
 				"name": "createConsoleWorkspaceStore",
-				"type": "unknown",
+				"type": "{ workspace: ReturnType<typeof createWorkspaceStore>; close: () => void; }",
 				"description": "The factory returns { workspace, close }, where workspace is the store from createWorkspaceStore() and close invokes the bridge adapter's close(). It disables routeProject, connects with local: false, rewrites only modules, module-resources, and permissions routes to the pages category while retaining branch and commit, and strips a leading /harness and inverts push in onNavigate."
 			}
 		],
@@ -46,7 +46,7 @@
 				"outputs": [
 					{
 						"name": "createConsoleWorkspaceStore",
-						"type": "unknown",
+						"type": "{ workspace: ReturnType<typeof createWorkspaceStore>; close: () => void; }",
 						"description": "The factory returns { workspace, close }, where workspace is the store from createWorkspaceStore() and close invokes the bridge adapter's close(). It disables routeProject, connects with local: false, rewrites only modules, module-resources, and permissions routes to the pages category while retaining branch and commit, and strips a leading /harness and inverts push in onNavigate."
 					}
 				],

@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.task-completion-service-task-audit-record",
+	"title": "service.task-completion-service-task-audit-record examples",
+	"kind": "headless",
+	"units": ["service.task-completion-service-task-audit-record"],
+	"builds": [],
+	"states": [
+		{
+			"id": "persists-a-planning-and-a-coding-audit-under-content-address",
+			"title": "Persists a planning and a coding audit under content-addressed ids",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-when-the-audit-directory-path-is-blocked-by-a-file",
+			"title": "Rejects when the audit directory path is blocked by a file",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.task-completion-service-task-audit-record.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"persists-a-planning-and-a-coding-audit-under-content-address",
+				"rejects-when-the-audit-directory-path-is-blocked-by-a-file"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"persists-a-planning-and-a-coding-audit-under-content-address",
+				"rejects-when-the-audit-directory-path-is-blocked-by-a-file"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"persists-a-planning-and-a-coding-audit-under-content-address",
+				"rejects-when-the-audit-directory-path-is-blocked-by-a-file"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

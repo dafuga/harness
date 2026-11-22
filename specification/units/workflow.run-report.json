@@ -39,8 +39,8 @@
 				"description": "Thrown with code ERR_INVALID_URL_SCHEME by fileURLToPath when import.meta.url is not a file: URL, or with code ERR_INVALID_ARG_VALUE by spawn when an args element or environment value contains a null byte; either one makes the returned promise reject."
 			},
 			{
-				"name": "unknown",
-				"type": "thrown",
+				"name": "reportsEnvironment() error",
+				"type": "propagated",
 				"description": "Any error thrown by reportsEnvironment() while the child environment is built is not caught here, so it makes the returned promise reject; this file does not define that error's class."
 			},
 			{
@@ -84,8 +84,8 @@
 						"description": "Thrown with code ERR_INVALID_URL_SCHEME by fileURLToPath when import.meta.url is not a file: URL, or with code ERR_INVALID_ARG_VALUE by spawn when an args element or environment value contains a null byte; either one makes the returned promise reject."
 					},
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "reportsEnvironment() error",
+						"type": "propagated",
 						"description": "Any error thrown by reportsEnvironment() while the child environment is built is not caught here, so it makes the returned promise reject; this file does not define that error's class."
 					},
 					{

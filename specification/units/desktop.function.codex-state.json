@@ -9,9 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/adapters/agents-providers/codex-app-server-adapter/codexState.ts"
+			"packages/desktop/src/adapters/agents-providers/codex-app-server-adapter/codexState.ts",
+			"packages/desktop/src/adapters/agents-providers/codex-app-server-adapter/codexState.types.ts"
 		],
-		"symbols": ["codexState"]
+		"symbols": ["codexState", "CodexChatGPTSignInError"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -1,5 +1,9 @@
 // @harness-uid u_bit6m3gnax
-import type { Runtime, Device } from './ios-acceptance-simulator.types';
+import {
+	IosAcceptanceSimulatorError,
+	type Runtime,
+	type Device
+} from './ios-acceptance-simulator.types';
 import { homedir } from 'node:os';
 import { resolve } from 'node:path';
 import { tool, tried } from './ios-products';
@@ -22,7 +26,7 @@ function newestRuntime(): Runtime {
 	const order = (item: Runtime) => item.version.split('.').map(Number);
 	usable.sort((a, b) => order(b)[0] - order(a)[0] || order(b)[1] - order(a)[1]);
 	if (usable[0]) return usable[0];
-	throw new Error('No iOS simulator runtime is installed.');
+	throw new IosAcceptanceSimulatorError('No iOS simulator runtime is installed.');
 }
 
 function existing(): string | null {
@@ -39,7 +43,7 @@ function created(): string {
 	const runtime = newestRuntime();
 	const phones = runtime.supportedDeviceTypes.filter((item) => item.productFamily === 'iPhone');
 	const type = phones.find((item) => item.name === 'iPhone 17 Pro') ?? phones[0];
-	if (!type) throw new Error('The newest runtime supports no iPhone.');
+	if (!type) throw new IosAcceptanceSimulatorError('The newest runtime supports no iPhone.');
 	return simctl('create', deviceName, type.identifier, runtime.identifier);
 }
 
@@ -92,7 +96,10 @@ export function keychainGroups(udid: string): string[] {
 	const database = resolve(homedir(), folder, 'keychain-2-debug.db');
 	const query = `select distinct agrp from genp where agrp like '%${bundleId}%'`;
 	const { code, output } = tried(['sqlite3', '-readonly', database, query]);
-	if (code !== 0) throw new Error('The Keychain database of the simulator could not be read.');
+	if (code !== 0)
+		throw new IosAcceptanceSimulatorError(
+			'The Keychain database of the simulator could not be read.'
+		);
 	return output.split('\n').filter(Boolean);
 }
 

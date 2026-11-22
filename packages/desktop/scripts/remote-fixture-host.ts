@@ -1,5 +1,9 @@
 // @harness-uid u_rp545ji5cr
 import type { Relay, Running, RemoteFixtureOptions } from './remote-fixture-host.types';
+import {
+	FixtureHostRelayConnectionError,
+	FixtureRelayRegistrationError
+} from './remote-fixture-host.types';
 import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -60,7 +64,8 @@ async function fixtureHost(relay: Relay, state: string, root: string) {
 		screen: { locked?: boolean } = {};
 	const register = async (input: RemoteHostRegisterInput) => {
 		const answer = await relay.manage('register', { owner, ...input });
-		if (!answer.ok) throw new Error('The fixture relay refused the registration.');
+		if (!answer.ok)
+			throw new FixtureRelayRegistrationError('The fixture relay refused the registration.');
 		return { ...((await answer.json()) as RelayRegistered), origin: relay.origin };
 	};
 	const host = new RemoteHostService({
@@ -90,7 +95,7 @@ async function online(host: RemoteHostService): Promise<string> {
 		if ((await host.status()).state === 'online' && enabled.host) return enabled.host.id;
 		await new Promise((resolve) => setTimeout(resolve, 50));
 	}
-	throw new Error('The fixture host did not reach the fixture relay.');
+	throw new FixtureHostRelayConnectionError('The fixture host did not reach the fixture relay.');
 }
 /** The person at the computer, stood in for by who runs the fixture: answers whoever waits. */
 function decisions(running: Running, view: () => Promise<object>): Record<string, FixtureAction> {

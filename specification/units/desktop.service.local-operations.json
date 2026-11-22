@@ -22,6 +22,7 @@
 			"LocalOperationsService.handle",
 			"LocalControl",
 			"LocalOperationsOptions",
+			"DesktopOperationUnavailableError",
 			"LocalControl",
 			"LocalOperationsOptions",
 			"Fields",
@@ -246,7 +247,7 @@
 				"outputs": [
 					{
 						"name": "LocalOperationsService.constructor",
-						"type": "unknown",
+						"type": "LocalOperationsService",
 						"description": "The new `LocalOperationsService` instance: it keeps the options and holds one `IpcRequestValidator` of its own."
 					}
 				],

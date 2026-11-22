@@ -27,7 +27,11 @@ const large = 'The answer of the Hub is too large for this phone.';
 const unreadable = 'The Hub sent an answer this app cannot read.';
 
 /** An error as the shared reads expect one: a status, a code and words a person can read. */
-export function failure(status: number, code: string, message = browserError(code, status)) {
+export function failure(
+	status: number,
+	code: string,
+	message: string = browserError(code, status)
+) {
 	return Object.assign(new Error(message), { status, code });
 }
 
@@ -81,8 +85,17 @@ export function fields(query: Query = {}): Record<string, string> {
 	return Object.fromEntries(kept);
 }
 
+/** Plain JSON data: the values that may cross the native bridge. */
+export type PlainJson =
+	| string
+	| number
+	| boolean
+	| null
+	| PlainJson[]
+	| { [key: string]: PlainJson };
+
 /** Only plain data crosses the native bridge: no proxy, no undefined. */
-export function plain(body: unknown): unknown {
+export function plain(body: PlainJson | undefined): unknown {
 	return JSON.parse(JSON.stringify(body ?? {}));
 }
 

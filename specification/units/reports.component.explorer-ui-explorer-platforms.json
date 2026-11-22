@@ -137,7 +137,7 @@
 			{
 				"name": "ExplorerPlatforms",
 				"type": "markup",
-				"description": "The four-target catalog or selected platform details, with search, a status dialog and explicit missing-data states."
+				"description": "The four-target catalog or selected platform details, with search, a status dialog and explicit missing-data states. The hovered card state shows its border transition; picker-open shows the native status choices."
 			}
 		],
 		"errors": [
@@ -201,7 +201,7 @@
 				"inputs": [
 					{
 						"name": "ExplorerPlatforms.label.name",
-						"type": "unknown",
+						"type": "string",
 						"required": true
 					}
 				],
@@ -219,7 +219,7 @@
 				"inputs": [
 					{
 						"name": "ExplorerPlatforms.children.name",
-						"type": "unknown",
+						"type": "string",
 						"required": true
 					}
 				],
@@ -424,7 +424,11 @@
 			}
 		]
 	},
-	"scenarios": ["component-catalog-previews", "explorer-platforms"],
+	"scenarios": [
+		"component-catalog-previews",
+		"explorer-platforms",
+		"platform-interaction-video-pilot"
+	],
 	"preview": {
 		"scenario": "component-catalog-previews",
 		"state": "reports-component-explorer-ui-explorer-platforms",

@@ -61,7 +61,7 @@
 			{
 				"name": "checkUnitContracts",
 				"type": "Promise<ContractCheckReport>",
-				"description": "A promise resolving to selected entity ids, located findings, per-entity counts, and overall totals. all considers active stored units, while an id selects one unit; findings remain heuristic.",
+				"description": "A promise resolving to selected entity ids, located findings, per-entity counts, and overall totals. all considers active stored units, while an id selects one unit; findings remain heuristic. Complete catalog and required-state lists are checked against all implied unit states; individual video entries retain their own scope and still contribute named-state documentation checks.",
 				"examples": [
 					{
 						"entities": ["workflow.development-tooling-check-unit-contracts"],
@@ -130,7 +130,7 @@
 					{
 						"name": "checkUnitContracts",
 						"type": "Promise<ContractCheckReport>",
-						"description": "A promise resolving to selected entity ids, located findings, per-entity counts, and overall totals. all considers active stored units, while an id selects one unit; findings remain heuristic.",
+						"description": "A promise resolving to selected entity ids, located findings, per-entity counts, and overall totals. all considers active stored units, while an id selects one unit; findings remain heuristic. Complete catalog and required-state lists are checked against all implied unit states; individual video entries retain their own scope and still contribute named-state documentation checks.",
 						"examples": [
 							{
 								"entities": ["workflow.development-tooling-check-unit-contracts"],

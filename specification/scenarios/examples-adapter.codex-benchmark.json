@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-adapter.codex-benchmark",
+	"title": "adapter.codex-benchmark examples",
+	"kind": "headless",
+	"units": ["adapter.codex-benchmark"],
+	"builds": [],
+	"states": [
+		{
+			"id": "preflight-returns-the-codex-version",
+			"title": "Preflight returns the Codex version.",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-preflight-settings-are-unsupported",
+			"title": "Throws Error when preflight settings are unsupported.",
+			"coverage": "required"
+		},
+		{
+			"id": "run-parses-codex-completed-turn-events",
+			"title": "Run parses Codex completed-turn events.",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-codexrunerror-when-the-codex-process-fails",
+			"title": "Throws CodexRunError when the Codex process fails.",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-codexrunerror-when-codex-reports-a-different-model",
+			"title": "Throws CodexRunError when Codex reports a different model.",
+			"coverage": "required"
+		},
+		{
+			"id": "command-builds-fresh-and-resumed-codex-argument-vectors",
+			"title": "Command builds fresh and resumed Codex argument vectors.",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/adapter.codex-benchmark.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"preflight-returns-the-codex-version",
+				"throws-error-when-preflight-settings-are-unsupported",
+				"run-parses-codex-completed-turn-events",
+				"throws-codexrunerror-when-the-codex-process-fails",
+				"throws-codexrunerror-when-codex-reports-a-different-model",
+				"command-builds-fresh-and-resumed-codex-argument-vectors"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"preflight-returns-the-codex-version",
+				"throws-error-when-preflight-settings-are-unsupported",
+				"run-parses-codex-completed-turn-events",
+				"throws-codexrunerror-when-the-codex-process-fails",
+				"throws-codexrunerror-when-codex-reports-a-different-model",
+				"command-builds-fresh-and-resumed-codex-argument-vectors"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"preflight-returns-the-codex-version",
+				"throws-error-when-preflight-settings-are-unsupported",
+				"run-parses-codex-completed-turn-events",
+				"throws-codexrunerror-when-the-codex-process-fails",
+				"throws-codexrunerror-when-codex-reports-a-different-model",
+				"command-builds-fresh-and-resumed-codex-argument-vectors"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

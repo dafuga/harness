@@ -9,10 +9,18 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/components/agents-providers/provider-picker/PickerSelectionRejectedError.ts",
+			"packages/reports/src/components/agents-providers/provider-picker/PreviewRequestRejectedError.ts",
 			"packages/reports/src/components/agents-providers/provider-picker/providerPickerClient.ts",
 			"packages/reports/src/utils/agents-providers/providerPickerClient.ts"
 		],
-		"symbols": ["providerPickerClient", "PickerClient", "providerPickerClient"]
+		"symbols": [
+			"PickerSelectionRejectedError",
+			"PreviewRequestRejectedError",
+			"providerPickerClient",
+			"PickerClient",
+			"providerPickerClient"
+		]
 	},
 	"contract": {
 		"origin": "declared",

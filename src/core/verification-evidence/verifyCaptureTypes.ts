@@ -1,4 +1,8 @@
 // @harness-uid u_wwu3xgisul
+import {
+	videoCaptureSchema,
+	videoReferenceSchema
+} from '../../utils/verification-evidence/videoClipSchema';
 import { z } from 'zod';
 import { unitIdPattern } from '../development-tooling/unitTypes';
 import { captureRegionSchema } from './verificationTypes';
@@ -8,8 +12,10 @@ const identifier = z.string().regex(unitIdPattern);
 
 /** One line a check writes to `captures.ndjson` in `HARNESS_EVIDENCE_DIR`. */
 export const captureLineSchema = z.strictObject({
+	video: videoCaptureSchema.optional(),
+	videoReference: videoReferenceSchema.optional(),
 	evidence: identifier,
-	kind: z.enum(['screenshot', 'audio', 'output', 'assertions', 'trace', 'benchmark']),
+	kind: z.enum(['screenshot', 'video', 'audio', 'output', 'assertions', 'trace', 'benchmark']),
 	state: identifier,
 	viewport: identifier.optional(),
 	clip: captureRegionSchema.optional(),

@@ -347,7 +347,7 @@
 		"outputs": [
 			{
 				"name": "retainedBranch",
-				"type": "unknown",
+				"type": "string",
 				"description": "The literal pseudo-branch name used to select retained revisions. It is separate from source branch names in the index.",
 				"examples": ["Retained commits"]
 			},

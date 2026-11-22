@@ -1,5 +1,6 @@
 // @harness-uid u_uss455qboj
 import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { ReportCliBundleError } from './package-website.types';
 const destination = 'dist/reports';
 await rm(destination, { recursive: true, force: true });
 await mkdir(destination, { recursive: true });
@@ -13,7 +14,7 @@ const result = await Bun.build({
 	naming: 'cli.js'
 });
 
-if (!result.success) throw new Error('Report CLI bundle failed.');
+if (!result.success) throw new ReportCliBundleError('Report CLI bundle failed.');
 
 // The compiled console as text, for hosts that serve it from their own server after their own
 // policy has admitted the request. This is server-side data: no route exposes it by itself.

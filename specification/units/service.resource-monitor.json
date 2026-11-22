@@ -239,7 +239,7 @@
 				"outputs": [
 					{
 						"name": "ResourceMonitorService.constructor",
-						"type": "unknown",
+						"type": "ResourceMonitorService",
 						"description": "Creates and returns the ResourceMonitorService instance configured with the supplied options."
 					}
 				],
@@ -251,6 +251,11 @@
 	"dependencies": [
 		{
 			"unit": "adapter.host-resources",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},

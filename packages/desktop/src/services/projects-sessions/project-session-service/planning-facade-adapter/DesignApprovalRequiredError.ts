@@ -1,0 +1,4 @@
+// @harness-uid u_uicoazlmfj
+export class DesignApprovalRequiredError extends Error {
+	override name = 'DesignApprovalRequiredError';
+}

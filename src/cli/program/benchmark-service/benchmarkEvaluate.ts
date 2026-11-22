@@ -1,6 +1,7 @@
 // @harness-uid u_nbmwprrg74
 import type { BenchmarkEvaluationInput } from './benchmarkEvaluate.types';
 export type { BenchmarkEvaluationInput } from './benchmarkEvaluate.types';
+import { BenchmarkSetupError } from './benchmarkEvaluate.types';
 import { join } from 'node:path';
 import { lstat } from 'node:fs/promises';
 import type {
@@ -44,7 +45,7 @@ export async function setupBenchmarkWorkspace(
 ): Promise<void> {
 	for (const command of definition.setup) {
 		const result = await benchmarkProcess({ command: ['sh', '-c', command], cwd, signal });
-		if (result.exitCode) throw new Error('Benchmark workspace setup failed.');
+		if (result.exitCode) throw new BenchmarkSetupError('Benchmark workspace setup failed.');
 	}
 }
 async function invalidBenchmarkFiles(input: BenchmarkEvaluationInput): Promise<string[]> {

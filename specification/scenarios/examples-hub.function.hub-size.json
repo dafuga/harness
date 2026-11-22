@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.function.hub-size",
+	"title": "hub.function.hub-size examples",
+	"kind": "headless",
+	"units": ["hub.function.hub-size"],
+	"builds": [],
+	"states": [
+		{
+			"id": "summarizes-requested-source-sizes-and-unavailable-paths",
+			"title": "Summarizes requested source sizes and unavailable paths",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.function.hub-size.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["summarizes-requested-source-sizes-and-unavailable-paths"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["summarizes-requested-source-sizes-and-unavailable-paths"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["summarizes-requested-source-sizes-and-unavailable-paths"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

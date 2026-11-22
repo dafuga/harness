@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-repository.execution-runtimes-job-history",
+	"title": "repository.execution-runtimes-job-history examples",
+	"kind": "headless",
+	"units": ["repository.execution-runtimes-job-history"],
+	"builds": [],
+	"states": [
+		{
+			"id": "keeps-the-first-start-for-a-repeated-attempt",
+			"title": "Keeps the first start for a repeated attempt",
+			"coverage": "required"
+		},
+		{
+			"id": "completes-an-attempt-once-and-preserves-its-first-outcome",
+			"title": "Completes an attempt once and preserves its first outcome",
+			"coverage": "required"
+		},
+		{
+			"id": "imports-completed-records-and-lists-attempts",
+			"title": "Imports completed records and lists attempts",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-rangeerror-when-ending-an-unrecorded-attempt",
+			"title": "Throws RangeError when ending an unrecorded attempt",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-sqliteerror-when-querying-after-the-connection-closes",
+			"title": "Throws SQLiteError when querying after the connection closes",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/repository.execution-runtimes-job-history.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"keeps-the-first-start-for-a-repeated-attempt",
+				"completes-an-attempt-once-and-preserves-its-first-outcome",
+				"imports-completed-records-and-lists-attempts",
+				"throws-rangeerror-when-ending-an-unrecorded-attempt",
+				"throws-sqliteerror-when-querying-after-the-connection-closes"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"keeps-the-first-start-for-a-repeated-attempt",
+				"completes-an-attempt-once-and-preserves-its-first-outcome",
+				"imports-completed-records-and-lists-attempts",
+				"throws-rangeerror-when-ending-an-unrecorded-attempt",
+				"throws-sqliteerror-when-querying-after-the-connection-closes"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"keeps-the-first-start-for-a-repeated-attempt",
+				"completes-an-attempt-once-and-preserves-its-first-outcome",
+				"imports-completed-records-and-lists-attempts",
+				"throws-rangeerror-when-ending-an-unrecorded-attempt",
+				"throws-sqliteerror-when-querying-after-the-connection-closes"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

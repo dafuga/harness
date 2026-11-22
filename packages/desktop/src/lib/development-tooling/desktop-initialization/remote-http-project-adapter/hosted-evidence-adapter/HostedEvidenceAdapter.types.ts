@@ -2,3 +2,7 @@
 import type { EntityEvidenceQuery } from '../../../../../models/verification-evidence/DesktopEvidence.types';
 
 export type Query = EntityEvidenceQuery & { projectId: string };
+
+export class InvalidHostedEvidenceAnswerError extends Error {
+	override name = 'InvalidHostedEvidenceAnswerError';
+}

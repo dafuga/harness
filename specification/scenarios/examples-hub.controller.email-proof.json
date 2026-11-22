@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.controller.email-proof",
+	"title": "hub.controller.email-proof examples",
+	"kind": "headless",
+	"units": ["hub.controller.email-proof"],
+	"builds": [],
+	"states": [
+		{
+			"id": "starts-email-proof-for-a-browser-request",
+			"title": "Starts email proof for a browser request",
+			"coverage": "required"
+		},
+		{
+			"id": "verifies-an-email-code-and-issues-a-session",
+			"title": "Verifies an email code and issues a session",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-authfailure-when-request-carries-an-authorization-hea",
+			"title": "Throws AuthFailure when request carries an Authorization header",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.controller.email-proof.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"starts-email-proof-for-a-browser-request",
+				"verifies-an-email-code-and-issues-a-session",
+				"throws-authfailure-when-request-carries-an-authorization-hea"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"starts-email-proof-for-a-browser-request",
+				"verifies-an-email-code-and-issues-a-session",
+				"throws-authfailure-when-request-carries-an-authorization-hea"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"starts-email-proof-for-a-browser-request",
+				"verifies-an-email-code-and-issues-a-session",
+				"throws-authfailure-when-request-carries-an-authorization-hea"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

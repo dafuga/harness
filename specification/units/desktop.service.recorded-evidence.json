@@ -9,16 +9,20 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/LocalBranchRequiredError.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-bridge/RecordedEvidenceService.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-bridge/RecordedEvidenceService.types.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/RecordedEvidenceService.types.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/RegisteredProjectIdRequiredError.ts"
 		],
 		"symbols": [
+			"LocalBranchRequiredError",
 			"RecordedEvidenceService",
 			"RecordedEvidenceService.constructor",
 			"RecordedEvidenceService.evidence",
 			"RecordedEvidenceService.artifact",
 			"Shown",
-			"ProjectRead"
+			"ProjectRead",
+			"RegisteredProjectIdRequiredError"
 		]
 	},
 	"contract": {
@@ -272,9 +276,14 @@
 				"description": "Thrown when the source history holds no entry for the commit a read asks for; a commit that Git has just resolved for the read is normally found."
 			},
 			{
-				"name": "Error",
+				"name": "RegisteredProjectIdRequiredError",
 				"type": "thrown",
-				"description": "Thrown as a plain Error with the message 'Open a registered project first.' when the open project has no registered id, and with the message 'Select a local branch to read recorded evidence on.' when no branch is named."
+				"description": "Thrown with the message 'Open a registered project first.' when the open project has no registered id."
+			},
+			{
+				"name": "LocalBranchRequiredError",
+				"type": "thrown",
+				"description": "Thrown with the message 'Select a local branch to read recorded evidence on.' when no branch is named."
 			}
 		],
 		"errorStatus": "declared",
@@ -465,9 +474,14 @@
 						"description": "Thrown when the source history holds no entry for the commit a read asks for; a commit that Git has just resolved for the read is normally found."
 					},
 					{
-						"name": "Error",
+						"name": "RegisteredProjectIdRequiredError",
 						"type": "thrown",
-						"description": "Thrown as a plain Error with the message 'Open a registered project first.' when the open project has no registered id, and with the message 'Select a local branch to read recorded evidence on.' when no branch is named."
+						"description": "Thrown with the message 'Open a registered project first.' when the open project has no registered id."
+					},
+					{
+						"name": "LocalBranchRequiredError",
+						"type": "thrown",
+						"description": "Thrown with the message 'Select a local branch to read recorded evidence on.' when no branch is named."
 					}
 				],
 				"errorStatus": "declared"
@@ -564,9 +578,14 @@
 						"description": "Thrown when the source history holds no entry for the commit a read asks for; a commit that Git has just resolved for the read is normally found."
 					},
 					{
-						"name": "Error",
+						"name": "RegisteredProjectIdRequiredError",
 						"type": "thrown",
-						"description": "Thrown as a plain Error with the message 'Open a registered project first.' when the open project has no registered id, and with the message 'Select a local branch to read recorded evidence on.' when no branch is named."
+						"description": "Thrown with the message 'Open a registered project first.' when the open project has no registered id."
+					},
+					{
+						"name": "LocalBranchRequiredError",
+						"type": "thrown",
+						"description": "Thrown with the message 'Select a local branch to read recorded evidence on.' when no branch is named."
 					}
 				],
 				"errorStatus": "declared"
@@ -586,7 +605,7 @@
 				"outputs": [
 					{
 						"name": "RecordedEvidenceService.constructor",
-						"type": "unknown",
+						"type": "RecordedEvidenceService",
 						"description": "The new RecordedEvidenceService instance: it keeps the session it was given and holds no repository reader until its first read."
 					}
 				],

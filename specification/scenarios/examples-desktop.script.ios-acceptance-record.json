@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.script.ios-acceptance-record",
+	"title": "desktop.script.ios-acceptance-record examples",
+	"kind": "headless",
+	"units": ["desktop.script.ios-acceptance-record"],
+	"builds": [],
+	"states": [
+		{
+			"id": "records-phase-checks-and-summarizes-pass-and-failure-counts",
+			"title": "records phase checks and summarizes pass and failure counts",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.script.ios-acceptance-record.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["records-phase-checks-and-summarizes-pass-and-failure-counts"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["records-phase-checks-and-summarizes-pass-and-failure-counts"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["records-phase-checks-and-summarizes-pass-and-failure-counts"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

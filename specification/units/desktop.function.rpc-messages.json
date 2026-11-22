@@ -17,6 +17,7 @@
 			"rpcMessages",
 			"rpcRequest",
 			"RpcState",
+			"CodexRpcError",
 			"RpcEvent",
 			"RpcPending",
 			"rpcMessages",
@@ -99,8 +100,8 @@
 				"description": "A matched reply with a truthy error causes rpcRequest to reject with an Error whose message is String(error.message ?? 'Codex RPC failed.'). The timeout callback also rejects with Error('Codex ' + frame.method + ' timed out.')."
 			},
 			{
-				"name": "unknown",
-				"type": "thrown",
+				"name": "Sender or callback error",
+				"type": "propagated",
 				"description": "If state.send throws while rpcRequest sends the frame, rpcRequest rejects with the same thrown value after removing the pending entry and clearing its timer. In rpcMessages, thrown values from pending callbacks, notification listeners, or the sender answering an incoming request propagate synchronously because those calls are not caught."
 			},
 			{
@@ -140,8 +141,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "Callback or sender error",
+						"type": "propagated",
 						"description": "If a pending callback, notification listener, or sender called for an incoming method with an id throws, that value propagates synchronously because rpcMessages does not catch callback exceptions."
 					},
 					{
@@ -210,8 +211,8 @@
 						"description": "A matched reply with a truthy error causes rpcRequest to reject with an Error whose message is String(error.message ?? 'Codex RPC failed.'). The timeout callback also rejects with Error('Codex ' + frame.method + ' timed out.')."
 					},
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "state.send error",
+						"type": "propagated",
 						"description": "If state.send throws while rpcRequest sends the frame, the returned promise rejects with that same thrown value after the pending entry is removed and its timer is cleared."
 					}
 				],

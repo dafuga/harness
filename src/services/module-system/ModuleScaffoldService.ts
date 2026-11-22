@@ -3,6 +3,7 @@ import {
 	generateModel,
 	generatePiece
 } from '../../workflows/projects-sessions/generate-code/generateCode';
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import type { ModuleResource, ModuleResourceRequest } from './moduleDefinition.types';
 /** Module declarations delegate to the same scaffold workflows as harness generate. */
 export class ModuleScaffoldService {
@@ -12,7 +13,8 @@ export class ModuleScaffoldService {
 		request: ModuleResourceRequest
 	): Promise<string[]> {
 		const generator = resource.generator;
-		if (generator?.kind !== 'scaffold') throw new Error('A scaffold generator is required.');
+		if (generator?.kind !== 'scaffold')
+			throw new ExpectedCliError('A scaffold generator is required.');
 		const common = { root, name: request.name, group: request.group };
 		const result =
 			generator.scaffold === 'model'

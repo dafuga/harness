@@ -1,5 +1,8 @@
 // @harness-uid u_b7hlwurone
 import type { ProcessOptions } from './cliProcess.types';
+import { CliCommandFailedError } from './CliCommandFailedError';
+import { CliOutputLimitError } from './CliOutputLimitError';
+import { CliRequestTimeoutError } from './CliRequestTimeoutError';
 export type { ProcessOptions } from './cliProcess.types';
 import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import { StringDecoder } from 'node:string_decoder';
@@ -49,20 +52,20 @@ export async function cliProcess(
 		};
 		const timer = setTimeout(() => {
 			killOwnedProcess(child.pid);
-			finish(new Error('CLI request timed out.'));
+			finish(new CliRequestTimeoutError('CLI request timed out.'));
 		}, options.timeoutMs ?? 600000);
 		options.signal?.addEventListener('abort', cancel, { once: true });
 		child.on('error', finish);
 		const consume = streamLines({
 			onLine: (line) => options.onLine?.(line),
 			maxBytes: options.maxBytes ?? 16000000,
-			onOverflow: () => finish(new Error('CLI output exceeded its limit.'))
+			onOverflow: () => finish(new CliOutputLimitError('CLI output exceeded its limit.'))
 		});
 		child.stdout.on('data', (chunk: Buffer) => {
 			output += decoder.write(chunk);
 			if (Buffer.byteLength(output) > (options.maxBytes ?? 16000000)) {
 				killOwnedProcess(child.pid);
-				finish(new Error('CLI output exceeded its limit.'));
+				finish(new CliOutputLimitError('CLI output exceeded its limit.'));
 				return;
 			}
 			consume.write(chunk);
@@ -73,7 +76,9 @@ export async function cliProcess(
 		child.on('close', (code) => {
 			output += decoder.end();
 			consume.end();
-			finish(code === 0 ? null : new Error('CLI failed (' + String(code) + '): ' + error));
+			finish(
+				code === 0 ? null : new CliCommandFailedError('CLI failed (' + String(code) + '): ' + error)
+			);
 		});
 		closeInput(child, options.input ?? '', finish);
 		if (child.pid) options.resources?.track(child.pid);

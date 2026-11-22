@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import { lstat, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
+import { CheckpointImageError } from './CheckpointImageError';
 const pattern = /^static\/game\/checkpoints\/[a-f0-9]{64}\.png$/;
 export class CheckpointImageRepository {
 	constructor(private root: string) {}
@@ -20,8 +21,9 @@ export class CheckpointImageRepository {
 		return path;
 	}
 	async read(path: string, commit?: string): Promise<string> {
-		if (!pattern.test(path)) throw new Error('Invalid checkpoint image path.');
-		if (commit && !/^[a-f0-9]{40}$/.test(commit)) throw new Error('A full commit is required.');
+		if (!pattern.test(path)) throw new CheckpointImageError('Invalid checkpoint image path.');
+		if (commit && !/^[a-f0-9]{40}$/.test(commit))
+			throw new CheckpointImageError('A full commit is required.');
 		const bytes = commit
 			? execFileSync('git', ['show', commit + ':' + path], {
 					cwd: this.root,
@@ -33,7 +35,7 @@ export class CheckpointImageRepository {
 			!path.endsWith(hash + '.png') ||
 			bytes.subarray(0, 8).toString('hex') !== '89504e470d0a1a0a'
 		)
-			throw new Error('Checkpoint image integrity failed.');
+			throw new CheckpointImageError('Checkpoint image integrity failed.');
 		return 'data:image/png;base64,' + bytes.toString('base64');
 	}
 	private async current(path: string): Promise<Buffer> {
@@ -41,7 +43,7 @@ export class CheckpointImageRepository {
 		const file = join(this.root, path),
 			stat = await lstat(file);
 		if (!stat.isFile() || stat.isSymbolicLink() || stat.size > 12_000_000)
-			throw new Error('Invalid checkpoint image file.');
+			throw new CheckpointImageError('Invalid checkpoint image file.');
 		return readFile(file);
 	}
 	private async directories(create: boolean) {
@@ -54,7 +56,7 @@ export class CheckpointImageRepository {
 				});
 			const stat = await lstat(parent);
 			if (!stat.isDirectory() || stat.isSymbolicLink())
-				throw new Error('Unsafe checkpoint image directory.');
+				throw new CheckpointImageError('Unsafe checkpoint image directory.');
 		}
 	}
 }

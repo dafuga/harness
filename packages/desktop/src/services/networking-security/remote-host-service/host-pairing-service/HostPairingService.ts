@@ -7,6 +7,8 @@ import type {
 	HostPairingApproved,
 	Requested
 } from './HostPairingService.types';
+import { PairingPhoneMismatchError } from './PairingPhoneMismatchError';
+import { PairingRequestNotFoundError } from './PairingRequestNotFoundError';
 import { remoteLimits } from '../../../../../../remote/src/models/Remote.types';
 import type { RemoteGrant } from '../../../../../../remote/src/models/Remote.types';
 import type { RemotePairingRequest } from '../../../../../../remote/src/models/networking-security/RemoteControl.types';
@@ -86,10 +88,10 @@ export class HostPairingService {
 		approval: { hostName: string; generation: number; grant: RemoteGrant; deviceId?: string }
 	): Promise<HostPairingApproved> {
 		const request = this.requested(pairingId);
-		if (!request) throw new Error('There is no pairing request to approve.');
+		if (!request) throw new PairingRequestNotFoundError('There is no pairing request to approve.');
 		const { deviceId: shown, ...granted } = approval;
 		if (shown !== undefined && shown !== request.deviceId)
-			throw new Error('This is not the phone that was shown.');
+			throw new PairingPhoneMismatchError('This is not the phone that was shown.');
 		this.current = null;
 		const { deviceId, deviceKey, deviceName, platform, challenge } = request;
 		const sealed = await sealPairing(request.approvalKey, 'approval', { deviceId, ...granted });

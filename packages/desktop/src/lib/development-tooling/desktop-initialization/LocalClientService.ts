@@ -7,12 +7,14 @@ import {
 	WireSessionService
 } from '../../../../../remote/src/index';
 import { localTransport } from '../../../../../remote/src/index';
-import type { WireChannel, WireLink } from '../../../../../remote/src/index';
+import type { RemoteConnectionEvent, WireChannel, WireLink } from '../../../../../remote/src/index';
 import { DesktopBridgeService } from '../../../services/development-tooling/desktop-bridge-service/DesktopBridgeService';
 import { DesktopRunService } from '../../../services/agents-providers/desktop-run-service/DesktopRunService';
 import { LocalOperationsService } from './LocalOperationsService';
 import type { LocalSocket } from '../../../services/LocalTransportService';
 import { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';
+import type { CacheStatus } from '../../../models/projects-sessions/ProjectContext.types';
+import type { RunEvent } from '../../../models/development-tooling/DesktopBridge.types';
 /** A person may leave a dialog open, so nothing here ends an operation early. */
 const patient = 6 * 60 * 60 * 1000;
 const limits = {
@@ -99,7 +101,7 @@ export class LocalClientService {
 			framing.reset();
 		});
 	}
-	emit(channel: WireChannel, value: unknown): void {
+	emit(channel: WireChannel, value: RunEvent | CacheStatus | RemoteConnectionEvent): void {
 		this.wire.emit(channel, value);
 	}
 	/** The runs of this window. Runs of phones and of other windows are not touched. */

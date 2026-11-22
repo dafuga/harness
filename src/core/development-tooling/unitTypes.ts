@@ -1,5 +1,6 @@
 // @harness-uid u_6shfrcvyqy
 import { z } from 'zod';
+import { videoManifestSchema } from '../../utils/verification-evidence/videoClipSchema';
 import { compositionSchema } from './composition';
 import { sourceContractSchema } from './contractSchemas';
 
@@ -141,6 +142,7 @@ export const componentManifestSchema = z.strictObject({
 });
 
 export const scenarioManifestSchema = z.strictObject({
+	video: videoManifestSchema.optional(),
 	schemaVersion: z.literal(1),
 	id: identifier,
 	title: text,
@@ -152,11 +154,11 @@ export const scenarioManifestSchema = z.strictObject({
 				id: identifier,
 				title: text,
 				coverage: z.enum(['required', 'missing', 'inapplicable']),
+				/** Required only when the scenario explicitly enrolls video. */
+				motion: z.enum(['required', 'none']).optional(),
+				motionReason: text.optional(),
 				reason: z.string().optional(),
-				/**
-				 * The units this state shows. A unit that some state names is covered only by the
-				 * states that name it; a unit no state names is covered by every state.
-				 */
+				/** Units shown by this state; omission retains historical scenario attribution. */
 				units: z.array(identifier).min(1).optional()
 			})
 		)
@@ -194,7 +196,7 @@ export const scenarioManifestSchema = z.strictObject({
 	evidence: z.array(
 		z.strictObject({
 			id: identifier,
-			kind: z.enum(['screenshot', 'audio', 'output', 'assertions', 'trace', 'benchmark']),
+			kind: z.enum(['screenshot', 'video', 'audio', 'output', 'assertions', 'trace', 'benchmark']),
 			states: z.array(identifier),
 			viewports: z.array(identifier),
 			provenance: z.enum(['fixture', 'actual-capture']).optional(),

@@ -26,7 +26,7 @@
 						"project": {
 							"id": "a41f0c9d2b7e3f58",
 							"name": "storefront",
-							"path": "/home/ci/work/storefront"
+							"path": "/workspace/project"
 						},
 						"title": "Checkout flow",
 						"mode": "feature",
@@ -49,7 +49,7 @@
 						"project": {
 							"id": "a41f0c9d2b7e3f58",
 							"name": "storefront",
-							"path": "/home/ci/work/storefront"
+							"path": "/workspace/project"
 						},
 						"title": "Checkout flow",
 						"mode": "feature",
@@ -99,7 +99,7 @@
 							"title": "guest checkout completes - desktop",
 							"category": "Playwright",
 							"status": "passed",
-							"path": "/home/ci/work/storefront/test-results/checkout-guest-chromium/desktop.png",
+							"path": "/workspace/project/test-results/checkout-guest-chromium/desktop.png",
 							"checkId": "pw-1",
 							"order": 1
 						}
@@ -118,15 +118,15 @@
 				"required": true,
 				"description": "The report run directory, the value ReportRepository.directory returns for the run id; only evidence records use it, writing the image or audio bytes to its assets subfolder under a SHA-256-based file name. The path is not checked here, so an evidence record whose directory cannot be created or written rejects.",
 				"examples": [
-					"/home/ci/.codex/project-reports/runs/7f9c2b1e-4a3d-4e8b-9c1a-2d5e6f7a8b90",
-					"/srv/project-reports/runs/3c5e8a10-6d2f-4b71-8e09-a5c4d1f27e36"
+					"/workspace/project/.harness/project-reports/runs/7f9c2b1e-4a3d-4e8b-9c1a-2d5e6f7a8b90",
+					"/workspace/project/.harness/project-reports/runs/3c5e8a10-6d2f-4b71-8e09-a5c4d1f27e36"
 				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportIngest",
-				"type": "unknown",
+				"type": "Promise<Report>",
 				"description": "Promise that resolves to the same report object passed in, mutated in place, with updatedAt set to the current time as an ISO string. For evidence, the file is imported from the unsanitized record.data.path, path and storage are dropped, the generated file, mediaType, mimeType and (for WAV) durationSeconds overwrite same-named caller fields, and category and status default to 'Evidence' and 'not-proven' when falsy.",
 				"examples": [
 					{
@@ -135,7 +135,7 @@
 						"project": {
 							"id": "a41f0c9d2b7e3f58",
 							"name": "storefront",
-							"path": "/home/ci/work/storefront"
+							"path": "/workspace/project"
 						},
 						"title": "Checkout flow",
 						"mode": "feature",
@@ -289,7 +289,7 @@
 								"project": {
 									"id": "a41f0c9d2b7e3f58",
 									"name": "storefront",
-									"path": "/home/ci/work/storefront"
+									"path": "/workspace/project"
 								},
 								"title": "Checkout flow",
 								"mode": "feature",
@@ -312,7 +312,7 @@
 								"project": {
 									"id": "a41f0c9d2b7e3f58",
 									"name": "storefront",
-									"path": "/home/ci/work/storefront"
+									"path": "/workspace/project"
 								},
 								"title": "Checkout flow",
 								"mode": "feature",
@@ -362,7 +362,7 @@
 									"title": "guest checkout completes - desktop",
 									"category": "Playwright",
 									"status": "passed",
-									"path": "/home/ci/work/storefront/test-results/checkout-guest-chromium/desktop.png",
+									"path": "/workspace/project/test-results/checkout-guest-chromium/desktop.png",
 									"checkId": "pw-1",
 									"order": 1
 								}
@@ -381,15 +381,15 @@
 						"required": true,
 						"description": "The report run directory, the value ReportRepository.directory returns for the run id; only evidence records use it, writing the image or audio bytes to its assets subfolder under a SHA-256-based file name. The path is not checked here, so an evidence record whose directory cannot be created or written rejects.",
 						"examples": [
-							"/home/ci/.codex/project-reports/runs/7f9c2b1e-4a3d-4e8b-9c1a-2d5e6f7a8b90",
-							"/srv/project-reports/runs/3c5e8a10-6d2f-4b71-8e09-a5c4d1f27e36"
+							"/workspace/project/.harness/project-reports/runs/7f9c2b1e-4a3d-4e8b-9c1a-2d5e6f7a8b90",
+							"/workspace/project/.harness/project-reports/runs/3c5e8a10-6d2f-4b71-8e09-a5c4d1f27e36"
 						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reportIngest",
-						"type": "unknown",
+						"type": "Promise<Report>",
 						"description": "Promise that resolves to the same report object passed in, mutated in place, with updatedAt set to the current time as an ISO string. For evidence, the file is imported from the unsanitized record.data.path, path and storage are dropped, the generated file, mediaType, mimeType and (for WAV) durationSeconds overwrite same-named caller fields, and category and status default to 'Evidence' and 'not-proven' when falsy.",
 						"examples": [
 							{
@@ -398,7 +398,7 @@
 								"project": {
 									"id": "a41f0c9d2b7e3f58",
 									"name": "storefront",
-									"path": "/home/ci/work/storefront"
+									"path": "/workspace/project"
 								},
 								"title": "Checkout flow",
 								"mode": "feature",

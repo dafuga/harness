@@ -10,6 +10,7 @@ import type {
 	Revision
 } from '../../../../models/development-tooling/Desktop.types';
 import { gitFiles } from './gitRead';
+import { GitSourceError } from './GitSourceAdapter.types';
 import { gitRead, gitRevision, gitText } from '../../../../utils/projects-sessions/gitRead';
 import { readUnitDocumentation } from '../../../../../../../src/utils/unit-documentation/unitDocumentation';
 
@@ -39,13 +40,13 @@ export class GitSourceAdapter {
 				branches.find((b) => b.name === query.branch) ||
 				(!query.branch ? branches.find((b) => b.current) : null);
 		if (!branch)
-			throw new Error(
+			throw new GitSourceError(
 				'Select a local branch. Detached HEAD is read-only and must have a named branch.'
 			);
 		const commit = query.commit ? await gitRevision(this.root, query.commit) : branch.tip;
 		if (query.commit)
 			await gitRead(this.root, ['merge-base', '--is-ancestor', commit, branch.tip]).catch(() => {
-				throw new Error('This commit is outside the selected branch ancestry.');
+				throw new GitSourceError('This commit is outside the selected branch ancestry.');
 			});
 		return { branch: branch.name, commit, tip: branch.tip, atTip: commit === branch.tip };
 	}
@@ -80,7 +81,7 @@ export class GitSourceAdapter {
 		return paths.map((path) => {
 			const unit = componentManifestSchema.parse(JSON.parse(blobs.get(path)!.toString()));
 			if (unit.id + '.json' !== basename(path))
-				throw new Error('Invalid component manifest identity: ' + path);
+				throw new GitSourceError('Invalid component manifest identity: ' + path);
 			return unit;
 		});
 	}
@@ -107,7 +108,7 @@ export class GitSourceAdapter {
 	}
 	async source(unit: ComponentManifest, revision: string, path: string) {
 		if (!(await this.sources(unit, revision)).includes(path))
-			throw new Error('This file is outside the selected entity source contract.');
+			throw new GitSourceError('This file is outside the selected entity source contract.');
 		return { path, text: await gitText(this.root, revision, path) };
 	}
 	async documentation(unit: ComponentManifest | undefined, revision: string) {

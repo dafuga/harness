@@ -53,7 +53,7 @@
 		"outputs": [
 			{
 				"name": "peakMemory",
-				"type": "PeakMemory",
+				"type": "Promise<PeakMemory>",
 				"description": "Resolves to `{bytes}` when `/usr/bin/time` exits successfully and stderr contains the BSD or GNU peak-resident-set report; GNU kilobytes are multiplied by 1024. Resolves to `{unavailable}` when `/usr/bin/time` is absent, the command exits nonzero, or neither report matches.",
 				"examples": [
 					{

@@ -8,3 +8,7 @@ export interface JevAdapterConfig {
 	timeout?: number;
 	maxRetries?: number;
 }
+/** A Jev evaluation that was cancelled, timed out, rejected by the API, or failed validation. */
+export class JevEvaluationError extends Error {
+	override name = 'JevEvaluationError';
+}

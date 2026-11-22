@@ -25,7 +25,7 @@
 			},
 			{
 				"name": "reportCleanupLog.result",
-				"type": "unknown",
+				"type": "RetentionResult",
 				"required": true,
 				"description": "Cleanup result that the function does not inspect; it is serialized with JSON.stringify under the result key of one new line that also carries executedAt. A BigInt or circular value makes the call reject with a TypeError, and an undefined value leaves the result key out of that line.",
 				"examples": [
@@ -43,7 +43,7 @@
 		"outputs": [
 			{
 				"name": "reportCleanupLog",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Promise that resolves to undefined once retention-history.jsonl has been rewritten; the rewrite keeps lines whose JSON parses and whose executedAt is later than the cutoff Date.now() - reportLifetimeMs, appends one new line with executedAt set to the current time and the result, and keeps only the last 300 lines, so the new line is always kept. A missing file is treated as empty, and any readFile error whose code is not 'ENOENT' or any write error makes the promise reject instead."
 			}
 		],
@@ -78,7 +78,7 @@
 					},
 					{
 						"name": "reportCleanupLog.result",
-						"type": "unknown",
+						"type": "RetentionResult",
 						"required": true,
 						"description": "Cleanup result that the function does not inspect; it is serialized with JSON.stringify under the result key of one new line that also carries executedAt. A BigInt or circular value makes the call reject with a TypeError, and an undefined value leaves the result key out of that line.",
 						"examples": [
@@ -96,7 +96,7 @@
 				"outputs": [
 					{
 						"name": "reportCleanupLog",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Promise that resolves to undefined once retention-history.jsonl has been rewritten; the rewrite keeps lines whose JSON parses and whose executedAt is later than the cutoff Date.now() - reportLifetimeMs, appends one new line with executedAt set to the current time and the result, and keeps only the last 300 lines, so the new line is always kept. A missing file is treated as empty, and any readFile error whose code is not 'ENOENT' or any write error makes the promise reject instead."
 					}
 				],

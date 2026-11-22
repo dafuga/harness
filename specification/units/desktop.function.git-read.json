@@ -11,9 +11,22 @@
 		"source": [
 			"packages/desktop/src/services/project-session-service/git-source-adapter/gitRead.ts",
 			"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/gitRead.ts",
+			"packages/desktop/src/utils/projects-sessions/InvalidRevisionError.ts",
+			"packages/desktop/src/utils/projects-sessions/SourceFileTooLargeError.ts",
+			"packages/desktop/src/utils/projects-sessions/UnsafeSourcePathError.ts",
 			"packages/desktop/src/utils/projects-sessions/gitRead.ts"
 		],
-		"symbols": ["gitFiles", "gitFiles", "gitRead", "gitRevision", "gitText", "gitFiles"]
+		"symbols": [
+			"gitFiles",
+			"gitFiles",
+			"InvalidRevisionError",
+			"SourceFileTooLargeError",
+			"UnsafeSourcePathError",
+			"gitRead",
+			"gitRevision",
+			"gitText",
+			"gitFiles"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -23,7 +36,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository directory that gitFiles passes to Git with -C for both the revision lookup and the tracked-file listing. The code does not validate it, so a directory that is not a Git repository makes the promise reject.",
-				"examples": ["/Users/dev/projects/harness", "/Users/dev/projects/harness/packages/desktop"]
+				"examples": ["/workspace/project", "/workspace/project/packages/desktop"]
 			},
 			{
 				"name": "gitFiles.revision",
@@ -37,7 +50,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository directory that gitRead passes to Git with -C before the Git arguments. The code does not validate it, so Git failures for that directory reject the promise.",
-				"examples": ["/Users/dev/projects/harness", "/Users/dev/projects/harness/packages/desktop"]
+				"examples": ["/workspace/project", "/workspace/project/packages/desktop"]
 			},
 			{
 				"name": "gitRead.args",
@@ -55,7 +68,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository directory that gitRevision passes to Git with -C when it resolves the revision. The code does not validate it, so Git failures for that directory reject the promise.",
-				"examples": ["/Users/dev/projects/harness", "/Users/dev/projects/harness/packages/desktop"]
+				"examples": ["/workspace/project", "/workspace/project/packages/desktop"]
 			},
 			{
 				"name": "gitRevision.revision",
@@ -70,7 +83,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository directory that gitText passes to Git with -C for both the revision lookup and the git show read. The code does not validate it, so Git failures for that directory reject the promise.",
-				"examples": ["/Users/dev/projects/harness", "/Users/dev/projects/harness/packages/desktop"]
+				"examples": ["/workspace/project", "/workspace/project/packages/desktop"]
 			},
 			{
 				"name": "gitText.revision",
@@ -163,10 +176,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository directory that gitFiles passes to Git with -C for both the revision lookup and the tracked-file listing. The code does not validate it, so a directory that is not a Git repository makes the promise reject.",
-						"examples": [
-							"/Users/dev/projects/harness",
-							"/Users/dev/projects/harness/packages/desktop"
-						]
+						"examples": ["/workspace/project", "/workspace/project/packages/desktop"]
 					},
 					{
 						"name": "gitFiles.revision",
@@ -212,10 +222,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository directory that gitRead passes to Git with -C before the Git arguments. The code does not validate it, so Git failures for that directory reject the promise.",
-						"examples": [
-							"/Users/dev/projects/harness",
-							"/Users/dev/projects/harness/packages/desktop"
-						]
+						"examples": ["/workspace/project", "/workspace/project/packages/desktop"]
 					},
 					{
 						"name": "gitRead.args",
@@ -260,10 +267,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository directory that gitRevision passes to Git with -C when it resolves the revision. The code does not validate it, so Git failures for that directory reject the promise.",
-						"examples": [
-							"/Users/dev/projects/harness",
-							"/Users/dev/projects/harness/packages/desktop"
-						]
+						"examples": ["/workspace/project", "/workspace/project/packages/desktop"]
 					},
 					{
 						"name": "gitRevision.revision",
@@ -307,10 +311,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository directory that gitText passes to Git with -C for both the revision lookup and the git show read. The code does not validate it, so Git failures for that directory reject the promise.",
-						"examples": [
-							"/Users/dev/projects/harness",
-							"/Users/dev/projects/harness/packages/desktop"
-						]
+						"examples": ["/workspace/project", "/workspace/project/packages/desktop"]
 					},
 					{
 						"name": "gitText.revision",

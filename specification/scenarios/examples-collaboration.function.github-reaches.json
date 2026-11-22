@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-collaboration.function.github-reaches",
+	"title": "collaboration.function.github-reaches examples",
+	"kind": "headless",
+	"units": ["collaboration.function.github-reaches"],
+	"builds": [],
+	"states": [
+		{
+			"id": "checks-whether-a-candidate-commit-is-reachable-from-the-tip",
+			"title": "Checks whether a candidate commit is reachable from the tip",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-zoderror-when-a-sha-does-not-match-its-schema",
+			"title": "Throws ZodError when a SHA does not match its schema",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-transport-check-rejects",
+			"title": "Throws Error when the transport check rejects",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/collaboration.function.github-reaches.test.ts",
+			"cwd": "packages/collaboration",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"checks-whether-a-candidate-commit-is-reachable-from-the-tip",
+				"throws-zoderror-when-a-sha-does-not-match-its-schema",
+				"throws-error-when-the-transport-check-rejects"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"checks-whether-a-candidate-commit-is-reachable-from-the-tip",
+				"throws-zoderror-when-a-sha-does-not-match-its-schema",
+				"throws-error-when-the-transport-check-rejects"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"checks-whether-a-candidate-commit-is-reachable-from-the-tip",
+				"throws-zoderror-when-a-sha-does-not-match-its-schema",
+				"throws-error-when-the-transport-check-rejects"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

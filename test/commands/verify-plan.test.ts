@@ -43,7 +43,8 @@ function groupingPlan(): PlannedCheck[] {
 			target: 'packages/reports/tests/e2e/provider-picker.spec.ts',
 			runner: 'playwright',
 			cwd: 'packages/reports',
-			command: 'bun x playwright test --config src/configs/pickerPlaywrightConfig.ts'
+			command:
+				'bun x playwright test --config src/configs/development-tooling/pickerPlaywrightConfig.ts'
 		}),
 		check({
 			id: 'wrong-runner',

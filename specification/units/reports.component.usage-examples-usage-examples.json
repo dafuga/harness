@@ -208,7 +208,7 @@
 						"name": "usageExamples.setup",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Setup text placed before the call in every returned snippet; an undefined or empty value adds no line, because falsy parts are filtered out.",
 						"examples": [
 							"const items = [1, 2, 3];",

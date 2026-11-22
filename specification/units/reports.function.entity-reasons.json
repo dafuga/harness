@@ -1117,7 +1117,7 @@
 				"outputs": [
 					{
 						"name": "uses",
-						"type": "unknown",
+						"type": "{ text: string; of: { subject: string; kind: ReasonKind; outcome: string; }; }[]",
 						"description": "Two entries for one reason, simplification then performance: text is the attempt as written, and of holds its subject (the humanized symbol, or 'the whole entity' for '*'), its kind and its humanized outcome.",
 						"examples": [
 							[

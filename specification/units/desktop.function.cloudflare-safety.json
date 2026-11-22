@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/networking-security/cloudflareSafety.ts"],
-		"symbols": ["cloudflareSafety"]
+		"source": [
+			"packages/desktop/src/utils/networking-security/cloudflareSafety.ts",
+			"packages/desktop/src/utils/networking-security/cloudflareSafety.types.ts"
+		],
+		"symbols": ["cloudflareSafety", "CloudflareSafetyError"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -125,7 +128,7 @@
 		"outputs": [
 			{
 				"name": "cloudflareSafety",
-				"type": "unknown",
+				"type": "void",
 				"description": "The function returns no value, so its result is undefined: it returns normally only when no lower workers target has a route hostname containing an asterisk or equal to a protected hostname and no route it reads is ambiguous or fails to parse as a URL, and it throws otherwise."
 			}
 		],
@@ -257,7 +260,7 @@
 				"outputs": [
 					{
 						"name": "cloudflareSafety",
-						"type": "unknown",
+						"type": "void",
 						"description": "The function returns no value, so its result is undefined: it returns normally only when no lower workers target has a route hostname containing an asterisk or equal to a protected hostname and no route it reads is ambiguous or fails to parse as a URL, and it throws otherwise."
 					}
 				],

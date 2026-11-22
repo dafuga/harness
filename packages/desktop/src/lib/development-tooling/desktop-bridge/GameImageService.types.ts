@@ -2,3 +2,7 @@
 import type { GameDesktopBridge } from '../../../models/game-authoring/GameDesktopBridge.types';
 
 export type Request = Parameters<NonNullable<GameDesktopBridge['gameImageGenerate']>>[0];
+/** A game-image request refused for its checkpoint, view, revision, prompt length or busy game. */
+export class GameImageRequestError extends Error {
+	override name = 'GameImageRequestError';
+}

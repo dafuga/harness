@@ -8,8 +8,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/validators/verification-evidence/HostedEvidenceValidator.ts"],
-		"symbols": ["HostedEvidenceValidator", "HostedEvidenceValidator.evidence"]
+		"source": [
+			"packages/desktop/src/validators/verification-evidence/HostedEvidenceValidator.ts",
+			"packages/desktop/src/validators/verification-evidence/HostedEvidenceValidator.types.ts"
+		],
+		"symbols": [
+			"HostedEvidenceValidator",
+			"HostedEvidenceValidator.evidence",
+			"HostedEvidenceValidationError"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -23,7 +30,7 @@
 					{
 						"identity": {
 							"principalId": "google-user-12345",
-							"projectId": "harness-shots",
+							"projectId": "example-project",
 							"repositoryId": 42,
 							"requestedRef": "main",
 							"sourceCommit": "0123456789abcdef0123456789abcdef01234567",
@@ -95,7 +102,7 @@
 				"description": "The requested project and entity read, with its commit, branch, and current or commit mode; projectId is optional. It binds the answer to the requested read, and current mode also requires a lone branch-tip side at the requested commit.",
 				"examples": [
 					{
-						"projectId": "harness-shots",
+						"projectId": "example-project",
 						"entityId": "reports.component.evidence-grid",
 						"commit": "0123456789abcdef0123456789abcdef01234567",
 						"branch": "main",
@@ -113,7 +120,7 @@
 					{
 						"identity": {
 							"principalId": "google-user-12345",
-							"projectId": "harness-shots",
+							"projectId": "example-project",
 							"repositoryId": 42,
 							"requestedRef": "main",
 							"sourceCommit": "0123456789abcdef0123456789abcdef01234567",
@@ -181,9 +188,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HostedEvidenceValidationError",
 				"type": "thrown",
-				"description": "A generic Error is thrown when the answer fails hostedEvidenceSchema, a bound answer field differs from the query, or the current-tip or first-parent requirement fails. Its message is either \"This app does not accept the hosted evidence answer.\" or \"The hosted answer is of another evidence read.\""
+				"description": "a HostedEvidenceValidationError is thrown when the answer fails hostedEvidenceSchema, a bound answer field differs from the query, or the current-tip or first-parent requirement fails. Its message is either \"This app does not accept the hosted evidence answer.\" or \"The hosted answer is of another evidence read.\""
 			}
 		],
 		"errorStatus": "declared",
@@ -200,7 +207,7 @@
 							{
 								"identity": {
 									"principalId": "google-user-12345",
-									"projectId": "harness-shots",
+									"projectId": "example-project",
 									"repositoryId": 42,
 									"requestedRef": "main",
 									"sourceCommit": "0123456789abcdef0123456789abcdef01234567",
@@ -272,7 +279,7 @@
 						"description": "The requested project and entity read, with its commit, branch, and current or commit mode; projectId is optional. It binds the answer to the requested read, and current mode also requires a lone branch-tip side at the requested commit.",
 						"examples": [
 							{
-								"projectId": "harness-shots",
+								"projectId": "example-project",
 								"entityId": "reports.component.evidence-grid",
 								"commit": "0123456789abcdef0123456789abcdef01234567",
 								"branch": "main",
@@ -290,7 +297,7 @@
 							{
 								"identity": {
 									"principalId": "google-user-12345",
-									"projectId": "harness-shots",
+									"projectId": "example-project",
 									"repositoryId": 42,
 									"requestedRef": "main",
 									"sourceCommit": "0123456789abcdef0123456789abcdef01234567",
@@ -358,9 +365,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HostedEvidenceValidationError",
 						"type": "thrown",
-						"description": "A generic Error is thrown when the answer fails hostedEvidenceSchema, a bound answer field differs from the query, or the current-tip or first-parent requirement fails. Its message is either \"This app does not accept the hosted evidence answer.\" or \"The hosted answer is of another evidence read.\""
+						"description": "a HostedEvidenceValidationError is thrown when the answer fails hostedEvidenceSchema, a bound answer field differs from the query, or the current-tip or first-parent requirement fails. Its message is either \"This app does not accept the hosted evidence answer.\" or \"The hosted answer is of another evidence read.\""
 					}
 				],
 				"errorStatus": "declared"

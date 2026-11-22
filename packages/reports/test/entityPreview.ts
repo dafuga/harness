@@ -16,6 +16,7 @@ import { index, revision } from './entityFixture';
 import { lens, place, viewOf } from './entityPlaces';
 import {
 	shellVariants,
+	platformsVariants,
 	declaredContract,
 	legacyReasons,
 	previewRecord,
@@ -38,6 +39,7 @@ import { withRelationGroups } from './entityRelationFixtures';
 import { withApis } from './entityApiFixtures';
 import { sourceCatalog, sourceSnapshots } from './entitySourceFixture';
 import { platformFixture } from './platformFixture';
+import { invalidPlatformCatalog, platformPreviewReply } from './entityPreviewPlatformData';
 
 const variant = ((window as unknown as { previewVariant?: PreviewVariant }).previewVariant ??
 	new URLSearchParams(location.search).get('variant')) as PreviewVariant | null;
@@ -52,14 +54,20 @@ const stored: Record<string, HarnessRevision> = {
 };
 if (variant === 'apis')
 	for (const commit of Object.keys(stored)) stored[commit] = withApis(stored[commit]);
-if (variant === 'platforms') {
+const platformsPreview = platformsVariants.has(variant ?? '');
+if (platformsPreview) {
 	for (const commit of [commits.middle, commits.tip])
 		stored[commit] = { ...stored[commit], ...{ platforms: platformFixture } };
+	if (variant === 'platforms-invalid')
+		stored[commits.middle] = { ...stored[commits.middle], platforms: invalidPlatformCatalog };
 }
 if (variant === 'groups')
 	for (const commit of Object.keys(stored)) stored[commit] = withGroups(stored[commit]);
 if (variant === 'measurements')
 	for (const commit of Object.keys(stored)) stored[commit] = withMeasurements(stored[commit]);
+// The selected commit was never verified: its registry still declares the targets, but nothing is recorded.
+if (variant === 'unrecorded-measures')
+	stored[commits.middle] = { ...stored[commits.middle], records: [] };
 if (variant === 'focused')
 	for (const commit of Object.keys(stored)) stored[commit] = withFocused(stored[commit]);
 if (variant === 'viewport-states')
@@ -152,8 +160,8 @@ if (shellVariants.has(variant ?? '')) {
 				path.endsWith(`/revisions/${commit}.json`)
 			)?.[1];
 			if (!data) return fetcher(input, init);
-			if (variant === 'platforms' || variant === 'apis')
-				return Promise.resolve(Response.json(data));
+			if (platformsPreview) return platformPreviewReply(path, data);
+			if (variant === 'apis') return Promise.resolve(Response.json(data));
 			const scaled = withScale(data);
 			const units = scaled.registry.units.map((unit) =>
 				unit.id === ids.filter ? callableFixture(unit) : unit

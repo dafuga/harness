@@ -1,6 +1,7 @@
 // @harness-uid u_vkj6mnyah7
 import type { MediaFacts } from '../../../../../utils/verification-evidence/mediaFacts';
 import { inflateSync } from 'node:zlib';
+import { videoFacts } from './videoFacts';
 
 const signature = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
 
@@ -23,6 +24,7 @@ export function pngChecksum(bytes: Buffer): number {
 export function mediaFacts(bytes: Buffer, mediaType: string): MediaFacts {
 	if (mediaType === 'image/png') return pngFacts(bytes);
 	if (mediaType === 'audio/wav' || mediaType === 'audio/x-wav') return wavFacts(bytes);
+	if (mediaType === 'video/mp4') return videoFacts(bytes);
 	return { error: `unsupported media type ${mediaType}` };
 }
 
@@ -54,12 +56,16 @@ function pixelFacts(header: Buffer, data: Buffer[]): MediaFacts {
 		return { error: 'invalid image header' };
 	}
 	let pixels: Buffer;
+	const expected = height * (1 + Math.ceil((width * perPixel) / 8));
+	const maxPixels = 256 * 1024 * 1024;
+	if (expected > maxPixels) return { error: 'decoded image exceeds the pixel byte cap' };
 	try {
-		pixels = inflateSync(Buffer.concat(data));
+		pixels = inflateSync(Buffer.concat(data), {
+			maxOutputLength: Math.min(expected * 2 + 1024, maxPixels)
+		});
 	} catch {
 		return { error: 'pixel data cannot be decompressed' };
 	}
-	const expected = height * (1 + Math.ceil((width * perPixel) / 8));
 	if (header[12] === 0 && pixels.length !== expected) {
 		return { error: `pixel data does not match ${width}x${height}` };
 	}

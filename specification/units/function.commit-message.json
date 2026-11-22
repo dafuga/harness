@@ -67,7 +67,7 @@
 		"outputs": [
 			{
 				"name": "commitPrefixes",
-				"type": "unknown",
+				"type": "readonly [\"feat:\", \"fix:\", \"chore:\", \"cleanup:\"]",
 				"description": "The four allowed subject prefix tokens: feat:, fix:, chore:, and cleanup:. The list contains the tokens only; a valid nonempty subject must also have a space and a nonspace character after one of them.",
 				"examples": [
 					["feat:", "fix:", "chore:", "cleanup:"]

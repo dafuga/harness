@@ -70,6 +70,10 @@ const claim = z.strictObject({
 	owner: z.strictObject({ workspace: z.uuid(), pid: z.number().int().positive(), startedAt: text })
 });
 export const storedTaskSchema = taskInputSchema.omit({ module: true, feature: true }).extend({
+	/** Preserve newer dispatch metadata; older workers decline these tasks. */
+	role: z.enum(['implementation', 'verification']).optional(),
+	assignedFiles: z.array(path).optional(),
+	dependsOn: z.array(id).optional(),
 	feature: featureSchema,
 	module: z.strictObject({ id, goal: text, files: z.array(path).min(1) }),
 	sourceCommit: commit,

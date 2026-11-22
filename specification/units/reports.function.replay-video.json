@@ -29,7 +29,7 @@
 						"project": {
 							"id": "9f2c4e7a1b3d5c60",
 							"name": "example-app",
-							"path": "/home/reviewer/projects/example-app"
+							"path": "/workspace/project"
 						},
 						"title": "Checkout summary",
 						"mode": "feature",
@@ -81,7 +81,7 @@
 				"required": true,
 				"description": "Report directory that holds the evidence files under assets/ and receives the replays/ cache folder, which is created when missing. A replays entry that is a symbolic link is rejected.",
 				"examples": [
-					"/home/reviewer/.codex/project-reports/runs/3b241101-e2bb-4255-8caf-4136c566a962",
+					"/workspace/project/.codex/project-reports/runs/3b241101-e2bb-4255-8caf-4136c566a962",
 					"/srv/project-reports/runs/7e1d4b96-0c2a-4f58-8e3b-a5d9c1f6e027"
 				]
 			},
@@ -97,7 +97,7 @@
 						"project": {
 							"id": "9f2c4e7a1b3d5c60",
 							"name": "example-app",
-							"path": "/home/reviewer/projects/example-app"
+							"path": "/workspace/project"
 						},
 						"title": "Checkout summary",
 						"mode": "feature",
@@ -147,7 +147,7 @@
 		"outputs": [
 			{
 				"name": "replayVideoKey",
-				"type": "unknown",
+				"type": "string",
 				"description": "Lowercase SHA-256 hex digest, 64 characters, of the JSON list of each replay frame's [id, file] pair in order plus the fixed ':3s:1280x720:v2' recipe suffix. It names the cached file replays/<key>.mp4, so a change in frame ids, file names, frame order or that suffix produces a different key.",
 				"examples": [
 					"e7b04c9d1a8f3e62b5d09c7a4f1e8b23d6a0c5f9e2b7418d3c6a9f0e5b2d8c14",
@@ -156,10 +156,10 @@
 			},
 			{
 				"name": "replayVideo",
-				"type": "unknown",
+				"type": "Promise<string>",
 				"description": "Promise resolving to the path <directory>/replays/<key>.mp4: an existing regular file there is returned as is, otherwise frames are rendered in batches of four, scaled to fit and padded to 1280 by 720, encoded at 10 fps with each screenshot held for three seconds, and renamed into place. The temporary encode folder is removed in finally, and the promise rejects if rendering or encoding fails.",
 				"examples": [
-					"/home/reviewer/.codex/project-reports/runs/3b241101-e2bb-4255-8caf-4136c566a962/replays/e7b04c9d1a8f3e62b5d09c7a4f1e8b23d6a0c5f9e2b7418d3c6a9f0e5b2d8c14.mp4",
+					"/workspace/project/.codex/project-reports/runs/3b241101-e2bb-4255-8caf-4136c566a962/replays/e7b04c9d1a8f3e62b5d09c7a4f1e8b23d6a0c5f9e2b7418d3c6a9f0e5b2d8c14.mp4",
 					"/srv/project-reports/runs/7e1d4b96-0c2a-4f58-8e3b-a5d9c1f6e027/replays/0c95e2a7f1b38d649a0e5c12d7f4b8903e6a1c5d8b2f7e094d1c6a3fe5908b27.mp4"
 				]
 			}
@@ -188,7 +188,7 @@
 								"project": {
 									"id": "9f2c4e7a1b3d5c60",
 									"name": "example-app",
-									"path": "/home/reviewer/projects/example-app"
+									"path": "/workspace/project"
 								},
 								"title": "Checkout summary",
 								"mode": "feature",
@@ -240,7 +240,7 @@
 						"required": true,
 						"description": "Report directory that holds the evidence files under assets/ and receives the replays/ cache folder, which is created when missing. A replays entry that is a symbolic link is rejected.",
 						"examples": [
-							"/home/reviewer/.codex/project-reports/runs/3b241101-e2bb-4255-8caf-4136c566a962",
+							"/workspace/project/.codex/project-reports/runs/3b241101-e2bb-4255-8caf-4136c566a962",
 							"/srv/project-reports/runs/7e1d4b96-0c2a-4f58-8e3b-a5d9c1f6e027"
 						]
 					}
@@ -248,10 +248,10 @@
 				"outputs": [
 					{
 						"name": "replayVideo",
-						"type": "unknown",
+						"type": "Promise<string>",
 						"description": "Promise resolving to the path <directory>/replays/<key>.mp4: an existing regular file there is returned as is, otherwise frames are rendered in batches of four, scaled to fit and padded to 1280 by 720, encoded at 10 fps with each screenshot held for three seconds, and renamed into place. The temporary encode folder is removed in finally, and the promise rejects if rendering or encoding fails.",
 						"examples": [
-							"/home/reviewer/.codex/project-reports/runs/3b241101-e2bb-4255-8caf-4136c566a962/replays/e7b04c9d1a8f3e62b5d09c7a4f1e8b23d6a0c5f9e2b7418d3c6a9f0e5b2d8c14.mp4",
+							"/workspace/project/.codex/project-reports/runs/3b241101-e2bb-4255-8caf-4136c566a962/replays/e7b04c9d1a8f3e62b5d09c7a4f1e8b23d6a0c5f9e2b7418d3c6a9f0e5b2d8c14.mp4",
 							"/srv/project-reports/runs/7e1d4b96-0c2a-4f58-8e3b-a5d9c1f6e027/replays/0c95e2a7f1b38d649a0e5c12d7f4b8903e6a1c5d8b2f7e094d1c6a3fe5908b27.mp4"
 						]
 					}
@@ -280,7 +280,7 @@
 								"project": {
 									"id": "9f2c4e7a1b3d5c60",
 									"name": "example-app",
-									"path": "/home/reviewer/projects/example-app"
+									"path": "/workspace/project"
 								},
 								"title": "Checkout summary",
 								"mode": "feature",
@@ -330,7 +330,7 @@
 				"outputs": [
 					{
 						"name": "replayVideoKey",
-						"type": "unknown",
+						"type": "string",
 						"description": "Lowercase SHA-256 hex digest, 64 characters, of the JSON list of each replay frame's [id, file] pair in order plus the fixed ':3s:1280x720:v2' recipe suffix. It names the cached file replays/<key>.mp4, so a change in frame ids, file names, frame order or that suffix produces a different key.",
 						"examples": [
 							"e7b04c9d1a8f3e62b5d09c7a4f1e8b23d6a0c5f9e2b7418d3c6a9f0e5b2d8c14",

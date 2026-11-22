@@ -8,8 +8,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/verification-evidence/verifyDeploymentSnapshot.ts"],
-		"symbols": ["captureDeploymentTarget", "verifyDeploymentSnapshot"]
+		"source": [
+			"packages/desktop/src/utils/verification-evidence/verifyDeploymentSnapshot.ts",
+			"packages/desktop/src/utils/verification-evidence/verifyDeploymentSnapshot.types.ts"
+		],
+		"symbols": [
+			"captureDeploymentTarget",
+			"verifyDeploymentSnapshot",
+			"DeploymentSnapshotVerificationError"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -40,7 +47,7 @@
 							"expiresAt": "2026-11-15T12:05:00.000Z"
 						},
 						"fingerprint": "8259a49b8a9e05ccc1e9c59a704fd28118d311db9f9bb05ec3ece6103bd80cec",
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
+						"root": "/workspace/project",
 						"projectId": null,
 						"target": {
 							"environment": "dev",
@@ -69,9 +76,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root to validate against the reviewed root and inspect for an isolated source checkout. When it differs from reviewed.root, its Git revision must equal plan.commit and its worktree must be clean.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "verifyDeploymentSnapshot.reviewed",
@@ -99,7 +104,7 @@
 							"expiresAt": "2026-11-15T12:05:00.000Z"
 						},
 						"fingerprint": "8259a49b8a9e05ccc1e9c59a704fd28118d311db9f9bb05ec3ece6103bd80cec",
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
+						"root": "/workspace/project",
 						"projectId": null,
 						"target": {
 							"environment": "dev",
@@ -127,7 +132,7 @@
 		"outputs": [
 			{
 				"name": "captureDeploymentTarget",
-				"type": "unknown",
+				"type": "Promise<{ target: CloudflareTarget; destination: DeploymentReceipt | null }>",
 				"description": "Returns config.targets[plan.environment] and the current receipt for that environment, or null when no receipt is recorded. The target is not separately checked for presence here; predecessor and ancestry checks apply only when those conditions exist.",
 				"examples": [
 					{
@@ -173,7 +178,7 @@
 			},
 			{
 				"name": "verifyDeploymentSnapshot",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Resolves to undefined after the source, configuration, and destination snapshot checks pass. A different root is also required to match the reviewed commit and have a clean worktree."
 			}
 		],
@@ -215,7 +220,7 @@
 									"expiresAt": "2026-11-15T12:05:00.000Z"
 								},
 								"fingerprint": "8259a49b8a9e05ccc1e9c59a704fd28118d311db9f9bb05ec3ece6103bd80cec",
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
+								"root": "/workspace/project",
 								"projectId": null,
 								"target": {
 									"environment": "dev",
@@ -243,7 +248,7 @@
 				"outputs": [
 					{
 						"name": "captureDeploymentTarget",
-						"type": "unknown",
+						"type": "Promise<{ target: import('../../models/development-tooling/Deployment.types').CloudflareTarget; destination: DeploymentReceipt | null }>",
 						"description": "Returns config.targets[plan.environment] and the current receipt for that environment, or null when no receipt is recorded. The target is not separately checked for presence here; predecessor and ancestry checks apply only when those conditions exist.",
 						"examples": [
 							{
@@ -305,9 +310,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root to validate against the reviewed root and inspect for an isolated source checkout. When it differs from reviewed.root, its Git revision must equal plan.commit and its worktree must be clean.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "verifyDeploymentSnapshot.reviewed",
@@ -335,7 +338,7 @@
 									"expiresAt": "2026-11-15T12:05:00.000Z"
 								},
 								"fingerprint": "8259a49b8a9e05ccc1e9c59a704fd28118d311db9f9bb05ec3ece6103bd80cec",
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
+								"root": "/workspace/project",
 								"projectId": null,
 								"target": {
 									"environment": "dev",
@@ -363,7 +366,7 @@
 				"outputs": [
 					{
 						"name": "verifyDeploymentSnapshot",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Resolves to undefined after the source, configuration, and destination snapshot checks pass. A different root is also required to match the reviewed commit and have a clean worktree."
 					}
 				],

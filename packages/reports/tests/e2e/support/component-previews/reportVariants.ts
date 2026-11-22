@@ -32,9 +32,12 @@ import { imageZoomVariant } from './imageZoomVariants';
 import { providerPickerCardVariant } from './providerPickerCardVariants';
 import { providerPickerVariant } from './providerPickerVariants';
 import { browserErrorsVariant } from './browserErrorsVariants';
+import { videoCatalogProps } from './videoCatalogVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
+	const video = videoCatalogProps(id, variant);
+	if (video) return video;
 	const shell = shellCatalogProps(id, props, variant);
 	if (shell) return shell;
 	const kit = explorerKitVariant(id, props, variant) ?? pluginVariant(id, props, variant);

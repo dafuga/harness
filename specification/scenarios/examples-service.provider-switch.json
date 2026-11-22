@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.provider-switch",
+	"title": "service.provider-switch examples",
+	"kind": "headless",
+	"units": ["service.provider-switch"],
+	"builds": [],
+	"states": [
+		{
+			"id": "queues-a-catalog-validated-request-as-pending",
+			"title": "Queues a catalog-validated request as pending",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-selections-outside-the-configured-catalog",
+			"title": "Rejects selections outside the configured catalog",
+			"coverage": "required"
+		},
+		{
+			"id": "cancels-only-the-current-pending-request",
+			"title": "Cancels only the current pending request",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-unavailable-desktop-control-in-status",
+			"title": "Reports unavailable desktop control in status",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.provider-switch.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"queues-a-catalog-validated-request-as-pending",
+				"rejects-selections-outside-the-configured-catalog",
+				"cancels-only-the-current-pending-request",
+				"reports-unavailable-desktop-control-in-status"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"queues-a-catalog-validated-request-as-pending",
+				"rejects-selections-outside-the-configured-catalog",
+				"cancels-only-the-current-pending-request",
+				"reports-unavailable-desktop-control-in-status"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"queues-a-catalog-validated-request-as-pending",
+				"rejects-selections-outside-the-configured-catalog",
+				"cancels-only-the-current-pending-request",
+				"reports-unavailable-desktop-control-in-status"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

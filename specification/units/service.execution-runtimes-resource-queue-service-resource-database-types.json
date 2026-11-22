@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/services/execution-runtimes/resource-queue-service/resourceDatabase.types.ts"],
-		"symbols": ["Statement", "ResourceDatabase"]
+		"symbols": ["Statement", "ResourceDatabase", "UnsupportedResourceQueueSchemaError"]
 	},
 	"contract": {
 		"origin": "declared",

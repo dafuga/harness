@@ -1,0 +1,119 @@
+{
+	"schemaVersion": 1,
+	"id": "loading-state-video-pilot",
+	"title": "loading state video pilot",
+	"kind": "ui",
+	"units": ["reports.component.shared-primitives-loading-state"],
+	"states": [
+		{
+			"id": "loading",
+			"title": "loading",
+			"coverage": "required",
+			"motion": "required"
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 920,
+			"height": 700
+		},
+		{
+			"id": "tablet",
+			"width": 768,
+			"height": 900
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "record-video-pilot",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun packages/reports/tests/e2e/record-video-pilot.ts loading-state-video-pilot",
+			"timeoutMs": 600000
+		}
+	],
+	"builds": ["shell-fixture"],
+	"evidence": [
+		{
+			"id": "motion",
+			"kind": "video",
+			"states": ["loading"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"build": "shell-fixture",
+			"required": true
+		}
+	],
+	"video": {
+		"schemaVersion": 1,
+		"viewports": [
+			{
+				"id": "desktop",
+				"width": 920,
+				"height": 700
+			},
+			{
+				"id": "tablet",
+				"width": 768,
+				"height": 900
+			},
+			{
+				"id": "mobile",
+				"width": 390,
+				"height": 844
+			}
+		],
+		"clips": [
+			{
+				"id": "loading-spinner",
+				"unit": "reports.component.shared-primitives-loading-state",
+				"state": "loading",
+				"viewports": ["desktop", "tablet", "mobile"],
+				"inputs": [
+					"packages/reports/src/components/shared-primitives/LoadingState.svelte",
+					"packages/reports/tests/e2e/record-video-pilot.ts"
+				],
+				"script": {
+					"path": "packages/reports/tests/e2e/support/component-previews/loadingStateVideo.ts",
+					"export": "record"
+				},
+				"fixture": "packages/reports/tests/e2e/support/component-previews/video-fixtures/loading.json",
+				"entry": "loading",
+				"exit": "loading",
+				"states": ["loading"],
+				"edges": [],
+				"durationSeconds": 8,
+				"checkpoints": [
+					{
+						"viewport": "desktop",
+						"entrySignature": "10e086d5a4b6e893558250d80feced941dfa763648804093227e3c236ffbec69",
+						"exitSignature": "10e086d5a4b6e893558250d80feced941dfa763648804093227e3c236ffbec69"
+					},
+					{
+						"viewport": "tablet",
+						"entrySignature": "faf2fa96c5adb206fc22d8c20d3eac28060f90a2a9245b1aca9f94036481cce0",
+						"exitSignature": "faf2fa96c5adb206fc22d8c20d3eac28060f90a2a9245b1aca9f94036481cce0"
+					},
+					{
+						"viewport": "mobile",
+						"entrySignature": "db2e90e0b7a3b6c0e66c019cb833b3736e5bd7666512ed3090112cda45da765f",
+						"exitSignature": "db2e90e0b7a3b6c0e66c019cb833b3736e5bd7666512ed3090112cda45da765f"
+					}
+				]
+			}
+		],
+		"graphs": [],
+		"playlists": [
+			{
+				"id": "loading-spinner",
+				"clips": ["loading-spinner"]
+			}
+		]
+	}
+}

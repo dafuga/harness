@@ -8,12 +8,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/responseCheckInput.ts"],
+		"source": [
+			"src/cli/program/responseCheckInput.ts",
+			"src/cli/program/responseCheckInput.types.ts"
+		],
 		"symbols": [
 			"responseInputLimit",
 			"responseCheckSettings",
 			"readResponseCheckInput",
-			"responseInputHashes"
+			"responseInputHashes",
+			"UnreadableInputFileError"
 		]
 	},
 	"contract": {
@@ -95,7 +99,7 @@
 		"outputs": [
 			{
 				"name": "responseInputLimit",
-				"type": "unknown",
+				"type": "24000",
 				"description": "The exported constant 24000, the UTF-8 byte limit for each input file and for the serialized evaluation input. readResponseCheckInput rejects anything larger instead of truncating it.",
 				"examples": [24000]
 			},
@@ -347,6 +351,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.response-check-types",
 			"via": "import",

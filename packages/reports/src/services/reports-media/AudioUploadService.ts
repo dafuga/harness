@@ -4,6 +4,9 @@ import type {
 	AudioUploadInput,
 	AudioComparisonInput
 } from './AudioUploadService.types';
+import { AudioDetailsTooLargeError } from './AudioDetailsTooLargeError';
+import { InvalidAudioFileSizeError } from './InvalidAudioFileSizeError';
+import { InvalidAudioTitleError } from './InvalidAudioTitleError';
 import { randomUUID } from 'node:crypto';
 import type { ReportRepository } from '../../repositories/reports-media/report-repository/ReportRepository';
 import { audioAsset } from '../../utils/reports-media/audio-asset/audioAsset';
@@ -11,9 +14,10 @@ import { writeImageAsset } from '../../utils/reports-media/reportAssets';
 import { sanitize } from '../../utils/development-tooling/sanitize';
 function inputDetails(input: AudioDetails) {
 	const title = sanitize(input.title.trim());
-	if (!title || title.length > 120) throw new Error('Audio title must be 1–120 characters');
+	if (!title || title.length > 120)
+		throw new InvalidAudioTitleError('Audio title must be 1–120 characters');
 	if (input.note.length > 2000 || input.source.length > 200)
-		throw new Error('Audio notes or source exceed size limit');
+		throw new AudioDetailsTooLargeError('Audio notes or source exceed size limit');
 	return {
 		title,
 		note: sanitize(input.note.trim()),
@@ -21,7 +25,8 @@ function inputDetails(input: AudioDetails) {
 	};
 }
 async function readAudio(audio: File) {
-	if (!audio.size || audio.size > 50_000_000) throw new Error('Audio file must be 1 byte to 50 MB');
+	if (!audio.size || audio.size > 50_000_000)
+		throw new InvalidAudioFileSizeError('Audio file must be 1 byte to 50 MB');
 	const bytes = Buffer.from(await audio.arrayBuffer());
 	const { name: file, ...metadata } = audioAsset(bytes, audio.name);
 	return { bytes, file, metadata };

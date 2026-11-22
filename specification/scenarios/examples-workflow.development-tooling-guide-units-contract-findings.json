@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.development-tooling-guide-units-contract-findings",
+	"title": "workflow.development-tooling-guide-units-contract-findings examples",
+	"kind": "headless",
+	"units": ["workflow.development-tooling-guide-units-contract-findings"],
+	"builds": [],
+	"states": [
+		{
+			"id": "finds-undocumented-source-inputs-and-missing-contract-outcom",
+			"title": "Finds undocumented source inputs and missing contract outcomes",
+			"coverage": "required"
+		},
+		{
+			"id": "keeps-root-and-operation-contracts-in-separate-scopes",
+			"title": "Keeps root and operation contracts in separate scopes",
+			"coverage": "required"
+		},
+		{
+			"id": "recognises-documented-failure-wording-as-a-failed-state",
+			"title": "Recognises documented failure wording as a failed state",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.development-tooling-guide-units-contract-findings.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"finds-undocumented-source-inputs-and-missing-contract-outcom",
+				"keeps-root-and-operation-contracts-in-separate-scopes",
+				"recognises-documented-failure-wording-as-a-failed-state"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"finds-undocumented-source-inputs-and-missing-contract-outcom",
+				"keeps-root-and-operation-contracts-in-separate-scopes",
+				"recognises-documented-failure-wording-as-a-failed-state"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"finds-undocumented-source-inputs-and-missing-contract-outcom",
+				"keeps-root-and-operation-contracts-in-separate-scopes",
+				"recognises-documented-failure-wording-as-a-failed-state"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

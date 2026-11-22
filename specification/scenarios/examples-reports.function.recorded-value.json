@@ -1,0 +1,119 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.recorded-value",
+	"title": "reports.function.recorded-value examples",
+	"kind": "headless",
+	"units": ["reports.function.recorded-value"],
+	"builds": [],
+	"states": [
+		{
+			"id": "scalars-and-missing-values-keep-types",
+			"title": "Scalars keep their types and absent or empty values say so",
+			"coverage": "required"
+		},
+		{
+			"id": "long-text-is-cut-and-marked",
+			"title": "Text over 240 characters is cut and marked shortened",
+			"coverage": "required"
+		},
+		{
+			"id": "collections-show-first-twelve-and-table-rule",
+			"title": "Collections show twelve entries and become tables only for flat scalar rows",
+			"coverage": "required"
+		},
+		{
+			"id": "mixed-and-sparse-collections-fall-back",
+			"title": "Mixed, nested, empty and sparse collections fall back or keep their gaps",
+			"coverage": "required"
+		},
+		{
+			"id": "nesting-stops-at-depth-four",
+			"title": "Nesting stops at four levels while scalars at that depth still show",
+			"coverage": "required"
+		},
+		{
+			"id": "budget-ends-in-notices",
+			"title": "The 120-value budget ends in notices rather than errors",
+			"coverage": "required"
+		},
+		{
+			"id": "input-is-never-rewritten",
+			"title": "Deep-frozen input is only read and presents without error",
+			"coverage": "required"
+		},
+		{
+			"id": "position-reads-follow-depth-and-budget",
+			"title": "Position reads follow the given depth and budget",
+			"coverage": "required"
+		},
+		{
+			"id": "getter-errors-reach-the-caller",
+			"title": "Getter failures reach the caller uncaught",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.recorded-value.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"scalars-and-missing-values-keep-types",
+				"long-text-is-cut-and-marked",
+				"collections-show-first-twelve-and-table-rule",
+				"mixed-and-sparse-collections-fall-back",
+				"nesting-stops-at-depth-four",
+				"budget-ends-in-notices",
+				"input-is-never-rewritten",
+				"position-reads-follow-depth-and-budget",
+				"getter-errors-reach-the-caller"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"scalars-and-missing-values-keep-types",
+				"long-text-is-cut-and-marked",
+				"collections-show-first-twelve-and-table-rule",
+				"mixed-and-sparse-collections-fall-back",
+				"nesting-stops-at-depth-four",
+				"budget-ends-in-notices",
+				"input-is-never-rewritten",
+				"position-reads-follow-depth-and-budget",
+				"getter-errors-reach-the-caller"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"scalars-and-missing-values-keep-types",
+				"long-text-is-cut-and-marked",
+				"collections-show-first-twelve-and-table-rule",
+				"mixed-and-sparse-collections-fall-back",
+				"nesting-stops-at-depth-four",
+				"budget-ends-in-notices",
+				"input-is-never-rewritten",
+				"position-reads-follow-depth-and-budget",
+				"getter-errors-reach-the-caller"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

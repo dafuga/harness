@@ -224,7 +224,7 @@
 				"inputs": [
 					{
 						"name": "EntitySummary.label.row",
-						"type": "unknown",
+						"type": "SummaryFact",
 						"required": true
 					}
 				],
@@ -242,7 +242,7 @@
 				"inputs": [
 					{
 						"name": "EntitySummary.children.row",
-						"type": "unknown",
+						"type": "SummaryFact",
 						"required": true
 					}
 				],

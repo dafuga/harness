@@ -24,6 +24,8 @@ export type TaskSelection = { provider: 'claude' | 'codex'; model: string; intel
 export interface TaskRunInput extends TaskSelection {
 	cwd: string;
 	prompt: string;
+	/** Verified extracted frames for this unit; passed as native image inputs. */
+	images?: string[];
 	signal: AbortSignal;
 	platform?: TaskPlatform;
 	supervision?: TaskSupervision;
@@ -43,4 +45,8 @@ export interface TaskRunResult extends TaskSelection {
 }
 export interface TaskRunner {
 	run(input: TaskRunInput): Promise<TaskRunResult>;
+}
+/** The task ref kept moving under concurrent writers, so the update gave up after 16 attempts. */
+export class TaskQueueContentionError extends Error {
+	override name = 'TaskQueueContentionError';
 }

@@ -1,11 +1,12 @@
 // @harness-uid u_gndb6l2t6f
 import ts from 'typescript';
 import type { TranslationRegistration, TranslationSource } from './translationMessages.types';
+import { UnreadableDictionaryError } from './translationMessages.types';
 
 /** Flatten message objects while retaining empty strings and ICU expressions verbatim. */
 export function flattenMessages(input: unknown, prefix = ''): Record<string, string> {
 	if (!input || typeof input !== 'object' || Array.isArray(input))
-		throw new Error('Dictionary must be an object.');
+		throw new UnreadableDictionaryError('Dictionary must be an object.');
 	const result: Record<string, string> = Object.create(null);
 	for (const [name, value] of Object.entries(input)) {
 		const key = prefix ? `${prefix}.${name}` : name;
@@ -23,10 +24,11 @@ function literal(node: ts.Expression): unknown {
 		ts.isSatisfiesExpression(node)
 	)
 		return literal(node.expression);
-	if (!ts.isObjectLiteralExpression(node)) throw new Error('Dictionary is not a static object.');
+	if (!ts.isObjectLiteralExpression(node))
+		throw new UnreadableDictionaryError('Dictionary is not a static object.');
 	const entries = node.properties.map((property) => {
 		if (!ts.isPropertyAssignment(property) || ts.isComputedPropertyName(property.name))
-			throw new Error('Dictionary has a computed property or spread.');
+			throw new UnreadableDictionaryError('Dictionary has a computed property or spread.');
 		return [property.name.text, literal(property.initializer)];
 	});
 	return Object.fromEntries(entries);
@@ -82,7 +84,9 @@ function registration(
 ): TranslationRegistration {
 	const [language, dictionary] = args;
 	if (!language || !ts.isStringLiteralLike(language) || !dictionary)
-		throw new Error('Dynamic locale or dictionary cannot be inspected statically.');
+		throw new UnreadableDictionaryError(
+			'Dynamic locale or dictionary cannot be inspected statically.'
+		);
 	const locale = language.text;
 	if (ts.isIdentifier(dictionary)) {
 		const resource = resources.get(dictionary.text);

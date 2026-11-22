@@ -30,7 +30,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project root directory to audit; the audit reads harness.audit.json, specification/modules and the collected source files beneath it, and finding and coverage paths are relative to it. A root that cannot be listed rejects the promise with a filesystem error.",
-				"examples": ["/home/dev/projects/shop-app", "/home/dev/projects/tools-lib"]
+				"examples": ["/workspace/project", "/workspace/library"]
 			},
 			{
 				"name": "auditPath.options",
@@ -56,7 +56,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project root directory to audit; the audit reads harness.audit.json, specification/modules and the collected source files beneath it, and finding and coverage paths are relative to it. A root that cannot be listed rejects the promise with a filesystem error.",
-				"examples": ["/home/dev/projects/shop-app", "/home/dev/projects/tools-lib"]
+				"examples": ["/workspace/project", "/workspace/library"]
 			},
 			{
 				"name": "auditProject.options",
@@ -196,7 +196,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project root directory to audit; the audit reads harness.audit.json, specification/modules and the collected source files beneath it, and finding and coverage paths are relative to it. A root that cannot be listed rejects the promise with a filesystem error.",
-						"examples": ["/home/dev/projects/shop-app", "/home/dev/projects/tools-lib"]
+						"examples": ["/workspace/project", "/workspace/library"]
 					},
 					{
 						"name": "auditPath.options",
@@ -279,7 +279,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project root directory to audit; the audit reads harness.audit.json, specification/modules and the collected source files beneath it, and finding and coverage paths are relative to it. A root that cannot be listed rejects the promise with a filesystem error.",
-						"examples": ["/home/dev/projects/shop-app", "/home/dev/projects/tools-lib"]
+						"examples": ["/workspace/project", "/workspace/library"]
 					},
 					{
 						"name": "auditProject.options",

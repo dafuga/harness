@@ -1,4 +1,8 @@
 // @harness-uid u_phdcou5q3p
+import {
+	FailedRevisionRecordNotFoundError,
+	SlugifyTemplateNotFoundError
+} from './harness-scale-data.types';
 import type { Unit, Detail } from './harness-scale-data.types';
 /**
  * Copies the console data of the synthetic history and gives its newest revision a registry
@@ -54,7 +58,10 @@ async function overloaded(to: string, commit: string): Promise<void> {
 	const path = join(to, 'revisions', `${commit}.json`);
 	const detail = JSON.parse(await readFile(path, 'utf8')) as Detail;
 	const failed = detail.records.find((record) => record.status === 'failed');
-	if (!failed) throw new Error(`the synthetic history has no failed record at ${commit}`);
+	if (!failed)
+		throw new FailedRevisionRecordNotFoundError(
+			`the synthetic history has no failed record at ${commit}`
+		);
 	failed.failures.push(...generatedFailures);
 	await writeFile(path, JSON.stringify(detail));
 }
@@ -70,7 +77,8 @@ export async function writeScaleData(
 	const path = join(to, 'revisions', `${commits.map}.json`);
 	const detail = JSON.parse(await readFile(path, 'utf8')) as Detail;
 	const template = detail.registry.units.find((unit) => unit.id === 'function.slugify');
-	if (!template) throw new Error('the synthetic history has no function.slugify to copy');
+	if (!template)
+		throw new SlugifyTemplateNotFoundError('the synthetic history has no function.slugify to copy');
 	const added = generated(template);
 	detail.registry.units.push(...added);
 	for (const unit of added) {

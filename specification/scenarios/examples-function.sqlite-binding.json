@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.sqlite-binding",
+	"title": "function.sqlite-binding examples",
+	"kind": "headless",
+	"units": ["function.sqlite-binding"],
+	"builds": [],
+	"states": [
+		{
+			"id": "encodes-application-values-for-each-sqlite-field-type",
+			"title": "Encodes application values for each SQLite field type",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-values-that-do-not-fit-the-declared-field",
+			"title": "Rejects values that do not fit the declared field",
+			"coverage": "required"
+		},
+		{
+			"id": "propagates-json-stringify-errors-for-json-fields",
+			"title": "Propagates JSON.stringify errors for json fields",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.sqlite-binding.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"encodes-application-values-for-each-sqlite-field-type",
+				"rejects-values-that-do-not-fit-the-declared-field",
+				"propagates-json-stringify-errors-for-json-fields"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"encodes-application-values-for-each-sqlite-field-type",
+				"rejects-values-that-do-not-fit-the-declared-field",
+				"propagates-json-stringify-errors-for-json-fields"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"encodes-application-values-for-each-sqlite-field-type",
+				"rejects-values-that-do-not-fit-the-declared-field",
+				"propagates-json-stringify-errors-for-json-fields"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

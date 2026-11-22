@@ -36,11 +36,28 @@
 		"outputs": [
 			{
 				"name": "productionPromotion",
-				"type": "unknown",
+				"type": "Promise<{ blockers: string[]; branch: string; promotion: { preprod: DeploymentReceipt | null; production: DeploymentReceipt | null; commitsBehind: number | null; }; }>",
 				"description": "Both verified receipts, their commit distance and reasons that block production promotion."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "SyntaxError",
+				"type": "propagated",
+				"description": "Rejected from deploymentState when receipts.json exists but is not valid JSON."
+			},
+			{
+				"name": "ZodError",
+				"type": "propagated",
+				"description": "Rejected from deploymentState when receipts.json is valid JSON but not an array of valid receipts."
+			},
+			{
+				"name": "deploymentState rejection",
+				"type": "propagated",
+				"description": "The git error from git rev-parse --git-common-dir, or a file-system error other than a missing receipts.json, while deploymentState reads the receipts. Git failures while measuring the commit distance are caught and reported as a blocker instead."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "productionPromotion",
@@ -67,12 +84,28 @@
 				"outputs": [
 					{
 						"name": "productionPromotion",
-						"type": "unknown",
+						"type": "Promise<{ blockers: string[]; branch: string; promotion: { preprod: DeploymentReceipt | null; production: DeploymentReceipt | null; commitsBehind: number | null; }; }>",
 						"description": "Both verified receipts, their commit distance and reasons that block production promotion."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "propagated",
+						"description": "Rejected from deploymentState when receipts.json exists but is not valid JSON."
+					},
+					{
+						"name": "ZodError",
+						"type": "propagated",
+						"description": "Rejected from deploymentState when receipts.json is valid JSON but not an array of valid receipts."
+					},
+					{
+						"name": "deploymentState rejection",
+						"type": "propagated",
+						"description": "The git error from git rev-parse --git-common-dir, or a file-system error other than a missing receipts.json, while deploymentState reads the receipts. Git failures while measuring the commit distance are caught and reported as a blocker instead."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

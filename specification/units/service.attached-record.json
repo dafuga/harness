@@ -10,14 +10,21 @@
 	"owns": {
 		"source": [
 			"src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
-			"src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.types.ts"
+			"src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.types.ts",
+			"src/services/verification-evidence/history-status-service/attached-record-service/recordDescriptor.ts",
+			"src/services/verification-evidence/history-status-service/attached-record-service/recordReferences.ts"
 		],
 		"symbols": [
 			"AttachedRecordService",
 			"AttachedRecordService.constructor",
 			"AttachedRecordService.load",
+			"AttachedRecordService.describe",
 			"AttachedRecord",
-			"AttachedRecord"
+			"AttachedRecord",
+			"AttachedRecordReadOptions",
+			"AttachedRecordDescriptor",
+			"recordDescriptor",
+			"recordReferences"
 		]
 	},
 	"contract": {
@@ -28,17 +35,21 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem path of the repository root used to construct the evidence branch repository and LFS adapter. It determines where evidence history and LFS objects are read.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "AttachedRecordService.constructor.within",
 				"type": "string | null",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional evidence commit that pins pointer validation to that commit’s history. Null rejects every pointer; when omitted, evidence is unpinned and each stored evidence commit can be followed.",
 				"examples": ["0123456789abcdef0123456789abcdef01234567", null]
+			},
+			{
+				"name": "AttachedRecordService.constructor.options",
+				"type": "AttachedRecordReadOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "AttachedRecordService.load.pointer",
@@ -52,6 +63,43 @@
 						"manifest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 					}
 				]
+			},
+			{
+				"name": "AttachedRecordService.describe.pointer",
+				"type": "EvidencePointer",
+				"required": true
+			},
+			{
+				"name": "recordDescriptor.repository",
+				"type": "EvidenceBranchRepository",
+				"required": true
+			},
+			{
+				"name": "recordDescriptor.pointer",
+				"type": "EvidencePointer",
+				"required": true
+			},
+			{
+				"name": "recordDescriptor.within",
+				"type": "string | null",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "The optional snapshot/root binding for this operation. Omission leaves this low-level descriptor’s ancestry unpinned; a commit string pins ancestry and null refuses unavailable evidence."
+			},
+			{
+				"name": "recordReferences.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordReferences.loaded",
+				"type": "AttachedRecord",
+				"required": true
+			},
+			{
+				"name": "recordReferences.scope",
+				"type": "{ within?: string | null; options: AttachedRecordReadOptions; }",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -61,8 +109,14 @@
 				"description": "Resolves to the attached record for the pointer, including the original pointer, a Map of readable file bytes keyed by file path, and any validation problems. The manifest and record are optional when their data is absent or invalid; each pointer key is read and hashed once per process."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Evidence reader rejection",
+				"type": "propagated",
+				"description": "An underlying Git/evidence-tree read can reject. Ordinary missing, malformed, mismatched or out-of-snapshot descriptor evidence is instead returned in problems; metadata discovery alone proves no media."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "AttachedRecordService.load",
@@ -90,6 +144,95 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "AttachedRecordService.describe",
+				"inputs": [
+					{
+						"name": "AttachedRecordService.describe.pointer",
+						"type": "EvidencePointer",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AttachedRecordService.describe",
+						"type": "Promise<AttachedRecordDescriptor>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Evidence reader rejection",
+						"type": "propagated",
+						"description": "An underlying Git/evidence-tree read can reject. Ordinary missing, malformed, mismatched or out-of-snapshot descriptor evidence is instead returned in problems; metadata discovery alone proves no media."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recordDescriptor",
+				"inputs": [
+					{
+						"name": "recordDescriptor.repository",
+						"type": "EvidenceBranchRepository",
+						"required": true
+					},
+					{
+						"name": "recordDescriptor.pointer",
+						"type": "EvidencePointer",
+						"required": true
+					},
+					{
+						"name": "recordDescriptor.within",
+						"type": "string | null",
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "The optional snapshot/root binding for this operation. Omission leaves this low-level descriptor’s ancestry unpinned; a commit string pins ancestry and null refuses unavailable evidence."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordDescriptor",
+						"type": "Promise<AttachedRecordDescriptor>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Evidence reader rejection",
+						"type": "propagated",
+						"description": "An underlying Git/evidence-tree read can reject. Ordinary missing, malformed, mismatched or out-of-snapshot descriptor evidence is instead returned in problems; metadata discovery alone proves no media."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recordReferences",
+				"inputs": [
+					{
+						"name": "recordReferences.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordReferences.loaded",
+						"type": "AttachedRecord",
+						"required": true
+					},
+					{
+						"name": "recordReferences.scope",
+						"type": "{ within?: string | null; options: AttachedRecordReadOptions; }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordReferences",
+						"type": "Promise<AttachedRecord>",
+						"description": "Catches reference resolution failures into loaded.problems and returns the loaded record, clearing media when retainMedia is false."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -101,23 +244,27 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem path of the repository root used to construct the evidence branch repository and LFS adapter. It determines where evidence history and LFS objects are read.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "AttachedRecordService.constructor.within",
 						"type": "string | null",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional evidence commit that pins pointer validation to that commit’s history. Null rejects every pointer; when omitted, evidence is unpinned and each stored evidence commit can be followed.",
 						"examples": ["0123456789abcdef0123456789abcdef01234567", null]
+					},
+					{
+						"name": "AttachedRecordService.constructor.options",
+						"type": "AttachedRecordReadOptions",
+						"required": false,
+						"default": {}
 					}
 				],
 				"outputs": [
 					{
 						"name": "AttachedRecordService.constructor",
-						"type": "unknown",
+						"type": "AttachedRecordService",
 						"description": "The constructed service instance, with an EvidenceBranchRepository and LfsAdapter rooted at root, the optional within pin, and an initially empty per-process load cache."
 					}
 				],
@@ -158,12 +305,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.function.entity-lens",
+			"unit": "repository.evidence-branch",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "repository.evidence-branch",
+			"unit": "service.verification-evidence-video-reference",
 			"via": "import",
 			"origin": "derived"
 		},

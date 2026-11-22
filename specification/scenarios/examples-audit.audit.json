@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-audit.audit",
+	"title": "audit.audit examples",
+	"kind": "headless",
+	"units": ["audit.audit"],
+	"builds": [],
+	"states": [
+		{
+			"id": "auditpath-returned-the-findings-of-a-library-without-the-one",
+			"title": "auditPath returned the findings of a library without the one its ignore entry matches, the same under a dry-run review, and none for a clean project",
+			"coverage": "required"
+		},
+		{
+			"id": "auditproject-described-the-coverage-of-a-library-and-of-a-sv",
+			"title": "auditProject described the coverage of a library and of a SvelteKit app with ignored paths, ignored findings and unknown files",
+			"coverage": "required"
+		},
+		{
+			"id": "auditproject-added-a-dry-run-clean-code-report-for-the-selec",
+			"title": "auditProject added a dry-run clean-code report for the selected source files and refused a dry run with review off",
+			"coverage": "required"
+		},
+		{
+			"id": "auditproject-refused-a-root-that-is-missing-a-root-that-is-a",
+			"title": "auditProject refused a root that is missing, a root that is a file and a harness.audit.json folder with their error codes",
+			"coverage": "required"
+		},
+		{
+			"id": "auditproject-refused-a-harness-audit-json-cut-off-before-its",
+			"title": "auditProject refused a harness.audit.json cut off before its end, holding null, with a zero limit or an invalid cleanCode mode",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/audit.audit.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"auditpath-returned-the-findings-of-a-library-without-the-one",
+				"auditproject-described-the-coverage-of-a-library-and-of-a-sv",
+				"auditproject-added-a-dry-run-clean-code-report-for-the-selec",
+				"auditproject-refused-a-root-that-is-missing-a-root-that-is-a",
+				"auditproject-refused-a-harness-audit-json-cut-off-before-its"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"auditpath-returned-the-findings-of-a-library-without-the-one",
+				"auditproject-described-the-coverage-of-a-library-and-of-a-sv",
+				"auditproject-added-a-dry-run-clean-code-report-for-the-selec",
+				"auditproject-refused-a-root-that-is-missing-a-root-that-is-a",
+				"auditproject-refused-a-harness-audit-json-cut-off-before-its"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"auditpath-returned-the-findings-of-a-library-without-the-one",
+				"auditproject-described-the-coverage-of-a-library-and-of-a-sv",
+				"auditproject-added-a-dry-run-clean-code-report-for-the-selec",
+				"auditproject-refused-a-root-that-is-missing-a-root-that-is-a",
+				"auditproject-refused-a-harness-audit-json-cut-off-before-its"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -1,5 +1,6 @@
 // @harness-uid u_rmurdehorf
 import { CommitTreeAdapter } from '../../adapters/git-source-history/CommitTreeAdapter';
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { UnitRegistryRepository } from '../../repositories/verification-evidence/UnitRegistryRepository';
 import {
 	ModuleTaskRepository,
@@ -28,7 +29,7 @@ export class ModuleTaskService {
 		return this.repository.update((queue) => {
 			const old = queue.features.find((f) => f.id === feature.id);
 			if (old && stableJson(old) !== stableJson(feature))
-				throw new Error('Feature context is immutable; use a new feature id.');
+				throw new ExpectedCliError('Feature context is immutable; use a new feature id.');
 			if (!old) queue.features.push(feature);
 			return feature;
 		});
@@ -40,17 +41,21 @@ export class ModuleTaskService {
 		const units = await new UnitRegistryRepository(this.root).read(tree);
 		const unit = units.manifests.find((u) => u.id === parsed.module && u.status === 'active');
 		if (!unit?.owns.source.length)
-			throw new Error(
+			throw new ExpectedCliError(
 				'Task module must be active and registered at the committed source revision.'
 			);
 		if (unit.responsibilityOrigin === 'derived' && !parsed.moduleGoal)
-			throw new Error('This module has only a generated placeholder goal; supply moduleGoal.');
+			throw new ExpectedCliError(
+				'This module has only a generated placeholder goal; supply moduleGoal.'
+			);
 		const recorded = await this.repository.update((queue) => {
 			if (queue.tasks.some((t) => t.id === parsed.id))
-				throw new Error('Task id already exists; wanted contracts are immutable.');
+				throw new ExpectedCliError('Task id already exists; wanted contracts are immutable.');
 			const feature = queue.features.find((f) => f.id === parsed.feature);
 			if (!feature)
-				throw new Error('Commit the shared feature goal and TLDR with task feature first.');
+				throw new ExpectedCliError(
+					'Commit the shared feature goal and TLDR with task feature first.'
+				);
 			const task = queuedTask(parsed, feature, unit, tree.revision);
 			queue.tasks.push(task);
 			return task;
@@ -71,7 +76,7 @@ export class ModuleTaskService {
 	async show(id: string) {
 		const { tasks, commit } = await this.list(),
 			task = tasks.find((t) => t.id === id);
-		if (!task) throw new Error(`Task ${id} does not exist.`);
+		if (!task) throw new ExpectedCliError(`Task ${id} does not exist.`);
 		return { task, commit };
 	}
 	async prompt(id: string) {
@@ -99,7 +104,7 @@ export class ModuleTaskService {
 
 function recoverTask(task: ModuleTask | undefined, workspace: string): ModuleTask {
 	if (!task || !retryableTask(task, workspace))
-		throw new Error(
+		throw new ExpectedCliError(
 			'Task cannot be retried while its owner is active, unknown or in another clone.'
 		);
 	if (task.result) task.attempts.push(task.result);

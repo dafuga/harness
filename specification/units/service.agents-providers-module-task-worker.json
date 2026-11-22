@@ -4,7 +4,7 @@
 	"uid": "u_b4uzqkb2i6",
 	"kind": "service",
 	"title": "ModuleTaskWorkerService",
-	"responsibility": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+	"responsibility": "Check machine readiness before claiming queued module work, run each claim in an isolated worktree with quota-only fallback, and preserve its result for review.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -33,6 +33,7 @@
 			"finishTask",
 			"taskWrites",
 			"TaskClaimOptions",
+			"WorkerOutsideModuleError",
 			"workspacePreflight",
 			"taskBlockers"
 		]
@@ -45,7 +46,7 @@
 				"type": "string",
 				"required": false,
 				"description": "Repository root that Git commands, the task queue, task worktrees and the analytics sync are bound to. Defaults to process.cwd(), read when the worker is constructed without a root.",
-				"examples": ["/home/dev/harness", "/srv/harness/checkout"]
+				"examples": ["/workspace/project", "/srv/harness/checkout"]
 			},
 			{
 				"name": "ModuleTaskWorkerService.constructor.runner",
@@ -162,7 +163,7 @@
 				"required": true,
 				"description": "Absolute path of the attempt's detached Git worktree, which taskWorkspace names with the claim token under .cache/harness/task-worktrees. It is stored unchanged as the result's worktree and passed to the runner as cwd.",
 				"examples": [
-					"/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+					"/workspace/project/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
 					"/srv/harness/checkout/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0"
 				]
 			},
@@ -446,7 +447,7 @@
 						"intelligence": "medium",
 						"reportedModel": "claude-haiku-5-5",
 						"text": "Claim and worktree checks are in place; the module's unit tests pass.",
-						"worktree": "/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+						"worktree": "/workspace/project/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
 						"changedFiles": [
 							"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
 						],
@@ -496,9 +497,9 @@
 						"intelligence": "medium",
 						"reportedModel": null,
 						"text": "",
-						"worktree": "/home/dev/harness/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0",
+						"worktree": "/workspace/project/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0",
 						"changedFiles": [],
-						"error": "git worktree add --detach /home/dev/harness/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0 7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e failed: fatal: could not create work tree dir '/home/dev/harness/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0': No space left on device",
+						"error": "git worktree add --detach /workspace/project/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0 7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e failed: fatal: could not create work tree dir '/workspace/project/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0': No space left on device",
 						"fallback": false,
 						"finishedAt": "2026-11-15T09:12:58.447Z",
 						"attempt": "0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0",
@@ -603,11 +604,15 @@
 		"outputs": [
 			{
 				"name": "ModuleTaskWorkerService.once",
-				"type": "unknown",
-				"description": "Result of one claim attempt: { status: 'idle' } when no eligible task was claimed; otherwise { status, task, result }, where status is 'failed' if result.error is set and 'review' if not, task is the claimed task's id and result is the final result.",
+				"type": "Promise<{ status: 'idle' } | { status: 'blocked'; problems: string[] } | { status: 'failed' | 'review'; task: string; result: NonNullable<ModuleTask['result']> }>",
+				"description": "Returns idle when no task was claimed and preflight found no blockers, blocked with machine or task problems when preflight prevents a claim, or the claimed task and result with review or failed status.",
 				"examples": [
 					{
 						"status": "idle"
+					},
+					{
+						"status": "blocked",
+						"problems": ["The assigned provider is in cooldown."]
 					},
 					{
 						"status": "review",
@@ -618,7 +623,7 @@
 							"intelligence": "medium",
 							"reportedModel": "claude-haiku-5-5",
 							"text": "Claim and worktree checks are in place; the module's unit tests pass.",
-							"worktree": "/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+							"worktree": "/workspace/project/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
 							"changedFiles": [
 								"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
 							],
@@ -676,7 +681,7 @@
 						"intelligence": "medium",
 						"reportedModel": null,
 						"text": "",
-						"worktree": "/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+						"worktree": "/workspace/project/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
 						"changedFiles": [],
 						"fallback": false,
 						"executions": [],
@@ -686,7 +691,7 @@
 			},
 			{
 				"name": "claimedTask",
-				"type": "unknown",
+				"type": "ModuleTask | null",
 				"description": "The claimed ModuleTask, mutated in place to status running with a new claim, or null when no queued task matches the worker, the modules list and the rule that a module with a running task is skipped.",
 				"examples": [
 					null,
@@ -752,7 +757,7 @@
 			},
 			{
 				"name": "finishTask",
-				"type": "unknown",
+				"type": "void",
 				"description": "Returns nothing: it sets the matching stored task's status and result in place, and throws when the claim or definition no longer matches."
 			},
 			{
@@ -809,11 +814,15 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskWorkerService.once",
-						"type": "unknown",
-						"description": "Result of one claim attempt: { status: 'idle' } when no eligible task was claimed; otherwise { status, task, result }, where status is 'failed' if result.error is set and 'review' if not, task is the claimed task's id and result is the final result.",
+						"type": "Promise<{ status: 'idle' } | { status: 'blocked'; problems: string[] } | { status: 'failed' | 'review'; task: string; result: NonNullable<ModuleTask['result']> }>",
+						"description": "Returns idle when no task was claimed and preflight found no blockers, blocked with machine or task problems when preflight prevents a claim, or the claimed task and result with review or failed status.",
 						"examples": [
 							{
 								"status": "idle"
+							},
+							{
+								"status": "blocked",
+								"problems": ["The assigned provider is in cooldown."]
 							},
 							{
 								"status": "review",
@@ -824,7 +833,7 @@
 									"intelligence": "medium",
 									"reportedModel": "claude-haiku-5-5",
 									"text": "Claim and worktree checks are in place; the module's unit tests pass.",
-									"worktree": "/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+									"worktree": "/workspace/project/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
 									"changedFiles": [
 										"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
 									],
@@ -1015,7 +1024,7 @@
 						"required": true,
 						"description": "Absolute path of the attempt's detached Git worktree, which taskWorkspace names with the claim token under .cache/harness/task-worktrees. It is stored unchanged as the result's worktree and passed to the runner as cwd.",
 						"examples": [
-							"/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+							"/workspace/project/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
 							"/srv/harness/checkout/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0"
 						]
 					}
@@ -1032,7 +1041,7 @@
 								"intelligence": "medium",
 								"reportedModel": null,
 								"text": "",
-								"worktree": "/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+								"worktree": "/workspace/project/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
 								"changedFiles": [],
 								"fallback": false,
 								"executions": [],
@@ -1188,7 +1197,7 @@
 				"outputs": [
 					{
 						"name": "claimedTask",
-						"type": "unknown",
+						"type": "ModuleTask | null",
 						"description": "The claimed ModuleTask, mutated in place to status running with a new claim, or null when no queued task matches the worker, the modules list and the rule that a module with a running task is skipped.",
 						"examples": [
 							null,
@@ -1415,7 +1424,7 @@
 								"intelligence": "medium",
 								"reportedModel": "claude-haiku-5-5",
 								"text": "Claim and worktree checks are in place; the module's unit tests pass.",
-								"worktree": "/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+								"worktree": "/workspace/project/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
 								"changedFiles": [
 									"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
 								],
@@ -1465,9 +1474,9 @@
 								"intelligence": "medium",
 								"reportedModel": null,
 								"text": "",
-								"worktree": "/home/dev/harness/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0",
+								"worktree": "/workspace/project/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0",
 								"changedFiles": [],
-								"error": "git worktree add --detach /home/dev/harness/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0 7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e failed: fatal: could not create work tree dir '/home/dev/harness/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0': No space left on device",
+								"error": "git worktree add --detach /workspace/project/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0 7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e failed: fatal: could not create work tree dir '/workspace/project/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0': No space left on device",
 								"fallback": false,
 								"finishedAt": "2026-11-15T09:12:58.447Z",
 								"attempt": "0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0",
@@ -1480,7 +1489,7 @@
 				"outputs": [
 					{
 						"name": "finishTask",
-						"type": "unknown",
+						"type": "void",
 						"description": "Returns nothing: it sets the matching stored task's status and result in place, and throws when the claim or definition no longer matches."
 					}
 				],
@@ -1648,7 +1657,7 @@
 						"type": "string",
 						"required": false,
 						"description": "Repository root that Git commands, the task queue, task worktrees and the analytics sync are bound to. Defaults to process.cwd(), read when the worker is constructed without a root.",
-						"examples": ["/home/dev/harness", "/srv/harness/checkout"]
+						"examples": ["/workspace/project", "/srv/harness/checkout"]
 					},
 					{
 						"name": "ModuleTaskWorkerService.constructor.runner",
@@ -1665,7 +1674,7 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskWorkerService.constructor",
-						"type": "unknown",
+						"type": "ModuleTaskWorkerService",
 						"description": "The new ModuleTaskWorkerService, whose repository is a ModuleTaskRepository bound to root."
 					}
 				],
@@ -1693,6 +1702,11 @@
 		},
 		{
 			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},

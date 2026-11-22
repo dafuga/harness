@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.function.hub-entity-contract",
+	"title": "hub.function.hub-entity-contract examples",
+	"kind": "headless",
+	"units": ["hub.function.hub-entity-contract"],
+	"builds": [],
+	"states": [
+		{
+			"id": "prefers-the-plan-contract-over-the-unit-contract",
+			"title": "Prefers the plan contract over the unit contract",
+			"coverage": "required"
+		},
+		{
+			"id": "hashes-the-unit-contract-and-adds-a-hash-field",
+			"title": "Hashes the unit contract and adds a hash field",
+			"coverage": "required"
+		},
+		{
+			"id": "returns-an-empty-contract-when-nothing-is-given",
+			"title": "Returns an empty contract when nothing is given",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-when-the-unit-contract-holds-a-bigint",
+			"title": "Rejects when the unit contract holds a BigInt",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.function.hub-entity-contract.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"prefers-the-plan-contract-over-the-unit-contract",
+				"hashes-the-unit-contract-and-adds-a-hash-field",
+				"returns-an-empty-contract-when-nothing-is-given",
+				"rejects-when-the-unit-contract-holds-a-bigint"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"prefers-the-plan-contract-over-the-unit-contract",
+				"hashes-the-unit-contract-and-adds-a-hash-field",
+				"returns-an-empty-contract-when-nothing-is-given",
+				"rejects-when-the-unit-contract-holds-a-bigint"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"prefers-the-plan-contract-over-the-unit-contract",
+				"hashes-the-unit-contract-and-adds-a-hash-field",
+				"returns-an-empty-contract-when-nothing-is-given",
+				"rejects-when-the-unit-contract-holds-a-bigint"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

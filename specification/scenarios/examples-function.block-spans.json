@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.block-spans",
+	"title": "function.block-spans examples",
+	"kind": "headless",
+	"units": ["function.block-spans"],
+	"builds": [],
+	"states": [
+		{
+			"id": "finds-top-level-functions-and-named-class-methods",
+			"title": "Finds top-level functions and named class methods",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.block-spans.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["finds-top-level-functions-and-named-class-methods"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["finds-top-level-functions-and-named-class-methods"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["finds-top-level-functions-and-named-class-methods"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

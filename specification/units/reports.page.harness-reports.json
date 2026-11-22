@@ -17,7 +17,7 @@
 		"outputs": [
 			{
 				"name": "load",
-				"type": "unknown",
+				"type": "void",
 				"description": "The exported server load handler for /harness/reports. On every invocation it redirects to /harness and does not return report data."
 			}
 		],
@@ -36,7 +36,7 @@
 				"outputs": [
 					{
 						"name": "load",
-						"type": "unknown",
+						"type": "void",
 						"description": "The exported server load handler for /harness/reports. On every invocation it redirects to /harness and does not return report data."
 					}
 				],

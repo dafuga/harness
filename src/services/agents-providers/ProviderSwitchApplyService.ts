@@ -7,6 +7,7 @@ import type {
 } from '../../core/development-tooling/pickerTypes';
 import { switchRevision } from '../../core/development-tooling/pickerTypes';
 import { sameSelection, validateSessionId } from '../../core/development-tooling/pickerModelTypes';
+import { SwitchVerificationError } from './ProviderSwitchApplyService.types';
 
 /** Internal boundary only: no desktop adapter is installed or exposed through MCP. */
 export class ProviderSwitchApplyService {
@@ -35,7 +36,7 @@ export class ProviderSwitchApplyService {
 			await this.control.resume(sessionId, request.target);
 			const result = await this.control.inspect(sessionId);
 			if (!this.fresh(result) || !sameSelection(result.selection, request.target))
-				throw new Error('Settings mismatch');
+				throw new SwitchVerificationError('Settings mismatch');
 			this.finish(claimed, 'applied', 'Provider, model and effort verified after resume.');
 		} catch {
 			await this.rollback(claimed, previous);
@@ -51,7 +52,9 @@ export class ProviderSwitchApplyService {
 	}
 	private finish(record: SwitchRequest, status: SwitchRequest['status'], reason: string): void {
 		if (!this.store.put({ ...record, status, reason }, switchRevision(record)))
-			throw new Error('Switch ownership changed; settings require manual verification.');
+			throw new SwitchVerificationError(
+				'Switch ownership changed; settings require manual verification.'
+			);
 	}
 	private async rollback(record: SwitchRequest, previous: SessionObservation): Promise<void> {
 		let reason =

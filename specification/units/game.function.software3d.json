@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/game/src/adapters/game-authoring/Canvas2dContextUnavailableError.ts",
 			"packages/game/src/adapters/game-authoring/Software3dAdapter.ts",
 			"packages/game/src/adapters/game-authoring/Software3dAdapter.types.ts"
 		],
 		"symbols": [
+			"Canvas2dContextUnavailableError",
 			"Software3dAdapter",
 			"Software3dAdapter.constructor",
 			"Software3dAdapter.render",
@@ -354,7 +356,7 @@
 				"outputs": [
 					{
 						"name": "Software3dAdapter.constructor",
-						"type": "unknown",
+						"type": "Software3dAdapter",
 						"description": "The new Software3dAdapter, which keeps the canvas and its 2D context for later render and dispose calls."
 					}
 				],

@@ -8,12 +8,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/module-system/ModuleCatalogService.ts"],
+		"source": [
+			"src/services/module-system/ModuleCatalogService.ts",
+			"src/services/module-system/ModuleCatalogService.types.ts"
+		],
 		"symbols": [
 			"ModuleCatalogService",
 			"ModuleCatalogService.load",
 			"ModuleCatalogService.at",
-			"ModuleCatalogService.state"
+			"ModuleCatalogService.state",
+			"ModuleCatalogValidationError"
 		]
 	},
 	"contract": {
@@ -24,9 +28,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project root path passed to moduleTree(root) for reading harness.modules.json and listing specification/modules. This method does not validate that the path is absolute.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "ModuleCatalogService.at.tree",
@@ -44,7 +46,7 @@
 				"name": "ModuleCatalogService.state.gaps",
 				"type": "string[]",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional array where recoverable installation-state read or parse problems are appended. When omitted, invalid state and non-missing read failures reject instead.",
 				"examples": [
 					["Invalid module installation state."]
@@ -221,9 +223,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project root path passed to moduleTree(root) for reading harness.modules.json and listing specification/modules. This method does not validate that the path is absolute.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -369,7 +369,7 @@
 						"name": "ModuleCatalogService.state.gaps",
 						"type": "string[]",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional array where recoverable installation-state read or parse problems are appended. When omitted, invalid state and non-missing read failures reject instead.",
 						"examples": [
 							["Invalid module installation state."]

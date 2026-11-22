@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/ipc-payload/ipcPayload.ts",
+			"packages/desktop/src/utils/ipc-payload/ipcPayload.types.ts",
 			"packages/desktop/src/utils/ipcPayload.ts"
 		],
 		"symbols": [
@@ -19,6 +20,7 @@
 			"creationPayload",
 			"runPayload",
 			"ipcPayload",
+			"InvalidPayloadError",
 			"approvalPayload",
 			"threadPayload",
 			"creationProject",
@@ -88,7 +90,7 @@
 					{
 						"intent": "create",
 						"projectId": "550e8400-e29b-41d4-a716-446655440000",
-						"category": "feature",
+						"category": "components",
 						"mode": "plan",
 						"provider": "codex",
 						"model": "gpt-6-luna",
@@ -145,7 +147,7 @@
 		"outputs": [
 			{
 				"name": "approvalPayload",
-				"type": "unknown",
+				"type": "{ option?: undefined; version: string; imageHashes: string[]; contractHash: string; } | { option: string; version: string; imageHashes: string[]; contractHash: string; }",
 				"description": "Returns version, imageHashes, and contractHash, adding option only when it was supplied. Returned version and hash values have passed their imported validators.",
 				"examples": [
 					{
@@ -158,7 +160,7 @@
 			},
 			{
 				"name": "threadPayload",
-				"type": "unknown",
+				"type": "{ option?: undefined; entityId: string; version: string | null; imageSha256: string | null; state: string | null; viewport: string | null; region: Region | null; } | { option: string; entityId: string; version: string | null; imageSha256: string | null; state: string | null; viewport: string | null; region: Region | null; }",
 				"description": "Returns entityId, version, imageSha256, state, viewport, and region, adding option only when supplied. Image-anchor fields are either all non-null or all null, and a null version requires a null region.",
 				"examples": [
 					{
@@ -191,13 +193,13 @@
 			},
 			{
 				"name": "creationPayload",
-				"type": "unknown",
+				"type": "{ designOptions?: undefined; intent: \"create\"; projectId: string; category: \"components\" | \"pages\" | \"apis\" | \"layouts\" | \"functions\" | \"configs\" | \"services\" | \"models\"; mode: \"plan\"; provider: \"claude\" | \"codex\"; model: string; effort: string | null; text: string; } | { designOptions: number; intent: \"create\"; projectId: string; category: \"components\" | \"pages\" | \"apis\" | \"layouts\" | \"functions\" | \"configs\" | \"services\" | \"models\"; mode: \"plan\"; provider: \"claude\" | \"codex\"; model: string; effort: string | null; text: string; }",
 				"description": "Returns intent, projectId, category, mode, provider, model, effort, and text, adding designOptions only when supplied. designOptions must be an integer from 1 to 10 and text is limited to 20,000 characters.",
 				"examples": [
 					{
 						"intent": "create",
 						"projectId": "550e8400-e29b-41d4-a716-446655440000",
-						"category": "feature",
+						"category": "components",
 						"mode": "plan",
 						"provider": "codex",
 						"model": "gpt-6-luna",
@@ -272,7 +274,7 @@
 				"outputs": [
 					{
 						"name": "approvalPayload",
-						"type": "unknown",
+						"type": "{ option?: undefined; version: string; imageHashes: string[]; contractHash: string; } | { option: string; version: string; imageHashes: string[]; contractHash: string; }",
 						"description": "Returns version, imageHashes, and contractHash, adding option only when it was supplied. Returned version and hash values have passed their imported validators.",
 						"examples": [
 							{
@@ -325,7 +327,7 @@
 				"outputs": [
 					{
 						"name": "threadPayload",
-						"type": "unknown",
+						"type": "{ option?: undefined; entityId: string; version: string | null; imageSha256: string | null; state: string | null; viewport: string | null; region: import('../../models/development-tooling/Desktop.types').Region | null; } | { option: string; entityId: string; version: string | null; imageSha256: string | null; state: string | null; viewport: string | null; region: import('../../models/development-tooling/Desktop.types').Region | null; }",
 						"description": "Returns entityId, version, imageSha256, state, viewport, and region, adding option only when supplied. Image-anchor fields are either all non-null or all null, and a null version requires a null region.",
 						"examples": [
 							{
@@ -403,7 +405,7 @@
 							{
 								"intent": "create",
 								"projectId": "550e8400-e29b-41d4-a716-446655440000",
-								"category": "feature",
+								"category": "components",
 								"mode": "plan",
 								"provider": "codex",
 								"model": "gpt-6-luna",
@@ -417,13 +419,13 @@
 				"outputs": [
 					{
 						"name": "creationPayload",
-						"type": "unknown",
+						"type": "{ designOptions?: undefined; intent: \"create\"; projectId: string; category: \"components\" | \"pages\" | \"apis\" | \"layouts\" | \"functions\" | \"configs\" | \"services\" | \"models\"; mode: \"plan\"; provider: \"claude\" | \"codex\"; model: string; effort: string | null; text: string; } | { designOptions: number; intent: \"create\"; projectId: string; category: \"components\" | \"pages\" | \"apis\" | \"layouts\" | \"functions\" | \"configs\" | \"services\" | \"models\"; mode: \"plan\"; provider: \"claude\" | \"codex\"; model: string; effort: string | null; text: string; }",
 						"description": "Returns intent, projectId, category, mode, provider, model, effort, and text, adding designOptions only when supplied. designOptions must be an integer from 1 to 10 and text is limited to 20,000 characters.",
 						"examples": [
 							{
 								"intent": "create",
 								"projectId": "550e8400-e29b-41d4-a716-446655440000",
-								"category": "feature",
+								"category": "components",
 								"mode": "plan",
 								"provider": "codex",
 								"model": "gpt-6-luna",

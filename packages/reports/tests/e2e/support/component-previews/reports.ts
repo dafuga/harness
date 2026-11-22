@@ -12,6 +12,7 @@ import {
 	viewerRelease
 } from './reportData';
 import { evidenceGridItems } from './evidenceGridData';
+import { videoEvidenceProps, videoGraphNavigationProps } from './videoEvidenceProps';
 import { recordedValueFixture } from './recordedValueVariants';
 import { evidenceViewerProps } from './evidenceViewerVariants';
 import * as d from './explorerData';
@@ -24,6 +25,8 @@ const overview = allStatesSnapshot();
 if (overview.status !== 'ready') throw new Error('The catalog needs a ready overview fixture.');
 const card = overview.projects[0];
 export const reportCases: PreviewCases = {
+	'reports.component.verification-evidence-video-evidence': videoEvidenceProps,
+	'reports.component.verification-evidence-video-graph-navigation': videoGraphNavigationProps,
 	'reports.component.projects-sessions-project-overview-project-overview': {
 		snapshot: overview
 	},

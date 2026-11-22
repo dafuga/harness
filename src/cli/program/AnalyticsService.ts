@@ -1,5 +1,6 @@
 // @harness-uid u_2uvstowd5m
 import type { AnalyticsOptions } from './AnalyticsService.types';
+import { ExpectedCliError } from '../../core/errors';
 import { projectIdentity } from '../../workflows/reports-media/analyticsRecord';
 import { resolve } from 'node:path';
 import { writeFile } from 'node:fs/promises';
@@ -13,7 +14,7 @@ import { ModuleTaskAnalyticsService } from '../../services/agents-providers/Modu
 export class AnalyticsService {
 	async execute(operation: string, options: AnalyticsOptions): Promise<void> {
 		if (operation === 'import') {
-			if (!options.root) throw new Error('--root is required.');
+			if (!options.root) throw new ExpectedCliError('--root is required.');
 			console.log(
 				JSON.stringify({
 					scannedEvents: await importAnalytics(options.root),
@@ -36,7 +37,7 @@ export class AnalyticsService {
 			repository.close();
 		}
 		if (operation === 'export') {
-			if (!options.output) throw new Error('--output is required.');
+			if (!options.output) throw new ExpectedCliError('--output is required.');
 			await writeFile(resolve(options.output), analyticsHtml(snapshot), { mode: 0o600 });
 			console.log(
 				JSON.stringify({ output: resolve(options.output), events: snapshot.events.length })
@@ -54,7 +55,7 @@ export async function normalizeFilter(options: AnalyticsFilter): Promise<Analyti
 	for (const key of ['since', 'until'] as const) {
 		if (!filter[key]) continue;
 		const date = new Date(filter[key]);
-		if (!Number.isFinite(date.getTime())) throw new Error(`Invalid --${key} date.`);
+		if (!Number.isFinite(date.getTime())) throw new ExpectedCliError(`Invalid --${key} date.`);
 		if (key === 'until' && /^\d{4}-\d{2}-\d{2}$/.test(filter[key]))
 			date.setUTCHours(23, 59, 59, 999);
 		filter[key] = date.toISOString();

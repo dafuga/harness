@@ -22,7 +22,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Directory string joined with package.json to read the manifest. The implementation does not require or check that it is absolute.",
-				"examples": ["/workspace/apps/web", "/Users/daniel/projects/example-app"]
+				"examples": ["/workspace/apps/web", "/workspace/project"]
 			},
 			{
 				"name": "ModulePackageService.plan.name",
@@ -67,7 +67,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Directory string joined with package.json to read the manifest. The implementation does not require or check that it is absolute.",
-						"examples": ["/workspace/apps/web", "/Users/daniel/projects/example-app"]
+						"examples": ["/workspace/apps/web", "/workspace/project"]
 					},
 					{
 						"name": "ModulePackageService.plan.name",
@@ -112,6 +112,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.files",
 			"via": "import",

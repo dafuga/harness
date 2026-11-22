@@ -28,8 +28,8 @@
 						"APP_MODE": "desktop"
 					},
 					{
-						"HOME": "/Users/alex",
-						"WRANGLER_CONFIG": "/repo/wrangler.toml",
+						"HOME": "/workspace/user",
+						"WRANGLER_CONFIG": "/workspace/project/wrangler.toml",
 						"ANTHROPIC_API_KEY": "sk-ant-example",
 						"NODE_ENV": "development"
 					}
@@ -47,7 +47,7 @@
 						"APP_MODE": "desktop"
 					},
 					{
-						"HOME": "/Users/alex",
+						"HOME": "/workspace/user",
 						"NODE_ENV": "development"
 					}
 				]
@@ -73,8 +73,8 @@
 								"APP_MODE": "desktop"
 							},
 							{
-								"HOME": "/Users/alex",
-								"WRANGLER_CONFIG": "/repo/wrangler.toml",
+								"HOME": "/workspace/user",
+								"WRANGLER_CONFIG": "/workspace/project/wrangler.toml",
 								"ANTHROPIC_API_KEY": "sk-ant-example",
 								"NODE_ENV": "development"
 							}
@@ -92,7 +92,7 @@
 								"APP_MODE": "desktop"
 							},
 							{
-								"HOME": "/Users/alex",
+								"HOME": "/workspace/user",
 								"NODE_ENV": "development"
 							}
 						]

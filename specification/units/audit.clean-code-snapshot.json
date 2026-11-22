@@ -19,6 +19,7 @@
 			"maxReviewStateBytes",
 			"snapshotCleanCodeFile",
 			"ReviewSnapshot",
+			"ReviewContextBudgetExceededError",
 			"ReviewSnapshot",
 			"SnapshotInput",
 			"SnapshotState"
@@ -66,7 +67,7 @@
 		"outputs": [
 			{
 				"name": "maxReviewStateBytes",
-				"type": "unknown",
+				"type": "number",
 				"description": "The exported byte budget, the literal 24000, for the UTF-8 length of the JSON-serialized review state. snapshotCleanCodeFile throws when the state exceeds 24000 bytes, keeps a related file only if the state including it stays at or below 22000 bytes, and keeps a convention file only if the state including it stays at or below 23500 bytes.",
 				"examples": [24000]
 			},

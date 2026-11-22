@@ -5,6 +5,10 @@ import type { RemoteKeyPair } from '../../../models/networking-security/RemoteSe
 import type { StoredRemoteKeys } from '../../../models/networking-security/RemoteSecure.types';
 import type { RemoteGrant } from '../../../models/networking-security/Remote.types';
 
+export class DevicePairingError extends Error {
+	override name = 'DevicePairingError';
+}
+
 export interface DevicePairingInput extends RemotePairInput {
 	platform?: PairingSecret['platform'];
 }

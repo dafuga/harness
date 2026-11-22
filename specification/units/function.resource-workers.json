@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/execution-runtimes/resourceWorkers.ts"],
-		"symbols": ["resourceWorkers", "resourceThreads"]
+		"source": [
+			"src/utils/execution-runtimes/resourceWorkers.ts",
+			"src/utils/execution-runtimes/resourceWorkers.types.ts"
+		],
+		"symbols": ["resourceWorkers", "resourceThreads", "InvalidTestWorkerCeilingError"]
 	},
 	"contract": {
 		"origin": "declared",

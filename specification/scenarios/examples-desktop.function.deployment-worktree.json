@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.deployment-worktree",
+	"title": "desktop.function.deployment-worktree examples",
+	"kind": "headless",
+	"units": ["desktop.function.deployment-worktree"],
+	"builds": [],
+	"states": [
+		{
+			"id": "returns-its-result-and-removes-the-detached-checkout",
+			"title": "returns its result and removes the detached checkout",
+			"coverage": "required"
+		},
+		{
+			"id": "rethrows-callback-failures-after-cleanup",
+			"title": "rethrows callback failures after cleanup",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.deployment-worktree.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"returns-its-result-and-removes-the-detached-checkout",
+				"rethrows-callback-failures-after-cleanup"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"returns-its-result-and-removes-the-detached-checkout",
+				"rethrows-callback-failures-after-cleanup"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"returns-its-result-and-removes-the-detached-checkout",
+				"rethrows-callback-failures-after-cleanup"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

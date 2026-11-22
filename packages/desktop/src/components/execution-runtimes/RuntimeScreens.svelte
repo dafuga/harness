@@ -5,6 +5,7 @@
 	import Notice from '$shared/explorer-ui/explorer-kit/Notice.svelte';
 	import ComparePanes from '$shared/shared-primitives/ComparePanes.svelte';
 	import { comparisonPanes } from '$reports/helpers/verification-evidence/comparisonPanes';
+	import type { ComparisonPane } from '$reports/helpers/verification-evidence/comparisonPanes.types';
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 
 	import Select from '$shared/Select.svelte';
@@ -17,6 +18,7 @@
 	} from '$reports/utils/explorer-ui/entityScreens';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
 	import type { EntityEvidenceResult } from '../../models/verification-evidence/DesktopEvidence.types';
+	import type { Evidence } from '$reports/models/reports-media/Report.types';
 	import RuntimePane from './RuntimePane.svelte';
 	import SegmentedChoice from '../shared-primitives/SegmentedChoice.svelte';
 	import Status from '$shared/shared-primitives/status/Status.svelte';
@@ -111,7 +113,7 @@
 		</hx-div>{/if}
 	{#if options.length === 1}<hx-p class="muted">One recorded scenario</hx-p>{/if}
 	<ComparePanes {panes} className="runtime-panes" framed={false}>
-		{#snippet children(pane)}<RuntimePane
+		{#snippet children(pane: ComparisonPane<Evidence>)}<RuntimePane
 				item={pane.value!}
 				{evidence}
 				title={pane.heading}

@@ -8,7 +8,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/benchmark-service/benchmarkWorkspace.ts"],
+		"source": [
+			"src/cli/program/benchmark-service/benchmarkWorkspace.ts",
+			"src/cli/program/benchmark-service/benchmarkWorkspace.types.ts"
+		],
 		"symbols": [
 			"benchmarkGit",
 			"benchmarkFiles",
@@ -16,7 +19,8 @@
 			"createBenchmarkWorkspace",
 			"regularBenchmarkFile",
 			"benchmarkFileValue",
-			"overlayBenchmarkFiles"
+			"overlayBenchmarkFiles",
+			"BenchmarkWorkspaceError"
 		]
 	},
 	"contract": {
@@ -27,9 +31,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Directory passed as the subprocess working directory for the Git command. It determines which repository Git uses; an unavailable directory can make the command fail.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "benchmarkGit.args",
@@ -45,9 +47,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository directory used as the Git working directory while listing the selected tree. It must contain the repository and revision being read.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "benchmarkFiles.revision",
@@ -61,9 +61,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository directory used for listing and archiving the selected tree. It must contain the repository and revision being read.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "snapshotBenchmark.revision",
@@ -98,9 +96,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Directory prefix used to resolve the file path one slash-separated segment at a time. The joined segments are checked for missing entries and symlinks.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "regularBenchmarkFile.file",
@@ -114,9 +110,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Directory prefix used to resolve the file before its mode and contents are read. The value is returned only when the path passes the regular nonsymlink-file check.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "benchmarkFileValue.file",
@@ -212,9 +206,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Directory passed as the subprocess working directory for the Git command. It determines which repository Git uses; an unavailable directory can make the command fail.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "benchmarkGit.args",
@@ -251,9 +243,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository directory used as the Git working directory while listing the selected tree. It must contain the repository and revision being read.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "benchmarkFiles.revision",
@@ -290,9 +280,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository directory used for listing and archiving the selected tree. It must contain the repository and revision being read.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "snapshotBenchmark.revision",
@@ -370,9 +358,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Directory prefix used to resolve the file path one slash-separated segment at a time. The joined segments are checked for missing entries and symlinks.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "regularBenchmarkFile.file",
@@ -407,9 +393,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Directory prefix used to resolve the file before its mode and contents are read. The value is returned only when the path passes the regular nonsymlink-file check.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "benchmarkFileValue.file",

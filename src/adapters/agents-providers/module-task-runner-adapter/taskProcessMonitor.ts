@@ -1,4 +1,5 @@
 // @harness-uid u_rw64iex44n
+import { parsePositiveIntegerEnvironmentValue } from './taskProcess';
 import { clearInterval, setInterval } from 'node:timers';
 import type { TaskRunInput } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import type { TaskProcessResult } from '../ModuleTaskRunnerAdapter.types';
@@ -43,7 +44,13 @@ export function processMonitor(
 	input.signal.addEventListener('abort', abort, { once: true });
 	if (input.signal.aborted) abort();
 	const poll = setInterval(sample, contextPollMs);
-	const timer = setTimeout(() => halt('timeout'), input.supervision ? 21_600_000 : 900_000);
+	const timer = setTimeout(
+		() => halt('timeout'),
+		parsePositiveIntegerEnvironmentValue(
+			process.env.HARNESS_TASK_TIMEOUT_MS,
+			input.supervision ? 21_600_000 : 900_000
+		)
+	);
 	child.once('exit', () => {
 		exited = true;
 		killGroup(child);

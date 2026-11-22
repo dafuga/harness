@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.model.harness-legacy-types",
+	"title": "reports.model.harness-legacy-types examples",
+	"kind": "headless",
+	"units": ["reports.model.harness-legacy-types"],
+	"builds": [],
+	"states": [
+		{
+			"id": "importing-the-harnesslegacy-model-returns-no-runtime-value",
+			"title": "Importing the HarnessLegacy model returns no runtime value",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.model.harness-legacy-types.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["importing-the-harnesslegacy-model-returns-no-runtime-value"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["importing-the-harnesslegacy-model-returns-no-runtime-value"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["importing-the-harnesslegacy-model-returns-no-runtime-value"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

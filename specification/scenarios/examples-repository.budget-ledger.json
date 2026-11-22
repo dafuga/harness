@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-repository.budget-ledger",
+	"title": "repository.budget-ledger examples",
+	"kind": "headless",
+	"units": ["repository.budget-ledger"],
+	"builds": [],
+	"states": [
+		{
+			"id": "reads-valid-and-malformed-ledger-lines",
+			"title": "Reads valid and malformed ledger lines",
+			"coverage": "required"
+		},
+		{
+			"id": "appends-reviewed-events-as-ledger-lines",
+			"title": "Appends reviewed events as ledger lines",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/repository.budget-ledger.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"reads-valid-and-malformed-ledger-lines",
+				"appends-reviewed-events-as-ledger-lines"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"reads-valid-and-malformed-ledger-lines",
+				"appends-reviewed-events-as-ledger-lines"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"reads-valid-and-malformed-ledger-lines",
+				"appends-reviewed-events-as-ledger-lines"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

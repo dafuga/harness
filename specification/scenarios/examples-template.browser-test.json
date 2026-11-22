@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-template.browser-test",
+	"title": "template.browser-test examples",
+	"kind": "headless",
+	"units": ["template.browser-test"],
+	"builds": [],
+	"states": [
+		{
+			"id": "plans-the-browser-test-scaffold-files-in-order",
+			"title": "Plans the browser-test scaffold files in order",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/template.browser-test.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["plans-the-browser-test-scaffold-files-in-order"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["plans-the-browser-test-scaffold-files-in-order"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["plans-the-browser-test-scaffold-files-in-order"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -1,5 +1,6 @@
 // @harness-uid u_dvhqqgtjas
 import type { Check } from './HostCommandValidator.types';
+import { HostCommandError } from './HostCommandValidator.types';
 import { remotePatterns, SecurePacketValidator } from '../../../../remote/src/index';
 import type { RelayHostCommand } from '../../../../remote/src/index';
 import { isRecord } from '../../utils/development-tooling/isRecord';
@@ -52,14 +53,14 @@ export class HostCommandValidator {
 	/** Returns the command, or throws when it is not exactly one of the contract. */
 	command(value: unknown): RelayHostCommand {
 		const shape = shapeOf(value);
-		if (!isRecord(value) || !shape) throw new Error('Not a host command.');
+		if (!isRecord(value) || !shape) throw new HostCommandError('Not a host command.');
 		const names = Object.keys(shape);
 		const extra = optional[String(value.type)] ?? {};
 		const present = Object.keys(extra).filter((name) => name in value);
 		const exact = Object.keys(value).length === names.length + 1 + present.length;
 		const valid = names.every((name) => shape[name](value[name]));
 		if (!exact || !valid || !present.every((name) => extra[name](value[name]))) {
-			throw new Error('Malformed host command.');
+			throw new HostCommandError('Malformed host command.');
 		}
 		return value as unknown as RelayHostCommand;
 	}

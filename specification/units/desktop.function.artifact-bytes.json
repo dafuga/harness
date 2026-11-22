@@ -10,9 +10,16 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/shared-primitives/recorded-preview/artifactBytes.ts",
+			"packages/desktop/src/components/shared-primitives/recorded-preview/artifactBytes.types.ts",
 			"packages/desktop/src/utils/shared-primitives/artifactBytes.ts"
 		],
-		"symbols": ["artifactBytes", "unreadArtifact", "damagedArtifact", "artifactBytes"]
+		"symbols": [
+			"artifactBytes",
+			"ArtifactReadError",
+			"unreadArtifact",
+			"damagedArtifact",
+			"artifactBytes"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -68,13 +75,13 @@
 		"outputs": [
 			{
 				"name": "unreadArtifact",
-				"type": "unknown",
+				"type": "string",
 				"description": "The fixed text of the Error thrown when the bridge has no `artifact` reader; it is the same string on every call and is exported from the utils module next to `damagedArtifact`.",
 				"examples": ["Recorded bytes cannot be read on this connection."]
 			},
 			{
 				"name": "damagedArtifact",
-				"type": "unknown",
+				"type": "string",
 				"description": "The fixed text of the Error thrown when the bytes the reader returned do not hash to `query.sha256`, the same string on every call. When it is thrown, no bytes are returned, so a caller never receives bytes that were not checked.",
 				"examples": ["The bytes that were read do not have the recorded SHA-256."]
 			},

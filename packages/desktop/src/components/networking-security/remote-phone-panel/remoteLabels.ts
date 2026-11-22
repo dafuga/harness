@@ -11,11 +11,12 @@ import {
 } from '../../../utils/networking-security/remoteLabels';
 import { plural } from '../../../helpers/strings/plural';
 import type {
+	RemoteGrant,
 	RemoteMobileStatus,
 	RemoteNativeStatus
 } from '../../../models/development-tooling/Environment.types';
 
-export function grantSummary(grant: { projects: unknown[]; agents: boolean }): string {
+export function grantSummary(grant: RemoteGrant): string {
 	return `${plural(grant.projects.length, 'project')} · ${grantLabel(grant)}`;
 }
 

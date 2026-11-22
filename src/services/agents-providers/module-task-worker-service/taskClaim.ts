@@ -1,5 +1,7 @@
 // @harness-uid u_b4uzqkb2i6
 import { randomUUID } from 'node:crypto';
+import { ExpectedCliError } from '../../../core/development-tooling/errors';
+import { WorkerOutsideModuleError } from './taskClaim.types';
 import type { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import type { TaskClaimOptions } from './taskClaim.types';
 import { TaskWorktreeChangedError } from '../../../adapters/agents-providers/TaskWorktreeChangedError';
@@ -27,6 +29,7 @@ export function pendingTaskResult(
 export function claimable(task: ModuleTask, worker: string, modules: string[]): boolean {
 	return (
 		task.status === 'queued' &&
+		!['role', 'assignedFiles', 'dependsOn'].some((key) => Object.hasOwn(task, key)) &&
 		(!task.assignee || task.assignee === worker) &&
 		(!modules.length || modules.includes(task.module.id))
 	);
@@ -62,7 +65,7 @@ export function finishTask(
 			current.repairCommit === claimed.repairCommit
 		].every(Boolean)
 	)
-		throw new Error('Task definition or claim changed; result was not overwritten.');
+		throw new ExpectedCliError('Task definition or claim changed; result was not overwritten.');
 	current.status = result?.error ? 'failed' : 'review';
 	current.result = result;
 }
@@ -76,7 +79,7 @@ export async function taskWrites(git: GitAdapter, task: ModuleTask): Promise<str
 	const paths = [...new Set((tracked + '\0' + untracked).split('\0').filter(Boolean))];
 	const outside = paths.filter((path) => !task.module.files.includes(path));
 	if (outside.length)
-		throw new TaskWorktreeChangedError(
+		throw new WorkerOutsideModuleError(
 			`Worker wrote outside the assigned module: ${outside.join(', ')}. Worktree preserved.`
 		);
 	return paths;

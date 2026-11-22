@@ -25,27 +25,27 @@
 		"outputs": [
 			{
 				"name": "taskUsageSchema",
-				"type": "unknown",
+				"type": "typeof taskUsageSchema",
 				"description": "Zod strict object schema for one task's token usage, where inputTokens, outputTokens, cacheReadTokens, cacheWriteTokens and reportedCostUsd must be present, cacheWriteLongTokens and reasoningTokens may be omitted, and each numeric field must be a finite non-negative number or null. It matters because taskExecutionSchema accepts it as its optional usage key, and any other key is rejected."
 			},
 			{
 				"name": "taskCostSchema",
-				"type": "unknown",
+				"type": "typeof taskCostSchema",
 				"description": "Zod strict object schema for one task's cost record, where all seven keys must be present, usd, minimumUsd and maximumUsd are finite non-negative numbers or null, basis is 'cli-reported', 'standard-api-estimate' or 'unavailable', rateCard and note are strings, and source is a string or null. It matters because taskExecutionSchema requires it as apiCost, and any other key is rejected."
 			},
 			{
 				"name": "taskExecutionSchema",
-				"type": "unknown",
+				"type": "typeof taskExecutionSchema",
 				"description": "Zod strict object schema for one task execution, where provider is 'claude' or 'codex', status is 'succeeded' or 'failed', model and intelligence are strings, reportedModel is a string or null, startedAt and finishedAt are UTC ISO datetime strings, apiCost must match taskCostSchema, and the optional usage must match taskUsageSchema. It matters whenever an execution record is validated because it nests those two schemas, and any other key is rejected."
 			},
 			{
 				"name": "reviewInputSchema",
-				"type": "unknown",
+				"type": "typeof reviewInputSchema",
 				"description": "Zod strict object schema for a review submission, where attempt is a UUID string, verdict is 'accepted' or 'incomplete', and the optional reviewer (trimmed, 1 to 150 characters, default 'unattributed') and feedback (trimmed, at most 16000 characters, default '') may be omitted. It matters because an 'incomplete' verdict is rejected with 'Incomplete review requires feedback.' unless the trimmed feedback is non-empty, and any other key is rejected."
 			},
 			{
 				"name": "taskReviewSchema",
-				"type": "unknown",
+				"type": "typeof taskReviewSchema",
 				"description": "Zod strict object schema for a task review record, where attempt is a UUID string, verdict is 'accepted' or 'incomplete', at is a UTC ISO datetime string, provider is 'claude' or 'codex', reviewer and feedback are strings with no trim, length limit or default, model and intelligence are strings, and reportedModel is a string or null, with all nine keys required. It matters when a review record is validated, since it adds at, provider, model, intelligence and reportedModel, which reviewInputSchema does not have, and any other key is rejected."
 			}
 		],

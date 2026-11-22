@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/ios-scan-fixture.ts"],
-		"symbols": ["scanFixtureProduct", "holds", "buildScanFixture"]
+		"source": [
+			"packages/desktop/scripts/ios-scan-fixture.ts",
+			"packages/desktop/scripts/ios-scan-fixture.types.ts"
+		],
+		"symbols": ["scanFixtureProduct", "holds", "buildScanFixture", "ScanFixtureMismatchError"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -35,7 +38,7 @@
 		"outputs": [
 			{
 				"name": "scanFixtureProduct",
-				"type": "unknown",
+				"type": "string",
 				"description": "Absolute destination path for `App.app` under `desktopRoot/.cache/ios/scan-fixture`. It names the test-only product built with the synthetic scanner.",
 				"examples": ["/repo/.cache/ios/scan-fixture/App.app"]
 			},

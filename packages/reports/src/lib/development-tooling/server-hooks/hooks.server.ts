@@ -1,6 +1,6 @@
 // @harness-uid u_hwwecdfxu6
 import { ConsoleAgentController } from './ConsoleAgentController';
-import type { Handle } from '@sveltejs/kit';
+import type { Handle, RequestEvent } from '@sveltejs/kit';
 import { consoleServer } from '../../../utils/explorer-ui/console-server/consoleServer';
 import { reportBuildIdentity } from '../../../utils/reports-media/reportBuildIdentity';
 
@@ -8,7 +8,13 @@ import { reportBuildIdentity } from '../../../utils/reports-media/reportBuildIde
 reportBuildIdentity();
 
 /** Every page, API, data, media and export request passes the owner policy before anything runs. */
-export const handle: Handle = async ({ event, resolve }) => {
+export const handle: Handle = async ({
+	event,
+	resolve
+}: {
+	event: RequestEvent;
+	resolve: Parameters<Handle>[0]['resolve'];
+}) => {
 	const denied = await consoleServer().guard(event);
 	if (denied) return denied;
 	const response =

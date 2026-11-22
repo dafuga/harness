@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.harness-icons",
+	"title": "reports.function.harness-icons examples",
+	"kind": "headless",
+	"units": ["reports.function.harness-icons"],
+	"builds": [],
+	"states": [
+		{
+			"id": "every-icon-is-path-data-on-the-grid",
+			"title": "Every icon is path data on the 24 by 24 grid",
+			"coverage": "required"
+		},
+		{
+			"id": "only-the-passed-and-failed-verdicts-are-solid",
+			"title": "Only the passed and failed verdicts are solid",
+			"coverage": "required"
+		},
+		{
+			"id": "each-entity-category-maps-to-its-own-catalog-icon",
+			"title": "Each entity category maps to its own catalog icon",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.harness-icons.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"every-icon-is-path-data-on-the-grid",
+				"only-the-passed-and-failed-verdicts-are-solid",
+				"each-entity-category-maps-to-its-own-catalog-icon"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"every-icon-is-path-data-on-the-grid",
+				"only-the-passed-and-failed-verdicts-are-solid",
+				"each-entity-category-maps-to-its-own-catalog-icon"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"every-icon-is-path-data-on-the-grid",
+				"only-the-passed-and-failed-verdicts-are-solid",
+				"each-entity-category-maps-to-its-own-catalog-icon"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

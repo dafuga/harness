@@ -1,5 +1,6 @@
 // @harness-uid u_dluvqzqdcs
 import type { RepositoryLease } from './repositoryLease.types';
+import { RepositoryLeaseError } from './repositoryLease.types';
 import { spawn } from 'node:child_process';
 import { mkdir, readFile, writeFile, unlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -8,7 +9,9 @@ import { createHash } from 'node:crypto';
 /** OS advisory lock shared across Web and Electron. A lost helper aborts its protected run. */
 async function advisoryLease(root: string): Promise<RepositoryLease | null> {
 	if (!['darwin', 'linux'].includes(process.platform))
-		throw new Error('Cross-app repository locking is not supported on this platform.');
+		throw new RepositoryLeaseError(
+			'Cross-app repository locking is not supported on this platform.'
+		);
 	const directory = join(tmpdir(), `harness-runs-${process.getuid?.() ?? 'owner'}`);
 	await mkdir(directory, { recursive: true, mode: 0o700 });
 	const file = join(directory, createHash('sha256').update(root).digest('hex'));
@@ -35,7 +38,7 @@ async function advisoryLease(root: string): Promise<RepositoryLease | null> {
 			if (!held) reject(cause);
 		});
 		child.stdin.on('error', () => {
-			if (!closing) lost.abort(new Error('Project lock pipe closed.'));
+			if (!closing) lost.abort(new RepositoryLeaseError('Project lock pipe closed.'));
 		});
 		child.stdout.once('data', () => {
 			held = true;
@@ -45,7 +48,7 @@ async function advisoryLease(root: string): Promise<RepositoryLease | null> {
 			if (!held) resolve(null);
 			else if (!closing) {
 				child.stdin.end();
-				lost.abort(new Error('Project lock was lost.'));
+				lost.abort(new RepositoryLeaseError('Project lock was lost.'));
 			}
 		});
 	});
@@ -88,7 +91,8 @@ export async function repositoryLease(root: string): Promise<RepositoryLease | n
 }
 function ownerAlive(owner: string): boolean {
 	const pid = Number(owner.split(':')[0]);
-	if (!Number.isSafeInteger(pid) || pid <= 0) throw new Error('Invalid project lock owner.');
+	if (!Number.isSafeInteger(pid) || pid <= 0)
+		throw new RepositoryLeaseError('Invalid project lock owner.');
 	try {
 		process.kill(pid, 0);
 		return true;

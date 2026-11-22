@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.adapter.mira-report",
+	"title": "reports.adapter.mira-report examples",
+	"kind": "headless",
+	"units": ["reports.adapter.mira-report"],
+	"builds": [],
+	"states": [
+		{
+			"id": "ingest-imports-assets-findings-and-coverage-into-the-store",
+			"title": "ingest imports assets, findings and coverage into the store",
+			"coverage": "required"
+		},
+		{
+			"id": "ingest-rejects-malformed-assets-json",
+			"title": "ingest rejects malformed assets JSON",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.adapter.mira-report.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"ingest-imports-assets-findings-and-coverage-into-the-store",
+				"ingest-rejects-malformed-assets-json"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"ingest-imports-assets-findings-and-coverage-into-the-store",
+				"ingest-rejects-malformed-assets-json"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"ingest-imports-assets-findings-and-coverage-into-the-store",
+				"ingest-rejects-malformed-assets-json"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

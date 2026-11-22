@@ -1,0 +1,1700 @@
+{
+	"schemaVersion": 1,
+	"id": "service.verification-evidence-video-archive",
+	"uid": "u_qfigvyo5j5",
+	"kind": "service",
+	"title": "VideoArchiveService",
+	"responsibility": "Seal bounded video/poster batches with original source provenance and verify their immutable metadata, media, ancestry and explicit transport without granting a verification verdict.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": [
+			"src/services/verification-evidence/VideoArchiveService.ts",
+			"src/services/verification-evidence/VideoArchiveService.types.ts",
+			"src/services/verification-evidence/video-archive-service/batch.ts",
+			"src/services/verification-evidence/video-archive-service/fetch.ts",
+			"src/services/verification-evidence/video-archive-service/media.ts",
+			"src/services/verification-evidence/video-archive-service/read.ts",
+			"src/services/verification-evidence/video-archive-service/restore.ts",
+			"src/services/verification-evidence/video-archive-service/schema.ts",
+			"src/services/verification-evidence/video-archive-service/source.ts",
+			"src/services/verification-evidence/video-archive-service/write.ts"
+		],
+		"symbols": [
+			"VideoArchiveService",
+			"VideoArchiveService.constructor",
+			"VideoArchiveService.run",
+			"VideoArchiveService.write",
+			"VideoArchiveService.read",
+			"VideoArchiveService.describe",
+			"VideoArchiveService.readClip",
+			"VideoArchiveService.current",
+			"VideoArchiveService.restore",
+			"VideoArchiveService.fetch",
+			"VideoArchiveBatch",
+			"VideoArchiveClip",
+			"VideoArchiveCurrent",
+			"VideoArchiveInput",
+			"VideoArchiveRead",
+			"VideoArchiveSlot",
+			"VideoBatchPointer",
+			"VideoBatchPointer",
+			"VideoArchiveSlot",
+			"VideoArchiveSelection",
+			"VideoArchiveClip",
+			"VideoArchiveBatch",
+			"VideoArchiveManifest",
+			"ArchiveVideoFacts",
+			"VideoArchiveSealedValue",
+			"VideoArchiveInput",
+			"VideoArchiveDescriptor",
+			"VideoArchiveRead",
+			"VideoArchiveCurrent",
+			"AdmittedVideo",
+			"digest",
+			"sealedBytes",
+			"slotKey",
+			"splitVideoBatches",
+			"mediaObjects",
+			"validateBatch",
+			"validateClip",
+			"batchManifest",
+			"fetchVideoBatch",
+			"retainedMedia",
+			"inspectMedia",
+			"readVideoBatch",
+			"readVideoBatchClip",
+			"readVideoBatchDescriptor",
+			"restoreVideoBatch",
+			"pointerSchema",
+			"mediaLimit",
+			"batchLimit",
+			"hashSchema",
+			"slotSchema",
+			"clipSchema",
+			"batchSchema",
+			"manifestSchema",
+			"sourceBinding",
+			"retainSource",
+			"fetchArchiveSources",
+			"writeVideoBatches"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "VideoArchiveService.constructor.root",
+				"type": "string",
+				"required": false,
+				"default": "process.cwd()",
+				"description": "The optional snapshot/root binding for this operation. Its documented default is the source expression process.cwd(), evaluated at construction, not a literal path string."
+			},
+			{
+				"name": "VideoArchiveService.write.inputs",
+				"type": "VideoArchiveInput[]",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.read.pointer",
+				"type": "VideoBatchPointer",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.read.within",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
+			},
+			{
+				"name": "VideoArchiveService.describe.pointer",
+				"type": "VideoBatchPointer",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.describe.within",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
+			},
+			{
+				"name": "VideoArchiveService.readClip.pointer",
+				"type": "VideoBatchPointer",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.readClip.selection",
+				"type": "VideoArchiveSelection",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.readClip.within",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
+			},
+			{
+				"name": "VideoArchiveService.current.slot",
+				"type": "VideoArchiveSlot",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.current.inputHash",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.current.pointers",
+				"type": "VideoBatchPointer[]",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.current.within",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
+			},
+			{
+				"name": "VideoArchiveService.restore.pointer",
+				"type": "VideoBatchPointer",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.restore.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.restore.within",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
+			},
+			{
+				"name": "VideoArchiveService.fetch.input",
+				"type": "VideoBatchPointer",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.fetch.remote",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "digest.bytes",
+				"type": "Buffer | string",
+				"required": true
+			},
+			{
+				"name": "sealedBytes.value",
+				"type": "VideoArchiveSealedValue",
+				"required": true
+			},
+			{
+				"name": "slotKey.slot",
+				"type": "VideoArchiveSlot",
+				"required": true
+			},
+			{
+				"name": "splitVideoBatches.clips",
+				"type": "VideoArchiveClip[]",
+				"required": true
+			},
+			{
+				"name": "mediaObjects.clips",
+				"type": "VideoArchiveClip[]",
+				"required": true
+			},
+			{
+				"name": "validateBatch.batch",
+				"type": "VideoArchiveBatch",
+				"required": true
+			},
+			{
+				"name": "validateClip.clip",
+				"type": "VideoArchiveClip",
+				"required": true
+			},
+			{
+				"name": "batchManifest.batch",
+				"type": "VideoArchiveBatch",
+				"required": true
+			},
+			{
+				"name": "batchManifest.bytes",
+				"type": "Buffer",
+				"required": true
+			},
+			{
+				"name": "fetchVideoBatch.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "fetchVideoBatch.input",
+				"type": "VideoBatchPointer",
+				"required": true
+			},
+			{
+				"name": "fetchVideoBatch.remote",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "retainedMedia.lfs",
+				"type": "LfsAdapter",
+				"required": true
+			},
+			{
+				"name": "retainedMedia.object",
+				"type": "VideoArchiveClip['media']",
+				"required": true
+			},
+			{
+				"name": "inspectMedia.clip",
+				"type": "VideoArchiveClip",
+				"required": true
+			},
+			{
+				"name": "inspectMedia.files",
+				"type": "Map<string, Buffer>",
+				"required": true
+			},
+			{
+				"name": "readVideoBatch.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readVideoBatch.input",
+				"type": "VideoBatchPointer",
+				"required": true
+			},
+			{
+				"name": "readVideoBatch.within",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
+			},
+			{
+				"name": "readVideoBatchClip.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readVideoBatchClip.pointer",
+				"type": "VideoBatchPointer",
+				"required": true
+			},
+			{
+				"name": "readVideoBatchClip.selection",
+				"type": "VideoArchiveSelection",
+				"required": true
+			},
+			{
+				"name": "readVideoBatchClip.within",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
+			},
+			{
+				"name": "readVideoBatchDescriptor.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readVideoBatchDescriptor.input",
+				"type": "VideoBatchPointer",
+				"required": true
+			},
+			{
+				"name": "readVideoBatchDescriptor.within",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
+			},
+			{
+				"name": "restoreVideoBatch.read",
+				"type": "VideoArchiveRead",
+				"required": true
+			},
+			{
+				"name": "restoreVideoBatch.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "restoreVideoBatch.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "sourceBinding.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "sourceBinding.clip",
+				"type": "VideoArchiveClip",
+				"required": true
+			},
+			{
+				"name": "retainSource.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "retainSource.revision",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "fetchArchiveSources.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "fetchArchiveSources.remote",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "fetchArchiveSources.clips",
+				"type": "VideoArchiveClip[]",
+				"required": true
+			},
+			{
+				"name": "writeVideoBatches.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "writeVideoBatches.inputs",
+				"type": "VideoArchiveInput[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "VideoArchiveService.run",
+				"type": "string"
+			},
+			{
+				"name": "VideoArchiveService.write",
+				"type": "Promise<VideoBatchPointer[]>"
+			},
+			{
+				"name": "VideoArchiveService.read",
+				"type": "Promise<VideoArchiveRead>"
+			},
+			{
+				"name": "VideoArchiveService.describe",
+				"type": "Promise<VideoArchiveDescriptor>"
+			},
+			{
+				"name": "VideoArchiveService.readClip",
+				"type": "Promise<VideoArchiveCurrent>"
+			},
+			{
+				"name": "VideoArchiveService.current",
+				"type": "Promise<VideoArchiveCurrent | null>"
+			},
+			{
+				"name": "VideoArchiveService.restore",
+				"type": "Promise<VideoArchiveRead>"
+			},
+			{
+				"name": "VideoArchiveService.fetch",
+				"type": "Promise<VideoArchiveRead>"
+			},
+			{
+				"name": "digest",
+				"type": "string",
+				"description": "Hashes declared Buffer/string bytes with fixed SHA-256; it has no operation-specific rejection for typed input."
+			},
+			{
+				"name": "sealedBytes",
+				"type": "Buffer"
+			},
+			{
+				"name": "slotKey",
+				"type": "string"
+			},
+			{
+				"name": "splitVideoBatches",
+				"type": "VideoArchiveClip[][]"
+			},
+			{
+				"name": "mediaObjects",
+				"type": "Map<string, VideoArchiveClip['media']>"
+			},
+			{
+				"name": "validateBatch",
+				"type": "void"
+			},
+			{
+				"name": "validateClip",
+				"type": "void"
+			},
+			{
+				"name": "batchManifest",
+				"type": "VideoArchiveManifest"
+			},
+			{
+				"name": "fetchVideoBatch",
+				"type": "Promise<VideoArchiveRead>"
+			},
+			{
+				"name": "retainedMedia",
+				"type": "Promise<Buffer>"
+			},
+			{
+				"name": "inspectMedia",
+				"type": "void"
+			},
+			{
+				"name": "readVideoBatch",
+				"type": "Promise<VideoArchiveRead>"
+			},
+			{
+				"name": "readVideoBatchClip",
+				"type": "Promise<VideoArchiveCurrent>"
+			},
+			{
+				"name": "readVideoBatchDescriptor",
+				"type": "Promise<VideoArchiveDescriptor>"
+			},
+			{
+				"name": "restoreVideoBatch",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "mediaLimit",
+				"type": "unknown"
+			},
+			{
+				"name": "batchLimit",
+				"type": "unknown"
+			},
+			{
+				"name": "hashSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "slotSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "clipSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "batchSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "manifestSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "sourceBinding",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "retainSource",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "fetchArchiveSources",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "writeVideoBatches",
+				"type": "Promise<VideoBatchPointer[]>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+			},
+			{
+				"name": "Git/LFS collaborator rejection",
+				"type": "propagated",
+				"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+			},
+			{
+				"name": "Filesystem rejection",
+				"type": "propagated",
+				"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "VideoArchiveService.run",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "VideoArchiveService.run",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "VideoArchiveService.write",
+				"inputs": [
+					{
+						"name": "VideoArchiveService.write.inputs",
+						"type": "VideoArchiveInput[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoArchiveService.write",
+						"type": "Promise<VideoBatchPointer[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VideoArchiveService.read",
+				"inputs": [
+					{
+						"name": "VideoArchiveService.read.pointer",
+						"type": "VideoBatchPointer",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.read.within",
+						"type": "string",
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoArchiveService.read",
+						"type": "Promise<VideoArchiveRead>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VideoArchiveService.describe",
+				"inputs": [
+					{
+						"name": "VideoArchiveService.describe.pointer",
+						"type": "VideoBatchPointer",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.describe.within",
+						"type": "string",
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoArchiveService.describe",
+						"type": "Promise<VideoArchiveDescriptor>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VideoArchiveService.readClip",
+				"inputs": [
+					{
+						"name": "VideoArchiveService.readClip.pointer",
+						"type": "VideoBatchPointer",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.readClip.selection",
+						"type": "VideoArchiveSelection",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.readClip.within",
+						"type": "string",
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoArchiveService.readClip",
+						"type": "Promise<VideoArchiveCurrent>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VideoArchiveService.current",
+				"inputs": [
+					{
+						"name": "VideoArchiveService.current.slot",
+						"type": "VideoArchiveSlot",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.current.inputHash",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.current.pointers",
+						"type": "VideoBatchPointer[]",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.current.within",
+						"type": "string",
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoArchiveService.current",
+						"type": "Promise<VideoArchiveCurrent | null>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Slot and input-hash validation occurs before the read loop. Once those inputs are valid, archive read failures are caught and return null rather than a reusable clip."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VideoArchiveService.restore",
+				"inputs": [
+					{
+						"name": "VideoArchiveService.restore.pointer",
+						"type": "VideoBatchPointer",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.restore.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.restore.within",
+						"type": "string",
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoArchiveService.restore",
+						"type": "Promise<VideoArchiveRead>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VideoArchiveService.fetch",
+				"inputs": [
+					{
+						"name": "VideoArchiveService.fetch.input",
+						"type": "VideoBatchPointer",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.fetch.remote",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoArchiveService.fetch",
+						"type": "Promise<VideoArchiveRead>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "digest",
+				"inputs": [
+					{
+						"name": "digest.bytes",
+						"type": "Buffer | string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "digest",
+						"type": "string",
+						"description": "Hashes declared Buffer/string bytes with fixed SHA-256; it has no operation-specific rejection for typed input."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "sealedBytes",
+				"inputs": [
+					{
+						"name": "sealedBytes.value",
+						"type": "VideoArchiveSealedValue",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedBytes",
+						"type": "Buffer"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "propagated",
+						"description": "The existing JSON serializer rejects an unsupported runtime value such as BigInt; inputs are expected to conform to the declared JSON descriptor shape."
+					},
+					{
+						"name": "RangeError",
+						"type": "propagated",
+						"description": "The existing recursive canonical serializer can exhaust the stack for cyclic or excessively deep runtime input; inputs are expected to satisfy the declared descriptor shape."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "slotKey",
+				"inputs": [
+					{
+						"name": "slotKey.slot",
+						"type": "VideoArchiveSlot",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "slotKey",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "propagated",
+						"description": "The existing JSON serializer rejects an unsupported runtime value such as BigInt; inputs are expected to conform to the declared JSON descriptor shape."
+					},
+					{
+						"name": "RangeError",
+						"type": "propagated",
+						"description": "The existing recursive canonical serializer can exhaust the stack for cyclic or excessively deep runtime input; inputs are expected to satisfy the declared descriptor shape."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "splitVideoBatches",
+				"inputs": [
+					{
+						"name": "splitVideoBatches.clips",
+						"type": "VideoArchiveClip[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "splitVideoBatches",
+						"type": "VideoArchiveClip[][]"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "mediaObjects",
+				"inputs": [
+					{
+						"name": "mediaObjects.clips",
+						"type": "VideoArchiveClip[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "mediaObjects",
+						"type": "Map<string, VideoArchiveClip['media']>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "validateBatch",
+				"inputs": [
+					{
+						"name": "validateBatch.batch",
+						"type": "VideoArchiveBatch",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateBatch",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "validateClip",
+				"inputs": [
+					{
+						"name": "validateClip.clip",
+						"type": "VideoArchiveClip",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateClip",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "batchManifest",
+				"inputs": [
+					{
+						"name": "batchManifest.batch",
+						"type": "VideoArchiveBatch",
+						"required": true
+					},
+					{
+						"name": "batchManifest.bytes",
+						"type": "Buffer",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "batchManifest",
+						"type": "VideoArchiveManifest"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "fetchVideoBatch",
+				"inputs": [
+					{
+						"name": "fetchVideoBatch.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "fetchVideoBatch.input",
+						"type": "VideoBatchPointer",
+						"required": true
+					},
+					{
+						"name": "fetchVideoBatch.remote",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "fetchVideoBatch",
+						"type": "Promise<VideoArchiveRead>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "retainedMedia",
+				"inputs": [
+					{
+						"name": "retainedMedia.lfs",
+						"type": "LfsAdapter",
+						"required": true
+					},
+					{
+						"name": "retainedMedia.object",
+						"type": "VideoArchiveClip['media']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "retainedMedia",
+						"type": "Promise<Buffer>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "inspectMedia",
+				"inputs": [
+					{
+						"name": "inspectMedia.clip",
+						"type": "VideoArchiveClip",
+						"required": true
+					},
+					{
+						"name": "inspectMedia.files",
+						"type": "Map<string, Buffer>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "inspectMedia",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "readVideoBatch",
+				"inputs": [
+					{
+						"name": "readVideoBatch.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readVideoBatch.input",
+						"type": "VideoBatchPointer",
+						"required": true
+					},
+					{
+						"name": "readVideoBatch.within",
+						"type": "string",
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readVideoBatch",
+						"type": "Promise<VideoArchiveRead>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "readVideoBatchClip",
+				"inputs": [
+					{
+						"name": "readVideoBatchClip.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readVideoBatchClip.pointer",
+						"type": "VideoBatchPointer",
+						"required": true
+					},
+					{
+						"name": "readVideoBatchClip.selection",
+						"type": "VideoArchiveSelection",
+						"required": true
+					},
+					{
+						"name": "readVideoBatchClip.within",
+						"type": "string",
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readVideoBatchClip",
+						"type": "Promise<VideoArchiveCurrent>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "readVideoBatchDescriptor",
+				"inputs": [
+					{
+						"name": "readVideoBatchDescriptor.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readVideoBatchDescriptor.input",
+						"type": "VideoBatchPointer",
+						"required": true
+					},
+					{
+						"name": "readVideoBatchDescriptor.within",
+						"type": "string",
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readVideoBatchDescriptor",
+						"type": "Promise<VideoArchiveDescriptor>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "restoreVideoBatch",
+				"inputs": [
+					{
+						"name": "restoreVideoBatch.read",
+						"type": "VideoArchiveRead",
+						"required": true
+					},
+					{
+						"name": "restoreVideoBatch.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "restoreVideoBatch.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "restoreVideoBatch",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "sourceBinding",
+				"inputs": [
+					{
+						"name": "sourceBinding.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "sourceBinding.clip",
+						"type": "VideoArchiveClip",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceBinding",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "retainSource",
+				"inputs": [
+					{
+						"name": "retainSource.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "retainSource.revision",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "retainSource",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "fetchArchiveSources",
+				"inputs": [
+					{
+						"name": "fetchArchiveSources.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "fetchArchiveSources.remote",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "fetchArchiveSources.clips",
+						"type": "VideoArchiveClip[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "fetchArchiveSources",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "writeVideoBatches",
+				"inputs": [
+					{
+						"name": "writeVideoBatches.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "writeVideoBatches.inputs",
+						"type": "VideoArchiveInput[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeVideoBatches",
+						"type": "Promise<VideoBatchPointer[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "VideoArchiveService.constructor",
+				"inputs": [
+					{
+						"name": "VideoArchiveService.constructor.root",
+						"type": "string",
+						"required": false,
+						"default": "process.cwd()",
+						"description": "The optional snapshot/root binding for this operation. Its documented default is the source expression process.cwd(), evaluated at construction, not a literal path string."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoArchiveService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.evidence-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.lfs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.history-refs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.lfs-pointer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.media-facts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-evidence-video-clip-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.evidence-branch",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/verification-evidence/VideoArchiveService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/verification-evidence/VideoArchiveService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

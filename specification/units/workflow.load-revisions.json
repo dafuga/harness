@@ -31,9 +31,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root passed to loadUnits alongside the source tree and indexer. It is used while loading and reconciling unit data for this side.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "loadSide.tree",
@@ -54,11 +52,11 @@
 				"description": "Selects the repository and revisions to compare. root defaults to process.cwd(), base defaults to HEAD (the value \"none\" selects emptySide), and an omitted head uses the working tree; the resolved root must be a Git repository, and opened commit trees containing evidenceMarker are rejected.",
 				"examples": [
 					{
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+						"root": "/workspace/project",
 						"base": "none"
 					},
 					{
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+						"root": "/workspace/project",
 						"base": "0123456789abcdef0123456789abcdef01234567",
 						"head": "89abcdef0123456789abcdef0123456789abcdef"
 					}
@@ -69,9 +67,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root bound to the returned commit loader. It is used when opening each requested commit tree.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-				]
+				"examples": ["/workspace/project"]
 			}
 		],
 		"outputs": [
@@ -113,9 +109,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root passed to loadUnits alongside the source tree and indexer. It is used while loading and reconciling unit data for this side.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "loadSide.tree",
@@ -163,11 +157,11 @@
 						"description": "Selects the repository and revisions to compare. root defaults to process.cwd(), base defaults to HEAD (the value \"none\" selects emptySide), and an omitted head uses the working tree; the resolved root must be a Git repository, and opened commit trees containing evidenceMarker are rejected.",
 						"examples": [
 							{
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+								"root": "/workspace/project",
 								"base": "none"
 							},
 							{
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+								"root": "/workspace/project",
 								"base": "0123456789abcdef0123456789abcdef01234567",
 								"head": "89abcdef0123456789abcdef0123456789abcdef"
 							}
@@ -198,9 +192,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root bound to the returned commit loader. It is used when opening each requested commit tree.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [

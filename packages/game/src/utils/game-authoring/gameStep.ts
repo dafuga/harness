@@ -8,6 +8,11 @@ import type {
 import { checkpointGraph } from './checkpointGraph';
 import { keyDoor } from './keyDoor';
 
+/** A game step refused because its level is not approved and built, a movement delta is not finite, or a mechanic patch writes a duplicate or unsafe state key. */
+export class GameStepRefusedError extends Error {
+	override name = 'GameStepRefusedError';
+}
+
 export function createRun(seed = 1, view?: GameView): GameRun {
 	const world = view?.world;
 	return {
@@ -43,9 +48,10 @@ export function stepGame(
 	view: GameView,
 	mechanics?: Mechanic[]
 ): GameRun {
-	if (!LevelValidator.isReady(view)) throw new Error('Approve and build the level before playing.');
+	if (!LevelValidator.isReady(view))
+		throw new GameStepRefusedError('Approve and build the level before playing.');
 	if (!Number.isFinite(input.x) || !Number.isFinite(input.y))
-		throw new Error('Movement must be finite.');
+		throw new GameStepRefusedError('Movement must be finite.');
 	run = enterView(run, view.id);
 	if (view.world && run.state.level !== view.id + ':' + view.planning?.built)
 		run = {
@@ -71,9 +77,9 @@ function runMechanics(state: GameRun['state'], input: GameInput, mechanics: Mech
 	for (const mechanic of [...mechanics].sort((a, b) => a.id.localeCompare(b.id))) {
 		const patch = mechanic.step(state, input);
 		for (const [key, value] of Object.entries(patch)) {
-			if (written.has(key)) throw new Error('Conflicting mechanic write: ' + key);
+			if (written.has(key)) throw new GameStepRefusedError('Conflicting mechanic write: ' + key);
 			if (['__proto__', 'constructor', 'prototype'].includes(key))
-				throw new Error('Unsafe state field.');
+				throw new GameStepRefusedError('Unsafe state field.');
 			written.add(key);
 			result[key] = value;
 		}

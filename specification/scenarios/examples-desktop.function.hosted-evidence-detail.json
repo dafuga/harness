@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.hosted-evidence-detail",
+	"title": "desktop.function.hosted-evidence-detail examples",
+	"kind": "headless",
+	"units": ["desktop.function.hosted-evidence-detail"],
+	"builds": [],
+	"states": [
+		{
+			"id": "accepts-complete-details-and-rejects-undeclared-fields",
+			"title": "accepts complete details and rejects undeclared fields",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.hosted-evidence-detail.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["accepts-complete-details-and-rejects-undeclared-fields"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["accepts-complete-details-and-rejects-undeclared-fields"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["accepts-complete-details-and-rejects-undeclared-fields"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

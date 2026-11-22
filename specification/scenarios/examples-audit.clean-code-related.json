@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-audit.clean-code-related",
+	"title": "audit.clean-code-related examples",
+	"kind": "headless",
+	"units": ["audit.clean-code-related"],
+	"builds": [],
+	"states": [
+		{
+			"id": "relatedreviewpaths-resolved-typescript-and-svelte-imports",
+			"title": "relatedReviewPaths resolved TypeScript and Svelte imports",
+			"coverage": "required"
+		},
+		{
+			"id": "relatedreviewpaths-resolved-python-relative-imports",
+			"title": "relatedReviewPaths resolved Python relative imports",
+			"coverage": "required"
+		},
+		{
+			"id": "relatedreviewpaths-capped-imports-at-four-and-tests-at-two",
+			"title": "relatedReviewPaths capped imports at four and tests at two",
+			"coverage": "required"
+		},
+		{
+			"id": "reviewconventionpaths-walked-folders-up-to-the-root",
+			"title": "reviewConventionPaths walked folders up to the root",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/audit.clean-code-related.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"relatedreviewpaths-resolved-typescript-and-svelte-imports",
+				"relatedreviewpaths-resolved-python-relative-imports",
+				"relatedreviewpaths-capped-imports-at-four-and-tests-at-two",
+				"reviewconventionpaths-walked-folders-up-to-the-root"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"relatedreviewpaths-resolved-typescript-and-svelte-imports",
+				"relatedreviewpaths-resolved-python-relative-imports",
+				"relatedreviewpaths-capped-imports-at-four-and-tests-at-two",
+				"reviewconventionpaths-walked-folders-up-to-the-root"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"relatedreviewpaths-resolved-typescript-and-svelte-imports",
+				"relatedreviewpaths-resolved-python-relative-imports",
+				"relatedreviewpaths-capped-imports-at-four-and-tests-at-two",
+				"reviewconventionpaths-walked-folders-up-to-the-root"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

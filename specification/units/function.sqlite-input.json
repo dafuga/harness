@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/development-tooling/sqliteInput.ts"],
-		"symbols": ["sqliteInput"]
+		"source": [
+			"src/utils/development-tooling/sqliteInput.ts",
+			"src/utils/development-tooling/sqliteInput.types.ts"
+		],
+		"symbols": ["sqliteInput", "UnknownSqliteFieldError"]
 	},
 	"contract": {
 		"origin": "declared",

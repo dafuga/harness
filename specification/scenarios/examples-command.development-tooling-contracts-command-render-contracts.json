@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-command.development-tooling-contracts-command-render-contracts",
+	"title": "command.development-tooling-contracts-command-render-contracts examples",
+	"kind": "headless",
+	"units": ["command.development-tooling-contracts-command-render-contracts"],
+	"builds": [],
+	"states": [
+		{
+			"id": "lists-contract-summaries-compactly",
+			"title": "Lists contract summaries compactly",
+			"coverage": "required"
+		},
+		{
+			"id": "shows-complete-stored-contract-fields",
+			"title": "Shows complete stored contract fields",
+			"coverage": "required"
+		},
+		{
+			"id": "searches-ranked-contract-matches",
+			"title": "Searches ranked contract matches",
+			"coverage": "required"
+		},
+		{
+			"id": "maps-contract-relationships-and-unresolved-ids",
+			"title": "Maps contract relationships and unresolved ids",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-show-receives-a-null-record",
+			"title": "Throws TypeError when show receives a null record",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-rangeerror-when-contract-fields-exceed-recursive-rend",
+			"title": "Throws RangeError when contract fields exceed recursive rendering depth",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/command.development-tooling-contracts-command-render-contracts.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"lists-contract-summaries-compactly",
+				"shows-complete-stored-contract-fields",
+				"searches-ranked-contract-matches",
+				"maps-contract-relationships-and-unresolved-ids",
+				"throws-typeerror-when-show-receives-a-null-record",
+				"throws-rangeerror-when-contract-fields-exceed-recursive-rend"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"lists-contract-summaries-compactly",
+				"shows-complete-stored-contract-fields",
+				"searches-ranked-contract-matches",
+				"maps-contract-relationships-and-unresolved-ids",
+				"throws-typeerror-when-show-receives-a-null-record",
+				"throws-rangeerror-when-contract-fields-exceed-recursive-rend"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"lists-contract-summaries-compactly",
+				"shows-complete-stored-contract-fields",
+				"searches-ranked-contract-matches",
+				"maps-contract-relationships-and-unresolved-ids",
+				"throws-typeerror-when-show-receives-a-null-record",
+				"throws-rangeerror-when-contract-fields-exceed-recursive-rend"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

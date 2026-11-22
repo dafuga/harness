@@ -4,22 +4,25 @@
 	"uid": "u_mzypaxxnyu",
 	"kind": "service",
 	"title": "reviewModuleTask",
-	"responsibility": "Owns the reviewModuleTask service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Record one verdict per module-task attempt, verify acceptance evidence, preserve work before requeueing incomplete work, and return a previously recorded verdict on replay.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"src/services/agents-providers/module-task-service/acceptanceEvidence.ts",
 			"src/services/agents-providers/module-task-service/acceptanceEvidence.types.ts",
 			"src/services/agents-providers/module-task-service/recordedReview.ts",
-			"src/services/agents-providers/module-task-service/reviewModuleTask.ts"
+			"src/services/agents-providers/module-task-service/reviewModuleTask.ts",
+			"src/services/agents-providers/module-task-service/reviewModuleTask.types.ts"
 		],
 		"symbols": [
 			"acceptanceEvidence",
 			"TaskAcceptanceEvidence",
 			"EvidenceScope",
 			"recordedReview",
-			"reviewModuleTask"
+			"TaskNotAwaitingAttemptReviewError",
+			"reviewModuleTask",
+			"StaleTaskReviewError"
 		]
 	},
 	"contract": {
@@ -55,9 +58,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository root passed to worktree checkpointing and module-task analytics sync. It is used when an incomplete review needs a checkpoint and after the repository update.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "reviewModuleTask.repository",
@@ -76,15 +77,17 @@
 				"name": "reviewModuleTask.input",
 				"type": "unknown",
 				"required": true,
-				"description": "The review payload parsed by reviewInputSchema before the task is changed. Its attempt is compared with the current claim token; an accepted verdict accepts the task, while other verdicts requeue it, and an incomplete verdict creates a checkpoint only when one is absent.",
+				"description": "Review payload with a claim UUID and verdict. Acceptance requires verification evidence carrying the submission. An incomplete verdict requires feedback and preserves a checkpoint before requeueing.",
 				"examples": [
 					{
-						"attempt": "attempt-7",
-						"verdict": "accepted"
+						"attempt": "5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+						"verdict": "accepted",
+						"evidence": "0123456789abcdef0123456789abcdef01234567"
 					},
 					{
-						"attempt": "attempt-7",
-						"verdict": "incomplete"
+						"attempt": "5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+						"verdict": "incomplete",
+						"feedback": "Add scenario proof for the changed behavior."
 					}
 				]
 			}
@@ -92,24 +95,30 @@
 		"outputs": [
 			{
 				"name": "reviewModuleTask",
-				"type": "unknown",
-				"description": "Resolves to an object containing the commit returned by repository.update and the task returned by its update callback. The task reflects the appended review and the resulting accepted or queued state; its remaining fields are supplied by the repository task value.",
+				"type": "Promise<{ commit: string | undefined; task: ModuleTask; replayed: boolean }>",
+				"description": "Returns the queue commit and task after recording a verdict, with replayed false. An equivalent replay returns the current queue commit and existing task with replayed true.",
 				"examples": [
 					{
 						"commit": "0123456789abcdef0123456789abcdef01234567",
 						"task": {
 							"id": "module-task-17",
 							"status": "accepted"
-						}
+						},
+						"replayed": false
 					}
 				]
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "TaskNotAwaitingAttemptReviewError",
 				"type": "thrown",
-				"description": "The explicit guards throw when the task is not awaiting this attempt (missing task, wrong status or claim token, or missing result), or when the task review becomes stale before update (status, claim token, contract hash, or result changed); the stale-review error prevents overwriting a result."
+				"description": "The task, matching claim, or submitted result is missing, or the task is outside review."
+			},
+			{
+				"name": "StaleTaskReviewError",
+				"type": "thrown",
+				"description": "The task status, claim, contract, or result changed before the review could be saved."
 			}
 		],
 		"errorStatus": "declared",
@@ -183,9 +192,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository root passed to worktree checkpointing and module-task analytics sync. It is used when an incomplete review needs a checkpoint and after the repository update.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "reviewModuleTask.repository",
@@ -204,15 +211,17 @@
 						"name": "reviewModuleTask.input",
 						"type": "unknown",
 						"required": true,
-						"description": "The review payload parsed by reviewInputSchema before the task is changed. Its attempt is compared with the current claim token; an accepted verdict accepts the task, while other verdicts requeue it, and an incomplete verdict creates a checkpoint only when one is absent.",
+						"description": "Review payload with a claim UUID and verdict. Acceptance requires verification evidence carrying the submission. An incomplete verdict requires feedback and preserves a checkpoint before requeueing.",
 						"examples": [
 							{
-								"attempt": "attempt-7",
-								"verdict": "accepted"
+								"attempt": "5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+								"verdict": "accepted",
+								"evidence": "0123456789abcdef0123456789abcdef01234567"
 							},
 							{
-								"attempt": "attempt-7",
-								"verdict": "incomplete"
+								"attempt": "5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+								"verdict": "incomplete",
+								"feedback": "Add scenario proof for the changed behavior."
 							}
 						]
 					}
@@ -220,24 +229,30 @@
 				"outputs": [
 					{
 						"name": "reviewModuleTask",
-						"type": "unknown",
-						"description": "Resolves to an object containing the commit returned by repository.update and the task returned by its update callback. The task reflects the appended review and the resulting accepted or queued state; its remaining fields are supplied by the repository task value.",
+						"type": "Promise<{ commit: string | undefined; task: ModuleTask; replayed: boolean }>",
+						"description": "Returns the queue commit and task after recording a verdict, with replayed false. An equivalent replay returns the current queue commit and existing task with replayed true.",
 						"examples": [
 							{
 								"commit": "0123456789abcdef0123456789abcdef01234567",
 								"task": {
 									"id": "module-task-17",
 									"status": "accepted"
-								}
+								},
+								"replayed": false
 							}
 						]
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "TaskNotAwaitingAttemptReviewError",
 						"type": "thrown",
-						"description": "The explicit guards throw when the task is not awaiting this attempt (missing task, wrong status or claim token, or missing result), or when the task review becomes stale before update (status, claim token, contract hash, or result changed); the stale-review error prevents overwriting a result."
+						"description": "The task, matching claim, or submitted result is missing, or the task is outside review."
+					},
+					{
+						"name": "StaleTaskReviewError",
+						"type": "thrown",
+						"description": "The task status, claim, contract, or result changed before the review could be saved."
 					}
 				],
 				"errorStatus": "declared"

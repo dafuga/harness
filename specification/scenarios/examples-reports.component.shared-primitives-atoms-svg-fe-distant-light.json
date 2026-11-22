@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.component.shared-primitives-atoms-svg-fe-distant-light",
+	"title": "reports.component.shared-primitives-atoms-svg-fe-distant-light examples",
+	"kind": "headless",
+	"units": ["reports.component.shared-primitives-atoms-svg-fe-distant-light"],
+	"builds": [],
+	"states": [
+		{
+			"id": "renders-a-bare-fedistantlight-element-with-no-child-content",
+			"title": "renders a bare feDistantLight element with no child content",
+			"coverage": "required"
+		},
+		{
+			"id": "passes-the-light-attributes-through-to-the-element",
+			"title": "passes the light attributes through to the element",
+			"coverage": "required"
+		},
+		{
+			"id": "renders-the-children-snippet-inside-the-element",
+			"title": "renders the children snippet inside the element",
+			"coverage": "required"
+		},
+		{
+			"id": "passes-an-invalid-attribute-value-through-without-validation",
+			"title": "passes an invalid attribute value through without validation",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.component.shared-primitives-atoms-svg-fe-distant-light.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"renders-a-bare-fedistantlight-element-with-no-child-content",
+				"passes-the-light-attributes-through-to-the-element",
+				"renders-the-children-snippet-inside-the-element",
+				"passes-an-invalid-attribute-value-through-without-validation"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"renders-a-bare-fedistantlight-element-with-no-child-content",
+				"passes-the-light-attributes-through-to-the-element",
+				"renders-the-children-snippet-inside-the-element",
+				"passes-an-invalid-attribute-value-through-without-validation"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"renders-a-bare-fedistantlight-element-with-no-child-content",
+				"passes-the-light-attributes-through-to-the-element",
+				"renders-the-children-snippet-inside-the-element",
+				"passes-an-invalid-attribute-value-through-without-validation"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.line-process",
+	"title": "function.line-process examples",
+	"kind": "headless",
+	"units": ["function.line-process"],
+	"builds": [],
+	"states": [
+		{
+			"id": "keeps-one-child-process-for-sequential-line-exchanges",
+			"title": "Keeps one child process for sequential line exchanges",
+			"coverage": "required"
+		},
+		{
+			"id": "close-stops-the-child-so-the-next-exchange-starts-a-new-one",
+			"title": "Close stops the child so the next exchange starts a new one",
+			"coverage": "required"
+		},
+		{
+			"id": "missing-command-resolves-the-exchange-as-runtime-unavailable",
+			"title": "Missing command resolves the exchange as runtime-unavailable",
+			"coverage": "required"
+		},
+		{
+			"id": "child-that-exits-before-replying-resolves-as-runtime-failed",
+			"title": "Child that exits before replying resolves as runtime-failed",
+			"coverage": "required"
+		},
+		{
+			"id": "silent-child-times-out-and-is-killed",
+			"title": "Silent child times out and is killed",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.line-process.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"keeps-one-child-process-for-sequential-line-exchanges",
+				"close-stops-the-child-so-the-next-exchange-starts-a-new-one",
+				"missing-command-resolves-the-exchange-as-runtime-unavailable",
+				"child-that-exits-before-replying-resolves-as-runtime-failed",
+				"silent-child-times-out-and-is-killed"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"keeps-one-child-process-for-sequential-line-exchanges",
+				"close-stops-the-child-so-the-next-exchange-starts-a-new-one",
+				"missing-command-resolves-the-exchange-as-runtime-unavailable",
+				"child-that-exits-before-replying-resolves-as-runtime-failed",
+				"silent-child-times-out-and-is-killed"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"keeps-one-child-process-for-sequential-line-exchanges",
+				"close-stops-the-child-so-the-next-exchange-starts-a-new-one",
+				"missing-command-resolves-the-exchange-as-runtime-unavailable",
+				"child-that-exits-before-replying-resolves-as-runtime-failed",
+				"silent-child-times-out-and-is-killed"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

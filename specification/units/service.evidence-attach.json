@@ -4,20 +4,30 @@
 	"uid": "u_rfumv65ikl",
 	"kind": "service",
 	"title": "EvidenceAttachService",
-	"responsibility": "Validates a verification record and its dependencies and persists them to the evidence branch, notes and archive refs.",
+	"responsibility": "Durably attaches verified records and resolves explicitly addressed video feedback after notes and media exist.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"src/services/verification-evidence/evidence-attach-service/EvidenceAttachService.ts",
-			"src/services/verification-evidence/evidence-attach-service/EvidenceAttachService.types.ts"
+			"src/services/verification-evidence/evidence-attach-service/EvidenceAttachService.types.ts",
+			"src/services/verification-evidence/evidence-attach-service/attachedClipDependencies.ts",
+			"src/services/verification-evidence/evidence-attach-service/attachedVideoFlagChecks.ts",
+			"src/services/verification-evidence/evidence-attach-service/attachedVideoFlags.ts",
+			"src/services/verification-evidence/evidence-attach-service/attachedVideoRaw.ts"
 		],
 		"symbols": [
 			"EvidenceAttachService",
 			"EvidenceAttachService.constructor",
 			"EvidenceAttachService.attach",
 			"Attached",
-			"Attached"
+			"Attached",
+			"attachedClipDependency",
+			"attachedVideoFlagFailure",
+			"resolveAttachedVideoFlags",
+			"eligibleVideoRecord",
+			"resolvedVideoAttachment",
+			"finalizedVideoAttachment"
 		]
 	},
 	"contract": {
@@ -28,9 +38,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root used to construct the verification store, evidence branch, history-note repository, LFS adapter, and checker.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "EvidenceAttachService.attach.commit",
@@ -49,7 +57,7 @@
 						"record": {
 							"id": "bf46f2cf6af18fe825e90b63bb15f0cac31bbb39ec43a02b302d7bd29e639815",
 							"schemaVersion": 1,
-							"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+							"repository": "/workspace/project",
 							"source": {
 								"commit": "0123456789abcdef0123456789abcdef01234567",
 								"tree": "89abcdef0123456789abcdef0123456789abcdef",
@@ -115,9 +123,97 @@
 							},
 							"failures": []
 						},
-						"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
+						"directory": "/workspace/project/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
 					}
 				]
+			},
+			{
+				"name": "attachedClipDependency.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "attachedClipDependency.record",
+				"type": "VerificationRecord",
+				"required": true
+			},
+			{
+				"name": "attachedClipDependency.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "attachedVideoFlagFailure.record",
+				"type": "string",
+				"required": true,
+				"description": "Verification record ID; a flag cannot be resolved by the same record it originally flagged."
+			},
+			{
+				"name": "attachedVideoFlagFailure.capture",
+				"type": "Capture",
+				"required": true,
+				"description": "One retained video capture with source owner, viewport, addressed flag IDs and original capture timestamp."
+			},
+			{
+				"name": "attachedVideoFlagFailure.flags",
+				"type": "FrameFlag[]",
+				"required": true,
+				"description": "Immutable reviewer flag snapshot including resolved identities and every current unresolved owner/clip/viewport obligation."
+			},
+			{
+				"name": "resolveAttachedVideoFlags.root",
+				"type": "string",
+				"required": true,
+				"description": "Original repository with durable Git evidence; clean source exports must not be used as evidence roots."
+			},
+			{
+				"name": "resolveAttachedVideoFlags.record",
+				"type": "VerificationRecord",
+				"required": true,
+				"description": "Sealed verification record whose present clip slots are checked against current reviewer standing."
+			},
+			{
+				"name": "eligibleVideoRecord.record",
+				"type": "VerificationRecord",
+				"required": true
+			},
+			{
+				"name": "eligibleVideoRecord.unit",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "resolvedVideoAttachment.root",
+				"type": "string",
+				"required": true,
+				"description": "Original repository with durable Git evidence; clean source exports must not be used as evidence roots."
+			},
+			{
+				"name": "resolvedVideoAttachment.record",
+				"type": "VerificationRecord",
+				"required": true,
+				"description": "Sealed verification record whose present clip slots are checked against current reviewer standing."
+			},
+			{
+				"name": "resolvedVideoAttachment.attached",
+				"type": "Attached",
+				"required": true,
+				"description": "Durable evidence receipt whose record media, source note and archive already exist."
+			},
+			{
+				"name": "finalizedVideoAttachment.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "finalizedVideoAttachment.stored",
+				"type": "StoredRecord",
+				"required": true
+			},
+			{
+				"name": "finalizedVideoAttachment.attached",
+				"type": "Attached",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -146,7 +242,7 @@
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Raised when record integrity has problems, an inherited record is unavailable, or the source commit cannot be kept reachable at its archive ref. Awaited filesystem and adapter operations may also reject with their own errors."
+				"description": "Raised when record integrity has problems, an inherited record is unavailable, or the source commit cannot be kept reachable at its archive ref. Awaited filesystem and adapter operations may also reject with their own errors. Current reviewer obligations also refuse missing, wrong-owner, late or predating replacements after durable attachment without deleting evidence."
 			}
 		],
 		"errorStatus": "declared",
@@ -171,7 +267,7 @@
 								"record": {
 									"id": "bf46f2cf6af18fe825e90b63bb15f0cac31bbb39ec43a02b302d7bd29e639815",
 									"schemaVersion": 1,
-									"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+									"repository": "/workspace/project",
 									"source": {
 										"commit": "0123456789abcdef0123456789abcdef01234567",
 										"tree": "89abcdef0123456789abcdef0123456789abcdef",
@@ -237,7 +333,7 @@
 									},
 									"failures": []
 								},
-								"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
+								"directory": "/workspace/project/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
 							}
 						]
 					}
@@ -272,6 +368,199 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "attachedClipDependency",
+				"inputs": [
+					{
+						"name": "attachedClipDependency.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "attachedClipDependency.record",
+						"type": "VerificationRecord",
+						"required": true
+					},
+					{
+						"name": "attachedClipDependency.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "attachedClipDependency",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised when record integrity has problems, an inherited record is unavailable, or the source commit cannot be kept reachable at its archive ref. Awaited filesystem and adapter operations may also reject with their own errors. Current reviewer obligations also refuse missing, wrong-owner, late or predating replacements after durable attachment without deleting evidence."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "attachedVideoFlagFailure",
+				"inputs": [
+					{
+						"name": "attachedVideoFlagFailure.record",
+						"type": "string",
+						"required": true,
+						"description": "Verification record ID; a flag cannot be resolved by the same record it originally flagged."
+					},
+					{
+						"name": "attachedVideoFlagFailure.capture",
+						"type": "Capture",
+						"required": true,
+						"description": "One retained video capture with source owner, viewport, addressed flag IDs and original capture timestamp."
+					},
+					{
+						"name": "attachedVideoFlagFailure.flags",
+						"type": "FrameFlag[]",
+						"required": true,
+						"description": "Immutable reviewer flag snapshot including resolved identities and every current unresolved owner/clip/viewport obligation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "attachedVideoFlagFailure",
+						"type": "string | undefined",
+						"description": "Current reviewer-admission diagnostic for a retained capture, or undefined without changing historical media integrity."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "resolveAttachedVideoFlags",
+				"inputs": [
+					{
+						"name": "resolveAttachedVideoFlags.root",
+						"type": "string",
+						"required": true,
+						"description": "Original repository with durable Git evidence; clean source exports must not be used as evidence roots."
+					},
+					{
+						"name": "resolveAttachedVideoFlags.record",
+						"type": "VerificationRecord",
+						"required": true,
+						"description": "Sealed verification record whose present clip slots are checked against current reviewer standing."
+					}
+				],
+				"outputs": [
+					{
+						"name": "resolveAttachedVideoFlags",
+						"type": "Promise<void>",
+						"description": "Explicit owning flag resolutions appended only after durable notes exist; late or old captures reject while preserving pending flags."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Current reviewer evidence is corrupt, exceeds finite capture-environment bounds, or the replacement omits, misowns or predates a required flag."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "eligibleVideoRecord",
+				"inputs": [
+					{
+						"name": "eligibleVideoRecord.record",
+						"type": "VerificationRecord",
+						"required": true
+					},
+					{
+						"name": "eligibleVideoRecord.unit",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "eligibleVideoRecord",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "resolvedVideoAttachment",
+				"inputs": [
+					{
+						"name": "resolvedVideoAttachment.root",
+						"type": "string",
+						"required": true,
+						"description": "Original repository with durable Git evidence; clean source exports must not be used as evidence roots."
+					},
+					{
+						"name": "resolvedVideoAttachment.record",
+						"type": "VerificationRecord",
+						"required": true,
+						"description": "Sealed verification record whose present clip slots are checked against current reviewer standing."
+					},
+					{
+						"name": "resolvedVideoAttachment.attached",
+						"type": "Attached",
+						"required": true,
+						"description": "Durable evidence receipt whose record media, source note and archive already exist."
+					}
+				],
+				"outputs": [
+					{
+						"name": "resolvedVideoAttachment",
+						"type": "Promise<Attached>",
+						"description": "Original durable receipt after current pending obligations have been rechecked and explicit acknowledgments resolved."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Current reviewer evidence is corrupt, exceeds finite capture-environment bounds, or the replacement omits, misowns or predates a required flag."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "finalizedVideoAttachment",
+				"inputs": [
+					{
+						"name": "finalizedVideoAttachment.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "finalizedVideoAttachment.stored",
+						"type": "StoredRecord",
+						"required": true
+					},
+					{
+						"name": "finalizedVideoAttachment.attached",
+						"type": "Attached",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "finalizedVideoAttachment",
+						"type": "Promise<Attached>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised when record integrity has problems, an inherited record is unavailable, or the source commit cannot be kept reachable at its archive ref. Awaited filesystem and adapter operations may also reject with their own errors. Current reviewer obligations also refuse missing, wrong-owner, late or predating replacements after durable attachment without deleting evidence."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -283,15 +572,13 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root used to construct the verification store, evidence branch, history-note repository, LFS adapter, and checker.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceAttachService.constructor",
-						"type": "unknown",
+						"type": "EvidenceAttachService",
 						"description": "The constructor returns a new EvidenceAttachService instance with its repositories, LFS adapter, checker, and per-instance attached-record cache initialized."
 					}
 				],
@@ -347,7 +634,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.record-lineage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.stable-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -383,6 +680,21 @@
 		},
 		{
 			"unit": "service.verification-evidence-evidence-attach-service-attach-dependencies",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-frame-flag",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-capture",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-reference",
 			"via": "import",
 			"origin": "derived"
 		}

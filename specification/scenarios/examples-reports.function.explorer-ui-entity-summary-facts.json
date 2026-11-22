@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.explorer-ui-entity-summary-facts",
+	"title": "reports.function.explorer-ui-entity-summary-facts examples",
+	"kind": "headless",
+	"units": ["reports.function.explorer-ui-entity-summary-facts"],
+	"builds": [],
+	"states": [
+		{
+			"id": "compact-facts-list-size-rows-then-latency-and-memory",
+			"title": "Compact facts list size rows then latency and memory",
+			"coverage": "required"
+		},
+		{
+			"id": "detailed-facts-describe-the-only-performance-row",
+			"title": "Detailed facts describe the only performance row",
+			"coverage": "required"
+		},
+		{
+			"id": "empty-performance-adds-unmeasured-latency-and-memory",
+			"title": "Empty performance adds unmeasured latency and memory",
+			"coverage": "required"
+		},
+		{
+			"id": "several-performance-rows-add-no-detailed-facts",
+			"title": "Several performance rows add no detailed facts",
+			"coverage": "required"
+		},
+		{
+			"id": "measurement-location-joins-target-and-profile-or-dashes",
+			"title": "Measurement location joins target and profile or dashes",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-measure-performance-is-missing",
+			"title": "Throws TypeError when measure performance is missing",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.explorer-ui-entity-summary-facts.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"compact-facts-list-size-rows-then-latency-and-memory",
+				"detailed-facts-describe-the-only-performance-row",
+				"empty-performance-adds-unmeasured-latency-and-memory",
+				"several-performance-rows-add-no-detailed-facts",
+				"measurement-location-joins-target-and-profile-or-dashes",
+				"throws-typeerror-when-measure-performance-is-missing"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"compact-facts-list-size-rows-then-latency-and-memory",
+				"detailed-facts-describe-the-only-performance-row",
+				"empty-performance-adds-unmeasured-latency-and-memory",
+				"several-performance-rows-add-no-detailed-facts",
+				"measurement-location-joins-target-and-profile-or-dashes",
+				"throws-typeerror-when-measure-performance-is-missing"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"compact-facts-list-size-rows-then-latency-and-memory",
+				"detailed-facts-describe-the-only-performance-row",
+				"empty-performance-adds-unmeasured-latency-and-memory",
+				"several-performance-rows-add-no-detailed-facts",
+				"measurement-location-joins-target-and-profile-or-dashes",
+				"throws-typeerror-when-measure-performance-is-missing"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -54,7 +54,7 @@
 		"outputs": [
 			{
 				"name": "evidencePayload",
-				"type": "unknown",
+				"type": "{ entityId: string; commit: string; branch: string; mode: \"current\" | \"commit\"; } | { side: \"before\" | \"after\"; recordId: string; scenarioId: string; state: string; evidenceId: string; viewport: string | null; sha256: string; notesRevision: string | null; evidenceRevision: string | null; entityId: string; commit: string; branch: string; mode: \"current\" | \"commit\"; }",
 				"description": "A new object holding only the validated scope fields (entityId, commit, branch, mode) and, when channel is exactly evidence:artifact, also the capture-binding fields (side, recordId, scenarioId, state, evidenceId, viewport, sha256, notesRevision, evidenceRevision), with any other field of x, such as a path or an address, dropped. A missing, blank, oversized or wrongly formatted field makes the call throw an Error whose message is 'Invalid text field.', 'Invalid identifier.' or 'Invalid option.', and a nullable field accepts null but not omission.",
 				"examples": [
 					{
@@ -148,7 +148,7 @@
 				"outputs": [
 					{
 						"name": "evidencePayload",
-						"type": "unknown",
+						"type": "{ entityId: string; commit: string; branch: string; mode: \"current\" | \"commit\"; } | { side: \"before\" | \"after\"; recordId: string; scenarioId: string; state: string; evidenceId: string; viewport: string | null; sha256: string; notesRevision: string | null; evidenceRevision: string | null; entityId: string; commit: string; branch: string; mode: \"current\" | \"commit\"; }",
 						"description": "A new object holding only the validated scope fields (entityId, commit, branch, mode) and, when channel is exactly evidence:artifact, also the capture-binding fields (side, recordId, scenarioId, state, evidenceId, viewport, sha256, notesRevision, evidenceRevision), with any other field of x, such as a path or an address, dropped. A missing, blank, oversized or wrongly formatted field makes the call throw an Error whose message is 'Invalid text field.', 'Invalid identifier.' or 'Invalid option.', and a nullable field accepts null but not omission.",
 						"examples": [
 							{

@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-game.function.draw2d",
+	"title": "game.function.draw2d examples",
+	"kind": "headless",
+	"units": ["game.function.draw2d"],
+	"builds": [],
+	"states": [
+		{
+			"id": "draws-the-default-scene-with-the-view-title",
+			"title": "Draws the default scene with the view title",
+			"coverage": "required"
+		},
+		{
+			"id": "draws-the-garden-lane-world-as-a-floor-with-objects",
+			"title": "Draws the garden lane world as a floor with objects",
+			"coverage": "required"
+		},
+		{
+			"id": "hides-the-door-key-and-player-when-their-flags-are-false",
+			"title": "Hides the door, key and player when their flags are false",
+			"coverage": "required"
+		},
+		{
+			"id": "render-paints-a-frame-and-dispose-clears-the-canvas",
+			"title": "Render paints a frame and dispose clears the canvas",
+			"coverage": "required"
+		},
+		{
+			"id": "skips-drawing-when-the-canvas-has-no-2d-context",
+			"title": "Skips drawing when the canvas has no 2d context",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/game.function.draw2d.test.ts",
+			"cwd": "packages/game",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"draws-the-default-scene-with-the-view-title",
+				"draws-the-garden-lane-world-as-a-floor-with-objects",
+				"hides-the-door-key-and-player-when-their-flags-are-false",
+				"render-paints-a-frame-and-dispose-clears-the-canvas",
+				"skips-drawing-when-the-canvas-has-no-2d-context"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"draws-the-default-scene-with-the-view-title",
+				"draws-the-garden-lane-world-as-a-floor-with-objects",
+				"hides-the-door-key-and-player-when-their-flags-are-false",
+				"render-paints-a-frame-and-dispose-clears-the-canvas",
+				"skips-drawing-when-the-canvas-has-no-2d-context"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"draws-the-default-scene-with-the-view-title",
+				"draws-the-garden-lane-world-as-a-floor-with-objects",
+				"hides-the-door-key-and-player-when-their-flags-are-false",
+				"render-paints-a-frame-and-dispose-clears-the-canvas",
+				"skips-drawing-when-the-canvas-has-no-2d-context"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -17,7 +17,7 @@
 		"outputs": [
 			{
 				"name": "GET",
-				"type": "unknown",
+				"type": "Response",
 				"description": "This is the route module's GET export, aliased directly to the imported reportHttp value. It is the value used for this route's GET handling; this file adds no wrapper or local behavior."
 			}
 		],

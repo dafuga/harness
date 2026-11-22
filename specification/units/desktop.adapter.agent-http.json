@@ -10,13 +10,16 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/AgentHttpAdapter.ts",
+			"packages/desktop/src/adapters/agents-providers/AgentBranchTipViewRequiredError.ts",
 			"packages/desktop/src/adapters/agents-providers/AgentHttpAdapter.ts",
-			"packages/desktop/src/adapters/agents-providers/AgentHttpAdapter.types.ts"
+			"packages/desktop/src/adapters/agents-providers/AgentHttpAdapter.types.ts",
+			"packages/desktop/src/adapters/agents-providers/UnacknowledgedAgentRequestError.ts"
 		],
 		"symbols": [
 			"agentRequestKey",
 			"definitiveAgentFailure",
 			"AgentHttpAdapter",
+			"AgentBranchTipViewRequiredError",
 			"agentRequestKey",
 			"definitiveAgentFailure",
 			"AgentHttpAdapter",
@@ -24,7 +27,8 @@
 			"AgentHttpAdapter.shown",
 			"AgentHttpAdapter.listen",
 			"AgentHttpAdapter.call",
-			"AgentCall"
+			"AgentCall",
+			"UnacknowledgedAgentRequestError"
 		]
 	},
 	"contract": {
@@ -266,12 +270,12 @@
 			},
 			{
 				"name": "AgentHttpAdapter.shown",
-				"type": "unknown",
+				"type": "void",
 				"description": "shown records or removes the project's branch-tip view and returns nothing, so the value is always undefined."
 			},
 			{
 				"name": "AgentHttpAdapter.listen",
-				"type": "unknown",
+				"type": "() => boolean",
 				"description": "The unsubscribe function for this listener; calling it removes the listener and returns true if it was still registered, or false if it had already been removed."
 			},
 			{
@@ -525,7 +529,7 @@
 				"outputs": [
 					{
 						"name": "AgentHttpAdapter.shown",
-						"type": "unknown",
+						"type": "void",
 						"description": "shown records or removes the project's branch-tip view and returns nothing, so the value is always undefined."
 					}
 				],
@@ -545,7 +549,7 @@
 				"outputs": [
 					{
 						"name": "AgentHttpAdapter.listen",
-						"type": "unknown",
+						"type": "() => boolean",
 						"description": "The unsubscribe function for this listener; calling it removes the listener and returns true if it was still registered, or false if it had already been removed."
 					}
 				],
@@ -655,7 +659,7 @@
 				"outputs": [
 					{
 						"name": "AgentHttpAdapter.constructor",
-						"type": "unknown",
+						"type": "AgentHttpAdapter",
 						"description": "The AgentHttpAdapter instance, which holds its pending starts, recorded views, listeners and active runs in memory."
 					}
 				],

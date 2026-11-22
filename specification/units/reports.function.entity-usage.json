@@ -472,7 +472,7 @@
 				"name": "usageOwners.revision",
 				"type": "HarnessRevision",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The revision whose registry supplies runtime owners: each unit with status active is projected with private units included, and units of any other status are ignored. When it is omitted (undefined), only the entities collection is used.",
 				"examples": [
 					{
@@ -2233,7 +2233,7 @@
 						"name": "usageOwners.revision",
 						"type": "HarnessRevision",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The revision whose registry supplies runtime owners: each unit with status active is projected with private units included, and units of any other status are ignored. When it is omitted (undefined), only the entities collection is used.",
 						"examples": [
 							{

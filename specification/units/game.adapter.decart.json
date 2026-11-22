@@ -9,16 +9,22 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/game/src/adapters/agents-providers/ActivePreviewLeaseError.ts",
 			"packages/game/src/adapters/agents-providers/DecartAdapter.ts",
-			"packages/game/src/adapters/agents-providers/DecartAdapter.types.ts"
+			"packages/game/src/adapters/agents-providers/DecartAdapter.types.ts",
+			"packages/game/src/adapters/agents-providers/DecartTokenCreationError.ts",
+			"packages/game/src/adapters/agents-providers/InvalidPreviewRequestError.ts"
 		],
 		"symbols": [
+			"ActivePreviewLeaseError",
 			"DecartAdapter",
 			"DecartAdapter.constructor",
 			"DecartAdapter.start",
 			"renderRate",
 			"validateSession",
-			"TokenClient"
+			"TokenClient",
+			"DecartTokenCreationError",
+			"InvalidPreviewRequestError"
 		]
 	},
 	"contract": {
@@ -344,7 +350,7 @@
 				"outputs": [
 					{
 						"name": "DecartAdapter.constructor",
-						"type": "unknown",
+						"type": "DecartAdapter",
 						"description": "The new DecartAdapter instance, whose until field starts at 0 and which keeps the tokens and now parameters as private fields."
 					}
 				],

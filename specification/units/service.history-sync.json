@@ -33,7 +33,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The root path given to the constructor and passed unchanged to the EvidenceTreeAdapter, LfsAdapter and HistoryNoteRepository it creates; the constructor does not check it. Every fetch, push and sync call uses the EvidenceTreeAdapter built from it.",
-				"examples": ["/home/dev/harness-app", "/srv/git/billing-service", "/workspace/monorepo"]
+				"examples": ["/workspace/project", "/workspace/git/billing-service", "/workspace/monorepo"]
 			},
 			{
 				"name": "HistorySyncService.fetch.remote",
@@ -294,13 +294,17 @@
 						"type": "string",
 						"required": true,
 						"description": "The root path given to the constructor and passed unchanged to the EvidenceTreeAdapter, LfsAdapter and HistoryNoteRepository it creates; the constructor does not check it. Every fetch, push and sync call uses the EvidenceTreeAdapter built from it.",
-						"examples": ["/home/dev/harness-app", "/srv/git/billing-service", "/workspace/monorepo"]
+						"examples": [
+							"/workspace/project",
+							"/workspace/git/billing-service",
+							"/workspace/monorepo"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HistorySyncService.constructor",
-						"type": "unknown",
+						"type": "HistorySyncService",
 						"description": "The new HistorySyncService instance, which keeps the EvidenceTreeAdapter, LfsAdapter and HistoryNoteRepository built from root in private readonly fields."
 					}
 				],

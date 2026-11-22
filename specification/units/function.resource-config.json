@@ -25,7 +25,7 @@
 						"PATH": "/usr/local/bin:/usr/bin:/bin"
 					},
 					{
-						"HARNESS_RESOURCES_HOME": "/Users/example/shared/harness"
+						"HARNESS_RESOURCES_HOME": "/workspace/project/shared/harness"
 					},
 					{
 						"PATH": "/usr/local/bin:/usr/bin:/bin"
@@ -37,7 +37,7 @@
 				"type": "string",
 				"required": false,
 				"description": "Directory whose config.json resourceConfig reads: when that file is absent, including when the directory does not exist, the schema defaults are returned and nothing is created. Defaults to resourceHome(): the shared resource directory from HARNESS_RESOURCES_HOME or the user-scoped Harness default.",
-				"examples": ["/Users/example/.codex/harness/resources", "/srv/harness/resources"]
+				"examples": ["/workspace/project/.codex/harness/resources", "/srv/harness/resources"]
 			},
 			{
 				"name": "saveResourceConfig.config",
@@ -76,7 +76,7 @@
 				"type": "string",
 				"required": false,
 				"description": "Directory that receives config.json: when it is missing it is created recursively with mode 0o700, and the JSON is written to a temporary config.<uuid>.partial file with mode 0o600 before being renamed to config.json. Defaults to resourceHome(): the shared resource directory from HARNESS_RESOURCES_HOME or the user-scoped Harness default.",
-				"examples": ["/Users/example/.codex/harness/resources", "/srv/harness/resources"]
+				"examples": ["/workspace/project/.codex/harness/resources", "/srv/harness/resources"]
 			}
 		],
 		"outputs": [
@@ -84,7 +84,7 @@
 				"name": "resourceHome",
 				"type": "string",
 				"description": "Absolute shared resource directory: path.resolve applied to HARNESS_RESOURCES_HOME, or to the user-scoped default under os.homedir() (.codex/harness/resources) when that variable is undefined or null. The directory is not checked for existence and nothing is created.",
-				"examples": ["/Users/example/.codex/harness/resources", "/srv/harness/resources"]
+				"examples": ["/workspace/project/.codex/harness/resources", "/srv/harness/resources"]
 			},
 			{
 				"name": "resourceConfig",
@@ -156,7 +156,7 @@
 								"PATH": "/usr/local/bin:/usr/bin:/bin"
 							},
 							{
-								"HARNESS_RESOURCES_HOME": "/Users/example/shared/harness"
+								"HARNESS_RESOURCES_HOME": "/workspace/project/shared/harness"
 							},
 							{
 								"PATH": "/usr/local/bin:/usr/bin:/bin"
@@ -169,7 +169,7 @@
 						"name": "resourceHome",
 						"type": "string",
 						"description": "Absolute shared resource directory: path.resolve applied to HARNESS_RESOURCES_HOME, or to the user-scoped default under os.homedir() (.codex/harness/resources) when that variable is undefined or null. The directory is not checked for existence and nothing is created.",
-						"examples": ["/Users/example/.codex/harness/resources", "/srv/harness/resources"]
+						"examples": ["/workspace/project/.codex/harness/resources", "/srv/harness/resources"]
 					}
 				],
 				"errors": [],
@@ -183,7 +183,7 @@
 						"type": "string",
 						"required": false,
 						"description": "Directory whose config.json resourceConfig reads: when that file is absent, including when the directory does not exist, the schema defaults are returned and nothing is created. Defaults to resourceHome(): the shared resource directory from HARNESS_RESOURCES_HOME or the user-scoped Harness default.",
-						"examples": ["/Users/example/.codex/harness/resources", "/srv/harness/resources"]
+						"examples": ["/workspace/project/.codex/harness/resources", "/srv/harness/resources"]
 					}
 				],
 				"outputs": [
@@ -278,7 +278,7 @@
 						"type": "string",
 						"required": false,
 						"description": "Directory that receives config.json: when it is missing it is created recursively with mode 0o700, and the JSON is written to a temporary config.<uuid>.partial file with mode 0o600 before being renamed to config.json. Defaults to resourceHome(): the shared resource directory from HARNESS_RESOURCES_HOME or the user-scoped Harness default.",
-						"examples": ["/Users/example/.codex/harness/resources", "/srv/harness/resources"]
+						"examples": ["/workspace/project/.codex/harness/resources", "/srv/harness/resources"]
 					}
 				],
 				"outputs": [

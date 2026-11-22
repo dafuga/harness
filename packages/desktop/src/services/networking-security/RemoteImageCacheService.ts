@@ -2,6 +2,8 @@
 import type { CacheIdentity } from '../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type { ImageQuery } from '../../models/development-tooling/DesktopBridge.types';
 import type { ProjectionCacheService } from '../../lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService';
+import { HostedCacheIdentityMismatchError } from './HostedCacheIdentityMismatchError';
+import { IncompleteHostedCacheIdentityError } from './IncompleteHostedCacheIdentityError';
 export class RemoteImageCacheService {
 	constructor(private cache: ProjectionCacheService) {}
 	async read(
@@ -19,7 +21,7 @@ export class RemoteImageCacheService {
 			identity.sourceCommit !== query.commit ||
 			identity.artifactHash !== query.sha256
 		)
-			throw new Error('Hosted cache identity mismatch.');
+			throw new HostedCacheIdentityMismatchError('Hosted cache identity mismatch.');
 		const fields = [
 			'repositoryId',
 			'requestedRef',
@@ -32,7 +34,7 @@ export class RemoteImageCacheService {
 			'profile'
 		];
 		if (fields.some((field) => !Object.hasOwn(identity, field)))
-			throw new Error('Incomplete hosted cache identity.');
+			throw new IncompleteHostedCacheIdentityError('Incomplete hosted cache identity.');
 		const bytes = await this.cache.get(identity, query.sha256);
 		if (bytes) return bytes;
 		const fresh = await load();

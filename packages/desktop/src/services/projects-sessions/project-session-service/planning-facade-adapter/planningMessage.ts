@@ -5,6 +5,8 @@ import type {
 } from '../../../../../../planning/src/lib/planning/index';
 import type { MessageDraft } from '../../../../models/planning-collaboration/PlanningPort.types';
 import type { PlanningContext } from '../../../../utils/projects-sessions/planning-reads/planRecord';
+import { ApprovalVersionMismatchError } from './ApprovalVersionMismatchError';
+import { DesignApprovalRequiredError } from './DesignApprovalRequiredError';
 import { messageInfo } from '../../../../utils/projects-sessions/planningConvert';
 import { reviewer } from '../../../../utils/projects-sessions/planningWrites';
 
@@ -44,9 +46,9 @@ function artifactReferences(
 
 function changeTarget(plan: PlanDetail, draft: MessageDraft): AppendMessageInput['change'] {
 	const approval = plan.approval;
-	if (!approval) throw new Error('An approved design is required.');
+	if (!approval) throw new DesignApprovalRequiredError('An approved design is required.');
 	if (draft.version !== approval.version)
-		throw new Error('This change is bound to a different approved version.');
+		throw new ApprovalVersionMismatchError('This change is bound to a different approved version.');
 	return {
 		target: {
 			approvalId: approval.id,

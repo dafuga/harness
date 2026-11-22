@@ -8,6 +8,7 @@ import { assertModuleCardPreview as assertCard } from './moduleCardPreviewAssert
 import { assertProjectAgentState } from './projectAgentStateAssertions';
 import type { ProjectAgentState } from './projectAgentStateFixtures.types';
 import { assertReportPreviewState } from './reportPreviewAssertions';
+import { assertPlatformsRouteReady } from './platformsPreviewAssertions';
 import type { Page, Locator } from '@playwright/test';
 
 export async function assertCatalogBeforeCapture({
@@ -74,28 +75,44 @@ async function assertCatalogNames(component: Locator, id: string, variant: strin
 
 /** Each required prop state joins the normal desktop/tablet/mobile catalog test matrix. */
 async function assertRequiredShellState(component: Locator, id: string, variant: string) {
-	if (id === 'reports.component.harness-entity-relations' && variant === 'both') {
+	const state = `${id}:${variant}`;
+	if (state === 'reports.page.harness-branch-branch-at-platforms:ready')
+		await test.step('Platforms route', () => assertPlatformsRouteReady(component));
+	if (state === 'reports.component.harness-entity-relations:both') {
 		await expect(component.getByRole('region', { name: 'Used In', exact: true })).toBeVisible();
 		await expect(component.getByRole('region', { name: 'Uses', exact: true })).toBeVisible();
 	}
-	if (id === 'reports.component.harness-harness-action' && variant === 'gold') {
+	if (state === 'reports.component.harness-harness-action:gold') {
 		const action = component.getByRole('link');
 		await expect(action).toHaveClass(/\bgold\b/);
 		await expect(action).toHaveAttribute('href', /\S+/);
-		await expect(action).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+		// Gold is an outline at rest. Its primary fill appears only on hover.
+		await expect(action).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+		const primary = await action.evaluate((node) => {
+			const probe = document.createElement('span');
+			probe.style.color = 'var(--hx-color-primary)';
+			node.append(probe);
+			const value = getComputedStyle(probe).color;
+			probe.remove();
+			return value;
+		});
+		await expect(action).toHaveCSS('border-top-color', primary);
 	}
-	if (id === 'reports.component.harness-harness-header' && variant === 'base') {
+	if (state === 'reports.component.harness-harness-header:base') {
 		await expect(component.getByRole('heading', { name: 'Harness', exact: true })).toBeVisible();
-		await expect(component.getByRole('navigation', { name: 'Other views' })).toBeVisible();
+		// The legacy nav is drawn with no links here; it is present in the DOM but has no box to show.
+		const nav = component.getByRole('navigation', { name: 'Other views' });
+		await expect(nav).toHaveCount(1);
+		await expect(nav.getByRole('link')).toHaveCount(0);
 		await expect(component.locator('.hx-navbar')).toHaveCount(0);
 	}
-	if (id === 'reports.component.harness-harness-verdict' && variant === 'verdict') {
+	if (state === 'reports.component.harness-harness-verdict:verdict') {
 		const mark = component.locator('.hx-verdict');
 		await expect(mark).toHaveClass(/\bpassed\b/);
 		await expect(mark.getByRole('button')).toHaveAttribute('aria-expanded', 'false');
 		await expect(component.locator('.badge')).toHaveCount(0);
 	}
-	if (id === 'reports.component.harness-harness-verdict' && variant === 'badge') {
+	if (state === 'reports.component.harness-harness-verdict:badge') {
 		await expect(component.locator('.badge')).toHaveClass(/\bpassed\b/);
 		await expect(component.locator('.badge')).toContainText('Passed');
 		await expect(component.locator('.badge [aria-hidden="true"]')).toHaveText('●');

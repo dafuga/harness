@@ -114,7 +114,7 @@
 				"outputs": [
 					{
 						"name": "PublicRelayController.constructor",
-						"type": "unknown",
+						"type": "PublicRelayController",
 						"description": "The constructor returns no value of its own: new PublicRelayController(env) yields the instance, which keeps env and a ConnectGuardMiddleware built from it, and the constructor validates nothing."
 					}
 				],

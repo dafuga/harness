@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.script.ios-acceptance-source",
+	"title": "desktop.script.ios-acceptance-source examples",
+	"kind": "headless",
+	"units": ["desktop.script.ios-acceptance-source"],
+	"builds": [],
+	"states": [
+		{
+			"id": "describes-the-renderer-native-and-fixture-source-sets",
+			"title": "describes the renderer native and fixture source sets",
+			"coverage": "required"
+		},
+		{
+			"id": "compares-source-maps-and-names-their-digest",
+			"title": "compares source maps and names their digest",
+			"coverage": "required"
+		},
+		{
+			"id": "finds-changes-across-the-three-source-readings",
+			"title": "finds changes across the three source readings",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-a-tree-path-is-a-file",
+			"title": "Throws Error when a tree path is a file",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.script.ios-acceptance-source.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"describes-the-renderer-native-and-fixture-source-sets",
+				"compares-source-maps-and-names-their-digest",
+				"finds-changes-across-the-three-source-readings",
+				"throws-error-when-a-tree-path-is-a-file"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"describes-the-renderer-native-and-fixture-source-sets",
+				"compares-source-maps-and-names-their-digest",
+				"finds-changes-across-the-three-source-readings",
+				"throws-error-when-a-tree-path-is-a-file"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"describes-the-renderer-native-and-fixture-source-sets",
+				"compares-source-maps-and-names-their-digest",
+				"finds-changes-across-the-three-source-readings",
+				"throws-error-when-a-tree-path-is-a-file"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

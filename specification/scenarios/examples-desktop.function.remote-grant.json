@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.remote-grant",
+	"title": "desktop.function.remote-grant examples",
+	"kind": "headless",
+	"units": ["desktop.function.remote-grant"],
+	"builds": [],
+	"states": [
+		{
+			"id": "offers-only-attached-methods-for-a-paired-phone",
+			"title": "offers only attached methods for a paired phone",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.remote-grant.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["offers-only-attached-methods-for-a-paired-phone"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["offers-only-attached-methods-for-a-paired-phone"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["offers-only-attached-methods-for-a-paired-phone"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

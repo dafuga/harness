@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.complexity-coverage",
+	"title": "function.complexity-coverage examples",
+	"kind": "headless",
+	"units": ["function.complexity-coverage"],
+	"builds": [],
+	"states": [
+		{
+			"id": "counts-supported-source",
+			"title": "Counts supported source",
+			"coverage": "required"
+		},
+		{
+			"id": "recognizes-declarative-files",
+			"title": "Recognizes declarative files",
+			"coverage": "required"
+		},
+		{
+			"id": "identifies-uncounted-code",
+			"title": "Identifies uncounted code",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.complexity-coverage.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"counts-supported-source",
+				"recognizes-declarative-files",
+				"identifies-uncounted-code"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"counts-supported-source",
+				"recognizes-declarative-files",
+				"identifies-uncounted-code"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"counts-supported-source",
+				"recognizes-declarative-files",
+				"identifies-uncounted-code"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

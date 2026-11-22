@@ -286,7 +286,7 @@
 				"name": "watchOperation.args",
 				"type": "never[]",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Argument list of a call to the wrapped operation; the proxy forwards it unchanged and records no argument values.",
 				"examples": [
 					[]
@@ -397,7 +397,7 @@
 			},
 			{
 				"name": "initializationEdits",
-				"type": "unknown",
+				"type": "{ start: number; end: number; text: string; }[]",
 				"description": "Ordered Edit objects that place the Begin call after any shebang and the Finish call at the end of the file, or an empty array when the module is not a data-only scope.",
 				"examples": [
 					[],
@@ -417,12 +417,12 @@
 			},
 			{
 				"name": "beginSourceScope",
-				"type": "()",
+				"type": "() => void",
 				"description": "Finishing callback from the collector's beginScope when profiling is enabled, or a no-op when HARNESS_RUNTIME_PROFILE_DIR is unset or a flush is running. A scope whose finish call never runs emits no successful observation."
 			},
 			{
 				"name": "watchOperation",
-				"type": "unknown",
+				"type": "T",
 				"description": "Returns the operation unchanged when HARNESS_RUNTIME_PROFILE_DIR is unset; otherwise a Proxy that keeps the receiver, arguments and return value, stops sampling after ten pending or successful calls, and stops sampling when a synchronous call returns a promise."
 			},
 			{
@@ -437,17 +437,17 @@
 			},
 			{
 				"name": "sourceProfilePlugin",
-				"type": "unknown",
+				"type": "{ name: string; enforce: \"pre\"; config(_config: unknown, environment: { mode: string; }): { test: { env: { HARNESS_RUNTIME_PROFILE_ROOT: string; HARNESS_RUNTIME_PROFILE_DIR: string; HARNESS_RUNTIME_PROFILE_CONTEXT: string; BUN_OPTIONS: string; }; setupFiles: string[]; }; } | undefined; transform(source: string, id: string): { code: string; map: null; } | null; }",
 				"description": "Vite plugin object for test-mode runs: its config hook assigns the profile environment to process.env, adds vitestSetup.ts and returns a test configuration, and its transform hook delegates to SourceProfileAdapter. The config hook returns nothing outside test mode or when no profile is selected."
 			},
 			{
 				"name": "runnerConfiguration",
-				"type": "unknown",
+				"type": "{ plugins: ReturnType<typeof sourceProfilePlugin>[] }",
 				"description": "Vite configuration object whose only plugin is the source-profile plugin created for environment.profileRoot."
 			},
 			{
 				"name": "nativeProfilePlugins",
-				"type": "unknown",
+				"type": "Promise<PluginOption[]>",
 				"description": "Promise that resolves to the plugins of the runner configuration loaded in test mode, or to an empty array when HARNESS_COLLECT_FILES is set; it rejects when Vite loads no configuration.",
 				"examples": [
 					[]
@@ -455,7 +455,7 @@
 			},
 			{
 				"name": "profileSelection",
-				"type": "unknown",
+				"type": "{ root: string; directory: string; units: ComponentManifest[] } | null",
 				"description": "Canonical project root, selected profile directory and validated unit registry, or null outside an eligible evidence run or inside an explicit benchmark boundary. Each registry file is parsed with componentManifestSchema before it is returned.",
 				"examples": [
 					null,
@@ -514,7 +514,7 @@
 			},
 			{
 				"name": "profileEnvironment",
-				"type": "unknown",
+				"type": "{ HARNESS_RUNTIME_PROFILE_ROOT: string; HARNESS_RUNTIME_PROFILE_DIR: string; HARNESS_RUNTIME_PROFILE_CONTEXT: string; BUN_OPTIONS: string; }",
 				"description": "Environment object containing the canonical root, profile directory, runtime context (default standard-runner) and a single deduplicated --preload option for the bunPreload module.",
 				"examples": [
 					{
@@ -753,7 +753,7 @@
 				"outputs": [
 					{
 						"name": "initializationEdits",
-						"type": "unknown",
+						"type": "{ start: number; end: number; text: string; }[]",
 						"description": "Ordered Edit objects that place the Begin call after any shebang and the Finish call at the end of the file, or an empty array when the module is not a data-only scope.",
 						"examples": [
 							[],
@@ -815,7 +815,7 @@
 						"name": "watchOperation.args",
 						"type": "never[]",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Argument list of a call to the wrapped operation; the proxy forwards it unchanged and records no argument values.",
 						"examples": [
 							[]
@@ -825,7 +825,7 @@
 				"outputs": [
 					{
 						"name": "watchOperation",
-						"type": "unknown",
+						"type": "T",
 						"description": "Returns the operation unchanged when HARNESS_RUNTIME_PROFILE_DIR is unset; otherwise a Proxy that keeps the receiver, arguments and return value, stops sampling after ten pending or successful calls, and stops sampling when a synchronous call returns a promise."
 					}
 				],
@@ -922,7 +922,7 @@
 				"outputs": [
 					{
 						"name": "sourceProfilePlugin",
-						"type": "unknown",
+						"type": "{ name: string; enforce: \"pre\"; config(_config: unknown, environment: { mode: string; }): { test: { env: { HARNESS_RUNTIME_PROFILE_ROOT: string; HARNESS_RUNTIME_PROFILE_DIR: string; HARNESS_RUNTIME_PROFILE_CONTEXT: string; BUN_OPTIONS: string; }; setupFiles: string[]; }; } | undefined; transform(source: string, id: string): { code: string; map: null; } | null; }",
 						"description": "Vite plugin object for test-mode runs: its config hook assigns the profile environment to process.env, adds vitestSetup.ts and returns a test configuration, and its transform hook delegates to SourceProfileAdapter. The config hook returns nothing outside test mode or when no profile is selected."
 					}
 				],
@@ -950,7 +950,7 @@
 				"outputs": [
 					{
 						"name": "runnerConfiguration",
-						"type": "unknown",
+						"type": "{ plugins: ReturnType<typeof sourceProfilePlugin>[] }",
 						"description": "Vite configuration object whose only plugin is the source-profile plugin created for environment.profileRoot."
 					}
 				],
@@ -971,7 +971,7 @@
 				"outputs": [
 					{
 						"name": "nativeProfilePlugins",
-						"type": "unknown",
+						"type": "Promise<import('vite').PluginOption[]>",
 						"description": "Promise that resolves to the plugins of the runner configuration loaded in test mode, or to an empty array when HARNESS_COLLECT_FILES is set; it rejects when Vite loads no configuration.",
 						"examples": [
 							[]
@@ -1001,7 +1001,7 @@
 				"outputs": [
 					{
 						"name": "profileSelection",
-						"type": "unknown",
+						"type": "{ root: string; directory: string; units: import('../../../core/development-tooling/unitTypes').ComponentManifest[] } | null",
 						"description": "Canonical project root, selected profile directory and validated unit registry, or null outside an eligible evidence run or inside an explicit benchmark boundary. Each registry file is parsed with componentManifestSchema before it is returned.",
 						"examples": [
 							null,
@@ -1097,7 +1097,7 @@
 				"outputs": [
 					{
 						"name": "profileEnvironment",
-						"type": "unknown",
+						"type": "{ HARNESS_RUNTIME_PROFILE_ROOT: string; HARNESS_RUNTIME_PROFILE_DIR: string; HARNESS_RUNTIME_PROFILE_CONTEXT: string; BUN_OPTIONS: string; }",
 						"description": "Environment object containing the canonical root, profile directory, runtime context (default standard-runner) and a single deduplicated --preload option for the bunPreload module.",
 						"examples": [
 							{
@@ -1185,7 +1185,7 @@
 				"outputs": [
 					{
 						"name": "SourceProfileAdapter.constructor",
-						"type": "unknown",
+						"type": "SourceProfileAdapter",
 						"description": "Adapter instance whose owners map holds the eligible units for each resolvable realpath of their owned sources; sources that cannot be resolved are skipped."
 					}
 				],

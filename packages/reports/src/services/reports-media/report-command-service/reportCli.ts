@@ -1,4 +1,5 @@
 // @harness-uid u_t5m7azkv7c
+import { ExpectedCliError } from '../../../../../../src/core/errors';
 import type { CliOptions } from '../../../utils/reports-media/reportCli';
 import { parseArgs } from 'node:util';
 import { readFile } from 'node:fs/promises';
@@ -37,12 +38,13 @@ export function reportCli(argv: string[]): CliOptions {
 
 export async function inputData(flags: Record<string, string | boolean>) {
 	const raw = flags.file ? await readFile(String(flags.file), 'utf8') : flags.data;
-	if (!raw) throw new Error('Provide --data JSON or --file JSON');
+	if (!raw) throw new ExpectedCliError('Provide --data JSON or --file JSON');
 	return JSON.parse(String(raw)) as Record<string, unknown>;
 }
 
 export function required(flags: Record<string, string | boolean>, name: string) {
 	const value = flags[name];
-	if (typeof value !== 'string' || !value.trim()) throw new Error(`--${name} is required`);
+	if (typeof value !== 'string' || !value.trim())
+		throw new ExpectedCliError(`--${name} is required`);
 	return value;
 }

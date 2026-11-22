@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-game.adapter.decart",
+	"title": "game.adapter.decart examples",
+	"kind": "headless",
+	"units": ["game.adapter.decart"],
+	"builds": [],
+	"states": [
+		{
+			"id": "prices-the-supported-decart-render-models",
+			"title": "prices the supported Decart render models",
+			"coverage": "required"
+		},
+		{
+			"id": "validates-preview-model-and-duration-requests",
+			"title": "validates preview model and duration requests",
+			"coverage": "required"
+		},
+		{
+			"id": "starts-a-preview-with-a-minted-token-and-request-metadata",
+			"title": "starts a preview with a minted token and request metadata",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-invalidpreviewrequesterror-when-the-model-is-unsuppor",
+			"title": "Throws InvalidPreviewRequestError when the model is unsupported",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-activepreviewleaseerror-when-a-preview-lease-is-alrea",
+			"title": "Throws ActivePreviewLeaseError when a preview lease is already active",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-decarttokencreationerror-when-token-creation-fails",
+			"title": "Throws DecartTokenCreationError when token creation fails",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/game.adapter.decart.test.ts",
+			"cwd": "packages/game",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"prices-the-supported-decart-render-models",
+				"validates-preview-model-and-duration-requests",
+				"starts-a-preview-with-a-minted-token-and-request-metadata",
+				"throws-invalidpreviewrequesterror-when-the-model-is-unsuppor",
+				"throws-activepreviewleaseerror-when-a-preview-lease-is-alrea",
+				"throws-decarttokencreationerror-when-token-creation-fails"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"prices-the-supported-decart-render-models",
+				"validates-preview-model-and-duration-requests",
+				"starts-a-preview-with-a-minted-token-and-request-metadata",
+				"throws-invalidpreviewrequesterror-when-the-model-is-unsuppor",
+				"throws-activepreviewleaseerror-when-a-preview-lease-is-alrea",
+				"throws-decarttokencreationerror-when-token-creation-fails"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"prices-the-supported-decart-render-models",
+				"validates-preview-model-and-duration-requests",
+				"starts-a-preview-with-a-minted-token-and-request-metadata",
+				"throws-invalidpreviewrequesterror-when-the-model-is-unsuppor",
+				"throws-activepreviewleaseerror-when-a-preview-lease-is-alrea",
+				"throws-decarttokencreationerror-when-token-creation-fails"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

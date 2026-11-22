@@ -12,6 +12,7 @@
 			"src/workflows/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.types.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordVideoBatches.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedOutcome.ts"
 		],
 		"symbols": [
@@ -23,6 +24,7 @@
 			"RecordAssemblyService.assemble",
 			"AssemblyContext",
 			"AssemblyInput",
+			"recordVideoBatches",
 			"outcome",
 			"recordedOutcome"
 		]
@@ -34,13 +36,13 @@
 				"name": "RecordAssemblyService.constructor.context",
 				"type": "AssemblyContext",
 				"required": true,
-				"description": "Carries the repository root, tested commit and tree, base and head revisions, impact report, profile, store, and a callback for the reason report; requirePerformance, baseRecord, requestedBase, and sourceHashes are optional. The performance gate runs only when requirePerformance is truthy, and supplied sourceHashes replace the revision indexes used to record component files; the store, callback, and source-hash maps cannot be represented in JSON."
+				"description": "Context for assembling verification evidence: repository and tested source identity, base selection, revision indexes, impact, profile, persistence and reason reporting. Performance and source-hash options control their corresponding assembly work; the store and reason-report callback are runtime dependencies that a complete JSON example cannot represent."
 			},
 			{
 				"name": "RecordAssemblyService.assemble.input",
 				"type": "AssemblyInput",
 				"required": true,
-				"description": "Carries the run start time, executed check and build observations, scenario results with their failures, and referenced scenario results. Assembly derives measurements and gates from these values, filters setup checks out of the recorded tests, and combines run and referenced scenarios.",
+				"description": "Carries the run start time, executed check and build observations, scenario results with their failures, and referenced scenario results. Assembly derives measurements and gate results, excludes setup checks from recorded tests, and sorts run and referenced scenarios together by id.",
 				"examples": [
 					{
 						"startedAt": "2026-11-15T10:00:00.000Z",
@@ -57,6 +59,12 @@
 						"referenced": []
 					}
 				]
+			},
+			{
+				"name": "recordVideoBatches.outcomes",
+				"type": "CheckOutcome[]",
+				"required": true,
+				"description": "Check outcomes whose admitted batch pointers are assembled into the record."
 			},
 			{
 				"name": "outcome.failures",
@@ -81,13 +89,13 @@
 			{
 				"name": "RecordAssemblyService.assemble",
 				"type": "Promise<VerificationRecord>",
-				"description": "Seals the recorded source, checks, scenarios and gate results. An optional artifact gate binds a passing full run to the retained file and its digest.",
+				"description": "Seals the tested revision, non-setup checks, scenarios and gate results. Includes video batch pointers and build identities when present. A passing full run may also bind a retained generated artifact to its digest.",
 				"examples": [
 					{
 						"id": "4727c5bd8473ce5bc3e7b376318425909810beaaf87b8f12f6fd046a1c61c1e0",
 						"schemaVersion": 1,
 						"componentSchemaVersion": 2,
-						"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+						"repository": "/workspace/project",
 						"source": {
 							"commit": "1111111111111111111111111111111111111111",
 							"tree": "2222222222222222222222222222222222222222",
@@ -150,8 +158,14 @@
 				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The same batch identity has conflicting evidence pointers across check outcomes; no inconsistent parent record is assembled."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RecordAssemblyService.assemble",
@@ -160,7 +174,7 @@
 						"name": "RecordAssemblyService.assemble.input",
 						"type": "AssemblyInput",
 						"required": true,
-						"description": "Carries the run start time, executed check and build observations, scenario results with their failures, and referenced scenario results. Assembly derives measurements and gates from these values, filters setup checks out of the recorded tests, and combines run and referenced scenarios.",
+						"description": "Carries the run start time, executed check and build observations, scenario results with their failures, and referenced scenario results. Assembly derives measurements and gate results, excludes setup checks from recorded tests, and sorts run and referenced scenarios together by id.",
 						"examples": [
 							{
 								"startedAt": "2026-11-15T10:00:00.000Z",
@@ -183,13 +197,13 @@
 					{
 						"name": "RecordAssemblyService.assemble",
 						"type": "Promise<VerificationRecord>",
-						"description": "Seals the recorded source, checks, scenarios and gate results. An optional artifact gate binds a passing full run to the retained file and its digest.",
+						"description": "Seals the tested revision, non-setup checks, scenarios and gate results. Includes video batch pointers and build identities when present. A passing full run may also bind a retained generated artifact to its digest.",
 						"examples": [
 							{
 								"id": "4727c5bd8473ce5bc3e7b376318425909810beaaf87b8f12f6fd046a1c61c1e0",
 								"schemaVersion": 1,
 								"componentSchemaVersion": 2,
-								"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+								"repository": "/workspace/project",
 								"source": {
 									"commit": "1111111111111111111111111111111111111111",
 									"tree": "2222222222222222222222222222222222222222",
@@ -256,6 +270,32 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "recordVideoBatches",
+				"inputs": [
+					{
+						"name": "recordVideoBatches.outcomes",
+						"type": "CheckOutcome[]",
+						"required": true,
+						"description": "Check outcomes whose admitted batch pointers are assembled into the record."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordVideoBatches",
+						"type": "{ videoBatches?: VideoBatchPointer[]; }",
+						"description": "The { videoBatches?: VideoBatchPointer[]; } result of recordVideoBatches; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Two check outcomes name different sealed pointers for one video batch ID."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
 				"name": "outcome",
 				"inputs": [
 					{
@@ -310,13 +350,13 @@
 						"name": "RecordAssemblyService.constructor.context",
 						"type": "AssemblyContext",
 						"required": true,
-						"description": "Carries the repository root, tested commit and tree, base and head revisions, impact report, profile, store, and a callback for the reason report; requirePerformance, baseRecord, requestedBase, and sourceHashes are optional. The performance gate runs only when requirePerformance is truthy, and supplied sourceHashes replace the revision indexes used to record component files; the store, callback, and source-hash maps cannot be represented in JSON."
+						"description": "Context for assembling verification evidence: repository and tested source identity, base selection, revision indexes, impact, profile, persistence and reason reporting. Performance and source-hash options control their corresponding assembly work; the store and reason-report callback are runtime dependencies that a complete JSON example cannot represent."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RecordAssemblyService.constructor",
-						"type": "unknown",
+						"type": "RecordAssemblyService",
 						"description": "The constructed RecordAssemblyService instance, which retains the supplied context for later assemble calls."
 					}
 				],
@@ -328,6 +368,16 @@
 	"dependencies": [
 		{
 			"unit": "function.build-stamp",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -362,6 +412,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.verification-evidence-video-clip-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.verification-types",
 			"via": "import",
 			"origin": "derived"
@@ -378,6 +433,11 @@
 		},
 		{
 			"unit": "service.budget",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.check-run",
 			"via": "import",
 			"origin": "derived"
 		},

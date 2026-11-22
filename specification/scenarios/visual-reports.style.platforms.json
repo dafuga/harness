@@ -1,0 +1,90 @@
+{
+	"schemaVersion": 1,
+	"id": "visual-reports.style.platforms",
+	"title": "reports.style.platforms states",
+	"kind": "ui",
+	"units": ["reports.style.platforms"],
+	"states": [
+		{
+			"id": "default",
+			"title": "Default",
+			"coverage": "required",
+			"units": ["reports.style.platforms"]
+		},
+		{
+			"id": "status-options-open",
+			"title": "Status options open",
+			"coverage": "required",
+			"units": ["reports.style.platforms"]
+		},
+		{
+			"id": "card-hovered",
+			"title": "Card hovered",
+			"coverage": "required",
+			"units": ["reports.style.platforms"]
+		},
+		{
+			"id": "card-focused",
+			"title": "Card focused",
+			"coverage": "required",
+			"units": ["reports.style.platforms"]
+		},
+		{
+			"id": "unindexed",
+			"title": "Unindexed",
+			"coverage": "required",
+			"units": ["reports.style.platforms"]
+		},
+		{
+			"id": "detail-web",
+			"title": "Detail web",
+			"coverage": "required",
+			"units": ["reports.style.platforms"]
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 920,
+			"height": 700
+		},
+		{
+			"id": "tablet",
+			"width": 768,
+			"height": 900
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "states",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts tests/e2e/units/explorer-shell-unit-reports.style.platforms.spec.ts",
+			"cwd": "packages/reports"
+		}
+	],
+	"evidence": [
+		{
+			"id": "screens",
+			"kind": "screenshot",
+			"states": [
+				"default",
+				"status-options-open",
+				"card-hovered",
+				"card-focused",
+				"unindexed",
+				"detail-web"
+			],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"build": "shell-fixture",
+			"capture": "full-page",
+			"required": true
+		}
+	]
+}

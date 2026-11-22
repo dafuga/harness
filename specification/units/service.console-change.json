@@ -34,7 +34,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project root used as the base for file reads, writes, and replacement storage. The service joins supplied paths to it and does not validate the root.",
-				"examples": ["/Users/daniel/projects/example-app"]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "ConsoleChangeService.constructor.manifest",
@@ -139,7 +139,7 @@
 		"outputs": [
 			{
 				"name": "replacedDirectory",
-				"type": "unknown",
+				"type": "string",
 				"description": "Relative directory under the project root where replace stores the bytes it overwrites. Each saved copy is named with the SHA-256 hash of those bytes.",
 				"examples": [".harness/console/replaced"]
 			},
@@ -519,7 +519,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project root used as the base for file reads, writes, and replacement storage. The service joins supplied paths to it and does not validate the root.",
-						"examples": ["/Users/daniel/projects/example-app"]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "ConsoleChangeService.constructor.manifest",
@@ -538,7 +538,7 @@
 				"outputs": [
 					{
 						"name": "ConsoleChangeService.constructor",
-						"type": "unknown",
+						"type": "ConsoleChangeService",
 						"description": "Creates a ConsoleChangeService instance that holds the host root and manifest."
 					}
 				],

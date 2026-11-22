@@ -25,7 +25,7 @@ and retries, leaving verification pending while proof fails.
 - The prevention guard is included in the project's normal verification command.
 - Both templates expose `bun run check` at verification and support project extensions.
 - Existing loop instances remain unchanged; newly resolved repair templates use coverage-first ordering.
-- Local/generated guidance and `info loop` specify selection, retries, evidence, and UI verification.
+- Local/generated guidance and `harness info loop` specify selection, retries, evidence, and UI verification.
 - Unit and temporary-workspace CLI tests cover discovery, ordering, evidence, and failed-to-passing evaluation with pending verification.
 
 ## Boundaries

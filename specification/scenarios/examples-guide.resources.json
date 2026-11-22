@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-guide.resources",
+	"title": "guide.resources examples",
+	"kind": "headless",
+	"units": ["guide.resources"],
+	"builds": [],
+	"states": [
+		{
+			"id": "documents-shared-resource-admission-limits",
+			"title": "Documents shared resource admission limits",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/guide.resources.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["documents-shared-resource-admission-limits"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["documents-shared-resource-admission-limits"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["documents-shared-resource-admission-limits"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

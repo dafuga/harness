@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.entity-history",
+	"title": "reports.function.entity-history examples",
+	"kind": "headless",
+	"units": ["reports.function.entity-history"],
+	"builds": [],
+	"states": [
+		{
+			"id": "history-timings-projected",
+			"title": "A listed commit carries its series point, beside the value of the listed commit before it",
+			"coverage": "required"
+		},
+		{
+			"id": "source-only-and-absent-history-empty",
+			"title": "Source-only and unbenchmarked units have no history timings, and no row is read past the last",
+			"coverage": "required"
+		},
+		{
+			"id": "listed-rows-keep-given-order",
+			"title": "Listed rows keep their given order, and unknown rows wait for a read to be listed or unread",
+			"coverage": "required"
+		},
+		{
+			"id": "profiles-in-first-occurrence-order",
+			"title": "Profiles are listed once each, in the order their timings first occur",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.entity-history.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"history-timings-projected",
+				"source-only-and-absent-history-empty",
+				"listed-rows-keep-given-order",
+				"profiles-in-first-occurrence-order"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"history-timings-projected",
+				"source-only-and-absent-history-empty",
+				"listed-rows-keep-given-order",
+				"profiles-in-first-occurrence-order"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"history-timings-projected",
+				"source-only-and-absent-history-empty",
+				"listed-rows-keep-given-order",
+				"profiles-in-first-occurrence-order"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

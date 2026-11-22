@@ -61,8 +61,8 @@
 		],
 		"errors": [
 			{
-				"name": "unspecified",
-				"type": "thrown",
+				"name": "Payload field or document validation error",
+				"type": "propagated",
 				"description": "May be thrown when ipcFields, textField, enumField, assertDocument, or validateSession fails while parsing or validating the payload. This file does not specify the thrown error's name or message."
 			}
 		],
@@ -118,8 +118,8 @@
 				],
 				"errors": [
 					{
-						"name": "unspecified",
-						"type": "thrown",
+						"name": "Payload field or document validation error",
+						"type": "propagated",
 						"description": "May be thrown when ipcFields, textField, enumField, assertDocument, or validateSession fails while parsing or validating the payload. This file does not specify the thrown error's name or message."
 					}
 				],

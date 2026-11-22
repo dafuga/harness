@@ -1,0 +1,176 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.execution-runtimes-driver-queue",
+	"uid": "u_ew2a54dglc",
+	"kind": "adapter",
+	"title": "DriverQueueAdapter",
+	"responsibility": "Read live worker task files and re-verify plans, excluding running and completed work, and infer current model capacity.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/execution-runtimes/DriverQueueAdapter.ts",
+			"src/adapters/execution-runtimes/DriverQueueAdapter.types.ts"
+		],
+		"symbols": [
+			"DriverQueueAdapter",
+			"DriverQueueAdapter.constructor",
+			"DriverQueueAdapter.active",
+			"DriverQueueAdapter.read",
+			"DriverQueueAdapter.render",
+			"DriverProcess",
+			"DriverQueueAdapterConfig",
+			"DriverActiveJob",
+			"DriverTotals",
+			"DriverActive"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "DriverQueueAdapter.constructor.config",
+				"type": "DriverQueueAdapterConfig",
+				"required": false,
+				"default": {},
+				"description": "Optional driver root, status directory and injected slot-process inventory. Defaults use the established component-pyramid results and code-phase status directories."
+			},
+			{
+				"name": "DriverQueueAdapter.render.state",
+				"type": "DriverActive",
+				"required": false,
+				"default": "this.active()",
+				"description": "Defaults to this.active(), a fresh read-only driver snapshot with dead PIDs removed."
+			}
+		],
+		"outputs": [
+			{
+				"name": "DriverQueueAdapter.active",
+				"type": "DriverActive",
+				"description": "Driver snapshot with dead PIDs removed, current model counts and recalculated nonnegative remaining totals; source files stay unchanged."
+			},
+			{
+				"name": "DriverQueueAdapter.read",
+				"type": "QueueSnapshot",
+				"description": "Queue snapshot reconstructed from live slot tasks, result-file completion markers, active starts and the reverify plan; includes inferred capacity and provenance warnings."
+			},
+			{
+				"name": "DriverQueueAdapter.render",
+				"type": "string",
+				"description": "ACTIVE.md-compatible text for the supplied state or a fresh active snapshot; does not write ACTIVE.md."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "DriverQueueAdapter.active",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "DriverQueueAdapter.active",
+						"type": "DriverActive",
+						"description": "Driver snapshot with dead PIDs removed, current model counts and recalculated nonnegative remaining totals; source files stay unchanged."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "DriverQueueAdapter.read",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "DriverQueueAdapter.read",
+						"type": "QueueSnapshot",
+						"description": "Queue snapshot reconstructed from live slot tasks, result-file completion markers, active starts and the reverify plan; includes inferred capacity and provenance warnings."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "DriverQueueAdapter.render",
+				"inputs": [
+					{
+						"name": "DriverQueueAdapter.render.state",
+						"type": "DriverActive",
+						"required": false,
+						"default": "this.active()",
+						"description": "Defaults to this.active(), a fresh read-only driver snapshot with dead PIDs removed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "DriverQueueAdapter.render",
+						"type": "string",
+						"description": "ACTIVE.md-compatible text for the supplied state or a fresh active snapshot; does not write ACTIVE.md."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "DriverQueueAdapter.constructor",
+				"inputs": [
+					{
+						"name": "DriverQueueAdapter.constructor.config",
+						"type": "DriverQueueAdapterConfig",
+						"required": false,
+						"default": {},
+						"description": "Optional driver root, status directory and injected slot-process inventory. Defaults use the established component-pyramid results and code-phase status directories."
+					}
+				],
+				"outputs": [
+					{
+						"name": "DriverQueueAdapter.constructor",
+						"type": "unknown",
+						"description": "Constructed DriverQueueAdapter instance retaining only its declared collaborators and state; repository construction opens the durable SQLite store."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-driver-queue-driver-files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.execution-runtimes-driver-queue-driver-worker-queue",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.execution-runtimes-driver-queue-render-driver-active",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-queue-eta",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/execution-runtimes/DriverQueueAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/execution-runtimes/DriverQueueAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

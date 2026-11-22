@@ -40,14 +40,14 @@
 				"type": "string",
 				"required": true,
 				"description": "Host project directory; the record is read from harness.console.json inside it, built with node:path join. Any read failure, including a missing directory or file, returns an empty record instead of rejecting, so a wrong host looks like a fresh install.",
-				"examples": ["/home/dev/projects/acme-web", "/workspace/payments-api"]
+				"examples": ["/workspace/project", "/workspace/payments-api"]
 			},
 			{
 				"name": "writeConsoleManifest.host",
 				"type": "string",
 				"required": true,
 				"description": "Host project directory that receives harness.console.json, built with node:path join; the directory must already exist because the write does not create it, and a missing or unwritable directory rejects the call.",
-				"examples": ["/home/dev/projects/acme-web", "/workspace/payments-api"]
+				"examples": ["/workspace/project", "/workspace/payments-api"]
 			},
 			{
 				"name": "writeConsoleManifest.manifest",
@@ -127,7 +127,7 @@
 		"outputs": [
 			{
 				"name": "consoleManifestFile",
-				"type": "unknown",
+				"type": "\"harness.console.json\"",
 				"description": "Constant file name harness.console.json, joined to the host directory by both functions; it is exported rather than passed in, so every host uses the same name.",
 				"examples": ["harness.console.json"]
 			},
@@ -237,7 +237,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Host project directory; the record is read from harness.console.json inside it, built with node:path join. Any read failure, including a missing directory or file, returns an empty record instead of rejecting, so a wrong host looks like a fresh install.",
-						"examples": ["/home/dev/projects/acme-web", "/workspace/payments-api"]
+						"examples": ["/workspace/project", "/workspace/payments-api"]
 					}
 				],
 				"outputs": [
@@ -337,7 +337,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Host project directory that receives harness.console.json, built with node:path join; the directory must already exist because the write does not create it, and a missing or unwritable directory rejects the call.",
-						"examples": ["/home/dev/projects/acme-web", "/workspace/payments-api"]
+						"examples": ["/workspace/project", "/workspace/payments-api"]
 					},
 					{
 						"name": "writeConsoleManifest.manifest",

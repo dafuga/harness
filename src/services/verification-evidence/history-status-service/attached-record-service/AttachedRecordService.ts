@@ -1,18 +1,19 @@
 // @harness-uid u_xetkmrxgc7
-import { shortCommit } from '$reports/helpers/strings/shortCommit';
-import type { AttachedRecord } from './AttachedRecordService.types';
+import type {
+	AttachedRecord,
+	AttachedRecordDescriptor,
+	AttachedRecordReadOptions
+} from './AttachedRecordService.types';
 import { createHash } from 'node:crypto';
 import { LfsAdapter } from '../../../../adapters/git-source-history/LfsAdapter';
 import {
-	evidenceManifestSchema,
 	type EvidenceFile,
 	type EvidencePointer
 } from '../../../../core/git-source-history/historyTypes';
 import { EvidenceBranchRepository } from '../../../../repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
-import { recordFiles } from '../../../../utils/verification-evidence/evidenceManifest';
 import { parseLfsPointer } from './lfsPointer';
-import { recordIntact } from '../../../../utils/verification-evidence/sealRecord';
-import { VerificationRecordValidator } from '../../../../validators/verification-evidence/VerificationRecordValidator';
+import { recordDescriptor } from './recordDescriptor';
+import { recordReferences } from './recordReferences';
 
 /**
  * Loads one stored directory from the evidence branch and validates all of it: the manifest
@@ -28,8 +29,9 @@ export class AttachedRecordService {
 	 * history of that evidence commit, and none is when it is null. Unpinned, each stored one is.
 	 */
 	constructor(
-		root: string,
-		private readonly within?: string | null
+		private readonly root: string,
+		private readonly within?: string | null,
+		private readonly options: AttachedRecordReadOptions = {}
 	) {
 		this.evidence = new EvidenceBranchRepository(root);
 		this.lfs = new LfsAdapter(root);
@@ -43,33 +45,28 @@ export class AttachedRecordService {
 		return pending;
 	}
 
+	describe(pointer: EvidencePointer): Promise<AttachedRecordDescriptor> {
+		return recordDescriptor(this.evidence, pointer, this.within);
+	}
+
 	private async read(pointer: EvidencePointer): Promise<AttachedRecord> {
-		const result: AttachedRecord = { pointer, files: new Map(), problems: [] };
-		const { tree } = this.evidence;
-		if (!(await tree.exists(pointer.commit))) {
-			const missing = `evidence commit ${shortCommit(pointer.commit)} is not available`;
-			return { ...result, problems: [`${missing}; run harness history fetch`] };
-		}
-		const { within } = this;
-		const outside = within === null || (within && !(await tree.contains(within, pointer.commit)));
-		if (outside) {
-			const stray = `evidence commit ${shortCommit(pointer.commit)} is not part of the pinned evidence`;
-			return { ...result, problems: [stray] };
-		}
-		const text = await tree.read(pointer.commit, `${pointer.path}/manifest.json`);
-		if (!text || sha256(text) !== pointer.manifest) {
-			return { ...result, problems: ['manifest does not match the hash in the note'] };
-		}
-		const manifest = evidenceManifestSchema.safeParse(parseJson(text));
-		if (!manifest.success) return { ...result, problems: ['manifest is not valid'] };
-		result.manifest = manifest.data;
-		const paths = manifest.data.files.map((file) => `${pointer.path}/${file.path}`);
-		const blobs = await tree.readMany(pointer.commit, paths);
-		for (const file of manifest.data.files) {
+		const descriptor = await this.describe(pointer);
+		const result: AttachedRecord = { ...descriptor, files: new Map() };
+		if (!descriptor.manifest || descriptor.problems.length) return result;
+		const paths = descriptor.manifest.files.map((file) => `${pointer.path}/${file.path}`);
+		const blobs = await this.evidence.tree.readMany(pointer.commit, paths);
+		for (const file of descriptor.manifest.files) {
 			const blob = blobs.get(`${pointer.path}/${file.path}`);
 			result.problems.push(...(await this.file(blob, file, result.files)));
 		}
-		return this.withRecord(result);
+		blobs.clear();
+		if (this.options.retainMedia === false) result.files.clear();
+		const checked = await recordReferences(this.root, result, {
+			within: this.within,
+			options: this.options
+		});
+		if (this.options.retainMedia === false) checked.files.clear();
+		return checked;
 	}
 
 	/** Reads one file and compares it with the manifest; media comes from its LFS object. */
@@ -93,29 +90,6 @@ export class AttachedRecordService {
 		return sha256(bytes) === file.sha256
 			? []
 			: [`media ${file.path} does not match its recorded hash`];
-	}
-
-	/** The record must be sealed, and every file it names must be in the manifest unchanged. */
-	private withRecord(result: AttachedRecord): AttachedRecord {
-		const bytes = result.files.get('record.json');
-		const parsed = bytes ? new VerificationRecordValidator().validate(parseJson(bytes)) : undefined;
-		const record = parsed?.value;
-		if (!record)
-			return { ...result, problems: [...result.problems, 'record.json is not a record'] };
-		const listed = new Map(result.manifest?.files.map((file) => [file.path, file.sha256]));
-		const unlisted = recordFiles(record)
-			.filter((file) => listed.get(file.path) !== file.sha256)
-			.map((file) => `evidence ${file.path} is not in the manifest`);
-		const sealed = recordIntact(record) ? [] : ['record content does not match its id'];
-		return { ...result, record, problems: [...result.problems, ...sealed, ...unlisted] };
-	}
-}
-
-function parseJson(bytes: Buffer): unknown {
-	try {
-		return JSON.parse(bytes.toString('utf8')) as unknown;
-	} catch {
-		return undefined;
 	}
 }
 

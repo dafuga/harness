@@ -1,5 +1,6 @@
 // @harness-uid u_5kqofa6wua
 import type { Known, Pinned, CommitFacts, PinnedRevision } from './PinnedHistoryAdapter.types';
+import { CommitNotFoundError } from './PinnedHistoryAdapter.types';
 import { SourceHistoryRepository } from '../../../../../../src/repositories/git-source-history/source-history-repository/SourceHistoryRepository';
 import { HistoryStatusService } from '../../../../../../src/services/verification-evidence/history-status-service/HistoryStatusService';
 import {
@@ -47,7 +48,8 @@ export class PinnedHistoryAdapter {
 	/** One commit as Git states it, without reading anything that is stored for it. */
 	async facts(commit: string): Promise<CommitFacts> {
 		const stated = await this.source.revision(commit, []);
-		if (!stated) throw new Error('This commit is not in the repository of this project.');
+		if (!stated)
+			throw new CommitNotFoundError('This commit is not in the repository of this project.');
 		const { parents, subject, author, committedAt } = stated;
 		return { commit: stated.commit, parents, subject, author, committedAt };
 	}

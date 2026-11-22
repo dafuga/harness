@@ -10,9 +10,17 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/repositories/reports-media/report-repository/reportFiles.ts",
-			"packages/reports/src/utils/reports-media/reportFiles.ts"
+			"packages/reports/src/utils/reports-media/reportFiles.ts",
+			"packages/reports/src/utils/reports-media/reportFiles.types.ts"
 		],
-		"symbols": ["reportFiles", "safeId", "readJson", "atomicJson", "reportFiles"]
+		"symbols": [
+			"reportFiles",
+			"safeId",
+			"readJson",
+			"atomicJson",
+			"reportFiles",
+			"InvalidReportOrAssetIdError"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -21,7 +29,7 @@
 				"name": "reportFiles.root",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional report-store root override; when omitted, its value is undefined. A truthy value is returned directly, while an empty string falls through to PROJECT_REPORTS_HOME and then join(homedir(), '.codex', 'project-reports').",
 				"examples": ["/srv/project-reports", ""]
 			},
@@ -37,9 +45,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Path passed to readFile; the file is read as UTF-8 and parsed as JSON. The helper does not create the file or validate the parsed value against a runtime schema.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna/reports.function.report-files/unit.json"
-				]
+				"examples": ["/workspace/project/reports/example.json"]
 			},
 			{
 				"name": "atomicJson.path",
@@ -47,7 +53,7 @@
 				"required": true,
 				"description": "Destination path for the JSON file. Its parent directory is created recursively before the temporary file is renamed over this path.",
 				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19/packages/reports/.codex/project-reports/reports/report-2026-11-15.json"
+					"/workspace/project/packages/reports/.codex/project-reports/reports/report-2026-11-15.json"
 				]
 			},
 			{
@@ -73,13 +79,13 @@
 		"outputs": [
 			{
 				"name": "reportFiles",
-				"type": "unknown",
+				"type": "string",
 				"description": "Returns a string root path. A truthy root wins, then PROJECT_REPORTS_HOME, otherwise the result is join(homedir(), '.codex', 'project-reports'); an empty root does not override either fallback.",
-				"examples": ["/srv/project-reports", "/Users/danielfugere/.codex/project-reports"]
+				"examples": ["/srv/project-reports", "/workspace/project/.codex/project-reports"]
 			},
 			{
 				"name": "safeId",
-				"type": "unknown",
+				"type": "string",
 				"description": "Returns the input string unchanged when it matches the accepted identifier pattern. Values outside that pattern throw Error with message Invalid report or asset ID.",
 				"examples": ["report-2026-11-15", "asset_01"]
 			},
@@ -101,7 +107,7 @@
 			},
 			{
 				"name": "atomicJson",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Resolves with undefined after it creates parent directories recursively with mode 0700, writes two-space-formatted JSON to a UUID-suffixed temporary file with mode 0600, and renames that file over the destination."
 			}
 		],
@@ -131,7 +137,7 @@
 						"name": "reportFiles.root",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional report-store root override; when omitted, its value is undefined. A truthy value is returned directly, while an empty string falls through to PROJECT_REPORTS_HOME and then join(homedir(), '.codex', 'project-reports').",
 						"examples": ["/srv/project-reports", ""]
 					}
@@ -139,9 +145,9 @@
 				"outputs": [
 					{
 						"name": "reportFiles",
-						"type": "unknown",
+						"type": "string",
 						"description": "Returns a string root path. A truthy root wins, then PROJECT_REPORTS_HOME, otherwise the result is join(homedir(), '.codex', 'project-reports'); an empty root does not override either fallback.",
-						"examples": ["/srv/project-reports", "/Users/danielfugere/.codex/project-reports"]
+						"examples": ["/srv/project-reports", "/workspace/project/.codex/project-reports"]
 					}
 				],
 				"errors": [],
@@ -161,7 +167,7 @@
 				"outputs": [
 					{
 						"name": "safeId",
-						"type": "unknown",
+						"type": "string",
 						"description": "Returns the input string unchanged when it matches the accepted identifier pattern. Values outside that pattern throw Error with message Invalid report or asset ID.",
 						"examples": ["report-2026-11-15", "asset_01"]
 					}
@@ -183,9 +189,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Path passed to readFile; the file is read as UTF-8 and parsed as JSON. The helper does not create the file or validate the parsed value against a runtime schema.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna/reports.function.report-files/unit.json"
-						]
+						"examples": ["/workspace/project/reports/example.json"]
 					}
 				],
 				"outputs": [
@@ -229,7 +233,7 @@
 						"required": true,
 						"description": "Destination path for the JSON file. Its parent directory is created recursively before the temporary file is renamed over this path.",
 						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19/packages/reports/.codex/project-reports/reports/report-2026-11-15.json"
+							"/workspace/project/packages/reports/.codex/project-reports/reports/report-2026-11-15.json"
 						]
 					},
 					{
@@ -255,7 +259,7 @@
 				"outputs": [
 					{
 						"name": "atomicJson",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Resolves with undefined after it creates parent directories recursively with mode 0700, writes two-space-formatted JSON to a UUID-suffixed temporary file with mode 0600, and renames that file over the destination."
 					}
 				],

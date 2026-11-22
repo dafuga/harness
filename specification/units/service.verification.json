@@ -4,14 +4,18 @@
 	"uid": "u_k23ebybqw2",
 	"kind": "service",
 	"title": "Verification record service",
-	"responsibility": "Selects checks and scenarios for one exact commit, executes them in a snapshot, judges coverage, and persists the assembled verification record.",
+	"responsibility": "Verifies an exact revision, rerunning scenarios with pending video feedback and retaining explicit scoped verdicts.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"src/workflows/run-verify/verification-service/VerificationService.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-			"src/workflows/verification-evidence/run-verify/verification-service/VerificationService.types.ts"
+			"src/workflows/verification-evidence/run-verify/verification-service/VerificationService.types.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/pendingVideoSelection.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/pendingVideoSelection.types.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/verificationScenarioCoverage.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/verificationScenarioCoverage.types.ts"
 		],
 		"symbols": [
 			"VerificationService",
@@ -22,7 +26,12 @@
 			"VerificationService.plan",
 			"VerificationService.planWithPending",
 			"ProfiledPlan",
-			"VerifyContext"
+			"VerifyContext",
+			"pendingVideoScenarioIds",
+			"pendingVideoSelection",
+			"PendingVideoSelection",
+			"verificationScenarioCoverage",
+			"VerificationScenarioCoverage"
 		]
 	},
 	"contract": {
@@ -33,6 +42,62 @@
 				"type": "VerifyContext",
 				"required": true,
 				"description": "The input for verifying one exact commit: its commit and tree, the store root, the base and head revisions, the impact report, the verify config, the environment and the explained callback. The constructor keeps it and opens the record store at root, and run() and plan() read its other fields as they need them; a null baseCommit means nothing is proven, and an entity runs only its own scenario states, so the record is partial."
+			},
+			{
+				"name": "pendingVideoScenarioIds.root",
+				"type": "string",
+				"required": true,
+				"description": "Original repository with durable Git evidence; clean source exports must not be used as evidence roots."
+			},
+			{
+				"name": "pendingVideoScenarioIds.scenarios",
+				"type": "ScenarioManifest[]",
+				"required": true,
+				"description": "Exact source-revision scenarios; unenrolled scenarios require no reviewer branch or LFS reads."
+			},
+			{
+				"name": "pendingVideoSelection.context",
+				"type": "VerifyContext",
+				"required": true,
+				"description": "Current verification source, head declarations, impact, configuration and optional exact-owner scope."
+			},
+			{
+				"name": "pendingVideoSelection.previous",
+				"type": "ScenarioResult[]",
+				"required": true,
+				"description": "Previously eligible scenario results with original tested provenance; pending IDs remove matching scenarios from inheritance."
+			},
+			{
+				"name": "pendingVideoSelection.pending",
+				"type": "ReadonlySet<string>",
+				"required": false,
+				"default": "new Set()",
+				"description": "Enrolled scenario IDs requiring real re-execution because current reviewer flags remain unresolved. Omission uses an empty set."
+			},
+			{
+				"name": "verificationScenarioCoverage.context",
+				"type": "VerifyContext",
+				"required": true,
+				"description": "Current verification source, head declarations, impact, configuration and optional exact-owner scope."
+			},
+			{
+				"name": "verificationScenarioCoverage.scenario",
+				"type": "ScenarioManifest",
+				"required": true,
+				"description": "One exact source scenario whose owning outcomes, source hashes and reviewer obligations are judged."
+			},
+			{
+				"name": "verificationScenarioCoverage.executed",
+				"type": "Executed",
+				"required": true,
+				"description": "Snapshot outcomes and original-repository reviewer requirements, build identities and source slot hashes collected by this run."
+			},
+			{
+				"name": "verificationScenarioCoverage.deferred",
+				"type": "number",
+				"required": false,
+				"default": 0,
+				"description": "Number of this scenario’s checks deferred by Lite verification. Defaults to zero for full verification and scenarios whose checks all ran."
 			}
 		],
 		"outputs": [
@@ -142,7 +207,13 @@
 				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Current reviewer evidence is corrupt, exceeds finite capture-environment bounds, or the replacement omits, misowns or predates a required flag."
+			}
+		],
 		"errorStatus": "none-found",
 		"operations": [
 			{
@@ -224,7 +295,13 @@
 						]
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Current original-repository reviewer requirements are corrupt or exceed finite bounds, so no verification checks can safely start."
+					}
+				],
 				"errorStatus": "declared"
 			},
 			{
@@ -274,6 +351,116 @@
 						"name": "VerificationService.planWithPending",
 						"type": "ProfiledPlan",
 						"description": "Runnable checks and deferred checks in plan order."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "pendingVideoScenarioIds",
+				"inputs": [
+					{
+						"name": "pendingVideoScenarioIds.root",
+						"type": "string",
+						"required": true,
+						"description": "Original repository with durable Git evidence; clean source exports must not be used as evidence roots."
+					},
+					{
+						"name": "pendingVideoScenarioIds.scenarios",
+						"type": "ScenarioManifest[]",
+						"required": true,
+						"description": "Exact source-revision scenarios; unenrolled scenarios require no reviewer branch or LFS reads."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pendingVideoScenarioIds",
+						"type": "Promise<Set<string>>",
+						"description": "Enrolled scenario IDs with unresolved reviewer flags; callers may await this before reporting a current verification plan."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Current reviewer evidence is corrupt, exceeds finite capture-environment bounds, or the replacement omits, misowns or predates a required flag."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "pendingVideoSelection",
+				"inputs": [
+					{
+						"name": "pendingVideoSelection.context",
+						"type": "VerifyContext",
+						"required": true,
+						"description": "Current verification source, head declarations, impact, configuration and optional exact-owner scope."
+					},
+					{
+						"name": "pendingVideoSelection.previous",
+						"type": "ScenarioResult[]",
+						"required": true,
+						"description": "Previously eligible scenario results with original tested provenance; pending IDs remove matching scenarios from inheritance."
+					},
+					{
+						"name": "pendingVideoSelection.pending",
+						"type": "ReadonlySet<string>",
+						"required": false,
+						"default": "new Set()",
+						"description": "Enrolled scenario IDs requiring real re-execution because current reviewer flags remain unresolved. Omission uses an empty set."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pendingVideoSelection",
+						"type": "PendingVideoSelection",
+						"description": "Real check plan, retained prior scenarios and rerun declarations, excluding flagged scenarios from same-source inheritance."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Current reviewer evidence is corrupt, exceeds finite capture-environment bounds, or the replacement omits, misowns or predates a required flag."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "verificationScenarioCoverage",
+				"inputs": [
+					{
+						"name": "verificationScenarioCoverage.context",
+						"type": "VerifyContext",
+						"required": true,
+						"description": "Current verification source, head declarations, impact, configuration and optional exact-owner scope."
+					},
+					{
+						"name": "verificationScenarioCoverage.scenario",
+						"type": "ScenarioManifest",
+						"required": true,
+						"description": "One exact source scenario whose owning outcomes, source hashes and reviewer obligations are judged."
+					},
+					{
+						"name": "verificationScenarioCoverage.executed",
+						"type": "Executed",
+						"required": true,
+						"description": "Snapshot outcomes and original-repository reviewer requirements, build identities and source slot hashes collected by this run."
+					},
+					{
+						"name": "verificationScenarioCoverage.deferred",
+						"type": "number",
+						"required": false,
+						"default": 0,
+						"description": "Number of this scenario’s checks deferred by Lite verification. Defaults to zero for full verification and scenarios whose checks all ran."
+					}
+				],
+				"outputs": [
+					{
+						"name": "verificationScenarioCoverage",
+						"type": "VerificationScenarioCoverage",
+						"description": "Owning check outcomes and ordinary scenario coverage using current source, build, media and reviewer inputs."
 					}
 				],
 				"errors": [],
@@ -330,6 +517,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.verification-types",
 			"via": "import",
 			"origin": "derived"
@@ -346,6 +538,11 @@
 		},
 		{
 			"unit": "repository.verification-store",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.check-run",
 			"via": "import",
 			"origin": "derived"
 		},

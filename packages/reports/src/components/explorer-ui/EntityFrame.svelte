@@ -77,7 +77,7 @@
 <!-- The marker of the entity's frame draws no box. -->
 <hx-div class="ex-entity" data-harness-component="harness-entity-frame">
 	<ExplorerFrame {host}>
-		{#snippet children(nav)}
+		{#snippet children(nav: EntityNav)}
 			<!-- A component keeps the screenshots of its revision between its name and every row of tabs. -->
 			{#snippet screens()}
 				{#if entity?.category === 'components'}

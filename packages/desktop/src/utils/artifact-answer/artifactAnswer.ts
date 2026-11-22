@@ -1,5 +1,6 @@
 // @harness-uid u_x7rrgdmohq
 import type { Listed } from './artifactAnswer.types';
+import { StoredCaptureCheckError } from './artifactAnswer.types';
 import type { EvidenceArtifactResult } from '../../models/verification-evidence/DesktopEvidence.types';
 import { artifactLimit } from '../reports-media/artifactMedia';
 import { artifactMedia } from './artifactMedia';
@@ -19,14 +20,14 @@ export async function artifactAnswer(
 ): Promise<EvidenceArtifactResult> {
 	if (capture.media === null || !bytes) {
 		const gap = capture.gap ?? 'its record does not hold them';
-		throw new Error(`The bytes of this capture are not stored: ${gap}.`);
+		throw new StoredCaptureCheckError(`The bytes of this capture are not stored: ${gap}.`);
 	}
 	if (bytes.length > artifactLimit) {
 		const most = `at most ${artifactLimit} bytes (11 MiB) are read here`;
-		throw new Error(`This capture has ${bytes.length} bytes; ${most}.`);
+		throw new StoredCaptureCheckError(`This capture has ${bytes.length} bytes; ${most}.`);
 	}
 	const digest = await crypto.subtle.digest('SHA-256', bytes as Uint8Array<ArrayBuffer>);
 	if (hex(new Uint8Array(digest)) !== capture.sha256)
-		throw new Error('The stored bytes do not have the recorded SHA-256.');
+		throw new StoredCaptureCheckError('The stored bytes do not have the recorded SHA-256.');
 	return { bytes, mediaType: artifactMedia(capture, bytes), sha256: capture.sha256 };
 }

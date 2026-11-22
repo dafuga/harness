@@ -1,6 +1,9 @@
 // @harness-uid u_bohfxf5fxx
 import { errorMessage } from '$reports/helpers/strings/errorMessage';
-import type { EvidenceTarget } from './entityEvidence.svelte.types';
+import {
+	EvidenceCaptureUnavailableError,
+	type EvidenceTarget
+} from './entityEvidence.svelte.types';
 import type { ExplorerBehavior } from '$reports/models/explorer-ui/Explorer.types';
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
 import type {
@@ -81,9 +84,9 @@ class EntityEvidenceState {
 	private async made(side: EvidenceSide, file: string, token: number): Promise<string> {
 		const query =
 			this.result && this.scope ? artifactQuery(this.result, this.scope, side, file) : null;
-		if (!query || !this.bridge) throw new Error(unlisted);
+		if (!query || !this.bridge) throw new EvidenceCaptureUnavailableError(unlisted);
 		const { bytes, mediaType } = await artifactBytes(this.bridge, query);
-		if (token !== this.serial) throw new Error(left);
+		if (token !== this.serial) throw new EvidenceCaptureUnavailableError(left);
 		const url = URL.createObjectURL(new Blob([new Uint8Array(bytes)], { type: mediaType }));
 		this.urls.push(url);
 		return url;

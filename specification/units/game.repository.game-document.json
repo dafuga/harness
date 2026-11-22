@@ -8,8 +8,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/repositories/game-authoring/GameDocumentRepository.ts"],
+		"source": [
+			"packages/game/src/repositories/game-authoring/GameDocumentError.ts",
+			"packages/game/src/repositories/game-authoring/GameDocumentRepository.ts"
+		],
 		"symbols": [
+			"GameDocumentError",
 			"GameDocumentRepository",
 			"GameDocumentRepository.constructor",
 			"GameDocumentRepository.read",
@@ -24,13 +28,13 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root used as the git working directory for commit reads and as the parent directory of game.json for working-tree reads and saves. The implementation does not validate its format.",
-				"examples": ["/Users/danielfugere/projects/sample-game"]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "GameDocumentRepository.read.commit",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "An optional full lowercase hexadecimal commit SHA used to read <commit>:game.json; a truthy value must be exactly 40 hex characters, while omitted or empty values select the working-tree file. Defaults to undefined.",
 				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
@@ -119,7 +123,7 @@
 						"name": "GameDocumentRepository.read.commit",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "An optional full lowercase hexadecimal commit SHA used to read <commit>:game.json; a truthy value must be exactly 40 hex characters, while omitted or empty values select the working-tree file. Defaults to undefined.",
 						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
@@ -226,13 +230,13 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root used as the git working directory for commit reads and as the parent directory of game.json for working-tree reads and saves. The implementation does not validate its format.",
-						"examples": ["/Users/danielfugere/projects/sample-game"]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GameDocumentRepository.constructor",
-						"type": "unknown",
+						"type": "GameDocumentRepository",
 						"description": "The constructed repository instance retains the supplied root for later reads and saves. The constructor does not inspect or validate the path."
 					}
 				],

@@ -1,0 +1,46 @@
+{
+	"name": "contracts-cli",
+	"goal": "Read stored contracts by identity or path; list search and map them without opening source",
+	"createdAt": "2026-11-15T18:14:57.246Z",
+	"updatedAt": "2026-11-15T19:03:00.371927Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-15T18:35:45.355Z",
+			"evidence": "BRIEF acceptance implemented: stored show/list/search/map; dynamic nested registry, source-read guards, text/JSON and agent guidance."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-15T18:35:46.380Z",
+			"evidence": "Source 2cc217eb98: contract-only lookup, search and map with bounded traversal. No contract file edits; no merge or push."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-15T18:35:47.148Z",
+			"evidence": "18 focused cases pass; matched feature and map-work red-green retained. Same map case proves 263 dependency reads before and 8 after."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending",
+			"evidence": "Pending: 3 new registry-freshness failures and 13 ownership changes; contract edits forbidden here. Safe suite 1616 pass,26 skip,5 fail including 2 inherited. Full E2E gate prohibited; owner request unacknowledged."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

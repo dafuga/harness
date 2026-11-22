@@ -1,6 +1,7 @@
 // @harness-uid u_fbp7jjiy5y
 import type { AgentRunner } from '../../../models/agents-providers/AgentRunner.types';
 import type { ProviderId } from '../../../models/development-tooling/Desktop.types';
+import { ProviderUnavailableError } from './ProviderDiscoveryService.types';
 import { validateModel } from './providerModels';
 
 export class ProviderDiscoveryService {
@@ -18,7 +19,7 @@ export class ProviderDiscoveryService {
 	async select(provider: ProviderId, model: string, effort: string | null) {
 		const runner = this.runners[provider],
 			state = await runner.discover();
-		if (!state.available) throw new Error(state.reason ?? 'CLI unavailable.');
+		if (!state.available) throw new ProviderUnavailableError(state.reason ?? 'CLI unavailable.');
 		validateModel(state.models, model, effort);
 		return runner;
 	}

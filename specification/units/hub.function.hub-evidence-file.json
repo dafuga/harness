@@ -50,13 +50,13 @@
 		"outputs": [
 			{
 				"name": "evidenceFileLimit",
-				"type": "unknown",
+				"type": "50000000",
 				"description": "The maximum accepted file size is 50,000,000 bytes, for both Git LFS objects and ordinary stored files. The function rejects declared, stored, or raw file content above this ceiling.",
 				"examples": [50000000]
 			},
 			{
 				"name": "hubEvidenceFile",
-				"type": "unknown",
+				"type": "Promise<Checked>",
 				"description": "Returns a problem when the file is missing or its stored LFS pointer does not match the declaration. Otherwise returns the bytes and problems, with a frozen fact containing the Git blob SHA only when the bytes match the declared size and SHA-256.",
 				"examples": [
 					{
@@ -119,7 +119,7 @@
 				"outputs": [
 					{
 						"name": "hubEvidenceFile",
-						"type": "unknown",
+						"type": "Promise<Checked>",
 						"description": "Returns a problem when the file is missing or its stored LFS pointer does not match the declaration. Otherwise returns the bytes and problems, with a frozen fact containing the Git blob SHA only when the bytes match the declared size and SHA-256.",
 						"examples": [
 							{

@@ -1,0 +1,4 @@
+{"event":"loop.created","timestamp":"2026-11-15T19:48:36.070Z","name":"video-archive","goal":"Retain sealed video batches without granting a full verification verdict","template":"feature","templateLineage":["feature"]}
+{"event":"step.completed","timestamp":"2026-11-15T20:20:10.928Z","loop":"video-archive","step":"spec","evidence":"Standalone pointer/API accepted by root; no parent wire or verdict changes."}
+{"event":"step.completed","timestamp":"2026-11-15T20:20:11.824Z","loop":"video-archive","step":"implement","evidence":"Source facdc5db9c; sealed bounded Git/LFS archive, exact source refs and scoped explicit fetch."}
+{"event":"step.completed","timestamp":"2026-11-15T20:20:12.709Z","loop":"video-archive","step":"test","evidence":"Eight finite service cases; retained red and green for archive and fresh-source restoration."}

@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-audit.adapters-typescript",
+	"title": "audit.adapters-typescript examples",
+	"kind": "headless",
+	"units": ["audit.adapters-typescript"],
+	"builds": [],
+	"states": [
+		{
+			"id": "audit-returns-the-rule-findings-of-a-typescript-file-in-cont",
+			"title": "audit returns the rule findings of a TypeScript file in contract order",
+			"coverage": "required"
+		},
+		{
+			"id": "audit-reports-react-component-name-only-for-a-tsx-or-jsx-fil",
+			"title": "audit reports react-component-name only for a tsx or jsx file whose name is not PascalCase",
+			"coverage": "required"
+		},
+		{
+			"id": "auditstructure-reports-folders-and-root-files-outside-the-ha",
+			"title": "auditStructure reports folders and root files outside the Harness scaffold catalog",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/audit.adapters-typescript.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"audit-returns-the-rule-findings-of-a-typescript-file-in-cont",
+				"audit-reports-react-component-name-only-for-a-tsx-or-jsx-fil",
+				"auditstructure-reports-folders-and-root-files-outside-the-ha"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"audit-returns-the-rule-findings-of-a-typescript-file-in-cont",
+				"audit-reports-react-component-name-only-for-a-tsx-or-jsx-fil",
+				"auditstructure-reports-folders-and-root-files-outside-the-ha"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"audit-returns-the-rule-findings-of-a-typescript-file-in-cont",
+				"audit-reports-react-component-name-only-for-a-tsx-or-jsx-fil",
+				"auditstructure-reports-folders-and-root-files-outside-the-ha"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

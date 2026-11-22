@@ -28,9 +28,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root passed to the Git adapter, verification store, and verification checker for later lookups. The constructor stores this string without validating or normalizing it.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "TrustedBaseService.nearest.from",
@@ -148,15 +146,13 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root passed to the Git adapter, verification store, and verification checker for later lookups. The constructor stores this string without validating or normalizing it.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "TrustedBaseService.constructor",
-						"type": "unknown",
+						"type": "TrustedBaseService",
 						"description": "The constructed TrustedBaseService instance, which retains the supplied repository root for later lookups."
 					}
 				],

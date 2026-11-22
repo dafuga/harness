@@ -21,10 +21,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The directory that holds the lookup and projection files; each path is this value joined with a generated file name, and nothing creates or checks it. A missing or wrong directory makes every read and unlink fail silently, so the call still resolves.",
-				"examples": [
-					"/Users/example/Library/Application Support/desktop/cache/projections",
-					"/home/example/.config/desktop/cache/projections"
-				]
+				"examples": ["/workspace/cache/projections", "/workspace/cache/shared-projections"]
 			},
 			{
 				"name": "projectionCacheDiscard.scope",
@@ -40,7 +37,7 @@
 		"outputs": [
 			{
 				"name": "projectionCacheDiscard",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "A promise that resolves to undefined once the attempts are finished: when the lookup parses and its identity field is truthy, the projection file derived from that identity is unlinked first, then the lookup file. Missing, unreadable or malformed lookup files and every unlink failure are swallowed, so resolution does not prove that either file was removed."
 			}
 		],
@@ -55,10 +52,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The directory that holds the lookup and projection files; each path is this value joined with a generated file name, and nothing creates or checks it. A missing or wrong directory makes every read and unlink fail silently, so the call still resolves.",
-						"examples": [
-							"/Users/example/Library/Application Support/desktop/cache/projections",
-							"/home/example/.config/desktop/cache/projections"
-						]
+						"examples": ["/workspace/cache/projections", "/workspace/cache/shared-projections"]
 					},
 					{
 						"name": "projectionCacheDiscard.scope",
@@ -74,7 +68,7 @@
 				"outputs": [
 					{
 						"name": "projectionCacheDiscard",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "A promise that resolves to undefined once the attempts are finished: when the lookup parses and its identity field is truthy, the projection file derived from that identity is unlinked first, then the lookup file. Missing, unreadable or malformed lookup files and every unlink failure are swallowed, so resolution does not prove that either file was removed."
 					}
 				],

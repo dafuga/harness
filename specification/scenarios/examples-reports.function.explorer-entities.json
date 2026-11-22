@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.explorer-entities",
+	"title": "reports.function.explorer-entities examples",
+	"kind": "headless",
+	"units": ["reports.function.explorer-entities"],
+	"builds": [],
+	"states": [
+		{
+			"id": "roster-of-categorized-units-in-category-order",
+			"title": "lists the scoped roster of categorized units in category order, with layouts and helpers",
+			"coverage": "required"
+		},
+		{
+			"id": "no-category-or-unrequested-private-function-is-null",
+			"title": "a unit with no category or an unrequested private function projects to null",
+			"coverage": "required"
+		},
+		{
+			"id": "first-source-impact-list-gives-change-mark",
+			"title": "the first source-impact list naming a unit gives its change mark",
+			"coverage": "required"
+		},
+		{
+			"id": "removed-units-list-last-parent-contract",
+			"title": "removed units list their last parent contract after registry order within each category",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.explorer-entities.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"roster-of-categorized-units-in-category-order",
+				"no-category-or-unrequested-private-function-is-null",
+				"first-source-impact-list-gives-change-mark",
+				"removed-units-list-last-parent-contract"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"roster-of-categorized-units-in-category-order",
+				"no-category-or-unrequested-private-function-is-null",
+				"first-source-impact-list-gives-change-mark",
+				"removed-units-list-last-parent-contract"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"roster-of-categorized-units-in-category-order",
+				"no-category-or-unrequested-private-function-is-null",
+				"first-source-impact-list-gives-change-mark",
+				"removed-units-list-last-parent-contract"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

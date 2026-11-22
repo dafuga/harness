@@ -1,5 +1,6 @@
 // @harness-uid u_u4ayhuatau
 import type { ProjectSelection, LoadedWorkspace } from './loadWorkspace.types';
+import { WorkspaceProjectMismatchError } from './loadWorkspace.types';
 import { offlineCapabilities } from '../cache-status/cacheStatus';
 import { offlineView } from './offlineView';
 import { projectCapabilities } from './projectCapabilities';
@@ -26,7 +27,7 @@ function shows(snapshot: ProjectSnapshot, route: WorkspaceRoute) {
 function owner(snapshot: ProjectSnapshot, route: WorkspaceRoute, selection: ProjectSelection) {
 	const id = snapshot.project.id;
 	if (route.projectId && id && id !== route.projectId)
-		throw new Error('The bridge answered for another project.');
+		throw new WorkspaceProjectMismatchError('The bridge answered for another project.');
 	if (id) selection.id = id;
 	return id ? { projectId: id } : {};
 }

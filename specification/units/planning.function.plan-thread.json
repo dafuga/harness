@@ -174,7 +174,7 @@
 		"outputs": [
 			{
 				"name": "planThread",
-				"type": "unknown",
+				"type": "Promise<Committed<PlanThread>>",
 				"description": "Resolved commit metadata (commit, parent, branch and paths, which are the thread.json and messages.ndjson files) with value, the new PlanThread: its pin is one more than the thread count of the current plan, and messages holds the first message only when one was given. Image anchors are checked at the viewed revision and again at the current plan.",
 				"examples": [
 					{
@@ -260,7 +260,7 @@
 			},
 			{
 				"name": "append",
-				"type": "unknown",
+				"type": "Promise<Committed<ThreadMessage>>",
 				"description": "Resolved commit metadata (commit, parent, branch and paths, which hold only the thread's messages.ndjson) with value, the appended ThreadMessage: sequence is the thread's message count plus one, and previous is the SHA-256 of the prior line, or of thread.json for the first message. An absent agent defaults to null, absent references to [], and a change without changedPaths or error gets [] and null.",
 				"examples": [
 					{
@@ -355,7 +355,7 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "PlanningFailure",
 				"type": "thrown",
 				"description": "Thrown by the fail helper as a plain Error whose code is a PlanningErrorCode, not as an ExpectedCliError instance: invalid-input, invalid-region, unsafe-path, approval-required, approval-mismatch, not-found and unknown-revision for rejected input; artifact-missing, artifact-corrupt, artifact-tampered, artifact-dirty and invalid-image for unreadable, dirty or invalid stored files; and conflict, repository-busy and git-failed for stale or locked writes and failing Git commands. Other file-system and process-spawn errors are rethrown without a PlanningErrorCode."
 			}
@@ -425,7 +425,7 @@
 				"outputs": [
 					{
 						"name": "planThread",
-						"type": "unknown",
+						"type": "Promise<import('../../../../models/planning-collaboration/PlanningView.types').Committed<PlanThread>>",
 						"description": "Resolved commit metadata (commit, parent, branch and paths, which are the thread.json and messages.ndjson files) with value, the new PlanThread: its pin is one more than the thread count of the current plan, and messages holds the first message only when one was given. Image anchors are checked at the viewed revision and again at the current plan.",
 						"examples": [
 							{
@@ -512,7 +512,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Thrown as a plain Error with a PlanningErrorCode: not-found for a plan missing at HEAD or the viewed revision, or for an image or option that the plan does not hold; unknown-revision for an unresolvable HEAD or viewed revision; invalid-input, unsafe-path, approval-required, approval-mismatch and invalid-region for a bad author, partial or invalid anchor, message, change or changed path; and artifact-missing, artifact-corrupt, artifact-tampered, artifact-dirty, invalid-image, repository-busy, conflict or git-failed for a failed read or write."
 					}
@@ -601,7 +601,7 @@
 				"outputs": [
 					{
 						"name": "append",
-						"type": "unknown",
+						"type": "Promise<import('../../../../models/planning-collaboration/PlanningView.types').Committed<ThreadMessage>>",
 						"description": "Resolved commit metadata (commit, parent, branch and paths, which hold only the thread's messages.ndjson) with value, the appended ThreadMessage: sequence is the thread's message count plus one, and previous is the SHA-256 of the prior line, or of thread.json for the first message. An absent agent defaults to null, absent references to [], and a change without changedPaths or error gets [] and null.",
 						"examples": [
 							{
@@ -696,7 +696,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Thrown as a plain Error with a PlanningErrorCode: not-found for a plan or thread that does not exist, unknown-revision for an unresolvable HEAD, unsafe-path for an unsafe threadId or changed path, invalid-input, approval-required and approval-mismatch for a bad author, body, mode, reference or change; and artifact-missing, artifact-corrupt, artifact-tampered, artifact-dirty, invalid-image, repository-busy, conflict or git-failed for a failed read or write."
 					}

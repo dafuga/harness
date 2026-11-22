@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-template.development-tooling-atomic-markup",
+	"title": "template.development-tooling-atomic-markup examples",
+	"kind": "headless",
+	"units": ["template.development-tooling-atomic-markup"],
+	"builds": [],
+	"states": [
+		{
+			"id": "generates-native-atom-tags-for-a-page",
+			"title": "Generates native atom tags for a page",
+			"coverage": "required"
+		},
+		{
+			"id": "computes-the-atoms-directory-from-the-file-path",
+			"title": "Computes the atoms directory from the file path",
+			"coverage": "required"
+		},
+		{
+			"id": "keeps-attributes-expressions-and-bindings-as-written",
+			"title": "Keeps attributes, expressions and bindings as written",
+			"coverage": "required"
+		},
+		{
+			"id": "rewrites-only-eligible-svelte-files-in-a-project",
+			"title": "Rewrites only eligible svelte files in a project",
+			"coverage": "required"
+		},
+		{
+			"id": "tags-layout-files-with-the-layout-tier",
+			"title": "Tags layout files with the layout tier",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-when-the-markup-cannot-be-parsed",
+			"title": "Throws when the markup cannot be parsed",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/template.development-tooling-atomic-markup.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"generates-native-atom-tags-for-a-page",
+				"computes-the-atoms-directory-from-the-file-path",
+				"keeps-attributes-expressions-and-bindings-as-written",
+				"rewrites-only-eligible-svelte-files-in-a-project",
+				"tags-layout-files-with-the-layout-tier",
+				"throws-when-the-markup-cannot-be-parsed"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"generates-native-atom-tags-for-a-page",
+				"computes-the-atoms-directory-from-the-file-path",
+				"keeps-attributes-expressions-and-bindings-as-written",
+				"rewrites-only-eligible-svelte-files-in-a-project",
+				"tags-layout-files-with-the-layout-tier",
+				"throws-when-the-markup-cannot-be-parsed"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"generates-native-atom-tags-for-a-page",
+				"computes-the-atoms-directory-from-the-file-path",
+				"keeps-attributes-expressions-and-bindings-as-written",
+				"rewrites-only-eligible-svelte-files-in-a-project",
+				"tags-layout-files-with-the-layout-tier",
+				"throws-when-the-markup-cannot-be-parsed"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

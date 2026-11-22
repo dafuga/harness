@@ -11,6 +11,43 @@ test('a record carries explicit tested component versions and measurement record
 	const sample = verificationSample();
 	expect(errorsOf(sample)).toEqual([]);
 	expect(new VerificationRecordValidator().validate(sample).value).toEqual(sample);
+	const pointer = {
+		schemaVersion: 1,
+		kind: 'harness-video-batch',
+		batch: 'b'.repeat(64),
+		evidence: {
+			commit: 'c'.repeat(40),
+			path: `video-batches/${'b'.repeat(64)}`,
+			manifest: 'd'.repeat(64)
+		}
+	};
+	expect(errorsOf({ ...sample, videoBatches: [pointer] })).toEqual([]);
+	const coverage = {
+		graph: 'page',
+		states: 0.5,
+		edges: 0.5,
+		clips: 0.5,
+		complete: false,
+		missing: ['state:loading']
+	};
+	const withCoverage = (value: typeof coverage) => ({
+		...sample,
+		scenarios: [
+			{
+				id: 'page',
+				status: 'failed',
+				testedRevision: sample.source.commit,
+				states: [],
+				videoCoverage: [value]
+			}
+		]
+	});
+	expect(errorsOf(withCoverage(coverage))).toEqual([]);
+	for (const field of ['states', 'edges', 'clips'])
+		for (const value of [-0.1, 1.1, Infinity, NaN])
+			expect(errorsOf(withCoverage({ ...coverage, [field]: value })).join(' ')).toContain(
+				'videoCoverage'
+			);
 	const schema = unitSchema('VerificationRecord') as { required: string[] };
 	expect(schema.required).toEqual(expect.arrayContaining(['components', 'measurements']));
 });

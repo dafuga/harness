@@ -17,7 +17,7 @@
 		"outputs": [
 			{
 				"name": "load",
-				"type": "unknown",
+				"type": "void",
 				"description": "The value load returns, which is undefined because its body has no return statement. It only matters if load completes, and it never does because redirect(308, '/harness') throws on every call."
 			}
 		],
@@ -36,7 +36,7 @@
 				"outputs": [
 					{
 						"name": "load",
-						"type": "unknown",
+						"type": "void",
 						"description": "The value the load operation returns, which is undefined because its body has no return statement. It only matters if the call completes, and it never does because redirect(308, '/harness') throws on every call."
 					}
 				],

@@ -49,7 +49,7 @@
 		"outputs": [
 			{
 				"name": "unitLinks",
-				"type": "(id: string)",
+				"type": "(id: string) => UnitLink | null",
 				"description": "Returns a resolver that finds IDs in the snapshot catalog, falling back only to the matching loaded entity, and yields a link with to, name and category or null. It yields null for non-unit or missing IDs, while the workspace is busy, or after the shown project, branch, commit or pin state changes; routes include a commit only for pinned views."
 			}
 		],

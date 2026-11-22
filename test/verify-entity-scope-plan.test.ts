@@ -10,6 +10,8 @@ import { scopedContext } from '../src/workflows/verification-evidence/run-verify
 import type { ScenarioManifest } from '../src/core/development-tooling/unitTypes';
 import type { PlannedCheck } from '../src/utils/verification-evidence/verifyPlan';
 
+import { twoOwnerVideo } from './support/videoEnrollmentFixture';
+
 const badge = 'reports.component.status-badge';
 const catalog = {
 	id: 'catalog',
@@ -21,7 +23,8 @@ const catalog = {
 	],
 	viewports: [{ id: 'desktop' }, { id: 'mobile' }],
 	evidence: [{ id: 'screens', kind: 'screenshot', states: ['badge', 'badge-failed', 'modal'] }],
-	tests: []
+	tests: [],
+	video: twoOwnerVideo(badge, 'badge', 'reports.component.modal', 'modal')
 } as unknown as ScenarioManifest;
 const other = { ...catalog, id: 'other', units: ['x'], states: [], evidence: [] };
 
@@ -32,6 +35,9 @@ test('a scoped run keeps only the scenarios and states that show the entity', ()
 	expect(scoped.states.map((state) => state.id)).toEqual(['badge', 'badge-failed']);
 	expect(scoped.evidence?.[0].states).toEqual(['badge', 'badge-failed']);
 	expect(scoped.viewports).toHaveLength(2);
+	expect(scoped.video?.clips.map((clip) => clip.id)).toEqual(['use-feature']);
+	expect(scoped.video?.graphs.map((graph) => graph.id)).toEqual(['feature']);
+	expect(scoped.video?.playlists).toEqual([{ id: 'all', clips: ['use-feature'] }]);
 	const implicit = {
 		...catalog,
 		states: catalog.states.map(({ id }) => ({ id }))

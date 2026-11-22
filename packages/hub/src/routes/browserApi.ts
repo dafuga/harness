@@ -1,5 +1,6 @@
 // @harness-uid u_ob4stlw5fp
 import type { Query, ApiFailure, BrowserApi } from '../utils/browserApi';
+import { BrowserApiRequestError } from './browserApi.types';
 import { hostedResponse } from '$desktop/utils/networking-security/hostedResponse';
 import { artifactLimit } from '$desktop/utils/reports-media/artifactMedia';
 import { browserError } from '../utils/browserError';
@@ -8,7 +9,8 @@ import { browserError } from '../utils/browserError';
 const patience = 30000;
 
 function address(path: string, query: Query = {}): string {
-	if (!path.startsWith('/api/')) throw new Error('Only the API of this site is called.');
+	if (!path.startsWith('/api/'))
+		throw new BrowserApiRequestError('Only the API of this site is called.');
 	const set = Object.entries(query).filter((entry): entry is [string, string] => Boolean(entry[1]));
 	return set.length ? `${path}?${new URLSearchParams(set)}` : path;
 }
@@ -17,7 +19,7 @@ async function failure(response: Response): Promise<ApiFailure> {
 	const body: unknown = await response.json().catch(() => null);
 	const stated = body && typeof body === 'object' && 'error' in body ? body.error : '';
 	const code = typeof stated === 'string' ? stated : '';
-	return Object.assign(new Error(browserError(code, response.status)), {
+	return Object.assign(new BrowserApiRequestError(browserError(code, response.status)), {
 		status: response.status,
 		code
 	});
@@ -44,7 +46,7 @@ export function browserApi(
 			body: write ? JSON.stringify(body ?? {}) : undefined,
 			signal: AbortSignal.timeout(patience)
 		}).catch(() => {
-			throw Object.assign(new Error(browserError('', 0)), {
+			throw Object.assign(new BrowserApiRequestError(browserError('', 0)), {
 				status: 0,
 				code: ''
 			});

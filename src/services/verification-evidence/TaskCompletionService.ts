@@ -1,10 +1,15 @@
 // @harness-uid u_vcijuxvzhw
 import { posix } from 'node:path';
 import { CommitTreeAdapter } from '../../adapters/git-source-history/CommitTreeAdapter';
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { planAudit, type TaskCheck } from './task-completion-service/planAudit';
 import { sourceAudit } from './task-completion-service/sourceAudit';
 import { taskAuditRecord } from './task-completion-service/taskAuditRecord';
-import type { TaskAudit, TaskAuditInput } from './TaskCompletionService.types';
+import {
+	TaskSourceChangedError,
+	type TaskAudit,
+	type TaskAuditInput
+} from './TaskCompletionService.types';
 export type { TaskAudit, TaskAuditInput } from './TaskCompletionService.types';
 
 /** Inspects actual source and Harness evidence; never promotes an agent's assertion to proof. */
@@ -23,7 +28,7 @@ export class TaskCompletionService {
 				checks.push(...(await codeAudit(this.root, commit, input.units)));
 			}
 			if ((await sourceAudit(this.root, input)) !== commit)
-				throw new Error('Task source changed during its completion audit.');
+				throw new TaskSourceChangedError('Task source changed during its completion audit.');
 		} catch (error) {
 			checks.push({
 				id: 'evidence',
@@ -37,14 +42,14 @@ export class TaskCompletionService {
 	requirePlan(proposal: string, goal: string): void {
 		const missing = planAudit(proposal, goal).filter((check) => !check.passed);
 		if (missing.length)
-			throw new Error(
+			throw new ExpectedCliError(
 				`Task completion audit failed: ${missing.map((check) => check.detail).join(' ')}`
 			);
 	}
 	async require(input: TaskAuditInput): Promise<TaskAudit> {
 		const audit = await this.check(input);
 		if (!audit.passed)
-			throw new Error(
+			throw new ExpectedCliError(
 				`Task completion audit failed: ${audit.checks
 					.filter((check) => !check.passed)
 					.map((check) => check.detail)
@@ -54,7 +59,7 @@ export class TaskCompletionService {
 	}
 	private async proposal(commit: string, path?: string): Promise<string> {
 		if (!path || path.startsWith('/') || posix.normalize(path) !== path || path.startsWith('../'))
-			throw new Error(
+			throw new ExpectedCliError(
 				'Name a committed project-relative --plan artifact for the completion audit.'
 			);
 		return (await CommitTreeAdapter.open(this.root, commit)).read(path);

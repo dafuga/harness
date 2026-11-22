@@ -12,7 +12,7 @@
 			"packages/desktop/src/utils/projects-sessions/promoteChange.ts",
 			"packages/desktop/src/utils/projects-sessions/promoteChange.types.ts"
 		],
-		"symbols": ["prepareChangeEnvironment", "promoteChange", "PromotionContext"]
+		"symbols": ["prepareChangeEnvironment", "promoteChange", "PromotionContext", "PromotionError"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -57,7 +57,7 @@
 		"outputs": [
 			{
 				"name": "prepareChangeEnvironment",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Resolves with undefined when the request is not a change with an environment, or when the source branch, clean worktree and every required environment target pass; rejects with an Error for a branch other than config.sourceBranch, a dirty worktree or a missing target."
 			},
 			{
@@ -110,7 +110,7 @@
 				"outputs": [
 					{
 						"name": "prepareChangeEnvironment",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Resolves with undefined when the request is not a change with an environment, or when the source branch, clean worktree and every required environment target pass; rejects with an Error for a branch other than config.sourceBranch, a dirty worktree or a missing target."
 					}
 				],

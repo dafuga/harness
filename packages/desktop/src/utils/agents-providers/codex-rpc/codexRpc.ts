@@ -8,6 +8,8 @@ import { killOwnedProcess } from '../cliProcess';
 import { streamLines } from '../../shared-primitives/streamLines';
 import type { RpcEvent, RpcPending } from '../rpcMessages';
 import { rpcMessages, rpcRequest } from './rpcMessages';
+import { CodexConnectionClosedError } from './CodexConnectionClosedError';
+import { CodexMessageTooLargeError } from './CodexMessageTooLargeError';
 /** Consumes diagnostics without exposing raw output or private reasoning to the renderer. */
 function connection(command: CliCommand, resources?: ResourceContext) {
 	const child = spawn(command.command, command.args, {
@@ -20,7 +22,7 @@ function connection(command: CliCommand, resources?: ResourceContext) {
 	const pending = new Map<number, RpcPending>(),
 		listeners = new Set<(event: RpcEvent) => void>();
 	const send = (value: unknown) => {
-		if (closed) throw new Error('Codex connection closed.');
+		if (closed) throw new CodexConnectionClosedError('Codex connection closed.');
 		child.stdin.write(JSON.stringify(value) + '\n');
 	};
 	const rejectAll = (error: Error) => {
@@ -36,7 +38,7 @@ function connection(command: CliCommand, resources?: ResourceContext) {
 		maxBytes: 96000000,
 		onOverflow: () => {
 			killOwnedProcess(child.pid);
-			rejectAll(new Error('Codex message too large.'));
+			rejectAll(new CodexMessageTooLargeError('Codex message too large.'));
 		}
 	});
 	watchConnection(child, consume, rejectAll);
@@ -52,7 +54,7 @@ function connection(command: CliCommand, resources?: ResourceContext) {
 		request,
 		dispose: () => {
 			killOwnedProcess(child.pid);
-			rejectAll(new Error('Codex connection closed.'));
+			rejectAll(new CodexConnectionClosedError('Codex connection closed.'));
 			child.stdin.end();
 		},
 		subscribe: (listener: (event: RpcEvent) => void) => {
@@ -70,8 +72,8 @@ function watchConnection(
 	child.stdout.on('data', consume.write);
 	child.stderr.resume();
 	child.on('error', reject);
-	child.on('close', () => reject(new Error('Codex connection closed.')));
-	child.stdin.on('error', () => reject(new Error('Codex connection closed.')));
+	child.on('close', () => reject(new CodexConnectionClosedError('Codex connection closed.')));
+	child.stdin.on('error', () => reject(new CodexConnectionClosedError('Codex connection closed.')));
 }
 
 export async function codexRpc(

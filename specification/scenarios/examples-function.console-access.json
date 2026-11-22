@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.console-access",
+	"title": "function.console-access examples",
+	"kind": "headless",
+	"units": ["function.console-access"],
+	"builds": [],
+	"states": [
+		{
+			"id": "serves-authorized-revision-data",
+			"title": "Serves authorized revision data",
+			"coverage": "required"
+		},
+		{
+			"id": "denies-access-before-reading",
+			"title": "Denies access before reading",
+			"coverage": "required"
+		},
+		{
+			"id": "distinguishes-missing-authorized-artifacts",
+			"title": "Distinguishes missing authorized artifacts",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.console-access.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"serves-authorized-revision-data",
+				"denies-access-before-reading",
+				"distinguishes-missing-authorized-artifacts"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"serves-authorized-revision-data",
+				"denies-access-before-reading",
+				"distinguishes-missing-authorized-artifacts"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"serves-authorized-revision-data",
+				"denies-access-before-reading",
+				"distinguishes-missing-authorized-artifacts"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

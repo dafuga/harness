@@ -1,5 +1,6 @@
 // @harness-uid u_nfkgpmxa2k
 import type { Shown } from '../../../../../../src/workflows/runActivity';
+import { ActivityUnavailableError } from './activityClient.types';
 
 /** How often an open, visible page reads the activity again. */
 const every = 15_000;
@@ -19,7 +20,7 @@ export function activityClient(arrived: (shown: Shown) => void, missed: () => vo
 		try {
 			const options = { cache: 'no-store' as const, signal: controller.signal };
 			const response = await fetch('/api/project-activity', options);
-			if (!response.ok) throw new Error('Activity unavailable.');
+			if (!response.ok) throw new ActivityUnavailableError('Activity unavailable.');
 			const shown = (await response.json()) as Shown;
 			if (active) arrived(shown);
 		} catch {

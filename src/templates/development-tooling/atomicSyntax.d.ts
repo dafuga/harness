@@ -1,5 +1,9 @@
 // @harness-uid u_gdranbq6zx
 import type { AST } from 'svelte/compiler';
+type AtomicMarkupNode = {
+	[key: string]: string | number | boolean | object | null | undefined;
+	type: string;
+};
 export function atomicSyntax(content: string): {
 	tree: AST.Root;
 	directory?: string;
@@ -11,6 +15,6 @@ export function atomicSyntax(content: string): {
 	}>;
 };
 export function walkAtomicMarkup(
-	node: unknown,
-	callback: (node: Record<string, unknown>) => void
+	node: AST.Fragment,
+	callback: (node: AtomicMarkupNode) => void
 ): void;

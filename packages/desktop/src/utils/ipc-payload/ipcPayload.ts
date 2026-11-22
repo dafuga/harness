@@ -14,11 +14,12 @@ import {
 } from './ipcFields';
 import { regionField } from './regionField';
 import { planPayload } from './planPayload';
+import { InvalidPayloadError } from './ipcPayload.types';
 
 export function approvalPayload(value: unknown) {
 	const x = ipcFields(value);
 	if (!Array.isArray(x.imageHashes) || x.imageHashes.length > 24)
-		throw new Error('Invalid image hashes.');
+		throw new InvalidPayloadError('Invalid image hashes.');
 	return {
 		version: textField(x.version, 20, versionPattern),
 		imageHashes: x.imageHashes.map((v) => textField(v, 64, hashPattern)),
@@ -34,8 +35,9 @@ export function threadPayload(x: Record<string, unknown>) {
 	const viewport = nullableText(x.viewport);
 	const region = regionField(x.region);
 	if ([imageSha256, state, viewport].some((v) => (v === null) !== (version === null)))
-		throw new Error('Incomplete image anchor.');
-	if (version === null && region !== null) throw new Error('Draft threads have no image region.');
+		throw new InvalidPayloadError('Incomplete image anchor.');
+	if (version === null && region !== null)
+		throw new InvalidPayloadError('Draft threads have no image region.');
 	return {
 		entityId: textField(x.entityId, 120, idPattern),
 		version,
@@ -52,7 +54,7 @@ const project = /^(?:local-[a-f0-9]{64}|[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{
 
 export function creationProject(value: unknown): string {
 	if (typeof value !== 'string' || !project.test(value))
-		throw new Error('A creation request names its project.');
+		throw new InvalidPayloadError('A creation request names its project.');
 	return value;
 }
 
@@ -64,7 +66,7 @@ const creation = [
 /** A request for something new: a Plan with a catalog as its hint, and no entity of its own. */
 export function creationPayload(x: Record<string, unknown>) {
 	if (Object.keys(x).some((key) => !creation.includes(key)))
-		throw new Error('A creation request names no entity, thread or approval.');
+		throw new InvalidPayloadError('A creation request names no entity, thread or approval.');
 	return {
 		intent: enumField(x.intent, ['create']),
 		projectId: creationProject(x.projectId),
@@ -81,10 +83,11 @@ export function creationPayload(x: Record<string, unknown>) {
 /** General chat cannot choose a directory or silently act on a different revision. */
 function taskPayload(x: Record<string, unknown>) {
 	const allowed = [...creation, 'branch', 'commit', 'conversation', 'environment'];
-	if (Object.keys(x).some((key) => !allowed.includes(key))) throw new Error('Invalid task fields.');
+	if (Object.keys(x).some((key) => !allowed.includes(key)))
+		throw new InvalidPayloadError('Invalid task fields.');
 	const conversation = x.conversation ?? [];
 	if (!Array.isArray(conversation) || conversation.length > 20)
-		throw new Error('Invalid conversation.');
+		throw new InvalidPayloadError('Invalid conversation.');
 	return {
 		intent: 'task' as const,
 		projectId: creationProject(x.projectId),
@@ -114,9 +117,10 @@ export function runPayload(x: Record<string, unknown>) {
 	if (x.intent !== undefined) return creationPayload(x);
 	const mode = enumField(x.mode, ['plan', 'change']);
 	const approval = x.approval === null ? null : approvalPayload(x.approval);
-	if (mode === 'change' && !approval) throw new Error('A Change request needs an approved design.');
+	if (mode === 'change' && !approval)
+		throw new InvalidPayloadError('A Change request needs an approved design.');
 	if (mode === 'change' && x.designOptions !== undefined)
-		throw new Error('A Change makes no design options.');
+		throw new InvalidPayloadError('A Change makes no design options.');
 	return {
 		mode,
 		approval,
@@ -137,7 +141,7 @@ export function runPayload(x: Record<string, unknown>) {
 function countField(value: unknown) {
 	if (value === undefined) return {};
 	if (!Number.isInteger(value) || (value as number) < 1 || (value as number) > 10)
-		throw new Error('Design options must be a whole number from 1 to 10.');
+		throw new InvalidPayloadError('Design options must be a whole number from 1 to 10.');
 	return { designOptions: value as number };
 }
 
@@ -166,7 +170,7 @@ function entityPayload(channel: string, x: Record<string, unknown>) {
 	const base = { entityId, commit };
 	if (channel === 'entity:history') {
 		if (!Number.isInteger(x.page) || Number(x.page) < 1 || Number(x.page) > 10000)
-			throw new Error('Invalid history page.');
+			throw new InvalidPayloadError('Invalid history page.');
 		return {
 			...base,
 			page: Number(x.page),

@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.validator.native-handoff",
+	"title": "desktop.validator.native-handoff examples",
+	"kind": "headless",
+	"units": ["desktop.validator.native-handoff"],
+	"builds": [],
+	"states": [
+		{
+			"id": "accepts-a-valid-native-handoff-start-response",
+			"title": "accepts a valid native handoff start response",
+			"coverage": "required"
+		},
+		{
+			"id": "exchanges-a-correctly-bound-native-handoff-response",
+			"title": "exchanges a correctly bound native handoff response",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-exchange-response-is-null",
+			"title": "Throws Error when the exchange response is null",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.validator.native-handoff.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"accepts-a-valid-native-handoff-start-response",
+				"exchanges-a-correctly-bound-native-handoff-response",
+				"throws-error-when-the-exchange-response-is-null"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"accepts-a-valid-native-handoff-start-response",
+				"exchanges-a-correctly-bound-native-handoff-response",
+				"throws-error-when-the-exchange-response-is-null"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"accepts-a-valid-native-handoff-start-response",
+				"exchanges-a-correctly-bound-native-handoff-response",
+				"throws-error-when-the-exchange-response-is-null"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

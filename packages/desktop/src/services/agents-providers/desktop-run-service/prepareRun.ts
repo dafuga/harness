@@ -8,6 +8,7 @@ import type { RunContext } from '../../../models/development-tooling/RunContext.
 import { RunCancelled } from '../../../models/agents-providers/AgentRunner.types';
 import { visualPlan } from '../../../utils/planning-collaboration/mockupPlan';
 import { approvalMatch } from './approvalMatch';
+import { ThreadNotInEntityError } from './prepareRun.types';
 
 export async function prepareRun(
 	preparation: Preparation,
@@ -25,7 +26,7 @@ export async function prepareRun(
 		mockupRunner ??
 		(await preparation.providers.select(request.provider, request.model, request.effort));
 	if (!entity.threads.some((t) => t.id === request.threadId))
-		throw new Error('Thread does not belong to this entity.');
+		throw new ThreadNotInEntityError('Thread does not belong to this entity.');
 	approvalMatch(entity, request);
 	const context: RunContext = {
 		...project,

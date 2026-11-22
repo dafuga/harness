@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.page.harness-branch-branch-at-shells-entity",
+	"title": "reports.page.harness-branch-branch-at-shells-entity examples",
+	"kind": "headless",
+	"units": ["reports.page.harness-branch-branch-at-shells-entity"],
+	"builds": [],
+	"states": [
+		{
+			"id": "titles-every-shell-page-with-the-shell-title",
+			"title": "Titles every shell page with the Shell title",
+			"coverage": "required"
+		},
+		{
+			"id": "hands-its-console-the-shell-address-with-its-query",
+			"title": "Hands its console the shell address with its query",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-with-403-forbidden-when-the-owner-policy-denies",
+			"title": "Refuses with 403 Forbidden when the owner policy denies",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-harnessdataloaderror-when-the-index-request-fails",
+			"title": "Throws HarnessDataLoadError when the index request fails",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-harnessdataloaderror-when-a-revision-request-fails",
+			"title": "Throws HarnessDataLoadError when a revision request fails",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-not-in-history-when-a-commit-is-not-held",
+			"title": "Reports not-in-history when a commit is not held",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.page.harness-branch-branch-at-shells-entity.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"titles-every-shell-page-with-the-shell-title",
+				"hands-its-console-the-shell-address-with-its-query",
+				"refuses-with-403-forbidden-when-the-owner-policy-denies",
+				"throws-harnessdataloaderror-when-the-index-request-fails",
+				"throws-harnessdataloaderror-when-a-revision-request-fails",
+				"reports-not-in-history-when-a-commit-is-not-held"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"titles-every-shell-page-with-the-shell-title",
+				"hands-its-console-the-shell-address-with-its-query",
+				"refuses-with-403-forbidden-when-the-owner-policy-denies",
+				"throws-harnessdataloaderror-when-the-index-request-fails",
+				"throws-harnessdataloaderror-when-a-revision-request-fails",
+				"reports-not-in-history-when-a-commit-is-not-held"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"titles-every-shell-page-with-the-shell-title",
+				"hands-its-console-the-shell-address-with-its-query",
+				"refuses-with-403-forbidden-when-the-owner-policy-denies",
+				"throws-harnessdataloaderror-when-the-index-request-fails",
+				"throws-harnessdataloaderror-when-a-revision-request-fails",
+				"reports-not-in-history-when-a-commit-is-not-held"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

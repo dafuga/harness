@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "command.development-tooling-contracts-command-contract-history-types",
+	"uid": "u_hsttypabcd",
+	"kind": "type",
+	"title": "contractHistory",
+	"responsibility": "Defines compile-time raw JSON snapshots, semantic fields, Git readers, identity aliases, query options and reachable history results; exports no runtime values.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["src/commands/development-tooling/contracts-command/contractHistory.types.ts"],
+		"symbols": [
+			"ContractJsonValue",
+			"ContractJsonField",
+			"StoredContract",
+			"ContractHistoryOptions",
+			"ContractFieldChange",
+			"ContractChange",
+			"ContractFieldCounts",
+			"ContractChangeSummary",
+			"ContractDiff",
+			"ContractCommitChange",
+			"ContractLog",
+			"ContractSnapshotContext",
+			"ContractHistoryReader",
+			"ContractHistoryCommit",
+			"ContractLogContext",
+			"ContractHistoryIdentity"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-contracts-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/development-tooling/contracts-command/contractHistory.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/development-tooling/contracts-command/contractHistory.types.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

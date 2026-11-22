@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.module-system-module-package",
+	"title": "service.module-system-module-package examples",
+	"kind": "headless",
+	"units": ["service.module-system-module-package"],
+	"builds": [],
+	"states": [
+		{
+			"id": "plans-a-pinned-scoped-dependency-into-the-manifest",
+			"title": "Plans a pinned scoped dependency into the manifest",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-version-range-instead-of-an-exact-version",
+			"title": "Rejects a version range instead of an exact version",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-when-the-dependency-already-pins-another-version",
+			"title": "Rejects when the dependency already pins another version",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.module-system-module-package.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"plans-a-pinned-scoped-dependency-into-the-manifest",
+				"rejects-a-version-range-instead-of-an-exact-version",
+				"rejects-when-the-dependency-already-pins-another-version"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"plans-a-pinned-scoped-dependency-into-the-manifest",
+				"rejects-a-version-range-instead-of-an-exact-version",
+				"rejects-when-the-dependency-already-pins-another-version"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"plans-a-pinned-scoped-dependency-into-the-manifest",
+				"rejects-a-version-range-instead-of-an-exact-version",
+				"rejects-when-the-dependency-already-pins-another-version"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

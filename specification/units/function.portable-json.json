@@ -41,7 +41,7 @@
 		"outputs": [
 			{
 				"name": "maxJsonDepth",
-				"type": "unknown",
+				"type": "64",
 				"description": "The deepest array or object nesting that portableJson accepts, exported as a const holding 64. A nested array or object is refused once its level reaches this value, so at most 64 nested containers pass.",
 				"examples": [64]
 			},

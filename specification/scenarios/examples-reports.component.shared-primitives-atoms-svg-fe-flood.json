@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.component.shared-primitives-atoms-svg-fe-flood",
+	"title": "reports.component.shared-primitives-atoms-svg-fe-flood examples",
+	"kind": "headless",
+	"units": ["reports.component.shared-primitives-atoms-svg-fe-flood"],
+	"builds": [],
+	"states": [
+		{
+			"id": "renders-the-bare-feflood-element-with-its-attributes",
+			"title": "renders the bare feFlood element with its attributes",
+			"coverage": "required"
+		},
+		{
+			"id": "renders-a-child-snippet-inside-the-feflood-element",
+			"title": "renders a child snippet inside the feFlood element",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.component.shared-primitives-atoms-svg-fe-flood.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"renders-the-bare-feflood-element-with-its-attributes",
+				"renders-a-child-snippet-inside-the-feflood-element"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"renders-the-bare-feflood-element-with-its-attributes",
+				"renders-a-child-snippet-inside-the-feflood-element"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"renders-the-bare-feflood-element-with-its-attributes",
+				"renders-a-child-snippet-inside-the-feflood-element"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

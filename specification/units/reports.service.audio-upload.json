@@ -9,10 +9,14 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/services/reports-media/AudioDetailsTooLargeError.ts",
 			"packages/reports/src/services/reports-media/AudioUploadService.ts",
-			"packages/reports/src/services/reports-media/AudioUploadService.types.ts"
+			"packages/reports/src/services/reports-media/AudioUploadService.types.ts",
+			"packages/reports/src/services/reports-media/InvalidAudioFileSizeError.ts",
+			"packages/reports/src/services/reports-media/InvalidAudioTitleError.ts"
 		],
 		"symbols": [
+			"AudioDetailsTooLargeError",
 			"AudioUploadService",
 			"AudioUploadService.constructor",
 			"AudioUploadService.upload",
@@ -21,7 +25,9 @@
 			"AudioComparisonInput",
 			"AudioDetails",
 			"AudioUploadInput",
-			"AudioComparisonInput"
+			"AudioComparisonInput",
+			"InvalidAudioFileSizeError",
+			"InvalidAudioTitleError"
 		]
 	},
 	"contract": {
@@ -63,7 +69,7 @@
 		"outputs": [
 			{
 				"name": "AudioUploadService.upload",
-				"type": "unknown",
+				"type": "Promise<Report>",
 				"description": "Resolves to the Report that repository.mutateActive returns, after the update has appended the new evidence entry with category 'Uploaded audio' and status 'not-proven' and set updatedAt; the manifest is written to disk before the promise resolves.",
 				"examples": [
 					{
@@ -105,7 +111,7 @@
 			},
 			{
 				"name": "AudioUploadService.uploadComparison",
-				"type": "unknown",
+				"type": "Promise<Report>",
 				"description": "Resolves to the Report that repository.mutateActive returns, after the update has appended the 'before' and 'after' evidence entries, which share one comparison id and have category 'Uploaded audio' and status 'not-proven'; the manifest is written to disk before the promise resolves.",
 				"examples": [
 					{
@@ -275,7 +281,7 @@
 				"outputs": [
 					{
 						"name": "AudioUploadService.upload",
-						"type": "unknown",
+						"type": "Promise<import('../../models/reports-media/Report.types').Report>",
 						"description": "Resolves to the Report that repository.mutateActive returns, after the update has appended the new evidence entry with category 'Uploaded audio' and status 'not-proven' and set updatedAt; the manifest is written to disk before the promise resolves.",
 						"examples": [
 							{
@@ -428,7 +434,7 @@
 				"outputs": [
 					{
 						"name": "AudioUploadService.uploadComparison",
-						"type": "unknown",
+						"type": "Promise<import('../../models/reports-media/Report.types').Report>",
 						"description": "Resolves to the Report that repository.mutateActive returns, after the update has appended the 'before' and 'after' evidence entries, which share one comparison id and have category 'Uploaded audio' and status 'not-proven'; the manifest is written to disk before the promise resolves.",
 						"examples": [
 							{
@@ -590,7 +596,7 @@
 				"outputs": [
 					{
 						"name": "AudioUploadService.constructor",
-						"type": "unknown",
+						"type": "AudioUploadService",
 						"description": "The AudioUploadService instance that the constructor creates; the constructor only stores the repository as a private readonly field."
 					}
 				],

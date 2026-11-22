@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.helper.strings-error-message",
+	"title": "reports.helper.strings-error-message examples",
+	"kind": "headless",
+	"units": ["reports.helper.strings-error-message"],
+	"builds": [],
+	"states": [
+		{
+			"id": "returns-error-messages-and-stringifies-other-thrown-values",
+			"title": "Returns Error messages and stringifies other thrown values",
+			"coverage": "required"
+		},
+		{
+			"id": "propagates-errors-from-message-reads-or-conversion",
+			"title": "Propagates errors from message reads or conversion",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.helper.strings-error-message.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"returns-error-messages-and-stringifies-other-thrown-values",
+				"propagates-errors-from-message-reads-or-conversion"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"returns-error-messages-and-stringifies-other-thrown-values",
+				"propagates-errors-from-message-reads-or-conversion"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"returns-error-messages-and-stringifies-other-thrown-values",
+				"propagates-errors-from-message-reads-or-conversion"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

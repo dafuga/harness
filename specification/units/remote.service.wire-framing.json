@@ -19,6 +19,7 @@
 			"WireFramingService.accept",
 			"WireFramingService.reset",
 			"WireFramingOptions",
+			"InvalidWirePartError",
 			"WireFramingOptions",
 			"Outgoing",
 			"Assembly"
@@ -199,7 +200,7 @@
 				"outputs": [
 					{
 						"name": "WireFramingService.constructor",
-						"type": "unknown",
+						"type": "WireFramingService",
 						"description": "A new WireFramingService that keeps the options object it was given, with no queued messages and no partly received messages; its first outgoing message gets id 0."
 					}
 				],

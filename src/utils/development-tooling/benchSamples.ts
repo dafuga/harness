@@ -1,5 +1,6 @@
 // @harness-uid u_eakvmkvycc
 import type { RoundResult } from './benchSamples.types';
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { performance } from 'node:perf_hooks';
 import { warmupCalls } from '../../core/development-tooling/comparisonTypes';
 import type { RuntimeRequest, UnitRuntime } from '../../core/execution-runtimes/runtimeTypes';
@@ -15,7 +16,7 @@ export async function timeCall(runtime: UnitRuntime, request: RuntimeRequest): P
 	const started = performance.now();
 	const response = await runtime.invoke(request);
 	const elapsed = performance.now() - started;
-	if (!response.ok) throw new Error(`${runtime.kind} failed: ${response.error.message}`);
+	if (!response.ok) throw new ExpectedCliError(`${runtime.kind} failed: ${response.error.message}`);
 	return elapsed;
 }
 

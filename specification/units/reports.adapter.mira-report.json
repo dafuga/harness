@@ -48,7 +48,7 @@
 				"name": "MiraReportAdapter.ingest.findingsFile",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "An optional UTF-8 JSON file read when this value is truthy; its issues are imported and its scene counts determine coverage status. The parsed JSON is type-asserted without runtime validation.",
 				"examples": ["packages/reports/fixtures/mira-findings.json"]
 			}
@@ -56,7 +56,7 @@
 		"outputs": [
 			{
 				"name": "MiraReportAdapter.ingest",
-				"type": "unknown",
+				"type": "Promise<{ evidence: number; }>",
 				"description": "The resolved result reports the number of entries in the parsed assets array as evidence. It is returned after the asset records, optional findings and coverage, and import check have been recorded.",
 				"examples": [
 					{
@@ -77,8 +77,8 @@
 				"description": "Parsed JSON is cast without runtime validation, so incompatible array or record shapes can cause TypeError during iteration, field access, or path construction."
 			},
 			{
-				"name": "unknown",
-				"type": "thrown",
+				"name": "File read or ReportRepository.record error",
+				"type": "propagated",
 				"description": "Filesystem read failures and throws or rejected values from ReportRepository.record propagate through ingest without being translated."
 			}
 		],
@@ -111,7 +111,7 @@
 						"name": "MiraReportAdapter.ingest.findingsFile",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "An optional UTF-8 JSON file read when this value is truthy; its issues are imported and its scene counts determine coverage status. The parsed JSON is type-asserted without runtime validation.",
 						"examples": ["packages/reports/fixtures/mira-findings.json"]
 					}
@@ -119,7 +119,7 @@
 				"outputs": [
 					{
 						"name": "MiraReportAdapter.ingest",
-						"type": "unknown",
+						"type": "Promise<{ evidence: number; }>",
 						"description": "The resolved result reports the number of entries in the parsed assets array as evidence. It is returned after the asset records, optional findings and coverage, and import check have been recorded.",
 						"examples": [
 							{
@@ -140,8 +140,8 @@
 						"description": "Parsed JSON is cast without runtime validation, so incompatible array or record shapes can cause TypeError during iteration, field access, or path construction."
 					},
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "File read or ReportRepository.record error",
+						"type": "propagated",
 						"description": "Filesystem read failures and throws or rejected values from ReportRepository.record propagate through ingest without being translated."
 					}
 				],

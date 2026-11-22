@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-audit.clean-code-files",
+	"title": "audit.clean-code-files examples",
+	"kind": "headless",
+	"units": ["audit.clean-code-files"],
+	"builds": [],
+	"states": [
+		{
+			"id": "reviewhash-produces-sha-256-digests",
+			"title": "reviewHash produces SHA-256 digests",
+			"coverage": "required"
+		},
+		{
+			"id": "readreviewinput-reads-a-contained-file",
+			"title": "readReviewInput reads a contained file",
+			"coverage": "required"
+		},
+		{
+			"id": "reviewinputscurrent-compares-saved-hashes",
+			"title": "reviewInputsCurrent compares saved hashes",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-invalidreviewinputerror-for-outside-paths",
+			"title": "Throws InvalidReviewInputError for outside paths",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-invalidreviewinputerror-for-symlinks",
+			"title": "Throws InvalidReviewInputError for symlinks",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-invalidreviewinputerror-for-files-over-1-mib",
+			"title": "Throws InvalidReviewInputError for files over 1 MiB",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/audit.clean-code-files.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"reviewhash-produces-sha-256-digests",
+				"readreviewinput-reads-a-contained-file",
+				"reviewinputscurrent-compares-saved-hashes",
+				"throws-invalidreviewinputerror-for-outside-paths",
+				"throws-invalidreviewinputerror-for-symlinks",
+				"throws-invalidreviewinputerror-for-files-over-1-mib"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"reviewhash-produces-sha-256-digests",
+				"readreviewinput-reads-a-contained-file",
+				"reviewinputscurrent-compares-saved-hashes",
+				"throws-invalidreviewinputerror-for-outside-paths",
+				"throws-invalidreviewinputerror-for-symlinks",
+				"throws-invalidreviewinputerror-for-files-over-1-mib"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"reviewhash-produces-sha-256-digests",
+				"readreviewinput-reads-a-contained-file",
+				"reviewinputscurrent-compares-saved-hashes",
+				"throws-invalidreviewinputerror-for-outside-paths",
+				"throws-invalidreviewinputerror-for-symlinks",
+				"throws-invalidreviewinputerror-for-files-over-1-mib"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

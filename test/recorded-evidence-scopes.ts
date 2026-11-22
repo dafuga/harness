@@ -5,6 +5,42 @@ import type { VerificationScope } from './verification-targets';
  * synthetic repositories and a synthetic source: this proves the readers, not a live service.
  */
 export const recordedEvidenceScopes: Record<string, VerificationScope> = {
+	'agent-activity': {
+		package: 'root',
+		vitest: {
+			'test/activity-agents.e2e.test.ts': {
+				'a repository where no agent ever registered says it does not know, not zero': 'lifecycle',
+				'an agent states who it is, and every checkout of its repository sees it; another repository does not':
+					'lifecycle',
+				'a heartbeat keeps an agent working and may restate its work; without one it is stale and not counted':
+					'lifecycle',
+				'a finished or failed agent is listed as that, and a late heartbeat does not bring it back':
+					'lifecycle',
+				'an agent whose process ended is not counted, whatever its heartbeat says': 'lifecycle',
+				'many agents register, beat and finish at once without losing or damaging a registration':
+					'lifecycle',
+				'what an owner may state is bounded, and an assignment the registry does not know is marked':
+					'lifecycle'
+			}
+		},
+		playwright: {}
+	},
+	'invocation-boundary': {
+		package: 'root',
+		vitest: {
+			'test/services/unit-runtime.test.ts': {
+				'a manifest with a handler and four targets is a valid unit': 'module',
+				'the module target answers the version call through the module adapter': 'module',
+				'the wasm target answers the version call through the Wasm adapter': 'wasm',
+				'the process target answers the version call through the persistent process adapter':
+					'process',
+				'the http target answers the version call through the served module kernel': 'module',
+				'an undeclared target is refused instead of guessed': 'module',
+				'the kernel default follows recorded measurements and http needs a served unit': 'module'
+			}
+		},
+		playwright: {}
+	},
 	'git-evidence-read': {
 		package: 'root',
 		vitest: {

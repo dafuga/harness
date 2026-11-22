@@ -88,7 +88,7 @@
 				"outputs": [
 					{
 						"name": "AuthFailure.constructor",
-						"type": "unknown",
+						"type": "AuthFailure",
 						"description": "An `AuthFailure` instance with the supplied readonly code, a `Hub auth ${code}` message, name `AuthFailure`, and the status mapped for that code. Its status is an HTTP status from the local `AuthFailureCode` map."
 					}
 				],

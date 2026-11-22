@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.script.seed-harness-console",
+	"title": "Importing the console history fixture seeder",
+	"kind": "headless",
+	"units": ["reports.script.seed-harness-console"],
+	"builds": [],
+	"states": [
+		{
+			"id": "importing-the-console-seeder-writes-and-deletes-nothing",
+			"title": "Importing the console seeder writes and deletes nothing under its fixture root",
+			"coverage": "required"
+		},
+		{
+			"id": "importing-the-console-seeder-without-a-run-root-does-not-throw",
+			"title": "Importing the console seeder without a run root does not throw",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/seed-harness-console.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"importing-the-console-seeder-writes-and-deletes-nothing",
+				"importing-the-console-seeder-without-a-run-root-does-not-throw"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"importing-the-console-seeder-writes-and-deletes-nothing",
+				"importing-the-console-seeder-without-a-run-root-does-not-throw"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"importing-the-console-seeder-writes-and-deletes-nothing",
+				"importing-the-console-seeder-without-a-run-root-does-not-throw"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

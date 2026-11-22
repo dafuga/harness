@@ -1,6 +1,7 @@
 // @harness-uid u_e5zlumk3sp
 import { lstat, readdir, rm } from 'node:fs/promises';
 import { join } from 'node:path';
+import { InvalidReportCleanupRootError } from './reportLocalCleanup.types';
 
 const reserved = new Set(['runs', 'publications', 'retention-lock', 'retention-history.jsonl']);
 
@@ -23,10 +24,10 @@ export async function reportLocalCleanup(
 	root: string,
 	cutoff: number,
 	dryRun = false,
-	knownRuns = new Set<string>()
+	knownRuns: Set<string> = new Set<string>()
 ) {
 	if (!Number.isFinite(cutoff) || (await lstat(root)).isSymbolicLink())
-		throw new Error('Invalid report cleanup root');
+		throw new InvalidReportCleanupRootError('Invalid report cleanup root');
 	let removed = 0;
 	for (const name of await readdir(root)) {
 		if (name === 'runs') {
@@ -41,7 +42,8 @@ export async function reportLocalCleanup(
 
 async function purgeOrphanRuns(root: string, cutoff: number, dryRun: boolean, known: Set<string>) {
 	const directory = join(root, 'runs');
-	if ((await lstat(directory)).isSymbolicLink()) throw new Error('Invalid report cleanup root');
+	if ((await lstat(directory)).isSymbolicLink())
+		throw new InvalidReportCleanupRootError('Invalid report cleanup root');
 	let removed = 0;
 	for (const id of await readdir(directory)) {
 		if (!known.has(id)) removed += await purge(join(directory, id), cutoff, dryRun);

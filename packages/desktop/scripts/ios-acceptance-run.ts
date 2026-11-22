@@ -1,5 +1,11 @@
 // @harness-uid u_fppws53qsn
-import type { FixtureView, Acceptance, PairingOffer } from './ios-acceptance-run.types';
+import {
+	type FixtureView,
+	type Acceptance,
+	type PairingOffer,
+	FixtureControlOriginError,
+	FixtureControlRefusedError
+} from './ios-acceptance-run.types';
 import { resolve } from 'node:path';
 import { localOrigin, loopbackArgument, scanArgument } from './ios-acceptance-guards';
 import { launch, screenshot } from './ios-acceptance-simulator';
@@ -17,14 +23,15 @@ export async function control<T = FixtureView>(
 	body?: object
 ): Promise<T> {
 	if (!localOrigin(run.controlOrigin))
-		throw new Error('The control of the fixture is not on this machine.');
+		throw new FixtureControlOriginError('The control of the fixture is not on this machine.');
 	const sent = body && {
 		body: JSON.stringify(body),
 		headers: { 'content-type': 'application/json' }
 	};
 	const method = path === '/status' ? 'GET' : 'POST';
 	const response = await fetch(run.controlOrigin + path, { method, ...sent });
-	if (!response.ok) throw new Error(`The fixture refused ${path} (${response.status}).`);
+	if (!response.ok)
+		throw new FixtureControlRefusedError(`The fixture refused ${path} (${response.status}).`);
 	return (await response.json()) as T;
 }
 

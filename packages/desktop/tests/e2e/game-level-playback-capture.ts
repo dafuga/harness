@@ -10,6 +10,14 @@ const units = [
 	'desktop.component.game-preview',
 	'desktop.component.game-controls'
 ];
+/**
+ * Starts the revision's source read before a worker's first case, so the cold tree read is not charged
+ * to a 30s case. A failure stays in the cached promise and is rethrown by the capture that needs it.
+ */
+export async function prefetchLevelPlaybackSource() {
+	if (!process.env.HARNESS_EVIDENCE_DIR) return;
+	await gameSourceMeasurements(process.env.HARNESS_VERIFY_REVISION, units).catch(() => undefined);
+}
 /** Capture the running planned level, separate from its non-playable proposal review. */
 export async function captureLevelPlayback(page: Page, dimension: string) {
 	if (!process.env.HARNESS_EVIDENCE_DIR) return;

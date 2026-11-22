@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.explorer-evidence-focused-captures",
+	"title": "reports.function.explorer-evidence-focused-captures examples",
+	"kind": "headless",
+	"units": ["reports.function.explorer-evidence-focused-captures"],
+	"builds": [],
+	"states": [
+		{
+			"id": "same-commit-focused-captures-are-selected",
+			"title": "Same-commit focused captures are selected",
+			"coverage": "required"
+		},
+		{
+			"id": "identical-source-tree-inherits-and-skips-other-trees",
+			"title": "Identical source tree inherits and skips other trees",
+			"coverage": "required"
+		},
+		{
+			"id": "viewport-suffix-removal-is-exact",
+			"title": "Viewport suffix removal is exact",
+			"coverage": "required"
+		},
+		{
+			"id": "focused-scenario-lists-states-and-viewports",
+			"title": "Focused scenario lists states and viewports",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.explorer-evidence-focused-captures.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"same-commit-focused-captures-are-selected",
+				"identical-source-tree-inherits-and-skips-other-trees",
+				"viewport-suffix-removal-is-exact",
+				"focused-scenario-lists-states-and-viewports"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"same-commit-focused-captures-are-selected",
+				"identical-source-tree-inherits-and-skips-other-trees",
+				"viewport-suffix-removal-is-exact",
+				"focused-scenario-lists-states-and-viewports"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"same-commit-focused-captures-are-selected",
+				"identical-source-tree-inherits-and-skips-other-trees",
+				"viewport-suffix-removal-is-exact",
+				"focused-scenario-lists-states-and-viewports"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

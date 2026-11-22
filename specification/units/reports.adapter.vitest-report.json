@@ -51,7 +51,7 @@
 		"outputs": [
 			{
 				"name": "VitestReportAdapter.ingest",
-				"type": "unknown",
+				"type": "Promise<{ checks: number; }>",
 				"description": "The promise resolves to { checks: number }, where checks counts the assertion results recorded as check entries. It is 0 when no assertion results exist, and the summary check is recorded instead.",
 				"examples": [
 					{
@@ -121,7 +121,7 @@
 				"outputs": [
 					{
 						"name": "VitestReportAdapter.ingest",
-						"type": "unknown",
+						"type": "Promise<{ checks: number; }>",
 						"description": "The promise resolves to { checks: number }, where checks counts the assertion results recorded as check entries. It is 0 when no assertion results exist, and the summary check is recorded instead.",
 						"examples": [
 							{

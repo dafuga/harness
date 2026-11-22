@@ -19,15 +19,13 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root beneath which the function resolves specification/units and specification/budgets/ledger.ndjson. Only regular .json files found under the unit directory are counted; unreadable directories and failed file stats are treated as empty or zero, while a ledger stream error can reject the report.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
-				]
+				"examples": ["/workspace/project"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "specificationStorageReport",
-				"type": "unknown",
+				"type": "Promise<{ units: { files: number; bytes: number; }; budgetLedger: { bytes: number; lines: number; }; operatorHeadsUpBytes: { units: number; budgetLedger: number; }; warnings: string[]; }>",
 				"description": "The report gives the number and total bytes of .json unit files, the ledger byte and line counts, the fixed operator heads-up thresholds, and any warnings. A warning appears when its byte total is at or above the corresponding threshold; filesystem enumeration and stat failures are treated as empty or zero.",
 				"examples": [
 					{
@@ -83,15 +81,13 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root beneath which the function resolves specification/units and specification/budgets/ledger.ndjson. Only regular .json files found under the unit directory are counted; unreadable directories and failed file stats are treated as empty or zero, while a ledger stream error can reject the report.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "specificationStorageReport",
-						"type": "unknown",
+						"type": "Promise<{ units: { files: number; bytes: number; }; budgetLedger: { bytes: number; lines: number; }; operatorHeadsUpBytes: { units: number; budgetLedger: number; }; warnings: string[]; }>",
 						"description": "The report gives the number and total bytes of .json unit files, the ledger byte and line counts, the fixed operator heads-up thresholds, and any warnings. A warning appears when its byte total is at or above the corresponding threshold; filesystem enumeration and stat failures are treated as empty or zero.",
 						"examples": [
 							{

@@ -2,7 +2,9 @@
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <!-- @harness-uid u_6noctf4cht -->
 <script lang="ts">
+	import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
+	import type { EntityNav } from '../../utils/explorer-ui/entityLens';
 	import EntityConfig from './EntityConfig.svelte';
 	import EntityFrame from './EntityFrame.svelte';
 	import EntitySections from './entity-sections/EntitySections.svelte';
@@ -13,7 +15,7 @@
 	marker of the screen draws no box. -->
 <hx-div class="ex-screen" data-harness-component="harness-entity-config-screen">
 	<EntityFrame {host}>
-		{#snippet children(entity, nav)}
+		{#snippet children(entity: ExplorerEntity, nav: EntityNav)}
 			<EntitySections {host} {entity} {nav}>
 				{#snippet pane()}
 					{#if entity.category === 'configs'}<EntityConfig {entity} scope={host.scope} {nav} />{/if}

@@ -26,7 +26,7 @@
 		"outputs": [
 			{
 				"name": "hostedPublicFailure",
-				"type": "unknown",
+				"type": "Promise<HostedFailureValidator>",
 				"description": "A promise resolving to a HostedFailureValidator instance: status 401 or 403 produces state denied, and every other status produces failed. Its message includes a parsed string error only when that code is allowlisted; otherwise it reports the HTTP status without exposing server prose."
 			}
 		],
@@ -46,7 +46,7 @@
 				"outputs": [
 					{
 						"name": "hostedPublicFailure",
-						"type": "unknown",
+						"type": "Promise<HostedFailureValidator>",
 						"description": "A promise resolving to a HostedFailureValidator instance: status 401 or 403 produces state denied, and every other status produces failed. Its message includes a parsed string error only when that code is allowlisted; otherwise it reports the HTTP status without exposing server prose."
 					}
 				],

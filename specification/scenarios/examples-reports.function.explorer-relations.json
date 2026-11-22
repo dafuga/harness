@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.explorer-relations",
+	"title": "reports.function.explorer-relations examples",
+	"kind": "headless",
+	"units": ["reports.function.explorer-relations"],
+	"builds": [],
+	"states": [
+		{
+			"id": "explorer-relations-uses-and-owners",
+			"title": "a page lists the categorized units it uses and a leaf lists the pages that show it",
+			"coverage": "required"
+		},
+		{
+			"id": "explorer-relations-scope-and-absent-rows",
+			"title": "removed units and absent ids give no relation rows",
+			"coverage": "required"
+		},
+		{
+			"id": "explorer-relations-reader-reuses-built-entities",
+			"title": "the reader keeps each answer and reuses only entities built for this unit",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.explorer-relations.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"explorer-relations-uses-and-owners",
+				"explorer-relations-scope-and-absent-rows",
+				"explorer-relations-reader-reuses-built-entities"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"explorer-relations-uses-and-owners",
+				"explorer-relations-scope-and-absent-rows",
+				"explorer-relations-reader-reuses-built-entities"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"explorer-relations-uses-and-owners",
+				"explorer-relations-scope-and-absent-rows",
+				"explorer-relations-reader-reuses-built-entities"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

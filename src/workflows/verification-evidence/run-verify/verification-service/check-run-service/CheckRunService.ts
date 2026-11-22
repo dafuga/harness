@@ -16,7 +16,9 @@ import {
 import type { PlannedCheck } from '../../../../../utils/verification-evidence/verifyPlan';
 import { evidenceDirectoryFailure } from './evidenceDirectoryFailure';
 import { RecordBudget } from './captureLimits';
-import { gatherCaptures } from './gatherCaptures';
+import { checkCaptures } from './checkCaptures';
+import { checkVideoEnvironment } from './checkVideoContext';
+import { videoRunReaders } from './videoRunReaders';
 import { readBrowserDiagnostics } from './readBrowserDiagnostics';
 
 const maxLogBytes = 2_000_000;
@@ -26,6 +28,12 @@ export class CheckRunService {
 	private readonly budget: RecordBudget;
 
 	constructor(private readonly context: RunContext) {
+		this.context = {
+			...context,
+			videoCapture: context.videoCapture
+				? { ...context.videoCapture, references: videoRunReaders(context.videoCapture) }
+				: undefined
+		};
 		this.budget = new RecordBudget(context.limits?.maxRecordBytes);
 	}
 
@@ -36,13 +44,14 @@ export class CheckRunService {
 		const evidencePath = `evidence/${commit}/${check.scenario ?? 'checks'}/${leaf}`;
 		const result = await this.execute(check, evidencePath, slug);
 		this.context.signal?.throwIfAborted();
-		const captures = checkCaptures(this.context, this.budget, result, evidencePath);
+		// Nothing a stopped check wrote is trusted: a timeout yields no captures at all.
+		const captures = await checkCaptures(this.context, check, this.budget, {
+			timedOut: result.timedOut,
+			evidencePath
+		});
 		const prefix = check.scenario ? `${check.scenario}: ` : '';
 		const written = captures.failures.map((failure) => `${prefix}check ${check.name} ${failure}`);
-		const diagnostics =
-			result.timedOut || evidenceDirectoryFailure(join(directory, evidencePath), directory)
-				? {}
-				: readBrowserDiagnostics(join(directory, evidencePath));
+		const diagnostics = checkDiagnostics(result, join(directory, evidencePath), directory);
 		if (diagnostics.failure) written.push(`${prefix}check ${check.name}: ${diagnostics.failure}`);
 		const failures = [
 			...outcomeFailures(check, result).map((failure) => prefix + failure),
@@ -54,6 +63,7 @@ export class CheckRunService {
 			passed,
 			entry: checkEntry(check, result, { diagnostics, passed }, this.context.directory),
 			gathered: captures.gathered,
+			...(captures.videoBatches?.length ? { videoBatches: captures.videoBatches } : {}),
 			failures
 		};
 	}
@@ -116,6 +126,7 @@ export class CheckRunService {
 	private environment(check: PlannedCheck, evidence: string): Record<string, string | undefined> {
 		return {
 			...this.context.env,
+			...checkVideoEnvironment(this.context, check),
 			...this.captureEnvironment(),
 			HARNESS_VERIFY: '1',
 			HARNESS_EVIDENCE_DIR: evidence,
@@ -191,22 +202,8 @@ function checkEntry(
 	};
 }
 
-/** Captures a finished check wrote; a timeout yields none, and Lite drops screenshots. */
-function checkCaptures(
-	context: RunContext,
-	budget: RecordBudget,
-	result: IsolatedResult,
-	evidencePath: string
-) {
-	if (result.timedOut) return { gathered: [], failures: [] };
-	const { directory, limits, lite } = context;
-	const captures = gatherCaptures(join(directory, evidencePath), evidencePath, limits, {
-		budget,
-		root: directory
-	});
-	if (!lite || !captures.gathered.some((item) => item.line.kind === 'screenshot')) return captures;
-	return {
-		gathered: captures.gathered.filter((item) => item.line.kind !== 'screenshot'),
-		failures: [...captures.failures, 'captured screenshots in Lite; declare it fullOnly.']
-	};
+function checkDiagnostics(result: IsolatedResult, evidence: string, root: string) {
+	return result.timedOut || evidenceDirectoryFailure(evidence, root)
+		? {}
+		: readBrowserDiagnostics(evidence);
 }

@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.script.ios-acceptance-products",
+	"title": "desktop.script.ios-acceptance-products examples",
+	"kind": "headless",
+	"units": ["desktop.script.ios-acceptance-products"],
+	"builds": [],
+	"states": [
+		{
+			"id": "builds-the-five-products-and-proves-the-renderer-they-carry",
+			"title": "builds the five products and proves the renderer they carry",
+			"coverage": "required"
+		},
+		{
+			"id": "stops-with-the-tool-error-when-a-build-step-fails",
+			"title": "stops with the tool error when a build step fails",
+			"coverage": "required"
+		},
+		{
+			"id": "starts-the-normal-debug-product-and-keeps-it-running",
+			"title": "starts the normal Debug product and keeps it running",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.script.ios-acceptance-products.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"builds-the-five-products-and-proves-the-renderer-they-carry",
+				"stops-with-the-tool-error-when-a-build-step-fails",
+				"starts-the-normal-debug-product-and-keeps-it-running"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"builds-the-five-products-and-proves-the-renderer-they-carry",
+				"stops-with-the-tool-error-when-a-build-step-fails",
+				"starts-the-normal-debug-product-and-keeps-it-running"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"builds-the-five-products-and-proves-the-renderer-they-carry",
+				"stops-with-the-tool-error-when-a-build-step-fails",
+				"starts-the-normal-debug-product-and-keeps-it-running"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

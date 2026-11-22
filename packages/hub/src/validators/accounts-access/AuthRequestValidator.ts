@@ -1,5 +1,5 @@
 // @harness-uid u_le3fi5uzvj
-import type { Body } from './AuthRequestValidator.types';
+import type { Body, JsonValue } from './AuthRequestValidator.types';
 import { EMAIL_CODE_LENGTH } from '../../models/accounts-access/HubAuth.types';
 import type {
 	GoogleSignInInput,
@@ -82,7 +82,7 @@ export class AuthRequestValidator {
 		return field({ code: typed }, 'code', EMAIL_CODE);
 	}
 
-	repositoryId(value: unknown): number {
+	repositoryId(value: JsonValue): number {
 		const valid = typeof value === 'number' && Number.isSafeInteger(value) && value > 0;
 		return valid ? value : authFail('invalid-request');
 	}

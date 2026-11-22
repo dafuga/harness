@@ -40,7 +40,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The file extension searched within adapters selected for the requested profile. Matching uses exact string inclusion.",
-				"examples": [".go"]
+				"examples": [".ts"]
 			},
 			{
 				"name": "adapterForExtension.profile",
@@ -54,9 +54,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root path consulted when profile is auto. Detection checks package.json harness.kind, contract directories, and Svelte markers.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "resolveAuditProfile.profile",
@@ -70,8 +68,8 @@
 		"outputs": [
 			{
 				"name": "auditAdapters",
-				"type": "unknown",
-				"description": "The ordered registry of imported audit adapter implementations. It is the source list filtered by profile and extension lookup."
+				"type": "[AuditAdapter, AuditAdapter, AuditAdapter, AuditAdapter, AuditAdapter, AuditAdapter, AuditAdapter, AuditAdapter, AuditAdapter]",
+				"description": "The ordered registry of imported audit adapter implementations available to profile filtering and extension lookup."
 			},
 			{
 				"name": "adaptersForProfile",
@@ -88,7 +86,34 @@
 				"type": "string[]",
 				"description": "The deduplicated extensions declared by registered adapters together with the built-in future extensions. First occurrence order is preserved.",
 				"examples": [
-					[".go", ".java", ".kt", ".m", ".mm", ".swift", ".vue"]
+					[
+						".ts",
+						".tsx",
+						".js",
+						".jsx",
+						".svelte",
+						".sql",
+						".c",
+						".cc",
+						".cpp",
+						".cxx",
+						".h",
+						".hh",
+						".hpp",
+						".hxx",
+						".rs",
+						".py",
+						".sh",
+						".abi",
+						".wasm",
+						".go",
+						".java",
+						".kt",
+						".m",
+						".mm",
+						".swift",
+						".vue"
+					]
 				]
 			},
 			{
@@ -130,7 +155,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The file extension searched within adapters selected for the requested profile. Matching uses exact string inclusion.",
-						"examples": [".go"]
+						"examples": [".ts"]
 					},
 					{
 						"name": "adapterForExtension.profile",
@@ -159,7 +184,34 @@
 						"type": "string[]",
 						"description": "The deduplicated extensions declared by registered adapters together with the built-in future extensions. First occurrence order is preserved.",
 						"examples": [
-							[".go", ".java", ".kt", ".m", ".mm", ".swift", ".vue"]
+							[
+								".ts",
+								".tsx",
+								".js",
+								".jsx",
+								".svelte",
+								".sql",
+								".c",
+								".cc",
+								".cpp",
+								".cxx",
+								".h",
+								".hh",
+								".hpp",
+								".hxx",
+								".rs",
+								".py",
+								".sh",
+								".abi",
+								".wasm",
+								".go",
+								".java",
+								".kt",
+								".m",
+								".mm",
+								".swift",
+								".vue"
+							]
 						]
 					}
 				],
@@ -174,9 +226,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root path consulted when profile is auto. Detection checks package.json harness.kind, contract directories, and Svelte markers.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "resolveAuditProfile.profile",

@@ -1,5 +1,5 @@
 // @harness-uid u_pghy4246hw
-import type { GitRunOptions, GitResult } from './GitAdapter.types';
+import { GitCommandError, type GitRunOptions, type GitResult } from './GitAdapter.types';
 import { BoundedCommandAdapter } from '../execution-runtimes/BoundedCommandAdapter';
 import { gitDeadline } from './git-adapter/gitDeadline';
 
@@ -15,7 +15,7 @@ export class GitAdapter {
 	async bytes(args: string[], options: GitRunOptions = {}): Promise<Buffer> {
 		const result = await this.exec(args, options);
 		if (result.code === 0) return result.stdout;
-		throw new Error(`git ${args.join(' ')} failed: ${result.stderr.trim()}`);
+		throw new GitCommandError(`git ${args.join(' ')} failed: ${result.stderr.trim()}`);
 	}
 
 	/** Runs git and returns undefined instead of failing, for existence probes. */

@@ -113,11 +113,12 @@
 			},
 			{
 				"name": "resourcePolicy",
-				"type": "unknown",
+				"type": "{ granted: string[]; reason: string | null; }",
 				"description": "IDs admitted by priority and bounded parent pools, plus the public waiting reason."
 			}
 		],
 		"errors": [],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "resourcePressure",
@@ -149,7 +150,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "memoryReserve",
@@ -175,7 +176,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "impossibleRequest",
@@ -207,7 +208,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "resourcePolicy",
@@ -240,12 +241,12 @@
 				"outputs": [
 					{
 						"name": "resourcePolicy",
-						"type": "unknown",
+						"type": "{ granted: string[]; reason: string | null; }",
 						"description": "IDs admitted by priority and bounded parent pools, plus the public waiting reason."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

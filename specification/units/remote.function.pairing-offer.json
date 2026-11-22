@@ -10,12 +10,14 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/networking-security/remote-host-service/pairingOffer.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/pairingOffer.types.ts",
 			"packages/remote/src/services/networking-security/device-pairing-service/pairingOffer.ts",
 			"packages/remote/src/utils/networking-security/pairingOffer.ts",
 			"packages/remote/src/utils/networking-security/pairingOffer.types.ts"
 		],
 		"symbols": [
 			"pairingOffer",
+			"InvalidPairingOfferError",
 			"readPairingOffer",
 			"offerRules",
 			"shape",
@@ -134,7 +136,7 @@
 		"outputs": [
 			{
 				"name": "offerRules",
-				"type": "unknown",
+				"type": "{ readonly version: \"1\"; readonly audience: \"harness-phone\"; readonly maxLength: 320; readonly skewMs: 60000; }",
 				"description": "The bounds of an offer text: version '1', audience 'harness-phone', maxLength 320 characters, and skewMs 60000 milliseconds, the allowance for how far a phone clock may run behind.",
 				"examples": [
 					{

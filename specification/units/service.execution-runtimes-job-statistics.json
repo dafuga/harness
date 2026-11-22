@@ -1,0 +1,161 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-job-statistics",
+	"uid": "u_u6mg7e66nj",
+	"kind": "service",
+	"title": "JobStatisticsService",
+	"responsibility": "Summarize completed duration samples and select exact, model, type or global distributions with conditional running-job residuals.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/execution-runtimes/JobStatisticsService.ts",
+			"src/services/execution-runtimes/JobStatisticsService.types.ts"
+		],
+		"symbols": [
+			"JobStatisticsService",
+			"JobStatisticsService.constructor",
+			"JobStatisticsService.summary",
+			"JobStatisticsService.estimate",
+			"DurationSummary",
+			"DurationEstimate"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "JobStatisticsService.constructor.records",
+				"type": "JobRecord[]",
+				"required": true,
+				"description": "Duration records whose pass/fail outcomes and finite durations contribute samples; cancelled and unfinished jobs are excluded."
+			},
+			{
+				"name": "JobStatisticsService.estimate.type",
+				"type": "string",
+				"required": true,
+				"description": "Job phase category requested for duration estimation, such as contract, stub, smell or reverify."
+			},
+			{
+				"name": "JobStatisticsService.estimate.model",
+				"type": "string",
+				"required": true,
+				"description": "Model identifier requested for a duration distribution; exact matching precedes model-only, type-only and global fallbacks."
+			},
+			{
+				"name": "JobStatisticsService.estimate.elapsedMs",
+				"type": "number",
+				"required": false,
+				"default": 0,
+				"description": "Already elapsed running time in milliseconds, default zero. Surviving samples estimate residuals; exhausted tails are explicitly extrapolated."
+			}
+		],
+		"outputs": [
+			{
+				"name": "JobStatisticsService.summary",
+				"type": "DurationSummary[]",
+				"description": "Per-type/model counts, numerically stable incremental means, conventional medians and nearest-rank p80/p90 durations."
+			},
+			{
+				"name": "JobStatisticsService.estimate",
+				"type": "DurationEstimate | null",
+				"description": "Queue service returns status, counts, slots, p50/p90 makespans, Lisbon finish clocks and sample notes. Statistics service returns a selected distribution or null when history has no usable samples."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "JobStatisticsService.summary",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "JobStatisticsService.summary",
+						"type": "DurationSummary[]",
+						"description": "Per-type/model counts, numerically stable incremental means, conventional medians and nearest-rank p80/p90 durations."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "JobStatisticsService.estimate",
+				"inputs": [
+					{
+						"name": "JobStatisticsService.estimate.type",
+						"type": "string",
+						"required": true,
+						"description": "Job phase category requested for duration estimation, such as contract, stub, smell or reverify."
+					},
+					{
+						"name": "JobStatisticsService.estimate.model",
+						"type": "string",
+						"required": true,
+						"description": "Model identifier requested for a duration distribution; exact matching precedes model-only, type-only and global fallbacks."
+					},
+					{
+						"name": "JobStatisticsService.estimate.elapsedMs",
+						"type": "number",
+						"required": false,
+						"default": 0,
+						"description": "Already elapsed running time in milliseconds, default zero. Surviving samples estimate residuals; exhausted tails are explicitly extrapolated."
+					}
+				],
+				"outputs": [
+					{
+						"name": "JobStatisticsService.estimate",
+						"type": "DurationEstimate | null",
+						"description": "Queue service returns status, counts, slots, p50/p90 makespans, Lisbon finish clocks and sample notes. Statistics service returns a selected distribution or null when history has no usable samples."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "JobStatisticsService.constructor",
+				"inputs": [
+					{
+						"name": "JobStatisticsService.constructor.records",
+						"type": "JobRecord[]",
+						"required": true,
+						"description": "Duration records whose pass/fail outcomes and finite durations contribute samples; cancelled and unfinished jobs are excluded."
+					}
+				],
+				"outputs": [
+					{
+						"name": "JobStatisticsService.constructor",
+						"type": "unknown",
+						"description": "Constructed JobStatisticsService instance retaining only its declared collaborators and state; repository construction opens the durable SQLite store."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "repository.execution-runtimes-job-history",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/JobStatisticsService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/JobStatisticsService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

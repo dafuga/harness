@@ -37,8 +37,11 @@ export class HistoryNoteRepository {
 		return result.code === 0 ? result.stdout.toString('utf8') : '';
 	}
 
-	async read(commit: string): Promise<ReadNote> {
-		return readNoteLines(await this.text(commit), commit);
+	async read(commit: string, at?: string | null): Promise<ReadNote> {
+		if (at === undefined) return readNoteLines(await this.text(commit), commit);
+		const [blob] = (await this.held(at)).find(([, source]) => source === commit) ?? [];
+		const text = blob ? (await this.blobs([blob]))[0] : '';
+		return readNoteLines(text, commit);
 	}
 
 	/** Adds entries to a commit's note, keeping every existing line; false when nothing is new. */

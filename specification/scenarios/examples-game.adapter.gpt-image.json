@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-game.adapter.gpt-image",
+	"title": "game.adapter.gpt-image examples",
+	"kind": "headless",
+	"units": ["game.adapter.gpt-image"],
+	"builds": [],
+	"states": [
+		{
+			"id": "generate-sends-request-and-decodes-png",
+			"title": "generate sends request and decodes PNG",
+			"coverage": "required"
+		},
+		{
+			"id": "generate-reports-a-non-ok-provider-response",
+			"title": "generate reports a non-OK provider response",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-imagegenerationerror-when-the-provider-payload-is-inv",
+			"title": "Throws ImageGenerationError when the provider payload is invalid",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-the-request-resolves-without-a-respons",
+			"title": "Throws TypeError when the request resolves without a response",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/game.adapter.gpt-image.test.ts",
+			"cwd": "packages/game",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"generate-sends-request-and-decodes-png",
+				"generate-reports-a-non-ok-provider-response",
+				"throws-imagegenerationerror-when-the-provider-payload-is-inv",
+				"throws-typeerror-when-the-request-resolves-without-a-respons"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"generate-sends-request-and-decodes-png",
+				"generate-reports-a-non-ok-provider-response",
+				"throws-imagegenerationerror-when-the-provider-payload-is-inv",
+				"throws-typeerror-when-the-request-resolves-without-a-respons"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"generate-sends-request-and-decodes-png",
+				"generate-reports-a-non-ok-provider-response",
+				"throws-imagegenerationerror-when-the-provider-payload-is-inv",
+				"throws-typeerror-when-the-request-resolves-without-a-respons"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

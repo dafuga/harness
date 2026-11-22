@@ -1,0 +1,159 @@
+{
+	"schemaVersion": 1,
+	"id": "command.development-tooling-contracts-command-run-contracts",
+	"uid": "u_k3ea3edvu7",
+	"kind": "command",
+	"title": "runContracts",
+	"responsibility": "Dispatches one read-only contract query against a fresh stored catalog and returns its text or JSON output.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["src/commands/development-tooling/contracts-command/runContracts.ts"],
+		"symbols": ["runContracts"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "runContracts.operation",
+				"type": "string",
+				"required": true,
+				"description": "One of show, list, search or map; the CLI admits these four operations before dispatch."
+			},
+			{
+				"name": "runContracts.query",
+				"type": "string",
+				"required": true,
+				"description": "Search substring or expression, or a show/map identity or path. List ignores this string."
+			},
+			{
+				"name": "runContracts.options",
+				"type": "ContractOptions",
+				"required": true,
+				"description": "Root, filters, output mode and operation-specific flags. The CLI validates positive limits and depth bounds before this call."
+			}
+		],
+		"outputs": [
+			{
+				"name": "runContracts",
+				"type": "Promise<string>",
+				"description": "The complete printable result, using indented JSON when requested. Empty list/search are arrays in JSON; missing show/map targets fail."
+			}
+		],
+		"errors": [
+			{
+				"name": "Filesystem rejection",
+				"type": "NodeJS.ErrnoException",
+				"description": "Original Node filesystem error while listing a specification directory, except ENOENT which is treated as empty. The original code and message are preserved."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Stored documents are invalid, ids duplicate, paths escape the root, search is empty or invalid, or show/map have no matches."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "runContracts",
+				"inputs": [
+					{
+						"name": "runContracts.operation",
+						"type": "string",
+						"required": true,
+						"description": "One of show, list, search or map; the CLI admits these four operations before dispatch."
+					},
+					{
+						"name": "runContracts.query",
+						"type": "string",
+						"required": true,
+						"description": "Search substring or expression, or a show/map identity or path. List ignores this string."
+					},
+					{
+						"name": "runContracts.options",
+						"type": "ContractOptions",
+						"required": true,
+						"description": "Root, filters, output mode and operation-specific flags. The CLI validates positive limits and depth bounds before this call."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runContracts",
+						"type": "Promise<string>",
+						"description": "The complete printable result, using indented JSON when requested. Empty list/search are arrays in JSON; missing show/map targets fail."
+					}
+				],
+				"errors": [
+					{
+						"name": "Filesystem rejection",
+						"type": "NodeJS.ErrnoException",
+						"description": "Original Node filesystem error while listing a specification directory, except ENOENT which is treated as empty. The original code and message are preserved."
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Stored documents are invalid, ids duplicate, paths escape the root, search is empty or invalid, or show/map have no matches."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.development-tooling-contracts-command-contract-selection",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-contracts-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-map-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-read-contract-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-render-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-search-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/development-tooling/contracts-command/runContracts.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/development-tooling/contracts-command/runContracts.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

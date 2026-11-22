@@ -26,6 +26,7 @@
 			"RouteSuffix",
 			"WorkspaceRoute",
 			"WorkspaceTarget",
+			"WorkspaceAddressError",
 			"routeSuffixes",
 			"workspaceSections",
 			"isWorkspacePath",
@@ -40,19 +41,33 @@
 				"name": "isWorkspacePath.path",
 				"type": "string",
 				"required": true,
-				"description": "The path to check for a /harness address or a /projects/{project}/harness address. This recognition step does not validate the category or commit."
+				"description": "The path to check for a /harness address or a /projects/{project}/harness address. This recognition step does not validate the category or commit.",
+				"examples": ["/harness/pages", "/projects/sample-project/harness"]
 			},
 			{
 				"name": "workspaceRoute.path",
 				"type": "string",
 				"required": true,
-				"description": "The workspace path to read, optionally naming a project, encoded branch, commit, category, entity and section. A named commit must contain exactly 40 lowercase hexadecimal characters. The category defaults to pages when absent."
+				"description": "The workspace path to read, optionally naming a project, encoded branch, commit, category, entity and section. A named commit must contain exactly 40 lowercase hexadecimal characters. The category defaults to pages when absent.",
+				"examples": [
+					"/projects/sample-project/harness/branch/feature%2Frouting/functions/desktop.function.workspace-route/history",
+					"/harness/pages"
+				]
 			},
 			{
 				"name": "workspacePath.target",
 				"type": "WorkspaceTarget",
 				"required": true,
-				"description": "The category to link to, plus optional project, branch, commit, entity and section. Project, branch and entity names are URL-encoded. A section is included only when an entity is supplied. This builder does not validate a supplied commit."
+				"description": "The category to link to, plus optional project, branch, commit, entity and section. Project, branch and entity names are URL-encoded. A section is included only when an entity is supplied. This builder does not validate a supplied commit.",
+				"examples": [
+					{
+						"category": "functions",
+						"projectId": "sample-project",
+						"branch": "feature/routing",
+						"entityId": "desktop.function.workspace-route",
+						"suffix": "history"
+					}
+				]
 			},
 			{
 				"name": "workspaceGameViews.workspace",
@@ -64,32 +79,61 @@
 		"outputs": [
 			{
 				"name": "routeSuffixes",
-				"type": "unknown",
+				"type": "readonly [\"apis\", \"designs\", \"plan\", \"used-in\", \"uses\", \"relationships\", \"evidence\", \"examples\", \"states\", \"history\", \"source\", \"details\"]",
 				"description": "The recognized entity sections: designs, plan, used-in, uses, relationships, evidence, history and details. Relationships remains accepted as an older address. An overview has no section suffix."
 			},
 			{
 				"name": "isWorkspacePath",
 				"type": "boolean",
-				"description": "True when the path has a recognized workspace prefix, otherwise false. A true result alone does not mean the full path can be read successfully."
+				"description": "True when the path has a recognized workspace prefix, otherwise false. A true result alone does not mean the full path can be read successfully.",
+				"examples": [true, false]
 			},
 			{
 				"name": "workspaceRoute",
 				"type": "WorkspaceRoute",
-				"description": "The decoded project, branch and entity, the commit, category and recognized section. Missing selections are null, except the default pages category. An unknown section is treated as no section."
+				"description": "The decoded project, branch and entity, the commit, category and recognized section. Missing selections are null, except the default pages category. An unknown section is treated as no section.",
+				"examples": [
+					{
+						"projectId": "sample-project",
+						"branch": "feature/routing",
+						"commit": null,
+						"category": "functions",
+						"entityId": "desktop.function.workspace-route",
+						"suffix": "history"
+					},
+					{
+						"projectId": null,
+						"branch": null,
+						"commit": null,
+						"category": "pages",
+						"entityId": null,
+						"suffix": null
+					}
+				]
 			},
 			{
 				"name": "workspacePath",
 				"type": "string",
-				"description": "A workspace path carrying the supplied selections. A missing project creates a legacy /harness link; absent branch and commit leave the revision unspecified."
+				"description": "A workspace path carrying the supplied selections. A missing project creates a legacy /harness link; absent branch and commit leave the revision unspecified.",
+				"examples": [
+					"/projects/sample-project/harness/branch/feature%2Frouting/functions/desktop.function.workspace-route/history",
+					"/harness/pages"
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Reading fails for a non-workspace address, a commit other than a full 40-character lowercase hexadecimal hash, or an unknown catalog category. Invalid URL escapes in decoded names can also throw; recognition can encounter that decoding error for project names."
+				"description": "Thrown by workspaceRoute for a non-workspace address, invalid commit hash or unknown catalog category."
+			},
+			{
+				"name": "URIError",
+				"type": "thrown",
+				"description": "Thrown when decoding malformed percent escapes in route names or encoding an unpaired surrogate in generated route values."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "isWorkspacePath",
@@ -98,18 +142,26 @@
 						"name": "isWorkspacePath.path",
 						"type": "string",
 						"required": true,
-						"description": "The path to check for a /harness address or a /projects/{project}/harness address. This recognition step does not validate the category or commit."
+						"description": "The path to check for a /harness address or a /projects/{project}/harness address. This recognition step does not validate the category or commit.",
+						"examples": ["/harness/pages", "/projects/sample-project/harness"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "isWorkspacePath",
 						"type": "boolean",
-						"description": "True when the path has a recognized workspace prefix, otherwise false. A true result alone does not mean the full path can be read successfully."
+						"description": "True when the path has a recognized workspace prefix, otherwise false. A true result alone does not mean the full path can be read successfully.",
+						"examples": [true, false]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "URIError",
+						"type": "thrown",
+						"description": "Thrown when a project name contains malformed percent escapes during workspace-path recognition."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "workspaceRoute",
@@ -118,23 +170,51 @@
 						"name": "workspaceRoute.path",
 						"type": "string",
 						"required": true,
-						"description": "The workspace path to read, optionally naming a project, encoded branch, commit, category, entity and section. A named commit must contain exactly 40 lowercase hexadecimal characters. The category defaults to pages when absent."
+						"description": "The workspace path to read, optionally naming a project, encoded branch, commit, category, entity and section. A named commit must contain exactly 40 lowercase hexadecimal characters. The category defaults to pages when absent.",
+						"examples": [
+							"/projects/sample-project/harness/branch/feature%2Frouting/functions/desktop.function.workspace-route/history",
+							"/harness/pages"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "workspaceRoute",
 						"type": "WorkspaceRoute",
-						"description": "The decoded project, branch and entity, the commit, category and recognized section. Missing selections are null, except the default pages category. An unknown section is treated as no section."
+						"description": "The decoded project, branch and entity, the commit, category and recognized section. Missing selections are null, except the default pages category. An unknown section is treated as no section.",
+						"examples": [
+							{
+								"projectId": "sample-project",
+								"branch": "feature/routing",
+								"commit": null,
+								"category": "functions",
+								"entityId": "desktop.function.workspace-route",
+								"suffix": "history"
+							},
+							{
+								"projectId": null,
+								"branch": null,
+								"commit": null,
+								"category": "pages",
+								"entityId": null,
+								"suffix": null
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the path is outside workspace routes, the supplied commit is not a full lowercase 40-character hash, or the catalog category is unknown."
+					},
+					{
+						"name": "URIError",
+						"type": "thrown",
+						"description": "Thrown when a decoded project, branch or entity segment contains malformed percent escapes."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "workspacePath",
@@ -143,18 +223,37 @@
 						"name": "workspacePath.target",
 						"type": "WorkspaceTarget",
 						"required": true,
-						"description": "The category to link to, plus optional project, branch, commit, entity and section. Project, branch and entity names are URL-encoded. A section is included only when an entity is supplied. This builder does not validate a supplied commit."
+						"description": "The category to link to, plus optional project, branch, commit, entity and section. Project, branch and entity names are URL-encoded. A section is included only when an entity is supplied. This builder does not validate a supplied commit.",
+						"examples": [
+							{
+								"category": "functions",
+								"projectId": "sample-project",
+								"branch": "feature/routing",
+								"entityId": "desktop.function.workspace-route",
+								"suffix": "history"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "workspacePath",
 						"type": "string",
-						"description": "A workspace path carrying the supplied selections. A missing project creates a legacy /harness link; absent branch and commit leave the revision unspecified."
+						"description": "A workspace path carrying the supplied selections. A missing project creates a legacy /harness link; absent branch and commit leave the revision unspecified.",
+						"examples": [
+							"/projects/sample-project/harness/branch/feature%2Frouting/functions/desktop.function.workspace-route/history",
+							"/harness/pages"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "URIError",
+						"type": "thrown",
+						"description": "Thrown when a project, branch or entity string passed to encodeURIComponent contains an unpaired surrogate."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "workspaceGameViews",
@@ -169,11 +268,19 @@
 				"outputs": [
 					{
 						"name": "workspaceGameViews",
-						"type": "string | null"
+						"type": "string | null",
+						"description": "A Game Views URL for a game snapshot when the workspace is local, has a project ID, and its bridge exposes gameRead; null otherwise. Writable snapshots use the project URL, while read-only snapshots include the shown commit.",
+						"examples": ["/game?projectId=sample-project", null]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "URIError",
+						"type": "thrown",
+						"description": "Thrown when the encoded project ID or read-only commit string contains an unpaired surrogate."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

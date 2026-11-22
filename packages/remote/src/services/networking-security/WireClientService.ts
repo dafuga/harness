@@ -65,7 +65,7 @@ export class WireClientService {
 		for (const id of [...this.waiting.keys()])
 			this.settle(id)?.reject(new RemoteFailure('offline'));
 	}
-	request<T = unknown>(method: RemoteMethod, input: Record<string, unknown> = {}): Promise<T> {
+	request<T = unknown>(method: RemoteMethod, input: WireRequest['input'] = {}): Promise<T> {
 		if (!this.bound || !this.cursor) return Promise.reject(new RemoteFailure('offline'));
 		const change = mutationMethods.includes(method),
 			body = change ? { ...input, epoch: this.cursor.epoch } : input;

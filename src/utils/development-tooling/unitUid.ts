@@ -14,8 +14,12 @@ const embedded = new Set([
 	'packages/game/src/adapters/game-authoring/ThreeSceneAdapter.ts',
 	'packages/game/src/adapters/game-authoring/Software3dAdapter.ts',
 	'packages/game/src/adapters/game-authoring/Software3dAdapter.types.ts',
+	'packages/game/src/adapters/game-authoring/Canvas2dContextUnavailableError.ts',
 	'packages/game/src/adapters/agents-providers/DecartStreamAdapter.ts',
 	'packages/game/src/adapters/agents-providers/DecartStreamAdapter.types.ts',
+	'packages/game/src/adapters/agents-providers/DecartTransportUnavailableError.ts',
+	'packages/game/src/adapters/agents-providers/DecartPreviewCancelledError.ts',
+	'packages/game/src/adapters/agents-providers/DecartConnectionFailedError.ts',
 	'src/templates/development-tooling/atomicPreprocess.js',
 	'src/templates/development-tooling/atomicSyntax.js',
 	'src/templates/development-tooling/htmlElements.js'

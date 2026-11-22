@@ -18,7 +18,10 @@ export function screenSize(item: Evidence): ScreenSize {
 	return 'other';
 }
 
-export function galleryEvidence(items: Evidence[], pairs = audioPairs(items)) {
+export function galleryEvidence(
+	items: Evidence[],
+	pairs: ReadonlyMap<string, Evidence> = audioPairs(items)
+) {
 	const pairedBefore = new Set([...pairs.values()].map((item) => item.id));
 	return items.filter(
 		(item) =>

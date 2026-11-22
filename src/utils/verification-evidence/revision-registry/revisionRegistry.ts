@@ -105,12 +105,15 @@ function scenarioView(scenario: ScenarioManifest): RevisionRegistry['scenarios']
 		title: scenario.title,
 		kind: scenario.kind,
 		units: scenario.units,
-		states: scenario.states.map(({ id, title, coverage, reason, units }) => ({
+		...(scenario.video ? { video: scenario.video } : {}),
+		states: scenario.states.map(({ id, title, coverage, reason, units, motion, motionReason }) => ({
 			id,
 			title,
 			coverage,
 			...(reason ? { reason } : {}),
-			...(units ? { units } : {})
+			...(units ? { units } : {}),
+			...(motion ? { motion } : {}),
+			...(motionReason ? { motionReason } : {})
 		})),
 		viewports: scenario.viewports,
 		tests: scenario.tests.map(({ id, kind, runner }) => ({ id, kind, runner })),

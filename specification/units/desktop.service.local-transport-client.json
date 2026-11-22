@@ -226,7 +226,7 @@
 				"outputs": [
 					{
 						"name": "LocalTransportClientService.constructor",
-						"type": "unknown",
+						"type": "LocalTransportClientService",
 						"description": "The new LocalTransportClientService, which creates its wire client and opens no connection until a request is made."
 					}
 				],

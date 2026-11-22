@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-template.module-system-testing-plugins",
+	"title": "template.module-system-testing-plugins examples",
+	"kind": "headless",
+	"units": ["template.module-system-testing-plugins"],
+	"builds": [],
+	"states": [
+		{
+			"id": "generates-the-default-headless-browser-smoke-test",
+			"title": "Generates the default headless browser smoke test",
+			"coverage": "required"
+		},
+		{
+			"id": "generates-deterministic-headless-audio-assertions",
+			"title": "Generates deterministic headless audio assertions",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/template.module-system-testing-plugins.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"generates-the-default-headless-browser-smoke-test",
+				"generates-deterministic-headless-audio-assertions"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"generates-the-default-headless-browser-smoke-test",
+				"generates-deterministic-headless-audio-assertions"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"generates-the-default-headless-browser-smoke-test",
+				"generates-deterministic-headless-audio-assertions"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

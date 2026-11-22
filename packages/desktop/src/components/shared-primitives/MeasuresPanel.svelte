@@ -4,6 +4,11 @@
 <script lang="ts">
 	import DetailList from '$shared/shared-primitives/DetailList.svelte';
 	import type { Measure } from '../../models/development-tooling/Desktop.types';
+	/** One panel row: its name, and the measure whose text and availability it shows. */
+	interface MeasuresPanelRow {
+		name: string;
+		measure: Measure;
+	}
 	let { size, performance }: { size: Measure; performance: Measure } = $props();
 </script>
 
@@ -19,7 +24,7 @@
 		grouped={false}
 		valueClass={(row) => (row.measure.available ? 'measured' : '')}
 	>
-		{#snippet label(row)}{row.name}{/snippet}
-		{#snippet children(row)}{row.measure.text || 'Not measured'}{/snippet}
+		{#snippet label(row: MeasuresPanelRow)}{row.name}{/snippet}
+		{#snippet children(row: MeasuresPanelRow)}{row.measure.text || 'Not measured'}{/snippet}
 	</DetailList>
 </hx-section>

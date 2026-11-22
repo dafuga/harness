@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.resource-work",
+	"title": "function.resource-work examples",
+	"kind": "headless",
+	"units": ["function.resource-work"],
+	"builds": [],
+	"states": [
+		{
+			"id": "runs-the-action-in-an-admitted-slot-and-returns-its-result",
+			"title": "Runs the action in an admitted slot and returns its result",
+			"coverage": "required"
+		},
+		{
+			"id": "re-raises-an-action-failure-after-releasing-its-queue-slot",
+			"title": "Re-raises an action failure after releasing its queue slot",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-an-unknown-request-key-before-the-action-is-queued",
+			"title": "Rejects an unknown request key before the action is queued",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.resource-work.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"runs-the-action-in-an-admitted-slot-and-returns-its-result",
+				"re-raises-an-action-failure-after-releasing-its-queue-slot",
+				"rejects-an-unknown-request-key-before-the-action-is-queued"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"runs-the-action-in-an-admitted-slot-and-returns-its-result",
+				"re-raises-an-action-failure-after-releasing-its-queue-slot",
+				"rejects-an-unknown-request-key-before-the-action-is-queued"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"runs-the-action-in-an-admitted-slot-and-returns-its-result",
+				"re-raises-an-action-failure-after-releasing-its-queue-slot",
+				"rejects-an-unknown-request-key-before-the-action-is-queued"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

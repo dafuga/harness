@@ -18,6 +18,7 @@ import { applyActivityPreviewContext } from './activityPreviewContext';
 import { routeLoadingZoom } from './imageZoomActions';
 import { settlePreviewAudio } from './audioPreviewReadiness';
 import { prepareDesktopPage, frameDesktopCapture } from './desktopStateActions';
+import { explorerPreviewInteraction } from './explorerCatalogVariants';
 
 import {
 	assertPreviewCaptureState,
@@ -122,7 +123,8 @@ async function readyRoute(page: Page, id: string) {
 		'desktop.page.game': 'Game Views',
 		'reports.page.harness-branch-branch-at-styles': 'Styles',
 		'reports.page.harness-branch-branch-at-dependencies': 'Dependencies',
-		'reports.page.harness-branch-branch-at-translations': 'Translations'
+		'reports.page.harness-branch-branch-at-translations': 'Translations',
+		'reports.page.harness-branch-branch-at-platforms': 'Platforms'
 	};
 	if (headings[id])
 		await expect(page.getByRole('heading', { name: headings[id], exact: true })).toBeVisible();
@@ -169,8 +171,9 @@ export async function capturePreview(
 	target: PreviewCaptureTarget
 ) {
 	const { viewport, variant = '' } = target;
-	const nativeOpen = usesNativePopup(id, variant);
-	await assertPreviewCaptureState(page.locator(`[data-preview-unit="${id}"]`), id, variant);
+	const interaction = explorerPreviewInteraction(id, variant);
+	const nativeOpen = usesNativePopup(id, interaction);
+	await assertPreviewCaptureState(page.locator(`[data-preview-unit="${id}"]`), id, interaction);
 	await settlePreviewAudio(page.locator(`[data-preview-unit="${id}"]`), id, variant);
 	await frameDesktopCapture(page, id);
 	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS && !nativeOpen) return;
@@ -193,6 +196,6 @@ export async function capturePreview(
 	}
 	if (!evidenceRequested()) return { clip, bytes };
 	await recordPreviewCapture(home, { id, variant, viewport, clip, bytes, reportDialog });
-	if (pageUnitIds.has(id)) await previewNavigation(page, id, viewport);
+	if (pageUnitIds.has(id)) await previewNavigation(page, id, viewport, variant);
 	return { clip, bytes };
 }

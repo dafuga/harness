@@ -51,7 +51,7 @@
 		"outputs": [
 			{
 				"name": "ReportCommandService.execute",
-				"type": "unknown",
+				"type": "Promise<Awaited<ReturnType<ReportRepository['begin']>> | (Awaited<ReturnType<ReportImportService['ingest']>> & { run: string }) | Awaited<ReturnType<ReportServerService['serve']>> | Awaited<ReturnType<ReportServerService['stop']>> | Awaited<ReturnType<ReportRetentionService['run']>> | Awaited<ReturnType<ReportStorageSyncService['run']>>>",
 				"description": "A Promise resolving to the selected command branch result. Import returns an object formed as { run: id, ...result }; other shapes are delegated to repositories or services and remain unknown."
 			}
 		],
@@ -95,7 +95,7 @@
 				"outputs": [
 					{
 						"name": "ReportCommandService.execute",
-						"type": "unknown",
+						"type": "Promise<Awaited<ReturnType<ReportRepository['begin']>> | (Awaited<ReturnType<ReportImportService['ingest']>> & { run: string }) | Awaited<ReturnType<ReportServerService['serve']>> | Awaited<ReturnType<ReportServerService['stop']>> | Awaited<ReturnType<ReportRetentionService['run']>> | Awaited<ReturnType<ReportStorageSyncService['run']>>>",
 						"description": "A Promise resolving to the selected command branch result. Import returns an object formed as { run: id, ...result }; other shapes are delegated to repositories or services and remain unknown."
 					}
 				],
@@ -128,7 +128,7 @@
 				"outputs": [
 					{
 						"name": "ReportCommandService.constructor",
-						"type": "unknown",
+						"type": "ReportCommandService",
 						"description": "The initialized ReportCommandService instance holding the selected repository. This class instance cannot be represented as JSON."
 					}
 				],
@@ -138,6 +138,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.function.report-cli",
 			"via": "import",

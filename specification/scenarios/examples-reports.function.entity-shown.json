@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.entity-shown",
+	"title": "reports.function.entity-shown examples",
+	"kind": "headless",
+	"units": ["reports.function.entity-shown"],
+	"builds": [],
+	"states": [
+		{
+			"id": "shown-record-of-own-commit",
+			"title": "a function shows the record of its own commit with its contract and measured size",
+			"coverage": "required"
+		},
+		{
+			"id": "tip-without-own-record-has-no-verdict",
+			"title": "a commit with no record of its own has no verdict, not an earlier commit record",
+			"coverage": "required"
+		},
+		{
+			"id": "removed-page-judged-by-shown-commit",
+			"title": "a removed page keeps its last contract and is judged only by the shown commit",
+			"coverage": "required"
+		},
+		{
+			"id": "category-selects-contract-rows",
+			"title": "the selected category chooses the contract rows of the same unit",
+			"coverage": "required"
+		},
+		{
+			"id": "focused-figures-match-commit-or-tree",
+			"title": "focused figures count only for the same commit or an identical source tree",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.entity-shown.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"shown-record-of-own-commit",
+				"tip-without-own-record-has-no-verdict",
+				"removed-page-judged-by-shown-commit",
+				"category-selects-contract-rows",
+				"focused-figures-match-commit-or-tree"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"shown-record-of-own-commit",
+				"tip-without-own-record-has-no-verdict",
+				"removed-page-judged-by-shown-commit",
+				"category-selects-contract-rows",
+				"focused-figures-match-commit-or-tree"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"shown-record-of-own-commit",
+				"tip-without-own-record-has-no-verdict",
+				"removed-page-judged-by-shown-commit",
+				"category-selects-contract-rows",
+				"focused-figures-match-commit-or-tree"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

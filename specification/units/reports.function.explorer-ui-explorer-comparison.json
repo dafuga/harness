@@ -36,7 +36,7 @@
 				"examples": [
 					[
 						{
-							"id": "checkout-smoke"
+							"id": "evidence-grid-smoke"
 						}
 					]
 				]
@@ -49,10 +49,10 @@
 				"examples": [
 					[
 						{
-							"id": "checkout-smoke"
+							"id": "evidence-grid-smoke"
 						},
 						{
-							"id": "checkout-regression"
+							"id": "evidence-grid-regression"
 						}
 					]
 				]
@@ -64,15 +64,15 @@
 				"description": "The current side’s scenario supplies the base object. It is returned as is when the other side is undefined; otherwise its states, viewports, and evidence are merged by id.",
 				"examples": [
 					{
-						"id": "checkout-smoke",
-						"title": "Checkout",
-						"kind": "browser",
+						"id": "evidence-grid-smoke",
+						"title": "Evidence grid",
+						"kind": "ui",
 						"units": ["reports.component.evidence-grid"],
 						"states": [
 							{
 								"id": "review",
-								"title": "Review form",
-								"coverage": "passed",
+								"title": "Grid with captures",
+								"coverage": "required",
 								"reason": "",
 								"units": ["reports.component.evidence-grid"]
 							}
@@ -86,14 +86,14 @@
 						],
 						"tests": [
 							{
-								"id": "checkout.e2e",
-								"kind": "browser",
+								"id": "evidence-grid.e2e",
+								"kind": "e2e",
 								"runner": "playwright"
 							}
 						],
 						"evidence": [
 							{
-								"id": "checkout-review-current",
+								"id": "evidence-grid-review-current",
 								"kind": "screenshot",
 								"states": ["review"],
 								"viewports": ["desktop"]
@@ -109,22 +109,22 @@
 				"description": "The prior side’s declaration contributes states, viewports, and evidence whose ids are missing from the current scenario. Undefined means there is no prior declaration to merge.",
 				"examples": [
 					{
-						"id": "checkout-smoke",
-						"title": "Checkout",
-						"kind": "browser",
+						"id": "evidence-grid-smoke",
+						"title": "Evidence grid",
+						"kind": "ui",
 						"units": ["reports.component.evidence-grid"],
 						"states": [
 							{
 								"id": "review",
-								"title": "Review form",
-								"coverage": "passed",
+								"title": "Grid with captures",
+								"coverage": "required",
 								"reason": "",
 								"units": ["reports.component.evidence-grid"]
 							},
 							{
 								"id": "empty",
-								"title": "Empty cart",
-								"coverage": "passed",
+								"title": "Empty grid",
+								"coverage": "required",
 								"reason": "",
 								"units": ["reports.component.evidence-grid"]
 							}
@@ -143,14 +143,14 @@
 						],
 						"tests": [
 							{
-								"id": "checkout.unit",
+								"id": "evidence-grid.unit",
 								"kind": "unit",
 								"runner": "vitest"
 							}
 						],
 						"evidence": [
 							{
-								"id": "checkout-review-before",
+								"id": "evidence-grid-review-before",
 								"kind": "screenshot",
 								"states": ["empty"],
 								"viewports": ["desktop"]
@@ -202,21 +202,21 @@
 		"outputs": [
 			{
 				"name": "covering",
-				"type": "unknown",
+				"type": "HarnessScenario[]",
 				"description": "The scenarios that cover the unit, with each scenario’s states selected by scenarioFor using the revision’s units. The result is empty for a null revision or when no scenario covers the unit.",
 				"examples": [
 					[],
 					[
 						{
-							"id": "checkout-smoke",
-							"title": "Checkout",
-							"kind": "browser",
+							"id": "evidence-grid-smoke",
+							"title": "Evidence grid",
+							"kind": "ui",
 							"units": ["reports.component.evidence-grid"],
 							"states": [
 								{
 									"id": "review",
-									"title": "Review form",
-									"coverage": "passed",
+									"title": "Grid with captures",
+									"coverage": "required",
 									"reason": "",
 									"units": ["reports.component.evidence-grid"]
 								}
@@ -230,14 +230,14 @@
 							],
 							"tests": [
 								{
-									"id": "checkout.e2e",
-									"kind": "browser",
+									"id": "evidence-grid.e2e",
+									"kind": "e2e",
 									"runner": "playwright"
 								}
 							],
 							"evidence": [
 								{
-									"id": "checkout-review-current",
+									"id": "evidence-grid-review-current",
 									"kind": "screenshot",
 									"states": ["review"],
 									"viewports": ["desktop"]
@@ -254,10 +254,10 @@
 				"examples": [
 					[
 						{
-							"id": "checkout-smoke"
+							"id": "evidence-grid-smoke"
 						},
 						{
-							"id": "checkout-regression"
+							"id": "evidence-grid-regression"
 						}
 					]
 				]
@@ -268,22 +268,22 @@
 				"description": "The current scenario is the base; when a prior scenario exists, states, viewports, and evidence are united by id, with missing evidence lists treated as empty. Other fields remain from the current scenario.",
 				"examples": [
 					{
-						"id": "checkout-smoke",
-						"title": "Checkout",
-						"kind": "browser",
+						"id": "evidence-grid-smoke",
+						"title": "Evidence grid",
+						"kind": "ui",
 						"units": ["reports.component.evidence-grid"],
 						"states": [
 							{
 								"id": "review",
-								"title": "Review form",
-								"coverage": "passed",
+								"title": "Grid with captures",
+								"coverage": "required",
 								"reason": "",
 								"units": ["reports.component.evidence-grid"]
 							},
 							{
 								"id": "empty",
-								"title": "Empty cart",
-								"coverage": "passed",
+								"title": "Empty grid",
+								"coverage": "required",
 								"reason": "",
 								"units": ["reports.component.evidence-grid"]
 							}
@@ -302,20 +302,20 @@
 						],
 						"tests": [
 							{
-								"id": "checkout.e2e",
-								"kind": "browser",
+								"id": "evidence-grid.e2e",
+								"kind": "e2e",
 								"runner": "playwright"
 							}
 						],
 						"evidence": [
 							{
-								"id": "checkout-review-current",
+								"id": "evidence-grid-review-current",
 								"kind": "screenshot",
 								"states": ["review"],
 								"viewports": ["desktop"]
 							},
 							{
-								"id": "checkout-review-before",
+								"id": "evidence-grid-review-before",
 								"kind": "screenshot",
 								"states": ["empty"],
 								"viewports": ["desktop"]
@@ -332,8 +332,8 @@
 					[],
 					[
 						"The two sides were recorded under different profiles (chromium-desktop and firefox-desktop).",
-						"Checkout: viewport desktop is 1024×768 before and 1280×800 after.",
-						"Checkout runs other tests after than before."
+						"Evidence grid: viewport desktop is 1024×768 before and 1280×800 after.",
+						"Evidence grid runs other tests after than before."
 					]
 				]
 			}
@@ -362,21 +362,21 @@
 				"outputs": [
 					{
 						"name": "covering",
-						"type": "unknown",
+						"type": "HarnessScenario[]",
 						"description": "The scenarios that cover the unit, with each scenario’s states selected by scenarioFor using the revision’s units. The result is empty for a null revision or when no scenario covers the unit.",
 						"examples": [
 							[],
 							[
 								{
-									"id": "checkout-smoke",
-									"title": "Checkout",
-									"kind": "browser",
+									"id": "evidence-grid-smoke",
+									"title": "Evidence grid",
+									"kind": "ui",
 									"units": ["reports.component.evidence-grid"],
 									"states": [
 										{
 											"id": "review",
-											"title": "Review form",
-											"coverage": "passed",
+											"title": "Grid with captures",
+											"coverage": "required",
 											"reason": "",
 											"units": ["reports.component.evidence-grid"]
 										}
@@ -390,14 +390,14 @@
 									],
 									"tests": [
 										{
-											"id": "checkout.e2e",
-											"kind": "browser",
+											"id": "evidence-grid.e2e",
+											"kind": "e2e",
 											"runner": "playwright"
 										}
 									],
 									"evidence": [
 										{
-											"id": "checkout-review-current",
+											"id": "evidence-grid-review-current",
 											"kind": "screenshot",
 											"states": ["review"],
 											"viewports": ["desktop"]
@@ -422,7 +422,7 @@
 						"examples": [
 							[
 								{
-									"id": "checkout-smoke"
+									"id": "evidence-grid-smoke"
 								}
 							]
 						]
@@ -435,10 +435,10 @@
 						"examples": [
 							[
 								{
-									"id": "checkout-smoke"
+									"id": "evidence-grid-smoke"
 								},
 								{
-									"id": "checkout-regression"
+									"id": "evidence-grid-regression"
 								}
 							]
 						]
@@ -452,10 +452,10 @@
 						"examples": [
 							[
 								{
-									"id": "checkout-smoke"
+									"id": "evidence-grid-smoke"
 								},
 								{
-									"id": "checkout-regression"
+									"id": "evidence-grid-regression"
 								}
 							]
 						]
@@ -474,15 +474,15 @@
 						"description": "The current side’s scenario supplies the base object. It is returned as is when the other side is undefined; otherwise its states, viewports, and evidence are merged by id.",
 						"examples": [
 							{
-								"id": "checkout-smoke",
-								"title": "Checkout",
-								"kind": "browser",
+								"id": "evidence-grid-smoke",
+								"title": "Evidence grid",
+								"kind": "ui",
 								"units": ["reports.component.evidence-grid"],
 								"states": [
 									{
 										"id": "review",
-										"title": "Review form",
-										"coverage": "passed",
+										"title": "Grid with captures",
+										"coverage": "required",
 										"reason": "",
 										"units": ["reports.component.evidence-grid"]
 									}
@@ -496,14 +496,14 @@
 								],
 								"tests": [
 									{
-										"id": "checkout.e2e",
-										"kind": "browser",
+										"id": "evidence-grid.e2e",
+										"kind": "e2e",
 										"runner": "playwright"
 									}
 								],
 								"evidence": [
 									{
-										"id": "checkout-review-current",
+										"id": "evidence-grid-review-current",
 										"kind": "screenshot",
 										"states": ["review"],
 										"viewports": ["desktop"]
@@ -519,22 +519,22 @@
 						"description": "The prior side’s declaration contributes states, viewports, and evidence whose ids are missing from the current scenario. Undefined means there is no prior declaration to merge.",
 						"examples": [
 							{
-								"id": "checkout-smoke",
-								"title": "Checkout",
-								"kind": "browser",
+								"id": "evidence-grid-smoke",
+								"title": "Evidence grid",
+								"kind": "ui",
 								"units": ["reports.component.evidence-grid"],
 								"states": [
 									{
 										"id": "review",
-										"title": "Review form",
-										"coverage": "passed",
+										"title": "Grid with captures",
+										"coverage": "required",
 										"reason": "",
 										"units": ["reports.component.evidence-grid"]
 									},
 									{
 										"id": "empty",
-										"title": "Empty cart",
-										"coverage": "passed",
+										"title": "Empty grid",
+										"coverage": "required",
 										"reason": "",
 										"units": ["reports.component.evidence-grid"]
 									}
@@ -553,14 +553,14 @@
 								],
 								"tests": [
 									{
-										"id": "checkout.unit",
+										"id": "evidence-grid.unit",
 										"kind": "unit",
 										"runner": "vitest"
 									}
 								],
 								"evidence": [
 									{
-										"id": "checkout-review-before",
+										"id": "evidence-grid-review-before",
 										"kind": "screenshot",
 										"states": ["empty"],
 										"viewports": ["desktop"]
@@ -577,22 +577,22 @@
 						"description": "The current scenario is the base; when a prior scenario exists, states, viewports, and evidence are united by id, with missing evidence lists treated as empty. Other fields remain from the current scenario.",
 						"examples": [
 							{
-								"id": "checkout-smoke",
-								"title": "Checkout",
-								"kind": "browser",
+								"id": "evidence-grid-smoke",
+								"title": "Evidence grid",
+								"kind": "ui",
 								"units": ["reports.component.evidence-grid"],
 								"states": [
 									{
 										"id": "review",
-										"title": "Review form",
-										"coverage": "passed",
+										"title": "Grid with captures",
+										"coverage": "required",
 										"reason": "",
 										"units": ["reports.component.evidence-grid"]
 									},
 									{
 										"id": "empty",
-										"title": "Empty cart",
-										"coverage": "passed",
+										"title": "Empty grid",
+										"coverage": "required",
 										"reason": "",
 										"units": ["reports.component.evidence-grid"]
 									}
@@ -611,20 +611,20 @@
 								],
 								"tests": [
 									{
-										"id": "checkout.e2e",
-										"kind": "browser",
+										"id": "evidence-grid.e2e",
+										"kind": "e2e",
 										"runner": "playwright"
 									}
 								],
 								"evidence": [
 									{
-										"id": "checkout-review-current",
+										"id": "evidence-grid-review-current",
 										"kind": "screenshot",
 										"states": ["review"],
 										"viewports": ["desktop"]
 									},
 									{
-										"id": "checkout-review-before",
+										"id": "evidence-grid-review-before",
 										"kind": "screenshot",
 										"states": ["empty"],
 										"viewports": ["desktop"]
@@ -689,8 +689,8 @@
 							[],
 							[
 								"The two sides were recorded under different profiles (chromium-desktop and firefox-desktop).",
-								"Checkout: viewport desktop is 1024×768 before and 1280×800 after.",
-								"Checkout runs other tests after than before."
+								"Evidence grid: viewport desktop is 1024×768 before and 1280×800 after.",
+								"Evidence grid runs other tests after than before."
 							]
 						]
 					}

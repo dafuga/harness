@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-command.units",
+	"title": "command.units examples",
+	"kind": "headless",
+	"units": ["command.units"],
+	"builds": [],
+	"states": [
+		{
+			"id": "registerunitscommand-attached-the-units-command-tree",
+			"title": "registerUnitsCommand attached the units command tree",
+			"coverage": "required"
+		},
+		{
+			"id": "units-schema-printed-the-json-schema-of-componentmanifest",
+			"title": "units schema printed the JSON Schema of ComponentManifest",
+			"coverage": "required"
+		},
+		{
+			"id": "units-commands-stopped-in-commander-before-any-action-ran",
+			"title": "units commands stopped in commander before any action ran",
+			"coverage": "required"
+		},
+		{
+			"id": "units-check-refused-two-broken-unit-files-as-one-error",
+			"title": "units check refused two broken unit files as one error",
+			"coverage": "required"
+		},
+		{
+			"id": "units-check-printed-a-valid-summary-for-an-empty-registry",
+			"title": "units check printed a valid summary for an empty registry",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/command.units.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"registerunitscommand-attached-the-units-command-tree",
+				"units-schema-printed-the-json-schema-of-componentmanifest",
+				"units-commands-stopped-in-commander-before-any-action-ran",
+				"units-check-refused-two-broken-unit-files-as-one-error",
+				"units-check-printed-a-valid-summary-for-an-empty-registry"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"registerunitscommand-attached-the-units-command-tree",
+				"units-schema-printed-the-json-schema-of-componentmanifest",
+				"units-commands-stopped-in-commander-before-any-action-ran",
+				"units-check-refused-two-broken-unit-files-as-one-error",
+				"units-check-printed-a-valid-summary-for-an-empty-registry"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"registerunitscommand-attached-the-units-command-tree",
+				"units-schema-printed-the-json-schema-of-componentmanifest",
+				"units-commands-stopped-in-commander-before-any-action-ran",
+				"units-check-refused-two-broken-unit-files-as-one-error",
+				"units-check-printed-a-valid-summary-for-an-empty-registry"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

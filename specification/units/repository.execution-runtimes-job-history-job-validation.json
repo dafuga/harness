@@ -1,0 +1,128 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.execution-runtimes-job-history-job-validation",
+	"uid": "u_znhiskysf2",
+	"kind": "repository",
+	"title": "jobValidation",
+	"responsibility": "Validate durable job identity and paired completion timing, and construct stable source-job-attempt database keys.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/repositories/execution-runtimes/job-history/jobValidation.ts"],
+		"symbols": ["jobRecord", "jobKey"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "jobRecord.input",
+				"type": "JobRecord",
+				"required": true,
+				"description": "Lifecycle record validated before persistence: nonempty identity, positive attempt and finite nonnegative timestamps. Completed records require outcome and matching duration."
+			},
+			{
+				"name": "jobKey.key",
+				"type": "JobKey",
+				"required": true,
+				"description": "Source, job ID and attempt tuple serialized as a compact JSON array to avoid collisions across runs or models."
+			}
+		],
+		"outputs": [
+			{
+				"name": "jobRecord",
+				"type": "JobRecord",
+				"description": "Validated record stripped to the stored lifecycle schema; inconsistent completion timing is rejected."
+			},
+			{
+				"name": "jobKey",
+				"type": "string",
+				"description": "Compact JSON tuple of source, job ID and attempt, preserving each identity field exactly."
+			}
+		],
+		"errors": [
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Rejects invalid lifecycle timing, identity or scheduling flags before the operation can record or estimate work."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Rejects malformed identity, attempt, timestamp or outcome fields before a database write."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "jobRecord",
+				"inputs": [
+					{
+						"name": "jobRecord.input",
+						"type": "JobRecord",
+						"required": true,
+						"description": "Lifecycle record validated before persistence: nonempty identity, positive attempt and finite nonnegative timestamps. Completed records require outcome and matching duration."
+					}
+				],
+				"outputs": [
+					{
+						"name": "jobRecord",
+						"type": "JobRecord",
+						"description": "Validated record stripped to the stored lifecycle schema; inconsistent completion timing is rejected."
+					}
+				],
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Rejects invalid lifecycle timing, identity or scheduling flags before the operation can record or estimate work."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "jobKey",
+				"inputs": [
+					{
+						"name": "jobKey.key",
+						"type": "JobKey",
+						"required": true,
+						"description": "Source, job ID and attempt tuple serialized as a compact JSON array to avoid collisions across runs or models."
+					}
+				],
+				"outputs": [
+					{
+						"name": "jobKey",
+						"type": "string",
+						"description": "Compact JSON tuple of source, job ID and attempt, preserving each identity field exactly."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "repository.execution-runtimes-job-history",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/execution-runtimes/job-history/jobValidation.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/execution-runtimes/job-history/jobValidation.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

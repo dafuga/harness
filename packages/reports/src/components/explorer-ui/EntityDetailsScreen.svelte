@@ -3,6 +3,8 @@
 <!-- @harness-uid u_b35ii4il4x -->
 <script lang="ts">
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
+	import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
+	import type { EntityNav } from '../../utils/explorer-ui/entityLens';
 	import { entityShown } from './entity-sections/entityShown';
 	import EntityDetails from './EntityDetails.svelte';
 	import EntityFrame from './EntityFrame.svelte';
@@ -13,7 +15,7 @@
 	marker of the screen draws no box. -->
 <hx-div class="ex-screen" data-harness-component="harness-entity-details-screen">
 	<EntityFrame {host}>
-		{#snippet children(entity, nav)}
+		{#snippet children(entity: ExplorerEntity, nav: EntityNav)}
 			{@const summary = entityShown(host, entity)}
 			<EntityDetails
 				{entity}

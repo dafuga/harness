@@ -1,5 +1,6 @@
 // @harness-uid u_inny3zqpds
 import type { Runtime, Captured } from './deploymentExecution.types';
+import { DeploymentExecutionError } from './deploymentExecution.types';
 import type { ReviewedDeployment } from '../../services/development-tooling/DeploymentService';
 import { deploymentWorktree } from './deploymentWorktree';
 import { deploymentCommand } from './deploymentCommand';
@@ -11,7 +12,8 @@ import {
 } from '../verification-evidence/verifyDeploymentSnapshot';
 /** Each target uses its own immutable checkout; later edits and lower deployments can continue. */
 export async function deploymentExecution(reviewed: ReviewedDeployment, runtime: Runtime) {
-	if (reviewed.plan.blockers.length) throw new Error(reviewed.plan.blockers.join(' '));
+	if (reviewed.plan.blockers.length)
+		throw new DeploymentExecutionError(reviewed.plan.blockers.join(' '));
 	runtime.update('preparing', 'Preparing source');
 	const captured = await captureDeploymentTarget(reviewed, runtime.plugin);
 	return deploymentWorktree(reviewed.root, reviewed.plan.commit, async (directory) => {
@@ -47,7 +49,9 @@ async function upload(
 	const deployed = await runtime.plugin.deploy(target, { root: source, commit: plan.commit });
 	runtime.update('verifying', `Verifying ${plan.environment} health`);
 	if (!(await (runtime.health ?? deploymentHealth)(target)))
-		throw new Error('Deployment health verification failed; environment state was not advanced.');
+		throw new DeploymentExecutionError(
+			'Deployment health verification failed; environment state was not advanced.'
+		);
 	await verifyDeploymentSnapshot(root, reviewed, guard);
 	await verifyDeploymentSnapshot(source, reviewed, guard);
 	const receipt = {

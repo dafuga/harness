@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-collaboration.function.create-invitation",
+	"title": "collaboration.function.create-invitation examples",
+	"kind": "headless",
+	"units": ["collaboration.function.create-invitation"],
+	"builds": [],
+	"states": [
+		{
+			"id": "creates-a-hashed-one-day-invitation-for-an-owner",
+			"title": "creates a hashed one-day invitation for an owner",
+			"coverage": "required"
+		},
+		{
+			"id": "accepts-an-invitation-and-retains-an-existing-member-role",
+			"title": "accepts an invitation and retains an existing member role",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-invitation-input-is-invalid",
+			"title": "Throws Error when invitation input is invalid",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-invitation-creation-is-forbidden",
+			"title": "Throws Error when invitation creation is forbidden",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-invitation-cannot-be-accepted",
+			"title": "Throws Error when invitation cannot be accepted",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-invitation-transaction-conflicts-repeatedl",
+			"title": "Throws Error when invitation transaction conflicts repeatedly",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/collaboration.function.create-invitation.test.ts",
+			"cwd": "packages/collaboration",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"creates-a-hashed-one-day-invitation-for-an-owner",
+				"accepts-an-invitation-and-retains-an-existing-member-role",
+				"throws-error-when-invitation-input-is-invalid",
+				"throws-error-when-invitation-creation-is-forbidden",
+				"throws-error-when-invitation-cannot-be-accepted",
+				"throws-error-when-invitation-transaction-conflicts-repeatedl"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"creates-a-hashed-one-day-invitation-for-an-owner",
+				"accepts-an-invitation-and-retains-an-existing-member-role",
+				"throws-error-when-invitation-input-is-invalid",
+				"throws-error-when-invitation-creation-is-forbidden",
+				"throws-error-when-invitation-cannot-be-accepted",
+				"throws-error-when-invitation-transaction-conflicts-repeatedl"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"creates-a-hashed-one-day-invitation-for-an-owner",
+				"accepts-an-invitation-and-retains-an-existing-member-role",
+				"throws-error-when-invitation-input-is-invalid",
+				"throws-error-when-invitation-creation-is-forbidden",
+				"throws-error-when-invitation-cannot-be-accepted",
+				"throws-error-when-invitation-transaction-conflicts-repeatedl"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

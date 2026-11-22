@@ -338,7 +338,7 @@
 				"inputs": [
 					{
 						"name": "EntityContract.label.row",
-						"type": "unknown",
+						"type": "ContractRow",
 						"required": true
 					}
 				],
@@ -356,7 +356,7 @@
 				"inputs": [
 					{
 						"name": "EntityContract.children.row",
-						"type": "unknown",
+						"type": "ContractRow",
 						"required": true
 					}
 				],

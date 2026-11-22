@@ -12,7 +12,14 @@
 			"packages/desktop/src/utils/reports-media/recordedScope.ts",
 			"packages/desktop/src/utils/reports-media/recordedScope.types.ts"
 		],
-		"symbols": ["recordedTip", "recordedScope", "ScopeFacts", "ScopeFacts", "Asked"]
+		"symbols": [
+			"recordedTip",
+			"recordedScope",
+			"ScopeFacts",
+			"ScopeFacts",
+			"Asked",
+			"RefusedScopeError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -9,14 +9,16 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/services/agents-providers/provider-discovery-service/ProviderDiscoveryService.ts"
+			"packages/desktop/src/services/agents-providers/provider-discovery-service/ProviderDiscoveryService.ts",
+			"packages/desktop/src/services/agents-providers/provider-discovery-service/ProviderDiscoveryService.types.ts"
 		],
 		"symbols": [
 			"ProviderDiscoveryService",
 			"ProviderDiscoveryService.constructor",
 			"ProviderDiscoveryService.list",
 			"ProviderDiscoveryService.mockupRunner",
-			"ProviderDiscoveryService.select"
+			"ProviderDiscoveryService.select",
+			"ProviderUnavailableError"
 		]
 	},
 	"contract": {
@@ -53,7 +55,7 @@
 		"outputs": [
 			{
 				"name": "ProviderDiscoveryService.list",
-				"type": "unknown",
+				"type": "Promise<ProviderState[]>",
 				"description": "Resolves to an array of each configured runner's ProviderState, in the order returned by Object.values(this.runners). The array length follows the configured record, and any rejected discover() call rejects the list operation.",
 				"examples": [
 					[
@@ -80,15 +82,30 @@
 			},
 			{
 				"name": "ProviderDiscoveryService.select",
-				"type": "unknown",
+				"type": "Promise<AgentRunner>",
 				"description": "Returns the stored AgentRunner for the selected provider after discover() reports it available and validateModel accepts the model and effort. The value is a runner instance, not the discovered state."
+			},
+			{
+				"name": "ProviderDiscoveryService.mockupRunner",
+				"type": "Promise<AgentRunner>",
+				"description": "Resolves to the Claude runner after discovery reports it available for visual mockup authoring."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Runner discovery rejections propagate from list() or select(); select also throws when discovery reports an unavailable provider or model validation fails. Unavailable state uses state.reason ?? 'CLI unavailable.'; validation messages are 'The selected model is not available from this CLI.' and 'The selected model does not support this effort.'"
+				"description": "Runner discovery failures propagate without wrapping. mockupRunner also rejects if Claude is unavailable."
+			},
+			{
+				"name": "ProviderUnavailableError",
+				"type": "thrown",
+				"description": "The selected provider is unavailable. The message uses the discovery reason or “CLI unavailable.”"
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The requested model is unavailable or the selected model does not support the supplied effort."
 			}
 		],
 		"errorStatus": "declared",
@@ -99,7 +116,7 @@
 				"outputs": [
 					{
 						"name": "ProviderDiscoveryService.list",
-						"type": "unknown",
+						"type": "Promise<import(\"../../../models/development-tooling/Desktop.types\").ProviderState[]>",
 						"description": "Resolves to an array of each configured runner's ProviderState, in the order returned by Object.values(this.runners). The array length follows the configured record, and any rejected discover() call rejects the list operation.",
 						"examples": [
 							[
@@ -140,16 +157,18 @@
 				"outputs": [
 					{
 						"name": "ProviderDiscoveryService.mockupRunner",
-						"type": "unknown"
+						"type": "Promise<AgentRunner>",
+						"description": "Resolves to the Claude runner after discovery reports it available for visual mockup authoring."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects with the discovery error, or with the reported reason when the Claude CLI is unavailable. Uses “Claude CLI is unavailable.” if discovery gives no reason."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProviderDiscoveryService.select",
@@ -179,15 +198,25 @@
 				"outputs": [
 					{
 						"name": "ProviderDiscoveryService.select",
-						"type": "unknown",
+						"type": "Promise<AgentRunner>",
 						"description": "Returns the stored AgentRunner for the selected provider after discover() reports it available and validateModel accepts the model and effort. The value is a runner instance, not the discovered state."
 					}
 				],
 				"errors": [
 					{
+						"name": "ProviderUnavailableError",
+						"type": "thrown",
+						"description": "The selected provider is unavailable. The message uses the discovery reason or “CLI unavailable.”"
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The requested model is unavailable or the selected model does not support the supplied effort."
+					},
+					{
 						"name": "Error",
 						"type": "thrown",
-						"description": "select throws an Error with state.reason ?? 'CLI unavailable.' when discovery reports an unavailable provider. It also throws the exact model-not-found or unsupported-effort Error from validateModel; rejected discovery promises propagate from the runner."
+						"description": "Rejections from the selected runner’s discovery propagate without wrapping."
 					}
 				],
 				"errorStatus": "declared"
@@ -207,7 +236,7 @@
 				"outputs": [
 					{
 						"name": "ProviderDiscoveryService.constructor",
-						"type": "unknown",
+						"type": "ProviderDiscoveryService",
 						"description": "Creates a ProviderDiscoveryService instance containing the supplied runner record. It does not discover provider state until list() or select() is called."
 					}
 				],

@@ -1,7 +1,6 @@
 // @harness-uid u_q33nfdq3id
-export interface DependentRecord {
+import type { RecordLinks } from '../../../utils/development-tooling/recordLineage.types';
+export interface DependentRecord extends RecordLinks {
 	id: string;
-	source: { baseRecord?: string | null };
-	scenarios: { referencedRecord?: string | null }[];
 	failures: string[];
 }

@@ -1,5 +1,6 @@
 // @harness-uid u_dilltr2si4
 import type { CryptoSource } from './remoteBytes.types';
+import { InvalidBase64Error } from './remoteBytes.types';
 const encoder = new TextEncoder();
 
 const decoder = new TextDecoder('utf-8', { fatal: true });
@@ -29,7 +30,7 @@ export function toBase64(bytes: Uint8Array): string {
 }
 
 export function fromBase64(text: string): Uint8Array {
-	if (!base64.test(text)) throw new Error('Invalid base64.');
+	if (!base64.test(text)) throw new InvalidBase64Error('Invalid base64.');
 	const binary = atob(text),
 		bytes = new Uint8Array(binary.length);
 	for (let index = 0; index < binary.length; index++) bytes[index] = binary.charCodeAt(index);
@@ -43,7 +44,7 @@ export function toBase64Url(bytes: Uint8Array): string {
 
 export function fromBase64Url(text: string): Uint8Array {
 	if (!/^[A-Za-z0-9_-]*$/.test(text) || text.length % 4 === 1)
-		throw new Error('Invalid base64url.');
+		throw new InvalidBase64Error('Invalid base64url.');
 	const padding = '='.repeat((4 - (text.length % 4)) % 4);
 	return fromBase64(text.replace(/-/g, '+').replace(/_/g, '/') + padding);
 }

@@ -33,7 +33,7 @@
 				"description": "The repository root path that the constructor passes to the GitAdapter it creates, and through which every git command of this repository runs. The constructor does not check the path; it only stores the adapter.",
 				"examples": [
 					"/workspace/harness-app",
-					"/home/dev/src/billing-service",
+					"/workspace/billing-service",
 					"/srv/repos/inventory-api"
 				]
 			},
@@ -377,7 +377,7 @@
 						"description": "The repository root path that the constructor passes to the GitAdapter it creates, and through which every git command of this repository runs. The constructor does not check the path; it only stores the adapter.",
 						"examples": [
 							"/workspace/harness-app",
-							"/home/dev/src/billing-service",
+							"/workspace/billing-service",
 							"/srv/repos/inventory-api"
 						]
 					}
@@ -385,7 +385,7 @@
 				"outputs": [
 					{
 						"name": "SourceHistoryRepository.constructor",
-						"type": "unknown",
+						"type": "SourceHistoryRepository",
 						"description": "The new SourceHistoryRepository instance, which holds the GitAdapter created from root."
 					}
 				],

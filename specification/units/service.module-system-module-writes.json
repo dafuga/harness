@@ -22,7 +22,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project directory that realpath() resolves before any planning, so it must exist; a relative value is resolved from the process working directory. Symlinks in the root are followed, and each planned file is then checked for symlinks beneath the resolved directory.",
-				"examples": ["/workspace/luna-pyramid", "/home/builder/luna-pyramid"]
+				"examples": ["/workspace/luna-pyramid", "/workspace/project"]
 			},
 			{
 				"name": "writeModuleFiles.files",
@@ -119,7 +119,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project directory that realpath() resolves before any planning, so it must exist; a relative value is resolved from the process working directory. Symlinks in the root are followed, and each planned file is then checked for symlinks beneath the resolved directory.",
-						"examples": ["/workspace/luna-pyramid", "/home/builder/luna-pyramid"]
+						"examples": ["/workspace/luna-pyramid", "/workspace/project"]
 					},
 					{
 						"name": "writeModuleFiles.files",
@@ -230,6 +230,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.files",
 			"via": "import",

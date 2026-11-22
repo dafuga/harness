@@ -128,14 +128,14 @@
 			{
 				"name": "scopedVerify",
 				"type": "Promise<VerifyResult>",
-				"description": "Resolves to the stored verification record with an attachment summary. Attachment is skipped unless there is at least one passing test and scenario, all failures are the scoped marker, and a screenshot exists; qualifying proof is attached or unchanged.",
+				"description": "Resolves to the stored record and an attachment summary. Attachment stays skipped unless tests and scenarios are present and all pass, the only failures are the entity's scope marker, and at least one capture exists. Complete evidence is attached or reused as unchanged; screenshot viewports are listed when present.",
 				"examples": [
 					{
 						"record": {
 							"schemaVersion": 1,
 							"componentSchemaVersion": 2,
 							"id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-							"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13",
+							"repository": "/workspace/project",
 							"source": {
 								"commit": "0123456789abcdef0123456789abcdef01234567",
 								"tree": "89abcdef0123456789abcdef0123456789abcdef",
@@ -145,7 +145,7 @@
 								"id": "0123456789abcdef",
 								"platform": "darwin",
 								"arch": "arm64",
-								"cpu": "Apple M5 Max",
+								"cpu": "Example CPU",
 								"cores": 16,
 								"memoryBytes": 38654705664,
 								"runtime": "bun 1.3.0"
@@ -227,7 +227,7 @@
 								"Scoped to reports.component.evidence-grid: only its scenario states ran, so this record is partial and never a full pass."
 							]
 						},
-						"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115123456789",
+						"directory": "/workspace/project/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115123456789",
 						"attachment": {
 							"status": "attached",
 							"entity": "reports.component.evidence-grid",
@@ -241,7 +241,7 @@
 			{
 				"name": "renderAttachment",
 				"type": "string[]",
-				"description": "Returns no lines when attachment is absent, one skipped message for skipped status, or one summary with states, viewports, and record for attached or unchanged status.",
+				"description": "Returns no lines without an attachment. A skipped attachment reports incomplete screenshots when viewports exist, or incomplete evidence otherwise. Attached and unchanged summaries list states and record, plus viewports for screenshots.",
 				"examples": [
 					[],
 					[
@@ -289,7 +289,7 @@
 			},
 			{
 				"name": "timer",
-				"type": "(step: string)",
+				"type": "(step: string) => void",
 				"description": "Callback that writes [verify <entity>] <step> +<elapsed>ms to stderr when entity is truthy. Elapsed time is measured from callback creation; an absent or empty entity suppresses output."
 			},
 			{
@@ -363,14 +363,14 @@
 					{
 						"name": "scopedVerify",
 						"type": "Promise<VerifyResult>",
-						"description": "Resolves to the stored verification record with an attachment summary. Attachment is skipped unless there is at least one passing test and scenario, all failures are the scoped marker, and a screenshot exists; qualifying proof is attached or unchanged.",
+						"description": "Resolves to the stored record and an attachment summary. Attachment stays skipped unless tests and scenarios are present and all pass, the only failures are the entity's scope marker, and at least one capture exists. Complete evidence is attached or reused as unchanged; screenshot viewports are listed when present.",
 						"examples": [
 							{
 								"record": {
 									"schemaVersion": 1,
 									"componentSchemaVersion": 2,
 									"id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-									"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13",
+									"repository": "/workspace/project",
 									"source": {
 										"commit": "0123456789abcdef0123456789abcdef01234567",
 										"tree": "89abcdef0123456789abcdef0123456789abcdef",
@@ -380,7 +380,7 @@
 										"id": "0123456789abcdef",
 										"platform": "darwin",
 										"arch": "arm64",
-										"cpu": "Apple M5 Max",
+										"cpu": "Example CPU",
 										"cores": 16,
 										"memoryBytes": 38654705664,
 										"runtime": "bun 1.3.0"
@@ -462,7 +462,7 @@
 										"Scoped to reports.component.evidence-grid: only its scenario states ran, so this record is partial and never a full pass."
 									]
 								},
-								"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115123456789",
+								"directory": "/workspace/project/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115123456789",
 								"attachment": {
 									"status": "attached",
 									"entity": "reports.component.evidence-grid",
@@ -513,7 +513,7 @@
 					{
 						"name": "renderAttachment",
 						"type": "string[]",
-						"description": "Returns no lines when attachment is absent, one skipped message for skipped status, or one summary with states, viewports, and record for attached or unchanged status.",
+						"description": "Returns no lines without an attachment. A skipped attachment reports incomplete screenshots when viewports exist, or incomplete evidence otherwise. Attached and unchanged summaries list states and record, plus viewports for screenshots.",
 						"examples": [
 							[],
 							[

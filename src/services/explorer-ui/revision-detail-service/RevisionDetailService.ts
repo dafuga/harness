@@ -1,5 +1,6 @@
 // @harness-uid u_x5bcnj5gs4
 import { PermissionCatalogService } from '../../networking-security/PermissionCatalogService';
+import { revisionMedia } from './revisionMedia';
 import type { SourceTree } from '../../../core/development-tooling/sourceTypes';
 import { translationCatalog } from './translationCatalog';
 import type { Stored, BuiltRevision, RevisionDetail } from './RevisionDetailService.types';
@@ -40,7 +41,7 @@ export class RevisionDetailService {
 	constructor(
 		private readonly root: string,
 		private readonly history: HistoryStatusService,
-		private readonly kept = revisionSources(root)
+		private readonly kept: ReturnType<typeof revisionSources> = revisionSources(root)
 	) {
 		this.git = new GitAdapter(root);
 	}
@@ -86,23 +87,10 @@ export class RevisionDetailService {
 		}
 	}
 	/** Every capture is looked up in the record that produced it, which may be an earlier one. */
-	private async media(
-		loaded: AttachedRecord,
-		media: MediaPlacer
-	): Promise<Map<string, ResolvedMedia>> {
-		const resolved = new Map<string, ResolvedMedia>();
-		const own = loaded.record?.id ?? '';
-		for (const scenario of loaded.record?.scenarios ?? []) {
-			const origin = scenario.referencedRecord ?? own;
-			const source = origin === own ? loaded : await this.origin(origin);
-			for (const capture of scenario.states.flatMap((state) => state.captures)) {
-				const bytes = source?.files.get(capture.path);
-				const placed = await media.place(bytes, capture, gapFor(source, capture.path, origin));
-				resolved.set(`${origin}\n${capture.path}`, placed);
-			}
-		}
-		return resolved;
+	private media(loaded: AttachedRecord, media: MediaPlacer): Promise<Map<string, ResolvedMedia>> {
+		return revisionMedia(loaded, media, (id) => this.origin(id));
 	}
+
 	/** The checks each record that this one inherits from ran, for the origins that can be read. */
 	private async ran(record: VerificationRecord): Promise<Map<string, VerificationRecord['tests']>> {
 		const origins = new Set(record.scenarios.flatMap((item) => item.referencedRecord ?? []));
@@ -154,12 +142,7 @@ export class RevisionDetailService {
 		return revisionReasons({ parent, own: await this.kept.source.reasons(commit), noted, records });
 	}
 }
-/** Why the bytes of a capture are not available, in the words of what is wrong with them. */
-function gapFor(source: AttachedRecord | undefined, path: string, origin: string): string {
-	if (!source) return `inherited record ${short(origin)} is not available`;
-	const named = source.problems.find((problem) => problem.includes(path));
-	return named ?? `${path} is not part of record ${short(origin)}`;
-}
+
 function comparison(sound: VerificationRecord[]): RevisionDetail['comparison'] {
 	const record = sound.find((item) => item.status === 'passed') ?? sound[0];
 	if (!record) return null;
@@ -169,7 +152,6 @@ function comparison(sound: VerificationRecord[]): RevisionDetail['comparison'] {
 		.map((scenario) => scenario.id);
 	return { base: record.source.base, record: record.id, units, changed, scenarios, uncertain };
 }
-const short = (id: string): string => id.slice(0, 12);
 async function regressionProofs(
 	root: string,
 	history: HistoryStatusService,

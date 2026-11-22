@@ -9,7 +9,7 @@ import {
 	brokenProject,
 	missingProject
 } from './script.check-doc-links.fixtures';
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { test } from 'vitest';
 import {
@@ -21,7 +21,7 @@ import {
 	pathCheckedDocuments
 } from '../../scripts/check-doc-links';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { createTempDirectory } from '../support/temporary';
+import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
 
 /**
@@ -31,9 +31,8 @@ import { expect } from '../verificationExpect';
  */
 
 /** brokenDocLinks as the script calls it, reading the files of a temporary project folder. */
-async function checkProject(name: string, files: Record<string, string>) {
-	const root = await createTempDirectory('check-doc-links-');
-	try {
+function checkProject(name: string, files: Record<string, string>) {
+	return withTempDir('check-doc-links-', (root) => {
 		for (const [path, text] of Object.entries(files)) {
 			mkdirSync(dirname(join(root, path)), { recursive: true });
 			writeFileSync(join(root, path), text);
@@ -45,9 +44,7 @@ async function checkProject(name: string, files: Record<string, string>) {
 		const input = { documents: checkedDocuments, pathChecked: pathCheckedDocuments, files };
 		const output = brokenDocLinks(checkedDocuments, project, pathCheckedDocuments);
 		return { name, input, output };
-	} finally {
-		rmSync(root, { recursive: true, force: true });
-	}
+	});
 }
 
 test('markdownLinks returned the target and line of each inline link and skipped links inside code spans and fenced blocks', () => {

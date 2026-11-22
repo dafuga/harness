@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.helper.verification-evidence-comparison-panes",
+	"title": "reports.helper.verification-evidence-comparison-panes examples",
+	"kind": "headless",
+	"units": ["reports.helper.verification-evidence-comparison-panes"],
+	"builds": [],
+	"states": [
+		{
+			"id": "pairs-before-and-after-panes-with-their-own-commit-headings",
+			"title": "Pairs before and after panes with their own commit headings",
+			"coverage": "required"
+		},
+		{
+			"id": "fills-an-empty-before-side-and-default-gap",
+			"title": "Fills an empty before side and default gap",
+			"coverage": "required"
+		},
+		{
+			"id": "builds-one-current-pane-when-paired-is-false",
+			"title": "Builds one current pane when paired is false",
+			"coverage": "required"
+		},
+		{
+			"id": "propagates-a-throwing-side-getter-without-wrapping-it",
+			"title": "Propagates a throwing side getter without wrapping it",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.helper.verification-evidence-comparison-panes.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"pairs-before-and-after-panes-with-their-own-commit-headings",
+				"fills-an-empty-before-side-and-default-gap",
+				"builds-one-current-pane-when-paired-is-false",
+				"propagates-a-throwing-side-getter-without-wrapping-it"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"pairs-before-and-after-panes-with-their-own-commit-headings",
+				"fills-an-empty-before-side-and-default-gap",
+				"builds-one-current-pane-when-paired-is-false",
+				"propagates-a-throwing-side-getter-without-wrapping-it"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"pairs-before-and-after-panes-with-their-own-commit-headings",
+				"fills-an-empty-before-side-and-default-gap",
+				"builds-one-current-pane-when-paired-is-false",
+				"propagates-a-throwing-side-getter-without-wrapping-it"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

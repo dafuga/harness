@@ -10,7 +10,12 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/development-tooling/DeploymentActivityService.ts",
-			"packages/desktop/src/services/development-tooling/DeploymentActivityService.types.ts"
+			"packages/desktop/src/services/development-tooling/DeploymentActivityService.types.ts",
+			"packages/desktop/src/services/development-tooling/DeploymentAlreadyStartedError.ts",
+			"packages/desktop/src/services/development-tooling/DeploymentCapacityError.ts",
+			"packages/desktop/src/services/development-tooling/MissingDeploymentTargetError.ts",
+			"packages/desktop/src/services/development-tooling/RequiredLowerEnvironmentDeploymentError.ts",
+			"packages/desktop/src/services/development-tooling/UnknownDeploymentError.ts"
 		],
 		"symbols": [
 			"DeploymentActivityService",
@@ -22,7 +27,12 @@
 			"DeploymentActivityService.schedule",
 			"desktopDeployments",
 			"Work",
-			"Entry"
+			"Entry",
+			"DeploymentAlreadyStartedError",
+			"DeploymentCapacityError",
+			"MissingDeploymentTargetError",
+			"RequiredLowerEnvironmentDeploymentError",
+			"UnknownDeploymentError"
 		]
 	},
 	"contract": {
@@ -40,9 +50,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project root path stored with the scheduled deployment. A path mismatch makes progress return null.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "DeploymentActivityService.wait.id",
@@ -73,7 +81,7 @@
 							"commit": "0123456789abcdef0123456789abcdef01234567",
 							"branch": "main",
 							"adapter": "cloudflare",
-							"target": "workers · slot-9-dev · dev · account 0123456789abcdef0123456789abcdef · https://slot-9-dev.workers.dev",
+							"target": "workers · project-dev · dev · account 0123456789abcdef0123456789abcdef · https://project-dev.example.test",
 							"steps": [
 								"Prepare source",
 								"Run checks",
@@ -85,19 +93,19 @@
 							"expiresAt": "2026-11-14T12:05:00.000Z"
 						},
 						"fingerprint": "7b1a7f5e02f4a0f56f7dfc3a8ef3e46236d158fcd0d88633fbe965fdc74f39ed",
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+						"root": "/workspace/project",
 						"projectId": null,
 						"target": {
 							"environment": "dev",
 							"kind": "workers",
 							"config": "packages/desktop/wrangler.toml",
-							"name": "slot-9-dev",
+							"name": "project-dev",
 							"accountId": "0123456789abcdef0123456789abcdef",
 							"tokenEnv": "CLOUDFLARE_API_TOKEN_DEV",
 							"wranglerEnvironment": "dev",
 							"branch": "main",
 							"output": "packages/desktop/dist",
-							"healthUrl": "https://slot-9-dev.workers.dev"
+							"healthUrl": "https://project-dev.example.test"
 						},
 						"predecessor": null
 					}
@@ -113,7 +121,7 @@
 				"name": "DeploymentActivityService.schedule.dependency",
 				"type": "Promise<DeploymentReceipt>",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional promise for a required lower-environment receipt that schedule awaits before invoking work. It has no source default; a rejection becomes Error('A required lower-environment deployment failed.').",
 				"examples": [
 					{
@@ -123,7 +131,7 @@
 						"updatedAt": "2026-11-14T12:02:00.000Z",
 						"adapter": "cloudflare",
 						"deploymentId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-						"url": "https://slot-9-dev.workers.dev",
+						"url": "https://project-dev.example.test",
 						"configuration": "7b1a7f5e02f4a0f56f7dfc3a8ef3e46236d158fcd0d88633fbe965fdc74f39ed"
 					}
 				]
@@ -132,14 +140,14 @@
 		"outputs": [
 			{
 				"name": "DeploymentActivityService.list",
-				"type": "unknown",
+				"type": "DeploymentActivity[]",
 				"description": "Returns cloned DeploymentActivity records in reverse registration order, newest scheduled first. Pruning retains at most the 64 most recently finished entries in addition to unfinished entries.",
 				"examples": [
 					[
 						{
 							"id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
 							"projectId": null,
-							"projectName": "slot-9",
+							"projectName": "project",
 							"environment": "dev",
 							"sourceEnvironment": null,
 							"commit": "0123456789abcdef0123456789abcdef01234567",
@@ -181,13 +189,13 @@
 			},
 			{
 				"name": "DeploymentActivityService.progress",
-				"type": "unknown",
+				"type": "DeploymentActivity | null",
 				"description": "Returns a cloned DeploymentActivity when the id exists and its stored project root matches, or null otherwise. The record may change phase as scheduled work proceeds.",
 				"examples": [
 					{
 						"id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
 						"projectId": null,
-						"projectName": "slot-9",
+						"projectName": "project",
 						"environment": "dev",
 						"sourceEnvironment": null,
 						"commit": "0123456789abcdef0123456789abcdef01234567",
@@ -229,7 +237,7 @@
 			},
 			{
 				"name": "DeploymentActivityService.wait",
-				"type": "unknown",
+				"type": "Promise<DeploymentReceipt>",
 				"description": "Returns the registered completion promise, which resolves to its DeploymentReceipt. It rejects for an unknown id or when the scheduled dependency or work fails.",
 				"examples": [
 					{
@@ -239,30 +247,30 @@
 						"updatedAt": "2026-11-14T12:02:00.000Z",
 						"adapter": "cloudflare",
 						"deploymentId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-						"url": "https://slot-9-dev.workers.dev",
+						"url": "https://project-dev.example.test",
 						"configuration": "7b1a7f5e02f4a0f56f7dfc3a8ef3e46236d158fcd0d88633fbe965fdc74f39ed"
 					}
 				]
 			},
 			{
 				"name": "DeploymentActivityService.idle",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Returns a promise that resolves after all completion promises present at invocation settle. It uses Promise.allSettled, so deployment failures do not reject idle."
 			},
 			{
 				"name": "DeploymentActivityService.ensureCapacity",
-				"type": "unknown",
+				"type": "void",
 				"description": "Returns undefined when unfinished entries plus count is at most 128. It throws Error('Wait for queued deployments before starting more.') when that sum exceeds 128."
 			},
 			{
 				"name": "DeploymentActivityService.schedule",
-				"type": "unknown",
+				"type": "DeploymentActivity",
 				"description": "Registers work and returns a cloned activity in its initial queued state. Work is serialized for a matching adapter, target kind, account id, and target name, with the branch included for Pages targets.",
 				"examples": [
 					{
 						"id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
 						"projectId": null,
-						"projectName": "slot-9",
+						"projectName": "project",
 						"environment": "dev",
 						"sourceEnvironment": null,
 						"commit": "0123456789abcdef0123456789abcdef01234567",
@@ -303,7 +311,7 @@
 			},
 			{
 				"name": "desktopDeployments",
-				"type": "unknown",
+				"type": "DeploymentActivityService",
 				"description": "The exported host-wide DeploymentActivityService singleton that owns the activity entries and per-target queue tails."
 			}
 		],
@@ -322,14 +330,14 @@
 				"outputs": [
 					{
 						"name": "DeploymentActivityService.list",
-						"type": "unknown",
+						"type": "DeploymentActivity[]",
 						"description": "Returns cloned DeploymentActivity records in reverse registration order, newest scheduled first. Pruning retains at most the 64 most recently finished entries in addition to unfinished entries.",
 						"examples": [
 							[
 								{
 									"id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
 									"projectId": null,
-									"projectName": "slot-9",
+									"projectName": "project",
 									"environment": "dev",
 									"sourceEnvironment": null,
 									"commit": "0123456789abcdef0123456789abcdef01234567",
@@ -388,21 +396,19 @@
 						"type": "string",
 						"required": true,
 						"description": "Project root path stored with the scheduled deployment. A path mismatch makes progress return null.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeploymentActivityService.progress",
-						"type": "unknown",
+						"type": "DeploymentActivity | null",
 						"description": "Returns a cloned DeploymentActivity when the id exists and its stored project root matches, or null otherwise. The record may change phase as scheduled work proceeds.",
 						"examples": [
 							{
 								"id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
 								"projectId": null,
-								"projectName": "slot-9",
+								"projectName": "project",
 								"environment": "dev",
 								"sourceEnvironment": null,
 								"commit": "0123456789abcdef0123456789abcdef01234567",
@@ -460,7 +466,7 @@
 				"outputs": [
 					{
 						"name": "DeploymentActivityService.wait",
-						"type": "unknown",
+						"type": "Promise<DeploymentReceipt>",
 						"description": "Returns the registered completion promise, which resolves to its DeploymentReceipt. It rejects for an unknown id or when the scheduled dependency or work fails.",
 						"examples": [
 							{
@@ -470,7 +476,7 @@
 								"updatedAt": "2026-11-14T12:02:00.000Z",
 								"adapter": "cloudflare",
 								"deploymentId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-								"url": "https://slot-9-dev.workers.dev",
+								"url": "https://project-dev.example.test",
 								"configuration": "7b1a7f5e02f4a0f56f7dfc3a8ef3e46236d158fcd0d88633fbe965fdc74f39ed"
 							}
 						]
@@ -491,7 +497,7 @@
 				"outputs": [
 					{
 						"name": "DeploymentActivityService.idle",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Returns a promise that resolves after all completion promises present at invocation settle. It uses Promise.allSettled, so deployment failures do not reject idle."
 					}
 				],
@@ -513,7 +519,7 @@
 				"outputs": [
 					{
 						"name": "DeploymentActivityService.ensureCapacity",
-						"type": "unknown",
+						"type": "void",
 						"description": "Returns undefined when unfinished entries plus count is at most 128. It throws Error('Wait for queued deployments before starting more.') when that sum exceeds 128."
 					}
 				],
@@ -543,7 +549,7 @@
 									"commit": "0123456789abcdef0123456789abcdef01234567",
 									"branch": "main",
 									"adapter": "cloudflare",
-									"target": "workers · slot-9-dev · dev · account 0123456789abcdef0123456789abcdef · https://slot-9-dev.workers.dev",
+									"target": "workers · project-dev · dev · account 0123456789abcdef0123456789abcdef · https://project-dev.example.test",
 									"steps": [
 										"Prepare source",
 										"Run checks",
@@ -555,19 +561,19 @@
 									"expiresAt": "2026-11-14T12:05:00.000Z"
 								},
 								"fingerprint": "7b1a7f5e02f4a0f56f7dfc3a8ef3e46236d158fcd0d88633fbe965fdc74f39ed",
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+								"root": "/workspace/project",
 								"projectId": null,
 								"target": {
 									"environment": "dev",
 									"kind": "workers",
 									"config": "packages/desktop/wrangler.toml",
-									"name": "slot-9-dev",
+									"name": "project-dev",
 									"accountId": "0123456789abcdef0123456789abcdef",
 									"tokenEnv": "CLOUDFLARE_API_TOKEN_DEV",
 									"wranglerEnvironment": "dev",
 									"branch": "main",
 									"output": "packages/desktop/dist",
-									"healthUrl": "https://slot-9-dev.workers.dev"
+									"healthUrl": "https://project-dev.example.test"
 								},
 								"predecessor": null
 							}
@@ -583,7 +589,7 @@
 						"name": "DeploymentActivityService.schedule.dependency",
 						"type": "Promise<DeploymentReceipt>",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional promise for a required lower-environment receipt that schedule awaits before invoking work. It has no source default; a rejection becomes Error('A required lower-environment deployment failed.').",
 						"examples": [
 							{
@@ -593,7 +599,7 @@
 								"updatedAt": "2026-11-14T12:02:00.000Z",
 								"adapter": "cloudflare",
 								"deploymentId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-								"url": "https://slot-9-dev.workers.dev",
+								"url": "https://project-dev.example.test",
 								"configuration": "7b1a7f5e02f4a0f56f7dfc3a8ef3e46236d158fcd0d88633fbe965fdc74f39ed"
 							}
 						]
@@ -602,13 +608,13 @@
 				"outputs": [
 					{
 						"name": "DeploymentActivityService.schedule",
-						"type": "unknown",
+						"type": "DeploymentActivity",
 						"description": "Registers work and returns a cloned activity in its initial queued state. Work is serialized for a matching adapter, target kind, account id, and target name, with the branch included for Pages targets.",
 						"examples": [
 							{
 								"id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
 								"projectId": null,
-								"projectName": "slot-9",
+								"projectName": "project",
 								"environment": "dev",
 								"sourceEnvironment": null,
 								"commit": "0123456789abcdef0123456789abcdef01234567",

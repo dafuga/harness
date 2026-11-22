@@ -3,10 +3,11 @@ import { ProjectContextValidator } from '../projects-sessions/ProjectContextVali
 import { channels } from '../../models/development-tooling/DesktopBridge.types';
 import { ipcPayload } from '../../utils/ipc-payload/ipcPayload';
 import { gamePayload } from './gamePayload';
+import { UnknownDesktopOperationError } from './IpcRequestValidator.types';
 export class IpcRequestValidator {
 	parse(channel: string, input: unknown): unknown {
 		if (!(Object.values(channels) as string[]).includes(channel))
-			throw new Error('Unknown desktop operation.');
+			throw new UnknownDesktopOperationError('Unknown desktop operation.');
 		if (channel.startsWith('game:')) return gamePayload(channel, input);
 		const context = new ProjectContextValidator();
 		const extended = context.operation(channel, input);

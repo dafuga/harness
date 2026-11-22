@@ -26,11 +26,9 @@
 				"name": "TaskCommand.constructor.root",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Filesystem root used to read the selected loop state and resolve committed task evidence and audit storage. If omitted, the constructor uses process.cwd().",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "TaskCommand.run.flags",
@@ -290,17 +288,15 @@
 						"name": "TaskCommand.constructor.root",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Filesystem root used to read the selected loop state and resolve committed task evidence and audit storage. If omitted, the constructor uses process.cwd().",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "TaskCommand.constructor",
-						"type": "unknown",
+						"type": "TaskCommand",
 						"description": "TaskCommand instance retaining the selected root; run uses that root for loop-state and task-audit service calls."
 					}
 				],

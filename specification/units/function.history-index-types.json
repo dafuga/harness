@@ -48,37 +48,37 @@
 		"outputs": [
 			{
 				"name": "indexedRecordSchema",
-				"type": "unknown",
+				"type": "typeof indexedRecordSchema",
 				"description": "Strict schema for one attached record as the index lists it under its commit, with `id`, a `passed` or `failed` `status`, `profile`, `finishedAt`, a nullable 40-character lowercase hex `base` commit, and `valid` and `problems` fields. `valid` is false when the record, one of its files or anything it inherits could not be validated, and unknown keys are rejected."
 			},
 			{
 				"name": "indexedRevisionSchema",
-				"type": "unknown",
+				"type": "typeof indexedRevisionSchema",
 				"description": "Strict schema for one source commit, listed even without evidence (with its gap stated in `gaps`), whose `coverage` is `verified`, `failed`, `invalid` or `unverified`. `retained` is true when no branch reaches the commit any more and only its archive ref keeps it; `changes` gives the units the commit changed itself against its first parent, whether or not it was verified, and is null when that could not be read and is absent in an index built before it was kept; `detail` is the path of the revision's detail file, relative to the index."
 			},
 			{
 				"name": "benchmarkSeriesSchema",
-				"type": "unknown",
+				"type": "typeof benchmarkSeriesSchema",
 				"description": "Measurements of one `unit`, `workload`, `metric` and `target` (a runtime kind, or null), with an `incompatible` boolean flag. Values taken on another profile, or under another unit of measure, method or comparison, form a separate entry in `series` and are never joined into one line; each point is a `commit`, `record` and numeric `value`."
 			},
 			{
 				"name": "legacyMediaSchema",
-				"type": "unknown",
+				"type": "typeof legacyMediaSchema",
 				"description": "One file of a legacy report, with its original `title`, `file` and `status`, optional `mediaType`, `capturedAt` and `viewport`, and `provenance` fixed to `legacy-report`. `sha256` (a 64-character lowercase hex SHA-256) and `bytes` (a non-negative integer) are nullable, and `media` is the output path or null, with `gap` set when the bytes are not available."
 			},
 			{
 				"name": "legacyEntrySchema",
-				"type": "unknown",
+				"type": "typeof legacyEntrySchema",
 				"description": "A report from before Git-backed records, kept exactly as it was recorded: `status` is the original outcome, with a run that was still running staying `running`, and `revision` is the revision as recorded, whether or not it resolves (nullable). `linked` is the commit of this repository that the revision resolves to, or null when it is unlinked."
 			},
 			{
 				"name": "historyIndexSchema",
-				"type": "unknown",
+				"type": "typeof historyIndexSchema",
 				"description": "The version 1 history index, where `schemaVersion` is the literal 1 and `refs` holds `evidence` and `notes` commits (each a commit or null), alongside branches with their heads, revisions, unit growth and reviews, benchmarks, profiles, legacy reports and problems. `truncated` is true when older commits were left out because of the revision limit, and `sourceRepository`, when present, is a URL."
 			},
 			{
 				"name": "indexedExplanationSchema",
-				"type": "unknown",
+				"type": "typeof indexedExplanationSchema",
 				"description": "An alias of `explanationSchema` with no changes, so the explanations shown with a revision are the stored reasons, unchanged by indexing."
 			}
 		],

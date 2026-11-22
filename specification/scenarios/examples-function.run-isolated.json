@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.run-isolated",
+	"title": "function.run-isolated examples",
+	"kind": "headless",
+	"units": ["function.run-isolated"],
+	"builds": [],
+	"states": [
+		{
+			"id": "runs-a-successful-command-and-records-its-captured-log",
+			"title": "Runs a successful command and records its captured log",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-aborterror-when-the-signal-is-already-aborted",
+			"title": "Throws AbortError when the signal is already aborted",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-log-parent-is-a-file",
+			"title": "Throws Error when the log parent is a file",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.run-isolated.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"runs-a-successful-command-and-records-its-captured-log",
+				"throws-aborterror-when-the-signal-is-already-aborted",
+				"throws-error-when-the-log-parent-is-a-file"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"runs-a-successful-command-and-records-its-captured-log",
+				"throws-aborterror-when-the-signal-is-already-aborted",
+				"throws-error-when-the-log-parent-is-a-file"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"runs-a-successful-command-and-records-its-captured-log",
+				"throws-aborterror-when-the-signal-is-already-aborted",
+				"throws-error-when-the-log-parent-is-a-file"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

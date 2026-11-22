@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.explorer-ui-source-file-parts",
+	"title": "reports.function.explorer-ui-source-file-parts examples",
+	"kind": "headless",
+	"units": ["reports.function.explorer-ui-source-file-parts"],
+	"builds": [],
+	"states": [
+		{
+			"id": "splits-source-paths-after-removing-an-exact-prefix",
+			"title": "Splits source paths after removing an exact prefix",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.explorer-ui-source-file-parts.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["splits-source-paths-after-removing-an-exact-prefix"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["splits-source-paths-after-removing-an-exact-prefix"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["splits-source-paths-after-removing-an-exact-prefix"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

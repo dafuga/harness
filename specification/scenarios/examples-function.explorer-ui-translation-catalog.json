@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.explorer-ui-translation-catalog",
+	"title": "function.explorer-ui-translation-catalog examples",
+	"kind": "headless",
+	"units": ["function.explorer-ui-translation-catalog"],
+	"builds": [],
+	"states": [
+		{
+			"id": "flattens-nested-messages-and-keeps-empty-strings",
+			"title": "Flattens nested messages and keeps empty strings",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-dictionaries-that-are-not-objects",
+			"title": "Rejects dictionaries that are not objects",
+			"coverage": "required"
+		},
+		{
+			"id": "reads-static-addmessages-registrations-and-keys",
+			"title": "Reads static addMessages registrations and keys",
+			"coverage": "required"
+		},
+		{
+			"id": "records-a-non-static-locale-as-a-gap",
+			"title": "Records a non-static locale as a gap",
+			"coverage": "required"
+		},
+		{
+			"id": "catalog-rows-list-the-units-that-call-each-key",
+			"title": "Catalog rows list the units that call each key",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-the-whole-catalog-when-a-source-read-fails",
+			"title": "Rejects the whole catalog when a source read fails",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.explorer-ui-translation-catalog.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"flattens-nested-messages-and-keeps-empty-strings",
+				"rejects-dictionaries-that-are-not-objects",
+				"reads-static-addmessages-registrations-and-keys",
+				"records-a-non-static-locale-as-a-gap",
+				"catalog-rows-list-the-units-that-call-each-key",
+				"rejects-the-whole-catalog-when-a-source-read-fails"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"flattens-nested-messages-and-keeps-empty-strings",
+				"rejects-dictionaries-that-are-not-objects",
+				"reads-static-addmessages-registrations-and-keys",
+				"records-a-non-static-locale-as-a-gap",
+				"catalog-rows-list-the-units-that-call-each-key",
+				"rejects-the-whole-catalog-when-a-source-read-fails"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"flattens-nested-messages-and-keeps-empty-strings",
+				"rejects-dictionaries-that-are-not-objects",
+				"reads-static-addmessages-registrations-and-keys",
+				"records-a-non-static-locale-as-a-gap",
+				"catalog-rows-list-the-units-that-call-each-key",
+				"rejects-the-whole-catalog-when-a-source-read-fails"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

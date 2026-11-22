@@ -4,12 +4,14 @@ import { scenarioManifestSchema } from '../../src/core/unitTypes';
 import type { Gathered } from '../../src/utils/verification-evidence/gatherCaptures';
 import { scenarioCoverage } from '../../src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage';
 import { problem } from '../../src/utils/verification-evidence/scenarioCoverage';
-import { captureLineSchema } from '../../src/core/verification-evidence/verifyTypes';
-import { captureSchema } from '../../src/core/verification-evidence/verificationTypes';
 import { assertColdEntries } from '../support/coldEntries';
 import { measureWorkload } from '../support/measureWorkload';
+import { assertVideoCoverage } from '../support/videoCoverageFixture';
+import { captureLineSchema } from '../../src/core/verification-evidence/verifyTypes';
+import { captureSchema } from '../../src/core/verification-evidence/verificationTypes';
 
 const commit = 'a'.repeat(40);
+
 const scenario = scenarioManifestSchema.parse({
 	schemaVersion: 1,
 	id: 'explorer-flow',
@@ -94,6 +96,14 @@ test('a result that claims no running software is judged as before', () =>
 			})),
 			[]
 		);
+	}));
+
+test('video slots require decoded motion media and retain versioned provenance', () =>
+	measureWorkload('function.scenario-coverage', 'pending-video-flags-and-graph-coverage', () => {
+		const result = assertVideoCoverage(scenario, gathered, served, true);
+		expect(result.videoCoverage, 'verified graph coverage must reach the parent record').toEqual([
+			{ graph: 'navigation', states: 1, edges: 1, clips: 1, complete: true, missing: [] }
+		]);
 	}));
 
 const region = { x: 12, y: 56, width: 158, height: 50 };

@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.entry.atomic-elements-d",
+	"title": "hub.entry.atomic-elements-d examples",
+	"kind": "headless",
+	"units": ["hub.entry.atomic-elements-d"],
+	"builds": [],
+	"states": [
+		{
+			"id": "declares-atomic-html-element-aliases",
+			"title": "Declares atomic HTML element aliases",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.entry.atomic-elements-d.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["declares-atomic-html-element-aliases"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["declares-atomic-html-element-aliases"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["declares-atomic-html-element-aliases"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

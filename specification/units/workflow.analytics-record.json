@@ -33,9 +33,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem path used to resolve the primary Git worktree; if canonicalization or Git lookup fails, the resolved input path is returned.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "resolvedContext.context",
@@ -55,9 +53,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository filesystem root used to locate loop state when a loop is selected.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "recordAnalytics.event",
@@ -83,13 +79,11 @@
 				"type": "string",
 				"required": false,
 				"description": "Filesystem root used to identify the project for the event. Defaults to process.cwd(), the process working directory.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "fingerprint.value",
-				"type": "unknown",
+				"type": "FingerprintValue",
 				"required": true,
 				"description": "Value serialized with JSON.stringify before SHA-256 hashing. It must serialize to a string; cyclic values and values such as undefined that serialize to no string throw.",
 				"examples": [
@@ -116,9 +110,7 @@
 				"name": "projectIdentity",
 				"type": "Promise<string>",
 				"description": "Canonical path from the first worktree entry in git worktree list --porcelain. If Git lookup fails or returns no worktree entry, the resolved input directory is returned.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "resolvedContext",
@@ -185,9 +177,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem path used to resolve the primary Git worktree; if canonicalization or Git lookup fails, the resolved input path is returned.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -195,9 +185,7 @@
 						"name": "projectIdentity",
 						"type": "Promise<string>",
 						"description": "Canonical path from the first worktree entry in git worktree list --porcelain. If Git lookup fails or returns no worktree entry, the resolved input directory is returned.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"errors": [],
@@ -224,9 +212,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository filesystem root used to locate loop state when a loop is selected.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -288,9 +274,7 @@
 						"type": "string",
 						"required": false,
 						"description": "Filesystem root used to identify the project for the event. Defaults to process.cwd(), the process working directory.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -308,7 +292,7 @@
 				"inputs": [
 					{
 						"name": "fingerprint.value",
-						"type": "unknown",
+						"type": "FingerprintValue",
 						"required": true,
 						"description": "Value serialized with JSON.stringify before SHA-256 hashing. It must serialize to a string; cyclic values and values such as undefined that serialize to no string throw.",
 						"examples": [
@@ -383,6 +367,11 @@
 		},
 		{
 			"unit": "function.analytics-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},

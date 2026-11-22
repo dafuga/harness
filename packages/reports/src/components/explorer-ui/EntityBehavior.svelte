@@ -5,12 +5,14 @@
 	import Notice from './explorer-kit/Notice.svelte';
 	import DetailList from '../shared-primitives/DetailList.svelte';
 	import { behaviorFacts } from '../../helpers/verification-evidence/behaviorFacts';
+	import type { BehaviorFact } from '../../helpers/verification-evidence/behaviorFacts.types';
 	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
 	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';
+	import type { ComparisonPane } from '../../helpers/verification-evidence/comparisonPanes.types';
 	import Card from './explorer-kit/Card.svelte';
 	import { untrack } from 'svelte';
 	import type { ExplorerBehavior, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
-	import { entityBehavior } from '../../utils/explorer-ui/entityBehavior';
+	import { entityBehavior, type EntityBehavior } from '../../utils/explorer-ui/entityBehavior';
 	import { entityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
 	import { shortCommit } from '../../helpers/strings/shortCommit';
 	import type { EntityReasons as Reasons } from '../../utils/explorer-ui/entityReasons';
@@ -140,7 +142,7 @@
 		</Notice>
 	{:else}
 		<ComparePanes {panes} className="ex-panes" framed={false}>
-			{#snippet children(pane)}
+			{#snippet children(pane: ComparisonPane<EntityBehavior>)}
 				<EntityRun
 					shown={pane.value!}
 					side={pane.side}
@@ -177,8 +179,8 @@
 			grouped={true}
 			valueClass={(row) => row.className}
 		>
-			{#snippet label(row)}{row.label}{/snippet}
-			{#snippet children(row)}{row.value}{/snippet}
+			{#snippet label(row: BehaviorFact)}{row.label}{/snippet}
+			{#snippet children(row: BehaviorFact)}{row.value}{/snippet}
 		</DetailList>
 	</hx-div>
 </Card>

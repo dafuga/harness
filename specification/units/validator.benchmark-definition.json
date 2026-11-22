@@ -94,7 +94,7 @@
 		"outputs": [
 			{
 				"name": "benchmarkDefinitionSchema",
-				"type": "unknown",
+				"type": "typeof benchmarkDefinitionSchema",
 				"description": "The exported zod schema (z.strictObject) that validate() parses its input with, so code outside validate() can apply the same rules. It is strict at every object level, requires version 1, and fills defaults for project ('.'), revision ('HEAD'), setup ([]), candidate instructions (''), candidate tools ('default') and an omitted budget (repetitions 3, timeoutMs 900000, repairs 2)."
 			},
 			{
@@ -376,6 +376,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.subagent-benchmark-types",
 			"via": "import",

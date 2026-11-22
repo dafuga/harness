@@ -24,12 +24,27 @@
 			"kind": "integration",
 			"runner": "command",
 			"target": "bun run src/index.ts kernel bench --boundary"
+		},
+		{
+			"id": "runtime",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/unit-runtime.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
 		}
 	],
 	"evidence": [
 		{
 			"id": "boundary",
 			"kind": "benchmark",
+			"states": ["module", "wasm", "process"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "runtime-assertions",
+			"kind": "assertions",
 			"states": ["module", "wasm", "process"],
 			"viewports": [],
 			"required": true

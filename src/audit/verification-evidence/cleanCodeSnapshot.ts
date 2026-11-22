@@ -1,5 +1,10 @@
 // @harness-uid u_i6qsyhxhun
-import type { SnapshotInput, ReviewSnapshot, SnapshotState } from './cleanCodeSnapshot.types';
+import {
+	ReviewContextBudgetExceededError,
+	type SnapshotInput,
+	type ReviewSnapshot,
+	type SnapshotState
+} from './cleanCodeSnapshot.types';
 import { extname } from 'node:path';
 import {
 	readReviewInput,
@@ -21,7 +26,9 @@ export async function snapshotCleanCodeFile(input: SnapshotInput): Promise<Revie
 		auditFindings: input.findings.filter((finding) => finding.path === input.path)
 	};
 	if (stateBytes(state) > maxReviewStateBytes)
-		throw new Error('Target exceeds the bounded review context; no code was truncated.');
+		throw new ReviewContextBudgetExceededError(
+			'Target exceeds the bounded review context; no code was truncated.'
+		);
 	const inputs = [target];
 	for (const path of relatedReviewPaths(input.path, target.contents, input.files)) {
 		await appendRelated(input.root, path, state, inputs);
@@ -29,7 +36,7 @@ export async function snapshotCleanCodeFile(input: SnapshotInput): Promise<Revie
 	for (const path of reviewConventionPaths(input.path))
 		await appendConvention(input.root, path, state, inputs);
 	if (stateBytes(state) > maxReviewStateBytes)
-		throw new Error('Supplied context exceeds the review budget.');
+		throw new ReviewContextBudgetExceededError('Supplied context exceeds the review budget.');
 	return {
 		target,
 		inputs,

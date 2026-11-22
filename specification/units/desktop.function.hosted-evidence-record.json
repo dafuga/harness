@@ -17,7 +17,7 @@
 		"outputs": [
 			{
 				"name": "hostedEvidenceRecord",
-				"type": "unknown",
+				"type": "typeof hostedEvidenceRecord",
 				"description": "A Zod strict-object schema that defines the accepted shape for validating hosted verification records, but does not attest that recorded evidence is truthful. It uses declared status enums, lowercase 40-character hexadecimal commit hashes and finite numbers, rejects unknown keys on strict objects, and applies 1,000,000-character string, 1–300-character name and 5,000-item array limits where the shared helpers are used; optional browser diagnostics use the imported diagnostic schema."
 			}
 		],

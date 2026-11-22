@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-guide.module-system-modules",
+	"title": "guide.module-system-modules examples",
+	"kind": "headless",
+	"units": ["guide.module-system-modules"],
+	"builds": [],
+	"states": [
+		{
+			"id": "documents-module-discovery-and-authoring-guidance",
+			"title": "Documents module discovery and authoring guidance",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/guide.module-system-modules.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["documents-module-discovery-and-authoring-guidance"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["documents-module-discovery-and-authoring-guidance"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["documents-module-discovery-and-authoring-guidance"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

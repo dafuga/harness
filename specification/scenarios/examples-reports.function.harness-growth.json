@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.harness-growth",
+	"title": "reports.function.harness-growth examples",
+	"kind": "headless",
+	"units": ["reports.function.harness-growth"],
+	"builds": [],
+	"states": [
+		{
+			"id": "builds-growth-rows-with-metric-deltas",
+			"title": "Builds growth rows with metric deltas",
+			"coverage": "required"
+		},
+		{
+			"id": "keeps-matching-benchmark-conditions-separate",
+			"title": "Keeps matching benchmark conditions separate",
+			"coverage": "required"
+		},
+		{
+			"id": "formats-signed-deltas-and-exposes-ordered-metric-keys",
+			"title": "Formats signed deltas and exposes ordered metric keys",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.harness-growth.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"builds-growth-rows-with-metric-deltas",
+				"keeps-matching-benchmark-conditions-separate",
+				"formats-signed-deltas-and-exposes-ordered-metric-keys"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"builds-growth-rows-with-metric-deltas",
+				"keeps-matching-benchmark-conditions-separate",
+				"formats-signed-deltas-and-exposes-ordered-metric-keys"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"builds-growth-rows-with-metric-deltas",
+				"keeps-matching-benchmark-conditions-separate",
+				"formats-signed-deltas-and-exposes-ordered-metric-keys"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

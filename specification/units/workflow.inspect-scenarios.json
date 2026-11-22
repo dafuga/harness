@@ -19,7 +19,7 @@
 				"type": "string",
 				"required": false,
 				"description": "Repository root whose working-tree scenario and unit manifests are read; a relative value is resolved against process.cwd() by path.resolve. It matters when the process is not running at the repository root, and it defaults to process.cwd() when omitted.",
-				"examples": ["/workspace/harness", "/home/runner/work/harness/harness"]
+				"examples": ["/workspace/harness", "/workspace/project"]
 			},
 			{
 				"name": "showScenario.id",
@@ -33,14 +33,14 @@
 				"type": "string",
 				"required": false,
 				"description": "Repository root whose working-tree scenario and unit manifests are read; a relative value is resolved against process.cwd() by path.resolve. It matters when the process is not running at the repository root, and it defaults to process.cwd() when omitted.",
-				"examples": ["/workspace/harness", "/home/runner/work/harness/harness"]
+				"examples": ["/workspace/harness", "/workspace/project"]
 			},
 			{
 				"name": "checkScenarios.root",
 				"type": "string",
 				"required": false,
 				"description": "Repository root whose working-tree scenario and unit manifests are read; a relative value is resolved against process.cwd() by path.resolve. It matters when the process is not running at the repository root, and it defaults to process.cwd() when omitted.",
-				"examples": ["/workspace/harness", "/home/runner/work/harness/harness"]
+				"examples": ["/workspace/harness", "/workspace/project"]
 			}
 		],
 		"outputs": [
@@ -253,7 +253,7 @@
 						"type": "string",
 						"required": false,
 						"description": "Repository root whose working-tree scenario and unit manifests are read; a relative value is resolved against process.cwd() by path.resolve. It matters when the process is not running at the repository root, and it defaults to process.cwd() when omitted.",
-						"examples": ["/workspace/harness", "/home/runner/work/harness/harness"]
+						"examples": ["/workspace/harness", "/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -304,7 +304,7 @@
 						"type": "string",
 						"required": false,
 						"description": "Repository root whose working-tree scenario and unit manifests are read; a relative value is resolved against process.cwd() by path.resolve. It matters when the process is not running at the repository root, and it defaults to process.cwd() when omitted.",
-						"examples": ["/workspace/harness", "/home/runner/work/harness/harness"]
+						"examples": ["/workspace/harness", "/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -416,7 +416,7 @@
 						"type": "string",
 						"required": false,
 						"description": "Repository root whose working-tree scenario and unit manifests are read; a relative value is resolved against process.cwd() by path.resolve. It matters when the process is not running at the repository root, and it defaults to process.cwd() when omitted.",
-						"examples": ["/workspace/harness", "/home/runner/work/harness/harness"]
+						"examples": ["/workspace/harness", "/workspace/project"]
 					}
 				],
 				"outputs": [

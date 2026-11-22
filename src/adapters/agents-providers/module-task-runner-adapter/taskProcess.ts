@@ -38,7 +38,14 @@ export async function taskProcess(
 		{
 			priority: 'coding',
 			label: 'Module task CLI',
-			...(image ? managedProviderDockerResources : { memoryMiB: 2048 })
+			cpus: parsePositiveNumberEnvironmentValue(
+				process.env.HARNESS_TASK_CPUS,
+				image ? managedProviderDockerResources.cpus : 1
+			),
+			memoryMiB: parsePositiveIntegerEnvironmentValue(
+				process.env.HARNESS_TASK_MEMORY_MIB,
+				image ? managedProviderDockerResources.memoryMiB : 2048
+			)
 		},
 		(resources) =>
 			image
@@ -122,12 +129,16 @@ function collectTaskProcess(
 		if (input.provider === 'claude') controller.sample();
 	});
 	const decoder = new StringDecoder('utf8');
+	const outputBytes = parsePositiveIntegerEnvironmentValue(
+		process.env.HARNESS_TASK_OUTPUT_BYTES,
+		8_000_000
+	);
 	let stdout = '';
 	let overflow = false;
 	child.stdout.on('data', (chunk: Buffer) => {
 		if (overflow) return;
 		stdout += decoder.write(chunk);
-		if (stdout.length <= 8_000_000) return;
+		if (stdout.length <= outputBytes) return;
 		overflow = true;
 		killGroup(child);
 	});
@@ -155,7 +166,22 @@ function collectTaskProcess(
 		child.stdin.end(input.prompt);
 	});
 }
-
+export function parsePositiveIntegerEnvironmentValue(
+	value: string | undefined,
+	fallback: number
+): number {
+	if (value === undefined || !/^\d+$/.test(value)) return fallback;
+	const parsed = Number(value);
+	return Number.isSafeInteger(parsed) && parsed > 0 ? parsed : fallback;
+}
+export function parsePositiveNumberEnvironmentValue(
+	value: string | undefined,
+	fallback: number
+): number {
+	if (value === undefined) return fallback;
+	const parsed = Number(value);
+	return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
 function taskEnvironment(resources: ResourceContext): Record<string, string | undefined> {
 	const env: Record<string, string | undefined> = {};
 	for (const key of [

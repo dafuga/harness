@@ -20,13 +20,13 @@
 		"inputs": [
 			{
 				"name": "handle.event",
-				"type": "RequestEvent<Record<string, string>, string>",
+				"type": "RequestEvent",
 				"required": true,
 				"description": "The SvelteKit RequestEvent of the incoming request. The hook itself reads only url.pathname, which selects the agent controller, and request, which that controller reads; the owner guard reads only getClientAddress from the event."
 			},
 			{
 				"name": "handle.resolve",
-				"type": "(event: RequestEvent<Record<string, string>, string>, opts?: ResolveOptions) => MaybePromise<Response>",
+				"type": "Parameters<Handle>[0]['resolve']",
 				"required": true,
 				"description": "The SvelteKit resolve function, which the hook calls only for an admitted request whose pathname is not /api/agent. Its Response is returned after the hook sets cache-control to 'private, no-store' if the Response has none."
 			}
@@ -34,7 +34,7 @@
 		"outputs": [
 			{
 				"name": "handle",
-				"type": "unknown",
+				"type": "Promise<Response>",
 				"description": "The Response for the request: the guard's 403 'Forbidden' response when the request is denied, otherwise the agent controller's response for /api/agent or resolve's response. A response with no cache-control header gets 'private, no-store' before it is returned."
 			}
 		],
@@ -57,13 +57,13 @@
 				"inputs": [
 					{
 						"name": "handle.event",
-						"type": "RequestEvent<Record<string, string>, string>",
+						"type": "RequestEvent",
 						"required": true,
 						"description": "The SvelteKit RequestEvent of the incoming request. The hook itself reads only url.pathname, which selects the agent controller, and request, which that controller reads; the owner guard reads only getClientAddress from the event."
 					},
 					{
 						"name": "handle.resolve",
-						"type": "(event: RequestEvent<Record<string, string>, string>, opts?: ResolveOptions) => MaybePromise<Response>",
+						"type": "Parameters<Handle>[0]['resolve']",
 						"required": true,
 						"description": "The SvelteKit resolve function, which the hook calls only for an admitted request whose pathname is not /api/agent. Its Response is returned after the hook sets cache-control to 'private, no-store' if the Response has none."
 					}
@@ -71,7 +71,7 @@
 				"outputs": [
 					{
 						"name": "handle",
-						"type": "unknown",
+						"type": "Promise<Response>",
 						"description": "The Response for the request: the guard's 403 'Forbidden' response when the request is denied, otherwise the agent controller's response for /api/agent or resolve's response. A response with no cache-control header gets 'private, no-store' before it is returned."
 					}
 				],

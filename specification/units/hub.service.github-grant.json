@@ -205,19 +205,19 @@
 		"outputs": [
 			{
 				"name": "STATE_TTL",
-				"type": "unknown",
+				"type": "number",
 				"description": "The lifetime of a GitHub authorization state: 10 minutes, as `10 * 60 * 1000` milliseconds. `begin` stores each state with an expiry of the current time plus this value, and `complete` claims a state only while it is unexpired.",
 				"examples": [600000]
 			},
 			{
 				"name": "GRANT_TTL",
-				"type": "unknown",
+				"type": "number",
 				"description": "The lifetime of a connected GitHub grant: 30 days, as `30 * 24 * 60 * 60 * 1000` milliseconds. `complete` sets a new grant's `expiresAt` to its creation time plus this value, rotation keeps that expiry, and the service treats a grant past it as no grant.",
 				"examples": [2592000000]
 			},
 			{
 				"name": "REFRESH_LEASE",
-				"type": "unknown",
+				"type": "number",
 				"description": "How long one caller may hold the right to rotate a grant's tokens: 30 seconds, as `30 * 1000` milliseconds. `refresh` requests a lease until the current time plus this value, and rotated tokens are stored only for the holder of that lease.",
 				"examples": [30000]
 			},
@@ -537,7 +537,7 @@
 				"outputs": [
 					{
 						"name": "GithubGrantService.constructor",
-						"type": "unknown",
+						"type": "GithubGrantService",
 						"description": "The new `GithubGrantService` instance, which keeps the options and performs no I/O during construction."
 					}
 				],

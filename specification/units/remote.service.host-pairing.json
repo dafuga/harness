@@ -11,6 +11,8 @@
 		"source": [
 			"packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.ts",
 			"packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.types.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/PairingPhoneMismatchError.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/PairingRequestNotFoundError.ts",
 			"packages/desktop/src/services/remote-host-service/host-pairing-service/HostPairingService.ts",
 			"packages/remote/src/services/host-pairing-service/HostPairingService.ts"
 		],
@@ -34,6 +36,8 @@
 			"HostPairingApproved",
 			"Requested",
 			"Offer",
+			"PairingPhoneMismatchError",
+			"PairingRequestNotFoundError",
 			"HostPairingService",
 			"HostPairingService",
 			"HostPairingOptions",
@@ -451,7 +455,7 @@
 				"outputs": [
 					{
 						"name": "HostPairingService.constructor",
-						"type": "unknown",
+						"type": "HostPairingService",
 						"description": "The HostPairingService instance itself, which starts with no offer open until open() is called."
 					}
 				],

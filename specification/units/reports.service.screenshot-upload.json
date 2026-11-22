@@ -17,7 +17,8 @@
 			"ScreenshotUploadService.constructor",
 			"ScreenshotUploadService.upload",
 			"ScreenshotUploadInput",
-			"ScreenshotUploadInput"
+			"ScreenshotUploadInput",
+			"InvalidUploadInputError"
 		]
 	},
 	"contract": {
@@ -52,7 +53,7 @@
 		"outputs": [
 			{
 				"name": "ScreenshotUploadService.upload",
-				"type": "unknown",
+				"type": "Promise<Report>",
 				"description": "The resolved value returned by repository.mutateActive after its callback completes; the callback stores both image buffers, writes their assets to the report directory, appends a before/after evidence pair, and updates report.updatedAt. The service does not inspect or reshape the repository return value."
 			}
 		],
@@ -85,7 +86,7 @@
 				"outputs": [
 					{
 						"name": "ScreenshotUploadService.upload",
-						"type": "unknown",
+						"type": "Promise<import('../../../models/reports-media/Report.types').Report>",
 						"description": "The resolved value returned by repository.mutateActive after its callback completes; the callback stores both image buffers, writes their assets to the report directory, appends a before/after evidence pair, and updates report.updatedAt. The service does not inspect or reshape the repository return value."
 					}
 				],
@@ -119,7 +120,7 @@
 				"outputs": [
 					{
 						"name": "ScreenshotUploadService.constructor",
-						"type": "unknown",
+						"type": "ScreenshotUploadService",
 						"description": "The ScreenshotUploadService instance initialized with the supplied repository and storage dependencies."
 					}
 				],

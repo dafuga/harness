@@ -1,6 +1,9 @@
 // @harness-uid u_rnymveoz42
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
+import { InvalidRevisionError } from './InvalidRevisionError';
+import { SourceFileTooLargeError } from './SourceFileTooLargeError';
+import { UnsafeSourcePathError } from './UnsafeSourcePathError';
 
 const run = promisify(execFile);
 
@@ -14,7 +17,7 @@ export async function gitRead(root: string, args: string[]): Promise<string> {
 
 export async function gitRevision(root: string, revision = 'HEAD'): Promise<string> {
 	if (!revision || revision.includes('\0') || revision.length > 300)
-		throw new Error('Invalid revision.');
+		throw new InvalidRevisionError('Invalid revision.');
 	return (
 		await gitRead(root, ['rev-parse', '--verify', '--end-of-options', revision + '^{commit}'])
 	).trim();
@@ -22,9 +25,10 @@ export async function gitRevision(root: string, revision = 'HEAD'): Promise<stri
 
 export async function gitText(root: string, revision: string, path: string): Promise<string> {
 	if (path.startsWith('/') || path.split('/').includes('..') || path.includes('\0'))
-		throw new Error('Unsafe source path.');
+		throw new UnsafeSourcePathError('Unsafe source path.');
 	const data = await gitRead(root, ['show', (await gitRevision(root, revision)) + ':' + path]);
-	if (Buffer.byteLength(data) > 2000000) throw new Error('Source file too large.');
+	if (Buffer.byteLength(data) > 2000000)
+		throw new SourceFileTooLargeError('Source file too large.');
 	return data;
 }
 

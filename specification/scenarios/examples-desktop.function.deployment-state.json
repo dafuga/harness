@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.deployment-state",
+	"title": "desktop.function.deployment-state examples",
+	"kind": "headless",
+	"units": ["desktop.function.deployment-state"],
+	"builds": [],
+	"states": [
+		{
+			"id": "reads-back-receipts-written-by-savedeployment",
+			"title": "Reads back receipts written by saveDeployment",
+			"coverage": "required"
+		},
+		{
+			"id": "reads-an-empty-list-when-no-receipts-file-exists",
+			"title": "Reads an empty list when no receipts file exists",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-root-outside-any-git-repository",
+			"title": "Rejects a root outside any Git repository",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-each-environment-with-its-receipt-and-target-availab",
+			"title": "Reports each environment with its receipt and target availability",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.deployment-state.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"reads-back-receipts-written-by-savedeployment",
+				"reads-an-empty-list-when-no-receipts-file-exists",
+				"rejects-a-root-outside-any-git-repository",
+				"reports-each-environment-with-its-receipt-and-target-availab"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"reads-back-receipts-written-by-savedeployment",
+				"reads-an-empty-list-when-no-receipts-file-exists",
+				"rejects-a-root-outside-any-git-repository",
+				"reports-each-environment-with-its-receipt-and-target-availab"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"reads-back-receipts-written-by-savedeployment",
+				"reads-an-empty-list-when-no-receipts-file-exists",
+				"rejects-a-root-outside-any-git-repository",
+				"reports-each-environment-with-its-receipt-and-target-availab"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

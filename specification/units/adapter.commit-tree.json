@@ -8,12 +8,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/git-source-history/CommitTreeAdapter.ts"],
+		"source": [
+			"src/adapters/git-source-history/CommitTreeAdapter.ts",
+			"src/adapters/git-source-history/CommitTreeAdapter.types.ts"
+		],
 		"symbols": [
 			"CommitTreeAdapter",
 			"CommitTreeAdapter.open",
 			"CommitTreeAdapter.list",
-			"CommitTreeAdapter.read"
+			"CommitTreeAdapter.read",
+			"CommitFileNotFoundError"
 		]
 	},
 	"contract": {
@@ -24,9 +28,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root passed to GitAdapter for revision lookup and object reads. It selects which repository this adapter uses.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "CommitTreeAdapter.open.reference",
@@ -91,9 +93,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root passed to GitAdapter for revision lookup and object reads. It selects which repository this adapter uses.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "CommitTreeAdapter.open.reference",

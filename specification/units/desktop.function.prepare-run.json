@@ -10,11 +10,17 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/agents-providers/desktop-run-service/prepareRun.ts",
+			"packages/desktop/src/services/agents-providers/desktop-run-service/prepareRun.types.ts",
+			"packages/desktop/src/utils/agents-providers/CodexImageGenerationCapabilityError.ts",
+			"packages/desktop/src/utils/agents-providers/DefaultImageOrchestrationModelMissingError.ts",
 			"packages/desktop/src/utils/agents-providers/prepareRun.ts",
 			"packages/desktop/src/utils/agents-providers/prepareRun.types.ts"
 		],
 		"symbols": [
 			"prepareRun",
+			"ThreadNotInEntityError",
+			"CodexImageGenerationCapabilityError",
+			"DefaultImageOrchestrationModelMissingError",
 			"messageFor",
 			"recordRunFailure",
 			"prepareRun",
@@ -106,7 +112,7 @@
 		"outputs": [
 			{
 				"name": "imageModel",
-				"type": "unknown",
+				"type": "Promise<string>",
 				"description": "Resolves to an empty string unless mode is plan and category is pages, layouts, or components. In those cases it returns the id of the default model listed by an available Codex provider with imageGeneration enabled.",
 				"examples": [""]
 			},
@@ -117,7 +123,7 @@
 			},
 			{
 				"name": "messageFor",
-				"type": "unknown",
+				"type": "{ entityId: string; threadId: string; author: \"user\" | \"agent\"; text: string; mode: RunMode; provider: ProviderId; model: string; version: string | null; imageSha256: string | null; }",
 				"description": "Returns a message draft with the request's entity and thread ids, the supplied author and text, mode, provider, and model. Version and imageSha256 are copied from the approval or set to null when absent.",
 				"examples": [
 					{
@@ -135,7 +141,7 @@
 			},
 			{
 				"name": "recordRunFailure",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Resolves after returning early when failureRecorded is true, or after switching to the run branch and appending an agent failure message. Change mode adds cancelled or failed status and error text limited to 600 characters."
 			}
 		],
@@ -249,7 +255,7 @@
 				"outputs": [
 					{
 						"name": "messageFor",
-						"type": "unknown",
+						"type": "{ entityId: string; threadId: string; author: \"user\" | \"agent\"; text: string; mode: import(\"../../models/development-tooling/Desktop.types\").RunMode; provider: import(\"../../models/development-tooling/Desktop.types\").ProviderId; model: string; version: string | null; imageSha256: string | null; }",
 						"description": "Returns a message draft with the request's entity and thread ids, the supplied author and text, mode, provider, and model. Version and imageSha256 are copied from the approval or set to null when absent.",
 						"examples": [
 							{
@@ -289,7 +295,7 @@
 				"outputs": [
 					{
 						"name": "recordRunFailure",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Resolves after returning early when failureRecorded is true, or after switching to the run branch and appending an agent failure message. Change mode adds cancelled or failed status and error text limited to 600 characters."
 					}
 				],

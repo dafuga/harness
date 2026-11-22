@@ -26,7 +26,8 @@
 			"DeploymentOptions",
 			"ReviewedDeployment",
 			"DeploymentOptions",
-			"ReviewedDeployment"
+			"ReviewedDeployment",
+			"DeploymentPreconditionError"
 		]
 	},
 	"contract": {
@@ -131,42 +132,42 @@
 		"outputs": [
 			{
 				"name": "DeploymentService.status",
-				"type": "unknown",
+				"type": "ReturnType<typeof deploymentStatus>",
 				"description": "Returns the value produced by deploymentStatus for the validated local root and configured plugin. This service returns that helper's result without reshaping it."
 			},
 			{
 				"name": "DeploymentService.activities",
-				"type": "unknown",
+				"type": "ReturnType<DeploymentActivityService['list']>",
 				"description": "Returns the current activity list from the configured activity service by calling list()."
 			},
 			{
 				"name": "DeploymentService.plan",
-				"type": "unknown",
+				"type": "Promise<ReviewedDeployment['plan']>",
 				"description": "Resolves to a structured clone of the reviewed deployment plan. Its plan ID is cached for later start or deploy calls until expiry, subject to the 32-entry cache cap."
 			},
 			{
 				"name": "DeploymentService.start",
-				"type": "unknown",
+				"type": "Promise<ReturnType<DeploymentActivityService['schedule']>>",
 				"description": "Resolves to the scheduled deployment activity after validating and consuming the cached plan and checking the current project and deployment state. A plan ID cannot be reused after this call."
 			},
 			{
 				"name": "DeploymentService.deploy",
-				"type": "unknown",
+				"type": "ReturnType<DeploymentActivityService['wait']>",
 				"description": "Resolves to the activity result returned by waiting for the job scheduled from the supplied plan. It performs the start flow's plan and project checks."
 			},
 			{
 				"name": "DeploymentService.automatic",
-				"type": "unknown",
+				"type": "ReturnType<DeploymentActivityService['wait']>",
 				"description": "Resolves to the activity result after planning and deploying for an allowed non-production environment. The allowed environments are dev, stage, and preprod."
 			},
 			{
 				"name": "DeploymentService.enqueue",
-				"type": "unknown",
+				"type": "ReturnType<typeof enqueueChangeDeployments>",
 				"description": "Returns the value produced by enqueueChangeDeployments for the active root and query, with the session project ID, configured options, plugin, and activity service."
 			},
 			{
 				"name": "DeploymentService.progress",
-				"type": "unknown",
+				"type": "Promise<ReturnType<DeploymentActivityService['progress']>>",
 				"description": "Returns the activity service's progress result for the supplied plan ID and validated local root."
 			}
 		],
@@ -196,7 +197,7 @@
 				"outputs": [
 					{
 						"name": "DeploymentService.status",
-						"type": "unknown",
+						"type": "ReturnType<typeof deploymentStatus>",
 						"description": "Returns the value produced by deploymentStatus for the validated local root and configured plugin. This service returns that helper's result without reshaping it."
 					}
 				],
@@ -215,7 +216,7 @@
 				"outputs": [
 					{
 						"name": "DeploymentService.activities",
-						"type": "unknown",
+						"type": "ReturnType<DeploymentActivityService['list']>",
 						"description": "Returns the current activity list from the configured activity service by calling list()."
 					}
 				],
@@ -241,7 +242,7 @@
 				"outputs": [
 					{
 						"name": "DeploymentService.plan",
-						"type": "unknown",
+						"type": "Promise<ReviewedDeployment['plan']>",
 						"description": "Resolves to a structured clone of the reviewed deployment plan. Its plan ID is cached for later start or deploy calls until expiry, subject to the 32-entry cache cap."
 					}
 				],
@@ -272,7 +273,7 @@
 				"outputs": [
 					{
 						"name": "DeploymentService.start",
-						"type": "unknown",
+						"type": "Promise<ReturnType<DeploymentActivityService['schedule']>>",
 						"description": "Resolves to the scheduled deployment activity after validating and consuming the cached plan and checking the current project and deployment state. A plan ID cannot be reused after this call."
 					}
 				],
@@ -303,7 +304,7 @@
 				"outputs": [
 					{
 						"name": "DeploymentService.deploy",
-						"type": "unknown",
+						"type": "ReturnType<DeploymentActivityService['wait']>",
 						"description": "Resolves to the activity result returned by waiting for the job scheduled from the supplied plan. It performs the start flow's plan and project checks."
 					}
 				],
@@ -335,7 +336,7 @@
 				"outputs": [
 					{
 						"name": "DeploymentService.automatic",
-						"type": "unknown",
+						"type": "ReturnType<DeploymentActivityService['wait']>",
 						"description": "Resolves to the activity result after planning and deploying for an allowed non-production environment. The allowed environments are dev, stage, and preprod."
 					}
 				],
@@ -367,7 +368,7 @@
 				"outputs": [
 					{
 						"name": "DeploymentService.enqueue",
-						"type": "unknown",
+						"type": "ReturnType<typeof enqueueChangeDeployments>",
 						"description": "Returns the value produced by enqueueChangeDeployments for the active root and query, with the session project ID, configured options, plugin, and activity service."
 					}
 				],
@@ -398,7 +399,7 @@
 				"outputs": [
 					{
 						"name": "DeploymentService.progress",
-						"type": "unknown",
+						"type": "Promise<ReturnType<DeploymentActivityService['progress']>>",
 						"description": "Returns the activity service's progress result for the supplied plan ID and validated local root."
 					}
 				],
@@ -436,7 +437,7 @@
 				"outputs": [
 					{
 						"name": "DeploymentService.constructor",
-						"type": "unknown",
+						"type": "DeploymentService",
 						"description": "Returns a DeploymentService instance initialized with the supplied session and options; omitted options select the default Cloudflare deployment plugin and activity service."
 					}
 				],

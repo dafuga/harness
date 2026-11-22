@@ -77,6 +77,8 @@
 			"runGeneration",
 			"taskProcess",
 			"dockerTaskImage",
+			"parsePositiveIntegerEnvironmentValue",
+			"parsePositiveNumberEnvironmentValue",
 			"TaskChild",
 			"TaskOutputOverflowError",
 			"processMonitor",
@@ -88,22 +90,33 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ModuleTaskRunnerAdapter.constructor.execute",
 				"type": "TaskProcessExecutor",
-				"required": false
+				"required": false,
+				"default": "taskProcess",
+				"description": "Optional process executor for CLI calls; when omitted, the adapter uses taskProcess to launch the selected provider command. The documented default is the source expression taskProcess, evaluated by the implementation; it is not a literal string value."
 			},
 			{
 				"name": "ModuleTaskRunnerAdapter.command.selection",
-				"type": "TaskSelection",
-				"required": true
+				"type": "TaskSelection & Pick<TaskRunInput, 'images'>",
+				"required": true,
+				"description": "Provider, exact model and intelligence level used to build that provider's CLI argument vector.",
+				"examples": [
+					{
+						"provider": "codex",
+						"model": "gpt-6-luna",
+						"intelligence": "high"
+					}
+				]
 			},
 			{
 				"name": "ModuleTaskRunnerAdapter.run.input",
 				"type": "TaskRunInput",
-				"required": true
+				"required": true,
+				"description": "Provider selection plus the task working directory, prompt and abort signal needed to execute and cancel one CLI run."
 			},
 			{
 				"name": "ProviderRequestGate.constructor.provider",
@@ -238,12 +251,33 @@
 			{
 				"name": "taskProcess.command",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Executable and argument strings for the selected provider CLI, launched as one admitted task process.",
+				"examples": [
+					[
+						"codex",
+						"exec",
+						"--json",
+						"--ephemeral",
+						"--sandbox",
+						"workspace-write",
+						"-m",
+						"gpt-6-luna",
+						"-c",
+						"model_reasoning_effort=\"high\"",
+						"-c",
+						"model_provider=\"openai\"",
+						"-c",
+						"approval_policy=\"never\"",
+						"-"
+					]
+				]
 			},
 			{
 				"name": "taskProcess.input",
 				"type": "TaskRunInput",
-				"required": true
+				"required": true,
+				"description": "Run context supplying the selected provider and model, child working directory, prompt for stdin and signal for cancellation."
 			},
 			{
 				"name": "dockerTaskImage.platform",
@@ -259,6 +293,26 @@
 				"name": "dockerTaskImage.image",
 				"type": "string",
 				"required": false
+			},
+			{
+				"name": "parsePositiveIntegerEnvironmentValue.value",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "parsePositiveIntegerEnvironmentValue.fallback",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "parsePositiveNumberEnvironmentValue.value",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "parsePositiveNumberEnvironmentValue.fallback",
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "processMonitor.child",
@@ -324,11 +378,64 @@
 		"outputs": [
 			{
 				"name": "ModuleTaskRunnerAdapter.command",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Argument vector for the selected provider CLI, including its model, effort and output settings.",
+				"examples": [
+					[
+						"codex",
+						"exec",
+						"--json",
+						"--ephemeral",
+						"--sandbox",
+						"workspace-write",
+						"-m",
+						"gpt-6-luna",
+						"-c",
+						"model_reasoning_effort=\"high\"",
+						"-c",
+						"model_provider=\"openai\"",
+						"-c",
+						"approval_policy=\"never\"",
+						"-"
+					],
+					[
+						"claude",
+						"-p",
+						"--verbose",
+						"--output-format",
+						"stream-json",
+						"--model",
+						"claude-haiku-5-5",
+						"--effort",
+						"high",
+						"--permission-mode",
+						"acceptEdits",
+						"--tools",
+						"Read,Edit,Write,Glob,Grep,Bash",
+						"--allowedTools",
+						"Read,Edit,Write,Glob,Grep,Bash",
+						"--no-session-persistence"
+					]
+				]
 			},
 			{
 				"name": "ModuleTaskRunnerAdapter.run",
-				"type": "Promise<TaskRunResult>"
+				"type": "Promise<TaskRunResult>",
+				"description": "Resolves to the selected task identity, public response text and reported model after CLI events pass success and identity checks.",
+				"examples": [
+					{
+						"provider": "codex",
+						"model": "gpt-6-luna",
+						"intelligence": "high",
+						"text": "Task completed.",
+						"reportedModel": "gpt-6-luna"
+					}
+				]
+			},
+			{
+				"name": "taskProcess",
+				"type": "Promise<TaskProcessResult>",
+				"description": "Resolves with the child CLI exit code and captured stdout after the admitted process closes; stderr is discarded."
 			},
 			{
 				"name": "ProviderRequestGate.origin",
@@ -403,10 +510,6 @@
 				"type": "Promise<GenerationResult>"
 			},
 			{
-				"name": "taskProcess",
-				"type": "Promise<TaskProcessResult>"
-			},
-			{
 				"name": "dockerTaskImage",
 				"type": "string | undefined"
 			},
@@ -434,28 +537,82 @@
 		"errors": [
 			{
 				"name": "ModuleTaskRunError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Signals a failed provider run, quota rejection, denied tool permission or a CLI model different from the requested selection."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by run when a non-empty line of the CLI's stdout is not JSON. It is raised before the result is read, so it carries no usage or reportedModel."
+			},
+			{
+				"name": "TaskOutputOverflowError",
+				"type": "thrown",
+				"description": "Rejected with the message 'Task CLI output exceeded its bound.' when the CLI's stdout passes 8,000,000 characters; the process group is killed first."
+			},
+			{
+				"name": "AbortSignal.reason",
+				"type": "propagated",
+				"description": "input.signal's reason (a DOMException named AbortError unless abort() was given another reason) when the signal is aborted before the CLI starts or while it runs; an abort kills the CLI's process group first."
+			},
+			{
+				"name": "NodeJS.ErrnoException",
+				"type": "propagated",
+				"description": "The spawn error when the CLI cannot be started, for example ENOENT when claude or codex is not on PATH."
+			},
+			{
+				"name": "resourceWork rejection",
+				"type": "propagated",
+				"description": "Rejections from resourceWork while it reserves the 2048 MiB coding slot pass through, for example 'Resource queue is full', a wait timeout, 'Resource request exceeds usable capacity after reserves', or a SyntaxError from an invalid queue config.json."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ModuleTaskRunnerAdapter.command",
 				"inputs": [
 					{
 						"name": "ModuleTaskRunnerAdapter.command.selection",
-						"type": "TaskSelection",
-						"required": true
+						"type": "TaskSelection & Pick<TaskRunInput, 'images'>",
+						"required": true,
+						"description": "Provider, exact model and intelligence level used to build that provider's CLI argument vector.",
+						"examples": [
+							{
+								"provider": "codex",
+								"model": "gpt-6-luna",
+								"intelligence": "high"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskRunnerAdapter.command",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Argument vector for the selected provider CLI, including its model, effort and output settings.",
+						"examples": [
+							[
+								"codex",
+								"exec",
+								"--json",
+								"--ephemeral",
+								"--sandbox",
+								"workspace-write",
+								"-m",
+								"gpt-6-luna",
+								"-c",
+								"model_reasoning_effort=\"high\"",
+								"-c",
+								"model_provider=\"openai\"",
+								"-c",
+								"approval_policy=\"never\"",
+								"-"
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ModuleTaskRunnerAdapter.run",
@@ -463,17 +620,44 @@
 					{
 						"name": "ModuleTaskRunnerAdapter.run.input",
 						"type": "TaskRunInput",
-						"required": true
+						"required": true,
+						"description": "Provider selection plus the task working directory, prompt and abort signal needed to execute and cancel one CLI run."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskRunnerAdapter.run",
-						"type": "Promise<TaskRunResult>"
+						"type": "Promise<TaskRunResult>",
+						"description": "Resolves to the selected task identity, public response text and reported model after CLI events pass success and identity checks.",
+						"examples": [
+							{
+								"provider": "codex",
+								"model": "gpt-6-luna",
+								"intelligence": "high",
+								"text": "Task completed.",
+								"reportedModel": "gpt-6-luna"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown",
+						"description": "Thrown, with usage and reportedModel attached, when the CLI exits non-zero, reports no result or an error event, Claude's quota was rejected (quotaRejected is then true), Claude was denied a required tool, or the CLI ran a model other than input.model. Any other Error raised while reading the result is rethrown with the same two fields."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by run when a non-empty line of the CLI's stdout is not JSON. It is raised before the result is read, so it carries no usage or reportedModel."
+					},
+					{
+						"name": "Executor rejection",
+						"type": "propagated",
+						"description": "Rejections of the injected executor pass through unchanged; with the default taskProcess these are the abort reason, TaskOutputOverflowError, the spawn error and resourceWork rejections."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProviderRequestGate.origin",
@@ -772,22 +956,71 @@
 					{
 						"name": "taskProcess.command",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Executable and argument strings for the selected provider CLI, launched as one admitted task process.",
+						"examples": [
+							[
+								"codex",
+								"exec",
+								"--json",
+								"--ephemeral",
+								"--sandbox",
+								"workspace-write",
+								"-m",
+								"gpt-6-luna",
+								"-c",
+								"model_reasoning_effort=\"high\"",
+								"-c",
+								"model_provider=\"openai\"",
+								"-c",
+								"approval_policy=\"never\"",
+								"-"
+							]
+						]
 					},
 					{
 						"name": "taskProcess.input",
 						"type": "TaskRunInput",
-						"required": true
+						"required": true,
+						"description": "Run context supplying the selected provider and model, child working directory, prompt for stdin and signal for cancellation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "taskProcess",
-						"type": "Promise<TaskProcessResult>"
+						"type": "Promise<TaskProcessResult>",
+						"description": "Resolves with the child CLI exit code and captured stdout after the admitted process closes; stderr is discarded.",
+						"examples": [
+							{
+								"code": 0,
+								"stdout": "{\"type\":\"turn.completed\",\"model\":\"gpt-6-luna\"}\n"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AbortSignal.reason",
+						"type": "propagated",
+						"description": "input.signal's reason (a DOMException named AbortError unless abort() was given another reason) when the signal is aborted before the CLI starts or while it runs; an abort kills the CLI's process group first."
+					},
+					{
+						"name": "TaskOutputOverflowError",
+						"type": "thrown",
+						"description": "Rejected with the message 'Task CLI output exceeded its bound.' when the CLI's stdout passes 8,000,000 characters; the process group is killed first."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "propagated",
+						"description": "The spawn error when the CLI cannot be started, for example ENOENT when claude or codex is not on PATH."
+					},
+					{
+						"name": "resourceWork rejection",
+						"type": "propagated",
+						"description": "Rejections from resourceWork while it reserves the 2048 MiB coding slot pass through, for example 'Resource queue is full', a wait timeout, 'Resource request exceeds usable capacity after reserves', or a SyntaxError from an invalid queue config.json."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "dockerTaskImage",
@@ -820,6 +1053,52 @@
 						"type": "thrown"
 					}
 				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parsePositiveIntegerEnvironmentValue",
+				"inputs": [
+					{
+						"name": "parsePositiveIntegerEnvironmentValue.value",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "parsePositiveIntegerEnvironmentValue.fallback",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parsePositiveIntegerEnvironmentValue",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parsePositiveNumberEnvironmentValue",
+				"inputs": [
+					{
+						"name": "parsePositiveNumberEnvironmentValue.value",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "parsePositiveNumberEnvironmentValue.fallback",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parsePositiveNumberEnvironmentValue",
+						"type": "number"
+					}
+				],
+				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{
@@ -960,17 +1239,20 @@
 					{
 						"name": "ModuleTaskRunnerAdapter.constructor.execute",
 						"type": "TaskProcessExecutor",
-						"required": false
+						"required": false,
+						"default": "taskProcess",
+						"description": "Optional process executor for CLI calls; when omitted, the adapter uses taskProcess to launch the selected provider command. The documented default is the source expression taskProcess, evaluated by the implementation; it is not a literal string value."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskRunnerAdapter.constructor",
-						"type": "unknown"
+						"type": "ModuleTaskRunnerAdapter",
+						"description": "Adapter instance that provides command and run operations and retains the supplied executor for CLI process calls."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProviderRequestGate.constructor",

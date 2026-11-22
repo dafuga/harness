@@ -136,7 +136,7 @@
 			"id": "apis",
 			"kind": "e2e",
 			"runner": "command",
-			"target": "bun x playwright test --config test/entityPreviewPlaywright.ts test/entity-preview.spec.ts --grep 'APIs catalog'",
+			"target": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts test/entity-preview.spec.ts --grep 'APIs catalog'",
 			"cwd": "packages/reports"
 		}
 	],

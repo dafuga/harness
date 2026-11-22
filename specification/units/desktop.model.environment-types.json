@@ -61,7 +61,7 @@
 		"outputs": [
 			{
 				"name": "remoteContext",
-				"type": "unknown",
+				"type": "\"harness:remote\"",
 				"description": "The constant `'harness:remote'`, the name of the place where the page keeps its two connection stores for the components below it. It matters only to code that uses this name to reach those stores; this module holds neither store, and the value is fixed.",
 				"examples": ["harness:remote"]
 			}

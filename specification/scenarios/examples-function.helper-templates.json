@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.helper-templates",
+	"title": "function.helper-templates examples",
+	"kind": "headless",
+	"units": ["function.helper-templates"],
+	"builds": [],
+	"states": [
+		{
+			"id": "wraps-template-expressions-for-helper-analysis",
+			"title": "Wraps template expressions for helper analysis",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-svelte-parser-error-when-template-source-is-invalid",
+			"title": "Throws Svelte parser error when template source is invalid",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.helper-templates.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"wraps-template-expressions-for-helper-analysis",
+				"throws-svelte-parser-error-when-template-source-is-invalid"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"wraps-template-expressions-for-helper-analysis",
+				"throws-svelte-parser-error-when-template-source-is-invalid"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"wraps-template-expressions-for-helper-analysis",
+				"throws-svelte-parser-error-when-template-source-is-invalid"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

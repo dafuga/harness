@@ -1,4 +1,7 @@
 // @harness-uid u_bdxtuk4rki
+import { ActivePreviewLeaseError } from './ActivePreviewLeaseError';
+import { DecartTokenCreationError } from './DecartTokenCreationError';
+import { InvalidPreviewRequestError } from './InvalidPreviewRequestError';
 import type { TokenClient } from './DecartAdapter.types';
 import type { RenderSessionRequest, RenderSession } from '../../models/game-authoring/Game.types';
 export class DecartAdapter {
@@ -9,7 +12,8 @@ export class DecartAdapter {
 	) {}
 	async start(input: RenderSessionRequest): Promise<RenderSession> {
 		validateSession(input);
-		if (this.until > this.now()) throw new Error('An AI preview lease is already active.');
+		if (this.until > this.now())
+			throw new ActivePreviewLeaseError('An AI preview lease is already active.');
 		this.until = this.now() + (input.seconds + 60) * 1000;
 		try {
 			const token = await this.tokens.create({
@@ -28,7 +32,7 @@ export class DecartAdapter {
 			};
 		} catch {
 			this.until = 0;
-			throw new Error(
+			throw new DecartTokenCreationError(
 				'Unable to start the Decart preview. Check this project’s provider configuration.'
 			);
 		}
@@ -47,5 +51,7 @@ export function validateSession(input: RenderSessionRequest): void {
 		input.seconds < 10 ||
 		input.seconds > 60
 	)
-		throw new Error('Invalid AI preview. Choose a supported model and 10–60 seconds.');
+		throw new InvalidPreviewRequestError(
+			'Invalid AI preview. Choose a supported model and 10–60 seconds.'
+		);
 }

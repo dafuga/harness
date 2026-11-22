@@ -2,6 +2,7 @@
 import type { CliCommand } from '../../../models/agents-providers/AgentRunner.types';
 import type { ProviderState } from '../../../models/development-tooling/Desktop.types';
 import { cliProcess } from '../../../utils/agents-providers/cliProcess';
+import { ClaudeCliSubscriptionSignInError } from './claudeState.types';
 
 export async function claudeState(command: CliCommand): Promise<ProviderState> {
 	const base: ProviderState = {
@@ -24,7 +25,7 @@ export async function claudeState(command: CliCommand): Promise<ProviderState> {
 			)
 		) as { loggedIn: boolean; authMethod?: string };
 		if (!auth.loggedIn || auth.authMethod !== 'claude.ai')
-			throw new Error('Sign in to Claude CLI with a subscription.');
+			throw new ClaudeCliSubscriptionSignInError('Sign in to Claude CLI with a subscription.');
 		return {
 			...base,
 			available: true,

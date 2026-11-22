@@ -11,8 +11,11 @@
 		"visibility": "internal"
 	},
 	"owns": {
-		"source": ["src/commands/module-system/module-command/TestingPluginService.ts"],
-		"symbols": ["TestingPluginService", "TestingPluginService.run"]
+		"source": [
+			"src/commands/module-system/module-command/TestingPluginService.ts",
+			"src/commands/module-system/module-command/TestingPluginService.types.ts"
+		],
+		"symbols": ["TestingPluginService", "TestingPluginService.run", "TestingPluginServiceError"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -22,9 +25,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project root passed to ModuleCatalogService.load and ModuleInstallService.add, and used as the runner process working directory. The service does not normalize or validate this path itself.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "TestingPluginService.run.id",
@@ -47,7 +48,7 @@
 				"name": "TestingPluginService.run.signal",
 				"type": "AbortSignal",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional AbortSignal forwarded to resourceWork and runIsolated. Defaults to undefined when omitted."
 			}
 		],
@@ -76,9 +77,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project root passed to ModuleCatalogService.load and ModuleInstallService.add, and used as the runner process working directory. The service does not normalize or validate this path itself.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "TestingPluginService.run.id",
@@ -101,7 +100,7 @@
 						"name": "TestingPluginService.run.signal",
 						"type": "AbortSignal",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional AbortSignal forwarded to resourceWork and runIsolated. Defaults to undefined when omitted."
 					}
 				],

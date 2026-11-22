@@ -21,6 +21,7 @@
 			"PickerRpc",
 			"PickerData",
 			"PickerRpc",
+			"UnsupportedModelSelectionError",
 			"nativePickerProtocol",
 			"pickerProvider",
 			"nativeOpusModel"
@@ -70,7 +71,7 @@
 			},
 			{
 				"name": "nativeOpusModel",
-				"type": "unknown",
+				"type": "typeof nativeOpusModel",
 				"description": "Constant catalog entry for Claude Opus 5.5 through Harness, with isDefault set to false, xhigh as its only supported reasoning effort, and text and image as input modalities. Its description states that native hosted web search is unavailable in this experiment, and the functions in this module never read it.",
 				"examples": [
 					{

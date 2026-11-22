@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.benchmark-trial",
+	"title": "workflow.benchmark-trial examples",
+	"kind": "headless",
+	"units": ["workflow.benchmark-trial"],
+	"builds": [],
+	"states": [
+		{
+			"id": "records-a-failed-trial-and-removes-its-workspace",
+			"title": "Records a failed trial and removes its workspace",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-when-persisting-the-trial-fails",
+			"title": "Rejects when persisting the trial fails",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.benchmark-trial.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"records-a-failed-trial-and-removes-its-workspace",
+				"rejects-when-persisting-the-trial-fails"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"records-a-failed-trial-and-removes-its-workspace",
+				"rejects-when-persisting-the-trial-fails"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"records-a-failed-trial-and-removes-its-workspace",
+				"rejects-when-persisting-the-trial-fails"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

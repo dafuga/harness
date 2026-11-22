@@ -3,18 +3,24 @@ import type {
 	PinnedHistory,
 	VerificationNote,
 	CommitStatus,
-	RecordStatus
+	RecordStatus,
+	RecordDependency
 } from './HistoryStatusService.types';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import type { VerificationRecord } from '../../../core/verification-evidence/verificationTypes';
 import { HistoryNoteRepository } from '../../../repositories/git-source-history/history-note-repository/HistoryNoteRepository';
 import type { ReadNote } from '../../../utils/git-source-history/note-lines/noteCommit';
 import { recordLineage } from '../../../utils/development-tooling/recordLineage';
+import {
+	recordDependencies,
+	wholeRecordDependencies
+} from '../../../utils/development-tooling/record-lineage/recordDependencies';
 import { verificationNoteIdentity } from '../../../utils/verification-evidence/verificationNoteIdentity';
 import {
 	AttachedRecordService,
 	type AttachedRecord
 } from './attached-record-service/AttachedRecordService';
+import type { AttachedRecordReadOptions } from './attached-record-service/AttachedRecordService.types';
 
 /**
  * What Git alone proves about a commit: the records attached to it, whether each is intact
@@ -22,6 +28,7 @@ import {
  */
 export class HistoryStatusService {
 	readonly attached: AttachedRecordService;
+	private readonly dependencyRecords: AttachedRecordService;
 	private readonly notes: HistoryNoteRepository;
 	private readonly git: GitAdapter;
 	private everything: Promise<Map<string, ReadNote>> | undefined;
@@ -29,9 +36,18 @@ export class HistoryStatusService {
 	/** Pinned, everything is read at exactly those two commits, wherever the refs are by now. */
 	constructor(
 		root: string,
-		readonly pinned?: PinnedHistory
+		readonly pinned?: PinnedHistory,
+		options: AttachedRecordReadOptions = {}
 	) {
-		this.attached = new AttachedRecordService(root, pinned?.evidence);
+		this.attached = new AttachedRecordService(root, pinned?.evidence, {
+			...options,
+			notes: pinned?.notes
+		});
+		this.dependencyRecords = new AttachedRecordService(root, pinned?.evidence, {
+			...options,
+			notes: pinned?.notes,
+			retainMedia: false
+		});
 		this.notes = new HistoryNoteRepository(root);
 		this.git = new GitAdapter(root);
 	}
@@ -77,12 +93,17 @@ export class HistoryStatusService {
 		const known = await this.dependencies(loaded.record, new Map());
 		return recordLineage(loaded.record, {
 			find: (id) => known.get(id)?.record,
-			problems: (dependency) => known.get(dependency.id)?.problems ?? []
+			problems: (dependency) => known.get(dependency.id)?.problems ?? [],
+			clipProblems: (dependency) =>
+				known.get(dependency.id)?.clipProblems ?? ['Clip parent metadata unavailable.']
 		});
 	}
 
 	/** A record must be the one the note names, for the commit and tree that really exist. */
-	private async own(line: VerificationNote, loaded: AttachedRecord): Promise<string[]> {
+	private async own(
+		line: VerificationNote,
+		loaded: Pick<AttachedRecord, 'record' | 'problems'>
+	): Promise<string[]> {
 		const { record } = loaded;
 		if (!record) return loaded.problems;
 		const tree = await this.git.attempt(['rev-parse', '--verify', `${line.source.commit}^{tree}`]);
@@ -93,17 +114,27 @@ export class HistoryStatusService {
 	/** Loads every record a record depends on, transitively, so lineage can be judged. */
 	private async dependencies(
 		record: VerificationRecord,
-		known: Map<string, { record: VerificationRecord; problems: string[] }>
+		known: Map<string, RecordDependency>
 	): Promise<typeof known> {
-		const referenced = record.scenarios.flatMap((scenario) => scenario.referencedRecord ?? []);
-		const wanted = [...new Set([record.source.baseRecord ?? '', ...referenced])].filter(Boolean);
+		const wanted = recordDependencies(record),
+			whole = new Set(wholeRecordDependencies(record));
 		const lines = await this.verifications();
-		for (const id of wanted.filter((item) => !known.has(item))) {
+		for (const id of wanted.filter(
+			(item) => !known.has(item) || (whole.has(item) && !known.get(item)?.full)
+		)) {
 			const line = lines.find((item) => item.record === id);
-			const loaded = line ? await this.attached.load(line.evidence) : undefined;
-			if (!line || !loaded?.record) continue;
-			known.set(id, { record: loaded.record, problems: await this.own(line, loaded) });
-			await this.dependencies(loaded.record, known);
+			if (!line) continue;
+			const descriptor = await this.attached.describe(line.evidence),
+				full = whole.has(id);
+			const loaded = full ? await this.dependencyRecords.load(line.evidence) : descriptor;
+			if (!loaded.record) continue;
+			known.set(id, {
+				record: loaded.record,
+				problems: await this.own(line, loaded),
+				clipProblems: await this.own(line, descriptor),
+				full
+			});
+			if (full) await this.dependencies(loaded.record, known);
 		}
 		return known;
 	}

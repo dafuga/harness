@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.component.shared-primitives-atoms-svg-fe-tile",
+	"title": "reports.component.shared-primitives-atoms-svg-fe-tile examples",
+	"kind": "headless",
+	"units": ["reports.component.shared-primitives-atoms-svg-fe-tile"],
+	"builds": [],
+	"states": [
+		{
+			"id": "attributes-are-written-onto-a-native-fetile-with-no-wrapper",
+			"title": "attributes are written onto a native feTile with no wrapper",
+			"coverage": "required"
+		},
+		{
+			"id": "a-children-snippet-renders-inside-the-fetile-element",
+			"title": "a children snippet renders inside the feTile element",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.component.shared-primitives-atoms-svg-fe-tile.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"attributes-are-written-onto-a-native-fetile-with-no-wrapper",
+				"a-children-snippet-renders-inside-the-fetile-element"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"attributes-are-written-onto-a-native-fetile-with-no-wrapper",
+				"a-children-snippet-renders-inside-the-fetile-element"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"attributes-are-written-onto-a-native-fetile-with-no-wrapper",
+				"a-children-snippet-renders-inside-the-fetile-element"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

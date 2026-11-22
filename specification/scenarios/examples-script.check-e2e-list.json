@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-script.check-e2e-list",
+	"title": "script.check-e2e-list examples",
+	"kind": "headless",
+	"units": ["script.check-e2e-list"],
+	"builds": [],
+	"states": [
+		{
+			"id": "declarede2etests-lists-the-e2e-files-a-script-names",
+			"title": "declaredE2eTests lists the E2E files a script names",
+			"coverage": "required"
+		},
+		{
+			"id": "comparee2etests-reports-missing-and-stale-e2e-files",
+			"title": "compareE2eTests reports missing and stale E2E files",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/script.check-e2e-list.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"declarede2etests-lists-the-e2e-files-a-script-names",
+				"comparee2etests-reports-missing-and-stale-e2e-files"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"declarede2etests-lists-the-e2e-files-a-script-names",
+				"comparee2etests-reports-missing-and-stale-e2e-files"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"declarede2etests-lists-the-e2e-files-a-script-names",
+				"comparee2etests-reports-missing-and-stale-e2e-files"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -8,8 +8,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts"],
-		"symbols": ["codexRpc"]
+		"source": [
+			"packages/desktop/src/utils/agents-providers/codex-rpc/CodexConnectionClosedError.ts",
+			"packages/desktop/src/utils/agents-providers/codex-rpc/CodexMessageTooLargeError.ts",
+			"packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts"
+		],
+		"symbols": ["CodexConnectionClosedError", "CodexMessageTooLargeError", "codexRpc"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,14 +46,14 @@
 				"name": "codexRpc.resources",
 				"type": "ResourceContext",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional resource context for the child process: its env (treated as {} when absent) passes through resourceEnvironment and is merged over cliEnvironment(), and its track function receives the child PID when spawn assigns one. Omitting it (undefined) merges resourceEnvironment({}) over cliEnvironment() and tracks no PID."
 			}
 		],
 		"outputs": [
 			{
 				"name": "codexRpc",
-				"type": "unknown",
+				"type": "Promise<{ send: (value: unknown) => void; request: <T = unknown>(method: string, params?: unknown, timeoutMs?: number) => Promise<T>; dispose: () => void; subscribe: (listener: (event: RpcEvent) => void) => () => boolean; }>",
 				"description": "A promise that resolves to an initialized connection with send, request, subscribe and dispose, after the initialize request succeeds and the initialized notification is sent. request assigns incrementing numeric ids and has a 30000 ms default timeout, subscribe returns an unsubscribe function, and dispose kills the owned process, ends stdin and rejects pending requests."
 			}
 		],
@@ -123,14 +127,14 @@
 						"name": "codexRpc.resources",
 						"type": "ResourceContext",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional resource context for the child process: its env (treated as {} when absent) passes through resourceEnvironment and is merged over cliEnvironment(), and its track function receives the child PID when spawn assigns one. Omitting it (undefined) merges resourceEnvironment({}) over cliEnvironment() and tracks no PID."
 					}
 				],
 				"outputs": [
 					{
 						"name": "codexRpc",
-						"type": "unknown",
+						"type": "Promise<{ send: (value: unknown) => void; request: <T = unknown>(method: string, params?: unknown, timeoutMs?: number) => Promise<T>; dispose: () => void; subscribe: (listener: (event: RpcEvent) => void) => () => boolean; }>",
 						"description": "A promise that resolves to an initialized connection with send, request, subscribe and dispose, after the initialize request succeeds and the initialized notification is sent. request assigns incrementing numeric ids and has a 30000 ms default timeout, subscribe returns an unsubscribe function, and dispose kills the owned process, ends stdin and rejects pending requests."
 					}
 				],

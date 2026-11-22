@@ -24,7 +24,7 @@
 		"outputs": [
 			{
 				"name": "streamLines",
-				"type": "unknown",
+				"type": "{ write: (chunk: Buffer) => void; end: () => void; }",
 				"description": "Returns write(chunk) and end() functions: write expects a Buffer, decodes it as UTF-8, emits each complete `\\n`-terminated segment (including empty segments), and retains the trailing segment; end flushes the decoder and emits the trailing segment only when non-empty. The byte limit is checked against the entire accumulated decoded buffer after each write and before splitting, so an overflow invokes onOverflow and discards that buffer."
 			}
 		],
@@ -44,7 +44,7 @@
 				"outputs": [
 					{
 						"name": "streamLines",
-						"type": "unknown",
+						"type": "{ write: (chunk: Buffer) => void; end: () => void; }",
 						"description": "Returns write(chunk) and end() functions: write expects a Buffer, decodes it as UTF-8, emits each complete `\\n`-terminated segment (including empty segments), and retains the trailing segment; end flushes the decoder and emits the trailing segment only when non-empty. The byte limit is checked against the entire accumulated decoded buffer after each write and before splitting, so an overflow invokes onOverflow and discards that buffer."
 					}
 				],

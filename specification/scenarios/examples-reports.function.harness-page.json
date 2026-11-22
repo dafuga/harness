@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.harness-page",
+	"title": "reports.function.harness-page examples",
+	"kind": "headless",
+	"units": ["reports.function.harness-page"],
+	"builds": [],
+	"states": [
+		{
+			"id": "the-root-opens-pages-at-the-tip-of-the-main-branch",
+			"title": "the root opens Pages at the tip of the main branch",
+			"coverage": "required"
+		},
+		{
+			"id": "a-branch-address-projects-the-page-bound-to-the-branch-tip",
+			"title": "a branch address projects the page bound to the branch tip",
+			"coverage": "required"
+		},
+		{
+			"id": "a-commit-address-projects-its-scope-with-the-branch-tip-beside-it",
+			"title": "a commit address projects its scope with the branch tip beside it",
+			"coverage": "required"
+		},
+		{
+			"id": "a-branch-or-commit-the-history-does-not-hold-is-missing",
+			"title": "a branch or commit the history does not hold is missing",
+			"coverage": "required"
+		},
+		{
+			"id": "a-history-with-no-revision-has-no-home-and-a-missing-root",
+			"title": "a history with no revision has no home and a missing root",
+			"coverage": "required"
+		},
+		{
+			"id": "a-branch-whose-tip-the-history-does-not-hold-is-unresolved",
+			"title": "a branch whose tip the history does not hold is unresolved",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.harness-page.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"the-root-opens-pages-at-the-tip-of-the-main-branch",
+				"a-branch-address-projects-the-page-bound-to-the-branch-tip",
+				"a-commit-address-projects-its-scope-with-the-branch-tip-beside-it",
+				"a-branch-or-commit-the-history-does-not-hold-is-missing",
+				"a-history-with-no-revision-has-no-home-and-a-missing-root",
+				"a-branch-whose-tip-the-history-does-not-hold-is-unresolved"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"the-root-opens-pages-at-the-tip-of-the-main-branch",
+				"a-branch-address-projects-the-page-bound-to-the-branch-tip",
+				"a-commit-address-projects-its-scope-with-the-branch-tip-beside-it",
+				"a-branch-or-commit-the-history-does-not-hold-is-missing",
+				"a-history-with-no-revision-has-no-home-and-a-missing-root",
+				"a-branch-whose-tip-the-history-does-not-hold-is-unresolved"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"the-root-opens-pages-at-the-tip-of-the-main-branch",
+				"a-branch-address-projects-the-page-bound-to-the-branch-tip",
+				"a-commit-address-projects-its-scope-with-the-branch-tip-beside-it",
+				"a-branch-or-commit-the-history-does-not-hold-is-missing",
+				"a-history-with-no-revision-has-no-home-and-a-missing-root",
+				"a-branch-whose-tip-the-history-does-not-hold-is-unresolved"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -10,13 +10,15 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/hostedAttestation.ts",
-			"packages/desktop/src/utils/networking-security/hostedAttestation.ts"
+			"packages/desktop/src/utils/networking-security/hostedAttestation.ts",
+			"packages/desktop/src/utils/networking-security/hostedAttestation.types.ts"
 		],
 		"symbols": [
 			"unshownHostedArtifact",
 			"hostedAttestation",
 			"unshownHostedArtifact",
-			"hostedAttestation"
+			"hostedAttestation",
+			"UnsupportedHostedMediaDeclarationError"
 		]
 	},
 	"contract": {
@@ -33,13 +35,13 @@
 		"outputs": [
 			{
 				"name": "unshownHostedArtifact",
-				"type": "unknown",
+				"type": "string",
 				"description": "The fixed message string that hostedAttestation passes to the Error it throws for a refused declaration. It is a constant export, so its value never changes with the input.",
 				"examples": ["The hosted service sent a kind this app does not show."]
 			},
 			{
 				"name": "hostedAttestation",
-				"type": "unknown",
+				"type": "{ kind: string; mediaType: string; }",
 				"description": "The result for an accepted declaration: kind is screenshot for PNG and JPEG, audio for WAV, MPEG, MP4 and Ogg, or output for JSON and plain text, and mediaType is the lowercased base type without parameters. It is derived from the declared string alone and does not inspect the bytes.",
 				"examples": [
 					{
@@ -80,7 +82,7 @@
 				"outputs": [
 					{
 						"name": "hostedAttestation",
-						"type": "unknown",
+						"type": "{ kind: string; mediaType: string; }",
 						"description": "The result for an accepted declaration: kind is screenshot for PNG and JPEG, audio for WAV, MPEG, MP4 and Ogg, or output for JSON and plain text, and mediaType is the lowercased base type without parameters. It is derived from the declared string alone and does not inspect the bytes.",
 						"examples": [
 							{

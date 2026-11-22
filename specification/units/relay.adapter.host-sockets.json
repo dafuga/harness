@@ -24,94 +24,153 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HostSocketsAdapter.constructor.state",
 				"type": "DurableObjectState",
-				"required": true
+				"required": true,
+				"description": "Durable Object state retained by the adapter to accept sockets and enumerate sockets held by the runtime, including after hibernation."
 			},
 			{
 				"name": "HostSocketsAdapter.open.attachment",
 				"type": "SocketAttachment",
-				"required": true
+				"required": true,
+				"description": "Identity and closed flag serialized on the new server socket; its role and IDs also determine the tags used by later lookups.",
+				"examples": [
+					{
+						"role": "host",
+						"closed": false
+					},
+					{
+						"role": "device",
+						"deviceId": "89abcdef0123456789abcdef0123456789abcdef",
+						"connectionId": "f4e1ba6c3d2949f1a56c8c7249e76310",
+						"closed": false
+					}
+				]
 			},
 			{
 				"name": "HostSocketsAdapter.attachment.socket",
 				"type": "WebSocket",
-				"required": true
+				"required": true,
+				"description": "The runtime-held WebSocket whose serialized attachment is read. Callers use it to recover socket identity after hibernation."
 			},
 			{
 				"name": "HostSocketsAdapter.device.deviceId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Exact device identifier appended to the `device:` tag when selecting that device's live sockets; the adapter does not normalize it.",
+				"examples": ["89abcdef0123456789abcdef0123456789abcdef"]
 			},
 			{
 				"name": "HostSocketsAdapter.connection.connectionId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Exact connection identifier appended to the `connection:` tag when selecting its live socket; the adapter does not normalize it.",
+				"examples": ["f4e1ba6c3d2949f1a56c8c7249e76310"]
 			},
 			{
 				"name": "HostSocketsAdapter.send.socket",
 				"type": "WebSocket",
-				"required": true
+				"required": true,
+				"description": "The target WebSocket for a JSON text frame. The method attempts send without checking readyState and returns false if serialization or send throws."
 			},
 			{
 				"name": "HostSocketsAdapter.send.frame",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The value JSON-stringified and sent as one text frame. Serialization or send failures make the operation return false.",
+				"examples": [
+					{
+						"type": "device-open",
+						"deviceId": "89abcdef0123456789abcdef0123456789abcdef",
+						"connectionId": "f4e1ba6c3d2949f1a56c8c7249e76310"
+					}
+				]
 			},
 			{
 				"name": "HostSocketsAdapter.close.socket",
 				"type": "WebSocket",
-				"required": true
+				"required": true,
+				"description": "The WebSocket to close. If its attachment exists, the adapter first marks it closed so live lookups stop returning it."
 			},
 			{
 				"name": "HostSocketsAdapter.close.code",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The close code passed to WebSocket.close; an error from closing is swallowed by the adapter.",
+				"examples": [1000]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HostSocketsAdapter.open",
-				"type": "{ client: WebSocket; server: WebSocket }"
+				"type": "{ client: WebSocket; server: WebSocket }",
+				"description": "The pair for a newly accepted connection: the client endpoint and server endpoint registered with the Durable Object, tagged and attached for later lookup."
 			},
 			{
 				"name": "HostSocketsAdapter.attachment",
-				"type": "SocketAttachment | undefined"
+				"type": "SocketAttachment | undefined",
+				"description": "The socket's deserialized SocketAttachment, or undefined when no attachment is stored; callers use it to identify its host or device connection.",
+				"examples": [
+					{
+						"role": "host",
+						"closed": false
+					},
+					{
+						"role": "device",
+						"deviceId": "89abcdef0123456789abcdef0123456789abcdef",
+						"connectionId": "f4e1ba6c3d2949f1a56c8c7249e76310",
+						"closed": false
+					}
+				]
 			},
 			{
 				"name": "HostSocketsAdapter.host",
-				"type": "WebSocket | undefined"
+				"type": "WebSocket | undefined",
+				"description": "The first live socket tagged `host`, or undefined when none is available. A socket counts only while OPEN and attached with `closed: false`."
 			},
 			{
 				"name": "HostSocketsAdapter.devices",
-				"type": "WebSocket[]"
+				"type": "WebSocket[]",
+				"description": "All sockets tagged `device` that are OPEN and have an attachment with `closed: false`."
 			},
 			{
 				"name": "HostSocketsAdapter.device",
-				"type": "WebSocket[]"
+				"type": "WebSocket[]",
+				"description": "All OPEN sockets tagged `device:<deviceId>` whose attachments have `closed: false`; the supplied ID must match the tag exactly."
 			},
 			{
 				"name": "HostSocketsAdapter.connection",
-				"type": "WebSocket | undefined"
+				"type": "WebSocket | undefined",
+				"description": "The first OPEN socket tagged `connection:<connectionId>` with an attachment marked `closed: false`, or undefined when none remains active."
 			},
 			{
 				"name": "HostSocketsAdapter.all",
-				"type": "WebSocket[]"
+				"type": "WebSocket[]",
+				"description": "Every WebSocket still held by the Durable Object, including sockets that are closing or excluded from live lookups."
 			},
 			{
 				"name": "HostSocketsAdapter.send",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when JSON serialization and socket.send complete; false when either throws. The adapter does not queue a frame for later.",
+				"examples": [true, false]
 			},
 			{
 				"name": "HostSocketsAdapter.close",
-				"type": "void"
+				"type": "void",
+				"description": "No return value. The adapter marks an existing attachment closed, then calls WebSocket.close with reason `closed`; socket errors are ignored."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Workers runtime error",
+				"type": "propagated",
+				"description": "open does not catch errors from the runtime's acceptWebSocket and serializeAttachment calls, for example an attachment over the runtime's attachment size limit. send and close catch every error."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HostSocketsAdapter.open",
@@ -119,17 +178,37 @@
 					{
 						"name": "HostSocketsAdapter.open.attachment",
 						"type": "SocketAttachment",
-						"required": true
+						"required": true,
+						"description": "Identity and closed flag serialized on the new server socket; its role and IDs also determine the tags used by later lookups.",
+						"examples": [
+							{
+								"role": "host",
+								"closed": false
+							},
+							{
+								"role": "device",
+								"deviceId": "89abcdef0123456789abcdef0123456789abcdef",
+								"connectionId": "f4e1ba6c3d2949f1a56c8c7249e76310",
+								"closed": false
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostSocketsAdapter.open",
-						"type": "{ client: WebSocket; server: WebSocket }"
+						"type": "{ client: WebSocket; server: WebSocket }",
+						"description": "The pair for a newly accepted connection: the client endpoint and server endpoint registered with the Durable Object, tagged and attached for later lookup."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Workers runtime error",
+						"type": "propagated",
+						"description": "open does not catch errors from the runtime's acceptWebSocket and serializeAttachment calls, for example an attachment over the runtime's attachment size limit. send and close catch every error."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostSocketsAdapter.attachment",
@@ -137,17 +216,31 @@
 					{
 						"name": "HostSocketsAdapter.attachment.socket",
 						"type": "WebSocket",
-						"required": true
+						"required": true,
+						"description": "The runtime-held WebSocket whose serialized attachment is read. Callers use it to recover socket identity after hibernation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostSocketsAdapter.attachment",
-						"type": "SocketAttachment | undefined"
+						"type": "SocketAttachment | undefined",
+						"description": "The socket's deserialized SocketAttachment, or undefined when no attachment is stored; callers use it to identify its host or device connection.",
+						"examples": [
+							{
+								"role": "host",
+								"closed": false
+							},
+							{
+								"role": "device",
+								"deviceId": "89abcdef0123456789abcdef0123456789abcdef",
+								"connectionId": "f4e1ba6c3d2949f1a56c8c7249e76310",
+								"closed": false
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostSocketsAdapter.host",
@@ -155,11 +248,12 @@
 				"outputs": [
 					{
 						"name": "HostSocketsAdapter.host",
-						"type": "WebSocket | undefined"
+						"type": "WebSocket | undefined",
+						"description": "The first live socket tagged `host`, or undefined when none is available. A socket counts only while OPEN and attached with `closed: false`."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostSocketsAdapter.devices",
@@ -167,11 +261,12 @@
 				"outputs": [
 					{
 						"name": "HostSocketsAdapter.devices",
-						"type": "WebSocket[]"
+						"type": "WebSocket[]",
+						"description": "All sockets tagged `device` that are OPEN and have an attachment with `closed: false`."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostSocketsAdapter.device",
@@ -179,17 +274,20 @@
 					{
 						"name": "HostSocketsAdapter.device.deviceId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Exact device identifier appended to the `device:` tag when selecting that device's live sockets; the adapter does not normalize it.",
+						"examples": ["89abcdef0123456789abcdef0123456789abcdef"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostSocketsAdapter.device",
-						"type": "WebSocket[]"
+						"type": "WebSocket[]",
+						"description": "All OPEN sockets tagged `device:<deviceId>` whose attachments have `closed: false`; the supplied ID must match the tag exactly."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostSocketsAdapter.connection",
@@ -197,17 +295,20 @@
 					{
 						"name": "HostSocketsAdapter.connection.connectionId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Exact connection identifier appended to the `connection:` tag when selecting its live socket; the adapter does not normalize it.",
+						"examples": ["f4e1ba6c3d2949f1a56c8c7249e76310"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostSocketsAdapter.connection",
-						"type": "WebSocket | undefined"
+						"type": "WebSocket | undefined",
+						"description": "The first OPEN socket tagged `connection:<connectionId>` with an attachment marked `closed: false`, or undefined when none remains active."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostSocketsAdapter.all",
@@ -215,11 +316,12 @@
 				"outputs": [
 					{
 						"name": "HostSocketsAdapter.all",
-						"type": "WebSocket[]"
+						"type": "WebSocket[]",
+						"description": "Every WebSocket still held by the Durable Object, including sockets that are closing or excluded from live lookups."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostSocketsAdapter.send",
@@ -227,22 +329,33 @@
 					{
 						"name": "HostSocketsAdapter.send.socket",
 						"type": "WebSocket",
-						"required": true
+						"required": true,
+						"description": "The target WebSocket for a JSON text frame. The method attempts send without checking readyState and returns false if serialization or send throws."
 					},
 					{
 						"name": "HostSocketsAdapter.send.frame",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The value JSON-stringified and sent as one text frame. Serialization or send failures make the operation return false.",
+						"examples": [
+							{
+								"type": "device-open",
+								"deviceId": "89abcdef0123456789abcdef0123456789abcdef",
+								"connectionId": "f4e1ba6c3d2949f1a56c8c7249e76310"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostSocketsAdapter.send",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when JSON serialization and socket.send complete; false when either throws. The adapter does not queue a frame for later.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostSocketsAdapter.close",
@@ -250,22 +363,26 @@
 					{
 						"name": "HostSocketsAdapter.close.socket",
 						"type": "WebSocket",
-						"required": true
+						"required": true,
+						"description": "The WebSocket to close. If its attachment exists, the adapter first marks it closed so live lookups stop returning it."
 					},
 					{
 						"name": "HostSocketsAdapter.close.code",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The close code passed to WebSocket.close; an error from closing is swallowed by the adapter.",
+						"examples": [1000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostSocketsAdapter.close",
-						"type": "void"
+						"type": "void",
+						"description": "No return value. The adapter marks an existing attachment closed, then calls WebSocket.close with reason `closed`; socket errors are ignored."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -275,17 +392,19 @@
 					{
 						"name": "HostSocketsAdapter.constructor.state",
 						"type": "DurableObjectState",
-						"required": true
+						"required": true,
+						"description": "Durable Object state retained by the adapter to accept sockets and enumerate sockets held by the runtime, including after hibernation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostSocketsAdapter.constructor",
-						"type": "unknown"
+						"type": "HostSocketsAdapter",
+						"description": "The newly constructed adapter that retains the supplied DurableObjectState for subsequent socket operations."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},

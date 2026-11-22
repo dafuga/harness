@@ -7,6 +7,9 @@ import {
 	type HostedReadOptions
 } from '../../../../services/development-tooling/HostedReadService';
 import { ProjectDiscoveryService } from './ProjectDiscoveryService';
+import { HostedCacheCommitMismatchError } from './HostedCacheCommitMismatchError';
+import { HostedCommitMismatchError } from './HostedCommitMismatchError';
+import { InvalidHostedProjectIdError } from './InvalidHostedProjectIdError';
 /** Names the rule a kept snapshot was listed by; one kept under another rule is not looked up. */
 const listed = 'pure-helper-contracts-v1:';
 export class RemoteProjectionService {
@@ -32,9 +35,9 @@ export class RemoteProjectionService {
 		const validate = (value: unknown) => {
 			const snapshot = this.validator.snapshot(value, input.projectId);
 			if (snapshot.cache && snapshot.cache.identity.sourceCommit !== snapshot.revision.commit)
-				throw new Error('Hosted cache commit mismatch.');
+				throw new HostedCacheCommitMismatchError('Hosted cache commit mismatch.');
 			if (input.commit && snapshot.revision.commit !== input.commit)
-				throw new Error('Hosted commit mismatch.');
+				throw new HostedCommitMismatchError('Hosted commit mismatch.');
 			return snapshot;
 		};
 		const result = await this.reads.read(
@@ -77,8 +80,9 @@ export class RemoteProjectionService {
 					input.projectId
 				);
 				if (metadata.cache && metadata.cache.identity.sourceCommit !== input.commit)
-					throw new Error('Hosted cache commit mismatch.');
-				if (metadata.revision.commit !== input.commit) throw new Error('Hosted commit mismatch.');
+					throw new HostedCacheCommitMismatchError('Hosted cache commit mismatch.');
+				if (metadata.revision.commit !== input.commit)
+					throw new HostedCommitMismatchError('Hosted commit mismatch.');
 				return { value: validate(await fetchValue()), identity: metadata.cache?.identity };
 			},
 			validate
@@ -91,7 +95,7 @@ export class RemoteProjectionService {
 }
 function projectionPath(projectId: string, operation: string, input: object = {}): string {
 	if (!/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$/.test(projectId))
-		throw new Error('Invalid hosted project.');
+		throw new InvalidHostedProjectIdError('Invalid hosted project.');
 	const query = new URLSearchParams();
 	for (const [key, value] of Object.entries(input))
 		if (key !== 'projectId' && value !== null && value !== undefined) query.set(key, String(value));

@@ -76,7 +76,7 @@
 		"outputs": [
 			{
 				"name": "htmlElements",
-				"type": "unknown",
+				"type": "string[]",
 				"description": "The array of conforming HTML element names, split from one whitespace-separated list in source order, which nativeAtoms maps to one atom per name. Every entry is a lowercase tag name with no prefix, such as 'a' or 'selectedcontent'.",
 				"examples": [
 					["a", "abbr", "address", "area"],
@@ -86,7 +86,7 @@
 			},
 			{
 				"name": "svgElements",
-				"type": "unknown",
+				"type": "string[]",
 				"description": "The array of SVG element names, split from one whitespace-separated list, which nativeAtoms maps to Svg-prefixed atoms. Names keep their SVG camelCase spelling, such as 'textPath' and 'feGaussianBlur', because nativeAtoms passes each one unchanged as the atom tag.",
 				"examples": [
 					["svg", "path", "circle"],
@@ -96,7 +96,7 @@
 			},
 			{
 				"name": "inputTypes",
-				"type": "unknown",
+				"type": "string[]",
 				"description": "The array of HTML input type names, split from one whitespace-separated list, which nativeAtoms expands into one input atom per type. Hyphenated names such as 'datetime-local' stay hyphenated in this list and in each atom's type field, and only the atom name is PascalCase, such as 'HtmlInputDatetimeLocal'.",
 				"examples": [
 					["button", "checkbox", "color"],
@@ -106,17 +106,17 @@
 			},
 			{
 				"name": "voidElements",
-				"type": "unknown",
+				"type": "Set<string>",
 				"description": "A Set, not an array, of the HTML void element names, which have no closing tag, such as 'img' and 'input'. nativeAtomSource checks it with has to leave out the children block."
 			},
 			{
 				"name": "elementName",
-				"type": "unknown",
+				"type": "string",
 				"description": "The exported elementName function, which maps a tag string to its Html-prefixed component name, such as 'HtmlInputText' for 'input-text'. Calling it with a value that is not a string throws a TypeError."
 			},
 			{
 				"name": "nativeAtoms",
-				"type": "unknown",
+				"type": "Array<{ name: string; tag: string; type?: string }>",
 				"description": "The array of native atom objects, built once when the module loads: one per HTML element, then one per SVG element, then one per input type, and a final HtmlElement atom for svelte:element. Each entry has name and tag, and only the input type atoms also have a type field.",
 				"examples": [
 					[
@@ -154,12 +154,12 @@
 			},
 			{
 				"name": "atomTag",
-				"type": "unknown",
+				"type": "string",
 				"description": "The exported atomTag function, which maps a native atom to its hx- tag name, such as 'hx-div' for HtmlDiv and 'hx-svg' for SvgSvg. Calling it with a null or undefined atom, or with an atom whose name is not a string, throws a TypeError."
 			},
 			{
 				"name": "nativeAtomSource",
-				"type": "unknown",
+				"type": "string",
 				"description": "The exported nativeAtomSource function, which returns the Svelte component source text for one native atom, with a harness-tier comment, a script block, and a svelte:element wrapper. Calling it with a null or undefined atom throws a TypeError."
 			}
 		],
@@ -196,7 +196,7 @@
 				"outputs": [
 					{
 						"name": "elementName",
-						"type": "unknown",
+						"type": "string",
 						"description": "The Html-prefixed component name that elementName returns for the tag, such as 'HtmlA' for 'a' or 'HtmlInputText' for 'input-text'. It is built only from the tag, so the same tag always returns the same name.",
 						"examples": ["HtmlA", "HtmlH1", "HtmlInputText"]
 					}
@@ -238,7 +238,7 @@
 				"outputs": [
 					{
 						"name": "atomTag",
-						"type": "unknown",
+						"type": "string",
 						"description": "The hx- prefixed tag name that atomTag returns for the atom, such as 'hx-div' or 'hx-input-text'. It is lowercase and hyphenated, and the SvgSvg atom is the one special case, mapping to 'hx-svg' instead of 'hx-svg-svg'.",
 						"examples": ["hx-div", "hx-svg-path", "hx-input-text"]
 					}
@@ -280,7 +280,7 @@
 				"outputs": [
 					{
 						"name": "nativeAtomSource",
-						"type": "unknown",
+						"type": "string",
 						"description": "The Svelte component source text for the atom, which begins with a '<!-- @harness-tier atom -->' comment and wraps the element in svelte:element. It is markup rather than structured data, and it adds the svg namespace option only when the atom's tag is an SVG element name."
 					}
 				],

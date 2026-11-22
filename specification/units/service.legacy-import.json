@@ -28,20 +28,20 @@
 				"type": "string",
 				"required": true,
 				"description": "The path of this repository's working tree that the service is built for. It is passed to the git adapter, the evidence-branch and history-note repositories and the LFS adapter, and when no project is given, a run belongs here only if its recorded project path resolves to the same directory as this path or as another worktree of the repository.",
-				"examples": ["/home/ci/work/billing-api", "/srv/checkouts/web-storefront"]
+				"examples": ["/workspace/project", "/srv/checkouts/web-storefront"]
 			},
 			{
 				"name": "LegacyImportService.import.store",
 				"type": "string",
 				"required": true,
 				"description": "The path of the old report store that the import reads. The store is opened as a LegacyReportRepository and only read, so every run it lists ends up either in imported or in skipped.",
-				"examples": ["/srv/legacy-reports", "/home/ci/.legacy-report-store"]
+				"examples": ["/srv/legacy-reports", "/workspace/.legacy-report-store"]
 			},
 			{
 				"name": "LegacyImportService.import.project",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "An optional project name or id that must equal the id or the name recorded on a run's project, compared exactly. When it is omitted (undefined) or an empty string, a run belongs here only if its recorded project path resolves to one of the repository's working trees; a given value skips that check, so it can also match runs recorded in other working trees.",
 				"examples": ["billing-api", "web-storefront"]
 			}
@@ -117,13 +117,13 @@
 						"type": "string",
 						"required": true,
 						"description": "The path of the old report store that the import reads. The store is opened as a LegacyReportRepository and only read, so every run it lists ends up either in imported or in skipped.",
-						"examples": ["/srv/legacy-reports", "/home/ci/.legacy-report-store"]
+						"examples": ["/srv/legacy-reports", "/workspace/.legacy-report-store"]
 					},
 					{
 						"name": "LegacyImportService.import.project",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "An optional project name or id that must equal the id or the name recorded on a run's project, compared exactly. When it is omitted (undefined) or an empty string, a run belongs here only if its recorded project path resolves to one of the repository's working trees; a given value skips that check, so it can also match runs recorded in other working trees.",
 						"examples": ["billing-api", "web-storefront"]
 					}
@@ -201,13 +201,13 @@
 						"type": "string",
 						"required": true,
 						"description": "The path of this repository's working tree that the service is built for. It is passed to the git adapter, the evidence-branch and history-note repositories and the LFS adapter, and when no project is given, a run belongs here only if its recorded project path resolves to the same directory as this path or as another worktree of the repository.",
-						"examples": ["/home/ci/work/billing-api", "/srv/checkouts/web-storefront"]
+						"examples": ["/workspace/project", "/srv/checkouts/web-storefront"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LegacyImportService.constructor",
-						"type": "unknown",
+						"type": "LegacyImportService",
 						"description": "The LegacyImportService instance that this constructor creates, holding the git adapter, the evidence-branch and history-note repositories and the LFS adapter built for root."
 					}
 				],

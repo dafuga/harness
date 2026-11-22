@@ -17,13 +17,17 @@ const mimes: Record<string, string> = {
 export function mediaMime(file: string) {
 	return mimes[file.slice(file.lastIndexOf('.')).toLowerCase()] || 'application/octet-stream';
 }
-export function evidenceMedia(item: Pick<Evidence, 'mediaType' | 'file'>): 'image' | 'audio' {
-	return (
-		item.mediaType ||
-		(mediaMime(item.file).startsWith('audio/') || item.file.startsWith('data:audio/')
-			? 'audio'
-			: 'image')
-	);
+export function evidenceMedia(
+	item: Pick<Evidence, 'mediaType' | 'file' | 'mimeType'>
+): 'image' | 'audio' | 'video' {
+	if (item.mediaType) return item.mediaType;
+	for (const kind of ['audio', 'video'] as const)
+		if (
+			(item.mimeType || mediaMime(item.file)).startsWith(kind + '/') ||
+			item.file.startsWith('data:' + kind + '/')
+		)
+			return kind;
+	return 'image';
 }
 
 export { formatDuration } from '../../helpers/strings/formatDuration';

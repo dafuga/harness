@@ -16,7 +16,8 @@
 			"GameLevelService",
 			"GameLevelService.constructor",
 			"GameLevelService.generate",
-			"LevelRequest"
+			"LevelRequest",
+			"LevelGenerationError"
 		]
 	},
 	"contract": {
@@ -530,7 +531,7 @@
 				"outputs": [
 					{
 						"name": "GameLevelService.constructor",
-						"type": "unknown",
+						"type": "GameLevelService",
 						"description": "The new GameLevelService instance, which keeps the session and providers for later generate() calls. The constructor body is empty, so construction itself does not throw."
 					}
 				],

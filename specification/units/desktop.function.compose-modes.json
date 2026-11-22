@@ -71,7 +71,7 @@
 		"outputs": [
 			{
 				"name": "designCounts",
-				"type": "unknown",
+				"type": "number[]",
 				"description": "The integer option counts available for visual plans. The list runs from 1 to 10 inclusive.",
 				"examples": [
 					[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -79,7 +79,7 @@
 			},
 			{
 				"name": "defaultDesignCount",
-				"type": "unknown",
+				"type": "3",
 				"description": "The default number of design options for a Plan. Its value is 3, within the available 1-to-10 range.",
 				"examples": [3]
 			},

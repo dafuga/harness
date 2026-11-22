@@ -159,7 +159,7 @@
 		"outputs": [
 			{
 				"name": "explorerCategories",
-				"type": "unknown",
+				"type": "readonly [\"pages\", \"apis\", \"layouts\", \"components\", \"functions\", \"configs\", \"services\", \"models\", \"types\", \"platforms\"]",
 				"description": "The accepted category names in route order: all entity categories followed by platforms.",
 				"examples": [
 					[
@@ -184,7 +184,7 @@
 			},
 			{
 				"name": "explorerSections",
-				"type": "unknown",
+				"type": "readonly [\"details\", \"history\"]",
 				"description": "The supported entity sections are details and history; an entity without a section is on its overview.",
 				"examples": [
 					["details", "history"]
@@ -192,7 +192,7 @@
 			},
 			{
 				"name": "explorerTabs",
-				"type": "unknown",
+				"type": "typeof explorerTabs",
 				"description": "The declared tab names for overview, details, and history sections. tabOf additionally filters these names by category and location rules.",
 				"examples": [
 					{

@@ -100,6 +100,60 @@
 				"reports.function.entity-lens",
 				"reports.style.platforms"
 			]
+		},
+		{
+			"id": "history",
+			"title": "Historical detail keeps its revision and source link through navigation",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-branch-branch-at-platforms-entity",
+				"reports.component.explorer-ui-explorer-platform-details"
+			]
+		},
+		{
+			"id": "invalid-catalog",
+			"title": "Invalid catalog explains the selected revision's gap",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-branch-branch-at-platforms",
+				"reports.component.explorer-ui-explorer-platforms"
+			]
+		},
+		{
+			"id": "unknown",
+			"title": "Unknown detail links back to the Platforms list",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-branch-branch-at-platforms-entity",
+				"reports.component.explorer-ui-explorer-platform-details"
+			]
+		},
+		{
+			"id": "recovered",
+			"title": "Reload recovers the selected Platforms revision after a failed read",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-branch-branch-at-platforms",
+				"reports.component.explorer-ui-explorer-platforms"
+			]
+		},
+		{
+			"id": "search-no-results",
+			"title": "No matching search result offers a reset",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-branch-branch-at-platforms",
+				"reports.component.explorer-ui-explorer-platforms"
+			]
+		},
+		{
+			"id": "filter-no-results",
+			"title": "A disjoint status and search combination offers a reset",
+			"coverage": "required",
+			"units": [
+				"reports.page.harness-branch-branch-at-platforms",
+				"reports.component.explorer-ui-explorer-platforms"
+			]
 		}
 	],
 	"viewports": [
@@ -132,7 +186,21 @@
 		{
 			"id": "platform-screens",
 			"kind": "screenshot",
-			"states": ["entry", "list", "web", "ios", "android", "desktop", "missing"],
+			"states": [
+				"entry",
+				"list",
+				"web",
+				"ios",
+				"android",
+				"desktop",
+				"missing",
+				"history",
+				"invalid-catalog",
+				"unknown",
+				"recovered",
+				"search-no-results",
+				"filter-no-results"
+			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",
 			"capture": "full-page",
@@ -143,7 +211,7 @@
 			"id": "platform-filter-screen",
 			"kind": "screenshot",
 			"states": ["status-filter"],
-			"viewports": ["mobile"],
+			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",
 			"capture": "full-page",
 			"build": "entity-preview",

@@ -11,6 +11,10 @@ import { reportIngest } from './reportIngest';
 import { ReportRecordValidator } from '../../../validators/reports-media/ReportRecordValidator';
 import { registeredAsset } from '../../../utils/reports-media/reportAssets';
 import { EvidenceStorageService } from '../../../services/verification-evidence/EvidenceStorageService';
+import { InvalidReportDirectoryError } from './InvalidReportDirectoryError';
+import { ReportAlreadyFinalizedError } from './ReportAlreadyFinalizedError';
+import { ReportNotActiveError } from './ReportNotActiveError';
+import { ReportNotFinalizingError } from './ReportNotFinalizingError';
 
 export class ReportRepository {
 	readonly root: string;
@@ -28,7 +32,8 @@ export class ReportRepository {
 	}
 	async get(id: string): Promise<Report> {
 		const directory = this.directory(id);
-		if ((await lstat(directory)).isSymbolicLink()) throw new Error('Invalid report directory');
+		if ((await lstat(directory)).isSymbolicLink())
+			throw new InvalidReportDirectoryError('Invalid report directory');
 		return readJson<Report>(join(directory, 'manifest.json'));
 	}
 	async list() {
@@ -46,7 +51,8 @@ export class ReportRepository {
 		ReportRecordValidator.validate(record);
 		return reportLock(this.directory(id), async () => {
 			const run = await this.get(id);
-			if (run.state !== 'active') throw new Error('Cannot update finalizing or finalized report');
+			if (run.state !== 'active')
+				throw new ReportNotActiveError('Cannot update finalizing or finalized report');
 			await reportIngest(run, record, this.directory(id));
 			if (record.kind === 'evidence')
 				await new EvidenceStorageService().store(run, this.directory(id));
@@ -57,7 +63,8 @@ export class ReportRepository {
 	async mutateActive(id: string, update: (run: Report, directory: string) => Promise<void>) {
 		return reportLock(this.directory(id), async () => {
 			const run = await this.get(id);
-			if (run.state !== 'active') throw new Error('Cannot update finalizing or finalized report');
+			if (run.state !== 'active')
+				throw new ReportNotActiveError('Cannot update finalizing or finalized report');
 			await update(run, this.directory(id));
 			await new EvidenceStorageService().store(run, this.directory(id));
 			await atomicJson(join(this.directory(id), 'manifest.json'), run);
@@ -67,7 +74,8 @@ export class ReportRepository {
 	async seal(id: string) {
 		return reportLock(this.directory(id), async () => {
 			const run = await this.get(id);
-			if (run.state === 'finalized') throw new Error('Report is already finalized');
+			if (run.state === 'finalized')
+				throw new ReportAlreadyFinalizedError('Report is already finalized');
 			for (const item of run.evidence) {
 				try {
 					await registeredAsset(
@@ -91,7 +99,8 @@ export class ReportRepository {
 	async finish(id: string) {
 		return reportLock(this.directory(id), async () => {
 			const run = await this.get(id);
-			if (run.state !== 'finalizing') throw new Error('Report must be finalizing');
+			if (run.state !== 'finalizing')
+				throw new ReportNotFinalizingError('Report must be finalizing');
 			run.state = 'finalized';
 			run.updatedAt = new Date().toISOString();
 			await atomicJson(join(this.directory(id), 'manifest.json'), run);

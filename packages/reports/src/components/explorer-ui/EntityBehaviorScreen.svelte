@@ -4,6 +4,8 @@
 <script lang="ts">
 	import { behaviorDuration } from '../../utils/explorer-ui/entityBehavior';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
+	import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
+	import type { EntityNav } from '../../utils/explorer-ui/entityLens';
 	import { entityChanged } from '../../utils/explorer-ui/entityShown';
 	import EntityAudio from './EntityAudio.svelte';
 	import EntityBehavior from './EntityBehavior.svelte';
@@ -16,7 +18,7 @@
 	marker of the screen draws no box. -->
 <hx-div class="ex-screen" data-harness-component="harness-entity-behavior-screen">
 	<EntityFrame {host}>
-		{#snippet children(entity, nav)}
+		{#snippet children(entity: ExplorerEntity, nav: EntityNav)}
 			<EntitySections {host} {entity} {nav}>
 				{#snippet pane()}
 					{@const evidence = host.lens.evidence(entity.unit)}

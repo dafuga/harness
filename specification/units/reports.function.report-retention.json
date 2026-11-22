@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/reportRetention.ts",
-			"packages/reports/src/utils/reports-media/reportRetention.ts"
+			"packages/reports/src/utils/reports-media/reportRetention.ts",
+			"packages/reports/src/utils/reports-media/reportRetention.types.ts"
 		],
 		"symbols": [
 			"reportLifetimeMs",
@@ -18,7 +19,8 @@
 			"reportRetention",
 			"reportLifetimeMs",
 			"reportCloudPrefixes",
-			"reportRetention"
+			"reportRetention",
+			"InvalidReportRetentionTimestampError"
 		]
 	},
 	"contract": {
@@ -49,13 +51,13 @@
 		"outputs": [
 			{
 				"name": "reportLifetimeMs",
-				"type": "unknown",
+				"type": "number",
 				"description": "Retention lifetime in milliseconds, 30 days computed as 30 * 24 * 60 * 60 * 1000 (2592000000); reportRetention adds it to the start instant to find the expiry instant. It is a fixed module constant, the same for every report.",
 				"examples": [2592000000]
 			},
 			{
 				"name": "reportCloudPrefixes",
-				"type": "unknown",
+				"type": "string[]",
 				"description": "Array of three cloud storage key prefixes in this order: 'report-evidence/runs/' for report evidence, 'uploaded-screenshots/runs/' for uploaded screenshots and 'published-reports/' for published reports. Every prefix ends with a slash, and reportRetention does not read this list.",
 				"examples": [
 					["report-evidence/runs/", "uploaded-screenshots/runs/", "published-reports/"]
@@ -63,7 +65,7 @@
 			},
 			{
 				"name": "reportRetention",
-				"type": "unknown",
+				"type": "boolean",
 				"description": "True once the start instant plus reportLifetimeMs is at or before now, meaning the report has reached its retention lifetime; false while the expiry instant is still after now. Invalid inputs make the call throw an Error instead of returning a value.",
 				"examples": [true, false]
 			}
@@ -105,7 +107,7 @@
 				"outputs": [
 					{
 						"name": "reportRetention",
-						"type": "unknown",
+						"type": "boolean",
 						"description": "True once the start instant plus reportLifetimeMs is at or before now, meaning the report has reached its retention lifetime; false while the expiry instant is still after now. Invalid inputs make the call throw an Error instead of returning a value.",
 						"examples": [true, false]
 					}

@@ -68,6 +68,24 @@
 	],
 	"references": [
 		{
+			"from": "packages/desktop/test/examples/desktop.function.artifact-query.test.ts",
+			"specifier": "$reports/models/explorer-ui/ExplorerEvidence.types",
+			"to": "packages/reports/src/models/explorer-ui/ExplorerEvidence.types.ts",
+			"reason": "The Desktop artifact-query tests use the Reports evidence, record and scope contracts through the build alias."
+		},
+		{
+			"from": "packages/desktop/test/examples/desktop.function.artifact-query.test.ts",
+			"specifier": "$reports/models/explorer-ui/Harness.types",
+			"to": "packages/reports/src/models/explorer-ui/Harness.types.ts",
+			"reason": "The Desktop artifact-query tests use the Reports evidence, record and scope contracts through the build alias."
+		},
+		{
+			"from": "packages/desktop/test/examples/desktop.function.artifact-query.test.ts",
+			"specifier": "$reports/models/explorer-ui/Explorer.types",
+			"to": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
+			"reason": "The Desktop artifact-query tests use the Reports evidence, record and scope contracts through the build alias."
+		},
+		{
 			"from": "packages/hub/src/components/projects-sessions/hubHomePresentation.ts",
 			"specifier": "$reports/lib/projects-sessions/hub-home/homeProviderPayload",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeProviderPayload.ts",
@@ -252,6 +270,12 @@
 			"specifier": "$reports/components/projects-sessions/project-overview/projectOverviewPresentation",
 			"to": "packages/reports/src/components/projects-sessions/project-overview/projectOverviewPresentation.ts",
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubQuotaSubscription.svelte",
+			"specifier": "$reports/components/explorer-ui/explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "The Hub quota subscription displays its state with the shared Reports pill."
 		},
 		{
 			"from": "packages/hub/src/components/projects-sessions/HubQuotaSubscription.svelte",
@@ -1436,6 +1460,12 @@
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
+			"from": "packages/desktop/src/components/reports-media/RuntimeAudio.svelte",
+			"specifier": "$reports/helpers/verification-evidence/comparisonPanes.types",
+			"to": "packages/reports/src/helpers/verification-evidence/comparisonPanes.types.ts",
+			"reason": "Shared Reports types through the workspace build alias."
+		},
+		{
 			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",
 			"specifier": "$shared/shared-primitives/ComparePanes.svelte",
 			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
@@ -1448,6 +1478,12 @@
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",
+			"specifier": "$reports/helpers/verification-evidence/comparisonPanes.types",
+			"to": "packages/reports/src/helpers/verification-evidence/comparisonPanes.types.ts",
+			"reason": "Shared Reports types through the workspace build alias."
+		},
+		{
 			"from": "packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte",
 			"specifier": "$shared/shared-primitives/ComparePanes.svelte",
 			"to": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
@@ -1458,6 +1494,12 @@
 			"specifier": "$reports/helpers/verification-evidence/comparisonPanes",
 			"to": "packages/reports/src/helpers/verification-evidence/comparisonPanes.ts",
 			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte",
+			"specifier": "$reports/helpers/verification-evidence/comparisonPanes.types",
+			"to": "packages/reports/src/helpers/verification-evidence/comparisonPanes.types.ts",
+			"reason": "Shared Reports types through the workspace build alias."
 		},
 		{
 			"from": "packages/reports/src/components/shared-primitives/ComparePanes.svelte",
@@ -1572,6 +1614,12 @@
 			"specifier": "$reports/helpers/verification-evidence/behaviorFacts",
 			"to": "packages/reports/src/helpers/verification-evidence/behaviorFacts.ts",
 			"reason": "Shared Reports source through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",
+			"specifier": "$reports/helpers/verification-evidence/behaviorFacts.types",
+			"to": "packages/reports/src/helpers/verification-evidence/behaviorFacts.types.ts",
+			"reason": "Shared Reports types through the workspace build alias."
 		},
 		{
 			"from": "packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte",

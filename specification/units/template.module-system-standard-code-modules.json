@@ -11,8 +11,11 @@
 		"visibility": "internal"
 	},
 	"owns": {
-		"source": ["src/templates/module-system/standardCodeModules.ts"],
-		"symbols": ["standardCodeModules"]
+		"source": [
+			"src/templates/module-system/standardCodeModules.ts",
+			"src/templates/module-system/standardCodeModules.types.ts"
+		],
+		"symbols": ["standardCodeModules", "UnknownStandardScaffoldError"]
 	},
 	"contract": {
 		"origin": "declared",

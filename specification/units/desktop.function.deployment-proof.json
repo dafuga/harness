@@ -8,8 +8,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/projects-sessions/deploymentProof.ts"],
-		"symbols": ["deploymentProof", "deploymentBlockers", "deploymentHealth", "deploymentCurrent"]
+		"source": [
+			"packages/desktop/src/utils/projects-sessions/deploymentProof.ts",
+			"packages/desktop/src/utils/projects-sessions/deploymentProof.types.ts"
+		],
+		"symbols": [
+			"deploymentProof",
+			"deploymentBlockers",
+			"deploymentHealth",
+			"deploymentCurrent",
+			"DeploymentNotCurrentError"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -44,9 +53,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project directory passed to Git and deployment receipt lookups. Uncaught Git or receipt read failures can reject the check; the symbolic branch lookup alone is caught and treated as empty.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "deploymentBlockers.query",
@@ -110,9 +117,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project directory passed to plugin discovery, Git checks, and deployment receipt lookups. Discovery or uncaught repository/state read failures reject the check.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "deploymentCurrent.plan",
@@ -155,7 +160,7 @@
 			},
 			{
 				"name": "deploymentBlockers",
-				"type": "unknown",
+				"type": "Promise<{ blockers: string[]; branch: string; promotion: { preprod: DeploymentReceipt | null; production: DeploymentReceipt | null; commitsBehind: number | null; }; } | { blockers: string[]; branch: string; promotion: undefined; }>",
 				"description": "For non-prod, returns blocker strings, the current branch, and promotion as undefined; for prod, forwards blockers, branch, and the preprod/production comparison. It reports state and target issues but does not perform a deployment.",
 				"examples": [
 					{
@@ -180,7 +185,7 @@
 			},
 			{
 				"name": "deploymentCurrent",
-				"type": "unknown",
+				"type": "Promise<DeploymentConfig>",
 				"description": "Returns the discovered DeploymentConfig, filling an empty sourceBranch from plan.branch. It throws when the fingerprint, production comparison, or blocker state changed; discovery and blocker-check failures also propagate.",
 				"examples": [
 					{
@@ -260,9 +265,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project directory passed to Git and deployment receipt lookups. Uncaught Git or receipt read failures can reject the check; the symbolic branch lookup alone is caught and treated as empty.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "deploymentBlockers.query",
@@ -305,7 +308,7 @@
 				"outputs": [
 					{
 						"name": "deploymentBlockers",
-						"type": "unknown",
+						"type": "Promise<{ blockers: string[]; branch: string; promotion: { preprod: import(\"../../models/development-tooling/Deployment.types\").DeploymentReceipt | null; production: import(\"../../models/development-tooling/Deployment.types\").DeploymentReceipt | null; commitsBehind: number | null; }; } | { blockers: string[]; branch: string; promotion: undefined; }>",
 						"description": "For non-prod, returns blocker strings, the current branch, and promotion as undefined; for prod, forwards blockers, branch, and the preprod/production comparison. It reports state and target issues but does not perform a deployment.",
 						"examples": [
 							{
@@ -375,9 +378,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project directory passed to plugin discovery, Git checks, and deployment receipt lookups. Discovery or uncaught repository/state read failures reject the check.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "deploymentCurrent.plan",
@@ -414,7 +415,7 @@
 				"outputs": [
 					{
 						"name": "deploymentCurrent",
-						"type": "unknown",
+						"type": "Promise<DeploymentConfig>",
 						"description": "Returns the discovered DeploymentConfig, filling an empty sourceBranch from plan.branch. It throws when the fingerprint, production comparison, or blocker state changed; discovery and blocker-check failures also propagate.",
 						"examples": [
 							{

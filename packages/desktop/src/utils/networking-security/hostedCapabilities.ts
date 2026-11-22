@@ -1,4 +1,5 @@
 // @harness-uid u_wn2754hxmh
+import { UnknownHostedProjectAccessError } from './hostedCapabilities.types';
 import type { ProjectCapabilities } from '../../models/projects-sessions/ProjectContext.types';
 import { responseRecord } from '../../validators/projects-sessions/RemoteProjectResponseValidator';
 export function hostedCapabilities(value: unknown, projectId: string): ProjectCapabilities {
@@ -7,7 +8,7 @@ export function hostedCapabilities(value: unknown, projectId: string): ProjectCa
 		project.id !== projectId ||
 		!['owner', 'writer', 'commenter', 'viewer'].includes(String(project.role))
 	)
-		throw new Error('Unknown hosted project access.');
+		throw new UnknownHostedProjectAccessError('Unknown hosted project access.');
 	const agents =
 		['owner', 'writer'].includes(String(project.role)) && project.executionAvailable === true;
 	return {

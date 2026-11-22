@@ -35,7 +35,7 @@ export function mapColumns(count: number): number {
  */
 export function harnessLayout(
 	units: HarnessUnit[],
-	perRow = mapColumns(units.length)
+	perRow: number = mapColumns(units.length)
 ): HarnessLayout {
 	const depth = depthsOf(units);
 	const layers = [...new Set(depth.values())].sort((left, right) => right - left);

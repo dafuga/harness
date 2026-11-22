@@ -87,12 +87,12 @@
 			},
 			{
 				"name": "sample",
-				"type": "unknown",
+				"type": "\"1111 8888\\n0123 4567\" | \"Aa Bb 0123\"",
 				"description": "Two lines of numerals for leading and numeral tokens, otherwise Aa Bb 0123."
 			},
 			{
 				"name": "headingId",
-				"type": "unknown",
+				"type": "string",
 				"description": "The text in lower case with each run of non-word characters as a hyphen, after the prefix styles-group-."
 			}
 		],
@@ -172,7 +172,7 @@
 				"outputs": [
 					{
 						"name": "sample",
-						"type": "unknown",
+						"type": "\"1111 8888\\n0123 4567\" | \"Aa Bb 0123\"",
 						"description": "Two lines of numerals for leading and numeral tokens, otherwise Aa Bb 0123."
 					}
 				],
@@ -192,7 +192,7 @@
 				"outputs": [
 					{
 						"name": "headingId",
-						"type": "unknown",
+						"type": "string",
 						"description": "The text in lower case with each run of non-word characters as a hyphen, after the prefix styles-group-."
 					}
 				],

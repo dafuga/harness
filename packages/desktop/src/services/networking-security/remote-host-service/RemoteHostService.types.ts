@@ -5,6 +5,10 @@ import type { RemoteSocket } from '../../../../../remote/src/index';
 import type { RemoteDeviceSessionsOptions } from './RemoteDeviceSessionsService';
 import type { RelayLinkTuning } from './RemoteHostRuntimeService';
 
+export class RemoteHostUnavailableError extends Error {
+	override name = 'RemoteHostUnavailableError';
+}
+
 export interface RemoteHostOptions {
 	store: RemoteHostStoreAdapter;
 	/** Registers this computer under the signed-in hosted identity; rejects when there is none. */

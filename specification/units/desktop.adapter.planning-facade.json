@@ -37,9 +37,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root passed to createPlanning; it must resolve to the root of a Git repository or opening rejects.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "PlanningFacadeAdapter.plans.revision",
@@ -236,12 +234,12 @@
 		"outputs": [
 			{
 				"name": "PlanningFacadeAdapter.open",
-				"type": "unknown",
+				"type": "Promise<PlanningFacadeAdapter>",
 				"description": "Opened PlanningFacadeAdapter instance holding the repository root and initialized PlanningApi; it exists only after the root is accepted as a Git repository."
 			},
 			{
 				"name": "PlanningFacadeAdapter.plans",
-				"type": "unknown",
+				"type": "Promise<PlanRecord[]>",
 				"description": "PlanRecord array read from the requested snapshot, with converted contracts, design versions and threads.",
 				"examples": [
 					[
@@ -266,7 +264,7 @@
 			},
 			{
 				"name": "PlanningFacadeAdapter.createPlan",
-				"type": "unknown",
+				"type": "Promise<PlanRecord>",
 				"description": "PlanRecord created from the draft; a new record begins with no design versions or threads.",
 				"examples": [
 					{
@@ -289,7 +287,7 @@
 			},
 			{
 				"name": "PlanningFacadeAdapter.ensurePlan",
-				"type": "unknown",
+				"type": "Promise<PlanRecord>",
 				"description": "PlanRecord for the canonical manifest id, either read from HEAD when it exists or newly created from the manifest.",
 				"examples": [
 					{
@@ -312,7 +310,7 @@
 			},
 			{
 				"name": "PlanningFacadeAdapter.addDesign",
-				"type": "unknown",
+				"type": "Promise<DesignVersion>",
 				"description": "DesignVersion committed for the requested design, with its stored prompt, optional notes and images.",
 				"examples": [
 					{
@@ -330,7 +328,7 @@
 			},
 			{
 				"name": "PlanningFacadeAdapter.openThread",
-				"type": "unknown",
+				"type": "Promise<ThreadInfo>",
 				"description": "ThreadInfo for the committed thread, including its generated id and pin; unanchored threads have null version and image fields.",
 				"examples": [
 					{
@@ -347,7 +345,7 @@
 			},
 			{
 				"name": "PlanningFacadeAdapter.messages",
-				"type": "unknown",
+				"type": "Promise<ThreadMessage[]>",
 				"description": "ThreadMessage array converted from the selected entity thread at the requested revision; the operation rejects if the thread is not part of that entity.",
 				"examples": [
 					[
@@ -367,7 +365,7 @@
 			},
 			{
 				"name": "PlanningFacadeAdapter.appendMessage",
-				"type": "unknown",
+				"type": "Promise<ThreadMessage>",
 				"description": "ThreadMessage converted from the committed message, including its resolved author, mode and artifact reference.",
 				"examples": [
 					{
@@ -385,7 +383,7 @@
 			},
 			{
 				"name": "PlanningFacadeAdapter.approve",
-				"type": "unknown",
+				"type": "Promise<ApprovalInfo>",
 				"description": "ApprovalInfo for the committed approval, with its version, image hashes, contract hash, timestamp and current flag.",
 				"examples": [
 					{
@@ -400,12 +398,12 @@
 			},
 			{
 				"name": "PlanningFacadeAdapter.image",
-				"type": "unknown",
+				"type": "Promise<Uint8Array<ArrayBufferLike>>",
 				"description": "Uint8Array containing the selected image bytes; the planning API enforces the optional design-option constraint."
 			},
 			{
 				"name": "PlanningFacadeAdapter.history",
-				"type": "unknown",
+				"type": "Promise<{ id: string; at: string; kind: \"commit\"; title: string; detail: string; commit: string; version: null; }[]>",
 				"description": "HistoryEvent array mapped from entity history; each event is represented as a commit with comma-joined event kinds and a null version.",
 				"examples": [
 					[
@@ -439,15 +437,13 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root passed to createPlanning; it must resolve to the root of a Git repository or opening rejects.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.open",
-						"type": "unknown",
+						"type": "Promise<PlanningFacadeAdapter>",
 						"description": "Opened PlanningFacadeAdapter instance holding the repository root and initialized PlanningApi; it exists only after the root is accepted as a Git repository."
 					}
 				],
@@ -474,7 +470,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.plans",
-						"type": "unknown",
+						"type": "Promise<import('../../../../models/planning-collaboration/PlanningPort.types').PlanRecord[]>",
 						"description": "PlanRecord array read from the requested snapshot, with converted contracts, design versions and threads.",
 						"examples": [
 							[
@@ -527,7 +523,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.createPlan",
-						"type": "unknown",
+						"type": "Promise<import('../../../../models/planning-collaboration/PlanningPort.types').PlanRecord>",
 						"description": "PlanRecord created from the draft; a new record begins with no design versions or threads.",
 						"examples": [
 							{
@@ -612,7 +608,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.ensurePlan",
-						"type": "unknown",
+						"type": "Promise<import('../../../../models/planning-collaboration/PlanningPort.types').PlanRecord>",
 						"description": "PlanRecord for the canonical manifest id, either read from HEAD when it exists or newly created from the manifest.",
 						"examples": [
 							{
@@ -671,7 +667,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.addDesign",
-						"type": "unknown",
+						"type": "Promise<import('../../../../models/planning-collaboration/DesignVersion.types').DesignVersion>",
 						"description": "DesignVersion committed for the requested design, with its stored prompt, optional notes and images.",
 						"examples": [
 							{
@@ -720,7 +716,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.openThread",
-						"type": "unknown",
+						"type": "Promise<import('../../../../models/development-tooling/Desktop.types').ThreadInfo>",
 						"description": "ThreadInfo for the committed thread, including its generated id and pin; unanchored threads have null version and image fields.",
 						"examples": [
 							{
@@ -773,7 +769,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.messages",
-						"type": "unknown",
+						"type": "Promise<import('../../../../models/development-tooling/Desktop.types').ThreadMessage[]>",
 						"description": "ThreadMessage array converted from the selected entity thread at the requested revision; the operation rejects if the thread is not part of that entity.",
 						"examples": [
 							[
@@ -827,7 +823,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.appendMessage",
-						"type": "unknown",
+						"type": "Promise<import('../../../../models/development-tooling/Desktop.types').ThreadMessage>",
 						"description": "ThreadMessage converted from the committed message, including its resolved author, mode and artifact reference.",
 						"examples": [
 							{
@@ -874,7 +870,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.approve",
-						"type": "unknown",
+						"type": "Promise<import('../../../../models/development-tooling/Desktop.types').ApprovalInfo>",
 						"description": "ApprovalInfo for the committed approval, with its version, image hashes, contract hash, timestamp and current flag.",
 						"examples": [
 							{
@@ -918,7 +914,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.image",
-						"type": "unknown",
+						"type": "Promise<Uint8Array<ArrayBufferLike>>",
 						"description": "Uint8Array containing the selected image bytes; the planning API enforces the optional design-option constraint."
 					}
 				],
@@ -970,7 +966,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.history",
-						"type": "unknown",
+						"type": "Promise<{ id: string; at: string; kind: \"commit\"; title: string; detail: string; commit: string; version: null; }[]>",
 						"description": "HistoryEvent array mapped from entity history; each event is represented as a commit with comma-joined event kinds and a null version.",
 						"examples": [
 							[

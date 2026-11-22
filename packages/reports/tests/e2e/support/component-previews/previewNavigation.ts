@@ -3,7 +3,7 @@ import { recordCapture } from '../../../../../../src/utils/reports-media/record-
 import { previewState } from './catalogUnits';
 
 /** The actual document that mounted this route, never a preceding soft-navigation document. */
-export async function previewNavigation(page: Page, unit: string, viewport: string) {
+export async function previewNavigation(page: Page, unit: string, viewport: string, variant = '') {
 	const navigation = await readNavigation(page);
 	if (
 		navigation?.document?.unit !== unit ||
@@ -17,9 +17,10 @@ export async function previewNavigation(page: Page, unit: string, viewport: stri
 	await session.detach();
 	if (!(heap.usedSize > 0)) throw new Error(`Missing settled preview heap for ${unit}`);
 	const size = page.viewportSize()!;
+	const state = previewState(unit, variant);
 	const common = {
 		unit,
-		workload: `route-preview-document-${size.width}x${size.height}`,
+		workload: `route-preview-document-${variant ? variant + '-' : ''}${size.width}x${size.height}`,
 		target: 'http',
 		samples: 1
 	};
@@ -41,7 +42,6 @@ export async function previewNavigation(page: Page, unit: string, viewport: stri
 				'Chromium used JavaScript heap after route preview fonts and images settled. Whole page including fixture and shared runtime; not isolated component memory or browser-process RSS.'
 		}
 	];
-	const state = previewState(unit);
 	recordCapture(
 		{
 			evidence: 'page-benchmarks',

@@ -11,8 +11,11 @@
 		"visibility": "internal"
 	},
 	"owns": {
-		"source": ["src/services/module-system/ModuleInstallService.ts"],
-		"symbols": ["ModuleInstallService", "ModuleInstallService.add"]
+		"source": [
+			"src/services/module-system/ModuleInstallService.ts",
+			"src/services/module-system/ModuleInstallService.types.ts"
+		],
+		"symbols": ["ModuleInstallService", "ModuleInstallService.add", "ModuleCatalogGapError"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -22,16 +25,14 @@
 				"type": "string",
 				"required": true,
 				"description": "Project root passed to module-catalog loading, module-tree lookup, package/group planning, and file writing. This method passes the string through without normalizing it.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "ModuleInstallService.add.id",
 				"type": "string",
 				"required": true,
 				"description": "Module ID compared with catalog definition IDs using strict equality and interpolated into the generated module README path. If no catalog entry matches, this method throws an Error naming the unknown ID; it does not normalize the string before matching.",
-				"examples": ["reports.component.evidence-grid"]
+				"examples": ["components"]
 			}
 		],
 		"outputs": [
@@ -61,16 +62,14 @@
 						"type": "string",
 						"required": true,
 						"description": "Project root passed to module-catalog loading, module-tree lookup, package/group planning, and file writing. This method passes the string through without normalizing it.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "ModuleInstallService.add.id",
 						"type": "string",
 						"required": true,
 						"description": "Module ID compared with catalog definition IDs using strict equality and interpolated into the generated module README path. If no catalog entry matches, this method throws an Error naming the unknown ID; it does not normalize the string before matching.",
-						"examples": ["reports.component.evidence-grid"]
+						"examples": ["components"]
 					}
 				],
 				"outputs": [
@@ -96,6 +95,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "service.module-system-module-catalog",
 			"via": "import",

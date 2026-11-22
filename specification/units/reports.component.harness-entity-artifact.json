@@ -188,7 +188,7 @@
 				"inputs": [
 					{
 						"name": "EntityArtifact.label.[name]",
-						"type": "unknown",
+						"type": "Fact",
 						"required": true
 					}
 				],
@@ -206,7 +206,7 @@
 				"inputs": [
 					{
 						"name": "EntityArtifact.children.[, value]",
-						"type": "unknown",
+						"type": "Fact",
 						"required": true
 					}
 				],

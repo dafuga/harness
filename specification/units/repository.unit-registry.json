@@ -32,9 +32,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem root joined with unit-manifest paths for write and remove. The constructor stores this root unchanged.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "UnitRegistryRepository.config.tree",
@@ -62,14 +60,14 @@
 				"type": "string",
 				"required": true,
 				"description": "Unit id used to locate its manifest JSON file under unitsDirectory. Removal uses force, so a missing file is ignored.",
-				"examples": ["reports.component.evidence-grid"]
+				"examples": ["repository.unit-registry"]
 			},
 			{
 				"name": "UnitRegistryRepository.path.id",
 				"type": "string",
 				"required": true,
 				"description": "Unit id appended to unitsDirectory with a .json suffix. The method returns this repository-relative path without checking whether the file exists.",
-				"examples": ["reports.component.evidence-grid"]
+				"examples": ["repository.unit-registry"]
 			}
 		],
 		"outputs": [
@@ -110,7 +108,7 @@
 				"type": "Promise<string[]>",
 				"description": "Repository-relative paths of manifests whose canonical JSON contents were written. Manifests whose existing file contents already equal stableJson output are omitted.",
 				"examples": [
-					["specification/units/reports.component.evidence-grid.json"]
+					["specification/units/repository.unit-registry.json"]
 				]
 			},
 			{
@@ -122,7 +120,7 @@
 				"name": "UnitRegistryRepository.path",
 				"type": "string",
 				"description": "Repository-relative manifest path formed as specification/units/<id>.json. The method does not access the filesystem.",
-				"examples": ["specification/units/reports.component.evidence-grid.json"]
+				"examples": ["specification/units/repository.unit-registry.json"]
 			}
 		],
 		"errors": [
@@ -226,7 +224,7 @@
 						"type": "Promise<string[]>",
 						"description": "Repository-relative paths of manifests whose canonical JSON contents were written. Manifests whose existing file contents already equal stableJson output are omitted.",
 						"examples": [
-							["specification/units/reports.component.evidence-grid.json"]
+							["specification/units/repository.unit-registry.json"]
 						]
 					}
 				],
@@ -241,7 +239,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Unit id used to locate its manifest JSON file under unitsDirectory. Removal uses force, so a missing file is ignored.",
-						"examples": ["reports.component.evidence-grid"]
+						"examples": ["repository.unit-registry"]
 					}
 				],
 				"outputs": [
@@ -262,7 +260,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Unit id appended to unitsDirectory with a .json suffix. The method returns this repository-relative path without checking whether the file exists.",
-						"examples": ["reports.component.evidence-grid"]
+						"examples": ["repository.unit-registry"]
 					}
 				],
 				"outputs": [
@@ -270,7 +268,7 @@
 						"name": "UnitRegistryRepository.path",
 						"type": "string",
 						"description": "Repository-relative manifest path formed as specification/units/<id>.json. The method does not access the filesystem.",
-						"examples": ["specification/units/reports.component.evidence-grid.json"]
+						"examples": ["specification/units/repository.unit-registry.json"]
 					}
 				],
 				"errors": [],
@@ -286,15 +284,13 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem root joined with unit-manifest paths for write and remove. The constructor stores this root unchanged.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "UnitRegistryRepository.constructor",
-						"type": "unknown",
+						"type": "UnitRegistryRepository",
 						"description": "The constructed UnitRegistryRepository instance, initialized with the supplied root and a ComponentManifestValidator. It is the object used to call the registry methods."
 					}
 				],

@@ -17,3 +17,8 @@ export interface WorkloadRun {
 }
 
 export type Workload = KernelBenchmark['workloads'][number];
+
+/** A kernel server that timed out, exited, or sent invalid readiness data before it was ready. */
+export class KernelServerStartupError extends Error {
+	override name = 'KernelServerStartupError';
+}

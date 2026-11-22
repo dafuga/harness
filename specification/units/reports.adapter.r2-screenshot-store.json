@@ -27,7 +27,8 @@
 			"R2ScreenshotStoreAdapter.put",
 			"R2ScreenshotStoreAdapter.get",
 			"R2ScreenshotStoreAdapterConfig",
-			"R2ScreenshotStoreAdapterConfig"
+			"R2ScreenshotStoreAdapterConfig",
+			"R2ScreenshotStoreError"
 		]
 	},
 	"contract": {
@@ -52,7 +53,7 @@
 				"name": "r2ScreenshotConfig.localFile",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional file path whose matching R2 account, bucket, and credential assignments supply fallback values; a missing file is ignored only for ENOENT, while other read errors propagate. Defaults to undefined, which skips file reading.",
 				"examples": ["packages/reports/.env"]
 			},
@@ -89,7 +90,7 @@
 				"name": "R2ScreenshotStoreAdapter.constructor.client",
 				"type": "S3Client",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional S3Client used to send screenshot requests. Defaults to undefined, which creates a client with region auto, path-style requests, the configured or account-derived endpoint, and the supplied credentials."
 			},
 			{
@@ -137,13 +138,13 @@
 		"outputs": [
 			{
 				"name": "screenshotObjectPrefix",
-				"type": "unknown",
+				"type": "\"uploaded-screenshots/\"",
 				"description": "Constant prefix prepended to every screenshot object key produced by this adapter.",
 				"examples": ["uploaded-screenshots/"]
 			},
 			{
 				"name": "r2ScreenshotConfig",
-				"type": "unknown",
+				"type": "{ accountId: string; bucket: string; accessKeyId: string; secretAccessKey: string; endpoint: string | undefined; }",
 				"description": "Resolved R2 configuration returned by the helper. Process values take precedence over local-file values, missing account, bucket, or credential values become empty strings, and endpoint comes only from the process environment.",
 				"examples": [
 					{
@@ -157,7 +158,7 @@
 			},
 			{
 				"name": "r2ObjectKey",
-				"type": "unknown",
+				"type": "string",
 				"description": "R2 key formed from uploaded-screenshots/runs/, safeId(reportId), /assets/, and the validated screenshot filename. The filename must match the 64-character lowercase hexadecimal pattern with a .png, .jpg, or .webp suffix.",
 				"examples": [
 					"uploaded-screenshots/runs/report-123/assets/0000000000000000000000000000000000000000000000000000000000000000.png"
@@ -165,17 +166,17 @@
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.fromEnvironment",
-				"type": "unknown",
+				"type": "R2ScreenshotStoreAdapter",
 				"description": "New R2ScreenshotStoreAdapter built from process.env, with PROJECT_REPORTS_CONFIG_FILE read unless NODE_ENV is test. It requires account ID, bucket, access key, and secret key, and accepts an endpoint override only when it matches http://127.0.0.1:<port>."
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.put",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Promise that resolves after the PutObjectCommand succeeds and has no resolved value. The command sends the configured bucket, generated key, provided Buffer, and MIME string."
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.get",
-				"type": "unknown",
+				"type": "Promise<Buffer<ArrayBuffer>>",
 				"description": "Promise that resolves to a Buffer containing the response body bytes from GetObjectCommand. It rejects if the request fails or the response has no body."
 			}
 		],
@@ -235,7 +236,7 @@
 						"name": "r2ScreenshotConfig.localFile",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional file path whose matching R2 account, bucket, and credential assignments supply fallback values; a missing file is ignored only for ENOENT, while other read errors propagate. Defaults to undefined, which skips file reading.",
 						"examples": ["packages/reports/.env"]
 					}
@@ -243,7 +244,7 @@
 				"outputs": [
 					{
 						"name": "r2ScreenshotConfig",
-						"type": "unknown",
+						"type": "{ accountId: string; bucket: string; accessKeyId: string; secretAccessKey: string; endpoint: string | undefined; }",
 						"description": "Resolved R2 configuration returned by the helper. Process values take precedence over local-file values, missing account, bucket, or credential values become empty strings, and endpoint comes only from the process environment.",
 						"examples": [
 							{
@@ -286,7 +287,7 @@
 				"outputs": [
 					{
 						"name": "r2ObjectKey",
-						"type": "unknown",
+						"type": "string",
 						"description": "R2 key formed from uploaded-screenshots/runs/, safeId(reportId), /assets/, and the validated screenshot filename. The filename must match the 64-character lowercase hexadecimal pattern with a .png, .jpg, or .webp suffix.",
 						"examples": [
 							"uploaded-screenshots/runs/report-123/assets/0000000000000000000000000000000000000000000000000000000000000000.png"
@@ -308,7 +309,7 @@
 				"outputs": [
 					{
 						"name": "R2ScreenshotStoreAdapter.fromEnvironment",
-						"type": "unknown",
+						"type": "R2ScreenshotStoreAdapter",
 						"description": "New R2ScreenshotStoreAdapter built from process.env, with PROJECT_REPORTS_CONFIG_FILE read unless NODE_ENV is test. It requires account ID, bucket, access key, and secret key, and accepts an endpoint override only when it matches http://127.0.0.1:<port>."
 					}
 				],
@@ -360,7 +361,7 @@
 				"outputs": [
 					{
 						"name": "R2ScreenshotStoreAdapter.put",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Promise that resolves after the PutObjectCommand succeeds and has no resolved value. The command sends the configured bucket, generated key, provided Buffer, and MIME string."
 					}
 				],
@@ -399,7 +400,7 @@
 				"outputs": [
 					{
 						"name": "R2ScreenshotStoreAdapter.get",
-						"type": "unknown",
+						"type": "Promise<Buffer<ArrayBuffer>>",
 						"description": "Promise that resolves to a Buffer containing the response body bytes from GetObjectCommand. It rejects if the request fails or the response has no body."
 					}
 				],
@@ -446,14 +447,14 @@
 						"name": "R2ScreenshotStoreAdapter.constructor.client",
 						"type": "S3Client",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional S3Client used to send screenshot requests. Defaults to undefined, which creates a client with region auto, path-style requests, the configured or account-derived endpoint, and the supplied credentials."
 					}
 				],
 				"outputs": [
 					{
 						"name": "R2ScreenshotStoreAdapter.constructor",
-						"type": "unknown",
+						"type": "R2ScreenshotStoreAdapter",
 						"description": "New R2ScreenshotStoreAdapter instance configured with the supplied client or a newly created S3Client. The generated client uses region auto and forcePathStyle true."
 					}
 				],

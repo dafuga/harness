@@ -106,10 +106,16 @@ export async function captureScreen(
 	page: Page,
 	state: string,
 	viewport: Viewport,
-	destination: string | { directory: string; evidence: string } = evidenceDirectory
+	destination:
+		| string
+		| { directory: string; evidence: string; benchmark?: string } = evidenceDirectory
 ): Promise<void> {
 	const directory = typeof destination === 'string' ? destination : destination.directory;
 	const evidence = typeof destination === 'string' ? 'screens' : destination.evidence;
+	const slot =
+		typeof destination === 'string' || !destination.benchmark
+			? undefined
+			: { evidence: destination.benchmark, state, viewport: viewport.id };
 	await settled(page);
 	const bytes = await page.screenshot({
 		animations: 'disabled',
@@ -134,7 +140,7 @@ export async function captureScreen(
 	);
 	keep(file, bytes);
 	if (directory === evidenceDirectory)
-		await pageBenchmark(page, `${state}-${viewport.id}`, pageUnit(page.url()));
+		await pageBenchmark(page, `${state}-${viewport.id}`, pageUnit(page.url()), slot);
 }
 
 /**

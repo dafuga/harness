@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-model.catalog-metadata",
+	"title": "model.catalog-metadata examples",
+	"kind": "headless",
+	"units": ["model.catalog-metadata"],
+	"builds": [],
+	"states": [
+		{
+			"id": "finds-a-catalog-metadata-row-by-id",
+			"title": "Finds a catalog metadata row by id",
+			"coverage": "required"
+		},
+		{
+			"id": "finds-rows-matching-catalog-metadata-fields",
+			"title": "Finds rows matching catalog metadata fields",
+			"coverage": "required"
+		},
+		{
+			"id": "creates-a-catalog-metadata-row",
+			"title": "Creates a catalog metadata row",
+			"coverage": "required"
+		},
+		{
+			"id": "updates-a-catalog-metadata-row",
+			"title": "Updates a catalog metadata row",
+			"coverage": "required"
+		},
+		{
+			"id": "deletes-a-catalog-metadata-row",
+			"title": "Deletes a catalog metadata row",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-persistence-failure-when-an-adapter-rejects",
+			"title": "Throws persistence failure when an adapter rejects",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/model.catalog-metadata.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"finds-a-catalog-metadata-row-by-id",
+				"finds-rows-matching-catalog-metadata-fields",
+				"creates-a-catalog-metadata-row",
+				"updates-a-catalog-metadata-row",
+				"deletes-a-catalog-metadata-row",
+				"throws-persistence-failure-when-an-adapter-rejects"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"finds-a-catalog-metadata-row-by-id",
+				"finds-rows-matching-catalog-metadata-fields",
+				"creates-a-catalog-metadata-row",
+				"updates-a-catalog-metadata-row",
+				"deletes-a-catalog-metadata-row",
+				"throws-persistence-failure-when-an-adapter-rejects"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"finds-a-catalog-metadata-row-by-id",
+				"finds-rows-matching-catalog-metadata-fields",
+				"creates-a-catalog-metadata-row",
+				"updates-a-catalog-metadata-row",
+				"deletes-a-catalog-metadata-row",
+				"throws-persistence-failure-when-an-adapter-rejects"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

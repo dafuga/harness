@@ -1,5 +1,6 @@
 // @harness-uid u_ukfchiprki
 import { randomUUID } from 'node:crypto';
+import { ProviderSwitchOperationError } from './ProviderSwitchService.types';
 import type {
 	PickerModel,
 	ProviderSelection
@@ -44,10 +45,12 @@ export class ProviderSwitchService {
 			(m) => m.provider === target.provider && m.model === target.model
 		);
 		if (!known?.efforts.includes(target.effort))
-			throw new Error('Selection is not in the configured model catalog.');
+			throw new ProviderSwitchOperationError('Selection is not in the configured model catalog.');
 		const previous = this.store.get(sessionId);
 		if (previous?.status === 'applying')
-			throw new Error('A switch is being verified; wait before replacing it.');
+			throw new ProviderSwitchOperationError(
+				'A switch is being verified; wait before replacing it.'
+			);
 		if (previous?.status === 'pending' && sameSelection(previous.target, target))
 			return this.status(sessionId);
 		const record = {
@@ -59,7 +62,7 @@ export class ProviderSwitchService {
 			reason: desktopControlUnavailable
 		};
 		if (!this.store.put(record, switchRevision(previous)))
-			throw new Error('Selection changed; refresh and retry.');
+			throw new ProviderSwitchOperationError('Selection changed; refresh and retry.');
 		return this.status(sessionId);
 	}
 
@@ -67,14 +70,14 @@ export class ProviderSwitchService {
 		validateSessionId(sessionId);
 		const current = this.store.get(sessionId);
 		if (current?.id !== requestId || current.status !== 'pending')
-			throw new Error('Pending selection changed; refresh first.');
+			throw new ProviderSwitchOperationError('Pending selection changed; refresh first.');
 		if (
 			!this.store.put(
 				{ ...current, status: 'cancelled', reason: 'Cancelled by the user.' },
 				switchRevision(current)
 			)
 		)
-			throw new Error('Pending selection changed; refresh first.');
+			throw new ProviderSwitchOperationError('Pending selection changed; refresh first.');
 		return this.status(sessionId);
 	}
 }

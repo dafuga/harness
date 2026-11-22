@@ -33,7 +33,7 @@
 		"outputs": [
 			{
 				"name": "ReplayVideoService.create",
-				"type": "unknown",
+				"type": "Promise<Buffer<ArrayBufferLike>>",
 				"description": "The completed replay-video contents as a Node.js Buffer, returned from a restored cache or after generation and storage. At most two distinct in-process preparation jobs run at once; calls with a matching in-flight key reuse its job."
 			}
 		],
@@ -60,7 +60,7 @@
 				"outputs": [
 					{
 						"name": "ReplayVideoService.create",
-						"type": "unknown",
+						"type": "Promise<Buffer<ArrayBufferLike>>",
 						"description": "The completed replay-video contents as a Node.js Buffer, returned from a restored cache or after generation and storage. At most two distinct in-process preparation jobs run at once; calls with a matching in-flight key reuse its job."
 					}
 				],
@@ -88,7 +88,7 @@
 				"outputs": [
 					{
 						"name": "ReplayVideoService.constructor",
-						"type": "unknown",
+						"type": "ReplayVideoService",
 						"description": "The constructed ReplayVideoService instance, retaining the supplied repository or the default ReportRepository."
 					}
 				],

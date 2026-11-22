@@ -2,6 +2,7 @@
 import type { FrozenBuild } from './frozenBuild.types';
 import { cp, rm } from 'node:fs/promises';
 import { BuildIdentityService } from '../../../../../src/services/verification-evidence/BuildIdentityService';
+import { ExpectedCliError } from '../../../../../src/core/development-tooling/errors';
 
 /**
  * Copies a finished build to where one run serves it from. A built server loads its files as
@@ -18,7 +19,8 @@ export async function frozenBuild(
 ): Promise<FrozenBuild> {
 	const identities = new BuildIdentityService();
 	const before = await identities.identify(source);
-	if (!before) throw new Error(`${source} holds no build: build the reports package first.`);
+	if (!before)
+		throw new ExpectedCliError(`${source} holds no build: build the reports package first.`);
 	await rm(target, { recursive: true, force: true });
 	await copied(source, target);
 	const [copy, after] = [await identities.identify(target), await identities.identify(source)];
@@ -27,7 +29,7 @@ export async function frozenBuild(
 	}
 	await rm(target, { recursive: true, force: true });
 	const now = after?.buildId.slice(0, 12) ?? 'nothing';
-	throw new Error(
+	throw new ExpectedCliError(
 		`${source} changed while this run was copying it (${before.buildId.slice(0, 12)}, then ${now}): another build is running in this checkout. A checkout has one build at a time; wait for it, or use another worktree or a verification snapshot.`
 	);
 }

@@ -25,7 +25,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The directory that every git command of the service runs in as its working directory. The constructor does not check it.",
-				"examples": ["/workspace/payments-service", "/home/ci/checkouts/billing-api"]
+				"examples": ["/workspace/payments-service", "/workspace/billing-api"]
 			},
 			{
 				"name": "CommitMessageService.written.file",
@@ -287,13 +287,13 @@
 						"type": "string",
 						"required": true,
 						"description": "The directory that every git command of the service runs in as its working directory. The constructor does not check it.",
-						"examples": ["/workspace/payments-service", "/home/ci/checkouts/billing-api"]
+						"examples": ["/workspace/payments-service", "/workspace/billing-api"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CommitMessageService.constructor",
-						"type": "unknown",
+						"type": "CommitMessageService",
 						"description": "The new CommitMessageService, which holds a git adapter for root and runs no git command."
 					}
 				],

@@ -50,7 +50,7 @@
 			},
 			{
 				"name": "LocalClientService.emit.value",
-				"type": "unknown",
+				"type": "RunEvent | CacheStatus | RemoteConnectionEvent",
 				"required": true,
 				"description": "The payload that emit forwards unchanged to the wire session; the two sends in this file pass a RunEvent on the 'run' channel. emit does not inspect the value.",
 				"examples": [
@@ -157,7 +157,7 @@
 					},
 					{
 						"name": "LocalClientService.emit.value",
-						"type": "unknown",
+						"type": "RunEvent | CacheStatus | RemoteConnectionEvent",
 						"required": true,
 						"description": "The payload that emit forwards unchanged to the wire session; the two sends in this file pass a RunEvent on the 'run' channel. emit does not inspect the value.",
 						"examples": [
@@ -232,7 +232,7 @@
 				"outputs": [
 					{
 						"name": "LocalClientService.constructor",
-						"type": "unknown",
+						"type": "LocalClientService",
 						"description": "The LocalClientService instance that new produces, with its session, runs and wire session already built."
 					}
 				],
@@ -250,6 +250,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.function.planning-collaboration-mockup-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-bridge-types",
 			"via": "import",
 			"origin": "derived"
 		},

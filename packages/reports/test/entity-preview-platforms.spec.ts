@@ -2,6 +2,13 @@ import { expect, test } from '../../../test/support/browserTest';
 import { capture, fits, open, ready, viewports } from './entityPreviewPage';
 import { commits } from './entityUnits';
 import { startRoute } from './entityPreviewPlatformEvidence';
+import { exercisePlatformFilters } from './entityPreviewPlatformFilters';
+import {
+	exercisePlatformCatalogGaps,
+	exercisePlatformHistory,
+	exercisePlatformRevisionRecovery,
+	exercisePlatformWithoutCatalog
+} from './entityPreviewPlatformHistory';
 
 const platforms = [
 	['Web', 'web', 'orders-web'],
@@ -54,40 +61,63 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await expect(page.getByRole('heading', { level: 1, name, exact: true })).toBeVisible();
 			await page.getByRole('link', { name: 'Platforms', exact: true }).last().click();
 		}
-		await startRoute(page);
-		await page.getByRole('combobox', { name: 'Commit', exact: true }).selectOption(commits.first);
-		await page.getByRole('link', { name: 'View Web configuration', exact: true }).click();
-		await expect(page.getByRole('main')).toContainText(
-			'No platform configuration is recorded at this revision.'
-		);
-		await expect(page.getByRole('main')).not.toContainText('orders-web');
-		await capture(page, `platforms-missing-${viewport}`);
+		await exercisePlatformWithoutCatalog(page, viewport);
 	});
 }
 
-test('platform search and the shared status filter narrow the list independently', async ({
-	page
-}) => {
-	await page.setViewportSize(viewports.mobile);
-	await open(page, {}, 'platforms');
-	await page
-		.getByRole('navigation', { name: 'Harness categories' })
-		.getByRole('link', { name: 'Platforms', exact: true })
-		.click();
-	const articles = page.getByRole('main').getByRole('article');
-	const search = page.getByRole('searchbox', { name: 'Search platforms', exact: true });
-	await search.fill('iphone');
-	await expect(articles).toHaveCount(1);
-	await expect(articles).toContainText('iOS');
-	await search.fill('');
-	await page.getByRole('button', { name: 'Filters', exact: true }).click();
-	const filters = page.getByRole('dialog', { name: 'Filters', exact: true });
-	await filters.getByRole('combobox').selectOption('configured');
-	await capture(page, 'platforms-status-filter-mobile');
-	await filters.getByRole('button', { name: 'Done', exact: true }).click();
-	await expect(articles).toHaveCount(2);
-	await page.getByRole('button', { name: 'Filters', exact: true }).click();
-	await filters.getByRole('button', { name: 'Reset filters', exact: true }).click();
-	await filters.getByRole('button', { name: 'Done', exact: true }).click();
-	await expect(articles).toHaveCount(4);
-});
+for (const [viewport, size] of Object.entries(viewports)) {
+	test(`platform history keeps its addresses and source links at ${viewport} width`, async ({
+		page
+	}) => {
+		await page.setViewportSize(size);
+		await exercisePlatformHistory(page, viewport);
+	});
+	test(`platform catalog gaps and unknown targets recover at ${viewport} width`, async ({
+		page
+	}) => {
+		await page.setViewportSize(size);
+		await exercisePlatformCatalogGaps(page, viewport);
+	});
+	test(`platforms recover from a failed revision load at ${viewport} width`, async ({ page }) => {
+		await page.setViewportSize(size);
+		await exercisePlatformRevisionRecovery(page, viewport);
+	});
+	test(`platform search covers all fixture card sets and status intersections at ${viewport} width`, async ({
+		page
+	}) => {
+		await page.setViewportSize(size);
+		await open(page, { category: 'platforms' }, 'platforms');
+		await exercisePlatformFilters(page, viewport);
+		expect(await fits(page)).toBe(true);
+	});
+}
+
+for (const [viewport, size] of Object.entries(viewports)) {
+	test(`platform search and the shared status filter narrow the list independently at ${viewport} width`, async ({
+		page
+	}) => {
+		await page.setViewportSize(size);
+		await open(page, {}, 'platforms');
+		await page
+			.getByRole('navigation', { name: 'Harness categories' })
+			.getByRole('link', { name: 'Platforms', exact: true })
+			.click();
+		const articles = page.getByRole('main').getByRole('article');
+		const search = page.getByRole('searchbox', { name: 'Search platforms', exact: true });
+		await search.fill('iphone');
+		await expect(articles).toHaveCount(1);
+		await expect(articles).toContainText('iOS');
+		await search.fill('');
+		await page.getByRole('button', { name: 'Filters', exact: true }).click();
+		const filters = page.getByRole('dialog', { name: 'Filters', exact: true });
+		await filters.getByRole('combobox').selectOption('configured');
+		await ready(page);
+		await capture(page, `platforms-status-filter-${viewport}`);
+		await filters.getByRole('button', { name: 'Done', exact: true }).click();
+		await expect(articles).toHaveCount(2);
+		await page.getByRole('button', { name: 'Filters', exact: true }).click();
+		await filters.getByRole('button', { name: 'Reset filters', exact: true }).click();
+		await filters.getByRole('button', { name: 'Done', exact: true }).click();
+		await expect(articles).toHaveCount(4);
+	});
+}

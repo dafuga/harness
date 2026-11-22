@@ -202,22 +202,22 @@
 		"outputs": [
 			{
 				"name": "hubContractSchema",
-				"type": "unknown",
+				"type": "typeof hubContractSchema",
 				"description": "The Zod object schema for a unit's contract: responsibility text, inputs and outputs as name and type pairs, errors and states as string lists, and viewports limited to desktop, tablet, mobile or diagram. hubPlanSchema and hubDesignSchema embed it as their contract, so a contract that fails it makes those records fail too."
 			},
 			{
 				"name": "hubPlanSchema",
-				"type": "unknown",
+				"type": "typeof hubPlanSchema",
 				"description": "The Zod object schema for a plan record: unitId, slug, title, goal and path as plain strings; category as one of page, shell, layout, component, function, config or service; createdAt as a timestamp ending in Z; baseRevision as a 40-character lowercase hexadecimal commit SHA; the embedded contract; and contractHash as a 64-character lowercase hexadecimal SHA-256. The plain strings are not format-checked, so an empty unitId, slug, title, goal or path passes."
 			},
 			{
 				"name": "hubDesignSchema",
-				"type": "unknown",
+				"type": "typeof hubDesignSchema",
 				"description": "The Zod object schema for a design version: version such as v001 (v plus at least three digits); generator provider and model as plain strings; prompt and notes as file and SHA-256 pairs (notes may be null); baseRevision as a 40-character lowercase hexadecimal commit SHA; contract and contractHash; an images list (may be empty) whose entries carry file, SHA-256, state, viewport, bytes from 1 to 33554432 and positive integer width and height; and an optional revises anchor. When present, the options list holds 1 to 10 strict objects, each with an id from o1 to o10, a nonblank direction, provider and model, and at least one image."
 			},
 			{
 				"name": "hubApprovalSchema",
-				"type": "unknown",
+				"type": "typeof hubApprovalSchema",
 				"description": "The Zod object schema for an approval record: a UUID id, unitId and version as plain strings (version has no format check), an images list of file and SHA-256 pairs (may be empty), notesSha256 as a 64-character hash or null, the 64-character contractHash, approvedAt as a timestamp ending in Z, and an optional option ID from o1 to o10. The schema does not check that the option appears in the version's options, so this module does not verify that link."
 			},
 			{

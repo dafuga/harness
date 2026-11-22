@@ -2,6 +2,7 @@
 import { createHash } from 'node:crypto';
 import { copyFile, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { CommandFailedError } from './build-kernel.types';
 import { pinnedToolchain } from './pinnedToolchain';
 
 const out = 'target/kernel';
@@ -21,7 +22,7 @@ const reference = [
 
 function run(command: string[], env?: Record<string, string | undefined>): string {
 	const result = Bun.spawnSync(command, { stdout: 'pipe', stderr: 'inherit', env });
-	if (result.exitCode !== 0) throw new Error(`${command.join(' ')} failed`);
+	if (result.exitCode !== 0) throw new CommandFailedError(`${command.join(' ')} failed`);
 	return result.stdout.toString().trim();
 }
 

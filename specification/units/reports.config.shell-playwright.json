@@ -17,7 +17,14 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [],
-		"outputs": [],
+		"outputs": [
+			{
+				"name": "default",
+				"type": "PlaywrightTestConfig",
+				"required": true,
+				"description": "The default Playwright test configuration for the explorer shell specs: tests in ../../tests/e2e whose file name starts with explorer-shell and ends in .spec.ts, one worker, the list reporter, results in ../../test-results/explorer-shell, screenshots only on failure, and the browser launched without --hide-scrollbars. It starts no web server and seeds nothing: the specs build their fixture pages and answer requests from those files."
+			}
+		],
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [],

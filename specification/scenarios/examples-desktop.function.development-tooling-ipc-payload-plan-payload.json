@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.development-tooling-ipc-payload-plan-payload",
+	"title": "desktop.function.development-tooling-ipc-payload-plan-payload examples",
+	"kind": "headless",
+	"units": ["desktop.function.development-tooling-ipc-payload-plan-payload"],
+	"builds": [],
+	"states": [
+		{
+			"id": "keeps-a-valid-component-plan-without-adding-a-contract",
+			"title": "Keeps a valid component plan without adding a contract",
+			"coverage": "required"
+		},
+		{
+			"id": "keeps-a-checked-proposed-contract-on-a-function-plan",
+			"title": "Keeps a checked proposed contract on a function plan",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-an-unknown-category-with-invalid-option",
+			"title": "Rejects an unknown category with Invalid option",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-blank-or-non-text-title-with-invalid-text-field",
+			"title": "Rejects a blank or non-text title with Invalid text field",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-duplicate-contract-errors-with-a-zoderror",
+			"title": "Rejects duplicate contract errors with a ZodError",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.development-tooling-ipc-payload-plan-payload.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"keeps-a-valid-component-plan-without-adding-a-contract",
+				"keeps-a-checked-proposed-contract-on-a-function-plan",
+				"rejects-an-unknown-category-with-invalid-option",
+				"rejects-a-blank-or-non-text-title-with-invalid-text-field",
+				"rejects-duplicate-contract-errors-with-a-zoderror"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"keeps-a-valid-component-plan-without-adding-a-contract",
+				"keeps-a-checked-proposed-contract-on-a-function-plan",
+				"rejects-an-unknown-category-with-invalid-option",
+				"rejects-a-blank-or-non-text-title-with-invalid-text-field",
+				"rejects-duplicate-contract-errors-with-a-zoderror"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"keeps-a-valid-component-plan-without-adding-a-contract",
+				"keeps-a-checked-proposed-contract-on-a-function-plan",
+				"rejects-an-unknown-category-with-invalid-option",
+				"rejects-a-blank-or-non-text-title-with-invalid-text-field",
+				"rejects-duplicate-contract-errors-with-a-zoderror"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

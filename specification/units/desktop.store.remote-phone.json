@@ -27,7 +27,7 @@
 		"outputs": [
 			{
 				"name": "createRemotePhoneStore",
-				"type": "unknown",
+				"type": "RemotePhoneState",
 				"description": "A new RemotePhoneState instance bound to the supplied Workspace and exposed through the RemotePhone type. It holds remote phone status, error, busy, and scan-failure state and acts through the workspace remote phone port."
 			}
 		],
@@ -47,7 +47,7 @@
 				"outputs": [
 					{
 						"name": "createRemotePhoneStore",
-						"type": "unknown",
+						"type": "RemotePhoneState",
 						"description": "A new RemotePhoneState instance bound to the supplied Workspace and exposed through the RemotePhone type. It holds remote phone status, error, busy, and scan-failure state and acts through the workspace remote phone port."
 					}
 				],

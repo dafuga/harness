@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.validator.remote-host",
+	"title": "hub.validator.remote-host examples",
+	"kind": "headless",
+	"units": ["hub.validator.remote-host"],
+	"builds": [],
+	"states": [
+		{
+			"id": "registers-each-host-when-its-id-matches-its-key",
+			"title": "Registers each host when its id matches its key",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-registration-whose-host-id-belongs-to-another-key",
+			"title": "Rejects a registration whose host id belongs to another key",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-registration-with-an-empty-or-oversized-name",
+			"title": "Rejects a registration with an empty or oversized name",
+			"coverage": "required"
+		},
+		{
+			"id": "returns-well-formed-host-and-device-ids-unchanged",
+			"title": "Returns well-formed host and device ids unchanged",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.validator.remote-host.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"registers-each-host-when-its-id-matches-its-key",
+				"rejects-a-registration-whose-host-id-belongs-to-another-key",
+				"rejects-a-registration-with-an-empty-or-oversized-name",
+				"returns-well-formed-host-and-device-ids-unchanged"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"registers-each-host-when-its-id-matches-its-key",
+				"rejects-a-registration-whose-host-id-belongs-to-another-key",
+				"rejects-a-registration-with-an-empty-or-oversized-name",
+				"returns-well-formed-host-and-device-ids-unchanged"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"registers-each-host-when-its-id-matches-its-key",
+				"rejects-a-registration-whose-host-id-belongs-to-another-key",
+				"rejects-a-registration-with-an-empty-or-oversized-name",
+				"returns-well-formed-host-and-device-ids-unchanged"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

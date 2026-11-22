@@ -34,11 +34,7 @@
 				"name": "chooseProject",
 				"type": "Promise<string | null>",
 				"description": "Resolves once the person has finished with the dialog, to the path of the folder they picked or to null when they cancel. The path is the first entry of the dialog's filePaths array, and null is also returned when the dialog is not canceled but that array is empty.",
-				"examples": [
-					"/Users/example/projects/harness-app",
-					null,
-					"/Users/example/Documents/harness-notes"
-				]
+				"examples": ["/workspace/projects/harness-app", null, "/workspace/projects/harness-notes"]
 			}
 		],
 		"errors": [],
@@ -66,9 +62,9 @@
 						"type": "Promise<string | null>",
 						"description": "Resolves once the person has finished with the dialog, to the path of the folder they picked or to null when they cancel. The path is the first entry of the dialog's filePaths array, and null is also returned when the dialog is not canceled but that array is empty.",
 						"examples": [
-							"/Users/example/projects/harness-app",
+							"/workspace/projects/harness-app",
 							null,
-							"/Users/example/Documents/harness-notes"
+							"/workspace/projects/harness-notes"
 						]
 					}
 				],

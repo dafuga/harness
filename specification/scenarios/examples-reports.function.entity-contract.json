@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.entity-contract",
+	"title": "reports.function.entity-contract examples",
+	"kind": "headless",
+	"units": ["reports.function.entity-contract"],
+	"builds": [],
+	"states": [
+		{
+			"id": "required-states-narrowed-or-empty",
+			"title": "Lists required states once, narrowed to the unit, and none for an unnamed unit",
+			"coverage": "required"
+		},
+		{
+			"id": "page-rows-show-purpose-route-and-markup",
+			"title": "A page shows its purpose, route, inputs and markup, or Not recorded for no route",
+			"coverage": "required"
+		},
+		{
+			"id": "category-rows-select-labels",
+			"title": "Each category shows its own rows, and failures or running targets only where declared",
+			"coverage": "required"
+		},
+		{
+			"id": "empty-contract-reads-none",
+			"title": "Explicit empty contracts read None or Nothing declared",
+			"coverage": "required"
+		},
+		{
+			"id": "identifiers-become-lowercase-words",
+			"title": "Identifiers become lowercase words, and empty or spaced text is kept as given",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/reports.function.entity-contract.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"required-states-narrowed-or-empty",
+				"page-rows-show-purpose-route-and-markup",
+				"category-rows-select-labels",
+				"empty-contract-reads-none",
+				"identifiers-become-lowercase-words"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"required-states-narrowed-or-empty",
+				"page-rows-show-purpose-route-and-markup",
+				"category-rows-select-labels",
+				"empty-contract-reads-none",
+				"identifiers-become-lowercase-words"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"required-states-narrowed-or-empty",
+				"page-rows-show-purpose-route-and-markup",
+				"category-rows-select-labels",
+				"empty-contract-reads-none",
+				"identifiers-become-lowercase-words"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

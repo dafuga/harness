@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.component.shared-primitives-atoms-svg-fe-merge",
+	"title": "reports.component.shared-primitives-atoms-svg-fe-merge examples",
+	"kind": "headless",
+	"units": ["reports.component.shared-primitives-atoms-svg-fe-merge"],
+	"builds": [],
+	"states": [
+		{
+			"id": "renders-a-bare-femerge-element-with-its-attributes-and-no-wr",
+			"title": "Renders a bare feMerge element with its attributes and no wrapper when no children are given",
+			"coverage": "required"
+		},
+		{
+			"id": "renders-a-supplied-children-snippet-inside-the-femerge-eleme",
+			"title": "Renders a supplied children snippet inside the feMerge element",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.component.shared-primitives-atoms-svg-fe-merge.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"renders-a-bare-femerge-element-with-its-attributes-and-no-wr",
+				"renders-a-supplied-children-snippet-inside-the-femerge-eleme"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"renders-a-bare-femerge-element-with-its-attributes-and-no-wr",
+				"renders-a-supplied-children-snippet-inside-the-femerge-eleme"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"renders-a-bare-femerge-element-with-its-attributes-and-no-wr",
+				"renders-a-supplied-children-snippet-inside-the-femerge-eleme"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

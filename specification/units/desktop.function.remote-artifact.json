@@ -10,11 +10,13 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/remoteArtifact.ts",
+			"packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/remoteArtifact.types.ts",
 			"packages/desktop/src/utils/remoteArtifact.ts",
 			"packages/desktop/src/utils/verification-evidence/remoteArtifact.ts"
 		],
 		"symbols": [
 			"remoteArtifact",
+			"ArtifactRefusedError",
 			"remoteArtifact",
 			"artifactLimit",
 			"artifactMediaTypes",
@@ -61,7 +63,7 @@
 		"outputs": [
 			{
 				"name": "artifactLimit",
-				"type": "unknown",
+				"type": "number",
 				"description": "The largest raw byte length accepted for one recorded artifact: 11 * 1024 * 1024 bytes, which is 11 MiB. A byteLength above it is refused with largeArtifact; the file is never cut.",
 				"examples": [11534336]
 			},
@@ -84,19 +86,19 @@
 			},
 			{
 				"name": "unshownArtifact",
-				"type": "unknown",
+				"type": "\"The computer sent a recorded file of a kind this app does not show.\"",
 				"description": "The message of the Error that remoteArtifact throws when the value is absent or its mediaType is missing or not in artifactMediaTypes.",
 				"examples": ["The computer sent a recorded file of a kind this app does not show."]
 			},
 			{
 				"name": "largeArtifact",
-				"type": "unknown",
+				"type": "\"The recorded file is too large to be read on this connection.\"",
 				"description": "The message of the Error that remoteArtifact throws when Number(byteLength) is above artifactLimit.",
 				"examples": ["The recorded file is too large to be read on this connection."]
 			},
 			{
 				"name": "otherArtifact",
-				"type": "unknown",
+				"type": "\"The computer sent another recorded file than the one asked for.\"",
 				"description": "The message of the Error that remoteArtifact throws when sha256 is missing or differs from asked, undefined asked included.",
 				"examples": ["The computer sent another recorded file than the one asked for."]
 			},

@@ -82,14 +82,24 @@
 				"name": "stateTests.options",
 				"type": "{ headless?: boolean }",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional headless mode. When true, skips dependency-attributed files and accepts scenario-declared test calls without a state literal or viewport-matrix marker; when false or omitted, attributed files are included and candidates must contain the state literal or, for declared viewports, a matrix marker.",
+				"examples": [
+					{},
+					{
+						"headless": true
+					},
+					{
+						"headless": false
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "stateTests",
 				"type": "Promise<StateTest[]>",
-				"description": "Authored test files that exist in the loaded index and contain a test or it call that is not skipped or todo, plus either the state as a string literal or, when a matching scenario whose tests resolve to the file declares viewports, one of the identifiers catalogCases, previewVariants, variants, previewState or state. Each viewports list holds the viewport IDs of the matching scenarios whose tests resolve to that file, and is empty when only dependency attribution found it.",
+				"description": "Authored test files that exist in the loaded index and contain a test or it call that is not skipped or todo, plus either the state as a string literal or, when a matching scenario whose tests resolve to the file declares viewports, one of the identifiers catalogCases, previewVariants, variants, previewState or state. Each viewports list holds the viewport IDs of the matching scenarios whose tests resolve to that file, and is empty when only dependency attribution found it. Declared native recording factories under tests receive their clip viewports only when their source contains assertions and state marks; an empty factory receives no test credit.",
 				"examples": [
 					[
 						{
@@ -187,14 +197,24 @@
 						"name": "stateTests.options",
 						"type": "{ headless?: boolean }",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional headless mode. When true, skips dependency-attributed files and accepts scenario-declared test calls without a state literal or viewport-matrix marker; when false or omitted, attributed files are included and candidates must contain the state literal or, for declared viewports, a matrix marker.",
+						"examples": [
+							{},
+							{
+								"headless": true
+							},
+							{
+								"headless": false
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "stateTests",
 						"type": "Promise<StateTest[]>",
-						"description": "Authored test files that exist in the loaded index and contain a test or it call that is not skipped or todo, plus either the state as a string literal or, when a matching scenario whose tests resolve to the file declares viewports, one of the identifiers catalogCases, previewVariants, variants, previewState or state. Each viewports list holds the viewport IDs of the matching scenarios whose tests resolve to that file, and is empty when only dependency attribution found it.",
+						"description": "Authored test files that exist in the loaded index and contain a test or it call that is not skipped or todo, plus either the state as a string literal or, when a matching scenario whose tests resolve to the file declares viewports, one of the identifiers catalogCases, previewVariants, variants, previewState or state. Each viewports list holds the viewport IDs of the matching scenarios whose tests resolve to that file, and is empty when only dependency attribution found it. Declared native recording factories under tests receive their clip viewports only when their source contains assertions and state marks; an empty factory receives no test credit.",
 						"examples": [
 							[
 								{

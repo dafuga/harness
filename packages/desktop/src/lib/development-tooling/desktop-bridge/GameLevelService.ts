@@ -1,6 +1,7 @@
 // @harness-uid u_mzhcxeicv4
 import { createHash } from 'node:crypto';
 import type { LevelRequest } from './GameLevelService.types';
+import { LevelGenerationError } from './GameLevelService.types';
 import type { LevelProposal } from '../../../../../game/src/models/game-authoring/Game.types';
 import { assertDocument } from '../../../../../game/src/validators/game-authoring/gameDocument';
 import { LevelValidator } from '../../../../../game/src/validators/game-authoring/LevelValidator';
@@ -20,7 +21,7 @@ export class GameLevelService {
 		this.session.assertProject(input.projectId);
 		const { root } = await this.session.mutable();
 		if (this.session.busy || active.has(root))
-			throw new Error('Wait for the current game operation.');
+			throw new LevelGenerationError('Wait for the current game operation.');
 		active.add(root);
 		try {
 			return await this.propose(root, input);
@@ -33,15 +34,18 @@ export class GameLevelService {
 		const view = input.document.views.find((v) => v.id === input.viewId),
 			planning = view?.planning;
 		if (!view || !planning?.concept.trim() || !planning.description.trim())
-			throw new Error('Describe the concept and level brief first.');
+			throw new LevelGenerationError('Describe the concept and level brief first.');
 		const repository = new GameDocumentRepository(root);
 		if ((await repository.read()).revision !== input.expectedRevision)
-			throw new Error('The game changed. Reload before generating.');
+			throw new LevelGenerationError('The game changed. Reload before generating.');
 		const result = await generateWithProvider(root, input, this.providers);
 		this.session.assertProject(input.projectId);
 		if ((await repository.read()).revision !== input.expectedRevision)
-			throw new Error('The game changed during generation. Reload before continuing.');
-		if (result.model !== input.model) throw new Error('The provider returned a different model.');
+			throw new LevelGenerationError(
+				'The game changed during generation. Reload before continuing.'
+			);
+		if (result.model !== input.model)
+			throw new LevelGenerationError('The provider returned a different model.');
 		const generated = parse(result.text);
 		const proposal = {
 			...generated,
@@ -56,7 +60,7 @@ export class GameLevelService {
 	}
 }
 function parse(text: string) {
-	if (text.length > 100000) throw new Error('The generated level is too large.');
+	if (text.length > 100000) throw new LevelGenerationError('The generated level is too large.');
 	const body = text
 		.trim()
 		.replace(/^```(?:json)?\s*/, '')
@@ -69,7 +73,9 @@ function parse(text: string) {
 		result.summary.length > 4000 ||
 		!LevelValidator.layout(result.layout)
 	)
-		throw new Error('The model returned an invalid level layout. Try refining the brief.');
+		throw new LevelGenerationError(
+			'The model returned an invalid level layout. Try refining the brief.'
+		);
 	return { summary: result.summary, layout: result.layout };
 }
 function prompt(input: LevelRequest) {
@@ -107,7 +113,7 @@ async function generateWithProvider(
 		onStatus() {}
 	});
 	if (sourceChanges(before, await sourceSnapshot(root)).length)
-		throw new Error(
+		throw new LevelGenerationError(
 			'Project files changed during generation. Review the project before continuing.'
 		);
 	return result;
@@ -120,6 +126,8 @@ function levelJson(body: string): Record<string, unknown> {
 	try {
 		return JSON.parse(body) as Record<string, unknown>;
 	} catch {
-		throw new Error('The model returned an invalid level layout. Try refining the brief.');
+		throw new LevelGenerationError(
+			'The model returned an invalid level layout. Try refining the brief.'
+		);
 	}
 }

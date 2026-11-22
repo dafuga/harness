@@ -1,0 +1,114 @@
+{
+	"schemaVersion": 1,
+	"id": "command.execution-runtimes-jobs-command-jobs-queue",
+	"uid": "u_uig432kach",
+	"kind": "command",
+	"title": "jobsQueue",
+	"responsibility": "Validate explicit queue JSON, capacity overrides and bounded what-if counts, including the current active unit registry.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/execution-runtimes/jobs-command/jobsQueue.ts"],
+		"symbols": ["jobsQueue"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "jobsQueue.options",
+				"type": "JobsOptions",
+				"required": true,
+				"description": "Parsed CLI flags selecting history home, driver input, explicit queue, capacity or what-if. An omitted home uses HARNESS_JOBS_HOME or the stable per-user directory."
+			},
+			{
+				"name": "jobsQueue.live",
+				"type": "QueueSnapshot",
+				"required": true,
+				"description": "Current read-only queue and capacity snapshot, used unless an explicit queue file replaces it; what-if excludes its running and queued jobs."
+			}
+		],
+		"outputs": [
+			{
+				"name": "jobsQueue",
+				"type": "QueueSnapshot",
+				"description": "Validated queue with capacity overrides, or a replacement what-if queue without live work. Invalid JSON, counts and required flags throw."
+			}
+		],
+		"errors": [
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Rejects invalid lifecycle timing, identity or scheduling flags before the operation can record or estimate work."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Invalid explicit queue JSON, unreadable registry inputs or schema violations propagate before scheduling."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "jobsQueue",
+				"inputs": [
+					{
+						"name": "jobsQueue.options",
+						"type": "JobsOptions",
+						"required": true,
+						"description": "Parsed CLI flags selecting history home, driver input, explicit queue, capacity or what-if. An omitted home uses HARNESS_JOBS_HOME or the stable per-user directory."
+					},
+					{
+						"name": "jobsQueue.live",
+						"type": "QueueSnapshot",
+						"required": true,
+						"description": "Current read-only queue and capacity snapshot, used unless an explicit queue file replaces it; what-if excludes its running and queued jobs."
+					}
+				],
+				"outputs": [
+					{
+						"name": "jobsQueue",
+						"type": "QueueSnapshot",
+						"description": "Validated queue with capacity overrides, or a replacement what-if queue without live work. Invalid JSON, counts and required flags throw."
+					}
+				],
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Rejects invalid lifecycle timing, identity or scheduling flags before the operation can record or estimate work."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.execution-runtimes-jobs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-queue-eta",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/execution-runtimes/jobs-command/jobsQueue.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/execution-runtimes/jobs-command/jobsQueue.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

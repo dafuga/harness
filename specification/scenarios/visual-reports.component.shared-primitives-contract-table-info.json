@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "visual-reports.component.shared-primitives-contract-table-info",
+	"title": "reports.component.shared-primitives-contract-table-info states",
+	"kind": "ui",
+	"units": ["reports.component.shared-primitives-contract-table-info"],
+	"states": [
+		{
+			"id": "default",
+			"title": "Default",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-contract-table-info"]
+		},
+		{
+			"id": "focused",
+			"title": "Focused",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-contract-table-info"]
+		},
+		{
+			"id": "hovered",
+			"title": "Hovered",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-contract-table-info"]
+		},
+		{
+			"id": "touch",
+			"title": "Touch",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-contract-table-info"]
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 920,
+			"height": 700
+		},
+		{
+			"id": "tablet",
+			"width": 768,
+			"height": 900
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "states",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts tests/e2e/units/explorer-shell-unit-reports.component.shared-primitives-contract-table-info.spec.ts",
+			"cwd": "packages/reports"
+		}
+	],
+	"evidence": [
+		{
+			"id": "screens",
+			"kind": "screenshot",
+			"states": ["default", "focused", "hovered", "touch"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"build": "shell-fixture",
+			"capture": "full-page",
+			"required": true
+		}
+	]
+}

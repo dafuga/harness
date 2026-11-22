@@ -4,6 +4,7 @@ import type {
 	EntityEvidenceResult
 } from '../../models/verification-evidence/DesktopEvidence.types';
 import { hostedEvidenceSchema } from '../../utils/verification-evidence/hostedEvidenceSchema';
+import { HostedEvidenceValidationError } from './HostedEvidenceValidator.types';
 
 const unaccepted = 'This app does not accept the hosted evidence answer.';
 
@@ -42,12 +43,13 @@ function parentBefore({ scope, evidence }: EntityEvidenceResult) {
 export class HostedEvidenceValidator {
 	evidence(value: unknown, query: EntityEvidenceQuery): EntityEvidenceResult {
 		const parsed = hostedEvidenceSchema.safeParse(value);
-		if (!parsed.success) throw new Error(unaccepted);
+		if (!parsed.success) throw new HostedEvidenceValidationError(unaccepted);
 		const answer = value as EntityEvidenceResult;
 		if (bound(answer, query).some(([found, asked]) => found !== asked))
-			throw new Error('The hosted answer is of another evidence read.');
+			throw new HostedEvidenceValidationError('The hosted answer is of another evidence read.');
 		const current = query.mode === 'current';
-		if ((current && !tipAlone(answer, query)) || !parentBefore(answer)) throw new Error(unaccepted);
+		if ((current && !tipAlone(answer, query)) || !parentBefore(answer))
+			throw new HostedEvidenceValidationError(unaccepted);
 		return answer;
 	}
 }

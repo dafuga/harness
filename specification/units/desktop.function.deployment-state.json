@@ -19,14 +19,20 @@
 				"type": "string",
 				"required": true,
 				"description": "Directory inside a Git repository or one of its worktrees, passed to git -C to locate the shared common Git directory that holds the harness-deployments/receipts.json file. Every worktree of a repository resolves to the same receipts, and a directory outside any repository makes git fail, so the operation rejects.",
-				"examples": ["/Users/dev/code/example-repo", "/Users/dev/code/example-repo-deploy"]
+				"examples": [
+					"/workspace/project/code/example-repo",
+					"/workspace/project/code/example-repo-deploy"
+				]
 			},
 			{
 				"name": "saveDeployment.root",
 				"type": "string",
 				"required": true,
 				"description": "Directory inside a Git repository or one of its worktrees, passed to git -C to locate the shared receipts directory before the stored receipts are read and replaced. A directory outside any repository makes git fail, so the save rejects and nothing is written.",
-				"examples": ["/Users/dev/code/example-repo", "/Users/dev/code/example-repo-deploy"]
+				"examples": [
+					"/workspace/project/code/example-repo",
+					"/workspace/project/code/example-repo-deploy"
+				]
 			},
 			{
 				"name": "saveDeployment.receipt",
@@ -59,7 +65,10 @@
 				"type": "string",
 				"required": true,
 				"description": "Directory inside a Git repository or one of its worktrees, passed to git -C to locate the shared receipts and also passed unchanged to plugin.discover. A directory outside any repository makes git fail, so the call rejects before discover is called.",
-				"examples": ["/Users/dev/code/example-repo", "/Users/dev/code/example-repo-deploy"]
+				"examples": [
+					"/workspace/project/code/example-repo",
+					"/workspace/project/code/example-repo-deploy"
+				]
 			},
 			{
 				"name": "deploymentStatus.plugin",
@@ -99,12 +108,12 @@
 			},
 			{
 				"name": "saveDeployment",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Resolves with undefined once the updated receipt list has been written to a temporary file in the receipts directory and renamed over receipts.json. Saves to that directory are queued in this process so they run one at a time, and read, validation or write errors reject the promise."
 			},
 			{
 				"name": "deploymentStatus",
-				"type": "unknown",
+				"type": "Promise<{ environment: \"dev\" | \"stage\" | \"preprod\" | \"prod\"; receipt: DeploymentReceipt | null; available: boolean; reason: string; }[]>",
 				"description": "One entry per environment, in the order dev, stage, preprod and prod, with its stored receipt or null and available set to whether discover reports a target for that environment. The reason is 'Cloudflare target configured.' or 'Deployment target not configured.' for each entry, or 'Cloudflare configuration is unavailable or invalid.' for every entry when discover rejects.",
 				"examples": [
 					[
@@ -205,7 +214,10 @@
 						"type": "string",
 						"required": true,
 						"description": "Directory inside a Git repository or one of its worktrees, passed to git -C to locate the shared common Git directory that holds the harness-deployments/receipts.json file. Every worktree of a repository resolves to the same receipts, and a directory outside any repository makes git fail, so the operation rejects.",
-						"examples": ["/Users/dev/code/example-repo", "/Users/dev/code/example-repo-deploy"]
+						"examples": [
+							"/workspace/project/code/example-repo",
+							"/workspace/project/code/example-repo-deploy"
+						]
 					}
 				],
 				"outputs": [
@@ -265,7 +277,10 @@
 						"type": "string",
 						"required": true,
 						"description": "Directory inside a Git repository or one of its worktrees, passed to git -C to locate the shared receipts directory before the stored receipts are read and replaced. A directory outside any repository makes git fail, so the save rejects and nothing is written.",
-						"examples": ["/Users/dev/code/example-repo", "/Users/dev/code/example-repo-deploy"]
+						"examples": [
+							"/workspace/project/code/example-repo",
+							"/workspace/project/code/example-repo-deploy"
+						]
 					},
 					{
 						"name": "saveDeployment.receipt",
@@ -297,7 +312,7 @@
 				"outputs": [
 					{
 						"name": "saveDeployment",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Resolves with undefined once the updated receipt list has been written to a temporary file in the receipts directory and renamed over receipts.json. Saves to that directory are queued in this process so they run one at a time, and read, validation or write errors reject the promise."
 					}
 				],
@@ -328,7 +343,10 @@
 						"type": "string",
 						"required": true,
 						"description": "Directory inside a Git repository or one of its worktrees, passed to git -C to locate the shared receipts and also passed unchanged to plugin.discover. A directory outside any repository makes git fail, so the call rejects before discover is called.",
-						"examples": ["/Users/dev/code/example-repo", "/Users/dev/code/example-repo-deploy"]
+						"examples": [
+							"/workspace/project/code/example-repo",
+							"/workspace/project/code/example-repo-deploy"
+						]
 					},
 					{
 						"name": "deploymentStatus.plugin",
@@ -340,7 +358,7 @@
 				"outputs": [
 					{
 						"name": "deploymentStatus",
-						"type": "unknown",
+						"type": "Promise<{ environment: \"dev\" | \"stage\" | \"preprod\" | \"prod\"; receipt: DeploymentReceipt | null; available: boolean; reason: string; }[]>",
 						"description": "One entry per environment, in the order dev, stage, preprod and prod, with its stored receipt or null and available set to whether discover reports a target for that environment. The reason is 'Cloudflare target configured.' or 'Deployment target not configured.' for each entry, or 'Cloudflare configuration is unavailable or invalid.' for every entry when discover rejects.",
 						"examples": [
 							[

@@ -12,7 +12,9 @@
 			"src/repositories/agents-providers/ModuleTaskRepository.ts",
 			"src/repositories/agents-providers/ModuleTaskRepository.types.ts",
 			"src/repositories/agents-providers/module-task-repository/syncTaskQueue.ts",
+			"src/repositories/agents-providers/module-task-repository/syncTaskQueue.types.ts",
 			"src/repositories/agents-providers/module-task-repository/taskOwner.ts",
+			"src/repositories/agents-providers/module-task-repository/taskOwner.types.ts",
 			"src/repositories/agents-providers/module-task-repository/taskSchemas.ts"
 		],
 		"symbols": [
@@ -38,8 +40,11 @@
 			"TaskSupervision",
 			"TaskRunResult",
 			"TaskRunner",
+			"TaskQueueContentionError",
 			"syncTaskQueue",
+			"TaskQueueSyncError",
 			"taskOwner",
+			"TaskOwnerIdentityError",
 			"featureSchema",
 			"wantedContractSchema",
 			"taskPlatformSchema",
@@ -56,7 +61,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem path passed to GitAdapter as the repository root and used to resolve the shared Git directory for task-owner identity. It must point to the repository whose task ref this instance manages.",
-				"examples": ["/Users/danielfugere/projects/harness"]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "ModuleTaskRepository.update.change",
@@ -68,7 +73,7 @@
 				"name": "ModuleTaskRepository.update.source",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional source commit supplied as a parent when creating a queue commit; when omitted, the prior queue commit is used, or HEAD seeds the first queue commit. The value must identify a commit Git accepts as a parent.",
 				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
@@ -109,17 +114,9 @@
 		"outputs": [
 			{
 				"name": "ModuleTaskRepository.read",
-				"type": "unknown",
-				"description": "Resolves to an object containing commit and data: the commit at refs/harness/tasks, or null when the ref is absent, and queue data validated by queueSchema. If absent, data is an empty version-1 queue; invalid committed JSON or queue shape rejects the Promise.",
+				"type": "Promise<{ commit: string | undefined; data: ModuleTaskQueue }>",
+				"description": "Resolves to an object containing commit and data: the commit at refs/harness/tasks, or undefined when the ref is absent, and queue data validated by queueSchema. If absent, data is an empty version-1 queue; invalid committed JSON or queue shape rejects the Promise. The JSON example shows an existing ref because an explicit undefined commit is not representable in JSON.",
 				"examples": [
-					{
-						"commit": null,
-						"data": {
-							"schemaVersion": 1,
-							"features": [],
-							"tasks": []
-						}
-					},
 					{
 						"commit": "0123456789abcdef0123456789abcdef01234567",
 						"data": {
@@ -132,37 +129,29 @@
 			},
 			{
 				"name": "ModuleTaskRepository.update",
-				"type": "unknown",
-				"description": "Resolves to the callback return value and resulting task-ref commit; unchanged normalized queue data preserves the previous commit. It retries ref compare-and-swap at most 16 times, then throws if updates keep racing.",
+				"type": "Promise<{ value: T; commit: string | undefined }>",
+				"description": "Resolves to the callback return value and resulting task-ref commit; unchanged normalized queue data preserves the previous commit. It retries ref compare-and-swap at most 16 times, then throws if updates keep racing. When no task ref exists and the normalized queue is unchanged, commit is undefined; the JSON example shows a committed result.",
 				"examples": [
 					{
 						"value": "updated",
 						"commit": "0123456789abcdef0123456789abcdef01234567"
-					},
-					{
-						"value": "unchanged",
-						"commit": null
 					}
 				]
 			},
 			{
 				"name": "ModuleTaskRepository.sync",
-				"type": "unknown",
-				"description": "Resolves to the requested remote and queue-ref commit after syncing the explicit task ref; it fetches advertised state and pushes the local ref when one exists. It rejects for an invalid remote name or divergent queues.",
+				"type": "Promise<{ remote: string; commit: string | undefined }>",
+				"description": "Resolves to the requested remote and queue-ref commit after syncing the explicit task ref; it fetches advertised state and pushes the local ref when one exists. It rejects for an invalid remote name or divergent queues. If neither side leaves a local task ref, commit is undefined; the JSON example shows a committed queue.",
 				"examples": [
 					{
 						"remote": "origin",
 						"commit": "0123456789abcdef0123456789abcdef01234567"
-					},
-					{
-						"remote": "origin",
-						"commit": null
 					}
 				]
 			},
 			{
 				"name": "ModuleTaskRepository.owner",
-				"type": "unknown",
+				"type": "Promise<{ workspace: string; pid: number; startedAt: string }>",
 				"description": "Resolves to a local workspace UUID, current process PID, and start time from ProcessIdentityAdapter after creating or reading harness/task-owner-id under the Git common directory. It throws if the stored UUID is invalid or current process start time is unavailable.",
 				"examples": [
 					{
@@ -174,22 +163,18 @@
 			},
 			{
 				"name": "syncTaskQueue",
-				"type": "unknown",
-				"description": "Resolves to the requested remote and current task-ref commit after fetching an advertised queue ref and pushing the local ref when present. It returns a null commit when neither side leaves a local task ref, and throws for an invalid remote name or divergent histories.",
+				"type": "Promise<{ remote: string; commit: string | undefined }>",
+				"description": "Resolves to the requested remote and current task-ref commit after fetching an advertised queue ref and pushing the local ref when present. It returns an explicit undefined commit when neither side leaves a local task ref, and throws for an invalid remote name or divergent histories. The JSON example shows a committed queue.",
 				"examples": [
 					{
 						"remote": "origin",
 						"commit": "0123456789abcdef0123456789abcdef01234567"
-					},
-					{
-						"remote": "origin",
-						"commit": null
 					}
 				]
 			},
 			{
 				"name": "taskOwner",
-				"type": "unknown",
+				"type": "Promise<{ workspace: string; pid: number; startedAt: string }>",
 				"description": "Resolves to a local workspace UUID, the current process PID, and its start time returned by ProcessIdentityAdapter. It creates or reads harness/task-owner-id under the repository's Git common directory and throws if that UUID is invalid or the process start time is unavailable.",
 				"examples": [
 					{
@@ -201,27 +186,27 @@
 			},
 			{
 				"name": "featureSchema",
-				"type": "unknown",
+				"type": "typeof featureSchema",
 				"description": "Zod schema for a strict feature object with exactly id, goal, and tldr; id uses the unit ID rule and a maximum length of 150, while both text fields are trimmed and limited to 1–16,000 characters. It validates feature records stored in the queue."
 			},
 			{
 				"name": "wantedContractSchema",
-				"type": "unknown",
+				"type": "typeof wantedContractSchema",
 				"description": "Zod schema for a strict contract object with responsibility, inputs, outputs, and errors; text is trimmed and limited to 1–16,000 characters, and outputs must contain at least one contract item. It validates the requested contract saved with a task input."
 			},
 			{
 				"name": "taskInputSchema",
-				"type": "unknown",
+				"type": "typeof taskInputSchema",
 				"description": "Zod schema for a strict task request with validated unit IDs, required title/instructions/wantedContract, and optional module goal, verification files, provider, intelligence, and assignee; model defaults to auto. Verification files are limited to 64 repository-relative paths that name a test or explicit verification fixture."
 			},
 			{
 				"name": "storedTaskSchema",
-				"type": "unknown",
+				"type": "typeof storedTaskSchema",
 				"description": "Zod schema for a persisted queue task that replaces incoming feature/module IDs with validated feature and module records and requires sourceCommit, contractHash, status, and createdAt. It restricts status to the declared values, commit IDs to lowercase 40-character hex strings, contractHash to 64 lowercase hex characters, and defaults omitted review/history/attempt arrays to empty arrays."
 			},
 			{
 				"name": "queueSchema",
-				"type": "unknown",
+				"type": "typeof queueSchema",
 				"description": "Zod schema for the strict root queue object with schemaVersion 1 and feature and task arrays. It validates each array entry and caps the arrays at 1,000 features and 10,000 tasks."
 			}
 		],
@@ -240,6 +225,11 @@
 				"name": "ZodError",
 				"type": "thrown",
 				"description": "Thrown when queue data read from Git or candidate data passed to update fails queueSchema validation. Strict objects, schema version, item rules, and queue limits apply."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Changing an existing wanted contract is refused; create a new task rather than rewriting the immutable contract."
 			}
 		],
 		"errorStatus": "declared",
@@ -250,17 +240,9 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskRepository.read",
-						"type": "unknown",
-						"description": "Resolves to an object containing commit and data: the commit at refs/harness/tasks, or null when the ref is absent, and queue data validated by queueSchema. If absent, data is an empty version-1 queue; invalid committed JSON or queue shape rejects the Promise.",
+						"type": "Promise<{ commit: string | undefined; data: ModuleTaskQueue }>",
+						"description": "Resolves to an object containing commit and data: the commit at refs/harness/tasks, or undefined when the ref is absent, and queue data validated by queueSchema. If absent, data is an empty version-1 queue; invalid committed JSON or queue shape rejects the Promise. The JSON example shows an existing ref because an explicit undefined commit is not representable in JSON.",
 						"examples": [
-							{
-								"commit": null,
-								"data": {
-									"schemaVersion": 1,
-									"features": [],
-									"tasks": []
-								}
-							},
 							{
 								"commit": "0123456789abcdef0123456789abcdef01234567",
 								"data": {
@@ -299,7 +281,7 @@
 						"name": "ModuleTaskRepository.update.source",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional source commit supplied as a parent when creating a queue commit; when omitted, the prior queue commit is used, or HEAD seeds the first queue commit. The value must identify a commit Git accepts as a parent.",
 						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
@@ -307,16 +289,12 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskRepository.update",
-						"type": "unknown",
-						"description": "Resolves to the callback return value and resulting task-ref commit; unchanged normalized queue data preserves the previous commit. It retries ref compare-and-swap at most 16 times, then throws if updates keep racing.",
+						"type": "Promise<{ value: T; commit: string | undefined }>",
+						"description": "Resolves to the callback return value and resulting task-ref commit; unchanged normalized queue data preserves the previous commit. It retries ref compare-and-swap at most 16 times, then throws if updates keep racing. When no task ref exists and the normalized queue is unchanged, commit is undefined; the JSON example shows a committed result.",
 						"examples": [
 							{
 								"value": "updated",
 								"commit": "0123456789abcdef0123456789abcdef01234567"
-							},
-							{
-								"value": "unchanged",
-								"commit": null
 							}
 						]
 					}
@@ -354,16 +332,12 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskRepository.sync",
-						"type": "unknown",
-						"description": "Resolves to the requested remote and queue-ref commit after syncing the explicit task ref; it fetches advertised state and pushes the local ref when one exists. It rejects for an invalid remote name or divergent queues.",
+						"type": "Promise<{ remote: string; commit: string | undefined }>",
+						"description": "Resolves to the requested remote and queue-ref commit after syncing the explicit task ref; it fetches advertised state and pushes the local ref when one exists. It rejects for an invalid remote name or divergent queues. If neither side leaves a local task ref, commit is undefined; the JSON example shows a committed queue.",
 						"examples": [
 							{
 								"remote": "origin",
 								"commit": "0123456789abcdef0123456789abcdef01234567"
-							},
-							{
-								"remote": "origin",
-								"commit": null
 							}
 						]
 					}
@@ -383,7 +357,7 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskRepository.owner",
-						"type": "unknown",
+						"type": "Promise<{ workspace: string; pid: number; startedAt: string }>",
 						"description": "Resolves to a local workspace UUID, current process PID, and start time from ProcessIdentityAdapter after creating or reading harness/task-owner-id under the Git common directory. It throws if the stored UUID is invalid or current process start time is unavailable.",
 						"examples": [
 							{
@@ -430,16 +404,12 @@
 				"outputs": [
 					{
 						"name": "syncTaskQueue",
-						"type": "unknown",
-						"description": "Resolves to the requested remote and current task-ref commit after fetching an advertised queue ref and pushing the local ref when present. It returns a null commit when neither side leaves a local task ref, and throws for an invalid remote name or divergent histories.",
+						"type": "Promise<{ remote: string; commit: string | undefined }>",
+						"description": "Resolves to the requested remote and current task-ref commit after fetching an advertised queue ref and pushing the local ref when present. It returns an explicit undefined commit when neither side leaves a local task ref, and throws for an invalid remote name or divergent histories. The JSON example shows a committed queue.",
 						"examples": [
 							{
 								"remote": "origin",
 								"commit": "0123456789abcdef0123456789abcdef01234567"
-							},
-							{
-								"remote": "origin",
-								"commit": null
 							}
 						]
 					}
@@ -466,7 +436,7 @@
 				"outputs": [
 					{
 						"name": "taskOwner",
-						"type": "unknown",
+						"type": "Promise<{ workspace: string; pid: number; startedAt: string }>",
 						"description": "Resolves to a local workspace UUID, the current process PID, and its start time returned by ProcessIdentityAdapter. It creates or reads harness/task-owner-id under the repository's Git common directory and throws if that UUID is invalid or the process start time is unavailable.",
 						"examples": [
 							{
@@ -496,13 +466,13 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem path passed to GitAdapter as the repository root and used to resolve the shared Git directory for task-owner identity. It must point to the repository whose task ref this instance manages.",
-						"examples": ["/Users/danielfugere/projects/harness"]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskRepository.constructor",
-						"type": "unknown",
+						"type": "ModuleTaskRepository",
 						"description": "The constructed ModuleTaskRepository instance retains the supplied root, creates its GitAdapter, and exposes refs/harness/tasks as its queue ref. Construction does not read or write the task queue."
 					}
 				],
@@ -519,6 +489,11 @@
 		},
 		{
 			"unit": "adapter.process-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},

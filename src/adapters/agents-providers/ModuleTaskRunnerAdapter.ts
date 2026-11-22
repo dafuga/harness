@@ -19,7 +19,7 @@ import {
 /** Run the installed CLIs with saved login, exact model/effort and public output only. */
 export class ModuleTaskRunnerAdapter implements TaskRunner {
 	constructor(private readonly execute: TaskProcessExecutor = taskProcess) {}
-	command(selection: TaskSelection): string[] {
+	command(selection: TaskSelection & Pick<TaskRunInput, 'images'>): string[] {
 		if (selection.provider === 'claude') return claudeTaskCommand(selection);
 		return [
 			'codex',
@@ -41,6 +41,7 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 			`model_auto_compact_token_limit=${providerCompactionTokens}`,
 			'-c',
 			'tool_output_token_limit=12000',
+			...(selection.images ?? []).flatMap((path) => ['-i', path]),
 			'-'
 		];
 	}
@@ -55,7 +56,7 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 			(current) =>
 				this.execute(
 					completionCommand(this.command(current), current.provider, completion === true),
-					current
+					taskImageInput(current)
 				),
 			(events, code, current) =>
 				current.provider === 'claude'
@@ -102,6 +103,16 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 			text: (finalMessageOnly ? (messages.at(-1) ?? '') : messages.join('\n')).slice(-16000)
 		};
 	}
+}
+function taskImageInput(input: TaskRunInput): TaskRunInput {
+	if (input.provider !== 'claude' || !input.images?.length) return input;
+	return {
+		...input,
+		prompt:
+			input.prompt +
+			'\n\nRead these extracted frame images before editing:\n' +
+			input.images.map((path) => JSON.stringify(path)).join('\n')
+	};
 }
 function completionCommand(
 	command: string[],

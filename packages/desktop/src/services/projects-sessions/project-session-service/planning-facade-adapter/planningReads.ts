@@ -3,11 +3,12 @@ import type { PlanningContext } from '../../../../utils/projects-sessions/planni
 import { planRecord } from '../../../../utils/projects-sessions/planning-reads/planRecord';
 import type { PlanImageQuery } from '../../../../models/planning-collaboration/PlanningPort.types';
 import { messageInfo } from '../../../../utils/projects-sessions/planningConvert';
+import { PlanningReadError } from './planningReads.types';
 
 export async function planningReads(context: PlanningContext, revision: string) {
 	const snapshot = await context.api.snapshot({ revision });
 	if (snapshot.rejected.length)
-		throw new Error(snapshot.rejected.map((p) => p.path + ': ' + p.message).join('\n'));
+		throw new PlanningReadError(snapshot.rejected.map((p) => p.path + ': ' + p.message).join('\n'));
 	return Promise.all(snapshot.plans.map((p) => planRecord(context, p, revision)));
 }
 
@@ -17,7 +18,7 @@ export async function readPlanMessages(
 ) {
 	const plan = await context.api.readPlan({ unitId: data.entityId, revision: data.revision }),
 		thread = plan.threads.find((t) => t.id === data.threadId);
-	if (!thread) throw new Error('Thread does not belong to this entity.');
+	if (!thread) throw new PlanningReadError('Thread does not belong to this entity.');
 	return thread.messages.map(messageInfo);
 }
 
@@ -26,7 +27,7 @@ export async function readPlanImage(context: PlanningContext, query: PlanImageQu
 	const image = plan.versions
 		.find((v) => v.version === query.version)
 		?.images.find((i) => i.sha256 === query.sha256);
-	if (!image) throw new Error('Image is not part of this entity/version.');
+	if (!image) throw new PlanningReadError('Image is not part of this entity/version.');
 	return (
 		await context.api.readImage({
 			unitId: query.entityId,

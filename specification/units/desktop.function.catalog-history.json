@@ -21,9 +21,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository root passed to gitRead for the Git history query. It has no effect when the unit has no owned source paths and no documentation path.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "catalogHistory.revision",
@@ -85,7 +83,7 @@
 		"outputs": [
 			{
 				"name": "catalogHistory",
-				"type": "unknown",
+				"type": "Promise<{ id: string; at: string; kind: \"commit\"; title: string; detail: string; commit: string; version: null; }[]>",
 				"description": "A promise resolving to at most 100 Git commits for the supplied revision, filtered to unit.owns.source and unit.documentation when present. Each entry contains the commit hash as id and commit, the author date and subject, kind “commit”, the fixed source-change detail, and version null; no paths or no matching commits yields an empty array.",
 				"examples": [
 					[],
@@ -120,9 +118,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository root passed to gitRead for the Git history query. It has no effect when the unit has no owned source paths and no documentation path.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "catalogHistory.revision",
@@ -184,7 +180,7 @@
 				"outputs": [
 					{
 						"name": "catalogHistory",
-						"type": "unknown",
+						"type": "Promise<{ id: string; at: string; kind: \"commit\"; title: string; detail: string; commit: string; version: null; }[]>",
 						"description": "A promise resolving to at most 100 Git commits for the supplied revision, filtered to unit.owns.source and unit.documentation when present. Each entry contains the commit hash as id and commit, the author date and subject, kind “commit”, the fixed source-change detail, and version null; no paths or no matching commits yields an empty array.",
 						"examples": [
 							[],

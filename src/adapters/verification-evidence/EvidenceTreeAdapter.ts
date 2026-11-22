@@ -1,5 +1,10 @@
 // @harness-uid u_pkblm2rnm6
-import type { TreeCommit, TreeFile } from './EvidenceTreeAdapter.types';
+import {
+	InvalidGitBatchResponseError,
+	type TreeCommit,
+	type TreeFile
+} from './EvidenceTreeAdapter.types';
+import { ExpectedCliError } from '../../core/errors';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -43,10 +48,10 @@ export class EvidenceTreeAdapter {
 		return result.code === 0 ? result.stdout : undefined;
 	}
 
-	/** Exact raw blobs in one batch; missing paths stay absent and duplicate objects are read once. */
+	/** Exact requested blobs in bounded batches; missing paths stay absent and duplicate objects are read once. */
 	async readMany(commit: string, paths: string[]): Promise<Map<string, Buffer>> {
 		if (paths.length === 0) return new Map();
-		const listed = await this.list(commit);
+		const listed = await this.list(commit, paths);
 		const requested = paths.flatMap((path) => {
 			const hash = listed.get(path);
 			return hash ? [[path, hash] as const] : [];
@@ -71,17 +76,26 @@ export class EvidenceTreeAdapter {
 	private readonly blobSizes = new Map<string, number>();
 
 	/** Every file path at a commit with its blob id (sizes are kept for batch reads). */
-	async list(commit: string): Promise<Map<string, string>> {
-		const output = await this.git.run(['ls-tree', '-r', '-l', '-z', commit]);
-		const entries = output
-			.split('\0')
-			.map((line) => /^\d+ blob ([0-9a-f]+) +([0-9]+)\t(.+)$/s.exec(line))
-			.flatMap((match): Array<[string, string]> => {
-				if (!match) return [];
-				this.blobSizes.set(match[1], Number(match[2]));
-				return [[match[3], match[1]]];
-			});
-		return new Map(entries);
+	async list(commit: string, paths?: string[]): Promise<Map<string, string>> {
+		if (paths?.length === 0) return new Map();
+		if (paths?.some((path) => Buffer.byteLength(path) + 128 > 32 * 1024))
+			throw new ExpectedCliError('A scoped evidence path exceeds the 32KiB argument budget.');
+		const selected = new Map<string, string>();
+		const scopes = paths
+			? batchGroups(
+					[...new Set(paths)],
+					new Map(paths.map((path) => [path, Buffer.byteLength(path)])),
+					32 * 1024
+				)
+			: [undefined];
+		const args = ['--literal-pathspecs', 'ls-tree', '-r', '-l', '-z', commit];
+		for (const scope of scopes)
+			rememberListing(
+				await this.git.run(scope ? [...args, '--', ...scope] : args),
+				selected,
+				this.blobSizes
+			);
+		return selected;
 	}
 
 	/** Creates a commit that adds files to its first parent's tree; no ref is moved. */
@@ -90,7 +104,7 @@ export class EvidenceTreeAdapter {
 		const env = { GIT_INDEX_FILE: join(scratch, 'index') };
 		try {
 			if (input.parents[0]) await this.git.run(['read-tree', input.parents[0]], { env });
-			const blobs = await this.blobs(input.files);
+			const blobs = await commitBlobs(this.git, input.files);
 			const info = input.files.map((file, index) => `100644 ${blobs[index]}\t${file.path}\n`);
 			await this.git.run(['update-index', '--add', '--index-info'], { env, input: info.join('') });
 			const tree = await this.git.run(['write-tree'], { env });
@@ -110,21 +124,6 @@ export class EvidenceTreeAdapter {
 	}
 
 	/** Files on disk are hashed in one process; generated content one at a time. */
-	private async blobs(files: TreeFile[]): Promise<string[]> {
-		const onDisk = files.flatMap((file) => ('file' in file.content ? [file.content.file] : []));
-		const hashed = onDisk.length
-			? (await this.git.run(['hash-object', '-w', '--stdin-paths'], { input: onDisk.join('\n') }))
-					.split('\n')
-					.reverse()
-			: [];
-		const ids: string[] = [];
-		for (const { content } of files) {
-			if ('file' in content) ids.push(hashed.pop() ?? '');
-			else if ('blob' in content) ids.push(content.blob);
-			else ids.push(await this.git.run(['hash-object', '-w', '--stdin'], { input: content.bytes }));
-		}
-		return ids;
-	}
 }
 
 /** Byte lengths delimit binary content; a malformed protocol response never becomes evidence. */
@@ -168,15 +167,45 @@ function batchBlobs(bytes: Buffer, hashes: string[]): Map<string, Buffer> {
 		);
 		const size = Number(header?.[2]);
 		if (end < 0 || header?.[1] !== hash || !Number.isSafeInteger(size))
-			throw new Error('Invalid Git batch response');
+			throw new InvalidGitBatchResponseError('Invalid Git batch response');
 		const start = end + 1,
 			next = start + size;
-		if (next >= bytes.length || bytes[next] !== 10) throw new Error('Invalid Git batch response');
+		if (next >= bytes.length || bytes[next] !== 10)
+			throw new InvalidGitBatchResponseError('Invalid Git batch response');
 		blobs.set(hash, bytes.subarray(start, next));
 		offset = next + 1;
 	}
-	if (offset !== bytes.length) throw new Error('Invalid Git batch response');
+	if (offset !== bytes.length) throw new InvalidGitBatchResponseError('Invalid Git batch response');
 	return blobs;
 }
 
 export type { TreeFile, TreeCommit } from './EvidenceTreeAdapter.types';
+
+function rememberListing(
+	output: string,
+	selected: Map<string, string>,
+	sizes: Map<string, number>
+): void {
+	for (const line of output.split('\0')) {
+		const match = /^\d+ blob ([0-9a-f]+) +([0-9]+)\t(.+)$/s.exec(line);
+		if (!match) continue;
+		sizes.set(match[1], Number(match[2]));
+		selected.set(match[3], match[1]);
+	}
+}
+
+async function commitBlobs(git: GitAdapter, files: TreeFile[]): Promise<string[]> {
+	const onDisk = files.flatMap((file) => ('file' in file.content ? [file.content.file] : []));
+	const hashed = onDisk.length
+		? (await git.run(['hash-object', '-w', '--stdin-paths'], { input: onDisk.join('\n') }))
+				.split('\n')
+				.reverse()
+		: [];
+	const ids: string[] = [];
+	for (const { content } of files) {
+		if ('file' in content) ids.push(hashed.pop() ?? '');
+		else if ('blob' in content) ids.push(content.blob);
+		else ids.push(await git.run(['hash-object', '-w', '--stdin'], { input: content.bytes }));
+	}
+	return ids;
+}

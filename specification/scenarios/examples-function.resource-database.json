@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.resource-database",
+	"title": "function.resource-database examples",
+	"kind": "headless",
+	"units": ["function.resource-database"],
+	"builds": [],
+	"states": [
+		{
+			"id": "creates-the-queue-schema-in-a-new-home-folder",
+			"title": "Creates the queue schema in a new home folder",
+			"coverage": "required"
+		},
+		{
+			"id": "reopens-an-existing-queue-without-losing-jobs",
+			"title": "Reopens an existing queue without losing jobs",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-queue-schema-version-it-does-not-support",
+			"title": "Rejects a queue schema version it does not support",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.resource-database.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"creates-the-queue-schema-in-a-new-home-folder",
+				"reopens-an-existing-queue-without-losing-jobs",
+				"rejects-a-queue-schema-version-it-does-not-support"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"creates-the-queue-schema-in-a-new-home-folder",
+				"reopens-an-existing-queue-without-losing-jobs",
+				"rejects-a-queue-schema-version-it-does-not-support"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"creates-the-queue-schema-in-a-new-home-folder",
+				"reopens-an-existing-queue-without-losing-jobs",
+				"rejects-a-queue-schema-version-it-does-not-support"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

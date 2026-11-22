@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-command.execution-runtimes-jobs-command-jobs-record",
+	"title": "command.execution-runtimes-jobs-command-jobs-record examples",
+	"kind": "headless",
+	"units": ["command.execution-runtimes-jobs-command-jobs-record"],
+	"builds": [],
+	"states": [
+		{
+			"id": "starts-job-attempts-and-defaults-the-attempt-number",
+			"title": "Starts job attempts and defaults the attempt number",
+			"coverage": "required"
+		},
+		{
+			"id": "completes-an-existing-attempt-and-returns-its-duration",
+			"title": "Completes an existing attempt and returns its duration",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-timestamp-that-omits-its-timezone",
+			"title": "Rejects a timestamp that omits its timezone",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/command.execution-runtimes-jobs-command-jobs-record.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"starts-job-attempts-and-defaults-the-attempt-number",
+				"completes-an-existing-attempt-and-returns-its-duration",
+				"rejects-a-timestamp-that-omits-its-timezone"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"starts-job-attempts-and-defaults-the-attempt-number",
+				"completes-an-existing-attempt-and-returns-its-duration",
+				"rejects-a-timestamp-that-omits-its-timezone"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"starts-job-attempts-and-defaults-the-attempt-number",
+				"completes-an-existing-attempt-and-returns-its-duration",
+				"rejects-a-timestamp-that-omits-its-timezone"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

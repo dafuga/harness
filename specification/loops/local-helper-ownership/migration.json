@@ -5857,6 +5857,600 @@
 			"definition": "4d7b575accd81204242458a749178423430b0bf3b26a9ebf0d7f7f08fa04ebc9"
 		},
 		{
+			"unit": "function.media-facts",
+			"name": "mediaFacts",
+			"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+			"reason": "Validate bounded silent MP4 facts for retained motion evidence.",
+			"definition": "44857788b4c069c6a3e23a49c809598789a781e237a65ddff3309b15c2f69cd2"
+		},
+		{
+			"unit": "function.scenario-coverage",
+			"name": "scenarioCoverage",
+			"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+			"reason": "Include modular video graph and frame-feedback admission in scenario evidence.",
+			"definition": "a53ff40023b48442fc20aa5111d5ac0b328c855ad9bcd4287e938a700214a29a"
+		},
+		{
+			"unit": "desktop.function.approval-match",
+			"name": "approvalMatch",
+			"commit": "e1b03f7b240a70185e7520cabeba76a5baf0ea53",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.approval-match, written by haiku); messages and behavior unchanged.",
+			"definition": "380a69abcca25f2e965c545c0b942bffdcccee5943c24c1371459954d16acebd"
+		},
+		{
+			"unit": "desktop.function.artifact-bytes",
+			"name": "artifactBytes",
+			"commit": "1eb64aa18a0ae47961c0d0915870e08c469e38df",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.artifact-bytes, written by haiku); messages and behavior unchanged.",
+			"definition": "04ab5e620fb5ab37e04f4c9830eb767ab1e096f84cb6146c0a17ec500a30a32b"
+		},
+		{
+			"unit": "desktop.function.catalog-detail",
+			"name": "catalogDetail",
+			"commit": "9cf4ee99eea5c0251592ff1b0ed66d82dd26b0c4",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.catalog-detail, written by haiku); messages and behavior unchanged.",
+			"definition": "df4da89358c25342c1f242a93bc5282f69d481a7549d23f0131b8fa2023583a3"
+		},
+		{
+			"unit": "desktop.function.claude-state",
+			"name": "claudeState",
+			"commit": "5bb281d0d685001872b9a0850376454b930a9476",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.claude-state, written by luna); messages and behavior unchanged.",
+			"definition": "1d5511927de7e2c743644cc6ad15c4c9be4d98c74452e7fd58712e526f01a8ba"
+		},
+		{
+			"unit": "desktop.function.git-blobs",
+			"name": "gitBlobs",
+			"commit": "d51e0706da63970b20dfad1779d9c8eeed31d61e",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.git-blobs, written by haiku); messages and behavior unchanged.",
+			"definition": "0d10d3ac4a16b790f4e6b3a001aca773b5bb0e47a1a512fe775b9540a31283a5"
+		},
+		{
+			"unit": "desktop.function.hosted-artifact",
+			"name": "hostedArtifact",
+			"to": "packages/desktop/src/adapters/explorer-ui/browser-project-adapter/hostedArtifact.ts",
+			"ownerSource": "packages/desktop/src/adapters/explorer-ui/browser-project-adapter/browserArtifact.ts",
+			"commit": "af8a025c89afbd50de949c5beeed97907d758e8a",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.hosted-artifact, written by haiku); messages and behavior unchanged.",
+			"definition": "995dccaef2f573b765aa761bc217487607d7168044cc65d35962b7562df326f7"
+		},
+		{
+			"unit": "desktop.function.hosted-evidence-path",
+			"name": "hostedEvidencePath",
+			"commit": "4344147035c00b3f27a966dac9ca7bd60be08e1e",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.hosted-evidence-path, written by luna); messages and behavior unchanged.",
+			"definition": "9237cb7470be9308edac3246b8604ae7545b3ddda22db80dd5aeda91509ecff6"
+		},
+		{
+			"unit": "desktop.function.hosted-image",
+			"name": "hostedImage",
+			"commit": "d3c39b26470e2d236a24e27bd3e70b52b91526a3",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.hosted-image, written by haiku); messages and behavior unchanged.",
+			"definition": "f927e432bdf205fe4a5817e4005e1def5ab6c9cafe1e31c75a45c228c219cadf"
+		},
+		{
+			"unit": "desktop.function.ipc-fields",
+			"name": "regionField",
+			"to": "packages/desktop/src/utils/ipc-payload/regionField.ts",
+			"ownerSource": "packages/desktop/src/utils/ipc-payload/ipcPayload.ts",
+			"commit": "9b4a5c2bb6fddad36eadb43ae0325e2d65ad5aea",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.ipc-fields, written by haiku); messages and behavior unchanged.",
+			"definition": "fef3e77790f17af9304235525859f645dec95b0169a3107b59412c12a32ab9d2"
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"name": "threadPayload",
+			"to": "packages/desktop/src/utils/ipc-payload/ipcPayload.ts",
+			"ownerSource": "packages/desktop/src/utils/ipc-payload/ipcPayload.ts",
+			"commit": "07c6885e97a496f225f7637c944143b0b7b7e83d",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.ipc-payload, written by haiku); messages and behavior unchanged.",
+			"definition": "c48e8d60df16eb6baf0252a617dae81181f59ab43298f96031cfd2c4b3a44fff"
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"name": "creationPayload",
+			"to": "packages/desktop/src/utils/ipc-payload/ipcPayload.ts",
+			"ownerSource": "packages/desktop/src/utils/ipc-payload/ipcPayload.ts",
+			"commit": "07c6885e97a496f225f7637c944143b0b7b7e83d",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.ipc-payload, written by haiku); messages and behavior unchanged.",
+			"definition": "8adaea991904511fcbbf3298f344fcea8064a9ebb2a737289fdf696b4dd6d79a"
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"name": "runPayload",
+			"to": "packages/desktop/src/utils/ipc-payload/ipcPayload.ts",
+			"ownerSource": "packages/desktop/src/utils/ipc-payload/ipcPayload.ts",
+			"commit": "07c6885e97a496f225f7637c944143b0b7b7e83d",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.ipc-payload, written by haiku); messages and behavior unchanged.",
+			"definition": "3d891781378fb3bfb34253fe652fdc43f7705ae9f638fd2a5f800995f2275a5d"
+		},
+		{
+			"unit": "desktop.function.planning-writes",
+			"name": "planningWrites",
+			"commit": "2b58142449f6daa844c3f9269bbe9d912ad59359",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-writes, written by haiku); messages and behavior unchanged.",
+			"definition": "759fb0dbcf68b19aefa5a71bd94a486c59211cf0f0839ec2a39bbd8b444725e0"
+		},
+		{
+			"unit": "desktop.function.planning-writes",
+			"name": "openPlanThread",
+			"commit": "2b58142449f6daa844c3f9269bbe9d912ad59359",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-writes, written by haiku); messages and behavior unchanged.",
+			"definition": "f00dae1ff684fe0bb184e0a08c683a11806662f18e9da6be6bd27150dc68a4bd"
+		},
+		{
+			"unit": "desktop.function.planning-writes",
+			"name": "approvePlanDesign",
+			"commit": "2b58142449f6daa844c3f9269bbe9d912ad59359",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-writes, written by haiku); messages and behavior unchanged.",
+			"definition": "7d107406462b1ef6ce927e4d8d7c68dfb030e6295f8b6f6b23ccb2a2266ad291"
+		},
+		{
+			"unit": "desktop.function.prepare-project-task",
+			"name": "prepareProjectTask",
+			"commit": "83eee726a65e4e0dfc19c895c0322b2dbabbe728",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.prepare-project-task, written by haiku); messages and behavior unchanged.",
+			"definition": "8da50dfe5edf0200fe84aa6de189c074cd33270ec03b93708535e657217a764c"
+		},
+		{
+			"unit": "desktop.function.prepare-run",
+			"name": "prepareRun",
+			"commit": "4e043d3da72866bbdc9167f9fefc5e482a78839a",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.prepare-run, written by luna); messages and behavior unchanged.",
+			"definition": "6bc6a42f5caa9a93eb8529703516e98fbf3f0f8301385ca60bd372b8692de571"
+		},
+		{
+			"unit": "desktop.function.provider-models",
+			"name": "validateModel",
+			"commit": "c3db48f419f8fba27cd28e3d8fd2357ad0fa3ecd",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.provider-models, written by luna); messages and behavior unchanged.",
+			"definition": "2d5fa6e1515d8b4defff4a77ccf03649498acd710f6297702eb4aed34b6bdc31"
+		},
+		{
+			"unit": "desktop.function.qr-symbol",
+			"name": "qrSymbol",
+			"commit": "710b52b891ad0c7da135ebc630779945cc3ff731",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.qr-symbol, written by haiku); messages and behavior unchanged.",
+			"definition": "7288eeaf936b7f7d327180d3dd660c51adb0af66fd523b34c6c078e9e11101a7"
+		},
+		{
+			"unit": "desktop.function.recorded-preview",
+			"name": "recordedPreview",
+			"to": "packages/desktop/src/components/shared-primitives/recorded-preview/recordedPreview.ts",
+			"ownerSource": "packages/desktop/src/components/shared-primitives/recorded-preview/RecordedPreview.svelte",
+			"commit": "ecce4ec809a3f8f70731ac126ff98a81a1c3babd",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.recorded-preview, written by haiku); messages and behavior unchanged.",
+			"definition": "76836c4c15a41a7df728ec458cf6ac49ffbc5727944520fc37a1158e33a48920"
+		},
+		{
+			"unit": "desktop.function.remote-artifact",
+			"name": "remoteArtifact",
+			"commit": "351fe5fb7ac2884cf2492d861faaba6f9fe8ceb3",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.remote-artifact, written by haiku); messages and behavior unchanged.",
+			"definition": "722b2fd7191bde097909ece4c0b6fd56d85504c3c1d530a173e00c1d309484c9"
+		},
+		{
+			"unit": "desktop.function.remote-host-identity",
+			"name": "registerRemoteHost",
+			"commit": "259888fc1e51b3f0248c53bac14ee7e1b5d6d1c2",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.remote-host-identity, written by haiku); messages and behavior unchanged.",
+			"definition": "c8b00feb76c2e965164522e7d47a358f58c3280c2467eb009a63eedf5771ad80"
+		},
+		{
+			"unit": "desktop.function.rpc-messages",
+			"name": "rpcRequest",
+			"commit": "fbb904ea046d8f4e3e875283a86bbc1fcad1b3de",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.rpc-messages, written by haiku); messages and behavior unchanged.",
+			"definition": "43f38c54b02ff93b81583b307faaa8f7a83c9e7eabeadd15ec3dc86051da3b60"
+		},
+		{
+			"unit": "function.pinned-toolchain",
+			"name": "pinnedToolchain",
+			"commit": "976dac8d5cfd4161dea3bab89e16bbe782afcefa",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-function.pinned-toolchain, written by haiku); messages and behavior unchanged.",
+			"definition": "f6a36ebb57210833507a2500e72f2a322902f4be0f8c16df52ff368a9cd20e64"
+		},
+		{
+			"unit": "function.reports-environment",
+			"name": "reportsEnvironment",
+			"commit": "f387b1cd34f447690d282ad3d862f1e99f97cc3d",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-function.reports-environment, written by luna); messages and behavior unchanged.",
+			"definition": "5a7d081e091de57a14aef7fa30c141a48612db12ebd27d7fafb2c2b4ffc20732"
+		},
+		{
+			"unit": "hub.function.browser-api",
+			"name": "browserApi",
+			"commit": "29d05b77d600e16d2a01eef984cb945657c72581",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-hub.function.browser-api, written by luna); messages and behavior unchanged.",
+			"definition": "61a511bd383aa96d3bab4b61018611b77925a52e132d0c9ca202bc4b470a3aea"
+		},
+		{
+			"unit": "planning.function.plan-commit",
+			"name": "requireLfsFilters",
+			"commit": "ea4a52d902317e945dd61b99abd220431330a187",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-planning.function.plan-commit, written by luna); messages and behavior unchanged.",
+			"definition": "9dc0132134f971e14f97071ccd6fcf76d0aa7c6492deaade8da5a3458472cf2b"
+		},
+		{
+			"unit": "remote.function.pairing-offer",
+			"name": "pairingOffer",
+			"commit": "316c31f985795ec4a9d092993bfe7dfcef5753d1",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-remote.function.pairing-offer, written by luna); messages and behavior unchanged.",
+			"definition": "4f4683c712535f897bb857f24fb7eb531efaca75348af053bb0c0ace222bb0b1"
+		},
+		{
+			"unit": "reports.function.activity-client",
+			"name": "activityClient",
+			"commit": "4eedab5cd6c922790280356a48400c1206a73f7b",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.function.activity-client, written by haiku); messages and behavior unchanged.",
+			"definition": "534022324fc4518e955d2d9bdfcd995d8e77afa98722c65629dfe8723c87ad3c"
+		},
+		{
+			"unit": "reports.function.analytics-cpu-client",
+			"name": "analyticsCpuClient",
+			"commit": "ecafb10d328868661a5da938e9f22b28be7ceaae",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.function.analytics-cpu-client, written by luna); messages and behavior unchanged.",
+			"definition": "78ad7e06423c8766564238ff19ecaac5790e5e0fd5a46ab26086a5c841b4bdc9"
+		},
+		{
+			"unit": "reports.function.e2e-fixtures",
+			"name": "e2eFixtures",
+			"commit": "965f046461886a1e92991cb3a746a89d2024afd7",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.function.e2e-fixtures, written by haiku); messages and behavior unchanged.",
+			"definition": "ed8734f8153231b752a6a3240193a1987af95e00bdebbd95b79dcc45bb0f3c5a"
+		},
+		{
+			"unit": "reports.function.preview-health",
+			"name": "readPreviewHealth",
+			"commit": "f82697bc67e6eb11e95a15ea51a0f7330ff59492",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.function.preview-health, written by haiku); messages and behavior unchanged.",
+			"definition": "d0e9df5dbea6c13f2056636b0dda77457ff39ad624a0211243cdd976a846eacc"
+		},
+		{
+			"unit": "reports.function.preview-owner",
+			"name": "previewOwner",
+			"commit": "9dfa10261507b836733a5cc9fb74c21668460c4e",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.function.preview-owner, written by luna); messages and behavior unchanged.",
+			"definition": "6d273e5b27e72d200b6af12661ac4132e7360549441f99ee4640ab2db7ca8fc5"
+		},
+		{
+			"unit": "reports.function.provider-picker-client",
+			"name": "providerPickerClient",
+			"commit": "5ed6772d6ef8fdf1a011521cd9bf12c687cbaf9f",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.function.provider-picker-client, written by luna); messages and behavior unchanged.",
+			"definition": "9539a2f7ed3082f8ca52a2857bd03946c6ce053e029a77ba18aca25e07d7d451"
+		},
+		{
+			"unit": "reports.function.replay-video",
+			"name": "replayVideo",
+			"commit": "418156e21424fd797fac8aff628582e5fdaa89ad",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.function.replay-video, written by haiku); messages and behavior unchanged.",
+			"definition": "a834e29074b57eeed679db94bafb07f97366765b5cc09187282a8297fcb31c80"
+		},
+		{
+			"unit": "reports.function.report-assets",
+			"name": "reportAssets",
+			"commit": "983b10e03f30733a4a1a48ad3c23e9bab8a88ee0",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.function.report-assets, written by haiku); messages and behavior unchanged.",
+			"definition": "98c0b0fe856743b3bc46135fab53cf71e2958154d4f8f8fdbd73d8c9ad93a803"
+		},
+		{
+			"unit": "reports.function.report-cli",
+			"name": "inputData",
+			"commit": "a72731acbd3f7c8f88a48cf154adf30320536a7e",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.function.report-cli, written by luna); messages and behavior unchanged.",
+			"definition": "e5ee571a15c5dfa639cb27492ec3672bef8b7451588e357ad255d5a21356d550"
+		},
+		{
+			"unit": "reports.function.report-cli",
+			"name": "required",
+			"commit": "a72731acbd3f7c8f88a48cf154adf30320536a7e",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.function.report-cli, written by luna); messages and behavior unchanged.",
+			"definition": "69379465fbc08779d6c8c29feb2cdfed8b4f7851e8a68fec55cfa280765dbfcc"
+		},
+		{
+			"unit": "reports.function.report-local-cleanup",
+			"name": "reportLocalCleanup",
+			"commit": "af2e4138394d15f5a5270c8d154dd03cbdecd24f",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.function.report-local-cleanup, written by luna); messages and behavior unchanged.",
+			"definition": "7ca68a98a4fcf6d3f2c03dc82aa717d8b5650942bba724a262ae179663a7c70f"
+		},
+		{
+			"unit": "reports.function.report-state",
+			"name": "reportState",
+			"commit": "ff51a551167a36da442b6cd68c551d03ed5e01bb",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.function.report-state, written by luna); messages and behavior unchanged.",
+			"definition": "0b0a0c717e2aaf04bf64906040ff273025d653296793a5340100e3924add953c"
+		},
+		{
+			"unit": "reports.function.wav-info",
+			"name": "wavInfo",
+			"commit": "321aad17c351cbff727dc42a1ebc4f56f2062b6d",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.function.wav-info, written by haiku); messages and behavior unchanged.",
+			"definition": "9b0b3d86823878001137132cb2433b891edcd0f9d211d103d3fdaa0219ffc778"
+		},
+		{
+			"unit": "desktop.function.artifact-media",
+			"name": "artifactMedia",
+			"to": "packages/desktop/src/utils/artifact-answer/artifactMedia.ts",
+			"ownerSource": "packages/desktop/src/utils/artifact-answer/artifactAnswer.ts",
+			"commit": "67038e17a5ff2990b83c188595b2c3a66382615b",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.artifact-media, written by luna); messages and behavior unchanged.",
+			"definition": "880261ae09bf4f585de14ab06335f03999e58a52706321d5f0c6791fe2a2c243"
+		},
+		{
+			"unit": "desktop.function.codex-state",
+			"name": "codexState",
+			"commit": "53cdb8285aede7cbd7e3d50cc4c1748acb6659cc",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.codex-state, written by luna); messages and behavior unchanged.",
+			"definition": "02ee9b1e46851ac8ab0ee6d4dc2a077af9fdf9e18b9890f9d58dc454a3c3774d"
+		},
+		{
+			"unit": "desktop.function.desktop-ipc",
+			"name": "desktopIpc",
+			"commit": "3bc31a815555f026be1a986534bdd3aa99e91c04",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.desktop-ipc, written by luna); messages and behavior unchanged.",
+			"definition": "d1f0e0e852756c64dd4cbf2c22d09a7025a1d9139fcd6c77a7a69821dcff0440"
+		},
+		{
+			"unit": "desktop.function.planning-reads",
+			"name": "planningReads",
+			"commit": "9e877aacd0ee365f1c643321e119a78de3b22545",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-reads, written by luna); messages and behavior unchanged.",
+			"definition": "038397c23ac20923145cfcc1b0add5c72e216aa9f543612eb25ae701f4579d66"
+		},
+		{
+			"unit": "desktop.function.planning-reads",
+			"name": "readPlanMessages",
+			"commit": "9e877aacd0ee365f1c643321e119a78de3b22545",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-reads, written by luna); messages and behavior unchanged.",
+			"definition": "7912cf8a42cb2340edecec819a01e831b8012874b1de82b44e5241de76c146dc"
+		},
+		{
+			"unit": "desktop.function.planning-reads",
+			"name": "readPlanImage",
+			"commit": "9e877aacd0ee365f1c643321e119a78de3b22545",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-reads, written by luna); messages and behavior unchanged.",
+			"definition": "478f6a2355c30f2ce18ab766d846d89fa6a1cc4d691dbd0dcbbd8316e72cc00b"
+		},
+		{
+			"unit": "desktop.function.prepare-project-run",
+			"name": "prepareProjectRun",
+			"commit": "c94fd0f0bd9160d827e75f5ffc284b93fb6d308e",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.prepare-project-run, written by luna); messages and behavior unchanged.",
+			"definition": "48e9f4d099d7af467a8c070e8b8a6b040701bd1aa6da12357ddb7c4a469bd356"
+		},
+		{
+			"unit": "desktop.function.renderer-assets",
+			"name": "rendererAssets",
+			"commit": "3289b82f457545ea6ce4a5d92c682f6756897c6c",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.renderer-assets, written by luna); messages and behavior unchanged.",
+			"definition": "45933419887c29acd9b73f9b23fe92175286b3d4996a04544eed9c7dc8c85ebb"
+		},
+		{
+			"unit": "hub.function.browser-artifact",
+			"name": "browserArtifact",
+			"commit": "3d7ae7e3b80eba98db7c6976b8b7359fa9613644",
+			"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-hub.function.browser-artifact, written by luna); messages and behavior unchanged.",
+			"definition": "c8dc5368ebeb7c6b4c8794d7a6ff325b97758335337079d22831e5d1b6b1b00e"
+		},
+		{
+			"unit": "collaboration.function.commit-records",
+			"name": "commitRecords",
+			"commit": "a5b101b0925e0232ef42898facea10c2e1882003",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-collaboration.function.commit-records, written by haiku); behavior unchanged.",
+			"definition": "cbfd2d1937f3f9c6c877d455d9c2896be3b5b82b5949d77a744458aacafcda5c"
+		},
+		{
+			"unit": "desktop.function.desktop-ipc",
+			"name": "desktopIpc",
+			"commit": "5859690f5cbce384063b89dabe474ff865ba1dc3",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.function.desktop-ipc, written by luna); behavior unchanged.",
+			"definition": "065ead987ce41867f3a26cd79493781057cefb6637877b3540d4b32619eede4e"
+		},
+		{
+			"unit": "desktop.function.public-cli-events",
+			"name": "publicCliEvents",
+			"commit": "733099aca3d2147ad4f81eb1d3d2ffe58c119899",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.function.public-cli-events, written by luna); behavior unchanged.",
+			"definition": "d8f3fce1fcd0b47ab8cfe87a3b4b4f7e6a18372c567f353e5e52a247486773ec"
+		},
+		{
+			"unit": "desktop.function.remote-failure-text",
+			"name": "remoteFailureText",
+			"commit": "3c242e3ae6448cb230e42cefddd040162e84917e",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.function.remote-failure-text, written by luna); behavior unchanged.",
+			"definition": "70190fa3c60940b1e6833347d4c16f0acf0b75f28c6455f1a80f024c52a3a101"
+		},
+		{
+			"unit": "desktop.function.remote-labels",
+			"name": "grantSummary",
+			"commit": "d86728ff657b2269155c858958fb4ef9f94ff033",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.function.remote-labels, written by luna); behavior unchanged.",
+			"definition": "9fbb37de5b278382b92f9df869b73c44b5d74df17e6769c555def94ff4131753"
+		},
+		{
+			"unit": "desktop.function.scan-notice",
+			"name": "scanFailure",
+			"to": "packages/desktop/src/utils/scan-notice/scanNotice.ts",
+			"ownerSource": "packages/desktop/src/utils/scan-notice/scanNotice.ts",
+			"commit": "2e8635841bc75251f8d3e3dd0ad887e1d3530a8d",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.function.scan-notice, written by luna); behavior unchanged.",
+			"definition": "5f0106e15181ab19aaea13bb3c40dd4de0c514ac3ed9daf55e1389d6e905166d"
+		},
+		{
+			"unit": "function.comparison-context",
+			"name": "requestDigest",
+			"commit": "10df2b78b08165f16df97852d09eebf66039b48b",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.comparison-context, written by haiku); behavior unchanged.",
+			"definition": "ffb2cce882fa2ae82a4ec580a431c5ae79cde46ff4a3321f43de32e5d2385037"
+		},
+		{
+			"unit": "function.cpu-processes",
+			"name": "cpuProcesses",
+			"commit": "fcc9805b161a82fd7afc7776e8c583b6ce8d4021",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.cpu-processes, written by luna); behavior unchanged.",
+			"definition": "a2858195e7099acd3d89a973a9288b7db25dc95725b7f05666410b0f8994933c"
+		},
+		{
+			"unit": "function.impact-kernel",
+			"name": "impactKernelText",
+			"commit": "4792415499f11452587b3ac872f7d90ac4ad1726",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.impact-kernel, written by luna); behavior unchanged.",
+			"definition": "c6656f1f933975b83461cdc0f80d43908da0ac129e09ce71c118de058aebae82"
+		},
+		{
+			"unit": "function.kernel-request",
+			"name": "kernelRequest",
+			"commit": "c3f0d2f6b84004d80efbe7cfa034387c466ecea3",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.kernel-request, written by luna); behavior unchanged.",
+			"definition": "cffda72b310c6d14c281402e71a867262e3f7003bcb43123cf1344497628b5a6"
+		},
+		{
+			"unit": "function.legacy-report",
+			"name": "legacyReport",
+			"commit": "dc2adf1ed360700297a36c83ef3bb7fdaa1b1112",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.legacy-report, written by luna); behavior unchanged.",
+			"definition": "34ae7b791b5751571de9a8e82fbdee7ed734585db16ee94c4550107da9bf8e1a"
+		},
+		{
+			"unit": "hub.function.hub-http",
+			"name": "hubHttpFailure",
+			"commit": "2cc1f9bc70897919117f0ba8bc39495d828bb82b",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-hub.function.hub-http, written by luna); behavior unchanged.",
+			"definition": "04ea862b180a211f48c32e252af1562667b87e4517966d1591afafaa89ba2e1a"
+		},
+		{
+			"unit": "remote.function.remote-bytes",
+			"name": "stableJson",
+			"commit": "1880c7d23f5dc93a8d0b51a1af0fb5e86c3c295a",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-remote.function.remote-bytes, written by luna); behavior unchanged.",
+			"definition": "dc9aad405cde2120b6cfec1fd3193fc0b8dcda78df5d867168d8b8291d1e47c0"
+		},
+		{
+			"unit": "reports.function.explorer-artifact",
+			"name": "artifactBehavior",
+			"commit": "0a34418fbf5d4657ba02d75ec7bc63b253aca0c6",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.explorer-artifact, written by luna); behavior unchanged.",
+			"definition": "db21fe9a2f202957b2c82d4be29f80308cb349d898217d4aa889749bbd33ce6f"
+		},
+		{
+			"unit": "reports.function.explorer-reading",
+			"name": "artifactDifferences",
+			"commit": "da23a3009b133547bee5aba7317bc1f88fa3aaea",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.explorer-reading, written by haiku); behavior unchanged.",
+			"definition": "c69202e3fddd8607718ad5f85dc189387d81df297a958c3e161d045e06fca383"
+		},
+		{
+			"unit": "reports.function.harness-layout",
+			"name": "harnessLayout",
+			"to": "packages/reports/src/components/explorer-ui/harness-map/harnessLayout.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-map/HarnessMap.svelte",
+			"commit": "b56e19f545b24a196fd3d2e161c28720ff971d5a",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.harness-layout, written by luna); behavior unchanged.",
+			"definition": "98fbda5836c29c241247523438d3fda641578dd889eb1ac02ea2da9914c41d4b"
+		},
+		{
+			"unit": "reports.function.recorded-value",
+			"name": "recordedValue",
+			"commit": "c8c99cb59f1ca74a1bf5078bda6862b9f2c0122f",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.recorded-value, written by luna); behavior unchanged.",
+			"definition": "1773ee6bcbeddbd429401e733e046100bacf18e3d5382932dfc087044967c2c6"
+		},
+		{
+			"unit": "reports.function.report-cleanup-log",
+			"name": "reportCleanupLog",
+			"commit": "1a95df8cade8484c9bc5084bf3f6be73e0476e19",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.report-cleanup-log, written by haiku); behavior unchanged.",
+			"definition": "b420cc9a3b9d53034ca04de01944670f57189cddabb0758b3dbb1b66ef8863af"
+		},
+		{
+			"unit": "reports.function.report-local-cleanup",
+			"name": "reportLocalCleanup",
+			"commit": "49a3a4fdf5d3f7ac3e0de502fe915648eacdb7e9",
+			"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.report-local-cleanup, written by luna); behavior unchanged.",
+			"definition": "59d4e2c2d9d06bf56664f6403763f7e0edbb0d9aca3bbc34f620a1098e1e5be8"
+		},
+		{
+			"unit": "desktop.function.desktop-ipc",
+			"name": "desktopIpc",
+			"commit": "664488601dfb824cc1b2f8853f897404431a7b4f",
+			"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 5859690f5c (desktop.function.desktop-ipc); behavior unchanged.",
+			"definition": "d1f0e0e852756c64dd4cbf2c22d09a7025a1d9139fcd6c77a7a69821dcff0440"
+		},
+		{
+			"unit": "desktop.function.public-cli-events",
+			"name": "publicCliEvents",
+			"commit": "33cb8fb8a6838d081828f7c08fb5d4a8a56a8626",
+			"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 733099aca3 (desktop.function.public-cli-events); behavior unchanged.",
+			"definition": "7b6c95d5c79224b1ed8ae4f2c34b8d5afc35c4fc550010847fd055622c6f0627"
+		},
+		{
+			"unit": "desktop.function.remote-failure-text",
+			"name": "remoteFailureText",
+			"commit": "2f8284cff81e51387c15b876688e5c4c39b1002f",
+			"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 3c242e3ae6 (desktop.function.remote-failure-text); behavior unchanged.",
+			"definition": "11274b46f52d98f577aa6c287a64b2cdc32a2c8f88fb8a2218ff96691cd86cc3"
+		},
+		{
+			"unit": "desktop.function.scan-notice",
+			"name": "scanFailure",
+			"to": "packages/desktop/src/utils/scan-notice/scanNotice.ts",
+			"ownerSource": "packages/desktop/src/utils/scan-notice/scanNotice.ts",
+			"commit": "30b2f9fe7a0be5bf70c86c165535229615b43955",
+			"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 2e8635841b (desktop.function.scan-notice); behavior unchanged.",
+			"definition": "32249aa25dc97083116e9517b0561f83977557d529203697e45851bb98bbbe24"
+		},
+		{
+			"unit": "function.impact-kernel",
+			"name": "impactKernelText",
+			"commit": "75c197fe17226006fe3dbfbf65802238c7613ae7",
+			"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 4792415499 (function.impact-kernel); behavior unchanged.",
+			"definition": "b130d163b72934e728761df565e847aee0d31dbb0edf7bdc74a3923273bca2f5"
+		},
+		{
+			"unit": "function.kernel-request",
+			"name": "kernelRequest",
+			"commit": "5d0e578d7c427f7f7ea0950e4715ee8ab3fe4d5d",
+			"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change c3f0d2f6b8 (function.kernel-request); behavior unchanged.",
+			"definition": "5285ca24c2bb9b5a0f8ddbc3effa8873179a76a3ce88aadd5eaa03c06b769c9f"
+		},
+		{
+			"unit": "function.legacy-report",
+			"name": "legacyReport",
+			"commit": "34029d3d4dabe3ba202cce3af78c8294f21a05ca",
+			"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change dc2adf1ed3 (function.legacy-report); behavior unchanged.",
+			"definition": "9f7d755b314787506d6f7d293bdfa65c9a30dc14b40a8cf5fee45ac6857f9450"
+		},
+		{
+			"unit": "hub.function.hub-http",
+			"name": "hubHttpFailure",
+			"commit": "bb4b0e129bf4449a0a98529f584283792e0acd8b",
+			"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 2cc1f9bc70 (hub.function.hub-http); behavior unchanged.",
+			"definition": "82a10efbc0d79dcb5c000d516a2f40c2e08af3b95ee8a7be7ddcc3bc2ca04c0d"
+		},
+		{
+			"unit": "reports.function.explorer-artifact",
+			"name": "artifactBehavior",
+			"commit": "0a2d1e326b2d853214a6444e4aac74a3a0aa7428",
+			"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 0a34418fbf (reports.function.explorer-artifact); behavior unchanged.",
+			"definition": "b107feb19164cb000067e215e56061c63b680ddf0897cd6308fc6ebd685b10b1"
+		},
+		{
+			"unit": "reports.function.explorer-reading",
+			"name": "artifactDifferences",
+			"commit": "072581c0bb02867e1fccaa87c271bdde0d126841",
+			"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change da23a3009b (reports.function.explorer-reading); behavior unchanged.",
+			"definition": "e0a95083858cbad54ade5b713550001fc1de41f4749ebf97f6b3ae7e1d3b3535"
+		},
+		{
+			"unit": "reports.function.recorded-value",
+			"name": "recordedValue",
+			"commit": "665a1f4b57ea2a4c9f2c0e7b7b2d8df564e2fbba",
+			"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change c8c99cb59f (reports.function.recorded-value); behavior unchanged.",
+			"definition": "0cb089bb628b220b2a314ee652ed9cd119bbf7f07fe4926088dc6a6c771f858c"
+		},
+		{
 			"unit": "function.record-capture",
 			"name": "evidenceRequested",
 			"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
@@ -5897,6 +6491,27 @@
 			"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
 			"reason": "Verify all approved captures in the pinned immutable plan read and bind the source digest.",
 			"definition": "cccc29d9017ea8eb55f03bb81a10c3a88aa186d38f02fe07d9aa8ef06948f205"
+		},
+		{
+			"unit": "desktop.function.prepare-run",
+			"name": "prepareRun",
+			"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+			"reason": "Use the selected mockup workflow while retaining named preparation failures.",
+			"definition": "0c662de9e24bbe25944e0d55dbd7fcf05f7bcefe96bcf11546c94d3ad67265c5"
+		},
+		{
+			"unit": "function.scenario-coverage",
+			"name": "scenarioCoverage",
+			"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+			"reason": "Validate video graphs in full verification and defer visual evidence in Lite.",
+			"definition": "d883e835ab25c02a1d3e9496c9b81d53e81c0deae9ad5b0967a762f4032699b2"
+		},
+		{
+			"unit": "function.verify-plan",
+			"name": "verifyPlan",
+			"commit": "28a1d24cacec44c0b2dc88871be3a6e42fc6f8d3",
+			"reason": "Carry declared host resource requirements into the check admissions plan.",
+			"definition": "2dafa9cade7870e6cc38c98e9963bbc224f75429952b909af116d2d9351ed904"
 		}
 	],
 	"retiredOwners": [

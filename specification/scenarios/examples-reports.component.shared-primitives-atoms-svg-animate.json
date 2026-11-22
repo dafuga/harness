@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.component.shared-primitives-atoms-svg-animate",
+	"title": "reports.component.shared-primitives-atoms-svg-animate examples",
+	"kind": "headless",
+	"units": ["reports.component.shared-primitives-atoms-svg-animate"],
+	"builds": [],
+	"states": [
+		{
+			"id": "renders-a-bare-animate-element-with-no-wrapper",
+			"title": "renders a bare animate element with no wrapper",
+			"coverage": "required"
+		},
+		{
+			"id": "spreads-attributes-onto-the-animate-element",
+			"title": "spreads attributes onto the animate element",
+			"coverage": "required"
+		},
+		{
+			"id": "renders-supplied-children-inside-the-animate-element",
+			"title": "renders supplied children inside the animate element",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.component.shared-primitives-atoms-svg-animate.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"renders-a-bare-animate-element-with-no-wrapper",
+				"spreads-attributes-onto-the-animate-element",
+				"renders-supplied-children-inside-the-animate-element"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"renders-a-bare-animate-element-with-no-wrapper",
+				"spreads-attributes-onto-the-animate-element",
+				"renders-supplied-children-inside-the-animate-element"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"renders-a-bare-animate-element-with-no-wrapper",
+				"spreads-attributes-onto-the-animate-element",
+				"renders-supplied-children-inside-the-animate-element"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

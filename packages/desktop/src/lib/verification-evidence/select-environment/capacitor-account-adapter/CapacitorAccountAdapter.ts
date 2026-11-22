@@ -1,5 +1,6 @@
 // @harness-uid u_djg3cju4tr
 import type { CapacitorAccountAdapterConfig } from './CapacitorAccountAdapter.types';
+import type { PlainJson } from './capacitorAccountCodec';
 import { browserBridge } from '../../../../adapters/explorer-ui/browser-project-adapter/browserBridge';
 import type { BrowserApi, Query } from '../../../../models/development-tooling/BrowserApi.types';
 import type { DesktopBridge } from '../../../../models/development-tooling/DesktopBridge.types';

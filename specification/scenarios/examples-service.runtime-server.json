@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.runtime-server",
+	"title": "service.runtime-server examples",
+	"kind": "headless",
+	"units": ["service.runtime-server"],
+	"builds": [],
+	"states": [
+		{
+			"id": "propagates-listener-errors",
+			"title": "Propagates listener errors",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.runtime-server.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["propagates-listener-errors"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["propagates-listener-errors"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["propagates-listener-errors"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

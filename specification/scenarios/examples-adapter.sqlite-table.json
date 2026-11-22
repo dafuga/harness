@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-adapter.sqlite-table",
+	"title": "adapter.sqlite-table examples",
+	"kind": "headless",
+	"units": ["adapter.sqlite-table"],
+	"builds": [],
+	"states": [
+		{
+			"id": "find-returns-the-row-with-its-configured-primary-key",
+			"title": "find returns the row with its configured primary key",
+			"coverage": "required"
+		},
+		{
+			"id": "findby-filters-declared-fields-including-null-values",
+			"title": "findBy filters declared fields including null values",
+			"coverage": "required"
+		},
+		{
+			"id": "insert-returns-the-inserted-task-row",
+			"title": "insert returns the inserted task row",
+			"coverage": "required"
+		},
+		{
+			"id": "update-changes-values-and-rejects-primary-key-changes",
+			"title": "update changes values and rejects primary key changes",
+			"coverage": "required"
+		},
+		{
+			"id": "delete-reports-whether-a-task-row-was-removed",
+			"title": "delete reports whether a task row was removed",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/adapter.sqlite-table.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"find-returns-the-row-with-its-configured-primary-key",
+				"findby-filters-declared-fields-including-null-values",
+				"insert-returns-the-inserted-task-row",
+				"update-changes-values-and-rejects-primary-key-changes",
+				"delete-reports-whether-a-task-row-was-removed"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"find-returns-the-row-with-its-configured-primary-key",
+				"findby-filters-declared-fields-including-null-values",
+				"insert-returns-the-inserted-task-row",
+				"update-changes-values-and-rejects-primary-key-changes",
+				"delete-reports-whether-a-task-row-was-removed"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"find-returns-the-row-with-its-configured-primary-key",
+				"findby-filters-declared-fields-including-null-values",
+				"insert-returns-the-inserted-task-row",
+				"update-changes-values-and-rejects-primary-key-changes",
+				"delete-reports-whether-a-task-row-was-removed"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.script.ios-acceptance-prelude",
+	"title": "desktop.script.ios-acceptance-prelude examples",
+	"kind": "headless",
+	"units": ["desktop.script.ios-acceptance-prelude"],
+	"builds": [],
+	"states": [
+		{
+			"id": "provides-page-helpers-for-native-acceptance-expressions",
+			"title": "provides page helpers for native acceptance expressions",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.script.ios-acceptance-prelude.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["provides-page-helpers-for-native-acceptance-expressions"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["provides-page-helpers-for-native-acceptance-expressions"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["provides-page-helpers-for-native-acceptance-expressions"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

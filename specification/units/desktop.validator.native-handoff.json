@@ -8,8 +8,20 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/validators/development-tooling/NativeHandoffValidator.ts"],
+		"source": [
+			"packages/desktop/src/validators/development-tooling/ExpiredNativeHandoffError.ts",
+			"packages/desktop/src/validators/development-tooling/InvalidNativeHandoffError.ts",
+			"packages/desktop/src/validators/development-tooling/InvalidNativeHandoffIdentityError.ts",
+			"packages/desktop/src/validators/development-tooling/InvalidNativeHandoffUrlError.ts",
+			"packages/desktop/src/validators/development-tooling/NativeHandoffBindingMismatchError.ts",
+			"packages/desktop/src/validators/development-tooling/NativeHandoffValidator.ts"
+		],
 		"symbols": [
+			"ExpiredNativeHandoffError",
+			"InvalidNativeHandoffError",
+			"InvalidNativeHandoffIdentityError",
+			"InvalidNativeHandoffUrlError",
+			"NativeHandoffBindingMismatchError",
 			"NativeHandoffValidator",
 			"NativeHandoffValidator.start",
 			"NativeHandoffValidator.exchange"
@@ -117,7 +129,7 @@
 		"outputs": [
 			{
 				"name": "NativeHandoffValidator.start",
-				"type": "unknown",
+				"type": "{ handoffId: string; userCode: string; verificationUrl: string; expiresAt: string; interval: number; }",
 				"description": "The handoff that start() returns: handoffId, userCode, verificationUrl, expiresAt (the input string, unchanged) and interval, which NativeAuthService treats as seconds between polls and which must be from 1 to 30. NativeAuthService removes handoffId and keeps the other fields as the pending handoff status.",
 				"examples": [
 					{
@@ -253,7 +265,7 @@
 				"outputs": [
 					{
 						"name": "NativeHandoffValidator.start",
-						"type": "unknown",
+						"type": "{ handoffId: string; userCode: string; verificationUrl: string; expiresAt: string; interval: number; }",
 						"description": "The handoff that start() returns: handoffId, userCode, verificationUrl, expiresAt (the input string, unchanged) and interval, which NativeAuthService treats as seconds between polls and which must be from 1 to 30. NativeAuthService removes handoffId and keeps the other fields as the pending handoff status.",
 						"examples": [
 							{

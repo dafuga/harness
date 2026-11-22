@@ -1,6 +1,7 @@
 // @harness-uid u_cx6ay75f2w
 import { ipcFields, textField, commitPattern } from '../../utils/ipc-payload/ipcFields';
 import { threadPayload } from '../../utils/ipc-payload/ipcPayload';
+import { ExplicitProjectRequiredError } from './ProjectContextValidator.types';
 const projectPattern = /^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$/;
 const uuidPattern = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
 export class ProjectContextValidator {
@@ -9,7 +10,7 @@ export class ProjectContextValidator {
 			return null;
 		if (channel === 'project:select') {
 			const parsed = this.context(input);
-			if (!parsed.projectId) throw new Error('Select an explicit project.');
+			if (!parsed.projectId) throw new ExplicitProjectRequiredError('Select an explicit project.');
 			return parsed;
 		}
 		if (channel === 'thread:comment') return this.comment(input);

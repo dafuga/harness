@@ -31,12 +31,12 @@
 		"outputs": [
 			{
 				"name": "performanceBaselineSchema",
-				"type": "unknown",
+				"type": "typeof performanceBaselineSchema",
 				"description": "A strict object holding one frozen performance value with its whole definition: a number value, nonempty text after trimming for workload, metric, profile, unitOfMeasure and method, a target from runtimeKinds, and a comparison context validated by comparisonSchema. A later measurement must match its unitOfMeasure, method and comparison context, and the workload name is only a label."
 			},
 			{
 				"name": "budgetEventSchema",
-				"type": "unknown",
+				"type": "typeof budgetEventSchema",
 				"description": "One line of the append-only budget ledger, discriminated by type: a baseline freezes a new unit's limits in metrics, and an approval records a reviewed change with before and after limits, where metrics, before and after map metric names to numbers. Each strict object requires a unit matching unitIdPattern, a record with a nonblank id and 40-character lowercase hex commit and tree SHAs, a nonblank reviewer, reason and at time, and a performance array of performanceBaselineSchema entries; either kind may add unmeasured, mapping metric names to the nonblank reason each was not measured."
 			},
 			{

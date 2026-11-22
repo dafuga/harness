@@ -34,7 +34,7 @@
 		"outputs": [
 			{
 				"name": "EMAIL_PURGES",
-				"type": "unknown",
+				"type": "string[]",
 				"description": "An ordered array of SQL deletes for proofs and verified emails with expires_at <= the supplied cutoff, and send rows whose last_sent_at is at least 172800000 ms old. The caller must bind the cutoff and execute each statement.",
 				"examples": [
 					[

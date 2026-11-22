@@ -4,7 +4,7 @@
 	"uid": "u_lnqhwcablp",
 	"kind": "function",
 	"title": "Scenario evidence coverage",
-	"responsibility": "Judges gathered captures against required states, media validity and the verified revision/build identity.",
+	"responsibility": "Judges scenario evidence for required states, media, build identity, video graph proof and pending reviewer flags.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -13,7 +13,11 @@
 			"src/utils/verification-evidence/scenarioCoverage.types.ts",
 			"src/workflows/run-verify/verification-service/scenarioCoverage.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/captureProblem.ts",
-			"src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts"
+			"src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/videoCoverage.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/videoCoverage.types.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/videoFlagCoverage.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/videoMetadataProblem.ts"
 		],
 		"symbols": [
 			"problem",
@@ -25,10 +29,18 @@
 			"ScenarioJudgement",
 			"Evidence",
 			"Viewport",
+			"VideoFrameFlagIdentity",
+			"PendingVideoFlags",
+			"VideoCoverageSummary",
 			"scenarioCoverage",
 			"problem",
 			"scenarioCoverage",
-			"judgeScenario"
+			"judgeScenario",
+			"videoCoverageFailures",
+			"videoCoverageReport",
+			"VideoCoverageReport",
+			"videoFlagCoverageFailure",
+			"videoMetadataProblem"
 		]
 	},
 	"contract": {
@@ -318,6 +330,60 @@
 				"type": "PlannedCheck[]",
 				"required": true,
 				"description": "The planned checks deferred by Lite."
+			},
+			{
+				"name": "videoCoverageFailures.input",
+				"type": "CoverageInput",
+				"required": true,
+				"description": "Scenario evidence, current source/build identities, admitted slots and authoritative reviewer obligations for this run."
+			},
+			{
+				"name": "videoCoverageFailures.admitted",
+				"type": "Gathered[]",
+				"required": true,
+				"description": "Captures already admitted by the ordinary media, interval and build checks; rejected media cannot contribute graph observations."
+			},
+			{
+				"name": "videoCoverageReport.input",
+				"type": "CoverageInput",
+				"required": true,
+				"description": "Scenario evidence, current source/build identities, admitted slots and authoritative reviewer obligations for this run."
+			},
+			{
+				"name": "videoCoverageReport.admitted",
+				"type": "Gathered[]",
+				"required": true,
+				"description": "Captures already admitted by the ordinary media, interval and build checks; rejected media cannot contribute graph observations."
+			},
+			{
+				"name": "videoFlagCoverageFailure.requirements",
+				"type": "PendingVideoFlags | undefined",
+				"required": true,
+				"description": "Known owning flag identities and unresolved ID/note requirements read from original Git evidence; absence proves no supplied flag identities."
+			},
+			{
+				"name": "videoFlagCoverageFailure.item",
+				"type": "Gathered",
+				"required": true,
+				"description": "One admitted video capture whose explicit addressed IDs and capture time must satisfy its exact owner, clip and viewport."
+			},
+			{
+				"name": "videoMetadataProblem.video",
+				"type": "NonNullable<Gathered['line']['video']>",
+				"required": true,
+				"description": "Declared retained video dimensions, cadence, frame count, poster and observed state/edge timestamps to compare with decoded media."
+			},
+			{
+				"name": "videoMetadataProblem.facts",
+				"type": "Extract<MediaFacts, { kind: 'video' }>",
+				"required": true,
+				"description": "Actual facts obtained from the admitted H.264 video, including its dimensions, cadence, frame count and duration."
+			},
+			{
+				"name": "videoMetadataProblem.line",
+				"type": "Gathered['line']",
+				"required": true,
+				"description": "Original capture line whose duration and asserted state must agree with the video metadata."
 			}
 		],
 		"outputs": [
@@ -781,6 +847,116 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "videoCoverageFailures",
+				"inputs": [
+					{
+						"name": "videoCoverageFailures.input",
+						"type": "CoverageInput",
+						"required": true,
+						"description": "Scenario evidence, current source/build identities, admitted slots and authoritative reviewer obligations for this run."
+					},
+					{
+						"name": "videoCoverageFailures.admitted",
+						"type": "Gathered[]",
+						"required": true,
+						"description": "Captures already admitted by the ordinary media, interval and build checks; rejected media cannot contribute graph observations."
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoCoverageFailures",
+						"type": "string[]",
+						"description": "Failure list from the same current-source, reviewer, clip and graph admission used by the structured report."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "videoCoverageReport",
+				"inputs": [
+					{
+						"name": "videoCoverageReport.input",
+						"type": "CoverageInput",
+						"required": true,
+						"description": "Scenario evidence, current source/build identities, admitted slots and authoritative reviewer obligations for this run."
+					},
+					{
+						"name": "videoCoverageReport.admitted",
+						"type": "Gathered[]",
+						"required": true,
+						"description": "Captures already admitted by the ordinary media, interval and build checks; rejected media cannot contribute graph observations."
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoCoverageReport",
+						"type": "VideoCoverageReport",
+						"description": "Failures and finite graph coverage computed once from freshly admitted observations; contains no frontend backend dependency."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "videoFlagCoverageFailure",
+				"inputs": [
+					{
+						"name": "videoFlagCoverageFailure.requirements",
+						"type": "PendingVideoFlags | undefined",
+						"required": true,
+						"description": "Known owning flag identities and unresolved ID/note requirements read from original Git evidence; absence proves no supplied flag identities."
+					},
+					{
+						"name": "videoFlagCoverageFailure.item",
+						"type": "Gathered",
+						"required": true,
+						"description": "One admitted video capture whose explicit addressed IDs and capture time must satisfy its exact owner, clip and viewport."
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoFlagCoverageFailure",
+						"type": "string | undefined",
+						"description": "A missing-pending, unknown-owner or predating-capture diagnostic, or undefined when the explicit acknowledgments are valid."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "videoMetadataProblem",
+				"inputs": [
+					{
+						"name": "videoMetadataProblem.video",
+						"type": "NonNullable<Gathered['line']['video']>",
+						"required": true,
+						"description": "Declared retained video dimensions, cadence, frame count, poster and observed state/edge timestamps to compare with decoded media."
+					},
+					{
+						"name": "videoMetadataProblem.facts",
+						"type": "Extract<MediaFacts, { kind: 'video' }>",
+						"required": true,
+						"description": "Actual facts obtained from the admitted H.264 video, including its dimensions, cadence, frame count and duration."
+					},
+					{
+						"name": "videoMetadataProblem.line",
+						"type": "Gathered['line']",
+						"required": true,
+						"description": "Original capture line whose duration and asserted state must agree with the video metadata."
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoMetadataProblem",
+						"type": "string | undefined",
+						"description": "First decoded-metadata, retained-timestamp or missing-state diagnostic, or undefined when those checks agree. The comparison leaves media and provenance unchanged."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
@@ -807,6 +983,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.verification-evidence-video-clip-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.verification-types",
 			"via": "import",
 			"origin": "derived"
@@ -828,6 +1009,11 @@
 		},
 		{
 			"unit": "service.verification",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-evidence",
 			"via": "import",
 			"origin": "derived"
 		},

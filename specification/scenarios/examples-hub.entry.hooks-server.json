@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.entry.hooks-server",
+	"title": "hub.entry.hooks-server examples",
+	"kind": "headless",
+	"units": ["hub.entry.hooks-server"],
+	"builds": [],
+	"states": [
+		{
+			"id": "adds-security-headers-to-the-resolved-response",
+			"title": "Adds security headers to the resolved response",
+			"coverage": "required"
+		},
+		{
+			"id": "propagates-a-resolve-rejection",
+			"title": "Propagates a resolve rejection",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.entry.hooks-server.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"adds-security-headers-to-the-resolved-response",
+				"propagates-a-resolve-rejection"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"adds-security-headers-to-the-resolved-response",
+				"propagates-a-resolve-rejection"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"adds-security-headers-to-the-resolved-response",
+				"propagates-a-resolve-rejection"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

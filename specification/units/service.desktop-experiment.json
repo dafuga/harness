@@ -10,12 +10,14 @@
 	"owns": {
 		"source": [
 			"scripts/prepare-desktop-experiment/DesktopExperimentService.ts",
+			"scripts/prepare-desktop-experiment/DesktopExperimentService.types.ts",
 			"src/services/DesktopExperimentService.ts"
 		],
 		"symbols": [
 			"DesktopExperimentService",
 			"DesktopExperimentService.plan",
 			"replaceOnce",
+			"DesktopPatchAnchorError",
 			"DesktopExperimentService",
 			"replaceOnce"
 		]
@@ -171,6 +173,11 @@
 	"dependencies": [
 		{
 			"unit": "config.desktop-patch",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		}

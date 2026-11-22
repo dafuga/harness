@@ -105,7 +105,7 @@
 		"outputs": [
 			{
 				"name": "addComment",
-				"type": "unknown",
+				"type": "Promise<CommittedThread>",
 				"description": "The thread that holds the comment, with every comment in it, plus collaborationCommit set to the collaboration revision that the transaction read or committed. A repeat that matches the stored comment returns the existing thread with the current revision and appends nothing, and any other repeat throws request-conflict.",
 				"examples": [
 					{
@@ -154,7 +154,7 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "Error",
 				"type": "thrown",
 				"description": "Thrown as an Error whose message is 'Collaboration <code>' and whose code is invalid-input (a schema check fails on the input or on records read or written), forbidden (no project, no membership, or a role other than owner, writer or commenter), not-found (threadId is not a thread of the project), anchor-conflict (the thread named by threadId has a different anchor), request-conflict (a repeated requestId with a different actor id, text, anchor or threadId), or conflict (compareAndSwap returned null on all five attempts). Rejections from deps.source and deps.repository pass through unchanged."
 			}
@@ -253,7 +253,7 @@
 				"outputs": [
 					{
 						"name": "addComment",
-						"type": "unknown",
+						"type": "Promise<import('../../../models/planning-collaboration/Collaboration.types').CommittedThread>",
 						"description": "The thread that holds the comment, with every comment in it, plus collaborationCommit set to the collaboration revision that the transaction read or committed. A repeat that matches the stored comment returns the existing thread with the current revision and appends nothing, and any other repeat throws request-conflict.",
 						"examples": [
 							{
@@ -302,7 +302,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "Error",
 						"type": "thrown",
 						"description": "Thrown as an Error whose message is 'Collaboration <code>' and whose code is invalid-input (a schema check fails on the input or on records read or written), forbidden (no project, no membership, or a role other than owner, writer or commenter), not-found (threadId is not a thread of the project), anchor-conflict (the thread named by threadId has a different anchor), request-conflict (a repeated requestId with a different actor id, text, anchor or threadId), or conflict (compareAndSwap returned null on all five attempts). Rejections from deps.source and deps.repository pass through unchanged."
 					}

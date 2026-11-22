@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.repository.session",
+	"title": "hub.repository.session examples",
+	"kind": "headless",
+	"units": ["hub.repository.session"],
+	"builds": [],
+	"states": [
+		{
+			"id": "issues-a-browser-session-with-its-credential-hash",
+			"title": "Issues a browser session with its credential hash",
+			"coverage": "required"
+		},
+		{
+			"id": "finds-live-credentials-and-rejects-expired-sessions",
+			"title": "Finds live credentials and rejects expired sessions",
+			"coverage": "required"
+		},
+		{
+			"id": "revokes-a-session-and-sessions-issued-from-its-origin",
+			"title": "Revokes a session and sessions issued from its origin",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.repository.session.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"issues-a-browser-session-with-its-credential-hash",
+				"finds-live-credentials-and-rejects-expired-sessions",
+				"revokes-a-session-and-sessions-issued-from-its-origin"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"issues-a-browser-session-with-its-credential-hash",
+				"finds-live-credentials-and-rejects-expired-sessions",
+				"revokes-a-session-and-sessions-issued-from-its-origin"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"issues-a-browser-session-with-its-credential-hash",
+				"finds-live-credentials-and-rejects-expired-sessions",
+				"revokes-a-session-and-sessions-issued-from-its-origin"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

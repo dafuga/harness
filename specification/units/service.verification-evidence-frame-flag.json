@@ -1,0 +1,1467 @@
+{
+	"schemaVersion": 1,
+	"id": "service.verification-evidence-frame-flag",
+	"uid": "u_zhz7hjx43x",
+	"kind": "service",
+	"title": "FrameFlagService",
+	"responsibility": "Stores version-bound frame flags durably and supplies unresolved image feedback to the owning unit.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": [
+			"src/services/verification-evidence/FrameFlagService.ts",
+			"src/services/verification-evidence/FrameFlagService.types.ts",
+			"src/services/verification-evidence/frame-flag-service/flagMedia.ts",
+			"src/services/verification-evidence/frame-flag-service/flagSchema.ts",
+			"src/services/verification-evidence/frame-flag-service/flagStore.ts",
+			"src/services/verification-evidence/frame-flag-service/flagStore.types.ts",
+			"src/services/verification-evidence/frame-flag-service/readFlagFrame.ts",
+			"src/services/verification-evidence/frame-flag-service/readFrameCapture.ts",
+			"src/services/verification-evidence/frame-flag-service/readFrameCapture.types.ts"
+		],
+		"symbols": [
+			"FrameFlagService",
+			"FrameFlagService.constructor",
+			"FrameFlagService.run",
+			"FrameFlagService.flag",
+			"FrameFlagService.list",
+			"FrameFlagService.feedback",
+			"FrameFlagService.frame",
+			"FrameFlagService.address",
+			"FrameClipReference",
+			"FrameClip",
+			"FrameClipReader",
+			"FrameRegion",
+			"FrameFlagInput",
+			"FrameFlag",
+			"FrameCurrentClip",
+			"FrameFeedback",
+			"StoredFrameFlag",
+			"FrameVideoFacts",
+			"LoadedFrameClip",
+			"FrameResolution",
+			"defaultAttachedReader",
+			"inspectFrameClip",
+			"extractFlagFrame",
+			"inspectFlagPng",
+			"materializeFlagFrame",
+			"retainedFlagFrame",
+			"ownerSchema",
+			"referenceSchema",
+			"inputSchema",
+			"storedFlagSchema",
+			"resolutionSchema",
+			"currentSchema",
+			"parseFlagValue",
+			"parseFlagJson",
+			"frameHash",
+			"boundClip",
+			"framePosition",
+			"sameFrameSlot",
+			"addressedFlags",
+			"owningFrameCapture",
+			"storeFrameFlag",
+			"readFrameFlags",
+			"storeFrameResolution",
+			"ResolutionClip",
+			"ResolutionReader",
+			"readFlagFrame",
+			"readFrameCapture",
+			"ReadFrameCapture",
+			"SelectedFrameCapture"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "FrameFlagService.constructor.root",
+				"type": "string",
+				"required": false,
+				"default": "process.cwd()",
+				"description": "Repository used for source notes, immutable evidence and retained frame objects. The documented default is the source expression process.cwd(), evaluated by the implementation; it is not a literal string value."
+			},
+			{
+				"name": "FrameFlagService.constructor.reader",
+				"type": "FrameClipReader",
+				"required": false,
+				"default": "defaultAttachedReader",
+				"description": "Exact-reference reader. The default follows attached verified evidence; injected readers must satisfy the same runtime binding checks. The documented default is the source expression defaultAttachedReader, evaluated by the implementation; it is not a literal string value."
+			},
+			{
+				"name": "FrameFlagService.flag.input",
+				"type": "FrameFlagInput",
+				"required": true,
+				"description": "Attached clip reference, exact frame position and optional reviewer note/region."
+			},
+			{
+				"name": "FrameFlagService.list.unit",
+				"type": "string",
+				"required": true,
+				"description": "Stable registered unit identity used to scope the lookup."
+			},
+			{
+				"name": "FrameFlagService.list.current",
+				"type": "FrameCurrentClip[]",
+				"required": false,
+				"default": [],
+				"description": "Current slot hashes used to distinguish stale feedback without removing its history."
+			},
+			{
+				"name": "FrameFlagService.feedback.unit",
+				"type": "string",
+				"required": true,
+				"description": "Stable registered unit identity used to scope the lookup."
+			},
+			{
+				"name": "FrameFlagService.feedback.directory",
+				"type": "string",
+				"required": true,
+				"description": "Task-owned input directory where exact hash-verified reviewer PNGs are materialized; caller supplies and owns the directory."
+			},
+			{
+				"name": "FrameFlagService.frame.unit",
+				"type": "string",
+				"required": true,
+				"description": "Stable registered unit identity used to scope the lookup."
+			},
+			{
+				"name": "FrameFlagService.frame.id",
+				"type": "string",
+				"required": true,
+				"description": "Id supplied to FrameFlagService.frame under its declared string contract."
+			},
+			{
+				"name": "FrameFlagService.address.reference",
+				"type": "FrameClipReference",
+				"required": true,
+				"description": "Immutable attached record/revision plus the owning unit, clip and viewport."
+			},
+			{
+				"name": "defaultAttachedReader.reference",
+				"type": "FrameClipReference",
+				"required": true,
+				"description": "Exact original attached parent and clip slot requested for frame feedback."
+			},
+			{
+				"name": "defaultAttachedReader.root",
+				"type": "string",
+				"required": false,
+				"default": "process.cwd()",
+				"description": "Project checkout used for immutable source and evidence reads. The documented default is the source expression process.cwd(), evaluated by the implementation; it is not a literal string value."
+			},
+			{
+				"name": "defaultAttachedReader.pinned",
+				"type": "PinnedHistory",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional fixed evidence and notes snapshot; supplied bounds are never widened. Omission passes undefined; the implementation applies the documented optional behavior."
+			},
+			{
+				"name": "inspectFrameClip.clip",
+				"type": "FrameClip",
+				"required": true,
+				"description": "Claimed clip bytes and provenance; schema, integrity and decoded facts are checked before admission."
+			},
+			{
+				"name": "extractFlagFrame.clip",
+				"type": "FrameClip",
+				"required": true,
+				"description": "Claimed clip bytes and provenance; schema, integrity and decoded facts are checked before admission."
+			},
+			{
+				"name": "extractFlagFrame.frameNumber",
+				"type": "number",
+				"required": true,
+				"description": "Zero-based decoded frame index within the retained clip interval."
+			},
+			{
+				"name": "inspectFlagPng.bytes",
+				"type": "Buffer",
+				"required": true,
+				"description": "Retained bytes inspected against their declared type, size and integrity."
+			},
+			{
+				"name": "materializeFlagFrame.root",
+				"type": "string",
+				"required": true,
+				"description": "Project checkout used for immutable source, evidence and tool reads."
+			},
+			{
+				"name": "materializeFlagFrame.flag",
+				"type": "FrameFlag",
+				"required": true,
+				"description": "The exact retained reviewer flag and its version-bound frame."
+			},
+			{
+				"name": "materializeFlagFrame.directory",
+				"type": "string",
+				"required": true,
+				"description": "Task-owned directory containing the capture or retained receipt files."
+			},
+			{
+				"name": "retainedFlagFrame.root",
+				"type": "string",
+				"required": true,
+				"description": "Project checkout used for immutable source, evidence and tool reads."
+			},
+			{
+				"name": "retainedFlagFrame.flag",
+				"type": "FrameFlag",
+				"required": true,
+				"description": "The exact retained reviewer flag and its version-bound frame."
+			},
+			{
+				"name": "parseFlagValue.schema",
+				"type": "z.ZodType<T>",
+				"required": true,
+				"description": "Runtime schema whose output type is admitted only after validation."
+			},
+			{
+				"name": "parseFlagValue.value",
+				"type": "T",
+				"required": true,
+				"description": "Typed caller value revalidated by the supplied schema; JavaScript and injected readers do not bypass runtime validation."
+			},
+			{
+				"name": "parseFlagJson.schema",
+				"type": "z.ZodType<T>",
+				"required": true,
+				"description": "Runtime schema whose output type is admitted only after validation."
+			},
+			{
+				"name": "parseFlagJson.bytes",
+				"type": "Buffer | undefined",
+				"required": true,
+				"description": "Raw JSON bytes; unknown parsed data stays private until the supplied schema accepts it. Missing, malformed or rejected input fails closed."
+			},
+			{
+				"name": "frameHash.bytes",
+				"type": "Buffer | string",
+				"required": true,
+				"description": "Retained bytes inspected against their declared type, size and integrity."
+			},
+			{
+				"name": "boundClip.reference",
+				"type": "FrameClipReference",
+				"required": true,
+				"description": "Immutable attached record/revision plus the owning unit, clip and viewport."
+			},
+			{
+				"name": "boundClip.value",
+				"type": "FrameClip",
+				"required": true,
+				"description": "FrameClip returned under the reader contract; exact requested identity, byte cap and hash are still independently validated."
+			},
+			{
+				"name": "framePosition.input",
+				"type": "FrameFlagInput",
+				"required": true,
+				"description": "Attached clip reference, exact frame position and optional reviewer note/region."
+			},
+			{
+				"name": "framePosition.facts",
+				"type": "FrameVideoFacts",
+				"required": true,
+				"description": "Decoded cadence, duration, dimensions and retained frame count."
+			},
+			{
+				"name": "sameFrameSlot.left",
+				"type": "FrameClipReference",
+				"required": true,
+				"description": "Immutable attached record/revision plus the owning unit, clip and viewport."
+			},
+			{
+				"name": "sameFrameSlot.right",
+				"type": "FrameClipReference",
+				"required": true,
+				"description": "Immutable attached record/revision plus the owning unit, clip and viewport."
+			},
+			{
+				"name": "addressedFlags.clip",
+				"type": "FrameClip",
+				"required": true,
+				"description": "Claimed clip bytes and provenance; schema, integrity and decoded facts are checked before admission."
+			},
+			{
+				"name": "addressedFlags.flags",
+				"type": "FrameFlag[]",
+				"required": true,
+				"description": "Retained reviewer flags whose identity and standing must remain explicit."
+			},
+			{
+				"name": "owningFrameCapture.record",
+				"type": "VerificationRecord",
+				"required": true,
+				"description": "ID of the attached verification parent whose admitted captures prove the receipt."
+			},
+			{
+				"name": "owningFrameCapture.reference",
+				"type": "FrameClipReference",
+				"required": true,
+				"description": "Immutable attached record/revision plus the owning unit, clip and viewport."
+			},
+			{
+				"name": "storeFrameFlag.root",
+				"type": "string",
+				"required": true,
+				"description": "Project checkout used for immutable source, evidence and tool reads."
+			},
+			{
+				"name": "storeFrameFlag.flag",
+				"type": "StoredFrameFlag",
+				"required": true,
+				"description": "The exact retained reviewer flag and its version-bound frame."
+			},
+			{
+				"name": "storeFrameFlag.png",
+				"type": "Buffer",
+				"required": true,
+				"description": "Exact extracted PNG bytes to retain with the reviewer flag."
+			},
+			{
+				"name": "readFrameFlags.root",
+				"type": "string",
+				"required": true,
+				"description": "Project checkout used for immutable source, evidence and tool reads."
+			},
+			{
+				"name": "readFrameFlags.reader",
+				"type": "FrameClipReader",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Exact-reference clip reader; its returned claim is independently validated before use. Omission passes undefined; the implementation applies the documented optional behavior."
+			},
+			{
+				"name": "readFrameFlags.unit",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional owning unit. When supplied, return only its flags and open only its resolution media while checking every retained flag and resolution metadata binding; omission replays all owners."
+			},
+			{
+				"name": "storeFrameResolution.root",
+				"type": "string",
+				"required": true,
+				"description": "Project checkout used for immutable source, evidence and tool reads."
+			},
+			{
+				"name": "storeFrameResolution.flag",
+				"type": "FrameFlag",
+				"required": true,
+				"description": "The exact retained reviewer flag and its version-bound frame."
+			},
+			{
+				"name": "storeFrameResolution.clip",
+				"type": "FrameClip",
+				"required": true,
+				"description": "Claimed clip bytes and provenance; schema, integrity and decoded facts are checked before admission."
+			},
+			{
+				"name": "readFlagFrame.root",
+				"type": "string",
+				"required": true,
+				"description": "Project checkout used for immutable source, evidence and tool reads."
+			},
+			{
+				"name": "readFlagFrame.flag",
+				"type": "FrameFlag",
+				"required": true,
+				"description": "The exact retained reviewer flag and its version-bound frame."
+			},
+			{
+				"name": "readFrameCapture.root",
+				"type": "string",
+				"required": true,
+				"description": "Project checkout used to read immutable source, notes and evidence objects."
+			},
+			{
+				"name": "readFrameCapture.reference",
+				"type": "FrameClipReference",
+				"required": true,
+				"description": "Exact original attached parent, tested source, owner, clip and viewport."
+			},
+			{
+				"name": "readFrameCapture.pinned",
+				"type": "PinnedHistory",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Immutable evidence and notes commits; null refuses unavailable evidence or notes. Omission passes undefined; the implementation applies the documented optional behavior."
+			}
+		],
+		"outputs": [
+			{
+				"name": "FrameFlagService.run",
+				"type": "string",
+				"description": "The string result of FrameFlagService.run."
+			},
+			{
+				"name": "FrameFlagService.flag",
+				"type": "Promise<FrameFlag>",
+				"description": "Persisted active reviewer flag with exact source/record/clip/frame identity and a hash-verified extracted PNG; no source commit is changed."
+			},
+			{
+				"name": "FrameFlagService.list",
+				"type": "Promise<FrameFlag[]>",
+				"description": "Only this owner’s retained flags, with immutable replacement media replayed only for this owner before resolved status is accepted; all retained flag metadata, pointer bindings, paths and resolution ownership remain validated. Supplied current hashes may mark unresolved feedback stale."
+			},
+			{
+				"name": "FrameFlagService.feedback",
+				"type": "Promise<FrameFeedback>",
+				"description": "Unresolved reviewer text, flag identities and exact materialized PNG paths for this owner; corrupt or missing frames reject the feedback assembly."
+			},
+			{
+				"name": "FrameFlagService.frame",
+				"type": "Promise<Buffer>",
+				"description": "Exact retained PNG bytes for this owner and flag ID after bounded regular-file, hash and PNG validation."
+			},
+			{
+				"name": "FrameFlagService.address",
+				"type": "Promise<FrameFlag[]>",
+				"description": "Reviewer flags explicitly addressed by an attached verified replacement captured strictly after each flag; immutable resolution events preserve prior feedback history."
+			},
+			{
+				"name": "defaultAttachedReader",
+				"type": "Promise<FrameClip>",
+				"description": "Original clip identity, timing, dimensions and verified bytes for exact frame extraction."
+			},
+			{
+				"name": "inspectFrameClip",
+				"type": "FrameVideoFacts",
+				"description": "The FrameVideoFacts result of inspectFrameClip."
+			},
+			{
+				"name": "extractFlagFrame",
+				"type": "Buffer",
+				"description": "The Buffer result of extractFlagFrame."
+			},
+			{
+				"name": "inspectFlagPng",
+				"type": "unknown",
+				"description": "The unknown result of inspectFlagPng."
+			},
+			{
+				"name": "materializeFlagFrame",
+				"type": "Promise<string>",
+				"description": "The Promise<string> result of materializeFlagFrame."
+			},
+			{
+				"name": "retainedFlagFrame",
+				"type": "Promise<Buffer>",
+				"description": "The Promise<Buffer> result of retainedFlagFrame."
+			},
+			{
+				"name": "ownerSchema",
+				"type": "unknown",
+				"description": "The unknown result of ownerSchema."
+			},
+			{
+				"name": "referenceSchema",
+				"type": "unknown",
+				"description": "The unknown result of referenceSchema."
+			},
+			{
+				"name": "inputSchema",
+				"type": "unknown",
+				"description": "The unknown result of inputSchema."
+			},
+			{
+				"name": "storedFlagSchema",
+				"type": "unknown",
+				"description": "The unknown result of storedFlagSchema."
+			},
+			{
+				"name": "resolutionSchema",
+				"type": "unknown",
+				"description": "The unknown result of resolutionSchema."
+			},
+			{
+				"name": "currentSchema",
+				"type": "unknown",
+				"description": "The unknown result of currentSchema."
+			},
+			{
+				"name": "parseFlagValue",
+				"type": "T",
+				"description": "The T result of parseFlagValue."
+			},
+			{
+				"name": "parseFlagJson",
+				"type": "unknown",
+				"description": "The unknown result of parseFlagJson."
+			},
+			{
+				"name": "frameHash",
+				"type": "string",
+				"description": "The string result of frameHash."
+			},
+			{
+				"name": "boundClip",
+				"type": "FrameClip",
+				"description": "The FrameClip result of boundClip."
+			},
+			{
+				"name": "framePosition",
+				"type": "unknown",
+				"description": "The unknown result of framePosition."
+			},
+			{
+				"name": "sameFrameSlot",
+				"type": "boolean",
+				"description": "The boolean result of sameFrameSlot."
+			},
+			{
+				"name": "addressedFlags",
+				"type": "FrameFlag[]",
+				"description": "The FrameFlag[] result of addressedFlags."
+			},
+			{
+				"name": "owningFrameCapture",
+				"type": "Capture",
+				"description": "The Capture result of owningFrameCapture."
+			},
+			{
+				"name": "storeFrameFlag",
+				"type": "Promise<FrameFlag>",
+				"description": "The Promise<FrameFlag> result of storeFrameFlag."
+			},
+			{
+				"name": "readFrameFlags",
+				"type": "Promise<FrameFlag[]>",
+				"description": "The Promise<FrameFlag[]> result of readFrameFlags."
+			},
+			{
+				"name": "storeFrameResolution",
+				"type": "Promise<void>",
+				"description": "The Promise<void> result of storeFrameResolution."
+			},
+			{
+				"name": "readFlagFrame",
+				"type": "Promise<Buffer>",
+				"description": "The Promise<Buffer> result of readFlagFrame."
+			},
+			{
+				"name": "readFrameCapture",
+				"type": "Promise<ReadFrameCapture>",
+				"description": "Selected admitted capture metadata and bounded verified video bytes; archived siblings are not loaded."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Invalid owner/reference/schema, out-of-range frame, unavailable or corrupt bounded media, or an unproved/older replacement rejects without clearing reviewer obligations."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "FrameFlagService.run",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "FrameFlagService.run",
+						"type": "string",
+						"description": "The string result of FrameFlagService.run; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "FrameFlagService.flag",
+				"inputs": [
+					{
+						"name": "FrameFlagService.flag.input",
+						"type": "FrameFlagInput",
+						"required": true,
+						"description": "Attached clip reference, exact frame position and optional reviewer note/region."
+					}
+				],
+				"outputs": [
+					{
+						"name": "FrameFlagService.flag",
+						"type": "Promise<FrameFlag>",
+						"description": "Persisted active reviewer flag with exact source/record/clip/frame identity and a hash-verified extracted PNG; no source commit is changed."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid owner/reference/schema, out-of-range frame, unavailable or corrupt bounded media, or an unproved/older replacement rejects without clearing reviewer obligations."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "FrameFlagService.list",
+				"inputs": [
+					{
+						"name": "FrameFlagService.list.unit",
+						"type": "string",
+						"required": true,
+						"description": "Stable registered unit identity used to scope the lookup."
+					},
+					{
+						"name": "FrameFlagService.list.current",
+						"type": "FrameCurrentClip[]",
+						"required": false,
+						"default": [],
+						"description": "Current slot hashes used to distinguish stale feedback without removing its history."
+					}
+				],
+				"outputs": [
+					{
+						"name": "FrameFlagService.list",
+						"type": "Promise<FrameFlag[]>",
+						"description": "Only this owner’s retained flags, with immutable replacement media replayed only for this owner before resolved status is accepted; all retained flag metadata, pointer bindings, paths and resolution ownership remain validated. Supplied current hashes may mark unresolved feedback stale."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid owner/reference/schema, out-of-range frame, unavailable or corrupt bounded media, or an unproved/older replacement rejects without clearing reviewer obligations."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "FrameFlagService.feedback",
+				"inputs": [
+					{
+						"name": "FrameFlagService.feedback.unit",
+						"type": "string",
+						"required": true,
+						"description": "Stable registered unit identity used to scope the lookup."
+					},
+					{
+						"name": "FrameFlagService.feedback.directory",
+						"type": "string",
+						"required": true,
+						"description": "Task-owned input directory where exact hash-verified reviewer PNGs are materialized; caller supplies and owns the directory."
+					}
+				],
+				"outputs": [
+					{
+						"name": "FrameFlagService.feedback",
+						"type": "Promise<FrameFeedback>",
+						"description": "Unresolved reviewer text, flag identities and exact materialized PNG paths for this owner; corrupt or missing frames reject the feedback assembly."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid owner/reference/schema, out-of-range frame, unavailable or corrupt bounded media, or an unproved/older replacement rejects without clearing reviewer obligations."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "FrameFlagService.frame",
+				"inputs": [
+					{
+						"name": "FrameFlagService.frame.unit",
+						"type": "string",
+						"required": true,
+						"description": "Stable registered unit identity used to scope the lookup."
+					},
+					{
+						"name": "FrameFlagService.frame.id",
+						"type": "string",
+						"required": true,
+						"description": "Id supplied to FrameFlagService.frame under its declared string contract."
+					}
+				],
+				"outputs": [
+					{
+						"name": "FrameFlagService.frame",
+						"type": "Promise<Buffer>",
+						"description": "Exact retained PNG bytes for this owner and flag ID after bounded regular-file, hash and PNG validation."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid owner/reference/schema, out-of-range frame, unavailable or corrupt bounded media, or an unproved/older replacement rejects without clearing reviewer obligations."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "FrameFlagService.address",
+				"inputs": [
+					{
+						"name": "FrameFlagService.address.reference",
+						"type": "FrameClipReference",
+						"required": true,
+						"description": "Immutable attached record/revision plus the owning unit, clip and viewport."
+					}
+				],
+				"outputs": [
+					{
+						"name": "FrameFlagService.address",
+						"type": "Promise<FrameFlag[]>",
+						"description": "Reviewer flags explicitly addressed by an attached verified replacement captured strictly after each flag; immutable resolution events preserve prior feedback history."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid owner/reference/schema, out-of-range frame, unavailable or corrupt bounded media, or an unproved/older replacement rejects without clearing reviewer obligations."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "defaultAttachedReader",
+				"inputs": [
+					{
+						"name": "defaultAttachedReader.reference",
+						"type": "FrameClipReference",
+						"required": true,
+						"description": "Exact original attached parent and clip slot requested for frame feedback."
+					},
+					{
+						"name": "defaultAttachedReader.root",
+						"type": "string",
+						"required": false,
+						"default": "process.cwd()",
+						"description": "Project checkout used for immutable source and evidence reads. The documented default is the source expression process.cwd(), evaluated by the implementation; it is not a literal string value."
+					},
+					{
+						"name": "defaultAttachedReader.pinned",
+						"type": "PinnedHistory",
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "Optional fixed evidence and notes snapshot; supplied bounds are never widened. Omission passes undefined; the implementation applies the documented optional behavior."
+					}
+				],
+				"outputs": [
+					{
+						"name": "defaultAttachedReader",
+						"type": "Promise<FrameClip>",
+						"description": "Original clip identity, timing, dimensions and verified bytes for exact frame extraction."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "No unique successful attached owner/slot capture is available in the pinned source, build, notes and evidence bounds."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "inspectFrameClip",
+				"inputs": [
+					{
+						"name": "inspectFrameClip.clip",
+						"type": "FrameClip",
+						"required": true,
+						"description": "Claimed clip bytes and provenance; schema, integrity and decoded facts are checked before admission."
+					}
+				],
+				"outputs": [
+					{
+						"name": "inspectFrameClip",
+						"type": "FrameVideoFacts",
+						"description": "The FrameVideoFacts result of inspectFrameClip; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Retained bytes cannot be decoded within video limits or contradict declared dimensions, duration or cadence."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "extractFlagFrame",
+				"inputs": [
+					{
+						"name": "extractFlagFrame.clip",
+						"type": "FrameClip",
+						"required": true,
+						"description": "Claimed clip bytes and provenance; schema, integrity and decoded facts are checked before admission."
+					},
+					{
+						"name": "extractFlagFrame.frameNumber",
+						"type": "number",
+						"required": true,
+						"description": "Zero-based decoded frame index within the retained clip interval."
+					}
+				],
+				"outputs": [
+					{
+						"name": "extractFlagFrame",
+						"type": "Buffer",
+						"description": "The Buffer result of extractFlagFrame; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Bounded exact-frame decoding fails, times out or produces incompatible PNG dimensions."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "inspectFlagPng",
+				"inputs": [
+					{
+						"name": "inspectFlagPng.bytes",
+						"type": "Buffer",
+						"required": true,
+						"description": "Retained bytes inspected against their declared type, size and integrity."
+					}
+				],
+				"outputs": [
+					{
+						"name": "inspectFlagPng",
+						"type": "unknown",
+						"description": "The unknown result of inspectFlagPng; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The frame is missing, oversized, outside dimension bounds or not a decodable PNG."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "materializeFlagFrame",
+				"inputs": [
+					{
+						"name": "materializeFlagFrame.root",
+						"type": "string",
+						"required": true,
+						"description": "Project checkout used for immutable source, evidence and tool reads."
+					},
+					{
+						"name": "materializeFlagFrame.flag",
+						"type": "FrameFlag",
+						"required": true,
+						"description": "The exact retained reviewer flag and its version-bound frame."
+					},
+					{
+						"name": "materializeFlagFrame.directory",
+						"type": "string",
+						"required": true,
+						"description": "Task-owned directory containing the capture or retained receipt files."
+					}
+				],
+				"outputs": [
+					{
+						"name": "materializeFlagFrame",
+						"type": "Promise<string>",
+						"description": "The Promise<string> result of materializeFlagFrame; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The retained frame or existing materialized file fails integrity, or the supplied target is not a regular directory."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "Promise rejection",
+						"description": "A Node filesystem operation rejects with its original error/code; this names the existing error interface, not a new runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "retainedFlagFrame",
+				"inputs": [
+					{
+						"name": "retainedFlagFrame.root",
+						"type": "string",
+						"required": true,
+						"description": "Project checkout used for immutable source, evidence and tool reads."
+					},
+					{
+						"name": "retainedFlagFrame.flag",
+						"type": "FrameFlag",
+						"required": true,
+						"description": "The exact retained reviewer flag and its version-bound frame."
+					}
+				],
+				"outputs": [
+					{
+						"name": "retainedFlagFrame",
+						"type": "Promise<Buffer>",
+						"description": "The Promise<Buffer> result of retainedFlagFrame; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The LFS object is missing, a symlink, outside the fixed size cap or inconsistent with its retained hash/PNG facts."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "parseFlagValue",
+				"inputs": [
+					{
+						"name": "parseFlagValue.schema",
+						"type": "z.ZodType<T>",
+						"required": true,
+						"description": "Runtime schema whose output type is admitted only after validation."
+					},
+					{
+						"name": "parseFlagValue.value",
+						"type": "T",
+						"required": true,
+						"description": "Typed caller value revalidated by the supplied schema; JavaScript and injected readers do not bypass runtime validation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseFlagValue",
+						"type": "T",
+						"description": "The T result of parseFlagValue; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid owner/reference/schema, out-of-range frame, unavailable or corrupt bounded media, or an unproved/older replacement rejects without clearing reviewer obligations."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "parseFlagJson",
+				"inputs": [
+					{
+						"name": "parseFlagJson.schema",
+						"type": "z.ZodType<T>",
+						"required": true,
+						"description": "Runtime schema whose output type is admitted only after validation."
+					},
+					{
+						"name": "parseFlagJson.bytes",
+						"type": "Buffer | undefined",
+						"required": true,
+						"description": "Raw JSON bytes; unknown parsed data stays private until the supplied schema accepts it. Missing, malformed or rejected input fails closed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseFlagJson",
+						"type": "T",
+						"description": "The T result of parseFlagJson; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid owner/reference/schema, out-of-range frame, unavailable or corrupt bounded media, or an unproved/older replacement rejects without clearing reviewer obligations."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "frameHash",
+				"inputs": [
+					{
+						"name": "frameHash.bytes",
+						"type": "Buffer | string",
+						"required": true,
+						"description": "Retained bytes inspected against their declared type, size and integrity."
+					}
+				],
+				"outputs": [
+					{
+						"name": "frameHash",
+						"type": "string",
+						"description": "The string result of frameHash; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "boundClip",
+				"inputs": [
+					{
+						"name": "boundClip.reference",
+						"type": "FrameClipReference",
+						"required": true,
+						"description": "Immutable attached record/revision plus the owning unit, clip and viewport."
+					},
+					{
+						"name": "boundClip.value",
+						"type": "FrameClip",
+						"required": true,
+						"description": "FrameClip returned under the reader contract; exact requested identity, byte cap and hash are still independently validated."
+					}
+				],
+				"outputs": [
+					{
+						"name": "boundClip",
+						"type": "FrameClip",
+						"description": "The FrameClip result of boundClip; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid owner/reference/schema, out-of-range frame, unavailable or corrupt bounded media, or an unproved/older replacement rejects without clearing reviewer obligations."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "framePosition",
+				"inputs": [
+					{
+						"name": "framePosition.input",
+						"type": "FrameFlagInput",
+						"required": true,
+						"description": "Attached clip reference, exact frame position and optional reviewer note/region."
+					},
+					{
+						"name": "framePosition.facts",
+						"type": "FrameVideoFacts",
+						"required": true,
+						"description": "Decoded cadence, duration, dimensions and retained frame count."
+					}
+				],
+				"outputs": [
+					{
+						"name": "framePosition",
+						"type": "unknown",
+						"description": "The unknown result of framePosition; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The timestamp/frame pair disagrees or falls outside the decoded retained frame interval."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "sameFrameSlot",
+				"inputs": [
+					{
+						"name": "sameFrameSlot.left",
+						"type": "FrameClipReference",
+						"required": true,
+						"description": "Immutable attached record/revision plus the owning unit, clip and viewport."
+					},
+					{
+						"name": "sameFrameSlot.right",
+						"type": "FrameClipReference",
+						"required": true,
+						"description": "Immutable attached record/revision plus the owning unit, clip and viewport."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sameFrameSlot",
+						"type": "boolean",
+						"description": "The boolean result of sameFrameSlot; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "addressedFlags",
+				"inputs": [
+					{
+						"name": "addressedFlags.clip",
+						"type": "FrameClip",
+						"required": true,
+						"description": "Claimed clip bytes and provenance; schema, integrity and decoded facts are checked before admission."
+					},
+					{
+						"name": "addressedFlags.flags",
+						"type": "FrameFlag[]",
+						"required": true,
+						"description": "Retained reviewer flags whose identity and standing must remain explicit."
+					}
+				],
+				"outputs": [
+					{
+						"name": "addressedFlags",
+						"type": "FrameFlag[]",
+						"description": "The FrameFlag[] result of addressedFlags; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "A replacement omits a pending flag, names a different owner/slot, or is not strictly newer than the addressed review."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "owningFrameCapture",
+				"inputs": [
+					{
+						"name": "owningFrameCapture.record",
+						"type": "VerificationRecord",
+						"required": true,
+						"description": "ID of the attached verification parent whose admitted captures prove the receipt."
+					},
+					{
+						"name": "owningFrameCapture.reference",
+						"type": "FrameClipReference",
+						"required": true,
+						"description": "Immutable attached record/revision plus the owning unit, clip and viewport."
+					}
+				],
+				"outputs": [
+					{
+						"name": "owningFrameCapture",
+						"type": "Capture",
+						"description": "The Capture result of owningFrameCapture; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The record is invalid or lacks one exact successful owner/slot capture with its source/build binding."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "storeFrameFlag",
+				"inputs": [
+					{
+						"name": "storeFrameFlag.root",
+						"type": "string",
+						"required": true,
+						"description": "Project checkout used for immutable source, evidence and tool reads."
+					},
+					{
+						"name": "storeFrameFlag.flag",
+						"type": "StoredFrameFlag",
+						"required": true,
+						"description": "The exact retained reviewer flag and its version-bound frame."
+					},
+					{
+						"name": "storeFrameFlag.png",
+						"type": "Buffer",
+						"required": true,
+						"description": "Exact extracted PNG bytes to retain with the reviewer flag."
+					}
+				],
+				"outputs": [
+					{
+						"name": "storeFrameFlag",
+						"type": "Promise<FrameFlag>",
+						"description": "The Promise<FrameFlag> result of storeFrameFlag; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The retained PNG or immutable evidence placement fails integrity."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "Promise rejection",
+						"description": "A Node filesystem operation rejects with its original error/code; this names the existing error interface, not a new runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "readFrameFlags",
+				"inputs": [
+					{
+						"name": "readFrameFlags.root",
+						"type": "string",
+						"required": true,
+						"description": "Project checkout used for immutable source, evidence and tool reads."
+					},
+					{
+						"name": "readFrameFlags.reader",
+						"type": "FrameClipReader",
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "Exact-reference clip reader; its returned claim is independently validated before use. Omission passes undefined; the implementation applies the documented optional behavior."
+					},
+					{
+						"name": "readFrameFlags.unit",
+						"type": "string",
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "Optional owning unit. When supplied, return only its flags and open only its resolution media while checking every retained flag and resolution metadata binding; omission replays all owners."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readFrameFlags",
+						"type": "Promise<FrameFlag[]>",
+						"description": "The Promise<FrameFlag[]> result of readFrameFlags; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid owner/reference/schema, out-of-range frame, unavailable or corrupt bounded media, or an unproved/older replacement rejects without clearing reviewer obligations."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "storeFrameResolution",
+				"inputs": [
+					{
+						"name": "storeFrameResolution.root",
+						"type": "string",
+						"required": true,
+						"description": "Project checkout used for immutable source, evidence and tool reads."
+					},
+					{
+						"name": "storeFrameResolution.flag",
+						"type": "FrameFlag",
+						"required": true,
+						"description": "The exact retained reviewer flag and its version-bound frame."
+					},
+					{
+						"name": "storeFrameResolution.clip",
+						"type": "FrameClip",
+						"required": true,
+						"description": "Claimed clip bytes and provenance; schema, integrity and decoded facts are checked before admission."
+					}
+				],
+				"outputs": [
+					{
+						"name": "storeFrameResolution",
+						"type": "Promise<void>",
+						"description": "The Promise<void> result of storeFrameResolution; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Immutable evidence placement conflicts or cannot preserve the addressed resolution identity."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "Promise rejection",
+						"description": "A Node filesystem operation rejects with its original error/code; this names the existing error interface, not a new runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "readFlagFrame",
+				"inputs": [
+					{
+						"name": "readFlagFrame.root",
+						"type": "string",
+						"required": true,
+						"description": "Project checkout used for immutable source, evidence and tool reads."
+					},
+					{
+						"name": "readFlagFrame.flag",
+						"type": "FrameFlag",
+						"required": true,
+						"description": "The exact retained reviewer flag and its version-bound frame."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readFlagFrame",
+						"type": "Promise<Buffer>",
+						"description": "The Promise<Buffer> result of readFlagFrame; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid owner/reference/schema, out-of-range frame, unavailable or corrupt bounded media, or an unproved/older replacement rejects without clearing reviewer obligations."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "readFrameCapture",
+				"inputs": [
+					{
+						"name": "readFrameCapture.root",
+						"type": "string",
+						"required": true,
+						"description": "Project checkout used to read immutable source, notes and evidence objects."
+					},
+					{
+						"name": "readFrameCapture.reference",
+						"type": "FrameClipReference",
+						"required": true,
+						"description": "Exact original attached parent, tested source, owner, clip and viewport."
+					},
+					{
+						"name": "readFrameCapture.pinned",
+						"type": "PinnedHistory",
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "Immutable evidence and notes commits; null refuses unavailable evidence or notes. Omission passes undefined; the implementation applies the documented optional behavior."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readFrameCapture",
+						"type": "Promise<ReadFrameCapture>",
+						"description": "Selected admitted capture metadata and bounded verified video bytes; archived siblings are not loaded."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid owner/reference/schema, out-of-range frame, unavailable or corrupt bounded media, or an unproved/older replacement rejects without clearing reviewer obligations."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "FrameFlagService.constructor",
+				"inputs": [
+					{
+						"name": "FrameFlagService.constructor.root",
+						"type": "string",
+						"required": false,
+						"default": "process.cwd()",
+						"description": "Repository used for source notes, immutable evidence and retained frame objects. The documented default is the source expression process.cwd(), evaluated by the implementation; it is not a literal string value."
+					},
+					{
+						"name": "FrameFlagService.constructor.reader",
+						"type": "FrameClipReader",
+						"required": false,
+						"default": "defaultAttachedReader",
+						"description": "Exact-reference reader. The default follows attached verified evidence; injected readers must satisfy the same runtime binding checks. The documented default is the source expression defaultAttachedReader, evaluated by the implementation; it is not a literal string value."
+					}
+				],
+				"outputs": [
+					{
+						"name": "FrameFlagService.constructor",
+						"type": "unknown",
+						"description": "The unknown result of FrameFlagService.constructor; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.lfs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.lfs-pointer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.media-facts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.evidence-branch",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.history-note",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.history-status",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-reference",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.verification-record",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/verification-evidence/FrameFlagService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/verification-evidence/FrameFlagService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

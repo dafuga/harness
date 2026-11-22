@@ -77,7 +77,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Unit ID compared with each benchmark's unit field. Matching uses exact string equality, and no matches produce an empty array.",
-				"examples": ["reports.component.evidence-grid"]
+				"examples": ["reports.function.harness-growth"]
 			},
 			{
 				"name": "signed.delta",
@@ -90,7 +90,7 @@
 		"outputs": [
 			{
 				"name": "growthMetrics",
-				"type": "unknown",
+				"type": "readonly [\"source-bytes\", \"complexity\", \"dependencies\"]",
 				"description": "Ordered metric keys used to read measured values and calculate deltas. The keys are source-bytes, complexity, and dependencies.",
 				"examples": [
 					["source-bytes", "complexity", "dependencies"]
@@ -190,7 +190,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Unit ID compared with each benchmark's unit field. Matching uses exact string equality, and no matches produce an empty array.",
-						"examples": ["reports.component.evidence-grid"]
+						"examples": ["reports.function.harness-growth"]
 					}
 				],
 				"outputs": [

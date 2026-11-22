@@ -9,13 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/R2ReportRetentionAdapter.ts"
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/R2ReportRetentionAdapter.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/R2ReportRetentionAdapter.types.ts"
 		],
 		"symbols": [
 			"R2ReportRetentionAdapter",
 			"R2ReportRetentionAdapter.fromEnvironment",
 			"R2ReportRetentionAdapter.purge",
-			"R2ReportRetentionAdapter.orphans"
+			"R2ReportRetentionAdapter.orphans",
+			"CloudCleanupError"
 		]
 	},
 	"contract": {
@@ -61,18 +63,18 @@
 		"outputs": [
 			{
 				"name": "R2ReportRetentionAdapter.fromEnvironment",
-				"type": "unknown",
+				"type": "R2ReportRetentionAdapter | undefined",
 				"description": "Returns undefined when r2EvidenceConfig() is falsy; otherwise it constructs and returns an R2ReportRetentionAdapter from that config. The returned adapter is a class instance."
 			},
 			{
 				"name": "R2ReportRetentionAdapter.purge",
-				"type": "unknown",
+				"type": "Promise<number>",
 				"description": "Resolves to the count of keys listed beneath safeId(id) for each reportCloudPrefixes entry. With dryRun true it returns that count without removing keys; otherwise removal is attempted before the promise resolves.",
 				"examples": [0, 3, 1001]
 			},
 			{
 				"name": "R2ReportRetentionAdapter.orphans",
-				"type": "unknown",
+				"type": "Promise<number>",
 				"description": "Resolves to the count of keys across reportCloudPrefixes whose first path segment passes /^[a-zA-Z0-9_-]{1,100}$/, is absent from known, and has LastModified at or before cutoff. With dryRun true the count is returned without removal; otherwise removal is attempted before the promise resolves.",
 				"examples": [0, 2, 37]
 			}
@@ -92,7 +94,7 @@
 				"outputs": [
 					{
 						"name": "R2ReportRetentionAdapter.fromEnvironment",
-						"type": "unknown",
+						"type": "R2ReportRetentionAdapter | undefined",
 						"description": "Returns undefined when r2EvidenceConfig() is falsy; otherwise it constructs and returns an R2ReportRetentionAdapter from that config. The returned adapter is a class instance."
 					}
 				],
@@ -121,7 +123,7 @@
 				"outputs": [
 					{
 						"name": "R2ReportRetentionAdapter.purge",
-						"type": "unknown",
+						"type": "Promise<number>",
 						"description": "Resolves to the count of keys listed beneath safeId(id) for each reportCloudPrefixes entry. With dryRun true it returns that count without removing keys; otherwise removal is attempted before the promise resolves.",
 						"examples": [0, 3, 1001]
 					}
@@ -163,7 +165,7 @@
 				"outputs": [
 					{
 						"name": "R2ReportRetentionAdapter.orphans",
-						"type": "unknown",
+						"type": "Promise<number>",
 						"description": "Resolves to the count of keys across reportCloudPrefixes whose first path segment passes /^[a-zA-Z0-9_-]{1,100}$/, is absent from known, and has LastModified at or before cutoff. With dryRun true the count is returned without removal; otherwise removal is attempted before the promise resolves.",
 						"examples": [0, 2, 37]
 					}

@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.helper-scopes",
+	"title": "function.helper-scopes examples",
+	"kind": "headless",
+	"units": ["function.helper-scopes"],
+	"builds": [],
+	"states": [
+		{
+			"id": "names-the-enclosing-function-chain-outermost-first",
+			"title": "Names the enclosing function chain outermost first",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-a-shadowing-parameter-or-block-binding",
+			"title": "Reports a shadowing parameter or block binding",
+			"coverage": "required"
+		},
+		{
+			"id": "ignores-file-level-bindings-for-the-helper-name",
+			"title": "Ignores file-level bindings for the helper name",
+			"coverage": "required"
+		},
+		{
+			"id": "returns-no-caller-for-a-detached-node",
+			"title": "Returns no caller for a detached node",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.helper-scopes.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"names-the-enclosing-function-chain-outermost-first",
+				"reports-a-shadowing-parameter-or-block-binding",
+				"ignores-file-level-bindings-for-the-helper-name",
+				"returns-no-caller-for-a-detached-node"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"names-the-enclosing-function-chain-outermost-first",
+				"reports-a-shadowing-parameter-or-block-binding",
+				"ignores-file-level-bindings-for-the-helper-name",
+				"returns-no-caller-for-a-detached-node"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"names-the-enclosing-function-chain-outermost-first",
+				"reports-a-shadowing-parameter-or-block-binding",
+				"ignores-file-level-bindings-for-the-helper-name",
+				"returns-no-caller-for-a-detached-node"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

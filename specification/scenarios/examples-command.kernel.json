@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-command.kernel",
+	"title": "command.kernel examples",
+	"kind": "headless",
+	"units": ["command.kernel"],
+	"builds": [],
+	"states": [
+		{
+			"id": "registers-the-kernel-command-tree-and-its-options",
+			"title": "Registers the kernel command tree and its options",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-parity-reports-problems",
+			"title": "Throws ExpectedCliError when parity reports problems",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/command.kernel.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"registers-the-kernel-command-tree-and-its-options",
+				"throws-expectedclierror-when-parity-reports-problems"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"registers-the-kernel-command-tree-and-its-options",
+				"throws-expectedclierror-when-parity-reports-problems"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"registers-the-kernel-command-tree-and-its-options",
+				"throws-expectedclierror-when-parity-reports-problems"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

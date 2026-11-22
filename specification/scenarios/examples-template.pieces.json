@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-template.pieces",
+	"title": "template.pieces examples",
+	"kind": "headless",
+	"units": ["template.pieces"],
+	"builds": [],
+	"states": [
+		{
+			"id": "plans-a-util-file-from-a-piece-name",
+			"title": "Plans a util file from a piece name",
+			"coverage": "required"
+		},
+		{
+			"id": "plans-a-migration-whose-comment-copies-the-name",
+			"title": "Plans a migration whose comment copies the name",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-for-a-kind-outside-the-scaffold-list",
+			"title": "Throws TypeError for a kind outside the scaffold list",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-game-view-without-a-dimension",
+			"title": "Rejects a game view without a dimension",
+			"coverage": "required"
+		},
+		{
+			"id": "marks-an-organism-svelte-file-with-its-tier",
+			"title": "Marks an organism svelte file with its tier",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/template.pieces.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"plans-a-util-file-from-a-piece-name",
+				"plans-a-migration-whose-comment-copies-the-name",
+				"throws-typeerror-for-a-kind-outside-the-scaffold-list",
+				"rejects-a-game-view-without-a-dimension",
+				"marks-an-organism-svelte-file-with-its-tier"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"plans-a-util-file-from-a-piece-name",
+				"plans-a-migration-whose-comment-copies-the-name",
+				"throws-typeerror-for-a-kind-outside-the-scaffold-list",
+				"rejects-a-game-view-without-a-dimension",
+				"marks-an-organism-svelte-file-with-its-tier"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"plans-a-util-file-from-a-piece-name",
+				"plans-a-migration-whose-comment-copies-the-name",
+				"throws-typeerror-for-a-kind-outside-the-scaffold-list",
+				"rejects-a-game-view-without-a-dimension",
+				"marks-an-organism-svelte-file-with-its-tier"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -1632,13 +1632,13 @@
 			"unit": "desktop.service.native-auth",
 			"from": "packages/desktop/src/services/NativeAuthService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
-			"definition": "11320e6d5b82ebd8669a90d972996bc48246dc328a09bd57bceedada92cc671f",
+			"definition": "2b8fb6b67435514d61c1666ed700b7e44eced3e8dbc4846e53f90d960e47fd81",
 			"relocationDefinition": "67a3c6213e0976f629348ba23061f5fa8274ef5c97eb067ee00cba2f8005485f",
 			"review": {
-				"commit": "caea83354142413dd97edae29bdd055924c9847b",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
-				"definition": "11320e6d5b82ebd8669a90d972996bc48246dc328a09bd57bceedada92cc671f",
-				"reason": "Reads the Tracker overview through the current native account and rejects stale sessions."
+				"definition": "2b8fb6b67435514d61c1666ed700b7e44eced3e8dbc4846e53f90d960e47fd81",
+				"reason": "Retains named native-auth errors while checking account freshness and reading Tracker overview."
 			},
 			"previousReviews": [
 				{
@@ -1646,6 +1646,18 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
 					"definition": "0435f4b7a85e042232cfe12ae825a7b3c48895b3cbd315b0bc63df1e47a3e41b",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "951e64f7516801d34db84011556adfde799e30ae",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
+					"definition": "986bf632f2cf84693894b3ada0aa8523c71ecf3d573f5d41504609de5f1c7447",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.native-auth, written by haiku); messages and behavior unchanged."
+				},
+				{
+					"commit": "caea83354142413dd97edae29bdd055924c9847b",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
+					"definition": "11320e6d5b82ebd8669a90d972996bc48246dc328a09bd57bceedada92cc671f",
+					"reason": "Reads the Tracker overview through the current native account and rejects stale sessions."
 				}
 			]
 		},
@@ -1719,13 +1731,13 @@
 			"unit": "workflow.load-units",
 			"from": "src/workflows/loadUnits.ts",
 			"to": "src/workflows/development-tooling/load-units/loadUnits.ts",
-			"definition": "d501e458db3d1381ecab0a098e4a7a2eda9c57a0d88ecc9b4a06d60baeac049a",
+			"definition": "34469ba2b232e654e815b68f9a23e830a129470bc43c52a1b5b83e9c17b3cdae",
 			"relocationDefinition": "43ff49f5ab22f48436c28b0e10bec73f575dde651160657b10cd29c0b1389769",
 			"review": {
-				"commit": "ebe557d670738560a9022377e71f260b328ae685",
+				"commit": "bcc9ced7ebd7fdb57e0a95dc3ce0debb6e132967",
 				"path": "src/workflows/development-tooling/load-units/loadUnits.ts",
-				"definition": "d501e458db3d1381ecab0a098e4a7a2eda9c57a0d88ecc9b4a06d60baeac049a",
-				"reason": "Validate active config controls against committed syntax while preserving retired histories."
+				"definition": "34469ba2b232e654e815b68f9a23e830a129470bc43c52a1b5b83e9c17b3cdae",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-workflow.load-units, written by haiku); behavior unchanged."
 			},
 			"previousReviews": [
 				{
@@ -1745,6 +1757,12 @@
 					"path": "src/workflows/development-tooling/load-units/loadUnits.ts",
 					"definition": "848fdef5a1df6e0f2565f7a1a992586701b49bed2e2c4d9ba14d73c13c9a0836",
 					"reason": "Reject config controls that are not values in their declared source."
+				},
+				{
+					"commit": "ebe557d670738560a9022377e71f260b328ae685",
+					"path": "src/workflows/development-tooling/load-units/loadUnits.ts",
+					"definition": "d501e458db3d1381ecab0a098e4a7a2eda9c57a0d88ecc9b4a06d60baeac049a",
+					"reason": "Validate active config controls against committed syntax while preserving retired histories."
 				}
 			]
 		},
@@ -1860,7 +1878,7 @@
 			"unit": "command.analytics",
 			"from": "src/commands/AnalyticsCommand.ts",
 			"to": "src/cli/program/AnalyticsCommand.ts",
-			"definition": "e5308e52ac3690c12bc759fc6d923293c77d699911a5a4fc9322b5b6daf8b737",
+			"definition": "5c68250ea96d1b45c7f38ebfabb588a1b1d77c4244646f3a6d921694c4f78c1e",
 			"previousReviews": [
 				{
 					"commit": "9425223b3263c3adbfd268eb67d49a2e01ad2f46",
@@ -1885,13 +1903,19 @@
 					"path": "src/cli/program/AnalyticsCommand.ts",
 					"definition": "fb326ecd4538912278f445eaddf24f3d32f7c9bacbad8b99fdd9a87a890d7e4c",
 					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
+				{
+					"commit": "9c62f93cf019176ee612459c00c250c0db3fc9ff",
+					"path": "src/cli/program/AnalyticsCommand.ts",
+					"definition": "e5308e52ac3690c12bc759fc6d923293c77d699911a5a4fc9322b5b6daf8b737",
+					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
 				}
 			],
 			"review": {
-				"commit": "9c62f93cf019176ee612459c00c250c0db3fc9ff",
+				"commit": "5179a394d4ca2f9351d290da077f79ccfeb999e6",
 				"path": "src/cli/program/AnalyticsCommand.ts",
-				"definition": "e5308e52ac3690c12bc759fc6d923293c77d699911a5a4fc9322b5b6daf8b737",
-				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				"definition": "5c68250ea96d1b45c7f38ebfabb588a1b1d77c4244646f3a6d921694c4f78c1e",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-command.analytics, written by haiku); messages and behavior unchanged."
 			},
 			"relocationDefinition": "5043fdbf76fd08dc5df16f5dd7d7eb348b0e2248dee70f1381c0f638b6a9194a"
 		},
@@ -1899,13 +1923,13 @@
 			"unit": "service.analytics",
 			"from": "src/services/AnalyticsService.ts",
 			"to": "src/cli/program/AnalyticsService.ts",
-			"definition": "ac38e5a7bad6d23461a544b32c77c7a19a0218e97dd1add14e42637f11d0d21b",
+			"definition": "4abf8d2bbc284cab704efcd97b00193b913f511b786d138bab725f773258b25e",
 			"relocationDefinition": "1a76ce9bc1eb2d33dcb0f216fd0f9861ee67e8a243fc3e8964142c3cb50fb086",
 			"review": {
-				"commit": "106cce18c1586a977ebf54dca9e42c52901937b3",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "src/cli/program/AnalyticsService.ts",
-				"definition": "ac38e5a7bad6d23461a544b32c77c7a19a0218e97dd1add14e42637f11d0d21b",
-				"reason": "Limit shared run records and recommendations to the task analytics command."
+				"definition": "4abf8d2bbc284cab704efcd97b00193b913f511b786d138bab725f773258b25e",
+				"reason": "Retains typed command errors and limits task registry records to task analytics."
 			},
 			"previousReviews": [
 				{
@@ -1937,6 +1961,18 @@
 					"path": "src/cli/program/AnalyticsService.ts",
 					"definition": "f802cac7b431bf473de8afb3cd8f471f5d02f5eecb01e4447b317fd3b9f99578",
 					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
+				{
+					"commit": "8e1531e356256c5b834292aade04f14a16cdd180",
+					"path": "src/cli/program/AnalyticsService.ts",
+					"definition": "96457d46427497e49f8c0d9e4e36eb1215dfa4f3c200909a16c5a98b9e80b62a",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-service.analytics, written by luna); messages and behavior unchanged."
+				},
+				{
+					"commit": "106cce18c1586a977ebf54dca9e42c52901937b3",
+					"path": "src/cli/program/AnalyticsService.ts",
+					"definition": "ac38e5a7bad6d23461a544b32c77c7a19a0218e97dd1add14e42637f11d0d21b",
+					"reason": "Limit shared run records and recommendations to the task analytics command."
 				}
 			]
 		},
@@ -1983,13 +2019,13 @@
 			"unit": "desktop.function.desktop-bridge",
 			"from": "packages/desktop/src/utils/desktopBridge.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
-			"definition": "1dcf0d6c89c118095165b25db4565b9cd85d0b5ee6520335d4982aee2ff6fb76",
+			"definition": "7b6ebbf1c09100d120f58cde105de9d0e7c95ab3e34f47a447b1ffb05dc0e5f1",
 			"relocationDefinition": "794c1bb220d50eaf6010b88d400f937c4e578f20d98a5bb9a6acbaf99358daab",
 			"review": {
-				"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
+				"commit": "a493b522aab637956711cf2c26f022d3e3a6f6c4",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
-				"definition": "1dcf0d6c89c118095165b25db4565b9cd85d0b5ee6520335d4982aee2ff6fb76",
-				"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
+				"definition": "7b6ebbf1c09100d120f58cde105de9d0e7c95ab3e34f47a447b1ffb05dc0e5f1",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.desktop-bridge, written by luna); messages and behavior unchanged."
 			},
 			"previousReviews": [
 				{
@@ -2021,6 +2057,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
 					"definition": "1d90f89ba767376505c86d9f43308a91252c7d923657d563b9160197a7d6e63c",
 					"reason": "Adds provider-backed gameLevelGenerate to the existing owner-local bridge while preserving other game operations and registered identity."
+				},
+				{
+					"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
+					"definition": "1dcf0d6c89c118095165b25db4565b9cd85d0b5ee6520335d4982aee2ff6fb76",
+					"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
 				}
 			]
 		},
@@ -2028,27 +2070,43 @@
 			"unit": "desktop.service.recorded-evidence",
 			"from": "packages/desktop/src/services/RecordedEvidenceService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/RecordedEvidenceService.ts",
-			"definition": "d816cf86236e43fa190e0447352dd828a7cf2d886e368e6061ad523b75460fe5",
+			"definition": "a0c5b22ca0d1a17bcd7acc01dec186dd80c88f6b28e67011e7e83e3aad7fb2b2",
 			"relocationDefinition": "20f742d0064d2f7b41ccff6bb63b5fddf59ea307c5df95c9b8882fb117efb79f",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "c1b36213c0e5b4cd58fe613778a8b15c7c0f782b",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/RecordedEvidenceService.ts",
-				"definition": "d816cf86236e43fa190e0447352dd828a7cf2d886e368e6061ad523b75460fe5",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "a0c5b22ca0d1a17bcd7acc01dec186dd80c88f6b28e67011e7e83e3aad7fb2b2",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.recorded-evidence, written by luna); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/RecordedEvidenceService.ts",
+					"definition": "d816cf86236e43fa190e0447352dd828a7cf2d886e368e6061ad523b75460fe5",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.adapter.evidence-refs",
 			"from": "packages/desktop/src/adapters/EvidenceRefsAdapter.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/EvidenceRefsAdapter.ts",
-			"definition": "3bf1ab5e665532667e97e3d3067a7a63778eb9baa90252a81c5b30b233e8a7e6",
+			"definition": "082eeabc01f298e4a5329f350e0efcdf00d21067b2e4795c7249df96a931ff10",
 			"relocationDefinition": "9e9e412ad8f06d522282097d50ea030e58dc73514c809cdb76f6c497774d4c84",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "ee8b6f89c0fa1ebedb4a0871726f1cf054758204",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/EvidenceRefsAdapter.ts",
-				"definition": "3bf1ab5e665532667e97e3d3067a7a63778eb9baa90252a81c5b30b233e8a7e6",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "082eeabc01f298e4a5329f350e0efcdf00d21067b2e4795c7249df96a931ff10",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.evidence-refs, written by luna); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/EvidenceRefsAdapter.ts",
+					"definition": "3bf1ab5e665532667e97e3d3067a7a63778eb9baa90252a81c5b30b233e8a7e6",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.desktop-bridge",
@@ -2060,13 +2118,13 @@
 			"unit": "desktop.service.hosted-project",
 			"from": "packages/desktop/src/services/HostedProjectService.ts",
 			"to": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
-			"definition": "d4080b409d5b35aa9aa3d9725c6fe10a6bed4746f65af05fec89bf99ca1e4e1d",
+			"definition": "fc2c288b4be9cc433ccc193e61060c5abff69cea783550f12b3f810a802fb4de",
 			"relocationDefinition": "b9917f0449c6e3eb571196e41e9ddf074be9c3abfeedfe0a221bd7e7e496059d",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "7a370a71ae36914a6274621151a9d0fcef37e518",
 				"path": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
-				"definition": "d4080b409d5b35aa9aa3d9725c6fe10a6bed4746f65af05fec89bf99ca1e4e1d",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				"definition": "fc2c288b4be9cc433ccc193e61060c5abff69cea783550f12b3f810a802fb4de",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.hosted-project, written by luna); messages and behavior unchanged."
 			},
 			"previousReviews": [
 				{
@@ -2074,6 +2132,12 @@
 					"path": "packages/desktop/src/services/HostedProjectService.ts",
 					"definition": "a9f13f9e5e99931e95884d9ea5b67648b0f0224b2c7488add859ec28c2f43d57",
 					"reason": "Retain the game branch’s local game creation and reread of the open project."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
+					"definition": "d4080b409d5b35aa9aa3d9725c6fe10a6bed4746f65af05fec89bf99ca1e4e1d",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 				}
 			]
 		},
@@ -2171,7 +2235,14 @@
 			"unit": "adapter.desktop-archive",
 			"from": "src/adapters/DesktopArchiveAdapter.ts",
 			"to": "scripts/prepare-desktop-experiment/DesktopArchiveAdapter.ts",
-			"definition": "2ed2e3d53d858c20c01ade8aceb1d7d58410033884041a2b49b07e8a992d5d23"
+			"definition": "1d0304b960857b71f236aa1c63c081eee5679c42c2a4563c38868804bb92d61c",
+			"relocationDefinition": "2ed2e3d53d858c20c01ade8aceb1d7d58410033884041a2b49b07e8a992d5d23",
+			"review": {
+				"commit": "4ee09ffcc40bddfe39807e9c624967f859e321a5",
+				"path": "scripts/prepare-desktop-experiment/DesktopArchiveAdapter.ts",
+				"definition": "1d0304b960857b71f236aa1c63c081eee5679c42c2a4563c38868804bb92d61c",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-adapter.desktop-archive, written by haiku); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "command.generate",
@@ -2211,14 +2282,22 @@
 			"unit": "desktop.service.remote-device-sessions",
 			"from": "packages/desktop/src/services/RemoteDeviceSessionsService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
-			"definition": "f94196b4018bf795307928eb69bc9d1a1409363c15695075d4e7e807cfb37dc7",
+			"definition": "304ec40005d70807352f970b2f87fdc7357629b98cf212b75d3ae33cbac9dee3",
 			"relocationDefinition": "53acfdf80eaf7aadf2fd5badff05ee77c037c0d9cea8eb0fe415bb39a0f79653",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "db7eff33b38b20f1300b0d589dd422121c332d42",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
-				"definition": "f94196b4018bf795307928eb69bc9d1a1409363c15695075d4e7e807cfb37dc7",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "304ec40005d70807352f970b2f87fdc7357629b98cf212b75d3ae33cbac9dee3",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.remote-device-sessions, written by haiku); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
+					"definition": "f94196b4018bf795307928eb69bc9d1a1409363c15695075d4e7e807cfb37dc7",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "hub.controller.hub-api",
@@ -2276,13 +2355,35 @@
 			"unit": "hub.function.hub-http",
 			"from": "packages/hub/src/controllers/hub-api-controller/hubHttp.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubHttp.ts",
-			"definition": "ea28ff7eb52b85f215c76d01547f598e1ea19b2d4a60648bc12af5b848b214f6"
+			"definition": "ea28ff7eb52b85f215c76d01547f598e1ea19b2d4a60648bc12af5b848b214f6",
+			"relocationDefinition": "ea28ff7eb52b85f215c76d01547f598e1ea19b2d4a60648bc12af5b848b214f6",
+			"review": {
+				"commit": "bb4b0e129bf4449a0a98529f584283792e0acd8b",
+				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubHttp.ts",
+				"definition": "ea28ff7eb52b85f215c76d01547f598e1ea19b2d4a60648bc12af5b848b214f6",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 2cc1f9bc70 (hub.function.hub-http); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "2cc1f9bc70897919117f0ba8bc39495d828bb82b",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubHttp.ts",
+					"definition": "cf4a7e07a0ad27c77715727553256432003ce4640262b8896e6a8a96a0062c6e",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-hub.function.hub-http, written by luna); behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "adapter.desktop-integrity",
 			"from": "src/adapters/DesktopIntegrityAdapter.ts",
 			"to": "scripts/prepare-desktop-experiment/DesktopIntegrityAdapter.ts",
-			"definition": "27f868db89312a323289c6910f5728385b7e5ac5276904caf5e67e72921344e1"
+			"definition": "69d10713c052a44139118eed3f8f7bf1f591c3ccc78bd0bff8463b222e665937",
+			"relocationDefinition": "27f868db89312a323289c6910f5728385b7e5ac5276904caf5e67e72921344e1",
+			"review": {
+				"commit": "47a208825d49b808cfb4a9cea75a6dc341db4858",
+				"path": "scripts/prepare-desktop-experiment/DesktopIntegrityAdapter.ts",
+				"definition": "69d10713c052a44139118eed3f8f7bf1f591c3ccc78bd0bff8463b222e665937",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-adapter.desktop-integrity, written by haiku); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "hub.controller.hub-remote",
@@ -2301,7 +2402,14 @@
 			"unit": "reports.service.report-import",
 			"from": "packages/reports/src/services/ReportImportService.ts",
 			"to": "packages/reports/src/services/reports-media/report-command-service/ReportImportService.ts",
-			"definition": "b8e8d33cf05cdf903b8c6da7da97537e345ac890f4afc917f646d2d8638cbc6c"
+			"definition": "39343a666105cdb3177ffcde6c6249329418d74bb5a74c466445d1c9447e0857",
+			"relocationDefinition": "b8e8d33cf05cdf903b8c6da7da97537e345ac890f4afc917f646d2d8638cbc6c",
+			"review": {
+				"commit": "7fe225aca8b560bbdff11e7a75665fd2ae20dafc",
+				"path": "packages/reports/src/services/reports-media/report-command-service/ReportImportService.ts",
+				"definition": "39343a666105cdb3177ffcde6c6249329418d74bb5a74c466445d1c9447e0857",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.service.report-import, written by luna); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "reports.adapter.vitest-report",
@@ -2649,13 +2757,13 @@
 			"unit": "service.kernel-benchmark",
 			"from": "src/services/kernel-benchmark-service/KernelBenchmarkService.ts",
 			"to": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
-			"definition": "0b7506528bdf23937d0b9a65fffd7ca72fa97f6d4274b3c75d85e15788b2faa5",
+			"definition": "3fea65612225e8dbba3359c5f0638e73b047fa142b75aaaf73edfb21792436d6",
 			"relocationDefinition": "31eb00cde9c6e7f351bd776bfd29d8e3db6c5e2952ac5c3d0320b7a7d7aaa28f",
 			"review": {
-				"commit": "c4221b3bf2fb9dfa02e7842d7ccf9b5e6db7bb46",
+				"commit": "a5832fa2f6ee605b13d105b70f5e5245ad2471b5",
 				"path": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
-				"definition": "0b7506528bdf23937d0b9a65fffd7ca72fa97f6d4274b3c75d85e15788b2faa5",
-				"reason": "Retain bounded process execution, bounded nested runtime lifetimes and asynchronous cold kernel samples."
+				"definition": "3fea65612225e8dbba3359c5f0638e73b047fa142b75aaaf73edfb21792436d6",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-service.kernel-benchmark, written by haiku); messages and behavior unchanged."
 			},
 			"previousReviews": [
 				{
@@ -2675,6 +2783,12 @@
 					"path": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
 					"definition": "e646e8792e26026e8a445e2f992c4987921070921b7e4e1778828b5105b387d8",
 					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
+				{
+					"commit": "c4221b3bf2fb9dfa02e7842d7ccf9b5e6db7bb46",
+					"path": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
+					"definition": "0b7506528bdf23937d0b9a65fffd7ca72fa97f6d4274b3c75d85e15788b2faa5",
+					"reason": "Retain bounded process execution, bounded nested runtime lifetimes and asynchronous cold kernel samples."
 				}
 			]
 		},
@@ -2709,13 +2823,27 @@
 			"unit": "desktop.adapter.remote-http-project",
 			"from": "packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
-			"definition": "56523dcc7e317b6acacd6394fa67dd5a8ab6fcd02336c1e564b9f5ad972c41fa"
+			"definition": "730683f6700bea18354561f796af8ee23a08cf57cfde91d43a4ee0529fe0ef01",
+			"relocationDefinition": "56523dcc7e317b6acacd6394fa67dd5a8ab6fcd02336c1e564b9f5ad972c41fa",
+			"review": {
+				"commit": "b8d18e06358ab516eb0c5af4062a424e1df2a524",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
+				"definition": "730683f6700bea18354561f796af8ee23a08cf57cfde91d43a4ee0529fe0ef01",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.remote-http-project, written by luna); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "desktop.function.hosted-image",
 			"from": "packages/desktop/src/adapters/remote-http-project-adapter/hostedImage.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hostedImage.ts",
-			"definition": "1b4eb6d53cd9ddbfacc236d19f328b8d1a29fc2f7e7ba1e23c23497505dbf127"
+			"definition": "acd723bbf29383c1d79721c9a179cf24ee75d732dcf35be7a9066f7d2efbc301",
+			"relocationDefinition": "1b4eb6d53cd9ddbfacc236d19f328b8d1a29fc2f7e7ba1e23c23497505dbf127",
+			"review": {
+				"commit": "d3c39b26470e2d236a24e27bd3e70b52b91526a3",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hostedImage.ts",
+				"definition": "acd723bbf29383c1d79721c9a179cf24ee75d732dcf35be7a9066f7d2efbc301",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.hosted-image, written by haiku); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "desktop.service.hosted-evidence",
@@ -2938,13 +3066,13 @@
 			"unit": "service.verification",
 			"from": "src/services/verification-service/VerificationService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-			"definition": "8fcfadc67cf612f0a9c7f965bdec2e920fa0713ee7df2e1d436b846b0ba4528f",
+			"definition": "9b33eb6188aa0d01bab2189dfbc222263299d04aa235867519dd9e92405930b0",
 			"relocationDefinition": "146b117282696844fcc9506d83b7d30df30482554e3603d38b08b295272e02c9",
 			"review": {
-				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-				"definition": "8fcfadc67cf612f0a9c7f965bdec2e920fa0713ee7df2e1d436b846b0ba4528f",
-				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
+				"definition": "9b33eb6188aa0d01bab2189dfbc222263299d04aa235867519dd9e92405930b0",
+				"reason": "Selects pending video work in full verification and preserves Lite planning, cancellation and artifact retention."
 			},
 			"previousReviews": [
 				{
@@ -2994,6 +3122,18 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
 					"definition": "c0842801d54d6023c0bcdcaf23c238a416ee29387c2debdb00aa30130c1ab933",
 					"reason": "Propagate cancellation to admitted setup and check processes so verification can clean up before exiting."
+				},
+				{
+					"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+					"definition": "a8f2b11c13e2390046b897cb32be52bd0f9c954b13be1e96f6eee179f7b7942e",
+					"reason": "Select and rerun declared video scenarios with pending frame feedback."
+				},
+				{
+					"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+					"definition": "8fcfadc67cf612f0a9c7f965bdec2e920fa0713ee7df2e1d436b846b0ba4528f",
+					"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
 				}
 			]
 		},
@@ -3001,14 +3141,28 @@
 			"unit": "function.scenario-coverage",
 			"from": "src/services/verification-service/scenarioCoverage.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
-			"definition": "c67c831944910df25ccb8b94e586f02d8aa0c0f3dd9b9c1fb6352b7cd9d15dbd",
+			"definition": "62c2c8370b97de2d968cf301d3d80b31b9f5a36a9be903a28d899585c831ee01",
 			"relocationDefinition": "7c6fde05df18fa70a2c12eae9a58acdd175271911693f14df619e73bd8938ffe",
 			"review": {
-				"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
-				"definition": "c67c831944910df25ccb8b94e586f02d8aa0c0f3dd9b9c1fb6352b7cd9d15dbd",
-				"reason": "Judge runnable checks and preserve pending scenario evidence."
-			}
+				"definition": "62c2c8370b97de2d968cf301d3d80b31b9f5a36a9be903a28d899585c831ee01",
+				"reason": "Judges admitted video graphs for full runs and reports deferred visual evidence for Lite."
+			},
+			"previousReviews": [
+				{
+					"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
+					"definition": "22d95fdf68fc2c01a4bc7a9848a46ce8c5dfd11d7026ebc6f111b1ae5cce3a63",
+					"reason": "Judge modular clip graph coverage and active reviewer flags with scenario evidence."
+				},
+				{
+					"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
+					"definition": "c67c831944910df25ccb8b94e586f02d8aa0c0f3dd9b9c1fb6352b7cd9d15dbd",
+					"reason": "Judge runnable checks and preserve pending scenario evidence."
+				}
+			]
 		},
 		{
 			"unit": "function.seal-record",
@@ -3020,46 +3174,36 @@
 			"unit": "function.verify-plan",
 			"from": "src/services/verification-service/verifyPlan.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlan.ts",
-			"definition": "ca5ff9cf3bc611a84844b0d19d47df2e0bf954f30ad08ea5283e612368bb0681",
+			"definition": "b18e6b92a5c3bd71f49d7dbf0423723782f0118f48cdd3bf4dcab737abea2d7d",
 			"relocationDefinition": "cc38e30b15727c2dd750d0ae3d269be515091dd8d0f675c442f1f6ffbaa9acdf",
 			"review": {
-				"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+				"commit": "28a1d24cacec44c0b2dc88871be3a6e42fc6f8d3",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlan.ts",
-				"definition": "ca5ff9cf3bc611a84844b0d19d47df2e0bf954f30ad08ea5283e612368bb0681",
-				"reason": "Plan Godot headlessly and identify full-only commands."
-			}
+				"definition": "b18e6b92a5c3bd71f49d7dbf0423723782f0118f48cdd3bf4dcab737abea2d7d",
+				"reason": "Carry declared host resource requirements into verification while preserving Lite selection."
+			},
+			"previousReviews": [
+				{
+					"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlan.ts",
+					"definition": "ca5ff9cf3bc611a84844b0d19d47df2e0bf954f30ad08ea5283e612368bb0681",
+					"reason": "Plan Godot headlessly and identify full-only commands."
+				}
+			]
 		},
 		{
 			"unit": "service.record-assembly",
 			"from": "src/services/record-assembly-service/RecordAssemblyService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"definition": "f10bcc6987f9d8cf238eea574e3a185ceab92936c150364124b378b33a74bddd",
+			"definition": "913db8b72b151bff7f83f900d19a40abc17a1d4bf31c59914c8010f8ab982a0d",
 			"relocationDefinition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936",
 			"review": {
-				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-				"definition": "f10bcc6987f9d8cf238eea574e3a185ceab92936c150364124b378b33a74bddd",
-				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
+				"definition": "913db8b72b151bff7f83f900d19a40abc17a1d4bf31c59914c8010f8ab982a0d",
+				"reason": "Preserves video batch references beside Lite outcomes, artifact digests and recorded builds."
 			},
 			"previousReviews": [
-				{
-					"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
-					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-					"definition": "50f9f685616a346bc63595ea505496ab7825cb9096e057aed5c8f737cd6c4c63",
-					"reason": "Seal Lite outcomes with a separate full-proof gate."
-				},
-				{
-					"commit": "e3191b248640e223bc34a92c8e973da3d60ba742",
-					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-					"definition": "9cf207e2c0d91cb1b71431b0e95187f0da34afa36a9c4c39b0d643b0d229af8e",
-					"reason": "Extract the component snapshot assembly so the record assembly method meets the length rule. Preserve the order, inputs, and fields used to seal the verification record."
-				},
-				{
-					"commit": "ecf3fe78354597ca168b43168d96ff4bc1ce5ab0",
-					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-					"definition": "d2c41ff73865a9c2c9c3a94e5de16153c26ef52ee57ce2c04ccc3a70e6dd2e7c",
-					"reason": "Retain the reviewed change: record assembly writes skippedBuilds from the snapshot run."
-				},
 				{
 					"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
@@ -3091,6 +3235,24 @@
 					"reason": "Mark newly assembled component identities as source-contract schema 2 for explicit historical verification."
 				},
 				{
+					"commit": "ecf3fe78354597ca168b43168d96ff4bc1ce5ab0",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "d2c41ff73865a9c2c9c3a94e5de16153c26ef52ee57ce2c04ccc3a70e6dd2e7c",
+					"reason": "Retain the reviewed change: record assembly writes skippedBuilds from the snapshot run."
+				},
+				{
+					"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "50f9f685616a346bc63595ea505496ab7825cb9096e057aed5c8f737cd6c4c63",
+					"reason": "Seal Lite outcomes with a separate full-proof gate."
+				},
+				{
+					"commit": "e3191b248640e223bc34a92c8e973da3d60ba742",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "9cf207e2c0d91cb1b71431b0e95187f0da34afa36a9c4c39b0d643b0d229af8e",
+					"reason": "Extract the component snapshot assembly so the record assembly method meets the length rule. Preserve the order, inputs, and fields used to seal the verification record."
+				},
+				{
 					"commit": "41db0c5289110d6ec9cd696a87614cb98f78c173",
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 					"definition": "3ba8f924316602c3d500219211db8612d9dac691ea892c3ccb75931bd6f7c06d",
@@ -3107,6 +3269,18 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 					"definition": "6578dca87e7e83d246f09169aef0b7752094b3d171b804cc83f4ff6226f578f3",
 					"reason": "Preserve exact artifact verification and current Harness record assembly in the reconciled source."
+				},
+				{
+					"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "948149be5e55d9bef494242c498b06500ff32bc1fc85c38c17087059dfebac3a",
+					"reason": "Retain validated video batch pointers in sealed verification records."
+				},
+				{
+					"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "f10bcc6987f9d8cf238eea574e3a185ceab92936c150364124b378b33a74bddd",
+					"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
 				}
 			]
 		},
@@ -3187,38 +3361,88 @@
 			"unit": "command.codex",
 			"from": "src/commands/CodexCommand.ts",
 			"to": "src/cli/program/CodexCommand.ts",
-			"definition": "c2ff061e7bd9b408cf0c852dba1df0a8d30cfcb3772e7da222d51adc5bb90cb7"
+			"definition": "c1cac136088ff27f5fc211bde5049c81978276f2f3c1effe62ea8b2668c296ef",
+			"relocationDefinition": "c2ff061e7bd9b408cf0c852dba1df0a8d30cfcb3772e7da222d51adc5bb90cb7",
+			"review": {
+				"commit": "729dc6ca84709574f874d66e8500d4e41b55fd71",
+				"path": "src/cli/program/CodexCommand.ts",
+				"definition": "c1cac136088ff27f5fc211bde5049c81978276f2f3c1effe62ea8b2668c296ef",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-command.codex, written by luna); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "reports.service.report-retention",
 			"from": "packages/reports/src/services/report-retention-service/ReportRetentionService.ts",
 			"to": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportRetentionService.ts",
-			"definition": "2563b9aa0765d4b80aeb5f27671943ca7491399e4c70dc1ee33b04639abe4cc2"
+			"definition": "f1182284a8c296ec7f3fc1ed796281cb6df1b011e8f4f4023cca9381c6ccce4b",
+			"relocationDefinition": "2563b9aa0765d4b80aeb5f27671943ca7491399e4c70dc1ee33b04639abe4cc2",
+			"review": {
+				"commit": "4add94fc05e44dec05247efe444e7ca02a2bfc8f",
+				"path": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportRetentionService.ts",
+				"definition": "f1182284a8c296ec7f3fc1ed796281cb6df1b011e8f4f4023cca9381c6ccce4b",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.service.report-retention, written by luna); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "reports.function.report-cleanup-log",
 			"from": "packages/reports/src/services/report-retention-service/reportCleanupLog.ts",
 			"to": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportCleanupLog.ts",
-			"definition": "f990585337ff82846ecf52563a07087274b1985f0bb5efecad806929ecb4d8a1"
+			"definition": "4b15ab64d65f137e1ecbbc167fc3784adf08bb743623ad71f226d9adc220bebe",
+			"relocationDefinition": "f990585337ff82846ecf52563a07087274b1985f0bb5efecad806929ecb4d8a1",
+			"review": {
+				"commit": "1a95df8cade8484c9bc5084bf3f6be73e0476e19",
+				"path": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportCleanupLog.ts",
+				"definition": "4b15ab64d65f137e1ecbbc167fc3784adf08bb743623ad71f226d9adc220bebe",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.report-cleanup-log, written by haiku); behavior unchanged."
+			}
 		},
 		{
 			"unit": "reports.function.report-local-cleanup",
 			"from": "packages/reports/src/services/report-retention-service/reportLocalCleanup.ts",
 			"to": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportLocalCleanup.ts",
-			"definition": "7df7d32c283819d8700c1801b6175c015de4d0c59b962cfa5265941b7db12123"
+			"definition": "abf41f1752cbf02bca3e6a014764b636855975d6e8ff637353f87253c4030d62",
+			"relocationDefinition": "7df7d32c283819d8700c1801b6175c015de4d0c59b962cfa5265941b7db12123",
+			"review": {
+				"commit": "49a3a4fdf5d3f7ac3e0de502fe915648eacdb7e9",
+				"path": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportLocalCleanup.ts",
+				"definition": "abf41f1752cbf02bca3e6a014764b636855975d6e8ff637353f87253c4030d62",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.report-local-cleanup, written by luna); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "af2e4138394d15f5a5270c8d154dd03cbdecd24f",
+					"path": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportLocalCleanup.ts",
+					"definition": "b64601d6970d244b731f5ddd876257cc96bfd6fd16b7b89d747521d20d963038",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.function.report-local-cleanup, written by luna); messages and behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "reports.adapter.report-pages-retention",
 			"from": "packages/reports/src/adapters/ReportPagesRetentionAdapter.ts",
 			"to": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts",
-			"definition": "e7aae4518baf087b89273b4e636084e439d56ef74ecf1b38a759e604c8fcfe97",
+			"definition": "0b0c448efa17a8082180f8478909c6c4e72dc58a4619c28ece46ba37d06217c3",
 			"relocationDefinition": "8277258b463411f5dc0b60f2f199e7d2b83478fc9fbe986bac924e1de01a5df4",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "ff4f6756f8a9bb6506a43ce53600a92679f75fd7",
 				"path": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts",
-				"definition": "e7aae4518baf087b89273b4e636084e439d56ef74ecf1b38a759e604c8fcfe97",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "0b0c448efa17a8082180f8478909c6c4e72dc58a4619c28ece46ba37d06217c3",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.adapter.report-pages-retention, written by luna); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts",
+					"definition": "e7aae4518baf087b89273b4e636084e439d56ef74ecf1b38a759e604c8fcfe97",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "73ef6fa1c0b168e71240bae4cb9d05258058f3cf",
+					"path": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts",
+					"definition": "b4e51a557729bcf63cbce6d28e41df9641d5b92dfa06daeec94e5ab1498ddff7",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.adapter.report-pages-retention, written by luna); messages and behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "workflow.loop-templates",
@@ -3315,14 +3539,22 @@
 			"unit": "desktop.service.project-session",
 			"from": "packages/desktop/src/services/ProjectSessionService.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts",
-			"definition": "b682426cdf8ec2c96946aa9725037009973fff0487cff89abdd4695052f6b0be",
+			"definition": "2da1880fbb37c5df1f6d27651c116d9bc643386dc6ce3320044ba995ce8c1d65",
 			"relocationDefinition": "0d0e15a7a7474cac77d924f1b80a3a0198d40d983f1f6f4db3086dec6a43609e",
 			"review": {
-				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
-				"path": "packages/desktop/src/services/ProjectSessionService.ts",
-				"definition": "b682426cdf8ec2c96946aa9725037009973fff0487cff89abdd4695052f6b0be",
-				"reason": "Retain the game branch’s selection state and game project identity."
-			}
+				"commit": "928dbd0877bbe55f75bb4b060551d1c5fa3c884d",
+				"path": "packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts",
+				"definition": "2da1880fbb37c5df1f6d27651c116d9bc643386dc6ce3320044ba995ce8c1d65",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.project-session, written by luna); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+					"path": "packages/desktop/src/services/ProjectSessionService.ts",
+					"definition": "b682426cdf8ec2c96946aa9725037009973fff0487cff89abdd4695052f6b0be",
+					"reason": "Retain the game branch’s selection state and game project identity."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.catalog",
@@ -3334,13 +3566,13 @@
 			"unit": "desktop.function.catalog-detail",
 			"from": "packages/desktop/src/services/catalog-service/catalogDetail.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.ts",
-			"definition": "064c515a4471c9d8f350acc0b367b181ed3e660f130674ccb2d58f5c13edbdd6",
+			"definition": "21894c160ed1aaa6541f37d04fb3705718bd90f1ae50836fdeefafffc7cb1dfe",
 			"relocationDefinition": "1ceee21dff48fa90b8ba7aa477d5eb90b99c6f96e2a2bf14b3b05071ebb65b31",
 			"review": {
-				"commit": "7c72cac191a91bc1f6b4f5586f7c165b896d8d29",
+				"commit": "9cf4ee99eea5c0251592ff1b0ed66d82dd26b0c4",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.ts",
-				"definition": "064c515a4471c9d8f350acc0b367b181ed3e660f130674ccb2d58f5c13edbdd6",
-				"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof."
+				"definition": "21894c160ed1aaa6541f37d04fb3705718bd90f1ae50836fdeefafffc7cb1dfe",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.catalog-detail, written by haiku); messages and behavior unchanged."
 			},
 			"previousReviews": [
 				{
@@ -3348,6 +3580,12 @@
 					"path": "packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.ts",
 					"definition": "adda1a4ffe96275b3aef4ce4e9d11c16aa532ddddf4f1e130679b2fcfa8c8ea2",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "7c72cac191a91bc1f6b4f5586f7c165b896d8d29",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.ts",
+					"definition": "064c515a4471c9d8f350acc0b367b181ed3e660f130674ccb2d58f5c13edbdd6",
+					"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof."
 				}
 			]
 		},
@@ -3361,14 +3599,28 @@
 			"unit": "desktop.service.project-operations",
 			"from": "packages/desktop/src/services/ProjectOperationsService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectOperationsService.ts",
-			"definition": "df70d5294b43a7a26cd848d6e0e1bf6f5a982dbe9da22e44e18d81f9f9e0d48a",
+			"definition": "f4148e794a98724dcc07cb4f1088ed488be87c090a67d5cfb6c47e856e0b2474",
 			"relocationDefinition": "8d0441fb6f610462198b107ee9a3517285b6b96143c340361063e994a2c94a5c",
 			"review": {
-				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
-				"path": "packages/desktop/src/services/ProjectOperationsService.ts",
-				"definition": "df70d5294b43a7a26cd848d6e0e1bf6f5a982dbe9da22e44e18d81f9f9e0d48a",
-				"reason": "Retain the game branch’s snapshot of the already open project."
-			}
+				"commit": "7b9b54c2e391bfb97e41d9f59fd1128a4560752c",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectOperationsService.ts",
+				"definition": "f4148e794a98724dcc07cb4f1088ed488be87c090a67d5cfb6c47e856e0b2474",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.project-operations, written by luna); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+					"path": "packages/desktop/src/services/ProjectOperationsService.ts",
+					"definition": "df70d5294b43a7a26cd848d6e0e1bf6f5a982dbe9da22e44e18d81f9f9e0d48a",
+					"reason": "Retain the game branch’s snapshot of the already open project."
+				},
+				{
+					"commit": "14066847cee16d362b5ea21d1296f7b469567819",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectOperationsService.ts",
+					"definition": "69708c91ae004c0fc9a99bd2a06f5303c3b1d76429fa4ae9762c44d5e78a5836",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.project-operations, written by luna); messages and behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "relay.controller.public-relay",
@@ -3419,26 +3671,48 @@
 			"unit": "reports.service.replay-video",
 			"from": "packages/reports/src/services/replay-video-service/ReplayVideoService.ts",
 			"to": "packages/reports/src/routes/api/replay-video/replay-video-service/ReplayVideoService.ts",
-			"definition": "6deeb3885d0c892ac39fbbd706b45ab8fb64d63a977bc72693aed8a16c225e7f"
+			"definition": "54c208f05aef9853e919da68b41aa1830a77731ead7b746de58014a6b3360254",
+			"relocationDefinition": "6deeb3885d0c892ac39fbbd706b45ab8fb64d63a977bc72693aed8a16c225e7f",
+			"review": {
+				"commit": "44b1656c1bdf25f3058cc0f1cd5828d4793c1772",
+				"path": "packages/reports/src/routes/api/replay-video/replay-video-service/ReplayVideoService.ts",
+				"definition": "54c208f05aef9853e919da68b41aa1830a77731ead7b746de58014a6b3360254",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.service.replay-video, written by haiku); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "reports.function.replay-video",
 			"from": "packages/reports/src/services/replay-video-service/replayVideo.ts",
 			"to": "packages/reports/src/routes/api/replay-video/replay-video-service/replayVideo.ts",
-			"definition": "d5d879ea4bd22f36c4535ebcfb12f29e8cf1e5395db1bed17f80102c8123803a"
+			"definition": "9f807f143273ae3230361484539209b73e98995e8cc0f49022277738a325e60c",
+			"relocationDefinition": "d5d879ea4bd22f36c4535ebcfb12f29e8cf1e5395db1bed17f80102c8123803a",
+			"review": {
+				"commit": "418156e21424fd797fac8aff628582e5fdaa89ad",
+				"path": "packages/reports/src/routes/api/replay-video/replay-video-service/replayVideo.ts",
+				"definition": "9f807f143273ae3230361484539209b73e98995e8cc0f49022277738a325e60c",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.function.replay-video, written by haiku); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "desktop.service.remote-artifact-cache",
 			"from": "packages/desktop/src/services/RemoteArtifactCacheService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService.ts",
-			"definition": "1657bc24f92ea4859084b82e7cd4280632880c4a8fbdae8ed8c9b23fcebe4216",
+			"definition": "42d74ebb7817d63c90d490ed5d7e1e957bc58169cf7af6f268c74fb74b0cce55",
 			"relocationDefinition": "56dbb98929eb8ad7b80cef5fbffa6668e32ff3337ae716c9a7074a6183ba137f",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "0887639ee911f7fc727b82d74048a62591aeee98",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService.ts",
-				"definition": "1657bc24f92ea4859084b82e7cd4280632880c4a8fbdae8ed8c9b23fcebe4216",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "42d74ebb7817d63c90d490ed5d7e1e957bc58169cf7af6f268c74fb74b0cce55",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.remote-artifact-cache, written by luna); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService.ts",
+					"definition": "1657bc24f92ea4859084b82e7cd4280632880c4a8fbdae8ed8c9b23fcebe4216",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "command.console",
@@ -3530,33 +3804,64 @@
 			"unit": "relay.adapter.host-sockets",
 			"from": "packages/relay/src/adapters/HostSocketsAdapter.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/HostSocketsAdapter.ts",
-			"definition": "c8e688667bd8d7314e8b0b11f9c39ad2a3da28cc951ae52fb0fe0ae4f8a01a88"
+			"definition": "c8e688667bd8d7314e8b0b11f9c39ad2a3da28cc951ae52fb0fe0ae4f8a01a88",
+			"relocationDefinition": "c8e688667bd8d7314e8b0b11f9c39ad2a3da28cc951ae52fb0fe0ae4f8a01a88",
+			"review": {
+				"commit": "f579a3b851e1951bcfb9a4e40a106aeb8d8274a4",
+				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostSocketsAdapter.ts",
+				"definition": "c8e688667bd8d7314e8b0b11f9c39ad2a3da28cc951ae52fb0fe0ae4f8a01a88",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 931656943f (relay.adapter.host-sockets); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "931656943f13623cd4b6106319cd1676f3511dcd",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostSocketsAdapter.ts",
+					"definition": "515028a1d2f3d84b6d35387c0ce1a3cfe68b6bf2cd253335f2e9b5a8f3762063",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-relay.adapter.host-sockets, written by luna); behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.local-transport",
 			"from": "packages/desktop/src/services/LocalTransportService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalTransportService.ts",
-			"definition": "2c8f72f2a24d06778497ca7e2247f58e35db26e989c392e875e38ab237144592",
+			"definition": "b9a60ee565f5706a2caecacc09a9bab63e51ebb5c9afdbcf67a561dec53994ba",
 			"relocationDefinition": "f3c24b924c74c2ac829123f1bd69cf51cb6d2303573f7e8611b7cd2461d62d71",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "7e33800fb3aeb5e2401eeb1bee6a194597d4a617",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalTransportService.ts",
-				"definition": "2c8f72f2a24d06778497ca7e2247f58e35db26e989c392e875e38ab237144592",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "b9a60ee565f5706a2caecacc09a9bab63e51ebb5c9afdbcf67a561dec53994ba",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.local-transport, written by luna); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalTransportService.ts",
+					"definition": "2c8f72f2a24d06778497ca7e2247f58e35db26e989c392e875e38ab237144592",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "reports.adapter.console-bridge",
 			"from": "packages/reports/src/adapters/ConsoleBridgeAdapter.ts",
 			"to": "packages/reports/src/lib/projects-sessions/console-workspace/ConsoleBridgeAdapter.ts",
-			"definition": "108d87b898246e30997bfbd8953e92e215fadee37de1d8df1e7fe6aadae83f08",
+			"definition": "0232adbf1dbfd59754870d67e70ad024c43ee31dfbda37ff9126134b90ae90a6",
 			"relocationDefinition": "99210841b8655c75dc1c97ca9da4db278f8d762a9d7dec7244055e7b0b8dae85",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "0d8bbf17ad5a6bf089e9eb4f7e5a6c4d44342864",
 				"path": "packages/reports/src/lib/projects-sessions/console-workspace/ConsoleBridgeAdapter.ts",
-				"definition": "108d87b898246e30997bfbd8953e92e215fadee37de1d8df1e7fe6aadae83f08",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "0232adbf1dbfd59754870d67e70ad024c43ee31dfbda37ff9126134b90ae90a6",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.adapter.console-bridge, written by haiku); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/reports/src/lib/projects-sessions/console-workspace/ConsoleBridgeAdapter.ts",
+					"definition": "108d87b898246e30997bfbd8953e92e215fadee37de1d8df1e7fe6aadae83f08",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "relay.adapter.host-storage",
@@ -3626,13 +3931,27 @@
 			"unit": "workflow.response-check-input",
 			"from": "src/workflows/responseCheckInput.ts",
 			"to": "src/cli/program/responseCheckInput.ts",
-			"definition": "f95c036bbfe0b37d7e9aa3ba559ddcadb671bc694a00378e0b6ecf48f45456d4"
+			"definition": "b2c15b86691f037f52d1d57bb9ccf950d27600b17ad329f8fdc3251487e27ad4",
+			"relocationDefinition": "f95c036bbfe0b37d7e9aa3ba559ddcadb671bc694a00378e0b6ecf48f45456d4",
+			"review": {
+				"commit": "c7c97a5ee63f05e0fc3940b3b935ef6c7fee1a9b",
+				"path": "src/cli/program/responseCheckInput.ts",
+				"definition": "b2c15b86691f037f52d1d57bb9ccf950d27600b17ad329f8fdc3251487e27ad4",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-workflow.response-check-input, written by haiku); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "serializer.claude-tools",
 			"from": "src/serializers/ClaudeToolsSerializer.ts",
 			"to": "src/serializers/agents-providers/claude-tools-serializer/ClaudeToolsSerializer.ts",
-			"definition": "936cc188f9dc3c3403ae6906eef5591331501b5c4de83eb56150835da2387fd6"
+			"definition": "607987c94fa4252079140faf4c4a219abb9fe428d3e49bb7ead84673e28fa5b8",
+			"relocationDefinition": "936cc188f9dc3c3403ae6906eef5591331501b5c4de83eb56150835da2387fd6",
+			"review": {
+				"commit": "03b40c2570832c59c72e0018fa35e61b5c0163bf",
+				"path": "src/serializers/agents-providers/claude-tools-serializer/ClaudeToolsSerializer.ts",
+				"definition": "607987c94fa4252079140faf4c4a219abb9fe428d3e49bb7ead84673e28fa5b8",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-serializer.claude-tools, written by haiku); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "service.gateway-events",
@@ -3790,14 +4109,22 @@
 			"unit": "function.console-host-files",
 			"from": "src/services/console-install-service/consoleHostFiles.ts",
 			"to": "src/cli/program/console-install-service/consoleHostFiles.ts",
-			"definition": "1090a87317a56cb7b8d682b13d8d1fd39e7f9f6a11e7efa4b9c44c5f3bba7800",
+			"definition": "43843b6290eded8d785f6152a2310877581a3c6ebcbd1d2bccccf5e3dea0d113",
 			"relocationDefinition": "69cae0b4559b77a45bee65616bf1c1bd0a71d7258d70e65f34fc29448be28e3c",
 			"review": {
-				"commit": "0a97ffe387a589a1eda8d92394e58ebaeb0a7704",
+				"commit": "9e5b3aed7e2bfa0d5d32af7a20be203eed2eb14d",
 				"path": "src/cli/program/console-install-service/consoleHostFiles.ts",
-				"definition": "1090a87317a56cb7b8d682b13d8d1fd39e7f9f6a11e7efa4b9c44c5f3bba7800",
-				"reason": "Stop generating the export route and the exporter binding for console hosts."
-			}
+				"definition": "43843b6290eded8d785f6152a2310877581a3c6ebcbd1d2bccccf5e3dea0d113",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-function.console-host-files, written by luna); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "0a97ffe387a589a1eda8d92394e58ebaeb0a7704",
+					"path": "src/cli/program/console-install-service/consoleHostFiles.ts",
+					"definition": "1090a87317a56cb7b8d682b13d8d1fd39e7f9f6a11e7efa4b9c44c5f3bba7800",
+					"reason": "Stop generating the export route and the exporter binding for console hosts."
+				}
+			]
 		},
 		{
 			"unit": "function.installable-host",
@@ -3822,20 +4149,35 @@
 			"unit": "desktop.adapter.hosted-evidence",
 			"from": "packages/desktop/src/adapters/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
-			"definition": "d3d5a3e4682b4d5aa9bc11aebeb6b78b267ede76d6af855804a055c43b2ec5b7",
+			"definition": "67ad5c6feb42d3b0475662a67904c8c4174cbb6c5e90e3f9c32dd43cdedc0ce2",
 			"relocationDefinition": "fde061067f0730945bc7cc76edcb411ee62318daa9bd504164739b5c53e32039",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "c6d8e7b38fab9a0e9a579917054309013a8ff606",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
-				"definition": "d3d5a3e4682b4d5aa9bc11aebeb6b78b267ede76d6af855804a055c43b2ec5b7",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "67ad5c6feb42d3b0475662a67904c8c4174cbb6c5e90e3f9c32dd43cdedc0ce2",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.hosted-evidence, written by luna); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
+					"definition": "d3d5a3e4682b4d5aa9bc11aebeb6b78b267ede76d6af855804a055c43b2ec5b7",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.hosted-evidence-path",
 			"from": "packages/desktop/src/adapters/hosted-evidence-adapter/hostedEvidencePath.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/hostedEvidencePath.ts",
-			"definition": "211db09c901dbaba79d20148bf5f656fd777c92b92ac0e61d7765dff04cd6b85"
+			"definition": "3ddf55079a8b1a8bd5a3539309fa8687a81f819e5a45f94a4cb04350dc3e0b22",
+			"relocationDefinition": "211db09c901dbaba79d20148bf5f656fd777c92b92ac0e61d7765dff04cd6b85",
+			"review": {
+				"commit": "4344147035c00b3f27a966dac9ca7bd60be08e1e",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/hostedEvidencePath.ts",
+				"definition": "3ddf55079a8b1a8bd5a3539309fa8687a81f819e5a45f94a4cb04350dc3e0b22",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.hosted-evidence-path, written by luna); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "command.activity",
@@ -3867,7 +4209,22 @@
 			"unit": "desktop.function.remote-failure-text",
 			"from": "packages/desktop/src/services/device-session-service/remoteFailureText.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/remoteFailureText.ts",
-			"definition": "cb50e7d5e3595d591971bc25f6c6841e147978c543abde02c42229be60890ec3"
+			"definition": "cb50e7d5e3595d591971bc25f6c6841e147978c543abde02c42229be60890ec3",
+			"relocationDefinition": "cb50e7d5e3595d591971bc25f6c6841e147978c543abde02c42229be60890ec3",
+			"review": {
+				"commit": "2f8284cff81e51387c15b876688e5c4c39b1002f",
+				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/remoteFailureText.ts",
+				"definition": "cb50e7d5e3595d591971bc25f6c6841e147978c543abde02c42229be60890ec3",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 3c242e3ae6 (desktop.function.remote-failure-text); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "3c242e3ae6448cb230e42cefddd040162e84917e",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/remoteFailureText.ts",
+					"definition": "95ff724dbb34ffb31555a7ee99c114f92289522c8496f586744370c479eae02b",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.function.remote-failure-text, written by luna); behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "service.legacy-import",
@@ -3886,7 +4243,22 @@
 			"unit": "function.legacy-report",
 			"from": "src/services/legacy-import-service/legacyReport.ts",
 			"to": "src/cli/program/legacy-import-service/legacyReport.ts",
-			"definition": "5ce428305c12c585c4526efaac220b7b5d58ca1f44c365bf2d99b3a34580fdf3"
+			"definition": "5ce428305c12c585c4526efaac220b7b5d58ca1f44c365bf2d99b3a34580fdf3",
+			"relocationDefinition": "5ce428305c12c585c4526efaac220b7b5d58ca1f44c365bf2d99b3a34580fdf3",
+			"review": {
+				"commit": "34029d3d4dabe3ba202cce3af78c8294f21a05ca",
+				"path": "src/cli/program/legacy-import-service/legacyReport.ts",
+				"definition": "5ce428305c12c585c4526efaac220b7b5d58ca1f44c365bf2d99b3a34580fdf3",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change dc2adf1ed3 (function.legacy-report); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "dc2adf1ed360700297a36c83ef3bb7fdaa1b1112",
+					"path": "src/cli/program/legacy-import-service/legacyReport.ts",
+					"definition": "38ff29c1f4db83854fc5bd3b013947334ff2015023092a065566d646906be0b0",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.legacy-report, written by luna); behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "repository.legacy-report",
@@ -3905,7 +4277,28 @@
 			"unit": "desktop.service.projection-cache",
 			"from": "packages/desktop/src/services/projection-cache-service/ProjectionCacheService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
-			"definition": "e2ffa99957b1f8890f13849efdc76dc22e94fe5c95662f0b9c594031e63be076"
+			"definition": "b68b7af23dce4748422c9166b1a6530019f05b46fd878c02beeac74a2dba5deb",
+			"relocationDefinition": "e2ffa99957b1f8890f13849efdc76dc22e94fe5c95662f0b9c594031e63be076",
+			"review": {
+				"commit": "fe87a3cbde936143822f13d56d8144be443bc199",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
+				"definition": "b68b7af23dce4748422c9166b1a6530019f05b46fd878c02beeac74a2dba5deb",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 17cddc014d (desktop.service.projection-cache); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a0702d156fd79ec6ed8f9429fb5808840fd95f0d",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
+					"definition": "b68b7af23dce4748422c9166b1a6530019f05b46fd878c02beeac74a2dba5deb",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.projection-cache, written by haiku); messages and behavior unchanged."
+				},
+				{
+					"commit": "17cddc014d08de3ed0c98629741a67a958d8e3a4",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService.ts",
+					"definition": "e3ba09afe96d89bc56b1899649bca2b618bf4bb40b3bde116ad0fd84e97844cb",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.projection-cache, written by haiku); behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.projection-cache-discard",
@@ -3923,20 +4316,35 @@
 			"unit": "service.desktop-experiment",
 			"from": "src/services/DesktopExperimentService.ts",
 			"to": "scripts/prepare-desktop-experiment/DesktopExperimentService.ts",
-			"definition": "e764b648f4d347a7d8384229b2985e2da2c0a1afb1f5181fa721f494abb5a498"
+			"definition": "f7db902f8d0a183dffba0bc9ba9a5e7ebbb34778fa9058576be170ff52102d16",
+			"relocationDefinition": "e764b648f4d347a7d8384229b2985e2da2c0a1afb1f5181fa721f494abb5a498",
+			"review": {
+				"commit": "76c0b8ed0c529dea1dd4495dcbf5b8567553b90f",
+				"path": "scripts/prepare-desktop-experiment/DesktopExperimentService.ts",
+				"definition": "f7db902f8d0a183dffba0bc9ba9a5e7ebbb34778fa9058576be170ff52102d16",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-service.desktop-experiment, written by haiku); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "desktop.service.remote-pairing-control",
 			"from": "packages/desktop/src/services/RemotePairingControlService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
-			"definition": "3844804ed55b42bd507ad6d8664b1f23dfd2c174f0a6d0a44b8a64e1849096ac",
+			"definition": "08ddc6ce251aade3c8593921d8044da50ddf93a66ca49f8742005b895efc0ba7",
 			"relocationDefinition": "387180118bceee12a21e4a25d91232047e1844acc24e79528c4902816fd1df06",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "5a8a809549abb49ab940583e33fe284b9c1c72bd",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
-				"definition": "3844804ed55b42bd507ad6d8664b1f23dfd2c174f0a6d0a44b8a64e1849096ac",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "08ddc6ce251aade3c8593921d8044da50ddf93a66ca49f8742005b895efc0ba7",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.remote-pairing-control, written by luna); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
+					"definition": "3844804ed55b42bd507ad6d8664b1f23dfd2c174f0a6d0a44b8a64e1849096ac",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "hub.service.hub-record-status",
@@ -4008,26 +4416,34 @@
 			"unit": "service.history-status",
 			"from": "src/services/HistoryStatusService.ts",
 			"to": "src/services/verification-evidence/history-status-service/HistoryStatusService.ts",
-			"definition": "d9d32c85757cfe89afd35cd74f3874e274c64965396b94c8220afc13ed6d8b29",
+			"definition": "894267c8068b161eb2fb2e5df4775eca8b85c361d6ffb557d43e85669c5305a4",
 			"relocationDefinition": "87c7256a47a4123f12fe84b1fcbe545919c9f68d9d8bf8af12ce2bb4e5cddb0a",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
 				"path": "src/services/verification-evidence/history-status-service/HistoryStatusService.ts",
-				"definition": "d9d32c85757cfe89afd35cd74f3874e274c64965396b94c8220afc13ed6d8b29",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "894267c8068b161eb2fb2e5df4775eca8b85c361d6ffb557d43e85669c5305a4",
+				"reason": "Resolve selected clip origin proof independently of unrelated parent media."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/services/verification-evidence/history-status-service/HistoryStatusService.ts",
+					"definition": "d9d32c85757cfe89afd35cd74f3874e274c64965396b94c8220afc13ed6d8b29",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "service.attached-record",
 			"from": "src/services/attached-record-service/AttachedRecordService.ts",
 			"to": "src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
-			"definition": "f5ad5e8f6027526142594cf95f2e52080a0adf6fb955897a12fe89c6b74ebccb",
+			"definition": "1ff49ce64dcad8a01aff84faf167be3995dede19508edef3d5a406f6a2536b9c",
 			"relocationDefinition": "b8757575d793690dcd6f3daf521c33ca6d67b2a6d3d63ee7c1f22a002400b992",
 			"review": {
-				"commit": "8c5579bf296da31b542d7c7a5dbf5c3e91637e98",
+				"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
 				"path": "src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
-				"definition": "f5ad5e8f6027526142594cf95f2e52080a0adf6fb955897a12fe89c6b74ebccb",
-				"reason": "Use seven-character commit labels while retaining distinct record and content identities."
+				"definition": "1ff49ce64dcad8a01aff84faf167be3995dede19508edef3d5a406f6a2536b9c",
+				"reason": "Validate selected clip references while retaining strict whole-record checks."
 			},
 			"previousReviews": [
 				{
@@ -4035,6 +4451,12 @@
 					"path": "src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
 					"definition": "260fbc51111da3bf82b8403add414ae027b472363a637401ca923b5974304cbe",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "8c5579bf296da31b542d7c7a5dbf5c3e91637e98",
+					"path": "src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
+					"definition": "f5ad5e8f6027526142594cf95f2e52080a0adf6fb955897a12fe89c6b74ebccb",
+					"reason": "Use seven-character commit labels while retaining distinct record and content identities."
 				}
 			]
 		},
@@ -4048,13 +4470,13 @@
 			"unit": "desktop.service.project-run",
 			"from": "packages/desktop/src/services/project-run-service/ProjectRunService.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
-			"definition": "2488d72e7e1acbad3d187edfba59d3c91903546bc74b5b9828bac0161e4d2b5c",
+			"definition": "cedffe6f388707b039beea1a66a9703fccfd930591625766fe40a80654e4f553",
 			"relocationDefinition": "1c852abd6f52c52c7ce29c47f3b8477eb7c958547321a94cfef241083068e502",
 			"review": {
-				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
-				"reason": "Use the selected agent for the new unit proposal, then send visual authoring to Sonnet.",
-				"definition": "2488d72e7e1acbad3d187edfba59d3c91903546bc74b5b9828bac0161e4d2b5c"
+				"definition": "cedffe6f388707b039beea1a66a9703fccfd930591625766fe40a80654e4f553",
+				"reason": "Preserves named source guards while separating unit proposal and visual authoring providers."
 			},
 			"previousReviews": [
 				{
@@ -4062,6 +4484,18 @@
 					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
 					"definition": "c0c8e938ebe7537ff6697610d106e55e70bbc9243489cf608b69027423e25ee4",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "6d19cf4d669e6a1820a1997e36406a0b189a5cd9",
+					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
+					"definition": "5b4bed1bb0b683a968769a92480e9696bc3aa211fac816cc8e48915d0ba65b66",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.project-run, written by luna); messages and behavior unchanged."
+				},
+				{
+					"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
+					"reason": "Use the selected agent for the new unit proposal, then send visual authoring to Sonnet.",
+					"definition": "2488d72e7e1acbad3d187edfba59d3c91903546bc74b5b9828bac0161e4d2b5c"
 				}
 			]
 		},
@@ -4069,7 +4503,14 @@
 			"unit": "desktop.function.project-proposal",
 			"from": "packages/desktop/src/services/project-run-service/projectProposal.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/projectProposal.ts",
-			"definition": "c5dbabc19a9f02002c27313d9fe1ee9e5f47ce026dd70ecd610d9d4841c4a00c"
+			"definition": "8f1642c7360a5dd3620f4bc3405df09250e0e70d1be3adca9542713c1d112a89",
+			"relocationDefinition": "c5dbabc19a9f02002c27313d9fe1ee9e5f47ce026dd70ecd610d9d4841c4a00c",
+			"review": {
+				"commit": "548897946bd658707e0b9e9d12fef4a7509463aa",
+				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/projectProposal.ts",
+				"definition": "8f1642c7360a5dd3620f4bc3405df09250e0e70d1be3adca9542713c1d112a89",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.project-proposal, written by haiku); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "desktop.function.proposal-units",
@@ -4134,27 +4575,43 @@
 			"unit": "desktop.adapter.git-source",
 			"from": "packages/desktop/src/adapters/git-source-adapter/GitSourceAdapter.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
-			"definition": "e12d157a00d668f62b5cfaeba6fc54cf425e0c785065f12b53adfcd345593362",
+			"definition": "71f9745718eab0c3bc0eba541ed44628bdbbc6c5eaf4b3779d1caa64fd7fa277",
 			"relocationDefinition": "01decde5581e75ca571d6f0156881dd2b9e059ef55127d28b366b3b64713cf90",
 			"review": {
-				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
-				"path": "packages/desktop/src/adapters/git-source-adapter/GitSourceAdapter.ts",
-				"definition": "e12d157a00d668f62b5cfaeba6fc54cf425e0c785065f12b53adfcd345593362",
-				"reason": "Retain main’s committed source measurement projection."
-			}
+				"commit": "856fccb0aecf758bed1250f6a20c54ff31348e7c",
+				"path": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+				"definition": "71f9745718eab0c3bc0eba541ed44628bdbbc6c5eaf4b3779d1caa64fd7fa277",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.git-source, written by haiku); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+					"path": "packages/desktop/src/adapters/git-source-adapter/GitSourceAdapter.ts",
+					"definition": "e12d157a00d668f62b5cfaeba6fc54cf425e0c785065f12b53adfcd345593362",
+					"reason": "Retain main’s committed source measurement projection."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.git-blobs",
 			"from": "packages/desktop/src/adapters/git-source-adapter/gitBlobs.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/gitBlobs.ts",
-			"definition": "112207d897c990c1eb89a5e1980fa9f0e008e6b9e55eb7241cd17554c1443cf9",
+			"definition": "19ff0ac0277ae96e7de58c2e7f1dda9761cbfbd1366a5d8bba715374c22417d6",
 			"relocationDefinition": "33e36f9afda2c67dafe8ac8750d80698f12501bb9c97a9b92d701169b2896f6f",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "d51e0706da63970b20dfad1779d9c8eeed31d61e",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/gitBlobs.ts",
-				"definition": "112207d897c990c1eb89a5e1980fa9f0e008e6b9e55eb7241cd17554c1443cf9",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "19ff0ac0277ae96e7de58c2e7f1dda9761cbfbd1366a5d8bba715374c22417d6",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.git-blobs, written by haiku); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/gitBlobs.ts",
+					"definition": "112207d897c990c1eb89a5e1980fa9f0e008e6b9e55eb7241cd17554c1443cf9",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.git-read",
@@ -4186,26 +4643,34 @@
 			"unit": "desktop.adapter.remote-registration",
 			"from": "packages/desktop/src/adapters/RemoteRegistrationAdapter.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter.ts",
-			"definition": "0a9926f6641d205003dc13959832bf6c59ba9bf7d74a03183e08ac3d9888d1e4",
+			"definition": "4e285fb9ef37f065ba3270b9c7ce7f3154c93a049a3a605f9bc0b6f277e375eb",
 			"relocationDefinition": "0b6b8fd1d9cbd054a71db55cd499d6ad412a4e65d86ea520e3ab8bf6414549a5",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "f3e39664e1ffc6da75a8706534891256ed85d362",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter.ts",
-				"definition": "0a9926f6641d205003dc13959832bf6c59ba9bf7d74a03183e08ac3d9888d1e4",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "4e285fb9ef37f065ba3270b9c7ce7f3154c93a049a3a605f9bc0b6f277e375eb",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.remote-registration, written by haiku); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter.ts",
+					"definition": "0a9926f6641d205003dc13959832bf6c59ba9bf7d74a03183e08ac3d9888d1e4",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "service.snapshot-run",
 			"from": "src/services/SnapshotRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-			"definition": "5f2e39a1e26144b546fc728986af328b661aa25d29c1debd3593051101770179",
+			"definition": "59aa7c81f4357b8882800b7a6ddd10b692a03e54e3e0edfdb1f98ff8607af7aa",
 			"relocationDefinition": "6c3ff0bd50e6e2875d27738b036a234a6c7ee208b4687d4a4b94f53319e3e740",
 			"review": {
-				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
+				"commit": "fe2a3effbe6a5337bd0f580d66267a869e34365c",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-				"definition": "5f2e39a1e26144b546fc728986af328b661aa25d29c1debd3593051101770179",
-				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
+				"definition": "59aa7c81f4357b8882800b7a6ddd10b692a03e54e3e0edfdb1f98ff8607af7aa",
+				"reason": "Keep video inputs, identified builds and retained artifacts in the same clean snapshot result."
 			},
 			"previousReviews": [
 				{
@@ -4243,6 +4708,24 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
 					"definition": "da687ac46f3f8b25ae6bbf5e3dc6064f39d90c66b4992d1aa4a13f7005e08062",
 					"reason": "Propagate cancellation to admitted setup and check processes so verification can clean up before exiting."
+				},
+				{
+					"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+					"definition": "4f0d5a024af9e69a5b33d01b5700e4c1a65806502f8983d9e8ff342d49765fe0",
+					"reason": "Freeze source clip hashes and pinned references before snapshot execution."
+				},
+				{
+					"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+					"definition": "5f2e39a1e26144b546fc728986af328b661aa25d29c1debd3593051101770179",
+					"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
+				},
+				{
+					"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+					"definition": "6b66451c84a3cae66601006017c63814adf0754f247407d0e6f2c0287927cb8f",
+					"reason": "Freezes video inputs before checks and retains artifacts only after a clean passing snapshot."
 				}
 			]
 		},
@@ -4256,13 +4739,13 @@
 			"unit": "service.check-run",
 			"from": "src/services/check-run-service/CheckRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-			"definition": "cd8095a0777c0823d7a95c042b03620d0b0ff56262781d0726ae83465793585c",
+			"definition": "644ed0ebb87e0840147fc3ee694d503fc96bdbd65e1fb1ffe631c4c98d591c69",
 			"relocationDefinition": "b4409148ed49b4fe1574ee44790338bbbe23be3b7a6a284687a37ca0b9e8a0c6",
 			"review": {
-				"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
+				"commit": "28a1d24cacec44c0b2dc88871be3a6e42fc6f8d3",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-				"definition": "cd8095a0777c0823d7a95c042b03620d0b0ff56262781d0726ae83465793585c",
-				"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
+				"definition": "644ed0ebb87e0840147fc3ee694d503fc96bdbd65e1fb1ffe631c4c98d591c69",
+				"reason": "Pass declared minimum host resources into scheduling while retaining evidence and timeout guards."
 			},
 			"previousReviews": [
 				{
@@ -4306,6 +4789,30 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
 					"definition": "97ebd97204897e4a258f2bf687c888785d24456b030b4127e86d6c7d29fc7bc2",
 					"reason": "Propagate cancellation to admitted setup and check processes so verification can clean up before exiting."
+				},
+				{
+					"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "b051c5fda5af2659e2deec284175f259fe2b81b7d88b657510d3e8097c5524f7",
+					"reason": "Carry frozen video context and admit authenticated reused clip captures."
+				},
+				{
+					"commit": "4c5ed1baf13ebfbb5f2162fafa41731f56e8265e",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "cd8095a0777c0823d7a95c042b03620d0b0ff56262781d0726ae83465793585c",
+					"reason": "Retain explicitly requested generated artifacts and propagate cancellation beside Lite verification."
+				},
+				{
+					"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "86bf02a4e21bf224ec6258a1c3668ec9130a38ae5c0199853719e6624d0dd1b0",
+					"reason": "Carries video proof context, drops timed-out or Lite visual captures and respects cancellation."
+				},
+				{
+					"commit": "fe2a3effbe6a5337bd0f580d66267a869e34365c",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "a50a8bb94de67b2ff5525c23b9f915d887e1c0c2a2ef16bda1a412552ead2f90",
+					"reason": "Keep browser diagnostics bounded to the completed check and preserve capture admission."
 				}
 			]
 		},
@@ -4313,14 +4820,22 @@
 			"unit": "reports.service.report-storage-sync",
 			"from": "packages/reports/src/services/ReportStorageSyncService.ts",
 			"to": "packages/reports/src/services/reports-media/report-command-service/ReportStorageSyncService.ts",
-			"definition": "c7a3c2dfe105687b1c3a978ad7364c2f96b0ddadb575e937c32148c92fcf68a9",
+			"definition": "a83e57b4af6135351780fd57ffcbe81c9ae304eed9ed3e4cadd28889644b2c6a",
 			"relocationDefinition": "0873e5cbf4d526f8c2a6b385538548eb00943824900f94dbd00db8af2a834473",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "c0983da98f9e60bdd160560864feb0efd93ff311",
 				"path": "packages/reports/src/services/reports-media/report-command-service/ReportStorageSyncService.ts",
-				"definition": "c7a3c2dfe105687b1c3a978ad7364c2f96b0ddadb575e937c32148c92fcf68a9",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "a83e57b4af6135351780fd57ffcbe81c9ae304eed9ed3e4cadd28889644b2c6a",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.service.report-storage-sync, written by luna); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/reports/src/services/reports-media/report-command-service/ReportStorageSyncService.ts",
+					"definition": "c7a3c2dfe105687b1c3a978ad7364c2f96b0ddadb575e937c32148c92fcf68a9",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "hub.service.request-session",
@@ -4472,14 +4987,22 @@
 			"unit": "function.reports-environment",
 			"from": "src/workflows/run-report/reportsEnvironment.ts",
 			"to": "src/cli/program/run-report/reportsEnvironment.ts",
-			"definition": "2ef76049642b4d853f70a176bfd0ebc8cbd569e06b219c77e43e14285bfac2dc",
+			"definition": "d4602d623fa6ee1a6156d36365c4590f0cf2512b566cde6511725297b914435d",
 			"relocationDefinition": "0d914797cc82d740380dfddf99191e75e1ee67f0b59596edbf53aa2f4a8329a3",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "f387b1cd34f447690d282ad3d862f1e99f97cc3d",
 				"path": "src/cli/program/run-report/reportsEnvironment.ts",
-				"definition": "2ef76049642b4d853f70a176bfd0ebc8cbd569e06b219c77e43e14285bfac2dc",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "d4602d623fa6ee1a6156d36365c4590f0cf2512b566cde6511725297b914435d",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-function.reports-environment, written by luna); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/run-report/reportsEnvironment.ts",
+					"definition": "2ef76049642b4d853f70a176bfd0ebc8cbd569e06b219c77e43e14285bfac2dc",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "workflow.run-report",
@@ -4491,7 +5014,14 @@
 			"unit": "hub.entry.hooks-server",
 			"from": "packages/hub/src/hooks.server.ts",
 			"to": "packages/hub/src/lib/development-tooling/server-hooks/hooks.server.ts",
-			"definition": "d6de198639572484e2829450568f01debacede62c3d6274e20fdc79a8ea4de1d"
+			"definition": "a778c130bed6f0e7165e36c651512b93621b02145c034cbf45d47501ca6b4963",
+			"relocationDefinition": "d6de198639572484e2829450568f01debacede62c3d6274e20fdc79a8ea4de1d",
+			"review": {
+				"commit": "6141f56ae9bbf31cd03a70fed56f045364b7db8f",
+				"path": "packages/hub/src/lib/development-tooling/server-hooks/hooks.server.ts",
+				"definition": "a778c130bed6f0e7165e36c651512b93621b02145c034cbf45d47501ca6b4963",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-hub.entry.hooks-server, written by luna); behavior unchanged."
+			}
 		},
 		{
 			"unit": "hub.middleware.hub-responses",
@@ -4535,25 +5065,39 @@
 			"unit": "desktop.function.planning-message",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/planningMessage.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts",
-			"definition": "be9626e715b55eb2dfb7159373284e12e01f21a0933995ac5316380d0fc7cb7b"
+			"definition": "46ddbce8632bb178ef27ce80cae44433f455b7e6385c4b4bb74e10b990a2c985",
+			"relocationDefinition": "be9626e715b55eb2dfb7159373284e12e01f21a0933995ac5316380d0fc7cb7b",
+			"review": {
+				"commit": "ea98a0daf1790475bd214f53387e2b8c81e26288",
+				"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts",
+				"definition": "46ddbce8632bb178ef27ce80cae44433f455b7e6385c4b4bb74e10b990a2c985",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-message, written by luna); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "desktop.function.planning-reads",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/planningReads.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningReads.ts",
-			"definition": "0fdd6df349103602a1edd9fc62dc32ffe1a41fecf315c0de75a532bef0aae255"
+			"definition": "0c069ab1501e5199088f670db9e4af61c2c97b8c319384e8a3df445054759c9b",
+			"relocationDefinition": "0fdd6df349103602a1edd9fc62dc32ffe1a41fecf315c0de75a532bef0aae255",
+			"review": {
+				"commit": "9e877aacd0ee365f1c643321e119a78de3b22545",
+				"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningReads.ts",
+				"definition": "0c069ab1501e5199088f670db9e4af61c2c97b8c319384e8a3df445054759c9b",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-reads, written by luna); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "desktop.function.planning-writes",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/planningWrites.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
-			"definition": "0a2033b4ff7ef64fe8a851aaee13adc91340f13e70e30f0e6c883633aef9ee86",
+			"definition": "e68d409bd479c7b619f875b249b78f903d282d1d24c3ec74773655562dd7dbd6",
 			"relocationDefinition": "26c1fa6ed92d6361d09e0804f6eff2b034e8b9315c575142fe22f0a0d30933ac",
 			"review": {
-				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
-				"reason": "Save every responsive image of a design option in a single immutable version.",
-				"definition": "0a2033b4ff7ef64fe8a851aaee13adc91340f13e70e30f0e6c883633aef9ee86"
+				"definition": "e68d409bd479c7b619f875b249b78f903d282d1d24c3ec74773655562dd7dbd6",
+				"reason": "Preserves named planning errors while storing responsive mockup versions together."
 			},
 			"previousReviews": [
 				{
@@ -4561,6 +5105,18 @@
 					"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
 					"definition": "d892b3f0b451c59f8046bff249122c9fca3f3f7733d5cd3baddb8fbe2c29d029",
 					"reason": "Create layout plans with screen viewports while retaining shell plan compatibility."
+				},
+				{
+					"commit": "2b58142449f6daa844c3f9269bbe9d912ad59359",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
+					"definition": "80ddc88f5d160b8b741d15008fe5c93335d826700a5d1f49383435d1647398ee",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-writes, written by haiku); messages and behavior unchanged."
+				},
+				{
+					"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
+					"reason": "Save every responsive image of a design option in a single immutable version.",
+					"definition": "0a2033b4ff7ef64fe8a851aaee13adc91340f13e70e30f0e6c883633aef9ee86"
 				}
 			]
 		},
@@ -4568,14 +5124,22 @@
 			"unit": "desktop.adapter.capacitor-bridge",
 			"from": "packages/desktop/src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
-			"definition": "7b03459af4ed88c4eca953c6fd318aa93ed94f99c9becfea6d1609deaa43be58",
+			"definition": "8853423eb532092b9c4cc08398209bc901b40f92adf161a200e4a8881ada70dc",
 			"relocationDefinition": "d508581532d44b290e7f920f2d540eb35ef9f9a804e77db0496990c21ef291f2",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "14bd3bb172886986a597b0499cd7c86b50c942b7",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
-				"definition": "7b03459af4ed88c4eca953c6fd318aa93ed94f99c9becfea6d1609deaa43be58",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "8853423eb532092b9c4cc08398209bc901b40f92adf161a200e4a8881ada70dc",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.capacitor-bridge, written by haiku); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
+					"definition": "7b03459af4ed88c4eca953c6fd318aa93ed94f99c9becfea6d1609deaa43be58",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.cached-snapshot",
@@ -4587,7 +5151,14 @@
 			"unit": "desktop.function.remote-artifact",
 			"from": "packages/desktop/src/adapters/capacitor-bridge-adapter/remoteArtifact.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/remoteArtifact.ts",
-			"definition": "49b1cb9c2db9e8683f882ffd6e5cd661a1db7cf4c95a24d1ae53434d45b3c254"
+			"definition": "10eb8bb85b90901715c1f2ba8175db8960c56b3c257325d130719751ec9d07b8",
+			"relocationDefinition": "49b1cb9c2db9e8683f882ffd6e5cd661a1db7cf4c95a24d1ae53434d45b3c254",
+			"review": {
+				"commit": "351fe5fb7ac2884cf2492d861faaba6f9fe8ceb3",
+				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/remoteArtifact.ts",
+				"definition": "10eb8bb85b90901715c1f2ba8175db8960c56b3c257325d130719751ec9d07b8",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.remote-artifact, written by haiku); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "desktop.function.remote-grant",
@@ -4653,10 +5224,10 @@
 			"definition": "1a861568730ba3682840b0f426290b0b49b7882bf5ed518b4e31e0e2af9bdb0d",
 			"relocationDefinition": "0e3be5d2f39adfa9674e3c23158e2aa577543d021a80a90020a45076a8c361af",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "3acbbd383e7678d4c88ca65ac63b92e762eeb927",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/LocalTransportClientService.ts",
 				"definition": "1a861568730ba3682840b0f426290b0b49b7882bf5ed518b4e31e0e2af9bdb0d",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 4addaeff16 (desktop.service.local-transport-client); behavior unchanged."
 			},
 			"previousReviews": [
 				{
@@ -4664,6 +5235,18 @@
 					"path": "packages/desktop/src/services/LocalTransportClientService.ts",
 					"definition": "feef703fe74a059e33f7ed0faef4b1c1b8208aae27c8b09e278f4965d52c36a6",
 					"reason": "Retain the game branch’s local transport request bound for full-size game documents."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/LocalTransportClientService.ts",
+					"definition": "1a861568730ba3682840b0f426290b0b49b7882bf5ed518b4e31e0e2af9bdb0d",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "4addaeff16a836f59721f96e9077bc1d87703d56",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/LocalTransportClientService.ts",
+					"definition": "d0a04272365054a962e797ada2d263c5581408d1315849ed2856f8dcf3409d80",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.local-transport-client, written by luna); behavior unchanged."
 				}
 			]
 		},
@@ -4753,14 +5336,22 @@
 			"unit": "remote.service.host-pairing",
 			"from": "packages/remote/src/services/host-pairing-service/HostPairingService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.ts",
-			"definition": "63adebf2436e7b747da746f7d0a4bf93d751c376f9b1c1a831ddfba128d828bf",
+			"definition": "04b3c301f20c04f16d7d6407b9c6fa55855f1c2f360a36ce71b8e24b6c154040",
 			"relocationDefinition": "4a40e61e9dd41177d106b1e6d73e1040b90d29be5ecaba311a76a91c200e708e",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "b01d2db9290e6e11b6f8526cc53859e96ea5a82f",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.ts",
-				"definition": "63adebf2436e7b747da746f7d0a4bf93d751c376f9b1c1a831ddfba128d828bf",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "04b3c301f20c04f16d7d6407b9c6fa55855f1c2f360a36ce71b8e24b6c154040",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-remote.service.host-pairing, written by luna); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.ts",
+					"definition": "63adebf2436e7b747da746f7d0a4bf93d751c376f9b1c1a831ddfba128d828bf",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "remote.function.remote-identity",
@@ -4772,40 +5363,69 @@
 			"unit": "workflow.response-check-evaluate",
 			"from": "src/workflows/responseCheckEvaluate.ts",
 			"to": "src/cli/program/responseCheckEvaluate.ts",
-			"definition": "dff12cecda5aa9dfdc4589cc72c1a66f31d331ede5eb710603f1241078a324e4",
+			"definition": "3fd6c66b23ef377e0f4178a18e6eec0982f1c6c82d0c0645cc390aa440385155",
 			"relocationDefinition": "ae5733eee279bb145f9c1c5a72a9b07ad7b9c1aa4cf7132cf4f27e9a3c6904ad",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "5cd0b974574121fdaaeb003caa64c2b71192e3ee",
 				"path": "src/cli/program/responseCheckEvaluate.ts",
-				"definition": "dff12cecda5aa9dfdc4589cc72c1a66f31d331ede5eb710603f1241078a324e4",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "3fd6c66b23ef377e0f4178a18e6eec0982f1c6c82d0c0645cc390aa440385155",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-workflow.response-check-evaluate, written by haiku); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/responseCheckEvaluate.ts",
+					"definition": "dff12cecda5aa9dfdc4589cc72c1a66f31d331ede5eb710603f1241078a324e4",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "adapter.cpu-process",
 			"from": "src/adapters/cpu-process-adapter/CpuProcessAdapter.ts",
 			"to": "src/services/development-tooling/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts",
-			"definition": "a45fce739aa454e372b1a60445a070ce3ebba1470c449e44a5bae34c89099046",
+			"definition": "4d71ea06060741f632e4d86b32d42ecb522caaf77ea3baef215e3068db7ac584",
 			"relocationDefinition": "f4d03e73c5e91f4910ba33f8df3a51019670e0eb91511447ac0c9ddd1de3d53a",
-			"previousReviews": [],
+			"previousReviews": [
+				{
+					"commit": "c6a4638b0a08fbe29eca98109a3fcfee60d2d245",
+					"path": "src/services/development-tooling/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts",
+					"definition": "a45fce739aa454e372b1a60445a070ce3ebba1470c449e44a5bae34c89099046",
+					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				}
+			],
 			"review": {
-				"commit": "c6a4638b0a08fbe29eca98109a3fcfee60d2d245",
+				"commit": "3ff43e7c51db6c5ef64d120e59f6241e1bd5c1b2",
 				"path": "src/services/development-tooling/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts",
-				"definition": "a45fce739aa454e372b1a60445a070ce3ebba1470c449e44a5bae34c89099046",
-				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				"definition": "4d71ea06060741f632e4d86b32d42ecb522caaf77ea3baef215e3068db7ac584",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-adapter.cpu-process, written by luna); messages and behavior unchanged."
 			}
 		},
 		{
 			"unit": "function.cpu-processes",
 			"from": "src/adapters/cpu-process-adapter/cpuProcesses.ts",
 			"to": "src/services/development-tooling/cpu-usage-service/cpu-process-adapter/cpuProcesses.ts",
-			"definition": "da089e6a90cd02560631a444e472879062e757d276657ae2889cdd287296154f"
+			"definition": "a2833181a1a16fdd985e1bf3acd6b17465d32bc80418fb416337ffa159d316a8",
+			"relocationDefinition": "da089e6a90cd02560631a444e472879062e757d276657ae2889cdd287296154f",
+			"review": {
+				"commit": "fcc9805b161a82fd7afc7776e8c583b6ce8d4021",
+				"path": "src/services/development-tooling/cpu-usage-service/cpu-process-adapter/cpuProcesses.ts",
+				"definition": "a2833181a1a16fdd985e1bf3acd6b17465d32bc80418fb416337ffa159d316a8",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.cpu-processes, written by luna); behavior unchanged."
+			}
 		},
 		{
 			"unit": "service.codex-gateway",
 			"from": "src/services/codex-gateway-service/CodexGatewayService.ts",
 			"to": "src/cli/program/codex-gateway-service/CodexGatewayService.ts",
-			"definition": "7d92cb5e10dd6b0e7f6bfe8281a8c40e682d1805ee4061390c83f759bca0b1d6"
+			"definition": "e335428f58667c235c2ea049391a07d2e6f30dcc1060df34153a49185c7153dd",
+			"relocationDefinition": "7d92cb5e10dd6b0e7f6bfe8281a8c40e682d1805ee4061390c83f759bca0b1d6",
+			"review": {
+				"commit": "c2f51f65cc3c7b2ce512632bf7a268e573848fcf",
+				"path": "src/cli/program/codex-gateway-service/CodexGatewayService.ts",
+				"definition": "e335428f58667c235c2ea049391a07d2e6f30dcc1060df34153a49185c7153dd",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-service.codex-gateway, written by luna); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "function.gateway-replay",
@@ -4823,26 +5443,48 @@
 			"unit": "adapter.claude-gateway",
 			"from": "src/adapters/ClaudeGatewayAdapter.ts",
 			"to": "src/cli/program/codex-gateway-service/ClaudeGatewayAdapter.ts",
-			"definition": "cdb1be5acbee9035a9192f2303dc4c0afe49e84d2ba73e67ebea58d4f80011f4"
+			"definition": "991f82604d77454fdf1e85f304e73e9c099d8e2e75aa89b8ae7dc08683857286",
+			"relocationDefinition": "cdb1be5acbee9035a9192f2303dc4c0afe49e84d2ba73e67ebea58d4f80011f4",
+			"review": {
+				"commit": "39a68e719b4a1626b7b30bd311e9f40c54ed7600",
+				"path": "src/cli/program/codex-gateway-service/ClaudeGatewayAdapter.ts",
+				"definition": "991f82604d77454fdf1e85f304e73e9c099d8e2e75aa89b8ae7dc08683857286",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-adapter.claude-gateway, written by haiku); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "reports.entry.hooks-server",
 			"from": "packages/reports/src/hooks.server.ts",
 			"to": "packages/reports/src/lib/development-tooling/server-hooks/hooks.server.ts",
-			"definition": "ccf9315ac6d07bbb53248c5a8707431023e2cbaf67d6bdfa5090c309814e6523"
+			"definition": "13e3a06393287c0092886cd727992ed10d0d60561c649ab483ae8902eae6a3c6",
+			"relocationDefinition": "ccf9315ac6d07bbb53248c5a8707431023e2cbaf67d6bdfa5090c309814e6523",
+			"review": {
+				"commit": "3e1028d3dc65cdb6acab9b836fce09e2539ad6bb",
+				"path": "packages/reports/src/lib/development-tooling/server-hooks/hooks.server.ts",
+				"definition": "13e3a06393287c0092886cd727992ed10d0d60561c649ab483ae8902eae6a3c6",
+				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.entry.hooks-server, written by haiku); behavior unchanged."
+			}
 		},
 		{
 			"unit": "reports.controller.console-agent",
 			"from": "packages/reports/src/controllers/ConsoleAgentController.ts",
 			"to": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentController.ts",
-			"definition": "1dc7e9b5af820f6006924bfa34fef2e73889ca259b6f19b0ffa8b13dd3d56a5b",
+			"definition": "73a37eea667bfb574a01e898f207a22544c78da6a892c93b349747a9335e9784",
 			"relocationDefinition": "e69fab551d013e04a4dce4403696335dde5a3d877b52d988f11b9639e7c3d75e",
 			"review": {
-				"commit": "1c1dcda3a2eb571c83c291ce370c2b9cec4f2f64",
+				"commit": "4024f4332bd976225a1fb6c95709905f84c17288",
 				"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentController.ts",
-				"definition": "1dc7e9b5af820f6006924bfa34fef2e73889ca259b6f19b0ffa8b13dd3d56a5b",
-				"reason": "Accepts native bearer headers and returns original API artifact bytes behind the existing owner guard."
-			}
+				"definition": "73a37eea667bfb574a01e898f207a22544c78da6a892c93b349747a9335e9784",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.controller.console-agent, written by luna); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "1c1dcda3a2eb571c83c291ce370c2b9cec4f2f64",
+					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentController.ts",
+					"definition": "1dc7e9b5af820f6006924bfa34fef2e73889ca259b6f19b0ffa8b13dd3d56a5b",
+					"reason": "Accepts native bearer headers and returns original API artifact bytes behind the existing owner guard."
+				}
+			]
 		},
 		{
 			"unit": "relay.service.socket-accept",
@@ -4867,46 +5509,97 @@
 			"unit": "desktop.service.remote-projection",
 			"from": "packages/desktop/src/services/RemoteProjectionService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts",
-			"definition": "de1f8f7b45e2210c8c54cbb5faef610b1fd382a23c38aaee970a92a171aeab9b"
+			"definition": "86a43c18d17429b60706e465c69d47834c58f6c7029edc0b32e2131db6d907ab",
+			"relocationDefinition": "de1f8f7b45e2210c8c54cbb5faef610b1fd382a23c38aaee970a92a171aeab9b",
+			"review": {
+				"commit": "4237aa8118f9808b4ca5ab7442b4c793ae5c30ba",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts",
+				"definition": "86a43c18d17429b60706e465c69d47834c58f6c7029edc0b32e2131db6d907ab",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 010a18d911 (desktop.service.remote-projection); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "4918b699bbdabafcee22a0630ae7a02a1bc3d91c",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts",
+					"definition": "86a43c18d17429b60706e465c69d47834c58f6c7029edc0b32e2131db6d907ab",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.remote-projection, written by luna); messages and behavior unchanged."
+				},
+				{
+					"commit": "010a18d91172ae52d253b27bfcc415aea8b3fb7d",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts",
+					"definition": "03fc4158dddc9d1bcc335f3671d0b44313c90d650da105dafab98c69796d7c10",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.remote-projection, written by luna); behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.project-discovery",
 			"from": "packages/desktop/src/services/ProjectDiscoveryService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/ProjectDiscoveryService.ts",
-			"definition": "70e82b9f7e1ab0d08bcc2556d643d9933d01bfef0cfa79baa671e48c4c9a7faf",
+			"definition": "16589db967c6f10b8bc7deaedd697ee910d675e7ef9f26e8065299cbf288e377",
 			"relocationDefinition": "83d804a14932dae5e1e35afc813a194dcd1991a9d879ebc5330b2eeea48e5d48",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "5cc5e456c07fc1c185589f65a991463ee8d745da",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/ProjectDiscoveryService.ts",
-				"definition": "70e82b9f7e1ab0d08bcc2556d643d9933d01bfef0cfa79baa671e48c4c9a7faf",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "16589db967c6f10b8bc7deaedd697ee910d675e7ef9f26e8065299cbf288e377",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.project-discovery, written by haiku); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/ProjectDiscoveryService.ts",
+					"definition": "70e82b9f7e1ab0d08bcc2556d643d9933d01bfef0cfa79baa671e48c4c9a7faf",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "workflow.review-clean-code",
 			"from": "src/workflows/reviewCleanCode.ts",
 			"to": "src/audit/development-tooling/reviewCleanCode.ts",
-			"definition": "04e49773a58e5b15ed544714c7dd52931dec2568434bcdd0a6b0fa1e41460a10",
+			"definition": "1412390f428954d2384e486dedd6385f10d9dd6a685e9f3280741800dde2ebff",
 			"relocationDefinition": "44b4bab69c483cf432c2ed13f325f301a3b3fb4229a1663559dba7e8ea494c62",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "e36398034fd6877436a2c5cfd3191ba2b9cd7597",
 				"path": "src/audit/development-tooling/reviewCleanCode.ts",
-				"definition": "04e49773a58e5b15ed544714c7dd52931dec2568434bcdd0a6b0fa1e41460a10",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "1412390f428954d2384e486dedd6385f10d9dd6a685e9f3280741800dde2ebff",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-workflow.review-clean-code, written by luna); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/audit/development-tooling/reviewCleanCode.ts",
+					"definition": "04e49773a58e5b15ed544714c7dd52931dec2568434bcdd0a6b0fa1e41460a10",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.plan-run",
 			"from": "packages/desktop/src/services/PlanRunService.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
-			"definition": "8ff720c60d089a3819652c9fe27092f942894d1e7e459246fec94a95362c2018",
+			"definition": "5b9d26ab31918964f905f0a13f03f1ceb9ba4a950373144b7929ec9c9afbbe13",
 			"relocationDefinition": "efa5aeed6c9be2c1a74d7f9a7cf08cbb3b31bf7a61c504518418a0d81d498da8",
 			"review": {
-				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
-				"reason": "Route visual entities to HTML and CSS mockups and preserve the selected runner for behavior notes.",
-				"definition": "8ff720c60d089a3819652c9fe27092f942894d1e7e459246fec94a95362c2018"
-			}
+				"definition": "5b9d26ab31918964f905f0a13f03f1ceb9ba4a950373144b7929ec9c9afbbe13",
+				"reason": "Preserves named planning errors while routing visual plan creation through the selected mockup provider."
+			},
+			"previousReviews": [
+				{
+					"commit": "fca04b06558193eb8b5bc5f5ac601b7126e76277",
+					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
+					"definition": "be088cb3d2b3d03bda1120346c1b948690d710033798626f07d5ed5906479bc3",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.plan-run, written by luna); messages and behavior unchanged."
+				},
+				{
+					"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
+					"reason": "Route visual entities to HTML and CSS mockups and preserve the selected runner for behavior notes.",
+					"definition": "8ff720c60d089a3819652c9fe27092f942894d1e7e459246fec94a95362c2018"
+				}
+			]
 		},
 		{
 			"unit": "relay.service.device-revocation",
@@ -5082,11 +5775,25 @@
 			"definition": "c1c0345d1fed8cda43c9ccc1de7f71cad73031337310561dd14cc326ae3be90c",
 			"relocationDefinition": "d566b05cb230f17316ee1a3e79071658e942276a05f11f5de213b2392efefd41",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "9313b0fcc3e1614d65478cd145d737b584b9772e",
 				"path": "packages/remote/src/services/networking-security/wire-session-service/ResponseLedgerService.ts",
 				"definition": "c1c0345d1fed8cda43c9ccc1de7f71cad73031337310561dd14cc326ae3be90c",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change f8b3dc1777 (remote.service.response-ledger); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/remote/src/services/networking-security/wire-session-service/ResponseLedgerService.ts",
+					"definition": "c1c0345d1fed8cda43c9ccc1de7f71cad73031337310561dd14cc326ae3be90c",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "f8b3dc177737e9a6ec38f08c9ba7f0b6bab1a523",
+					"path": "packages/remote/src/services/networking-security/wire-session-service/ResponseLedgerService.ts",
+					"definition": "cd3c69cbbf2c90a61468d436121a819802fd26bc78101d15573ef69fd4356064",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-remote.service.response-ledger, written by luna); behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "service.console-uninstall",
@@ -5105,13 +5812,13 @@
 			"unit": "reports.service.console-agent",
 			"from": "packages/reports/src/services/ConsoleAgentService.ts",
 			"to": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
-			"definition": "f0de2dcb656d031a3de4d9a1621359e3a35d587c9c2ea7e11b9fb0beb7bfbdd9",
+			"definition": "990ebaf94ffcdfdccf44a497662eb6c965450877dd190387b0c40540676ab707",
 			"relocationDefinition": "2a0274757c369262eb9cc7098eb14483461e21fd95c40fc82cb6b5371dcd1695",
 			"review": {
-				"commit": "ac0c34670e704cf6d60885e523b88831c4e272a0",
+				"commit": "92086cbaa5061cec445e557889b28a4578bdd30e",
 				"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
-				"definition": "f0de2dcb656d031a3de4d9a1621359e3a35d587c9c2ea7e11b9fb0beb7bfbdd9",
-				"reason": "Combines revision-bound registry and recorded-evidence reads with main agent registrations while preserving session and mutation validation."
+				"definition": "990ebaf94ffcdfdccf44a497662eb6c965450877dd190387b0c40540676ab707",
+				"reason": "Use the integrated Desktop run event callback and its default visual mockup renderer."
 			},
 			"previousReviews": [
 				{
@@ -5131,6 +5838,30 @@
 					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
 					"definition": "acf5f437cf8bcc745670f9045614425e46c0f3c365b8bb7db31d604e7db16269",
 					"reason": "Exposes validated revision-bound registry reads alongside existing owner-session operations."
+				},
+				{
+					"commit": "ac0c34670e704cf6d60885e523b88831c4e272a0",
+					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
+					"definition": "f0de2dcb656d031a3de4d9a1621359e3a35d587c9c2ea7e11b9fb0beb7bfbdd9",
+					"reason": "Combines revision-bound registry and recorded-evidence reads with main agent registrations while preserving session and mutation validation."
+				},
+				{
+					"commit": "645cbaf2f1e176c1d5c0f23aab8f5e3d162baf14",
+					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
+					"definition": "823fbfcaaf05196e2f5f7ca74ff2608654bc21ff867c34e25ffeaa524f899a25",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.service.console-agent, written by haiku); messages and behavior unchanged."
+				},
+				{
+					"commit": "9058fcc15d7937818b465ec87c4710f4e17cb7b2",
+					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
+					"definition": "341c9d4798a8c7c701b19718254cafedc1cb06b518575c381d36de20f9715af2",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.service.console-agent, written by haiku); behavior unchanged."
+				},
+				{
+					"commit": "75e486963e72fac1a0b3765e096743908625abf0",
+					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
+					"definition": "823fbfcaaf05196e2f5f7ca74ff2608654bc21ff867c34e25ffeaa524f899a25",
+					"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 9058fcc15d (reports.service.console-agent); behavior unchanged."
 				}
 			]
 		},
@@ -5138,7 +5869,14 @@
 			"unit": "service.claude-query",
 			"from": "src/services/claude-query-service/ClaudeQueryService.ts",
 			"to": "src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService.ts",
-			"definition": "ca72ec6df05ed24a79f03cd969147c2c869a7bec2468605e8258673400bd0e77"
+			"definition": "e8272e93cb40adb65b6bed9ce111fe66b8837fb6ab36ce90d5d65eee2c234e4e",
+			"relocationDefinition": "ca72ec6df05ed24a79f03cd969147c2c869a7bec2468605e8258673400bd0e77",
+			"review": {
+				"commit": "7dd3643e85e380df8deca43d90374a9b335e05e0",
+				"path": "src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService.ts",
+				"definition": "e8272e93cb40adb65b6bed9ce111fe66b8837fb6ab36ce90d5d65eee2c234e4e",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-service.claude-query, written by luna); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "function.gateway-messages",
@@ -5174,7 +5912,14 @@
 			"unit": "service.picker-preview",
 			"from": "src/services/PickerPreviewService.ts",
 			"to": "src/cli/program/codex-picker-command/PickerPreviewService.ts",
-			"definition": "7a6bb0c9a6e91afdb7ea93c1194cedc7b9e23534116773a70e309558a74452f0"
+			"definition": "c4ed8b142b5272c8b8b746535b96fbf47d9242b20b93fd8726edfb919d7aed2c",
+			"relocationDefinition": "7a6bb0c9a6e91afdb7ea93c1194cedc7b9e23534116773a70e309558a74452f0",
+			"review": {
+				"commit": "124e256cf37030886b7b0bd16bca4c2756d3d835",
+				"path": "src/cli/program/codex-picker-command/PickerPreviewService.ts",
+				"definition": "c4ed8b142b5272c8b8b746535b96fbf47d9242b20b93fd8726edfb919d7aed2c",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-service.picker-preview, written by luna); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "planning.service.planning",
@@ -5264,13 +6009,13 @@
 			"unit": "desktop.adapter.pinned-history",
 			"from": "packages/desktop/src/adapters/PinnedHistoryAdapter.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/PinnedHistoryAdapter.ts",
-			"definition": "be861a6d48e5b0cf919ca0105ad4ad0d7a8fe540a561eaf1414dab6d9af67a3f",
+			"definition": "befdfc34c7d21a551b4c772e451bc74df35491a2c48a0a53ee93a435456884c0",
 			"relocationDefinition": "235f3a164c394ef8af28277f70a8dacb6277795a732f363a2188221f354dfd97",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "02dd395c5064857323a1d583aba1d0f4646a4558",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/PinnedHistoryAdapter.ts",
-				"definition": "be861a6d48e5b0cf919ca0105ad4ad0d7a8fe540a561eaf1414dab6d9af67a3f",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				"definition": "befdfc34c7d21a551b4c772e451bc74df35491a2c48a0a53ee93a435456884c0",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.pinned-history, written by luna); messages and behavior unchanged."
 			},
 			"previousReviews": [
 				{
@@ -5278,6 +6023,12 @@
 					"path": "packages/desktop/src/adapters/PinnedHistoryAdapter.ts",
 					"definition": "191a47d794391e1f000a6ac989d60d4af5d235e26400dcca6afa8ad5fbc6056a",
 					"reason": "Retain main’s regression evidence and source measurement projection."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/PinnedHistoryAdapter.ts",
+					"definition": "be861a6d48e5b0cf919ca0105ad4ad0d7a8fe540a561eaf1414dab6d9af67a3f",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 				}
 			]
 		},
@@ -5285,7 +6036,14 @@
 			"unit": "repository.codex-session",
 			"from": "src/repositories/codex-session-repository/CodexSessionRepository.ts",
 			"to": "src/cli/program/codex-gateway-service/codex-session-repository/CodexSessionRepository.ts",
-			"definition": "9a85ab68eb60444b14869c6a781ee625603c4d0308b0f799419ce01370b64963"
+			"definition": "86e92a1f56b62e44faa985b65caf4ce3fb8ae9d8525f19559a34e40edb40332c",
+			"relocationDefinition": "9a85ab68eb60444b14869c6a781ee625603c4d0308b0f799419ce01370b64963",
+			"review": {
+				"commit": "9cea2ee61fe944bfe8e7e6181f025e36e2d61c5c",
+				"path": "src/cli/program/codex-gateway-service/codex-session-repository/CodexSessionRepository.ts",
+				"definition": "86e92a1f56b62e44faa985b65caf4ce3fb8ae9d8525f19559a34e40edb40332c",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-repository.codex-session, written by haiku); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "function.gateway-types",
@@ -5310,7 +6068,14 @@
 			"unit": "reports.adapter.r2-report-retention",
 			"from": "packages/reports/src/adapters/R2ReportRetentionAdapter.ts",
 			"to": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/R2ReportRetentionAdapter.ts",
-			"definition": "23de3eab3f3acb5e9c114ce616d453dfc68f3dd4e9a079056277caebd01dfd3f"
+			"definition": "13cbfab50f4621778f1a5f49de19b8f8c0476ed5d58149dc7fd695ca77914f14",
+			"relocationDefinition": "23de3eab3f3acb5e9c114ce616d453dfc68f3dd4e9a079056277caebd01dfd3f",
+			"review": {
+				"commit": "d6048ad8a3d85aa19286c5eab9676f5cbf5b19ac",
+				"path": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/R2ReportRetentionAdapter.ts",
+				"definition": "13cbfab50f4621778f1a5f49de19b8f8c0476ed5d58149dc7fd695ca77914f14",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.adapter.r2-report-retention, written by haiku); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "service.verification-gates",
@@ -5356,7 +6121,22 @@
 			"unit": "function.impact-kernel",
 			"from": "src/workflows/run-kernel/impactKernel.ts",
 			"to": "src/cli/program/run-kernel/impactKernel.ts",
-			"definition": "dfad609f762a2f9ef4930fea731d76778910061081ac1a408822f8cf1302f628"
+			"definition": "dfad609f762a2f9ef4930fea731d76778910061081ac1a408822f8cf1302f628",
+			"relocationDefinition": "dfad609f762a2f9ef4930fea731d76778910061081ac1a408822f8cf1302f628",
+			"review": {
+				"commit": "75c197fe17226006fe3dbfbf65802238c7613ae7",
+				"path": "src/cli/program/run-kernel/impactKernel.ts",
+				"definition": "dfad609f762a2f9ef4930fea731d76778910061081ac1a408822f8cf1302f628",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 4792415499 (function.impact-kernel); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "4792415499f11452587b3ac872f7d90ac4ad1726",
+					"path": "src/cli/program/run-kernel/impactKernel.ts",
+					"definition": "54b4afcbf780109399563ec1e520033d71e21403b45865bbc02094756ca12dbc",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-function.impact-kernel, written by luna); behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "function.kernel-workload",
@@ -5477,13 +6257,27 @@
 			"unit": "service.native-picker-bridge",
 			"from": "src/services/NativePickerBridgeService.ts",
 			"to": "src/services/development-tooling/native-picker-bridge-service/NativePickerBridgeService.ts",
-			"definition": "2159b7972dc966a61dd8c18c972d16717d96db1036cdd6ba26aff3a5704144d2"
+			"definition": "d1685c943bfd4d63c8bc89086e26369999a2180a7a1ac578c99ce2d24fc90be1",
+			"relocationDefinition": "2159b7972dc966a61dd8c18c972d16717d96db1036cdd6ba26aff3a5704144d2",
+			"review": {
+				"commit": "8189b233f931e12dd43e2c8c1a7a88bb59eba2df",
+				"path": "src/services/development-tooling/native-picker-bridge-service/NativePickerBridgeService.ts",
+				"definition": "d1685c943bfd4d63c8bc89086e26369999a2180a7a1ac578c99ce2d24fc90be1",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-service.native-picker-bridge, written by haiku); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "service.native-picker-defaults",
 			"from": "src/services/NativePickerDefaultsService.ts",
 			"to": "src/services/development-tooling/native-picker-bridge-service/NativePickerDefaultsService.ts",
-			"definition": "854ac915b0d8de4753b2880459d1d65963236f85c1fc34257d263350ac58ec87"
+			"definition": "6c9835b89092010336232a5f4941706d5f24e84f11697e321a18451d8837bf6b",
+			"relocationDefinition": "854ac915b0d8de4753b2880459d1d65963236f85c1fc34257d263350ac58ec87",
+			"review": {
+				"commit": "dba37bafeae24f99ab694226edf4247678a12c5c",
+				"path": "src/services/development-tooling/native-picker-bridge-service/NativePickerDefaultsService.ts",
+				"definition": "6c9835b89092010336232a5f4941706d5f24e84f11697e321a18451d8837bf6b",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-service.native-picker-defaults, written by haiku); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "workflow.run-audit",
@@ -5529,13 +6323,20 @@
 			"unit": "reports.function.preview-node",
 			"from": "packages/reports/src/utils/previewNode.ts",
 			"to": "packages/reports/src/lib/development-tooling/preview-node/previewNode.ts",
-			"definition": "c6330fbd3b43178d6e4c67995a105e528526c3e9ea2611f4436d33bd4abc5e5f"
+			"definition": "0bdba578e66d49ee35ebb3839fc29e85ded361c72c61a978fde27f2369e63cc1",
+			"relocationDefinition": "c6330fbd3b43178d6e4c67995a105e528526c3e9ea2611f4436d33bd4abc5e5f",
+			"review": {
+				"commit": "3e6ffaaeef6b1aee0ceb779e16a507a356ae1bfa",
+				"path": "packages/reports/src/lib/development-tooling/preview-node/previewNode.ts",
+				"definition": "0bdba578e66d49ee35ebb3839fc29e85ded361c72c61a978fde27f2369e63cc1",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.function.preview-node, written by luna); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "reports.service.preview-worker",
 			"from": "packages/reports/src/services/preview-worker-service/PreviewWorkerService.ts",
 			"to": "packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/PreviewWorkerService.ts",
-			"definition": "ba1fbbadb81ac4dc48957524eb476d63050bd45f4149298fbfd6cfc80de0af0c",
+			"definition": "615ae88b4095e09bb5bbccc015ae465ee139bf68aa5049c2c34619c39eee8dbd",
 			"relocationDefinition": "b0afd2601578c69b68d8e01a90b5f0aa6f9215c7087abd8f6931dd8938dd1877",
 			"previousReviews": [
 				{
@@ -5549,20 +6350,33 @@
 					"path": "packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/PreviewWorkerService.ts",
 					"definition": "15bcfc4f7873d7cab181a32e81376572a6358ae64dc79e9881a67b6fff677978",
 					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
+				{
+					"commit": "55c266df8d9fc38127baed75319e44a14edb63f4",
+					"path": "packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/PreviewWorkerService.ts",
+					"definition": "ba1fbbadb81ac4dc48957524eb476d63050bd45f4149298fbfd6cfc80de0af0c",
+					"reason": "Retain the isolated preview worker environment, preserved scoped child configuration and auth, and owner-scoped child credentials."
 				}
 			],
 			"review": {
-				"commit": "55c266df8d9fc38127baed75319e44a14edb63f4",
+				"commit": "f57ac723b7a16638f2f68ce61399656aac9bdf52",
 				"path": "packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/PreviewWorkerService.ts",
-				"definition": "ba1fbbadb81ac4dc48957524eb476d63050bd45f4149298fbfd6cfc80de0af0c",
-				"reason": "Retain the isolated preview worker environment, preserved scoped child configuration and auth, and owner-scoped child credentials."
+				"definition": "615ae88b4095e09bb5bbccc015ae465ee139bf68aa5049c2c34619c39eee8dbd",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.service.preview-worker, written by luna); messages and behavior unchanged."
 			}
 		},
 		{
 			"unit": "reports.function.preview-health",
 			"from": "packages/reports/src/services/preview-worker-service/previewHealth.ts",
 			"to": "packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/previewHealth.ts",
-			"definition": "e335cb3dd1e93a46fc808c2b485ce7a3f3c077de5bdb5a85a8d3985e3f586625"
+			"definition": "5fd6befefbf02d06a0a78a5a047183a575e76c1fb4f370eb4eeefc5436c8e976",
+			"relocationDefinition": "e335cb3dd1e93a46fc808c2b485ce7a3f3c077de5bdb5a85a8d3985e3f586625",
+			"review": {
+				"commit": "f82697bc67e6eb11e95a15ea51a0f7330ff59492",
+				"path": "packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/previewHealth.ts",
+				"definition": "5fd6befefbf02d06a0a78a5a047183a575e76c1fb4f370eb4eeefc5436c8e976",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.function.preview-health, written by haiku); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "hub.adapter.relay-manage",
@@ -5594,7 +6408,14 @@
 			"unit": "desktop.function.remote-host-identity",
 			"from": "packages/desktop/src/services/remote-host-switch-service/remoteHostIdentity.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/remoteHostIdentity.ts",
-			"definition": "dd1ca75e359a546992a7f79e13d4a296479b5d83feaa14e9f18b2b480e5ef630"
+			"definition": "20ad420e59bb9bcdff11ef246a28e3b5c9a088a244339374dcc009616235f6b7",
+			"relocationDefinition": "dd1ca75e359a546992a7f79e13d4a296479b5d83feaa14e9f18b2b480e5ef630",
+			"review": {
+				"commit": "259888fc1e51b3f0248c53bac14ee7e1b5d6d1c2",
+				"path": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/remoteHostIdentity.ts",
+				"definition": "20ad420e59bb9bcdff11ef246a28e3b5c9a088a244339374dcc009616235f6b7",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.remote-host-identity, written by haiku); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "hub.service.github-grant",
@@ -5613,20 +6434,35 @@
 			"unit": "desktop.service.project-image-cache",
 			"from": "packages/desktop/src/services/ProjectImageCacheService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectImageCacheService.ts",
-			"definition": "12b147900f1bc34523186d2943b3a53390bd2b6dfcbcf12d19dc91fb445d039d"
+			"definition": "473b9710238e99a084f261adf0810f42f2f2758b17c962acbb7b9f06254f7d88",
+			"relocationDefinition": "12b147900f1bc34523186d2943b3a53390bd2b6dfcbcf12d19dc91fb445d039d",
+			"review": {
+				"commit": "0fbae169f64edb139b2838999c226ec6de195f68",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectImageCacheService.ts",
+				"definition": "473b9710238e99a084f261adf0810f42f2f2758b17c962acbb7b9f06254f7d88",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.project-image-cache, written by luna); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "reports.service.report-server",
 			"from": "packages/reports/src/services/report-server-service/ReportServerService.ts",
 			"to": "packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.ts",
-			"definition": "a2c57ecc04ebb264bd508f10138e571f9142c94db051fbac04cb4fd76ddc27c3",
+			"definition": "6c1983f1f9da9a14e2754d180c35785b148e0ada131b1a8c9e9b97acb282400c",
 			"relocationDefinition": "8981e216100b4860ba47d2356a22c84663f62fc4f22d81cf3481b9279f8d680f",
 			"review": {
-				"commit": "1c8072c5168bc0979c05eb377ea5e5ea2b2b08ab",
+				"commit": "cd543c140f3c79381d5ad60e3deddbb4b1570091",
 				"path": "packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.ts",
-				"definition": "a2c57ecc04ebb264bd508f10138e571f9142c94db051fbac04cb4fd76ddc27c3",
-				"reason": "Set the served origin to the exact loopback address and port so CLI requests to report serve are accepted."
-			}
+				"definition": "6c1983f1f9da9a14e2754d180c35785b148e0ada131b1a8c9e9b97acb282400c",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.service.report-server, written by luna); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "1c8072c5168bc0979c05eb377ea5e5ea2b2b08ab",
+					"path": "packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.ts",
+					"definition": "a2c57ecc04ebb264bd508f10138e571f9142c94db051fbac04cb4fd76ddc27c3",
+					"reason": "Set the served origin to the exact loopback address and port so CLI requests to report serve are accepted."
+				}
+			]
 		},
 		{
 			"unit": "reports.function.report-server-record",
@@ -5644,13 +6480,13 @@
 			"unit": "adapter.wasm-module-runtime",
 			"from": "src/adapters/WasmModuleRuntimeAdapter.ts",
 			"to": "src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
-			"definition": "0512728dea030c994ef4a31f12bbd1490de7b3c38aa93e0563ceb7fd5964ed43",
+			"definition": "f802fe77cb7deb02ca71a0e4f3f60a7b91204493a6b53922b91f62436dcfaad3",
 			"relocationDefinition": "6e795040118ba3425b9dabbd4884df717cc4f45b43bbcf841bb021b762d2f41a",
 			"review": {
-				"commit": "f2ebc4c666eaaabadec04be22f63d1e27d22c882",
+				"commit": "ba1559ab09d5816ba55ee8417aa1858f6c9f271f",
 				"path": "src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
-				"definition": "0512728dea030c994ef4a31f12bbd1490de7b3c38aa93e0563ceb7fd5964ed43",
-				"reason": "Delegate error text to the shared formatter while preserving ABI failure classification and recovery."
+				"definition": "f802fe77cb7deb02ca71a0e4f3f60a7b91204493a6b53922b91f62436dcfaad3",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-adapter.wasm-module-runtime, written by haiku); messages and behavior unchanged."
 			},
 			"previousReviews": [
 				{
@@ -5658,6 +6494,12 @@
 					"path": "src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
 					"definition": "a1be9417b15b6f66a9cc82fff3a44ad9b244b3b8732d95f7c9027c93f77e5db6",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "f2ebc4c666eaaabadec04be22f63d1e27d22c882",
+					"path": "src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
+					"definition": "0512728dea030c994ef4a31f12bbd1490de7b3c38aa93e0563ceb7fd5964ed43",
+					"reason": "Delegate error text to the shared formatter while preserving ABI failure classification and recovery."
 				}
 			]
 		},
@@ -5678,21 +6520,15 @@
 			"unit": "desktop.service.local-client",
 			"from": "packages/desktop/src/services/LocalClientService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-			"definition": "fc4ac939b6401690b8183751141ab5a92f1b3b260a9096025bea4fa1a83e96b0",
+			"definition": "847078af0e445e4bb00c33609c5959a641ac8cc6769a8e9a80e4ea2e2b542447",
 			"relocationDefinition": "db0ec4b62e6922c297169687608d262d5d27c0fbea6e3b27da2a52def20bb765",
 			"review": {
-				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-				"reason": "Give local windows the same headless rendering workflow as remote clients.",
-				"definition": "fc4ac939b6401690b8183751141ab5a92f1b3b260a9096025bea4fa1a83e96b0"
+				"definition": "847078af0e445e4bb00c33609c5959a641ac8cc6769a8e9a80e4ea2e2b542447",
+				"reason": "Retains typed client failures and uses main’s visual mockup runner when opening local projects."
 			},
 			"previousReviews": [
-				{
-					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
-					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-					"definition": "1f8781d596660ae51c109384f6efb74834a9e19cfa93c319f71ee6dc8b668d1e",
-					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-				},
 				{
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/desktop/src/services/LocalClientService.ts",
@@ -5700,10 +6536,28 @@
 					"reason": "Retain the game branch’s local transport request bound for full-size game documents."
 				},
 				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+					"definition": "1f8781d596660ae51c109384f6efb74834a9e19cfa93c319f71ee6dc8b668d1e",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
 					"commit": "caea83354142413dd97edae29bdd055924c9847b",
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
 					"definition": "bbd255f3b64af1587a08a456291b5d1cd00fc621d404a1699a41382700f83b50",
 					"reason": "Uses the configured native Hub account as the overview source."
+				},
+				{
+					"commit": "5335b4805da23435b714d1946548347ad02c33ac",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+					"definition": "eb6cae1949145f9b58555a4d60ed9ca862b477f7e4db6df371fc20079ba94f92",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.local-client, written by haiku); behavior unchanged."
+				},
+				{
+					"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+					"reason": "Give local windows the same headless rendering workflow as remote clients.",
+					"definition": "fc4ac939b6401690b8183751141ab5a92f1b3b260a9096025bea4fa1a83e96b0"
 				}
 			]
 		},
@@ -5711,13 +6565,13 @@
 			"unit": "desktop.service.local-operations",
 			"from": "packages/desktop/src/services/LocalOperationsService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-			"definition": "24abc5d2f2cb8a71536125e8a723d22be51876df584e9d9b8ff577877c4c59de",
+			"definition": "99a5afd915176506e32bbf0c7c0352db1ce862a3cca43c1871f72226e2a5aa81",
 			"relocationDefinition": "6c93c210df9a0612e8b374298b009646d8cc776940b82b610c6aa2edf7a6f2b4",
 			"review": {
-				"commit": "caea83354142413dd97edae29bdd055924c9847b",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-				"definition": "24abc5d2f2cb8a71536125e8a723d22be51876df584e9d9b8ff577877c4c59de",
-				"reason": "Dispatches the zero-argument project overview operation."
+				"definition": "99a5afd915176506e32bbf0c7c0352db1ce862a3cca43c1871f72226e2a5aa81",
+				"reason": "Retains typed local operation errors and main’s visual mockup runner wiring."
 			},
 			"previousReviews": [
 				{
@@ -5725,6 +6579,18 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
 					"definition": "a820511343a29c7edeb5ba96bd48a84e12615a4275e20d64f45f1054258db559",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "b90a174f4df61047264912cd3135bf0174ed9fd3",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "6fb689a2ebd20a1a1bf5c2b17218bf0dc19ac9534b94d10c69c6d708efa61da3",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.local-operations, written by luna); messages and behavior unchanged."
+				},
+				{
+					"commit": "caea83354142413dd97edae29bdd055924c9847b",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "24abc5d2f2cb8a71536125e8a723d22be51876df584e9d9b8ff577877c4c59de",
+					"reason": "Dispatches the zero-argument project overview operation."
 				}
 			]
 		},
@@ -5783,7 +6649,14 @@
 			"unit": "service.native-picker-switch",
 			"from": "src/services/NativePickerSwitchService.ts",
 			"to": "src/services/development-tooling/native-picker-bridge-service/NativePickerSwitchService.ts",
-			"definition": "2e34e601d4fff1c4a30496525fc9626da31701174bf5f5e3dc54e93827aa4c96"
+			"definition": "99fa67a9ee9f84fefa6f8630798d11929d5344ed0f3c999b39f0e2a90fdd6e91",
+			"relocationDefinition": "2e34e601d4fff1c4a30496525fc9626da31701174bf5f5e3dc54e93827aa4c96",
+			"review": {
+				"commit": "963d5d88893a326b439a4a78694ebce934b4e1c2",
+				"path": "src/services/development-tooling/native-picker-bridge-service/NativePickerSwitchService.ts",
+				"definition": "99fa67a9ee9f84fefa6f8630798d11929d5344ed0f3c999b39f0e2a90fdd6e91",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-service.native-picker-switch, written by haiku); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "relay.service.pairing-access",
@@ -5801,19 +6674,26 @@
 			"unit": "reports.repository.site-report",
 			"from": "packages/reports/src/repositories/SiteReportRepository.ts",
 			"to": "packages/reports/src/routes/api/health/SiteReportRepository.ts",
-			"definition": "3506b18061c783bd846906d681b21458ad35348e15d1401d2cfa308e776a7355"
+			"definition": "26d101c1ee52b21e9aef1bfe5d466c1f9e91852be14db6fd8e6287746cccdc54",
+			"relocationDefinition": "3506b18061c783bd846906d681b21458ad35348e15d1401d2cfa308e776a7355",
+			"review": {
+				"commit": "2a34cafffbed0a1ce1ed37a5ce277c7a76a161ee",
+				"path": "packages/reports/src/routes/api/health/SiteReportRepository.ts",
+				"definition": "26d101c1ee52b21e9aef1bfe5d466c1f9e91852be14db6fd8e6287746cccdc54",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.repository.site-report, written by luna); messages and behavior unchanged."
+			}
 		},
 		{
 			"unit": "desktop.service.client-projects",
 			"from": "packages/desktop/src/services/ClientProjectsService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.ts",
-			"definition": "e33e2814bb995021dd73731aa44b096ceece36666bbc1eff23182d29ebabca58",
+			"definition": "2eec45df27bbd4b0606ecd327b331d895968afdb69b378ee1260108eab975741",
 			"relocationDefinition": "e7b1ac7d1e24d5fb3626b6072183bfc29bf27d362eca39ba35c3a254b3da4f42",
 			"review": {
-				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.ts",
-				"reason": "Use the same mockup authoring and renderer in an authorized remote project session.",
-				"definition": "e33e2814bb995021dd73731aa44b096ceece36666bbc1eff23182d29ebabca58"
+				"definition": "2eec45df27bbd4b0606ecd327b331d895968afdb69b378ee1260108eab975741",
+				"reason": "Preserves the typed stale-session error and provides the responsive mockup runner to remote clients."
 			},
 			"previousReviews": [
 				{
@@ -5821,6 +6701,18 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.ts",
 					"definition": "d826b63ecb38d784b43182a19686c1db3fb408da0ea4a3637f949fe4af08d6fa",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "8996007893c305f6bd5459b0e549f0fa5b7c4c77",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.ts",
+					"definition": "97a9d5e3ee7a98c2b67bc0d75f49d92e21d19c3a8203accfaa8b03930e3dbcd3",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.client-projects, written by luna); messages and behavior unchanged."
+				},
+				{
+					"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.ts",
+					"reason": "Use the same mockup authoring and renderer in an authorized remote project session.",
+					"definition": "e33e2814bb995021dd73731aa44b096ceece36666bbc1eff23182d29ebabca58"
 				}
 			]
 		},
@@ -5828,14 +6720,22 @@
 			"unit": "reports.service.screenshot-upload",
 			"from": "packages/reports/src/services/ScreenshotUploadService.ts",
 			"to": "packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts",
-			"definition": "d640bf556facf0ca3612e0bb6781bedf3267edcfb6ac796c471c53366a2be021",
+			"definition": "e02315d7aaff38f9024ac43318fa24b717d5ba1c0c91c95e84bc306f9d4c29dd",
 			"relocationDefinition": "e19472c2cbf4000653bedf229be0e2df9fa8a390db23a9ba052e446cc5648ac8",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "4715ce5a9e2775c1728d3e89beba2fd144ec6c0c",
 				"path": "packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts",
-				"definition": "d640bf556facf0ca3612e0bb6781bedf3267edcfb6ac796c471c53366a2be021",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "e02315d7aaff38f9024ac43318fa24b717d5ba1c0c91c95e84bc306f9d4c29dd",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.service.screenshot-upload, written by haiku); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts",
+					"definition": "d640bf556facf0ca3612e0bb6781bedf3267edcfb6ac796c471c53366a2be021",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.adapter.capacitor-account",
@@ -5855,6 +6755,18 @@
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
 					"definition": "70a7d0dab7d16078c4fea5135346fdd88a87b30923b8d0c9a46cdf779dd45ce5",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "80802304f8cf42761392581cf21cdf806f72d931",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
+					"definition": "90c49bf638dd8ae45b616d797d3b186a746159b844784334cf64f807e6b5ef75",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.adapter.capacitor-account, written by haiku); behavior unchanged."
+				},
+				{
+					"commit": "a9ac44a3810a40ffae7c91c2aa9888a2c52574fd",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
+					"definition": "28418e2a350f2be7f85874f88cb640e98e4ca1f334c4ce53548e0588d470ee3c",
+					"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 80802304f8 (desktop.adapter.capacitor-account); behavior unchanged."
 				}
 			]
 		},
@@ -5862,21 +6774,42 @@
 			"unit": "desktop.adapter.capacitor-account",
 			"from": "packages/desktop/src/adapters/capacitor-account-adapter/capacitorAccountCodec.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts",
-			"definition": "66cb4f1b1f00e91a021140ec2916703f6f4b2e01dd1b4cc30197a9bb5dfc842b"
+			"definition": "117865db4b85eac2434b1f4550df3aaa9b3a78b18dc20bd4ca00dad2ec3e2a54",
+			"relocationDefinition": "66cb4f1b1f00e91a021140ec2916703f6f4b2e01dd1b4cc30197a9bb5dfc842b",
+			"review": {
+				"commit": "a9ac44a3810a40ffae7c91c2aa9888a2c52574fd",
+				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts",
+				"definition": "117865db4b85eac2434b1f4550df3aaa9b3a78b18dc20bd4ca00dad2ec3e2a54",
+				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 80802304f8 (desktop.adapter.capacitor-account); behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "80802304f8cf42761392581cf21cdf806f72d931",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts",
+					"definition": "b8b0c2cb30ee941365c1542817ef6981730a0d72aa948e1f65adab1c06a73126",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.adapter.capacitor-account, written by haiku); behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "workflow.create-project",
 			"from": "src/workflows/create-project/createProject.ts",
 			"to": "src/cli/program/create-project/createProject.ts",
-			"definition": "42e9bf2ed78903f643705f75d3593a332bc3e8e4d953ee86c77cd2dece3d4fa9",
+			"definition": "510ad64c095c87c65a33c574be7f047435085c9cf643455be28dbf8a4b763daf",
 			"relocationDefinition": "079d03bf5f45ed18001faf540c6fe2ea44ec45252b43225525d9e377022a84d1",
 			"review": {
-				"commit": "d07eac3753950f0f30df3242830668d4c3bcbfc8",
+				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 				"path": "src/cli/program/create-project/createProject.ts",
-				"definition": "42e9bf2ed78903f643705f75d3593a332bc3e8e4d953ee86c77cd2dece3d4fa9",
-				"reason": "Validates and forwards the optional game engine for project generation."
+				"definition": "510ad64c095c87c65a33c574be7f047435085c9cf643455be28dbf8a4b763daf",
+				"reason": "Keeps the expected dimension error and passes static app adapters and game engines into scaffold generation."
 			},
 			"previousReviews": [
+				{
+					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+					"path": "src/workflows/create-project/createProject.ts",
+					"definition": "6d8ebd2b12dfe7c85ac76def00cf62ea5fb3f9956bf84f53affbee9219b0f4f4",
+					"reason": "Retain the game branch’s dimension, parent folder and partial-creation handling."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "src/cli/program/create-project/createProject.ts",
@@ -5884,10 +6817,16 @@
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 				},
 				{
-					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
-					"path": "src/workflows/create-project/createProject.ts",
-					"definition": "6d8ebd2b12dfe7c85ac76def00cf62ea5fb3f9956bf84f53affbee9219b0f4f4",
-					"reason": "Retain the game branch’s dimension, parent folder and partial-creation handling."
+					"commit": "1a8f8ea070bdec7b258cd9143559f780e7f1f49a",
+					"path": "src/cli/program/create-project/createProject.ts",
+					"definition": "4d7ca85277a9378e2953b14ae5872cc691d87a51af224736fa5a0c2a63b057b1",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-workflow.create-project, written by haiku); messages and behavior unchanged."
+				},
+				{
+					"commit": "d07eac3753950f0f30df3242830668d4c3bcbfc8",
+					"path": "src/cli/program/create-project/createProject.ts",
+					"definition": "42e9bf2ed78903f643705f75d3593a332bc3e8e4d953ee86c77cd2dece3d4fa9",
+					"reason": "Validates and forwards the optional game engine for project generation."
 				}
 			]
 		},
@@ -5914,14 +6853,22 @@
 			"unit": "desktop.service.project-task",
 			"from": "packages/desktop/src/services/project-task-service/ProjectTaskService.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.ts",
-			"definition": "8c771efe4a0656c993f5384024042df58ac6123ba1223a421e4a36427d19c171",
+			"definition": "f7d4250fbbe3ba93697b9ca8361d03e36a444111298bffbdee23c996dda734b5",
 			"relocationDefinition": "73959fb2b3c38f25589fe1b5ba676292ada0f9cc0799254885488e8680b3b573",
 			"review": {
-				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
-				"path": "packages/desktop/src/services/project-task-service/ProjectTaskService.ts",
-				"definition": "8c771efe4a0656c993f5384024042df58ac6123ba1223a421e4a36427d19c171",
-				"reason": "Retain main’s verified change promotion after approved project tasks."
-			}
+				"commit": "d25e7f26ad455c455b319e2fef025fa6f10bccfd",
+				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.ts",
+				"definition": "f7d4250fbbe3ba93697b9ca8361d03e36a444111298bffbdee23c996dda734b5",
+				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.project-task, written by luna); messages and behavior unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+					"path": "packages/desktop/src/services/project-task-service/ProjectTaskService.ts",
+					"definition": "8c771efe4a0656c993f5384024042df58ac6123ba1223a421e4a36427d19c171",
+					"reason": "Retain main’s verified change promotion after approved project tasks."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.proposal-units",

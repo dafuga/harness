@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-guide.analytics",
+	"title": "guide.analytics examples",
+	"kind": "headless",
+	"units": ["guide.analytics"],
+	"builds": [],
+	"states": [
+		{
+			"id": "describes-analytics-guidance-with-its-rules-and-commands",
+			"title": "Describes analytics guidance with its rules and commands",
+			"coverage": "required"
+		},
+		{
+			"id": "describes-report-guidance-and-its-finalize-step",
+			"title": "Describes report guidance and its finalize step",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/guide.analytics.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"describes-analytics-guidance-with-its-rules-and-commands",
+				"describes-report-guidance-and-its-finalize-step"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"describes-analytics-guidance-with-its-rules-and-commands",
+				"describes-report-guidance-and-its-finalize-step"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"describes-analytics-guidance-with-its-rules-and-commands",
+				"describes-report-guidance-and-its-finalize-step"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

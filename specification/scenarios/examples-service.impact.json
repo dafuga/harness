@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.impact",
+	"title": "service.impact examples",
+	"kind": "headless",
+	"units": ["service.impact"],
+	"builds": [],
+	"states": [
+		{
+			"id": "computes-an-impact-report-for-a-modified-source-file",
+			"title": "Computes an impact report for a modified source file",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-with-the-kernel-failure-code-and-message",
+			"title": "Rejects with the kernel failure code and message",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.impact.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"computes-an-impact-report-for-a-modified-source-file",
+				"rejects-with-the-kernel-failure-code-and-message"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"computes-an-impact-report-for-a-modified-source-file",
+				"rejects-with-the-kernel-failure-code-and-message"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"computes-an-impact-report-for-a-modified-source-file",
+				"rejects-with-the-kernel-failure-code-and-message"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

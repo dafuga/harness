@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.store.thread-run",
+	"title": "desktop.store.thread-run examples",
+	"kind": "headless",
+	"units": ["desktop.store.thread-run"],
+	"builds": [],
+	"states": [
+		{
+			"id": "starts-each-store-idle-with-no-run-active",
+			"title": "starts each store idle with no run active",
+			"coverage": "required"
+		},
+		{
+			"id": "start-refuses-a-second-run-while-one-is-still-starting-or-active",
+			"title": "start refuses a second run while one is still starting or active",
+			"coverage": "required"
+		},
+		{
+			"id": "a-missing-bridge-is-stored-as-an-error-and-cancel-does-not-reject",
+			"title": "a missing bridge is stored as an error and cancel does not reject",
+			"coverage": "required"
+		},
+		{
+			"id": "a-failed-run-clears-its-run-id-before-a-refresh-rejection-reaches-event",
+			"title": "a failed run clears its run id before a refresh rejection reaches event",
+			"coverage": "required"
+		},
+		{
+			"id": "a-finished-change-rejects-when-the-deployments-load-fails",
+			"title": "a finished Change rejects when the deployments load fails",
+			"coverage": "required"
+		},
+		{
+			"id": "a-finished-change-without-a-deployments-store-skips-the-load-and-resolves",
+			"title": "a finished Change without a deployments store skips the load and resolves",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.store.thread-run.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"starts-each-store-idle-with-no-run-active",
+				"start-refuses-a-second-run-while-one-is-still-starting-or-active",
+				"a-missing-bridge-is-stored-as-an-error-and-cancel-does-not-reject",
+				"a-failed-run-clears-its-run-id-before-a-refresh-rejection-reaches-event",
+				"a-finished-change-rejects-when-the-deployments-load-fails",
+				"a-finished-change-without-a-deployments-store-skips-the-load-and-resolves"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"starts-each-store-idle-with-no-run-active",
+				"start-refuses-a-second-run-while-one-is-still-starting-or-active",
+				"a-missing-bridge-is-stored-as-an-error-and-cancel-does-not-reject",
+				"a-failed-run-clears-its-run-id-before-a-refresh-rejection-reaches-event",
+				"a-finished-change-rejects-when-the-deployments-load-fails",
+				"a-finished-change-without-a-deployments-store-skips-the-load-and-resolves"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"starts-each-store-idle-with-no-run-active",
+				"start-refuses-a-second-run-while-one-is-still-starting-or-active",
+				"a-missing-bridge-is-stored-as-an-error-and-cancel-does-not-reject",
+				"a-failed-run-clears-its-run-id-before-a-refresh-rejection-reaches-event",
+				"a-finished-change-rejects-when-the-deployments-load-fails",
+				"a-finished-change-without-a-deployments-store-skips-the-load-and-resolves"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -8,8 +8,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["scripts/build-kernel.ts", "scripts/build-kernel/build-kernel.ts"],
-		"symbols": []
+		"source": [
+			"scripts/build-kernel.ts",
+			"scripts/build-kernel/build-kernel.ts",
+			"scripts/build-kernel/build-kernel.types.ts"
+		],
+		"symbols": ["CommandFailedError"]
 	},
 	"contract": {
 		"origin": "declared",

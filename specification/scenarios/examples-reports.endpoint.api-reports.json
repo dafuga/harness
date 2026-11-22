@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.endpoint.api-reports",
+	"title": "reports.endpoint.api-reports examples",
+	"kind": "headless",
+	"units": ["reports.endpoint.api-reports"],
+	"builds": [],
+	"states": [
+		{
+			"id": "lists-reports-without-caching-the-response",
+			"title": "Lists reports without caching the response",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-repository-list-rejection-when-it-fails",
+			"title": "Throws repository.list rejection when it fails",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.endpoint.api-reports.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"lists-reports-without-caching-the-response",
+				"throws-repository-list-rejection-when-it-fails"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"lists-reports-without-caching-the-response",
+				"throws-repository-list-rejection-when-it-fails"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"lists-reports-without-caching-the-response",
+				"throws-repository-list-rejection-when-it-fails"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

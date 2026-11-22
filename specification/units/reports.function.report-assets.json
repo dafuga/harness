@@ -10,9 +10,19 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/repositories/reports-media/report-repository/reportAssets.ts",
-			"packages/reports/src/utils/reports-media/reportAssets.ts"
+			"packages/reports/src/repositories/reports-media/report-repository/reportAssets.types.ts",
+			"packages/reports/src/utils/reports-media/reportAssets.ts",
+			"packages/reports/src/utils/reports-media/reportAssets.types.ts"
 		],
-		"symbols": ["reportAssets", "imageAsset", "writeImageAsset", "registeredAsset", "reportAssets"]
+		"symbols": [
+			"reportAssets",
+			"InvalidEvidenceSourceError",
+			"imageAsset",
+			"writeImageAsset",
+			"registeredAsset",
+			"reportAssets",
+			"InvalidAssetError"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -22,18 +32,14 @@
 				"type": "string",
 				"required": true,
 				"description": "Destination report directory used to store the imported file beneath an assets subdirectory. The helper creates that subdirectory recursively.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports"
-				]
+				"examples": ["/workspace/project/packages/reports"]
 			},
 			{
 				"name": "reportAssets.source",
 				"type": "string",
 				"required": true,
 				"description": "Filesystem path inspected as the evidence source; symbolic links, non-files, and files larger than 50,000,000 bytes are rejected. Its detected media type selects the audio or image handling path.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports/test/fixtures/evidence.png"
-				]
+				"examples": ["/workspace/project/packages/reports/test/fixtures/evidence.png"]
 			},
 			{
 				"name": "imageAsset.bytes",
@@ -53,9 +59,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Destination report directory; the helper writes under its assets subdirectory and creates that directory recursively.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports"
-				]
+				"examples": ["/workspace/project/packages/reports"]
 			},
 			{
 				"name": "writeImageAsset.name",
@@ -75,9 +79,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Directory canonicalized with realpath to establish the boundary for resolving an asset name. Filesystem lookup failures reject the promise.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports/assets"
-				]
+				"examples": ["/workspace/project/packages/reports/assets"]
 			},
 			{
 				"name": "registeredAsset.name",
@@ -99,7 +101,7 @@
 		"outputs": [
 			{
 				"name": "imageAsset",
-				"type": "unknown",
+				"type": "{ name: string; mime: string; }",
 				"description": "Object containing the SHA-256 digest of the bytes plus their detected extension and the corresponding MIME type. Detection checks PNG, JPEG, and WebP signatures without fully decoding the image.",
 				"examples": [
 					{
@@ -110,12 +112,12 @@
 			},
 			{
 				"name": "writeImageAsset",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Promise resolving to undefined after creating the assets directory recursively with mode 0700 and writing the supplied bytes with creation mode 0600."
 			},
 			{
 				"name": "reportAssets",
-				"type": "unknown",
+				"type": "Promise<{ name: string; mimeType: string; mediaType: 'audio'; durationSeconds?: number } | { name: string; mediaType: 'image'; mimeType: string }>",
 				"description": "Promise resolving to metadata for the stored audio or image asset after source checks and a content-addressed write under directory/assets. The image branch returns name, mediaType, and mimeType; audio metadata comes from audioAsset.",
 				"examples": [
 					{
@@ -127,10 +129,10 @@
 			},
 			{
 				"name": "registeredAsset",
-				"type": "unknown",
+				"type": "Promise<string>",
 				"description": "Promise resolving to the canonical-base path for the requested registered file after confirming it is a regular non-symlink file whose real path remains inside the base directory.",
 				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports/assets/9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"
+					"/workspace/project/packages/reports/assets/9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"
 				]
 			}
 		],
@@ -151,24 +153,20 @@
 						"type": "string",
 						"required": true,
 						"description": "Destination report directory used to store the imported file beneath an assets subdirectory. The helper creates that subdirectory recursively.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports"
-						]
+						"examples": ["/workspace/project/packages/reports"]
 					},
 					{
 						"name": "reportAssets.source",
 						"type": "string",
 						"required": true,
 						"description": "Filesystem path inspected as the evidence source; symbolic links, non-files, and files larger than 50,000,000 bytes are rejected. Its detected media type selects the audio or image handling path.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports/test/fixtures/evidence.png"
-						]
+						"examples": ["/workspace/project/packages/reports/test/fixtures/evidence.png"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reportAssets",
-						"type": "unknown",
+						"type": "Promise<{ name: string; mimeType: string; mediaType: 'audio'; durationSeconds?: number } | { name: string; mediaType: 'image'; mimeType: string }>",
 						"description": "Promise resolving to metadata for the stored audio or image asset after source checks and a content-addressed write under directory/assets. The image branch returns name, mediaType, and mimeType; audio metadata comes from audioAsset.",
 						"examples": [
 							{
@@ -208,7 +206,7 @@
 				"outputs": [
 					{
 						"name": "imageAsset",
-						"type": "unknown",
+						"type": "{ name: string; mime: string; }",
 						"description": "Object containing the SHA-256 digest of the bytes plus their detected extension and the corresponding MIME type. Detection checks PNG, JPEG, and WebP signatures without fully decoding the image.",
 						"examples": [
 							{
@@ -235,9 +233,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Destination report directory; the helper writes under its assets subdirectory and creates that directory recursively.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports"
-						]
+						"examples": ["/workspace/project/packages/reports"]
 					},
 					{
 						"name": "writeImageAsset.name",
@@ -256,7 +252,7 @@
 				"outputs": [
 					{
 						"name": "writeImageAsset",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Promise resolving to undefined after creating the assets directory recursively with mode 0700 and writing the supplied bytes with creation mode 0600."
 					}
 				],
@@ -277,9 +273,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Directory canonicalized with realpath to establish the boundary for resolving an asset name. Filesystem lookup failures reject the promise.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports/assets"
-						]
+						"examples": ["/workspace/project/packages/reports/assets"]
 					},
 					{
 						"name": "registeredAsset.name",
@@ -301,10 +295,10 @@
 				"outputs": [
 					{
 						"name": "registeredAsset",
-						"type": "unknown",
+						"type": "Promise<string>",
 						"description": "Promise resolving to the canonical-base path for the requested registered file after confirming it is a regular non-symlink file whose real path remains inside the base directory.",
 						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17/packages/reports/assets/9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"
+							"/workspace/project/packages/reports/assets/9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"
 						]
 					}
 				],

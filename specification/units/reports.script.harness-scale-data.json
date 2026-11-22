@@ -12,7 +12,15 @@
 			"packages/reports/scripts/harness-scale-data.ts",
 			"packages/reports/scripts/harness-scale-data.types.ts"
 		],
-		"symbols": ["generatedUnits", "generatedFailures", "writeScaleData", "Unit", "Detail"]
+		"symbols": [
+			"generatedUnits",
+			"generatedFailures",
+			"writeScaleData",
+			"FailedRevisionRecordNotFoundError",
+			"SlugifyTemplateNotFoundError",
+			"Unit",
+			"Detail"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,13 +55,13 @@
 		"outputs": [
 			{
 				"name": "generatedUnits",
-				"type": "unknown",
+				"type": "number",
 				"description": "The fixed number of generated units exported by the script: 480, with generated IDs indexed from 000 through 479. The generator uses a 120-unit offset when assigning dependencies.",
 				"examples": [480]
 			},
 			{
 				"name": "generatedFailures",
-				"type": "unknown",
+				"type": "string[]",
 				"description": "An exported array of 480 synthetic failure strings, one for each generated unit, stating that no baseline is established and a reviewer must establish one. Its generated IDs run from `function.generated-000` through `function.generated-479`; these are fixture data, not descriptions of real source.",
 				"examples": [
 					["function.generated-000: no baseline is established; a reviewer must establish one"]

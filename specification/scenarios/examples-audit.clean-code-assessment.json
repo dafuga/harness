@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-audit.clean-code-assessment",
+	"title": "audit.clean-code-assessment examples",
+	"kind": "headless",
+	"units": ["audit.clean-code-assessment"],
+	"builds": [],
+	"states": [
+		{
+			"id": "maps-answers-to-statuses-at-the-confidence-threshold",
+			"title": "Maps answers to statuses at the confidence threshold",
+			"coverage": "required"
+		},
+		{
+			"id": "rolls-file-assessments-up-to-one-file-status",
+			"title": "Rolls file assessments up to one file status",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-the-worst-file-status-across-a-report",
+			"title": "Reports the worst file status across a report",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-a-typeerror-when-a-principle-has-no-answer",
+			"title": "Throws a TypeError when a principle has no answer",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/audit.clean-code-assessment.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"maps-answers-to-statuses-at-the-confidence-threshold",
+				"rolls-file-assessments-up-to-one-file-status",
+				"reports-the-worst-file-status-across-a-report",
+				"throws-a-typeerror-when-a-principle-has-no-answer"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"maps-answers-to-statuses-at-the-confidence-threshold",
+				"rolls-file-assessments-up-to-one-file-status",
+				"reports-the-worst-file-status-across-a-report",
+				"throws-a-typeerror-when-a-principle-has-no-answer"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"maps-answers-to-statuses-at-the-confidence-threshold",
+				"rolls-file-assessments-up-to-one-file-status",
+				"reports-the-worst-file-status-across-a-report",
+				"throws-a-typeerror-when-a-principle-has-no-answer"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

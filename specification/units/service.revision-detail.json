@@ -13,6 +13,7 @@
 			"src/services/explorer-ui/revision-detail-service/RevisionDetailService.types.ts",
 			"src/services/explorer-ui/revision-detail-service/projectDependencies.ts",
 			"src/services/explorer-ui/revision-detail-service/projectDependencies.types.ts",
+			"src/services/explorer-ui/revision-detail-service/revisionMedia.ts",
 			"src/services/revision-detail-service/RevisionDetailService.ts"
 		],
 		"symbols": [
@@ -22,6 +23,7 @@
 			"RevisionDetailService.build",
 			"RevisionDetail",
 			"BuiltRevision",
+			"OriginRecordReader",
 			"RevisionDetail",
 			"Stored",
 			"BuiltRevision",
@@ -30,6 +32,7 @@
 			"ProjectDependencies",
 			"DependencyManifest",
 			"DependencySection",
+			"revisionMedia",
 			"revisionSources",
 			"RevisionDetailService"
 		]
@@ -42,14 +45,14 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root passed directly to the source-impact service created for the shared context. This function does not normalize or validate the path.",
-				"examples": ["/Users/danielfugere/projects/example"]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "RevisionDetailService.constructor.root",
 				"type": "string",
 				"required": true,
 				"description": "Repository root used to construct the Git adapter and, when no shared context is supplied, the default source context. The constructor does not normalize or validate the path.",
-				"examples": ["/Users/danielfugere/projects/example"]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "RevisionDetailService.constructor.history",
@@ -59,9 +62,10 @@
 			},
 			{
 				"name": "RevisionDetailService.constructor.kept",
-				"type": "{ source: SourceImpactService; registries: Map<string, Stored>; }",
+				"type": "ReturnType<typeof revisionSources>",
 				"required": false,
-				"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map."
+				"default": "revisionSources(root)",
+				"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map. The documented default is the source expression revisionSources(root), evaluated at construction; it is not a literal collaborator value."
 			},
 			{
 				"name": "RevisionDetailService.build.commit",
@@ -81,12 +85,27 @@
 				"type": "SourceTree",
 				"required": true,
 				"description": "Selected source tree whose recorded paths and manifest contents are inspected. The function reads root package.json or Cargo.toml files and matching workspace manifests, and turns manifest read or parse failures into catalog gaps."
+			},
+			{
+				"name": "revisionMedia.loaded",
+				"type": "AttachedRecord",
+				"required": true
+			},
+			{
+				"name": "revisionMedia.media",
+				"type": "MediaPlacer",
+				"required": true
+			},
+			{
+				"name": "revisionMedia.read",
+				"type": "OriginRecordReader",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "revisionSources",
-				"type": "unknown",
+				"type": "{ source: sourceImpact.SourceImpactService; registries: Map<string, Stored>; }",
 				"description": "Shared source context containing a SourceImpactService and an initially empty Map of stored revision registries. The map is reused by tree hash when available and by commit string when the tree cannot be resolved."
 			},
 			{
@@ -153,23 +172,23 @@
 		],
 		"errors": [
 			{
-				"name": "unspecified",
-				"type": "thrown",
+				"name": "SourceImpactService construction error",
+				"type": "propagated",
 				"description": "Creating the SourceImpactService can propagate a construction failure. This implementation does not establish a specific error name or shape."
 			},
 			{
-				"name": "unspecified",
-				"type": "thrown",
+				"name": "Collaborator rejection",
+				"type": "propagated",
 				"description": "An awaited history, Git, source-impact, repository, catalog, media-placement, or regression-proof collaborator can reject, and build does not catch those failures. This implementation does not establish a specific rejection name or shape."
 			},
 			{
-				"name": "unspecified",
-				"type": "thrown",
+				"name": "tree.list() rejection",
+				"type": "propagated",
 				"description": "A failure from listing the source tree rejects the operation because tree.list() is outside the manifest-read catch. Individual manifest read and parse failures are caught and recorded as gaps."
 			},
 			{
-				"name": "unspecified",
-				"type": "thrown",
+				"name": "GitAdapter or revisionSources construction error",
+				"type": "propagated",
 				"description": "Construction can propagate a failure from creating the GitAdapter or, when kept is omitted, from creating revisionSources(root). This implementation does not establish a specific error name or shape."
 			}
 		],
@@ -183,20 +202,20 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root passed directly to the source-impact service created for the shared context. This function does not normalize or validate the path.",
-						"examples": ["/Users/danielfugere/projects/example"]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "revisionSources",
-						"type": "unknown",
+						"type": "{ source: sourceImpact.SourceImpactService; registries: Map<string, Stored>; }",
 						"description": "Shared source context containing a SourceImpactService and an initially empty Map of stored revision registries. The map is reused by tree hash when available and by commit string when the tree cannot be resolved."
 					}
 				],
 				"errors": [
 					{
-						"name": "unspecified",
-						"type": "thrown",
+						"name": "SourceImpactService construction error",
+						"type": "propagated",
 						"description": "Creating the SourceImpactService can propagate a construction failure. This implementation does not establish a specific error name or shape."
 					}
 				],
@@ -264,8 +283,8 @@
 				],
 				"errors": [
 					{
-						"name": "unspecified",
-						"type": "thrown",
+						"name": "Collaborator rejection",
+						"type": "propagated",
 						"description": "An awaited history, Git, source-impact, repository, catalog, media-placement, or regression-proof collaborator can reject, and build does not catch those failures. This implementation does not establish a specific rejection name or shape."
 					}
 				],
@@ -305,9 +324,43 @@
 				],
 				"errors": [
 					{
-						"name": "unspecified",
-						"type": "thrown",
+						"name": "tree.list() rejection",
+						"type": "propagated",
 						"description": "A failure from listing the source tree rejects the operation because tree.list() is outside the manifest-read catch. Individual manifest read and parse failures are caught and recorded as gaps."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "revisionMedia",
+				"inputs": [
+					{
+						"name": "revisionMedia.loaded",
+						"type": "AttachedRecord",
+						"required": true
+					},
+					{
+						"name": "revisionMedia.media",
+						"type": "MediaPlacer",
+						"required": true
+					},
+					{
+						"name": "revisionMedia.read",
+						"type": "OriginRecordReader",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "revisionMedia",
+						"type": "Promise<Map<string, ResolvedMedia>>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Collaborator rejection",
+						"type": "propagated",
+						"description": "The supplied origin-record reader or MediaPlacer may reject, and revisionMedia forwards that failure. Missing source/media is passed to the placer as a gap rather than fabricated evidence."
 					}
 				],
 				"errorStatus": "declared"
@@ -322,7 +375,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root used to construct the Git adapter and, when no shared context is supplied, the default source context. The constructor does not normalize or validate the path.",
-						"examples": ["/Users/danielfugere/projects/example"]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "RevisionDetailService.constructor.history",
@@ -332,22 +385,23 @@
 					},
 					{
 						"name": "RevisionDetailService.constructor.kept",
-						"type": "{ source: SourceImpactService; registries: Map<string, Stored>; }",
+						"type": "ReturnType<typeof revisionSources>",
 						"required": false,
-						"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map."
+						"default": "revisionSources(root)",
+						"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map. The documented default is the source expression revisionSources(root), evaluated at construction; it is not a literal collaborator value."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RevisionDetailService.constructor",
-						"type": "unknown",
+						"type": "RevisionDetailService",
 						"description": "Constructed RevisionDetailService instance bound to the repository root, history service, and shared source context. It creates a GitAdapter and does not load a revision until build is called."
 					}
 				],
 				"errors": [
 					{
-						"name": "unspecified",
-						"type": "thrown",
+						"name": "GitAdapter or revisionSources construction error",
+						"type": "propagated",
 						"description": "Construction can propagate a failure from creating the GitAdapter or, when kept is omitted, from creating revisionSources(root). This implementation does not establish a specific error name or shape."
 					}
 				],
@@ -433,6 +487,11 @@
 		},
 		{
 			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		},

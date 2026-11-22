@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/projects-sessions/site-activity/activityClient.ts"],
-		"symbols": ["activityClient"]
+		"source": [
+			"packages/reports/src/components/projects-sessions/site-activity/activityClient.ts",
+			"packages/reports/src/components/projects-sessions/site-activity/activityClient.types.ts"
+		],
+		"symbols": ["activityClient", "ActivityUnavailableError"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -30,7 +33,7 @@
 		"outputs": [
 			{
 				"name": "activityClient",
-				"type": "unknown",
+				"type": "{ refresh(): Promise<void>; stop(): void }",
 				"description": "An object with refresh and stop methods; creating it reads document synchronously, so it needs a DOM document, and it sends no request on construction. refresh returns without fetching while a request is pending or after stop, otherwise fetching /api/project-activity with cache 'no-store' and not checking visibility itself; a 15-second timer and a visibilitychange listener call it only while document.visibilityState is 'visible', and stop clears the timer, removes the listener, marks the client inactive and aborts any in-flight request."
 			}
 		],
@@ -62,7 +65,7 @@
 				"outputs": [
 					{
 						"name": "activityClient",
-						"type": "unknown",
+						"type": "{ refresh(): Promise<void>; stop(): void }",
 						"description": "An object with refresh and stop methods; creating it reads document synchronously, so it needs a DOM document, and it sends no request on construction. refresh returns without fetching while a request is pending or after stop, otherwise fetching /api/project-activity with cache 'no-store' and not checking visibility itself; a 15-second timer and a visibilitychange listener call it only while document.visibilityState is 'visible', and stop clears the timer, removes the listener, marks the client inactive and aborts any in-flight request."
 					}
 				],

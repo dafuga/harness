@@ -51,7 +51,7 @@
 		"outputs": [
 			{
 				"name": "CHALLENGE_TTL",
-				"type": "unknown",
+				"type": "number",
 				"description": "Challenge lifetime in milliseconds; fixed at five minutes (5 * 60 * 1000). issue adds this duration to now() for the stored record's expiresAt.",
 				"examples": [300000]
 			},
@@ -157,7 +157,7 @@
 				"outputs": [
 					{
 						"name": "LoginChallengeService.constructor",
-						"type": "unknown",
+						"type": "LoginChallengeService",
 						"description": "Creates a LoginChallengeService that retains the required options. It performs no store or hashing work until issue or consume is called."
 					}
 				],

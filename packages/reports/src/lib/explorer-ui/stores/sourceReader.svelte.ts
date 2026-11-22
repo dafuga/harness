@@ -1,5 +1,6 @@
 // @harness-uid u_dvnkqsclwa
 import { errorMessage } from '../../../helpers/strings/errorMessage';
+import { ArchivedSourceReadError } from './sourceReader.svelte.types';
 import type { SourceState, SourceRead, SourceFiles } from './sourceReader.svelte.types';
 import type { HarnessUnit } from '../../../models/explorer-ui/Harness.types';
 
@@ -94,11 +95,13 @@ async function readArchivedFile(
 	const file =
 		archived[0]?.find((entry) => entry.path === path) ??
 		archived[1]?.find((entry) => entry.path === path);
-	if (!file?.media) throw new Error(file?.gap ?? `${path} is not archived at this revision.`);
+	if (!file?.media)
+		throw new ArchivedSourceReadError(file?.gap ?? `${path} is not archived at this revision.`);
 	if (!/^media\/[a-f0-9]{64}\.txt$/.test(file.media))
-		throw new Error('The recorded source reference is invalid.');
+		throw new ArchivedSourceReadError('The recorded source reference is invalid.');
 	const response = await fetch(mediaBase + file.media.slice('media/'.length));
-	if (!response.ok) throw new Error(`${path} could not be read (${response.status}).`);
+	if (!response.ok)
+		throw new ArchivedSourceReadError(`${path} could not be read (${response.status}).`);
 	return await response.text();
 }
 

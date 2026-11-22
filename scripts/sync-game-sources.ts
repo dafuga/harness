@@ -3,6 +3,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { posix } from 'node:path';
 import { format } from 'prettier';
 import { formatConfigFiles } from '../src/templates/development-tooling/formatConfig';
+import { UnembeddedImportError } from './sync-game-sources.types';
 
 /** Generated games keep their src/lib/game layout; each destination names its engine source. */
 export const gameSourceLayout: Readonly<Record<string, string>> = {
@@ -17,8 +18,16 @@ export const gameSourceLayout: Readonly<Record<string, string>> = {
 	'adapters/ThreeSceneAdapter.ts': 'adapters/game-authoring/ThreeSceneAdapter.ts',
 	'adapters/Software3dAdapter.ts': 'adapters/game-authoring/Software3dAdapter.ts',
 	'adapters/Software3dAdapter.types.ts': 'adapters/game-authoring/Software3dAdapter.types.ts',
+	'adapters/Canvas2dContextUnavailableError.ts':
+		'adapters/game-authoring/Canvas2dContextUnavailableError.ts',
 	'adapters/DecartStreamAdapter.ts': 'adapters/agents-providers/DecartStreamAdapter.ts',
-	'adapters/DecartStreamAdapter.types.ts': 'adapters/agents-providers/DecartStreamAdapter.types.ts'
+	'adapters/DecartStreamAdapter.types.ts': 'adapters/agents-providers/DecartStreamAdapter.types.ts',
+	'adapters/DecartTransportUnavailableError.ts':
+		'adapters/agents-providers/DecartTransportUnavailableError.ts',
+	'adapters/DecartPreviewCancelledError.ts':
+		'adapters/agents-providers/DecartPreviewCancelledError.ts',
+	'adapters/DecartConnectionFailedError.ts':
+		'adapters/agents-providers/DecartConnectionFailedError.ts'
 };
 
 /** The formatting a generated project checks, so embedded sources pass its own format check. */
@@ -35,7 +44,8 @@ export async function embeddedSource(destination: string, text: string): Promise
 		(_whole, lead: string, specifier: string) => {
 			const target = posix.join(posix.dirname(source), specifier) + '.ts';
 			const embedded = destinations.find((path) => gameSourceLayout[path] === target);
-			if (!embedded) throw new Error(`${source} imports ${specifier}, which is not embedded.`);
+			if (!embedded)
+				throw new UnembeddedImportError(`${source} imports ${specifier}, which is not embedded.`);
 			const moved = posix.relative(posix.dirname(destination), embedded).replace(/\.ts$/, '');
 			return `${lead}'${moved.startsWith('.') ? moved : './' + moved}'`;
 		}

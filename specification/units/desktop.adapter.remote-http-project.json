@@ -10,11 +10,14 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/InvalidHostedSourceError.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/UnknownHostedImageAnchorError.ts"
 		],
 		"symbols": [
 			"NativeHostedCredential",
 			"RemoteHttpProjectAdapter",
+			"InvalidHostedSourceError",
 			"NativeHostedCredential",
 			"RemoteHttpProjectAdapter",
 			"RemoteHttpProjectAdapter.constructor",
@@ -31,7 +34,8 @@
 			"RemoteHttpProjectAdapter.messages",
 			"RemoteHttpProjectAdapter.history",
 			"RemoteHttpProjectAdapter.capabilities",
-			"RemoteHttpProjectAdapter.addComment"
+			"RemoteHttpProjectAdapter.addComment",
+			"UnknownHostedImageAnchorError"
 		]
 	},
 	"contract": {
@@ -238,7 +242,7 @@
 		"outputs": [
 			{
 				"name": "RemoteHttpProjectAdapter.evidence",
-				"type": "unknown",
+				"type": "Promise<EntityEvidenceResult>",
 				"description": "Returns the validated hosted evidence answer, including its requested scope, source/cache identity, evidence sides, and behavior summary. The adapter checks the answer's schema and query bindings; sealed-record validation remains the server's responsibility.",
 				"examples": [
 					{
@@ -311,12 +315,12 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.artifact",
-				"type": "unknown",
+				"type": "Promise<EvidenceArtifactResult>",
 				"description": "Returns the checked capture bytes, media type, and SHA-256 from the hosted artifact cache path. The hosted artifact path is capped at 11 MiB, and its Uint8Array bytes cannot be represented exactly in JSON."
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.agent",
-				"type": "unknown",
+				"type": "Promise<unknown>",
 				"description": "Returns the hosted endpoint's JSON response without a general response schema. For startRun, the adapter reads its runId and uses it to poll and dispatch run events.",
 				"examples": [
 					{
@@ -333,18 +337,18 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.onRunEvent",
-				"type": "unknown",
+				"type": "() => boolean",
 				"description": "Returns an unsubscribe callback; invoking it removes the listener and returns whether the listener was present. The callback itself cannot be represented in JSON."
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.available",
-				"type": "unknown",
+				"type": "Promise<boolean>",
 				"description": "Resolves to whether the credentials provider returned a credential value; it does not verify the session with the hosted service.",
 				"examples": [true, false]
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.listProjects",
-				"type": "unknown",
+				"type": "Promise<DesktopProject[]>",
 				"description": "Returns the authenticated principal's hosted projects as shared project summaries. Each returned item contains only id, name, and kind.",
 				"examples": [
 					[
@@ -358,7 +362,7 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.snapshot",
-				"type": "unknown",
+				"type": "Promise<ProjectSnapshot>",
 				"description": "Returns the hosted snapshot with capabilities read for the project and writable set only when the request is not commit-pinned, the revision is at its tip, and agents are available. An offline cached snapshot is returned read-only without that additional capability read.",
 				"examples": [
 					{
@@ -391,7 +395,7 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.entity",
-				"type": "unknown",
+				"type": "Promise<EntityDetail>",
 				"description": "Returns the hosted entity detail for the requested entity id. Validation checks the id and that versions, sources, and threads are arrays; other entity fields pass through.",
 				"examples": [
 					{
@@ -436,7 +440,7 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.source",
-				"type": "unknown",
+				"type": "Promise<{ path: string; text: string; }>",
 				"description": "Returns the requested repository-relative path and its hosted text after checking the path matches and text is a string.",
 				"examples": [
 					{
@@ -447,12 +451,12 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.image",
-				"type": "unknown",
+				"type": "Promise<Uint8Array<ArrayBufferLike>>",
 				"description": "Returns decoded image bytes only after the entity contains the requested version/SHA-256 anchor and the bytes match that hash. Images larger than 25,000,000 bytes are rejected; Uint8Array bytes cannot be represented exactly in JSON."
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.messages",
-				"type": "unknown",
+				"type": "Promise<ThreadMessage[]>",
 				"description": "Returns the hosted thread's message array after checking that each item has a string id and text. Other message fields are passed through by the response validator.",
 				"examples": [
 					[
@@ -472,7 +476,7 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.history",
-				"type": "unknown",
+				"type": "Promise<{ entries: HistoryEvent[]; complete: boolean; nextPage: number | null; }>",
 				"description": "Returns a validated history page with entries, a boolean completion state, and nextPage set to null or an integer of at least one. Each entry is checked for string id and title; its other fields pass through.",
 				"examples": [
 					{
@@ -499,7 +503,7 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.addComment",
-				"type": "unknown",
+				"type": "Promise<CommittedThread>",
 				"description": "Returns the acknowledged committed thread after checking its project, optional requested thread id, anchor, comment request id and text, and verified actor identity.",
 				"examples": [
 					{
@@ -570,7 +574,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.evidence",
-						"type": "unknown",
+						"type": "Promise<EntityEvidenceResult>",
 						"description": "Returns the validated hosted evidence answer, including its requested scope, source/cache identity, evidence sides, and behavior summary. The adapter checks the answer's schema and query bindings; sealed-record validation remains the server's responsibility.",
 						"examples": [
 							{
@@ -682,7 +686,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.artifact",
-						"type": "unknown",
+						"type": "Promise<EvidenceArtifactResult>",
 						"description": "Returns the checked capture bytes, media type, and SHA-256 from the hosted artifact cache path. The bytes are a Uint8Array and are bounded by the hosted artifact reader, so JSON cannot represent this value exactly."
 					}
 				],
@@ -733,7 +737,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.agent",
-						"type": "unknown",
+						"type": "Promise<unknown>",
 						"description": "Returns the hosted endpoint's JSON response without a general response schema. For startRun, the adapter reads its runId and uses it to poll and dispatch run events.",
 						"examples": [
 							{
@@ -771,7 +775,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.onRunEvent",
-						"type": "unknown",
+						"type": "() => boolean",
 						"description": "Returns an unsubscribe callback; invoking it removes the listener and returns whether the listener was present. The callback itself cannot be represented in JSON."
 					}
 				],
@@ -784,7 +788,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.available",
-						"type": "unknown",
+						"type": "Promise<boolean>",
 						"description": "Resolves to whether the credentials provider returned a credential value; it does not verify the session with the hosted service.",
 						"examples": [true, false]
 					}
@@ -798,7 +802,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.listProjects",
-						"type": "unknown",
+						"type": "Promise<DesktopProject[]>",
 						"description": "Returns the authenticated principal's hosted projects as shared project summaries. Each returned item contains only id, name, and kind.",
 						"examples": [
 							[
@@ -840,7 +844,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.snapshot",
-						"type": "unknown",
+						"type": "Promise<import('../../../../models/development-tooling/Desktop.types').ProjectSnapshot>",
 						"description": "Returns the hosted snapshot with capabilities read for the project and writable set only when the request is not commit-pinned, the revision is at its tip, and agents are available. An offline cached snapshot is returned read-only without that additional capability read.",
 						"examples": [
 							{
@@ -901,7 +905,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.entity",
-						"type": "unknown",
+						"type": "Promise<import('../../../../models/development-tooling/DesktopEntity.types').EntityDetail>",
 						"description": "Returns the hosted entity detail for the requested entity id. Validation checks the id and that versions, sources, and threads are arrays; other entity fields pass through.",
 						"examples": [
 							{
@@ -975,7 +979,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.source",
-						"type": "unknown",
+						"type": "Promise<{ path: string; text: string; }>",
 						"description": "Returns the requested repository-relative path and its hosted text after checking the path matches and text is a string.",
 						"examples": [
 							{
@@ -1016,7 +1020,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.image",
-						"type": "unknown",
+						"type": "Promise<Uint8Array<ArrayBufferLike>>",
 						"description": "Returns decoded image bytes only after the entity contains the requested version/SHA-256 anchor and the bytes match that hash. Images larger than 25,000,000 bytes are rejected; Uint8Array bytes cannot be represented exactly in JSON."
 					}
 				],
@@ -1050,7 +1054,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.messages",
-						"type": "unknown",
+						"type": "Promise<import('../../../../models/development-tooling/Desktop.types').ThreadMessage[]>",
 						"description": "Returns the hosted thread's message array after checking that each item has a string id and text. Other message fields are passed through by the response validator.",
 						"examples": [
 							[
@@ -1100,7 +1104,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.history",
-						"type": "unknown",
+						"type": "Promise<{ entries: import('../../../../models/development-tooling/DesktopEntity.types').HistoryEvent[]; complete: boolean; nextPage: number | null; }>",
 						"description": "Returns a validated history page with entries, completion state, and the next page number or null. Each entry is checked for string id and title; its other fields pass through.",
 						"examples": [
 							{
@@ -1188,7 +1192,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.addComment",
-						"type": "unknown",
+						"type": "Promise<import('../../../../../../collaboration/src/models/planning-collaboration/Collaboration.types').CommittedThread>",
 						"description": "Returns the acknowledged committed thread after checking its project, optional requested thread id, anchor, comment request id and text, and verified actor identity.",
 						"examples": [
 							{
@@ -1247,7 +1251,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.constructor",
-						"type": "unknown",
+						"type": "RemoteHttpProjectAdapter",
 						"description": "Constructs the adapter instance and its authenticated HTTP, agent, projection, and evidence services. The returned class instance cannot be represented in JSON."
 					}
 				],

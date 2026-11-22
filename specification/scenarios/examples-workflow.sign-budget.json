@@ -1,0 +1,54 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.sign-budget",
+	"title": "workflow.sign-budget examples",
+	"kind": "headless",
+	"units": ["workflow.sign-budget"],
+	"builds": [],
+	"states": [
+		{
+			"id": "rejects-an-establish-without-a-reviewer",
+			"title": "Rejects an establish without a reviewer",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-an-approval-without-a-reason",
+			"title": "Rejects an approval without a reason",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.sign-budget.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["rejects-an-establish-without-a-reviewer", "rejects-an-approval-without-a-reason"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["rejects-an-establish-without-a-reviewer", "rejects-an-approval-without-a-reason"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["rejects-an-establish-without-a-reviewer", "rejects-an-approval-without-a-reason"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

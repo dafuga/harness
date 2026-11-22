@@ -8,11 +8,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/serializers/agents-providers/claude-tools-serializer/ClaudeToolsSerializer.ts"],
+		"source": [
+			"src/serializers/agents-providers/claude-tools-serializer/ClaudeToolsSerializer.ts",
+			"src/serializers/agents-providers/claude-tools-serializer/ClaudeToolsSerializer.types.ts"
+		],
 		"symbols": [
 			"ClaudeToolsSerializer",
 			"ClaudeToolsSerializer.constructor",
-			"ClaudeToolsSerializer.server"
+			"ClaudeToolsSerializer.server",
+			"UnsupportedToolShapeError"
 		]
 	},
 	"contract": {
@@ -58,7 +62,7 @@
 		"outputs": [
 			{
 				"name": "ClaudeToolsSerializer.server",
-				"type": "unknown",
+				"type": "ReturnType<typeof createSdkMcpServer>",
 				"description": "The server value returned by createSdkMcpServer, configured with name codex, version 0.1.0, and one generated tool for each mapped definition. Each generated tool is named tool_<index> and only supports function or custom definitions."
 			}
 		],
@@ -108,7 +112,7 @@
 				"outputs": [
 					{
 						"name": "ClaudeToolsSerializer.server",
-						"type": "unknown",
+						"type": "ReturnType<typeof createSdkMcpServer>",
 						"description": "The server value returned by createSdkMcpServer, configured with name codex, version 0.1.0, and one generated tool for each mapped definition. Each generated tool is named tool_<index> and only supports function or custom definitions."
 					}
 				],
@@ -136,7 +140,7 @@
 				"outputs": [
 					{
 						"name": "ClaudeToolsSerializer.constructor",
-						"type": "unknown",
+						"type": "ClaudeToolsSerializer",
 						"description": "The constructed ClaudeToolsSerializer instance, retaining the supplied repository and initializing a GatewayEventsService field."
 					}
 				],

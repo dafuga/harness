@@ -30,7 +30,7 @@
 				"name": "managedAgentTurn.queue",
 				"type": "ResourceQueueService",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Shared ResourceQueueService whose run method is called with the coding request (priority 'coding', memoryMiB 2048, label 'Desktop coding task') plus cpus: 1 in place of resourceWork. When it is omitted (default undefined), resourceWork is called instead with the same request without cpus and with process.env as the third argument."
 			}
 		],
@@ -69,7 +69,7 @@
 						"name": "managedAgentTurn.queue",
 						"type": "ResourceQueueService",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Shared ResourceQueueService whose run method is called with the coding request (priority 'coding', memoryMiB 2048, label 'Desktop coding task') plus cpus: 1 in place of resourceWork. When it is omitted (default undefined), resourceWork is called instead with the same request without cpus and with process.env as the third argument."
 					}
 				],

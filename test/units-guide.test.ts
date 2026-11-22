@@ -1,6 +1,9 @@
 import { readFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
+import { assertVideoGuideBoundaries } from './support/videoGuideBoundaries';
+import { assertGuideCaptureIds } from './support/guideCaptureIds';
+import { enrollGuidanceVideo } from './support/enrollGuidanceVideo';
 import { runHarness } from './support/cli';
 import { measureWorkload } from './support/measureWorkload';
 import {
@@ -49,6 +52,8 @@ test('guide distinguishes named states and heuristic prop boundaries', async () 
 	const root = await project();
 	const unit = widgetManifest();
 	unit.contract.inputs = [
+		{ name: 'Widget.assetBase', type: 'string', required: true },
+		{ name: 'Widget.initialFlags', type: 'string[]', required: false, default: [] },
 		{ name: 'Widget.label', type: 'string', required: false, default: '' },
 		{ name: 'Widget.items', type: 'string[]', required: true },
 		{ name: 'Widget.disabled', type: 'boolean', required: false, default: false }
@@ -66,6 +71,7 @@ test('guide distinguishes named states and heuristic prop boundaries', async () 
 		'derive-state-checklist',
 		async () => {
 			const { report, exitCode } = await guidanceJson(root, ['guide', entity]);
+			assertGuideCaptureIds(report.guesses);
 			expect(exitCode).toBe(1);
 			expect(report.states.map((state: { name: string }) => state.name)).toEqual([
 				'default',
@@ -99,6 +105,7 @@ test('guide distinguishes named states and heuristic prop boundaries', async () 
 });
 
 test('guide counts verified shots per state and viewport and reaches DONE', async () => {
+	assertVideoGuideBoundaries();
 	const root = await project(['default', 'loading']);
 	const unit = widgetManifest();
 	unit.contract.inputs = [
@@ -136,7 +143,13 @@ test('guide counts verified shots per state and viewport and reaches DONE', asyn
 	);
 	const text = await runHarness(['units', 'guide', entity], root);
 	expect(text.stdout).toContain('ALL DONE');
-	expect(text.stdout).toContain('DONE');
+	await enrollGuidanceVideo(root);
+	await commitGuidance(root);
+	await attachGuidanceShots(root, ['default', 'loading']);
+	const missingVideo = await guidanceJson(root, ['guide', entity]);
+	expect(missingVideo.report.states[0].status).toBe('MISSING');
+	expect(missingVideo.report.proof.gap).toMatch(/video/i);
+
 	await writeGuidanceFile(
 		root,
 		'tests/duplicate/catalog.spec.ts',

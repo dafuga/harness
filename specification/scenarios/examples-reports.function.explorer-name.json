@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.explorer-name",
+	"title": "reports.function.explorer-name examples",
+	"kind": "headless",
+	"units": ["reports.function.explorer-name"],
+	"builds": [],
+	"states": [
+		{
+			"id": "code-identity-wins",
+			"title": "Owned code identity names a unit before its descriptive title",
+			"coverage": "required"
+		},
+		{
+			"id": "written-titles-and-route-screens",
+			"title": "Written titles, endpoint paths and route screens read as labels",
+			"coverage": "required"
+		},
+		{
+			"id": "id-and-unnamed-fallbacks",
+			"title": "Identifier fallbacks and unknown units read as words or Unnamed",
+			"coverage": "required"
+		},
+		{
+			"id": "page-and-layout-addresses",
+			"title": "Pages and layouts name an address, and other kinds have none",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.explorer-name.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"code-identity-wins",
+				"written-titles-and-route-screens",
+				"id-and-unnamed-fallbacks",
+				"page-and-layout-addresses"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"code-identity-wins",
+				"written-titles-and-route-screens",
+				"id-and-unnamed-fallbacks",
+				"page-and-layout-addresses"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"code-identity-wins",
+				"written-titles-and-route-screens",
+				"id-and-unnamed-fallbacks",
+				"page-and-layout-addresses"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

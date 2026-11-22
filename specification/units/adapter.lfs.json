@@ -28,7 +28,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository root this adapter is bound to: it is passed to GitAdapter, and a relative `--git-common-dir` result is joined onto it. The constructor does not check that the path is a repository.",
-				"examples": ["/home/dev/projects/example-app", "/srv/repos/billing-service"]
+				"examples": ["/workspace/project", "/workspace/repos/billing-service"]
 			},
 			{
 				"name": "LfsAdapter.path.oid",
@@ -91,8 +91,8 @@
 				"type": "Promise<string>",
 				"description": "The location where the object with the given id is, or would be, stored: `lfs/objects` inside the Git common directory, then the two id-derived directories, then the id as the file name. The file is not checked for existence, and the common directory lookup is done once and cached, including when it fails.",
 				"examples": [
-					"/home/dev/projects/example-app/.git/lfs/objects/9f/86/9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
-					"/home/dev/projects/example-app/.git/lfs/objects/2c/26/2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae"
+					"/workspace/project/.git/lfs/objects/9f/86/9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+					"/workspace/project/.git/lfs/objects/2c/26/2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae"
 				]
 			},
 			{
@@ -186,8 +186,8 @@
 						"type": "Promise<string>",
 						"description": "The location where the object with the given id is, or would be, stored: `lfs/objects` inside the Git common directory, then the two id-derived directories, then the id as the file name. The file is not checked for existence, and the common directory lookup is done once and cached, including when it fails.",
 						"examples": [
-							"/home/dev/projects/example-app/.git/lfs/objects/9f/86/9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
-							"/home/dev/projects/example-app/.git/lfs/objects/2c/26/2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae"
+							"/workspace/project/.git/lfs/objects/9f/86/9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+							"/workspace/project/.git/lfs/objects/2c/26/2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae"
 						]
 					}
 				],
@@ -368,13 +368,13 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository root this adapter is bound to: it is passed to GitAdapter, and a relative `--git-common-dir` result is joined onto it. The constructor does not check that the path is a repository.",
-						"examples": ["/home/dev/projects/example-app", "/srv/repos/billing-service"]
+						"examples": ["/workspace/project", "/workspace/repos/billing-service"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LfsAdapter.constructor",
-						"type": "unknown",
+						"type": "LfsAdapter",
 						"description": "The new LfsAdapter instance that `new LfsAdapter(root)` evaluates to; the constructor body has no return value of its own. The git common directory is not looked up here, only when path is first called."
 					}
 				],

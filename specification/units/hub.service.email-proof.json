@@ -128,37 +128,37 @@
 		"outputs": [
 			{
 				"name": "PENDING_TTL",
-				"type": "unknown",
+				"type": "number",
 				"description": "Milliseconds a pending proof lives after open() sets its expiresAt, after which it no longer counts as pending. Its value is 10 minutes.",
 				"examples": [600000]
 			},
 			{
 				"name": "CODE_TTL",
-				"type": "unknown",
+				"type": "number",
 				"description": "Milliseconds a mailed code stays usable, counted from the send in start(); a newer code replaces the older one. Its value is 10 minutes.",
 				"examples": [600000]
 			},
 			{
 				"name": "MAX_ATTEMPTS",
-				"type": "unknown",
+				"type": "5",
 				"description": "The attempt limit that every verify() call passes as `limit` to emailProofs.attempt. Its value is 5.",
 				"examples": [5]
 			},
 			{
 				"name": "SEND_INTERVAL",
-				"type": "unknown",
+				"type": "number",
 				"description": "The send window in milliseconds: allowed() passes now minus this value as `since` to the ledger for the Google subject and for the address, which allows one send a minute. Its value is 60000, one minute.",
 				"examples": [60000]
 			},
 			{
 				"name": "DAILY_SENDS",
-				"type": "unknown",
+				"type": "5",
 				"description": "The daily send cap that allowed() passes as `cap` to the ledger for the Google subject and for the address, counted per UTC day. Its value is 5.",
 				"examples": [5]
 			},
 			{
 				"name": "PROOF_TTL",
-				"type": "unknown",
+				"type": "number",
 				"description": "Milliseconds that a proven address lets its Google subject sign in without a new proof, counted from verify(). Its value is 30 days.",
 				"examples": [2592000000]
 			},
@@ -530,7 +530,7 @@
 				"outputs": [
 					{
 						"name": "EmailProofService.constructor",
-						"type": "unknown",
+						"type": "EmailProofService",
 						"description": "The new EmailProofService instance; its only state is the private options it was constructed with."
 					}
 				],

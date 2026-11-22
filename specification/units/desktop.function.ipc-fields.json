@@ -10,7 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/ipc-payload/ipcFields.ts",
+			"packages/desktop/src/utils/ipc-payload/ipcFields.types.ts",
 			"packages/desktop/src/utils/ipc-payload/regionField.ts",
+			"packages/desktop/src/utils/ipc-payload/regionField.types.ts",
 			"packages/desktop/src/utils/ipcFields.ts"
 		],
 		"symbols": [
@@ -23,7 +25,9 @@
 			"versionPattern",
 			"enumField",
 			"regionField",
+			"IpcFieldError",
 			"regionField",
+			"ImageRegionError",
 			"regionField",
 			"ipcFields",
 			"textField",
@@ -78,7 +82,7 @@
 				"name": "textField.pattern",
 				"type": "RegExp",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "An optional RegExp that the text must match, checked with pattern.test(value); a non-matching text throws 'Invalid identifier.' When omitted, no pattern check runs."
 			},
 			{
@@ -92,7 +96,7 @@
 				"name": "nullableText.pattern",
 				"type": "RegExp",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "An optional RegExp that a non-null text must match, checked with pattern.test(value) inside textField; a non-matching text throws 'Invalid identifier.' Null is returned as null without any pattern check."
 			},
 			{
@@ -169,22 +173,22 @@
 			},
 			{
 				"name": "hashPattern",
-				"type": "unknown",
+				"type": "RegExp",
 				"description": "A RegExp, /^[a-f0-9]{64}$/, that accepts exactly 64 lowercase hexadecimal characters and nothing else."
 			},
 			{
 				"name": "commitPattern",
-				"type": "unknown",
+				"type": "RegExp",
 				"description": "A RegExp, /^[a-f0-9]{40}$/, that accepts exactly 40 lowercase hexadecimal characters and nothing else."
 			},
 			{
 				"name": "idPattern",
-				"type": "unknown",
+				"type": "RegExp",
 				"description": "A RegExp, /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/, that accepts lowercase letter-or-digit segments separated by single dots or hyphens, such as reports.component.evidence-grid. It rejects uppercase letters, leading or trailing separators and doubled separators."
 			},
 			{
 				"name": "versionPattern",
-				"type": "unknown",
+				"type": "RegExp",
 				"description": "A RegExp that accepts a lowercase v followed by three or more decimal digits and nothing else, such as v001."
 			},
 			{
@@ -216,9 +220,14 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "IpcFieldError",
 				"type": "thrown",
-				"description": "Thrown as a plain Error whose message identifies the failed check: 'Expected an object.' (ipcFields and regionField), 'Invalid text field.' or 'Invalid identifier.' (textField and nullableText), 'Invalid option.' (enumField), or 'Invalid image region.' and 'Image region is outside the image.' (regionField)."
+				"description": "Thrown as an IpcFieldError whose message identifies the failed check: 'Expected an object.' (ipcFields and regionField), 'Invalid text field.' or 'Invalid identifier.' (textField and nullableText), or 'Invalid option.' (enumField)."
+			},
+			{
+				"name": "ImageRegionError",
+				"type": "thrown",
+				"description": "Thrown as an ImageRegionError by regionField: 'Invalid image region.' for coordinates that are not finite numbers from 0 to 1, and 'Image region is outside the image.' for zero width or height or a rectangle that extends past the image."
 			}
 		],
 		"errorStatus": "declared",
@@ -272,9 +281,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "IpcFieldError",
 						"type": "thrown",
-						"description": "Thrown as a plain Error with the message 'Expected an object.' when the value is null, undefined, a primitive, a function or an array."
+						"description": "Thrown as an IpcFieldError with the message 'Expected an object.' when the value is null, undefined, a primitive, a function or an array."
 					}
 				],
 				"errorStatus": "declared"
@@ -301,7 +310,7 @@
 						"name": "textField.pattern",
 						"type": "RegExp",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "An optional RegExp that the text must match, checked with pattern.test(value); a non-matching text throws 'Invalid identifier.' When omitted, no pattern check runs."
 					}
 				],
@@ -315,9 +324,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "IpcFieldError",
 						"type": "thrown",
-						"description": "Thrown as a plain Error with 'Invalid text field.' when the value is not a string, is blank after trimming or is longer than max, and with 'Invalid identifier.' when a supplied pattern does not match."
+						"description": "Thrown as an IpcFieldError with 'Invalid text field.' when the value is not a string, is blank after trimming or is longer than max, and with 'Invalid identifier.' when a supplied pattern does not match."
 					}
 				],
 				"errorStatus": "declared"
@@ -336,7 +345,7 @@
 						"name": "nullableText.pattern",
 						"type": "RegExp",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "An optional RegExp that a non-null text must match, checked with pattern.test(value) inside textField; a non-matching text throws 'Invalid identifier.' Null is returned as null without any pattern check."
 					}
 				],
@@ -350,9 +359,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "IpcFieldError",
 						"type": "thrown",
-						"description": "Thrown as a plain Error with 'Invalid text field.' or 'Invalid identifier.' for any non-null value that fails the textField checks; null never throws."
+						"description": "Thrown as an IpcFieldError with 'Invalid text field.' or 'Invalid identifier.' for any non-null value that fails the textField checks; null never throws."
 					}
 				],
 				"errorStatus": "declared"
@@ -388,9 +397,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "IpcFieldError",
 						"type": "thrown",
-						"description": "Thrown as a plain Error with 'Invalid option.' when the value is not included in the allowed list."
+						"description": "Thrown as an IpcFieldError with 'Invalid option.' when the value is not included in the allowed list."
 					}
 				],
 				"errorStatus": "declared"
@@ -444,9 +453,14 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "IpcFieldError",
 						"type": "thrown",
-						"description": "Thrown as a plain Error with 'Expected an object.' for a value that is neither null nor a non-array object, with 'Invalid image region.' for coordinates that are not finite numbers from 0 to 1, and with 'Image region is outside the image.' for zero width or height or a rectangle that extends past the image."
+						"description": "Thrown as an IpcFieldError with 'Expected an object.' for a value that is neither null nor a non-array object."
+					},
+					{
+						"name": "ImageRegionError",
+						"type": "thrown",
+						"description": "Thrown as an ImageRegionError with 'Invalid image region.' for coordinates that are not finite numbers from 0 to 1, and with 'Image region is outside the image.' for zero width or height or a rectangle that extends past the image."
 					}
 				],
 				"errorStatus": "declared"

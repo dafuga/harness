@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.remote-authority",
+	"title": "desktop.function.remote-authority examples",
+	"kind": "headless",
+	"units": ["desktop.function.remote-authority"],
+	"builds": [],
+	"states": [
+		{
+			"id": "identifies-the-remote-holder-and-serialized-grant",
+			"title": "identifies the remote holder and serialized grant",
+			"coverage": "required"
+		},
+		{
+			"id": "classifies-authority-changes-for-steady-and-changed-access",
+			"title": "classifies authority changes for steady and changed access",
+			"coverage": "required"
+		},
+		{
+			"id": "checks-whether-a-selected-project-is-outside-the-grant",
+			"title": "checks whether a selected project is outside the grant",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-a-required-status-or-authority-is-null",
+			"title": "Throws TypeError when a required status or authority is null",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.remote-authority.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"identifies-the-remote-holder-and-serialized-grant",
+				"classifies-authority-changes-for-steady-and-changed-access",
+				"checks-whether-a-selected-project-is-outside-the-grant",
+				"throws-typeerror-when-a-required-status-or-authority-is-null"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"identifies-the-remote-holder-and-serialized-grant",
+				"classifies-authority-changes-for-steady-and-changed-access",
+				"checks-whether-a-selected-project-is-outside-the-grant",
+				"throws-typeerror-when-a-required-status-or-authority-is-null"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"identifies-the-remote-holder-and-serialized-grant",
+				"classifies-authority-changes-for-steady-and-changed-access",
+				"checks-whether-a-selected-project-is-outside-the-grant",
+				"throws-typeerror-when-a-required-status-or-authority-is-null"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

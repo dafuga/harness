@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-adapter.commit-tree",
+	"title": "adapter.commit-tree examples",
+	"kind": "headless",
+	"units": ["adapter.commit-tree"],
+	"builds": [],
+	"states": [
+		{
+			"id": "opens-a-revision-expression-as-a-commit",
+			"title": "Opens a revision expression as a commit",
+			"coverage": "required"
+		},
+		{
+			"id": "lists-blob-files-from-the-selected-commit",
+			"title": "Lists blob files from the selected commit",
+			"coverage": "required"
+		},
+		{
+			"id": "reads-contents-from-the-selected-commit",
+			"title": "Reads contents from the selected commit",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-requested-path-is-absent-from-the-comm",
+			"title": "Throws Error when the requested path is absent from the commit tree",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-the-revision-expression-names-n",
+			"title": "Throws ExpectedCliError when the revision expression names no commit",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/adapter.commit-tree.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"opens-a-revision-expression-as-a-commit",
+				"lists-blob-files-from-the-selected-commit",
+				"reads-contents-from-the-selected-commit",
+				"throws-error-when-the-requested-path-is-absent-from-the-comm",
+				"throws-expectedclierror-when-the-revision-expression-names-n"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"opens-a-revision-expression-as-a-commit",
+				"lists-blob-files-from-the-selected-commit",
+				"reads-contents-from-the-selected-commit",
+				"throws-error-when-the-requested-path-is-absent-from-the-comm",
+				"throws-expectedclierror-when-the-revision-expression-names-n"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"opens-a-revision-expression-as-a-commit",
+				"lists-blob-files-from-the-selected-commit",
+				"reads-contents-from-the-selected-commit",
+				"throws-error-when-the-requested-path-is-absent-from-the-comm",
+				"throws-expectedclierror-when-the-revision-expression-names-n"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

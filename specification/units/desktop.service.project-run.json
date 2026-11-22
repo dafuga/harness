@@ -9,16 +9,20 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/AgentChangedFilesError.ts",
 			"packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
 			"packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.types.ts",
+			"packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/SourceRevisionAdvancedError.ts",
 			"packages/desktop/src/services/desktop-run-service/project-run-service/ProjectRunService.ts"
 		],
 		"symbols": [
+			"AgentChangedFilesError",
 			"plannedBefore",
 			"ProjectRunService",
 			"ProjectRunService.run",
 			"Progress",
 			"Host",
+			"SourceRevisionAdvancedError",
 			"plannedBefore",
 			"ProjectRunService"
 		]
@@ -36,7 +40,7 @@
 		"outputs": [
 			{
 				"name": "plannedBefore",
-				"type": "unknown",
+				"type": "WeakMap<object, CreatedEntity>",
 				"description": "An exported module-level WeakMap that maps the Error a failed or cancelled run rejects with to a copy of the CreatedEntity of the draft that run had already created. It is set only when a draft existed before that error, and setting it never removes the draft."
 			},
 			{

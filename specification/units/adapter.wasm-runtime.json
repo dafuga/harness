@@ -67,7 +67,7 @@
 				"outputs": [
 					{
 						"name": "WasmRuntimeAdapter.constructor",
-						"type": "unknown",
+						"type": "WasmRuntimeAdapter",
 						"description": "The constructor returns a WasmRuntimeAdapter instance, which inherits the Wasm runtime interface."
 					}
 				],

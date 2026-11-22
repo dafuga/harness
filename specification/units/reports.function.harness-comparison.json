@@ -151,7 +151,7 @@
 		"outputs": [
 			{
 				"name": "comparisonChoices",
-				"type": "unknown",
+				"type": "{ scenario: string; states: string[]; viewports: string[] }[]",
 				"description": "A sorted list of scenario choices collected from both selected records, each with sorted unique state and viewport ids. Scenarios without screenshot or audio captures are omitted, and a missing record contributes no choices.",
 				"examples": [
 					[
@@ -165,7 +165,7 @@
 			},
 			{
 				"name": "harnessComparison",
-				"type": "unknown",
+				"type": "{ items: Evidence[]; aligned: AlignedState[] }",
 				"description": "An object containing gallery items and aligned-state summaries for matching recorded media. Keys are unique and sorted; each key yields before then after items, with explicit gaps for missing captures that are never filled from another revision.",
 				"examples": [
 					{
@@ -235,7 +235,7 @@
 				"outputs": [
 					{
 						"name": "comparisonChoices",
-						"type": "unknown",
+						"type": "{ scenario: string; states: string[]; viewports: string[] }[]",
 						"description": "A sorted list of scenario choices collected from both selected records, each with sorted unique state and viewport ids. Scenarios without screenshot or audio captures are omitted, and a missing record contributes no choices.",
 						"examples": [
 							[
@@ -326,7 +326,7 @@
 				"outputs": [
 					{
 						"name": "harnessComparison",
-						"type": "unknown",
+						"type": "{ items: Evidence[]; aligned: AlignedState[] }",
 						"description": "An object containing gallery items and aligned-state summaries for matching recorded media. Keys are unique and sorted; each key yields before then after items, with explicit gaps for missing captures that are never filled from another revision.",
 						"examples": [
 							{

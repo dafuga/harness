@@ -22,20 +22,18 @@
 				"type": "string",
 				"required": false,
 				"description": "Repository root used to resolve the source tree and registry paths for this load. Defaults to process.cwd(); resolve() turns it into an absolute path.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "loadUnits.tree",
 				"type": "SourceTree",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional readable source snapshot used instead of a WorkingTreeAdapter created from root; it must provide revision, list(), and read(path). Defaults to undefined, so the working tree is used."
 			},
 			{
 				"name": "loadUnits.indexer",
-				"type": "SourceIndexService",
+				"type": "Pick<SourceIndexService, 'index'>",
 				"required": false,
 				"description": "Service that indexes the selected source tree with the loaded UnitsConfig before registry reconciliation. Defaults to new SourceIndexService(); the supplied instance must provide index(source, config)."
 			},
@@ -91,20 +89,18 @@
 						"type": "string",
 						"required": false,
 						"description": "The repository root that loadUnits resolves to an absolute path before creating the registry repositories and selecting a working-tree source. It matters when loading a repository other than the process working directory; omission uses process.cwd().",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "loadUnits.tree",
 						"type": "SourceTree",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The optional source snapshot passed to configuration, indexing, registry, and scenario reads. When omitted, loadUnits creates a WorkingTreeAdapter for the resolved root."
 					},
 					{
 						"name": "loadUnits.indexer",
-						"type": "SourceIndexService",
+						"type": "Pick<SourceIndexService, 'index'>",
 						"required": false,
 						"description": "The source index service called with the selected source tree and loaded units config to produce the source index used for the fresh unit index. When omitted, loadUnits creates a SourceIndexService."
 					}

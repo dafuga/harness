@@ -38,19 +38,23 @@
 	let run = $derived(cell.read?.verified ? cell.read.behavior : null);
 	/** Whether the recorded text was asked for: it is drawn only then, and never twice at once. */
 	let asked = $state(false);
-	const facts = (run: ExplorerArtifactBehavior) =>
-		[
+	/** One fact a recorded result states: its name, and its value when the result holds one. */
+	type Fact = [string, string | null];
+	const facts = (run: ExplorerArtifactBehavior): Fact[] => {
+		const all: Fact[] = [
 			['Scenario', run.scenario],
 			['Environment', run.environment],
 			['Test data', run.fixture]
-		].filter(([, value]) => value);
+		];
+		return all.filter(([, value]) => value);
+	};
 </script>
 
 {#snippet recorded(run: ExplorerArtifactBehavior)}
 	{#if facts(run).length}
 		<DetailList rows={facts(run)} rowKey={([name]) => String(name)} className="ex-rows">
-			{#snippet label([name])}{name}{/snippet}
-			{#snippet children([, value])}{value}{/snippet}
+			{#snippet label([name]: Fact)}{name}{/snippet}
+			{#snippet children([, value]: Fact)}{value}{/snippet}
 		</DetailList>
 	{/if}
 	{#if run.steps.length}

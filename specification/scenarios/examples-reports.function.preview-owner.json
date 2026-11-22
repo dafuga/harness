@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.preview-owner",
+	"title": "reports.function.preview-owner examples",
+	"kind": "headless",
+	"units": ["reports.function.preview-owner"],
+	"builds": [],
+	"states": [
+		{
+			"id": "returns-the-reported-preview-url-for-the-same-identity",
+			"title": "Returns the reported preview url for the same identity",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-a-preview-started-from-a-different-checkout",
+			"title": "Refuses a preview started from a different checkout",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-a-port-answered-by-another-application",
+			"title": "Refuses a port answered by another application",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-a-reported-address-that-is-not-loopback",
+			"title": "Refuses a reported address that is not loopback",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.preview-owner.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"returns-the-reported-preview-url-for-the-same-identity",
+				"refuses-a-preview-started-from-a-different-checkout",
+				"refuses-a-port-answered-by-another-application",
+				"refuses-a-reported-address-that-is-not-loopback"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"returns-the-reported-preview-url-for-the-same-identity",
+				"refuses-a-preview-started-from-a-different-checkout",
+				"refuses-a-port-answered-by-another-application",
+				"refuses-a-reported-address-that-is-not-loopback"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"returns-the-reported-preview-url-for-the-same-identity",
+				"refuses-a-preview-started-from-a-different-checkout",
+				"refuses-a-port-answered-by-another-application",
+				"refuses-a-reported-address-that-is-not-loopback"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

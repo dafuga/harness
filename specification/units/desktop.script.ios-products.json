@@ -51,7 +51,7 @@
 						"codesign",
 						"--verify",
 						"--strict",
-						"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+						"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
 					]
 				]
 			},
@@ -88,7 +88,7 @@
 						"/usr/libexec/PlistBuddy",
 						"-c",
 						"Print :CFBundleIdentifier",
-						"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/Info.plist"
+						"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/Info.plist"
 					]
 				]
 			},
@@ -98,7 +98,7 @@
 				"required": true,
 				"description": "Names a readable file whose bytes are hashed with SHA-256. The result is a 64-character lowercase hexadecimal digest; file access failures throw.",
 				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/App"
+					"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/App"
 				]
 			},
 			{
@@ -107,7 +107,7 @@
 				"required": true,
 				"description": "Names a directory whose entries are traversed recursively. Only regular files are returned, while directories and other entry types such as symbolic links are omitted.",
 				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+					"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
 				]
 			},
 			{
@@ -116,7 +116,7 @@
 				"required": true,
 				"description": "Names an app product checked by strict codesign verification, ad hoc signature flags, and the embedded app identity. It succeeds only when no team or provisioning profile is found and each application identifier equals the bundle identifier.",
 				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+					"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
 				]
 			},
 			{
@@ -125,7 +125,7 @@
 				"required": true,
 				"description": "Names an app product whose Info.plist is queried for NSAppTransportSecurity. The result reflects whether PlistBuddy can print that key, not the value of NSAllowsLocalNetworking.",
 				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+					"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
 				]
 			},
 			{
@@ -134,7 +134,7 @@
 				"required": true,
 				"description": "Names an app product whose capacitor.config.json is parsed. The result is true only when ios.webContentsDebuggingEnabled is exactly true; unreadable files and invalid JSON can fail.",
 				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+					"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
 				]
 			},
 			{
@@ -143,7 +143,7 @@
 				"required": true,
 				"description": "Names an app product summarized by its desktopRoot-relative path, executable digest, verified signature, local-networking key presence, and inspectability. Required file, command, signature, or JSON failures propagate.",
 				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+					"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
 				]
 			},
 			{
@@ -152,7 +152,7 @@
 				"required": true,
 				"description": "Names the app bundle recursively copied before test-only edits and ad hoc signing. The source must differ from target because changedCopy removes target before copying.",
 				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+					"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
 				]
 			},
 			{
@@ -160,9 +160,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Names the destination app bundle, which is recursively removed before source is copied there. It must differ from source or the source would be removed first.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/fixture/App.app"
-				]
+				"examples": ["/workspace/project/packages/desktop/.cache/ios/fixture/App.app"]
 			},
 			{
 				"name": "changedCopy.change",
@@ -184,35 +182,29 @@
 		"outputs": [
 			{
 				"name": "desktopRoot",
-				"type": "unknown",
+				"type": "string",
 				"description": "The absolute desktop package directory resolved from the script module location. Other exported paths are based on this directory.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop"
-				]
+				"examples": ["/workspace/project/packages/desktop"]
 			},
 			{
 				"name": "derivedData",
-				"type": "unknown",
+				"type": "string",
 				"description": "The absolute Xcode DerivedData directory at desktopRoot/.cache/ios/DerivedData. builtProduct places configuration-specific simulator products beneath it.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData"
-				]
+				"examples": ["/workspace/project/packages/desktop/.cache/ios/DerivedData"]
 			},
 			{
 				"name": "fixtureProduct",
-				"type": "unknown",
+				"type": "string",
 				"description": "The absolute fixture app bundle path at desktopRoot/.cache/ios/fixture/App.app. The script exports this location but does not create it during module initialization.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/fixture/App.app"
-				]
+				"examples": ["/workspace/project/packages/desktop/.cache/ios/fixture/App.app"]
 			},
 			{
 				"name": "builtProduct",
 				"type": "string",
 				"description": "The absolute path to App.app under the selected Debug-iphonesimulator or Release-iphonesimulator products directory. It constructs the path without checking that the product exists.",
 				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app",
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Release-iphonesimulator/App.app"
+					"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app",
+					"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Release-iphonesimulator/App.app"
 				]
 			},
 			{
@@ -254,8 +246,8 @@
 				"description": "Returns absolute paths for regular files found recursively under the supplied folder. Directories and entries that are not regular files are omitted.",
 				"examples": [
 					[
-						"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/App",
-						"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/Info.plist"
+						"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/App",
+						"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/Info.plist"
 					]
 				]
 			},
@@ -279,7 +271,7 @@
 			},
 			{
 				"name": "productFacts",
-				"type": "unknown",
+				"type": "{ path: string; executable: string; signature: string; localNetworking: boolean; inspectable: boolean; }",
 				"description": "Returns exactly path, executable, signature, localNetworking, and inspectable fields; path is relative to desktopRoot and executable is a SHA-256 digest. Signature validation must pass before the object is returned.",
 				"examples": [
 					{
@@ -334,8 +326,8 @@
 						"type": "string",
 						"description": "The absolute path to App.app under the selected Debug-iphonesimulator or Release-iphonesimulator products directory. It constructs the path without checking that the product exists.",
 						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app",
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Release-iphonesimulator/App.app"
+							"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app",
+							"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Release-iphonesimulator/App.app"
 						]
 					}
 				],
@@ -355,7 +347,7 @@
 								"codesign",
 								"--verify",
 								"--strict",
-								"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+								"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
 							]
 						]
 					}
@@ -443,7 +435,7 @@
 								"/usr/libexec/PlistBuddy",
 								"-c",
 								"Print :CFBundleIdentifier",
-								"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/Info.plist"
+								"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/Info.plist"
 							]
 						]
 					}
@@ -479,7 +471,7 @@
 						"required": true,
 						"description": "Names a readable file whose bytes are hashed with SHA-256. The result is a 64-character lowercase hexadecimal digest; file access failures throw.",
 						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/App"
+							"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/App"
 						]
 					}
 				],
@@ -509,7 +501,7 @@
 						"required": true,
 						"description": "Names a directory whose entries are traversed recursively. Only regular files are returned, while directories and other entry types such as symbolic links are omitted.",
 						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+							"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
 						]
 					}
 				],
@@ -520,8 +512,8 @@
 						"description": "Returns absolute paths for regular files found recursively under the supplied folder. Directories and entries that are not regular files are omitted.",
 						"examples": [
 							[
-								"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/App",
-								"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/Info.plist"
+								"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/App",
+								"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app/Info.plist"
 							]
 						]
 					}
@@ -544,7 +536,7 @@
 						"required": true,
 						"description": "Names an app product checked by strict codesign verification, ad hoc signature flags, and the embedded app identity. It succeeds only when no team or provisioning profile is found and each application identifier equals the bundle identifier.",
 						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+							"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
 						]
 					}
 				],
@@ -574,7 +566,7 @@
 						"required": true,
 						"description": "Names an app product whose Info.plist is queried for NSAppTransportSecurity. The result reflects whether PlistBuddy can print that key, not the value of NSAllowsLocalNetworking.",
 						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+							"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
 						]
 					}
 				],
@@ -598,7 +590,7 @@
 						"required": true,
 						"description": "Names an app product whose capacitor.config.json is parsed. The result is true only when ios.webContentsDebuggingEnabled is exactly true; unreadable files and invalid JSON can fail.",
 						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+							"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
 						]
 					}
 				],
@@ -633,14 +625,14 @@
 						"required": true,
 						"description": "Names an app product summarized by its desktopRoot-relative path, executable digest, verified signature, local-networking key presence, and inspectability. Required file, command, signature, or JSON failures propagate.",
 						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+							"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
 						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "productFacts",
-						"type": "unknown",
+						"type": "{ path: string; executable: string; signature: string; localNetworking: boolean; inspectable: boolean; }",
 						"description": "Returns exactly path, executable, signature, localNetworking, and inspectable fields; path is relative to desktopRoot and executable is a SHA-256 digest. Signature validation must pass before the object is returned.",
 						"examples": [
 							{
@@ -676,7 +668,7 @@
 						"required": true,
 						"description": "Names the app bundle recursively copied before test-only edits and ad hoc signing. The source must differ from target because changedCopy removes target before copying.",
 						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
+							"/workspace/project/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app"
 						]
 					},
 					{
@@ -684,9 +676,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Names the destination app bundle, which is recursively removed before source is copied there. It must differ from source or the source would be removed first.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8/packages/desktop/.cache/ios/fixture/App.app"
-						]
+						"examples": ["/workspace/project/packages/desktop/.cache/ios/fixture/App.app"]
 					},
 					{
 						"name": "changedCopy.change",
@@ -730,7 +720,13 @@
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/desktop/scripts/ios-products.ts",

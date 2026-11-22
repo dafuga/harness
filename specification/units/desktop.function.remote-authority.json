@@ -221,7 +221,7 @@
 			},
 			{
 				"name": "authorityChange",
-				"type": "unknown",
+				"type": "\"none\" | \"holder\" | \"grant\"",
 				"description": "The kind of change, one of the strings 'none', 'holder' or 'grant': 'none' for a steady, identical authority; 'holder' only when known.holder is not null and differs from next.holder; 'grant' otherwise.",
 				"examples": ["none", "holder", "grant"]
 			},
@@ -373,7 +373,7 @@
 				"outputs": [
 					{
 						"name": "authorityChange",
-						"type": "unknown",
+						"type": "\"none\" | \"holder\" | \"grant\"",
 						"description": "The kind of change, one of the strings 'none', 'holder' or 'grant': 'none' for a steady, identical authority; 'holder' only when known.holder is not null and differs from next.holder; 'grant' otherwise.",
 						"examples": ["none", "holder", "grant"]
 					}

@@ -21,7 +21,7 @@
 				"description": "The source file record passed to the atomic syntax parser. It matters only for paths under src/components/ or src/routes/; parser failures are converted to no findings.",
 				"examples": [
 					{
-						"absolutePath": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5/src/components/Button.svelte",
+						"absolutePath": "/workspace/project/src/components/Button.svelte",
 						"relativePath": "src/components/Button.svelte",
 						"extension": ".svelte",
 						"contents": "<div>Save</div>",
@@ -77,7 +77,7 @@
 						"description": "The source file record passed to the atomic syntax parser. It matters only for paths under src/components/ or src/routes/; parser failures are converted to no findings.",
 						"examples": [
 							{
-								"absolutePath": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5/src/components/Button.svelte",
+								"absolutePath": "/workspace/project/src/components/Button.svelte",
 								"relativePath": "src/components/Button.svelte",
 								"extension": ".svelte",
 								"contents": "<div>Save</div>",

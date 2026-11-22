@@ -1,10 +1,11 @@
 // @harness-uid u_3dmfoj4dph
 import { toSnakeCase } from '../../core/case';
 import type { SqliteField, SqliteModel } from '../../core/development-tooling/sqliteTypes';
+import { InvalidSqliteDefinitionError } from './sqliteTableSql.types';
 
 export function sqliteIdentifier(identifier: string): string {
 	if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(identifier))
-		throw new Error(`Invalid SQLite identifier: ${identifier}`);
+		throw new InvalidSqliteDefinitionError(`Invalid SQLite identifier: ${identifier}`);
 	return `"${identifier}"`;
 }
 
@@ -14,12 +15,13 @@ export function sqliteColumn(property: string, field: SqliteField): string {
 
 export function sqliteTableSql(model: SqliteModel): string {
 	const primary = model.primaryKey ?? 'id';
-	if (!Object.hasOwn(model.fields, primary)) throw new Error(`Missing primary key: ${primary}`);
+	if (!Object.hasOwn(model.fields, primary))
+		throw new InvalidSqliteDefinitionError(`Missing primary key: ${primary}`);
 	const names = Object.entries(model.fields).map(([property, field]) =>
 		sqliteColumn(property, field)
 	);
 	if (new Set(names).size !== names.length)
-		throw new Error(`Duplicate SQLite column in ${model.table}`);
+		throw new InvalidSqliteDefinitionError(`Duplicate SQLite column in ${model.table}`);
 	const columns = Object.entries(model.fields).map(([property, field]) => {
 		const type = {
 			string: 'TEXT',
@@ -28,7 +30,7 @@ export function sqliteTableSql(model: SqliteModel): string {
 			json: 'TEXT',
 			blob: 'BLOB'
 		}[field.type];
-		if (!type) throw new Error(`Invalid SQLite field type: ${field.type}`);
+		if (!type) throw new InvalidSqliteDefinitionError(`Invalid SQLite field type: ${field.type}`);
 		let constraint = field.nullable ? '' : ' NOT NULL';
 		if (property === primary)
 			constraint = ` PRIMARY KEY${field.type === 'number' ? '' : ' NOT NULL'}`;

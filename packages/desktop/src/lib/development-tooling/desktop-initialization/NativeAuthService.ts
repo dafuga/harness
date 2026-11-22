@@ -1,5 +1,6 @@
 // @harness-uid u_bt6e76o6y5
 import type { Pending, AuthOptions } from './NativeAuthService.types';
+import { NativeSignInError } from './NativeAuthService.types';
 import { randomBytes, createHash } from 'node:crypto';
 import type { NativeHostedStatus } from '../../../models/projects-sessions/ProjectContext.types';
 import { NativeHandoffValidator } from '../../../validators/development-tooling/NativeHandoffValidator';
@@ -74,7 +75,7 @@ export class NativeAuthService {
 	}
 	private async begin(): Promise<NativeHostedStatus> {
 		if (!this.options.store.available())
-			throw new Error('OS encryption is required for hosted sessions.');
+			throw new NativeSignInError('OS encryption is required for hosted sessions.');
 		const verifier = randomBytes(32).toString('base64url'),
 			nonce = randomBytes(24).toString('base64url'),
 			resource = 'projects';
@@ -123,7 +124,8 @@ export class NativeAuthService {
 		);
 		if (result.status === 'pending') return pending.status;
 		this.pending = null;
-		if (result.status !== 'approved') throw new Error('Native handoff expired or was refused.');
+		if (result.status !== 'approved')
+			throw new NativeSignInError('Native handoff expired or was refused.');
 		const { handoffId, verifier, nonce, resource } = pending;
 		const resultExchange = await this.options.http.publicJson('/api/auth/native/exchange', {
 			handoffId,

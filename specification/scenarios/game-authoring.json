@@ -504,6 +504,18 @@
 				"desktop.component.game-preview",
 				"desktop.component.game-controls"
 			]
+		},
+		{
+			"id": "desktop-component-game-navigation-guard",
+			"title": "Default guard leaves a clean game",
+			"coverage": "required",
+			"units": ["desktop.component.game-navigation-guard"]
+		},
+		{
+			"id": "desktop-component-game-navigation-guard-unsaved",
+			"title": "Cancel navigation and keep the unsaved game",
+			"coverage": "required",
+			"units": ["desktop.component.game-navigation-guard"]
 		}
 	],
 	"viewports": [
@@ -523,6 +535,7 @@
 			"height": 844
 		}
 	],
+	"builds": ["desktop-main", "desktop-renderer"],
 	"tests": [
 		{
 			"id": "native-game-authoring",
@@ -571,7 +584,9 @@
 				"2d-trace",
 				"3d-trace",
 				"2d-catalog",
-				"3d-catalog"
+				"3d-catalog",
+				"desktop-component-game-navigation-guard",
+				"desktop-component-game-navigation-guard-unsaved"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",
@@ -607,7 +622,9 @@
 				"2d-trace",
 				"3d-trace",
 				"2d-catalog",
-				"3d-catalog"
+				"3d-catalog",
+				"desktop-component-game-navigation-guard",
+				"desktop-component-game-navigation-guard-unsaved"
 			],
 			"viewports": [],
 			"required": true
@@ -633,7 +650,9 @@
 				"2d-trace",
 				"3d-trace",
 				"2d-catalog",
-				"3d-catalog"
+				"3d-catalog",
+				"desktop-component-game-navigation-guard",
+				"desktop-component-game-navigation-guard-unsaved"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"required": true

@@ -12,6 +12,7 @@ import { createHash } from 'node:crypto';
 import { statSync } from 'node:fs';
 import { Readable } from 'node:stream';
 import { finished } from 'node:stream/promises';
+import { ArchiveDestinationNotSeparateError } from './DesktopArchiveAdapter.types';
 
 export class DesktopArchiveAdapter {
 	read(source: string, paths: string[]): Map<string, string> {
@@ -19,7 +20,8 @@ export class DesktopArchiveAdapter {
 	}
 
 	async patch(source: string, target: string, changes: Map<string, string>): Promise<string> {
-		if (source === target) throw new Error('Archive destination must be a separate copy');
+		if (source === target)
+			throw new ArchiveDestinationNotSeparateError('Archive destination must be a separate copy');
 		const paths = listPackage(source, { isPack: false }).map((path) => path.replace(/^\//u, ''));
 		const streams = paths.map((path) => this.entry(source, path, changes));
 		for (const [path, content] of changes) {

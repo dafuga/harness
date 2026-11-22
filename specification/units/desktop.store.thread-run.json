@@ -27,7 +27,7 @@
 		"outputs": [
 			{
 				"name": "createThreadRunStore",
-				"type": "unknown",
+				"type": "ThreadRunState",
 				"description": "The ThreadRunState instance that createThreadRunStore returns, a new instance on each call with runId, status, streaming, and error set to empty strings and no run active. Its start() returns false while active is true, so one instance runs at most one agent run at a time."
 			}
 		],
@@ -58,7 +58,7 @@
 				"outputs": [
 					{
 						"name": "createThreadRunStore",
-						"type": "unknown",
+						"type": "ThreadRunState",
 						"description": "The ThreadRunState instance that createThreadRunStore returns, a new instance on each call with runId, status, streaming, and error set to empty strings and no run active. Its start() returns false while active is true, so one instance runs at most one agent run at a time."
 					}
 				],

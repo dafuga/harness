@@ -94,7 +94,7 @@
 				"outputs": [
 					{
 						"name": "HostedFailureValidator.constructor",
-						"type": "unknown",
+						"type": "HostedFailureValidator",
 						"description": "The new HostedFailureValidator instance that the constructor creates, which extends Error and exposes the readonly category and status properties. Its message is always 'Hosted request failed or access was refused.', whatever category or status is passed."
 					}
 				],

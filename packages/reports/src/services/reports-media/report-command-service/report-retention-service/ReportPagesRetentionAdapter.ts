@@ -1,4 +1,10 @@
 // @harness-uid u_3pdv54xqo7
+import { CloudflarePagesCleanupError } from './CloudflarePagesCleanupError';
+import { InvalidReportDeploymentIdError } from './InvalidReportDeploymentIdError';
+import { InvalidReportPublicationReceiptError } from './InvalidReportPublicationReceiptError';
+import { MissingProjectReportsCloudflareAccountError } from './MissingProjectReportsCloudflareAccountError';
+import { PublishedReportAbsentFromDeploymentListingError } from './PublishedReportAbsentFromDeploymentListingError';
+import { ReportPublicationProjectMismatchError } from './ReportPublicationProjectMismatchError';
 import type { Deployment } from './ReportPagesRetentionAdapter.types';
 import { reportRuntimeRoot } from '../../../../utils/reports-media/reportRuntimeRoot';
 import { join } from 'node:path';
@@ -9,14 +15,16 @@ function publicationProject(url?: string) {
 	const configured = process.env.PROJECT_REPORTS_PAGES_PROJECT || 'project-report-shares';
 	if (!url) return configured;
 	const match = url.match(/^https:\/\/[a-z0-9-]+\.([a-z0-9-]+)\.pages\.dev\/?$/);
-	if (!match) throw new Error('Invalid report publication receipt');
+	if (!match) throw new InvalidReportPublicationReceiptError('Invalid report publication receipt');
 	if (match[1] !== configured)
-		throw new Error('Publication escaped the Project Reports Pages project');
+		throw new ReportPublicationProjectMismatchError(
+			'Publication escaped the Project Reports Pages project'
+		);
 	return configured;
 }
 export class ReportPagesRetentionAdapter {
 	constructor(
-		private readonly command = reportProcess,
+		private readonly command: typeof reportProcess = reportProcess,
 		private readonly request: (
 			input: string | URL | Request,
 			init?: RequestInit
@@ -38,7 +46,8 @@ export class ReportPagesRetentionAdapter {
 		);
 		await this.checkListed(receipt.url, matching);
 		for (const item of matching) {
-			if (!/^[a-f0-9-]{36}$/.test(item.Id)) throw new Error('Invalid report deployment ID');
+			if (!/^[a-f0-9-]{36}$/.test(item.Id))
+				throw new InvalidReportDeploymentIdError('Invalid report deployment ID');
 			if (!dryRun) await this.execute(['delete', item.Id, '--project-name', project, '--force']);
 		}
 		return matching.length;
@@ -47,13 +56,17 @@ export class ReportPagesRetentionAdapter {
 		if (!url || matching.some((item) => item.Deployment === url)) return;
 		const response = await this.request(url, { signal: AbortSignal.timeout(30000) });
 		if (response.status !== 404)
-			throw new Error('Published report absent from deployment listing; local receipt retained');
+			throw new PublishedReportAbsentFromDeploymentListingError(
+				'Published report absent from deployment listing; local receipt retained'
+			);
 	}
 	private async execute(args: string[]) {
 		const root = reportRuntimeRoot();
 		const config = r2ScreenshotConfig(process.env, process.env.PROJECT_REPORTS_CONFIG_FILE);
 		if (!config.accountId)
-			throw new Error('Project Reports Cloudflare account is required for published cleanup');
+			throw new MissingProjectReportsCloudflareAccountError(
+				'Project Reports Cloudflare account is required for published cleanup'
+			);
 		const result = await this.command(
 			process.execPath,
 			['x', 'wrangler@4.93.0', 'pages', 'deployment', ...args],
@@ -66,7 +79,7 @@ export class ReportPagesRetentionAdapter {
 			}
 		);
 		if (result.code !== 0)
-			throw new Error(
+			throw new CloudflarePagesCleanupError(
 				'Cloudflare Pages cleanup failed; local publication receipt retained for retry'
 			);
 		return result.output;

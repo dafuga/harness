@@ -17,34 +17,34 @@
 		"outputs": [
 			{
 				"name": "GET",
-				"type": "unknown",
+				"type": "Promise<Response>",
 				"description": "GET is the shared SvelteKit request-handler function exported for GET requests. It merges private and platform environment values, checks rate limiting, then returns a non-nullish limiter result or delegates the request to HubApiController.handle; this file adds no GET-specific behavior."
 			},
 			{
 				"name": "POST",
-				"type": "unknown",
+				"type": "Promise<Response>",
 				"description": "POST is the shared SvelteKit request-handler function exported for POST requests. It merges private and platform environment values, checks rate limiting, then returns a non-nullish limiter result or delegates the request to HubApiController.handle; this file adds no POST-specific behavior."
 			},
 			{
 				"name": "DELETE",
-				"type": "unknown",
+				"type": "Promise<Response>",
 				"description": "DELETE is the shared SvelteKit request-handler function exported for DELETE requests. It merges private and platform environment values, checks rate limiting, then returns a non-nullish limiter result or delegates the request to HubApiController.handle; this file adds no DELETE-specific behavior."
 			},
 			{
 				"name": "PUT",
-				"type": "unknown",
+				"type": "Promise<Response>",
 				"description": "PUT is the shared SvelteKit request-handler function exported for PUT requests. It merges private and platform environment values, checks rate limiting, then returns a non-nullish limiter result or delegates the request to HubApiController.handle; this file adds no PUT-specific behavior."
 			},
 			{
 				"name": "PATCH",
-				"type": "unknown",
+				"type": "Promise<Response>",
 				"description": "PATCH is the shared SvelteKit request-handler function exported for PATCH requests. It merges private and platform environment values, checks rate limiting, then returns a non-nullish limiter result or delegates the request to HubApiController.handle; this file adds no PATCH-specific behavior."
 			}
 		],
 		"errors": [
 			{
-				"name": "unknown",
-				"type": "thrown",
+				"name": "Request handling error",
+				"type": "propagated",
 				"description": "If config creation, rate limiting, runtime/controller construction, or request handling throws or rejects, this handler has no catch and the failure propagates to its caller. This file does not specify the concrete error name or failure conditions."
 			}
 		],

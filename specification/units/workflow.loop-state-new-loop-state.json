@@ -19,7 +19,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project root that newLoopState passes to resolveLoopTemplate only when input.from is set; resolveLoopTemplate then reads project templates from specification/loop-templates under it, and newLoopState itself does not check the value.",
-				"examples": ["/workspace/checkout-service", "/home/ci/projects/acme-api"]
+				"examples": ["/workspace/checkout-service", "/workspace/acme-api"]
 			},
 			{
 				"name": "newLoopState.input",
@@ -120,7 +120,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project root that newLoopState passes to resolveLoopTemplate only when input.from is set; resolveLoopTemplate then reads project templates from specification/loop-templates under it, and newLoopState itself does not check the value.",
-						"examples": ["/workspace/checkout-service", "/home/ci/projects/acme-api"]
+						"examples": ["/workspace/checkout-service", "/workspace/acme-api"]
 					},
 					{
 						"name": "newLoopState.input",

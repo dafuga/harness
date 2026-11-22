@@ -114,7 +114,7 @@
 				"description": "Project root used by analytics recording to identify the repository, plus clean-code elapsed duration in milliseconds. The root is passed to project identity lookup and the duration is copied without a range check.",
 				"examples": [
 					{
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+						"root": "/workspace/project",
 						"durationMs": 2350
 					}
 				]
@@ -252,7 +252,7 @@
 						"description": "Project root used by analytics recording to identify the repository, plus clean-code elapsed duration in milliseconds. The root is passed to project identity lookup and the duration is copied without a range check.",
 						"examples": [
 							{
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+								"root": "/workspace/project",
 								"durationMs": 2350
 							}
 						]

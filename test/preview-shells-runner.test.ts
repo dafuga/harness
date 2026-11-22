@@ -33,6 +33,30 @@ const previews = readdirSync('packages/reports/test')
 
 test('the Shells preview spec runs once, in the reports package, under the entity preview config', () => {
 	const path = 'packages/reports/test/entity-preview-shells.spec.ts';
+	const listed = spawnSync(
+		'bun',
+		[
+			'x',
+			'playwright',
+			'test',
+			'--config',
+			'src/configs/development-tooling/shellPlaywrightConfig.ts',
+			'--grep',
+			'reports.component.verification-evidence-video-evidence at',
+			'--list'
+		],
+		{
+			cwd: resolve('packages/reports'),
+			env: { ...ownEnvironment(), PLAYWRIGHT_BROWSERS_PATH: '/unavailable-harness-browser' },
+			encoding: 'utf8',
+			timeout: 20000
+		}
+	);
+	expect(
+		listed.status,
+		'the governed shell config must discover its real catalog video cases'
+	).toBe(0);
+	expect(listed.stdout).toContain('3 tests in 1 file');
 	expect(existsSync(path)).toBe(true);
 	expect(planned(path)).toEqual([
 		{

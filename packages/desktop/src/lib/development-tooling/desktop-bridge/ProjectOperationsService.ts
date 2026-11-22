@@ -1,14 +1,18 @@
 // @harness-uid u_26fcc4te3c
 import type { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';
+import type { CommentOutboxService } from '../../../services/projects-sessions/CommentOutboxService';
 import type {
 	HumanCommentDraft,
 	ProjectCapabilities,
 	ProjectContext
 } from '../../../models/projects-sessions/ProjectContext.types';
+import { InvalidProjectDiscussionAnchorError } from './InvalidProjectDiscussionAnchorError';
+import { UnknownCommentImageAnchorError } from './UnknownCommentImageAnchorError';
+import { UnknownCommentThreadError } from './UnknownCommentThreadError';
 export class ProjectOperationsService {
 	constructor(
 		private session: ProjectSessionService,
-		private outbox = session.outbox
+		private outbox: CommentOutboxService = session.outbox
 	) {}
 	listProjects() {
 		return this.session.registry.list();
@@ -50,7 +54,7 @@ export class ProjectOperationsService {
 						image.state === input.anchor.state &&
 						image.viewport === input.anchor.viewport
 				);
-			if (!image) throw new Error('Unknown comment image anchor.');
+			if (!image) throw new UnknownCommentImageAnchorError('Unknown comment image anchor.');
 		}
 		if (
 			input.threadId &&
@@ -61,7 +65,7 @@ export class ProjectOperationsService {
 					thread.version === input.anchor.version
 			)
 		)
-			throw new Error('Unknown comment thread.');
+			throw new UnknownCommentThreadError('Unknown comment thread.');
 		return this.outbox.save({ ...input, projectId: this.session.projectId! });
 	}
 	async pendingComments(input: ProjectContext = {}) {
@@ -81,6 +85,6 @@ function projectDiscussion(input: HumanCommentDraft): boolean {
 		input.anchor.viewport ||
 		input.anchor.region
 	)
-		throw new Error('Invalid project discussion anchor.');
+		throw new InvalidProjectDiscussionAnchorError('Invalid project discussion anchor.');
 	return true;
 }

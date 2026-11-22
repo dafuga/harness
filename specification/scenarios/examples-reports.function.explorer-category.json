@@ -1,0 +1,111 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.explorer-category",
+	"title": "reports.function.explorer-category examples",
+	"kind": "headless",
+	"units": ["reports.function.explorer-category"],
+	"builds": [],
+	"states": [
+		{
+			"id": "canonical-plural-categories",
+			"title": "canonical categories are the plural entity labels, one per product kind",
+			"coverage": "required"
+		},
+		{
+			"id": "sources-decide-address-category",
+			"title": "a source address decides the category before the kind does",
+			"coverage": "required"
+		},
+		{
+			"id": "internal-and-nonvisual-unlisted",
+			"title": "internal units and nonvisual layouts are unlisted whatever their kind",
+			"coverage": "required"
+		},
+		{
+			"id": "helper-contract-gates-functions",
+			"title": "a function or module is listed only with a helper that helperContract accepts",
+			"coverage": "required"
+		},
+		{
+			"id": "declarations-decide-models-types",
+			"title": "a model is a stored class or a type group, owned by its own source",
+			"coverage": "required"
+		},
+		{
+			"id": "unknown-kinds-unlisted",
+			"title": "kinds that are not one of the product kinds have no category",
+			"coverage": "required"
+		},
+		{
+			"id": "role-priority-labels",
+			"title": "a unit says its role in priority order: types, configuration, alias, page, loader, then kind",
+			"coverage": "required"
+		},
+		{
+			"id": "role-unknown-kind-words",
+			"title": "a kind with no known role is named by its own words, capitalized",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.explorer-category.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"canonical-plural-categories",
+				"sources-decide-address-category",
+				"internal-and-nonvisual-unlisted",
+				"helper-contract-gates-functions",
+				"declarations-decide-models-types",
+				"unknown-kinds-unlisted",
+				"role-priority-labels",
+				"role-unknown-kind-words"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"canonical-plural-categories",
+				"sources-decide-address-category",
+				"internal-and-nonvisual-unlisted",
+				"helper-contract-gates-functions",
+				"declarations-decide-models-types",
+				"unknown-kinds-unlisted",
+				"role-priority-labels",
+				"role-unknown-kind-words"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"canonical-plural-categories",
+				"sources-decide-address-category",
+				"internal-and-nonvisual-unlisted",
+				"helper-contract-gates-functions",
+				"declarations-decide-models-types",
+				"unknown-kinds-unlisted",
+				"role-priority-labels",
+				"role-unknown-kind-words"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

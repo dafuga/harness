@@ -8,13 +8,14 @@ import type { CodexSessionRepository } from '../codex-session-repository/CodexSe
 import { ClaudeToolsSerializer } from '../../../../serializers/agents-providers/claude-tools-serializer/ClaudeToolsSerializer';
 import { gatewayMessages } from './gatewayMessages';
 import { gatewayOptions } from './gatewayOptions';
+import { ClaudeQueryFailedError } from './ClaudeQueryService.types';
 
 export class ClaudeQueryService {
 	constructor(private readonly repository: CodexSessionRepository) {}
 
 	private forward(message: SDKMessage, session: GatewaySession): void {
 		if (message.type === 'result' && message.subtype !== 'success')
-			throw new Error('Claude query failed');
+			throw new ClaudeQueryFailedError('Claude query failed');
 		if (message.type !== 'stream_event' || message.event.type !== 'content_block_delta') return;
 		if (message.event.delta.type === 'text_delta')
 			session.emit?.({ type: 'text', text: message.event.delta.text });

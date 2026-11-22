@@ -1,6 +1,6 @@
 // @harness-uid u_2rustlmo6g
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
-import type { Asked, ScopeFacts } from './recordedScope.types';
+import { RefusedScopeError, type Asked, type ScopeFacts } from './recordedScope.types';
 import type { ExplorerScope } from '$reports/models/explorer-ui/Explorer.types';
 import type { HarnessRevisionSummary } from '$reports/models/explorer-ui/Harness.types';
 import { categoryOf } from '../shared-primitives/categoryOf';
@@ -8,7 +8,7 @@ import { categoryOf } from '../shared-primitives/categoryOf';
 /** Refuses a view of the tip once the tip is elsewhere: nothing is read for a stale view. */
 export function recordedTip(query: Asked, tip: string): void {
 	if (query.mode === 'current' && query.commit !== tip)
-		throw new Error(
+		throw new RefusedScopeError(
 			`Commit ${shortCommit(query.commit)} is no longer the tip of branch ${query.branch}.`
 		);
 }
@@ -25,7 +25,7 @@ export function recordedScope(query: Asked, facts: ScopeFacts): ExplorerScope {
 	const { branch, commit, mode } = query;
 	recordedTip(query, facts.tip);
 	const category = facts.kind === undefined ? null : categoryOf(facts.kind);
-	if (!category) throw new Error('This entity is not registered at this commit.');
+	if (!category) throw new RefusedScopeError('This entity is not registered at this commit.');
 	const { parents, subject, author, committedAt } = facts.revision;
 	const { coverage, gaps, records } = facts.judged;
 	const summary: HarnessRevisionSummary = {

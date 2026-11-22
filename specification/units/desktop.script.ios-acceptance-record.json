@@ -287,7 +287,7 @@
 				"outputs": [
 					{
 						"name": "AcceptanceRecord.constructor",
-						"type": "unknown",
+						"type": "AcceptanceRecord",
 						"description": "New AcceptanceRecord instance with empty checks and secrets and an empty current phase. The instance retains the supplied print callback, or console.log when the callback is omitted."
 					}
 				],

@@ -63,13 +63,15 @@ export class RemoteInputValidator {
 		return { protocol: REMOTE_PROTOCOL, client: client(item.client), resume: resume(item.resume) };
 	}
 	/** A project registered on the computer. Paths and hosted project ids never match. */
-	projectId(input: Fields): string {
-		if (input.projectId === undefined) throw new RemoteFailure('project-required');
-		return matching(input.projectId, remotePatterns.projectId, 'project-denied');
+	projectId(input: unknown): string {
+		const projectId = fields(input)?.projectId;
+		if (projectId === undefined) throw new RemoteFailure('project-required');
+		return matching(projectId, remotePatterns.projectId, 'project-denied');
 	}
-	revision(input: Fields): RemoteRevision {
-		if (input.revision === undefined) throw new RemoteFailure('revision-required');
-		const item = exact(input.revision, 'branch,commit', 'revision-required'),
+	revision(input: unknown): RemoteRevision {
+		const revision = fields(input)?.revision;
+		if (revision === undefined) throw new RemoteFailure('revision-required');
+		const item = exact(revision, 'branch,commit', 'revision-required'),
 			{ branch } = item;
 		const named = typeof branch === 'string' && branch.length > 0 && branch.length <= 255;
 		if (!named) throw new RemoteFailure('revision-required');

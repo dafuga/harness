@@ -24,7 +24,7 @@
 				"description": "Repository structure snapshot supplied to the audit, with a root, discovered files and directories, and optionally declared module source folders. A falsy root makes moduleCategoryFindings return no findings; auditHarnessStructure uses files and dirs, and a missing moduleSourceFolders list behaves as empty.",
 				"examples": [
 					{
-						"root": "/Users/daniel/projects/example-app",
+						"root": "/workspace/project",
 						"profile": "app",
 						"files": [
 							"src/audit/structure-rules/moduleCategoryFindings.ts",
@@ -34,7 +34,7 @@
 						"moduleSourceFolders": ["audit"]
 					},
 					{
-						"root": "/Users/daniel/projects/sample-app",
+						"root": "/workspace/sample-app",
 						"profile": "lib",
 						"files": ["src/audit/development-tooling/structure-rules/structureRules.ts"],
 						"dirs": [
@@ -54,7 +54,7 @@
 				"description": "Repository structure snapshot supplied to the audit, with a root, discovered files and directories, and optionally declared module source folders. A falsy root makes moduleCategoryFindings return no findings; auditHarnessStructure uses files and dirs, and a missing moduleSourceFolders list behaves as empty.",
 				"examples": [
 					{
-						"root": "/Users/daniel/projects/example-app",
+						"root": "/workspace/project",
 						"profile": "app",
 						"files": [
 							"src/audit/structure-rules/moduleCategoryFindings.ts",
@@ -64,7 +64,7 @@
 						"moduleSourceFolders": ["audit"]
 					},
 					{
-						"root": "/Users/daniel/projects/sample-app",
+						"root": "/workspace/sample-app",
 						"profile": "lib",
 						"files": ["src/audit/development-tooling/structure-rules/structureRules.ts"],
 						"dirs": [
@@ -127,7 +127,7 @@
 						"description": "Repository structure snapshot supplied to the audit, with a root, discovered files and directories, and optionally declared module source folders. A falsy root makes moduleCategoryFindings return no findings; auditHarnessStructure uses files and dirs, and a missing moduleSourceFolders list behaves as empty.",
 						"examples": [
 							{
-								"root": "/Users/daniel/projects/example-app",
+								"root": "/workspace/project",
 								"profile": "app",
 								"files": [
 									"src/audit/structure-rules/moduleCategoryFindings.ts",
@@ -137,7 +137,7 @@
 								"moduleSourceFolders": ["audit"]
 							},
 							{
-								"root": "/Users/daniel/projects/sample-app",
+								"root": "/workspace/sample-app",
 								"profile": "lib",
 								"files": ["src/audit/development-tooling/structure-rules/structureRules.ts"],
 								"dirs": [
@@ -186,7 +186,7 @@
 						"description": "Repository structure snapshot supplied to the audit, with a root, discovered files and directories, and optionally declared module source folders. A falsy root makes moduleCategoryFindings return no findings; auditHarnessStructure uses files and dirs, and a missing moduleSourceFolders list behaves as empty.",
 						"examples": [
 							{
-								"root": "/Users/daniel/projects/example-app",
+								"root": "/workspace/project",
 								"profile": "app",
 								"files": [
 									"src/audit/structure-rules/moduleCategoryFindings.ts",
@@ -196,7 +196,7 @@
 								"moduleSourceFolders": ["audit"]
 							},
 							{
-								"root": "/Users/daniel/projects/sample-app",
+								"root": "/workspace/sample-app",
 								"profile": "lib",
 								"files": ["src/audit/development-tooling/structure-rules/structureRules.ts"],
 								"dirs": [

@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/verification-evidence/r2EvidenceConfig.ts"],
-		"symbols": ["r2EvidenceConfig"]
+		"source": [
+			"packages/reports/src/utils/verification-evidence/r2EvidenceConfig.ts",
+			"packages/reports/src/utils/verification-evidence/r2EvidenceConfig.types.ts"
+		],
+		"symbols": ["r2EvidenceConfig", "EvidenceStorageConfigError"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -17,7 +20,7 @@
 		"outputs": [
 			{
 				"name": "r2EvidenceConfig",
-				"type": "unknown",
+				"type": "{ accountId: string; bucket: string; accessKeyId: string; secretAccessKey: string; endpoint: string | undefined; } | undefined",
 				"description": "The R2 settings object: accountId, bucket, accessKeyId and secretAccessKey are non-empty strings, and endpoint is the PROJECT_REPORTS_R2_ENDPOINT value (undefined when unset; a non-empty value must match http://127.0.0.1:<port>). It is undefined for local-only storage (PROJECT_REPORTS_ASSET_STORAGE set to 'local'), or when all four R2 settings are empty and PROJECT_REPORTS_HOME resolves under the OS temp directory, /tmp or /private/tmp; otherwise the four required settings come from their PROJECT_REPORTS_R2_* environment variables first and then from the file named by PROJECT_REPORTS_CONFIG_FILE, which is not read when NODE_ENV is 'test'.",
 				"examples": [
 					{
@@ -31,7 +34,8 @@
 						"accountId": "3f9c1d7a5b2e4f60a8d9c7b1e2f3a4b5",
 						"bucket": "report-evidence-prod",
 						"accessKeyId": "example-prod-access-key-id",
-						"secretAccessKey": "example-prod-secret-access-key"
+						"secretAccessKey": "example-prod-secret-access-key",
+						"endpoint": "http://127.0.0.1:9001"
 					}
 				]
 			}
@@ -51,7 +55,7 @@
 				"outputs": [
 					{
 						"name": "r2EvidenceConfig",
-						"type": "unknown",
+						"type": "{ accountId: string; bucket: string; accessKeyId: string; secretAccessKey: string; endpoint: string | undefined; } | undefined",
 						"description": "The R2 settings object: accountId, bucket, accessKeyId and secretAccessKey are non-empty strings, and endpoint is the PROJECT_REPORTS_R2_ENDPOINT value (undefined when unset; a non-empty value must match http://127.0.0.1:<port>). It is undefined for local-only storage (PROJECT_REPORTS_ASSET_STORAGE set to 'local'), or when all four R2 settings are empty and PROJECT_REPORTS_HOME resolves under the OS temp directory, /tmp or /private/tmp; otherwise the four required settings come from their PROJECT_REPORTS_R2_* environment variables first and then from the file named by PROJECT_REPORTS_CONFIG_FILE, which is not read when NODE_ENV is 'test'.",
 						"examples": [
 							{
@@ -65,7 +69,8 @@
 								"accountId": "3f9c1d7a5b2e4f60a8d9c7b1e2f3a4b5",
 								"bucket": "report-evidence-prod",
 								"accessKeyId": "example-prod-access-key-id",
-								"secretAccessKey": "example-prod-secret-access-key"
+								"secretAccessKey": "example-prod-secret-access-key",
+								"endpoint": "http://127.0.0.1:9001"
 							}
 						]
 					}

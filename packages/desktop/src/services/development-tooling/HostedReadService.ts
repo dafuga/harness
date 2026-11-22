@@ -1,6 +1,12 @@
 // @harness-uid u_qqalll47m3
 import type { HostedReadOptions, ReadContext } from './HostedReadService.types';
 import type { CacheIdentity } from '../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
+import { HostedAuthorityChangedError } from './HostedAuthorityChangedError';
+import { HostedCacheIdentityMismatchError } from './HostedCacheIdentityMismatchError';
+import { HostedSessionRequiredError } from './HostedSessionRequiredError';
+import { IncompleteHostedCacheIdentityError } from './IncompleteHostedCacheIdentityError';
+import { InvalidHostedCacheRevisionError } from './InvalidHostedCacheRevisionError';
+import { InvalidHostedCollaborationRevisionError } from './InvalidHostedCollaborationRevisionError';
 import { HostedFailureValidator } from '../../validators/development-tooling/HostedFailureValidator';
 export class HostedReadService {
 	constructor(private options: HostedReadOptions) {}
@@ -41,7 +47,7 @@ export class HostedReadService {
 				return;
 			this.options.onCacheStatus?.({ projectId: '$projects', status: 'denied' });
 			await this.options.cache?.purge(credential.principalId);
-			throw new Error('Hosted authority changed during the read.');
+			throw new HostedAuthorityChangedError('Hosted authority changed during the read.');
 		};
 	}
 	private async credential() {
@@ -53,7 +59,7 @@ export class HostedReadService {
 			!credential.principalId
 		) {
 			this.options.onCacheStatus?.({ projectId: '$projects', status: 'denied' });
-			throw new Error('A verified hosted session is required.');
+			throw new HostedSessionRequiredError('A verified hosted session is required.');
 		}
 		return credential;
 	}
@@ -63,7 +69,7 @@ export class HostedReadService {
 	) {
 		await context.guard();
 		if (result.principalId !== undefined && result.principalId !== context.principalId)
-			throw new Error('Hosted cache identity mismatch.');
+			throw new HostedCacheIdentityMismatchError('Hosted cache identity mismatch.');
 		if (result.identity) validateIdentity(result.identity, context);
 		const cachedAt = result.identity
 			? await this.options.cache?.remember(context.scope, result.identity, result.value)
@@ -109,13 +115,13 @@ function validateIdentity(
 	context: { principalId: string; projectId: string }
 ) {
 	if (identity.principalId !== context.principalId || identity.projectId !== context.projectId)
-		throw new Error('Hosted cache identity mismatch.');
+		throw new HostedCacheIdentityMismatchError('Hosted cache identity mismatch.');
 	const collaboration = identity.collaborationRevision;
 	if (
 		collaboration != null &&
 		(typeof collaboration !== 'string' || !/^[a-f0-9]{40}$/.test(collaboration))
 	)
-		throw new Error('Invalid hosted collaboration revision.');
+		throw new InvalidHostedCollaborationRevisionError('Invalid hosted collaboration revision.');
 	const fields = [
 		'repositoryId',
 		'requestedRef',
@@ -130,9 +136,9 @@ function validateIdentity(
 		'profile'
 	];
 	if (fields.some((key) => !Object.hasOwn(identity, key)))
-		throw new Error('Incomplete hosted cache identity.');
+		throw new IncompleteHostedCacheIdentityError('Incomplete hosted cache identity.');
 	if (![identity.sourceCommit, identity.sourceTree].every((value) => /^[a-f0-9]{40}$/.test(value)))
-		throw new Error('Invalid hosted cache revision.');
+		throw new InvalidHostedCacheRevisionError('Invalid hosted cache revision.');
 }
 
 export type { HostedReadOptions } from './HostedReadService.types';

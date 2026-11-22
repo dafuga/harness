@@ -49,7 +49,7 @@
 			},
 			{
 				"name": "GatewayContentSerializer.toolResult",
-				"type": "unknown",
+				"type": "{ isError?: boolean | undefined; content: ({ data: string; mimeType: \"image/png\" | \"image/jpeg\" | \"image/gif\" | \"image/webp\"; type: \"image\"; } | { type: \"text\"; text: string; })[]; }",
 				"description": "The result contains a `content` array with a text item and any extracted image items; the text is the original output unless images were extracted, when normalized content is JSON-serialized. A parsed top-level `isError: true` adds `isError: true` to the result.",
 				"examples": [
 					{
@@ -130,7 +130,7 @@
 				"outputs": [
 					{
 						"name": "GatewayContentSerializer.toolResult",
-						"type": "unknown",
+						"type": "{ isError?: boolean | undefined; content: ({ data: string; mimeType: \"image/png\" | \"image/jpeg\" | \"image/gif\" | \"image/webp\"; type: \"image\"; } | { type: \"text\"; text: string; })[]; }",
 						"description": "The result contains a `content` array with a text item and any extracted image items; the text is the original output unless images were extracted, when normalized content is JSON-serialized. A parsed top-level `isError: true` adds `isError: true` to the result.",
 						"examples": [
 							{

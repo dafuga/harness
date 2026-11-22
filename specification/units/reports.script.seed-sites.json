@@ -17,13 +17,13 @@
 		"outputs": [
 			{
 				"name": "siteRoot",
-				"type": "unknown",
+				"type": "string",
 				"description": "Filesystem path returned by site('alpha-project') for the alpha fixture root; the script deletes and recreates this directory from the shared template, then uses it as the main repository. It is the alpha repository root, not any of the generated checkout paths.",
 				"examples": ["alpha-project"]
 			},
 			{
 				"name": "foreignRoot",
-				"type": "unknown",
+				"type": "string",
 				"description": "Filesystem path returned by site('beta-project') for the foreign fixture root; the script deletes and recreates this application from the shared template with its own repository URL. It is separate from the alpha repository.",
 				"examples": ["beta-project"]
 			}

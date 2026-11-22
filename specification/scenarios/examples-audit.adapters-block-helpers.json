@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-audit.adapters-block-helpers",
+	"title": "audit.adapters-block-helpers examples",
+	"kind": "headless",
+	"units": ["audit.adapters-block-helpers"],
+	"builds": [],
+	"states": [
+		{
+			"id": "flags-curly-functions-over-the-default-55-line-limit",
+			"title": "Flags curly functions over the default 55-line limit",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-a-deeply-nested-block-that-breaks-several-limits",
+			"title": "Reports a deeply nested block that breaks several limits",
+			"coverage": "required"
+		},
+		{
+			"id": "scans-python-def-blocks-and-skips-async-def",
+			"title": "Scans Python def blocks and skips async def",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/audit.adapters-block-helpers.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"flags-curly-functions-over-the-default-55-line-limit",
+				"reports-a-deeply-nested-block-that-breaks-several-limits",
+				"scans-python-def-blocks-and-skips-async-def"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"flags-curly-functions-over-the-default-55-line-limit",
+				"reports-a-deeply-nested-block-that-breaks-several-limits",
+				"scans-python-def-blocks-and-skips-async-def"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"flags-curly-functions-over-the-default-55-line-limit",
+				"reports-a-deeply-nested-block-that-breaks-several-limits",
+				"scans-python-def-blocks-and-skips-async-def"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

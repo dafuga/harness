@@ -31,13 +31,19 @@
 				"name": "instanceScript.code",
 				"type": "string",
 				"required": true,
-				"description": "Svelte source from which comments and module-context scripts are excluded."
+				"description": "Svelte source from which comments and module-context scripts are excluded.",
+				"examples": [
+					"<!-- note --><script>const count = 1;</script><script module>export const role = 'button';</script>"
+				]
 			},
 			{
 				"name": "componentSource.code",
 				"type": "string",
 				"required": true,
-				"description": "Svelte component or instance TypeScript source to parse without executing it."
+				"description": "Svelte component or instance TypeScript source to parse without executing it.",
+				"examples": [
+					"<script lang=\"ts\">let { label }: { label: string } = $props();</script><span>{label}</span>"
+				]
 			},
 			{
 				"name": "propsDeclaration.file",
@@ -79,7 +85,21 @@
 				"name": "boundProps.items",
 				"type": "ContractItem[]",
 				"required": true,
-				"description": "Declared prop fields before destructured binding names and literal defaults are applied."
+				"description": "Declared prop fields before destructured binding names and literal defaults are applied.",
+				"examples": [
+					[
+						{
+							"name": "label",
+							"type": "string",
+							"required": true
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false
+						}
+					]
+				]
 			},
 			{
 				"name": "boundProps.node",
@@ -91,41 +111,68 @@
 				"name": "boundProps.owner",
 				"type": "string",
 				"required": true,
-				"description": "Canonical component name used to qualify each public input."
+				"description": "Canonical component name used to qualify each public input.",
+				"examples": ["Button"]
 			},
 			{
 				"name": "componentSnippets.code",
 				"type": "string",
 				"required": true,
-				"description": "Svelte source whose authored markup snippets are scanned separately from props and script exports."
+				"description": "Svelte source whose authored markup snippets are scanned separately from props and script exports.",
+				"examples": ["{#snippet row(item: string)}<span>{item}</span>{/snippet}"]
 			},
 			{
 				"name": "componentSnippets.owner",
 				"type": "string",
 				"required": true,
-				"description": "Canonical component name used to qualify each snippet and its parameters."
+				"description": "Canonical component name used to qualify each snippet and its parameters.",
+				"examples": ["DataTable"]
 			},
 			{
 				"name": "scanComponent.code",
 				"type": "string",
 				"required": true,
-				"description": "Svelte source containing script blocks and markup."
+				"description": "Svelte source containing script blocks and markup.",
+				"examples": [
+					"<script lang=\"ts\">let { label }: { label: string } = $props();</script><span>{label}</span>"
+				]
 			},
 			{
 				"name": "scanComponent.name",
 				"type": "string",
 				"required": true,
-				"description": "Component symbol name used to prefix prop inputs."
+				"description": "Component symbol name used to prefix prop inputs.",
+				"examples": ["Button"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "scanComponent",
 				"type": "ExportScan",
-				"description": "Export scan containing a component symbol with props and markup output, followed by script exports and sorted unique detected error names. Inline $props object types become fields; named/untyped props remain a single props input. Optional props with no binding fallback explicitly use the documentation marker undefined (omitted); required props retain no default and literal fallbacks retain their source value."
+				"description": "Export scan containing a component symbol with props and markup output, followed by script exports and sorted unique detected error names. Inline $props object types become fields; named/untyped props remain a single props input. Optional props with no binding fallback explicitly use the documentation marker undefined (omitted); required props retain no default and literal fallbacks retain their source value.",
+				"examples": [
+					{
+						"symbols": [
+							{
+								"name": "Button",
+								"kind": "component",
+								"inputs": [
+									{
+										"name": "Button.label",
+										"type": "string",
+										"required": true
+									}
+								],
+								"output": "markup"
+							}
+						],
+						"errors": []
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "instanceScript",
@@ -134,17 +181,22 @@
 						"name": "instanceScript.code",
 						"type": "string",
 						"required": true,
-						"description": "Svelte source from which comments and module-context scripts are excluded."
+						"description": "Svelte source from which comments and module-context scripts are excluded.",
+						"examples": [
+							"<!-- note --><script>const count = 1;</script><script module>export const role = 'button';</script>"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "instanceScript",
-						"type": "string"
+						"type": "string",
+						"description": "The first non-module script body after HTML comments are removed, or an empty string when no instance script exists. Module scripts are excluded because only instance code declares component props.",
+						"examples": ["const count = 1;"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "componentSource",
@@ -153,17 +205,21 @@
 						"name": "componentSource.code",
 						"type": "string",
 						"required": true,
-						"description": "Svelte component or instance TypeScript source to parse without executing it."
+						"description": "Svelte component or instance TypeScript source to parse without executing it.",
+						"examples": [
+							"<script lang=\"ts\">let { label }: { label: string } = $props();</script><span>{label}</span>"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "componentSource",
-						"type": "ts.SourceFile"
+						"type": "ts.SourceFile",
+						"description": "A TypeScript source file parsed from the instance-script body when the input contains a Svelte script tag, or from the supplied text directly otherwise. Prop discovery uses this syntax tree without executing component code."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "propsDeclaration",
@@ -178,11 +234,12 @@
 				"outputs": [
 					{
 						"name": "propsDeclaration",
-						"type": "ts.VariableDeclaration | undefined"
+						"type": "ts.VariableDeclaration | undefined",
+						"description": "The first top-level variable declaration initialized by a $props() call, which anchors component input discovery; undefined means no top-level props declaration was found."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "propsType",
@@ -197,11 +254,12 @@
 				"outputs": [
 					{
 						"name": "propsType",
-						"type": "ts.TypeNode | undefined"
+						"type": "ts.TypeNode | undefined",
+						"description": "The props variable's type annotation, falling back to the first type argument of a call initializer such as $props<Props>(); undefined means neither form supplies a type for field discovery."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "localProps",
@@ -228,11 +286,26 @@
 				"outputs": [
 					{
 						"name": "localProps",
-						"type": "ContractItem[]"
+						"type": "ContractItem[]",
+						"description": "The fields in a local object type, parenthesized or intersected type, or locally declared alias/interface referenced by the props type. Missing, unsupported, or already visited types return an empty array, which keeps unsupported and recursive references out of component inputs.",
+						"examples": [
+							[
+								{
+									"name": "label",
+									"type": "string",
+									"required": true
+								},
+								{
+									"name": "disabled",
+									"type": "boolean",
+									"required": false
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "propMembers",
@@ -247,11 +320,26 @@
 				"outputs": [
 					{
 						"name": "propMembers",
-						"type": "ContractItem[]"
+						"type": "ContractItem[]",
+						"description": "Property and method signatures become prop entries with their source-written type (or unknown) and required flag; other type members are skipped. This lets object and interface declarations supply component input metadata.",
+						"examples": [
+							[
+								{
+									"name": "label",
+									"type": "string",
+									"required": true
+								},
+								{
+									"name": "disabled",
+									"type": "boolean",
+									"required": false
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "boundProps",
@@ -260,7 +348,21 @@
 						"name": "boundProps.items",
 						"type": "ContractItem[]",
 						"required": true,
-						"description": "Declared prop fields before destructured binding names and literal defaults are applied."
+						"description": "Declared prop fields before destructured binding names and literal defaults are applied.",
+						"examples": [
+							[
+								{
+									"name": "label",
+									"type": "string",
+									"required": true
+								},
+								{
+									"name": "disabled",
+									"type": "boolean",
+									"required": false
+								}
+							]
+						]
 					},
 					{
 						"name": "boundProps.node",
@@ -272,18 +374,34 @@
 						"name": "boundProps.owner",
 						"type": "string",
 						"required": true,
-						"description": "Canonical component name used to qualify each public input."
+						"description": "Canonical component name used to qualify each public input.",
+						"examples": ["Button"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "boundProps",
 						"type": "ContractItem[]",
-						"description": " Optional props with no binding fallback explicitly use the documentation marker undefined (omitted); required props retain no default and literal fallbacks retain their source value."
+						"description": "Prop fields are qualified with the component name and updated from destructured bindings. Optional props without a fallback get the marker undefined (omitted); required props keep no default, while literal fallbacks make the prop optional and retain their source value.",
+						"examples": [
+							[
+								{
+									"name": "Button.label",
+									"type": "string",
+									"required": true
+								},
+								{
+									"name": "Button.disabled",
+									"type": "boolean",
+									"required": false,
+									"default": "undefined (omitted)"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "componentSnippets",
@@ -292,23 +410,42 @@
 						"name": "componentSnippets.code",
 						"type": "string",
 						"required": true,
-						"description": "Svelte source whose authored markup snippets are scanned separately from props and script exports."
+						"description": "Svelte source whose authored markup snippets are scanned separately from props and script exports.",
+						"examples": ["{#snippet row(item: string)}<span>{item}</span>{/snippet}"]
 					},
 					{
 						"name": "componentSnippets.owner",
 						"type": "string",
 						"required": true,
-						"description": "Canonical component name used to qualify each snippet and its parameters."
+						"description": "Canonical component name used to qualify each snippet and its parameters.",
+						"examples": ["DataTable"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "componentSnippets",
-						"type": "unknown"
+						"type": "Array<{ name: string; kind: 'snippet'; inputs: ContractItem[]; output: string }>",
+						"description": "Markup-level snippet declarations become symbols with owner-qualified names, parsed inputs, and markup output; HTML comments and script blocks are stripped first so they cannot create snippet entries.",
+						"examples": [
+							[
+								{
+									"name": "DataTable.row",
+									"kind": "snippet",
+									"inputs": [
+										{
+											"name": "DataTable.row.item",
+											"type": "string",
+											"required": true
+										}
+									],
+									"output": "markup"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "scanComponent",
@@ -317,24 +454,47 @@
 						"name": "scanComponent.code",
 						"type": "string",
 						"required": true,
-						"description": "Svelte source containing script blocks and markup."
+						"description": "Svelte source containing script blocks and markup.",
+						"examples": [
+							"<script lang=\"ts\">let { label }: { label: string } = $props();</script><span>{label}</span>"
+						]
 					},
 					{
 						"name": "scanComponent.name",
 						"type": "string",
 						"required": true,
-						"description": "Component symbol name used to prefix prop inputs."
+						"description": "Component symbol name used to prefix prop inputs.",
+						"examples": ["Button"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scanComponent",
 						"type": "ExportScan",
-						"description": "Export scan containing a component symbol with props and markup output, followed by script exports and sorted unique detected error names. Inline $props object types become fields; named/untyped props remain a single props input. Optional props with no binding fallback explicitly use the documentation marker undefined (omitted); required props retain no default and literal fallbacks retain their source value."
+						"description": "Export scan containing a component symbol with props and markup output, followed by script exports and sorted unique detected error names. Inline $props object types become fields; named/untyped props remain a single props input. Optional props with no binding fallback explicitly use the documentation marker undefined (omitted); required props retain no default and literal fallbacks retain their source value.",
+						"examples": [
+							{
+								"symbols": [
+									{
+										"name": "Button",
+										"kind": "component",
+										"inputs": [
+											{
+												"name": "Button.label",
+												"type": "string",
+												"required": true
+											}
+										],
+										"output": "markup"
+									}
+								],
+								"errors": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

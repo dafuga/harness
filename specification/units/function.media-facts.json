@@ -12,7 +12,8 @@
 			"src/services/check-run-service/mediaFacts.ts",
 			"src/utils/verification-evidence/mediaFacts.ts",
 			"src/workflows/run-verify/verification-service/check-run-service/mediaFacts.ts",
-			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/mediaFacts.ts"
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/mediaFacts.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/videoFacts.ts"
 		],
 		"symbols": [
 			"pngChecksum",
@@ -23,7 +24,8 @@
 			"pngChecksum",
 			"mediaFacts",
 			"pngChecksum",
-			"mediaFacts"
+			"mediaFacts",
+			"videoFacts"
 		]
 	},
 	"contract": {
@@ -47,6 +49,12 @@
 				"required": true,
 				"description": "Declared MIME type that selects the parser: image/png selects pngFacts, and audio/wav or audio/x-wav select wavFacts. Matching is exact and case-sensitive, and any other value returns an error reading unsupported media type followed by the value.",
 				"examples": ["image/png", "audio/wav", "audio/x-wav"]
+			},
+			{
+				"name": "videoFacts.bytes",
+				"type": "Buffer",
+				"required": true,
+				"description": "Encoded MP4 bytes, capped at eight MiB before any probe or decode starts."
 			}
 		],
 		"outputs": [
@@ -81,6 +89,11 @@
 				"name": "RangeError",
 				"type": "thrown",
 				"description": "Thrown out of mediaFacts when a PNG reaches its IEND chunk with an IHDR chunk of fewer than 8 data bytes whose CRC is valid, because pixelFacts reads the width and height before it checks the header length. No other input of the declared types throws, since malformed PNG and WAV data comes back as an error object."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "caught",
+				"description": "Internal decoder failures are caught and returned through MediaFacts.error."
 			}
 		],
 		"errorStatus": "declared",
@@ -152,11 +165,37 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "videoFacts",
+				"inputs": [
+					{
+						"name": "videoFacts.bytes",
+						"type": "Buffer",
+						"required": true,
+						"description": "Encoded MP4 bytes, capped at eight MiB before any probe or decode starts."
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoFacts",
+						"type": "MediaFacts",
+						"description": "Decoded silent H.264 media facts, or a structured error for malformed, oversized or incompatible video."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/utils/verification-evidence/mediaFacts.ts",

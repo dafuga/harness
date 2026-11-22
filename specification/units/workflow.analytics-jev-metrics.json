@@ -24,7 +24,7 @@
 						{
 							"id": "073d8792-18ab-4701-b3bb-9a8f14c3dabe",
 							"timestamp": "2026-11-14T10:00:00.000Z",
-							"project": "harness-shots",
+							"project": "sample-project",
 							"kind": "jev",
 							"action": "check",
 							"loop": "analytics",
@@ -40,7 +40,7 @@
 						{
 							"id": "bc3768d7-bb95-48bb-8eaf-810b75bf061e",
 							"timestamp": "2026-11-14T10:01:00.000Z",
-							"project": "harness-shots",
+							"project": "sample-project",
 							"kind": "jev",
 							"action": "check",
 							"loop": "analytics",
@@ -66,7 +66,7 @@
 				"name": "jevMetrics.author",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "When present, this filters by exact event.agentModel equality, treating a missing agent model as \"unknown\". It applies to check counts, outcome counts, exclusions, and task summaries.",
 				"examples": ["gpt-6-luna"]
 			},
@@ -74,7 +74,7 @@
 				"name": "jevMetrics.model",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "When present and truthy, this keeps checks whose agentModel or evaluatorModel equals the model string. An omitted or empty string disables this filter.",
 				"examples": ["gpt-6-luna"]
 			}
@@ -82,7 +82,7 @@
 		"outputs": [
 			{
 				"name": "jevMetrics",
-				"type": "unknown",
+				"type": "{ checks: number; outcomes: Record<string, number>; excluded: number; firstTry: { numerator: number; denominator: number; rate: number | null; }; tasks: { project: string; loop: string | undefined; step: string | undefined; task: string | undefined; agentModel: string; attempts: number; attemptsToPass: number | null; firstPassed: boolean; report: string | undefined; }[]; }",
 				"description": "The result contains matching check and status counts, the excluded-record count, first-try pass totals and rate, and summaries of eligible task groups. The first-try rate is null when there are no task groups; groups use project, loopRun, task identity, and check type, and each summary carries the first attempt’s report value.",
 				"examples": [
 					{
@@ -99,7 +99,7 @@
 						},
 						"tasks": [
 							{
-								"project": "harness-shots",
+								"project": "sample-project",
 								"loop": "analytics",
 								"step": "jevMetrics",
 								"task": "lint-generated-route",
@@ -130,7 +130,7 @@
 								{
 									"id": "073d8792-18ab-4701-b3bb-9a8f14c3dabe",
 									"timestamp": "2026-11-14T10:00:00.000Z",
-									"project": "harness-shots",
+									"project": "sample-project",
 									"kind": "jev",
 									"action": "check",
 									"loop": "analytics",
@@ -146,7 +146,7 @@
 								{
 									"id": "bc3768d7-bb95-48bb-8eaf-810b75bf061e",
 									"timestamp": "2026-11-14T10:01:00.000Z",
-									"project": "harness-shots",
+									"project": "sample-project",
 									"kind": "jev",
 									"action": "check",
 									"loop": "analytics",
@@ -172,7 +172,7 @@
 						"name": "jevMetrics.author",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "When present, this filters by exact event.agentModel equality, treating a missing agent model as \"unknown\". It applies to check counts, outcome counts, exclusions, and task summaries.",
 						"examples": ["gpt-6-luna"]
 					},
@@ -180,7 +180,7 @@
 						"name": "jevMetrics.model",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "When present and truthy, this keeps checks whose agentModel or evaluatorModel equals the model string. An omitted or empty string disables this filter.",
 						"examples": ["gpt-6-luna"]
 					}
@@ -188,7 +188,7 @@
 				"outputs": [
 					{
 						"name": "jevMetrics",
-						"type": "unknown",
+						"type": "{ checks: number; outcomes: Record<string, number>; excluded: number; firstTry: { numerator: number; denominator: number; rate: number | null; }; tasks: { project: string; loop: string | undefined; step: string | undefined; task: string | undefined; agentModel: string; attempts: number; attemptsToPass: number | null; firstPassed: boolean; report: string | undefined; }[]; }",
 						"description": "The result contains matching check and status counts, the excluded-record count, first-try pass totals and rate, and summaries of eligible task groups. The first-try rate is null when there are no task groups; groups use project, loopRun, task identity, and check type, and each summary carries the first attempt’s report value.",
 						"examples": [
 							{
@@ -205,7 +205,7 @@
 								},
 								"tasks": [
 									{
-										"project": "harness-shots",
+										"project": "sample-project",
 										"loop": "analytics",
 										"step": "jevMetrics",
 										"task": "lint-generated-route",

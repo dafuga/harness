@@ -13,6 +13,7 @@ import type { RevisionQuery } from '../../../../../desktop/src/models/DesktopBri
 import { join } from 'node:path';
 import { CommentOutboxService } from '../../../../../desktop/src/services/projects-sessions/CommentOutboxService';
 import { reportSite } from '../../../utils/reports-media/reportSite';
+import { ChatSessionError } from './ConsoleAgentService.types';
 
 const arbiter = new RepositoryArbiterService();
 const outbox = new CommentOutboxService(join(reportSite().root, 'work/console-comments.json'));
@@ -49,7 +50,7 @@ export class ConsoleAgentService {
 		codex: this.codex,
 		claude: new ClaudeCliAdapter()
 	});
-	private runs = new DesktopRunService(this.session, this.providers, this.codex, (value) => {
+	private runs = new DesktopRunService(this.session, this.providers, (value) => {
 		this.events = [...this.events.slice(-511), { sequence: ++this.sequence, value }];
 		const held = this.replay.get(value.runId) ?? { text: '', detail: '' };
 		if (value.kind === 'text') held.text = (held.text + value.text).slice(-128000);
@@ -78,7 +79,8 @@ export class ConsoleAgentService {
 	}
 	private progress(input: unknown) {
 		const after = Number((input as { after?: number })?.after ?? 0);
-		if (!Number.isSafeInteger(after) || after < 0) throw new Error('Invalid event cursor.');
+		if (!Number.isSafeInteger(after) || after < 0)
+			throw new ChatSessionError('Invalid event cursor.');
 		return {
 			events: this.events.filter((event) => event.sequence > after),
 			gap: after < (this.events[0]?.sequence ?? 1) - 1,
@@ -91,14 +93,15 @@ export class ConsoleAgentService {
 		this.touched = Date.now();
 		const reads = { events: () => this.progress(input), registry: () => this.registry(input) };
 		if (Object.hasOwn(reads, method)) return reads[method as keyof typeof reads]();
-		if (!allowed.includes(method)) throw new Error('Operation unavailable in this web session.');
+		if (!allowed.includes(method))
+			throw new ChatSessionError('Operation unavailable in this web session.');
 		if (method === 'startRun') {
 			if (!requestId || !/^[a-f0-9-]{36}$/.test(requestId))
-				throw new Error('Request identity required.');
+				throw new ChatSessionError('Request identity required.');
 			const prior = this.requests.get(requestId);
 			if (prior) {
 				if (prior.digest !== createHash('sha256').update(JSON.stringify(input)).digest('hex'))
-					throw new Error('Request identity conflict.');
+					throw new ChatSessionError('Request identity conflict.');
 				return prior.work;
 			}
 		}
@@ -142,7 +145,7 @@ export async function consoleAgent(input: Record<string, unknown>): Promise<unkn
 		}
 	}
 	if (typeof input.token !== 'string' || !clients.has(input.token))
-		throw new Error('Chat session expired. Reopen the page.');
+		throw new ChatSessionError('Chat session expired. Reopen the page.');
 	const client = clients.get(input.token)!;
 	if (input.method === 'disconnect') {
 		client.close();
@@ -162,7 +165,10 @@ function availableSessionSlot() {
 		const idle = [...clients].find(
 			([, client]) => !client['session'].busy && client['session'].root !== null
 		);
-		if (!idle) throw new Error('All chat sessions are active. Finish one before opening another.');
+		if (!idle)
+			throw new ChatSessionError(
+				'All chat sessions are active. Finish one before opening another.'
+			);
 		idle[1].close();
 		clients.delete(idle[0]);
 	}

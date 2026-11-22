@@ -9,9 +9,17 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/repositories/reports-media/report-repository/InvalidReportDirectoryError.ts",
+			"packages/reports/src/repositories/reports-media/report-repository/ReportAlreadyFinalizedError.ts",
+			"packages/reports/src/repositories/reports-media/report-repository/ReportNotActiveError.ts",
+			"packages/reports/src/repositories/reports-media/report-repository/ReportNotFinalizingError.ts",
 			"packages/reports/src/repositories/reports-media/report-repository/ReportRepository.ts"
 		],
 		"symbols": [
+			"InvalidReportDirectoryError",
+			"ReportAlreadyFinalizedError",
+			"ReportNotActiveError",
+			"ReportNotFinalizingError",
 			"ReportRepository",
 			"ReportRepository.constructor",
 			"ReportRepository.directory",
@@ -31,7 +39,7 @@
 				"name": "ReportRepository.constructor.root",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional storage root. The constructor has no parameter initializer, so omission passes undefined; reportFiles then uses a truthy PROJECT_REPORTS_HOME or falls back to join(homedir(), '.codex', 'project-reports').",
 				"examples": ["/tmp/project-reports", "/var/tmp/project-reports"]
 			},
@@ -119,13 +127,13 @@
 		"outputs": [
 			{
 				"name": "ReportRepository.directory",
-				"type": "unknown",
+				"type": "string",
 				"description": "Returns the filesystem path join(root, 'runs', safeId(id)) for the requested report.",
 				"examples": ["/tmp/project-reports/runs/550e8400-e29b-41d4-a716-446655440000"]
 			},
 			{
 				"name": "ReportRepository.begin",
-				"type": "unknown",
+				"type": "Promise<Report>",
 				"description": "Resolves to the new Report created by reportState after its run directory and manifest are written.",
 				"examples": [
 					{
@@ -187,7 +195,7 @@
 			},
 			{
 				"name": "ReportRepository.list",
-				"type": "unknown",
+				"type": "Promise<Report[]>",
 				"description": "Resolves to directory-backed reports sorted by startedAt descending; unreadable runs directories and individual manifests are skipped.",
 				"examples": [
 					[
@@ -220,7 +228,7 @@
 			},
 			{
 				"name": "ReportRepository.record",
-				"type": "unknown",
+				"type": "Promise<Report>",
 				"description": "Resolves to the updated active Report after record ingestion, evidence storage for evidence records, and manifest writing.",
 				"examples": [
 					{
@@ -251,7 +259,7 @@
 			},
 			{
 				"name": "ReportRepository.mutateActive",
-				"type": "unknown",
+				"type": "Promise<Report>",
 				"description": "Resolves to the active Report after the callback, evidence storage, and manifest writing complete.",
 				"examples": [
 					{
@@ -282,7 +290,7 @@
 			},
 			{
 				"name": "ReportRepository.seal",
-				"type": "unknown",
+				"type": "Promise<Report>",
 				"description": "Resolves to the Report in finalizing state with resultStatus applied; evidence unavailable during finalization is marked missing and not-proven.",
 				"examples": [
 					{
@@ -313,7 +321,7 @@
 			},
 			{
 				"name": "ReportRepository.finish",
-				"type": "unknown",
+				"type": "Promise<Report>",
 				"description": "Resolves to the Report in finalized state after updating updatedAt and writing the manifest.",
 				"examples": [
 					{
@@ -376,7 +384,7 @@
 				"outputs": [
 					{
 						"name": "ReportRepository.directory",
-						"type": "unknown",
+						"type": "string",
 						"description": "Returns the filesystem path join(root, 'runs', safeId(id)) for the requested report.",
 						"examples": ["/tmp/project-reports/runs/550e8400-e29b-41d4-a716-446655440000"]
 					}
@@ -415,7 +423,7 @@
 				"outputs": [
 					{
 						"name": "ReportRepository.begin",
-						"type": "unknown",
+						"type": "Promise<Report>",
 						"description": "Resolves to the new Report created by reportState after its run directory and manifest are written.",
 						"examples": [
 							{
@@ -518,7 +526,7 @@
 				"outputs": [
 					{
 						"name": "ReportRepository.list",
-						"type": "unknown",
+						"type": "Promise<Report[]>",
 						"description": "Resolves to directory-backed reports sorted by startedAt descending; unreadable runs directories and individual manifests are skipped.",
 						"examples": [
 							[
@@ -587,7 +595,7 @@
 				"outputs": [
 					{
 						"name": "ReportRepository.record",
-						"type": "unknown",
+						"type": "Promise<Report>",
 						"description": "Resolves to the updated active Report after record ingestion, evidence storage for evidence records, and manifest writing.",
 						"examples": [
 							{
@@ -651,7 +659,7 @@
 				"outputs": [
 					{
 						"name": "ReportRepository.mutateActive",
-						"type": "unknown",
+						"type": "Promise<Report>",
 						"description": "Resolves to the active Report after the callback, evidence storage, and manifest writing complete.",
 						"examples": [
 							{
@@ -709,7 +717,7 @@
 				"outputs": [
 					{
 						"name": "ReportRepository.seal",
-						"type": "unknown",
+						"type": "Promise<Report>",
 						"description": "Resolves to the Report in finalizing state with resultStatus applied; evidence unavailable during finalization is marked missing and not-proven.",
 						"examples": [
 							{
@@ -767,7 +775,7 @@
 				"outputs": [
 					{
 						"name": "ReportRepository.finish",
-						"type": "unknown",
+						"type": "Promise<Report>",
 						"description": "Resolves to the Report in finalized state after updating updatedAt and writing the manifest.",
 						"examples": [
 							{
@@ -820,7 +828,7 @@
 						"name": "ReportRepository.constructor.root",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional storage root. The constructor has no parameter initializer, so omission passes undefined; reportFiles then uses a truthy PROJECT_REPORTS_HOME or falls back to join(homedir(), '.codex', 'project-reports').",
 						"examples": ["/tmp/project-reports", "/var/tmp/project-reports"]
 					}
@@ -828,7 +836,7 @@
 				"outputs": [
 					{
 						"name": "ReportRepository.constructor",
-						"type": "unknown",
+						"type": "ReportRepository",
 						"description": "A ReportRepository class instance whose readonly root is selected by reportFiles from the supplied root, PROJECT_REPORTS_HOME, or the homedir fallback."
 					}
 				],

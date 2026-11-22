@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.reports-environment",
+	"title": "function.reports-environment examples",
+	"kind": "headless",
+	"units": ["function.reports-environment"],
+	"builds": [],
+	"states": [
+		{
+			"id": "settings-file-supplies-unset-report-environment-values",
+			"title": "Settings file supplies unset report environment values",
+			"coverage": "required"
+		},
+		{
+			"id": "explicit-values-override-settings-including-empty-strings",
+			"title": "Explicit values override settings including empty strings",
+			"coverage": "required"
+		},
+		{
+			"id": "missing-settings-file-preserves-undefined-report-keys",
+			"title": "Missing settings file preserves undefined report keys",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.reports-environment.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"settings-file-supplies-unset-report-environment-values",
+				"explicit-values-override-settings-including-empty-strings",
+				"missing-settings-file-preserves-undefined-report-keys"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"settings-file-supplies-unset-report-environment-values",
+				"explicit-values-override-settings-including-empty-strings",
+				"missing-settings-file-preserves-undefined-report-keys"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"settings-file-supplies-unset-report-environment-values",
+				"explicit-values-override-settings-including-empty-strings",
+				"missing-settings-file-preserves-undefined-report-keys"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

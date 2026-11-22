@@ -1,5 +1,6 @@
 // @harness-uid u_a3ytqsxx4a
 import type { CachedEvaluation } from './cleanCodeCache.types';
+import { CacheOutsideProjectError } from './cleanCodeCache.types';
 import { randomUUID } from 'node:crypto';
 import { mkdir, readFile, realpath, rename, writeFile } from 'node:fs/promises';
 import { dirname, isAbsolute, join, relative } from 'node:path';
@@ -54,7 +55,8 @@ async function cacheDirectory(root: string, create: boolean): Promise<string> {
 	}
 	const [base, actual] = await Promise.all([realpath(root), realpath(directory)]);
 	const path = relative(base, actual);
-	if (path.startsWith('..') || isAbsolute(path)) throw new Error('Cache is outside project');
+	if (path.startsWith('..') || isAbsolute(path))
+		throw new CacheOutsideProjectError('Cache is outside project');
 	return actual;
 }
 
@@ -71,7 +73,7 @@ async function validateCacheAncestor(root: string, directory: string): Promise<v
 	}
 	const path = relative(base, actual);
 	if (path.startsWith('..') || isAbsolute(path))
-		throw new Error('Cache ancestor is outside project');
+		throw new CacheOutsideProjectError('Cache ancestor is outside project');
 }
 
 export type { CachedEvaluation } from './cleanCodeCache.types';

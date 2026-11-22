@@ -20,7 +20,7 @@
 		"outputs": [
 			{
 				"name": "offlineModule",
-				"type": "unknown",
+				"type": "typeof offlineModule",
 				"description": "The exported offlineModule definition supplies the app-only Offline module's service and endpoint templates, collection scaffold, dependencies, and setup guidance. It is version 1.0.0; its generated endpoint limits request bodies to 65,536 bytes and downloads to 32 collections, 4 MiB per frame, and 8 MiB per batch.",
 				"examples": [
 					{

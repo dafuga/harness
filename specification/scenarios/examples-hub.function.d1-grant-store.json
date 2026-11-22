@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.function.d1-grant-store",
+	"title": "hub.function.d1-grant-store examples",
+	"kind": "headless",
+	"units": ["hub.function.d1-grant-store"],
+	"builds": [],
+	"states": [
+		{
+			"id": "grant-operations-update-versioned-rows",
+			"title": "Grant operations update versioned rows",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-record-or-lease-arguments-are-null",
+			"title": "Throws TypeError when record or lease arguments are null",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-db-error-when-a-query-operation-fails",
+			"title": "Throws db error when a query operation fails",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-records-grantstate-error-when-an-existing-row-is-read",
+			"title": "Throws records grantState error when an existing row is read",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.function.d1-grant-store.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"grant-operations-update-versioned-rows",
+				"throws-typeerror-when-record-or-lease-arguments-are-null",
+				"throws-db-error-when-a-query-operation-fails",
+				"throws-records-grantstate-error-when-an-existing-row-is-read"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"grant-operations-update-versioned-rows",
+				"throws-typeerror-when-record-or-lease-arguments-are-null",
+				"throws-db-error-when-a-query-operation-fails",
+				"throws-records-grantstate-error-when-an-existing-row-is-read"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"grant-operations-update-versioned-rows",
+				"throws-typeerror-when-record-or-lease-arguments-are-null",
+				"throws-db-error-when-a-query-operation-fails",
+				"throws-records-grantstate-error-when-an-existing-row-is-read"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

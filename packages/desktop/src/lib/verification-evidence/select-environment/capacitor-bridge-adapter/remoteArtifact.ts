@@ -9,6 +9,7 @@ import {
 import type { EvidenceArtifactResult } from '../../../../models/verification-evidence/DesktopEvidence.types';
 import type { RemoteBinary } from '../../../../models/development-tooling/Environment.types';
 import { remoteBinary } from '../../../../utils/networking-security/remoteBinary';
+import { ArtifactRefusedError } from './remoteArtifact.types';
 
 /**
  * One artifact of recorded evidence, as a computer sent it or as the phone kept it, decoded to
@@ -20,8 +21,9 @@ export async function remoteArtifact(
 	asked: string | undefined
 ): Promise<EvidenceArtifactResult> {
 	const { mediaType, byteLength, sha256 } = (value ?? {}) as Partial<RemoteBinary>;
-	if (!mediaType || !artifactMediaTypes.includes(mediaType)) throw new Error(unshownArtifact);
-	if (Number(byteLength) > artifactLimit) throw new Error(largeArtifact);
-	if (!sha256 || sha256 !== asked) throw new Error(otherArtifact);
+	if (!mediaType || !artifactMediaTypes.includes(mediaType))
+		throw new ArtifactRefusedError(unshownArtifact);
+	if (Number(byteLength) > artifactLimit) throw new ArtifactRefusedError(largeArtifact);
+	if (!sha256 || sha256 !== asked) throw new ArtifactRefusedError(otherArtifact);
 	return { bytes: await remoteBinary(value), mediaType, sha256 };
 }

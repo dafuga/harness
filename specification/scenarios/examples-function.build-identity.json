@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.build-identity",
+	"title": "function.build-identity examples",
+	"kind": "headless",
+	"units": ["function.build-identity"],
+	"builds": [],
+	"states": [
+		{
+			"id": "build-identity-sorts-file-records-by-path",
+			"title": "Build identity sorts file records by path",
+			"coverage": "required"
+		},
+		{
+			"id": "built-file-hash-ignores-embedded-build-stamp-values",
+			"title": "Built file hash ignores embedded build stamp values",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.build-identity.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"build-identity-sorts-file-records-by-path",
+				"built-file-hash-ignores-embedded-build-stamp-values"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"build-identity-sorts-file-records-by-path",
+				"built-file-hash-ignores-embedded-build-stamp-values"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"build-identity-sorts-file-records-by-path",
+				"built-file-hash-ignores-embedded-build-stamp-values"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -1,7 +1,7 @@
 [
 	{
 		"id": "packages/reports/tests/e2e/provider-picker.spec.ts",
-		"command": "bun x playwright test --config src/configs/pickerPlaywrightConfig.ts",
+		"command": "bun x playwright test --config src/configs/development-tooling/pickerPlaywrightConfig.ts",
 		"timeoutMs": 600000
 	},
 	{

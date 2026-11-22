@@ -20,16 +20,16 @@
 				"required": true,
 				"description": "The project directory: observe resolves relative reported paths against it and skips paths that resolve strictly inside it (the directory itself is not skipped, and neither is any path whose path relative to it starts with '..'). record creates work/ under it and appends to work/host-changes.ndjson only when at least one path was observed.",
 				"examples": [
-					"/Users/dev/projects/harness-app",
-					"/srv/builds/checkout-42",
-					"/home/dev/code/design-system"
+					"/workspace/project",
+					"/workspace/builds/checkout-42",
+					"/workspace/code/design-system"
 				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hostChanges",
-				"type": "unknown",
+				"type": "{ observe: (value: string) => void; record: (runId: string) => Promise<{ path: string; before: string | null; after: string | null; coverage: \"observed-cli-file-operation\"; }[]>; }",
 				"description": "An object with observe(value), which remembers each reported path that is not strictly inside the project once, as an absolute path, and starts its first hash read at that moment, and record(runId), which reads the final hashes and resolves to the list of entries ({path, before, after, coverage}). Entries are kept even when before and after are equal, a hash read that fails is stored as null, and record appends one JSON line (runId, ISO timestamp, coverage label, entries) to work/host-changes.ndjson whenever there are entries."
 			}
 		],
@@ -51,16 +51,16 @@
 						"required": true,
 						"description": "The project directory: observe resolves relative reported paths against it and skips paths that resolve strictly inside it (the directory itself is not skipped, and neither is any path whose path relative to it starts with '..'). record creates work/ under it and appends to work/host-changes.ndjson only when at least one path was observed.",
 						"examples": [
-							"/Users/dev/projects/harness-app",
-							"/srv/builds/checkout-42",
-							"/home/dev/code/design-system"
+							"/workspace/project",
+							"/workspace/builds/checkout-42",
+							"/workspace/code/design-system"
 						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hostChanges",
-						"type": "unknown",
+						"type": "{ observe: (value: string) => void; record: (runId: string) => Promise<{ path: string; before: string | null; after: string | null; coverage: \"observed-cli-file-operation\"; }[]>; }",
 						"description": "An object with observe(value), which remembers each reported path that is not strictly inside the project once, as an absolute path, and starts its first hash read at that moment, and record(runId), which reads the final hashes and resolves to the list of entries ({path, before, after, coverage}). Entries are kept even when before and after are equal, a hash read that fails is stored as null, and record appends one JSON line (runId, ISO timestamp, coverage label, entries) to work/host-changes.ndjson whenever there are entries."
 					}
 				],

@@ -1,7 +1,14 @@
 // @harness-uid u_hs46i3q25s
 import type { HistoryNote } from '../../../core/git-source-history/historyTypes';
+import type { VerificationRecord } from '../../../core/verification-evidence/verificationTypes';
 
 export type VerificationNote = Extract<HistoryNote, { kind: 'verification' }>;
+export interface RecordDependency {
+	record: VerificationRecord;
+	problems: string[];
+	clipProblems: string[];
+	full: boolean;
+}
 
 export interface RecordStatus {
 	record: string;

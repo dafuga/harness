@@ -64,7 +64,7 @@
 		"outputs": [
 			{
 				"name": "defaultRuntimeTimeoutMs",
-				"type": "unknown",
+				"type": "30000",
 				"description": "The exported default runtime timeout value is 30,000 milliseconds. This module declares and re-exports it but does not apply it to calls.",
 				"examples": [30000]
 			},

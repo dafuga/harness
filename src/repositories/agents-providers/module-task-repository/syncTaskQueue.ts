@@ -1,10 +1,11 @@
 // @harness-uid u_bya7wvvkm5
 import { randomUUID } from 'node:crypto';
 import type { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
+import { TaskQueueSyncError } from './syncTaskQueue.types';
 /** Exchange the explicit task ref without merging conflicting claims or changing source branches. */
 export async function syncTaskQueue(git: GitAdapter, ref: string, remote: string) {
 	if (!/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/.test(remote))
-		throw new Error('Use a configured Git remote name.');
+		throw new TaskQueueSyncError('Use a configured Git remote name.');
 	await git.run(['remote', 'get-url', remote]);
 	const advertised = await git.run(['ls-remote', '--refs', remote, ref]),
 		incoming = `refs/harness/task-sync/${randomUUID()}`;
@@ -17,7 +18,7 @@ export async function syncTaskQueue(git: GitAdapter, ref: string, remote: string
 				const forward = await git.exec(['merge-base', '--is-ancestor', ours, theirs]);
 				const ahead = await git.exec(['merge-base', '--is-ancestor', theirs, ours]);
 				if (forward.code !== 0 && ahead.code !== 0)
-					throw new Error(
+					throw new TaskQueueSyncError(
 						'Task queues diverged. Keep both histories; coordinate the queue owner before retrying.'
 					);
 				if (forward.code === 0) await git.run(['update-ref', ref, theirs, ours]);

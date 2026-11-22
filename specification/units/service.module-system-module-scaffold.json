@@ -22,9 +22,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project directory passed to the selected scaffold workflow as its root for project detection and file generation. The service forwards this string unchanged.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "ModuleScaffoldService.generate.resource",
@@ -74,9 +72,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "The service throws a plain Error with message 'A scaffold generator is required.' when resource.generator?.kind is not scaffold; native errors from delegated filesystem operations also propagate through the promise."
+				"description": "The service throws a ExpectedCliError with message 'A scaffold generator is required.' when resource.generator?.kind is not scaffold; native errors from delegated filesystem operations also propagate through the promise."
 			},
 			{
 				"name": "ExpectedCliError",
@@ -94,9 +92,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project directory passed to the selected scaffold workflow as its root for project detection and file generation. The service forwards this string unchanged.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "ModuleScaffoldService.generate.resource",
@@ -146,9 +142,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "The service throws a plain Error with message 'A scaffold generator is required.' when resource.generator?.kind is not scaffold; native errors from delegated filesystem operations also propagate through the promise."
+						"description": "The service throws a ExpectedCliError with message 'A scaffold generator is required.' when resource.generator?.kind is not scaffold; native errors from delegated filesystem operations also propagate through the promise."
 					},
 					{
 						"name": "ExpectedCliError",
@@ -162,6 +158,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "service.module-system-module-definition",
 			"via": "import",

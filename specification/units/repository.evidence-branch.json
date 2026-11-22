@@ -29,7 +29,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem root passed to EvidenceTreeAdapter when the repository is constructed. This class does not normalize or validate the string.",
-				"examples": ["/Users/daniel/projects/sample-repository"]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "EvidenceBranchRepository.add.directory",
@@ -44,7 +44,14 @@
 				"required": true,
 				"description": "Files added under directory when a new commit is made; a file whose path equals key supplies the bytes used to recognize an identical existing entry. If that file is absent or lacks matching byte content, an existing entry is refused.",
 				"examples": [
-					[]
+					[
+						{
+							"path": "record.json",
+							"content": {
+								"bytes": "{\"status\":\"passed\",\"run\":\"verification-001\"}\n"
+							}
+						}
+					]
 				]
 			},
 			{
@@ -124,7 +131,14 @@
 						"required": true,
 						"description": "Files added under directory when a new commit is made; a file whose path equals key supplies the bytes used to recognize an identical existing entry. If that file is absent or lacks matching byte content, an existing entry is refused.",
 						"examples": [
-							[]
+							[
+								{
+									"path": "record.json",
+									"content": {
+										"bytes": "{\"status\":\"passed\",\"run\":\"verification-001\"}\n"
+									}
+								}
+							]
 						]
 					},
 					{
@@ -178,13 +192,13 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem root passed to EvidenceTreeAdapter when the repository is constructed. This class does not normalize or validate the string.",
-						"examples": ["/Users/daniel/projects/sample-repository"]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceBranchRepository.constructor",
-						"type": "unknown",
+						"type": "EvidenceBranchRepository",
 						"description": "EvidenceBranchRepository instance created with the supplied root through EvidenceTreeAdapter. The instance uses that adapter for evidence-ref reads and writes."
 					}
 				],

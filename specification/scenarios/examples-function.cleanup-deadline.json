@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.cleanup-deadline",
+	"title": "function.cleanup-deadline examples",
+	"kind": "headless",
+	"units": ["function.cleanup-deadline"],
+	"builds": [],
+	"states": [
+		{
+			"id": "deadline-returns-work-or-fallback-and-stops-pending-waits",
+			"title": "Deadline returns work or fallback and stops pending waits",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.cleanup-deadline.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["deadline-returns-work-or-fallback-and-stops-pending-waits"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["deadline-returns-work-or-fallback-and-stops-pending-waits"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["deadline-returns-work-or-fallback-and-stops-pending-waits"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

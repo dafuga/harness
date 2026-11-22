@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.page.harness-branch-branch-at-components-entity-details",
+	"title": "reports.page.harness-branch-branch-at-components-entity-details examples",
+	"kind": "headless",
+	"units": ["reports.page.harness-branch-branch-at-components-entity-details"],
+	"builds": [],
+	"states": [
+		{
+			"id": "renders-the-component-details-page-with-the-document-title-c",
+			"title": "Renders the component details page with the document title Component details \u00b7 Harness",
+			"coverage": "required"
+		},
+		{
+			"id": "renders-the-measurements-and-source-tab-addresses-of-a-compo",
+			"title": "Renders the measurements and source tab addresses of a component without another revision content",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-not-in-history-when-the-history-lacks-the-address",
+			"title": "Reports not-in-history when the history lacks the address",
+			"coverage": "required"
+		},
+		{
+			"id": "redirects-other-category-to-the-category-that-lists-it",
+			"title": "Redirects other-category to the category that lists it",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-harnessdataloaderror-when-a-data-request-is-not-ok",
+			"title": "Throws HarnessDataLoadError when a data request is not ok",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.page.harness-branch-branch-at-components-entity-details.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"renders-the-component-details-page-with-the-document-title-c",
+				"renders-the-measurements-and-source-tab-addresses-of-a-compo",
+				"reports-not-in-history-when-the-history-lacks-the-address",
+				"redirects-other-category-to-the-category-that-lists-it",
+				"throws-harnessdataloaderror-when-a-data-request-is-not-ok"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"renders-the-component-details-page-with-the-document-title-c",
+				"renders-the-measurements-and-source-tab-addresses-of-a-compo",
+				"reports-not-in-history-when-the-history-lacks-the-address",
+				"redirects-other-category-to-the-category-that-lists-it",
+				"throws-harnessdataloaderror-when-a-data-request-is-not-ok"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"renders-the-component-details-page-with-the-document-title-c",
+				"renders-the-measurements-and-source-tab-addresses-of-a-compo",
+				"reports-not-in-history-when-the-history-lacks-the-address",
+				"redirects-other-category-to-the-category-that-lists-it",
+				"throws-harnessdataloaderror-when-a-data-request-is-not-ok"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

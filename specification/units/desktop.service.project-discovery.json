@@ -17,7 +17,8 @@
 			"ProjectDiscoveryService.constructor",
 			"ProjectDiscoveryService.projects",
 			"HeldDiscovery",
-			"SnapshotPort"
+			"SnapshotPort",
+			"HostedAuthorityChangedError"
 		]
 	},
 	"contract": {
@@ -160,7 +161,7 @@
 				"outputs": [
 					{
 						"name": "ProjectDiscoveryService.constructor",
-						"type": "unknown",
+						"type": "ProjectDiscoveryService",
 						"description": "The ProjectDiscoveryService instance built from the four inputs, with a new RemoteProjectResponseValidator and a queue that is already resolved. The constructor only stores its inputs and creates those two members, so it reads nothing and cannot fail."
 					}
 				],

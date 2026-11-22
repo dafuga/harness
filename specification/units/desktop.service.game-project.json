@@ -8,8 +8,14 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/lib/development-tooling/desktop-bridge/GameProjectService.ts"],
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/GameProjectAlreadyExistsError.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/GameProjectBusyError.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/GameProjectService.ts"
+		],
 		"symbols": [
+			"GameProjectAlreadyExistsError",
+			"GameProjectBusyError",
 			"GameProjectService",
 			"GameProjectService.constructor",
 			"GameProjectService.create",
@@ -31,7 +37,7 @@
 				"type": "string",
 				"required": false,
 				"description": "The folder that create uses as the parent of each new project folder; create creates it recursively when it is missing. Defaults to join(homedir(), 'projects'): the 'projects' folder inside the user's home directory.",
-				"examples": ["/Users/example/projects", "/home/example/projects"]
+				"examples": ["/workspace/projects", "/workspace/game-projects"]
 			},
 			{
 				"name": "GameProjectService.create.input",
@@ -58,7 +64,7 @@
 				"description": "The request to read a project document: read calls this.session.assertProject with input.projectId, then this.session.requireProject(), and passes input.commit to a new GameDocumentRepository(root).read call without checking it in this service.",
 				"examples": [
 					{
-						"projectId": "local-5e9c1f7a3b2d8e04c6f1a9b7d3e5c2f8a0b4d6e9c1f3a7b5d2e8c0f4a6b9d1e3",
+						"projectId": "local-ee689cf5bca33f2d46849307c5d488edbce94e344e72cc4aa61a9224729700af",
 						"commit": "3b7e9d1f0c4a6e2b8d5f7a9c1e3b5d7f9a1c3e5b"
 					},
 					{
@@ -73,7 +79,7 @@
 				"description": "The request to save a project document: save calls this.session.assertProject with input.projectId, awaits this.session.mutable(), and then runs a new GameDocumentRepository(root).save(input.document, input.expectedRevision) call inside this.session.arbiter.exclusive for the project root.",
 				"examples": [
 					{
-						"projectId": "local-5e9c1f7a3b2d8e04c6f1a9b7d3e5c2f8a0b4d6e9c1f3a7b5d2e8c0f4a6b9d1e3",
+						"projectId": "local-ee689cf5bca33f2d46849307c5d488edbce94e344e72cc4aa61a9224729700af",
 						"document": {
 							"version": 1,
 							"views": [
@@ -106,14 +112,14 @@
 		"outputs": [
 			{
 				"name": "GameProjectService.create",
-				"type": "unknown",
+				"type": "ReturnType<ProjectSessionService['open']>",
 				"description": "The resolved value of create: whatever this.session.open(target) returns for the new project folder. It resolves only after createProject, the initializePlanning step for kind 'game', and the initialize steps (git init, git add, git commit) have succeeded; if one of those steps throws, the target folder is removed and the call rejects.",
 				"examples": [
 					{
 						"project": {
 							"name": "moon-runner",
-							"root": "/Users/example/projects/moon-runner",
-							"id": "local-5e9c1f7a3b2d8e04c6f1a9b7d3e5c2f8a0b4d6e9c1f3a7b5d2e8c0f4a6b9d1e3",
+							"root": "/workspace/projects/moon-runner",
+							"id": "local-ee689cf5bca33f2d46849307c5d488edbce94e344e72cc4aa61a9224729700af",
 							"kind": "game",
 							"dimension": "2d"
 						},
@@ -153,7 +159,7 @@
 			},
 			{
 				"name": "GameProjectService.read",
-				"type": "unknown",
+				"type": "ReturnType<GameDocumentRepository['read']>",
 				"description": "The resolved value of read: the result of new GameDocumentRepository(root).read(input.commit) for the open project root, returned without change. The call rejects when this.session.requireProject() throws or when this.session.assertProject throws synchronously.",
 				"examples": [
 					{
@@ -187,7 +193,7 @@
 			},
 			{
 				"name": "GameProjectService.save",
-				"type": "unknown",
+				"type": "Promise<{ revision: string }>",
 				"description": "The resolved value of save: whatever this.session.arbiter.exclusive resolves for the new GameDocumentRepository(root).save(input.document, input.expectedRevision) call, returned without change. The call rejects when this.session.mutable() rejects, when the busy check throws, or when the exclusive run rejects.",
 				"examples": [
 					{
@@ -295,14 +301,14 @@
 				"outputs": [
 					{
 						"name": "GameProjectService.create",
-						"type": "unknown",
+						"type": "ReturnType<ProjectSessionService['open']>",
 						"description": "The resolved value of create: whatever this.session.open(target) returns for the new project folder. It resolves only after createProject, the initializePlanning step for kind 'game', and the initialize steps (git init, git add, git commit) have succeeded; if one of those steps throws, the target folder is removed and the call rejects.",
 						"examples": [
 							{
 								"project": {
 									"name": "moon-runner",
-									"root": "/Users/example/projects/moon-runner",
-									"id": "local-5e9c1f7a3b2d8e04c6f1a9b7d3e5c2f8a0b4d6e9c1f3a7b5d2e8c0f4a6b9d1e3",
+									"root": "/workspace/projects/moon-runner",
+									"id": "local-ee689cf5bca33f2d46849307c5d488edbce94e344e72cc4aa61a9224729700af",
 									"kind": "game",
 									"dimension": "2d"
 								},
@@ -390,7 +396,7 @@
 						"description": "The request to read a project document: read calls this.session.assertProject with input.projectId, then this.session.requireProject(), and passes input.commit to a new GameDocumentRepository(root).read call without checking it in this service.",
 						"examples": [
 							{
-								"projectId": "local-5e9c1f7a3b2d8e04c6f1a9b7d3e5c2f8a0b4d6e9c1f3a7b5d2e8c0f4a6b9d1e3",
+								"projectId": "local-ee689cf5bca33f2d46849307c5d488edbce94e344e72cc4aa61a9224729700af",
 								"commit": "3b7e9d1f0c4a6e2b8d5f7a9c1e3b5d7f9a1c3e5b"
 							},
 							{
@@ -402,7 +408,7 @@
 				"outputs": [
 					{
 						"name": "GameProjectService.read",
-						"type": "unknown",
+						"type": "ReturnType<GameDocumentRepository['read']>",
 						"description": "The resolved value of read: the result of new GameDocumentRepository(root).read(input.commit) for the open project root, returned without change. The call rejects when this.session.requireProject() throws or when this.session.assertProject throws synchronously.",
 						"examples": [
 							{
@@ -464,7 +470,7 @@
 						"description": "The request to save a project document: save calls this.session.assertProject with input.projectId, awaits this.session.mutable(), and then runs a new GameDocumentRepository(root).save(input.document, input.expectedRevision) call inside this.session.arbiter.exclusive for the project root.",
 						"examples": [
 							{
-								"projectId": "local-5e9c1f7a3b2d8e04c6f1a9b7d3e5c2f8a0b4d6e9c1f3a7b5d2e8c0f4a6b9d1e3",
+								"projectId": "local-ee689cf5bca33f2d46849307c5d488edbce94e344e72cc4aa61a9224729700af",
 								"document": {
 									"version": 1,
 									"views": [
@@ -497,7 +503,7 @@
 				"outputs": [
 					{
 						"name": "GameProjectService.save",
-						"type": "unknown",
+						"type": "Promise<{ revision: string }>",
 						"description": "The resolved value of save: whatever this.session.arbiter.exclusive resolves for the new GameDocumentRepository(root).save(input.document, input.expectedRevision) call, returned without change. The call rejects when this.session.mutable() rejects, when the busy check throws, or when the exclusive run rejects.",
 						"examples": [
 							{
@@ -546,13 +552,13 @@
 						"type": "string",
 						"required": false,
 						"description": "The folder that create uses as the parent of each new project folder; create creates it recursively when it is missing. Defaults to join(homedir(), 'projects'): the 'projects' folder inside the user's home directory.",
-						"examples": ["/Users/example/projects", "/home/example/projects"]
+						"examples": ["/workspace/projects", "/workspace/game-projects"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GameProjectService.constructor",
-						"type": "unknown",
+						"type": "GameProjectService",
 						"description": "The GameProjectService instance that the constructor creates; it keeps the session and projectsRoot it was given."
 					}
 				],

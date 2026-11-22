@@ -102,13 +102,13 @@
 		"outputs": [
 			{
 				"name": "REMOTE_PROTOCOL",
-				"type": "unknown",
+				"type": "1",
 				"description": "The wire protocol version used by this remote model. A host answers no other protocol number.",
 				"examples": [1]
 			},
 			{
 				"name": "remoteLimits",
-				"type": "unknown",
+				"type": "typeof remoteLimits",
 				"description": "The numeric bounds for the wire protocol, covering message sizes, request and event capacity, deadlines, connection timing, and pairing. A host also returns these limits from session.attach.",
 				"examples": [
 					{
@@ -132,13 +132,13 @@
 			},
 			{
 				"name": "attachMethod",
-				"type": "unknown",
+				"type": "\"session.attach\"",
 				"description": "The method name for attaching a remote session. It is included in the projectless method set.",
 				"examples": ["session.attach"]
 			},
 			{
 				"name": "readMethods",
-				"type": "unknown",
+				"type": "readonly [\"listProjects\", \"capabilities\", \"snapshot\", \"entity\", \"history\", \"source\", \"image\", \"evidence\", \"artifact\", \"messages\", \"pendingComments\", \"providers\"]",
 				"description": "Names the methods for reads of a granted project. The list contains listProjects, capabilities, snapshot, entity, history, source, image, evidence, artifact, messages, pendingComments, and providers.",
 				"examples": [
 					[
@@ -159,7 +159,7 @@
 			},
 			{
 				"name": "commentMethods",
-				"type": "unknown",
+				"type": "readonly [\"addComment\", \"openThread\"]",
 				"description": "Names a person’s own comment operation and the thread it needs. These methods do not include planning, approval, or a run.",
 				"examples": [
 					["addComment", "openThread"]
@@ -167,7 +167,7 @@
 			},
 			{
 				"name": "agentMethods",
-				"type": "unknown",
+				"type": "readonly [\"createPlan\", \"approve\", \"startRun\", \"cancelRun\"]",
 				"description": "Names planning writes and agent runs. These methods require the agents permission of a grant.",
 				"examples": [
 					["createPlan", "approve", "startRun", "cancelRun"]
@@ -175,7 +175,7 @@
 			},
 			{
 				"name": "localMethods",
-				"type": "unknown",
+				"type": "typeof localMethods",
 				"description": "Names operations that are never available to a remote device. Folders and hosted credentials stay on the computer.",
 				"examples": [
 					[
@@ -203,7 +203,7 @@
 			},
 			{
 				"name": "controlMethods",
-				"type": "unknown",
+				"type": "readonly [\"remote.status\", \"remote.enable\", \"remote.disable\", \"remote.createPairing\", \"remote.closePairing\", \"remote.approvePairing\", \"remote.denyPairing\", \"remote.revokeDevice\"]",
 				"description": "Names the methods on the desktop control port, which is local connection only.",
 				"examples": [
 					[
@@ -220,7 +220,7 @@
 			},
 			{
 				"name": "remoteMethods",
-				"type": "unknown",
+				"type": "typeof remoteMethods",
 				"description": "The complete set of RemoteMethod names, assembled from attach, read, comment, agent, local, and control methods. Some listed methods are local-only and are never available to a remote device.",
 				"examples": [
 					[
@@ -325,7 +325,7 @@
 			},
 			{
 				"name": "remoteErrorMessages",
-				"type": "unknown",
+				"type": "typeof remoteErrorMessages",
 				"description": "Maps each RemoteErrorCode to its default display message. RemoteFailure uses the matching entry when no custom message is supplied; wire failure messages are display text without paths or secrets.",
 				"examples": [
 					{
@@ -381,7 +381,7 @@
 				"outputs": [
 					{
 						"name": "RemoteFailure.constructor",
-						"type": "unknown",
+						"type": "RemoteFailure",
 						"description": "An Error subclass named RemoteFailure with the selected code and display message. Its optional requestId is not set by the constructor and can identify the failing request when that id is known."
 					}
 				],

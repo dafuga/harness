@@ -217,7 +217,7 @@
 			},
 			{
 				"name": "HubEvidenceService.artifact",
-				"type": "unknown",
+				"type": "Promise<EvidenceArtifactResult>",
 				"description": "The resolved EvidenceArtifactResult for one listed capture: `bytes` (the stored bytes as a Uint8Array), `mediaType` (what the capture is served as, decided from its kind and bytes) and `sha256` (the hash the capture states)."
 			}
 		],
@@ -484,7 +484,7 @@
 				"outputs": [
 					{
 						"name": "HubEvidenceService.artifact",
-						"type": "unknown",
+						"type": "Promise<import('../../../../../../../desktop/src/models/verification-evidence/DesktopEvidence.types').EvidenceArtifactResult>",
 						"description": "The resolved EvidenceArtifactResult for one listed capture: `bytes` (the stored bytes as a Uint8Array), `mediaType` (what the capture is served as, decided from its kind and bytes) and `sha256` (the hash the capture states)."
 					}
 				],
@@ -537,7 +537,7 @@
 				"outputs": [
 					{
 						"name": "HubEvidenceService.constructor",
-						"type": "unknown",
+						"type": "HubEvidenceService",
 						"description": "The new HubEvidenceService, holding the dependencies it was given and an empty map of kept answers."
 					}
 				],

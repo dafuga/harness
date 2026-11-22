@@ -25,8 +25,8 @@
 				"required": true,
 				"description": "Path of the JSON document: read() reads it with readFile, and each update() creates missing parent directories with mode 0o700, writes a temporary file beside it with mode 0o600, and renames that file over it. Undefined or an empty string keeps the document in memory only, and the adapter is for private app-data only, never session credentials or canonical artifacts.",
 				"examples": [
-					"/Users/example/Library/Application Support/reports-media/document.json",
-					"/home/example/.local/share/reports-media/document.json"
+					"/workspace/project/Library/Application Support/reports-media/document.json",
+					"/workspace/project/.local/share/reports-media/document.json"
 				]
 			},
 			{
@@ -200,8 +200,8 @@
 						"required": true,
 						"description": "Path of the JSON document: read() reads it with readFile, and each update() creates missing parent directories with mode 0o700, writes a temporary file beside it with mode 0o600, and renames that file over it. Undefined or an empty string keeps the document in memory only, and the adapter is for private app-data only, never session credentials or canonical artifacts.",
 						"examples": [
-							"/Users/example/Library/Application Support/reports-media/document.json",
-							"/home/example/.local/share/reports-media/document.json"
+							"/workspace/project/Library/Application Support/reports-media/document.json",
+							"/workspace/project/.local/share/reports-media/document.json"
 						]
 					},
 					{
@@ -214,7 +214,7 @@
 				"outputs": [
 					{
 						"name": "LocalDocumentAdapter.constructor",
-						"type": "unknown",
+						"type": "LocalDocumentAdapter<T>",
 						"description": "The new LocalDocumentAdapter instance; the constructor performs no file access and only stores the result of empty() as the in-memory copy."
 					}
 				],

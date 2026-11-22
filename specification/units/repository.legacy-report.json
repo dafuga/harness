@@ -29,9 +29,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem path to the root of the legacy report store. The repository resolves its runs directory and run asset directories from this path.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "LegacyReportRepository.asset.run",
@@ -132,15 +130,13 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem path to the root of the legacy report store. The repository resolves its runs directory and run asset directories from this path.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LegacyReportRepository.constructor",
-						"type": "unknown",
+						"type": "LegacyReportRepository",
 						"description": "The constructed repository instance retains the supplied store path. Construction performs no filesystem access; reads occur when runs() or asset() is called."
 					}
 				],

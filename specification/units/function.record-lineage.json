@@ -9,14 +9,102 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/utils/development-tooling/record-lineage/recordDependencies.ts",
+			"src/utils/development-tooling/record-lineage/videoLineage.ts",
 			"src/utils/development-tooling/recordLineage.ts",
 			"src/utils/development-tooling/recordLineage.types.ts"
 		],
-		"symbols": ["recordLineage", "LineageSource", "LineageSource", "Soundness"]
+		"symbols": [
+			"clipParentRecords",
+			"recordDependencies",
+			"wholeRecordDependencies",
+			"videoRecordPassed",
+			"sameVideoCapture",
+			"originalVideoCapture",
+			"videoLineage",
+			"recordLineage",
+			"LineageSource",
+			"LineageSource",
+			"Soundness",
+			"RecordLinks",
+			"VideoOriginRecord"
+		]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "clipParentRecords.record",
+				"type": "RecordLinks",
+				"required": true,
+				"description": "Record links whose own clips may cite earlier attached parent records."
+			},
+			{
+				"name": "recordDependencies.record",
+				"type": "RecordLinks",
+				"required": true,
+				"description": "Record ancestry, including whole-record and clip-level parent references."
+			},
+			{
+				"name": "wholeRecordDependencies.record",
+				"type": "RecordLinks",
+				"required": true,
+				"description": "Record base and whole-scenario references that require complete verification proof."
+			},
+			{
+				"name": "videoRecordPassed.record",
+				"type": "VideoOriginRecord",
+				"required": true,
+				"description": "Sealed original parent metadata with owner versions, tests and scope outcome."
+			},
+			{
+				"name": "videoRecordPassed.unit",
+				"type": "string",
+				"required": true,
+				"description": "Exact declared clip owner whose successful coverage the parent must prove."
+			},
+			{
+				"name": "sameVideoCapture.left",
+				"type": "Capture",
+				"required": true,
+				"description": "Original admitted capture including source, build, timing and media metadata."
+			},
+			{
+				"name": "sameVideoCapture.right",
+				"type": "Capture",
+				"required": true,
+				"description": "Proposed reused capture; only reference bookkeeping may differ."
+			},
+			{
+				"name": "originalVideoCapture.record",
+				"type": "VideoOriginRecord",
+				"required": true,
+				"description": "Original parent metadata used to locate one source- and build-bound own capture."
+			},
+			{
+				"name": "originalVideoCapture.capture",
+				"type": "Capture",
+				"required": true,
+				"description": "Proposed reused capture identifying the owner, clip, state and viewport."
+			},
+			{
+				"name": "videoLineage.record",
+				"type": "VerificationRecord",
+				"required": true,
+				"description": "Parent record whose own video references require original clip provenance."
+			},
+			{
+				"name": "videoLineage.source",
+				"type": "LineageSource",
+				"required": true,
+				"description": "Trusted lookup of sealed original parents and their applicable integrity problems."
+			},
+			{
+				"name": "videoLineage.sound",
+				"type": "Soundness",
+				"required": true,
+				"description": "Whole-record soundness fallback when no clip-local media proof is supplied."
+			},
 			{
 				"name": "recordLineage.record",
 				"type": "VerificationRecord",
@@ -27,7 +115,7 @@
 						"id": "f4f5051ae09bab886120426e4dfb1d2b7f0fdbac38fc7d30cb42e3fddb89fffc",
 						"schemaVersion": 1,
 						"componentSchemaVersion": 2,
-						"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18",
+						"repository": "/workspace/project",
 						"source": {
 							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
 							"tree": "dddddddddddddddddddddddddddddddddddddddd",
@@ -111,9 +199,210 @@
 				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "propagated",
+				"description": "The existing JSON serializer rejects an unsupported runtime value such as BigInt; inputs are expected to conform to the declared JSON descriptor shape."
+			},
+			{
+				"name": "RangeError",
+				"type": "propagated",
+				"description": "The existing recursive canonical serializer can exhaust the stack for cyclic or excessively deep runtime input; inputs are expected to satisfy the declared descriptor shape."
+			},
+			{
+				"name": "Lineage collaborator failure",
+				"type": "propagated",
+				"description": "The supplied source.find or sound callback may throw; videoLineage does not catch those collaborator failures. Missing or unsound ordinary records are returned as diagnostic strings."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
+			{
+				"name": "clipParentRecords",
+				"inputs": [
+					{
+						"name": "clipParentRecords.record",
+						"type": "RecordLinks",
+						"required": true,
+						"description": "Record links whose own clips may cite earlier attached parent records."
+					}
+				],
+				"outputs": [
+					{
+						"name": "clipParentRecords",
+						"type": "string[]",
+						"description": "Collects unique clip-parent record IDs from typed links; it does not read or validate external evidence."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "recordDependencies",
+				"inputs": [
+					{
+						"name": "recordDependencies.record",
+						"type": "RecordLinks",
+						"required": true,
+						"description": "Record ancestry, including whole-record and clip-level parent references."
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordDependencies",
+						"type": "string[]",
+						"description": "Unions whole-record and clip-level dependency ID lists without I/O."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "wholeRecordDependencies",
+				"inputs": [
+					{
+						"name": "wholeRecordDependencies.record",
+						"type": "RecordLinks",
+						"required": true,
+						"description": "Record base and whole-scenario references that require complete verification proof."
+					}
+				],
+				"outputs": [
+					{
+						"name": "wholeRecordDependencies",
+						"type": "string[]",
+						"description": "Collects whole-record inheritance IDs without granting clip dependencies a full verdict."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "videoRecordPassed",
+				"inputs": [
+					{
+						"name": "videoRecordPassed.record",
+						"type": "VideoOriginRecord",
+						"required": true,
+						"description": "Sealed original parent metadata with owner versions, tests and scope outcome."
+					},
+					{
+						"name": "videoRecordPassed.unit",
+						"type": "string",
+						"required": true,
+						"description": "Exact declared clip owner whose successful coverage the parent must prove."
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoRecordPassed",
+						"type": "boolean",
+						"description": "Returns a boolean from recorded owner/scope and successful-test fields without I/O."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "sameVideoCapture",
+				"inputs": [
+					{
+						"name": "sameVideoCapture.left",
+						"type": "Capture",
+						"required": true,
+						"description": "Original admitted capture including source, build, timing and media metadata."
+					},
+					{
+						"name": "sameVideoCapture.right",
+						"type": "Capture",
+						"required": true,
+						"description": "Proposed reused capture; only reference bookkeeping may differ."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sameVideoCapture",
+						"type": "boolean"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "propagated",
+						"description": "The existing JSON serializer rejects an unsupported runtime value such as BigInt; inputs are expected to conform to the declared JSON descriptor shape."
+					},
+					{
+						"name": "RangeError",
+						"type": "propagated",
+						"description": "The existing recursive canonical serializer can exhaust the stack for cyclic or excessively deep runtime input; inputs are expected to satisfy the declared descriptor shape."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "originalVideoCapture",
+				"inputs": [
+					{
+						"name": "originalVideoCapture.record",
+						"type": "VideoOriginRecord",
+						"required": true,
+						"description": "Original parent metadata used to locate one source- and build-bound own capture."
+					},
+					{
+						"name": "originalVideoCapture.capture",
+						"type": "Capture",
+						"required": true,
+						"description": "Proposed reused capture identifying the owner, clip, state and viewport."
+					}
+				],
+				"outputs": [
+					{
+						"name": "originalVideoCapture",
+						"type": "Capture | undefined",
+						"description": "Returns one matching build-bound original capture or undefined; absence/ambiguity is a value, not an exception."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "videoLineage",
+				"inputs": [
+					{
+						"name": "videoLineage.record",
+						"type": "VerificationRecord",
+						"required": true,
+						"description": "Parent record whose own video references require original clip provenance."
+					},
+					{
+						"name": "videoLineage.source",
+						"type": "LineageSource",
+						"required": true,
+						"description": "Trusted lookup of sealed original parents and their applicable integrity problems."
+					},
+					{
+						"name": "videoLineage.sound",
+						"type": "Soundness",
+						"required": true,
+						"description": "Whole-record soundness fallback when no clip-local media proof is supplied."
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoLineage",
+						"type": "string[]"
+					}
+				],
+				"errors": [
+					{
+						"name": "Lineage collaborator failure",
+						"type": "propagated",
+						"description": "The supplied source.find or sound callback may throw; videoLineage does not catch those collaborator failures. Missing or unsound ordinary records are returned as diagnostic strings."
+					}
+				],
+				"errorStatus": "declared"
+			},
 			{
 				"name": "recordLineage",
 				"inputs": [
@@ -127,7 +416,7 @@
 								"id": "f4f5051ae09bab886120426e4dfb1d2b7f0fdbac38fc7d30cb42e3fddb89fffc",
 								"schemaVersion": 1,
 								"componentSchemaVersion": 2,
-								"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18",
+								"repository": "/workspace/project",
 								"source": {
 									"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
 									"tree": "dddddddddddddddddddddddddddddddddddddddd",

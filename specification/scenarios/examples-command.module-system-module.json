@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-command.module-system-module",
+	"title": "command.module-system-module examples",
+	"kind": "headless",
+	"units": ["command.module-system-module"],
+	"builds": [],
+	"states": [
+		{
+			"id": "registers-module-and-plugin-command-groups",
+			"title": "Registers module and plugin command groups",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-a-module-or-plugin-id-is-missing",
+			"title": "Throws Error when a module or plugin id is missing",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/command.module-system-module.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"registers-module-and-plugin-command-groups",
+				"throws-error-when-a-module-or-plugin-id-is-missing"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"registers-module-and-plugin-command-groups",
+				"throws-error-when-a-module-or-plugin-id-is-missing"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"registers-module-and-plugin-command-groups",
+				"throws-error-when-a-module-or-plugin-id-is-missing"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

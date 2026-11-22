@@ -330,7 +330,7 @@
 				"outputs": [
 					{
 						"name": "DeviceOperationsService.constructor",
-						"type": "unknown",
+						"type": "DeviceOperationsService",
 						"description": "The DeviceOperationsService instance itself: it keeps the options, creates its own RemoteInputValidator and IpcRequestValidator, and exposes methods() and handle()."
 					}
 				],

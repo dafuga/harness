@@ -539,7 +539,7 @@
 		"outputs": [
 			{
 				"name": "hubCatalog",
-				"type": "unknown",
+				"type": "Promise<{ items: CatalogEntity[]; listed: CatalogEntity[]; units: ComponentManifest[]; plans: HubPlan[]; records: PlanRecord[] }>",
 				"description": "Object containing title-sorted catalog items, listed entries, manifests, plans, and generated plan records. Listed entries also follow catalog rules that omit route loaders and functions without listed helper contracts.",
 				"examples": [
 					{
@@ -553,7 +553,7 @@
 			},
 			{
 				"name": "hubAttestPlan",
-				"type": "unknown",
+				"type": "undefined",
 				"description": "Returns undefined when a registered unit kind matches the plan category or an unregistered plan id equals category.slug. Otherwise it throws an artifact-corrupt error."
 			},
 			{
@@ -575,7 +575,7 @@
 			},
 			{
 				"name": "hubOwnedPaths",
-				"type": "unknown",
+				"type": "string[]",
 				"description": "Repository-relative paths for blob entries equal to or nested beneath a declared source root, in source-tree order. Non-blob entries are omitted and duplicates are preserved.",
 				"examples": [
 					["packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"]
@@ -877,7 +877,7 @@
 				"outputs": [
 					{
 						"name": "hubCatalog",
-						"type": "unknown",
+						"type": "Promise<{ items: CatalogEntity[]; listed: CatalogEntity[]; units: ComponentManifest[]; plans: HubPlan[]; records: PlanRecord[] }>",
 						"description": "Object containing title-sorted catalog items, listed entries, manifests, plans, and generated plan records. Listed entries also follow catalog rules that omit route loaders and functions without listed helper contracts.",
 						"examples": [
 							{
@@ -1042,7 +1042,7 @@
 				"outputs": [
 					{
 						"name": "hubAttestPlan",
-						"type": "unknown",
+						"type": "undefined",
 						"description": "Returns undefined when a registered unit kind matches the plan category or an unregistered plan id equals category.slug. Otherwise it throws an artifact-corrupt error."
 					}
 				],
@@ -1177,7 +1177,7 @@
 				"outputs": [
 					{
 						"name": "hubOwnedPaths",
-						"type": "unknown",
+						"type": "string[]",
 						"description": "Repository-relative paths for blob entries equal to or nested beneath a declared source root, in source-tree order. Non-blob entries are omitted and duplicates are preserved.",
 						"examples": [
 							["packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"]

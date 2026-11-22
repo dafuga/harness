@@ -32,7 +32,14 @@
 				"description": "On mount connects the browser bridge in nonlocal mode, loads projects and opens matching workspace paths. Follows browser back/forward events and removes its listener and bridge on cleanup. Shows the workspace and project account menu when a snapshot exists, otherwise loading or project-open error content. Document title includes the loaded project name."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown while the component initializes when no ancestor provided the hosted browser context (provideBrowser): it destructures api and session from the undefined result of browserContext()."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [

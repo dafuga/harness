@@ -27,7 +27,7 @@
 		"inputs": [
 			{
 				"name": "requestDigest.request",
-				"type": "unknown",
+				"type": "RuntimeRequest",
 				"required": true,
 				"description": "Value passed to canonicalJson and then hashed when a stable request fingerprint is needed. It is typed unknown, and this function does not check a request schema before serialization.",
 				"examples": [
@@ -41,7 +41,7 @@
 			},
 			{
 				"name": "comparisonContext.request",
-				"type": "unknown",
+				"type": "RuntimeRequest",
 				"required": true,
 				"description": "Request being compared; its canonical digest is stored in the returned comparison context. It is typed unknown and passed through requestDigest without a request-schema check.",
 				"examples": [
@@ -110,7 +110,7 @@
 				"inputs": [
 					{
 						"name": "requestDigest.request",
-						"type": "unknown",
+						"type": "RuntimeRequest",
 						"required": true,
 						"description": "Value passed to canonicalJson and then hashed when a stable request fingerprint is needed. It is typed unknown, and this function does not check a request schema before serialization.",
 						"examples": [
@@ -150,7 +150,7 @@
 				"inputs": [
 					{
 						"name": "comparisonContext.request",
-						"type": "unknown",
+						"type": "RuntimeRequest",
 						"required": true,
 						"description": "Request being compared; its canonical digest is stored in the returned comparison context. It is typed unknown and passed through requestDigest without a request-schema check.",
 						"examples": [
@@ -219,6 +219,11 @@
 		},
 		{
 			"unit": "function.comparison-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.runtime-types",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -38,19 +38,19 @@
 		"outputs": [
 			{
 				"name": "measurementsDirectory",
-				"type": "unknown",
+				"type": "\"specification/measurements/impact-kernel\"",
 				"description": "A relative path string, 'specification/measurements/impact-kernel', that names the directory for impact-kernel measurements. This module only exports the string; it does not read, write or check that the directory exists.",
 				"examples": ["specification/measurements/impact-kernel"]
 			},
 			{
 				"name": "representativeWorkload",
-				"type": "unknown",
+				"type": "\"graph-1k\"",
 				"description": "The workload id 'graph-1k', which this module defines as the representative workload. kernelBenchmarkSchema accepts any nonempty string as a workload id, so records are not checked against this value.",
 				"examples": ["graph-1k"]
 			},
 			{
 				"name": "calibrationNote",
-				"type": "unknown",
+				"type": "string",
 				"description": "The notice text this module exports for calibration measurements: they are observational, not verification evidence, and cannot establish or satisfy a budget baseline. calibrationSchema only requires its note field to be a nonempty string, so the schema does not enforce this exact text.",
 				"examples": [
 					"Observational measurements from a local benchmark run. They are not verification evidence and cannot establish or satisfy a budget baseline."
@@ -58,17 +58,17 @@
 			},
 			{
 				"name": "calibrationSchema",
-				"type": "unknown",
+				"type": "typeof calibrationSchema",
 				"description": "The provenance schema for kernel benchmark records: a Zod strictObject requiring kind to be the literal 'calibration', verified to be the literal false and note to be a nonempty string, and rejecting any other key. These literals keep a benchmark file calibration rather than proof, because verified measurements exist only inside verification records."
 			},
 			{
 				"name": "benchMeasurementSchema",
-				"type": "unknown",
+				"type": "typeof benchMeasurementSchema",
 				"description": "The measurement schema from verification evidence, extended so that testedRevision is null or a 40-character lowercase hexadecimal commit id. Per the source comment, a measurement names a tested revision only when the tree was clean at that commit, and this schema does not check the dirty state."
 			},
 			{
 				"name": "kernelBenchmarkSchema",
-				"type": "unknown",
+				"type": "typeof kernelBenchmarkSchema",
 				"description": "The Zod object schema for a version 1 kernel benchmark record (schemaVersion must be 1), covering its profile, source commit and dirty state, provenance, workload sizes, measurements and default runtime choice, whose basis is measured or unmeasured. Its source, provenance, workload entries and default objects reject extra keys, while unknown top-level keys are stripped."
 			}
 		],

@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.layout.root",
+	"title": "desktop.layout.root examples",
+	"kind": "headless",
+	"units": ["desktop.layout.root"],
+	"builds": [],
+	"states": [
+		{
+			"id": "exports-ssr-as-false-for-the-root-layout",
+			"title": "Exports ssr as false for the root layout",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.layout.root.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["exports-ssr-as-false-for-the-root-layout"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["exports-ssr-as-false-for-the-root-layout"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["exports-ssr-as-false-for-the-root-layout"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

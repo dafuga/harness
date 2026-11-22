@@ -22,15 +22,13 @@
 				"type": "string",
 				"required": true,
 				"description": "Directory used as the base for read(path) and list(); list() scans its specification/modules child. The implementation does not validate that it is absolute or that a package manifest exists.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
-				]
+				"examples": ["/workspace/project"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "moduleTree",
-				"type": "unknown",
+				"type": "{ read: (path: string) => Promise<string>; list(): Promise<{ path: string; }[]>; }",
 				"description": "An object with read(path) and list() methods bound to root. read reads the path formed by join(root, path) as UTF-8; list returns {path} records for immediate directories under specification/modules whose module.json reads succeed, returns an empty list for a missing module directory, omits missing module files, and propagates other filesystem errors."
 			}
 		],
@@ -51,15 +49,13 @@
 						"type": "string",
 						"required": true,
 						"description": "Directory used as the base for read(path) and list(); list() scans its specification/modules child. The implementation does not validate that it is absolute or that a package manifest exists.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "moduleTree",
-						"type": "unknown",
+						"type": "{ read: (path: string) => Promise<string>; list(): Promise<{ path: string; }[]>; }",
 						"description": "An object with read(path) and list() methods bound to root. read reads the path formed by join(root, path) as UTF-8; list returns {path} records for immediate directories under specification/modules whose module.json reads succeed, returns an empty list for a missing module directory, omits missing module files, and propagates other filesystem errors."
 					}
 				],

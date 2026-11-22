@@ -4,7 +4,10 @@ import { toKebabCase, toCamelCase, toPascalCase } from '../../helpers/strings/ca
 import { fail } from '../../core/development-tooling/errors';
 import type { PieceContext } from '../development-tooling/pieces';
 
-export function gameViewFiles(name: string, { dimension }: PieceContext): PlannedFile[] {
+export function gameViewFiles(
+	name: string,
+	{ dimension }: { dimension?: PieceContext['dimension'] }
+): PlannedFile[] {
 	if (!dimension) fail('A game view needs harness.dimension 2d or 3d in package.json.');
 	const symbol = toCamelCase(name) + 'ViewConfig';
 	return [

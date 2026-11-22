@@ -3,6 +3,8 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { catalogFixtureMedia } from './catalogFixtureMedia';
 import { shellMedia } from './shellArtworkImages';
+import { serveVideoPlayerFixture, serveVideoPlayerFrameFixture } from './videoPlayerFixture';
+import { serveVideoFeedback } from './videoFeedbackFixture';
 import { shellActivity } from './shellCatalogRoutes';
 import { index, revision, record } from '../../../../test/entityFixture';
 import { commits } from '../../../../test/entityUnits';
@@ -43,6 +45,8 @@ export async function servePreview(route: Route, home: string, markup = '') {
 	if (/^\/(?:harness\/)?media\//.test(url.pathname)) return media(route, url.pathname, home);
 	if (url.pathname === '/api/project-activity') return activityFixture(route);
 	if (url.pathname === '/api/agent') return consoleAgentFixture(route);
+	if (url.pathname === '/api/video-flags') return serveVideoFeedback(route);
+	if (url.pathname === '/api/video-flag-frame') return serveVideoPlayerFrameFixture(route);
 	if (url.pathname === '/api/replay-video')
 		return route.fulfill({ contentType: 'video/mp4', body: 'Synthetic export response.' });
 	if (url.pathname === '/tools') return pickerFixture(route);
@@ -130,7 +134,6 @@ async function consoleAgentFixture(route: Route) {
 	if (!(method in answers)) throw new Error(`Unexpected preview agent request: ${method}`);
 	return route.fulfill({ json: answers[method] });
 }
-
 function activityFixture(route: Route) {
 	const query = new URL(route.request().frame().page().url()).searchParams;
 	const variant = query.get('variant') ?? '';
@@ -156,6 +159,7 @@ function historyOf(route: Route, url: URL) {
 async function media(route: Route, path: string, home: string) {
 	const all = catalogFixtureMedia(home);
 	const file = path.split('/').pop()!;
+	if (file === 'video-player-fixture.mp4') return serveVideoPlayerFixture(route);
 	const artifact = artifactByName(all, file);
 	if (artifact)
 		return route.fulfill({ contentType: artifact.mediaType, body: Buffer.from(artifact.data) });

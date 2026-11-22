@@ -2,6 +2,7 @@ import { rm } from 'node:fs/promises';
 import { afterEach, expect, test } from 'vitest';
 import { runHarness } from './support/cli';
 import { measureWorkload } from './support/measureWorkload';
+import { motionRegistryProject, assertPartialVideoRegistry } from './support/partialVideoRegistry';
 import {
 	entity,
 	guidanceJson,
@@ -86,7 +87,8 @@ test('check-contract reports every heuristic finding with identity, detail and l
 });
 
 test('check-contract accepts explicit none errors, outputs and complete state coverage', async () => {
-	const root = await project();
+	const root = await motionRegistryProject();
+	roots.push(root);
 	const { report, exitCode } = await guidanceJson(root, ['check-contract', entity]);
 	expect(exitCode).toBe(0);
 	expect(report).toMatchObject({
@@ -94,6 +96,7 @@ test('check-contract accepts explicit none errors, outputs and complete state co
 		counts: [{ entity, findings: 0 }],
 		summary: { entities: 1, findings: 0 }
 	});
+	await assertPartialVideoRegistry(root);
 });
 
 test('native element atoms skip guesses but retain explicitly required state gaps', async () => {

@@ -23,6 +23,7 @@
 			"CommitStatus",
 			"PinnedHistory",
 			"VerificationNote",
+			"RecordDependency",
 			"RecordStatus",
 			"CommitStatus",
 			"PinnedHistory"
@@ -36,13 +37,13 @@
 				"type": "string",
 				"required": true,
 				"description": "Path of the Git repository whose notes, evidence branch and LFS objects are read; it is the working directory of every Git command the service runs. The constructor does not check that the path exists or is a repository.",
-				"examples": ["/home/ci/checkouts/luna-pyramid", "/srv/git/harness-app"]
+				"examples": ["/workspace/project", "/workspace/another-project"]
 			},
 			{
 				"name": "HistoryStatusService.constructor.pinned",
 				"type": "PinnedHistory",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The commits to read history at instead of the live refs: notes is the notes commit, a full 40-character hash or null for no notes, and evidence is the evidence commit whose history bounds which evidence pointers are followed (null follows none). Omitted, the live refs are read.",
 				"examples": [
 					{
@@ -54,6 +55,12 @@
 						"evidence": null
 					}
 				]
+			},
+			{
+				"name": "HistoryStatusService.constructor.options",
+				"type": "AttachedRecordReadOptions",
+				"required": false,
+				"default": {}
 			},
 			{
 				"name": "HistoryStatusService.status.commit",
@@ -551,13 +558,13 @@
 						"type": "string",
 						"required": true,
 						"description": "Path of the Git repository whose notes, evidence branch and LFS objects are read; it is the working directory of every Git command the service runs. The constructor does not check that the path exists or is a repository.",
-						"examples": ["/home/ci/checkouts/luna-pyramid", "/srv/git/harness-app"]
+						"examples": ["/workspace/project", "/workspace/another-project"]
 					},
 					{
 						"name": "HistoryStatusService.constructor.pinned",
 						"type": "PinnedHistory",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The commits to read history at instead of the live refs: notes is the notes commit, a full 40-character hash or null for no notes, and evidence is the evidence commit whose history bounds which evidence pointers are followed (null follows none). Omitted, the live refs are read.",
 						"examples": [
 							{
@@ -569,12 +576,18 @@
 								"evidence": null
 							}
 						]
+					},
+					{
+						"name": "HistoryStatusService.constructor.options",
+						"type": "AttachedRecordReadOptions",
+						"required": false,
+						"default": {}
 					}
 				],
 				"outputs": [
 					{
 						"name": "HistoryStatusService.constructor",
-						"type": "unknown",
+						"type": "HistoryStatusService",
 						"description": "The HistoryStatusService instance, which holds the attached-record service, the note repository and the Git adapter; constructing it runs no Git command, so nothing is read until a method is called."
 					}
 				],

@@ -1,5 +1,6 @@
 // @harness-uid u_6pu7b34r7u
 import { consoleAgent } from '../../../services/ConsoleAgentService';
+import { InvalidRequestError } from './ConsoleAgentController.types';
 /** The owner guard covers this route. Mutation additionally requires browser same-origin JSON. */
 export class ConsoleAgentController {
 	async handle(request: Request): Promise<Response> {
@@ -10,7 +11,7 @@ export class ConsoleAgentController {
 		try {
 			const input: unknown = JSON.parse(new TextDecoder().decode(bytes));
 			if (!input || typeof input !== 'object' || Array.isArray(input))
-				throw new Error('Invalid request.');
+				throw new InvalidRequestError('Invalid request.');
 			const payload = input as Record<string, unknown>;
 			const bearer = request.headers.get('authorization');
 			if (bearer?.startsWith('Bearer ')) payload.token = bearer.slice(7);

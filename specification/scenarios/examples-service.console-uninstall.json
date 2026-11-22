@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.console-uninstall",
+	"title": "service.console-uninstall examples",
+	"kind": "headless",
+	"units": ["service.console-uninstall"],
+	"builds": [],
+	"states": [
+		{
+			"id": "removes-unchanged-generated-files-and-clears-the-manifest",
+			"title": "Removes unchanged generated files and clears the manifest",
+			"coverage": "required"
+		},
+		{
+			"id": "keeps-edited-generated-files-as-host-owned-when-requested",
+			"title": "Keeps edited generated files as host-owned when requested",
+			"coverage": "required"
+		},
+		{
+			"id": "updates-edited-generated-files-by-recording-and-removing-the",
+			"title": "Updates edited generated files by recording and removing them",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-no-harness-owned-console-files",
+			"title": "Throws ExpectedCliError when no harness-owned console files are installed",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-expectedclierror-when-edited-generated-files-have-no",
+			"title": "Throws ExpectedCliError when edited generated files have no handling option",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.console-uninstall.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"removes-unchanged-generated-files-and-clears-the-manifest",
+				"keeps-edited-generated-files-as-host-owned-when-requested",
+				"updates-edited-generated-files-by-recording-and-removing-the",
+				"throws-expectedclierror-when-no-harness-owned-console-files",
+				"throws-expectedclierror-when-edited-generated-files-have-no"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"removes-unchanged-generated-files-and-clears-the-manifest",
+				"keeps-edited-generated-files-as-host-owned-when-requested",
+				"updates-edited-generated-files-by-recording-and-removing-the",
+				"throws-expectedclierror-when-no-harness-owned-console-files",
+				"throws-expectedclierror-when-edited-generated-files-have-no"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"removes-unchanged-generated-files-and-clears-the-manifest",
+				"keeps-edited-generated-files-as-host-owned-when-requested",
+				"updates-edited-generated-files-by-recording-and-removing-the",
+				"throws-expectedclierror-when-no-harness-owned-console-files",
+				"throws-expectedclierror-when-edited-generated-files-have-no"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

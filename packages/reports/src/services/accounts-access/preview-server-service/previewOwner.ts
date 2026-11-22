@@ -1,6 +1,10 @@
 // @harness-uid u_6yzc5wxfxm
 import type { PreviewOwner } from '../../../utils/accounts-access/previewOwner';
 import { previewOwnerPath } from '../../../utils/accounts-access/previewOwner';
+import { InvalidPreviewOwnerAddressError } from './InvalidPreviewOwnerAddressError';
+import { PreviewOwnerIdentityMismatchError } from './PreviewOwnerIdentityMismatchError';
+import { PreviewOwnerPortOccupiedError } from './PreviewOwnerPortOccupiedError';
+import { PreviewOwnerStillStartingError } from './PreviewOwnerStillStartingError';
 
 /** A bound slot is never assumed to be ours merely because it answers HTTP. */
 export async function previewOwner(port: number, identity: string): Promise<string> {
@@ -11,18 +15,24 @@ export async function previewOwner(port: number, identity: string): Promise<stri
 		});
 		const text = await response.text();
 		if (!response.ok || text.length > 2048)
-			throw new Error('Preview ownership port is occupied by another application.');
+			throw new PreviewOwnerPortOccupiedError(
+				'Preview ownership port is occupied by another application.'
+			);
 		const owner = JSON.parse(text) as PreviewOwner;
 		if (owner.protocol !== 'harness-preview-v1')
-			throw new Error('Preview ownership port is occupied by another application.');
+			throw new PreviewOwnerPortOccupiedError(
+				'Preview ownership port is occupied by another application.'
+			);
 		if (owner.url !== null && !/^http:\/\/127\.0\.0\.1:\d+$/.test(owner.url))
-			throw new Error('Invalid preview owner address.');
+			throw new InvalidPreviewOwnerAddressError('Invalid preview owner address.');
 		if (owner.identity !== identity)
-			throw new Error(
+			throw new PreviewOwnerIdentityMismatchError(
 				`A different Harness preview is already running at ${owner.url ?? 'startup'}. Close it before switching checkout or history data.`
 			);
 		if (owner.url) return owner.url;
 		await new Promise((resolve) => setTimeout(resolve, 100));
 	}
-	throw new Error('The existing Harness preview is still starting; no duplicate was launched.');
+	throw new PreviewOwnerStillStartingError(
+		'The existing Harness preview is still starting; no duplicate was launched.'
+	);
 }

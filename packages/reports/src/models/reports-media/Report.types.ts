@@ -1,4 +1,13 @@
 // @harness-uid u_ejm6j7oia3
+import type { VideoCapture } from '../../../../../src/utils/verification-evidence/videoClipSchema.types';
+import type { FrameClipReference } from '../../../../../src/services/verification-evidence/FrameFlagService.types';
+export type EvidenceVideo = Omit<VideoCapture, 'poster'> & {
+	poster: VideoCapture['poster'] & { url?: string };
+	sha256: string;
+	reference?: FrameClipReference;
+	selectedRevision: string;
+	freshness: 'current' | 'inherited' | 'stale' | 'historical';
+};
 export type Status =
 	| 'running'
 	| 'passed'
@@ -21,6 +30,7 @@ export interface Evidence {
 	id: string;
 	title: string;
 	category: string;
+	state?: string;
 	file: string;
 	status: Status;
 	source?: string;
@@ -37,7 +47,8 @@ export interface Evidence {
 	note?: string;
 	missing?: boolean;
 	storage?: 'r2' | 'r2-evidence';
-	mediaType?: 'image' | 'audio';
+	mediaType?: 'image' | 'audio' | 'video';
+	video?: EvidenceVideo;
 	mimeType?: string;
 	durationSeconds?: number;
 	transcript?: string;

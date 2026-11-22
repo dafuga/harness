@@ -19,7 +19,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository directory: collected paths are made relative to it, and the bounded git check-ignore probe runs with it as the working directory. A file outside this directory gets a relative path that starts with '../'.",
-				"examples": ["/workspace/app", "/home/runner/work/app/app", "/srv/builds/web-client"]
+				"examples": ["/workspace/app", "/workspace/project", "/srv/builds/web-client"]
 			},
 			{
 				"name": "discoverCleanCodeFiles.collected",
@@ -163,7 +163,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository directory: collected paths are made relative to it, and the bounded git check-ignore probe runs with it as the working directory. A file outside this directory gets a relative path that starts with '../'.",
-						"examples": ["/workspace/app", "/home/runner/work/app/app", "/srv/builds/web-client"]
+						"examples": ["/workspace/app", "/workspace/project", "/srv/builds/web-client"]
 					},
 					{
 						"name": "discoverCleanCodeFiles.collected",
@@ -324,6 +324,11 @@
 		},
 		{
 			"unit": "audit.collect",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		}

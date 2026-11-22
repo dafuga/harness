@@ -45,7 +45,7 @@
 				"outputs": [
 					{
 						"name": "RunCancelled.constructor",
-						"type": "unknown",
+						"type": "RunCancelled",
 						"description": "The RunCancelled instance that `new RunCancelled()` creates, representing a run its owner cancelled as distinct from one that failed. The constructor takes no arguments, so every instance is an Error named 'RunCancelled' with the message 'The run was cancelled.'"
 					}
 				],

@@ -95,7 +95,7 @@
 	function loadSessions() {
 		void run('Loading queued sessions…', 'list_observed_sessions', {}, (data) => {
 			const list = readSessions(data as object | null);
-			if (!list) throw new Error('Queued sessions could not be read.');
+			if (!list) throw new TypeError('Queued sessions could not be read.');
 			sessions = list;
 		});
 	}

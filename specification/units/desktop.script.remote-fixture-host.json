@@ -15,6 +15,8 @@
 		"symbols": [
 			"startRemoteFixture",
 			"RemoteFixtureOptions",
+			"FixtureRelayRegistrationError",
+			"FixtureHostRelayConnectionError",
 			"RemoteFixtureOptions",
 			"Relay",
 			"Running"
@@ -33,7 +35,7 @@
 		"outputs": [
 			{
 				"name": "startRemoteFixture",
-				"type": "unknown",
+				"type": "Promise<{ controlOrigin: string; entity: { entityId: string; threadId: string; }; stop: () => Promise<void>; relayOrigin: string; hostId: string; project: { id: string; name: string; }; }>",
 				"description": "Resolves to the running fixture: relayOrigin (the fixture relay's origin), hostId (the enabled host's id), project ({ id, name } of the registered fixture project), controlOrigin (the control's origin), entity ({ entityId, threadId } from the fixture project setup) and stop, an async function that stops the host, closes the control, stops the relay and removes the state and project directories. stop is returned only on success, so a failed start gives no way to stop what it started."
 			}
 		],
@@ -69,7 +71,7 @@
 				"outputs": [
 					{
 						"name": "startRemoteFixture",
-						"type": "unknown",
+						"type": "Promise<{ controlOrigin: string; entity: { entityId: string; threadId: string; }; stop: () => Promise<void>; relayOrigin: string; hostId: string; project: { id: string; name: string; }; }>",
 						"description": "Resolves to the running fixture: relayOrigin (the fixture relay's origin), hostId (the enabled host's id), project ({ id, name } of the registered fixture project), controlOrigin (the control's origin), entity ({ entityId, threadId } from the fixture project setup) and stop, an async function that stops the host, closes the control, stops the relay and removes the state and project directories. stop is returned only on success, so a failed start gives no way to stop what it started."
 					}
 				],

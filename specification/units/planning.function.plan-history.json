@@ -73,7 +73,7 @@
 				"name": "commits.path",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional repository path passed to git log after '--', so only commits touching it are listed. An empty string or an omitted value applies no path filter.",
 				"examples": [
 					"plans/reports.component.evidence-grid",
@@ -90,7 +90,7 @@
 				"name": "revisionInfo.requested",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Branch, tag or commit to resolve; omitted means HEAD. A provided value is returned unchanged in the requested field, and an omitted value appears there as null.",
 				"examples": ["main", "v1.4.0", "c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71"]
 			}
@@ -153,7 +153,7 @@
 			},
 			{
 				"name": "planHistory",
-				"type": "unknown",
+				"type": "Promise<EntityHistory>",
 				"description": "Object with unitId (the input unit ID), revision (the RevisionInfo of the resolved revision) and entries: up to the requested limit of commits that touched the plan folder, newest first, each with the CommitInfo fields and events. Each event has a kind of plan-created, design-added (with version), design-approved (with approvalId), thread-opened or message-appended (with threadId), or other (with path relative to the plan folder).",
 				"examples": [
 					{
@@ -254,7 +254,7 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "PlanningFailure",
 				"type": "thrown",
 				"description": "Raised by commits through fail('invalid-input', 'Invalid history limit') when limit is not an integer from 1 to 500, so planHistory rejects the same way for an invalid limit. Errors from revision, planIdentity and Git command calls propagate unchanged, except that a failed symbolic-ref lookup is ignored."
 			}
@@ -295,7 +295,7 @@
 				"outputs": [
 					{
 						"name": "planHistory",
-						"type": "unknown",
+						"type": "Promise<import('../../../../models/planning-collaboration/PlanningView.types').EntityHistory>",
 						"description": "Object with unitId (the input unit ID), revision (the RevisionInfo of the resolved revision) and entries: up to the requested limit of commits that touched the plan folder, newest first, each with the CommitInfo fields and events. Each event has a kind of plan-created, design-added (with version), design-approved (with approvalId), thread-opened or message-appended (with threadId), or other (with path relative to the plan folder).",
 						"examples": [
 							{
@@ -396,7 +396,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Rejects with the invalid-input failure from commits when limit is not an integer from 1 to 500. Errors from revisionInfo, planIdentity and the diff-tree Git calls propagate unchanged."
 					}
@@ -435,7 +435,7 @@
 						"name": "commits.path",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional repository path passed to git log after '--', so only commits touching it are listed. An empty string or an omitted value applies no path filter.",
 						"examples": [
 							"plans/reports.component.evidence-grid",
@@ -479,7 +479,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Raised through fail('invalid-input', 'Invalid history limit') when limit is not an integer from 1 to 500. Git command errors from run propagate unchanged."
 					}
@@ -499,7 +499,7 @@
 						"name": "revisionInfo.requested",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Branch, tag or commit to resolve; omitted means HEAD. A provided value is returned unchanged in the requested field, and an omitted value appears there as null.",
 						"examples": ["main", "v1.4.0", "c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71"]
 					}

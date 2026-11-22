@@ -8,6 +8,7 @@ import {
 } from '../../../utils/development-tooling/nativePickerProtocol';
 import { NativePickerSwitchService } from './NativePickerSwitchService';
 import { NativePickerDefaultsService } from './NativePickerDefaultsService';
+import { NativePickerError } from './NativePickerBridgeService.types';
 
 export class NativePickerBridgeService {
 	private readonly locks = new Map<string, Promise<unknown>>();
@@ -77,7 +78,7 @@ export class NativePickerBridgeService {
 			provider !== previous.modelProvider &&
 			nativePickerProtocol(previous.status).type !== 'notLoaded'
 		)
-			throw new Error('Close this chat before resuming with a different provider');
+			throw new NativePickerError('Close this chat before resuming with a different provider');
 		const config = { ...nativePickerProtocol(params.config) };
 		if (provider === 'harness-claude')
 			Object.assign(config, {
@@ -99,7 +100,8 @@ export class NativePickerBridgeService {
 		);
 		if (state.modelProvider === pickerProvider(params.model)) return;
 		const context = this.contexts.get(String(params.threadId));
-		if (!context) throw new Error('Reopen this chat in the experimental client before switching');
+		if (!context)
+			throw new NativePickerError('Reopen this chat in the experimental client before switching');
 		const resumed = await this.switcher.apply(params, context);
 		this.contexts.set(String(params.threadId), {
 			...context,
@@ -128,7 +130,7 @@ async function pickerDiscovery(
 			options
 		);
 	const result = await rpc(method, params, options);
-	if (!Array.isArray(result.data)) throw new Error('Invalid model discovery response');
+	if (!Array.isArray(result.data)) throw new NativePickerError('Invalid model discovery response');
 	return {
 		...result,
 		data: result.data.some((item) => nativePickerProtocol(item).model === nativeOpusModel.model)

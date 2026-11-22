@@ -21,7 +21,7 @@
 				"description": "The file's repository-relative path, extension, and structural source lines. The audit recognizes function declarations and const arrow-function declarations from line-start patterns, permits PascalCase in .jsx and .tsx files, and permits HTTP verbs only in +server.ts files.",
 				"examples": [
 					{
-						"absolutePath": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5/src/utils/format.ts",
+						"absolutePath": "/workspace/project/src/utils/format.ts",
 						"relativePath": "src/utils/format.ts",
 						"extension": ".ts",
 						"contents": "export function FormatDate(value) { return value; }\nconst formatDate = (value) => value;",
@@ -101,7 +101,7 @@
 						"description": "The file's repository-relative path, extension, and structural source lines. The audit recognizes function declarations and const arrow-function declarations from line-start patterns, permits PascalCase in .jsx and .tsx files, and permits HTTP verbs only in +server.ts files.",
 						"examples": [
 							{
-								"absolutePath": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5/src/utils/format.ts",
+								"absolutePath": "/workspace/project/src/utils/format.ts",
 								"relativePath": "src/utils/format.ts",
 								"extension": ".ts",
 								"contents": "export function FormatDate(value) { return value; }",

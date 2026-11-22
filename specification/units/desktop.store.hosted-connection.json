@@ -32,7 +32,7 @@
 		"outputs": [
 			{
 				"name": "createHostedConnectionStore",
-				"type": "unknown",
+				"type": "HostedConnectionState",
 				"description": "An instance of HostedConnectionState bound to the supplied Workspace, with status, error, busy, availability, address and expiry state plus load, connect, disconnect and dispose methods. Its bridge requests are skipped when the required bridge operations are unavailable, another request is busy, or the instance has been disposed."
 			}
 		],
@@ -52,7 +52,7 @@
 				"outputs": [
 					{
 						"name": "createHostedConnectionStore",
-						"type": "unknown",
+						"type": "HostedConnectionState",
 						"description": "An instance of HostedConnectionState bound to the supplied Workspace, with status, error, busy, availability, address and expiry state plus load, connect, disconnect and dispose methods. Its bridge requests are skipped when the required bridge operations are unavailable, another request is busy, or the instance has been disposed."
 					}
 				],

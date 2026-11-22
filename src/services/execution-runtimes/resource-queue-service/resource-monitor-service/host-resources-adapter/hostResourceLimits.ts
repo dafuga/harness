@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { platform } from 'node:os';
 import { dirname, resolve } from 'node:path';
 import type { HostLimits } from './hostResourceLimits.types';
+import { HostResourceLimitsError } from './hostResourceLimits.types';
 export type { HostLimits } from './hostResourceLimits.types';
 /** Respect hierarchical cgroup-v2 limits as well as affinity; host counters alone hide quota saturation. */
 export function hostResourceLimits(
@@ -15,10 +16,10 @@ export function hostResourceLimits(
 }
 function linuxLimits(root: string, membership: string): HostLimits {
 	if (!existsSync(root + '/cgroup.controllers'))
-		throw new Error('Resource admission requires cgroup v2 on Linux');
+		throw new HostResourceLimitsError('Resource admission requires cgroup v2 on Linux');
 	const relative = /^0::(.*)$/m.exec(readFileSync(membership, 'utf8'))?.[1];
-	if (!relative) throw new Error('Cannot establish cgroup membership');
-	if (relative.split('/').includes('..')) throw new Error('Invalid cgroup path');
+	if (!relative) throw new HostResourceLimitsError('Cannot establish cgroup membership');
+	if (relative.split('/').includes('..')) throw new HostResourceLimitsError('Invalid cgroup path');
 	const candidate = resolve(root, '.' + relative);
 	// A cgroup namespace may expose its own root instead of the host-relative path.
 	let path = existsSync(candidate) ? candidate : root;
@@ -36,7 +37,8 @@ function readLimits(path: string, result: HostLimits): void {
 		.split(/\s+/);
 	if (cpu && cpu[0] !== 'max') {
 		const cores = Number(cpu[0]) / Number(cpu[1]);
-		if (!Number.isFinite(cores) || cores <= 0) throw new Error('Invalid CPU quota');
+		if (!Number.isFinite(cores) || cores <= 0)
+			throw new HostResourceLimitsError('Invalid CPU quota');
 		if (result.cores === undefined || cores <= result.cores) {
 			result.cores = cores;
 			result.cpuUsedUs = Number(
@@ -52,7 +54,7 @@ function readMemoryLimits(path: string, result: HostLimits): void {
 		const total = Number(memory),
 			current = Number(readFileSync(path + '/memory.current', 'utf8').trim());
 		if (!Number.isFinite(total) || !Number.isFinite(current) || total <= 0 || current < 0)
-			throw new Error('Invalid memory quota');
+			throw new HostResourceLimitsError('Invalid memory quota');
 		result.memoryTotalBytes = Math.min(result.memoryTotalBytes ?? Infinity, total);
 		result.memoryAvailableBytes = Math.min(
 			result.memoryAvailableBytes ?? Infinity,

@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.reference-prompt",
+	"title": "desktop.function.reference-prompt examples",
+	"kind": "headless",
+	"units": ["desktop.function.reference-prompt"],
+	"builds": [],
+	"states": [
+		{
+			"id": "lists-only-accepted-unique-ids-in-order",
+			"title": "lists only accepted unique ids in order",
+			"coverage": "required"
+		},
+		{
+			"id": "caps-the-listed-ids-at-one-hundred-twenty",
+			"title": "caps the listed ids at one hundred twenty",
+			"coverage": "required"
+		},
+		{
+			"id": "names-discovery-or-plain-word-guidance-for-unlisted-units",
+			"title": "names discovery or plain-word guidance for unlisted units",
+			"coverage": "required"
+		},
+		{
+			"id": "says-none-when-no-id-is-accepted",
+			"title": "says none when no id is accepted",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.reference-prompt.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"lists-only-accepted-unique-ids-in-order",
+				"caps-the-listed-ids-at-one-hundred-twenty",
+				"names-discovery-or-plain-word-guidance-for-unlisted-units",
+				"says-none-when-no-id-is-accepted"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"lists-only-accepted-unique-ids-in-order",
+				"caps-the-listed-ids-at-one-hundred-twenty",
+				"names-discovery-or-plain-word-guidance-for-unlisted-units",
+				"says-none-when-no-id-is-accepted"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"lists-only-accepted-unique-ids-in-order",
+				"caps-the-listed-ids-at-one-hundred-twenty",
+				"names-discovery-or-plain-word-guidance-for-unlisted-units",
+				"says-none-when-no-id-is-accepted"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

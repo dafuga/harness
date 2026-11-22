@@ -1,5 +1,6 @@
 // @harness-uid u_l76zx7vxgv
 import type { RemoteRegistrationAdapterConfig } from './RemoteRegistrationAdapter.types';
+import { HubRegistrationError } from './RemoteRegistrationAdapter.types';
 import type {
 	RemoteHostRegisterInput,
 	RemoteHostRegistration
@@ -7,7 +8,7 @@ import type {
 import type { HostedFailureValidator } from '../../../validators/development-tooling/HostedFailureValidator';
 import { HostedHttpAdapter } from '../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 function signedOut(): Error {
-	const error = new Error('Connect to Harness Hub on this computer first.');
+	const error = new HubRegistrationError('Connect to Harness Hub on this computer first.');
 	return Object.assign(error, { signedOut: true });
 }
 function registration(value: unknown, hostId: string): RemoteHostRegistration {
@@ -15,7 +16,7 @@ function registration(value: unknown, hostId: string): RemoteHostRegistration {
 		{}) as Partial<RemoteHostRegistration>;
 	const shaped = typeof origin === 'string' && typeof registeredAt === 'string';
 	if (rest.hostId !== hostId || !shaped || !Number.isSafeInteger(generation))
-		throw new Error('The hub answered with an invalid registration.');
+		throw new HubRegistrationError('The hub answered with an invalid registration.');
 	return { hostId, origin, generation: generation as number, registeredAt };
 }
 

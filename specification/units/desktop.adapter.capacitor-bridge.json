@@ -20,7 +20,8 @@
 			"CapacitorBridgeAdapterConfig",
 			"CapacitorBridgeAdapterConfig",
 			"Input",
-			"Operation"
+			"Operation",
+			"RequestRefusedError"
 		]
 	},
 	"contract": {
@@ -291,7 +292,7 @@
 				"outputs": [
 					{
 						"name": "CapacitorBridgeAdapter.constructor",
-						"type": "unknown",
+						"type": "CapacitorBridgeAdapter",
 						"description": "The new CapacitorBridgeAdapter instance, which keeps the config and starts with no selected project, no recorded revisions, no granted methods, an empty principal and the reached flag unset until allow is called."
 					}
 				],

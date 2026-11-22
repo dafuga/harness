@@ -30,8 +30,8 @@
 		],
 		"errors": [
 			{
-				"name": "unknown",
-				"type": "thrown",
+				"name": "Metadata load error",
+				"type": "propagated",
 				"description": "Rejects with the underlying thrown or rejected value from metadata path construction, cache access/deletion/write, source.rawMany, or bundle transformation/validation. A failed shared load clears metadataPending and propagates that value unchanged."
 			}
 		],
@@ -56,8 +56,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "Metadata load error",
+						"type": "propagated",
 						"description": "Rejects with the underlying thrown or rejected value from metadata path construction, cache access/deletion/write, source.rawMany, or bundle transformation/validation. A failed shared load clears metadataPending and propagates that value unchanged."
 					}
 				],

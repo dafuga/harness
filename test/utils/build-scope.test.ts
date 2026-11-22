@@ -66,6 +66,12 @@ test('evidence without a build, or no evidence at all, needs every build', () =>
 test('an empty declared build list needs no build and keeps only unscoped setup steps', () => {
 	const needed = neededBuilds([scenario('headless', [{ id: 'output' }], [])]);
 	expect(needed).toEqual(new Set());
+	const headless = ['hosted-catalog', 'hub-recorded-evidence'].map((id) => {
+		const file = new URL(`../../specification/scenarios/${id}.json`, import.meta.url);
+		return scenarioManifestSchema.parse(JSON.parse(readFileSync(file, 'utf8')));
+	});
+	expect(headless.map((manifest) => manifest.builds)).toEqual([[], []]);
+	expect(neededBuilds(headless)).toEqual(new Set());
 	expect(commandsFor(needed)).toEqual([
 		'bun install --frozen-lockfile',
 		'bun run generate-types',

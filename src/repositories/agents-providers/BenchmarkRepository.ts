@@ -3,16 +3,18 @@ import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
 import type { BenchmarkRun } from '../../core/agents-providers/subagentBenchmarkTypes';
+import { InvalidBenchmarkRunIdError } from './BenchmarkRepository.types';
 
 export class BenchmarkRepository {
 	constructor(
-		readonly home = join(
+		readonly home: string = join(
 			process.env.HARNESS_ANALYTICS_HOME ?? join(homedir(), '.codex', 'harness'),
 			'benchmarks'
 		)
 	) {}
 	directory(id: string): string {
-		if (!/^[a-f0-9-]{36}$/.test(id)) throw new Error('Invalid benchmark run ID.');
+		if (!/^[a-f0-9-]{36}$/.test(id))
+			throw new InvalidBenchmarkRunIdError('Invalid benchmark run ID.');
 		return join(this.home, id);
 	}
 	async save(run: BenchmarkRun): Promise<void> {

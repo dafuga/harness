@@ -53,12 +53,12 @@
 		"outputs": [
 			{
 				"name": "changeExecute",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Resolves with no value once the runner returns; the runner runs with write access and the approved reference image path when one exists, streamed text and status are emitted, and the reply is kept for recordChange. It does not run verification, and it rejects with RunCancelled when the signal is aborted after the runner returns."
 			},
 			{
 				"name": "recordChange",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Resolves with no value after comparing source snapshots, recording host operations, emitting changed files and appending one agent message to the thread. The message holds the trimmed reply, if any, cut to its first 20,000 characters with a newline and an ellipsis when longer, then a summary of the status, file and operation counts, owning units when the unit registry at the revision can be read, and that verification is pending."
 			}
 		],
@@ -90,7 +90,7 @@
 				"outputs": [
 					{
 						"name": "changeExecute",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Resolves with no value once the runner returns; the runner runs with write access and the approved reference image path when one exists, streamed text and status are emitted, and the reply is kept for recordChange. It does not run verification, and it rejects with RunCancelled when the signal is aborted after the runner returns."
 					}
 				],
@@ -122,7 +122,7 @@
 				"outputs": [
 					{
 						"name": "recordChange",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Resolves with no value after comparing source snapshots, recording host operations, emitting changed files and appending one agent message to the thread. The message holds the trimmed reply, if any, cut to its first 20,000 characters with a newline and an ellipsis when longer, then a summary of the status, file and operation counts, owning units when the unit registry at the revision can be read, and that verification is pending."
 					}
 				],

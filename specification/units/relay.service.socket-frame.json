@@ -148,7 +148,7 @@
 				"outputs": [
 					{
 						"name": "SocketFrameService.constructor",
-						"type": "unknown",
+						"type": "SocketFrameService",
 						"description": "Constructs and returns SocketFrameService, initializing a SecurePacketValidator and an empty per-socket rate-window map while retaining the supplied services. It does not process a frame until an operation is called."
 					}
 				],

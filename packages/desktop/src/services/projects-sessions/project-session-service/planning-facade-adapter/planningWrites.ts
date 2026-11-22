@@ -14,6 +14,7 @@ import {
 	planVersion
 } from '../../../../utils/projects-sessions/planning-reads/planRecord';
 import { approvalInfo, threadInfo } from '../../../../utils/projects-sessions/planningConvert';
+import { PlanningWriteError } from './planningWrites.types';
 
 export async function planningWrites(context: PlanningContext, draft: PlanDraft) {
 	const slug = draft.title
@@ -21,7 +22,7 @@ export async function planningWrites(context: PlanningContext, draft: PlanDraft)
 		.replace(/[^a-z0-9]+/g, '-')
 		.replace(/^-|-$/g, '')
 		.slice(0, 64);
-	if (!slug) throw new Error('Use a title containing letters or numbers.');
+	if (!slug) throw new PlanningWriteError('Use a title containing letters or numbers.');
 	const category = draft.category.slice(0, -1) as PlanDetail['category'];
 	const result = await context.api.createPlan({
 		category,
@@ -97,9 +98,10 @@ export async function openPlanThread(context: PlanningContext, draft: ThreadDraf
 	const image = plan.versions
 		.find((v) => v.version === draft.version)
 		?.images.find((i) => i.sha256 === draft.imageSha256);
-	if (draft.version && !image) throw new Error('The image anchor does not belong to this entity.');
+	if (draft.version && !image)
+		throw new PlanningWriteError('The image anchor does not belong to this entity.');
 	if (image && (image.state !== draft.state || image.viewport !== draft.viewport))
-		throw new Error('The image state/viewport anchor does not match.');
+		throw new PlanningWriteError('The image state/viewport anchor does not match.');
 	return threadInfo(
 		(
 			await context.api.openThread({
@@ -118,13 +120,13 @@ export async function openPlanThread(context: PlanningContext, draft: ThreadDraf
 export async function approvePlanDesign(context: PlanningContext, draft: ApprovalDraft) {
 	const plan = await context.api.readPlan({ unitId: draft.entityId }),
 		version = plan.versions.find((v) => v.version === draft.version);
-	if (!version) throw new Error('Unknown design version.');
+	if (!version) throw new PlanningWriteError('Unknown design version.');
 	const group = version.options?.find((o) => o.id === draft.option)?.images ?? version.images;
 	const images = group
 		.filter((i) => draft.imageHashes.includes(i.sha256))
 		.map((i) => ({ file: i.file, sha256: i.sha256 }));
 	if (images.length !== draft.imageHashes.length)
-		throw new Error('Approval images do not match the version.');
+		throw new PlanningWriteError('Approval images do not match the version.');
 	return approvalInfo(
 		(
 			await context.api.approveDesign({

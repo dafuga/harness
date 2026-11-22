@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.budget-reviews",
+	"title": "function.budget-reviews examples",
+	"kind": "headless",
+	"units": ["function.budget-reviews"],
+	"builds": [],
+	"states": [
+		{
+			"id": "combines-ledger-reviews-and-removes-repeated-events",
+			"title": "Combines ledger reviews and removes repeated events",
+			"coverage": "required"
+		},
+		{
+			"id": "selects-source-limits-and-their-unmeasured-reasons",
+			"title": "Selects source limits and their unmeasured reasons",
+			"coverage": "required"
+		},
+		{
+			"id": "selects-emitted-limits-for-distinct-executable-targets",
+			"title": "Selects emitted limits for distinct executable targets",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.budget-reviews.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"combines-ledger-reviews-and-removes-repeated-events",
+				"selects-source-limits-and-their-unmeasured-reasons",
+				"selects-emitted-limits-for-distinct-executable-targets"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"combines-ledger-reviews-and-removes-repeated-events",
+				"selects-source-limits-and-their-unmeasured-reasons",
+				"selects-emitted-limits-for-distinct-executable-targets"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"combines-ledger-reviews-and-removes-repeated-events",
+				"selects-source-limits-and-their-unmeasured-reasons",
+				"selects-emitted-limits-for-distinct-executable-targets"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -24,6 +24,7 @@
 			"SourceState",
 			"SourceFiles",
 			"SourceRead",
+			"ArchivedSourceReadError",
 			"createSourceReaderStore",
 			"implementationFiles",
 			"archivedSource",
@@ -296,7 +297,7 @@
 				"name": "archivedSource.filePath",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "An optional archived path moved to the front of the files result when it is present there. Other values do not change the path order.",
 				"examples": ["packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.test.ts"]
 			}
@@ -304,7 +305,7 @@
 		"outputs": [
 			{
 				"name": "createSourceReaderStore",
-				"type": "unknown",
+				"type": "{ state: SourceState; select: (path: string) => Promise<void>; initialise: (files: SourceFiles, load: SourceRead) => Promise<void>; cancel: () => void; }",
 				"description": "Creates reactive state with {files: [], path: '', text: '', loading: true, error: ''} and returns it with initialise, select, and cancel; accepted selections and initialization replace the active generation. Paths outside state.files are ignored, failures are stored in state.error, and cancellation or later generations prevent pending replies from updating state without aborting them."
 			},
 			{
@@ -348,7 +349,7 @@
 				"outputs": [
 					{
 						"name": "createSourceReaderStore",
-						"type": "unknown",
+						"type": "{ state: SourceState; select: (path: string) => Promise<void>; initialise: (files: SourceFiles, load: SourceRead) => Promise<void>; cancel: () => void; }",
 						"description": "Creates reactive state with {files: [], path: '', text: '', loading: true, error: ''} and returns it with initialise, select, and cancel; accepted selections and initialization replace the active generation. Paths outside state.files are ignored, failures are stored in state.error, and cancellation or later generations prevent pending replies from updating state without aborting them."
 					}
 				],
@@ -657,7 +658,7 @@
 						"name": "archivedSource.filePath",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "An optional archived path moved to the front of the files result when it is present there. Other values do not change the path order.",
 						"examples": ["packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.test.ts"]
 					}

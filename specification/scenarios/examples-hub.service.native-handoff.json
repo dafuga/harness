@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.service.native-handoff",
+	"title": "hub.service.native-handoff examples",
+	"kind": "headless",
+	"units": ["hub.service.native-handoff"],
+	"builds": [],
+	"states": [
+		{
+			"id": "start-issues-a-dashed-user-code-and-a-five-minute-handoff",
+			"title": "start issues a dashed user code and a five minute handoff",
+			"coverage": "required"
+		},
+		{
+			"id": "approve-binds-the-handoff-to-the-approving-browser-session",
+			"title": "approve binds the handoff to the approving browser session",
+			"coverage": "required"
+		},
+		{
+			"id": "poll-reports-pending-approved-and-expired-handoffs",
+			"title": "poll reports pending, approved and expired handoffs",
+			"coverage": "required"
+		},
+		{
+			"id": "exchange-issues-one-native-session-for-an-approved-handoff",
+			"title": "exchange issues one native session for an approved handoff",
+			"coverage": "required"
+		},
+		{
+			"id": "exchange-refuses-wrong-verifiers-and-signed-out-approvers",
+			"title": "exchange refuses wrong verifiers and signed-out approvers",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.service.native-handoff.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"start-issues-a-dashed-user-code-and-a-five-minute-handoff",
+				"approve-binds-the-handoff-to-the-approving-browser-session",
+				"poll-reports-pending-approved-and-expired-handoffs",
+				"exchange-issues-one-native-session-for-an-approved-handoff",
+				"exchange-refuses-wrong-verifiers-and-signed-out-approvers"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"start-issues-a-dashed-user-code-and-a-five-minute-handoff",
+				"approve-binds-the-handoff-to-the-approving-browser-session",
+				"poll-reports-pending-approved-and-expired-handoffs",
+				"exchange-issues-one-native-session-for-an-approved-handoff",
+				"exchange-refuses-wrong-verifiers-and-signed-out-approvers"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"start-issues-a-dashed-user-code-and-a-five-minute-handoff",
+				"approve-binds-the-handoff-to-the-approving-browser-session",
+				"poll-reports-pending-approved-and-expired-handoffs",
+				"exchange-issues-one-native-session-for-an-approved-handoff",
+				"exchange-refuses-wrong-verifiers-and-signed-out-approvers"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

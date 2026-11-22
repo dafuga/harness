@@ -1,5 +1,6 @@
 // @harness-uid u_jqqdhrwai3
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { ExpectedCliError } from '../src/core/development-tooling/errors';
 
 const destination = 'plugins/claude-picker/dist';
 await mkdir(destination, { recursive: true });
@@ -17,4 +18,4 @@ const result = await Bun.build({
 	outdir: destination,
 	naming: 'server.js'
 });
-if (!result.success) throw new Error('Picker MCP bundle failed.');
+if (!result.success) throw new ExpectedCliError('Picker MCP bundle failed.');

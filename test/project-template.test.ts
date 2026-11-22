@@ -8,6 +8,7 @@ import { projectFiles } from '../src/templates/projects-sessions/project';
 import { measureWorkload } from './support/measureWorkload';
 import { assertFoundationLint } from './support/project-template/foundations';
 import { assertAtomCompiler } from './support/project-template/atoms';
+import { assertHarnessCliGuidance } from './support/harnessCliGuidance';
 import { withTempDir } from './support/temporary';
 
 test(
@@ -57,7 +58,7 @@ test('app projects include SvelteKit and specification files', () =>
 			expect(fileContents(files, path)).toContain('src/helpers/<responsibility>/<camelName>.ts');
 			expect(fileContents(files, path)).toContain('selected callable implementation');
 		}
-		expectRenameGuidance(files);
+		expectAgentGuidance(files);
 		expect(auditConfig(files).limits.maxMethodLines).toBe(35);
 		expect(packageJson.harness.kind).toBe('app');
 		expect(packageJson.scripts['test:e2e']).toBe('playwright test');
@@ -97,7 +98,7 @@ test('library projects include Bun TypeScript test structure', () => {
 		expect(fileContents(files, path)).toContain('<camelName>.ts');
 		expect(fileContents(files, path)).toContain('instantiated classes');
 	}
-	expectRenameGuidance(files);
+	expectAgentGuidance(files);
 	expect(packageJson.harness.kind).toBe('lib');
 	expect(packageJson.scripts.audit).toContain('harness-audit');
 	expect(packageJson.scripts.check).toContain('format:check');
@@ -205,4 +206,12 @@ function auditConfig(files: ReturnType<typeof projectFiles>): { limits: Record<s
 function expectResourceGuidance(files: ReturnType<typeof projectFiles>): void {
 	expect(fileContents(files, 'AGENTS.md')).toContain('harness resources run');
 	expect(fileContents(files, 'AGENTS.md')).toContain('Finish current tests under pressure');
+}
+
+function expectAgentGuidance(files: Parameters<typeof fileContents>[0]): void {
+	assertHarnessCliGuidance(files);
+	expectRenameGuidance(files);
+	for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md'])
+		for (const command of ['map', 'search', 'show'])
+			expect(fileContents(files, path)).toContain(`harness contracts ${command}`);
 }

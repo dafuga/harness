@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.project-agent-events",
+	"title": "desktop.function.project-agent-events project replies, failures and saved plans",
+	"kind": "headless",
+	"units": ["desktop.function.project-agent-events"],
+	"builds": [],
+	"states": [
+		{
+			"id": "ignores-events-for-another-run",
+			"title": "Events for another run or with no active run change nothing and resolve",
+			"coverage": "required"
+		},
+		{
+			"id": "streams-status-replay-and-text",
+			"title": "Status, replay and text events update the streamed reply in place",
+			"coverage": "required"
+		},
+		{
+			"id": "failed-run-records-reply-and-clears-run",
+			"title": "A failed run records its reply, clears the active run and settles as not planned",
+			"coverage": "required"
+		},
+		{
+			"id": "cancelled-run-keeps-draft-link-unopened",
+			"title": "A cancelled run with a saved draft keeps the draft link without opening it",
+			"coverage": "required"
+		},
+		{
+			"id": "finished-run-opens-saved-thread",
+			"title": "A finished run whose request is saved opens its thread after refreshing",
+			"coverage": "required"
+		},
+		{
+			"id": "refresh-failure-rejects-the-event",
+			"title": "A workspace refresh failure after a terminal event rejects the promise",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.project-agent-events.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"ignores-events-for-another-run",
+				"streams-status-replay-and-text",
+				"failed-run-records-reply-and-clears-run",
+				"cancelled-run-keeps-draft-link-unopened",
+				"finished-run-opens-saved-thread",
+				"refresh-failure-rejects-the-event"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"ignores-events-for-another-run",
+				"streams-status-replay-and-text",
+				"failed-run-records-reply-and-clears-run",
+				"cancelled-run-keeps-draft-link-unopened",
+				"finished-run-opens-saved-thread",
+				"refresh-failure-rejects-the-event"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"ignores-events-for-another-run",
+				"streams-status-replay-and-text",
+				"failed-run-records-reply-and-clears-run",
+				"cancelled-run-keeps-draft-link-unopened",
+				"finished-run-opens-saved-thread",
+				"refresh-failure-rejects-the-event"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

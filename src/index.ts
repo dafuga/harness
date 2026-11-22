@@ -97,29 +97,13 @@ export type {
 	CatalogRevisionEntityUpdateInput
 } from './models/git-source-history/CatalogRevisionEntity.types';
 export { CatalogDependency } from './models/git-source-history/CatalogDependency';
-export type {
-	CatalogDependencyAttributes,
-	CatalogDependencyCreateInput,
-	CatalogDependencyUpdateInput
-} from './models/git-source-history/CatalogDependency.types';
+export type * from './models/git-source-history/CatalogDependency.types';
 export { CatalogBranch } from './models/git-source-history/CatalogBranch';
-export type {
-	CatalogBranchAttributes,
-	CatalogBranchCreateInput,
-	CatalogBranchUpdateInput
-} from './models/git-source-history/CatalogBranch.types';
+export type * from './models/git-source-history/CatalogBranch.types';
 export { CatalogRecord } from './models/git-source-history/CatalogRecord';
-export type {
-	CatalogRecordAttributes,
-	CatalogRecordCreateInput,
-	CatalogRecordUpdateInput
-} from './models/git-source-history/CatalogRecord.types';
+export type * from './models/git-source-history/CatalogRecord.types';
 export { CatalogMetadata } from './models/git-source-history/CatalogMetadata';
-export type {
-	CatalogMetadataAttributes,
-	CatalogMetadataCreateInput,
-	CatalogMetadataUpdateInput
-} from './models/git-source-history/CatalogMetadata.types';
+export type * from './models/git-source-history/CatalogMetadata.types';
 export { AnalyticsEvent } from './models/reports-media/AnalyticsEvent';
 export type {
 	AnalyticsEventAttributes,
@@ -186,6 +170,20 @@ export { PermissionsCommand } from './commands/networking-security/PermissionsCo
 export { BoundedCommandAdapter } from './adapters/execution-runtimes/BoundedCommandAdapter';
 export { staleBuild } from './utils/development-tooling/staleBuild';
 export { scenarioHealth } from './utils/verification-evidence/scenarioHealth';
+export { ContractsCommand } from './commands/development-tooling/ContractsCommand';
+export { VideoEvidenceService } from './services/verification-evidence/VideoEvidenceService';
+export { videoClipSchema } from './utils/verification-evidence/videoClipSchema';
+export { FrameFlagService } from './services/verification-evidence/FrameFlagService';
+export { NativeVideoRecorderService } from './services/verification-evidence/NativeVideoRecorderService';
+export { VideoArchiveService } from './services/verification-evidence/VideoArchiveService';
+export { VideoReferenceService } from './services/verification-evidence/VideoReferenceService';
+export { VideoCaptureService } from './services/verification-evidence/VideoCaptureService';
+export { JobHistoryRepository } from './repositories/execution-runtimes/JobHistoryRepository';
+export { JobStatisticsService } from './services/execution-runtimes/JobStatisticsService';
+export { QueueEtaService } from './services/execution-runtimes/QueueEtaService';
+export { DriverQueueAdapter } from './adapters/execution-runtimes/DriverQueueAdapter';
+export { JobBackfillService } from './services/execution-runtimes/JobBackfillService';
+export { JobsCommand } from './commands/execution-runtimes/JobsCommand';
 export { TaskOrchestrationCommand } from './commands/agents-providers/TaskOrchestrationCommand';
 export { ProviderSessionAdapter } from './adapters/agents-providers/ProviderSessionAdapter';
 export { TrackerCommand } from './commands/projects-sessions/TrackerCommand';

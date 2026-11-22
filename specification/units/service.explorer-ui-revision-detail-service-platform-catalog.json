@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/explorer-ui/revision-detail-service/platformCatalog.ts"],
-		"symbols": ["readPlatformCatalog"]
+		"source": [
+			"src/services/explorer-ui/revision-detail-service/platformCatalog.ts",
+			"src/services/explorer-ui/revision-detail-service/platformCatalog.types.ts"
+		],
+		"symbols": ["readPlatformCatalog", "InvalidPlatformCatalogManifestError"]
 	},
 	"contract": {
 		"origin": "declared",

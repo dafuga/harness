@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.source-branches",
+	"title": "function.source-branches examples",
+	"kind": "headless",
+	"units": ["function.source-branches"],
+	"builds": [],
+	"states": [
+		{
+			"id": "keeps-matching-remote-tips-under-the-local-branch-name",
+			"title": "Keeps matching remote tips under the local branch name",
+			"coverage": "required"
+		},
+		{
+			"id": "names-remote-branches-when-their-tips-conflict",
+			"title": "Names remote branches when their tips conflict",
+			"coverage": "required"
+		},
+		{
+			"id": "lists-agreed-remote-only-branches-and-filters-other-refs",
+			"title": "Lists agreed remote-only branches and filters other refs",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.source-branches.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"keeps-matching-remote-tips-under-the-local-branch-name",
+				"names-remote-branches-when-their-tips-conflict",
+				"lists-agreed-remote-only-branches-and-filters-other-refs"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"keeps-matching-remote-tips-under-the-local-branch-name",
+				"names-remote-branches-when-their-tips-conflict",
+				"lists-agreed-remote-only-branches-and-filters-other-refs"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"keeps-matching-remote-tips-under-the-local-branch-name",
+				"names-remote-branches-when-their-tips-conflict",
+				"lists-agreed-remote-only-branches-and-filters-other-refs"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -58,7 +58,7 @@
 		"outputs": [
 			{
 				"name": "hostCpuCounters",
-				"type": "unknown",
+				"type": "{ at: number; limits: HostLimits; cores: number; affinity: number; idle: number; total: number; }",
 				"description": "A host sample containing monotonic performance.now() time, the logical CPU count from os.cpus(), affinity from availableParallelism(), aggregate idle and total CPU times, and the current hostResourceLimits() value. Call it for interval endpoints passed to resourceCpu; its elapsed and idle deltas are validated there.",
 				"examples": [
 					{
@@ -76,7 +76,7 @@
 			},
 			{
 				"name": "resourceCpu",
-				"type": "unknown",
+				"type": "{ logicalCores: number; usableCores: number; cpuUsedPercent: number; cpuAvailableCores: number; }",
 				"description": "An interval summary with the logical core count, usable core count, host CPU use percentage, and available cores. Usable cores are bounded by logical cores, affinity, and any core limit; available cores are clamped at zero and bounded by observed idle capacity and, when quota use is reported, measured quota availability.",
 				"examples": [
 					{
@@ -103,7 +103,7 @@
 				"outputs": [
 					{
 						"name": "hostCpuCounters",
-						"type": "unknown",
+						"type": "{ at: number; limits: import('./hostResourceLimits.types').HostLimits; cores: number; affinity: number; idle: number; total: number; }",
 						"description": "A host sample containing monotonic performance.now() time, the logical CPU count from os.cpus(), affinity from availableParallelism(), aggregate idle and total CPU times, and the current hostResourceLimits() value. Call it for interval endpoints passed to resourceCpu; its elapsed and idle deltas are validated there.",
 						"examples": [
 							{
@@ -168,7 +168,7 @@
 				"outputs": [
 					{
 						"name": "resourceCpu",
-						"type": "unknown",
+						"type": "{ logicalCores: number; usableCores: number; cpuUsedPercent: number; cpuAvailableCores: number; }",
 						"description": "An interval summary with the logical core count, usable core count, host CPU use percentage, and available cores. Usable cores are bounded by logical cores, affinity, and any core limit; available cores are clamped at zero and bounded by observed idle capacity and, when quota use is reported, measured quota availability.",
 						"examples": [
 							{

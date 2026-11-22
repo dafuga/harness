@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.page.harness-branch-branch-at-shells-entity-details",
+	"title": "reports.page.harness-branch-branch-at-shells-entity-details examples",
+	"kind": "headless",
+	"units": ["reports.page.harness-branch-branch-at-shells-entity-details"],
+	"builds": [],
+	"states": [
+		{
+			"id": "renders-the-shell-details-route-in-the-harness-console",
+			"title": "Renders the shell details route in the Harness console",
+			"coverage": "required"
+		},
+		{
+			"id": "titles-the-shell-details-page-shell-details",
+			"title": "Titles the shell details page Shell details",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.page.harness-branch-branch-at-shells-entity-details.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"renders-the-shell-details-route-in-the-harness-console",
+				"titles-the-shell-details-page-shell-details"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"renders-the-shell-details-route-in-the-harness-console",
+				"titles-the-shell-details-page-shell-details"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"renders-the-shell-details-route-in-the-harness-console",
+				"titles-the-shell-details-page-shell-details"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.build-stamp",
+	"title": "function.build-stamp examples",
+	"kind": "headless",
+	"units": ["function.build-stamp"],
+	"builds": [],
+	"states": [
+		{
+			"id": "emptybuildstamp-builds-the-all-zero-placeholder-slot",
+			"title": "emptyBuildStamp builds the all-zero placeholder slot",
+			"coverage": "required"
+		},
+		{
+			"id": "buildstamp-reads-the-identity-from-a-filled-slot",
+			"title": "buildStamp reads the identity from a filled slot",
+			"coverage": "required"
+		},
+		{
+			"id": "buildstamp-treats-the-all-zero-placeholder-as-unstamped",
+			"title": "buildStamp treats the all-zero placeholder as unstamped",
+			"coverage": "required"
+		},
+		{
+			"id": "buildstamp-returns-null-for-absent-or-malformed-slots",
+			"title": "buildStamp returns null for absent or malformed slots",
+			"coverage": "required"
+		},
+		{
+			"id": "buildstamppattern-matches-filled-and-placeholder-slots",
+			"title": "buildStampPattern matches filled and placeholder slots",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.build-stamp.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"emptybuildstamp-builds-the-all-zero-placeholder-slot",
+				"buildstamp-reads-the-identity-from-a-filled-slot",
+				"buildstamp-treats-the-all-zero-placeholder-as-unstamped",
+				"buildstamp-returns-null-for-absent-or-malformed-slots",
+				"buildstamppattern-matches-filled-and-placeholder-slots"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"emptybuildstamp-builds-the-all-zero-placeholder-slot",
+				"buildstamp-reads-the-identity-from-a-filled-slot",
+				"buildstamp-treats-the-all-zero-placeholder-as-unstamped",
+				"buildstamp-returns-null-for-absent-or-malformed-slots",
+				"buildstamppattern-matches-filled-and-placeholder-slots"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"emptybuildstamp-builds-the-all-zero-placeholder-slot",
+				"buildstamp-reads-the-identity-from-a-filled-slot",
+				"buildstamp-treats-the-all-zero-placeholder-as-unstamped",
+				"buildstamp-returns-null-for-absent-or-malformed-slots",
+				"buildstamppattern-matches-filled-and-placeholder-slots"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -17,7 +17,14 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [],
-		"outputs": [],
+		"outputs": [
+			{
+				"name": "default",
+				"type": "UserConfig",
+				"required": true,
+				"description": "The default Vite configuration object for building the console library. It uses the Svelte plugin and the src/lib/development-tooling/console.ts library entry, and builds to dist/console as one iife script under the HarnessConsole global name with the file name console, with emptyOutDir enabled and CSS code splitting disabled, so a host serves the console as one script and one stylesheet; the Svelte plugin contains callback hooks that JSON cannot express."
+			}
+		],
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [],

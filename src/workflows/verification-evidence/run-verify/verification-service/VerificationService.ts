@@ -20,10 +20,11 @@ import { emittedTargets } from '../../../../utils/development-tooling/unitMeasur
 import { neededBuilds } from './buildScope';
 import { RecordAssemblyService } from './record-assembly-service/RecordAssemblyService';
 import { judgeScenario } from './scenarioCoverage';
-import { scopedCheck, scopedScenarios } from './entityScope';
 import { referencedScenario } from './sealRecord';
 import { SnapshotRunService } from './SnapshotRunService';
-import { deferredInLite, deferredLiteCheck, verifyPlan } from './verifyPlan';
+import { deferredInLite, deferredLiteCheck } from './verifyPlan';
+import type { ScenarioManifest } from '../../../../core/development-tooling/unitTypes';
+import { pendingVideoScenarioIds, pendingVideoSelection } from './pendingVideoSelection';
 
 /** Verifies one exact commit in a clean snapshot and writes the record, whatever the outcome. */
 export class VerificationService {
@@ -46,12 +47,18 @@ export class VerificationService {
 
 	private async runAt(directory: string, startedAt: string): Promise<StoredRecord> {
 		const { context } = this;
-		const { plan, pendingChecks, referenced, rerun } = this.selection();
+		const pending = this.lite
+			? new Set<string>()
+			: await pendingVideoScenarioIds(context.root, context.head.scenarios);
+		const { plan, pendingChecks, referenced, rerun } = this.selection(pending);
 		const active = this.lite
 			? rerun.filter((scenario) => plan.some((check) => check.scenario === scenario.id))
 			: rerun;
 		const needed = context.entity ? neededBuilds(active) : undefined;
-		const executed = await this.snapshotRun(directory, needed).execute(plan, this.artifactPaths());
+		const executed = await this.snapshotRun(directory, needed, this.lite ? [] : active).execute(
+			plan,
+			this.artifactPaths()
+		);
 		const scenarios = rerun.map((scenario) =>
 			judgeScenario(context, scenario, executed, pendingChecks)
 		);
@@ -82,22 +89,10 @@ export class VerificationService {
 		return this.context.verificationProfile === 'lite';
 	}
 
-	private selection() {
+	private selection(pending: ReadonlySet<string> = new Set()) {
 		const { context } = this;
-		const { entity } = context;
-		const referenced = entity ? [] : referencedScenarios(context, this.store);
-		const kept = new Set(referenced.map((scenario) => scenario.id));
-		const rerun = entity
-			? scopedScenarios(context.head.scenarios, entity)
-			: context.head.scenarios.filter((scenario) => !kept.has(scenario.id));
-		const checks = verifyPlan({
-			selectedTests: entity ? [] : context.impact.tests.selected,
-			scenarios: rerun,
-			config: context.config,
-			unitsConfig: context.head.config,
-			testTimeoutMs: context.testTimeoutMs
-		});
-		const scoped = entity ? checks.map((check) => scopedCheck(check, entity)) : checks;
+		const previous = context.entity ? [] : referencedScenarios(context, this.store);
+		const { plan: scoped, referenced, rerun } = pendingVideoSelection(context, previous, pending);
 		const pendingChecks = this.lite ? scoped.filter(deferredLiteCheck) : [];
 		const plan = this.lite ? scoped.filter((check) => !deferredLiteCheck(check)) : scoped;
 		return { plan, pendingChecks, referenced, rerun };
@@ -119,11 +114,15 @@ export class VerificationService {
 	}
 
 	/** A scoped run passes the builds its scenarios need; a full run passes none. */
-	private snapshotRun(directory: string, needed?: ReadonlySet<string> | 'all'): SnapshotRunService {
+	private snapshotRun(
+		directory: string,
+		needed: ReadonlySet<string> | 'all' | undefined,
+		videos: ScenarioManifest[]
+	): SnapshotRunService {
 		const { root, config, commit, tree, env, retainArtifact, signal } = this.context;
 		const { lite } = this;
 		const context = { directory, commit, tree, profile: this.profile.id, env, signal, lite };
-		return new SnapshotRunService({ root, config, context, needed, retainArtifact });
+		return new SnapshotRunService({ root, config, context, needed, retainArtifact, videos });
 	}
 }
 

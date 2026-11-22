@@ -1,5 +1,6 @@
 import { resolve } from 'node:path';
-import { afterAll, beforeAll, expect, test } from 'vitest';
+import { afterAll, beforeAll, test } from 'vitest';
+import { expect } from '../verificationExpect';
 import type { ComponentManifest } from '../../src/core/unitTypes';
 import {
 	RuntimeServerService,
@@ -13,6 +14,7 @@ import { indexFiles, unitOf } from '../support/memoryTree';
 const root = resolve('.');
 const artifacts = kernelArtifacts();
 const service = new UnitRuntimeService(root);
+const expected = { ok: true, output: { contract: 'impact-kernel/1' } };
 let served: ServedRuntime;
 let manifest: ComponentManifest;
 
@@ -47,17 +49,41 @@ test('a manifest with a handler and four targets is a valid unit', () => {
 	).toEqual([]);
 });
 
-test('each declared execution target selects a working adapter of that kind', async () => {
-	const expected = { ok: true, output: { contract: 'impact-kernel/1' } };
-	for (const kind of ['module', 'wasm', 'process', 'http'] as const) {
-		const runtime = service.forUnit(manifest, kind);
-		expect(runtime.kind).toBe(kind);
-		expect(await runtime.invoke({ operation: 'version' }), kind).toEqual(expected);
-		await runtime.close();
-	}
-	const byDefault = service.forUnit(manifest);
-	expect(byDefault.kind).toBe('module');
-	expect(await byDefault.invoke({ operation: 'version' })).toEqual(expected);
+test('the module target answers the version call through the module adapter', async () => {
+	const runtime = service.forUnit(manifest, 'module');
+	expect(runtime.kind).toBe('module');
+	expect(await runtime.invoke({ operation: 'version' })).toEqual(expected);
+	expect(service.forUnit(manifest).kind).toBe('module');
+	await runtime.close();
+});
+
+test('the wasm target answers the version call through the Wasm adapter', async () => {
+	const runtime = service.forUnit(manifest, 'wasm');
+	expect(runtime.kind).toBe('wasm');
+	expect(await runtime.invoke({ operation: 'version' })).toEqual(expected);
+	await runtime.close();
+	const kernel = service.kernel('wasm');
+	expect(kernel.kind).toBe('wasm');
+	expect(await kernel.invoke({ operation: 'version' })).toEqual(expected);
+	await kernel.close();
+});
+
+test('the process target answers the version call through the persistent process adapter', async () => {
+	const runtime = service.forUnit(manifest, 'process');
+	expect(runtime.kind).toBe('process');
+	expect(await runtime.invoke({ operation: 'version' })).toEqual(expected);
+	await runtime.close();
+	const kernel = service.kernel('process');
+	expect(kernel.kind).toBe('process');
+	expect(await kernel.invoke({ operation: 'version' })).toEqual(expected);
+	await kernel.close();
+});
+
+test('the http target answers the version call through the served module kernel', async () => {
+	const runtime = service.forUnit(manifest, 'http');
+	expect(runtime.kind).toBe('http');
+	expect(await runtime.invoke({ operation: 'version' })).toEqual(expected);
+	await runtime.close();
 });
 
 test('an undeclared target is refused instead of guessed', async () => {

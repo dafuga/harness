@@ -32,9 +32,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Store root used to locate `<root>/servers/<port>.json`; it determines which recorded server is considered for stopping. A file-read failure is treated as no record.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18/packages/reports"
-				]
+				"examples": ["/workspace/project/packages/reports"]
 			},
 			{
 				"name": "stopReportServer.port",
@@ -55,9 +53,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Root directory prefixed to the `servers/<port>.json` record path; it determines where the handle reads, writes and removes this record. The directory is created recursively only by `write()`, not by constructing the handle.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18/packages/reports"
-				]
+				"examples": ["/workspace/project/packages/reports"]
 			},
 			{
 				"name": "reportServerRecord.port",
@@ -76,7 +72,7 @@
 			},
 			{
 				"name": "reportServerRecord",
-				"type": "unknown",
+				"type": "{ file: string; read(): Promise<ServerRecord | undefined>; write(record: ServerRecord): Promise<void>; remove: () => Promise<void>; }",
 				"description": "Returns a handle whose `file` is `<root>/servers/<port>.json` and whose methods read, write and remove that file. `read()` returns parsed JSON or `undefined` for read errors or empty content but rejects malformed JSON; `write()` creates parent directories and writes pretty JSON plus a newline, while `remove()` force-removes the file."
 			},
 			{
@@ -125,9 +121,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Store root used to locate `<root>/servers/<port>.json`; it determines which recorded server is considered for stopping. A file-read failure is treated as no record.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18/packages/reports"
-						]
+						"examples": ["/workspace/project/packages/reports"]
 					},
 					{
 						"name": "stopReportServer.port",
@@ -206,9 +200,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Root directory prefixed to the `servers/<port>.json` record path; it determines where the handle reads, writes and removes this record. The directory is created recursively only by `write()`, not by constructing the handle.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18/packages/reports"
-						]
+						"examples": ["/workspace/project/packages/reports"]
 					},
 					{
 						"name": "reportServerRecord.port",
@@ -221,7 +213,7 @@
 				"outputs": [
 					{
 						"name": "reportServerRecord",
-						"type": "unknown",
+						"type": "{ file: string; read(): Promise<ServerRecord | undefined>; write(record: ServerRecord): Promise<void>; remove: () => Promise<void>; }",
 						"description": "Returns a handle whose `file` is `<root>/servers/<port>.json` and whose methods read, write and remove that file. `read()` returns parsed JSON or `undefined` for read errors or empty content but rejects malformed JSON; `write()` creates parent directories and writes pretty JSON plus a newline, while `remove()` force-removes the file."
 					}
 				],

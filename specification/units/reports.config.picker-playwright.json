@@ -17,7 +17,14 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [],
-		"outputs": [],
+		"outputs": [
+			{
+				"name": "default",
+				"type": "PlaywrightTestConfig",
+				"required": true,
+				"description": "The default Playwright test configuration for the provider-picker suite: tests in ../../tests/e2e matching provider-picker.spec.ts, one worker, the list reporter, and a 900 by 900 viewport with baseURL HARNESS_PICKER_PREVIEW_URL or http://127.0.0.1:<port>. The port is HARNESS_PICKER_PREVIEW_PORT or 47839; under HARNESS_VERIFY an unset port is replaced by a free one and written back to that variable for the run's workers. Unless HARNESS_PICKER_PREVIEW_URL is set, a webServer run from the repository root builds the picker, clears .cache/codex-picker-preview and starts codex picker-preview on that port, waits up to 180 s for <origin>/preview, and reuses a running server except under HARNESS_VERIFY."
+			}
+		],
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [],

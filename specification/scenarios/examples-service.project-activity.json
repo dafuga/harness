@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.project-activity",
+	"title": "service.project-activity examples",
+	"kind": "headless",
+	"units": ["service.project-activity"],
+	"builds": [],
+	"states": [
+		{
+			"id": "shows-a-checkout-that-has-no-commits-yet",
+			"title": "Shows a checkout that has no commits yet",
+			"coverage": "required"
+		},
+		{
+			"id": "lists-the-recorded-work-of-a-project-history",
+			"title": "Lists the recorded work of a project history",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-every-worktree-is-bare",
+			"title": "Throws TypeError when every worktree is bare",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-boundedcommandfailure-when-git-cannot-start",
+			"title": "Throws BoundedCommandFailure when git cannot start",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-a-git-read-exits-non-zero",
+			"title": "Throws Error when a git read exits non-zero",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-a-units-directory-is-not-a-directory",
+			"title": "Throws Error when a units directory is not a directory",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.project-activity.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"shows-a-checkout-that-has-no-commits-yet",
+				"lists-the-recorded-work-of-a-project-history",
+				"throws-typeerror-when-every-worktree-is-bare",
+				"throws-boundedcommandfailure-when-git-cannot-start",
+				"throws-error-when-a-git-read-exits-non-zero",
+				"throws-error-when-a-units-directory-is-not-a-directory"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"shows-a-checkout-that-has-no-commits-yet",
+				"lists-the-recorded-work-of-a-project-history",
+				"throws-typeerror-when-every-worktree-is-bare",
+				"throws-boundedcommandfailure-when-git-cannot-start",
+				"throws-error-when-a-git-read-exits-non-zero",
+				"throws-error-when-a-units-directory-is-not-a-directory"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"shows-a-checkout-that-has-no-commits-yet",
+				"lists-the-recorded-work-of-a-project-history",
+				"throws-typeerror-when-every-worktree-is-bare",
+				"throws-boundedcommandfailure-when-git-cannot-start",
+				"throws-error-when-a-git-read-exits-non-zero",
+				"throws-error-when-a-units-directory-is-not-a-directory"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

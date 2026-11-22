@@ -22,7 +22,8 @@
 			"PermissionCatalogService.at",
 			"PermissionProfile",
 			"PermissionCatalog",
-			"PermissionSourceTree"
+			"PermissionSourceTree",
+			"ProfileIdentityError"
 		]
 	},
 	"contract": {
@@ -33,9 +34,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem root passed to path joining before the service enumerates `specification/permissions`. It matters to `load`; a missing permissions directory yields an empty catalog, while other directory-listing errors reject.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "PermissionCatalogService.at.tree",
@@ -47,7 +46,7 @@
 		"outputs": [
 			{
 				"name": "profileSchema",
-				"type": "unknown",
+				"type": "typeof profileSchema",
 				"description": "Strict Zod schema used to parse permission-profile JSON: `schemaVersion` must be 1, `id` must match the lowercase hyphenated pattern, text values must be nonempty after trimming, and grants must use the declared API, page, or data shape. It rejects unknown keys and enforces the action and nonempty-array constraints; the schema instance cannot be represented as a JSON value."
 			},
 			{
@@ -160,9 +159,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem root passed to path joining before the service enumerates `specification/permissions`. It matters to `load`; a missing permissions directory yields an empty catalog, while other directory-listing errors reject.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [

@@ -24,6 +24,7 @@
 			"RetainedArtifact",
 			"SnapshotDrift",
 			"SnapshotDrift",
+			"TarExtractError",
 			"RetainedArtifact"
 		]
 	},
@@ -35,9 +36,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository root passed to the Git archive and commit-tree adapters. It matters when exporting the selected commit and loading its tracked tree.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "SnapshotAdapter.create.commit",
@@ -61,9 +60,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The checkout root used to locate the source path for a shared link. The source must exist under this root for a link to be created.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "SnapshotAdapter.link.path",
@@ -172,9 +169,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository root passed to the Git archive and commit-tree adapters. It matters when exporting the selected commit and loading its tracked tree.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "SnapshotAdapter.create.commit",
@@ -218,9 +213,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The checkout root used to locate the source path for a shared link. The source must exist under this root for a link to be created.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "SnapshotAdapter.link.path",

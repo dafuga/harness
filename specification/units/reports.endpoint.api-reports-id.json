@@ -35,7 +35,7 @@
 		"outputs": [
 			{
 				"name": "GET",
-				"type": "unknown",
+				"type": "Promise<Response>",
 				"description": "The Response that SvelteKit's json() helper builds from the Report that repository.get resolves with, so its body is that report's JSON and it carries the header Cache-Control: no-store. It is returned only when the lookup succeeds, which means a report recorded for another site is never returned, and any failed lookup throws the 404 error instead."
 			}
 		],
@@ -72,7 +72,7 @@
 				"outputs": [
 					{
 						"name": "GET",
-						"type": "unknown",
+						"type": "Promise<Response>",
 						"description": "The Response that SvelteKit's json() helper builds from the Report that repository.get resolves with, so its body is that report's JSON and it carries the header Cache-Control: no-store. It is returned only when the lookup succeeds, which means a report recorded for another site is never returned, and any failed lookup throws the 404 error instead."
 					}
 				],

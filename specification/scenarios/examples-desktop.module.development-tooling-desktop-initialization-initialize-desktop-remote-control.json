@@ -1,0 +1,51 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.module.development-tooling-desktop-initialization-initialize-desktop-remote-control",
+	"title": "desktop.module.development-tooling-desktop-initialization-initialize-desktop-remote-control examples",
+	"kind": "headless",
+	"units": [
+		"desktop.module.development-tooling-desktop-initialization-initialize-desktop-remote-control"
+	],
+	"builds": [],
+	"states": [
+		{
+			"id": "forwards-remote-host-and-device-controls",
+			"title": "Forwards remote host and device controls",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.module.development-tooling-desktop-initialization-initialize-desktop-remote-control.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["forwards-remote-host-and-device-controls"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["forwards-remote-host-and-device-controls"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["forwards-remote-host-and-device-controls"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

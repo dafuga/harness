@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.function.hub-runtime",
+	"title": "hub.function.hub-runtime examples",
+	"kind": "headless",
+	"units": ["hub.function.hub-runtime"],
+	"builds": [],
+	"states": [
+		{
+			"id": "builds-a-runtime-with-no-relay-in-local-mode",
+			"title": "Builds a runtime with no relay in local mode",
+			"coverage": "required"
+		},
+		{
+			"id": "connects-collaboration-for-a-configured-repository",
+			"title": "Connects collaboration for a configured repository",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-connect-when-the-repository-id-is-invalid",
+			"title": "Rejects connect when the repository id is invalid",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-connect-when-owner-or-repo-is-empty",
+			"title": "Rejects connect when owner or repo is empty",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.function.hub-runtime.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"builds-a-runtime-with-no-relay-in-local-mode",
+				"connects-collaboration-for-a-configured-repository",
+				"rejects-connect-when-the-repository-id-is-invalid",
+				"rejects-connect-when-owner-or-repo-is-empty"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"builds-a-runtime-with-no-relay-in-local-mode",
+				"connects-collaboration-for-a-configured-repository",
+				"rejects-connect-when-the-repository-id-is-invalid",
+				"rejects-connect-when-owner-or-repo-is-empty"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"builds-a-runtime-with-no-relay-in-local-mode",
+				"connects-collaboration-for-a-configured-repository",
+				"rejects-connect-when-the-repository-id-is-invalid",
+				"rejects-connect-when-owner-or-repo-is-empty"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

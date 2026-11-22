@@ -16,6 +16,7 @@
 			"ModuleTaskCommand",
 			"ModuleTaskCommand.constructor",
 			"ModuleTaskCommand.register",
+			"TaskWorkerInterruptedError",
 			"WorkerFlags"
 		]
 	},
@@ -86,7 +87,7 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskCommand.constructor",
-						"type": "unknown",
+						"type": "ModuleTaskCommand",
 						"description": "The constructed ModuleTaskCommand instance used to register CLI commands. It stores the provided service or the instance created by `new ModuleTaskService()`."
 					}
 				],
@@ -98,6 +99,11 @@
 	"dependencies": [
 		{
 			"unit": "adapter.agents-providers-module-task-runner",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -9,9 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/ApprovalVersionMismatchError.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/DesignApprovalRequiredError.ts",
 			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts"
 		],
-		"symbols": ["planningMessage"]
+		"symbols": ["ApprovalVersionMismatchError", "DesignApprovalRequiredError", "planningMessage"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -59,7 +61,7 @@
 		"outputs": [
 			{
 				"name": "planningMessage",
-				"type": "unknown",
+				"type": "Promise<ThreadMessage>",
 				"description": "Resolves to the display message created from the appended record, with its generated UUID, timestamp, and normalized author/provider fields. Its version comes from a matched image or notes reference or the Change target, and its image hash is set only for an image reference.",
 				"examples": [
 					{
@@ -131,7 +133,7 @@
 				"outputs": [
 					{
 						"name": "planningMessage",
-						"type": "unknown",
+						"type": "Promise<import(\"../../../../models/development-tooling/Desktop.types\").ThreadMessage>",
 						"description": "Resolves to the display message created from the appended record, with its generated UUID, timestamp, and normalized author/provider fields. Its version comes from a matched image or notes reference or the Change target, and its image hash is set only for an image reference.",
 						"examples": [
 							{

@@ -1,6 +1,7 @@
 // @harness-uid u_lzm3x5offh
 import type { ProviderSwitchService } from '../../../services/agents-providers/ProviderSwitchService';
 import { pickerMcpTools } from '../../../utils/development-tooling/pickerMcpTools';
+import { InvalidPickerPreviewRequestError } from './PickerPreviewService.types';
 
 /** Isolated local preview, not a desktop control transport. */
 export class PickerPreviewService {
@@ -37,10 +38,12 @@ export class PickerPreviewService {
 	private async respond(request: Request): Promise<Response> {
 		try {
 			const body = await request.text();
-			if (body.length > 16_000) throw new Error('Request too large');
+			if (body.length > 16_000) throw new InvalidPickerPreviewRequestError('Request too large');
 			const input = JSON.parse(body) as { name: string; arguments?: { session_id?: string } };
 			if (input.arguments?.session_id && input.arguments.session_id !== 'preview-session')
-				throw new Error('The preview only accepts its synthetic session.');
+				throw new InvalidPickerPreviewRequestError(
+					'The preview only accepts its synthetic session.'
+				);
 			const args = { ...input.arguments };
 			if (input.name === 'open_model_picker') args.session_id = 'preview-session';
 			return Response.json(await pickerMcpTools(this.service, input.name, args));

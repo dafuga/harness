@@ -31,6 +31,7 @@
 			"requestDigest",
 			"CredentialBinding",
 			"CredentialBinding",
+			"InvalidRemoteIdentityPublicKeyError",
 			"pairingCode",
 			"requestDigest",
 			"remotePatterns",
@@ -113,7 +114,7 @@
 		"outputs": [
 			{
 				"name": "remotePatterns",
-				"type": "unknown",
+				"type": "{ readonly hostId: RegExp; readonly deviceId: RegExp; readonly pairingId: RegExp; readonly connectionId: RegExp; readonly epoch: RegExp; readonly requestId: RegExp; readonly key: RegExp; readonly nonce: RegExp; readonly credential: RegExp; readonly challenge: RegExp; readonly hash: RegExp; readonly sealed: RegExp; readonly code: RegExp; readonly projectId: RegExp; }",
 				"description": "Maps host/device IDs (40 lowercase hex), pairing/connection/epoch IDs (32 lowercase hex), request IDs (8-4-4-4-12 lowercase hex), keys, nonces, credentials, challenges, hashes, sealed envelopes, pairing codes and local project IDs to their format regexes. Key, nonce, credential/challenge and sealed patterns allow 87, 22, 43 and 22–8192 base64url characters respectively; hashes are 64 lowercase hex, codes use eight characters from ABCDEFGHJKLMNPQRSTUVWXYZ23456789, and local project IDs are local- followed by 64 lowercase hex characters."
 			},
 			{

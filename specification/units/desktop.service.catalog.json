@@ -84,7 +84,7 @@
 			},
 			{
 				"name": "CatalogService.entity",
-				"type": "unknown",
+				"type": "Promise<EntityDetail>",
 				"description": "Resolves to the detail record for the matching catalog id and revision, including its contract, relationships, versions, threads, history, source information, and measurements. It throws Error when no assembled catalog row has the requested id.",
 				"examples": [
 					{
@@ -198,7 +198,7 @@
 				"outputs": [
 					{
 						"name": "CatalogService.entity",
-						"type": "unknown",
+						"type": "Promise<import(\"../../../../models/development-tooling/DesktopEntity.types\").EntityDetail>",
 						"description": "Resolves to the detail record for the matching catalog id and revision, including its contract, relationships, versions, threads, history, source information, and measurements. It throws Error when no assembled catalog row has the requested id.",
 						"examples": [
 							{
@@ -270,7 +270,7 @@
 				"outputs": [
 					{
 						"name": "CatalogService.constructor",
-						"type": "unknown",
+						"type": "CatalogService",
 						"description": "Constructs a CatalogService instance and stores the supplied source and planning dependencies as private fields. The constructor does no asynchronous work."
 					}
 				],

@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-adapter.desktop-integrity",
+	"title": "adapter.desktop-integrity examples",
+	"kind": "headless",
+	"units": ["adapter.desktop-integrity"],
+	"builds": [],
+	"states": [
+		{
+			"id": "updates-the-stored-digest-of-the-experimental-copy",
+			"title": "Updates the stored digest of the experimental copy",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-an-app-path-that-is-not-the-experimental-copy",
+			"title": "Refuses an app path that is not the experimental copy",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-copy-whose-asar-integrity-is-disabled",
+			"title": "Rejects a copy whose ASAR integrity is disabled",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-copy-with-no-stored-integrity-digest",
+			"title": "Rejects a copy with no stored integrity digest",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/adapter.desktop-integrity.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"updates-the-stored-digest-of-the-experimental-copy",
+				"refuses-an-app-path-that-is-not-the-experimental-copy",
+				"rejects-a-copy-whose-asar-integrity-is-disabled",
+				"rejects-a-copy-with-no-stored-integrity-digest"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"updates-the-stored-digest-of-the-experimental-copy",
+				"refuses-an-app-path-that-is-not-the-experimental-copy",
+				"rejects-a-copy-whose-asar-integrity-is-disabled",
+				"rejects-a-copy-with-no-stored-integrity-digest"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"updates-the-stored-digest-of-the-experimental-copy",
+				"refuses-an-app-path-that-is-not-the-experimental-copy",
+				"rejects-a-copy-whose-asar-integrity-is-disabled",
+				"rejects-a-copy-with-no-stored-integrity-digest"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.gateway-prompt",
+	"title": "function.gateway-prompt examples",
+	"kind": "headless",
+	"units": ["function.gateway-prompt"],
+	"builds": [],
+	"states": [
+		{
+			"id": "gateway-prompt-serializes-a-single-user-message",
+			"title": "Gateway prompt serializes a single user message",
+			"coverage": "required"
+		},
+		{
+			"id": "gateway-prompt-keeps-tool-calls-and-outputs-in-order",
+			"title": "Gateway prompt keeps tool calls and outputs in order",
+			"coverage": "required"
+		},
+		{
+			"id": "gateway-prompt-throws-for-a-bigint-in-the-history",
+			"title": "Gateway prompt throws for a BigInt in the history",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.gateway-prompt.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"gateway-prompt-serializes-a-single-user-message",
+				"gateway-prompt-keeps-tool-calls-and-outputs-in-order",
+				"gateway-prompt-throws-for-a-bigint-in-the-history"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"gateway-prompt-serializes-a-single-user-message",
+				"gateway-prompt-keeps-tool-calls-and-outputs-in-order",
+				"gateway-prompt-throws-for-a-bigint-in-the-history"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"gateway-prompt-serializes-a-single-user-message",
+				"gateway-prompt-keeps-tool-calls-and-outputs-in-order",
+				"gateway-prompt-throws-for-a-bigint-in-the-history"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

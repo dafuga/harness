@@ -34,17 +34,45 @@
 			{
 				"name": "recordedDone.captures",
 				"type": "ExplorerCapture[]",
-				"required": true
+				"required": true,
+				"description": "Retained ExplorerCapture records to search. A record qualifies only when it is usable, its underlying capture passed, and its kind is assertions or trace.",
+				"examples": [
+					[
+						{
+							"scenario": "required-unit-states",
+							"state": "default",
+							"capture": {
+								"evidence": "unit-state-assertions",
+								"kind": "assertions",
+								"state": "default",
+								"status": "passed",
+								"path": "evidence/unit-state-default.json",
+								"sha256": "c2f8a15e9d046b3ae71f2c85b0d9e3467a1c5f92d8b30e4cf6a9d2175e0b8c3f",
+								"mediaType": "application/json",
+								"capturedAt": "2026-11-15T10:30:00.000Z",
+								"media": ".harness/records/example/unit-state-default.json"
+							},
+							"standing": "fresh",
+							"usable": true,
+							"current": true,
+							"inheritedFrom": null
+						}
+					]
+				]
 			},
 			{
 				"name": "recordedDone.unitId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Unit identifier used to normalize each capture state through unitStateName before comparing it with the requested named state.",
+				"examples": ["workflow.development-tooling-guide-units"]
 			},
 			{
 				"name": "recordedDone.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Named unit state to match after the capture state is normalized for the supplied unit ID.",
+				"examples": ["default"]
 			},
 			{
 				"name": "guideUnits.id",
@@ -62,7 +90,7 @@
 				"examples": [
 					{},
 					{
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+						"root": "/workspace/project"
 					}
 				]
 			},
@@ -261,27 +289,57 @@
 					{
 						"name": "recordedDone.captures",
 						"type": "ExplorerCapture[]",
-						"required": true
+						"required": true,
+						"description": "Retained ExplorerCapture records to search. A record qualifies only when it is usable, its underlying capture passed, and its kind is assertions or trace.",
+						"examples": [
+							[
+								{
+									"scenario": "required-unit-states",
+									"state": "default",
+									"capture": {
+										"evidence": "unit-state-assertions",
+										"kind": "assertions",
+										"state": "default",
+										"status": "passed",
+										"path": "evidence/unit-state-default.json",
+										"sha256": "c2f8a15e9d046b3ae71f2c85b0d9e3467a1c5f92d8b30e4cf6a9d2175e0b8c3f",
+										"mediaType": "application/json",
+										"capturedAt": "2026-11-15T10:30:00.000Z",
+										"media": ".harness/records/example/unit-state-default.json"
+									},
+									"standing": "fresh",
+									"usable": true,
+									"current": true,
+									"inheritedFrom": null
+								}
+							]
+						]
 					},
 					{
 						"name": "recordedDone.unitId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Unit identifier used to normalize each capture state through unitStateName before comparing it with the requested named state.",
+						"examples": ["workflow.development-tooling-guide-units"]
 					},
 					{
 						"name": "recordedDone.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Named unit state to match after the capture state is normalized for the supplied unit ID.",
+						"examples": ["default"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordedDone",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Whether at least one capture is usable, passed, and of kind assertions or trace, with a normalized state matching the requested name.",
+						"examples": [true]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "guideUnits",
@@ -302,7 +360,7 @@
 						"examples": [
 							{},
 							{
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+								"root": "/workspace/project"
 							}
 						]
 					}

@@ -21,10 +21,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The directory whose immediate entries are listed (readdir is not recursive); only names exactly matching projection-<64 lowercase hex characters>.json or lookup-<64 lowercase hex characters>.json are read. If the listing fails for any reason, the directory is treated as empty and nothing is removed.",
-				"examples": [
-					"/Users/example/Library/Caches/harness/projection-cache",
-					"/home/example/.cache/harness/projection-cache"
-				]
+				"examples": ["/workspace/cache/projections", "/workspace/cache/alternate-projections"]
 			},
 			{
 				"name": "projectionCachePurge.principalId",
@@ -37,7 +34,7 @@
 				"name": "projectionCachePurge.projectId",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional project identity: when it is omitted (undefined) or an empty string, every cache file of the matching principal is removed; otherwise only files whose identity.projectId equals this value or is '$projects' (the shared project-list entry) are removed.",
 				"examples": ["project-7a1d3e90", "project-c4e08b15"]
 			}
@@ -45,7 +42,7 @@
 		"outputs": [
 			{
 				"name": "projectionCachePurge",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Resolves to undefined after the scan has removed every file it selects, so callers can await completion but receive no result. Recognized files whose identity is missing, falsy, or unparseable (including files that cannot be read or parsed) are removed regardless of principal; a directory-listing failure is treated as no entries, and any unlink failure rejects the promise."
 			}
 		],
@@ -71,10 +68,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The directory whose immediate entries are listed (readdir is not recursive); only names exactly matching projection-<64 lowercase hex characters>.json or lookup-<64 lowercase hex characters>.json are read. If the listing fails for any reason, the directory is treated as empty and nothing is removed.",
-						"examples": [
-							"/Users/example/Library/Caches/harness/projection-cache",
-							"/home/example/.cache/harness/projection-cache"
-						]
+						"examples": ["/workspace/cache/projections", "/workspace/cache/alternate-projections"]
 					},
 					{
 						"name": "projectionCachePurge.principalId",
@@ -87,7 +81,7 @@
 						"name": "projectionCachePurge.projectId",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional project identity: when it is omitted (undefined) or an empty string, every cache file of the matching principal is removed; otherwise only files whose identity.projectId equals this value or is '$projects' (the shared project-list entry) are removed.",
 						"examples": ["project-7a1d3e90", "project-c4e08b15"]
 					}
@@ -95,7 +89,7 @@
 				"outputs": [
 					{
 						"name": "projectionCachePurge",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Resolves to undefined after the scan has removed every file it selects, so callers can await completion but receive no result. Recognized files whose identity is missing, falsy, or unparseable (including files that cannot be read or parsed) are removed regardless of principal; a directory-listing failure is treated as no entries, and any unlink failure rejects the promise."
 					}
 				],

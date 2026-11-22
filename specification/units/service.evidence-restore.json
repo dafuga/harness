@@ -28,9 +28,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem root passed unchanged to the verification store, history status, and history note repositories. It determines where restore reads history and writes the local cache; the constructor does not validate it.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
-				]
+				"examples": ["/workspace/project"]
 			}
 		],
 		"outputs": [
@@ -90,15 +88,13 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem root passed unchanged to the verification store, history status, and history note repositories. It determines where restore reads history and writes the local cache; the constructor does not validate it.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceRestoreService.constructor",
-						"type": "unknown",
+						"type": "EvidenceRestoreService",
 						"description": "An EvidenceRestoreService instance holding the verification store, history status, and history note repositories rooted at the supplied path. Restore work begins only when restore() is called."
 					}
 				],

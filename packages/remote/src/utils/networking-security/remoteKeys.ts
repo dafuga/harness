@@ -4,11 +4,12 @@ import type {
 	StoredRemoteKeys
 } from '../../models/networking-security/RemoteSecure.types';
 import { cryptoSource, fromBase64Url, remoteBytes, toBase64Url, toHex } from './remoteBytes';
+import { RemoteKeyError } from './remoteKeys.types';
 
 const curve = { name: 'ECDH', namedCurve: 'P-256' } as const;
 
 function point(bytes: Uint8Array): Uint8Array {
-	if (bytes.length !== 65 || bytes[0] !== 4) throw new Error('Invalid P-256 public key.');
+	if (bytes.length !== 65 || bytes[0] !== 4) throw new RemoteKeyError('Invalid P-256 public key.');
 	return bytes;
 }
 /** A fresh P-256 key-agreement pair. */
@@ -48,12 +49,12 @@ export async function importRemoteKeys(stored: StoredRemoteKeys): Promise<Remote
 	const probe = await remoteKeys();
 	const mine = await sharedSecret(privateKey, probe.publicKey),
 		theirs = await sharedSecret(probe.privateKey, publicKey);
-	if (toHex(mine) !== toHex(theirs)) throw new Error('Stored key pair does not match.');
+	if (toHex(mine) !== toHex(theirs)) throw new RemoteKeyError('Stored key pair does not match.');
 	return { publicKey, privateKey };
 }
 export async function exportRemoteKeys(pair: RemoteKeyPair): Promise<StoredRemoteKeys> {
 	const jwk = await crypto.subtle.exportKey('jwk', pair.privateKey);
-	if (typeof jwk.d !== 'string') throw new Error('Private key cannot be exported.');
+	if (typeof jwk.d !== 'string') throw new RemoteKeyError('Private key cannot be exported.');
 	return { d: jwk.d, publicKey: toBase64Url(pair.publicKey) };
 }
 /** HKDF-SHA256 (RFC 5869). */

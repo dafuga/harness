@@ -142,6 +142,7 @@
 			"height": 900
 		}
 	],
+	"builds": ["desktop-main", "desktop-renderer"],
 	"tests": [
 		{
 			"id": "native-desktop",

@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.service.harness-analytics",
+	"title": "reports.service.harness-analytics examples",
+	"kind": "headless",
+	"units": ["reports.service.harness-analytics"],
+	"builds": [],
+	"states": [
+		{
+			"id": "forwards-only-nonempty-loop-and-since-parameters-to-the-cli",
+			"title": "Forwards only nonempty loop and since parameters to the CLI",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-with-a-query-error-when-the-cli-exits-non-zero",
+			"title": "Rejects with a query error when the CLI exits non-zero",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-with-a-syntaxerror-when-the-cli-prints-invalid-json",
+			"title": "Rejects with a SyntaxError when the CLI prints invalid JSON",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.service.harness-analytics.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"forwards-only-nonempty-loop-and-since-parameters-to-the-cli",
+				"rejects-with-a-query-error-when-the-cli-exits-non-zero",
+				"rejects-with-a-syntaxerror-when-the-cli-prints-invalid-json"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"forwards-only-nonempty-loop-and-since-parameters-to-the-cli",
+				"rejects-with-a-query-error-when-the-cli-exits-non-zero",
+				"rejects-with-a-syntaxerror-when-the-cli-prints-invalid-json"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"forwards-only-nonempty-loop-and-since-parameters-to-the-cli",
+				"rejects-with-a-query-error-when-the-cli-exits-non-zero",
+				"rejects-with-a-syntaxerror-when-the-cli-prints-invalid-json"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

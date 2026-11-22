@@ -20,7 +20,7 @@
 		"outputs": [
 			{
 				"name": "harnessIcons",
-				"type": "unknown",
+				"type": "typeof harnessIcons",
 				"description": "Maps every HarnessIconName to its SVG path-data string on a 24-by-24 grid. Explorer uses these values to draw its icons; passed and failed are solid verdict discs and every other path is outlined.",
 				"examples": [
 					{

@@ -1,5 +1,7 @@
 // @harness-uid u_5gsnsmohic
 import type { AgentCall } from './AgentHttpAdapter.types';
+import { AgentBranchTipViewRequiredError } from './AgentBranchTipViewRequiredError';
+import { UnacknowledgedAgentRequestError } from './UnacknowledgedAgentRequestError';
 import type { RunEvent, RevisionQuery } from '../../models/development-tooling/DesktopBridge.types';
 import type { ProjectSnapshot } from '../../models/development-tooling/Desktop.types';
 /** Ignore volatile context when retrying an unacknowledged start; resend its original payload. */
@@ -44,7 +46,9 @@ export class AgentHttpAdapter {
 		const changes = ['startRun', 'approve', 'openThread'].includes(method);
 		const revision = this.views.get(projectId);
 		if (changes && !revision)
-			throw new Error('View the current branch tip before asking an agent.');
+			throw new AgentBranchTipViewRequiredError(
+				'View the current branch tip before asking an agent.'
+			);
 		let body: AgentCall = {
 			method,
 			input,
@@ -105,7 +109,7 @@ function pendingCall(
 	const key = agentRequestKey(body.input),
 		prior = pending.get(projectId);
 	if (prior && prior.key !== key)
-		throw new Error(
+		throw new UnacknowledgedAgentRequestError(
 			'Retry the previous request to establish whether it started before sending another.'
 		);
 	body = prior?.body ?? body;

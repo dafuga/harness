@@ -1,4 +1,7 @@
 import type { Prompt, VideoConnection } from './DecartStreamAdapter.types';
+import { DecartConnectionFailedError } from './DecartConnectionFailedError';
+import { DecartPreviewCancelledError } from './DecartPreviewCancelledError';
+import { DecartTransportUnavailableError } from './DecartTransportUnavailableError';
 import type { RenderSession } from '../../models/game-authoring/Game.types';
 /** The public vendor SDK puts its client credential in a URL. No safe transport is registered. */
 export function decartTransportReady(): boolean {
@@ -31,13 +34,13 @@ async function connectCanvas(
 ) {
 	const connector = typeof prompt === 'string' ? undefined : prompt.connector;
 	if (!connector)
-		throw new Error(
+		throw new DecartTransportUnavailableError(
 			'Live AI is unavailable until a credential-safe provider transport is configured.'
 		);
 	const source = canvas.captureStream(25);
 	const signal = typeof prompt === 'string' ? undefined : prompt.signal;
 	const life = canvasLife(source, session.seconds, signal);
-	if (life.ended()) throw new Error('AI preview cancelled.');
+	if (life.ended()) throw new DecartPreviewCancelledError('AI preview cancelled.');
 	try {
 		const connection = await connector(source, {
 			session,
@@ -56,7 +59,9 @@ async function connectCanvas(
 		};
 	} catch {
 		life.stop();
-		throw new Error('AI video connection failed. The simple renderer remains available.');
+		throw new DecartConnectionFailedError(
+			'AI video connection failed. The simple renderer remains available.'
+		);
 	}
 }
 

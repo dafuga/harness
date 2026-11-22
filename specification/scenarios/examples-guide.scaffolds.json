@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-guide.scaffolds",
+	"title": "guide.scaffolds examples",
+	"kind": "headless",
+	"units": ["guide.scaffolds"],
+	"builds": [],
+	"states": [
+		{
+			"id": "lists-one-guide-per-scaffold-kind-with-its-contains-list",
+			"title": "Lists one guide per scaffold kind with its contains list",
+			"coverage": "required"
+		},
+		{
+			"id": "summarises-the-scaffold-catalog-index",
+			"title": "Summarises the scaffold catalog index",
+			"coverage": "required"
+		},
+		{
+			"id": "lists-canonical-source-names-for-every-module-type",
+			"title": "Lists canonical source names for every module type",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/guide.scaffolds.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"lists-one-guide-per-scaffold-kind-with-its-contains-list",
+				"summarises-the-scaffold-catalog-index",
+				"lists-canonical-source-names-for-every-module-type"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"lists-one-guide-per-scaffold-kind-with-its-contains-list",
+				"summarises-the-scaffold-catalog-index",
+				"lists-canonical-source-names-for-every-module-type"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"lists-one-guide-per-scaffold-kind-with-its-contains-list",
+				"summarises-the-scaffold-catalog-index",
+				"lists-canonical-source-names-for-every-module-type"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

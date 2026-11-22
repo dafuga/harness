@@ -36,6 +36,7 @@ export function recordView(
 			...(browserErrors ? { browserErrors } : {})
 		})),
 		...(record.builds ? { builds: record.builds } : {}),
+		...(record.videoBatches ? { videoBatches: record.videoBatches } : {}),
 		scenarios: recordedScenarios(record, context),
 		measurements: record.measurements,
 		budgets: record.budgets,
@@ -60,6 +61,7 @@ function recordedScenarios(record: VerificationRecord, context: Parameters<typeo
 					}
 				: {}),
 			id: scenario.id,
+			...(scenario.videoCoverage ? { videoCoverage: scenario.videoCoverage } : {}),
 			status: scenario.status,
 			testedRevision: scenario.testedRevision,
 			inherited,
@@ -68,11 +70,32 @@ function recordedScenarios(record: VerificationRecord, context: Parameters<typeo
 				...state,
 				captures: state.captures.map((capture) => ({
 					...capture,
-					...context.resolve(capture, origin)
+					...resolvedCapture(
+						capture,
+						context.resolve(capture, capture.videoReference?.record ?? origin)
+					)
 				}))
 			}))
 		};
 	});
+}
+
+function resolvedCapture(
+	capture: Parameters<MediaResolver>[0],
+	resolved: ReturnType<MediaResolver>
+) {
+	const poster = resolved.poster?.media;
+	return {
+		...resolved,
+		...(capture.video && poster
+			? {
+					video: {
+						...capture.video,
+						poster: { ...capture.video.poster, url: poster.replace(/^media\//, '') }
+					}
+				}
+			: {})
+	};
 }
 
 export type { ResolvedMedia, MediaResolver, RecordView } from './recordView.types';

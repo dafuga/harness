@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import { appStyleTokensConfig } from '../../configs/shared-primitives/appStyleTokensConfig';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
+	import type { EntityNav } from '../../utils/explorer-ui/entityLens';
 	import type {
 		StyleRoleCard,
 		StyleToken
@@ -65,7 +66,7 @@
 	</hx-article>
 {/snippet}
 <ExplorerFrame {host}>
-	{#snippet children(_nav)}
+	{#snippet children(_nav: EntityNav)}
 		<hx-section
 			data-harness-component="explorer-ui-harness-explorer-styles-screen"
 			class="hx-styles-page"

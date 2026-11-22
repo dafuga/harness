@@ -145,9 +145,16 @@ async function actionState(component: Locator, variant: string) {
 	if (variant === 'disabled') await expect(component.getByRole('button')).toBeDisabled();
 }
 /** Every loading capture is taken without motion, so its still shows the ring at rest. */
-async function loadingState(component: Locator) {
-	await component.page().emulateMedia({ reducedMotion: 'reduce' });
-	await expect(component.locator('.hx-loading-indicator')).toHaveCSS('animation-name', 'none');
+async function loadingState(component: Locator, variant: string) {
+	const normalMotion = variant === 'loading';
+	await component.page().emulateMedia({ reducedMotion: normalMotion ? 'no-preference' : 'reduce' });
+	const ring = component.locator('.hx-loading-indicator');
+	await expect(ring).toHaveCSS('animation-name', normalMotion ? /hx-loading-turn/ : 'none');
+	if (normalMotion) {
+		await expect(ring).toBeInViewport();
+		await expect(ring).toHaveAttribute('aria-hidden', 'true');
+		await expect(component.getByRole('status')).toHaveText('Loading page data…');
+	}
 }
 async function iconState(component: Locator, variant: string) {
 	if (variant !== 'decorative')

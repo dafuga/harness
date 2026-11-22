@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.catalog-index",
+	"title": "service.catalog-index examples",
+	"kind": "headless",
+	"units": ["service.catalog-index"],
+	"builds": [],
+	"states": [
+		{
+			"id": "writes-a-replacement-catalog-database",
+			"title": "Writes a replacement catalog database",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-directory-is-not-a-string",
+			"title": "Throws TypeError when directory is not a string",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-temporary-directory-cannot-be-created",
+			"title": "Throws Error when temporary directory cannot be created",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.catalog-index.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"writes-a-replacement-catalog-database",
+				"throws-typeerror-when-directory-is-not-a-string",
+				"throws-error-when-temporary-directory-cannot-be-created"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"writes-a-replacement-catalog-database",
+				"throws-typeerror-when-directory-is-not-a-string",
+				"throws-error-when-temporary-directory-cannot-be-created"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"writes-a-replacement-catalog-database",
+				"throws-typeerror-when-directory-is-not-a-string",
+				"throws-error-when-temporary-directory-cannot-be-created"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

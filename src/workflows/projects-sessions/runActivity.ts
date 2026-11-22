@@ -3,7 +3,11 @@ import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { Shown } from './runActivity.types';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
-import type { AgentRoster } from '../../core/projects-sessions/activityTypes';
+import type {
+	AgentRoster,
+	LiveActivity,
+	ProjectActivity
+} from '../../core/projects-sessions/activityTypes';
 import { fail } from '../../core/development-tooling/errors';
 import { ProjectWorkRepository } from '../../repositories/projects-sessions/ProjectWorkRepository';
 import { AgentActivityService } from '../../services/agents-providers/agent-activity-service/AgentActivityService';
@@ -48,7 +52,9 @@ export async function finishAgent(id: string, options: { failed?: boolean; outco
  * A heartbeat from a command an agent ran: when HARNESS_AGENT_ID names a registered agent, every
  * Harness command it runs is a sign of work. It never fails the command it follows.
  */
-export async function beatFromEnvironment(env = process.env): Promise<void> {
+export async function beatFromEnvironment(
+	env: Record<string, string | undefined> = process.env
+): Promise<void> {
 	const id = env.HARNESS_AGENT_ID?.trim();
 	if (!id) return;
 	await beatAgent(id, {}).catch(() => undefined);
@@ -71,7 +77,13 @@ export function renderRoster(roster: AgentRoster): string {
 	return [`${roster.working} registered agents are working now.`, ...lines, ...unread].join('\n');
 }
 
-export function renderShown({ activity, live }: Shown): string {
+export function renderShown({
+	activity,
+	live
+}: {
+	activity: ProjectActivity;
+	live: LiveActivity;
+}): string {
 	const { name, branch, head } = activity.repository;
 	const loops = activity.loops.types.map(
 		(type) => `  ${type.template}: ${type.loops} loops, ${type.complete} complete`

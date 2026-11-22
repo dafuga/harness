@@ -70,7 +70,7 @@
 				"outputs": [
 					{
 						"name": "GithubConnectionController.constructor",
-						"type": "unknown",
+						"type": "GithubConnectionController",
 						"description": "The value is a newly initialized GithubConnectionController instance that retains the supplied options and creates an AuthRequestValidator for GitHub callback parsing. Calling routes() on the instance creates its GitHub route map."
 					}
 				],

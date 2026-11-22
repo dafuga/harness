@@ -40,7 +40,7 @@ the public contracts of their dependencies.
 - `@dafuga01/harness/contracts` and `@dafuga01/harness/runtime` are typed package entry points
   that never start the CLI.
 
-The `generate unit`, `units`, `impact` and `kernel` commands and the package entry points exist
+The `harness generate unit`, `harness units`, `harness impact` and `harness kernel` commands and the package entry points exist
 today; see Delivery status.
 
 ## Acceptance Criteria
@@ -373,16 +373,16 @@ configuration, which builds the panel and starts the picker preview it was writt
 
 ## Delivery status
 
-Stages A to F are implemented. Stage A: unit schemas, the unit generator, the `units`
+Stages A to F are implemented. Stage A: unit schemas, the unit generator, the `harness units`
 commands, the source graph and the self-host registry. Stage B: the runtime contract and
 adapters, the reference and Rust kernels, `harness impact`, `harness kernel` and the typed
 package entries. Stage C: scenario contracts and their coverage rules, the evidence protocol
 with media and build-stamp validation, verification of clean snapshots under process isolation,
-reasons, frozen budgets with a reviewed ledger, and `harness scenarios`, `explain`, `budget` and
-`verify`. Complete entity screenshots attach automatically through
+reasons, frozen budgets with a reviewed ledger, and `harness scenarios`, `harness explain`, `harness budget` and
+`harness verify`. Complete entity screenshots attach automatically through
 `harness verify run --priority agent-test --entity <id>` after the standard Playwright tests
 are committed. Stage D: records, evidence and reasons kept in Git (`harness history attach`
-for manual imports and full-record edge cases; `reasons`, `status`, `fetch`, `push`, `sync`), the deterministic history index
+for manual imports and full-record edge cases; `harness history reasons`, `harness history status`, `harness history fetch`, `harness history push`, `harness history sync`), the deterministic history index
 (`harness history build`), the legacy report import, the opt-in pre-push hook
 (`harness hooks`), the two CI workflows and the `@dafuga01/harness/history` package entry.
 Stage E: the protected `/harness` console over the history index, with the map, comparison,
@@ -391,7 +391,7 @@ the owner policy and the redirects of the former routes; per-capture provenance;
 (`harness verify identity`, `builds` in `harness.verify.json`); the browser capture helper and
 the console scenario; the edge runtime entry (`@dafuga01/harness/edge`, `/console`,
 `/console-ui`, `/kernel.wasm`); and the SvelteKit installer (`harness console install` and
-`restore`). Stage F: exact comparison of any two commits from one stored side per source tree;
+`harness console restore`). Stage F: exact comparison of any two commits from one stored side per source tree;
 each recorded state before and after a change, with the source of both sides; position keys
 for every list of the console; a private bucket as the store of an installed console
 (`--bucket`, `harness console objects`), measured against the size a Worker script may have;

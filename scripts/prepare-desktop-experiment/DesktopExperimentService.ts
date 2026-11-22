@@ -1,6 +1,8 @@
 // @harness-uid u_4tf66ojpp6
 import { createHash } from 'node:crypto';
 import { desktopPatchConfig } from '../../src/configs/development-tooling/desktopPatchConfig';
+import { ExpectedCliError } from '../../src/core/development-tooling/errors';
+import { DesktopPatchAnchorError } from './DesktopExperimentService.types';
 
 export class DesktopExperimentService {
 	plan(
@@ -42,7 +44,7 @@ export class DesktopExperimentService {
 		for (const [path, hash] of Object.entries(desktopPatchConfig.assets)) {
 			const source = sources.get(path);
 			if (!source || createHash('sha256').update(source).digest('hex') !== hash)
-				throw new Error(`Unsupported desktop build: ${path}`);
+				throw new ExpectedCliError(`Unsupported desktop build: ${path}`);
 		}
 	}
 
@@ -86,6 +88,6 @@ export class DesktopExperimentService {
 
 export function replaceOnce(source: string, anchor: string, replacement: string): string {
 	if (source.split(anchor).length !== 2)
-		throw new Error('Desktop patch anchor must appear exactly once');
+		throw new DesktopPatchAnchorError('Desktop patch anchor must appear exactly once');
 	return source.replace(anchor, replacement);
 }

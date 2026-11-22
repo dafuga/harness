@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "visual-reports.style.explorer-navbar",
+	"title": "reports.style.explorer-navbar states",
+	"kind": "ui",
+	"units": ["reports.style.explorer-navbar"],
+	"states": [
+		{
+			"id": "default",
+			"title": "Default",
+			"coverage": "required",
+			"units": ["reports.style.explorer-navbar"]
+		},
+		{
+			"id": "pages",
+			"title": "Pages",
+			"coverage": "required",
+			"units": ["reports.style.explorer-navbar"]
+		},
+		{
+			"id": "historical",
+			"title": "Historical",
+			"coverage": "required",
+			"units": ["reports.style.explorer-navbar"]
+		},
+		{
+			"id": "unresolved",
+			"title": "Unresolved",
+			"coverage": "required",
+			"units": ["reports.style.explorer-navbar"]
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 920,
+			"height": 700
+		},
+		{
+			"id": "tablet",
+			"width": 768,
+			"height": 900
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "states",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts tests/e2e/units/explorer-shell-unit-reports.style.explorer-navbar.spec.ts",
+			"cwd": "packages/reports"
+		}
+	],
+	"evidence": [
+		{
+			"id": "screens",
+			"kind": "screenshot",
+			"states": ["default", "pages", "historical", "unresolved"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"build": "shell-fixture",
+			"capture": "full-page",
+			"required": true
+		}
+	]
+}

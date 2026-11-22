@@ -1,5 +1,6 @@
 // @harness-uid u_jtvwvk5o56
 import type { AnalyticsSnapshot } from './HarnessAnalyticsService.types';
+import { HarnessAnalyticsQueryError } from './HarnessAnalyticsService.types';
 import { spawn } from 'node:child_process';
 import { resolve } from 'node:path';
 import { reportRuntimeRoot } from '../../utils/reports-media/reportRuntimeRoot';
@@ -31,7 +32,7 @@ export class HarnessAnalyticsService {
 			child.once('error', reject);
 			child.once('close', (code) => {
 				if (code === 0) resolveOutput(output);
-				else reject(new Error('Harness analytics query failed.'));
+				else reject(new HarnessAnalyticsQueryError('Harness analytics query failed.'));
 			});
 		});
 	}

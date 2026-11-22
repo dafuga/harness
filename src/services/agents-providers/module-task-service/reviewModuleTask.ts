@@ -6,6 +6,10 @@ import { ModuleTaskWorktreeAdapter } from '../../../adapters/agents-providers/Mo
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { taskWrites } from '../module-task-worker-service/taskClaim';
 import { ModuleTaskAnalyticsService } from '../ModuleTaskAnalyticsService';
+import { StaleTaskReviewError } from './reviewModuleTask.types';
+export class TaskNotAwaitingAttemptReviewError extends Error {
+	override name = 'TaskNotAwaitingAttemptReviewError';
+}
 import { acceptanceEvidence } from './acceptanceEvidence';
 import { recordedReview } from './recordedReview';
 /**
@@ -24,7 +28,7 @@ export async function reviewModuleTask(
 	const replay = recordedReview(before, review);
 	if (replay) return { commit: snapshot.commit, task: before!, replayed: true };
 	if (before?.status !== 'review' || before.claim?.token !== review.attempt || !before.result)
-		throw new Error('Task is not awaiting this attempt review.');
+		throw new TaskNotAwaitingAttemptReviewError('Task is not awaiting this attempt review.');
 	const evidence =
 		review.verdict === 'accepted'
 			? await acceptanceEvidence(root, before, review.evidence!)
@@ -38,7 +42,7 @@ export async function reviewModuleTask(
 			task.contractHash !== before.contractHash ||
 			!task.result
 		)
-			throw new Error('Task review is stale; no result was overwritten.');
+			throw new StaleTaskReviewError('Task review is stale; no result was overwritten.');
 		const { attempt, verdict, cause, reviewer, feedback } = review;
 		task.reviews.push({
 			...{ attempt, verdict, reviewer, feedback, ...(cause ? { cause } : {}) },

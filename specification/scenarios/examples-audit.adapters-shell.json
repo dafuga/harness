@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-audit.adapters-shell",
+	"title": "audit.adapters-shell examples",
+	"kind": "headless",
+	"units": ["audit.adapters-shell"],
+	"builds": [],
+	"states": [
+		{
+			"id": "accepts-a-strict-quoted-shell-script",
+			"title": "Accepts a strict, quoted shell script",
+			"coverage": "required"
+		},
+		{
+			"id": "flags-missing-shebang-and-strict-mode",
+			"title": "Flags missing shebang and strict mode",
+			"coverage": "required"
+		},
+		{
+			"id": "flags-broad-rm-rf-and-unquoted-variables",
+			"title": "Flags broad rm -rf and unquoted variables",
+			"coverage": "required"
+		},
+		{
+			"id": "describes-the-shell-adapter-profiles",
+			"title": "Describes the shell adapter profiles",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/audit.adapters-shell.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"accepts-a-strict-quoted-shell-script",
+				"flags-missing-shebang-and-strict-mode",
+				"flags-broad-rm-rf-and-unquoted-variables",
+				"describes-the-shell-adapter-profiles"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"accepts-a-strict-quoted-shell-script",
+				"flags-missing-shebang-and-strict-mode",
+				"flags-broad-rm-rf-and-unquoted-variables",
+				"describes-the-shell-adapter-profiles"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"accepts-a-strict-quoted-shell-script",
+				"flags-missing-shebang-and-strict-mode",
+				"flags-broad-rm-rf-and-unquoted-variables",
+				"describes-the-shell-adapter-profiles"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

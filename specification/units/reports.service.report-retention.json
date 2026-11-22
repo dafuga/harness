@@ -9,9 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/InvalidExportLockError.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/InvalidPublicationRetentionTimestampError.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/InvalidPublicationStagingDirectoryError.ts",
 			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportRetentionService.ts"
 		],
 		"symbols": [
+			"InvalidExportLockError",
+			"InvalidPublicationRetentionTimestampError",
+			"InvalidPublicationStagingDirectoryError",
 			"ReportRetentionService",
 			"ReportRetentionService.constructor",
 			"ReportRetentionService.run"
@@ -40,7 +46,7 @@
 		"outputs": [
 			{
 				"name": "ReportRetentionService.run",
-				"type": "unknown",
+				"type": "Promise<{ plannedReports: string[]; deletedReports: string[]; cloudObjects: number; pages: number; localFiles: number; errors: string[]; dryRun: boolean; }>",
 				"description": "The resolved object contains planned report IDs, expiry paths reported complete outside dry-run mode, cloud and page cleanup counts, the local cleanup count, collected error messages, and the effective dryRun flag. When run selects one report, orphan cleanup is skipped; failures can reject before an object is returned.",
 				"examples": [
 					{
@@ -81,7 +87,7 @@
 				"outputs": [
 					{
 						"name": "ReportRetentionService.run",
-						"type": "unknown",
+						"type": "Promise<{ plannedReports: string[]; deletedReports: string[]; cloudObjects: number; pages: number; localFiles: number; errors: string[]; dryRun: boolean; }>",
 						"description": "The resolved object contains planned report IDs, expiry paths reported complete outside dry-run mode, cloud and page cleanup counts, the local cleanup count, collected error messages, and the effective dryRun flag. When run selects one report, orphan cleanup is skipped; failures can reject before an object is returned.",
 						"examples": [
 							{
@@ -120,7 +126,7 @@
 				"outputs": [
 					{
 						"name": "ReportRetentionService.constructor",
-						"type": "unknown",
+						"type": "ReportRetentionService",
 						"description": "The constructor creates a ReportRetentionService instance that retains the repository reference for later reads and directory lookups. If the argument is omitted, the default parameter constructs new ReportRepository()."
 					}
 				],

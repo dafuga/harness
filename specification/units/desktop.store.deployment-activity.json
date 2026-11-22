@@ -24,7 +24,7 @@
 		"outputs": [
 			{
 				"name": "createDeploymentActivityStore",
-				"type": "unknown",
+				"type": "DeploymentActivityState",
 				"description": "A DeploymentActivityState instance bound to the supplied Workspace, with items initially [] and error initially ''. It exposes activeCount, which counts items without a truthy finishedAt, plus remember(job) and watch(); the watcher covers desktop deployments independently of the project being browsed."
 			}
 		],
@@ -44,7 +44,7 @@
 				"outputs": [
 					{
 						"name": "createDeploymentActivityStore",
-						"type": "unknown",
+						"type": "DeploymentActivityState",
 						"description": "A DeploymentActivityState instance bound to the supplied Workspace, with items initially [] and error initially ''. It exposes activeCount, which counts items without a truthy finishedAt, plus remember(job) and watch(); the watcher covers desktop deployments independently of the project being browsed."
 					}
 				],

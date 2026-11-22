@@ -175,7 +175,7 @@
 				"outputs": [
 					{
 						"name": "HandlerRuntimeAdapter.constructor",
-						"type": "unknown",
+						"type": "HandlerRuntimeAdapter",
 						"description": "The constructor result is a HandlerRuntimeAdapter instance that holds the handler and resolved timeout for calls. Its kind is always module, and the instance is not a JSON value."
 					}
 				],

@@ -17,6 +17,7 @@
 			"ReportStorageSyncService.constructor",
 			"ReportStorageSyncService.run",
 			"StorageSyncOptions",
+			"InvalidReplayDirectoryError",
 			"StorageSyncOptions"
 		]
 	},
@@ -46,7 +47,7 @@
 		"outputs": [
 			{
 				"name": "ReportStorageSyncService.run",
-				"type": "unknown",
+				"type": "Promise<{ reports: string[]; evidence: number; replays: number; skipped: number; errors: string[]; dryRun: boolean; }>",
 				"description": "Summarizes report IDs with at least one pending evidence file or eligible replay, aggregate file counts, retention skips, per-report error messages, and the effective dryRun flag. evidence counts distinct pending evidence filenames; replays counts hash-named .mp4 files without storage receipts.",
 				"examples": [
 					{
@@ -97,7 +98,7 @@
 				"outputs": [
 					{
 						"name": "ReportStorageSyncService.run",
-						"type": "unknown",
+						"type": "Promise<{ reports: string[]; evidence: number; replays: number; skipped: number; errors: string[]; dryRun: boolean; }>",
 						"description": "Summarizes report IDs with at least one pending evidence file or eligible replay, aggregate file counts, retention skips, per-report error messages, and the effective dryRun flag. evidence counts distinct pending evidence filenames; replays counts hash-named .mp4 files without storage receipts.",
 						"examples": [
 							{
@@ -143,7 +144,7 @@
 				"outputs": [
 					{
 						"name": "ReportStorageSyncService.constructor",
-						"type": "unknown",
+						"type": "ReportStorageSyncService",
 						"description": "The new ReportStorageSyncService instance, which holds the selected repository for later calls."
 					}
 				],

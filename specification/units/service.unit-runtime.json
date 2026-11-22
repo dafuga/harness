@@ -31,9 +31,7 @@
 				"type": "string",
 				"required": false,
 				"description": "Filesystem root used to resolve relative target entries and to locate recorded measurements. Defaults to process.cwd().",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "UnitRuntimeService.constructor.options",
@@ -366,9 +364,7 @@
 						"type": "string",
 						"required": false,
 						"description": "Filesystem root used to resolve relative target entries and to locate recorded measurements. Defaults to process.cwd().",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "UnitRuntimeService.constructor.options",
@@ -390,7 +386,7 @@
 				"outputs": [
 					{
 						"name": "UnitRuntimeService.constructor",
-						"type": "unknown",
+						"type": "UnitRuntimeService",
 						"description": "Initialized UnitRuntimeService instance using the supplied root and options. Omitted root uses process.cwd(), and omitted options.env uses process.env for kernel artifact lookup."
 					}
 				],

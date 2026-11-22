@@ -7,6 +7,7 @@ import type {
 	Relationship
 } from '../../../../models/development-tooling/Desktop.types';
 import type { GitSourceAdapter } from '../git-source-adapter/GitSourceAdapter';
+import { EntityNotFoundError } from './catalogDetail.types';
 import { catalogHistory } from './catalogHistory';
 import { categoryOf } from '../../../../utils/shared-primitives/categoryOf';
 
@@ -18,7 +19,7 @@ export async function catalogDetail(
 		{ source } = context;
 	const item = items.find((i) => i.id === id),
 		unit = units.find((u) => u.id === id);
-	if (!item) throw new Error('Entity not found at this revision.');
+	if (!item) throw new EntityNotFoundError('Entity not found at this revision.');
 	const history = await entityHistory(context, { id, revision, unit, hasPlan: Boolean(plan) });
 	const contract = plan?.contract ?? unitContract(source, unit);
 	return {

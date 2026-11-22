@@ -1,4 +1,9 @@
 // @harness-uid u_ludgaead75
+import { DeploymentAlreadyStartedError } from './DeploymentAlreadyStartedError';
+import { DeploymentCapacityError } from './DeploymentCapacityError';
+import { MissingDeploymentTargetError } from './MissingDeploymentTargetError';
+import { RequiredLowerEnvironmentDeploymentError } from './RequiredLowerEnvironmentDeploymentError';
+import { UnknownDeploymentError } from './UnknownDeploymentError';
 import type { Entry, Work } from './DeploymentActivityService.types';
 import { basename } from 'node:path';
 import { deploymentSteps } from '../../models/development-tooling/Deployment.types';
@@ -22,7 +27,7 @@ export class DeploymentActivityService {
 	}
 	wait(id: string) {
 		const entry = this.entries.get(id);
-		return entry?.completion ?? Promise.reject(new Error('Unknown deployment.'));
+		return entry?.completion ?? Promise.reject(new UnknownDeploymentError('Unknown deployment.'));
 	}
 	async idle() {
 		await Promise.allSettled([...this.entries.values()].map((entry) => entry.completion));
@@ -32,17 +37,20 @@ export class DeploymentActivityService {
 			[...this.entries.values()].filter((entry) => !entry.activity.finishedAt).length + count >
 			128
 		)
-			throw new Error('Wait for queued deployments before starting more.');
+			throw new DeploymentCapacityError('Wait for queued deployments before starting more.');
 	}
 	schedule(reviewed: ReviewedDeployment, work: Work, dependency?: Promise<DeploymentReceipt>) {
 		this.ensureCapacity();
-		if (this.entries.has(reviewed.plan.id)) throw new Error('This deployment already started.');
+		if (this.entries.has(reviewed.plan.id))
+			throw new DeploymentAlreadyStartedError('This deployment already started.');
 		const key = targetKey(reviewed),
 			activity = activityFor(reviewed);
 		const completion = (this.tails.get(key) ?? Promise.resolve())
 			.then(async () => {
 				const predecessor = await dependency?.catch(() => {
-					throw new Error('A required lower-environment deployment failed.');
+					throw new RequiredLowerEnvironmentDeploymentError(
+						'A required lower-environment deployment failed.'
+					);
 				});
 				return work((phase, detail) => this.update(activity.id, phase, detail), predecessor);
 			})
@@ -96,7 +104,7 @@ function failureMessage(item: DeploymentActivity, error: unknown) {
 }
 function targetKey(reviewed: ReviewedDeployment) {
 	const target = reviewed.target;
-	if (!target) throw new Error('Configure the deployment target.');
+	if (!target) throw new MissingDeploymentTargetError('Configure the deployment target.');
 	return JSON.stringify([
 		reviewed.plan.adapter,
 		target.kind,

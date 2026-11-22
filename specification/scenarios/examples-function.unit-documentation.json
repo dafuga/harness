@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.unit-documentation",
+	"title": "function.unit-documentation examples",
+	"kind": "headless",
+	"units": ["function.unit-documentation"],
+	"builds": [],
+	"states": [
+		{
+			"id": "unitdocumentation-parsed-a-block-per-unit-and-trimmed-setup",
+			"title": "unitDocumentation parsed a block per unit and trimmed setup",
+			"coverage": "required"
+		},
+		{
+			"id": "unitdocumentation-refused-a-foreign-doubled-or-invalid-block",
+			"title": "unitDocumentation refused a foreign, doubled, or invalid block",
+			"coverage": "required"
+		},
+		{
+			"id": "readunitdocumentation-read-files-and-gave-undefined-or-gaps",
+			"title": "readUnitDocumentation read files and gave undefined or gaps",
+			"coverage": "required"
+		},
+		{
+			"id": "hydrateunitdocumentation-read-each-path-and-left-other-units",
+			"title": "hydrateUnitDocumentation read each path and left other units",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.unit-documentation.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"unitdocumentation-parsed-a-block-per-unit-and-trimmed-setup",
+				"unitdocumentation-refused-a-foreign-doubled-or-invalid-block",
+				"readunitdocumentation-read-files-and-gave-undefined-or-gaps",
+				"hydrateunitdocumentation-read-each-path-and-left-other-units"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"unitdocumentation-parsed-a-block-per-unit-and-trimmed-setup",
+				"unitdocumentation-refused-a-foreign-doubled-or-invalid-block",
+				"readunitdocumentation-read-files-and-gave-undefined-or-gaps",
+				"hydrateunitdocumentation-read-each-path-and-left-other-units"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"unitdocumentation-parsed-a-block-per-unit-and-trimmed-setup",
+				"unitdocumentation-refused-a-foreign-doubled-or-invalid-block",
+				"readunitdocumentation-read-files-and-gave-undefined-or-gaps",
+				"hydrateunitdocumentation-read-each-path-and-left-other-units"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

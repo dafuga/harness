@@ -12,7 +12,7 @@
 			"packages/desktop/src/utils/projects-sessions/repositoryLease.ts",
 			"packages/desktop/src/utils/projects-sessions/repositoryLease.types.ts"
 		],
-		"symbols": ["repositoryLease", "RepositoryLease", "RepositoryLease"]
+		"symbols": ["repositoryLease", "RepositoryLease", "RepositoryLease", "RepositoryLeaseError"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -22,9 +22,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Exact repository-root path used to derive a per-checkout lock key. Coordination across processes depends on callers supplying the same string, because the implementation hashes it as-is and does not validate or normalize it.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
-				]
+				"examples": ["/workspace/project"]
 			}
 		],
 		"outputs": [
@@ -52,9 +50,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Exact repository-root path used to derive a per-checkout lock key. Coordination across processes depends on callers supplying the same string, because the implementation hashes it as-is and does not validate or normalize it.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [

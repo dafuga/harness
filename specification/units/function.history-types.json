@@ -58,75 +58,75 @@
 		"outputs": [
 			{
 				"name": "evidenceBranch",
-				"type": "unknown",
+				"type": "\"harness-evidence\"",
 				"description": "The branch name used for the evidence branch in Git-backed history. Its fixed literal is `harness-evidence`.",
 				"examples": ["harness-evidence"]
 			},
 			{
 				"name": "evidenceRef",
-				"type": "unknown",
+				"type": "\"refs/heads/harness-evidence\"",
 				"description": "The full Git ref for the evidence branch. It points to `refs/heads/harness-evidence`.",
 				"examples": ["refs/heads/harness-evidence"]
 			},
 			{
 				"name": "notesRef",
-				"type": "unknown",
+				"type": "\"refs/notes/harness\"",
 				"description": "The Git notes ref name used for history notes. Its fixed value is `refs/notes/harness`.",
 				"examples": ["refs/notes/harness"]
 			},
 			{
 				"name": "sourceArchivePrefix",
-				"type": "unknown",
+				"type": "\"refs/harness/source/\"",
 				"description": "The prefix for source archive refs, with one ref per tested commit named by its hash so the commit outlives its branch. The fixed prefix is `refs/harness/source/`.",
 				"examples": ["refs/harness/source/"]
 			},
 			{
 				"name": "remoteTrackingPrefix",
-				"type": "unknown",
+				"type": "\"refs/harness/remotes/\"",
 				"description": "The prefix where fetched copies of a remote's evidence and notes are kept before they are merged. Its fixed value is `refs/harness/remotes/`.",
 				"examples": ["refs/harness/remotes/"]
 			},
 			{
 				"name": "evidenceMarker",
-				"type": "unknown",
+				"type": "\"harness-evidence.json\"",
 				"description": "The filename at the root of every evidence tree. A commit carrying this marker is never treated as source; the value is `harness-evidence.json`.",
 				"examples": ["harness-evidence.json"]
 			},
 			{
 				"name": "recordsDirectory",
-				"type": "unknown",
+				"type": "\"records\"",
 				"description": "The directory name for stored evidence records. Its fixed value is `records`.",
 				"examples": ["records"]
 			},
 			{
 				"name": "legacyDirectory",
-				"type": "unknown",
+				"type": "\"legacy\"",
 				"description": "The directory name for legacy reports. Its fixed value is `legacy`.",
 				"examples": ["legacy"]
 			},
 			{
 				"name": "evidencePointerSchema",
-				"type": "unknown",
+				"type": "typeof evidencePointerSchema",
 				"description": "A strict schema for a stored-record pointer with a full lowercase 40-character commit hash, a nonempty path, and a lowercase 64-character manifest SHA-256 digest. It identifies the evidence commit, record path, and manifest hash; it does not enumerate files."
 			},
 			{
 				"name": "historyNoteSchema",
-				"type": "unknown",
+				"type": "typeof historyNoteSchema",
 				"description": "A strict version 1 discriminated union for the `verification`, `reason`, `legacy-report`, and `regression` history-note kinds. Use it for one line on a source commit; each kind names the commit it was written for and rejects undeclared fields."
 			},
 			{
 				"name": "evidenceFileSchema",
-				"type": "unknown",
+				"type": "typeof evidenceFileSchema",
 				"description": "A strict schema for one stored record file: it requires a nonempty path, lowercase 64-character SHA-256, nonnegative integer byte count, and `git` or `lfs` storage, with optional `mediaType`. `git` means an ordinary Git blob; `lfs` means a Git LFS pointer on the branch, and the schema carries no file bytes."
 			},
 			{
 				"name": "evidenceManifestSchema",
-				"type": "unknown",
+				"type": "typeof evidenceManifestSchema",
 				"description": "The immutable strict schema for a version 1 evidence manifest beside a stored record. It requires a nonempty record name, source commit and tree, pass/fail status, and file list; each source hash is a full commit hash."
 			},
 			{
 				"name": "legacyRecordSchema",
-				"type": "unknown",
+				"type": "typeof legacyRecordSchema",
 				"description": "A strict version 1 schema for a report recorded before Git-backed records, preserving its declared report fields, checks, and media provenance. It omits old-store paths, commands, and logs; revision and each media file's SHA-256 and byte count are nullable, while mediaType, capturedAt, and viewport are optional."
 			}
 		],

@@ -5,10 +5,13 @@
 	import Notice from './explorer-kit/Notice.svelte';
 	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
 	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';
+	import type { ComparisonPane } from '../../helpers/verification-evidence/comparisonPanes.types';
 
 	import type { ExplorerEvidence, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
-	import { entityScreens } from '../../utils/explorer-ui/entityScreens';
+	import { entityScreens, galleryItems } from '../../utils/explorer-ui/entityScreens';
+	import VideoEvidence from '../verification-evidence/VideoEvidence.svelte';
+	import VideoGraphNavigation from '../verification-evidence/VideoGraphNavigation.svelte';
 	import EvidenceCard from '../verification-evidence/EvidenceCard.svelte';
 	import EvidenceViewer from '../verification-evidence/EvidenceViewer.svelte';
 	import Select from '../shared-primitives/Select.svelte';
@@ -29,12 +32,25 @@
 	} = $props();
 	let wanted = $state('');
 	let viewport = $state('');
+	let path = $state('');
 	let viewing = $state<Evidence | null>(null);
 	let resolved = $state<Record<string, { file: string; note?: string }>>({});
 	const words = (id: string) =>
 		id.replace(/[-_]/g, ' ').replace(/^./, (letter) => letter.toUpperCase());
 	let scenarios = $derived(evidence.scenarios.filter((scenario) => scenario.viewports.length > 0));
 	let scenario = $derived(scenarios.find((item) => item.id === wanted) ?? scenarios[0]);
+	let playlist = $derived(scenario?.video?.playlists.find((item) => item.id === path));
+	let graphCoverage = $derived.by(() => {
+		const records =
+			evidence.after.detail?.records ?? (evidence.after.record ? [evidence.after.record] : []);
+		return (
+			records
+				.filter((record) => record.valid && record.source.commit === evidence.after.commit)
+				.sort((left, right) => right.finishedAt.localeCompare(left.finishedAt))
+				.flatMap((record) => record.scenarios)
+				.find((item) => item.id === scenario?.id)?.videoCoverage ?? []
+		);
+	});
 	let screen = $derived(
 		scenario?.viewports.find((item) => item.id === viewport) ?? scenario?.viewports[0]
 	);
@@ -57,6 +73,7 @@
 		})
 	);
 	let items = $derived(rows.flatMap((row) => row.items));
+	let videos = $derived(galleryItems(evidence).filter((item) => item.mediaType === 'video'));
 	let assetBase = $derived(resolveImage ? '' : mediaBase);
 	function prepared(item: Evidence): Evidence {
 		if (!resolveImage || item.missing) return item;
@@ -112,7 +129,7 @@
 	<hx-header>
 		<hx-div>
 			<hx-h2>States</hx-h2>
-			<hx-p>Recorded screenshots of each supported state.</hx-p>
+			<hx-p>Recorded screenshots and videos of each supported state.</hx-p>
 		</hx-div>
 		<hx-div class="state-controls">
 			{#if scenarios.length > 1}
@@ -141,6 +158,11 @@
 			{/if}
 		</hx-div>
 	</hx-header>
+	{#if scenario?.video}<VideoGraphNavigation
+			library={scenario.video}
+			coverage={graphCoverage}
+			bind:selected={path}
+		/>{/if}
 	{#if evidence.incomparable.length}<Notice as="p" className={'state-gap entity-states-state-gap'}
 			>{evidence.incomparable.join(' ')}</Notice
 		>{/if}
@@ -166,7 +188,7 @@
 						className="state-panes"
 						framed={false}
 					>
-						{#snippet children(pane)}
+						{#snippet children(pane: ComparisonPane<Evidence>)}
 							{#if pane.value}
 								{@const item = pane.value}
 								{@const shown = prepared(item)}
@@ -185,6 +207,9 @@
 							{/if}
 						{/snippet}
 					</ComparePanes>{/if}
+				{#each videos.filter((clip) => clip.category === scenario.id && clip.state === row.state.id && clip.viewport === screen?.id && (!playlist || playlist.clips.includes(clip.video?.clipId ?? ''))) as clip (clip.id)}
+					<VideoEvidence item={clip} assetBase={mediaBase} />
+				{/each}
 			</hx-article>
 		{/each}
 	</hx-div>

@@ -4,9 +4,10 @@
 <script lang="ts">
 	import ComparePanes from '../shared-primitives/ComparePanes.svelte';
 	import { comparisonPanes } from '../../helpers/verification-evidence/comparisonPanes';
+	import type { ComparisonPane } from '../../helpers/verification-evidence/comparisonPanes.types';
 	import { shortCommit } from '../../helpers/strings/shortCommit';
 
-	import type { RegressionView } from '../../../../../src/core/regressionTypes';
+	import type { RegressionPoint, RegressionView } from '../../../../../src/core/regressionTypes';
 	import Status from '../shared-primitives/status/Status.svelte';
 	let {
 		items = [],
@@ -66,7 +67,7 @@
 						{ value: item.green, commit: item.green?.commit, gap: 'Awaiting a passing fix commit.' }
 					)}
 					<ComparePanes {panes} className="proof-steps" framed={false}>
-						{#snippet children(pane)}
+						{#snippet children(pane: ComparisonPane<RegressionPoint>)}
 							<hx-div
 								class="proof-step"
 								class:failed={pane.side === 'before'}
@@ -113,7 +114,7 @@
 						{#if expanded[index]}<hx-code class="command">{item.red.command}</hx-code>
 
 							<ComparePanes {panes} className="proof-steps" framed={false}>
-								{#snippet children(pane)}
+								{#snippet children(pane: ComparisonPane<RegressionPoint>)}
 									{#if pane.value}<hx-div
 											><hx-h4
 												>{pane.side === 'before' ? 'Before fix' : 'After fix'} · {shortCommit(

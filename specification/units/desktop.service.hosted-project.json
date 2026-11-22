@@ -9,10 +9,22 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectBusyError.ts",
+			"packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectEvidenceUnavailableError.ts",
+			"packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectExecutorUnavailableError.ts",
+			"packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectNotSelectedError.ts",
+			"packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectOperationUnsupportedError.ts",
+			"packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectReadUnavailableError.ts",
 			"packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
 			"packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.types.ts"
 		],
 		"symbols": [
+			"HostedProjectBusyError",
+			"HostedProjectEvidenceUnavailableError",
+			"HostedProjectExecutorUnavailableError",
+			"HostedProjectNotSelectedError",
+			"HostedProjectOperationUnsupportedError",
+			"HostedProjectReadUnavailableError",
 			"HostedProjectService",
 			"HostedProjectService.constructor",
 			"HostedProjectService.wrap",
@@ -124,7 +136,7 @@
 				"outputs": [
 					{
 						"name": "HostedProjectService.constructor",
-						"type": "unknown",
+						"type": "HostedProjectService",
 						"description": "The HostedProjectService object that new creates, which holds session and remote as private fields and starts with selected set to null, so no hosted project is selected."
 					}
 				],

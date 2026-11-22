@@ -21,6 +21,7 @@
 			"RemoteSocket",
 			"DeviceStatus",
 			"DeviceConnectionOptions",
+			"DeviceConnectionError",
 			"RemoteSocket",
 			"DeviceStatus",
 			"DeviceConnectionOptions",
@@ -232,7 +233,7 @@
 				"outputs": [
 					{
 						"name": "DeviceConnectionService.constructor",
-						"type": "unknown",
+						"type": "DeviceConnectionService",
 						"description": "Creates a DeviceConnectionService instance and exposes wire, using options.wire when supplied or a new WireClientService({ client: options.client }) otherwise."
 					}
 				],

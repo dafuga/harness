@@ -33,7 +33,7 @@
 		"outputs": [
 			{
 				"name": "watchDeploymentActivities",
-				"type": "unknown",
+				"type": "() => void",
 				"description": "The cleanup callback deactivates this watcher and clears its 500 ms interval. It does not cancel an in-flight bridge request, but such a reply is ignored after cleanup."
 			}
 		],
@@ -59,7 +59,7 @@
 				"outputs": [
 					{
 						"name": "watchDeploymentActivities",
-						"type": "unknown",
+						"type": "() => void",
 						"description": "The cleanup callback deactivates this watcher and clears its 500 ms interval. It does not cancel an in-flight bridge request, but such a reply is ignored after cleanup."
 					}
 				],

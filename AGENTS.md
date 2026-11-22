@@ -2,11 +2,19 @@
 
 This is a Harness CLI project. Treat Harness as the operating contract for every code change in this repository.
 
+## Contracts first
+
+Start with `harness contracts map <source-path-or-folder>` to find the owning contracts and their recorded dependencies/dependents. Use `harness contracts list --area <category>` or `harness contracts search "term" -i --limit 10`, then `harness contracts show <id-or-path>` before opening implementation. Add `--json` for structured output; search also supports `--regex`, `--folder` and `--kind`. Run `harness info contracts` for examples and exact matching rules.
+
+Use `harness contracts diff` for HEAD to working-tree changes, `harness contracts diff <commit>` for that commit's first-parent delta, or `harness contracts diff <base>..<head> --summary` for a range. `--since <rev>` includes working-tree changes; `--staged` reads the index. Use `harness contracts log <unit>` for commit summaries and `harness contracts last <unit>` for the latest material field diff. History supports folder/area/kind/field filters and JSON; `--summary --json` keeps counts and omits field values.
+
+Lookup reloads stored unit/scenario JSON; diff/log/last read raw unit JSON snapshots and Git commit metadata. They do not inspect source, infer missing states, or verify registry freshness. Named metadata matches by name, examples and unknown arrays retain order, and formatting-only files are counted separately. Paths are project-root relative; use `--root <project>` from elsewhere. Read dependency contracts first; open source for the units you need to change or a specific contract gap. Use `harness units check` to verify freshness. Run `harness info contracts` for snapshot, count and identity limits.
+
 ## Required Harness Workflow
 
 - Read this file and `.codex/skills/harness/SKILL.md` before changing code.
 - Use Harness generators for supported code shapes instead of hand-rolling new structure.
-- Ask `bun run dev -- info <topic>` before adding unfamiliar code or choosing a scaffold shape.
+- Ask `harness info <topic>` before adding unfamiliar code or choosing a scaffold shape.
 - For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.
 - Add or update focused unit and E2E coverage for changes to audit rules, generators, or CLI behavior. When changing URL structure, tab aliases, defaults or canonicalization, run `test/utils/explorer-route.test.ts`, `test/utils/console-canonical.test.ts` and `test/utils/explorer-legacy.test.ts` together alongside the affected standard browser matrix, even when broad CLI/native suites are deferred.
 - When relocating modules, run their existing namespace-spy tests against the declaration module imported by the subject; retain separate coverage of supported public forwarding entries.
@@ -17,10 +25,10 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 - Keep files small, focused, and aligned with `harness.audit.json` limits.
 - When changing a helper recorded by `local-helper-ownership`, keep its original migration definition and record the intentional update in `followUps` with the implementation commit and reason. Run `test/services/unit-index.test.ts` alongside the owning workspace's checks before landing.
 - Ownership review follows ledger membership, including bridge factories and initializers in `shared-service-ownership`. When their behavior changes, preserve earlier reviews, record the new committed definition, regenerate the review object pack and run the same unit-index guard even when full CLI/native suites are deferred.
-- When adding, editing or regenerating unit registry manifests or contracts, review the real responsibility and every field description against the implementation. Run `bun run dev -- units check` and the unchanged `bun x vitest run test/readable-unit-contracts.test.ts`, even when broad CLI/native suites are deferred. Keep the guard assertions intact. Reindex to zero pending updates and run the unchanged shared-alias, shared-select and shared-search impact tests. Reviewed operation errors use `errorStatus: "declared"`; inferred statuses allow reindexing to replace them.
+- When adding, editing or regenerating unit registry manifests or contracts, review the real responsibility and every field description against the implementation. Run `harness units check` and the unchanged `bun x vitest run test/readable-unit-contracts.test.ts`, even when broad CLI/native suites are deferred. Keep the guard assertions intact. Reindex to zero pending updates and run the unchanged shared-alias, shared-select and shared-search impact tests. Reviewed operation errors use `errorStatus: "declared"`; inferred statuses allow reindexing to replace them.
 - When widening shared catalog or search categories, run desktop typecheck and the existing workspace-search and workspace-route tests. Shared categories must not silently expand a consumer's supported routes.
 - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `harness audit`.
-- An agent that works here says so: `bun run dev -- activity register --label <who> --task <what> --units <ids>`, then `activity heartbeat <id>` as it goes (or `HARNESS_AGENT_ID=<id>` on its Harness commands) and `activity finish <id>` at the end. `bun run dev -- info activity` has the rules.
+- An agent that works here says so: `harness activity register --label <who> --task <what> --units <ids>`, then `harness activity heartbeat <id>` as it goes (or `HARNESS_AGENT_ID=<id>` on its Harness commands) and `harness activity finish <id>` at the end. `harness info activity` has the rules.
 
 When projecting provenance-rich dependencies into query indexes, preserve raw records and cover repeated logical edges, distinct relation types and rollback in the existing catalog boundary tests.
 
@@ -29,7 +37,7 @@ When projecting provenance-rich dependencies into query indexes, preserve raw re
 - Keep completed work on the common `main` codebase. Fetch and safely incorporate current remote `main` before landing; preserve unrelated changes and original source history. Route ready, frozen source heads through the coordinated merger so concurrent sessions do not overwrite one another.
 - Deliver the actual merged `main` app. Coordinate publication of both runtime source and revision data, select current `main` in the shared preview, and inspect fresh screenshots containing the change before claiming delivery. Report a pending merge or publication explicitly; branch fixtures and older selected commits do not prove current-main delivery.
 - Use one persistent browsing preview across Harness chats and worktrees. Reuse the configured preview, verify its live owner and coordinate source/history updates with Platforms. See the local preview details in the Harness skill.
-- Follow the shared preview lifecycle in `.codex/skills/harness/SKILL.md`. Do not change ownership ports or directly launch Vite, built servers or `report serve` to bypass the existing owner. Another persistent preview requires Daniel's explicit request.
+- Follow the shared preview lifecycle in `.codex/skills/harness/SKILL.md`. Do not change ownership ports or directly launch Vite, built servers or `harness report serve` to bypass the existing owner. Another persistent preview requires Daniel's explicit request.
 - Automated fixture servers are temporary: use existing test configuration and guaranteed task-owned teardown on every outcome. Preserve the shared preview, other projects' servers, source/history and evidence.
 
 ## Harness Project Change Communication
@@ -45,7 +53,7 @@ These rules apply only to this Harness repository, including requests made in an
 
 ## Bug and Regression Loops
 
-- Commit the strengthened failing test before product repair. Run `harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure>` on that commit. Make a separate fix commit and run `loop record --phase green` against the same tests, fixtures, command and environment. Keep both commits when landing; never squash away this regression history. Focused red/green proof does not replace full verification.
+- Commit the strengthened failing test before product repair. Run `harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure>` on that commit. Make a separate fix commit and run `harness loop record --phase green` against the same tests, fixtures, command and environment. Keep both commits when landing; never squash away this regression history. Focused red/green proof does not replace full verification.
 
 - For a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.
 - Strengthen the existing standardized test and shared fixtures or assertions using the project's Harness scenario, state, viewport, registered-test and evidence format. Do not add a one-off bug-specific regression test.
@@ -69,7 +77,7 @@ These rules apply only to this Harness repository, including requests made in an
 - A change to the hook wrappers, or a stage added to them, passes `test/hooks-shared-stages.e2e.test.ts` first: an earlier opt-in, a new one and none, and no Harness started for a stage that was not asked for.
 - Explain the specific change, the actual attempt and its result. Do not repeat an inventory of the repository.
 - The limits bound notes and commit messages only. They never shorten tests, contracts, assertions, traces, transcripts or evidence.
-- `bun run dev -- info hooks` and `bun run dev -- info explain` have the rules.
+- `harness info hooks` and `harness info explain` have the rules.
 
 - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture and watch extra contexts before navigation. Preserve logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears.
 
@@ -78,7 +86,7 @@ These rules apply only to this Harness repository, including requests made in an
 - Run `harness units guide <id>` before writing component state tests. Write and commit the standard test for NEXT, run `harness verify run --priority agent-test --entity <id>`, then repeat the guide until DONE. REQUIRED states are named unit catalog or dedicated scenario declarations. GUESSES are advisory and do not block DONE until justified and declared as unit states. DONE requires committed tests and verified attached shots at desktop, tablet and mobile, not scratch images.
 - Run `harness units check-contract <id>` whenever writing or changing a contract. Review props, defaults, errors, outputs and implied states; use `--all --json` for an inventory. Heuristic success does not prove that a contract is exhaustive.
 
-- Write and commit the entity's standard Playwright tests for every declared state and desktop/tablet/mobile viewport, then run `bun src/index.ts verify run --priority agent-test --entity <id>`. Complete passing entity checks automatically attach screenshots and their record link to Git evidence. Agents need no manual attachment command. Failed or incomplete entity runs attach nothing; uncommitted tests are excluded. Fetch the attached captures with `harness api screenshot`; scoped proof never grants whole-commit verification.
+- Write and commit the entity's standard Playwright tests for every declared state and desktop/tablet/mobile viewport, then run `harness verify run --priority agent-test --entity <id>`. Complete passing entity checks automatically attach screenshots and their record link to Git evidence. Agents need no manual attachment command. Failed or incomplete entity runs attach nothing; uncommitted tests are excluded. Fetch the attached captures with `harness api screenshot`; scoped proof never grants whole-commit verification.
 - A changed UI is not ready to hand off or merge while any required screenshot is missing. Capture each applicable page, tab/state and desktop, tablet and mobile viewport through its standard test, from the exact committed build. Fix capture failures and rerun; a green assertion alone is insufficient.
 - Register and retain the original image bytes, hashes, unit, state, viewport, served build and revision in Harness evidence before temporary workspace cleanup. A scratch path, broken image URL or image in chat is not durable screenshot delivery.
 - Resolve a scenario screenshot slot to its declared units. A slot name is not a page identity; never fill a missing preview with another page's image.
@@ -168,7 +176,7 @@ URLs must stay unchanged. Avoid broad technical catch-alls when a feature is kno
 
 Application config modules belong in `src/configs/<category>/`, with one focused file per config. Update generator output and public SDK export plans together; run the standard every-scaffold export-to-emission guard for config relocations. The Configs catalog renders one table per source file, with typed literal values and source-preserving inspection of computed expressions. Do not execute configuration to populate it. Keep framework-required entry files at their supported addresses.
 
-Keep Configs limited to important controls a user, operator or app developer needs to change. Review the concrete tuning need and retain a sensible fixed default when none exists. Declare each public `configControls` entry with its exact source path, value name, audience and purpose; `units check` rejects missing or unresolved declarations. Keep schemas, protocol invariants, lookup tables, test/build machinery and documentation internal, and design tokens in Styles. New config scaffolds start internal without automatic `name` or `enabled` fields. Preserve internal units, source contracts and history rather than deleting implementation data to simplify the catalog.
+Keep Configs limited to important controls a user, operator or app developer needs to change. Review the concrete tuning need and retain a sensible fixed default when none exists. Declare each public `configControls` entry with its exact source path, value name, audience and purpose; `harness units check` rejects missing or unresolved declarations. Keep schemas, protocol invariants, lookup tables, test/build machinery and documentation internal, and design tokens in Styles. New config scaffolds start internal without automatic `name` or `enabled` fields. Preserve internal units, source contracts and history rather than deleting implementation data to simplify the catalog.
 
 Place every module type in `src/<kind>/<category>/` using the project taxonomy in
 `harness.groups.json`. Use `harness generate <kind> <name> --group <category>` for

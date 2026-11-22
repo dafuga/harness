@@ -125,7 +125,7 @@
 			},
 			{
 				"name": "beatFromEnvironment.env",
-				"type": "NodeJS.ProcessEnv",
+				"type": "Record<string, string | undefined>",
 				"required": false,
 				"description": "Only HARNESS_AGENT_ID is read from it, trimmed, and a value that is missing or blank means nothing is beaten. Defaults to process.env, the environment of the running process.",
 				"examples": [
@@ -160,7 +160,7 @@
 								"label": "Reviewer",
 								"provider": "anthropic",
 								"model": "claude-sonnet-5-5",
-								"worktree": "harness-slot-7",
+								"worktree": "example-worktree",
 								"branch": "feature/activity-roster",
 								"task": "Writing the evidence grid tests",
 								"loop": "sol-12-cli-startup",
@@ -274,7 +274,7 @@
 								"truncated": false
 							},
 							{
-								"name": "harness-slot-7",
+								"name": "example-worktree",
 								"branch": "feature/activity-roster",
 								"head": "5c0e8b2f7a91d46e3b8c0f25a7d19e4b6c3f08d2",
 								"primary": false,
@@ -292,7 +292,7 @@
 									"label": "Reviewer",
 									"provider": "anthropic",
 									"model": "claude-sonnet-5-5",
-									"worktree": "harness-slot-7",
+									"worktree": "example-worktree",
 									"branch": "feature/activity-roster",
 									"task": "Writing the evidence grid tests",
 									"loop": "sol-12-cli-startup",
@@ -407,7 +407,7 @@
 									"truncated": false
 								},
 								{
-									"name": "harness-slot-7",
+									"name": "example-worktree",
 									"branch": "feature/activity-roster",
 									"head": "5c0e8b2f7a91d46e3b8c0f25a7d19e4b6c3f08d2",
 									"primary": false,
@@ -425,7 +425,7 @@
 										"label": "Reviewer",
 										"provider": "anthropic",
 										"model": "claude-sonnet-5-5",
-										"worktree": "harness-slot-7",
+										"worktree": "example-worktree",
 										"branch": "feature/activity-roster",
 										"task": "Writing the evidence grid tests",
 										"loop": "sol-12-cli-startup",
@@ -445,7 +445,7 @@
 			},
 			{
 				"name": "registerAgent",
-				"type": "unknown",
+				"type": "Promise<{ id: string; branch: string | null; registeredAt: string; ttlSeconds: number; }>",
 				"description": "The registration just written: the agent's id, the branch of the checkout it registered in or null when there is none, when it registered, and its time to live in seconds.",
 				"examples": [
 					{
@@ -464,7 +464,7 @@
 			},
 			{
 				"name": "beatAgent",
-				"type": "unknown",
+				"type": "Promise<{ at: string; branch: string | null; task: string | null; loop: string | null; units: string[]; id: string; }>",
 				"description": "The heartbeat just written, with the agent's id: at is when it was written, branch is the branch of the checkout the agent registered in, and task, loop and units are what the agent says now.",
 				"examples": [
 					{
@@ -479,7 +479,7 @@
 			},
 			{
 				"name": "finishAgent",
-				"type": "unknown",
+				"type": "Promise<{ id: string; status: string; }>",
 				"description": "The agent's id with its final status, which is failed when failed was true and completed otherwise.",
 				"examples": [
 					{
@@ -518,7 +518,7 @@
 								"label": "Reviewer",
 								"provider": "anthropic",
 								"model": "claude-sonnet-5-5",
-								"worktree": "harness-slot-7",
+								"worktree": "example-worktree",
 								"branch": "feature/activity-roster",
 								"task": "Writing the evidence grid tests",
 								"loop": "sol-12-cli-startup",
@@ -540,7 +540,7 @@
 				"description": "The roster as plain text: one sentence saying no agent has registered when tracking is never-used, and otherwise a line counting the working agents, one line per entry with its state, label, provider and model, checkout, branch and detail, and a line for any unreadable registrations.",
 				"examples": [
 					"No agent has registered in this repository, so who is working is not known.",
-					"1 registered agents are working now.\n  working   Reviewer (anthropic · claude-sonnet-5-5) in harness-slot-7 · branch feature/activity-roster: Last heartbeat at 2026-11-15T09:12:44.318Z"
+					"1 registered agents are working now.\n  working   Reviewer (anthropic · claude-sonnet-5-5) in example-worktree · branch feature/activity-roster: Last heartbeat at 2026-11-15T09:12:44.318Z"
 				]
 			},
 			{
@@ -548,7 +548,7 @@
 				"type": "string",
 				"description": "The activity as plain text: a heading with the repository name, branch and short head commit, then the loop types, the recent work with short commits, commit times and subjects, the checkouts with their uncommitted change counts, and the agent roster.",
 				"examples": [
-					"harness · branch main · 3f9a1c7\nLoop types:\n  regression-prevention: 1 loops, 0 complete\nRecent work:\n  3f9a1c7 2026-11-14T16:22:08+01:00 Show agents in the activity roster\n  a71d05c 2026-11-13T10:04:51+01:00 Refuse a limit outside 1 to 200\nCheckouts:\n  harness (main): 1 uncommitted\n  harness-slot-7 (feature/activity-roster): 0 uncommitted\n1 registered agents are working now.\n  working   Reviewer (anthropic · claude-sonnet-5-5) in harness-slot-7 · branch feature/activity-roster: Last heartbeat at 2026-11-15T09:12:44.318Z"
+					"harness · branch main · 3f9a1c7\nLoop types:\n  regression-prevention: 1 loops, 0 complete\nRecent work:\n  3f9a1c7 2026-11-14T16:22:08+01:00 Show agents in the activity roster\n  a71d05c 2026-11-13T10:04:51+01:00 Refuse a limit outside 1 to 200\nCheckouts:\n  harness (main): 1 uncommitted\n  example-worktree (feature/activity-roster): 0 uncommitted\n1 registered agents are working now.\n  working   Reviewer (anthropic · claude-sonnet-5-5) in example-worktree · branch feature/activity-roster: Last heartbeat at 2026-11-15T09:12:44.318Z"
 				]
 			}
 		],
@@ -691,7 +691,7 @@
 											"truncated": false
 										},
 										{
-											"name": "harness-slot-7",
+											"name": "example-worktree",
 											"branch": "feature/activity-roster",
 											"head": "5c0e8b2f7a91d46e3b8c0f25a7d19e4b6c3f08d2",
 											"primary": false,
@@ -709,7 +709,7 @@
 												"label": "Reviewer",
 												"provider": "anthropic",
 												"model": "claude-sonnet-5-5",
-												"worktree": "harness-slot-7",
+												"worktree": "example-worktree",
 												"branch": "feature/activity-roster",
 												"task": "Writing the evidence grid tests",
 												"loop": "sol-12-cli-startup",
@@ -766,7 +766,7 @@
 				"outputs": [
 					{
 						"name": "registerAgent",
-						"type": "unknown",
+						"type": "Promise<{ id: string; branch: string | null; registeredAt: string; ttlSeconds: number; }>",
 						"description": "The registration just written: the agent's id, the branch of the checkout it registered in or null when there is none, when it registered, and its time to live in seconds.",
 						"examples": [
 							{
@@ -820,7 +820,7 @@
 				"outputs": [
 					{
 						"name": "beatAgent",
-						"type": "unknown",
+						"type": "Promise<{ at: string; branch: string | null; task: string | null; loop: string | null; units: string[]; id: string; }>",
 						"description": "The heartbeat just written, with the agent's id: at is when it was written, branch is the branch of the checkout the agent registered in, and task, loop and units are what the agent says now.",
 						"examples": [
 							{
@@ -872,7 +872,7 @@
 				"outputs": [
 					{
 						"name": "finishAgent",
-						"type": "unknown",
+						"type": "Promise<{ id: string; status: string; }>",
 						"description": "The agent's id with its final status, which is failed when failed was true and completed otherwise.",
 						"examples": [
 							{
@@ -900,7 +900,7 @@
 				"inputs": [
 					{
 						"name": "beatFromEnvironment.env",
-						"type": "NodeJS.ProcessEnv",
+						"type": "Record<string, string | undefined>",
 						"required": false,
 						"description": "Only HARNESS_AGENT_ID is read from it, trimmed, and a value that is missing or blank means nothing is beaten. Defaults to process.env, the environment of the running process.",
 						"examples": [
@@ -949,7 +949,7 @@
 										"label": "Reviewer",
 										"provider": "anthropic",
 										"model": "claude-sonnet-5-5",
-										"worktree": "harness-slot-7",
+										"worktree": "example-worktree",
 										"branch": "feature/activity-roster",
 										"task": "Writing the evidence grid tests",
 										"loop": "sol-12-cli-startup",
@@ -994,7 +994,7 @@
 										"label": "Reviewer",
 										"provider": "anthropic",
 										"model": "claude-sonnet-5-5",
-										"worktree": "harness-slot-7",
+										"worktree": "example-worktree",
 										"branch": "feature/activity-roster",
 										"task": "Writing the evidence grid tests",
 										"loop": "sol-12-cli-startup",
@@ -1018,7 +1018,7 @@
 						"description": "The roster as plain text: one sentence saying no agent has registered when tracking is never-used, and otherwise a line counting the working agents, one line per entry with its state, label, provider and model, checkout, branch and detail, and a line for any unreadable registrations.",
 						"examples": [
 							"No agent has registered in this repository, so who is working is not known.",
-							"1 registered agents are working now.\n  working   Reviewer (anthropic · claude-sonnet-5-5) in harness-slot-7 · branch feature/activity-roster: Last heartbeat at 2026-11-15T09:12:44.318Z"
+							"1 registered agents are working now.\n  working   Reviewer (anthropic · claude-sonnet-5-5) in example-worktree · branch feature/activity-roster: Last heartbeat at 2026-11-15T09:12:44.318Z"
 						]
 					}
 				],
@@ -1126,7 +1126,7 @@
 										"truncated": false
 									},
 									{
-										"name": "harness-slot-7",
+										"name": "example-worktree",
 										"branch": "feature/activity-roster",
 										"head": "5c0e8b2f7a91d46e3b8c0f25a7d19e4b6c3f08d2",
 										"primary": false,
@@ -1144,7 +1144,7 @@
 											"label": "Reviewer",
 											"provider": "anthropic",
 											"model": "claude-sonnet-5-5",
-											"worktree": "harness-slot-7",
+											"worktree": "example-worktree",
 											"branch": "feature/activity-roster",
 											"task": "Writing the evidence grid tests",
 											"loop": "sol-12-cli-startup",
@@ -1168,7 +1168,7 @@
 						"type": "string",
 						"description": "The activity as plain text: a heading with the repository name, branch and short head commit, then the loop types, the recent work with short commits, commit times and subjects, the checkouts with their uncommitted change counts, and the agent roster.",
 						"examples": [
-							"harness · branch main · 3f9a1c7\nLoop types:\n  regression-prevention: 1 loops, 0 complete\nRecent work:\n  3f9a1c7 2026-11-14T16:22:08+01:00 Show agents in the activity roster\n  a71d05c 2026-11-13T10:04:51+01:00 Refuse a limit outside 1 to 200\nCheckouts:\n  harness (main): 1 uncommitted\n  harness-slot-7 (feature/activity-roster): 0 uncommitted\n1 registered agents are working now.\n  working   Reviewer (anthropic · claude-sonnet-5-5) in harness-slot-7 · branch feature/activity-roster: Last heartbeat at 2026-11-15T09:12:44.318Z"
+							"harness · branch main · 3f9a1c7\nLoop types:\n  regression-prevention: 1 loops, 0 complete\nRecent work:\n  3f9a1c7 2026-11-14T16:22:08+01:00 Show agents in the activity roster\n  a71d05c 2026-11-13T10:04:51+01:00 Refuse a limit outside 1 to 200\nCheckouts:\n  harness (main): 1 uncommitted\n  example-worktree (feature/activity-roster): 0 uncommitted\n1 registered agents are working now.\n  working   Reviewer (anthropic · claude-sonnet-5-5) in example-worktree · branch feature/activity-roster: Last heartbeat at 2026-11-15T09:12:44.318Z"
 						]
 					}
 				],

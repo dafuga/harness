@@ -30,7 +30,7 @@
 						"model": "gpt-6-luna",
 						"task": "Review agent activity metadata",
 						"loop": "contract-review",
-						"units": "reports.component.evidence-grid,function.agent-statement",
+						"units": "workflow.run-activity,function.agent-statement",
 						"pid": "4312",
 						"ttl": "1800",
 						"outcome": "Validated activity metadata"
@@ -51,7 +51,7 @@
 						"model": "gpt-6-luna",
 						"task": "Review agent activity metadata",
 						"loop": "contract-review",
-						"units": ["function.agent-statement", "reports.component.evidence-grid"],
+						"units": ["function.agent-statement", "workflow.run-activity"],
 						"pid": 4312,
 						"ttlSeconds": 1800,
 						"outcome": "Validated activity metadata"
@@ -84,7 +84,7 @@
 								"model": "gpt-6-luna",
 								"task": "Review agent activity metadata",
 								"loop": "contract-review",
-								"units": "reports.component.evidence-grid,function.agent-statement",
+								"units": "workflow.run-activity,function.agent-statement",
 								"pid": "4312",
 								"ttl": "1800",
 								"outcome": "Validated activity metadata"
@@ -105,7 +105,7 @@
 								"model": "gpt-6-luna",
 								"task": "Review agent activity metadata",
 								"loop": "contract-review",
-								"units": ["function.agent-statement", "reports.component.evidence-grid"],
+								"units": ["function.agent-statement", "workflow.run-activity"],
 								"pid": 4312,
 								"ttlSeconds": 1800,
 								"outcome": "Validated activity metadata"

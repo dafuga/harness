@@ -1,0 +1,53 @@
+{
+	"schemaVersion": 1,
+	"id": "unrecorded-wasm-measurements",
+	"title": "An unrecorded revision with a declared Wasm target",
+	"kind": "ui",
+	"units": ["reports.component.harness-entity-overview"],
+	"builds": ["entity-preview"],
+	"states": [
+		{
+			"id": "reports-component-harness-entity-overview-unrecorded-wasm",
+			"title": "Wasm size has no recorded measurement",
+			"coverage": "required"
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 900
+		},
+		{
+			"id": "tablet",
+			"width": 834,
+			"height": 1112
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "overview",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts test/entity-preview-unrecorded-measures.spec.ts",
+			"cwd": "packages/reports"
+		}
+	],
+	"evidence": [
+		{
+			"id": "unrecorded-measure-screens",
+			"kind": "screenshot",
+			"states": ["reports-component-harness-entity-overview-unrecorded-wasm"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"build": "entity-preview",
+			"capture": "full-page",
+			"provenance": "actual-capture",
+			"required": true
+		}
+	]
+}

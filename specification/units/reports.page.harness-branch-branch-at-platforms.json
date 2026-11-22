@@ -24,7 +24,7 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The page markup for this route is a HarnessScreen titled Platforms with the ExplorerPlatforms component as its content. This file reads no route parameters and passes none to either component, so the [branch] and [...at] segments are not used here."
+				"description": "The page markup for this route is a HarnessScreen titled Platforms with the ExplorerPlatforms component as its content. This file reads no route parameters and passes none to either component, so the [branch] and [...at] segments are not used here. The ready search boundary is the unfiltered page before and after each declared result-set branch."
 			}
 		],
 		"errors": [],
@@ -54,7 +54,7 @@
 			}
 		]
 	},
-	"scenarios": ["component-catalog-previews", "explorer-platforms"],
+	"scenarios": ["component-catalog-previews", "explorer-platforms", "platform-search-video-pilot"],
 	"preview": {
 		"scenario": "component-catalog-previews",
 		"state": "reports-page-harness-branch-branch-at-platforms",

@@ -4,6 +4,13 @@ import type { HarnessLegacyReport } from './HarnessLegacy.types';
 import type { Status } from '../reports-media/Report.types';
 import type { BrowserDiagnostic } from '../../../../../src/core/development-tooling/browserDiagnostics';
 import type { UnitMetadata } from '../../../../../src/utils/explorer-ui/unitMetadata';
+import type {
+	VideoCapture,
+	VideoReference,
+	VideoBatchPointer,
+	VideoCoverage,
+	VideoManifest
+} from '../../../../../src/utils/verification-evidence/videoClipSchema.types';
 export type * from './HarnessLegacy.types';
 export interface HarnessRecordSummary {
 	id: string;
@@ -93,11 +100,14 @@ export interface HarnessUnit extends HarnessUnitLimits, UnitMetadata {
 	version: string;
 }
 export interface HarnessScenario {
+	video?: VideoManifest;
 	id: string;
 	title: string;
 	kind: string;
 	units: string[];
 	states: Array<{
+		motion?: 'required' | 'none';
+		motionReason?: string;
 		id: string;
 		title?: string;
 		coverage: string;
@@ -109,6 +119,8 @@ export interface HarnessScenario {
 	evidence?: Array<{ id: string; kind: string; states: string[]; viewports: string[] }>;
 }
 export interface HarnessCapture {
+	videoReference?: VideoReference;
+	video?: VideoCapture & { poster: VideoCapture['poster'] & { url?: string } };
 	evidence: string;
 	kind: string;
 	state: string;
@@ -126,6 +138,7 @@ export interface HarnessCapture {
 	gap?: string;
 }
 export interface HarnessRecord {
+	videoBatches?: VideoBatchPointer[];
 	id: string;
 	status: 'passed' | 'failed';
 	valid: boolean;
@@ -145,6 +158,7 @@ export interface HarnessRecord {
 		browserErrors?: BrowserDiagnostic[];
 	}>;
 	scenarios: Array<{
+		videoCoverage?: VideoCoverage;
 		id: string;
 		status: 'passed' | 'failed' | 'referenced';
 		testedRevision: string;

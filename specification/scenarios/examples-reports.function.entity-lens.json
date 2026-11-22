@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.entity-lens",
+	"title": "reports.function.entity-lens examples",
+	"kind": "headless",
+	"units": ["reports.function.entity-lens"],
+	"builds": [],
+	"states": [
+		{
+			"id": "shortcommit-keeps-seven-characters",
+			"title": "Commit text is cut to its first seven characters, and shorter text is unchanged",
+			"coverage": "required"
+		},
+		{
+			"id": "entity-labels-keep-pages-first",
+			"title": "The ten collections keep Pages first, each with its fixed title and subtitle",
+			"coverage": "required"
+		},
+		{
+			"id": "link-keeps-branch-and-commit",
+			"title": "A link keeps the branch and the commit it starts from unless it names its own",
+			"coverage": "required"
+		},
+		{
+			"id": "link-never-carries-section-or-tab",
+			"title": "A link never carries a section or tab from where it starts",
+			"coverage": "required"
+		},
+		{
+			"id": "helper-only-for-same-entity-in-functions",
+			"title": "A helper is carried only into the functions category for the same entity",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.entity-lens.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"shortcommit-keeps-seven-characters",
+				"entity-labels-keep-pages-first",
+				"link-keeps-branch-and-commit",
+				"link-never-carries-section-or-tab",
+				"helper-only-for-same-entity-in-functions"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"shortcommit-keeps-seven-characters",
+				"entity-labels-keep-pages-first",
+				"link-keeps-branch-and-commit",
+				"link-never-carries-section-or-tab",
+				"helper-only-for-same-entity-in-functions"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"shortcommit-keeps-seven-characters",
+				"entity-labels-keep-pages-first",
+				"link-keeps-branch-and-commit",
+				"link-never-carries-section-or-tab",
+				"helper-only-for-same-entity-in-functions"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

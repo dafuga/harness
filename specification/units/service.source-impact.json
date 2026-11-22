@@ -30,9 +30,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem path for the repository used by GitAdapter and CommitTreeAdapter to resolve commits and read source trees. It matters for every service method and must identify the repository containing the requested commits.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "SourceImpactService.of.commit",
@@ -141,7 +139,7 @@
 			},
 			{
 				"name": "SourceImpactService.measurements",
-				"type": "unknown",
+				"type": "Promise<Measurement[]>",
 				"description": "Static measurements produced for each manifest in the loaded source side and tagged with the requested commit. It returns an empty list when side loading fails.",
 				"examples": [
 					[]
@@ -297,7 +295,7 @@
 				"outputs": [
 					{
 						"name": "SourceImpactService.measurements",
-						"type": "unknown",
+						"type": "Promise<Measurement[]>",
 						"description": "Static measurements produced for each manifest in the loaded source side and tagged with the requested commit. It returns an empty list when side loading fails.",
 						"examples": [
 							[]
@@ -317,15 +315,13 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem path for the repository used by GitAdapter and CommitTreeAdapter to resolve commits and read source trees. It matters for every service method and must identify the repository containing the requested commits.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SourceImpactService.constructor",
-						"type": "unknown",
+						"type": "SourceImpactService",
 						"description": "A SourceImpactService instance bound to the repository root, with its Git adapter, source indexer and impact runtime initialized. It caches each commit side promise so a tree is indexed once per service instance."
 					}
 				],

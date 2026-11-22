@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.model.browser-api-types",
+	"title": "desktop.model.browser-api-types examples",
+	"kind": "headless",
+	"units": ["desktop.model.browser-api-types"],
+	"builds": [],
+	"states": [
+		{
+			"id": "accepts-typed-project-api-requests-and-responses",
+			"title": "accepts typed project API requests and responses",
+			"coverage": "required"
+		},
+		{
+			"id": "accepts-an-error-with-request-status-and-code",
+			"title": "accepts an error with request status and code",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.model.browser-api-types.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"accepts-typed-project-api-requests-and-responses",
+				"accepts-an-error-with-request-status-and-code"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"accepts-typed-project-api-requests-and-responses",
+				"accepts-an-error-with-request-status-and-code"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"accepts-typed-project-api-requests-and-responses",
+				"accepts-an-error-with-request-status-and-code"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

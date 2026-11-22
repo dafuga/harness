@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.generate-unit",
+	"title": "workflow.generate-unit examples",
+	"kind": "headless",
+	"units": ["workflow.generate-unit"],
+	"builds": [],
+	"states": [
+		{
+			"id": "generates-a-function-unit-with-its-declared-responsibility",
+			"title": "Generates a function unit with its declared responsibility",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-an-unsupported-unit-kind",
+			"title": "Rejects an unsupported unit kind",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-unit-name-with-invalid-characters",
+			"title": "Rejects a unit name with invalid characters",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.generate-unit.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"generates-a-function-unit-with-its-declared-responsibility",
+				"rejects-an-unsupported-unit-kind",
+				"rejects-a-unit-name-with-invalid-characters"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"generates-a-function-unit-with-its-declared-responsibility",
+				"rejects-an-unsupported-unit-kind",
+				"rejects-a-unit-name-with-invalid-characters"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"generates-a-function-unit-with-its-declared-responsibility",
+				"rejects-an-unsupported-unit-kind",
+				"rejects-a-unit-name-with-invalid-characters"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

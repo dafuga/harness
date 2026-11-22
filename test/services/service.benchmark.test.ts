@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { chmodSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { chmodSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterEach, test, vi } from 'vitest';
 import type { PreparedBenchmark } from '../../src/cli/program/benchmark-service/benchmarkDefinition';
@@ -9,7 +9,7 @@ import type { BenchmarkRun } from '../../src/core/agents-providers/subagentBench
 import { ExpectedCliError } from '../../src/core/development-tooling/errors';
 import { BenchmarkRepository } from '../../src/repositories/agents-providers/BenchmarkRepository';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { createTempDirectory } from '../support/temporary';
+import { withTempDir, withTempRepo } from '../support/temporary';
 import { expect } from '../verificationExpect';
 import type { Rendered } from './service.benchmark.test.types';
 import { failedTrial, passedTrial } from './service.benchmark.fixtures';
@@ -30,23 +30,14 @@ const definitionSource = {
 	candidates: [{ id: 'agent', runner: 'codex', model: 'explicit-model', effort: 'medium' }],
 	budget: { repetitions: 2, timeoutMs: 10000, repairs: 2 }
 };
-const owned: string[] = [];
-
 afterEach(() => {
 	vi.unstubAllEnvs();
 	vi.restoreAllMocks();
-	for (const directory of owned.splice(0)) rmSync(directory, { recursive: true, force: true });
 });
 
-async function temporaryDirectory(): Promise<string> {
-	const directory = await createTempDirectory('service-benchmark-examples-');
-	owned.push(directory);
-	return directory;
-}
-
-/** Points the analytics home, where benchmark runs are kept, at a temporary directory. */
-async function analyticsHome(): Promise<void> {
-	vi.stubEnv('HARNESS_ANALYTICS_HOME', await temporaryDirectory());
+/** Points the analytics home, where benchmark runs are kept, at the given directory. */
+function analyticsHome(directory: string): void {
+	vi.stubEnv('HARNESS_ANALYTICS_HOME', directory);
 }
 
 /** Runs git in a fixture repository under a fixed identity, so commits do not depend on the machine. */
@@ -60,9 +51,9 @@ function printed(calls: unknown[][]): string {
 	return calls.map((args) => String(args[0])).join('\n');
 }
 
-/** Saves the two-trial run where `benchmark run` saves it, in this test's analytics home. */
-async function persistSeededRun(): Promise<BenchmarkRun> {
-	await analyticsHome();
+/** Saves the two-trial run where `benchmark run` saves it, in the analytics home at `directory`. */
+async function persistSeededRun(directory: string): Promise<BenchmarkRun> {
+	analyticsHome(directory);
 	const run: BenchmarkRun = {
 		version: 1,
 		id: runId,
@@ -81,114 +72,128 @@ async function persistSeededRun(): Promise<BenchmarkRun> {
 }
 
 test('execute called with validate on a definition file prints its preview with the revision, runner version and trial count', async () => {
-	const root = await temporaryDirectory();
-	const bin = join(await temporaryDirectory(), 'bin');
-	mkdirSync(bin);
-	writeFileSync(join(bin, 'codex'), '#!/bin/sh\necho "codex fixture 1"\n');
-	chmodSync(join(bin, 'codex'), 0o755);
-	vi.stubEnv('PATH', `${bin}:${process.env.PATH ?? ''}`);
-	await analyticsHome();
-	writeFileSync(join(root, 'component.ts'), 'export const value = 0;\n');
-	git(root, 'init', '-q');
-	git(root, 'add', 'component.ts');
-	git(root, '-c', 'commit.gpgsign=false', 'commit', '-qm', 'fixture');
-	const path = join(root, 'benchmark.json');
-	writeFileSync(path, JSON.stringify(definitionSource));
-	const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
-	await new BenchmarkService().execute('validate', path, {});
-	const preview = JSON.parse(printed(log.mock.calls)) as PreparedBenchmark;
-	expect(preview.definition.name).toBe('component-value');
-	expect(preview.runnerVersions).toEqual({ agent: 'codex fixture 1' });
-	expect(preview.trials).toBe(2);
-	expect(preview.revision).toBe(git(root, 'rev-parse', 'HEAD'));
-	recordExampleCases(
-		{ unitId, symbol, state: 'validate-definition', evidence, file: 'validate-definition.json' },
-		[
-			{
-				name: 'benchmark.json at the root of its repository, with one codex candidate',
-				input: { operation: 'validate', target: 'benchmark.json', options: {} },
-				output: {
-					name: preview.definition.name,
-					revision: preview.revision,
-					runnerVersions: preview.runnerVersions,
-					trials: preview.trials
-				}
-			}
-		]
-	);
+	await withTempDir('service-benchmark-examples-', async (home) => {
+		const bin = join(home, 'bin');
+		mkdirSync(bin);
+		writeFileSync(join(bin, 'codex'), '#!/bin/sh\necho "codex fixture 1"\n');
+		chmodSync(join(bin, 'codex'), 0o755);
+		vi.stubEnv('PATH', `${bin}:${process.env.PATH ?? ''}`);
+		analyticsHome(home);
+		await withTempRepo(async ({ root }) => {
+			writeFileSync(join(root, 'component.ts'), 'export const value = 0;\n');
+			git(root, 'add', 'component.ts');
+			git(root, '-c', 'commit.gpgsign=false', 'commit', '-qm', 'fixture');
+			const path = join(root, 'benchmark.json');
+			writeFileSync(path, JSON.stringify(definitionSource));
+			const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+			await new BenchmarkService().execute('validate', path, {});
+			const preview = JSON.parse(printed(log.mock.calls)) as PreparedBenchmark;
+			expect(preview.definition.name).toBe('component-value');
+			expect(preview.runnerVersions).toEqual({ agent: 'codex fixture 1' });
+			expect(preview.trials).toBe(2);
+			expect(preview.revision).toBe(git(root, 'rev-parse', 'HEAD'));
+			recordExampleCases(
+				{
+					unitId,
+					symbol,
+					state: 'validate-definition',
+					evidence,
+					file: 'validate-definition.json'
+				},
+				[
+					{
+						name: 'benchmark.json at the root of its repository, with one codex candidate',
+						input: { operation: 'validate', target: 'benchmark.json', options: {} },
+						output: {
+							name: preview.definition.name,
+							revision: preview.revision,
+							runnerVersions: preview.runnerVersions,
+							trials: preview.trials
+						}
+					}
+				]
+			);
+		}, 'service-benchmark-examples-');
+	});
 }, 20000);
 
 test('execute called with results for a persisted run prints the run and a table comparing its candidates', async () => {
-	const run = await persistSeededRun();
-	const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
-	await new BenchmarkService().execute('results', run.id, {});
-	const lines = printed(log.mock.calls).split('\n');
-	expect(lines).toEqual([
-		'Benchmark: component-value',
-		`Run: ${runId}`,
-		`Revision: ${revision}`,
-		'Candidate | Trials | First submission | Eventually passed | Median successful ms | Outcomes',
-		'agent | 2 | 1/2 | 1/2 | 1400 | {"passed":1,"failed":1}',
-		'Usage and reported cost are available with --json; unknown values are not zero.'
-	]);
-	recordExampleCases(
-		{ unitId, symbol, state: 'results-table', evidence, file: 'results-table.json' },
-		[
-			{
-				name: 'persisted run of one candidate with two trials, printed as a table',
-				input: { operation: 'results', target: run.id, options: {} },
-				output: lines
-			}
-		]
-	);
+	await withTempDir('service-benchmark-examples-', async (directory) => {
+		const run = await persistSeededRun(directory);
+		const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+		await new BenchmarkService().execute('results', run.id, {});
+		const lines = printed(log.mock.calls).split('\n');
+		expect(lines).toEqual([
+			'Benchmark: component-value',
+			`Run: ${runId}`,
+			`Revision: ${revision}`,
+			'Candidate | Trials | First submission | Eventually passed | Median successful ms | Outcomes',
+			'agent | 2 | 1/2 | 1/2 | 1400 | {"passed":1,"failed":1}',
+			'Usage and reported cost are available with --json; unknown values are not zero.'
+		]);
+		recordExampleCases(
+			{ unitId, symbol, state: 'results-table', evidence, file: 'results-table.json' },
+			[
+				{
+					name: 'persisted run of one candidate with two trials, printed as a table',
+					input: { operation: 'results', target: run.id, options: {} },
+					output: lines
+				}
+			]
+		);
+	});
 });
 
 test('execute called with results and json output prints the persisted run and its comparison as JSON', async () => {
-	const run = await persistSeededRun();
-	const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
-	await new BenchmarkService().execute('results', run.id, { json: true });
-	const result = JSON.parse(printed(log.mock.calls)) as Rendered;
-	expect(result.run).toEqual(run);
-	expect(result.comparison).toMatchObject([
-		{
-			candidate: 'agent',
-			trials: 2,
-			successes: 1,
-			medianSuccessfulDurationMs: 1400,
-			outcomes: { passed: 1, failed: 1 },
-			usage: { inputTokens: 22, outputTokens: 5, cacheReadTokens: null },
-			reportedCostUsd: null
-		}
-	]);
-	recordExampleCases(
-		{ unitId, symbol, state: 'results-json', evidence, file: 'results-json.json' },
-		[
+	await withTempDir('service-benchmark-examples-', async (directory) => {
+		const run = await persistSeededRun(directory);
+		const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+		await new BenchmarkService().execute('results', run.id, { json: true });
+		const result = JSON.parse(printed(log.mock.calls)) as Rendered;
+		expect(result.run).toEqual(run);
+		expect(result.comparison).toMatchObject([
 			{
-				name: 'persisted run with json output selected',
-				input: { operation: 'results', target: run.id, options: { json: true } },
-				output: {
-					run: { id: result.run.id, trials: result.run.trials.map((trial) => trial.status) },
-					comparison: result.comparison
-				}
+				candidate: 'agent',
+				trials: 2,
+				successes: 1,
+				medianSuccessfulDurationMs: 1400,
+				outcomes: { passed: 1, failed: 1 },
+				usage: { inputTokens: 22, outputTokens: 5, cacheReadTokens: null },
+				reportedCostUsd: null
 			}
-		]
-	);
+		]);
+		recordExampleCases(
+			{ unitId, symbol, state: 'results-json', evidence, file: 'results-json.json' },
+			[
+				{
+					name: 'persisted run with json output selected',
+					input: { operation: 'results', target: run.id, options: { json: true } },
+					output: {
+						run: { id: result.run.id, trials: result.run.trials.map((trial) => trial.status) },
+						comparison: result.comparison
+					}
+				}
+			]
+		);
+	});
 });
 
 test('execute called with results for a target that is not a run ID rejects with an expected CLI error', async () => {
-	await analyticsHome();
-	const rejected = new BenchmarkService().execute('results', 'not-a-run', {});
-	await expect(rejected).rejects.toBeInstanceOf(ExpectedCliError);
-	const message = await rejected.catch((error: Error) => error.message);
-	expect(message).toBe('Invalid benchmark run ID.');
-	recordExampleCases(
-		{ unitId, symbol, state: 'invalid-run-id', evidence, file: 'invalid-run-id.json' },
-		[
-			{
-				name: 'target that is not a benchmark run ID',
-				input: { operation: 'results', target: 'not-a-run', options: {} },
-				error: message
-			}
-		]
-	);
+	await withTempDir('service-benchmark-examples-', async (directory) => {
+		analyticsHome(directory);
+		const rejected = new BenchmarkService().execute('results', 'not-a-run', {});
+		await expect(rejected).rejects.toBeInstanceOf(ExpectedCliError);
+		const message = await rejected.catch((error: Error) => error.message);
+		expect(message).toBe('Invalid benchmark run ID.');
+		recordExampleCases(
+			{ unitId, symbol, state: 'invalid-run-id', evidence, file: 'invalid-run-id.json' },
+			[
+				{
+					name: 'target that is not a benchmark run ID',
+					input: { operation: 'results', target: 'not-a-run', options: {} },
+					error: message
+				}
+			]
+		);
+	});
 });

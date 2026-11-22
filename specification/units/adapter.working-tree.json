@@ -25,9 +25,9 @@
 				"required": true,
 				"description": "Directory the adapter treats as its working tree; it is passed to GitAdapter and is the base that list() and read() join relative paths onto. The constructor does not validate it, so the repository check and all file access happen later, in list() or read().",
 				"examples": [
-					"/home/dev/workspace/app",
-					"/srv/checkouts/billing-service",
-					"C:\\work\\monorepo\\service"
+					"/workspace/project",
+					"/workspace/checkouts/billing-service",
+					"C:\\workspace\\monorepo\\service"
 				]
 			},
 			{
@@ -191,16 +191,16 @@
 						"required": true,
 						"description": "Directory the adapter treats as its working tree; it is passed to GitAdapter and is the base that list() and read() join relative paths onto. The constructor does not validate it, so the repository check and all file access happen later, in list() or read().",
 						"examples": [
-							"/home/dev/workspace/app",
-							"/srv/checkouts/billing-service",
-							"C:\\work\\monorepo\\service"
+							"/workspace/project",
+							"/workspace/checkouts/billing-service",
+							"C:\\workspace\\monorepo\\service"
 						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "WorkingTreeAdapter.constructor",
-						"type": "unknown",
+						"type": "WorkingTreeAdapter",
 						"description": "The new WorkingTreeAdapter instance; its constructor body only stores root and creates a GitAdapter for it, with no file or git call of its own. Its list() and read() methods do the file and git work: list() once per adapter, read() on every call."
 					}
 				],

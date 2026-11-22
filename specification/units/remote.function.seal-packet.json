@@ -59,8 +59,19 @@
 				"name": "SecureFailure",
 				"type": "thrown",
 				"description": "Any decoding, parameter or authentication failure while opening becomes SecureFailure with reason tag."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Rejected by sealPacket when context.counter is not an integer, because the nonce converts it with BigInt."
+			},
+			{
+				"name": "DOMException",
+				"type": "propagated",
+				"description": "Rejected by sealPacket when crypto.subtle.encrypt rejects, for example an InvalidAccessError when context.key is not an AES-GCM key that allows encryption."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "sealPacket",
@@ -85,8 +96,19 @@
 						"description": "Base64url ciphertext and 16-byte tag using a nonce derived from the counter."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Rejected by sealPacket when context.counter is not an integer, because the nonce converts it with BigInt."
+					},
+					{
+						"name": "DOMException",
+						"type": "propagated",
+						"description": "Rejected by sealPacket when crypto.subtle.encrypt rejects, for example an InvalidAccessError when context.key is not an AES-GCM key that allows encryption."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "openPacket",
@@ -114,10 +136,11 @@
 				"errors": [
 					{
 						"name": "SecureFailure",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Any exception while decoding the base64url data, constructing authentication parameters or decrypting is replaced with SecureFailure with reason tag; the original error is not propagated."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

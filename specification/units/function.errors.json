@@ -27,7 +27,7 @@
 				"required": true,
 				"description": "The text passed unchanged to the Error constructor, so it becomes the message property that callers read from the thrown ExpectedCliError. fail does no trimming, formatting, length or runtime type check, so only the TypeScript string type constrains it: an empty string is accepted, and a Symbol makes the Error constructor throw a TypeError.",
 				"examples": [
-					"Unit reports.component.evidence-grid has no contract section.",
+					"Unit function.errors has no contract section.",
 					"Could not parse unit.json: unexpected end of JSON input",
 					"Refusing to overwrite an existing unit.json."
 				]
@@ -78,7 +78,7 @@
 						"required": true,
 						"description": "The text passed unchanged to the Error constructor, so it becomes the message property that callers read from the thrown ExpectedCliError. fail does no trimming, formatting, length or runtime type check, so only the TypeScript string type constrains it: an empty string is accepted, and a Symbol makes the Error constructor throw a TypeError.",
 						"examples": [
-							"Unit reports.component.evidence-grid has no contract section.",
+							"Unit function.errors has no contract section.",
 							"Could not parse unit.json: unexpected end of JSON input",
 							"Refusing to overwrite an existing unit.json."
 						]

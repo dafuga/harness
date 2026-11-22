@@ -474,7 +474,7 @@
 				"outputs": [
 					{
 						"name": "ScenarioRepository.constructor",
-						"type": "unknown",
+						"type": "ScenarioRepository",
 						"description": "The new ScenarioRepository instance, which keeps root and a new ScenarioManifestValidator and provides read() and write()."
 					}
 				],

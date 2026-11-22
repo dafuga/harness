@@ -36,7 +36,7 @@
 			},
 			{
 				"name": "ssr",
-				"type": "unknown",
+				"type": "false",
 				"description": "This layout module exports `false` for SvelteKit's `ssr` setting. It tells SvelteKit to render hosted pages in the browser, where the signed-in session and bridge live.",
 				"examples": [false]
 			}

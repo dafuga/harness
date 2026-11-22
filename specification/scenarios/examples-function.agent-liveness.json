@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.agent-liveness",
+	"title": "function.agent-liveness examples",
+	"kind": "headless",
+	"units": ["function.agent-liveness"],
+	"builds": [],
+	"states": [
+		{
+			"id": "reports-a-final-record-as-its-end-state",
+			"title": "Reports a final record as its end state",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-an-agent-gone-when-its-process-ended-or-was-reused",
+			"title": "Reports an agent gone when its process ended or was reused",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-a-heartbeat-older-than-its-allowance-as-stale",
+			"title": "Reports a heartbeat older than its allowance as stale",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-a-heartbeat-within-its-allowance-as-working",
+			"title": "Reports a heartbeat within its allowance as working",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.agent-liveness.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"reports-a-final-record-as-its-end-state",
+				"reports-an-agent-gone-when-its-process-ended-or-was-reused",
+				"reports-a-heartbeat-older-than-its-allowance-as-stale",
+				"reports-a-heartbeat-within-its-allowance-as-working"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"reports-a-final-record-as-its-end-state",
+				"reports-an-agent-gone-when-its-process-ended-or-was-reused",
+				"reports-a-heartbeat-older-than-its-allowance-as-stale",
+				"reports-a-heartbeat-within-its-allowance-as-working"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"reports-a-final-record-as-its-end-state",
+				"reports-an-agent-gone-when-its-process-ended-or-was-reused",
+				"reports-a-heartbeat-older-than-its-allowance-as-stale",
+				"reports-a-heartbeat-within-its-allowance-as-working"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

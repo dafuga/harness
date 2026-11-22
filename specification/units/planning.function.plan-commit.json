@@ -9,11 +9,17 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/planning/src/utils/planning-collaboration/plan-write/LfsFilterOutputMismatchError.ts",
+			"packages/planning/src/utils/planning-collaboration/plan-write/MissingLfsFilterError.ts",
 			"packages/planning/src/utils/planning-collaboration/plan-write/planCommit.ts",
 			"packages/planning/src/utils/planning-collaboration/planCommit.ts",
 			"packages/planning/src/utils/planning-collaboration/planCommit.types.ts"
 		],
 		"symbols": [
+			"LfsFilterOutputMismatchError",
+			"LfsFilterOutputMismatchError.constructor",
+			"MissingLfsFilterError",
+			"MissingLfsFilterError.constructor",
 			"planCommit",
 			"requireLfsFilters",
 			"stageFiles",
@@ -56,13 +62,13 @@
 						"parent": "3f6c1a0d9b2e47c5a8f1d0e3b6a9c2d4e7f80a12",
 						"branch": "main",
 						"commit": "9d2b7e4f1a0c8e6d3b5a7f9c1e2d4b6a8f0c3e5d",
-						"temp": "/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Xk3pQ9"
+						"temp": "/workspace/tmp/planning-index-a"
 					},
 					{
 						"parent": "b71e0c4d82a95f3e6107d2c8b4f9a0e3d5c76b18",
 						"branch": "planning/daily-sync",
 						"commit": "e04a9d2c7f1b6e8350a4d9c2f7b1e6083a5d4c9f",
-						"temp": "/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Qb7mZ2"
+						"temp": "/workspace/tmp/planning-index-b"
 					}
 				]
 			},
@@ -98,8 +104,8 @@
 				"required": true,
 				"description": "Index file path passed as GIT_INDEX_FILE to each update-index call, which records every file as a 100644 entry. planCommit passes temp/next-index, a copy of the real index, so the real index is replaced only later by the rename.",
 				"examples": [
-					"/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Xk3pQ9/next-index",
-					"/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Qb7mZ2/index"
+					"/workspace/tmp/planning-index-a/next-index",
+					"/workspace/tmp/planning-index-b/index"
 				]
 			}
 		],
@@ -127,7 +133,7 @@
 				"description": "Node system errors (for example EACCES) from filesystem calls and spawned Git processes, such as copyFile, rename or a spawn failure, propagate unchanged, and a rollback step that fails replaces the original error."
 			},
 			{
-				"name": "ExpectedCliError",
+				"name": "PlanningFailure",
 				"type": "thrown",
 				"description": "Error objects whose code property is a planning error code (repository-busy, conflict, unsafe-path or git-failed), created by fail() or by planGit's run; no ExpectedCliError class is thrown."
 			}
@@ -167,13 +173,13 @@
 								"parent": "3f6c1a0d9b2e47c5a8f1d0e3b6a9c2d4e7f80a12",
 								"branch": "main",
 								"commit": "9d2b7e4f1a0c8e6d3b5a7f9c1e2d4b6a8f0c3e5d",
-								"temp": "/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Xk3pQ9"
+								"temp": "/workspace/tmp/planning-index-a"
 							},
 							{
 								"parent": "b71e0c4d82a95f3e6107d2c8b4f9a0e3d5c76b18",
 								"branch": "planning/daily-sync",
 								"commit": "e04a9d2c7f1b6e8350a4d9c2f7b1e6083a5d4c9f",
-								"temp": "/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Qb7mZ2"
+								"temp": "/workspace/tmp/planning-index-b"
 							}
 						]
 					}
@@ -187,7 +193,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Error objects with a planning code in their code property: repository-busy when index.lock cannot be created exclusively (any open failure, including a missing Git directory), conflict when HEAD names a different branch than context.branch, unsafe-path from safePath, and git-failed from a non-zero Git exit such as a failed update-ref compare-and-swap; no ExpectedCliError class is thrown."
 					},
@@ -223,7 +229,7 @@
 						"description": "Node system error from removing the temporary probe directory in the finally block; it replaces a git-failed error that was already being thrown, because every failure inside the probe is converted to git-failed."
 					},
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Error objects with the planning code git-failed for every failure inside the probe: git lfs version failing, no configured clean or process filter, a filter result that differs from the expected pointer, or a failed mkdtemp or writeFile; no ExpectedCliError class is thrown."
 					}
@@ -259,8 +265,8 @@
 						"required": true,
 						"description": "Index file path passed as GIT_INDEX_FILE to each update-index call, which records every file as a 100644 entry. planCommit passes temp/next-index, a copy of the real index, so the real index is replaced only later by the rename.",
 						"examples": [
-							"/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Xk3pQ9/next-index",
-							"/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Qb7mZ2/index"
+							"/workspace/tmp/planning-index-a/next-index",
+							"/workspace/tmp/planning-index-b/index"
 						]
 					}
 				],
@@ -281,7 +287,32 @@
 				"errorStatus": "declared"
 			}
 		],
-		"initialization": []
+		"initialization": [
+			{
+				"name": "LfsFilterOutputMismatchError.constructor",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "LfsFilterOutputMismatchError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "MissingLfsFilterError.constructor",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "MissingLfsFilterError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

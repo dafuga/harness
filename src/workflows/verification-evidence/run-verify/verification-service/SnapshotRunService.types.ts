@@ -4,6 +4,9 @@ import type { RunContext } from './check-run-service/CheckRunService';
 import type { CheckOutcome } from './check-run-service/CheckRunService';
 import type { BuiltArtifacts } from '../../../../utils/development-tooling/unitMeasurements';
 import type { BuiltIdentity } from '../../../../services/verification-evidence/BuildIdentityService';
+import type { ScenarioManifest } from '../../../../core/development-tooling/unitTypes';
+import type { PendingVideoFlags } from '../../../../utils/verification-evidence/scenarioCoverage.types';
+import type { VideoSlot } from '../../../../services/verification-evidence/VideoEvidenceService.types';
 import type { RetainedArtifact } from '../../../../adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.types';
 
 export interface SnapshotRun {
@@ -17,10 +20,13 @@ export interface SnapshotRun {
 	 * given, runs and identifies everything.
 	 */
 	needed?: ReadonlySet<string> | 'all';
+	videos?: ScenarioManifest[];
 	retainArtifact?: string;
 }
 
 export interface Executed {
+	pendingVideoFlags?: Record<string, PendingVideoFlags>;
+	videoSlots?: Record<string, VideoSlot[]>;
 	outcomes: CheckOutcome[];
 	/** Tracked files that setup or a check changed or deleted. */
 	mutated: string[];

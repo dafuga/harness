@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.benchmark-events",
+	"title": "function.benchmark-events examples",
+	"kind": "headless",
+	"units": ["function.benchmark-events"],
+	"builds": [],
+	"states": [
+		{
+			"id": "parses-provider-event-streams-in-source-order",
+			"title": "Parses provider event streams in source order",
+			"coverage": "required"
+		},
+		{
+			"id": "extracts-a-completed-codex-turn",
+			"title": "Extracts a completed Codex turn",
+			"coverage": "required"
+		},
+		{
+			"id": "extracts-a-successful-claude-turn-with-usage-and-cost",
+			"title": "Extracts a successful Claude turn with usage and cost",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-syntaxerror-when-a-retained-line-is-invalid-json",
+			"title": "Throws SyntaxError when a retained line is invalid JSON",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-zoderror-when-an-event-violates-the-runner-schema",
+			"title": "Throws ZodError when an event violates the runner schema",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-codex-has-no-completed-submission",
+			"title": "Throws Error when Codex has no completed submission",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.benchmark-events.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"parses-provider-event-streams-in-source-order",
+				"extracts-a-completed-codex-turn",
+				"extracts-a-successful-claude-turn-with-usage-and-cost",
+				"throws-syntaxerror-when-a-retained-line-is-invalid-json",
+				"throws-zoderror-when-an-event-violates-the-runner-schema",
+				"throws-error-when-codex-has-no-completed-submission"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"parses-provider-event-streams-in-source-order",
+				"extracts-a-completed-codex-turn",
+				"extracts-a-successful-claude-turn-with-usage-and-cost",
+				"throws-syntaxerror-when-a-retained-line-is-invalid-json",
+				"throws-zoderror-when-an-event-violates-the-runner-schema",
+				"throws-error-when-codex-has-no-completed-submission"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"parses-provider-event-streams-in-source-order",
+				"extracts-a-completed-codex-turn",
+				"extracts-a-successful-claude-turn-with-usage-and-cost",
+				"throws-syntaxerror-when-a-retained-line-is-invalid-json",
+				"throws-zoderror-when-an-event-violates-the-runner-schema",
+				"throws-error-when-codex-has-no-completed-submission"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

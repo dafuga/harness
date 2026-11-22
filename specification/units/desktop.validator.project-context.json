@@ -8,12 +8,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/validators/projects-sessions/ProjectContextValidator.ts"],
+		"source": [
+			"packages/desktop/src/validators/projects-sessions/ProjectContextValidator.ts",
+			"packages/desktop/src/validators/projects-sessions/ProjectContextValidator.types.ts"
+		],
 		"symbols": [
 			"ProjectContextValidator",
 			"ProjectContextValidator.operation",
 			"ProjectContextValidator.context",
-			"ProjectContextValidator.comment"
+			"ProjectContextValidator.comment",
+			"ExplicitProjectRequiredError"
 		]
 	},
 	"contract": {
@@ -162,7 +166,7 @@
 			},
 			{
 				"name": "ProjectContextValidator.comment",
-				"type": "unknown",
+				"type": "{ projectId?: string; requestId: string; threadId?: string; anchor: ReturnType<typeof threadPayload> & { branch: string; commit: string }; text: string }",
 				"description": "The validated thread comment: requestId and text as given, projectId and threadId only when supplied, and an anchor holding entityId, version, imageSha256, state, viewport, region, option (only when supplied), branch and commit. Input fields outside these are not copied into the result.",
 				"examples": [
 					{
@@ -469,7 +473,7 @@
 				"outputs": [
 					{
 						"name": "ProjectContextValidator.comment",
-						"type": "unknown",
+						"type": "{ projectId?: string; requestId: string; threadId?: string; anchor: ReturnType<typeof threadPayload> & { branch: string; commit: string }; text: string }",
 						"description": "The validated thread comment: requestId and text as given, projectId and threadId only when supplied, and an anchor holding entityId, version, imageSha256, state, viewport, region, option (only when supplied), branch and commit. Input fields outside these are not copied into the result.",
 						"examples": [
 							{

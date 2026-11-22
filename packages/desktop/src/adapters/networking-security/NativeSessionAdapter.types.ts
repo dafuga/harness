@@ -1,4 +1,5 @@
 // @harness-uid u_ytwarm6wyy
+
 /** Electron safeStorage is injected only by main; fixtures supply a deterministic encryption port. */
 export interface NativeEncryption {
 	isEncryptionAvailable(): boolean;

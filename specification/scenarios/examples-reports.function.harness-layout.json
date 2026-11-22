@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.harness-layout",
+	"title": "reports.function.harness-layout examples",
+	"kind": "headless",
+	"units": ["reports.function.harness-layout"],
+	"builds": [],
+	"states": [
+		{
+			"id": "lays-out-an-empty-map-at-the-node-size",
+			"title": "Lays out an empty map at the node size",
+			"coverage": "required"
+		},
+		{
+			"id": "sizes-map-rows-from-the-unit-count",
+			"title": "Sizes map rows from the unit count",
+			"coverage": "required"
+		},
+		{
+			"id": "places-dependencies-in-layers-with-deduplicated-edges",
+			"title": "Places dependencies in layers with deduplicated edges",
+			"coverage": "required"
+		},
+		{
+			"id": "wraps-wide-layers-into-rows-of-perrow-units",
+			"title": "Wraps wide layers into rows of perRow units",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.harness-layout.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"lays-out-an-empty-map-at-the-node-size",
+				"sizes-map-rows-from-the-unit-count",
+				"places-dependencies-in-layers-with-deduplicated-edges",
+				"wraps-wide-layers-into-rows-of-perrow-units"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"lays-out-an-empty-map-at-the-node-size",
+				"sizes-map-rows-from-the-unit-count",
+				"places-dependencies-in-layers-with-deduplicated-edges",
+				"wraps-wide-layers-into-rows-of-perrow-units"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"lays-out-an-empty-map-at-the-node-size",
+				"sizes-map-rows-from-the-unit-count",
+				"places-dependencies-in-layers-with-deduplicated-edges",
+				"wraps-wide-layers-into-rows-of-perrow-units"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

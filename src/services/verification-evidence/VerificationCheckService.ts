@@ -1,4 +1,6 @@
 // @harness-uid u_a7rs3z4f6t
+import { videoFlagProofFailures } from './verification-check-service/videoFlagProof';
+import { videoReferenceIntegrity } from './verification-check-service/videoReferenceIntegrity';
 import type { CheckReport } from './VerificationCheckService.types';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
@@ -34,6 +36,7 @@ export class VerificationCheckService {
 		const problems = [
 			...integrity,
 			...(integrity.length > 0 ? [] : this.lineage(record)),
+			...(integrity.length > 0 ? [] : await videoFlagProofFailures(this.root, record)),
 			...(record.status === 'passed' ? [] : record.failures)
 		];
 		return {
@@ -59,6 +62,7 @@ export class VerificationCheckService {
 			...identity,
 			...(recordIntact(record) ? [] : ['record content does not match its id']),
 			...(await this.components(commit, record)),
+			...(await videoReferenceIntegrity(this.root, record)),
 			...this.evidence(record, directory)
 		];
 	}
@@ -83,6 +87,8 @@ export class VerificationCheckService {
 		};
 		return recordLineage(record, {
 			find: (id) => find(id)?.record,
+			clipProblems: (dependency) =>
+				recordIntact(dependency) ? [] : ['record content does not match its id'],
 			problems: (dependency) => {
 				const found = find(dependency.id);
 				if (!found) return ['its files are not stored'];

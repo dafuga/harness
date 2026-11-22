@@ -23,3 +23,8 @@ export interface ReviewedDeployment {
 	target?: CloudflareTarget;
 	predecessor: DeploymentReceipt | null;
 }
+
+/** A deployment refused before it starts because a precondition is not met. */
+export class DeploymentPreconditionError extends Error {
+	override name = 'DeploymentPreconditionError';
+}

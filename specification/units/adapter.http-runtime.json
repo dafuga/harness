@@ -245,7 +245,7 @@
 				"outputs": [
 					{
 						"name": "HttpRuntimeAdapter.constructor",
-						"type": "unknown",
+						"type": "HttpRuntimeAdapter",
 						"description": "The new HttpRuntimeAdapter, a UnitRuntime whose kind is 'http'. It keeps the url and the timeout it resolved from options: options.timeoutMs, or defaultRuntimeTimeoutMs (30000 ms) when that is missing or null."
 					}
 				],

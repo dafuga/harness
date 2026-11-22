@@ -1,0 +1,1023 @@
+{
+	"schemaVersion": 1,
+	"id": "platform-search-video-pilot",
+	"title": "platform search video pilot",
+	"kind": "ui",
+	"units": ["reports.page.harness-branch-branch-at-platforms"],
+	"states": [
+		{
+			"id": "ready",
+			"title": "ready",
+			"coverage": "required",
+			"motion": "required"
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 900
+		},
+		{
+			"id": "tablet",
+			"width": 834,
+			"height": 1112
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "record-video-pilot",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun packages/reports/tests/e2e/record-video-pilot.ts platform-search-video-pilot",
+			"timeoutMs": 600000
+		}
+	],
+	"builds": ["reports"],
+	"evidence": [
+		{
+			"id": "motion",
+			"kind": "video",
+			"states": ["ready"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"build": "reports",
+			"required": true
+		}
+	],
+	"video": {
+		"schemaVersion": 1,
+		"viewports": [
+			{
+				"id": "desktop",
+				"width": 1440,
+				"height": 900
+			},
+			{
+				"id": "tablet",
+				"width": 834,
+				"height": 1112
+			},
+			{
+				"id": "mobile",
+				"width": 390,
+				"height": 844
+			}
+		],
+		"clips": [
+			{
+				"id": "search-0",
+				"unit": "reports.page.harness-branch-branch-at-platforms",
+				"state": "ready",
+				"viewports": ["desktop", "tablet", "mobile"],
+				"inputs": [
+					"packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/+page.svelte",
+					"packages/reports/tests/e2e/record-video-pilot.ts"
+				],
+				"script": {
+					"path": "packages/reports/tests/e2e/support/component-previews/platformSearchVideo.ts",
+					"export": "record"
+				},
+				"fixture": "packages/reports/tests/e2e/support/component-previews/video-fixtures/search-0.json",
+				"entry": "ready",
+				"exit": "ready",
+				"states": ["ready", "results-0"],
+				"edges": ["search-0", "reset-0"],
+				"durationSeconds": 12,
+				"checkpoints": [
+					{
+						"viewport": "desktop",
+						"entrySignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796",
+						"exitSignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796"
+					},
+					{
+						"viewport": "tablet",
+						"entrySignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce",
+						"exitSignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce"
+					},
+					{
+						"viewport": "mobile",
+						"entrySignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b",
+						"exitSignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b"
+					}
+				]
+			},
+			{
+				"id": "search-1",
+				"unit": "reports.page.harness-branch-branch-at-platforms",
+				"state": "ready",
+				"viewports": ["desktop", "tablet", "mobile"],
+				"inputs": [
+					"packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/+page.svelte",
+					"packages/reports/tests/e2e/record-video-pilot.ts"
+				],
+				"script": {
+					"path": "packages/reports/tests/e2e/support/component-previews/platformSearchVideo.ts",
+					"export": "record"
+				},
+				"fixture": "packages/reports/tests/e2e/support/component-previews/video-fixtures/search-1.json",
+				"entry": "ready",
+				"exit": "ready",
+				"states": ["ready", "results-1"],
+				"edges": ["search-1", "reset-1"],
+				"durationSeconds": 12,
+				"checkpoints": [
+					{
+						"viewport": "desktop",
+						"entrySignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796",
+						"exitSignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796"
+					},
+					{
+						"viewport": "tablet",
+						"entrySignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce",
+						"exitSignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce"
+					},
+					{
+						"viewport": "mobile",
+						"entrySignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b",
+						"exitSignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b"
+					}
+				]
+			},
+			{
+				"id": "search-2",
+				"unit": "reports.page.harness-branch-branch-at-platforms",
+				"state": "ready",
+				"viewports": ["desktop", "tablet", "mobile"],
+				"inputs": [
+					"packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/+page.svelte",
+					"packages/reports/tests/e2e/record-video-pilot.ts"
+				],
+				"script": {
+					"path": "packages/reports/tests/e2e/support/component-previews/platformSearchVideo.ts",
+					"export": "record"
+				},
+				"fixture": "packages/reports/tests/e2e/support/component-previews/video-fixtures/search-2.json",
+				"entry": "ready",
+				"exit": "ready",
+				"states": ["ready", "results-2"],
+				"edges": ["search-2", "reset-2"],
+				"durationSeconds": 12,
+				"checkpoints": [
+					{
+						"viewport": "desktop",
+						"entrySignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796",
+						"exitSignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796"
+					},
+					{
+						"viewport": "tablet",
+						"entrySignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce",
+						"exitSignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce"
+					},
+					{
+						"viewport": "mobile",
+						"entrySignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b",
+						"exitSignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b"
+					}
+				]
+			},
+			{
+				"id": "search-3",
+				"unit": "reports.page.harness-branch-branch-at-platforms",
+				"state": "ready",
+				"viewports": ["desktop", "tablet", "mobile"],
+				"inputs": [
+					"packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/+page.svelte",
+					"packages/reports/tests/e2e/record-video-pilot.ts"
+				],
+				"script": {
+					"path": "packages/reports/tests/e2e/support/component-previews/platformSearchVideo.ts",
+					"export": "record"
+				},
+				"fixture": "packages/reports/tests/e2e/support/component-previews/video-fixtures/search-3.json",
+				"entry": "ready",
+				"exit": "ready",
+				"states": ["ready", "results-3"],
+				"edges": ["search-3", "reset-3"],
+				"durationSeconds": 12,
+				"checkpoints": [
+					{
+						"viewport": "desktop",
+						"entrySignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796",
+						"exitSignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796"
+					},
+					{
+						"viewport": "tablet",
+						"entrySignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce",
+						"exitSignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce"
+					},
+					{
+						"viewport": "mobile",
+						"entrySignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b",
+						"exitSignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b"
+					}
+				]
+			},
+			{
+				"id": "search-4",
+				"unit": "reports.page.harness-branch-branch-at-platforms",
+				"state": "ready",
+				"viewports": ["desktop", "tablet", "mobile"],
+				"inputs": [
+					"packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/+page.svelte",
+					"packages/reports/tests/e2e/record-video-pilot.ts"
+				],
+				"script": {
+					"path": "packages/reports/tests/e2e/support/component-previews/platformSearchVideo.ts",
+					"export": "record"
+				},
+				"fixture": "packages/reports/tests/e2e/support/component-previews/video-fixtures/search-4.json",
+				"entry": "ready",
+				"exit": "ready",
+				"states": ["ready", "results-4"],
+				"edges": ["search-4", "reset-4"],
+				"durationSeconds": 12,
+				"checkpoints": [
+					{
+						"viewport": "desktop",
+						"entrySignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796",
+						"exitSignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796"
+					},
+					{
+						"viewport": "tablet",
+						"entrySignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce",
+						"exitSignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce"
+					},
+					{
+						"viewport": "mobile",
+						"entrySignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b",
+						"exitSignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b"
+					}
+				]
+			},
+			{
+				"id": "search-5",
+				"unit": "reports.page.harness-branch-branch-at-platforms",
+				"state": "ready",
+				"viewports": ["desktop", "tablet", "mobile"],
+				"inputs": [
+					"packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/+page.svelte",
+					"packages/reports/tests/e2e/record-video-pilot.ts"
+				],
+				"script": {
+					"path": "packages/reports/tests/e2e/support/component-previews/platformSearchVideo.ts",
+					"export": "record"
+				},
+				"fixture": "packages/reports/tests/e2e/support/component-previews/video-fixtures/search-5.json",
+				"entry": "ready",
+				"exit": "ready",
+				"states": ["ready", "results-5"],
+				"edges": ["search-5", "reset-5"],
+				"durationSeconds": 12,
+				"checkpoints": [
+					{
+						"viewport": "desktop",
+						"entrySignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796",
+						"exitSignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796"
+					},
+					{
+						"viewport": "tablet",
+						"entrySignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce",
+						"exitSignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce"
+					},
+					{
+						"viewport": "mobile",
+						"entrySignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b",
+						"exitSignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b"
+					}
+				]
+			},
+			{
+				"id": "search-6",
+				"unit": "reports.page.harness-branch-branch-at-platforms",
+				"state": "ready",
+				"viewports": ["desktop", "tablet", "mobile"],
+				"inputs": [
+					"packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/+page.svelte",
+					"packages/reports/tests/e2e/record-video-pilot.ts"
+				],
+				"script": {
+					"path": "packages/reports/tests/e2e/support/component-previews/platformSearchVideo.ts",
+					"export": "record"
+				},
+				"fixture": "packages/reports/tests/e2e/support/component-previews/video-fixtures/search-6.json",
+				"entry": "ready",
+				"exit": "ready",
+				"states": ["ready", "results-6"],
+				"edges": ["search-6", "reset-6"],
+				"durationSeconds": 12,
+				"checkpoints": [
+					{
+						"viewport": "desktop",
+						"entrySignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796",
+						"exitSignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796"
+					},
+					{
+						"viewport": "tablet",
+						"entrySignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce",
+						"exitSignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce"
+					},
+					{
+						"viewport": "mobile",
+						"entrySignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b",
+						"exitSignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b"
+					}
+				]
+			},
+			{
+				"id": "search-7",
+				"unit": "reports.page.harness-branch-branch-at-platforms",
+				"state": "ready",
+				"viewports": ["desktop", "tablet", "mobile"],
+				"inputs": [
+					"packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/+page.svelte",
+					"packages/reports/tests/e2e/record-video-pilot.ts"
+				],
+				"script": {
+					"path": "packages/reports/tests/e2e/support/component-previews/platformSearchVideo.ts",
+					"export": "record"
+				},
+				"fixture": "packages/reports/tests/e2e/support/component-previews/video-fixtures/search-7.json",
+				"entry": "ready",
+				"exit": "ready",
+				"states": ["ready", "results-7"],
+				"edges": ["search-7", "reset-7"],
+				"durationSeconds": 12,
+				"checkpoints": [
+					{
+						"viewport": "desktop",
+						"entrySignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796",
+						"exitSignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796"
+					},
+					{
+						"viewport": "tablet",
+						"entrySignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce",
+						"exitSignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce"
+					},
+					{
+						"viewport": "mobile",
+						"entrySignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b",
+						"exitSignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b"
+					}
+				]
+			},
+			{
+				"id": "search-8",
+				"unit": "reports.page.harness-branch-branch-at-platforms",
+				"state": "ready",
+				"viewports": ["desktop", "tablet", "mobile"],
+				"inputs": [
+					"packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/+page.svelte",
+					"packages/reports/tests/e2e/record-video-pilot.ts"
+				],
+				"script": {
+					"path": "packages/reports/tests/e2e/support/component-previews/platformSearchVideo.ts",
+					"export": "record"
+				},
+				"fixture": "packages/reports/tests/e2e/support/component-previews/video-fixtures/search-8.json",
+				"entry": "ready",
+				"exit": "ready",
+				"states": ["ready", "results-8"],
+				"edges": ["search-8", "reset-8"],
+				"durationSeconds": 12,
+				"checkpoints": [
+					{
+						"viewport": "desktop",
+						"entrySignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796",
+						"exitSignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796"
+					},
+					{
+						"viewport": "tablet",
+						"entrySignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce",
+						"exitSignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce"
+					},
+					{
+						"viewport": "mobile",
+						"entrySignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b",
+						"exitSignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b"
+					}
+				]
+			},
+			{
+				"id": "search-9",
+				"unit": "reports.page.harness-branch-branch-at-platforms",
+				"state": "ready",
+				"viewports": ["desktop", "tablet", "mobile"],
+				"inputs": [
+					"packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/+page.svelte",
+					"packages/reports/tests/e2e/record-video-pilot.ts"
+				],
+				"script": {
+					"path": "packages/reports/tests/e2e/support/component-previews/platformSearchVideo.ts",
+					"export": "record"
+				},
+				"fixture": "packages/reports/tests/e2e/support/component-previews/video-fixtures/search-9.json",
+				"entry": "ready",
+				"exit": "ready",
+				"states": ["ready", "results-9"],
+				"edges": ["search-9", "reset-9"],
+				"durationSeconds": 12,
+				"checkpoints": [
+					{
+						"viewport": "desktop",
+						"entrySignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796",
+						"exitSignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796"
+					},
+					{
+						"viewport": "tablet",
+						"entrySignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce",
+						"exitSignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce"
+					},
+					{
+						"viewport": "mobile",
+						"entrySignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b",
+						"exitSignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b"
+					}
+				]
+			},
+			{
+				"id": "search-10",
+				"unit": "reports.page.harness-branch-branch-at-platforms",
+				"state": "ready",
+				"viewports": ["desktop", "tablet", "mobile"],
+				"inputs": [
+					"packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/+page.svelte",
+					"packages/reports/tests/e2e/record-video-pilot.ts"
+				],
+				"script": {
+					"path": "packages/reports/tests/e2e/support/component-previews/platformSearchVideo.ts",
+					"export": "record"
+				},
+				"fixture": "packages/reports/tests/e2e/support/component-previews/video-fixtures/search-10.json",
+				"entry": "ready",
+				"exit": "ready",
+				"states": ["ready", "results-10"],
+				"edges": ["search-10", "reset-10"],
+				"durationSeconds": 12,
+				"checkpoints": [
+					{
+						"viewport": "desktop",
+						"entrySignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796",
+						"exitSignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796"
+					},
+					{
+						"viewport": "tablet",
+						"entrySignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce",
+						"exitSignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce"
+					},
+					{
+						"viewport": "mobile",
+						"entrySignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b",
+						"exitSignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b"
+					}
+				]
+			},
+			{
+				"id": "search-11",
+				"unit": "reports.page.harness-branch-branch-at-platforms",
+				"state": "ready",
+				"viewports": ["desktop", "tablet", "mobile"],
+				"inputs": [
+					"packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/+page.svelte",
+					"packages/reports/tests/e2e/record-video-pilot.ts"
+				],
+				"script": {
+					"path": "packages/reports/tests/e2e/support/component-previews/platformSearchVideo.ts",
+					"export": "record"
+				},
+				"fixture": "packages/reports/tests/e2e/support/component-previews/video-fixtures/search-11.json",
+				"entry": "ready",
+				"exit": "ready",
+				"states": ["ready", "results-11"],
+				"edges": ["search-11", "reset-11"],
+				"durationSeconds": 12,
+				"checkpoints": [
+					{
+						"viewport": "desktop",
+						"entrySignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796",
+						"exitSignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796"
+					},
+					{
+						"viewport": "tablet",
+						"entrySignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce",
+						"exitSignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce"
+					},
+					{
+						"viewport": "mobile",
+						"entrySignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b",
+						"exitSignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b"
+					}
+				]
+			},
+			{
+				"id": "search-12",
+				"unit": "reports.page.harness-branch-branch-at-platforms",
+				"state": "ready",
+				"viewports": ["desktop", "tablet", "mobile"],
+				"inputs": [
+					"packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/+page.svelte",
+					"packages/reports/tests/e2e/record-video-pilot.ts"
+				],
+				"script": {
+					"path": "packages/reports/tests/e2e/support/component-previews/platformSearchVideo.ts",
+					"export": "record"
+				},
+				"fixture": "packages/reports/tests/e2e/support/component-previews/video-fixtures/search-12.json",
+				"entry": "ready",
+				"exit": "ready",
+				"states": ["ready", "results-12"],
+				"edges": ["search-12", "reset-12"],
+				"durationSeconds": 12,
+				"checkpoints": [
+					{
+						"viewport": "desktop",
+						"entrySignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796",
+						"exitSignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796"
+					},
+					{
+						"viewport": "tablet",
+						"entrySignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce",
+						"exitSignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce"
+					},
+					{
+						"viewport": "mobile",
+						"entrySignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b",
+						"exitSignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b"
+					}
+				]
+			},
+			{
+				"id": "search-13",
+				"unit": "reports.page.harness-branch-branch-at-platforms",
+				"state": "ready",
+				"viewports": ["desktop", "tablet", "mobile"],
+				"inputs": [
+					"packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/+page.svelte",
+					"packages/reports/tests/e2e/record-video-pilot.ts"
+				],
+				"script": {
+					"path": "packages/reports/tests/e2e/support/component-previews/platformSearchVideo.ts",
+					"export": "record"
+				},
+				"fixture": "packages/reports/tests/e2e/support/component-previews/video-fixtures/search-13.json",
+				"entry": "ready",
+				"exit": "ready",
+				"states": ["ready", "results-13"],
+				"edges": ["search-13", "reset-13"],
+				"durationSeconds": 12,
+				"checkpoints": [
+					{
+						"viewport": "desktop",
+						"entrySignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796",
+						"exitSignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796"
+					},
+					{
+						"viewport": "tablet",
+						"entrySignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce",
+						"exitSignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce"
+					},
+					{
+						"viewport": "mobile",
+						"entrySignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b",
+						"exitSignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b"
+					}
+				]
+			},
+			{
+				"id": "search-14",
+				"unit": "reports.page.harness-branch-branch-at-platforms",
+				"state": "ready",
+				"viewports": ["desktop", "tablet", "mobile"],
+				"inputs": [
+					"packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/+page.svelte",
+					"packages/reports/tests/e2e/record-video-pilot.ts"
+				],
+				"script": {
+					"path": "packages/reports/tests/e2e/support/component-previews/platformSearchVideo.ts",
+					"export": "record"
+				},
+				"fixture": "packages/reports/tests/e2e/support/component-previews/video-fixtures/search-14.json",
+				"entry": "ready",
+				"exit": "ready",
+				"states": ["ready", "results-14"],
+				"edges": ["search-14", "reset-14"],
+				"durationSeconds": 12,
+				"checkpoints": [
+					{
+						"viewport": "desktop",
+						"entrySignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796",
+						"exitSignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796"
+					},
+					{
+						"viewport": "tablet",
+						"entrySignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce",
+						"exitSignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce"
+					},
+					{
+						"viewport": "mobile",
+						"entrySignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b",
+						"exitSignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b"
+					}
+				]
+			},
+			{
+				"id": "search-15",
+				"unit": "reports.page.harness-branch-branch-at-platforms",
+				"state": "ready",
+				"viewports": ["desktop", "tablet", "mobile"],
+				"inputs": [
+					"packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/+page.svelte",
+					"packages/reports/tests/e2e/record-video-pilot.ts"
+				],
+				"script": {
+					"path": "packages/reports/tests/e2e/support/component-previews/platformSearchVideo.ts",
+					"export": "record"
+				},
+				"fixture": "packages/reports/tests/e2e/support/component-previews/video-fixtures/search-15.json",
+				"entry": "ready",
+				"exit": "ready",
+				"states": ["ready", "results-15"],
+				"edges": ["search-15", "reset-15"],
+				"durationSeconds": 12,
+				"checkpoints": [
+					{
+						"viewport": "desktop",
+						"entrySignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796",
+						"exitSignature": "d0dcebd3cf244c01b7d8b5b7b2f6776b88b01e4f9893521ee4e7c9960c227796"
+					},
+					{
+						"viewport": "tablet",
+						"entrySignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce",
+						"exitSignature": "33ca974f5bc623dd88bf629cfa561f4a8da663a3cfcd9051e60eeec4d1e030ce"
+					},
+					{
+						"viewport": "mobile",
+						"entrySignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b",
+						"exitSignature": "1c617a375fae79c979f103ead52b3f9fd286b0b607458eab6718d7339cddaa4b"
+					}
+				]
+			}
+		],
+		"graphs": [
+			{
+				"id": "platform-search",
+				"unit": "reports.page.harness-branch-branch-at-platforms",
+				"initial": "ready",
+				"terminals": ["ready"],
+				"states": [
+					{
+						"id": "ready",
+						"predicate": "Empty search with all four fixture cards and search focus at the top"
+					},
+					{
+						"id": "results-0",
+						"predicate": "Search \"no-such-platform\" yields exact card set 0; each returned card is visibly visited by the script"
+					},
+					{
+						"id": "results-1",
+						"predicate": "Search \"web\" yields exact card set 1; each returned card is visibly visited by the script"
+					},
+					{
+						"id": "results-2",
+						"predicate": "Search \"iphone\" yields exact card set 2; each returned card is visibly visited by the script"
+					},
+					{
+						"id": "results-3",
+						"predicate": "Search \"h\" yields exact card set 3; each returned card is visibly visited by the script"
+					},
+					{
+						"id": "results-4",
+						"predicate": "Search \"android\" yields exact card set 4; each returned card is visibly visited by the script"
+					},
+					{
+						"id": "results-5",
+						"predicate": "Search \"f\" yields exact card set 5; each returned card is visibly visited by the script"
+					},
+					{
+						"id": "results-6",
+						"predicate": "Search \"and\" yields exact card set 6; each returned card is visibly visited by the script"
+					},
+					{
+						"id": "results-7",
+						"predicate": "Search \"a\" yields exact card set 7; each returned card is visibly visited by the script"
+					},
+					{
+						"id": "results-8",
+						"predicate": "Search \"electron\" yields exact card set 8; each returned card is visibly visited by the script"
+					},
+					{
+						"id": "results-9",
+						"predicate": "Search \"k\" yields exact card set 9; each returned card is visibly visited by the script"
+					},
+					{
+						"id": "results-10",
+						"predicate": "Search \"to\" yields exact card set 10; each returned card is visibly visited by the script"
+					},
+					{
+						"id": "results-11",
+						"predicate": "Search \"orders\" yields exact card set 11; each returned card is visibly visited by the script"
+					},
+					{
+						"id": "results-12",
+						"predicate": "Search \"ect\" yields exact card set 12; each returned card is visibly visited by the script"
+					},
+					{
+						"id": "results-13",
+						"predicate": "Search \"ro\" yields exact card set 13; each returned card is visibly visited by the script"
+					},
+					{
+						"id": "results-14",
+						"predicate": "Search \"p\" yields exact card set 14; each returned card is visibly visited by the script"
+					},
+					{
+						"id": "results-15",
+						"predicate": "Search \"o\" yields exact card set 15; each returned card is visibly visited by the script"
+					}
+				],
+				"edges": [
+					{
+						"id": "search-0",
+						"from": "ready",
+						"to": "results-0",
+						"action": "Enter representative query for card set 0"
+					},
+					{
+						"id": "reset-0",
+						"from": "results-0",
+						"to": "ready",
+						"action": "Use Show all platforms"
+					},
+					{
+						"id": "search-1",
+						"from": "ready",
+						"to": "results-1",
+						"action": "Enter representative query for card set 1"
+					},
+					{
+						"id": "reset-1",
+						"from": "results-1",
+						"to": "ready",
+						"action": "Clear search through the input"
+					},
+					{
+						"id": "search-2",
+						"from": "ready",
+						"to": "results-2",
+						"action": "Enter representative query for card set 2"
+					},
+					{
+						"id": "reset-2",
+						"from": "results-2",
+						"to": "ready",
+						"action": "Clear search through the input"
+					},
+					{
+						"id": "search-3",
+						"from": "ready",
+						"to": "results-3",
+						"action": "Enter representative query for card set 3"
+					},
+					{
+						"id": "reset-3",
+						"from": "results-3",
+						"to": "ready",
+						"action": "Clear search through the input"
+					},
+					{
+						"id": "search-4",
+						"from": "ready",
+						"to": "results-4",
+						"action": "Enter representative query for card set 4"
+					},
+					{
+						"id": "reset-4",
+						"from": "results-4",
+						"to": "ready",
+						"action": "Clear search through the input"
+					},
+					{
+						"id": "search-5",
+						"from": "ready",
+						"to": "results-5",
+						"action": "Enter representative query for card set 5"
+					},
+					{
+						"id": "reset-5",
+						"from": "results-5",
+						"to": "ready",
+						"action": "Clear search through the input"
+					},
+					{
+						"id": "search-6",
+						"from": "ready",
+						"to": "results-6",
+						"action": "Enter representative query for card set 6"
+					},
+					{
+						"id": "reset-6",
+						"from": "results-6",
+						"to": "ready",
+						"action": "Clear search through the input"
+					},
+					{
+						"id": "search-7",
+						"from": "ready",
+						"to": "results-7",
+						"action": "Enter representative query for card set 7"
+					},
+					{
+						"id": "reset-7",
+						"from": "results-7",
+						"to": "ready",
+						"action": "Clear search through the input"
+					},
+					{
+						"id": "search-8",
+						"from": "ready",
+						"to": "results-8",
+						"action": "Enter representative query for card set 8"
+					},
+					{
+						"id": "reset-8",
+						"from": "results-8",
+						"to": "ready",
+						"action": "Clear search through the input"
+					},
+					{
+						"id": "search-9",
+						"from": "ready",
+						"to": "results-9",
+						"action": "Enter representative query for card set 9"
+					},
+					{
+						"id": "reset-9",
+						"from": "results-9",
+						"to": "ready",
+						"action": "Clear search through the input"
+					},
+					{
+						"id": "search-10",
+						"from": "ready",
+						"to": "results-10",
+						"action": "Enter representative query for card set 10"
+					},
+					{
+						"id": "reset-10",
+						"from": "results-10",
+						"to": "ready",
+						"action": "Clear search through the input"
+					},
+					{
+						"id": "search-11",
+						"from": "ready",
+						"to": "results-11",
+						"action": "Enter representative query for card set 11"
+					},
+					{
+						"id": "reset-11",
+						"from": "results-11",
+						"to": "ready",
+						"action": "Clear search through the input"
+					},
+					{
+						"id": "search-12",
+						"from": "ready",
+						"to": "results-12",
+						"action": "Enter representative query for card set 12"
+					},
+					{
+						"id": "reset-12",
+						"from": "results-12",
+						"to": "ready",
+						"action": "Clear search through the input"
+					},
+					{
+						"id": "search-13",
+						"from": "ready",
+						"to": "results-13",
+						"action": "Enter representative query for card set 13"
+					},
+					{
+						"id": "reset-13",
+						"from": "results-13",
+						"to": "ready",
+						"action": "Clear search through the input"
+					},
+					{
+						"id": "search-14",
+						"from": "ready",
+						"to": "results-14",
+						"action": "Enter representative query for card set 14"
+					},
+					{
+						"id": "reset-14",
+						"from": "results-14",
+						"to": "ready",
+						"action": "Clear search through the input"
+					},
+					{
+						"id": "search-15",
+						"from": "ready",
+						"to": "results-15",
+						"action": "Enter representative query for card set 15"
+					},
+					{
+						"id": "reset-15",
+						"from": "results-15",
+						"to": "ready",
+						"action": "Clear search through the input"
+					}
+				],
+				"clips": [
+					"search-0",
+					"search-1",
+					"search-2",
+					"search-3",
+					"search-4",
+					"search-5",
+					"search-6",
+					"search-7",
+					"search-8",
+					"search-9",
+					"search-10",
+					"search-11",
+					"search-12",
+					"search-13",
+					"search-14",
+					"search-15"
+				]
+			}
+		],
+		"playlists": [
+			{
+				"id": "search-0",
+				"clips": ["search-0"]
+			},
+			{
+				"id": "search-1",
+				"clips": ["search-1"]
+			},
+			{
+				"id": "search-2",
+				"clips": ["search-2"]
+			},
+			{
+				"id": "search-3",
+				"clips": ["search-3"]
+			},
+			{
+				"id": "search-4",
+				"clips": ["search-4"]
+			},
+			{
+				"id": "search-5",
+				"clips": ["search-5"]
+			},
+			{
+				"id": "search-6",
+				"clips": ["search-6"]
+			},
+			{
+				"id": "search-7",
+				"clips": ["search-7"]
+			},
+			{
+				"id": "search-8",
+				"clips": ["search-8"]
+			},
+			{
+				"id": "search-9",
+				"clips": ["search-9"]
+			},
+			{
+				"id": "search-10",
+				"clips": ["search-10"]
+			},
+			{
+				"id": "search-11",
+				"clips": ["search-11"]
+			},
+			{
+				"id": "search-12",
+				"clips": ["search-12"]
+			},
+			{
+				"id": "search-13",
+				"clips": ["search-13"]
+			},
+			{
+				"id": "search-14",
+				"clips": ["search-14"]
+			},
+			{
+				"id": "search-15",
+				"clips": ["search-15"]
+			}
+		]
+	}
+}

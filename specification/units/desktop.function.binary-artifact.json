@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/reports-media/binaryArtifact.ts"],
-		"symbols": ["binaryArtifact"]
+		"source": [
+			"packages/desktop/src/utils/reports-media/binaryArtifact.ts",
+			"packages/desktop/src/utils/reports-media/binaryArtifact.types.ts"
+		],
+		"symbols": ["binaryArtifact", "InvalidMediaTypeError"]
 	},
 	"contract": {
 		"origin": "declared",

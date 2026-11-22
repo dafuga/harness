@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-adapter.process-runtime",
+	"title": "adapter.process-runtime examples",
+	"kind": "headless",
+	"units": ["adapter.process-runtime"],
+	"builds": [],
+	"states": [
+		{
+			"id": "invoke-sends-a-json-request-to-a-one-shot-runtime",
+			"title": "invoke sends a JSON request to a one-shot runtime",
+			"coverage": "required"
+		},
+		{
+			"id": "invoketext-returns-one-shot-stdout-unchanged",
+			"title": "invokeText returns one-shot stdout unchanged",
+			"coverage": "required"
+		},
+		{
+			"id": "close-stops-the-persistent-runtime-after-a-line-exchange",
+			"title": "close stops the persistent runtime after a line exchange",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/adapter.process-runtime.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"invoke-sends-a-json-request-to-a-one-shot-runtime",
+				"invoketext-returns-one-shot-stdout-unchanged",
+				"close-stops-the-persistent-runtime-after-a-line-exchange"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"invoke-sends-a-json-request-to-a-one-shot-runtime",
+				"invoketext-returns-one-shot-stdout-unchanged",
+				"close-stops-the-persistent-runtime-after-a-line-exchange"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"invoke-sends-a-json-request-to-a-one-shot-runtime",
+				"invoketext-returns-one-shot-stdout-unchanged",
+				"close-stops-the-persistent-runtime-after-a-line-exchange"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

@@ -20,7 +20,12 @@
 				"required": true,
 				"description": "The planned files to process in one scaffold. Paths under tests/, test/, or db/, paths containing .test. or .spec., paths ending in .types.ts, and paths beginning src/models/adapters/ are returned unchanged; other paths are annotated with a unit uid.",
 				"examples": [
-					[]
+					[
+						{
+							"path": "src/workflows/example/annotate.ts",
+							"contents": "export const value = 42;\n"
+						}
+					]
 				]
 			},
 			{
@@ -28,9 +33,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The project root is joined with each eligible file path to check for an existing file. If a target exists on disk, its uid is reused; otherwise a new uid is minted.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
-				]
+				"examples": ["/workspace/project"]
 			}
 		],
 		"outputs": [
@@ -39,7 +42,12 @@
 				"type": "PlannedFile[]",
 				"description": "Returns one planned entry for each input file in the original order. Excluded paths are returned unchanged; other paths have contents annotated with the existing on-disk uid when present, or a minted uid otherwise.",
 				"examples": [
-					[]
+					[
+						{
+							"path": "src/workflows/example/annotate.ts",
+							"contents": "// @harness-uid u_abcdefgh23\nexport const value = 42;\n"
+						}
+					]
 				]
 			}
 		],
@@ -61,7 +69,12 @@
 						"required": true,
 						"description": "The planned files to process in one scaffold. Paths under tests/, test/, or db/, paths containing .test. or .spec., paths ending in .types.ts, and paths beginning src/models/adapters/ are returned unchanged; other paths are annotated with a unit uid.",
 						"examples": [
-							[]
+							[
+								{
+									"path": "src/workflows/example/annotate.ts",
+									"contents": "export const value = 42;\n"
+								}
+							]
 						]
 					},
 					{
@@ -69,9 +82,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The project root is joined with each eligible file path to check for an existing file. If a target exists on disk, its uid is reused; otherwise a new uid is minted.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -80,7 +91,12 @@
 						"type": "PlannedFile[]",
 						"description": "Returns one planned entry for each input file in the original order. Excluded paths are returned unchanged; other paths have contents annotated with the existing on-disk uid when present, or a minted uid otherwise.",
 						"examples": [
-							[]
+							[
+								{
+									"path": "src/workflows/example/annotate.ts",
+									"contents": "// @harness-uid u_abcdefgh23\nexport const value = 42;\n"
+								}
+							]
 						]
 					}
 				],

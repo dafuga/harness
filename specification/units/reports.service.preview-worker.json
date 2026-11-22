@@ -9,13 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/PreviewWorkerService.ts"
+			"packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/PreviewWorkerService.ts",
+			"packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/PreviewWorkerService.types.ts"
 		],
 		"symbols": [
 			"PreviewWorkerService",
 			"PreviewWorkerService.constructor",
 			"PreviewWorkerService.start",
-			"PreviewWorkerService.close"
+			"PreviewWorkerService.close",
+			"PreviewWorkerIdentityChangedError"
 		]
 	},
 	"contract": {
@@ -166,6 +168,11 @@
 	"dependencies": [
 		{
 			"unit": "adapter.execution-runtimes-bounded-command",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},

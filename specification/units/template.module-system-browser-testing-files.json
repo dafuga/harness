@@ -20,7 +20,7 @@
 		"outputs": [
 			{
 				"name": "browserTestingFiles",
-				"type": "unknown",
+				"type": "{ path: string; contents: string; }[]",
 				"description": "This is an ordered array of planned files: the two files returned by browserTestFiles() with tests/e2e/support rewritten to tests/e2e/plugin-support, followed by src/configs/playwright/browserPlaywrightConfig.ts. The appended config sets testDir to ../../../tests/e2e/browser and outputDir to ../../../test-results/browser, enables headless Chromium with only-on-failure screenshots, sets workers from HARNESS_RESOURCE_CPUS or 1, and uses the list reporter; it preserves existing application Playwright settings.",
 				"examples": [
 					[

@@ -59,7 +59,7 @@
 				"required": false,
 				"default": "undefined (omitted)",
 				"description": "Optional unit identifier passed with document to artifactCases only when examples is undefined. It defaults to undefined (omitted), so examples mode does not use it.",
-				"examples": ["reports.component.evidence-grid"]
+				"examples": ["reports.function.artifact-cases"]
 			},
 			{
 				"name": "EntityCases.callable",

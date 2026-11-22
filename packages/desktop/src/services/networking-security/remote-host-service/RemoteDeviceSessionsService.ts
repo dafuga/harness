@@ -9,7 +9,12 @@ import {
 	fromBase64Url,
 	relayCloseCodes
 } from '../../../../../remote/src/index';
-import type { RemoteGrant, SecurePacket, WireChannel } from '../../../../../remote/src/index';
+import type {
+	RemoteConnectionEvent,
+	RemoteGrant,
+	SecurePacket,
+	WireChannel
+} from '../../../../../remote/src/index';
 import type { RemoteHostDevice } from '../../../adapters/networking-security/RemoteHostStoreAdapter';
 import { DeviceSessionService } from './device-session-service/DeviceSessionService';
 
@@ -50,7 +55,7 @@ export class RemoteDeviceSessionsService {
 		for (const entry of this.entries.values()) this.detach(entry);
 	}
 	/** An event for every phone that is connected now. It is not kept for the others. */
-	announce(channel: WireChannel, value: unknown): void {
+	announce(channel: WireChannel, value: RemoteConnectionEvent): void {
 		for (const entry of this.entries.values())
 			if (entry.link) entry.session.wire.emit(channel, value);
 	}

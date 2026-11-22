@@ -17,7 +17,7 @@
 		"outputs": [
 			{
 				"name": "consoleGuides",
-				"type": "unknown",
+				"type": "Guide[]",
 				"description": "The module exports a fixed two-entry array containing the console and edge guide objects; it is available to importers of this module. Each guide carries topic, summary, steps, rules, antiPatterns, and exampleCommands.",
 				"examples": [
 					[

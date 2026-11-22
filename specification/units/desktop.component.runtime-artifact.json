@@ -180,7 +180,7 @@
 				"inputs": [
 					{
 						"name": "RuntimeArtifact.label.[name]",
-						"type": "unknown",
+						"type": "[string, string]",
 						"required": true
 					}
 				],
@@ -198,7 +198,7 @@
 				"inputs": [
 					{
 						"name": "RuntimeArtifact.children.[, value]",
-						"type": "unknown",
+						"type": "[string, string]",
 						"required": true
 					}
 				],

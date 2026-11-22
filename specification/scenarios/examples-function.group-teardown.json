@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.group-teardown",
+	"title": "function.group-teardown examples",
+	"kind": "headless",
+	"units": ["function.group-teardown"],
+	"builds": [],
+	"states": [
+		{
+			"id": "skips-group-signaling-when-the-child-has-no-pid",
+			"title": "Skips group signaling when the child has no pid",
+			"coverage": "required"
+		},
+		{
+			"id": "returns-no-processes-when-descendants-have-settled",
+			"title": "Returns no processes when descendants have settled",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.group-teardown.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"skips-group-signaling-when-the-child-has-no-pid",
+				"returns-no-processes-when-descendants-have-settled"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"skips-group-signaling-when-the-child-has-no-pid",
+				"returns-no-processes-when-descendants-have-settled"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"skips-group-signaling-when-the-child-has-no-pid",
+				"returns-no-processes-when-descendants-have-settled"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

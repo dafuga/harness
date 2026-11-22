@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-template.game-scaffold-details",
+	"title": "template.game-scaffold-details examples",
+	"kind": "headless",
+	"units": ["template.game-scaffold-details"],
+	"builds": [],
+	"states": [
+		{
+			"id": "provides-game-scaffold-details",
+			"title": "Provides game scaffold details",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/template.game-scaffold-details.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["provides-game-scaffold-details"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["provides-game-scaffold-details"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["provides-game-scaffold-details"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

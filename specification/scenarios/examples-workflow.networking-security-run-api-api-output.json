@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.networking-security-run-api-api-output",
+	"title": "workflow.networking-security-run-api-api-output examples",
+	"kind": "headless",
+	"units": ["workflow.networking-security-run-api-api-output"],
+	"builds": [],
+	"states": [
+		{
+			"id": "writes-the-selected-json-field-to-a-new-file",
+			"title": "Writes the selected JSON field to a new file",
+			"coverage": "required"
+		},
+		{
+			"id": "writes-binary-response-bytes-without-replacing-an-existing-f",
+			"title": "Writes binary response bytes without replacing an existing file",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-binary-response-without-an-output-destination",
+			"title": "Rejects a binary response without an output destination",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.networking-security-run-api-api-output.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"writes-the-selected-json-field-to-a-new-file",
+				"writes-binary-response-bytes-without-replacing-an-existing-f",
+				"rejects-a-binary-response-without-an-output-destination"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"writes-the-selected-json-field-to-a-new-file",
+				"writes-binary-response-bytes-without-replacing-an-existing-f",
+				"rejects-a-binary-response-without-an-output-destination"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"writes-the-selected-json-field-to-a-new-file",
+				"writes-binary-response-bytes-without-replacing-an-existing-f",
+				"rejects-a-binary-response-without-an-output-destination"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

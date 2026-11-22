@@ -82,7 +82,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.development-tooling-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.execution-runtimes-deploy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.execution-runtimes-jobs",
 			"via": "import",
 			"origin": "derived"
 		},

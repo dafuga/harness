@@ -154,8 +154,8 @@
 {#snippet summaryRows(rows: ContractRow[])}
 	{#if rows.length > 0}
 		<DetailList {rows} rowKey={(_, position) => position} className="ex-rows">
-			{#snippet label(row)}{row.label}{/snippet}
-			{#snippet children(row)}{row.value}{/snippet}
+			{#snippet label(row: ContractRow)}{row.label}{/snippet}
+			{#snippet children(row: ContractRow)}{row.value}{/snippet}
 		</DetailList>
 	{/if}
 {/snippet}

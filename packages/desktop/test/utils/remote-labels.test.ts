@@ -78,10 +78,18 @@ test('the desktop states its relay, its progress and how many phones are approve
 	expect(hostSummary(host({}))).toBe('Phone access on · no phone');
 	const devices = [{}, {}] as RemoteHostStatus['devices'];
 	expect(hostSummary(host({ devices }))).toBe('Phone access on · 2 phones');
-	expect(grantSummary({ projects: [{}], agents: false })).toBe('1 project · Read and comment only');
-	expect(grantSummary({ projects: [{}, {}], agents: true })).toBe(
-		'2 projects · Plan and Change allowed'
+	expect(grantSummary({ projects: [{ id: 'project-a', name: 'Project A' }], agents: false })).toBe(
+		'1 project · Read and comment only'
 	);
+	expect(
+		grantSummary({
+			projects: [
+				{ id: 'project-a', name: 'Project A' },
+				{ id: 'project-b', name: 'Project B' }
+			],
+			agents: true
+		})
+	).toBe('2 projects · Plan and Change allowed');
 });
 
 test('a whole device identity is shown in groups, so that it can be compared on both screens', () => {

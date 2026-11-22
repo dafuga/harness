@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.component.explorer-ui-entity-contract-service-methods",
+	"title": "reports.component.explorer-ui-entity-contract-service-methods examples",
+	"kind": "headless",
+	"units": ["reports.component.explorer-ui-entity-contract-service-methods"],
+	"builds": [],
+	"states": [
+		{
+			"id": "projects-a-recorded-service-class-into-crud-first-methods",
+			"title": "Projects a recorded service class into CRUD-first methods",
+			"coverage": "required"
+		},
+		{
+			"id": "projects-model-declarations-with-authored-parameter-metadata",
+			"title": "Projects model declarations with authored parameter metadata",
+			"coverage": "required"
+		},
+		{
+			"id": "reports-an-empty-contract-when-no-method-is-discovered",
+			"title": "Reports an empty contract when no method is discovered",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-typeerror-when-an-example-is-a-bigint-or-cyclic",
+			"title": "Throws TypeError when an example is a BigInt or cyclic",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-rangeerror-when-an-example-is-nested-too-deeply",
+			"title": "Throws RangeError when an example is nested too deeply",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-the-example-callback-error-when-a-getter-throws",
+			"title": "Throws the example callback error when a getter throws",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.component.explorer-ui-entity-contract-service-methods.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"projects-a-recorded-service-class-into-crud-first-methods",
+				"projects-model-declarations-with-authored-parameter-metadata",
+				"reports-an-empty-contract-when-no-method-is-discovered",
+				"throws-typeerror-when-an-example-is-a-bigint-or-cyclic",
+				"throws-rangeerror-when-an-example-is-nested-too-deeply",
+				"throws-the-example-callback-error-when-a-getter-throws"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"projects-a-recorded-service-class-into-crud-first-methods",
+				"projects-model-declarations-with-authored-parameter-metadata",
+				"reports-an-empty-contract-when-no-method-is-discovered",
+				"throws-typeerror-when-an-example-is-a-bigint-or-cyclic",
+				"throws-rangeerror-when-an-example-is-nested-too-deeply",
+				"throws-the-example-callback-error-when-a-getter-throws"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"projects-a-recorded-service-class-into-crud-first-methods",
+				"projects-model-declarations-with-authored-parameter-metadata",
+				"reports-an-empty-contract-when-no-method-is-discovered",
+				"throws-typeerror-when-an-example-is-a-bigint-or-cyclic",
+				"throws-rangeerror-when-an-example-is-nested-too-deeply",
+				"throws-the-example-callback-error-when-a-getter-throws"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

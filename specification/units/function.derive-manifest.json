@@ -40,7 +40,7 @@
 				"name": "deriveContract.entry",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Repository-relative source path used to select a primary component export when that file is present. If no matching component is found, inputs fall back to all deduplicated component exports; defaults to undefined.",
 				"examples": ["src/utils/development-tooling/deriveManifest.ts"]
 			},
@@ -214,7 +214,7 @@
 						"name": "deriveContract.entry",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Repository-relative source path used to select a primary component export when that file is present. If no matching component is found, inputs fall back to all deduplicated component exports; defaults to undefined.",
 						"examples": ["src/utils/development-tooling/deriveManifest.ts"]
 					}
@@ -322,7 +322,7 @@
 				"outputs": [
 					{
 						"name": "operationContract",
-						"type": "unknown",
+						"type": "{ name: string; inputs: ExportedSymbol['inputs']; outputs: { name: string; type: string }[]; errors: { name: string; type: string }[]; errorStatus: NonNullable<ExportedSymbol['errorStatus']> }",
 						"description": "A contract representation of one scanned export, with input items, zero or one return item, thrown-error names, and the export's scanned error status.",
 						"examples": [
 							{

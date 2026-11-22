@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-11-15T19:15:40.845Z","name":"video-input-closure","goal":"Prove dependency-complete clip reuse with one cached input context per plan","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-11-15T19:16:45.586Z","loop":"video-input-closure","step":"spec","evidence":"Plan must reuse proven-independent inputs while shared and implicit dependencies invalidate actual consumers."}
+{"event":"step.completed","timestamp":"2026-11-15T19:16:46.470Z","loop":"video-input-closure","step":"coverage","evidence":"Existing planning cases only changed registered source and CSS; strengthen them with static imports, fonts, layouts, dynamic widening, unsafe paths and per-plan reads/tool calls."}

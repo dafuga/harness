@@ -3,6 +3,7 @@ import type {
 	ConsoleHostOptions,
 	HostFile
 } from '../../../utils/development-tooling/consoleHostFiles';
+import { MissingConsoleBucketBindingError } from './consoleHostFiles.types';
 import { consoleServerDirectory } from '../../../utils/development-tooling/consoleHostFiles';
 import { emptyBuildStamp } from '../../../utils/development-tooling/buildStamp';
 
@@ -32,7 +33,10 @@ function stored(bucket: { binding: string; prefix: string }): string {
 function data(event: ConsoleRequest) {
 	const env = (event.platform as { env?: Record<string, unknown> } | undefined)?.env;
 	const bucket = env?.['${bucket.binding}'] as ConsoleBucket | undefined;
-	if (!bucket) throw new Error('The ${bucket.binding} binding is missing from this deployment.');
+	if (!bucket)
+		throw new (${MissingConsoleBucketBindingError.toString()})(
+			'The ${bucket.binding} binding is missing from this deployment.'
+		);
 	return consoleStore(bucket, '${bucket.prefix}');
 }
 `;

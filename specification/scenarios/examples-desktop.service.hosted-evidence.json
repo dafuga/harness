@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.service.hosted-evidence",
+	"title": "desktop.service.hosted-evidence examples",
+	"kind": "headless",
+	"units": ["desktop.service.hosted-evidence"],
+	"builds": [],
+	"states": [
+		{
+			"id": "returns-a-verified-hosted-evidence-artifact",
+			"title": "Returns a verified hosted evidence artifact",
+			"coverage": "required"
+		},
+		{
+			"id": "throws-error-when-the-artifact-digest-does-not-match",
+			"title": "Throws Error when the artifact digest does not match",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.service.hosted-evidence.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"returns-a-verified-hosted-evidence-artifact",
+				"throws-error-when-the-artifact-digest-does-not-match"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"returns-a-verified-hosted-evidence-artifact",
+				"throws-error-when-the-artifact-digest-does-not-match"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"returns-a-verified-hosted-evidence-artifact",
+				"throws-error-when-the-artifact-digest-does-not-match"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

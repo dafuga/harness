@@ -19,9 +19,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The path string passed to the selected runtime SQLite database constructor. This function opens only the supplied path and does not choose or rewrite the location.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna/adapter.open-sqlite/state.sqlite"
-				]
+				"examples": ["/workspace/project/state.sqlite"]
 			},
 			{
 				"name": "openSqlite.readOnly",
@@ -56,9 +54,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The path string passed to the selected runtime SQLite database constructor. This function opens only the supplied path and does not choose or rewrite the location.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna/adapter.open-sqlite/state.sqlite"
-						]
+						"examples": ["/workspace/project/state.sqlite"]
 					},
 					{
 						"name": "openSqlite.readOnly",

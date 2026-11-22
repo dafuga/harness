@@ -39,8 +39,8 @@
 		className="about"
 		valueClass={(name) => (name === 'Description' && !field.description ? 'none' : '')}
 	>
-		{#snippet label(name)}{name}{/snippet}
-		{#snippet children(name)}
+		{#snippet label(name: string)}{name}{/snippet}
+		{#snippet children(name: string)}
 			{#if name === 'Type'}<hx-code class="type">{field.type}</hx-code>
 			{:else}{field.description ?? 'No description recorded.'}{/if}
 		{/snippet}

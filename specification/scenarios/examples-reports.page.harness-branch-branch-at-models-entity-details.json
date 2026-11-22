@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.page.harness-branch-branch-at-models-entity-details",
+	"title": "reports.page.harness-branch-branch-at-models-entity-details examples",
+	"kind": "headless",
+	"units": ["reports.page.harness-branch-branch-at-models-entity-details"],
+	"builds": [],
+	"states": [
+		{
+			"id": "renders-the-model-details-page-markup",
+			"title": "Renders the Model details page markup",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.page.harness-branch-branch-at-models-entity-details.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["renders-the-model-details-page-markup"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["renders-the-model-details-page-markup"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["renders-the-model-details-page-markup"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

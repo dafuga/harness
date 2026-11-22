@@ -28,102 +28,395 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "indent.lines",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Source lines to prefix with the requested two-space indentation; an empty list produces no rows.",
+				"examples": [
+					["Source", "Contract"]
+				]
 			},
 			{
 				"name": "indent.depth",
 				"type": "number",
 				"required": false,
-				"default": 1
+				"default": 1,
+				"description": "Number of two-space indentation levels to add before each line; it defaults to one for nested sections.",
+				"examples": [2]
 			},
 			{
 				"name": "fields.list",
 				"type": "Field[]",
-				"required": true
+				"required": true,
+				"description": "Contract fields to render as names, types and qualifiers, with descriptions continued on indented lines; an empty list renders as none.",
+				"examples": [
+					[
+						{
+							"name": "project.id",
+							"type": "string",
+							"required": true,
+							"description": "Project identifier.",
+							"examples": ["project-42"]
+						},
+						{
+							"name": "owner.id",
+							"type": "string",
+							"required": true,
+							"description": "Owner identifier.",
+							"examples": ["user-7"]
+						},
+						{
+							"name": "status",
+							"type": "string",
+							"required": false,
+							"default": "active",
+							"description": "Current project status.",
+							"examples": ["active"]
+						}
+					]
+				]
 			},
 			{
 				"name": "fields.componentProps",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "When true, shorten names to their final dotted segment and collapse duplicate props; false preserves qualified names when needed to distinguish fields.",
+				"examples": [true, false]
 			},
 			{
 				"name": "errorRows.errors",
 				"type": "Field[]",
-				"required": true
+				"required": true,
+				"description": "Declared error fields to format; when empty, the status determines whether output says none or unknown.",
+				"examples": [
+					[
+						{
+							"name": "renderUnit.detail",
+							"type": "thrown",
+							"description": "The detail has an unsupported shape."
+						}
+					]
+				]
 			},
 			{
 				"name": "errorRows.status",
 				"type": "ComponentManifest['contract']['errorStatus']",
-				"required": true
+				"required": true,
+				"description": "Declared contract error outcome, used to distinguish declared absence, unknown indirect errors and statically found or not-found errors.",
+				"examples": ["declared", "none-found", "unknown"]
 			},
 			{
 				"name": "operationRows.operations",
 				"type": "NonNullable<ComponentManifest['contract']['operations']>",
-				"required": true
+				"required": true,
+				"description": "Operations whose names and Inputs, Outputs and Errors sections are rendered in order.",
+				"examples": [
+					[
+						{
+							"name": "saveProject",
+							"inputs": [
+								{
+									"name": "id",
+									"type": "string",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "saved",
+									"type": "boolean"
+								}
+							],
+							"errors": [
+								{
+									"name": "SaveError",
+									"type": "thrown",
+									"description": "The save operation failed."
+								}
+							],
+							"errorStatus": "found"
+						}
+					]
+				]
 			},
 			{
 				"name": "storageRows.models",
 				"type": "NonNullable<ComponentManifest['contract']['storage']>",
-				"required": true
+				"required": true,
+				"description": "Storage models whose table, primary key, fields, validation, relations and unresolved gaps are rendered.",
+				"examples": [
+					[
+						{
+							"name": "Project",
+							"table": "projects",
+							"primaryKey": "id",
+							"fields": [
+								{
+									"name": "id",
+									"type": "string",
+									"required": true,
+									"primaryKey": true
+								},
+								{
+									"name": "label",
+									"type": "string",
+									"required": true
+								}
+							]
+						}
+					]
+				]
 			},
 			{
 				"name": "renderContract.manifest",
 				"type": "ComponentManifest",
-				"required": true
+				"required": true,
+				"description": "Unit manifest whose contract is rendered; component manifests use props while other units may show storage, initialization and operation sections.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "entry.example",
+						"kind": "entry",
+						"title": "formatExample",
+						"responsibility": "Formats an example unit summary.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": ["src/example.ts"],
+							"symbols": ["formatExample"]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [
+								{
+									"name": "id",
+									"type": "string",
+									"required": true,
+									"description": "Example identifier.",
+									"examples": ["example-42"]
+								}
+							],
+							"outputs": [
+								{
+									"name": "summary",
+									"type": "string",
+									"description": "Rendered summary.",
+									"examples": ["Example summary"]
+								}
+							],
+							"errors": [],
+							"errorStatus": "declared"
+						},
+						"dependencies": [],
+						"runtime": {
+							"kind": "module",
+							"entry": "src/example.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/example.ts"
+								}
+							]
+						},
+						"scenarios": [],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "groupTests.tests",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Test file paths to group by containing directory; an empty list renders as none.",
+				"examples": [
+					["test/example.test.ts", "tests/render-unit.test.ts"]
+				]
 			},
 			{
 				"name": "renderUnit.detail",
 				"type": "UnitDetail",
-				"required": true
+				"required": true,
+				"description": "Unit manifest, revision hashes, consumers and test files used to render the complete Markdown unit detail.",
+				"examples": [
+					{
+						"manifest": {
+							"schemaVersion": 1,
+							"id": "entry.example",
+							"kind": "entry",
+							"title": "formatExample",
+							"responsibility": "Formats an example unit summary.",
+							"responsibilityOrigin": "declared",
+							"status": "active",
+							"owns": {
+								"source": ["src/example.ts"],
+								"symbols": ["formatExample"]
+							},
+							"contract": {
+								"origin": "declared",
+								"inputs": [
+									{
+										"name": "id",
+										"type": "string",
+										"required": true,
+										"description": "Example identifier.",
+										"examples": ["example-42"]
+									}
+								],
+								"outputs": [
+									{
+										"name": "summary",
+										"type": "string",
+										"description": "Rendered summary.",
+										"examples": ["Example summary"]
+									}
+								],
+								"errors": [],
+								"errorStatus": "declared"
+							},
+							"dependencies": [],
+							"runtime": {
+								"kind": "module",
+								"entry": "src/example.ts",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/example.ts"
+									}
+								]
+							},
+							"scenarios": [],
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							}
+						},
+						"version": {
+							"unit": "entry.example",
+							"manifest": "manifest-hash",
+							"source": "source-hash",
+							"contract": "contract-hash",
+							"runtime": "runtime-hash",
+							"files": [
+								{
+									"path": "src/example.ts",
+									"hash": "source-hash"
+								}
+							]
+						},
+						"consumers": ["workflow.example-consumer"],
+						"tests": ["test/example.test.ts"],
+						"dependencies": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "indent",
-				"type": "unknown"
+				"type": "string[]",
+				"description": "Lines prefixed with two spaces repeated for the requested depth, preserving their order.",
+				"examples": [
+					["    Source", "    Contract"]
+				]
 			},
 			{
 				"name": "fields",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Formatted field rows with required/default qualifiers and each field description on its own indented line; empty inputs render as none.",
+				"examples": [
+					[
+						"id      string  (required)",
+						"  Owner identifier.",
+						"status  string  (optional; default \"active\")",
+						"  Current project status."
+					]
+				]
 			},
 			{
 				"name": "errorRows",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Formatted error fields, or a status-specific none/unknown row when there are no errors.",
+				"examples": [
+					["detail", "  The detail has an unsupported shape."]
+				]
 			},
 			{
 				"name": "operationRows",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Operation names followed by indented Inputs, Outputs and Errors sections.",
+				"examples": [
+					[
+						"saveProject",
+						"  Inputs",
+						"    id  string  (required)",
+						"  Outputs",
+						"    saved  boolean",
+						"  Errors",
+						"    SaveError",
+						"      The save operation failed."
+					]
+				]
 			},
 			{
 				"name": "storageRows",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Storage model rows including schema declarations and any recorded unresolved schema details.",
+				"examples": [
+					[
+						"Project",
+						"  Table  projects",
+						"  Primary key  id",
+						"  id  string  (required)  (primary key)",
+						"  label  string  (required)"
+					]
+				]
 			},
 			{
 				"name": "renderContract",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Contract heading and the sections applicable to this manifest's kind and declared contract.",
+				"examples": [
+					[
+						"Contract (declared)",
+						"  Inputs",
+						"    id  string  (required)",
+						"      Example identifier.",
+						"  Outputs",
+						"    summary  string",
+						"      Rendered summary.",
+						"  Errors",
+						"    none"
+					]
+				]
 			},
 			{
 				"name": "groupTests",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "File count and per-directory counts, or none when no tests are listed.",
+				"examples": [
+					["2 files", "  test/   1", "  tests/  1"]
+				]
 			},
 			{
 				"name": "renderUnit",
-				"type": "string"
+				"type": "string",
+				"description": "Markdown unit summary combining its title, responsibility, contract, runtime, revision, relations and impacted tests.",
+				"examples": [
+					"# entry.example  (entry, active)\nFormats an example unit summary.\n\nContract (declared)\n  Inputs\n    id  string  (required)\n      Example identifier.\n  Outputs\n    summary  string\n      Rendered summary.\n  Errors\n    none\n\nDetails\n  Source               src/example.ts\n  Runtime              module src/example.ts\n  Version              source source-hash · contract contract-has\n  Depends on           none\n  Consumers            workflow.example-consumer\n  Impacted test files  1 files\n                         test/  1\n  Scenarios            none"
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "indent",
@@ -131,23 +424,33 @@
 					{
 						"name": "indent.lines",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Source lines to prefix with the requested two-space indentation; an empty list produces no rows.",
+						"examples": [
+							["Source", "Contract"]
+						]
 					},
 					{
 						"name": "indent.depth",
 						"type": "number",
 						"required": false,
-						"default": 1
+						"default": 1,
+						"description": "Number of two-space indentation levels to add before each line; it defaults to one for nested sections.",
+						"examples": [2]
 					}
 				],
 				"outputs": [
 					{
 						"name": "indent",
-						"type": "unknown"
+						"type": "string[]",
+						"description": "Lines prefixed with two spaces repeated for the requested depth, preserving their order.",
+						"examples": [
+							["    Source", "    Contract"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "fields",
@@ -155,23 +458,61 @@
 					{
 						"name": "fields.list",
 						"type": "Field[]",
-						"required": true
+						"required": true,
+						"description": "Contract fields to render as names, types and qualifiers, with descriptions continued on indented lines; an empty list renders as none.",
+						"examples": [
+							[
+								{
+									"name": "project.id",
+									"type": "string",
+									"required": true,
+									"description": "Project identifier.",
+									"examples": ["project-42"]
+								},
+								{
+									"name": "owner.id",
+									"type": "string",
+									"required": true,
+									"description": "Owner identifier.",
+									"examples": ["user-7"]
+								},
+								{
+									"name": "status",
+									"type": "string",
+									"required": false,
+									"default": "active",
+									"description": "Current project status.",
+									"examples": ["active"]
+								}
+							]
+						]
 					},
 					{
 						"name": "fields.componentProps",
 						"type": "boolean",
 						"required": false,
-						"default": false
+						"default": false,
+						"description": "When true, shorten names to their final dotted segment and collapse duplicate props; false preserves qualified names when needed to distinguish fields.",
+						"examples": [true, false]
 					}
 				],
 				"outputs": [
 					{
 						"name": "fields",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Formatted field rows with required/default qualifiers and each field description on its own indented line; empty inputs render as none.",
+						"examples": [
+							[
+								"id      string  (required)",
+								"  Owner identifier.",
+								"status  string  (optional; default \"active\")",
+								"  Current project status."
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "errorRows",
@@ -179,22 +520,38 @@
 					{
 						"name": "errorRows.errors",
 						"type": "Field[]",
-						"required": true
+						"required": true,
+						"description": "Declared error fields to format; when empty, the status determines whether output says none or unknown.",
+						"examples": [
+							[
+								{
+									"name": "renderUnit.detail",
+									"type": "thrown",
+									"description": "The detail has an unsupported shape."
+								}
+							]
+						]
 					},
 					{
 						"name": "errorRows.status",
 						"type": "ComponentManifest['contract']['errorStatus']",
-						"required": true
+						"required": true,
+						"description": "Declared contract error outcome, used to distinguish declared absence, unknown indirect errors and statically found or not-found errors.",
+						"examples": ["declared", "none-found", "unknown"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "errorRows",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Formatted error fields, or a status-specific none/unknown row when there are no errors.",
+						"examples": [
+							["detail", "  The detail has an unsupported shape."]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "operationRows",
@@ -202,17 +559,59 @@
 					{
 						"name": "operationRows.operations",
 						"type": "NonNullable<ComponentManifest['contract']['operations']>",
-						"required": true
+						"required": true,
+						"description": "Operations whose names and Inputs, Outputs and Errors sections are rendered in order.",
+						"examples": [
+							[
+								{
+									"name": "saveProject",
+									"inputs": [
+										{
+											"name": "id",
+											"type": "string",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "saved",
+											"type": "boolean"
+										}
+									],
+									"errors": [
+										{
+											"name": "SaveError",
+											"type": "thrown",
+											"description": "The save operation failed."
+										}
+									],
+									"errorStatus": "found"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "operationRows",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Operation names followed by indented Inputs, Outputs and Errors sections.",
+						"examples": [
+							[
+								"saveProject",
+								"  Inputs",
+								"    id  string  (required)",
+								"  Outputs",
+								"    saved  boolean",
+								"  Errors",
+								"    SaveError",
+								"      The save operation failed."
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "storageRows",
@@ -220,17 +619,50 @@
 					{
 						"name": "storageRows.models",
 						"type": "NonNullable<ComponentManifest['contract']['storage']>",
-						"required": true
+						"required": true,
+						"description": "Storage models whose table, primary key, fields, validation, relations and unresolved gaps are rendered.",
+						"examples": [
+							[
+								{
+									"name": "Project",
+									"table": "projects",
+									"primaryKey": "id",
+									"fields": [
+										{
+											"name": "id",
+											"type": "string",
+											"required": true,
+											"primaryKey": true
+										},
+										{
+											"name": "label",
+											"type": "string",
+											"required": true
+										}
+									]
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "storageRows",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Storage model rows including schema declarations and any recorded unresolved schema details.",
+						"examples": [
+							[
+								"Project",
+								"  Table  projects",
+								"  Primary key  id",
+								"  id  string  (required)  (primary key)",
+								"  label  string  (required)"
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderContract",
@@ -238,17 +670,86 @@
 					{
 						"name": "renderContract.manifest",
 						"type": "ComponentManifest",
-						"required": true
+						"required": true,
+						"description": "Unit manifest whose contract is rendered; component manifests use props while other units may show storage, initialization and operation sections.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "entry.example",
+								"kind": "entry",
+								"title": "formatExample",
+								"responsibility": "Formats an example unit summary.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": ["src/example.ts"],
+									"symbols": ["formatExample"]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [
+										{
+											"name": "id",
+											"type": "string",
+											"required": true,
+											"description": "Example identifier.",
+											"examples": ["example-42"]
+										}
+									],
+									"outputs": [
+										{
+											"name": "summary",
+											"type": "string",
+											"description": "Rendered summary.",
+											"examples": ["Example summary"]
+										}
+									],
+									"errors": [],
+									"errorStatus": "declared"
+								},
+								"dependencies": [],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/example.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/example.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderContract",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Contract heading and the sections applicable to this manifest's kind and declared contract.",
+						"examples": [
+							[
+								"Contract (declared)",
+								"  Inputs",
+								"    id  string  (required)",
+								"      Example identifier.",
+								"  Outputs",
+								"    summary  string",
+								"      Rendered summary.",
+								"  Errors",
+								"    none"
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "groupTests",
@@ -256,17 +757,25 @@
 					{
 						"name": "groupTests.tests",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Test file paths to group by containing directory; an empty list renders as none.",
+						"examples": [
+							["test/example.test.ts", "tests/render-unit.test.ts"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "groupTests",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "File count and per-directory counts, or none when no tests are listed.",
+						"examples": [
+							["2 files", "  test/   1", "  tests/  1"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderUnit",
@@ -274,17 +783,94 @@
 					{
 						"name": "renderUnit.detail",
 						"type": "UnitDetail",
-						"required": true
+						"required": true,
+						"description": "Unit manifest, revision hashes, consumers and test files used to render the complete Markdown unit detail.",
+						"examples": [
+							{
+								"manifest": {
+									"schemaVersion": 1,
+									"id": "entry.example",
+									"kind": "entry",
+									"title": "formatExample",
+									"responsibility": "Formats an example unit summary.",
+									"responsibilityOrigin": "declared",
+									"status": "active",
+									"owns": {
+										"source": ["src/example.ts"],
+										"symbols": ["formatExample"]
+									},
+									"contract": {
+										"origin": "declared",
+										"inputs": [
+											{
+												"name": "id",
+												"type": "string",
+												"required": true,
+												"description": "Example identifier.",
+												"examples": ["example-42"]
+											}
+										],
+										"outputs": [
+											{
+												"name": "summary",
+												"type": "string",
+												"description": "Rendered summary.",
+												"examples": ["Example summary"]
+											}
+										],
+										"errors": [],
+										"errorStatus": "declared"
+									},
+									"dependencies": [],
+									"runtime": {
+										"kind": "module",
+										"entry": "src/example.ts",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/example.ts"
+											}
+										]
+									},
+									"scenarios": [],
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									}
+								},
+								"version": {
+									"unit": "entry.example",
+									"manifest": "manifest-hash",
+									"source": "source-hash",
+									"contract": "contract-hash",
+									"runtime": "runtime-hash",
+									"files": [
+										{
+											"path": "src/example.ts",
+											"hash": "source-hash"
+										}
+									]
+								},
+								"consumers": ["workflow.example-consumer"],
+								"tests": ["test/example.test.ts"],
+								"dependencies": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderUnit",
-						"type": "string"
+						"type": "string",
+						"description": "Markdown unit summary combining its title, responsibility, contract, runtime, revision, relations and impacted tests.",
+						"examples": [
+							"# entry.example  (entry, active)\nFormats an example unit summary.\n\nContract (declared)\n  Inputs\n    id  string  (required)\n      Example identifier.\n  Outputs\n    summary  string\n      Rendered summary.\n  Errors\n    none\n\nDetails\n  Source               src/example.ts\n  Runtime              module src/example.ts\n  Version              source source-hash · contract contract-has\n  Depends on           none\n  Consumers            workflow.example-consumer\n  Impacted test files  1 files\n                         test/  1\n  Scenarios            none"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

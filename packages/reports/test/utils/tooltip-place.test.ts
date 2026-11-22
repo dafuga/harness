@@ -17,7 +17,7 @@ test('a tooltip sits under its mark, centred on it, with the gap a pointer can c
 	);
 	await measureWorkload('reports.function.tooltip-place', 'cold-public-and-owner-entries', () => {
 		for (const path of [
-			'src/utils/tooltipPlace.ts',
+			'src/utils/explorer-ui/tooltipPlace.ts',
 			'src/utils/explorer-ui/tooltipPlace.ts',
 			'src/components/shared-primitives/status/tooltipPlace.ts'
 		]) {

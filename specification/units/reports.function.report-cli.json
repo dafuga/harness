@@ -97,7 +97,7 @@
 			},
 			{
 				"name": "inputData",
-				"type": "unknown",
+				"type": "Promise<Record<string, unknown>>",
 				"description": "Resolves to the JSON value parsed from the truthy `file` contents or, when no truthy file is supplied, from `data`. The value is cast to a record without runtime shape validation.",
 				"examples": [
 					{
@@ -111,7 +111,7 @@
 			},
 			{
 				"name": "required",
-				"type": "unknown",
+				"type": "string",
 				"description": "The original string at `flags[name]` when it is nonblank. Surrounding whitespace is retained.",
 				"examples": ["reports", "  release  "]
 			}
@@ -204,7 +204,7 @@
 				"outputs": [
 					{
 						"name": "inputData",
-						"type": "unknown",
+						"type": "Promise<Record<string, unknown>>",
 						"description": "Resolves to the JSON value parsed from the truthy `file` contents or, when no truthy file is supplied, from `data`. The value is cast to a record without runtime shape validation.",
 						"examples": [
 							{
@@ -259,7 +259,7 @@
 				"outputs": [
 					{
 						"name": "required",
-						"type": "unknown",
+						"type": "string",
 						"description": "The original string at `flags[name]` when it is nonblank. Surrounding whitespace is retained.",
 						"examples": ["reports", "  release  "]
 					}
@@ -276,7 +276,13 @@
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/src/utils/reports-media/reportCli.ts",

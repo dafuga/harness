@@ -33,9 +33,9 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "CollaborationInputError",
 				"type": "thrown",
-				"description": "This error marks explicit source validation failures: commit mismatch, truncated or mismatched tree, unsafe or duplicate paths, missing or non-regular files, and blob integrity failure. Rejections from delegated transport, anchor, history, or LFS helpers follow those implementations."
+				"description": "The package's CollaborationInputError from fail (message 'Collaboration <code>', with a code property) marks the explicit source validation failures: commit mismatch, truncated or mismatched tree, unsafe or duplicate paths, missing or non-regular files, and blob integrity failure. Rejections from delegated transport, anchor, history, or LFS helpers follow those implementations."
 			}
 		],
 		"errorStatus": "declared",

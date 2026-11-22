@@ -24,7 +24,7 @@
 			},
 			{
 				"name": "commitRecords.input",
-				"type": "{ parent: string | null; path: string; records: unknown }",
+				"type": "{ parent: string | null; path: string; records: CollaborationRecords }",
 				"required": true,
 				"description": "Contains the parent commit identifier or null, the tree path, and the records value passed to JSON.stringify. A truthy parent supplies the base tree and sole commit parent; fields are not validated locally, and cyclic data or BigInt can fail during serialization.",
 				"examples": [
@@ -72,7 +72,7 @@
 					},
 					{
 						"name": "commitRecords.input",
-						"type": "{ parent: string | null; path: string; records: unknown }",
+						"type": "{ parent: string | null; path: string; records: CollaborationRecords }",
 						"required": true,
 						"description": "Contains the parent commit identifier or null, the tree path, and the records value passed to JSON.stringify. A truthy parent supplies the base tree and sole commit parent; fields are not validated locally, and cyclic data or BigInt can fail during serialization.",
 						"examples": [
@@ -120,6 +120,11 @@
 		},
 		{
 			"unit": "collaboration.function.parse-collaboration-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "collaboration.model.collaboration-types",
 			"via": "import",
 			"origin": "derived"
 		}

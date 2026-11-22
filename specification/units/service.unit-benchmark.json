@@ -113,7 +113,7 @@
 				"name": "UnitBenchmarkService.measure.kind",
 				"type": "RuntimeKind",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The execution target kind to measure, one of module, wasm, process or http, which the manifest must declare in runtime.targets. Defaults to manifest.runtime.kind when omitted, which UnitRuntimeService.forUnit applies because measure passes an omitted kind through as undefined; the kind that ran is reported as target.",
 				"examples": ["module", "wasm", "process"]
 			}
@@ -313,7 +313,7 @@
 						"name": "UnitBenchmarkService.measure.kind",
 						"type": "RuntimeKind",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The execution target kind to measure, one of module, wasm, process or http, which the manifest must declare in runtime.targets. Defaults to manifest.runtime.kind when omitted, which UnitRuntimeService.forUnit applies because measure passes an omitted kind through as undefined; the kind that ran is reported as target.",
 						"examples": ["module", "wasm", "process"]
 					}
@@ -445,7 +445,7 @@
 				"outputs": [
 					{
 						"name": "UnitBenchmarkService.constructor",
-						"type": "unknown",
+						"type": "UnitBenchmarkService",
 						"description": "The UnitBenchmarkService instance, which holds only the repository root it was given; constructing it does no other work and cannot throw."
 					}
 				],

@@ -16,6 +16,7 @@
 			"createEntityEvidenceStore",
 			"EvidenceTarget",
 			"EntityEvidence",
+			"EvidenceCaptureUnavailableError",
 			"EvidenceTarget",
 			"EntityEvidence"
 		]
@@ -26,7 +27,7 @@
 		"outputs": [
 			{
 				"name": "createEntityEvidenceStore",
-				"type": "unknown",
+				"type": "EntityEvidenceState",
 				"description": "Each call returns a new, separate EntityEvidenceState on which show(), url() and reset() act, starting with status 'idle', a null result, an empty error, an undefined read and empty refusals. It reads no evidence until show() is called, reset() revokes the object URLs made by url(), and show() runs reset() whenever the target or bridge differs from the one shown."
 			}
 		],
@@ -45,7 +46,7 @@
 				"outputs": [
 					{
 						"name": "createEntityEvidenceStore",
-						"type": "unknown",
+						"type": "EntityEvidenceState",
 						"description": "Each call returns a new, separate EntityEvidenceState on which show(), url() and reset() act, starting with status 'idle', a null result, an empty error, an undefined read and empty refusals. It reads no evidence until show() is called, reset() revokes the object URLs made by url(), and show() runs reset() whenever the target or bridge differs from the one shown."
 					}
 				],

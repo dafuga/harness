@@ -1,9 +1,9 @@
 // @harness-uid u_l3f5bpp55y
 import type { RetainedArtifact, SnapshotDrift } from './SnapshotAdapter.types';
+import { TarExtractError } from './SnapshotAdapter.types';
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { constants, existsSync } from 'node:fs';
-import type { Stats } from 'node:fs';
+import { constants, existsSync, type Stats } from 'node:fs';
 import { mkdir, mkdtemp, lstat, open, readFile, readlink, rm, symlink } from 'node:fs/promises';
 import type { FileHandle } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -140,7 +140,9 @@ function extract(archive: Buffer, directory: string): Promise<void> {
 	return new Promise((resolve, reject) => {
 		tar.once('error', reject);
 		tar.once('close', (code) =>
-			code === 0 ? resolve() : reject(new Error(`tar failed: ${Buffer.concat(errors).toString()}`))
+			code === 0
+				? resolve()
+				: reject(new TarExtractError(`tar failed: ${Buffer.concat(errors).toString()}`))
 		);
 	});
 }

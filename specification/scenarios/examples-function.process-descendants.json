@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.process-descendants",
+	"title": "function.process-descendants examples",
+	"kind": "headless",
+	"units": ["function.process-descendants"],
+	"builds": [],
+	"states": [
+		{
+			"id": "parses-bounded-ps-rows",
+			"title": "Parses bounded ps rows",
+			"coverage": "required"
+		},
+		{
+			"id": "tracks-survivors-and-marks-group-strangers",
+			"title": "Tracks survivors and marks group strangers",
+			"coverage": "required"
+		},
+		{
+			"id": "checks-process-identities-before-signaling",
+			"title": "Checks process identities before signaling",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.process-descendants.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"parses-bounded-ps-rows",
+				"tracks-survivors-and-marks-group-strangers",
+				"checks-process-identities-before-signaling"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"parses-bounded-ps-rows",
+				"tracks-survivors-and-marks-group-strangers",
+				"checks-process-identities-before-signaling"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"parses-bounded-ps-rows",
+				"tracks-survivors-and-marks-group-strangers",
+				"checks-process-identities-before-signaling"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

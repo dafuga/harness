@@ -43,57 +43,92 @@
 				"name": "splitTopLevel.masked",
 				"type": "string",
 				"required": true,
-				"description": "Masked text whose top-level separator positions should be found."
+				"description": "Masked text whose top-level separator positions should be found.",
+				"examples": ["fn(a, b), next"]
 			},
 			{
 				"name": "splitTopLevel.separators",
 				"type": "string",
 				"required": true,
-				"description": "String of individual separator characters to recognize at nesting depth zero."
+				"description": "String of individual separator characters to recognize at nesting depth zero.",
+				"examples": [","]
 			},
 			{
 				"name": "parseParameters.code",
 				"type": "string",
 				"required": true,
-				"description": "Original parameter-list or object-type text containing the type spellings to retain."
+				"description": "Original parameter-list or object-type text containing the type spellings to retain.",
+				"examples": ["url: string, retries = 3, label?: string"]
 			},
 			{
 				"name": "parseParameters._masked",
 				"type": "string",
 				"required": true,
-				"description": "Compatibility argument containing masked source; the AST parser currently reads code directly."
+				"description": "Compatibility argument containing masked source; the AST parser currently reads code directly.",
+				"examples": ["url: string, retries = 3, label?: string"]
 			},
 			{
 				"name": "parseParameters.options",
 				"type": "{ owner: string; separators?: string }",
 				"required": true,
-				"description": "Owner prefix for field names and optional separator characters, default comma."
+				"description": "Owner prefix for field names and optional separator characters, default comma.",
+				"examples": [
+					{
+						"owner": "request"
+					}
+				]
 			},
 			{
 				"name": "normalizeType.text",
 				"type": "string",
 				"required": true,
-				"description": "Raw type text to normalize."
+				"description": "Raw type text to normalize.",
+				"examples": ["  Promise < string > ; "]
 			}
 		],
 		"outputs": [
 			{
 				"name": "splitTopLevel",
 				"type": "number[]",
-				"description": "Indexes of separator characters outside tracked brackets/generics; text itself is not split or changed."
+				"description": "Indexes of separator characters outside tracked brackets/generics; text itself is not split or changed.",
+				"examples": [
+					[8]
+				]
 			},
 			{
 				"name": "parseParameters",
 				"type": "ContractItem[]",
-				"description": "Contract items named owner.parameter with normalized explicit type or unknown when absent. Empty pieces are skipped and unrecognized/destructured names become input."
+				"description": "Contract items named owner.parameter with normalized explicit type or unknown when absent. Empty pieces are skipped and unrecognized/destructured names become input.",
+				"examples": [
+					[
+						{
+							"name": "request.url",
+							"type": "string",
+							"required": true
+						},
+						{
+							"name": "request.retries",
+							"type": "number",
+							"required": false,
+							"default": 3
+						},
+						{
+							"name": "request.label",
+							"type": "string",
+							"required": false
+						}
+					]
+				]
 			},
 			{
 				"name": "normalizeType",
 				"type": "string",
-				"description": "Whitespace-collapsed type text with trailing comma/semicolon removed, or unknown for empty text."
+				"description": "Whitespace-collapsed type text with trailing comma/semicolon removed, or unknown for empty text.",
+				"examples": ["Promise < string >"]
 			}
 		],
 		"errors": [],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "parameterDefault",
@@ -108,11 +143,23 @@
 				"outputs": [
 					{
 						"name": "parameterDefault",
-						"type": "Pick<ContractItem, 'default'>"
+						"type": "Pick<ContractItem, 'default'>",
+						"description": "The extracted literal default as a default field, or an empty object when the initializer is absent or uses unsupported syntax. It reads primitive literals, recursively literal arrays and plain object properties without evaluating expressions.",
+						"examples": [
+							{},
+							{
+								"default": 3
+							},
+							{
+								"default": {
+									"retries": 2
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "parameterType",
@@ -127,11 +174,13 @@
 				"outputs": [
 					{
 						"name": "parameterType",
-						"type": "string"
+						"type": "string",
+						"description": "The inferred type label for a readable literal initializer: the primitive typeof result, null for null, unknown[] for arrays, object for objects, or unknown when no supported literal default is available.",
+						"examples": ["number", "null", "unknown"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "splitTopLevel",
@@ -140,24 +189,29 @@
 						"name": "splitTopLevel.masked",
 						"type": "string",
 						"required": true,
-						"description": "Masked text whose top-level separator positions should be found."
+						"description": "Masked text whose top-level separator positions should be found.",
+						"examples": ["fn(a, b), next"]
 					},
 					{
 						"name": "splitTopLevel.separators",
 						"type": "string",
 						"required": true,
-						"description": "String of individual separator characters to recognize at nesting depth zero."
+						"description": "String of individual separator characters to recognize at nesting depth zero.",
+						"examples": [","]
 					}
 				],
 				"outputs": [
 					{
 						"name": "splitTopLevel",
 						"type": "number[]",
-						"description": "Indexes of separator characters outside tracked brackets/generics; text itself is not split or changed."
+						"description": "Indexes of separator characters outside tracked brackets/generics; text itself is not split or changed.",
+						"examples": [
+							[8]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "parseParameters",
@@ -166,30 +220,57 @@
 						"name": "parseParameters.code",
 						"type": "string",
 						"required": true,
-						"description": "Original parameter-list or object-type text containing the type spellings to retain."
+						"description": "Original parameter-list or object-type text containing the type spellings to retain.",
+						"examples": ["url: string, retries = 3, label?: string"]
 					},
 					{
 						"name": "parseParameters._masked",
 						"type": "string",
 						"required": true,
-						"description": "Compatibility argument containing masked source; the AST parser currently reads code directly."
+						"description": "Compatibility argument containing masked source; the AST parser currently reads code directly.",
+						"examples": ["url: string, retries = 3, label?: string"]
 					},
 					{
 						"name": "parseParameters.options",
 						"type": "{ owner: string; separators?: string }",
 						"required": true,
-						"description": "Owner prefix for field names and optional separator characters, default comma."
+						"description": "Owner prefix for field names and optional separator characters, default comma.",
+						"examples": [
+							{
+								"owner": "request"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "parseParameters",
 						"type": "ContractItem[]",
-						"description": "Contract items named owner.parameter with normalized explicit type or unknown when absent. Empty pieces are skipped and unrecognized/destructured names become input."
+						"description": "Contract items named owner.parameter with normalized explicit type or unknown when absent. Empty pieces are skipped and unrecognized/destructured names become input.",
+						"examples": [
+							[
+								{
+									"name": "request.url",
+									"type": "string",
+									"required": true
+								},
+								{
+									"name": "request.retries",
+									"type": "number",
+									"required": false,
+									"default": 3
+								},
+								{
+									"name": "request.label",
+									"type": "string",
+									"required": false
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "normalizeType",
@@ -198,18 +279,20 @@
 						"name": "normalizeType.text",
 						"type": "string",
 						"required": true,
-						"description": "Raw type text to normalize."
+						"description": "Raw type text to normalize.",
+						"examples": ["  Promise < string > ; "]
 					}
 				],
 				"outputs": [
 					{
 						"name": "normalizeType",
 						"type": "string",
-						"description": "Whitespace-collapsed type text with trailing comma/semicolon removed, or unknown for empty text."
+						"description": "Whitespace-collapsed type text with trailing comma/semicolon removed, or unknown for empty text.",
+						"examples": ["Promise < string >"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

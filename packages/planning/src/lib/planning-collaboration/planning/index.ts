@@ -5,6 +5,7 @@ import type {
 	PlanningResult
 } from '../../../models/planning-collaboration/PlanningBridge.types';
 import type { PlanningErrorCode } from '../../../models/planning-collaboration/PlanningView.types';
+import { UnknownPlanningOperationError } from './index.types';
 import { planGit } from './planGit';
 import { planningService } from './planning-service/PlanningService';
 
@@ -26,7 +27,9 @@ export async function handlePlanningRequest(
 ): Promise<PlanningResult<unknown>> {
 	try {
 		if (!request || !Object.hasOwn(api, request.operation))
-			throw Object.assign(new Error('Unknown planning operation'), { code: 'invalid-input' });
+			throw Object.assign(new UnknownPlanningOperationError('Unknown planning operation'), {
+				code: 'invalid-input'
+			});
 		const operation = api[request.operation] as (input: unknown) => Promise<unknown>;
 		return { ok: true, value: await operation(request.input) };
 	} catch (error) {

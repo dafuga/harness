@@ -198,7 +198,7 @@
 				"name": "heldBy.wanted",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional option ID the caller expects to own the file, such as o1. When it is given, a file owned by another option, or by no option, is refused with not-found.",
 				"examples": ["o1", "o2"]
 			},
@@ -375,7 +375,7 @@
 			},
 			{
 				"name": "binding.sha256",
-				"type": "string",
+				"type": "Sha256",
 				"required": true,
 				"description": "SHA-256 digest of the image bytes, expected as 64 lowercase hexadecimal characters, copied unchanged without validation.",
 				"examples": [
@@ -675,7 +675,7 @@
 				"name": "approvable.option",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Option ID to approve, such as o1; an optioned version needs one, and an omitted or unmatched ID yields null. A single design must leave it out, because any ID yields null.",
 				"examples": ["o1", "o2"]
 			}
@@ -683,7 +683,7 @@
 		"outputs": [
 			{
 				"name": "planOptions",
-				"type": "unknown",
+				"type": "{ images: DesignImage[]; options?: DesignOption[] }",
 				"description": "The written images of the design: for options, all option images combined, with options listing each DesignOption's prompt, revised prompt, generator and image bindings; a single design returns images alone.",
 				"examples": [
 					{
@@ -814,9 +814,9 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "PlanningFailure",
 				"type": "thrown",
-				"description": "The name the harness gives every fail() call. The planning fail helper actually throws a plain Error whose code is invalid-input for rejected input or text, not-found when heldBy refuses a wanted option that does not own the file, artifact-tampered when stored options do not match the version images, or unsafe-path for an invalid stored prompt file name."
+				"description": "The planning fail helper throws a plain Error whose code is invalid-input for rejected input or text, not-found when heldBy refuses a wanted option that does not own the file, artifact-tampered when stored options do not match the version images, or unsafe-path for an invalid stored prompt file name."
 			}
 		],
 		"errorStatus": "declared",
@@ -862,7 +862,7 @@
 				"outputs": [
 					{
 						"name": "planOptions",
-						"type": "unknown",
+						"type": "{ images: DesignImage[]; options?: DesignOption[] }",
 						"description": "The written images of the design: for options, all option images combined, with options listing each DesignOption's prompt, revised prompt, generator and image bindings; a single design returns images alone.",
 						"examples": [
 							{
@@ -951,7 +951,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Raised with code invalid-input when the design input is malformed: images missing or not an array, options not 1 to 10, a direction empty or over 2000 characters, an option without images, an empty prompt or revised prompt, a missing or empty generator, repeated directions or images, or flat images that differ from the option images."
 					}
@@ -1080,7 +1080,7 @@
 						"name": "heldBy.wanted",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional option ID the caller expects to own the file, such as o1. When it is given, a file owned by another option, or by no option, is refused with not-found.",
 						"examples": ["o1", "o2"]
 					}
@@ -1100,7 +1100,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Raised with code not-found when the wanted option is not the option holding the file, including when no option holds it."
 					}
@@ -1277,7 +1277,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Raised with code artifact-tampered when stored options do not claim each version image exactly once with matching sha256 and in-order ids, when there are no options or more than 10, or when an option has no images; invalid-input covers an invalid stored direction, revised prompt or generator, and unsafe-path an invalid prompt file name."
 					}
@@ -1298,7 +1298,7 @@
 				"outputs": [
 					{
 						"name": "id",
-						"type": "unknown",
+						"type": "string",
 						"description": "The one-based option identifier: o followed by the position plus one, such as o1 for position 0.",
 						"examples": ["o1", "o2", "o10"]
 					}
@@ -1318,7 +1318,7 @@
 					},
 					{
 						"name": "binding.sha256",
-						"type": "string",
+						"type": "Sha256",
 						"required": true,
 						"description": "SHA-256 digest of the image bytes, expected as 64 lowercase hexadecimal characters, copied unchanged without validation.",
 						"examples": [
@@ -1386,7 +1386,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Raised with code invalid-input when the provider or the model is not non-empty text."
 					}
@@ -1687,7 +1687,7 @@
 						"name": "approvable.option",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Option ID to approve, such as o1; an optioned version needs one, and an omitted or unmatched ID yields null. A single design must leave it out, because any ID yields null.",
 						"examples": ["o1", "o2"]
 					}

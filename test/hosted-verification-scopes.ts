@@ -16,7 +16,9 @@ export const hostedVerificationScopes: Record<string, VerificationScope> = {
 				'removing membership cancels this actor\u2019s runs and denies the running authorization callback':
 					'write-access',
 				'viewer cannot execute and its existing runs are revoked': 'write-access',
-				'commenter cannot execute and its existing runs are revoked': 'write-access'
+				'commenter cannot execute and its existing runs are revoked': 'write-access',
+				'contract proposals reach only an authorized executor at the verified branch tip':
+					'write-access'
 			},
 
 			'test/hub-catalog-listing.test.ts': {

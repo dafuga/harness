@@ -1,10 +1,10 @@
 // @harness-uid u_fdvzeb7c4q
-import { error, type RequestEvent } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 import { ReplayVideoService } from './replay-video-service/ReplayVideoService';
 import { mediaResponse } from '../../../utils/development-tooling/mediaResponse';
 import { repository } from '../../../utils/reports-media/reportHttp';
 const service = new ReplayVideoService(repository);
-export async function GET({ url, request }: RequestEvent) {
+export async function GET({ url, request }: { url: URL; request: Request }) {
 	const id = url.searchParams.get('run');
 	if (!id || !/^[a-f0-9-]{36}$/.test(id)) error(400, 'A valid report ID is required');
 	// A report this site does not have is absent, whatever could be rendered from it.

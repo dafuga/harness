@@ -3,10 +3,11 @@ import { z } from 'zod';
 import type { GitHubTransport } from '../githubTransport';
 import { base64 } from '../githubTransport';
 import { parse, sha } from '../../planning-collaboration/parseCollaborationInput';
+import type { CollaborationRecords } from '../../../models/planning-collaboration/Collaboration.types';
 
 export async function commitRecords(
 	client: GitHubTransport,
-	input: { parent: string | null; path: string; records: unknown }
+	input: { parent: string | null; path: string; records: CollaborationRecords }
 ): Promise<string> {
 	const parent = input.parent
 		? parse(

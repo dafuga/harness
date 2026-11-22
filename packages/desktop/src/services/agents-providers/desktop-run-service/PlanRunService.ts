@@ -1,5 +1,6 @@
 // @harness-uid u_vw6hylhmj7
 import type { RunContext } from '../../../models/development-tooling/RunContext.types';
+import { PlanAgentChangedProjectFilesError } from './PlanRunService.types';
 import { runContext } from '../../../utils/projects-sessions/runContext';
 import { sourceSnapshot } from '../../../utils/verification-evidence/sourceSnapshot';
 import { sourceChanges } from '../../../utils/git-source-history/sourceChanges';
@@ -29,7 +30,7 @@ export class PlanRunService {
 			onStatus: () => {}
 		});
 		if (sourceChanges(before, await sourceSnapshot(context.root)).length)
-			throw new Error(
+			throw new PlanAgentChangedProjectFilesError(
 				'The Plan agent changed project files. The changes remain recoverable; no design was approved.'
 			);
 		return planDesign(context, result.text);

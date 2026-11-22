@@ -1,10 +1,13 @@
 // @harness-uid u_ocykouvtlq
 import { canonicalJson } from '../../../../../src/utils/development-tooling/canonicalJson';
+import { HarnessArtifactUnavailableError } from './hubJson.types';
 export function hubJson(bytes: Uint8Array): unknown {
 	try {
 		return JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)) as unknown;
 	} catch {
-		throw Object.assign(new Error('Invalid committed artifact'), { code: 'artifact-corrupt' });
+		throw Object.assign(new HarnessArtifactUnavailableError('Invalid committed artifact'), {
+			code: 'artifact-corrupt'
+		});
 	}
 }
 export async function hubHash(value: Uint8Array | string): Promise<string> {
@@ -13,11 +16,20 @@ export async function hubHash(value: Uint8Array | string): Promise<string> {
 		.map((b) => b.toString(16).padStart(2, '0'))
 		.join('');
 }
-export async function hubContractHash(value: unknown) {
+type HubJsonValue =
+	| null
+	| boolean
+	| number
+	| string
+	| HubJsonValue[]
+	| { [key: string]: HubJsonValue };
+export async function hubContractHash(value: HubJsonValue) {
 	return hubHash(canonicalJson(value));
 }
 export function hubFail(code = 'artifact-corrupt'): never {
-	throw Object.assign(new Error('Harness artifact unavailable'), { code });
+	throw Object.assign(new HarnessArtifactUnavailableError('Harness artifact unavailable'), {
+		code
+	});
 }
 export function hubFile(value: string) {
 	if (!/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,199}$/.test(value) || value.includes('..'))

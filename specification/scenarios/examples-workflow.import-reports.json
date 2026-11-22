@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.import-reports",
+	"title": "workflow.import-reports examples",
+	"kind": "headless",
+	"units": ["workflow.import-reports"],
+	"builds": [],
+	"states": [
+		{
+			"id": "rejects-when-the-legacy-report-store-does-not-exist",
+			"title": "Rejects when the legacy report store does not exist",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-when-no-legacy-report-store-is-given",
+			"title": "Rejects when no legacy report store is given",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-outside-a-git-repository",
+			"title": "Rejects outside a Git repository",
+			"coverage": "required"
+		},
+		{
+			"id": "renders-imported-and-skipped-runs-of-a-repository",
+			"title": "Renders imported and skipped runs of a repository",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.import-reports.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"rejects-when-the-legacy-report-store-does-not-exist",
+				"rejects-when-no-legacy-report-store-is-given",
+				"rejects-outside-a-git-repository",
+				"renders-imported-and-skipped-runs-of-a-repository"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"rejects-when-the-legacy-report-store-does-not-exist",
+				"rejects-when-no-legacy-report-store-is-given",
+				"rejects-outside-a-git-repository",
+				"renders-imported-and-skipped-runs-of-a-repository"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"rejects-when-the-legacy-report-store-does-not-exist",
+				"rejects-when-no-legacy-report-store-is-given",
+				"rejects-outside-a-git-repository",
+				"renders-imported-and-skipped-runs-of-a-repository"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

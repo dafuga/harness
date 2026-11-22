@@ -1,0 +1,136 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.endpoint.verification-evidence-api-video-flag-frame",
+	"uid": "u_tdqgsngwsz",
+	"kind": "endpoint",
+	"title": "/(verification-evidence)/api/video-flag-frame",
+	"responsibility": "Serve the exact retained reviewer PNG for a validated owner and flag ID, with the existing bounded range-response behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/routes/(verification-evidence)/api/video-flag-frame/+server.ts"
+		],
+		"symbols": ["GET"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "GET.url",
+				"type": "URL",
+				"required": true,
+				"description": "Request URL containing the owner/flag query parameters documented by this endpoint."
+			},
+			{
+				"name": "GET.request",
+				"type": "Request",
+				"required": true,
+				"description": "Request whose optional Range header is applied to the exact retained PNG."
+			}
+		],
+		"outputs": [
+			{
+				"name": "GET",
+				"type": "Promise<Response>",
+				"description": "Exact hash-verified retained PNG bytes using the existing media range response, or a JSON error."
+			}
+		],
+		"errors": [
+			{
+				"name": "HTTP 400",
+				"type": "HTTP response",
+				"description": "Invalid owner, current-slot parameters, input JSON or attached evidence/integrity produces a JSON error response."
+			},
+			{
+				"name": "HTTP 404",
+				"type": "HTTP response",
+				"description": "No retained flag belongs to this owner and flag ID."
+			},
+			{
+				"name": "HTTP 416",
+				"type": "HTTP response",
+				"description": "The existing media response rejects an unsatisfiable byte range."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "GET",
+				"inputs": [
+					{
+						"name": "GET.url",
+						"type": "URL",
+						"required": true,
+						"description": "Request URL containing the owner/flag query parameters documented by this endpoint."
+					},
+					{
+						"name": "GET.request",
+						"type": "Request",
+						"required": true,
+						"description": "Request whose optional Range header is applied to the exact retained PNG."
+					}
+				],
+				"outputs": [
+					{
+						"name": "GET",
+						"type": "Promise<Response>",
+						"description": "Exact hash-verified retained PNG bytes using the existing media range response, or a JSON error."
+					}
+				],
+				"errors": [
+					{
+						"name": "HTTP 400",
+						"type": "HTTP response",
+						"description": "Invalid owner, current-slot parameters, input JSON or attached evidence/integrity produces a JSON error response."
+					},
+					{
+						"name": "HTTP 404",
+						"type": "HTTP response",
+						"description": "No retained flag belongs to this owner and flag ID."
+					},
+					{
+						"name": "HTTP 416",
+						"type": "HTTP response",
+						"description": "The existing media response rejects an unsatisfiable byte range."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.media-response",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.report-site",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-frame-flag",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/routes/(verification-evidence)/api/video-flag-frame/+server.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/routes/(verification-evidence)/api/video-flag-frame/+server.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -31,7 +31,7 @@
 				"name": "mediaResponse.range",
 				"type": "string | null",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "When omitted (default undefined), null, or empty, the helper returns the full buffer; otherwise this is one bytes=...-... range. It accepts closed, open-ended, or positive suffix ranges and returns 416 for malformed, unsafe-integer, or unsatisfiable ranges; multiple ranges are unsupported.",
 				"examples": [null, "bytes=0-1023", "bytes=-512"]
 			},
@@ -47,7 +47,7 @@
 		"outputs": [
 			{
 				"name": "mediaResponse",
-				"type": "unknown",
+				"type": "Response",
 				"description": "Returns a Fetch Response with Content-Type, X-Content-Type-Options: nosniff, Cache-Control: no-store, Content-Disposition, and Accept-Ranges: bytes headers. A falsy range yields status 200 with all bytes and Content-Length; a valid single range yields status 206 with the selected bytes, Content-Range, and selected-byte Content-Length, while a malformed or unsatisfiable nonempty range yields status 416, a null body, and Content-Range: bytes */<total-size>."
 			}
 		],
@@ -80,7 +80,7 @@
 						"name": "mediaResponse.range",
 						"type": "string | null",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "When omitted (default undefined), null, or empty, the helper returns the full buffer; otherwise this is one bytes=...-... range. It accepts closed, open-ended, or positive suffix ranges and returns 416 for malformed, unsafe-integer, or unsatisfiable ranges; multiple ranges are unsupported.",
 						"examples": [null, "bytes=0-1023", "bytes=-512"]
 					},
@@ -96,7 +96,7 @@
 				"outputs": [
 					{
 						"name": "mediaResponse",
-						"type": "unknown",
+						"type": "Response",
 						"description": "Returns a Fetch Response with Content-Type, X-Content-Type-Options: nosniff, Cache-Control: no-store, Content-Disposition, and Accept-Ranges: bytes headers. A falsy range yields status 200 with all bytes and Content-Length; a valid single range yields status 206 with the selected bytes, Content-Range, and selected-byte Content-Length, while a malformed or unsatisfiable nonempty range yields status 416, a null body, and Content-Range: bytes */<total-size>."
 					}
 				],

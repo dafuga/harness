@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-guide.benchmark",
+	"title": "guide.benchmark examples",
+	"kind": "headless",
+	"units": ["guide.benchmark"],
+	"builds": [],
+	"states": [
+		{
+			"id": "documents-pinned-defaults-and-explicit-provider-choice",
+			"title": "Documents pinned defaults and explicit provider choice",
+			"coverage": "required"
+		},
+		{
+			"id": "lists-the-four-benchmark-commands-in-documented-order",
+			"title": "Lists the four benchmark commands in documented order",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/guide.benchmark.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"documents-pinned-defaults-and-explicit-provider-choice",
+				"lists-the-four-benchmark-commands-in-documented-order"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"documents-pinned-defaults-and-explicit-provider-choice",
+				"lists-the-four-benchmark-commands-in-documented-order"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"documents-pinned-defaults-and-explicit-provider-choice",
+				"lists-the-four-benchmark-commands-in-documented-order"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

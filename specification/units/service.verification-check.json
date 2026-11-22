@@ -4,13 +4,15 @@
 	"uid": "u_a7rs3z4f6t",
 	"kind": "service",
 	"title": "VerificationCheckService",
-	"responsibility": "Decides whether a stored record proves a commit: identity, integrity and outcome.",
+	"responsibility": "Checks record identity, source integrity, lineage and current video reviewer obligations.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"src/services/verification-evidence/VerificationCheckService.ts",
-			"src/services/verification-evidence/VerificationCheckService.types.ts"
+			"src/services/verification-evidence/VerificationCheckService.types.ts",
+			"src/services/verification-evidence/verification-check-service/videoFlagProof.ts",
+			"src/services/verification-evidence/verification-check-service/videoReferenceIntegrity.ts"
 		],
 		"symbols": [
 			"VerificationCheckService",
@@ -18,7 +20,9 @@
 			"VerificationCheckService.check",
 			"VerificationCheckService.integrity",
 			"CheckReport",
-			"CheckReport"
+			"CheckReport",
+			"videoFlagProofFailures",
+			"videoReferenceIntegrity"
 		]
 	},
 	"contract": {
@@ -29,14 +33,13 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root used to resolve commit and verification-store data for the service. It matters to every check because Git history, stored record lookup, and evidence paths are read relative to it.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "VerificationCheckService.constructor.indexer",
 				"type": "SourceIndexService",
 				"required": false,
+				"default": "new SourceIndexService()",
 				"description": "SourceIndexService passed to loadSide while rebuilding the committed source. Defaults to new SourceIndexService(): an instance may be shared and reuses parsing only for files with identical content, while each commit is still indexed and compared in full."
 			},
 			{
@@ -56,7 +59,7 @@
 						"record": {
 							"id": "66121b631169356fc8c32135156ebc982dfb28d5b9c75285ce69a231576d62e5",
 							"schemaVersion": 1,
-							"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+							"repository": "/workspace/project",
 							"source": {
 								"commit": "0123456789abcdef0123456789abcdef01234567",
 								"tree": "89abcdef0123456789abcdef0123456789abcdef",
@@ -100,7 +103,7 @@
 							},
 							"failures": []
 						},
-						"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
+						"directory": "/workspace/project/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
 					}
 				]
 			},
@@ -121,7 +124,7 @@
 						"record": {
 							"id": "66121b631169356fc8c32135156ebc982dfb28d5b9c75285ce69a231576d62e5",
 							"schemaVersion": 1,
-							"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+							"repository": "/workspace/project",
 							"source": {
 								"commit": "0123456789abcdef0123456789abcdef01234567",
 								"tree": "89abcdef0123456789abcdef0123456789abcdef",
@@ -165,9 +168,31 @@
 							},
 							"failures": []
 						},
-						"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
+						"directory": "/workspace/project/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
 					}
 				]
+			},
+			{
+				"name": "videoFlagProofFailures.root",
+				"type": "string",
+				"required": true,
+				"description": "Original repository with durable Git evidence; clean source exports must not be used as evidence roots."
+			},
+			{
+				"name": "videoFlagProofFailures.record",
+				"type": "VerificationRecord",
+				"required": true,
+				"description": "Sealed verification record whose present clip slots are checked against current reviewer standing."
+			},
+			{
+				"name": "videoReferenceIntegrity.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "videoReferenceIntegrity.record",
+				"type": "VerificationRecord",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -225,7 +250,7 @@
 								"record": {
 									"id": "66121b631169356fc8c32135156ebc982dfb28d5b9c75285ce69a231576d62e5",
 									"schemaVersion": 1,
-									"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+									"repository": "/workspace/project",
 									"source": {
 										"commit": "0123456789abcdef0123456789abcdef01234567",
 										"tree": "89abcdef0123456789abcdef0123456789abcdef",
@@ -269,7 +294,7 @@
 									},
 									"failures": []
 								},
-								"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
+								"directory": "/workspace/project/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
 							}
 						]
 					}
@@ -318,7 +343,7 @@
 								"record": {
 									"id": "66121b631169356fc8c32135156ebc982dfb28d5b9c75285ce69a231576d62e5",
 									"schemaVersion": 1,
-									"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+									"repository": "/workspace/project",
 									"source": {
 										"commit": "0123456789abcdef0123456789abcdef01234567",
 										"tree": "89abcdef0123456789abcdef0123456789abcdef",
@@ -362,7 +387,7 @@
 									},
 									"failures": []
 								},
-								"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
+								"directory": "/workspace/project/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
 							}
 						]
 					}
@@ -388,6 +413,61 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "videoFlagProofFailures",
+				"inputs": [
+					{
+						"name": "videoFlagProofFailures.root",
+						"type": "string",
+						"required": true,
+						"description": "Original repository with durable Git evidence; clean source exports must not be used as evidence roots."
+					},
+					{
+						"name": "videoFlagProofFailures.record",
+						"type": "VerificationRecord",
+						"required": true,
+						"description": "Sealed verification record whose present clip slots are checked against current reviewer standing."
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoFlagProofFailures",
+						"type": "Promise<string[]>",
+						"description": "Current proof failures for video slots actually present in the record; records without video cause no reviewer-evidence reads."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "videoReferenceIntegrity",
+				"inputs": [
+					{
+						"name": "videoReferenceIntegrity.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "videoReferenceIntegrity.record",
+						"type": "VerificationRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoReferenceIntegrity",
+						"type": "Promise<string[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -399,21 +479,20 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root used to resolve commit and verification-store data for the service. It matters to every check because Git history, stored record lookup, and evidence paths are read relative to it.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "VerificationCheckService.constructor.indexer",
 						"type": "SourceIndexService",
 						"required": false,
+						"default": "new SourceIndexService()",
 						"description": "SourceIndexService passed to loadSide while rebuilding the committed source. Defaults to new SourceIndexService(): an instance may be shared and reuses parsing only for files with identical content, while each commit is still indexed and compared in full."
 					}
 				],
 				"outputs": [
 					{
 						"name": "VerificationCheckService.constructor",
-						"type": "unknown",
+						"type": "VerificationCheckService",
 						"description": "Constructed service instance holding the repository root and indexer for later check and integrity calls. If no indexer is provided, the constructor creates a new SourceIndexService."
 					}
 				],
@@ -464,7 +543,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.evidence-attach",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.source-index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-frame-flag",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-reference",
 			"via": "import",
 			"origin": "derived"
 		},

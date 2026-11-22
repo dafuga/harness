@@ -9,12 +9,14 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/development-tooling/native-picker-bridge-service/NativePickerSwitchService.ts"
+			"src/services/development-tooling/native-picker-bridge-service/NativePickerSwitchService.ts",
+			"src/services/development-tooling/native-picker-bridge-service/NativePickerSwitchService.types.ts"
 		],
 		"symbols": [
 			"NativePickerSwitchService",
 			"NativePickerSwitchService.constructor",
-			"NativePickerSwitchService.apply"
+			"NativePickerSwitchService.apply",
+			"NativePickerSwitchError"
 		]
 	},
 	"contract": {
@@ -162,7 +164,7 @@
 				"outputs": [
 					{
 						"name": "NativePickerSwitchService.constructor",
-						"type": "unknown",
+						"type": "NativePickerSwitchService",
 						"description": "Creates a NativePickerSwitchService instance that retains the supplied RPC callback and options. When options are omitted, the instance uses {}."
 					}
 				],

@@ -16,9 +16,7 @@ beforeAll(async () => {
 	});
 }, 120_000);
 afterAll(() => baseline?.dispose());
-
 const entityFlags = ['--priority', 'agent-test', '--entity'];
-
 async function entityRun(
 	repo: VerifyRepo,
 	env: Record<string, string> = {},
@@ -27,7 +25,6 @@ async function entityRun(
 	const result = await repo.run(['verify', 'run', ...entityFlags, entity, '--json'], env);
 	return { ...result, ...JSON.parse(result.stdout) };
 }
-
 test(
 	'entity verification attaches every state and viewport with its record link',
 	async () =>
@@ -72,7 +69,6 @@ test(
 		}),
 	120_000
 );
-
 test('repeating entity verification keeps one attached record for identical proof', async () => {
 	const repo = await cloneRepo(baseline);
 	try {
@@ -87,7 +83,6 @@ test('repeating entity verification keeps one attached record for identical proo
 		await repo.dispose();
 	}
 }, 120_000);
-
 test("a headless entity's complete evidence is attached with its record", async () => {
 	const repo = await cloneRepo(baseline);
 	try {
@@ -106,7 +101,6 @@ test("a headless entity's complete evidence is attached with its record", async 
 		await repo.dispose();
 	}
 }, 120_000);
-
 test.each([
 	[{ FIXTURE_FAIL: '1' }, 'test page failed'],
 	[{ FIXTURE_SKIP: 'filled-mobile' }, 'missing screenshot for state filled at viewport mobile'],

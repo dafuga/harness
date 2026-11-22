@@ -44,8 +44,11 @@ export const explorerCatalogVariants: Record<string, string[]> = {
 		'card-focused',
 		'card-hovered',
 		'filter-active-open',
-		'status-options-open'
+		'status-options-open',
+		'hovered',
+		'picker-open'
 	],
+	'reports.page.harness-branch-branch-at-platforms': ['ready'],
 	'reports.component.explorer-ui-explorer-platform-details': [
 		'ios',
 		'android',
@@ -125,3 +128,11 @@ export const explorerCatalogVariants: Record<string, string[]> = {
 		'source-disabled'
 	]
 };
+
+/** Pilot stills retain their declared names while exercising the same real controls. */
+export function explorerPreviewInteraction(id: string, variant: string): string {
+	if (id !== 'reports.component.explorer-ui-explorer-platforms') return variant;
+	if (variant === 'hovered') return 'card-hovered';
+	if (variant === 'picker-open') return 'status-options-open';
+	return variant;
+}

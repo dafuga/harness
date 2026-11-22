@@ -1,5 +1,7 @@
 // @harness-uid u_4fbefo5t7a
 import type { Listener, Guard, Reads, Denied } from './browserBridge.types';
+import { HostedAgentUnavailableError } from './HostedAgentUnavailableError';
+import { ProjectIdRequiredError } from './ProjectIdRequiredError';
 import { AgentHttpAdapter } from '../../agents-providers/AgentHttpAdapter';
 import { browserEvidenceReads } from './browserEvidenceReads';
 import type { CommittedThread, ProjectSummary } from 'collaboration';
@@ -20,10 +22,10 @@ import type { BrowserApi } from '../../../models/development-tooling/BrowserApi.
 
 const refused = 'The hosted workspace shows projects and comments. It runs no agent.';
 
-const refuse = () => Promise.reject(new Error(refused));
+const refuse = () => Promise.reject(new HostedAgentUnavailableError(refused));
 
 function base(input: ProjectContext): string {
-	if (!input.projectId) throw new Error('Name the project this is asked for.');
+	if (!input.projectId) throw new ProjectIdRequiredError('Name the project this is asked for.');
 	return `/api/projects/${encodeURIComponent(input.projectId)}`;
 }
 

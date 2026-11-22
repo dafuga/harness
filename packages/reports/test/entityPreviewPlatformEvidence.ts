@@ -39,7 +39,7 @@ export async function capturePlatformEvidence(
 	pixels: Buffer
 ): Promise<void> {
 	const match =
-		/^platforms-(entry|list|web|ios|android|desktop|missing|status-filter)-(desktop|tablet|mobile)$/.exec(
+		/^platforms-(entry|list|web|ios|android|desktop|missing|status-filter|history|invalid-catalog|unknown|recovered|search-no-results|filter-no-results)-(desktop|tablet|mobile)$/.exec(
 			name
 		);
 	if (!match || !evidenceRequested()) return;
@@ -48,7 +48,17 @@ export async function capturePlatformEvidence(
 	if (!served) throw new Error('The platform preview build is missing.');
 	let units = detailUnits;
 	if (state === 'entry') units = ['reports.component.harness-harness-navbar'];
-	else if (['list', 'status-filter'].includes(state)) units = listUnits;
+	else if (
+		[
+			'list',
+			'status-filter',
+			'invalid-catalog',
+			'recovered',
+			'search-no-results',
+			'filter-no-results'
+		].includes(state)
+	)
+		units = listUnits;
 	recordCapture(
 		{
 			evidence: state === 'status-filter' ? 'platform-filter-screen' : 'platform-screens',

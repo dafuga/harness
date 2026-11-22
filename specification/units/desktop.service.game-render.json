@@ -8,8 +8,22 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/lib/development-tooling/desktop-bridge/GameRenderService.ts"],
-		"symbols": ["GameRenderService", "GameRenderService.constructor", "GameRenderService.start"]
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/CredentialSafeProviderTransportUnavailableError.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/DecartTokenRequestError.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/GameRenderBusyError.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/GameRenderService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/InvalidDecartTokenResponseError.ts"
+		],
+		"symbols": [
+			"CredentialSafeProviderTransportUnavailableError",
+			"DecartTokenRequestError",
+			"GameRenderBusyError",
+			"GameRenderService",
+			"GameRenderService.constructor",
+			"GameRenderService.start",
+			"InvalidDecartTokenResponseError"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -62,7 +76,7 @@
 		"outputs": [
 			{
 				"name": "GameRenderService.start",
-				"type": "unknown",
+				"type": "ReturnType<DecartAdapter['start']>",
 				"description": "The RenderSession that start() resolves with, as built by DecartAdapter.start: model, fast and seconds echo the request, and rate is 0.01 for 'lucy-restyle-2', 0.02 for 'lucy-2.5' and 0.04 for fast 'lucy-2.5'. apiKey and expiresAt are the strings from the token response (checked only to be strings, not parsed), apiKey is that client token rather than the stored HARNESS_GAME_DECART_API_KEY credential, and the promise settles only after the token request completes.",
 				"examples": [
 					{
@@ -134,7 +148,7 @@
 				"outputs": [
 					{
 						"name": "GameRenderService.start",
-						"type": "unknown",
+						"type": "ReturnType<DecartAdapter['start']>",
 						"description": "The RenderSession that start() resolves with, as built by DecartAdapter.start: model, fast and seconds echo the request, and rate is 0.01 for 'lucy-restyle-2', 0.02 for 'lucy-2.5' and 0.04 for fast 'lucy-2.5'. apiKey and expiresAt are the strings from the token response (checked only to be strings, not parsed), apiKey is that client token rather than the stored HARNESS_GAME_DECART_API_KEY credential, and the promise settles only after the token request completes.",
 						"examples": [
 							{
@@ -200,7 +214,7 @@
 				"outputs": [
 					{
 						"name": "GameRenderService.constructor",
-						"type": "unknown",
+						"type": "GameRenderService",
 						"description": "The new GameRenderService instance, which keeps session, transportReady and send as private fields and has an empty constructor body. Adapters are cached in a module-level map that every instance shares."
 					}
 				],

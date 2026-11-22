@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.host-resource-limits",
+	"title": "function.host-resource-limits examples",
+	"kind": "headless",
+	"units": ["function.host-resource-limits"],
+	"builds": [],
+	"states": [
+		{
+			"id": "returns-an-empty-limits-object-on-non-linux-systems",
+			"title": "Returns an empty limits object on non-Linux systems",
+			"coverage": "required"
+		},
+		{
+			"id": "reads-the-tightest-cgroup-v2-quota-from-ancestors",
+			"title": "Reads the tightest cgroup v2 quota from ancestors",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-membership-path-that-climbs-out-of-the-root",
+			"title": "Rejects a membership path that climbs out of the root",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.host-resource-limits.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"returns-an-empty-limits-object-on-non-linux-systems",
+				"reads-the-tightest-cgroup-v2-quota-from-ancestors",
+				"rejects-a-membership-path-that-climbs-out-of-the-root"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"returns-an-empty-limits-object-on-non-linux-systems",
+				"reads-the-tightest-cgroup-v2-quota-from-ancestors",
+				"rejects-a-membership-path-that-climbs-out-of-the-root"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"returns-an-empty-limits-object-on-non-linux-systems",
+				"reads-the-tightest-cgroup-v2-quota-from-ancestors",
+				"rejects-a-membership-path-that-climbs-out-of-the-root"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

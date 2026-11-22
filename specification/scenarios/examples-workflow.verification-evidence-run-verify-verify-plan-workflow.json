@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-workflow.verification-evidence-run-verify-verify-plan-workflow",
+	"title": "workflow.verification-evidence-run-verify-verify-plan-workflow examples",
+	"kind": "headless",
+	"units": ["workflow.verification-evidence-run-verify-verify-plan-workflow"],
+	"builds": [],
+	"states": [
+		{
+			"id": "root-commit-plans-test-files-report-only-from-an-empty-base",
+			"title": "Root commit plans test files report-only from an empty base",
+			"coverage": "required"
+		},
+		{
+			"id": "unproven-first-parent-is-requested-but-not-used-as-the-base",
+			"title": "Unproven first parent is requested but not used as the base",
+			"coverage": "required"
+		},
+		{
+			"id": "entity-scope-plans-its-covering-scenario-without-any-base",
+			"title": "Entity scope plans its covering scenario without any base",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-a-root-runtime-commit-or-entity-it-cannot-plan",
+			"title": "Refuses a root, runtime, commit or entity it cannot plan",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-a-verification-config-that-is-invalid-or-malformed",
+			"title": "Rejects a verification config that is invalid or malformed",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/workflow.verification-evidence-run-verify-verify-plan-workflow.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"root-commit-plans-test-files-report-only-from-an-empty-base",
+				"unproven-first-parent-is-requested-but-not-used-as-the-base",
+				"entity-scope-plans-its-covering-scenario-without-any-base",
+				"refuses-a-root-runtime-commit-or-entity-it-cannot-plan",
+				"rejects-a-verification-config-that-is-invalid-or-malformed"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"root-commit-plans-test-files-report-only-from-an-empty-base",
+				"unproven-first-parent-is-requested-but-not-used-as-the-base",
+				"entity-scope-plans-its-covering-scenario-without-any-base",
+				"refuses-a-root-runtime-commit-or-entity-it-cannot-plan",
+				"rejects-a-verification-config-that-is-invalid-or-malformed"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"root-commit-plans-test-files-report-only-from-an-empty-base",
+				"unproven-first-parent-is-requested-but-not-used-as-the-base",
+				"entity-scope-plans-its-covering-scenario-without-any-base",
+				"refuses-a-root-runtime-commit-or-entity-it-cannot-plan",
+				"rejects-a-verification-config-that-is-invalid-or-malformed"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

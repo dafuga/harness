@@ -1,6 +1,7 @@
 import type { CatalogCheckContext } from './catalogChecks.types';
 import { expect } from '../../../../../../test/support/browserTest';
 import * as caseAssertions from './catalogCaseAssertions';
+import { assertVideoCatalogState } from './videoCatalogChecks';
 
 export async function assertCatalogControls({
 	component,
@@ -22,6 +23,7 @@ export async function assertCatalogControls({
 	}
 	await caseAssertions.assertCatalogLayout(component, unit, viewport);
 	await caseAssertions.assertCatalogDetails(component, unit.id, variant);
+	await assertVideoCatalogState({ component, unit, variant });
 	if (
 		['remote-connection', 'remote-host-panel', 'remote-offer-code'].some(
 			(name) => unit.id === `desktop.component.${name}`

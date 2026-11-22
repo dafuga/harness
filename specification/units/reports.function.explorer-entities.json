@@ -211,7 +211,7 @@
 				"name": "explorerEntities.parent",
 				"type": "HarnessRevision | null",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The optional first-parent revision used to recover the last active form of units removed by head. If omitted or null, no removal entries are added.",
 				"examples": [null]
 			}
@@ -471,7 +471,7 @@
 						"name": "explorerEntities.parent",
 						"type": "HarnessRevision | null",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The optional first-parent revision used to recover the last active form of units removed by head. If omitted or null, no removal entries are added.",
 						"examples": [null]
 					}

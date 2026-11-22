@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-command.development-tooling-contracts-command-search-contracts",
+	"title": "command.development-tooling-contracts-command-search-contracts examples",
+	"kind": "headless",
+	"units": ["command.development-tooling-contracts-command-search-contracts"],
+	"builds": [],
+	"states": [
+		{
+			"id": "ranks-identity-matches-before-descriptive-matches",
+			"title": "Ranks identity matches before descriptive matches",
+			"coverage": "required"
+		},
+		{
+			"id": "returns-a-bounded-snippet-with-ellipses-around-the-match",
+			"title": "Returns a bounded snippet with ellipses around the match",
+			"coverage": "required"
+		},
+		{
+			"id": "matches-regular-expressions-ignoring-case",
+			"title": "Matches regular expressions ignoring case",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-an-empty-search-query",
+			"title": "Rejects an empty search query",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-an-uncompilable-regular-expression",
+			"title": "Rejects an uncompilable regular expression",
+			"coverage": "required"
+		},
+		{
+			"id": "caps-results-at-the-requested-limit",
+			"title": "Caps results at the requested limit",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/command.development-tooling-contracts-command-search-contracts.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"ranks-identity-matches-before-descriptive-matches",
+				"returns-a-bounded-snippet-with-ellipses-around-the-match",
+				"matches-regular-expressions-ignoring-case",
+				"rejects-an-empty-search-query",
+				"rejects-an-uncompilable-regular-expression",
+				"caps-results-at-the-requested-limit"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"ranks-identity-matches-before-descriptive-matches",
+				"returns-a-bounded-snippet-with-ellipses-around-the-match",
+				"matches-regular-expressions-ignoring-case",
+				"rejects-an-empty-search-query",
+				"rejects-an-uncompilable-regular-expression",
+				"caps-results-at-the-requested-limit"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"ranks-identity-matches-before-descriptive-matches",
+				"returns-a-bounded-snippet-with-ellipses-around-the-match",
+				"matches-regular-expressions-ignoring-case",
+				"rejects-an-empty-search-query",
+				"rejects-an-uncompilable-regular-expression",
+				"caps-results-at-the-requested-limit"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

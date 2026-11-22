@@ -1,4 +1,7 @@
 // @harness-uid u_ytwarm6wyy
+import { HostedSessionEncryptionRequiredError } from './HostedSessionEncryptionRequiredError';
+import { InvalidStoredHostedSessionError } from './InvalidStoredHostedSessionError';
+import { StoredHostedSessionUnavailableError } from './StoredHostedSessionUnavailableError';
 import type { NativeEncryption } from './NativeSessionAdapter.types';
 import { mkdir, readFile, rename, unlink, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
@@ -34,16 +37,21 @@ export class NativeSessionAdapter {
 				typeof stored.principalId !== 'string' ||
 				typeof stored.token !== 'string'
 			)
-				throw new Error('Invalid session');
+				throw new InvalidStoredHostedSessionError('Invalid session');
 			return stored as NativeHostedCredential;
 		} catch (error) {
 			if ((error as NodeJS.ErrnoException).code === 'ENOENT') return null;
-			throw new Error('Stored hosted session is unavailable. Sign in again.');
+			throw new StoredHostedSessionUnavailableError(
+				'Stored hosted session is unavailable. Sign in again.'
+			);
 		}
 	}
 	async save(credential: NativeHostedCredential): Promise<void> {
 		this.generation++;
-		if (!this.available()) throw new Error('OS encryption is required for hosted sessions.');
+		if (!this.available())
+			throw new HostedSessionEncryptionRequiredError(
+				'OS encryption is required for hosted sessions.'
+			);
 		const bytes = this.encryption.encryptString(JSON.stringify(credential));
 		await mkdir(dirname(this.file), { recursive: true, mode: 0o700 });
 		const temporary = `${this.file}.${randomUUID()}.tmp`;

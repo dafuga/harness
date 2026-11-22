@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.function.auth-fail",
+	"title": "hub.function.auth-fail examples",
+	"kind": "headless",
+	"units": ["hub.function.auth-fail"],
+	"builds": [],
+	"states": [
+		{
+			"id": "authentication-failures-map-codes-to-statuses",
+			"title": "Authentication failures map codes to statuses",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.function.auth-fail.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["authentication-failures-map-codes-to-statuses"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["authentication-failures-map-codes-to-statuses"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["authentication-failures-map-codes-to-statuses"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

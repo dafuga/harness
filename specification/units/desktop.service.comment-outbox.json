@@ -17,7 +17,8 @@
 			"CommentOutboxService.constructor",
 			"CommentOutboxService.save",
 			"CommentOutboxService.list",
-			"PendingComment"
+			"PendingComment",
+			"CommentSaveError"
 		]
 	},
 	"contract": {
@@ -27,12 +28,9 @@
 				"name": "CommentOutboxService.constructor.file",
 				"type": "string",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Path of the JSON file that stores unsent drafts; when omitted or empty, drafts are kept only in memory and are lost when the instance is discarded. A set path is written through a temporary file that is renamed over the drafts file, its missing parent directory is created with mode 0700, and the file is created with mode 0600.",
-				"examples": [
-					"/Users/example/Library/Application Support/Harness/comment-outbox.json",
-					"/Users/example/Library/Application Support/Harness/outbox/drafts.json"
-				]
+				"examples": ["/workspace/state/comment-outbox.json", "/workspace/state/outbox/drafts.json"]
 			},
 			{
 				"name": "CommentOutboxService.save.input",
@@ -507,18 +505,18 @@
 						"name": "CommentOutboxService.constructor.file",
 						"type": "string",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Path of the JSON file that stores unsent drafts; when omitted or empty, drafts are kept only in memory and are lost when the instance is discarded. A set path is written through a temporary file that is renamed over the drafts file, its missing parent directory is created with mode 0700, and the file is created with mode 0600.",
 						"examples": [
-							"/Users/example/Library/Application Support/Harness/comment-outbox.json",
-							"/Users/example/Library/Application Support/Harness/outbox/drafts.json"
+							"/workspace/state/comment-outbox.json",
+							"/workspace/state/outbox/drafts.json"
 						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CommentOutboxService.constructor",
-						"type": "unknown",
+						"type": "CommentOutboxService",
 						"description": "The new CommentOutboxService instance, which stores drafts in the given file or in memory when file is omitted or empty."
 					}
 				],

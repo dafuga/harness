@@ -22,32 +22,50 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ModuleTaskWorktreeAdapter.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Owner repository checkout root used to compare its Git common directory with the task worktree; construction stores this path without checking it, and checkpoint performs the check.",
+				"examples": ["/workspace/repository"]
 			},
 			{
 				"name": "ModuleTaskWorktreeAdapter.checkpoint.input",
 				"type": "TaskCheckpointInput",
-				"required": true
+				"required": true,
+				"description": "Task worktree context for a checkpoint: cwd selects the Git worktree, source is the commit that must still be at HEAD, and paths are the literal Git pathspecs to preserve. The worktree must share the configured root's Git common directory; an empty paths array returns source unchanged.",
+				"examples": [
+					{
+						"cwd": "/workspace/task-worktree",
+						"source": "7d9e0f1a2b3c4d5e6f708192a3b4c5d6e7f8a9b0",
+						"paths": ["src/feature.ts", "README.md"]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleTaskWorktreeAdapter.checkpoint",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Resolves to the source commit when paths is empty, otherwise to a new commit whose tree adds only the requested paths using a temporary index; the task worktree HEAD and user index remain unchanged.",
+				"examples": ["1a2b3c4d5e6f708192a3b4c5d6e7f8a9b0c1d2e3"]
 			}
 		],
 		"errors": [
 			{
 				"name": "TaskWorktreeChangedError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when the task worktree has a different Git common directory from the configured root, or its HEAD no longer equals input.source."
+			},
+			{
+				"name": "Input or dependency failure",
+				"type": "propagated",
+				"description": "Any other thrown value or rejected promise propagates without conversion, including failures while reading or processing input, running Git commands, managing temporary-index files or resolving commit identity."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ModuleTaskWorktreeAdapter.checkpoint",
@@ -55,22 +73,38 @@
 					{
 						"name": "ModuleTaskWorktreeAdapter.checkpoint.input",
 						"type": "TaskCheckpointInput",
-						"required": true
+						"required": true,
+						"description": "Task worktree context for a checkpoint: cwd selects the Git worktree, source is the commit that must still be at HEAD, and paths are the literal Git pathspecs to preserve. The worktree must share the configured root's Git common directory; an empty paths array returns source unchanged.",
+						"examples": [
+							{
+								"cwd": "/workspace/task-worktree",
+								"source": "7d9e0f1a2b3c4d5e6f708192a3b4c5d6e7f8a9b0",
+								"paths": ["src/feature.ts", "README.md"]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskWorktreeAdapter.checkpoint",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Resolves to the source commit when paths is empty, otherwise to a new commit whose tree adds only the requested paths using a temporary index; the task worktree HEAD and user index remain unchanged.",
+						"examples": ["1a2b3c4d5e6f708192a3b4c5d6e7f8a9b0c1d2e3"]
 					}
 				],
 				"errors": [
 					{
 						"name": "TaskWorktreeChangedError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the task worktree has a different Git common directory from the configured root, or its HEAD no longer equals input.source."
+					},
+					{
+						"name": "Input or dependency failure",
+						"type": "propagated",
+						"description": "Any other thrown value or rejected promise propagates without conversion, including failures while reading or processing input, running Git commands, managing temporary-index files or resolving commit identity."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -80,17 +114,20 @@
 					{
 						"name": "ModuleTaskWorktreeAdapter.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Owner repository checkout root used to compare its Git common directory with the task worktree; construction stores this path without checking it, and checkpoint performs the check.",
+						"examples": ["/workspace/repository"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskWorktreeAdapter.constructor",
-						"type": "unknown"
+						"type": "ModuleTaskWorktreeAdapter",
+						"description": "New adapter retaining root as its private repository root; construction performs no Git access, so root is checked only when checkpoint is called."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},

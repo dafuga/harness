@@ -186,7 +186,7 @@ sessions. Carry forward the verified host value.
 Launch requests use a configured repository, and an item repository
 override must match it exactly. Configure the lanes qualified on each host.
 Linux uses plain Docker through the pinned Harness
-`task orchestrate --platform linux` entry point and its managed provider
+`harness task orchestrate --platform linux` entry point and its managed provider
 adapter. Mac-only projects use interactive native Codex or Claude in the
 retained tmux socket on a registered Mac. The launcher creates a detached
 task worktree and records the attempt key before opening the worker pane.

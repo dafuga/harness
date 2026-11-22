@@ -24,7 +24,7 @@
 		"outputs": [
 			{
 				"name": "createDeploymentsStore",
-				"type": "unknown",
+				"type": "DeploymentsState",
 				"description": "A DeploymentsState instance bound to the supplied workspace, exposing environment selection, status refresh, deployment review and execution, and related loading and error state. The factory returns this class instance."
 			}
 		],
@@ -44,7 +44,7 @@
 				"outputs": [
 					{
 						"name": "createDeploymentsStore",
-						"type": "unknown",
+						"type": "DeploymentsState",
 						"description": "A DeploymentsState instance bound to the supplied workspace, exposing environment selection, status refresh, deployment review and execution, and related loading and error state. The factory returns this class instance."
 					}
 				],

@@ -1,0 +1,54 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.portable-json",
+	"title": "function.portable-json examples",
+	"kind": "headless",
+	"units": ["function.portable-json"],
+	"builds": [],
+	"states": [
+		{
+			"id": "accepts-supported-portable-json-values",
+			"title": "Accepts supported portable JSON values",
+			"coverage": "required"
+		},
+		{
+			"id": "enforces-the-json-nesting-limit",
+			"title": "Enforces the JSON nesting limit",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.portable-json.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["accepts-supported-portable-json-values", "enforces-the-json-nesting-limit"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["accepts-supported-portable-json-values", "enforces-the-json-nesting-limit"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["accepts-supported-portable-json-values", "enforces-the-json-nesting-limit"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

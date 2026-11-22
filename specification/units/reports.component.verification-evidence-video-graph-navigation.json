@@ -1,0 +1,129 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.verification-evidence-video-graph-navigation",
+	"uid": "u_d526lwxlsr",
+	"kind": "component",
+	"title": "VideoGraphNavigation",
+	"responsibility": "Select a declared video path and present attached graph coverage, missing proof and explicit discovery gaps.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.select",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h3",
+			"reports.component.shared-primitives-atoms-html-label",
+			"reports.component.shared-primitives-atoms-html-option",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/verification-evidence/VideoGraphNavigation.svelte",
+			"packages/reports/src/components/verification-evidence/VideoGraphNavigation.types.ts"
+		],
+		"symbols": ["VideoGraphNavigation", "VideoGraphNavigationProps"]
+	},
+	"contract": {
+		"origin": "declared",
+		"primitives": ["reports.component.select"],
+		"inputs": [
+			{
+				"name": "VideoGraphNavigation.library",
+				"type": "Pick<VideoManifest, 'graphs' | 'playlists'> & {\n\t\tdiscoveryGaps?: { unit: string; reason: string }[];\n\t}",
+				"required": true,
+				"description": "Declared graphs and playlists, with optional explicit discovery gaps. This declaration does not establish verified coverage."
+			},
+			{
+				"name": "VideoGraphNavigation.coverage",
+				"type": "VideoGraphCoverage[]",
+				"required": false,
+				"default": [],
+				"description": "Attached graph state, transition and clip ratios, missing requirements and completeness. An empty array displays that no verified coverage is attached."
+			},
+			{
+				"name": "VideoGraphNavigation.selected",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "Two-way bound playlist ID. Empty selects all clips; a selection removed from the library resets to empty."
+			}
+		],
+		"outputs": [
+			{
+				"name": "VideoGraphNavigation",
+				"type": "markup",
+				"description": "Video path selector, attached state/transition/clip ratios, missing proof and explicit discovery gaps. Declarations alone never claim verified completeness. Catalog input and outcome checks cover empty-library, library-none, library-one, library-many, graphs, playlists, without-coverage, with-coverage, coverage-none, coverage-one, coverage-many, without-selected, with-selected, empty-selected, empty, none, one, many."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.verification-evidence-video-clip-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-label",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-option",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-evidence",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/verification-evidence/VideoGraphNavigation.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/verification-evidence/VideoGraphNavigation.svelte"
+			}
+		]
+	},
+	"scenarios": ["component-catalog-previews"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -3,20 +3,24 @@ import { DecartAdapter } from '../../../../../game/src/adapters/agents-providers
 import type { RenderSessionRequest } from '../../../../../game/src/models/game-authoring/Game.types';
 import type { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';
 import { ProjectGameCredentialAdapter } from '../../../adapters/game-authoring/ProjectGameCredentialAdapter';
+import { CredentialSafeProviderTransportUnavailableError } from './CredentialSafeProviderTransportUnavailableError';
+import { DecartTokenRequestError } from './DecartTokenRequestError';
+import { GameRenderBusyError } from './GameRenderBusyError';
+import { InvalidDecartTokenResponseError } from './InvalidDecartTokenResponseError';
 const renderers = new Map<string, DecartAdapter>();
 
 export class GameRenderService {
 	constructor(
 		private session: ProjectSessionService,
-		private transportReady = () => false,
+		private transportReady: () => boolean = () => false,
 		private send: (url: string, options: RequestInit) => Promise<Response> = globalThis.fetch
 	) {}
 	async start(input: RenderSessionRequest) {
 		this.session.assertProject(input.projectId);
 		const { root } = await this.session.mutable();
-		if (this.session.busy) throw new Error('Wait for the current run.');
+		if (this.session.busy) throw new GameRenderBusyError('Wait for the current run.');
 		if (!this.transportReady())
-			throw new Error(
+			throw new CredentialSafeProviderTransportUnavailableError(
 				'Live AI is blocked until a credential-safe provider transport is available.'
 			);
 		let adapter = renderers.get(root);
@@ -43,10 +47,10 @@ function serverTokens(
 				headers: { 'X-API-KEY': key, 'Content-Type': 'application/json' },
 				body: JSON.stringify(options)
 			});
-			if (!response.ok) throw new Error('Token request failed.');
+			if (!response.ok) throw new DecartTokenRequestError('Token request failed.');
 			const token = (await response.json()) as { apiKey: string; expiresAt: string };
 			if (typeof token?.apiKey !== 'string' || typeof token.expiresAt !== 'string')
-				throw new Error('Invalid token response.');
+				throw new InvalidDecartTokenResponseError('Invalid token response.');
 			return token;
 		}
 	};

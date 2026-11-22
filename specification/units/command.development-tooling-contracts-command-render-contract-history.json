@@ -1,0 +1,187 @@
+{
+	"schemaVersion": 1,
+	"id": "command.development-tooling-contracts-command-render-contract-history",
+	"uid": "u_hstrendabc",
+	"kind": "command",
+	"title": "renderContractHistory",
+	"responsibility": "Formats semantic contract changes and attributed commit history as grouped, wrapped terminal text with optional color and summary-only field suppression.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["src/commands/development-tooling/contracts-command/renderContractHistory.ts"],
+		"symbols": ["renderContractDiff", "renderContractLog", "renderContractHistoryJson"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "renderContractDiff.diff",
+				"type": "ContractDiff",
+				"required": true,
+				"description": "Structured semantic diff with complete filtered counts and possibly limited contract rows; ignored file counts and snapshot labels are preserved."
+			},
+			{
+				"name": "renderContractDiff.summary",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "When true, prints per-contract and change-kind counts without field values; defaults to false."
+			},
+			{
+				"name": "renderContractLog.log",
+				"type": "ContractLog",
+				"required": true,
+				"description": "Attributed first-parent material-change records, including identity-following scope and an explicit indication of unscanned candidate history."
+			},
+			{
+				"name": "renderContractLog.summary",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "When true, prints per-contract and change-kind counts without field values; defaults to false."
+			},
+			{
+				"name": "renderContractHistoryJson.result",
+				"type": "ContractDiff | ContractLog",
+				"required": true,
+				"description": "Structured diff or committed log result to serialize; summary output omits field values while retaining contract metadata and field-kind counts."
+			},
+			{
+				"name": "renderContractHistoryJson.summary",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "When true, prints per-contract and change-kind counts without field values; defaults to false."
+			}
+		],
+		"outputs": [
+			{
+				"name": "renderContractDiff",
+				"type": "string",
+				"description": "Grouped terminal text containing snapshot labels, complete summary counts, per-contract status and optionally wrapped old-to-new field values."
+			},
+			{
+				"name": "renderContractLog",
+				"type": "string",
+				"description": "Attributed commit blocks with per-contract field changes or summaries, identity-following limits and a truncation notice where candidates remain unscanned."
+			},
+			{
+				"name": "renderContractHistoryJson",
+				"type": "string",
+				"description": "Structured JSON preserving full semantic field values by default, or per-contract metadata and field-kind counts without values when summary is true."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "renderContractDiff",
+				"inputs": [
+					{
+						"name": "renderContractDiff.diff",
+						"type": "ContractDiff",
+						"required": true,
+						"description": "Structured semantic diff with complete filtered counts and possibly limited contract rows; ignored file counts and snapshot labels are preserved."
+					},
+					{
+						"name": "renderContractDiff.summary",
+						"type": "boolean",
+						"required": false,
+						"default": false,
+						"description": "When true, prints per-contract and change-kind counts without field values; defaults to false."
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderContractDiff",
+						"type": "string",
+						"description": "Grouped terminal text containing snapshot labels, complete summary counts, per-contract status and optionally wrapped old-to-new field values."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "renderContractLog",
+				"inputs": [
+					{
+						"name": "renderContractLog.log",
+						"type": "ContractLog",
+						"required": true,
+						"description": "Attributed first-parent material-change records, including identity-following scope and an explicit indication of unscanned candidate history."
+					},
+					{
+						"name": "renderContractLog.summary",
+						"type": "boolean",
+						"required": false,
+						"default": false,
+						"description": "When true, prints per-contract and change-kind counts without field values; defaults to false."
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderContractLog",
+						"type": "string",
+						"description": "Attributed commit blocks with per-contract field changes or summaries, identity-following limits and a truncation notice where candidates remain unscanned."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "renderContractHistoryJson",
+				"inputs": [
+					{
+						"name": "renderContractHistoryJson.result",
+						"type": "ContractDiff | ContractLog",
+						"required": true,
+						"description": "Structured diff or committed log result to serialize; summary output omits field values while retaining contract metadata and field-kind counts."
+					},
+					{
+						"name": "renderContractHistoryJson.summary",
+						"type": "boolean",
+						"required": false,
+						"default": false,
+						"description": "When true, prints per-contract and change-kind counts without field values; defaults to false."
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderContractHistoryJson",
+						"type": "string",
+						"description": "Structured JSON preserving full semantic field values by default, or per-contract metadata and field-kind counts without values when summary is true."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.development-tooling-contracts-command-contract-history-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/development-tooling/contracts-command/renderContractHistory.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/development-tooling/contracts-command/renderContractHistory.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -34,6 +34,8 @@ test('help, version and info argv shapes skip analytics', () => {
 		['help', 'loop'],
 		['info'],
 		['info', 'activity'],
+		['contracts', 'show', 'service.billing', '--json'],
+		['contracts', 'search', 'Money'],
 		['loop', '--help'],
 		['loop', 'create', '-h'],
 		['audit', '--help', '--json']
@@ -58,6 +60,7 @@ test('the call site records real commands and leaves out skipped ones', async ()
 	await recordCommandAnalytics(['--help'], Date.now(), 0, record);
 	await recordCommandAnalytics(['info', 'loop'], Date.now(), 0, record);
 	await recordCommandAnalytics(['-V'], Date.now(), undefined, record);
+	await recordCommandAnalytics(['contracts', 'search', 'Money'], Date.now(), 0, record);
 	expect(record).not.toHaveBeenCalled();
 	await recordCommandAnalytics(['loop', 'status', 'x'], Date.now() - 5, 2, record);
 	expect(record).toHaveBeenCalledTimes(1);
@@ -111,7 +114,14 @@ test('the real entry runs no sqlite or git worktree work for --help, --version a
 		stderr: ''
 	});
 	for (const entry of [cli, join(process.cwd(), 'src/cli/index.ts')])
-		for (const args of [['--help'], ['--version'], ['info', 'activity'], ['loop', '--help']])
+		for (const args of [
+			['--help'],
+			['--version'],
+			['info', 'activity'],
+			['loop', '--help'],
+			['contracts', 'list', '--json'],
+			['contracts', 'search', 'Money', '--json']
+		])
 			await runCommand(['bun', entry, ...args], scratch, true, env);
 	await runCommand(
 		['bun', join(process.cwd(), 'src/cli/index.ts'), 'loop', 'list', '--json'],

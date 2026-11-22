@@ -13,6 +13,11 @@ import { CatalogService } from './catalog-service/CatalogService';
 import type { RevisionQuery } from '../../../models/development-tooling/DesktopBridge.types';
 import type { ProjectSnapshot } from '../../../models/development-tooling/Desktop.types';
 import { gitRead } from '../../../utils/projects-sessions/gitRead';
+import { CheckedOutBranchChangedError } from './CheckedOutBranchChangedError';
+import { ProjectNotOpenError } from './ProjectNotOpenError';
+import { ProjectNotSelectedError } from './ProjectNotSelectedError';
+import { ProjectRevisionReadOnlyError } from './ProjectRevisionReadOnlyError';
+import { ProjectSwitchBlockedError } from './ProjectSwitchBlockedError';
 export class ProjectSessionService {
 	root: string | null = null;
 	projectId: string | null = null;
@@ -44,7 +49,7 @@ export class ProjectSessionService {
 	}
 	assertProject(projectId?: string) {
 		if (projectId !== undefined && projectId !== this.projectId)
-			throw new Error('The requested project is not selected.');
+			throw new ProjectNotSelectedError('The requested project is not selected.');
 	}
 	source: GitSourceAdapter | null = null;
 	planning: PlanningFacadeAdapter | null = null;
@@ -56,7 +61,9 @@ export class ProjectSessionService {
 	}
 	async open(directory: string): Promise<ProjectSnapshot> {
 		if (this.busy || this.pending || this.opening)
-			throw new Error('Cancel or finish the current run before switching projects.');
+			throw new ProjectSwitchBlockedError(
+				'Cancel or finish the current run before switching projects.'
+			);
 		this.opening = true;
 		try {
 			const root = await realpath(
@@ -106,7 +113,7 @@ export class ProjectSessionService {
 	}
 	requireProject() {
 		if (!this.root || !this.source || !this.planning || !this.catalog)
-			throw new Error('Open a project first.');
+			throw new ProjectNotOpenError('Open a project first.');
 		return { root: this.root, source: this.source, planning: this.planning, catalog: this.catalog };
 	}
 	async mutable() {
@@ -119,7 +126,7 @@ export class ProjectSessionService {
 			!revision.atTip ||
 			revision.branch === 'harness-evidence'
 		)
-			throw new Error(
+			throw new ProjectRevisionReadOnlyError(
 				'Historical views and other branches are read-only. View the checked-out branch tip to make changes.'
 			);
 		return { ...project, revision };
@@ -128,7 +135,7 @@ export class ProjectSessionService {
 		const project = this.requireProject(),
 			current = (await project.source.branches()).find((b) => b.current);
 		if (current?.name !== branch)
-			throw new Error('The checked-out branch changed during this run.');
+			throw new CheckedOutBranchChangedError('The checked-out branch changed during this run.');
 		return project;
 	}
 }

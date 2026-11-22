@@ -6,7 +6,8 @@ import {
 	verifyConfigSchema
 } from '../../src/core/verifyTypes';
 
-const whole = 'bun x playwright test --config src/configs/shellPlaywrightConfig.ts';
+const whole =
+	'bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts';
 const parse = (profiles: object, checks: object[]) =>
 	verifyConfigSchema.safeParse({ ...defaultVerifyConfig, profiles, checks });
 const issues = (result: ReturnType<typeof parse>) =>

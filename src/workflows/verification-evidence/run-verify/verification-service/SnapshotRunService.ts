@@ -5,9 +5,10 @@ import { verifyConfigFile } from '../../../../core/verification-evidence/verifyT
 import type { BuiltArtifacts } from '../../../../utils/development-tooling/unitMeasurements';
 import type { PlannedCheck } from '../../../../utils/verification-evidence/verifyPlan';
 import { BuildIdentityService } from '../../../../services/verification-evidence/BuildIdentityService';
-import { CheckRunService, type CheckOutcome } from './check-run-service/CheckRunService';
+import type { CheckRunService, CheckOutcome } from './check-run-service/CheckRunService';
 import type { CaptureLimits } from './check-run-service/captureLimits.types';
 import { scopedSetup } from './buildScope';
+import { snapshotDriftObserver, snapshotVideoRun } from './snapshotVideoRun';
 import { deferredInLite } from './verifyPlan';
 
 /**
@@ -28,9 +29,12 @@ export class SnapshotRunService {
 		const drift = trackDrift(snapshot);
 		try {
 			for (const path of config.link) await snapshot.link(root, path);
-			const limits = captureLimits(config);
-			const runner = new CheckRunService({ ...context, snapshot: snapshot.directory, limits });
-			const misdeclared = snapshot.misdeclared().map(describeOutput);
+			const { runner, failures, videoInputs } = await snapshotVideoRun(
+				this.run,
+				snapshot.directory,
+				captureLimits(config)
+			);
+			const misdeclared = [...snapshot.misdeclared().map(describeOutput), ...failures];
 			const setupFailures = misdeclared.length > 0 ? misdeclared : await this.setup(runner, needed);
 			const tools = setupFailures.length > 0 ? [] : await this.tools(runner, setupFailures);
 			const wanted = config.builds.filter((build) => needed === 'all' || needed.has(build.id));
@@ -43,12 +47,8 @@ export class SnapshotRunService {
 			const buildFailures = [...compiled.failures, ...moved];
 			const observed = { outcomes, ...drift.paths(), setupFailures, tools, artifacts };
 			const exported = await retainedArtifact(this.run, snapshot, observed, buildFailures);
-			return {
-				...observed,
-				...recordedBuilds(config, needed, compiled.found),
-				buildFailures,
-				...exported
-			};
+			const builds = recordedBuilds(config, needed, compiled.found);
+			return { ...observed, ...videoInputs, ...builds, buildFailures, ...exported };
 		} finally {
 			await snapshot.remove();
 		}
@@ -143,11 +143,7 @@ function trackDrift(snapshot: SnapshotAdapter) {
 	const mutated = new Set<string>();
 	const added = new Set<string>();
 	return {
-		async observe() {
-			const drift = await snapshot.drift();
-			for (const path of drift.mutated) mutated.add(path);
-			for (const path of drift.added) added.add(path);
-		},
+		observe: snapshotDriftObserver(snapshot, { mutated, added }),
 		paths: () => ({ mutated: [...mutated].sort(), added: [...added].sort() })
 	};
 }

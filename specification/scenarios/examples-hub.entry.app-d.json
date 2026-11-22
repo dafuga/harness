@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.entry.app-d",
+	"title": "hub.entry.app-d examples",
+	"kind": "headless",
+	"units": ["hub.entry.app-d"],
+	"builds": [],
+	"states": [
+		{
+			"id": "describes-optional-hub-platform-bindings",
+			"title": "Describes optional hub platform bindings",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.entry.app-d.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["describes-optional-hub-platform-bindings"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["describes-optional-hub-platform-bindings"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["describes-optional-hub-platform-bindings"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

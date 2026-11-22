@@ -8,13 +8,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/benchmark-service/benchmark-definition/CodexBenchmarkAdapter.ts"],
+		"source": [
+			"src/cli/program/benchmark-service/benchmark-definition/CodexBenchmarkAdapter.ts",
+			"src/cli/program/benchmark-service/benchmark-definition/CodexBenchmarkAdapter.types.ts"
+		],
 		"symbols": [
 			"CodexBenchmarkAdapter",
 			"CodexBenchmarkAdapter.constructor",
 			"CodexBenchmarkAdapter.preflight",
 			"CodexBenchmarkAdapter.run",
-			"CodexBenchmarkAdapter.command"
+			"CodexBenchmarkAdapter.command",
+			"CodexRunError"
 		]
 	},
 	"contract": {
@@ -244,7 +248,7 @@
 				"outputs": [
 					{
 						"name": "CodexBenchmarkAdapter.constructor",
-						"type": "unknown",
+						"type": "CodexBenchmarkAdapter",
 						"description": "The constructed adapter instance, which stores the supplied executable or the constructor default codex."
 					}
 				],
@@ -261,6 +265,11 @@
 		},
 		{
 			"unit": "function.benchmark-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},

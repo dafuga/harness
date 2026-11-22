@@ -22,7 +22,7 @@
 				"name": "recordedBuilds.observed",
 				"type": "RecordedBuild[]",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The builds a run identified; each entry keeps only its id, directory, buildId and files, so a stamp or any other extra field is dropped. Undefined, which a run passes when the project declares no build, leaves out the builds key, and an explicitly empty array is kept as builds: [].",
 				"examples": [
 					[
@@ -66,7 +66,7 @@
 				"name": "recordedBuilds.skipped",
 				"type": "string[]",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "The ids of the declared builds that an entity-scoped run skipped because it did not need them. When given, even as an empty array, it is copied into skippedBuilds; when undefined, the result has no skippedBuilds key.",
 				"examples": [
 					["docs.site"],
@@ -78,10 +78,27 @@
 		"outputs": [
 			{
 				"name": "recordedBuilds",
-				"type": "Pick<VerificationRecord, 'builds'>",
-				"description": "It is an empty object when neither input is given, and has builds only when observed is given, holding id, directory, buildId and files for each entry (an explicitly empty array stays builds: []). When skipped is given, the implementation also returns skippedBuilds, which this output type does not list.",
+				"type": "Pick<VerificationRecord, 'builds' | 'skippedBuilds'>",
+				"description": "It is an empty object when neither input is given, and has builds only when observed is given, holding id, directory, buildId and files for each entry (an explicitly empty array stays builds: []). The skippedBuilds field is a copy of skipped when skipped is given, even when empty, and is absent otherwise.",
 				"examples": [
 					{},
+					{
+						"builds": [
+							{
+								"id": "web-client",
+								"directory": "dist/web",
+								"buildId": "9c1e4f0a7b2d86e35f1a0c9d4b7e2f83a6d15c0e9f4b2a7d38c6e1f05a9b4d72",
+								"files": 48
+							},
+							{
+								"id": "api-server",
+								"directory": "build/api",
+								"buildId": "e27a09c4d8f13b6e5a92c7d0f48e1b3a6c95d2e0f7a4b18c3d6e9f25a07b4c1d",
+								"files": 7
+							}
+						],
+						"skippedBuilds": ["docs.site"]
+					},
 					{
 						"builds": [
 							{
@@ -103,9 +120,6 @@
 								"files": 212
 							}
 						]
-					},
-					{
-						"builds": []
 					}
 				]
 			}
@@ -120,7 +134,7 @@
 						"name": "recordedBuilds.observed",
 						"type": "RecordedBuild[]",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The builds a run identified; each entry keeps only its id, directory, buildId and files, so a stamp or any other extra field is dropped. Undefined, which a run passes when the project declares no build, leaves out the builds key, and an explicitly empty array is kept as builds: [].",
 						"examples": [
 							[
@@ -164,7 +178,7 @@
 						"name": "recordedBuilds.skipped",
 						"type": "string[]",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "The ids of the declared builds that an entity-scoped run skipped because it did not need them. When given, even as an empty array, it is copied into skippedBuilds; when undefined, the result has no skippedBuilds key.",
 						"examples": [
 							["docs.site"],

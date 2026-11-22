@@ -20,7 +20,7 @@
 		"outputs": [
 			{
 				"name": "localTransport",
-				"type": "unknown",
+				"type": "{ readonly path: \"/v1/local\"; readonly protocol: \"harness.v1\"; readonly ticketPrefix: \"ticket.\"; readonly origin: \"harness://app\"; readonly ticketMs: 10000; readonly tickets: 8; readonly clients: 4; readonly streams: 8; readonly requestBytes: number; }",
 				"description": "The fixed settings the Electron renderer uses to open its WebSocket to its own main process, which never leaves the machine and carries the same wire messages as a phone's channel, in plain text frames. A client connects at path `/v1/local` with protocol `harness.v1` from origin `harness://app` (the only page allowed to connect), carries its one-use ticket as a second subprotocol prefixed `ticket.` (never in the address, never stored), and the timing and limits are `ticketMs` 10000 ms, `tickets` 8 waiting tickets over all windows, `clients` 4, `streams` 8 messages one side may have in flight, and `requestBytes` 1114112 (a game document of at most 1 MiB plus a 65536-byte envelope allowance).",
 				"examples": [
 					{

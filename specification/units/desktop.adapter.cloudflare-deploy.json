@@ -9,15 +9,25 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/adapters/development-tooling/CloudflareCredentialConfigurationError.ts",
 			"packages/desktop/src/adapters/development-tooling/CloudflareDeployAdapter.ts",
-			"packages/desktop/src/adapters/development-tooling/CloudflareDeployAdapter.types.ts"
+			"packages/desktop/src/adapters/development-tooling/CloudflareDeployAdapter.types.ts",
+			"packages/desktop/src/adapters/development-tooling/CloudflareDeploymentIdentityMissingError.ts",
+			"packages/desktop/src/adapters/development-tooling/CloudflareProductionBranchConflictError.ts",
+			"packages/desktop/src/adapters/development-tooling/CloudflareProductionBranchUnknownError.ts",
+			"packages/desktop/src/adapters/development-tooling/CloudflareTargetAccessVerificationError.ts"
 		],
 		"symbols": [
+			"CloudflareCredentialConfigurationError",
 			"CloudflareDeployAdapter",
 			"CloudflareDeployAdapter.constructor",
 			"CloudflareDeployAdapter.discover",
 			"CloudflareDeployAdapter.deploy",
-			"Options"
+			"Options",
+			"CloudflareDeploymentIdentityMissingError",
+			"CloudflareProductionBranchConflictError",
+			"CloudflareProductionBranchUnknownError",
+			"CloudflareTargetAccessVerificationError"
 		]
 	},
 	"contract": {
@@ -92,7 +102,7 @@
 		"outputs": [
 			{
 				"name": "CloudflareDeployAdapter.discover",
-				"type": "unknown",
+				"type": "Promise<DeploymentConfig>",
 				"description": "Resolved DeploymentConfig for root: sourceBranch comes from harness.deploy.json or the current git branch (empty when git fails), and targets maps each configured environment to a CloudflareTarget. fingerprint is the hex SHA-256 digest of the harness.deploy.json text and the Wrangler configuration text.",
 				"examples": [
 					{
@@ -135,7 +145,7 @@
 			},
 			{
 				"name": "CloudflareDeployAdapter.deploy",
-				"type": "unknown",
+				"type": "Promise<{ deploymentId: string; url: string; }>",
 				"description": "Resolved result of deploy: url is the first *.pages.dev or *.workers.dev URL printed by the command, or the target's healthUrl when a Workers command prints none. deploymentId is the leading label of that URL for Pages, or the printed Workers Version ID UUID for Workers.",
 				"examples": [
 					{
@@ -182,7 +192,7 @@
 				"outputs": [
 					{
 						"name": "CloudflareDeployAdapter.discover",
-						"type": "unknown",
+						"type": "Promise<import('../../models/development-tooling/Deployment.types').DeploymentConfig>",
 						"description": "Resolved DeploymentConfig for root: sourceBranch comes from harness.deploy.json or the current git branch (empty when git fails), and targets maps each configured environment to a CloudflareTarget. fingerprint is the hex SHA-256 digest of the harness.deploy.json text and the Wrangler configuration text.",
 						"examples": [
 							{
@@ -298,7 +308,7 @@
 				"outputs": [
 					{
 						"name": "CloudflareDeployAdapter.deploy",
-						"type": "unknown",
+						"type": "Promise<{ deploymentId: string; url: string; }>",
 						"description": "Resolved result of deploy: url is the first *.pages.dev or *.workers.dev URL printed by the command, or the target's healthUrl when a Workers command prints none. deploymentId is the leading label of that URL for Pages, or the printed Workers Version ID UUID for Workers.",
 						"examples": [
 							{
@@ -345,7 +355,7 @@
 				"outputs": [
 					{
 						"name": "CloudflareDeployAdapter.constructor",
-						"type": "unknown",
+						"type": "CloudflareDeployAdapter",
 						"description": "The new CloudflareDeployAdapter instance, whose readonly id is 'cloudflare' and whose options are stored privately."
 					}
 				],

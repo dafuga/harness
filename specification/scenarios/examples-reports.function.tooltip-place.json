@@ -1,0 +1,111 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.tooltip-place",
+	"title": "reports.function.tooltip-place examples",
+	"kind": "headless",
+	"units": ["reports.function.tooltip-place"],
+	"builds": [],
+	"states": [
+		{
+			"id": "places-below-centred-with-the-gap",
+			"title": "Places the tooltip below its mark, centred, with the 8-pixel gap",
+			"coverage": "required"
+		},
+		{
+			"id": "clamps-to-the-screen-edges",
+			"title": "Clamps the tooltip to the screen edges when it fits",
+			"coverage": "required"
+		},
+		{
+			"id": "overwide-tooltip-starts-at-the-margin",
+			"title": "An overwide tooltip starts at the margin and is not made to fit",
+			"coverage": "required"
+		},
+		{
+			"id": "opens-above-without-room-below",
+			"title": "Opens above the mark when there is no room below",
+			"coverage": "required"
+		},
+		{
+			"id": "exact-fit-uses-no-height",
+			"title": "A tooltip exactly as tall as the room on one side fits without a height",
+			"coverage": "required"
+		},
+		{
+			"id": "takes-the-roomier-side-below",
+			"title": "A tooltip taller than both sides takes the roomier side below and its height",
+			"coverage": "required"
+		},
+		{
+			"id": "tie-prefers-the-side-below",
+			"title": "On a tie between the two sides the tooltip goes below with that room as height",
+			"coverage": "required"
+		},
+		{
+			"id": "short-screen-takes-the-roomier-side-above",
+			"title": "On a short screen a tooltip takes the roomier side above, starting at the gap",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.tooltip-place.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"places-below-centred-with-the-gap",
+				"clamps-to-the-screen-edges",
+				"overwide-tooltip-starts-at-the-margin",
+				"opens-above-without-room-below",
+				"exact-fit-uses-no-height",
+				"takes-the-roomier-side-below",
+				"tie-prefers-the-side-below",
+				"short-screen-takes-the-roomier-side-above"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"places-below-centred-with-the-gap",
+				"clamps-to-the-screen-edges",
+				"overwide-tooltip-starts-at-the-margin",
+				"opens-above-without-room-below",
+				"exact-fit-uses-no-height",
+				"takes-the-roomier-side-below",
+				"tie-prefers-the-side-below",
+				"short-screen-takes-the-roomier-side-above"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"places-below-centred-with-the-gap",
+				"clamps-to-the-screen-edges",
+				"overwide-tooltip-starts-at-the-margin",
+				"opens-above-without-room-below",
+				"exact-fit-uses-no-height",
+				"takes-the-roomier-side-below",
+				"tie-prefers-the-side-below",
+				"short-screen-takes-the-roomier-side-above"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

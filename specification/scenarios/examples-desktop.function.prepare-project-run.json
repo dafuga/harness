@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.prepare-project-run",
+	"title": "desktop.function.prepare-project-run examples",
+	"kind": "headless",
+	"units": ["desktop.function.prepare-project-run"],
+	"builds": [],
+	"states": [
+		{
+			"id": "resolves-a-create-plan-after-project-and-runner-checks",
+			"title": "resolves a create Plan after the project and runner are checked, with a fresh id",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-a-request-that-is-not-a-create-plan",
+			"title": "refuses a request that is not a create Plan before anything is asked",
+			"coverage": "required"
+		},
+		{
+			"id": "refuses-a-request-for-an-unselected-project",
+			"title": "refuses a request for a project that is not the open one before selecting a runner",
+			"coverage": "required"
+		},
+		{
+			"id": "stops-a-run-cancelled-before-the-context-is-returned",
+			"title": "stops a run cancelled during runner preparation before returning a context",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.prepare-project-run.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"resolves-a-create-plan-after-project-and-runner-checks",
+				"refuses-a-request-that-is-not-a-create-plan",
+				"refuses-a-request-for-an-unselected-project",
+				"stops-a-run-cancelled-before-the-context-is-returned"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"resolves-a-create-plan-after-project-and-runner-checks",
+				"refuses-a-request-that-is-not-a-create-plan",
+				"refuses-a-request-for-an-unselected-project",
+				"stops-a-run-cancelled-before-the-context-is-returned"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"resolves-a-create-plan-after-project-and-runner-checks",
+				"refuses-a-request-that-is-not-a-create-plan",
+				"refuses-a-request-for-an-unselected-project",
+				"stops-a-run-cancelled-before-the-context-is-returned"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

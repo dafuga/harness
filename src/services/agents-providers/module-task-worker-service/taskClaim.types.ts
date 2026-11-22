@@ -6,3 +6,8 @@ export interface TaskClaimOptions {
 	/** Tasks that passed this machine's preflight; others stay queued. All tasks when omitted. */
 	runnable?: ReadonlySet<string>;
 }
+
+/** A worker's changes reached a path outside its module's files, so the worktree is preserved for review. */
+export class WorkerOutsideModuleError extends Error {
+	override name = 'WorkerOutsideModuleError';
+}

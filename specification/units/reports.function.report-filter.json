@@ -60,7 +60,7 @@
 			},
 			{
 				"name": "galleryEvidence.pairs",
-				"type": "Map<string, Evidence>",
+				"type": "ReadonlyMap<string, Evidence>",
 				"required": false,
 				"description": "Optional after-to-before audio pair map, defaulting to audioPairs(items)."
 			},
@@ -91,21 +91,22 @@
 			},
 			{
 				"name": "galleryEvidence",
-				"type": "unknown",
+				"type": "Evidence[]",
 				"description": "All non-before items plus unpaired before-audio items. Paired before audio and all before images are hidden as separate gallery entries."
 			},
 			{
 				"name": "reportFilter",
-				"type": "unknown",
+				"type": "Evidence[]",
 				"description": "Matches where either the item or its paired before item satisfies all filters, sorted by order with missing order treated as zero. Search spans title, notes, category, viewport, source and transcript."
 			},
 			{
 				"name": "projectFilter",
-				"type": "unknown",
+				"type": "boolean",
 				"description": "True when project selection matches and the lowercased project name, title or summary contains the query."
 			}
 		],
 		"errors": [],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reportFilter",
@@ -132,12 +133,12 @@
 				"outputs": [
 					{
 						"name": "reportFilter",
-						"type": "unknown",
+						"type": "Evidence[]",
 						"description": "Matches where either the item or its paired before item satisfies all filters, sorted by order with missing order treated as zero. Search spans title, notes, category, viewport, source and transcript."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "screenSize",
@@ -157,7 +158,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "galleryEvidence",
@@ -170,7 +171,7 @@
 					},
 					{
 						"name": "galleryEvidence.pairs",
-						"type": "Map<string, Evidence>",
+						"type": "ReadonlyMap<string, Evidence>",
 						"required": false,
 						"description": "Optional after-to-before audio pair map, defaulting to audioPairs(items)."
 					}
@@ -178,12 +179,12 @@
 				"outputs": [
 					{
 						"name": "galleryEvidence",
-						"type": "unknown",
+						"type": "Evidence[]",
 						"description": "All non-before items plus unpaired before-audio items. Paired before audio and all before images are hidden as separate gallery entries."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "projectFilter",
@@ -210,12 +211,12 @@
 				"outputs": [
 					{
 						"name": "projectFilter",
-						"type": "unknown",
+						"type": "boolean",
 						"description": "True when project selection matches and the lowercased project name, title or summary contains the query."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

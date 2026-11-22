@@ -1,0 +1,103 @@
+{
+	"schemaVersion": 1,
+	"id": "command.execution-runtimes-jobs",
+	"uid": "u_dvprh5x3mq",
+	"kind": "command",
+	"title": "JobsCommand",
+	"responsibility": "Register job lifecycle, backfill, statistics, active status and ETA commands without executing work at registration.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/commands/execution-runtimes/JobsCommand.ts",
+			"src/commands/execution-runtimes/JobsCommand.types.ts"
+		],
+		"symbols": ["JobsCommand", "JobsCommand.register", "JobsOptions"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "JobsCommand.register.program",
+				"type": "Command",
+				"required": true,
+				"description": "Commander root program receiving the jobs family. Subcommand actions execute only after parsing an invocation."
+			}
+		],
+		"outputs": [
+			{
+				"name": "JobsCommand.register",
+				"type": "void",
+				"description": "No return value; registers deferred Commander actions or prints the supplied report without changing queue inputs."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "JobsCommand.register",
+				"inputs": [
+					{
+						"name": "JobsCommand.register.program",
+						"type": "Command",
+						"required": true,
+						"description": "Commander root program receiving the jobs family. Subcommand actions execute only after parsing an invocation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "JobsCommand.register",
+						"type": "void",
+						"description": "No return value; registers deferred Commander actions or prints the supplied report without changing queue inputs."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-driver-queue",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.execution-runtimes-jobs-command-job-queries",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.execution-runtimes-jobs-command-jobs-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.execution-runtimes-jobs-command-with-job-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-job-backfill",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/execution-runtimes/JobsCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/execution-runtimes/JobsCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

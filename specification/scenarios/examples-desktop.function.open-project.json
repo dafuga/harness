@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-desktop.function.open-project",
+	"title": "desktop.function.open-project examples",
+	"kind": "headless",
+	"units": ["desktop.function.open-project"],
+	"builds": [],
+	"states": [
+		{
+			"id": "opens-a-project-on-its-branch-pages-and-refreshes-the-list",
+			"title": "opens a project on its branch pages and refreshes the list",
+			"coverage": "required"
+		},
+		{
+			"id": "stores-a-bridge-failure-and-clears-busy-state",
+			"title": "stores a bridge failure and clears busy state",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.function.open-project.test.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"opens-a-project-on-its-branch-pages-and-refreshes-the-list",
+				"stores-a-bridge-failure-and-clears-busy-state"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"opens-a-project-on-its-branch-pages-and-refreshes-the-list",
+				"stores-a-bridge-failure-and-clears-busy-state"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"opens-a-project-on-its-branch-pages-and-refreshes-the-list",
+				"stores-a-bridge-failure-and-clears-busy-state"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

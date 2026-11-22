@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["scripts/prepare-desktop-experiment.ts"],
-		"symbols": []
+		"source": [
+			"scripts/prepare-desktop-experiment.ts",
+			"scripts/prepare-desktop-experiment.types.ts"
+		],
+		"symbols": ["ExperimentalAppBuildError"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -39,6 +42,11 @@
 		},
 		{
 			"unit": "config.desktop-patch",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},

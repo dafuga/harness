@@ -1,0 +1,215 @@
+{
+	"schemaVersion": 1,
+	"id": "command.development-tooling-contracts-command-read-contract-history",
+	"uid": "u_hstreadabc",
+	"kind": "command",
+	"title": "readContractHistory",
+	"responsibility": "Reads contract-only snapshot differences and reachable committed history, with true first-parent merge deltas, immutable blob reuse, stable identity following and commit attribution.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["src/commands/development-tooling/contracts-command/readContractHistory.ts"],
+		"symbols": ["readContractDiff", "readContractLog"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "readContractDiff.revisions",
+				"type": "string[]",
+				"required": true,
+				"description": "Zero selectors for HEAD to working tree, one range or commit selector, or two explicit revisions; a lone commit compares its first parent or the empty root base."
+			},
+			{
+				"name": "readContractDiff.options",
+				"type": "ContractHistoryOptions",
+				"required": true,
+				"description": "Project root, identity/path/kind/area and field filters, snapshot selectors, output mode and limits. Diff counts precede display limits; log limits matching commits."
+			},
+			{
+				"name": "readContractLog.unit",
+				"type": "string",
+				"required": true,
+				"description": "Unit id or stable uid to follow through committed history; an empty string selects every contract permitted by the other filters."
+			},
+			{
+				"name": "readContractLog.options",
+				"type": "ContractHistoryOptions",
+				"required": true,
+				"description": "Project root, identity/path/kind/area and field filters, snapshot selectors, output mode and limits. Diff counts precede display limits; log limits matching commits."
+			},
+			{
+				"name": "readContractLog.last",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "When true, stops at the latest material matching commit and rejects an empty result; otherwise log defaults to twenty matching commits."
+			}
+		],
+		"outputs": [
+			{
+				"name": "readContractDiff",
+				"type": "Promise<ContractDiff>",
+				"description": "Contract-only snapshot comparison with resolved snapshot labels, semantic changes, ignored files and full filtered counts before the display limit."
+			},
+			{
+				"name": "readContractLog",
+				"type": "Promise<ContractLog>",
+				"description": "Reachable material contract changes with commit, author, date and subject. Merge commits use actual first-parent deltas; stable uid and observed pre-uid aliases select identity. Last returns one result without pagination."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Invalid roots, revisions, contracts, selectors or filters propagate; last also rejects a history with no matching material change."
+			},
+			{
+				"name": "Git command or filesystem read failure",
+				"type": "thrown",
+				"description": "GitAdapter Error messages retain git arguments and stderr. Filesystem errors such as ENOENT or EACCES propagate their I/O diagnostic; no registry or source writes are performed."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "readContractDiff",
+				"inputs": [
+					{
+						"name": "readContractDiff.revisions",
+						"type": "string[]",
+						"required": true,
+						"description": "Zero selectors for HEAD to working tree, one range or commit selector, or two explicit revisions; a lone commit compares its first parent or the empty root base."
+					},
+					{
+						"name": "readContractDiff.options",
+						"type": "ContractHistoryOptions",
+						"required": true,
+						"description": "Project root, identity/path/kind/area and field filters, snapshot selectors, output mode and limits. Diff counts precede display limits; log limits matching commits."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readContractDiff",
+						"type": "Promise<ContractDiff>",
+						"description": "Contract-only snapshot comparison with resolved snapshot labels, semantic changes, ignored files and full filtered counts before the display limit."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid roots, revisions, contracts, selectors or filters propagate; last also rejects a history with no matching material change."
+					},
+					{
+						"name": "Git command or filesystem read failure",
+						"type": "thrown",
+						"description": "GitAdapter Error messages retain git arguments and stderr. Filesystem errors such as ENOENT or EACCES propagate their I/O diagnostic; no registry or source writes are performed."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "readContractLog",
+				"inputs": [
+					{
+						"name": "readContractLog.unit",
+						"type": "string",
+						"required": true,
+						"description": "Unit id or stable uid to follow through committed history; an empty string selects every contract permitted by the other filters."
+					},
+					{
+						"name": "readContractLog.options",
+						"type": "ContractHistoryOptions",
+						"required": true,
+						"description": "Project root, identity/path/kind/area and field filters, snapshot selectors, output mode and limits. Diff counts precede display limits; log limits matching commits."
+					},
+					{
+						"name": "readContractLog.last",
+						"type": "boolean",
+						"required": false,
+						"default": false,
+						"description": "When true, stops at the latest material matching commit and rejects an empty result; otherwise log defaults to twenty matching commits."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readContractLog",
+						"type": "Promise<ContractLog>",
+						"description": "Reachable material contract changes with commit, author, date and subject. Merge commits use actual first-parent deltas; stable uid and observed pre-uid aliases select identity. Last returns one result without pagination."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Invalid roots, revisions, contracts, selectors or filters propagate; last also rejects a history with no matching material change."
+					},
+					{
+						"name": "Git command or filesystem read failure",
+						"type": "thrown",
+						"description": "GitAdapter Error messages retain git arguments and stderr. Filesystem errors such as ENOENT or EACCES propagate their I/O diagnostic; no registry or source writes are performed."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.development-tooling-contracts-command-contract-history-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-contract-history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-contract-revisions",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-diff-contract-snapshots",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-read-contract-snapshot",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.units-config",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/development-tooling/contracts-command/readContractHistory.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/development-tooling/contracts-command/readContractHistory.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

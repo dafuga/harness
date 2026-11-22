@@ -1,0 +1,1169 @@
+{
+	"schemaVersion": 1,
+	"id": "service.verification-evidence-video-reference",
+	"uid": "u_alfe4qnget",
+	"kind": "service",
+	"title": "VideoReferenceService",
+	"responsibility": "Resolve archived video references through exact owner and attached original-parent proof, preserving original capture identity and keeping current-input admission as a separate caller obligation.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": [
+			"src/services/verification-evidence/VideoReferenceService.ts",
+			"src/services/verification-evidence/VideoReferenceService.types.ts",
+			"src/services/verification-evidence/video-reference-service/binding.ts",
+			"src/services/verification-evidence/video-reference-service/candidates.ts",
+			"src/services/verification-evidence/video-reference-service/materialize.ts",
+			"src/services/verification-evidence/video-reference-service/origins.ts",
+			"src/services/verification-evidence/video-reference-service/referenceCache.ts",
+			"src/services/verification-evidence/video-reference-service/resolve.ts"
+		],
+		"symbols": [
+			"VideoReferenceService",
+			"VideoReferenceService.constructor",
+			"VideoReferenceService.run",
+			"VideoReferenceService.resolve",
+			"VideoReferenceService.materialize",
+			"VideoReferenceService.candidates",
+			"TrustedVideoReference",
+			"VideoReferenceInput",
+			"VideoReferenceCandidate",
+			"VideoReferenceSelection",
+			"VideoReferenceInput",
+			"TrustedVideoReference",
+			"VideoReferenceSelection",
+			"VideoReferenceCandidate",
+			"VideoReferenceContext",
+			"VideoMaterializationState",
+			"MetadataMemo",
+			"VideoReferenceMemo",
+			"VideoOriginProof",
+			"referencePaths",
+			"safeReferencePath",
+			"bindReference",
+			"currentOwner",
+			"videoReferenceCandidates",
+			"materializeVideoReferences",
+			"referenceScope",
+			"proveOriginal",
+			"metadataLimit",
+			"createReferenceCache",
+			"scopeKey",
+			"originKey",
+			"memoOrigin",
+			"memoCatalog",
+			"resolveVideoReference"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "VideoReferenceService.constructor.root",
+				"type": "string",
+				"required": false,
+				"default": "process.cwd()",
+				"description": "The optional snapshot/root binding for this operation. Its documented default is the source expression process.cwd(), evaluated at construction, not a literal path string."
+			},
+			{
+				"name": "VideoReferenceService.constructor.pinned",
+				"type": "VideoReferenceContext['pinned']",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "The optional snapshot/root binding for this operation. Omission reads current evidence and notes tips when the reference scope is established; explicit null snapshot bounds are never widened."
+			},
+			{
+				"name": "VideoReferenceService.constructor.trail",
+				"type": "string[]",
+				"required": false,
+				"default": []
+			},
+			{
+				"name": "VideoReferenceService.constructor.retainMedia",
+				"type": "boolean",
+				"required": false,
+				"default": true
+			},
+			{
+				"name": "VideoReferenceService.resolve.input",
+				"type": "VideoReferenceInput",
+				"required": true
+			},
+			{
+				"name": "VideoReferenceService.materialize.record",
+				"type": "VerificationRecord",
+				"required": true
+			},
+			{
+				"name": "VideoReferenceService.materialize.physical",
+				"type": "string[]",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "The optional snapshot/root binding for this operation. Omission derives physical capture paths from recordFiles(record); this list is only used to reject conflicts with virtual referenced media."
+			},
+			{
+				"name": "VideoReferenceService.candidates.selection",
+				"type": "VideoReferenceSelection",
+				"required": true
+			},
+			{
+				"name": "referencePaths.capture",
+				"type": "Capture",
+				"required": true
+			},
+			{
+				"name": "safeReferencePath.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "bindReference.input",
+				"type": "VideoReferenceInput",
+				"required": true
+			},
+			{
+				"name": "bindReference.clip",
+				"type": "VideoArchiveClip",
+				"required": true
+			},
+			{
+				"name": "currentOwner.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "currentOwner.input",
+				"type": "VideoReferenceInput",
+				"required": true
+			},
+			{
+				"name": "videoReferenceCandidates.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "videoReferenceCandidates.selection",
+				"type": "VideoReferenceSelection",
+				"required": true
+			},
+			{
+				"name": "videoReferenceCandidates.context",
+				"type": "VideoReferenceContext",
+				"required": true
+			},
+			{
+				"name": "materializeVideoReferences.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "materializeVideoReferences.record",
+				"type": "VerificationRecord",
+				"required": true
+			},
+			{
+				"name": "materializeVideoReferences.scope",
+				"type": "{ context: VideoReferenceContext; physical?: string[]; }",
+				"required": true
+			},
+			{
+				"name": "referenceScope.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "referenceScope.context",
+				"type": "VideoReferenceContext",
+				"required": true
+			},
+			{
+				"name": "proveOriginal.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "proveOriginal.capture",
+				"type": "Capture",
+				"required": true
+			},
+			{
+				"name": "proveOriginal.context",
+				"type": "VideoReferenceContext",
+				"required": true
+			},
+			{
+				"name": "scopeKey.pinned",
+				"type": "PinnedHistory",
+				"required": true
+			},
+			{
+				"name": "originKey.pinned",
+				"type": "PinnedHistory",
+				"required": true
+			},
+			{
+				"name": "originKey.trail",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "originKey.record",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "originKey.revision",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "memoOrigin.memo",
+				"type": "VideoReferenceMemo",
+				"required": true
+			},
+			{
+				"name": "memoOrigin.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "memoOrigin.load",
+				"type": "() => Promise<VideoOriginProof>",
+				"required": true
+			},
+			{
+				"name": "memoCatalog.memo",
+				"type": "VideoReferenceMemo",
+				"required": true
+			},
+			{
+				"name": "memoCatalog.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "memoCatalog.load",
+				"type": "() => Promise<VideoReferenceCandidate[]>",
+				"required": true
+			},
+			{
+				"name": "resolveVideoReference.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "resolveVideoReference.proposed",
+				"type": "VideoReferenceInput",
+				"required": true
+			},
+			{
+				"name": "resolveVideoReference.context",
+				"type": "VideoReferenceContext",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "VideoReferenceService.run",
+				"type": "string"
+			},
+			{
+				"name": "VideoReferenceService.resolve",
+				"type": "Promise<TrustedVideoReference>"
+			},
+			{
+				"name": "VideoReferenceService.materialize",
+				"type": "Promise<Map<string, Buffer>>"
+			},
+			{
+				"name": "VideoReferenceService.candidates",
+				"type": "Promise<VideoReferenceCandidate[]>"
+			},
+			{
+				"name": "referencePaths",
+				"type": "[string, string]"
+			},
+			{
+				"name": "safeReferencePath",
+				"type": "boolean",
+				"description": "Returns a boolean from a string path without opening files."
+			},
+			{
+				"name": "bindReference",
+				"type": "void"
+			},
+			{
+				"name": "currentOwner",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "videoReferenceCandidates",
+				"type": "Promise<VideoReferenceCandidate[]>"
+			},
+			{
+				"name": "materializeVideoReferences",
+				"type": "Promise<Map<string, Buffer>>"
+			},
+			{
+				"name": "referenceScope",
+				"type": "Promise<PinnedHistory>"
+			},
+			{
+				"name": "proveOriginal",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "metadataLimit",
+				"type": "unknown"
+			},
+			{
+				"name": "createReferenceCache",
+				"type": "VideoReferenceMemo",
+				"description": "Allocates empty in-memory metadata caches without external work."
+			},
+			{
+				"name": "scopeKey",
+				"type": "string"
+			},
+			{
+				"name": "originKey",
+				"type": "string",
+				"description": "Hashes the declared string-based scope/trail/record identity without external work."
+			},
+			{
+				"name": "memoOrigin",
+				"type": "Promise<VideoOriginProof>"
+			},
+			{
+				"name": "memoCatalog",
+				"type": "Promise<VideoReferenceCandidate[]>"
+			},
+			{
+				"name": "resolveVideoReference",
+				"type": "Promise<TrustedVideoReference>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+			},
+			{
+				"name": "Git/LFS collaborator rejection",
+				"type": "propagated",
+				"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+			},
+			{
+				"name": "Filesystem rejection",
+				"type": "propagated",
+				"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+			},
+			{
+				"name": "Loader rejection",
+				"type": "propagated",
+				"description": "The supplied loader may throw or reject. Its original failure propagates and failed work is not retained as successful memoized proof."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Memoization measures the loader result with JSON.stringify; a cyclic or unsupported runtime value cannot be measured and rejects the call."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "JSON.stringify may exceed the call stack on an excessively deep loader result."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "VideoReferenceService.run",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "VideoReferenceService.run",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "VideoReferenceService.resolve",
+				"inputs": [
+					{
+						"name": "VideoReferenceService.resolve.input",
+						"type": "VideoReferenceInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoReferenceService.resolve",
+						"type": "Promise<TrustedVideoReference>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VideoReferenceService.materialize",
+				"inputs": [
+					{
+						"name": "VideoReferenceService.materialize.record",
+						"type": "VerificationRecord",
+						"required": true
+					},
+					{
+						"name": "VideoReferenceService.materialize.physical",
+						"type": "string[]",
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "The optional snapshot/root binding for this operation. Omission derives physical capture paths from recordFiles(record); this list is only used to reject conflicts with virtual referenced media."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoReferenceService.materialize",
+						"type": "Promise<Map<string, Buffer>>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VideoReferenceService.candidates",
+				"inputs": [
+					{
+						"name": "VideoReferenceService.candidates.selection",
+						"type": "VideoReferenceSelection",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoReferenceService.candidates",
+						"type": "Promise<VideoReferenceCandidate[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "referencePaths",
+				"inputs": [
+					{
+						"name": "referencePaths.capture",
+						"type": "Capture",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "referencePaths",
+						"type": "[string, string]"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "This low-level helper requires a capture with video metadata; a runtime capture without that required metadata can fail property access before reference proof."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "safeReferencePath",
+				"inputs": [
+					{
+						"name": "safeReferencePath.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "safeReferencePath",
+						"type": "boolean",
+						"description": "Returns a boolean from a string path without opening files."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "bindReference",
+				"inputs": [
+					{
+						"name": "bindReference.input",
+						"type": "VideoReferenceInput",
+						"required": true
+					},
+					{
+						"name": "bindReference.clip",
+						"type": "VideoArchiveClip",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "bindReference",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "TypeError",
+						"type": "propagated",
+						"description": "The existing JSON serializer rejects an unsupported runtime value such as BigInt; inputs are expected to conform to the declared JSON descriptor shape."
+					},
+					{
+						"name": "RangeError",
+						"type": "propagated",
+						"description": "The existing recursive canonical serializer can exhaust the stack for cyclic or excessively deep runtime input; inputs are expected to satisfy the declared descriptor shape."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "currentOwner",
+				"inputs": [
+					{
+						"name": "currentOwner.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "currentOwner.input",
+						"type": "VideoReferenceInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "currentOwner",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "This low-level helper requires a capture with video metadata; a runtime capture without that required metadata can fail property access before reference proof."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "videoReferenceCandidates",
+				"inputs": [
+					{
+						"name": "videoReferenceCandidates.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "videoReferenceCandidates.selection",
+						"type": "VideoReferenceSelection",
+						"required": true
+					},
+					{
+						"name": "videoReferenceCandidates.context",
+						"type": "VideoReferenceContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoReferenceCandidates",
+						"type": "Promise<VideoReferenceCandidate[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "materializeVideoReferences",
+				"inputs": [
+					{
+						"name": "materializeVideoReferences.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "materializeVideoReferences.record",
+						"type": "VerificationRecord",
+						"required": true
+					},
+					{
+						"name": "materializeVideoReferences.scope",
+						"type": "{ context: VideoReferenceContext; physical?: string[]; }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "materializeVideoReferences",
+						"type": "Promise<Map<string, Buffer>>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "referenceScope",
+				"inputs": [
+					{
+						"name": "referenceScope.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "referenceScope.context",
+						"type": "VideoReferenceContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "referenceScope",
+						"type": "Promise<PinnedHistory>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "proveOriginal",
+				"inputs": [
+					{
+						"name": "proveOriginal.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "proveOriginal.capture",
+						"type": "Capture",
+						"required": true
+					},
+					{
+						"name": "proveOriginal.context",
+						"type": "VideoReferenceContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "proveOriginal",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "createReferenceCache",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "createReferenceCache",
+						"type": "VideoReferenceMemo",
+						"description": "Allocates empty in-memory metadata caches without external work."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "scopeKey",
+				"inputs": [
+					{
+						"name": "scopeKey.pinned",
+						"type": "PinnedHistory",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scopeKey",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "originKey",
+				"inputs": [
+					{
+						"name": "originKey.pinned",
+						"type": "PinnedHistory",
+						"required": true
+					},
+					{
+						"name": "originKey.trail",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "originKey.record",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "originKey.revision",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "originKey",
+						"type": "string",
+						"description": "Hashes the declared string-based scope/trail/record identity without external work."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "memoOrigin",
+				"inputs": [
+					{
+						"name": "memoOrigin.memo",
+						"type": "VideoReferenceMemo",
+						"required": true
+					},
+					{
+						"name": "memoOrigin.key",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "memoOrigin.load",
+						"type": "() => Promise<VideoOriginProof>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "memoOrigin",
+						"type": "Promise<VideoOriginProof>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Loader rejection",
+						"type": "propagated",
+						"description": "The supplied loader may throw or reject. Its original failure propagates and failed work is not retained as successful memoized proof."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Memoization measures the loader result with JSON.stringify; a cyclic or unsupported runtime value cannot be measured and rejects the call."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "JSON.stringify may exceed the call stack on an excessively deep loader result."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "memoCatalog",
+				"inputs": [
+					{
+						"name": "memoCatalog.memo",
+						"type": "VideoReferenceMemo",
+						"required": true
+					},
+					{
+						"name": "memoCatalog.key",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "memoCatalog.load",
+						"type": "() => Promise<VideoReferenceCandidate[]>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "memoCatalog",
+						"type": "Promise<VideoReferenceCandidate[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "Loader rejection",
+						"type": "propagated",
+						"description": "The supplied loader may throw or reject. Its original failure propagates and failed work is not retained as successful memoized proof."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Memoization measures the loader result with JSON.stringify; a cyclic or unsupported runtime value cannot be measured and rejects the call."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "JSON.stringify may exceed the call stack on an excessively deep loader result."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "resolveVideoReference",
+				"inputs": [
+					{
+						"name": "resolveVideoReference.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "resolveVideoReference.proposed",
+						"type": "VideoReferenceInput",
+						"required": true
+					},
+					{
+						"name": "resolveVideoReference.context",
+						"type": "VideoReferenceContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "resolveVideoReference",
+						"type": "Promise<TrustedVideoReference>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The source, owner/slot, ancestry, hash seal, bounded media, poster, timeline or filesystem destination fails the operation’s explicit integrity checks."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "A supplied or retained pointer, slot, clip, batch or manifest fails its runtime schema; no malformed descriptor is admitted."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Retained batch/manifest or source-owner JSON cannot be parsed; the original parse failure propagates."
+					},
+					{
+						"name": "Git/LFS collaborator rejection",
+						"type": "propagated",
+						"description": "A Git/evidence-tree/LFS collaborator can reject; this operation does not establish a narrower rejection shape and does not turn it into verification success."
+					},
+					{
+						"name": "Filesystem rejection",
+						"type": "propagated",
+						"description": "A bounded filesystem operation can reject with its original error/code; this is a failure category rather than an invented runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "VideoReferenceService.constructor",
+				"inputs": [
+					{
+						"name": "VideoReferenceService.constructor.root",
+						"type": "string",
+						"required": false,
+						"default": "process.cwd()",
+						"description": "The optional snapshot/root binding for this operation. Its documented default is the source expression process.cwd(), evaluated at construction, not a literal path string."
+					},
+					{
+						"name": "VideoReferenceService.constructor.pinned",
+						"type": "VideoReferenceContext['pinned']",
+						"required": false,
+						"default": "undefined (omitted)",
+						"description": "The optional snapshot/root binding for this operation. Omission reads current evidence and notes tips when the reference scope is established; explicit null snapshot bounds are never widened."
+					},
+					{
+						"name": "VideoReferenceService.constructor.trail",
+						"type": "string[]",
+						"required": false,
+						"default": []
+					},
+					{
+						"name": "VideoReferenceService.constructor.retainMedia",
+						"type": "boolean",
+						"required": false,
+						"default": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoReferenceService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.evidence-manifest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.record-lineage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-evidence-video-clip-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-note-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.evidence-branch",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.history-note",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.history-status",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-archive",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/verification-evidence/VideoReferenceService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/verification-evidence/VideoReferenceService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

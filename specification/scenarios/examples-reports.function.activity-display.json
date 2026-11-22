@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-reports.function.activity-display",
+	"title": "reports.function.activity-display examples",
+	"kind": "headless",
+	"units": ["reports.function.activity-display"],
+	"builds": [],
+	"states": [
+		{
+			"id": "agent-wording-is-singular-for-one-unknown-for-null",
+			"title": "Agent wording is singular for one, unknown for null",
+			"coverage": "required"
+		},
+		{
+			"id": "agent-state-labels-name-all-five-states",
+			"title": "Agent state labels name all five states",
+			"coverage": "required"
+		},
+		{
+			"id": "activity-time-shows-utc-minute-and-keeps-invalid-input",
+			"title": "Activity time shows UTC minute and keeps invalid input",
+			"coverage": "required"
+		},
+		{
+			"id": "plural-adds-s-except-for-exactly-one",
+			"title": "Plural adds s except for exactly one",
+			"coverage": "required"
+		},
+		{
+			"id": "commit-history-link-joins-base-commit-and-first-branch",
+			"title": "Commit history link joins base, commit and first branch",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.activity-display.test.ts",
+			"cwd": "packages/reports",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"agent-wording-is-singular-for-one-unknown-for-null",
+				"agent-state-labels-name-all-five-states",
+				"activity-time-shows-utc-minute-and-keeps-invalid-input",
+				"plural-adds-s-except-for-exactly-one",
+				"commit-history-link-joins-base-commit-and-first-branch"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"agent-wording-is-singular-for-one-unknown-for-null",
+				"agent-state-labels-name-all-five-states",
+				"activity-time-shows-utc-minute-and-keeps-invalid-input",
+				"plural-adds-s-except-for-exactly-one",
+				"commit-history-link-joins-base-commit-and-first-branch"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"agent-wording-is-singular-for-one-unknown-for-null",
+				"agent-state-labels-name-all-five-states",
+				"activity-time-shows-utc-minute-and-keeps-invalid-input",
+				"plural-adds-s-except-for-exactly-one",
+				"commit-history-link-joins-base-commit-and-first-branch"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

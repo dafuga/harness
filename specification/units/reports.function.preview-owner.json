@@ -10,11 +10,19 @@
 	"documentation": "packages/reports/specification/features/planned/managed-preview-server.md",
 	"owns": {
 		"source": [
+			"packages/reports/src/services/accounts-access/preview-server-service/InvalidPreviewOwnerAddressError.ts",
+			"packages/reports/src/services/accounts-access/preview-server-service/PreviewOwnerIdentityMismatchError.ts",
+			"packages/reports/src/services/accounts-access/preview-server-service/PreviewOwnerPortOccupiedError.ts",
+			"packages/reports/src/services/accounts-access/preview-server-service/PreviewOwnerStillStartingError.ts",
 			"packages/reports/src/services/accounts-access/preview-server-service/previewOwner.ts",
 			"packages/reports/src/utils/accounts-access/previewOwner.ts",
 			"packages/reports/src/utils/accounts-access/previewOwner.types.ts"
 		],
 		"symbols": [
+			"InvalidPreviewOwnerAddressError",
+			"PreviewOwnerIdentityMismatchError",
+			"PreviewOwnerPortOccupiedError",
+			"PreviewOwnerStillStartingError",
 			"previewOwner",
 			"previewOwnerPort",
 			"previewOwnerPath",
@@ -47,13 +55,13 @@
 		"outputs": [
 			{
 				"name": "previewOwnerPort",
-				"type": "unknown",
+				"type": "47840",
 				"description": "Exported numeric constant 47840 named previewOwnerPort in utils/accounts-access/previewOwner.ts; the previewOwner function never reads it and uses only its port argument.",
 				"examples": [47840]
 			},
 			{
 				"name": "previewOwnerPath",
-				"type": "unknown",
+				"type": "\"/__harness_preview__\"",
 				"description": "Exported string constant '/__harness_preview__' from utils/accounts-access/previewOwner.ts, appended to http://127.0.0.1:<port> on every probe. The probe sets redirect to 'error', so a redirect fails the request instead of being followed.",
 				"examples": ["/__harness_preview__"]
 			},

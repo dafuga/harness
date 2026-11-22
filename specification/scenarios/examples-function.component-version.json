@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-function.component-version",
+	"title": "function.component-version examples",
+	"kind": "headless",
+	"units": ["function.component-version"],
+	"builds": [],
+	"states": [
+		{
+			"id": "fingerprints-owned-files-and-manifest-parts",
+			"title": "Fingerprints owned files and manifest parts",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.component-version.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["fingerprints-owned-files-and-manifest-parts"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["fingerprints-owned-files-and-manifest-parts"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["fingerprints-owned-files-and-manifest-parts"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

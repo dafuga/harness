@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-hub.function.hub-rate-limit",
+	"title": "hub.function.hub-rate-limit examples",
+	"kind": "headless",
+	"units": ["hub.function.hub-rate-limit"],
+	"builds": [],
+	"states": [
+		{
+			"id": "skips-counting-for-non-post-and-unlisted-routes",
+			"title": "Skips counting for non-POST and unlisted routes",
+			"coverage": "required"
+		},
+		{
+			"id": "allows-a-count-at-the-route-cap",
+			"title": "Allows a count at the route cap",
+			"coverage": "required"
+		},
+		{
+			"id": "returns-429-with-retry-after-over-the-email-start-cap",
+			"title": "Returns 429 with Retry-After over the email start cap",
+			"coverage": "required"
+		},
+		{
+			"id": "returns-429-when-the-counting-query-returns-no-row",
+			"title": "Returns 429 when the counting query returns no row",
+			"coverage": "required"
+		},
+		{
+			"id": "rejects-when-the-d1-upsert-fails",
+			"title": "Rejects when the D1 upsert fails",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/hub.function.hub-rate-limit.test.ts",
+			"cwd": "packages/hub",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": [
+				"skips-counting-for-non-post-and-unlisted-routes",
+				"allows-a-count-at-the-route-cap",
+				"returns-429-with-retry-after-over-the-email-start-cap",
+				"returns-429-when-the-counting-query-returns-no-row",
+				"rejects-when-the-d1-upsert-fails"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": [
+				"skips-counting-for-non-post-and-unlisted-routes",
+				"allows-a-count-at-the-route-cap",
+				"returns-429-with-retry-after-over-the-email-start-cap",
+				"returns-429-when-the-counting-query-returns-no-row",
+				"rejects-when-the-d1-upsert-fails"
+			],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": [
+				"skips-counting-for-non-post-and-unlisted-routes",
+				"allows-a-count-at-the-route-cap",
+				"returns-429-with-retry-after-over-the-email-start-cap",
+				"returns-429-when-the-counting-query-returns-no-row",
+				"rejects-when-the-d1-upsert-fails"
+			],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

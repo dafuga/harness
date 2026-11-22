@@ -27,7 +27,7 @@ const frame = (heading: string) =>
 /** The commits it made, by what the frame was at each; it leaves `main` checked out. */
 export async function seedShells(
 	repo: VerifyRepo,
-	{ verified, explain }: ShellsSeed,
+	{ verified, explain }: { verified: ShellsSeed['verified']; explain: ShellsSeed['explain'] },
 	from: string
 ): Promise<Record<'framed' | 'framedBaseline' | 'shelled' | 'shellRetained', string>> {
 	await repo.git(['checkout', '-q', '-b', shellsBranch, from]);

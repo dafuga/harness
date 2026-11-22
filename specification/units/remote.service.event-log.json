@@ -316,7 +316,7 @@
 				"outputs": [
 					{
 						"name": "EventLogService.constructor",
-						"type": "unknown",
+						"type": "EventLogService",
 						"description": "The new EventLogService instance: its epoch and capacity are fixed at construction, it starts with no events, and its sequence starts at 0."
 					}
 				],

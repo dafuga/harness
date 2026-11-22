@@ -1,10 +1,11 @@
 // @harness-uid u_gnxqoqxlzz
-import type {
-	LocalSocket,
-	Ticket,
-	LocalTransportTarget,
-	LocalTransportOptions,
-	Verdict
+import {
+	LocalTransportNotListeningError,
+	type LocalSocket,
+	type Ticket,
+	type LocalTransportTarget,
+	type LocalTransportOptions,
+	type Verdict
 } from './LocalTransportService.types';
 import { once } from 'node:events';
 import type { IncomingMessage } from 'node:http';
@@ -137,7 +138,8 @@ export class LocalTransportService {
 	}
 	private bound(): AddressInfo {
 		const address = this.server ? this.server.address() : null;
-		if (!address || typeof address === 'string') throw new Error('The transport is not listening.');
+		if (!address || typeof address === 'string')
+			throw new LocalTransportNotListeningError('The transport is not listening.');
 		return address;
 	}
 	private now(): number {

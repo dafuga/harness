@@ -29,9 +29,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Directory used as the current working directory for each configured setup command. Commands run sequentially and stop at the first nonzero exit code.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "setupBenchmarkWorkspace.definition",
@@ -42,7 +40,7 @@
 					{
 						"version": 1,
 						"name": "unit-smoke-check",
-						"project": "/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna",
+						"project": "/workspace/project",
 						"revision": "0123456789abcdef0123456789abcdef01234567",
 						"task": "Update the example module.",
 						"contract": "Change only src/example.ts and leave the checks passing.",
@@ -198,9 +196,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Directory used as the current working directory for each configured setup command. Commands run sequentially and stop at the first nonzero exit code.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "setupBenchmarkWorkspace.definition",
@@ -211,7 +207,7 @@
 							{
 								"version": 1,
 								"name": "unit-smoke-check",
-								"project": "/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna",
+								"project": "/workspace/project",
 								"revision": "0123456789abcdef0123456789abcdef01234567",
 								"task": "Update the example module.",
 								"contract": "Change only src/example.ts and leave the checks passing.",

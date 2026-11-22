@@ -44,7 +44,7 @@
 		"outputs": [
 			{
 				"name": "EXPIRE_GRANTS",
-				"type": "unknown",
+				"type": "string",
 				"description": "String constant holding an UPDATE for auth_github_grants that tombstones each row with revoked_at still NULL and expires_at at or before its single ? placeholder: it erases the token, refresh and lease columns, increments generation and sets revoked_at to expires_at. This file only exports the string, and rows are never deleted, so a generation never repeats.",
 				"examples": [
 					"UPDATE auth_github_grants SET token_cipher = '', token_expires_at = NULL, refresh_cipher = NULL, refresh_expires_at = NULL, refreshing_until = NULL, generation = generation + 1, revoked_at = expires_at WHERE expires_at <= ? AND revoked_at IS NULL"

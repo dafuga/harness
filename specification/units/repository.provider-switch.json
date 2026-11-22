@@ -257,7 +257,7 @@
 				"outputs": [
 					{
 						"name": "ProviderSwitchRepository.constructor",
-						"type": "unknown",
+						"type": "ProviderSwitchRepository",
 						"description": "A ProviderSwitchRepository instance holding the initialized SQLite database connection under the supplied home directory. The instance is used for repository operations and its connection is closed by close."
 					}
 				],

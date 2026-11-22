@@ -31,8 +31,8 @@
 				"required": true,
 				"description": "Repository root that the history walk passes to a new GitAdapter. The constructor stores it unchanged, and the walk uses it only when the direct check has failures.",
 				"examples": [
-					"/Users/dev/code/shop-app",
-					"/home/runner/work/shop-app/shop-app",
+					"/workspace/project",
+					"/workspace/shop-app/shop-app",
 					"/srv/checkouts/ledger-service"
 				]
 			},
@@ -146,8 +146,8 @@
 						"required": true,
 						"description": "Repository root that the history walk passes to a new GitAdapter. The constructor stores it unchanged, and the walk uses it only when the direct check has failures.",
 						"examples": [
-							"/Users/dev/code/shop-app",
-							"/home/runner/work/shop-app/shop-app",
+							"/workspace/project",
+							"/workspace/shop-app/shop-app",
 							"/srv/checkouts/ledger-service"
 						]
 					},
@@ -161,7 +161,7 @@
 				"outputs": [
 					{
 						"name": "ReasonPathService.constructor",
-						"type": "unknown",
+						"type": "ReasonPathService",
 						"description": "The new ReasonPathService instance, which keeps the root and load values and holds a new ExplanationService."
 					}
 				],

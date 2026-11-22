@@ -8,11 +8,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/codex-gateway-service/CodexGatewayService.ts"],
+		"source": [
+			"src/cli/program/codex-gateway-service/CodexGatewayService.ts",
+			"src/cli/program/codex-gateway-service/CodexGatewayService.types.ts"
+		],
 		"symbols": [
 			"CodexGatewayService",
 			"CodexGatewayService.constructor",
-			"CodexGatewayService.fetch"
+			"CodexGatewayService.fetch",
+			"InvalidGatewayRequestError"
 		]
 	},
 	"contract": {
@@ -98,7 +102,7 @@
 				"outputs": [
 					{
 						"name": "CodexGatewayService.constructor",
-						"type": "unknown",
+						"type": "CodexGatewayService",
 						"description": "The new CodexGatewayService instance that `new` returns, which keeps the config object by reference and an empty CodexSessionRepository in its private `repository` field. The constructor does no validation and cannot throw, because the only work CodexSessionRepository does on construction is creating an empty Map."
 					}
 				],

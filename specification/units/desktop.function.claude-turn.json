@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/adapters/agents-providers/claude-cli-adapter/claudeTurn.ts"],
-		"symbols": ["claudeTurn"]
+		"source": [
+			"packages/desktop/src/adapters/agents-providers/claude-cli-adapter/claudeTurn.ts",
+			"packages/desktop/src/adapters/agents-providers/claude-cli-adapter/claudeTurn.types.ts"
+		],
+		"symbols": ["claudeTurn", "ClaudeRunFailedError"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -44,14 +47,14 @@
 				"name": "claudeTurn.queue",
 				"type": "ResourceQueueService",
 				"required": false,
-				"default": "undefined",
+				"default": "undefined (omitted)",
 				"description": "Optional ResourceQueueService whose run method admits the Claude run with priority coding, memoryMiB 2048 and cpus 1; when omitted, managedAgentTurn calls resourceWork with process.env instead."
 			}
 		],
 		"outputs": [
 			{
 				"name": "claudeTurn",
-				"type": "unknown",
+				"type": "Promise<{ text: string; model: string; }>",
 				"description": "A promise that resolves to { text, model } after the CLI exits with code 0 and its last result event is not an error: text is that event's result as a string (empty when missing or null) and model is the model its init event reported, which equals the requested model. Public text extracted from each parsed event is forwarded to onText while it runs, and lines that are not valid JSON are ignored.",
 				"examples": [
 					{
@@ -112,14 +115,14 @@
 						"name": "claudeTurn.queue",
 						"type": "ResourceQueueService",
 						"required": false,
-						"default": "undefined",
+						"default": "undefined (omitted)",
 						"description": "Optional ResourceQueueService whose run method admits the Claude run with priority coding, memoryMiB 2048 and cpus 1; when omitted, managedAgentTurn calls resourceWork with process.env instead."
 					}
 				],
 				"outputs": [
 					{
 						"name": "claudeTurn",
-						"type": "unknown",
+						"type": "Promise<{ text: string; model: string; }>",
 						"description": "A promise that resolves to { text, model } after the CLI exits with code 0 and its last result event is not an error: text is that event's result as a string (empty when missing or null) and model is the model its init event reported, which equals the requested model. Public text extracted from each parsed event is forwarded to onText while it runs, and lines that are not valid JSON are ignored.",
 						"examples": [
 							{
