@@ -1,0 +1,22 @@
+
+Running 15 tests using 1 worker
+
+(node:77071) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.component.shared-primitives-loading-state at desktop (936ms)
+  ✓   2 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.component.shared-primitives-loading-state:default-label at desktop (871ms)
+  ✓   3 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.component.shared-primitives-loading-state:long at desktop (870ms)
+  ✓   4 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.component.shared-primitives-loading-state:inline at desktop (870ms)
+  ✓   5 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.component.shared-primitives-loading-state:loading at desktop (1.0s)
+  ✓   6 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.component.shared-primitives-loading-state at tablet (570ms)
+  ✓   7 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.component.shared-primitives-loading-state:default-label at tablet (570ms)
+  ✓   8 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.component.shared-primitives-loading-state:long at tablet (589ms)
+  ✓   9 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.component.shared-primitives-loading-state:inline at tablet (572ms)
+  ✓  10 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.component.shared-primitives-loading-state:loading at tablet (573ms)
+  ✓  11 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.component.shared-primitives-loading-state at mobile (572ms)
+  ✓  12 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.component.shared-primitives-loading-state:default-label at mobile (551ms)
+  ✓  13 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.component.shared-primitives-loading-state:long at mobile (551ms)
+  ✓  14 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.component.shared-primitives-loading-state:inline at mobile (534ms)
+  ✓  15 tests/e2e/explorer-shell-component-catalog.spec.ts:86:3 › reports.component.shared-primitives-loading-state:loading at mobile (568ms)
+
+  15 passed (12.6s)
