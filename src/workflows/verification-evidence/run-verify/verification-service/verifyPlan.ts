@@ -21,7 +21,8 @@ export function verifyPlan(input: PlanInput): PlannedCheck[] {
 				target: test.target,
 				cwd: test.cwd ?? '.',
 				command: command(test.runner, test.target),
-				timeoutMs: test.timeoutMs ?? timeoutMs
+				timeoutMs: test.timeoutMs ?? timeoutMs,
+				...(test.memoryMiB ? { memoryMiB: test.memoryMiB } : {})
 			})
 		)
 	);

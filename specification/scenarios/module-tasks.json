@@ -183,14 +183,16 @@
 			"kind": "e2e",
 			"runner": "command",
 			"target": "bun test/verification-output.ts vitest test/module-tasks.e2e.test.ts",
-			"timeoutMs": 240000
+			"timeoutMs": 240000,
+			"memoryMiB": 2560
 		},
 		{
 			"id": "analytics-attribution",
 			"kind": "e2e",
 			"runner": "command",
 			"target": "bun test/verification-output.ts vitest test/analytics-attribution.e2e.test.ts",
-			"timeoutMs": 240000
+			"timeoutMs": 240000,
+			"memoryMiB": 2560
 		},
 		{
 			"id": "module-task-acceptance",
@@ -218,7 +220,8 @@
 			"kind": "e2e",
 			"runner": "command",
 			"target": "bun test/verification-output.ts vitest test/module-task-dispatch.e2e.test.ts",
-			"timeoutMs": 240000
+			"timeoutMs": 240000,
+			"memoryMiB": 2560
 		}
 	],
 	"evidence": [
