@@ -35,7 +35,8 @@ export class CheckRunService {
 		const leaf = check.scenario ? check.name : slug;
 		const evidencePath = `evidence/${commit}/${check.scenario ?? 'checks'}/${leaf}`;
 		const result = await this.execute(check, evidencePath, slug);
-		const captures = this.captures(result, evidencePath);
+		this.context.signal?.throwIfAborted();
+		const captures = checkCaptures(this.context, this.budget, result, evidencePath);
 		const prefix = check.scenario ? `${check.scenario}: ` : '';
 		const written = captures.failures.map((failure) => `${prefix}check ${check.name} ${failure}`);
 		const diagnostics =
@@ -57,27 +58,12 @@ export class CheckRunService {
 		};
 	}
 
-	private captures(result: IsolatedResult, evidencePath: string) {
-		if (result.timedOut) return { gathered: [], failures: [] };
-		const { directory, limits, lite } = this.context;
-		const captures = gatherCaptures(join(directory, evidencePath), evidencePath, limits, {
-			budget: this.budget,
-			root: directory
-		});
-		if (!lite || !captures.gathered.some((item) => item.line.kind === 'screenshot'))
-			return captures;
-		return {
-			gathered: captures.gathered.filter((item) => item.line.kind !== 'screenshot'),
-			failures: [...captures.failures, 'captured screenshots in Lite; declare it fullOnly.']
-		};
-	}
-
 	private execute(
 		check: PlannedCheck,
 		evidencePath: string,
 		slug: string
 	): Promise<IsolatedResult> {
-		const { directory } = this.context;
+		const { directory, signal } = this.context;
 		return resourceWork(
 			{
 				priority: resourcePriority.parse(
@@ -96,11 +82,13 @@ export class CheckRunService {
 						...resourceEnvironment(context.env)
 					},
 					onSpawn: context.track,
+					signal,
 					timeoutMs: check.timeoutMs,
 					log: join(directory, 'logs', `${slug}.log`),
 					maxLogBytes
 				}),
-			this.context.env
+			this.context.env,
+			{ signal }
 		);
 	}
 
@@ -112,10 +100,12 @@ export class CheckRunService {
 			args: ['-c', tool.command],
 			cwd: this.context.snapshot,
 			env: { ...this.context.env, ...(this.context.lite ? this.captureEnvironment() : {}) },
+			signal: this.context.signal,
 			timeoutMs: 60_000,
 			log,
 			maxLogBytes
 		});
+		this.context.signal?.throwIfAborted();
 		if (result.status !== 'passed') return undefined;
 		const printed = await readFile(log, 'utf8').catch(() => '');
 		return firstPrintedLine(printed);
@@ -197,5 +187,25 @@ function checkEntry(
 		...(diagnostics.browserErrors ? { browserErrors: diagnostics.browserErrors } : {}),
 		durationMs: Math.round(result.durationMs),
 		log: { ...result.log, path: relative(directory, result.log.path) }
+	};
+}
+
+/** Captures a finished check wrote; a timeout yields none, and Lite drops screenshots. */
+function checkCaptures(
+	context: RunContext,
+	budget: RecordBudget,
+	result: IsolatedResult,
+	evidencePath: string
+) {
+	if (result.timedOut) return { gathered: [], failures: [] };
+	const { directory, limits, lite } = context;
+	const captures = gatherCaptures(join(directory, evidencePath), evidencePath, limits, {
+		budget,
+		root: directory
+	});
+	if (!lite || !captures.gathered.some((item) => item.line.kind === 'screenshot')) return captures;
+	return {
+		gathered: captures.gathered.filter((item) => item.line.kind !== 'screenshot'),
+		failures: [...captures.failures, 'captured screenshots in Lite; declare it fullOnly.']
 	};
 }

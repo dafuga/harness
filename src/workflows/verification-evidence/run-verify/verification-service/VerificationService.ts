@@ -3,6 +3,10 @@ import type { ProfiledPlan, VerifyContext } from './VerificationService.types';
 export type { VerifyContext } from './VerificationService.types';
 
 import type { ScenarioResult } from '../../../../core/verification-evidence/verificationTypes';
+import { retainedArtifactPath } from '../../../../core/verification-evidence/verificationTypes';
+import { randomUUID } from 'node:crypto';
+import { rm } from 'node:fs/promises';
+import { join } from 'node:path';
 import type { PlannedCheck } from '../../../../utils/verification-evidence/verifyPlan';
 
 import {
@@ -33,7 +37,15 @@ export class VerificationService {
 	async run(): Promise<StoredRecord> {
 		const { context } = this;
 		const startedAt = new Date().toISOString();
-		const directory = this.store.directoryFor(context.commit, startedAt);
+		const plannedDirectory = this.store.directoryFor(context.commit, startedAt);
+		if (context.retainArtifact === undefined) return this.runAt(plannedDirectory, startedAt);
+		return runWithRetainedArtifact(plannedDirectory, (directory) =>
+			this.runAt(directory, startedAt)
+		);
+	}
+
+	private async runAt(directory: string, startedAt: string): Promise<StoredRecord> {
+		const { context } = this;
 		const { plan, pendingChecks, referenced, rerun } = this.selection();
 		const active = this.lite
 			? rerun.filter((scenario) => plan.some((check) => check.scenario === scenario.id))
@@ -50,6 +62,7 @@ export class VerificationService {
 		});
 		const lite = this.lite ? this.litePending(pendingChecks) : undefined;
 		const record = await assembly.assemble({ startedAt, executed, scenarios, referenced, lite });
+		context.signal?.throwIfAborted();
 		await this.store.save(record, directory);
 		return { record, directory };
 	}
@@ -72,7 +85,7 @@ export class VerificationService {
 	private selection() {
 		const { context } = this;
 		const { entity } = context;
-		const referenced = entity ? [] : this.referenced();
+		const referenced = entity ? [] : referencedScenarios(context, this.store);
 		const kept = new Set(referenced.map((scenario) => scenario.id));
 		const rerun = entity
 			? scopedScenarios(context.head.scenarios, entity)
@@ -107,22 +120,41 @@ export class VerificationService {
 
 	/** A scoped run passes the builds its scenarios need; a full run passes none. */
 	private snapshotRun(directory: string, needed?: ReadonlySet<string> | 'all'): SnapshotRunService {
-		const { root, config, commit, tree, env } = this.context;
-		const context = { directory, commit, tree, profile: this.profile.id, env, lite: this.lite };
-		return new SnapshotRunService({ root, config, context, needed });
+		const { root, config, commit, tree, env, retainArtifact, signal } = this.context;
+		const { lite } = this;
+		const context = { directory, commit, tree, profile: this.profile.id, env, signal, lite };
+		return new SnapshotRunService({ root, config, context, needed, retainArtifact });
 	}
+}
 
-	/**
-	 * Unaffected scenarios keep the evidence of the revision that last tested them, but only when
-	 * the base commit itself has a record; otherwise nothing proves they were unaffected since.
-	 */
-	private referenced(): ScenarioResult[] {
-		const { baseRecord, impact, head } = this.context;
-		const prior = baseRecord ? this.store.load(baseRecord)?.record : undefined;
-		const affected = new Set(impact.scenarios.affected);
-		if (!prior) return [];
-		return head.scenarios.flatMap((scenario) =>
-			affected.has(scenario.id) ? [] : (referencedScenario(prior, scenario.id) ?? [])
-		);
+async function runWithRetainedArtifact(
+	plannedDirectory: string,
+	run: (directory: string) => Promise<StoredRecord>
+): Promise<StoredRecord> {
+	const directory = `${plannedDirectory}-export-${randomUUID()}`;
+	let retained = false;
+	try {
+		const result = await run(directory);
+		retained = result.record.status === 'passed' && result.record.retainedArtifact !== undefined;
+		return result;
+	} finally {
+		if (!retained) await rm(join(directory, retainedArtifactPath), { force: true });
 	}
+}
+
+/**
+ * Unaffected scenarios keep the evidence of the revision that last tested them, but only when
+ * the base commit itself has a record; otherwise nothing proves they were unaffected since.
+ */
+function referencedScenarios(
+	context: VerifyContext,
+	store: VerificationStoreRepository
+): ScenarioResult[] {
+	const { baseRecord, impact, head } = context;
+	const prior = baseRecord ? store.load(baseRecord)?.record : undefined;
+	const affected = new Set(impact.scenarios.affected);
+	if (!prior) return [];
+	return head.scenarios.flatMap((scenario) =>
+		affected.has(scenario.id) ? [] : (referencedScenario(prior, scenario.id) ?? [])
+	);
 }

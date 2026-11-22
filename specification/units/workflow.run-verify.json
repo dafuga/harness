@@ -14,7 +14,8 @@
 			"src/workflows/verification-evidence/run-verify/capturePage.types.ts",
 			"src/workflows/verification-evidence/run-verify/renderVerify.ts",
 			"src/workflows/verification-evidence/run-verify/runVerify.ts",
-			"src/workflows/verification-evidence/run-verify/runVerify.types.ts"
+			"src/workflows/verification-evidence/run-verify/runVerify.types.ts",
+			"src/workflows/verification-evidence/run-verify/verifyAdmission.ts"
 		],
 		"symbols": [
 			"verifyRun",
@@ -34,7 +35,9 @@
 			"verifyIdentity",
 			"verifyStamp",
 			"VerifyResult",
-			"VerifyOptions"
+			"VerifyOptions",
+			"partialRetention",
+			"requiresPerformance"
 		]
 	},
 	"contract": {
@@ -320,7 +323,7 @@
 				"type": "VerifyOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional settings for one verification: `commit` is the revision to verify (default `HEAD`; uncommitted changes are never part of it), `root` the repository directory (default: the current directory), `base` the revision to compare against (default: the first parent, used only when a passing record proves it, otherwise the nearest proven ancestor or nothing), `runtime` the impact kernel (`default`, `module`, `wasm`, `process`, or `http`; default: the kernel chosen from this machine's recorded measurements), `testTimeout` the per-check timeout in milliseconds as a string for checks that declare none, `requirePerformance` requires performance evidence, `entity` a unit id that limits the run to the scenario states that show that unit, and `priority` one of `agent-test`, `coding`, or `environment` (default: HARNESS_RESOURCE_PRIORITY, then `environment`). The `base` and `requirePerformance` options apply only to full runs, and an entity run's record is partial and never a full pass.",
+				"description": "Selects an exact source commit, optional trusted base or entity and check settings. Artifact retention selects a declared output and requires full verification.",
 				"examples": [
 					{
 						"commit": "3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b",
@@ -374,13 +377,28 @@
 				"required": true,
 				"description": "The built directory to stamp, resolved against the current directory: each file that holds a `harness-build:` slot of 64 lowercase hex digits (empty or already stamped) is rewritten in place with the directory's build id, and the call fails when no file holds a slot.",
 				"examples": ["/workspace/app/dist/worker", "dist/worker"]
+			},
+			{
+				"name": "partialRetention.options",
+				"type": "VerifyOptions",
+				"required": true
+			},
+			{
+				"name": "requiresPerformance.options",
+				"type": "VerifyOptions",
+				"required": true
+			},
+			{
+				"name": "requiresPerformance.config",
+				"type": "VerifyConfig",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "verifyRun",
 				"type": "Promise<VerifyResult>",
-				"description": "The stored result of one verification: its sealed record and the directory holding its `record.json`. A failing verification still resolves, with a record whose status is `failed`, and an entity run always includes an `attachment` whose status is `attached`, `unchanged`, or `skipped`.",
+				"description": "Returns the record and its directory. An opted-in passing full record identifies the retained generated file, its source path, byte count and SHA-256.",
 				"examples": [
 					{
 						"record": {
@@ -1127,7 +1145,7 @@
 						"type": "VerifyOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional settings for one verification: `commit` is the revision to verify (default `HEAD`; uncommitted changes are never part of it), `root` the repository directory (default: the current directory), `base` the revision to compare against (default: the first parent, used only when a passing record proves it, otherwise the nearest proven ancestor or nothing), `runtime` the impact kernel (`default`, `module`, `wasm`, `process`, or `http`; default: the kernel chosen from this machine's recorded measurements), `testTimeout` the per-check timeout in milliseconds as a string for checks that declare none, `requirePerformance` requires performance evidence, `entity` a unit id that limits the run to the scenario states that show that unit, and `priority` one of `agent-test`, `coding`, or `environment` (default: HARNESS_RESOURCE_PRIORITY, then `environment`). The `base` and `requirePerformance` options apply only to full runs, and an entity run's record is partial and never a full pass.",
+						"description": "Selects an exact source commit, optional trusted base or entity and check settings. Artifact retention selects a declared output and requires full verification.",
 						"examples": [
 							{
 								"commit": "3f9a1c0d7e52b84f61a0c9d2e7b5f413a8c06e9b",
@@ -1152,7 +1170,7 @@
 					{
 						"name": "verifyRun",
 						"type": "Promise<VerifyResult>",
-						"description": "The stored result of one verification: its sealed record and the directory holding its `record.json`. A failing verification still resolves, with a record whose status is `failed`, and an entity run always includes an `attachment` whose status is `attached`, `unchanged`, or `skipped`.",
+						"description": "Returns the record and its directory. An opted-in passing full record identifies the retained generated file, its source path, byte count and SHA-256.",
 						"examples": [
 							{
 								"record": {
@@ -1562,6 +1580,47 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "partialRetention",
+				"inputs": [
+					{
+						"name": "partialRetention.options",
+						"type": "VerifyOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "partialRetention",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "requiresPerformance",
+				"inputs": [
+					{
+						"name": "requiresPerformance.options",
+						"type": "VerifyOptions",
+						"required": true
+					},
+					{
+						"name": "requiresPerformance.config",
+						"type": "VerifyConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "requiresPerformance",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []
@@ -1579,6 +1638,11 @@
 		},
 		{
 			"unit": "function.media-facts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
 			"via": "import",
 			"origin": "derived"
 		},

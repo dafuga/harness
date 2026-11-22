@@ -39,7 +39,7 @@
 			{
 				"name": "VerificationService.run",
 				"type": "Promise<StoredRecord>",
-				"description": "The StoredRecord of the completed run: the sealed record, whose id is the SHA-256 of everything else in it, and the directory from directoryFor(commit, startedAt) that holds record.json. It resolves only after the record is saved, and run() catches nothing, so a rejected step it awaits rejects the promise.",
+				"description": "Stores the sealed verification record. A full passing run may retain one declared generated file and record its exact byte count and hash. A failed run removes its staged artifact.",
 				"examples": [
 					{
 						"record": {
@@ -152,7 +152,7 @@
 					{
 						"name": "VerificationService.run",
 						"type": "Promise<StoredRecord>",
-						"description": "The StoredRecord of the completed run: the sealed record, whose id is the SHA-256 of everything else in it, and the directory from directoryFor(commit, startedAt) that holds record.json. It resolves only after the record is saved, and run() catches nothing, so a rejected step it awaits rejects the promise.",
+						"description": "Stores the sealed verification record. A full passing run may retain one declared generated file and record its exact byte count and hash. A failed run removes its staged artifact.",
 						"examples": [
 							{
 								"record": {

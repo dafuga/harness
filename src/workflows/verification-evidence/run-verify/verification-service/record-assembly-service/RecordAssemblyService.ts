@@ -59,11 +59,7 @@ export class RecordAssemblyService {
 			components: componentSnapshots(context, measurements),
 			measurements,
 			impact: recordedImpact(context.impact),
-			// Only a run that skipped a declared build names one; every other record is unchanged.
-			...recordedBuilds(
-				input.executed.builds,
-				input.executed.skippedBuilds?.length ? input.executed.skippedBuilds : undefined
-			),
+			...recordedObservations(input, Object.values(gates).flat().length === 0),
 			budgets: { status: outcome(budgets.report.failures), findings: budgets.report.findings },
 			reasons: recordedReasons(reasons)
 		});
@@ -84,6 +80,7 @@ export class RecordAssemblyService {
 				? { performance: profileFailures(this.context, judged.measurements) }
 				: {}),
 			snapshot: snapshotFailures(input.executed),
+			...(input.executed.artifactFailures ? { artifact: input.executed.artifactFailures } : {}),
 			registry: registryGate(this.context.base, this.context.head),
 			ledger: judged.budgets.ledger,
 			tests: outcomes.filter((item) => !item.check.scenario).flatMap((item) => item.failures),
@@ -198,4 +195,13 @@ function profileFailures(context: AssemblyContext, measurements: Measurement[]):
 		commit,
 		profile: profile.id
 	});
+}
+
+function recordedObservations(input: AssemblyInput, passed: boolean) {
+	const { builds, skippedBuilds, retainedArtifact } = input.executed;
+	return {
+		// Only a run that skipped a declared build names one; every other record is unchanged.
+		...recordedBuilds(builds, skippedBuilds?.length ? skippedBuilds : undefined),
+		...(passed && retainedArtifact ? { retainedArtifact } : {})
+	};
 }
