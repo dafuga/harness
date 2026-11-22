@@ -196,8 +196,7 @@
 			"TrackerAdapterLeaseAdapter",
 			"TrackerDispatchRepository",
 			"TrackerDispatchSchedulerService",
-			"TrackerSupervisorService",
-			"ProviderSignInCommand"
+			"TrackerSupervisorService"
 		]
 	},
 	"contract": {
@@ -292,11 +291,6 @@
 		},
 		{
 			"unit": "command.agents-providers-module-task",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "command.agents-providers-provider-sign-in",
 			"via": "reexport",
 			"origin": "derived"
 		},

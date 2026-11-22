@@ -217,4 +217,3 @@ export { TrackerAdapterLeaseAdapter } from './adapters/projects-sessions/Tracker
 export { TrackerDispatchRepository } from './repositories/projects-sessions/TrackerDispatchRepository';
 export { TrackerDispatchSchedulerService } from './services/projects-sessions/TrackerDispatchSchedulerService';
 export { TrackerSupervisorService } from './services/projects-sessions/TrackerSupervisorService';
-export { ProviderSignInCommand } from './commands/agents-providers/ProviderSignInCommand';
