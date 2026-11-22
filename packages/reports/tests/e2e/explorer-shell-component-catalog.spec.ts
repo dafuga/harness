@@ -110,7 +110,7 @@ for (const viewport of catalogViewports) {
 			await expect
 				.poll(() => page.evaluate(() => document.documentElement.scrollWidth))
 				.toBeLessThanOrEqual(viewport.width);
-			if (viewport.id === 'desktop') await profilePreview(page, unit.id, variant);
+			if (viewport.id === 'desktop') await profilePreview(page, unit.id, state);
 			if (isProjectAgent)
 				expect(projectErrors, 'ProjectAgent produces no unexpected browser errors').toEqual([]);
 		});

@@ -159,6 +159,6 @@ export async function capturePreview(
 	}
 	if (!evidenceRequested()) return { clip, bytes };
 	await recordPreviewCapture(home, { id, variant, viewport, clip, bytes, reportDialog });
-	if (pageUnitIds.has(id)) await previewNavigation(page, id, viewport);
+	if (pageUnitIds.has(id)) await previewNavigation(page, id, viewport, variant);
 	return { clip, bytes };
 }

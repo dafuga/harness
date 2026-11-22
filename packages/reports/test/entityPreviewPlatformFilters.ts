@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import type { PlatformSearchCase } from '../tests/e2e/support/component-previews/platformSearchVideo.types';
 import { capture } from './entityPreviewPage';
 
-/** The Orders platforms in the bit order the finite search fixtures use: bit n selects platform n. */
+/** The fixture mask uses this platform order. */
 const platforms = ['Web', 'iOS', 'Android', 'Desktop (Electron)'];
 const statusCases: [string, string[]][] = [
 	['all', platforms],
@@ -32,7 +32,7 @@ const trigger = (page: Page) => page.getByRole('button', { name: 'Filters', exac
 const dialog = (page: Page) => page.getByRole('dialog', { name: 'Filters', exact: true });
 const done = (page: Page) => dialog(page).getByRole('button', { name: 'Done', exact: true });
 
-/** Exact card set: the count matches and every expected link is present once, so nothing extra shows. */
+/** Check the count and the unique link for each expected card. */
 async function expectPlatforms(page: Page, names: string[]): Promise<void> {
 	await expect(links(page)).toHaveCount(names.length);
 	for (const name of names) {
@@ -71,7 +71,7 @@ async function focusAndHover(page: Page): Promise<void> {
 	await expectPlatforms(page, platforms);
 }
 
-/** Each fixture query yields its exact set; each class is reset before the next one starts. */
+/** Reset the full list after each fixture query. */
 async function exerciseSearchCases(page: Page, viewport: string): Promise<void> {
 	for (const [index, fixture] of searchCases().entries()) {
 		expect(fixture.mask, `search-${index}.json names its own mask`).toBe(index);
@@ -87,7 +87,7 @@ async function exerciseSearchCases(page: Page, viewport: string): Promise<void> 
 	}
 }
 
-/** Every status option yields its exact set; the not-recorded zero result resets with Show all. */
+/** Check each status filter, including the empty Not recorded result. */
 async function exerciseStatusCases(page: Page): Promise<void> {
 	for (const [status, names] of statusCases) {
 		await chooseStatus(page, status);
