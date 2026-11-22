@@ -1,7 +1,6 @@
 import { execFile } from 'node:child_process';
-import { mkdtempSync } from 'node:fs';
-import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
+import { createTempDirectory } from './temporary';
 
 // Each case runs a whole Vitest process.
 export const observationTimeout = 180_000;
@@ -13,7 +12,7 @@ export async function runVerificationObservation(
 	targets: string[],
 	directories: string[]
 ) {
-	const directory = mkdtempSync(join(tmpdir(), 'harness-observation-proof-'));
+	const directory = await createTempDirectory('harness-observation-proof-');
 	directories.push(directory);
 	// Yield while commands run so Vitest can acknowledge its worker's reporting messages.
 	const result = await new Promise<{
