@@ -1,0 +1,18 @@
+The bundle contains this ref:
+772d376465aaf7662a307ec9f675fc616e6b28a9 HEAD
+The bundle records a complete history.
+The bundle uses this hash algorithm: sha1
+/Users/danielfugere/harness-z5jp8p-evidence/overnight-8303ae615/linux-ui-snapshot-declared-772d37646-20261122T134001
+{"scenario":"explorer-platforms","test":"platforms","command":"ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts test/entity-preview-platforms.spec.ts","exit":0,"signal":null}
+{"scenario":"component-catalog-previews","test":"previews","command":"bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts explorer-shell-component-catalog.spec.ts --grep '(^| )(reports\\.component\\.shared-primitives-loading-state|reports\\.component\\.explorer-ui-explorer-platforms|reports\\.page\\.harness-branch-branch-at-platforms|reports\\.component\\.harness-harness-console:loading-history|reports\\.component\\.harness-harness-console:loading-revision|reports\\.component\\.harness-harness-console:index-error|reports\\.component\\.harness-harness-console:revision-error)(:[^ ]+)? at '","exit":0,"signal":null}
+{
+  "revision": "772d376465aaf7662a307ec9f675fc616e6b28a9",
+  "tree": "5cd721ade72148fc664cbdaf365a78075a5f98f1",
+  "chromium": "Google Chrome for Testing 153.0.8010.12",
+  "electron": "44.7.0",
+  "sealedNativeRecord": false,
+  "passedRegisteredCommands": 2,
+  "failedRegisteredCommands": 0,
+  "passingCasesInSuccessfulCommands": 105,
+  "verifiedScreenshots": 129
+}
