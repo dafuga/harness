@@ -39,7 +39,7 @@ test('Tracker plan children, due items, current question and privacy survive pro
 	};
 	const home = buildHomeSnapshot(
 		{ items: [plan, work, completed, sensitive], runs: [], machines: [] },
-		{ ...noProviders, routines: [routine] },
+		{ ...noProviders, routines: [routine], routinesReadAt: updated_at },
 		now
 	);
 	expect(home.plans).toMatchObject([{ id: plan.id, total: 2, done: 1, state: 'draft' }]);

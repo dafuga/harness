@@ -82,8 +82,21 @@ async function dialogs(page: Page, position: CapturePosition, fixture: HomeFixtu
 		if (screen.id === 'agents' && position[0] === 'phone' && position[2] === 'default')
 			await agentChat(page, position, fixture);
 		if (screen.id === 'wip') await workByProject(page, position);
-		if (screen.id === 'quota' && position[2] === 'busy')
+		if (screen.id === 'quota' && position[2] === 'busy') {
+			const stale = dialog.locator('.hh-q-plan').last();
+			await expect(stale.getByText('Unknown', { exact: true })).toBeVisible();
+			await expect(stale.getByRole('meter')).toHaveCount(0);
 			await expect(dialog.getByText('Almost out', { exact: true }).first()).toBeVisible();
+		}
+		if (screen.id === 'quota' && position[2] === 'empty')
+			await expect(dialog.getByText('Provider quota is unknown.')).toBeVisible();
+		if (screen.id === 'scheduled' && position[2] === 'busy') {
+			const routine = fixture.snapshot.scheduled.find((run) => run.source === 'claude')!;
+			const tracker = fixture.snapshot.scheduled.find((run) => run.source === 'tracker')!;
+			await expect(dialog.getByText('Claude routine dates are unknown.')).toBeVisible();
+			await expect(dialog.getByText(routine.title, { exact: true })).toHaveCount(0);
+			await expect(dialog.getByText(tracker.title, { exact: true })).toBeVisible();
+		}
 		await page.keyboard.press('Escape');
 		await expect(opener).toBeFocused();
 	}

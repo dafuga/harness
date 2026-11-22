@@ -57,6 +57,9 @@ export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
 	await page.clock.setFixedTime(homeClock);
 	const data = mockup(mode);
 	const snapshot = homeData(data);
+	if (mode === 'busy')
+		snapshot.providers.routinesReadAt = new Date(homeClock - 10_800_000).toISOString();
+	if (mode === 'empty') snapshot.providers.quota = null;
 	let release = () => {};
 	const pending = new Promise<void>((resolve) => {
 		release = resolve;

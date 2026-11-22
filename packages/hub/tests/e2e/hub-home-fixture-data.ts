@@ -194,6 +194,10 @@ export function homeData(data: MockupHomeData): OwnerHomeSnapshot {
 			].map((title, pos) => ({ id: `step-${pos}`, title, done: pos < plan.done }))
 		})),
 		scheduled: schedule,
-		providers: { routines: schedule.filter((run) => run.source === 'claude'), quota: quotas(data) }
+		providers: {
+			routines: schedule.filter((run) => run.source === 'claude'),
+			routinesReadAt: at(-2),
+			quota: quotas(data)
+		}
 	};
 }
