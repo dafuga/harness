@@ -1,0 +1,177 @@
+{
+	"schemaVersion": 1,
+	"id": "command.agents-providers-provider-sign-in",
+	"uid": "u_hcdv6alnyy",
+	"kind": "command",
+	"title": "ProviderSignInCommand",
+	"responsibility": "Owns the ProviderSignInCommand command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/commands/agents-providers/ProviderSignInCommand.ts",
+			"src/commands/agents-providers/ProviderSignInCommand.types.ts"
+		],
+		"symbols": [
+			"ProviderSignInCommand",
+			"ProviderSignInCommand.constructor",
+			"ProviderSignInCommand.register",
+			"ProviderSignInCommand.status",
+			"ProviderSignInCommand.run",
+			"SignInProviderId",
+			"ProviderSignInStatus",
+			"ProviderSignInSpec",
+			"ProviderSignInDeps"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ProviderSignInCommand.constructor.deps",
+				"type": "ProviderSignInDeps",
+				"required": false
+			},
+			{
+				"name": "ProviderSignInCommand.register.program",
+				"type": "Command",
+				"required": true
+			},
+			{
+				"name": "ProviderSignInCommand.status.provider",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "ProviderSignInCommand.run.provider",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "ProviderSignInCommand.register",
+				"type": "void"
+			},
+			{
+				"name": "ProviderSignInCommand.status",
+				"type": "ProviderSignInStatus"
+			},
+			{
+				"name": "ProviderSignInCommand.run",
+				"type": "Promise<number>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ProviderSignInCommand.register",
+				"inputs": [
+					{
+						"name": "ProviderSignInCommand.register.program",
+						"type": "Command",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProviderSignInCommand.register",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProviderSignInCommand.status",
+				"inputs": [
+					{
+						"name": "ProviderSignInCommand.status.provider",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProviderSignInCommand.status",
+						"type": "ProviderSignInStatus"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProviderSignInCommand.run",
+				"inputs": [
+					{
+						"name": "ProviderSignInCommand.run.provider",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProviderSignInCommand.run",
+						"type": "Promise<number>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ProviderSignInCommand.constructor",
+				"inputs": [
+					{
+						"name": "ProviderSignInCommand.constructor.deps",
+						"type": "ProviderSignInDeps",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProviderSignInCommand.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/agents-providers/ProviderSignInCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/agents-providers/ProviderSignInCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

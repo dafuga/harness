@@ -8,6 +8,7 @@ export const commandHelp = [
 		term: 'codex',
 		aliases: []
 	},
+	plainHelp('provider', 'Open the installed provider sign-in tools.'),
 	{
 		name: 'benchmark',
 		signature: 'benchmark',
@@ -36,13 +37,7 @@ export const commandHelp = [
 		term: 'activity',
 		aliases: []
 	},
-	{
-		name: 'projects',
-		signature: 'projects',
-		description: 'Read local Harness project cards.',
-		term: 'projects',
-		aliases: []
-	},
+	plainHelp('projects', 'Read local Harness project cards.'),
 	{
 		name: 'report',
 		signature: 'report [args...]',
@@ -214,3 +209,7 @@ export const commandHelp = [
 		aliases: []
 	}
 ];
+
+function plainHelp(name: string, description: string) {
+	return { name, signature: name, description, term: name, aliases: [] };
+}

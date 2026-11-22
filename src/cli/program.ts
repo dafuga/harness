@@ -1,6 +1,7 @@
 // @harness-uid u_3tibsmkofv
 import { DeployCommand } from '../commands/execution-runtimes/DeployCommand';
 import { PermissionsCommand } from '../commands/networking-security/PermissionsCommand';
+import { ProviderSignInCommand } from '../commands/agents-providers/ProviderSignInCommand';
 import { registerTaskCommand } from './program/TaskCommand';
 import { TrackerCommand } from '../commands/projects-sessions/TrackerCommand';
 import { ModuleCommand } from '../commands/module-system/ModuleCommand';
@@ -40,6 +41,7 @@ export function buildProgram(): Command {
 		.version(sdkPackage.version);
 
 	registerCodexCommand(program);
+	new ProviderSignInCommand().register(program);
 	registerBenchmarkCommand(program);
 	registerResourcesCommand(program);
 	registerAnalyticsCommand(program);
