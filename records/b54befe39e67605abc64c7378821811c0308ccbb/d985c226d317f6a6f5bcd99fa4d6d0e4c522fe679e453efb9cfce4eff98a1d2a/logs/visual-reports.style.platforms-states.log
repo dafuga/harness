@@ -1,0 +1,25 @@
+
+Running 18 tests using 1 worker
+
+(node:84041) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/units/explorer-shell-unit-reports.style.platforms.spec.ts:27:3 › reports.style.platforms:default at desktop (716ms)
+  ✓   2 tests/e2e/units/explorer-shell-unit-reports.style.platforms.spec.ts:27:3 › reports.style.platforms:status-options-open at desktop (859ms)
+  ✓   3 tests/e2e/units/explorer-shell-unit-reports.style.platforms.spec.ts:27:3 › reports.style.platforms:card-hovered at desktop (803ms)
+  ✓   4 tests/e2e/units/explorer-shell-unit-reports.style.platforms.spec.ts:27:3 › reports.style.platforms:card-focused at desktop (627ms)
+  ✓   5 tests/e2e/units/explorer-shell-unit-reports.style.platforms.spec.ts:27:3 › reports.style.platforms:unindexed at desktop (613ms)
+  ✓   6 tests/e2e/units/explorer-shell-unit-reports.style.platforms.spec.ts:27:3 › reports.style.platforms:detail-web at desktop (638ms)
+  ✓   7 tests/e2e/units/explorer-shell-unit-reports.style.platforms.spec.ts:27:3 › reports.style.platforms:default at tablet (1.0s)
+  ✓   8 tests/e2e/units/explorer-shell-unit-reports.style.platforms.spec.ts:27:3 › reports.style.platforms:status-options-open at tablet (2.2s)
+  ✓   9 tests/e2e/units/explorer-shell-unit-reports.style.platforms.spec.ts:27:3 › reports.style.platforms:card-hovered at tablet (1.2s)
+  ✓  10 tests/e2e/units/explorer-shell-unit-reports.style.platforms.spec.ts:27:3 › reports.style.platforms:card-focused at tablet (993ms)
+  ✓  11 tests/e2e/units/explorer-shell-unit-reports.style.platforms.spec.ts:27:3 › reports.style.platforms:unindexed at tablet (1.3s)
+  ✓  12 tests/e2e/units/explorer-shell-unit-reports.style.platforms.spec.ts:27:3 › reports.style.platforms:detail-web at tablet (1.9s)
+  ✓  13 tests/e2e/units/explorer-shell-unit-reports.style.platforms.spec.ts:27:3 › reports.style.platforms:default at mobile (2.1s)
+  ✓  14 tests/e2e/units/explorer-shell-unit-reports.style.platforms.spec.ts:27:3 › reports.style.platforms:status-options-open at mobile (2.1s)
+  ✓  15 tests/e2e/units/explorer-shell-unit-reports.style.platforms.spec.ts:27:3 › reports.style.platforms:card-hovered at mobile (1.7s)
+  ✓  16 tests/e2e/units/explorer-shell-unit-reports.style.platforms.spec.ts:27:3 › reports.style.platforms:card-focused at mobile (1.0s)
+  ✓  17 tests/e2e/units/explorer-shell-unit-reports.style.platforms.spec.ts:27:3 › reports.style.platforms:unindexed at mobile (1.2s)
+  ✓  18 tests/e2e/units/explorer-shell-unit-reports.style.platforms.spec.ts:27:3 › reports.style.platforms:detail-web at mobile (1.0s)
+
+  18 passed (24.4s)

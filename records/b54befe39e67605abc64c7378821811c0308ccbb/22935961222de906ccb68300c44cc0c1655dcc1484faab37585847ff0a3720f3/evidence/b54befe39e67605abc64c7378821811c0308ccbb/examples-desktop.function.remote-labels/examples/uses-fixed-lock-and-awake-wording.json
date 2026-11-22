@@ -1,0 +1,29 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.remote-labels",
+	"symbol": "lockNote",
+	"cases": [
+		{
+			"name": "lock guidance text",
+			"input": {
+				"export": "lockNote"
+			},
+			"output": "Approved phones keep working while this Mac is locked and awake. A sleeping Mac is offline."
+		},
+		{
+			"name": "awake wording when lock state is unreported",
+			"input": {
+				"export": "awakeNote"
+			},
+			"output": "Computer awake · works while its screen is locked"
+		},
+		{
+			"name": "public entry repeats lock guidance",
+			"input": {
+				"export": "publicEntry.lockNote"
+			},
+			"output": "Approved phones keep working while this Mac is locked and awake. A sleeping Mac is offline."
+		}
+	]
+}

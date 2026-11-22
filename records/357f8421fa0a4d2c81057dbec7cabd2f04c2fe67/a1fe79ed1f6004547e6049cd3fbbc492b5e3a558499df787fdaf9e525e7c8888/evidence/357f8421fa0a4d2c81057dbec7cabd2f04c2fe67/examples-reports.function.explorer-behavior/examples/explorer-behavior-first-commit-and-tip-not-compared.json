@@ -1,0 +1,58 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-behavior",
+	"symbol": "explorerBehavior",
+	"cases": [
+		{
+			"name": "first commit gives its initial reason",
+			"input": {
+				"before": null
+			},
+			"output": {
+				"summary": "not-compared",
+				"reason": "This is the first commit.",
+				"rows": [
+					[
+						"default",
+						"output",
+						"unknown"
+					]
+				],
+				"scenarios": [
+					{
+						"id": "clock",
+						"title": "Clock",
+						"before": null,
+						"after": null
+					}
+				]
+			}
+		},
+		{
+			"name": "branch tip has one side and no reason",
+			"input": {
+				"mode": "current"
+			},
+			"output": {
+				"summary": "not-compared",
+				"reason": null,
+				"rows": [
+					[
+						"default",
+						"output",
+						"unknown"
+					]
+				],
+				"scenarios": [
+					{
+						"id": "clock",
+						"title": "Clock",
+						"before": null,
+						"after": null
+					}
+				]
+			}
+		}
+	]
+}

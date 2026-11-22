@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-history",
+	"symbol": "historyDetail",
+	"cases": [
+		{
+			"name": "a unit the commit changed directly has its explanation and verdict",
+			"input": {
+				"commit": "8b41d0720e252681deac809969b3faf8181dac30",
+				"unit": "app.function.filter-orders"
+			},
+			"output": {
+				"sourceSize": null,
+				"sourceComplexity": null,
+				"known": true,
+				"present": true,
+				"change": "direct",
+				"version": "v-app.function.filter-orders",
+				"explanations": [
+					{
+						"unit": "app.function.filter-orders",
+						"symbol": "filterOrders",
+						"change": "modified",
+						"behavior": "Matches orders regardless of case.",
+						"simplification": {
+							"attempt": "Removed the second normalization.",
+							"outcome": "improved"
+						},
+						"performance": {
+							"attempt": "Normalizes once per request.",
+							"outcome": "improved"
+						}
+					}
+				],
+				"verdict": {
+					"passed": true,
+					"label": "Full coverage passed",
+					"reasons": []
+				}
+			}
+		},
+		{
+			"name": "a unit the commit left alone is present with no change",
+			"input": {
+				"commit": "8b41d0720e252681deac809969b3faf8181dac30",
+				"unit": "app.component.order-card"
+			},
+			"output": {
+				"sourceSize": null,
+				"sourceComplexity": null,
+				"known": true,
+				"present": true,
+				"change": null,
+				"version": "v-app.component.order-card",
+				"explanations": [],
+				"verdict": {
+					"passed": true,
+					"label": "Full coverage passed",
+					"reasons": []
+				}
+			}
+		}
+	]
+}

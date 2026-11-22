@@ -1,0 +1,68 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-name",
+	"symbol": "explorerName",
+	"cases": [
+		{
+			"name": "declared identifier without owned source",
+			"input": {
+				"id": "function.console-route",
+				"kind": "function",
+				"title": "consoleRoute"
+			},
+			"output": "consoleRoute"
+		},
+		{
+			"name": "owned symbol wins over a descriptive title",
+			"input": {
+				"id": "app.service.orders",
+				"kind": "service",
+				"title": "A descriptive title for orders",
+				"owns": {
+					"source": [
+						"src/lib/checkout/CheckoutService.ts"
+					],
+					"symbols": [
+						"CheckoutOptions",
+						"CheckoutService"
+					]
+				}
+			},
+			"output": "CheckoutService"
+		},
+		{
+			"name": "explorer name keeps its own exported symbol",
+			"input": {
+				"id": "reports.function.explorer-name",
+				"kind": "function",
+				"title": "Readable entity names",
+				"owns": {
+					"source": [
+						"packages/reports/src/utils/explorer-ui/explorerName.ts"
+					],
+					"symbols": [
+						"explorerName",
+						"explorerAppRoute"
+					]
+				}
+			},
+			"output": "explorerName"
+		},
+		{
+			"name": "owned module stem names a function without symbols",
+			"input": {
+				"id": "function.format",
+				"kind": "function",
+				"title": "Format duration",
+				"owns": {
+					"source": [
+						"src/utils/formatDuration.ts"
+					],
+					"symbols": []
+				}
+			},
+			"output": "formatDuration"
+		}
+	]
+}

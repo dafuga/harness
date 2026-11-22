@@ -1,0 +1,17 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.service.project-task",
+	"symbol": "ProjectTaskService.run",
+	"cases": [
+		{
+			"name": "ask request resolves Answer complete",
+			"input": {
+				"mode": "ask"
+			},
+			"output": {
+				"summary": "Answer complete."
+			}
+		}
+	]
+}

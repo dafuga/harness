@@ -1,0 +1,225 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.history-series",
+	"symbol": "historySeries",
+	"cases": [
+		{
+			"name": "profile, unit of measure, method and comparison split lines",
+			"input": {
+				"records": [
+					{
+						"id": "r-1",
+						"measurements": [
+							{
+								"unitOfMeasure": "ms",
+								"method": "Median of timed rounds.",
+								"workload": "render 1k",
+								"profile": "linux-x64-ci",
+								"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "latency-warm-ms",
+								"value": 12
+							}
+						]
+					},
+					{
+						"id": "r-2",
+						"measurements": [
+							{
+								"unitOfMeasure": "ms",
+								"method": "Median of timed rounds.",
+								"workload": "render 1k",
+								"profile": "linux-x64-ci",
+								"testedRevision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "latency-warm-ms",
+								"value": 10
+							},
+							{
+								"unitOfMeasure": "ms",
+								"method": "Median of timed rounds.",
+								"workload": "render 1k",
+								"profile": "another-runner",
+								"testedRevision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "latency-warm-ms",
+								"value": 9
+							},
+							{
+								"unitOfMeasure": "us",
+								"method": "Median of timed rounds.",
+								"workload": "render 1k",
+								"profile": "linux-x64-ci",
+								"testedRevision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "latency-warm-ms",
+								"value": 2000
+							},
+							{
+								"unitOfMeasure": "ms",
+								"method": "Single run.",
+								"workload": "render 1k",
+								"profile": "linux-x64-ci",
+								"testedRevision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "latency-warm-ms",
+								"value": 8
+							},
+							{
+								"unitOfMeasure": "ms",
+								"method": "Median of timed rounds.",
+								"workload": "render 1k",
+								"profile": "linux-x64-ci",
+								"testedRevision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "latency-warm-ms",
+								"value": 11,
+								"comparison": {
+									"request": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+									"boundary": "public-invocation",
+									"protocol": "harness-rounds/1",
+									"sampling": {
+										"warmup": 3,
+										"rounds": 5,
+										"iterations": 20
+									}
+								}
+							},
+							{
+								"unitOfMeasure": "ms",
+								"method": "Median of timed rounds.",
+								"workload": "render 1k",
+								"profile": "linux-x64-ci",
+								"testedRevision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "latency-warm-ms",
+								"value": null,
+								"unavailable": "Not measured."
+							},
+							{
+								"unitOfMeasure": "ms",
+								"method": "Median of timed rounds.",
+								"workload": null,
+								"profile": "linux-x64-ci",
+								"testedRevision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "latency-warm-ms",
+								"value": 3
+							},
+							{
+								"unitOfMeasure": "ms",
+								"method": "Median of timed rounds.",
+								"workload": "render 1k",
+								"profile": null,
+								"testedRevision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "latency-warm-ms",
+								"value": 4
+							}
+						]
+					}
+				]
+			},
+			"output": [
+				{
+					"unit": "function.alpha",
+					"workload": "render 1k",
+					"metric": "latency-warm-ms",
+					"target": null,
+					"incompatible": true,
+					"series": [
+						{
+							"profile": "another-runner",
+							"unitOfMeasure": "ms",
+							"method": "Median of timed rounds.",
+							"comparison": null,
+							"points": [
+								{
+									"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+									"record": "r-2",
+									"value": 9
+								}
+							]
+						},
+						{
+							"profile": "linux-x64-ci",
+							"unitOfMeasure": "ms",
+							"method": "Median of timed rounds.",
+							"comparison": null,
+							"points": [
+								{
+									"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"record": "r-1",
+									"value": 12
+								},
+								{
+									"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+									"record": "r-2",
+									"value": 10
+								}
+							]
+						},
+						{
+							"profile": "linux-x64-ci",
+							"unitOfMeasure": "us",
+							"method": "Median of timed rounds.",
+							"comparison": null,
+							"points": [
+								{
+									"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+									"record": "r-2",
+									"value": 2000
+								}
+							]
+						},
+						{
+							"profile": "linux-x64-ci",
+							"unitOfMeasure": "ms",
+							"method": "Single run.",
+							"comparison": null,
+							"points": [
+								{
+									"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+									"record": "r-2",
+									"value": 8
+								}
+							]
+						},
+						{
+							"profile": "linux-x64-ci",
+							"unitOfMeasure": "ms",
+							"method": "Median of timed rounds.",
+							"comparison": {
+								"request": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+								"boundary": "public-invocation",
+								"protocol": "harness-rounds/1",
+								"sampling": {
+									"warmup": 3,
+									"rounds": 5,
+									"iterations": 20
+								}
+							},
+							"points": [
+								{
+									"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+									"record": "r-2",
+									"value": 11
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

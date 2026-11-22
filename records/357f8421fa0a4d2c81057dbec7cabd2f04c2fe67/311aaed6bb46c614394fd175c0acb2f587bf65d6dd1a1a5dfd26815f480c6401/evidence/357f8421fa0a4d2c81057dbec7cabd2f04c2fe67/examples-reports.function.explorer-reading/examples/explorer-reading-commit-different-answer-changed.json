@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-reading",
+	"symbol": "explorerReading",
+	"cases": [
+		{
+			"name": "different output is a changed path",
+			"input": {
+				"mode": "commit",
+				"before": "hello world",
+				"after": "HELLO WORLD"
+			},
+			"output": {
+				"summary": "changed",
+				"reason": null,
+				"change": "changed",
+				"differences": [
+					"output[0]"
+				],
+				"beforeRead": {
+					"output": [
+						"hello world"
+					],
+					"verified": true,
+					"problem": null
+				},
+				"afterRead": {
+					"output": [
+						"HELLO WORLD"
+					],
+					"verified": true,
+					"problem": null
+				}
+			}
+		}
+	]
+}

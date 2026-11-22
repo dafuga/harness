@@ -1,0 +1,21 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-budget",
+	"symbol": "harnessBudget",
+	"cases": [
+		{
+			"name": "missing measurement with ledger limit",
+			"input": {
+				"known": {
+					"declared": true,
+					"limit": 2048
+				}
+			},
+			"output": {
+				"value": "not measured at this revision",
+				"limit": "frozen at 2048"
+			}
+		}
+	]
+}

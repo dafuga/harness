@@ -1,0 +1,664 @@
+{
+	"id": "37cf0b0dd27d0f942067503d255d7eb8687de7ba7ce66ae08c8963b45b690dd6",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-hl.Q8lpob/source",
+	"source": {
+		"commit": "ecb91a0508a98c91876158586472ee870eb311f9",
+		"tree": "abd6c5656cfb7f28ed60d2f15dc92ec62db8e02b",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T00:31:51.730Z",
+	"finishedAt": "2026-11-20T00:32:05.772Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "0caed629f3043f934a73c512701bcd0c0fae9095c30c6a187885110dea899737",
+			"source": "892462d92508c508fc102b074d3a51b66a07592c180a06e7a30051f19f219f71",
+			"contract": "9469b9a14ddb76143c738f5345225fa6be5d4849f0cd8e9d2baa982f421a47a3",
+			"runtime": "fff7c42e7a4e7ed2a1f4ddce4ff9f9fb2278c5f0ac792176dd8eb141fc8794f3",
+			"files": [
+				{
+					"path": "src/adapters/execution-runtimes/BoundedCommandAdapter.ts",
+					"hash": "9534e053da7a22f9f89e8c64aebc227629083a89"
+				},
+				{
+					"path": "src/adapters/execution-runtimes/BoundedCommandAdapter.types.ts",
+					"hash": "cdea30279adf96aba2d808eb95c52feb16ad5f8f"
+				},
+				{
+					"path": "src/adapters/execution-runtimes/CommandAbortedError.ts",
+					"hash": "a614b5eab74e0d32c6ebd757c1f65ef022a911bc"
+				},
+				{
+					"path": "src/adapters/execution-runtimes/CommandBoundsError.ts",
+					"hash": "e597fb902acbf276f54bcda1d9dc21c4e2f6cb7d"
+				},
+				{
+					"path": "src/adapters/execution-runtimes/CommandOutputLimitError.ts",
+					"hash": "f46c615106a55f662b83a51c29af515146043cbb"
+				},
+				{
+					"path": "src/adapters/execution-runtimes/DirectProbeRestrictionError.ts",
+					"hash": "9437d007cda65f4de838259bf3268bcb842c4207"
+				},
+				{
+					"path": "src/adapters/execution-runtimes/bounded-command-adapter/commandDeadlines.ts",
+					"hash": "07fff823bb131ea05c7273c1d35e314afd1bf57b"
+				},
+				{
+					"path": "src/adapters/execution-runtimes/bounded-command-adapter/commandFailure.ts",
+					"hash": "0d2385553e16573b81f7131294cffdc46637cea0"
+				},
+				{
+					"path": "src/adapters/execution-runtimes/bounded-command-adapter/commandFailure.types.ts",
+					"hash": "d683eab8b08f44dc5eea2e87b978e61330bab67a"
+				},
+				{
+					"path": "src/adapters/execution-runtimes/bounded-command-adapter/commandOutput.ts",
+					"hash": "a7d92a695df99246391c5fa25b06a2c8e18643cd"
+				}
+			]
+		},
+		{
+			"unit": "adapter.git",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "34e9f144274dab1e0944653ab99c178e1189f8c1e1eb41973b2abc3fa96a3e2c",
+			"source": "46e7efbe3e25f36f095bb16561258b1bbe5294359eef3fc8f0ff8e0ffb5c2c3d",
+			"contract": "298132b152fa8315bc7fff2b627988b2a96c1e7ddb4a6b6f268aa6cc668b8999",
+			"runtime": "02661af22f4aa221903e5fbe05d79207946440686aedcd784651d841669b625d",
+			"files": [
+				{
+					"path": "src/adapters/git-source-history/GitAdapter.ts",
+					"hash": "d54591db7fb687432e97b3641375121552557ace"
+				},
+				{
+					"path": "src/adapters/git-source-history/GitAdapter.types.ts",
+					"hash": "931611f9eefdbad78c91a07f8ea1e797c42cb881"
+				},
+				{
+					"path": "src/adapters/git-source-history/git-adapter/gitDeadline.ts",
+					"hash": "bda0e29cb92ae896e1c1f404a8fabc2c4482060d"
+				}
+			]
+		},
+		{
+			"unit": "function.commit-identity",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "19c8a619d6c14b984cca48656446a1c5ac9a642b18e19c9db2dd517577ff7639",
+			"source": "0ca21ee03e84f1a0198bc3c8e5530d85e0d7245f0cba5ab9d3cd67151de0050d",
+			"contract": "2418c70620706e3942b1757d4e14d6f9be6fa11c67e644055118da07474a640a",
+			"runtime": "5ce86f1c935e0c96dfad7424cc58aa035faf96ecb5091231e7c693fa36ef6a26",
+			"files": [
+				{
+					"path": "src/utils/git-source-history/commitIdentity.ts",
+					"hash": "f3ab9e74971a4bed66cc32cee42ce8a5297325f3"
+				}
+			]
+		},
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cfb49b515cacc084047d75cdf10a295ab3790ecaf878e2b75e06463793f628bf",
+			"source": "cbf5fb170c4db458f39bcc4ba18996e377a782371040baa39d1667f04bf87635",
+			"contract": "6f2e8a598fb220dd111fe8085fb28c645ee24019cc4b1f25315b141a569962d7",
+			"runtime": "ec246a1eb80a7c06e7ccbd8601bab05e75d00122b0ad9d09eec95bbe94f31c19",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts",
+					"hash": "36741c54d766dd2689e542099ca02135cd07760b"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.types.ts",
+					"hash": "758395e715dd7c7d824deb57b07849f373ef164e"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/artifactCases.ts",
+					"hash": "f5a0a857433ab39a3aa86c795bab10681a76db3f"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.012500000000045475,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91308032,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.00638525000002943,
+			"method": "Arithmetic mean of 8 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92733440,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "adapter.git",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0055999999999926334,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-cd29ce748bc862bb-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "adapter.git",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92569600,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-cd29ce748bc862bb-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "adapter.git",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.02531660000000784,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-c430067d8be1c07f-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "adapter.git",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92569600,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-c430067d8be1c07f-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.020475099999998747,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-b1351d4859eb5f4e-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92569600,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-b1351d4859eb5f4e-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.00677910000001134,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-533dac913ce3e600-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92585984,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-533dac913ce3e600-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "adapter.git",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 8.169004400000016,
+			"method": "Arithmetic mean of 10 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-d95493c24ef80725-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "adapter.git",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92585984,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-d95493c24ef80725-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "function.commit-identity",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 16.235388999999987,
+			"method": "Arithmetic mean of 6 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-260a6ef8b9d93060-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "function.commit-identity",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92635136,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-260a6ef8b9d93060-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.20833300000001032,
+			"method": "Arithmetic mean of 4 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92733440,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "examples-function.commit-identity:examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.commit-identity.test.ts",
+			"status": "passed",
+			"durationMs": 2103,
+			"log": {
+				"path": "logs/examples-function.commit-identity-examples.log",
+				"bytes": 408,
+				"sha256": "b015bb3a22a829e54715e7235ddca64542b95d42e419aed1bba4b49ad9c82e30"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "examples-function.commit-identity",
+			"status": "passed",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"states": [
+				{
+					"id": "repository-configured-identity-fills-all-four-keys",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "repository-configured-identity-fills-all-four-keys",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.commit-identity/examples/repository-configured-identity-fills-all-four-keys.json",
+							"sha256": "726e94fadc78891749b330f0ff9cce630635b98eb51320e0863d507809b0d113",
+							"bytes": 448,
+							"capturedAt": "2026-11-20T00:32:04.244Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "repository-configured-identity-fills-all-four-keys",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.commit-identity.test.ts.",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.commit-identity/examples/test-examples-function.commit-identity.test.ts-repository-configured-identity-fills-all-four-keys.txt",
+							"sha256": "b015bb3a22a829e54715e7235ddca64542b95d42e419aed1bba4b49ad9c82e30",
+							"bytes": 408,
+							"capturedAt": "2026-11-20T00:32:04.245Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "repository-configured-identity-fills-all-four-keys",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.commit-identity/examples/test-examples-function.commit-identity.test.ts-repository-configured-identity-fills-all-four-keys.json",
+							"sha256": "08fbdc796fde210880bbcda68939556d7e90addc5f8ebacb1bc68f627ab63f8e",
+							"bytes": 896,
+							"capturedAt": "2026-11-20T00:32:04.245Z"
+						}
+					]
+				},
+				{
+					"id": "missing-identity-falls-back-to-harness",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "missing-identity-falls-back-to-harness",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.commit-identity/examples/missing-identity-falls-back-to-harness.json",
+							"sha256": "57029e840a61a71938bf31bda3aa03b65ef55c65053b7a7bd736c58d62fb2177",
+							"bytes": 408,
+							"capturedAt": "2026-11-20T00:32:04.244Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "missing-identity-falls-back-to-harness",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.commit-identity.test.ts.",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.commit-identity/examples/test-examples-function.commit-identity.test.ts-missing-identity-falls-back-to-harness.txt",
+							"sha256": "b015bb3a22a829e54715e7235ddca64542b95d42e419aed1bba4b49ad9c82e30",
+							"bytes": 408,
+							"capturedAt": "2026-11-20T00:32:04.245Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "missing-identity-falls-back-to-harness",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.commit-identity/examples/test-examples-function.commit-identity.test.ts-missing-identity-falls-back-to-harness.json",
+							"sha256": "ed73f994d89d46c86455730c814b02cdfc994b829ec7dd5324df3741bda3ca88",
+							"bytes": 812,
+							"capturedAt": "2026-11-20T00:32:04.245Z"
+						}
+					]
+				},
+				{
+					"id": "empty-or-partial-identity-falls-back-per-field",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "empty-or-partial-identity-falls-back-per-field",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.commit-identity/examples/empty-or-partial-identity-falls-back-per-field.json",
+							"sha256": "a76d66a605110d8d4c5f9db6c736e79c8551090a8ffdb9773f7dd0a83d0151f8",
+							"bytes": 1043,
+							"capturedAt": "2026-11-20T00:32:04.244Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "empty-or-partial-identity-falls-back-per-field",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.commit-identity.test.ts.",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.commit-identity/examples/test-examples-function.commit-identity.test.ts-empty-or-partial-identity-falls-back-per-field.txt",
+							"sha256": "b015bb3a22a829e54715e7235ddca64542b95d42e419aed1bba4b49ad9c82e30",
+							"bytes": 408,
+							"capturedAt": "2026-11-20T00:32:04.245Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "empty-or-partial-identity-falls-back-per-field",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.commit-identity/examples/test-examples-function.commit-identity.test.ts-empty-or-partial-identity-falls-back-per-field.json",
+							"sha256": "f485ee81219ce248b97df731d4340e80606878c1c18def92baad3d7be03a9afa",
+							"bytes": 1928,
+							"capturedAt": "2026-11-20T00:32:04.245Z"
+						}
+					]
+				},
+				{
+					"id": "identity-resolution-leaves-git-config-unchanged",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "identity-resolution-leaves-git-config-unchanged",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.commit-identity/examples/identity-resolution-leaves-git-config-unchanged.json",
+							"sha256": "4429a7f1c7b2605ec418a8bc66222963970a0d2eebee7fe18735eecf71e7cb63",
+							"bytes": 258,
+							"capturedAt": "2026-11-20T00:32:04.245Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "identity-resolution-leaves-git-config-unchanged",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.commit-identity.test.ts.",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.commit-identity/examples/test-examples-function.commit-identity.test.ts-identity-resolution-leaves-git-config-unchanged.txt",
+							"sha256": "b015bb3a22a829e54715e7235ddca64542b95d42e419aed1bba4b49ad9c82e30",
+							"bytes": 408,
+							"capturedAt": "2026-11-20T00:32:04.245Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "identity-resolution-leaves-git-config-unchanged",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/examples-function.commit-identity/examples/test-examples-function.commit-identity.test.ts-identity-resolution-leaves-git-config-unchanged.json",
+							"sha256": "43d390a59e134c4e4021193702bf577e771302aef8680b402e0265b891c2d5d9",
+							"bytes": 1759,
+							"capturedAt": "2026-11-20T00:32:04.246Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to function.commit-identity: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}

@@ -1,0 +1,60 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-catalog",
+	"symbol": "entityCatalog",
+	"cases": [
+		{
+			"name": "single owner service absent",
+			"input": {
+				"category": "services"
+			},
+			"output": []
+		},
+		{
+			"name": "related single owner kept",
+			"input": {
+				"category": "services",
+				"related": true
+			},
+			"output": [
+				"OrderStore"
+			]
+		},
+		{
+			"name": "one consumer helper absent",
+			"input": {
+				"category": "functions"
+			},
+			"output": []
+		},
+		{
+			"name": "related pure callee kept",
+			"input": {
+				"category": "functions",
+				"related": true
+			},
+			"output": [
+				"filterOrders"
+			]
+		},
+		{
+			"name": "related configs one per module",
+			"input": {
+				"category": "configs",
+				"related": true
+			},
+			"output": [
+				"orderSettings"
+			]
+		},
+		{
+			"name": "non-config unit yields no rows",
+			"input": {
+				"category": "configs",
+				"kind": "page"
+			},
+			"output": []
+		}
+	]
+}

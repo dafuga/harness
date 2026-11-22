@@ -1,0 +1,73 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.unit-measurements",
+	"symbol": "emittedTargets",
+	"cases": [
+		{
+			"name": "module, wasm, http and process targets",
+			"input": {
+				"unit": {
+					"id": "kernel.impact",
+					"owns": {
+						"source": [],
+						"symbols": []
+					},
+					"dependencies": [],
+					"runtime": {
+						"targets": [
+							{
+								"kind": "module",
+								"entry": "src/index.ts"
+							},
+							{
+								"kind": "wasm",
+								"entry": "target/kernel.wasm"
+							},
+							{
+								"kind": "http",
+								"entry": "src/routes.ts"
+							},
+							{
+								"kind": "process",
+								"entry": "target/kernel"
+							}
+						]
+					}
+				}
+			},
+			"output": [
+				{
+					"kind": "wasm",
+					"entry": "target/kernel.wasm"
+				},
+				{
+					"kind": "process",
+					"entry": "target/kernel"
+				}
+			]
+		},
+		{
+			"name": "module-only unit gets an empty list",
+			"input": {
+				"unit": {
+					"id": "function.pick",
+					"owns": {
+						"source": [],
+						"symbols": []
+					},
+					"dependencies": [],
+					"runtime": {
+						"targets": [
+							{
+								"kind": "module",
+								"entry": "src/index.ts"
+							}
+						]
+					}
+				}
+			},
+			"output": []
+		}
+	]
+}

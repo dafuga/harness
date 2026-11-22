@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.ezIhB9/tmp/harness-snapshot-1uCj0U/packages/hub
+
+ ✓ test/utils/hub-design-options-corrupt.test.ts (3 tests) 18146ms
+   ✓ options whose directions differ only by case and spacing are refused  5864ms
+   ✓ two options holding one picture under two files are refused  5909ms
+   ✓ an option prompt whose file no longer hashes to its record is refused  6358ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  13:20:58
+   Duration  20.14s (transform 1.14s, setup 195ms, collect 1.53s, tests 18.15s, environment 0ms, prepare 57ms)
+
+JSON report written to /tmp/z5jp8p-hl.ezIhB9/tmp/harness-runner-DjkD1l/report.json

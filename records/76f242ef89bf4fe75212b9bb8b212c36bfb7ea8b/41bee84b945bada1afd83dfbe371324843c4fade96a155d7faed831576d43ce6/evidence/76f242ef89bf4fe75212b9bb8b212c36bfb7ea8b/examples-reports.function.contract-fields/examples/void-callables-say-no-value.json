@@ -1,0 +1,19 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.contract-fields",
+	"symbol": "callableContracts",
+	"cases": [
+		{
+			"name": "logLine",
+			"input": "logLine",
+			"output": {
+				"name": "returnValue",
+				"type": "void",
+				"source": "missing",
+				"examples": [],
+				"description": "This function returns no value."
+			}
+		}
+	]
+}

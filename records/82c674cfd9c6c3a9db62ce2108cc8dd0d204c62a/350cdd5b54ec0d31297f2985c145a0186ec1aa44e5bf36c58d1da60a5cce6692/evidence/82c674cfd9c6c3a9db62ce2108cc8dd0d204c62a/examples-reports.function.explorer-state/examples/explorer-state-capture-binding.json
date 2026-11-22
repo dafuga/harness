@@ -1,0 +1,135 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-state",
+	"symbol": "captureUnbound",
+	"cases": [
+		{
+			"name": "capture of its commit is bound",
+			"input": {
+				"capture": {
+					"evidence": "screens",
+					"kind": "screenshot",
+					"state": "empty",
+					"viewport": "desktop",
+					"status": "passed",
+					"path": "evidence/empty-desktop.png",
+					"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+					"mediaType": "image/png",
+					"capturedAt": "2026-10-10T18:00:00.000Z",
+					"server": {
+						"buildId": "build-1",
+						"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+					},
+					"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+				},
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+			},
+			"output": null
+		},
+		{
+			"name": "another build names both revisions",
+			"input": {
+				"capture": {
+					"evidence": "screens",
+					"kind": "screenshot",
+					"state": "empty",
+					"viewport": "desktop",
+					"status": "passed",
+					"path": "evidence/empty-desktop.png",
+					"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+					"mediaType": "image/png",
+					"capturedAt": "2026-10-10T18:00:00.000Z",
+					"server": {
+						"buildId": "build-2",
+						"revision": "cccccccccccccccccccccccccccccccccccccccc"
+					},
+					"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+				},
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+			},
+			"output": "is of a build of ccccccc, not of aaaaaaa"
+		},
+		{
+			"name": "screenshot with no build",
+			"input": {
+				"capture": {
+					"evidence": "screens",
+					"kind": "screenshot",
+					"state": "empty",
+					"viewport": "desktop",
+					"status": "passed",
+					"path": "evidence/empty-desktop.png",
+					"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+					"mediaType": "image/png",
+					"capturedAt": "2026-10-10T18:00:00.000Z",
+					"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+				},
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+			},
+			"output": "names no build, so it is bound to no commit"
+		},
+		{
+			"name": "trace with no build or provenance",
+			"input": {
+				"capture": {
+					"evidence": "screens",
+					"kind": "trace",
+					"state": "empty",
+					"viewport": "desktop",
+					"status": "passed",
+					"path": "evidence/empty-desktop.png",
+					"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+					"mediaType": "image/png",
+					"capturedAt": "2026-10-10T18:00:00.000Z",
+					"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+				},
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+			},
+			"output": null
+		},
+		{
+			"name": "actual-capture trace, no build",
+			"input": {
+				"capture": {
+					"evidence": "screens",
+					"kind": "trace",
+					"state": "empty",
+					"viewport": "desktop",
+					"status": "passed",
+					"path": "evidence/empty-desktop.png",
+					"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+					"mediaType": "image/png",
+					"capturedAt": "2026-10-10T18:00:00.000Z",
+					"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png",
+					"provenance": "actual-capture"
+				},
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+			},
+			"output": "names no build, so it is bound to no commit"
+		},
+		{
+			"name": "trace stamped with another build",
+			"input": {
+				"capture": {
+					"evidence": "screens",
+					"kind": "trace",
+					"state": "empty",
+					"viewport": "desktop",
+					"status": "passed",
+					"path": "evidence/empty-desktop.png",
+					"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+					"mediaType": "image/png",
+					"capturedAt": "2026-10-10T18:00:00.000Z",
+					"server": {
+						"buildId": "build-2",
+						"revision": "cccccccccccccccccccccccccccccccccccccccc"
+					},
+					"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+				},
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+			},
+			"output": "is of a build of ccccccc, not of aaaaaaa"
+		}
+	]
+}

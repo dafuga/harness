@@ -1,0 +1,50 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.project-agent-actions",
+	"symbol": "projectAgentActions",
+	"cases": [
+		{
+			"name": "agents capability withheld",
+			"input": {
+				"mode": "plan",
+				"provider": "codex",
+				"model": "synthetic-model",
+				"effort": null,
+				"text": "Plan a settings panel"
+			},
+			"output": {
+				"result": false,
+				"startRuns": 0
+			}
+		},
+		{
+			"name": "no project id",
+			"input": {
+				"mode": "plan",
+				"provider": "codex",
+				"model": "synthetic-model",
+				"effort": null,
+				"text": "Plan a settings panel"
+			},
+			"output": {
+				"result": false,
+				"startRuns": 0
+			}
+		},
+		{
+			"name": "run already active",
+			"input": {
+				"mode": "plan",
+				"provider": "codex",
+				"model": "synthetic-model",
+				"effort": null,
+				"text": "Plan a settings panel"
+			},
+			"output": {
+				"result": false,
+				"startRuns": 0
+			}
+		}
+	]
+}

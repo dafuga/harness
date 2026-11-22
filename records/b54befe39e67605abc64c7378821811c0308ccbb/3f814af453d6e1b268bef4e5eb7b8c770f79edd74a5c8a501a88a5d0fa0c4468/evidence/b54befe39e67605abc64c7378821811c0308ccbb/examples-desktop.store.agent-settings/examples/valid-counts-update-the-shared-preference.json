@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.agent-settings",
+	"symbol": "setDesignOptions",
+	"cases": [
+		{
+			"name": "set 1",
+			"input": {
+				"designOptions": 1
+			},
+			"output": {
+				"returned": true,
+				"designOptions": 1,
+				"saved": true
+			}
+		},
+		{
+			"name": "set 10",
+			"input": {
+				"designOptions": 10
+			},
+			"output": {
+				"returned": true,
+				"designOptions": 10,
+				"saved": true
+			}
+		},
+		{
+			"name": "set 6",
+			"input": {
+				"designOptions": 6
+			},
+			"output": {
+				"returned": true,
+				"designOptions": 6,
+				"saved": true
+			}
+		}
+	]
+}

@@ -1,0 +1,31 @@
+
+Running 24 tests using 1 worker
+
+(node:81581) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations at desktop (1.5s)
+  ✓   2 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:both at desktop (1.4s)
+  ✓   3 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:empty at desktop (875ms)
+  ✓   4 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:removed at desktop (872ms)
+  ✓   5 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:used-in at desktop (1.1s)
+  ✓   6 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:uses at desktop (1.2s)
+  ✓   7 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:models at desktop (943ms)
+  ✓   8 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:apis at desktop (891ms)
+  ✓   9 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations at tablet (695ms)
+  ✓  10 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:both at tablet (650ms)
+  ✓  11 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:empty at tablet (558ms)
+  ✓  12 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:removed at tablet (558ms)
+  ✓  13 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:used-in at tablet (612ms)
+  ✓  14 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:uses at tablet (609ms)
+  ✓  15 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:models at tablet (558ms)
+  ✓  16 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:apis at tablet (575ms)
+  ✓  17 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations at mobile (677ms)
+  ✓  18 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:both at mobile (639ms)
+  ✓  19 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:empty at mobile (554ms)
+  ✓  20 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:removed at mobile (555ms)
+  ✓  21 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:used-in at mobile (602ms)
+  ✓  22 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:uses at mobile (593ms)
+  ✓  23 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:models at mobile (575ms)
+  ✓  24 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-entity-relations:apis at mobile (553ms)
+
+  24 passed (20.8s)

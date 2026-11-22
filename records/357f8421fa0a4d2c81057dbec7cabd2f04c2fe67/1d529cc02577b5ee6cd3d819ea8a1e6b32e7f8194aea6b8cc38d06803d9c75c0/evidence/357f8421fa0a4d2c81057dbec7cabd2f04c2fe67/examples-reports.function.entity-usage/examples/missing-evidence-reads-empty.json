@@ -1,0 +1,45 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-usage",
+	"symbol": "entityUsage",
+	"cases": [
+		{
+			"name": "no relations at all",
+			"input": {
+				"relations": "none"
+			},
+			"output": {
+				"usedIn": [],
+				"usedInGroups": [],
+				"uses": [],
+				"other": [],
+				"count": 0
+			}
+		},
+		{
+			"name": "services list absent, functions kept",
+			"input": {
+				"relations": "partial"
+			},
+			"output": {
+				"usedIn": [],
+				"usedInGroups": [],
+				"uses": [
+					{
+						"title": "Functions",
+						"icon": "functions",
+						"items": [
+							{
+								"id": "function.f",
+								"category": "functions"
+							}
+						]
+					}
+				],
+				"other": [],
+				"count": 1
+			}
+		}
+	]
+}

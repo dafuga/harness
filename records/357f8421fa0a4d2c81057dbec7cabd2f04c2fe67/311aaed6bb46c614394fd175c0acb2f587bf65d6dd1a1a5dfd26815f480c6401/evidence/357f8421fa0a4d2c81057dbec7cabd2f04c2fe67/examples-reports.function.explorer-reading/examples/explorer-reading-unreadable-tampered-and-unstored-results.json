@@ -1,0 +1,106 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-reading",
+	"symbol": "explorerReading",
+	"cases": [
+		{
+			"name": "missing bytes",
+			"input": {
+				"before": "a",
+				"after": "a"
+			},
+			"output": {
+				"summary": "unknown",
+				"reason": "A recorded result could not be read and checked, so it is not compared.",
+				"change": "unknown",
+				"differences": [],
+				"beforeRead": {
+					"output": null,
+					"verified": false,
+					"problem": "The artifact could not be read (404)."
+				},
+				"afterRead": {
+					"output": null,
+					"verified": false,
+					"problem": "The artifact could not be read (404)."
+				}
+			}
+		},
+		{
+			"name": "tampered bytes",
+			"input": {
+				"before": "a",
+				"after": "b"
+			},
+			"output": {
+				"summary": "unknown",
+				"reason": "A recorded result could not be read and checked, so it is not compared.",
+				"change": "unknown",
+				"differences": [],
+				"beforeRead": {
+					"output": [
+						"a"
+					],
+					"verified": true,
+					"problem": null
+				},
+				"afterRead": {
+					"output": null,
+					"verified": false,
+					"problem": "The bytes that were read do not have the recorded SHA-256."
+				}
+			}
+		},
+		{
+			"name": "not stored",
+			"input": {
+				"after": "a"
+			},
+			"output": {
+				"summary": "unknown",
+				"reason": "A recorded result could not be read and checked, so it is not compared.",
+				"change": "unknown",
+				"differences": [],
+				"beforeRead": {
+					"output": [
+						"a"
+					],
+					"verified": true,
+					"problem": null
+				},
+				"afterRead": {
+					"output": null,
+					"verified": false,
+					"problem": "The run was not stored."
+				}
+			}
+		},
+		{
+			"name": "supplied reason kept",
+			"input": {
+				"summary": "unknown"
+			},
+			"output": {
+				"summary": "unknown",
+				"reason": "Source moved.",
+				"change": "unchanged",
+				"differences": [],
+				"beforeRead": {
+					"output": [
+						"a"
+					],
+					"verified": true,
+					"problem": null
+				},
+				"afterRead": {
+					"output": [
+						"a"
+					],
+					"verified": true,
+					"problem": null
+				}
+			}
+		}
+	]
+}

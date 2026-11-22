@@ -1,0 +1,54 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.comparison-types",
+	"symbol": "comparisonSchema",
+	"cases": [
+		{
+			"name": "context with an extra top-level key",
+			"input": {
+				"request": "10ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 10
+				},
+				"workload": "sum"
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					{
+						"path": "",
+						"message": "Unrecognized key: \"workload\""
+					}
+				]
+			}
+		},
+		{
+			"name": "sampling with an extra key",
+			"input": {
+				"request": "10ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 10,
+					"seed": 7
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					{
+						"path": "sampling",
+						"message": "Unrecognized key: \"seed\""
+					}
+				]
+			}
+		}
+	]
+}

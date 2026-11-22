@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.config.shell-vite",
+	"symbol": "default",
+	"cases": [
+		{
+			"name": "SHELL_FIXTURE_PAGE=activity and SHELL_FIXTURE_OUT select its page entry and output",
+			"input": {
+				"SHELL_FIXTURE_PAGE": "activity",
+				"SHELL_FIXTURE_OUT": "output/shell-fixture-check/activity"
+			},
+			"output": {
+				"outDir": "output/shell-fixture-check/activity",
+				"entry": {
+					"entry": "tests/e2e/support/shell/activityEntry.ts",
+					"formats": [
+						"iife"
+					],
+					"name": "ShellFixture",
+					"fileName": "page"
+				}
+			}
+		},
+		{
+			"name": "SHELL_FIXTURE_PAGE=errors uses the default output directory for that page",
+			"input": {
+				"SHELL_FIXTURE_PAGE": "errors"
+			},
+			"output": "output/shell-fixture/errors"
+		},
+		{
+			"name": "components page aliases the $app modules and $desktop, $shared and $reports paths",
+			"input": {
+				"SHELL_FIXTURE_PAGE": "components"
+			},
+			"output": {
+				"aliases": [
+					"$app/navigation",
+					"$app/paths",
+					"$app/state",
+					"$desktop",
+					"$reports",
+					"$shared"
+				],
+				"targetsPresent": {
+					"$app/navigation": true,
+					"$app/state": true,
+					"$desktop": true,
+					"$shared": true,
+					"$reports": true,
+					"$app/paths": true
+				}
+			}
+		}
+	]
+}

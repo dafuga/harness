@@ -1,0 +1,1071 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.recorded-value",
+	"symbol": "recordedValue",
+	"cases": [
+		{
+			"name": "twelve groups of twelve values",
+			"input": "g0-g11 with s0-s11",
+			"output": {
+				"kind": "fields",
+				"fields": [
+					{
+						"name": "g0",
+						"node": {
+							"kind": "fields",
+							"fields": [
+								{
+									"name": "s0",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v0"
+									}
+								},
+								{
+									"name": "s1",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v1"
+									}
+								},
+								{
+									"name": "s2",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v2"
+									}
+								},
+								{
+									"name": "s3",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v3"
+									}
+								},
+								{
+									"name": "s4",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v4"
+									}
+								},
+								{
+									"name": "s5",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v5"
+									}
+								},
+								{
+									"name": "s6",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v6"
+									}
+								},
+								{
+									"name": "s7",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v7"
+									}
+								},
+								{
+									"name": "s8",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v8"
+									}
+								},
+								{
+									"name": "s9",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v9"
+									}
+								},
+								{
+									"name": "s10",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v10"
+									}
+								},
+								{
+									"name": "s11",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v11"
+									}
+								}
+							],
+							"remaining": 0
+						}
+					},
+					{
+						"name": "g1",
+						"node": {
+							"kind": "fields",
+							"fields": [
+								{
+									"name": "s0",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v0"
+									}
+								},
+								{
+									"name": "s1",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v1"
+									}
+								},
+								{
+									"name": "s2",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v2"
+									}
+								},
+								{
+									"name": "s3",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v3"
+									}
+								},
+								{
+									"name": "s4",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v4"
+									}
+								},
+								{
+									"name": "s5",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v5"
+									}
+								},
+								{
+									"name": "s6",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v6"
+									}
+								},
+								{
+									"name": "s7",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v7"
+									}
+								},
+								{
+									"name": "s8",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v8"
+									}
+								},
+								{
+									"name": "s9",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v9"
+									}
+								},
+								{
+									"name": "s10",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v10"
+									}
+								},
+								{
+									"name": "s11",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v11"
+									}
+								}
+							],
+							"remaining": 0
+						}
+					},
+					{
+						"name": "g2",
+						"node": {
+							"kind": "fields",
+							"fields": [
+								{
+									"name": "s0",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v0"
+									}
+								},
+								{
+									"name": "s1",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v1"
+									}
+								},
+								{
+									"name": "s2",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v2"
+									}
+								},
+								{
+									"name": "s3",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v3"
+									}
+								},
+								{
+									"name": "s4",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v4"
+									}
+								},
+								{
+									"name": "s5",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v5"
+									}
+								},
+								{
+									"name": "s6",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v6"
+									}
+								},
+								{
+									"name": "s7",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v7"
+									}
+								},
+								{
+									"name": "s8",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v8"
+									}
+								},
+								{
+									"name": "s9",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v9"
+									}
+								},
+								{
+									"name": "s10",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v10"
+									}
+								},
+								{
+									"name": "s11",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v11"
+									}
+								}
+							],
+							"remaining": 0
+						}
+					},
+					{
+						"name": "g3",
+						"node": {
+							"kind": "fields",
+							"fields": [
+								{
+									"name": "s0",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v0"
+									}
+								},
+								{
+									"name": "s1",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v1"
+									}
+								},
+								{
+									"name": "s2",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v2"
+									}
+								},
+								{
+									"name": "s3",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v3"
+									}
+								},
+								{
+									"name": "s4",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v4"
+									}
+								},
+								{
+									"name": "s5",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v5"
+									}
+								},
+								{
+									"name": "s6",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v6"
+									}
+								},
+								{
+									"name": "s7",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v7"
+									}
+								},
+								{
+									"name": "s8",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v8"
+									}
+								},
+								{
+									"name": "s9",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v9"
+									}
+								},
+								{
+									"name": "s10",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v10"
+									}
+								},
+								{
+									"name": "s11",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v11"
+									}
+								}
+							],
+							"remaining": 0
+						}
+					},
+					{
+						"name": "g4",
+						"node": {
+							"kind": "fields",
+							"fields": [
+								{
+									"name": "s0",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v0"
+									}
+								},
+								{
+									"name": "s1",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v1"
+									}
+								},
+								{
+									"name": "s2",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v2"
+									}
+								},
+								{
+									"name": "s3",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v3"
+									}
+								},
+								{
+									"name": "s4",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v4"
+									}
+								},
+								{
+									"name": "s5",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v5"
+									}
+								},
+								{
+									"name": "s6",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v6"
+									}
+								},
+								{
+									"name": "s7",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v7"
+									}
+								},
+								{
+									"name": "s8",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v8"
+									}
+								},
+								{
+									"name": "s9",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v9"
+									}
+								},
+								{
+									"name": "s10",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v10"
+									}
+								},
+								{
+									"name": "s11",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v11"
+									}
+								}
+							],
+							"remaining": 0
+						}
+					},
+					{
+						"name": "g5",
+						"node": {
+							"kind": "fields",
+							"fields": [
+								{
+									"name": "s0",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v0"
+									}
+								},
+								{
+									"name": "s1",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v1"
+									}
+								},
+								{
+									"name": "s2",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v2"
+									}
+								},
+								{
+									"name": "s3",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v3"
+									}
+								},
+								{
+									"name": "s4",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v4"
+									}
+								},
+								{
+									"name": "s5",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v5"
+									}
+								},
+								{
+									"name": "s6",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v6"
+									}
+								},
+								{
+									"name": "s7",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v7"
+									}
+								},
+								{
+									"name": "s8",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v8"
+									}
+								},
+								{
+									"name": "s9",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v9"
+									}
+								},
+								{
+									"name": "s10",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v10"
+									}
+								},
+								{
+									"name": "s11",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v11"
+									}
+								}
+							],
+							"remaining": 0
+						}
+					},
+					{
+						"name": "g6",
+						"node": {
+							"kind": "fields",
+							"fields": [
+								{
+									"name": "s0",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v0"
+									}
+								},
+								{
+									"name": "s1",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v1"
+									}
+								},
+								{
+									"name": "s2",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v2"
+									}
+								},
+								{
+									"name": "s3",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v3"
+									}
+								},
+								{
+									"name": "s4",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v4"
+									}
+								},
+								{
+									"name": "s5",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v5"
+									}
+								},
+								{
+									"name": "s6",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v6"
+									}
+								},
+								{
+									"name": "s7",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v7"
+									}
+								},
+								{
+									"name": "s8",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v8"
+									}
+								},
+								{
+									"name": "s9",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v9"
+									}
+								},
+								{
+									"name": "s10",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v10"
+									}
+								},
+								{
+									"name": "s11",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v11"
+									}
+								}
+							],
+							"remaining": 0
+						}
+					},
+					{
+						"name": "g7",
+						"node": {
+							"kind": "fields",
+							"fields": [
+								{
+									"name": "s0",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v0"
+									}
+								},
+								{
+									"name": "s1",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v1"
+									}
+								},
+								{
+									"name": "s2",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v2"
+									}
+								},
+								{
+									"name": "s3",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v3"
+									}
+								},
+								{
+									"name": "s4",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v4"
+									}
+								},
+								{
+									"name": "s5",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v5"
+									}
+								},
+								{
+									"name": "s6",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v6"
+									}
+								},
+								{
+									"name": "s7",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v7"
+									}
+								},
+								{
+									"name": "s8",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v8"
+									}
+								},
+								{
+									"name": "s9",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v9"
+									}
+								},
+								{
+									"name": "s10",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v10"
+									}
+								},
+								{
+									"name": "s11",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v11"
+									}
+								}
+							],
+							"remaining": 0
+						}
+					},
+					{
+						"name": "g8",
+						"node": {
+							"kind": "fields",
+							"fields": [
+								{
+									"name": "s0",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v0"
+									}
+								},
+								{
+									"name": "s1",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v1"
+									}
+								},
+								{
+									"name": "s2",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v2"
+									}
+								},
+								{
+									"name": "s3",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v3"
+									}
+								},
+								{
+									"name": "s4",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v4"
+									}
+								},
+								{
+									"name": "s5",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v5"
+									}
+								},
+								{
+									"name": "s6",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v6"
+									}
+								},
+								{
+									"name": "s7",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v7"
+									}
+								},
+								{
+									"name": "s8",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v8"
+									}
+								},
+								{
+									"name": "s9",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v9"
+									}
+								},
+								{
+									"name": "s10",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v10"
+									}
+								},
+								{
+									"name": "s11",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v11"
+									}
+								}
+							],
+							"remaining": 0
+						}
+					},
+					{
+						"name": "g9",
+						"node": {
+							"kind": "fields",
+							"fields": [
+								{
+									"name": "s0",
+									"node": {
+										"kind": "scalar",
+										"type": "Text",
+										"text": "v0"
+									}
+								},
+								{
+									"name": "s1",
+									"node": {
+										"kind": "notice",
+										"text": "Open Full recorded values to see more."
+									}
+								},
+								{
+									"name": "s2",
+									"node": {
+										"kind": "notice",
+										"text": "Open Full recorded values to see more."
+									}
+								},
+								{
+									"name": "s3",
+									"node": {
+										"kind": "notice",
+										"text": "Open Full recorded values to see more."
+									}
+								},
+								{
+									"name": "s4",
+									"node": {
+										"kind": "notice",
+										"text": "Open Full recorded values to see more."
+									}
+								},
+								{
+									"name": "s5",
+									"node": {
+										"kind": "notice",
+										"text": "Open Full recorded values to see more."
+									}
+								},
+								{
+									"name": "s6",
+									"node": {
+										"kind": "notice",
+										"text": "Open Full recorded values to see more."
+									}
+								},
+								{
+									"name": "s7",
+									"node": {
+										"kind": "notice",
+										"text": "Open Full recorded values to see more."
+									}
+								},
+								{
+									"name": "s8",
+									"node": {
+										"kind": "notice",
+										"text": "Open Full recorded values to see more."
+									}
+								},
+								{
+									"name": "s9",
+									"node": {
+										"kind": "notice",
+										"text": "Open Full recorded values to see more."
+									}
+								},
+								{
+									"name": "s10",
+									"node": {
+										"kind": "notice",
+										"text": "Open Full recorded values to see more."
+									}
+								},
+								{
+									"name": "s11",
+									"node": {
+										"kind": "notice",
+										"text": "Open Full recorded values to see more."
+									}
+								}
+							],
+							"remaining": 0
+						}
+					},
+					{
+						"name": "g10",
+						"node": {
+							"kind": "notice",
+							"text": "Open Full recorded values to see more."
+						}
+					},
+					{
+						"name": "g11",
+						"node": {
+							"kind": "notice",
+							"text": "Open Full recorded values to see more."
+						}
+					}
+				],
+				"remaining": 0
+			}
+		}
+	]
+}

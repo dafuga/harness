@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"record": "5c29601b7fab40c582402b5d4dc2be973082f3b073b73cbd56c9e6e66800b26b",
+	"source": {
+		"commit": "b1ef963097568efffc75b53a19ae9ec91020cefd",
+		"tree": "232557cfb27514c4a10ef5a2495789666c67b967"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "ca7dd2391b17951fb2b93abbae769a6de0da88475c1b2e73889e9cbdedc1adb8",
+			"bytes": 290060,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b1ef963097568efffc75b53a19ae9ec91020cefd/plan-fixture-contracts/fixture-contracts/test-fixture-design-options.test.ts-native.txt",
+			"sha256": "2e7673db5d1a3721ca46eb2ca326da7534a5e7b60fd18fdf1ade6476b7672b4d",
+			"bytes": 800,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b1ef963097568efffc75b53a19ae9ec91020cefd/plan-fixture-contracts/fixture-contracts/test-fixture-design-options.test.ts-native.json",
+			"sha256": "5058067673b69a7712ee9297ba6e43a24fe6a80fd1b614c9c2d293d87986a3b7",
+			"bytes": 2922,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/plan-fixture-contracts-fixture-contracts.log",
+			"sha256": "2e7673db5d1a3721ca46eb2ca326da7534a5e7b60fd18fdf1ade6476b7672b4d",
+			"bytes": 800,
+			"storage": "git"
+		}
+	]
+}

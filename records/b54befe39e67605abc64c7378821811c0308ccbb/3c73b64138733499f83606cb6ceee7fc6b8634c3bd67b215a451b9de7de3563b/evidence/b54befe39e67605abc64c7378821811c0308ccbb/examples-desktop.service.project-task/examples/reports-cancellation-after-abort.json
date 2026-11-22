@@ -1,0 +1,15 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.service.project-task",
+	"symbol": "ProjectTaskService.run",
+	"cases": [
+		{
+			"name": "abort during an ask run",
+			"input": {
+				"mode": "ask"
+			},
+			"error": "The run was cancelled."
+		}
+	]
+}

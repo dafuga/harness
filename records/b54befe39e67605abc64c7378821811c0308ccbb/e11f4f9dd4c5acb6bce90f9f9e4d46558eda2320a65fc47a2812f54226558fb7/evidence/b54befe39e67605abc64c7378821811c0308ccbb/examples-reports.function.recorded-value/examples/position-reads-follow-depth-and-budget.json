@@ -1,0 +1,53 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.recorded-value",
+	"symbol": "read",
+	"cases": [
+		{
+			"name": "number with budget left",
+			"input": 7,
+			"output": {
+				"kind": "scalar",
+				"type": "Number",
+				"text": "7"
+			}
+		},
+		{
+			"name": "object with no budget",
+			"input": {
+				"a": 1
+			},
+			"output": {
+				"kind": "notice",
+				"text": "Open Full recorded values to see more."
+			}
+		},
+		{
+			"name": "array at depth four",
+			"input": [
+				1
+			],
+			"output": {
+				"kind": "notice",
+				"text": "Open Full recorded values to see more."
+			}
+		},
+		{
+			"name": "null at depth four",
+			"input": null,
+			"output": {
+				"kind": "scalar",
+				"type": "Null",
+				"text": "null"
+			}
+		},
+		{
+			"name": "absent value",
+			"output": {
+				"kind": "notice",
+				"text": "Not recorded"
+			}
+		}
+	]
+}

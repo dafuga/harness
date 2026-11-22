@@ -1,0 +1,132 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.history-series",
+	"symbol": "unitGrowth",
+	"cases": [
+		{
+			"name": "missing metrics stay notes",
+			"input": {
+				"records": [
+					{
+						"id": "r-1",
+						"measurements": [
+							{
+								"unitOfMeasure": "bytes",
+								"method": "Byte count of the unit source.",
+								"workload": null,
+								"profile": null,
+								"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "source-bytes",
+								"value": null,
+								"unavailable": "Source was not read."
+							},
+							{
+								"unitOfMeasure": "bytes",
+								"method": "Byte count of the unit source.",
+								"workload": null,
+								"profile": null,
+								"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "dependencies",
+								"value": 3,
+								"partial": "one manifest was not read"
+							},
+							{
+								"unitOfMeasure": "bytes",
+								"method": "Byte count of the unit source.",
+								"workload": null,
+								"profile": null,
+								"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "artifact-bytes",
+								"value": null,
+								"target": "wasm",
+								"unavailable": "The wasm build was not run."
+							},
+							{
+								"unitOfMeasure": "bytes",
+								"method": "Byte count of the unit source.",
+								"workload": "render 1k",
+								"profile": "linux-x64-ci",
+								"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "source-bytes",
+								"value": 55
+							},
+							{
+								"unitOfMeasure": "bytes",
+								"method": "Byte count of the unit source.",
+								"workload": "render 1k",
+								"profile": "linux-x64-ci",
+								"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"artifacts": [],
+								"unit": "function.alpha",
+								"metric": "artifact-bytes",
+								"value": 900,
+								"target": "module"
+							},
+							{
+								"unitOfMeasure": "bytes",
+								"method": "Byte count of the unit source.",
+								"workload": null,
+								"profile": null,
+								"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"artifacts": [],
+								"unit": "function.beta",
+								"metric": "source-bytes",
+								"value": 50
+							}
+						]
+					}
+				],
+				"reviews": {}
+			},
+			"output": [
+				{
+					"id": "function.alpha",
+					"growth": [
+						{
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"record": "r-1",
+							"notes": {
+								"source-bytes": "Source was not read.",
+								"dependencies": "one manifest was not read",
+								"artifact-bytes:wasm": "The wasm build was not run."
+							},
+							"dependencies": 3
+						}
+					],
+					"reviews": [
+						{
+							"type": "baseline",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"record": "r-1",
+							"reviewer": "reviewer-1",
+							"reason": "Initial frozen limits.",
+							"at": "2026-11-18T09:00:00.000Z",
+							"after": {
+								"source-bytes": 100
+							}
+						}
+					]
+				},
+				{
+					"id": "function.beta",
+					"growth": [
+						{
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"record": "r-1",
+							"source-bytes": 50
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,22 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.created-thread",
+	"symbol": "createdThread",
+	"cases": [
+		{
+			"name": "second workspace read",
+			"input": "thread-2 remembered",
+			"output": {
+				"id": "thread-2"
+			}
+		},
+		{
+			"name": "first workspace read",
+			"input": "thread-1 remembered",
+			"output": {
+				"id": "thread-1"
+			}
+		}
+	]
+}

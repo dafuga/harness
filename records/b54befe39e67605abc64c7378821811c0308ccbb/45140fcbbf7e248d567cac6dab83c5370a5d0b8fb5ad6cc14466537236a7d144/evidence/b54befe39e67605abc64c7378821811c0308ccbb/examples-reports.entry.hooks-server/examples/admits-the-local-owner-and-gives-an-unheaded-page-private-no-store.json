@@ -1,0 +1,24 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.entry.hooks-server",
+	"symbol": "handle",
+	"cases": [
+		{
+			"name": "loopback owner reaches the page and gets the owner cache policy",
+			"input": {
+				"pathname": "/harness/branch/main/pages",
+				"peer": "127.0.0.1",
+				"owner": {
+					"HARNESS_OWNER_MODE": "loopback",
+					"HARNESS_BIND": "127.0.0.1"
+				}
+			},
+			"output": {
+				"status": 200,
+				"cacheControl": "private, no-store",
+				"resolved": 1
+			}
+		}
+	]
+}

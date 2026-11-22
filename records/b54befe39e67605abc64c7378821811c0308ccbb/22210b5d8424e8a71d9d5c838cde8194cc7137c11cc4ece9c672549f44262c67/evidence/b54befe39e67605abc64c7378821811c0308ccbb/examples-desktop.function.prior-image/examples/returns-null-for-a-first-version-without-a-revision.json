@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.prior-image",
+	"symbol": "priorImage",
+	"cases": [
+		{
+			"name": "no preceding version exists",
+			"input": {
+				"versions": [
+					{
+						"version": "v1",
+						"createdAt": "2026-11-10T09:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "codex",
+						"prompt": "Refine the header image lighting.",
+						"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+						"images": [
+							{
+								"state": "default",
+								"viewport": "desktop",
+								"sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+								"bytes": 124800
+							},
+							{
+								"state": "default",
+								"viewport": "mobile",
+								"sha256": "431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460",
+								"bytes": 124800
+							}
+						],
+						"approval": null
+					}
+				],
+				"shown": {
+					"version": "v1",
+					"image": {
+						"state": "default",
+						"viewport": "desktop",
+						"sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+						"bytes": 124800
+					}
+				},
+				"commit": "0123456789abcdef0123456789abcdef01234567"
+			},
+			"output": null
+		}
+	]
+}

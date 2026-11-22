@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.config.shell-playwright",
+	"symbol": "default",
+	"cases": [
+		{
+			"name": "default explorer-shell suite settings",
+			"input": null,
+			"output": {
+				"testDirectory": "tests/e2e",
+				"outputDirectory": "test-results/explorer-shell",
+				"testMatch": "/[\\\\/]explorer-shell[^\\\\/]*\\.spec\\.ts$/",
+				"selected": [
+					"explorer-shell-activity-list.spec.ts",
+					"explorer-shell-browser-errors.spec.ts",
+					"explorer-shell-capture-readiness.spec.ts",
+					"explorer-shell-component-catalog.spec.ts",
+					"explorer-shell-pieces.spec.ts",
+					"explorer-shell-search-fit.spec.ts",
+					"explorer-shell-search-scope.spec.ts",
+					"explorer-shell-search.spec.ts",
+					"explorer-shell-verdict.spec.ts",
+					"explorer-shell.spec.ts"
+				],
+				"workers": 1,
+				"reporter": "list",
+				"use": {
+					"screenshot": "only-on-failure",
+					"launchOptions": {
+						"ignoreDefaultArgs": [
+							"--hide-scrollbars"
+						]
+					}
+				},
+				"webServer": null
+			}
+		}
+	]
+}

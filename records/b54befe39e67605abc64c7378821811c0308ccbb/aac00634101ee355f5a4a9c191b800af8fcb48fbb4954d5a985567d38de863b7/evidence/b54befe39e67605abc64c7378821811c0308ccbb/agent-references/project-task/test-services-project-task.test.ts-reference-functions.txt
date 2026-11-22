@@ -1,0 +1,16 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-ui.rmAjls/tmp/harness-snapshot-pOFKOo/packages/desktop
+
+ ✓ test/services/project-task.test.ts (5 tests) 7455ms
+   ✓ Ask preserves source and a returned answer containing a registered unit reference  1545ms
+   ✓ a requested registered unit beyond the first 120 is prioritized in the bounded prompt  1475ms
+   ✓ Change reports actual registered source owners rather than the requested subject  1539ms
+   ✓ an unexpected Ask write fails and preserves the changed file for review  1553ms
+   ✓ a scoped project change refuses missing deployment configuration before an agent writes  1328ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  10:19:55
+   Duration  8.65s (transform 622ms, setup 172ms, collect 787ms, tests 7.46s, environment 0ms, prepare 42ms)
+
+JSON report written to /tmp/z5jp8p-ui.rmAjls/tmp/harness-runner-uqQWSo/report.json

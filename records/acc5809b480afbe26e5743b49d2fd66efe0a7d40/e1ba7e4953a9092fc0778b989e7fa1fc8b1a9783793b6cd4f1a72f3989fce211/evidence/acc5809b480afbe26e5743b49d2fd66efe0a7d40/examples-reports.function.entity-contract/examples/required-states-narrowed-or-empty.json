@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-contract",
+	"symbol": "requiredStates",
+	"cases": [
+		{
+			"name": "shared state once; other unit and inapplicable states left out",
+			"input": {
+				"unit": "app.function.filter",
+				"scenarioIds": [
+					"orders-filter",
+					"orders-search"
+				]
+			},
+			"output": [
+				"match",
+				"no-match"
+			]
+		},
+		{
+			"name": "unit named by no scenario gets an empty list",
+			"input": {
+				"unit": "app.function.export",
+				"scenarioIds": [
+					"orders-filter",
+					"orders-search"
+				]
+			},
+			"output": []
+		}
+	]
+}

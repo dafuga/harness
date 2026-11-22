@@ -1,0 +1,13 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.commit-identity",
+	"symbol": "commitIdentity",
+	"cases": [
+		{
+			"name": "repository config file bytes after resolution",
+			"input": "read .git/config",
+			"output": true
+		}
+	]
+}

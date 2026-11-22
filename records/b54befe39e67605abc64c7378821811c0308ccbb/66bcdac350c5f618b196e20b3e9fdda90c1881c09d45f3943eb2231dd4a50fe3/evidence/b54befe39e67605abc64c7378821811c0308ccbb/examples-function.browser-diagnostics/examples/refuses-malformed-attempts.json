@@ -1,0 +1,363 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.browser-diagnostics",
+	"symbol": "browserDiagnosticSchema",
+	"cases": [
+		{
+			"name": "empty test name",
+			"input": {
+				"test": "",
+				"file": "test/e2e/dashboard.spec.ts",
+				"project": "desktop",
+				"retry": 0,
+				"browser": "chromium",
+				"errors": [
+					{
+						"type": "console",
+						"message": "Failed to load resource: 503",
+						"page": "/dashboard",
+						"source": "https://localhost/api/items",
+						"line": 0,
+						"column": 0
+					},
+					{
+						"type": "pageerror",
+						"message": "ResizeObserver loop limit exceeded",
+						"page": "/dashboard",
+						"source": "app.js",
+						"line": 12,
+						"column": 4,
+						"stack": "Error: ResizeObserver loop limit exceeded\n    at app.js:12:4"
+					}
+				],
+				"expected": [
+					{
+						"type": "pageerror",
+						"message": "ResizeObserver loop limit exceeded",
+						"reason": "Benign browser notice declared by this test.",
+						"source": "app.js"
+					}
+				]
+			},
+			"error": [
+				{
+					"code": "too_small",
+					"path": "test"
+				}
+			]
+		},
+		{
+			"name": "negative retry",
+			"input": {
+				"test": "Shows the dashboard with its recorded browser errors",
+				"file": "test/e2e/dashboard.spec.ts",
+				"project": "desktop",
+				"retry": -1,
+				"browser": "chromium",
+				"errors": [
+					{
+						"type": "console",
+						"message": "Failed to load resource: 503",
+						"page": "/dashboard",
+						"source": "https://localhost/api/items",
+						"line": 0,
+						"column": 0
+					},
+					{
+						"type": "pageerror",
+						"message": "ResizeObserver loop limit exceeded",
+						"page": "/dashboard",
+						"source": "app.js",
+						"line": 12,
+						"column": 4,
+						"stack": "Error: ResizeObserver loop limit exceeded\n    at app.js:12:4"
+					}
+				],
+				"expected": [
+					{
+						"type": "pageerror",
+						"message": "ResizeObserver loop limit exceeded",
+						"reason": "Benign browser notice declared by this test.",
+						"source": "app.js"
+					}
+				]
+			},
+			"error": [
+				{
+					"code": "too_small",
+					"path": "retry"
+				}
+			]
+		},
+		{
+			"name": "fractional retry",
+			"input": {
+				"test": "Shows the dashboard with its recorded browser errors",
+				"file": "test/e2e/dashboard.spec.ts",
+				"project": "desktop",
+				"retry": 1.5,
+				"browser": "chromium",
+				"errors": [
+					{
+						"type": "console",
+						"message": "Failed to load resource: 503",
+						"page": "/dashboard",
+						"source": "https://localhost/api/items",
+						"line": 0,
+						"column": 0
+					},
+					{
+						"type": "pageerror",
+						"message": "ResizeObserver loop limit exceeded",
+						"page": "/dashboard",
+						"source": "app.js",
+						"line": 12,
+						"column": 4,
+						"stack": "Error: ResizeObserver loop limit exceeded\n    at app.js:12:4"
+					}
+				],
+				"expected": [
+					{
+						"type": "pageerror",
+						"message": "ResizeObserver loop limit exceeded",
+						"reason": "Benign browser notice declared by this test.",
+						"source": "app.js"
+					}
+				]
+			},
+			"error": [
+				{
+					"code": "invalid_type",
+					"path": "retry"
+				}
+			]
+		},
+		{
+			"name": "missing expected array",
+			"input": {
+				"test": "Shows the dashboard with its recorded browser errors",
+				"file": "test/e2e/dashboard.spec.ts",
+				"project": "desktop",
+				"retry": 0,
+				"browser": "chromium",
+				"errors": [
+					{
+						"type": "console",
+						"message": "Failed to load resource: 503",
+						"page": "/dashboard",
+						"source": "https://localhost/api/items",
+						"line": 0,
+						"column": 0
+					},
+					{
+						"type": "pageerror",
+						"message": "ResizeObserver loop limit exceeded",
+						"page": "/dashboard",
+						"source": "app.js",
+						"line": 12,
+						"column": 4,
+						"stack": "Error: ResizeObserver loop limit exceeded\n    at app.js:12:4"
+					}
+				]
+			},
+			"error": [
+				{
+					"code": "invalid_type",
+					"path": "expected"
+				}
+			]
+		},
+		{
+			"name": "unknown observed type",
+			"input": {
+				"test": "Shows the dashboard with its recorded browser errors",
+				"file": "test/e2e/dashboard.spec.ts",
+				"project": "desktop",
+				"retry": 0,
+				"browser": "chromium",
+				"errors": [
+					{
+						"type": "warning",
+						"message": "Slow",
+						"page": "/dashboard"
+					}
+				],
+				"expected": [
+					{
+						"type": "pageerror",
+						"message": "ResizeObserver loop limit exceeded",
+						"reason": "Benign browser notice declared by this test.",
+						"source": "app.js"
+					}
+				]
+			},
+			"error": [
+				{
+					"code": "invalid_value",
+					"path": "errors.0.type"
+				}
+			]
+		},
+		{
+			"name": "negative observed line",
+			"input": {
+				"test": "Shows the dashboard with its recorded browser errors",
+				"file": "test/e2e/dashboard.spec.ts",
+				"project": "desktop",
+				"retry": 0,
+				"browser": "chromium",
+				"errors": [
+					{
+						"type": "pageerror",
+						"message": "Boom",
+						"page": "/",
+						"line": -3
+					}
+				],
+				"expected": [
+					{
+						"type": "pageerror",
+						"message": "ResizeObserver loop limit exceeded",
+						"reason": "Benign browser notice declared by this test.",
+						"source": "app.js"
+					}
+				]
+			},
+			"error": [
+				{
+					"code": "too_small",
+					"path": "errors.0.line"
+				}
+			]
+		},
+		{
+			"name": "observed entry with an undeclared key",
+			"input": {
+				"test": "Shows the dashboard with its recorded browser errors",
+				"file": "test/e2e/dashboard.spec.ts",
+				"project": "desktop",
+				"retry": 0,
+				"browser": "chromium",
+				"errors": [
+					{
+						"type": "console",
+						"message": "Boom",
+						"page": "/",
+						"retries": 2
+					}
+				],
+				"expected": [
+					{
+						"type": "pageerror",
+						"message": "ResizeObserver loop limit exceeded",
+						"reason": "Benign browser notice declared by this test.",
+						"source": "app.js"
+					}
+				]
+			},
+			"error": [
+				{
+					"code": "unrecognized_keys",
+					"path": "errors.0"
+				}
+			]
+		},
+		{
+			"name": "expected entry with an empty reason",
+			"input": {
+				"test": "Shows the dashboard with its recorded browser errors",
+				"file": "test/e2e/dashboard.spec.ts",
+				"project": "desktop",
+				"retry": 0,
+				"browser": "chromium",
+				"errors": [
+					{
+						"type": "console",
+						"message": "Failed to load resource: 503",
+						"page": "/dashboard",
+						"source": "https://localhost/api/items",
+						"line": 0,
+						"column": 0
+					},
+					{
+						"type": "pageerror",
+						"message": "ResizeObserver loop limit exceeded",
+						"page": "/dashboard",
+						"source": "app.js",
+						"line": 12,
+						"column": 4,
+						"stack": "Error: ResizeObserver loop limit exceeded\n    at app.js:12:4"
+					}
+				],
+				"expected": [
+					{
+						"type": "console",
+						"message": "Boom",
+						"reason": ""
+					}
+				]
+			},
+			"error": [
+				{
+					"code": "too_small",
+					"path": "expected.0.reason"
+				}
+			]
+		},
+		{
+			"name": "undeclared key on the attempt",
+			"input": {
+				"test": "Shows the dashboard with its recorded browser errors",
+				"file": "test/e2e/dashboard.spec.ts",
+				"project": "desktop",
+				"retry": 0,
+				"browser": "chromium",
+				"errors": [
+					{
+						"type": "console",
+						"message": "Failed to load resource: 503",
+						"page": "/dashboard",
+						"source": "https://localhost/api/items",
+						"line": 0,
+						"column": 0
+					},
+					{
+						"type": "pageerror",
+						"message": "ResizeObserver loop limit exceeded",
+						"page": "/dashboard",
+						"source": "app.js",
+						"line": 12,
+						"column": 4,
+						"stack": "Error: ResizeObserver loop limit exceeded\n    at app.js:12:4"
+					}
+				],
+				"expected": [
+					{
+						"type": "pageerror",
+						"message": "ResizeObserver loop limit exceeded",
+						"reason": "Benign browser notice declared by this test.",
+						"source": "app.js"
+					}
+				],
+				"duration": 12
+			},
+			"error": [
+				{
+					"code": "unrecognized_keys",
+					"path": "record"
+				}
+			]
+		},
+		{
+			"name": "attempt that is not an object",
+			"input": "Shows the dashboard",
+			"error": [
+				{
+					"code": "invalid_type",
+					"path": "record"
+				}
+			]
+		}
+	]
+}

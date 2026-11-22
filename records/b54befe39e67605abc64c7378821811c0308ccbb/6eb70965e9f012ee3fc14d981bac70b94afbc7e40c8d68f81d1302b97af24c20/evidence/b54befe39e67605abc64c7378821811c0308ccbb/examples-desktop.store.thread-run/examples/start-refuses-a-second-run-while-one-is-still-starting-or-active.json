@@ -1,0 +1,24 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.thread-run",
+	"symbol": "start",
+	"cases": [
+		{
+			"name": "start",
+			"input": {
+				"mode": "plan"
+			},
+			"output": {
+				"duringStart": false,
+				"starting": true,
+				"accepted": true,
+				"duringRun": false,
+				"runId": "run-1",
+				"status": "Request accepted",
+				"active": true,
+				"startCalls": 1
+			}
+		}
+	]
+}

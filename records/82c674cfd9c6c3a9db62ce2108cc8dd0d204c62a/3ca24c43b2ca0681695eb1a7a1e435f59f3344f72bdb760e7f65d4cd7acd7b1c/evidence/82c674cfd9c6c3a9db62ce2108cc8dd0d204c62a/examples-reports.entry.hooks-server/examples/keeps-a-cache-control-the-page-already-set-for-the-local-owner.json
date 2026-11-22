@@ -1,0 +1,21 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.entry.hooks-server",
+	"symbol": "handle",
+	"cases": [
+		{
+			"name": "page with its own cache-control keeps that header",
+			"input": {
+				"pathname": "/harness/data/index.json",
+				"peer": "127.0.0.1",
+				"pageCacheControl": "public, max-age=60"
+			},
+			"output": {
+				"status": 200,
+				"cacheControl": "public, max-age=60",
+				"resolved": 1
+			}
+		}
+	]
+}

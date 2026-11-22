@@ -1,0 +1,3262 @@
+{
+	"id": "9fa5d9354483999288a22b10e1681286439fed039f8350b65183b138ad235905",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-hl.NEqxeh/source",
+	"source": {
+		"commit": "8303ae615135c6d42a71738328e3f3df413bde8e",
+		"tree": "b4633f6170933255193f3e77bb7d3f5d5b280e9a",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-19T21:54:23.973Z",
+	"finishedAt": "2026-11-19T21:54:42.346Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "desktop.function.catalog-unit",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "e6af75ad703aa128b593066c6b1cb9f5a35c7cace778dd5f26c86a47d9085349",
+			"source": "c829c9986cfb2e4f1602eef972fd116033e580ddbf5ceef10a251c59afb0f3d4",
+			"contract": "b86663d19c2bbc8093c48c6895e0769a615ba401f14c55aa39438bf63d4b9ae6",
+			"runtime": "ae7357c702359993b9f63a7a0b88483931c54658cce4db8fe32441b2459e9c75",
+			"files": [
+				{
+					"path": "packages/desktop/src/utils/explorer-ui/catalogUnit.ts",
+					"hash": "d8e134af3b8866f8a70afcc28f3ede331c5fa718"
+				}
+			]
+		},
+		{
+			"unit": "desktop.function.category-of",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "5217abee5da0d244e97f9d67f8d4e19495118261c94236076fa2ba52f43fc1df",
+			"source": "cb93bc5ecc9a10da259052aaac51b30bf2e3071a5f916a2d12ba08f94cfda55a",
+			"contract": "5295f9c0ec9dcca5e449c890f20c95a60c9cf69a375c009da414d02df49bdaf0",
+			"runtime": "d9a7a0023d7a45717491ef0f0fa71d59279e28ff20c93bc8aa39368513648964",
+			"files": [
+				{
+					"path": "packages/desktop/src/utils/shared-primitives/categoryOf.ts",
+					"hash": "22b2b8b1b9665c9af480a29435848514d2e2e2be"
+				}
+			]
+		},
+		{
+			"unit": "desktop.function.development-tooling-ipc-payload-plan-payload",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "ae7bd2b535b3b419ca0e191f6b9480a9b777cfffaf8fad03d800eea10f73a68f",
+			"source": "d41fc8690ec22e2aafd294f3adaa6220c664f8f77617639c225aa8c6044e92f6",
+			"contract": "b3b6f862bd1d419e944cd211e9d8f7d8e0d015d40a1746f7bf096344f041d6e2",
+			"runtime": "7c80e94cb660f21ec9ae01d9fbbf8a377df9744953d43557a8eefba81430c888",
+			"files": [
+				{
+					"path": "packages/desktop/src/utils/ipc-payload/planPayload.ts",
+					"hash": "8ca5a296cacfcc5b7c46b8d555d24227eca08272"
+				}
+			]
+		},
+		{
+			"unit": "desktop.function.ipc-fields",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "6e5a710200f7aea790c88d2827389e0aede114e0108e2c1c8df8e9c518e9dad1",
+			"source": "ff74e3acb7941af3866d4e217f44ad41b75110c58cbabf194dbf2e206e40ee72",
+			"contract": "d1769e8c5ec960649b23adac59a16071cab5e00214001022c12187eb64074990",
+			"runtime": "45745e645a0f06eedad918283e521c01065b28160feb57236b1c2832f9a1dd4c",
+			"files": [
+				{
+					"path": "packages/desktop/src/utils/ipc-payload/ipcFields.ts",
+					"hash": "3c036dfec4ae7746a481fda5c5683d6560319df6"
+				},
+				{
+					"path": "packages/desktop/src/utils/ipc-payload/ipcFields.types.ts",
+					"hash": "eae250f9e6d64d40fa86006710b7a387a1152a8d"
+				},
+				{
+					"path": "packages/desktop/src/utils/ipc-payload/regionField.ts",
+					"hash": "e2e9f8595632e50ec9e91e7054d97b18be5ff1c3"
+				},
+				{
+					"path": "packages/desktop/src/utils/ipc-payload/regionField.types.ts",
+					"hash": "9f39ca7b27e45b0d61508f703470fc04249ef48e"
+				},
+				{
+					"path": "packages/desktop/src/utils/ipcFields.ts",
+					"hash": "9ae0437e8bb2dda630662cf10f4860702b35a0d7"
+				}
+			]
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "dc91dfda2efc26c4b846d1408c8be940f10677c34b6ebc67e6df4d441c73ab88",
+			"source": "9ab1b6bd3b1c4bc82ca6abc2d31f3df3bafb31a75c2893e0da2578e6ee89c446",
+			"contract": "f0ab94e70119045e6ccb0284398852684ee42f2a0f8177451a32ed44bd5e10b6",
+			"runtime": "5f247f8f29b8d736fae53f35c7675074f76064816266e7b79fa4b670d7143a59",
+			"files": [
+				{
+					"path": "packages/desktop/src/utils/ipc-payload/ipcPayload.ts",
+					"hash": "9ce93732f6e76eaa578445c653d1fd5698fc168d"
+				},
+				{
+					"path": "packages/desktop/src/utils/ipc-payload/ipcPayload.types.ts",
+					"hash": "4732120191d55c9176436e053cc1c0c526639345"
+				},
+				{
+					"path": "packages/desktop/src/utils/ipcPayload.ts",
+					"hash": "581356729c238b3c137cbd30370a399e7bd010fa"
+				}
+			]
+		},
+		{
+			"unit": "desktop.model.deployment-types",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "ba50c82de206e9c1373bd0d165d68218a406926475ac0c5936ee342c32f5283b",
+			"source": "868b8a94e5fb62e98732f58dbb42de934da4c0c67610cbeecc7d4b1387672362",
+			"contract": "ecc554e2cf38878514fff509633a5adddfd75ec867efff0a3e532c03fd85ce02",
+			"runtime": "d65277d4a61e01d215c685bcd19786bdd99888fdffab14717e1f72cdf17d1b91",
+			"files": [
+				{
+					"path": "packages/desktop/src/models/development-tooling/Deployment.types.ts",
+					"hash": "90a46e92b160c263492ced300ca31020b6e85fa9"
+				},
+				{
+					"path": "packages/desktop/src/models/development-tooling/DeploymentValues.ts",
+					"hash": "46c637a9efaf7739ab8adb168ed8d81a3de73010"
+				}
+			]
+		},
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "25426cc29e39c18a86af41ad32c8a4cdcfadee0ddee96e726889a0642d63a863",
+			"source": "de924b8a2ca2ddb40cd92526141bb7be113946d1911f5c1a72d6d1f99ddf6692",
+			"contract": "38e85074d04dbb01c7b7a0e364a3683b5d1629440581d55800af40f9bee4262e",
+			"runtime": "6b0115e8432e08b8521c33f79a59544a4e8bda6025f1f845017566a153df772f",
+			"files": [
+				{
+					"path": "packages/desktop/src/models/DesktopBridge.types.ts",
+					"hash": "27d91d01367f1599aebff8160af43616486c3086"
+				},
+				{
+					"path": "packages/desktop/src/models/development-tooling/DesktopBridge.types.ts",
+					"hash": "c6bc2dd1558b21c140bbb5c4dcf73663f93ec9cd"
+				},
+				{
+					"path": "packages/desktop/src/models/development-tooling/DesktopBridgeValues.ts",
+					"hash": "729c43bbea9e650e68030fa7eb2944bbba78a094"
+				}
+			]
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "6aa43f5e21b0b7f2658c994f73c433432813a86437ea36baa7ead31e965ba4dd",
+			"source": "b294628dec7c197595756dc18cadec3da83a51abf1f20fd4301d3521dbf556ed",
+			"contract": "1f9ecb5c2a1806f1b0757cc27190015dd8c167bf357fbb6a2cf776d87e65d46d",
+			"runtime": "28d91572560532cab3345e46bf35f6b0e1eac0b3bf93d697a47bfcab30f4a90c",
+			"files": [
+				{
+					"path": "packages/desktop/src/models/development-tooling/Desktop.types.ts",
+					"hash": "73793e8c73196fe1a22fa4414f8cf33cca44cbb2"
+				},
+				{
+					"path": "packages/desktop/src/models/development-tooling/DesktopValues.ts",
+					"hash": "cc10609c9290ebeb9f72d7e72205db2534ae49d7"
+				}
+			]
+		},
+		{
+			"unit": "desktop.validator.ipc-request",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "f8c1f853abee978b2b089ef1b5a65f408e511e357dff8a6bce4fe890b2183871",
+			"source": "c43c383b4f112607e75df23e9e5765b1b311224b68e2ba86ebd9dfa24afe5c88",
+			"contract": "24fc895a7d6616ee1dc6d1237e0b05ea94ebedab1d645727e89ac804ab0317e2",
+			"runtime": "82eda04792f5574cbd1fad4b0d93c9176f9482c6764b92ee303bb720fac29ec2",
+			"files": [
+				{
+					"path": "packages/desktop/src/validators/development-tooling/IpcRequestValidator.ts",
+					"hash": "957f5d3e05f8c9cfce9f1202bf28f99439285604"
+				},
+				{
+					"path": "packages/desktop/src/validators/development-tooling/IpcRequestValidator.types.ts",
+					"hash": "1b585ca9f12ec5ded8a0eec4190685dae8479806"
+				}
+			]
+		},
+		{
+			"unit": "desktop.validator.project-context",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "e2bbf7eced4639ea80b18631ca559d67717d26c0d9dc372cd4e6acfbf0befdba",
+			"source": "abb39492f9be0ae08a624093603e81e08f78ceb1747696e9bf8ba827cf089c33",
+			"contract": "8aeb6046b893ecef6b475d0de105a943f1d95cf57177006071d8e6bc8507ab7b",
+			"runtime": "816f77afbb6a6f37c368a1d5e19bea8b4852eac1f67ea844c58086125d8cfe40",
+			"files": [
+				{
+					"path": "packages/desktop/src/validators/projects-sessions/ProjectContextValidator.ts",
+					"hash": "f72774a35bd617f593f3553143d3d424f18a9de5"
+				},
+				{
+					"path": "packages/desktop/src/validators/projects-sessions/ProjectContextValidator.types.ts",
+					"hash": "021bb9b785cc4bf8346c8757f6e9624b9c5177d8"
+				}
+			]
+		},
+		{
+			"unit": "desktop.validator.remote-project-response",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "b34aba9bb638e97c3be25c8c085f21c317a2fad8c2a14c60b4bafab97d427933",
+			"source": "59b40bb5502c44f0a2e5a26369dcebf8d9d3e242e7e29c917b0595a94a0deb16",
+			"contract": "23cd4368ba0a2025d757a2430c6aa68b5a27aa1deb8c8142aefda1ee99fec758",
+			"runtime": "bc720b7a0909771c1c6c4cc414d3f11f23a972ea38fc8ad662cde1fae1453702",
+			"files": [
+				{
+					"path": "packages/desktop/src/validators/RemoteProjectResponseValidator.ts",
+					"hash": "2e7377860644cd1bdbedc2d7de8466f7cca417a9"
+				},
+				{
+					"path": "packages/desktop/src/validators/projects-sessions/HostedActorIdentityError.ts",
+					"hash": "34ca0991d2337127cd15ec5a02607db8fecde18f"
+				},
+				{
+					"path": "packages/desktop/src/validators/projects-sessions/HostedActorRequiredError.ts",
+					"hash": "63f916a600463c6423718fc3814ed582b5b467d0"
+				},
+				{
+					"path": "packages/desktop/src/validators/projects-sessions/HostedCommentAnchorMismatchError.ts",
+					"hash": "a6c007e131af6873439046debec897feb42dc8ab"
+				},
+				{
+					"path": "packages/desktop/src/validators/projects-sessions/HostedCommentIdentityMismatchError.ts",
+					"hash": "e2b82778f5ee7331bb0e2417acbe5620e5d5c95f"
+				},
+				{
+					"path": "packages/desktop/src/validators/projects-sessions/HostedCommentNotAcknowledgedError.ts",
+					"hash": "2f5d13baa0cd13c1cd6745768904d1a452832d75"
+				},
+				{
+					"path": "packages/desktop/src/validators/projects-sessions/HostedThreadMismatchError.ts",
+					"hash": "bd8e3ca564f33c841ddcc54ace4f0ed8db0a318e"
+				},
+				{
+					"path": "packages/desktop/src/validators/projects-sessions/InvalidHostedEntityError.ts",
+					"hash": "89f7301a9f848a5d63b7f8134e86fe207bd02dbe"
+				},
+				{
+					"path": "packages/desktop/src/validators/projects-sessions/InvalidHostedHistoryEventError.ts",
+					"hash": "ed0531bedf5ec828dc928d53c6acc4fd012ccd42"
+				},
+				{
+					"path": "packages/desktop/src/validators/projects-sessions/InvalidHostedHistoryPageError.ts",
+					"hash": "1df5c775d8a83dfb8f0ea1d6249732fc181889fe"
+				},
+				{
+					"path": "packages/desktop/src/validators/projects-sessions/InvalidHostedMessagesError.ts",
+					"hash": "1d9dd3aea7bd3f25cab4a5319859b75440735dc9"
+				},
+				{
+					"path": "packages/desktop/src/validators/projects-sessions/InvalidHostedProjectError.ts",
+					"hash": "ff1f660e3b5ff5f13684d434601d52d46fa5a4be"
+				},
+				{
+					"path": "packages/desktop/src/validators/projects-sessions/InvalidHostedProjectsError.ts",
+					"hash": "b6e9a9e4cbbd02672fd8378693ab62e36116bbd7"
+				},
+				{
+					"path": "packages/desktop/src/validators/projects-sessions/InvalidHostedResponseRecordError.ts",
+					"hash": "f79e7cc218e5339531c471c1e951b52dfb3a1a36"
+				},
+				{
+					"path": "packages/desktop/src/validators/projects-sessions/InvalidHostedSnapshotError.ts",
+					"hash": "6f92ced28076e0f65b01556fd3f313628c398d49"
+				},
+				{
+					"path": "packages/desktop/src/validators/projects-sessions/RemoteProjectResponseValidator.ts",
+					"hash": "9813ebd225f3361f6e88a1e3bc66533a8f8053d4"
+				}
+			]
+		},
+		{
+			"unit": "function.canonical-json",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "9552d66720d9f64c0046d976cfc697554fa326b85ba6c3852ace15ef62502d84",
+			"source": "44720b233c69a62f80eaa23af24edcda7333f680dc1887164c99b503ebf61dea",
+			"contract": "269b3dc5817ef8734be262c38c51dda65e2615cfa398407b65fdda9d454e4cd5",
+			"runtime": "157459dd8f331e0cbe4053ca0f593fc64de39f516dfeddb7b0e26920e69e80ce",
+			"files": [
+				{
+					"path": "src/utils/development-tooling/canonicalJson.ts",
+					"hash": "8b27509ba970c0b4607edf4a688932c998e22c53"
+				}
+			]
+		},
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "function.unit-documentation",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "a232de816eba8ee68d074babdaa9e90e6cb4117a07e8b8c1739ed424df35f2c5",
+			"source": "48c0cd6c3428b39b4c7cfce751c6d3a4fabd6805e7e9be2760018969cb80fafc",
+			"contract": "fd014be8402d426dc9d2ed63de6d79e0036a7ec6144e7ccf8b7a0560f04c0077",
+			"runtime": "9e5fbc95a452d736664e577f2ed0914321b1073744089b8e9e1ad3b1cc5f9a12",
+			"files": [
+				{
+					"path": "src/services/explorer-ui/revision-detail-service/unitDocumentation.ts",
+					"hash": "36a4ee398e037e7d3fec355a16587ee7d349724b"
+				},
+				{
+					"path": "src/utils/explorer-ui/unit-documentation/unitDocumentation.ts",
+					"hash": "82fe13a75283a43db771612046484598265cfb64"
+				},
+				{
+					"path": "src/utils/explorer-ui/unit-documentation/unitDocumentation.types.ts",
+					"hash": "d4fe303b747b8272405b379b386b067d0f7e5b59"
+				},
+				{
+					"path": "src/utils/unit-documentation/unitDocumentation.ts",
+					"hash": "c2202961827764194833310b17559ae27287eedd"
+				},
+				{
+					"path": "src/utils/unitDocumentation.ts",
+					"hash": "7751fe687200d38d8265134beb125de99376ccbb"
+				}
+			]
+		},
+		{
+			"unit": "hub.controller.hub-agent",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "53ed1b9651f2feecdf025136332c032f31047cc053ec26aea97017360e053d87",
+			"source": "c422d95be6ff7791803d71392d3f38b8016873fb674293e2f00bb367aae87695",
+			"contract": "f5c52798cab75437a6dee8aed5490cb7726535531036f9ffcb702fe1694fea05",
+			"runtime": "e01c77373c34d718da01daa4681a3f3ac601c3f195ddc4bc0430b9a1e32a9f86",
+			"files": [
+				{
+					"path": "packages/hub/src/controllers/HubAgentController.ts",
+					"hash": "4478812822c2c2f1c409a03f9791601a38b7f790"
+				},
+				{
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.ts",
+					"hash": "aed145c407c45bd867801ca595888a859316362c"
+				},
+				{
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.types.ts",
+					"hash": "45512b04551427bf877b90a80e75bf186a2b31db"
+				}
+			]
+		},
+		{
+			"unit": "hub.function.hub-body-bytes",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cd3e67d9541e8968cac0fe890045970f542cbe7a9eac7bc4e60654aa778663f9",
+			"source": "cffee17899112aad929a0d8a3588f18a692af6cf6ce3807fb2d3f73d1238164e",
+			"contract": "0975c2c50597ed44c2521aadff169c2772a4febe323451113cc4aae64c4b17ca",
+			"runtime": "a384785267c9c27d4d9ce2fd1d93c8e928ee70b85f2496f5e29a977b32c35d65",
+			"files": [
+				{
+					"path": "packages/hub/src/utils/networking-security/hub-http/hubBodyBytes.ts",
+					"hash": "745061dc44c5316d26148958aca969c30a314b84"
+				}
+			]
+		},
+		{
+			"unit": "hub.function.hub-cache",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "7c0ccf2c48a2d107848752836b1fdedf2b02bc1b9865876bce60f8ad61844ca0",
+			"source": "0d24dfc518f682c31ad1b1609269f866ede4d9122164426f1e2ffd88df6b42c6",
+			"contract": "6ad09b1542bba1a05384ebf62f4d8f736052af9485abcbc55208c848b426ac55",
+			"runtime": "93d0a99def23e3a9731008e8adf9159f4e5d7fd46b8565948c0187b60cc373a1",
+			"files": [
+				{
+					"path": "packages/hub/src/routes/api/[...path]/hubCache.ts",
+					"hash": "898d1b464065ebb3ebcd254e4ec9dbe445660661"
+				}
+			]
+		},
+		{
+			"unit": "hub.function.hub-catalog",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cb444db4767cd35dafcd9af1cb066266a9a62ccc0d4cc1ba3911fc46b03f7cd1",
+			"source": "43201ee42ed736fe724e1d71644704c2603982dc19c06e276df6bf2e7d41fa76",
+			"contract": "d53fa3c187ad4e0151cf58cfcd2d095ec68fe1ded2e59bb7c727ddd9168d4b8b",
+			"runtime": "b4b0f8b01633076eb2826b463b5196fc1560f7a42cc243c16f9b1ead070eed3e",
+			"files": [
+				{
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubCatalog.ts",
+					"hash": "4f29db6b96afe39676b3d26df0e44ec20d39f6f7"
+				},
+				{
+					"path": "packages/hub/src/utils/hub-catalog/hubCatalog.ts",
+					"hash": "990bbacfaadf295fa36dcbcf22f9d68d2f0606c3"
+				},
+				{
+					"path": "packages/hub/src/utils/hubCatalog.ts",
+					"hash": "5a88062b4be392e7af8707f6c55569c70b24fdcb"
+				},
+				{
+					"path": "packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts",
+					"hash": "8fb0d5bd5ad572dab9289c550b4a6d8946aa9fd6"
+				}
+			]
+		},
+		{
+			"unit": "hub.function.hub-entity",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "86bacf68d0e3a05df7be7f05472d1567df325296b6dc70ac111138f0cf24feb1",
+			"source": "306fc6eaa920a5cf1b48f3f582b57bfd0aa21e63a1be76b56fff8fe0e3db71e3",
+			"contract": "65e38a680c99d18f32e43ecf21e10aaf6b279a131db0501d9708e85bcbaaf719",
+			"runtime": "576235ae33978674979a41e59ce99dff4105f0acbb4db58a8c072437b965a5c4",
+			"files": [
+				{
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntity.ts",
+					"hash": "93116227081e81bec17ebb52280af4f3ccaeaf09"
+				}
+			]
+		},
+		{
+			"unit": "hub.function.hub-entity-contract",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "b28950d974e5c76c9ab43b7f7ffffdf24ca29c4a51308756cf5349a95d323762",
+			"source": "0857aa0564c5f450b074f9ad85e74eda602420a37c933de259c18baef432348e",
+			"contract": "b813e312d17a9a7d173746227c4317b7c66bdeef87cd6061a5b3b9f4263ea5cf",
+			"runtime": "c80a48188208e04a44341457bfaac65b35d67e151673df928cfd5b576d4ce858",
+			"files": [
+				{
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntityContract.ts",
+					"hash": "305e9322893c69dfb3cb6564d7c1f366649197f5"
+				}
+			]
+		},
+		{
+			"unit": "hub.function.hub-evidence-file",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "71cac72cfccee717939667599be280ba436f85dc20473fb273685a80dfafb122",
+			"source": "6feb1550d87afbca30d2bdd6a725c9eb13a837b4c10d805958f734db75bf70b5",
+			"contract": "6b101bc009f7d97eb62c2e862e4be404362efb690fbc7ba12d3a48d0182f906e",
+			"runtime": "ec077c867da726c4a896de16df011a668a335c7c255398bf5b810bbcea384631",
+			"files": [
+				{
+					"path": "packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/hubEvidenceFile.ts",
+					"hash": "b90c992dd61b9b84c511f48b3b5d49af3b39966c"
+				},
+				{
+					"path": "packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/hubEvidenceFile.types.ts",
+					"hash": "0f6df7bd644197b8c6dfba7c9a6c631a4a8cf3d1"
+				},
+				{
+					"path": "packages/hub/src/utils/verification-evidence/hubEvidenceFile.ts",
+					"hash": "eb24d67999dc8a09cb2334fd2652bec804dad27a"
+				}
+			]
+		},
+		{
+			"unit": "hub.function.hub-history",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "30e1220a37ca4e9ad895f36dc2165042556842481a509520d39c1714b62c7157",
+			"source": "dfb92c960e5c3e7e529f746c244562ba16febf421ac38d1490cecb792cd12fc3",
+			"contract": "8a1d0ed9630cf522271b3eb65d9940d80a35de02cc257af30860d4f97e0262e2",
+			"runtime": "4ee68b1f34a23a9ab0b68c9a71897b9f60988d198a215148e8f76c1b2a93530c",
+			"files": [
+				{
+					"path": "packages/hub/src/utils/git-source-history/hubHistory.ts",
+					"hash": "2ed89595c39c2a15443e598b66c6c035636f0a98"
+				},
+				{
+					"path": "packages/hub/src/utils/git-source-history/hubHistory.types.ts",
+					"hash": "0b5ef266cc5dd4249eb36fea4b7c29ffcf54affd"
+				}
+			]
+		},
+		{
+			"unit": "hub.function.hub-http",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "dd1d2894ddff57e47cb6a40f7d24e7553922d0772a1e8f99d396d29b7fce9a46",
+			"source": "7baad0a9b706983e89d549cf3ee133df0be8874d3d46e414fc3e169310950578",
+			"contract": "e22dee1bc191b8ccfcf02066f7103aef46999ce5d0e954400863a86a7d60ebf6",
+			"runtime": "1a71b9566be789bc25941e2f17000e030f359c09f416d4b1521e03714c127b91",
+			"files": [
+				{
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubHttp.ts",
+					"hash": "13cfbb33262884201d428b0298d6edd2feeb225b"
+				},
+				{
+					"path": "packages/hub/src/utils/hubHttp.ts",
+					"hash": "8ef0ed632799cf00bfe0e9108ad5fbd1d76f4b80"
+				},
+				{
+					"path": "packages/hub/src/utils/networking-security/hub-http/hubHttp.ts",
+					"hash": "c4ee8b920440cf96abd57f9a190dbc9ad3956abf"
+				}
+			]
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "3d5a3cf1f40ee8a42d37efb697e71e5ed119dc7b3760fb8dca3bbd8bb8f02c6a",
+			"source": "7490d2c8ee956d0d3307d4645bee6ff111bee937a4a5f1d478f877a88095ffd7",
+			"contract": "f52cad99b8163d0fe67e41eb730d490b793cc87ce0a3932521ec28d868faf93b",
+			"runtime": "386790d362363cab8db7559c920888bd53f892110d4d6b13ff3362861a5314f5",
+			"files": [
+				{
+					"path": "packages/hub/src/utils/development-tooling/hubJson.ts",
+					"hash": "7f19c06663063bfb78b80f4725d7bd1962552cce"
+				},
+				{
+					"path": "packages/hub/src/utils/development-tooling/hubJson.types.ts",
+					"hash": "6e415731cbb7320df73ef7eedcec218e24638489"
+				}
+			]
+		},
+		{
+			"unit": "hub.function.hub-metadata",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "a5aeb49b2686c4a645b63964925510ce50b1ca8765445ee3f7e6b3d9a543c859",
+			"source": "a3f7349baf8e3de73d481dc99fa0282dc3e9331ed1b74174daf46c823cbe6340",
+			"contract": "a99d3f42cd0f4ae5004ce12c90129d6f77d8a21fb551ec0ff22ace80e71da488",
+			"runtime": "36f046537438518f53a4df5347ec57d48ab88f9a14ddfe553b89a554115fe42e",
+			"files": [
+				{
+					"path": "packages/hub/src/utils/development-tooling/hub-metadata/hubMetadata.ts",
+					"hash": "a1a29e4a1079b8e3cd96a9dd5df270d085f7ede4"
+				}
+			]
+		},
+		{
+			"unit": "hub.function.hub-plans",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "b520340b525305af43ea0ce95b61e8538f302b73e10bfb53d7096794f9986691",
+			"source": "6dd4050e2decf7e3902d41c137a75b091d85a0523f2602ce3934918beee41146",
+			"contract": "49d86c095e8c1c44e763e8af4af82fca9e9c8e84ce66c73d088fbad4648999b7",
+			"runtime": "cc765fd558708f557c5b7651d59dea3e108b6806340ee19916760235df813dcf",
+			"files": [
+				{
+					"path": "packages/hub/src/utils/networking-security/hub-catalog/hubPlanRecord.ts",
+					"hash": "cdde9ad44d4d319c6922a6a9e059beb2723a021f"
+				},
+				{
+					"path": "packages/hub/src/utils/networking-security/hubPlans.ts",
+					"hash": "4b951f329ab1b225ec01580255cf8c10283e6190"
+				}
+			]
+		},
+		{
+			"unit": "hub.function.hub-projection-cache",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "b05cef5ef9dd04eb518eccf46827cb41ed10f2a602d445827d7061496faa0e41",
+			"source": "44686efd3851e92d48815632843091d913dedfc46b3a93bf5e3d053925be7fe7",
+			"contract": "a4bf647c8a39d89ac04cfe95e1e1395561083c87a3b8ac722d70c6216e57d66e",
+			"runtime": "748c11e09c284c49dc71c1e18512b1bbbf8f465b61e6977001d501c6c058c8cb",
+			"files": [
+				{
+					"path": "packages/hub/src/utils/development-tooling/hubProjectionCache.ts",
+					"hash": "d5dea7250e71c1208eabeba0c5a222f470f8e775"
+				}
+			]
+		},
+		{
+			"unit": "hub.function.hub-raw",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "8cec18667c3a883b9159aa3e2550ed332a0ad5b0e2431555915d535bbb103b1c",
+			"source": "db8657f441f51f3791794146f4f5e9eaf9e22b536af4a8a79ba23f604bbc5015",
+			"contract": "2c7bace979cae934a715ccd215e86df6e57afcf00f3adcb24471a1a7856d31af",
+			"runtime": "2cb27d0aa19232124da18fa645acd41793c78c970f99e58fb8fead60246abfe0",
+			"files": [
+				{
+					"path": "packages/hub/src/utils/development-tooling/hubRaw.ts",
+					"hash": "f9d5f2c04f36bc29c0bc0b3d0619700bfbdd7bcc"
+				}
+			]
+		},
+		{
+			"unit": "hub.function.hub-records",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "1ef22cdf34769e44a732e418907a098e1ab62bb1c0e16c20fd3c1aece7b520c2",
+			"source": "75f1a40bb29c9d9e688b7efde97bb27e888a40b6a8e56738e0db0223ff59d668",
+			"contract": "0dee93781ae2c210ab423612896eb2cdea4ad2889413be03e2afd3832f536005",
+			"runtime": "427ffc4ea8f290189928707d66f5e7fbf48b245d4da56534139b35a3b9ebb839",
+			"files": [
+				{
+					"path": "packages/hub/src/utils/development-tooling/hubRecords.ts",
+					"hash": "ea4c1e513e05b1230d09242f99d1eb156b41ad3b"
+				}
+			]
+		},
+		{
+			"unit": "hub.function.hub-size",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "d766d274e0c0b86352a37735f7859e1d3f4a771092976c3d11aaac32c72b08fc",
+			"source": "62a4d74bda7ee1b30f97ef9986860caf9b95b4a180bbdcc686af9ce0782508fc",
+			"contract": "f178c97c578298e9cc2049c16fe65e6ebe8f0f45cebf0658909fc42d0f50e7ae",
+			"runtime": "4f419a8df21505e4ffb6c2c98c50b8a434d0a5e2656acf02b36fb3a8ebfa34ee",
+			"files": [
+				{
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubSize.ts",
+					"hash": "0e9dcad71045ec142e4bbedd4d3abd8d63b0debb"
+				}
+			]
+		},
+		{
+			"unit": "hub.function.hub-snapshot",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "f15fe945867ffd8799ebf4276c1d6e818e3bba6498165ed2beba69325feaf790",
+			"source": "115e41d7fe8a06d76536514c7e924226ddec052f4cedf3791ad3d2493ea00bd8",
+			"contract": "45d0637f7b7943c0bf97997806a03e1ce90c8e6f351faa8b36bda459cfb730ef",
+			"runtime": "f62d6e8e3b326bd29f2697a6b4165dc19772b9977cae11a9ded361ad46d7b250",
+			"files": [
+				{
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubSnapshot.ts",
+					"hash": "fdf1adaf07d6dc7046afecac127e8c6859f9d135"
+				}
+			]
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "1c1ffcfa25fe38ac48a894a612f01ad54eda0a31dc9dd085a81b310a40246a2d",
+			"source": "631c6c33ac7b066aa9f288df5b486f9dea12d961cae4801b1c3db40354728082",
+			"contract": "b3018f4c3f0b25144306f963fe21fde30627685b71eb5ff0236884678ac9083a",
+			"runtime": "ee9feedebad54f4f77e857e50e5cdc5c90c68bb1c951ce5282d25f8819fb194b",
+			"files": [
+				{
+					"path": "packages/hub/src/utils/development-tooling/hubSource.ts",
+					"hash": "9fc57a4260e500336fa5ffde1b0fbc714e7a9f7f"
+				},
+				{
+					"path": "packages/hub/src/utils/development-tooling/hubSource.types.ts",
+					"hash": "a8b76d01237a3f697beaa4442379ce0aa5bc9038"
+				}
+			]
+		},
+		{
+			"unit": "hub.function.hub-threads",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "a22bc4813d1147ba6334d978766ac980c83498fcb6a0cb64793e410fe92a4557",
+			"source": "228cfc15ed3f44b8b0dd0cc8abe17ea914108f8c31fbc6ea42a9c901a548551d",
+			"contract": "5df9949986d7d376318f144384639c0ef74c7784384dbbf727e3fc87e0e6a8bd",
+			"runtime": "3dded1f6bbe1ac3502aa89abacdd138bfd7522bf08c95378e4e0a923c270c272",
+			"files": [
+				{
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubThreads.ts",
+					"hash": "37dee4b5d4aa0dc8671b26f10bed606fc3e65a72"
+				},
+				{
+					"path": "packages/hub/src/utils/networking-security/hubThreads.ts",
+					"hash": "78b852a8d4af44fe537a3f82d0b99d87ba93956e"
+				}
+			]
+		},
+		{
+			"unit": "hub.service.hub-projection",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "bd71090fe135db0b76f519a1d8376264153e0c9047f5ddd9504f1032241574fb",
+			"source": "38ca88142b2fbbd488f8f38163da23588d73361ca2d7c5fe3d224626fa54e77b",
+			"contract": "44f6359901111f716e0afa9a4b71bc28753eb743cef57488233b6bc3d3d13281",
+			"runtime": "76000e3a340050dda233f9df8c90be5717bd8e95bc8730aefc937c14d68dfc70",
+			"files": [
+				{
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
+					"hash": "cee91a9b35823158b2e53b1c9964ea368aa5b953"
+				},
+				{
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.types.ts",
+					"hash": "c091922543e4e8d968b06ec9cb1cbd44821fb07d"
+				}
+			]
+		},
+		{
+			"unit": "remote.model.remote-control-types",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "8751fa27c84d6b890f94999c0d06a05bb15d3c6e95b3fd7d05981291c79f5b0e",
+			"source": "1855ce100fb61b998d19c230df4f8fbc9505d73a078cd76da49a5cb47f9ef05e",
+			"contract": "f72a5c6c7ca2f506e11ddba20bd78dedd31713fc33f1a5fdc0dafd8a9a30998a",
+			"runtime": "c5afdee6a46473566cf90908dfbd76b831e3ddacf8ba0068440b6467cf1b960e",
+			"files": [
+				{
+					"path": "packages/remote/src/models/networking-security/RemoteControl.types.ts",
+					"hash": "6348dba1ba7186cc809f52eeac6c3bbefd41ebc6"
+				},
+				{
+					"path": "packages/remote/src/models/networking-security/RemoteControlValues.ts",
+					"hash": "bda3a2754d2644471162cdd4c14a05bf78c143c8"
+				}
+			]
+		},
+		{
+			"unit": "remote.model.remote-relay-types",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cf07c3aea6d2561fc9f10b7bf175545ca656b9f59ab0a6f6503059b754874d86",
+			"source": "ba1bb41d870f5df5a3e57326572e5a08e3c7e2a5e9bf71bd09968832af9ea33e",
+			"contract": "af3c9fa62d672a72593e9c0a426617a94b39948c242ecac342fac3d7bfc0e129",
+			"runtime": "2354192fb33aa713bea865cada3d466a006e9c31c2ee34a5fc682ba6101e2ef1",
+			"files": [
+				{
+					"path": "packages/remote/src/models/networking-security/RemoteRelay.types.ts",
+					"hash": "6804f6332b82cf9c2c3ff49ff22874f5e9325c23"
+				},
+				{
+					"path": "packages/remote/src/models/networking-security/RemoteRelayValues.ts",
+					"hash": "988ae0cfaef4468a2ff3c2a8a7610e89a05ddae3"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "c4fab09433602bf710b316a893e37b122eeac84b8f8f11f636a6cea19ac38fb5",
+			"source": "f07aca4c2373ce76c7aa1ce91087938c1c8c7593aaf9cc40b7baa9327e3a059c",
+			"contract": "f32577deb9df76347b3bfa0b1885e5170158f9492995aa9de4fa09796e363b7c",
+			"runtime": "78ccc1d2268be406436ffb357b669fbd984b3d9ce5d6f387f214923ce79494a7",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerName.ts",
+					"hash": "bd7b37345d70e4fcfb26c9300e5424e36b37fd76"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerName.types.ts",
+					"hash": "1b8037a61659a535543cb4027396a443cf8644c1"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "hub.controller.hub-agent",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 2.9985830000000533,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "hosted-contract-admission",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.controller.hub-agent",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 73540800,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "hosted-contract-admission",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.model.deployment-types",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.014416999999980362,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-38e8fb14c10acf1f-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.model.deployment-types",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90587136,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-38e8fb14c10acf1f-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.001040999999986525,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-02a4c081d3a28c86-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90636288,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-02a4c081d3a28c86-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.01587499999999409,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-eb4451e998f3f337-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90718208,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-eb4451e998f3f337-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "remote.model.remote-relay-types",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.005749999999920874,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-6bbebda50262e3c8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "remote.model.remote-relay-types",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 97697792,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-6bbebda50262e3c8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "remote.model.remote-control-types",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0009999999999763531,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-20d6471f64f85b85-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "remote.model.remote-control-types",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 97845248,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-20d6471f64f85b85-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-evidence-file",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0006670000000212895,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-c0bd92f8ea6fbba8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-evidence-file",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 102989824,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-c0bd92f8ea6fbba8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-cache",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.00656762500003083,
+			"method": "Arithmetic mean of 8 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-762d4a898d43face-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-cache",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111575040,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-762d4a898d43face-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-body-bytes",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.12575683333333623,
+			"method": "Arithmetic mean of 6 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-6682c7678e322785-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-body-bytes",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111755264,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-6682c7678e322785-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-http",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.15418050000001435,
+			"method": "Arithmetic mean of 6 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-7bb7391e1dab713c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-http",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111755264,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-7bb7391e1dab713c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.validator.project-context",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.004849799999965399,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-e91be3a0ff2e634e-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.validator.project-context",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111771648,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-e91be3a0ff2e634e-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.ipc-fields",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0014585999999553677,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-c7cd1d4c4946cab5-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.ipc-fields",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111804416,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-c7cd1d4c4946cab5-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.028083333333218736,
+			"method": "Arithmetic mean of 3 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-00d12f5c6d5f884b-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 110411776,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-00d12f5c6d5f884b-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.ipc-fields",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0013498999999910666,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-7718590a4ef5de53-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.ipc-fields",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111099904,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-7718590a4ef5de53-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.ipc-fields",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.005412399999977424,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-f709a3ac705f1490-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.ipc-fields",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 109740032,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-f709a3ac705f1490-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.ipc-fields",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.002250000000003638,
+			"method": "Arithmetic mean of 3 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-5e6b0615e6392f5a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.ipc-fields",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 110428160,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-5e6b0615e6392f5a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.13840266666670686,
+			"method": "Arithmetic mean of 3 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-79d9c25235787272-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 110428160,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-79d9c25235787272-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.1572417999999743,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-01be72ecf5514af0-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111788032,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-01be72ecf5514af0-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.validator.project-context",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.015275200000087353,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-c6308ba41b601f79-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.validator.project-context",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111804416,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-c6308ba41b601f79-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.validator.ipc-request",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.2031333999999788,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-80c5a89cb8d1076a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.validator.ipc-request",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111804416,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-80c5a89cb8d1076a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.05655840000003991,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-02d04a6a44145233-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111837184,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-02d04a6a44145233-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.26382910000002086,
+			"method": "Arithmetic mean of 10 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-5fcb27d387b1b57a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 110493696,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-5fcb27d387b1b57a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-metadata",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.011220899999989343,
+			"method": "Arithmetic mean of 10 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3ebcb1eb7c3e0fad-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-metadata",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111886336,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3ebcb1eb7c3e0fad-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-plans",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0931999999999789,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-a9216db037522c7c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-plans",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111902720,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-a9216db037522c7c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-raw",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.04849160000003394,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-9d14f245b1203709-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-raw",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111902720,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-9d14f245b1203709-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-raw",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.25943320000001224,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-09e626b224e1f247-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-raw",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111951872,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-09e626b224e1f247-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-raw",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.04293340000003809,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-e539529ba66be583-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-raw",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111968256,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-e539529ba66be583-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.3288833999999497,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-9d8d2f3555f0cc80-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111968256,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-9d8d2f3555f0cc80-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.017549800000006145,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-5aeef5348342f601-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111968256,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-5aeef5348342f601-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-records",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.9737167999999656,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-2ab2dfb4f3acafd6-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-records",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 112017408,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-2ab2dfb4f3acafd6-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.category-of",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.004849999999987631,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-56c47d7cf97d5d37-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.category-of",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 112017408,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-56c47d7cf97d5d37-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.catalog-unit",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.030466399999977512,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-d1f341f9e0649e50-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.catalog-unit",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 112017408,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-d1f341f9e0649e50-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.catalog-unit",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.029958399999986795,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-f599bc51450d3dc8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.catalog-unit",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 112033792,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-f599bc51450d3dc8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-catalog",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 1.071149799999921,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-ff8690d69c1803ae-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-catalog",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 112033792,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-ff8690d69c1803ae-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.validator.remote-project-response",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.001575000000025284,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-f06d2e4f43637839-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.validator.remote-project-response",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111411200,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-f06d2e4f43637839-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.validator.remote-project-response",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.017541800000026343,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-03c30107fca17456-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.validator.remote-project-response",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 112033792,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-03c30107fca17456-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-projection-cache",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 1.6484247999999297,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-0861d9a7c4f7150a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-projection-cache",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 112066560,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-0861d9a7c4f7150a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-snapshot",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 2.218700000000035,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-1332fbf00d3be4c4-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-snapshot",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 112066560,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-1332fbf00d3be4c4-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.service.hub-projection",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 2.28584179999998,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-32e01555f3ff6c92-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.service.hub-projection",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 112066560,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-32e01555f3ff6c92-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-http",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.11855020000002696,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-b9fdeae9662f90d5-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-http",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111525888,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-b9fdeae9662f90d5-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.controller.hub-agent",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 2.5869500000000243,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-78cd25547e2708f5-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.controller.hub-agent",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111525888,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-78cd25547e2708f5-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0071665000000393775,
+			"method": "Arithmetic mean of 2 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 2,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 112459776,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 2,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.development-tooling-ipc-payload-plan-payload",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.13924999999994725,
+			"method": "Arithmetic mean of 2 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-bfbed3c395a2a7b7-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 2,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.development-tooling-ipc-payload-plan-payload",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 111788032,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-bfbed3c395a2a7b7-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 2,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.3194170000001577,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 112459776,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "remote.model.remote-relay-types",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.014333000000078755,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-6bbebda50262e3c8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "remote.model.remote-relay-types",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 96124928,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-6bbebda50262e3c8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "remote.model.remote-control-types",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0009170000000722212,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-20d6471f64f85b85-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "remote.model.remote-control-types",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 96272384,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-20d6471f64f85b85-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-evidence-file",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0007919999999330685,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-c0bd92f8ea6fbba8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-evidence-file",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 103940096,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-c0bd92f8ea6fbba8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.model.deployment-types",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.005375000000185537,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-38e8fb14c10acf1f-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.model.deployment-types",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 104529920,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-38e8fb14c10acf1f-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0007499999999254214,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-02a4c081d3a28c86-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 104562688,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-02a4c081d3a28c86-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.015208000000029642,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-eb4451e998f3f337-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 104628224,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-eb4451e998f3f337-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-cache",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.006452428571459937,
+			"method": "Arithmetic mean of 7 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-762d4a898d43face-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 7,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-cache",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 126091264,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-762d4a898d43face-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 7,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.06832499999998162,
+			"method": "Arithmetic mean of 10 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-02d04a6a44145233-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 125943808,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-02d04a6a44145233-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.5524291000000175,
+			"method": "Arithmetic mean of 10 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-5fcb27d387b1b57a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 106774528,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-5fcb27d387b1b57a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-metadata",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.014333199999987301,
+			"method": "Arithmetic mean of 10 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3ebcb1eb7c3e0fad-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-metadata",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 116457472,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3ebcb1eb7c3e0fad-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-plans",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.13435830000000806,
+			"method": "Arithmetic mean of 10 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-a9216db037522c7c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-plans",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 125943808,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-a9216db037522c7c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-raw",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.44516689999998105,
+			"method": "Arithmetic mean of 10 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-9d14f245b1203709-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-raw",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 106790912,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-9d14f245b1203709-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-raw",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 1.5561458000000357,
+			"method": "Arithmetic mean of 10 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-09e626b224e1f247-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-raw",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 106954752,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-09e626b224e1f247-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-raw",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 3.1512251000000333,
+			"method": "Arithmetic mean of 10 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-e539529ba66be583-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-raw",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 109756416,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-e539529ba66be583-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 4.724429299999997,
+			"method": "Arithmetic mean of 10 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-9d8d2f3555f0cc80-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 109756416,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-9d8d2f3555f0cc80-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.011250099999983831,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-5aeef5348342f601-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 109772800,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-5aeef5348342f601-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-records",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 1.632058200000006,
+			"method": "Arithmetic mean of 10 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-2ab2dfb4f3acafd6-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-records",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 125943808,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-2ab2dfb4f3acafd6-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.category-of",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0032125999999834676,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-56c47d7cf97d5d37-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.category-of",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 109953024,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-56c47d7cf97d5d37-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.catalog-unit",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.037062500000024555,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-d1f341f9e0649e50-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.catalog-unit",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 109985792,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-d1f341f9e0649e50-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.02786660000001575,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-11e5501ebb3ba5e9-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 125943808,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-11e5501ebb3ba5e9-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.catalog-unit",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.020658400000024814,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-f599bc51450d3dc8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.function.catalog-unit",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 125943808,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-f599bc51450d3dc8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-catalog",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 2.5307585000000246,
+			"method": "Arithmetic mean of 10 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-ff8690d69c1803ae-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-catalog",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 125943808,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-ff8690d69c1803ae-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.validator.remote-project-response",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0015457999999625826,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-f06d2e4f43637839-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.validator.remote-project-response",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 125943808,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-f06d2e4f43637839-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.validator.remote-project-response",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.01402500000008331,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-03c30107fca17456-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.validator.remote-project-response",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 126058496,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-03c30107fca17456-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-projection-cache",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 2.891299999999956,
+			"method": "Arithmetic mean of 10 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-0861d9a7c4f7150a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-projection-cache",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 126107648,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-0861d9a7c4f7150a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-snapshot",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 4.602550199999996,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-1332fbf00d3be4c4-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-snapshot",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 126074880,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-1332fbf00d3be4c4-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.service.hub-projection",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 5.062924799999974,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-32e01555f3ff6c92-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.service.hub-projection",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 126074880,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-32e01555f3ff6c92-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-catalog",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.012791444444448845,
+			"method": "Arithmetic mean of 9 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-0b62aa9391da9c4d-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 9,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-catalog",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 126091264,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-0b62aa9391da9c4d-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 9,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "function.canonical-json",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.013616799999999785,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-48ec632d1e079ac2-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "function.canonical-json",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 126091264,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-48ec632d1e079ac2-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.043200199999955655,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-68b67ed614104697-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 126091264,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-68b67ed614104697-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-entity-contract",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.05421640000008665,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-f8875a8c141040ac-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-entity-contract",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 126091264,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-f8875a8c141040ac-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-history",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.018083200000000944,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3efa9b3f67a84111-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-history",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 126091264,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3efa9b3f67a84111-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "function.unit-documentation",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.1982832000000144,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-71bc3c4a72ed47e5-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "function.unit-documentation",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 126107648,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-71bc3c4a72ed47e5-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-size",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.013183400000025358,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-21b244a2bf9c1b53-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-size",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 126107648,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-21b244a2bf9c1b53-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-catalog",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.011424799999986135,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-9aeb37937da74d16-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-catalog",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 126107648,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-9aeb37937da74d16-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-threads",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0025915999999824636,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-dc3a5a7a52303cc3-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-threads",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 126107648,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-dc3a5a7a52303cc3-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-entity",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 1.566350199999988,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-ff72f8f23f7fefad-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.function.hub-entity",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 126107648,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-ff72f8f23f7fefad-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.validator.remote-project-response",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.006691600000021935,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-7970bfe722224c5d-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.validator.remote-project-response",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 126107648,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-7970bfe722224c5d-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.service.hub-projection",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 2.0584918000000014,
+			"method": "Arithmetic mean of 5 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-ef60d5a777eb3562-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.service.hub-projection",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 126107648,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-ef60d5a777eb3562-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.service.hub-projection",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 1.6342599999999834,
+			"method": "Arithmetic mean of 4 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-7a6918ab5d492365-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "hub.service.hub-projection",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 125943808,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-7a6918ab5d492365-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "function.unit-documentation",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.8295829999999569,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-c4e12d7913c2935e-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		},
+		{
+			"unit": "function.unit-documentation",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 126107648,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-c4e12d7913c2935e-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "hosted-catalog:project-agent-access",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/controllers/hub-agent.test.ts",
+			"status": "passed",
+			"durationMs": 3190,
+			"log": {
+				"path": "logs/hosted-catalog-project-agent-access.log",
+				"bytes": 408,
+				"sha256": "9f7d11c788c04eaebf262f080faa7a8e4dc296f1df9d42b2d18a0d00dd2274be"
+			}
+		},
+		{
+			"id": "hosted-catalog:listing",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/hub-catalog-listing.test.ts",
+			"status": "passed",
+			"durationMs": 3106,
+			"log": {
+				"path": "logs/hosted-catalog-listing.log",
+				"bytes": 406,
+				"sha256": "0b87da2ee5b60f3caa8079b00c959af54fded65133475b8f1c075c0dea3601d1"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "hosted-catalog",
+			"status": "passed",
+			"testedRevision": "8303ae615135c6d42a71738328e3f3df413bde8e",
+			"states": [
+				{
+					"id": "hosted-listing",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "hosted-catalog-output",
+							"kind": "output",
+							"state": "hosted-listing",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/hub-catalog-listing.test.ts.",
+							"status": "passed",
+							"path": "evidence/8303ae615135c6d42a71738328e3f3df413bde8e/hosted-catalog/listing/test-hub-catalog-listing.test.ts-hosted-listing.txt",
+							"sha256": "0b87da2ee5b60f3caa8079b00c959af54fded65133475b8f1c075c0dea3601d1",
+							"bytes": 406,
+							"capturedAt": "2026-11-19T21:54:40.821Z"
+						},
+						{
+							"evidence": "hosted-catalog-assertions",
+							"kind": "assertions",
+							"state": "hosted-listing",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/8303ae615135c6d42a71738328e3f3df413bde8e/hosted-catalog/listing/test-hub-catalog-listing.test.ts-hosted-listing.json",
+							"sha256": "d52b57a42b97eb1512105c96cd24013da8a763dca8f9f5ada5aff974fc018e23",
+							"bytes": 1893,
+							"capturedAt": "2026-11-19T21:54:40.821Z"
+						}
+					]
+				},
+				{
+					"id": "hosted-detail",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "hosted-catalog-output",
+							"kind": "output",
+							"state": "hosted-detail",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/hub-catalog-listing.test.ts.",
+							"status": "passed",
+							"path": "evidence/8303ae615135c6d42a71738328e3f3df413bde8e/hosted-catalog/listing/test-hub-catalog-listing.test.ts-hosted-detail.txt",
+							"sha256": "0b87da2ee5b60f3caa8079b00c959af54fded65133475b8f1c075c0dea3601d1",
+							"bytes": 406,
+							"capturedAt": "2026-11-19T21:54:40.821Z"
+						},
+						{
+							"evidence": "hosted-catalog-assertions",
+							"kind": "assertions",
+							"state": "hosted-detail",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/8303ae615135c6d42a71738328e3f3df413bde8e/hosted-catalog/listing/test-hub-catalog-listing.test.ts-hosted-detail.json",
+							"sha256": "c700823f52b45d2cee239ca06db17cf21cc6f11e382e5a04d49e4746a7b7f61a",
+							"bytes": 12368,
+							"capturedAt": "2026-11-19T21:54:40.821Z"
+						}
+					]
+				},
+				{
+					"id": "hosted-history",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "hosted-catalog-output",
+							"kind": "output",
+							"state": "hosted-history",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/hub-catalog-listing.test.ts.",
+							"status": "passed",
+							"path": "evidence/8303ae615135c6d42a71738328e3f3df413bde8e/hosted-catalog/listing/test-hub-catalog-listing.test.ts-hosted-history.txt",
+							"sha256": "0b87da2ee5b60f3caa8079b00c959af54fded65133475b8f1c075c0dea3601d1",
+							"bytes": 406,
+							"capturedAt": "2026-11-19T21:54:40.821Z"
+						},
+						{
+							"evidence": "hosted-catalog-assertions",
+							"kind": "assertions",
+							"state": "hosted-history",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/8303ae615135c6d42a71738328e3f3df413bde8e/hosted-catalog/listing/test-hub-catalog-listing.test.ts-hosted-history.json",
+							"sha256": "941d00aa2a7a6ae0ddabc520f72938bbac20ad912b723d28325c4eadfc2cc970",
+							"bytes": 1544,
+							"capturedAt": "2026-11-19T21:54:40.821Z"
+						}
+					]
+				},
+				{
+					"id": "hosted-cache",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "hosted-catalog-output",
+							"kind": "output",
+							"state": "hosted-cache",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/hub-catalog-listing.test.ts.",
+							"status": "passed",
+							"path": "evidence/8303ae615135c6d42a71738328e3f3df413bde8e/hosted-catalog/listing/test-hub-catalog-listing.test.ts-hosted-cache.txt",
+							"sha256": "0b87da2ee5b60f3caa8079b00c959af54fded65133475b8f1c075c0dea3601d1",
+							"bytes": 406,
+							"capturedAt": "2026-11-19T21:54:40.821Z"
+						},
+						{
+							"evidence": "hosted-catalog-assertions",
+							"kind": "assertions",
+							"state": "hosted-cache",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/8303ae615135c6d42a71738328e3f3df413bde8e/hosted-catalog/listing/test-hub-catalog-listing.test.ts-hosted-cache.json",
+							"sha256": "28ac96a8ee5d24f4d92bc17d34c630cf3312eed7ba7c35defb289ad77e9f23c8",
+							"bytes": 554,
+							"capturedAt": "2026-11-19T21:54:40.821Z"
+						}
+					]
+				},
+				{
+					"id": "write-access",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "hosted-catalog-output",
+							"kind": "output",
+							"state": "write-access",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/controllers/hub-agent.test.ts.",
+							"status": "passed",
+							"path": "evidence/8303ae615135c6d42a71738328e3f3df413bde8e/hosted-catalog/project-agent-access/test-controllers-hub-agent.test.ts-write-access.txt",
+							"sha256": "9f7d11c788c04eaebf262f080faa7a8e4dc296f1df9d42b2d18a0d00dd2274be",
+							"bytes": 408,
+							"capturedAt": "2026-11-19T21:54:36.967Z"
+						},
+						{
+							"evidence": "hosted-catalog-assertions",
+							"kind": "assertions",
+							"state": "write-access",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/8303ae615135c6d42a71738328e3f3df413bde8e/hosted-catalog/project-agent-access/test-controllers-hub-agent.test.ts-write-access.json",
+							"sha256": "902d26146768f1acc6697dd0bded61b6594b5c0aa10bac066bea70a41953f58b",
+							"bytes": 8964,
+							"capturedAt": "2026-11-19T21:54:36.967Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to hub.function.hub-snapshot: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}

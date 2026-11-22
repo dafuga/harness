@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.image-url",
+	"symbol": "imageUrl",
+	"cases": [
+		{
+			"name": "callbacks after release",
+			"input": {
+				"release": true
+			},
+			"output": [
+				[
+					"",
+					""
+				]
+			]
+		},
+		{
+			"name": "bridge image requests sent",
+			"input": {
+				"request": {
+					"entityId": "design-image-42",
+					"version": "v3",
+					"sha256": "ba7816bf00000000000000000000000000000000000000000000000000000000"
+				}
+			},
+			"output": 1
+		},
+		{
+			"name": "object URLs created",
+			"input": {
+				"settled": true
+			},
+			"output": 0
+		}
+	]
+}

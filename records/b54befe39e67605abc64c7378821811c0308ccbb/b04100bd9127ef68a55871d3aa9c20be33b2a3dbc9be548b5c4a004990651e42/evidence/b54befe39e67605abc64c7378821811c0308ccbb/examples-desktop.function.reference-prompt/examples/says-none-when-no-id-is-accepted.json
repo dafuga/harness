@@ -1,0 +1,18 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.reference-prompt",
+	"symbol": "referencePrompt",
+	"cases": [
+		{
+			"name": "rejected ids leave no listed unit",
+			"input": {
+				"ids": [
+					"Bad Id",
+					"single"
+				]
+			},
+			"output": "Name a unit as [[unit:<id>]] with its registered id, never by a file name, a path or a\nguessed id. Name a unit that is not listed here in plain words.\nUnits you may name: none"
+		}
+	]
+}

@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.comparison-types",
+	"symbol": "metricUnits",
+	"cases": [
+		{
+			"name": "benchmark protocol id",
+			"input": "roundsProtocol",
+			"output": "harness-rounds/1"
+		},
+		{
+			"name": "warm-up calls before the first timed round",
+			"input": "warmupCalls",
+			"output": 3
+		},
+		{
+			"name": "allowed measurement boundaries",
+			"input": "measurementBoundaries",
+			"output": [
+				"public-invocation",
+				"fixture"
+			]
+		},
+		{
+			"name": "unit of latency-cold-ms",
+			"input": "latency-cold-ms",
+			"output": "ms"
+		},
+		{
+			"name": "unit of throughput-ops",
+			"input": "throughput-ops",
+			"output": "ops/s"
+		},
+		{
+			"name": "unit of memory-bytes",
+			"input": "memory-bytes",
+			"output": "bytes"
+		},
+		{
+			"name": "unlisted metric has no unit entry",
+			"input": "unlisted-metric",
+			"output": false
+		}
+	]
+}

@@ -1,0 +1,117 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.project-proposal",
+	"symbol": "projectProposal",
+	"cases": [
+		{
+			"name": "plain object",
+			"input": {
+				"answer": "plain"
+			},
+			"output": {
+				"category": "functions",
+				"title": "Format elapsed time",
+				"goal": "Format elapsed milliseconds for people.",
+				"proposal": "Input 1500 returns 1.5 seconds.",
+				"contract": {
+					"inputs": [
+						{
+							"name": "elapsed ms",
+							"type": "number"
+						}
+					],
+					"outputs": [
+						{
+							"name": "text",
+							"type": "string"
+						}
+					],
+					"errors": [
+						"Negative duration"
+					]
+				}
+			}
+		},
+		{
+			"name": "json fence with padded title",
+			"input": {
+				"answer": "fenced"
+			},
+			"output": {
+				"category": "functions",
+				"title": "Order list",
+				"goal": "Format elapsed milliseconds for people.",
+				"proposal": "Input 1500 returns 1.5 seconds.",
+				"contract": {
+					"inputs": [
+						{
+							"name": "elapsed ms",
+							"type": "number"
+						}
+					],
+					"outputs": [
+						{
+							"name": "text",
+							"type": "string"
+						}
+					],
+					"errors": [
+						"Negative duration"
+					]
+				}
+			}
+		},
+		{
+			"name": "unlabelled fence",
+			"input": {
+				"answer": "bare fence"
+			},
+			"output": {
+				"category": "functions",
+				"title": "Format elapsed time",
+				"goal": "Format elapsed milliseconds for people.",
+				"proposal": "Input 1500 returns 1.5 seconds.",
+				"contract": {
+					"inputs": [
+						{
+							"name": "elapsed ms",
+							"type": "number"
+						}
+					],
+					"outputs": [
+						{
+							"name": "text",
+							"type": "string"
+						}
+					],
+					"errors": [
+						"Negative duration"
+					]
+				}
+			}
+		},
+		{
+			"name": "contract entry kept as written",
+			"input": {
+				"answer": "padded name"
+			},
+			"output": {
+				"category": "functions",
+				"title": "Format elapsed time",
+				"goal": "Format elapsed milliseconds for people.",
+				"proposal": "Input 1500 returns 1.5 seconds.",
+				"contract": {
+					"inputs": [
+						{
+							"name": " value ",
+							"type": "number"
+						}
+					],
+					"outputs": [],
+					"errors": []
+				}
+			}
+		}
+	]
+}

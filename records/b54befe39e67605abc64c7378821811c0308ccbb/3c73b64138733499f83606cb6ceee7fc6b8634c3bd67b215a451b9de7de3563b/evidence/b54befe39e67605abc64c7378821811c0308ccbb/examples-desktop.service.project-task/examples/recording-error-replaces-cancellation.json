@@ -1,0 +1,15 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.service.project-task",
+	"symbol": "ProjectTaskService.run",
+	"cases": [
+		{
+			"name": "abort after an ask run wrote a file",
+			"input": {
+				"mode": "ask"
+			},
+			"error": "The read-only agent changed files. Changes were preserved for review."
+		}
+	]
+}

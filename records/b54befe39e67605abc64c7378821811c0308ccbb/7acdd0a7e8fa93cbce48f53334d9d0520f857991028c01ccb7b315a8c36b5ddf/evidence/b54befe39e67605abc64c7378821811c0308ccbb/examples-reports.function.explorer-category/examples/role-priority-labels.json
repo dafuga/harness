@@ -1,0 +1,124 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-category",
+	"symbol": "explorerRole",
+	"cases": [
+		{
+			"name": "shared type declarations",
+			"input": {
+				"kind": "model",
+				"source": [
+					"src/models/Order.types.ts"
+				],
+				"models": [
+					{
+						"name": "case",
+						"source": "src/models/Order.types.ts",
+						"stored": false
+					}
+				]
+			},
+			"output": "Type definitions"
+		},
+		{
+			"name": "route configuration",
+			"input": {
+				"kind": "layout",
+				"source": [
+					"src/routes/+layout.ts"
+				]
+			},
+			"output": "Route configuration"
+		},
+		{
+			"name": "legacy details address",
+			"input": {
+				"kind": "page",
+				"source": [
+					"packages/reports/src/routes/harness/branch/[branch]/[...at]/pages/[entity]/details/+page.svelte"
+				]
+			},
+			"output": "Route alias"
+		},
+		{
+			"name": "rendered page",
+			"input": {
+				"kind": "component",
+				"source": [
+					"src/routes/o/+page.svelte"
+				]
+			},
+			"output": "Page"
+		},
+		{
+			"name": "route loader",
+			"input": {
+				"kind": "page",
+				"source": [
+					"src/routes/+page.server.ts"
+				]
+			},
+			"output": "Route loader"
+		},
+		{
+			"name": "layout that frames pages",
+			"input": {
+				"kind": "layout",
+				"source": [
+					"src/routes/+layout.svelte"
+				]
+			},
+			"output": "Layout"
+		},
+		{
+			"name": "stored model",
+			"input": {
+				"kind": "model",
+				"source": [
+					"src/models/Order.ts"
+				],
+				"models": [
+					{
+						"name": "case",
+						"source": "src/models/Order.ts",
+						"stored": true
+					}
+				]
+			},
+			"output": "Model"
+		},
+		{
+			"name": "component",
+			"input": {
+				"kind": "component",
+				"source": []
+			},
+			"output": "Component"
+		},
+		{
+			"name": "endpoint",
+			"input": {
+				"kind": "api",
+				"source": []
+			},
+			"output": "Endpoint"
+		},
+		{
+			"name": "audit rule",
+			"input": {
+				"kind": "audit",
+				"source": []
+			},
+			"output": "Audit rule"
+		},
+		{
+			"name": "style sheet",
+			"input": {
+				"kind": "style",
+				"source": []
+			},
+			"output": "Style sheet"
+		}
+	]
+}

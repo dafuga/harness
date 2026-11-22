@@ -1,0 +1,24 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-history",
+	"symbol": "explorerHistory",
+	"cases": [
+		{
+			"name": "a commit the index does not hold has an empty history",
+			"input": {
+				"scope": "missing",
+				"unit": "app.function.filter-orders"
+			},
+			"output": []
+		},
+		{
+			"name": "a unit no revision names has an empty history",
+			"input": {
+				"scope": "current",
+				"unit": "app.function.never"
+			},
+			"output": []
+		}
+	]
+}

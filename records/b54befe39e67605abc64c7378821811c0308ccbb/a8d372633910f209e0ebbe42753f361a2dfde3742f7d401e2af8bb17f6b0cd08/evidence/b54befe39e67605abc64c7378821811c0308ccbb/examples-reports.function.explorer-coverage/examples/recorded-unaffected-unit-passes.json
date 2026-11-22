@@ -1,0 +1,156 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-coverage",
+	"symbol": "explorerCoverage",
+	"cases": [
+		{
+			"name": "complete record, unit unaffected",
+			"input": "titles-page",
+			"output": {
+				"scenario": "titles-page",
+				"title": "Titles page",
+				"kind": "ui",
+				"standing": "passed",
+				"reasons": [],
+				"tests": [
+					{
+						"id": "page",
+						"status": "passed"
+					}
+				],
+				"inheritedFrom": null,
+				"states": [
+					{
+						"state": "empty",
+						"declared": "required",
+						"standing": "passed",
+						"reasons": [],
+						"slots": [
+							{
+								"evidence": "screens",
+								"kind": "screenshot",
+								"viewport": "desktop",
+								"capture": {
+									"evidence": "screens",
+									"kind": "screenshot",
+									"state": "empty",
+									"viewport": "desktop",
+									"status": "passed",
+									"path": "evidence/empty-desktop.png",
+									"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+									"mediaType": "image/png",
+									"capturedAt": "2026-10-10T18:00:00.000Z",
+									"server": {
+										"buildId": "build-1",
+										"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+									},
+									"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+								},
+								"standing": "passed",
+								"reason": null
+							},
+							{
+								"evidence": "screens",
+								"kind": "screenshot",
+								"viewport": "mobile",
+								"capture": {
+									"evidence": "screens",
+									"kind": "screenshot",
+									"state": "empty",
+									"viewport": "mobile",
+									"status": "passed",
+									"path": "evidence/empty-desktop.png",
+									"sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+									"mediaType": "image/png",
+									"capturedAt": "2026-10-10T18:00:00.000Z",
+									"server": {
+										"buildId": "build-1",
+										"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+									},
+									"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+								},
+								"standing": "passed",
+								"reason": null
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"name": "inherited record, unit unaffected",
+			"input": "titles-page",
+			"output": {
+				"scenario": "titles-page",
+				"title": "Titles page",
+				"kind": "ui",
+				"standing": "passed",
+				"reasons": [],
+				"tests": [
+					{
+						"id": "page",
+						"status": "passed"
+					}
+				],
+				"inheritedFrom": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"states": [
+					{
+						"state": "empty",
+						"declared": "required",
+						"standing": "passed",
+						"reasons": [],
+						"slots": [
+							{
+								"evidence": "screens",
+								"kind": "screenshot",
+								"viewport": "desktop",
+								"capture": {
+									"evidence": "screens",
+									"kind": "screenshot",
+									"state": "empty",
+									"viewport": "desktop",
+									"status": "passed",
+									"path": "evidence/empty-desktop.png",
+									"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+									"mediaType": "image/png",
+									"capturedAt": "2026-10-10T18:00:00.000Z",
+									"server": {
+										"buildId": "build-0",
+										"revision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+									},
+									"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+								},
+								"standing": "passed",
+								"reason": null
+							},
+							{
+								"evidence": "screens",
+								"kind": "screenshot",
+								"viewport": "mobile",
+								"capture": {
+									"evidence": "screens",
+									"kind": "screenshot",
+									"state": "empty",
+									"viewport": "mobile",
+									"status": "passed",
+									"path": "evidence/empty-desktop.png",
+									"sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+									"mediaType": "image/png",
+									"capturedAt": "2026-10-10T18:00:00.000Z",
+									"server": {
+										"buildId": "build-0",
+										"revision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+									},
+									"media": "media/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+								},
+								"standing": "passed",
+								"reason": null
+							}
+						]
+					}
+				]
+			}
+		}
+	]
+}

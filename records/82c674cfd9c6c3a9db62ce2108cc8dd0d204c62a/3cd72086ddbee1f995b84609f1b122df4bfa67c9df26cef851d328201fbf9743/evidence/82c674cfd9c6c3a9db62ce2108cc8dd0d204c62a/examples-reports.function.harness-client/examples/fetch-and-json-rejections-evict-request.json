@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-client",
+	"symbol": "harnessClient",
+	"cases": [
+		{
+			"name": "the fetcher rejects; its error passes unwrapped",
+			"input": {
+				"path": "index.json"
+			},
+			"error": {
+				"name": "TypeError",
+				"message": "fetch failed"
+			}
+		},
+		{
+			"name": "response.json rejects; its error passes unwrapped",
+			"input": {
+				"path": "activity.json"
+			},
+			"error": {
+				"name": "SyntaxError",
+				"message": "Unexpected end of JSON input"
+			}
+		},
+		{
+			"name": "the failed index is retried once the fetcher answers",
+			"input": {
+				"path": "index.json"
+			},
+			"output": {
+				"recovered": true
+			}
+		}
+	]
+}

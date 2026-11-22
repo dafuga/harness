@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-search",
+	"symbol": "entitySearch",
+	"cases": [
+		{
+			"name": "order",
+			"input": {
+				"query": "order",
+				"entries": [
+					"app.tax.rules",
+					"app.component.reorder-tool",
+					"app.page.order",
+					"app.shell.order-frame",
+					"app.component.order-list",
+					"app.function.format",
+					"app.function.shipping"
+				]
+			},
+			"output": [
+				"app.page.order",
+				"app.shell.order-frame",
+				"app.component.order-list",
+				"app.function.format",
+				"app.component.reorder-tool",
+				"app.function.shipping",
+				"app.tax.rules"
+			]
+		}
+	]
+}

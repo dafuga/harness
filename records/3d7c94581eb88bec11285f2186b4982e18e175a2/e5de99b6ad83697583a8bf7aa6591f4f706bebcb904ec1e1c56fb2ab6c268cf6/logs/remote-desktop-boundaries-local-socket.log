@@ -1,0 +1,19 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.SuYNuD/tmp/harness-snapshot-7JNmLQ/packages/desktop
+
+ ✓ test/local-transport.test.ts (8 tests) 22486ms
+   ✓ the bridge works over a socket that only this machine can reach  2322ms
+   ✓ an image of more than a mebibyte crosses the socket in bounded frames and arrives intact  3827ms
+   ✓ two large answers take turns on the socket and a small one does not wait for them  4389ms
+   ✓ each window is its own client: its own project, its own run events, one repository lock  5555ms
+   ✓ a reload keeps the session of its window; closing the window ends its socket and its run only  2527ms
+   ✓ a game of nearly a mebibyte crosses to the main process in bounded frames and reopens  1525ms
+   ✓ the control port travels over the same socket, with exactly what the page gave  1141ms
+   ✓ repeated concurrent listens reuse one listener and closing releases it  1168ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  23:43:18
+   Duration  25.61s (transform 1.73s, setup 134ms, collect 2.77s, tests 22.49s, environment 0ms, prepare 34ms)
+
+JSON report written to /tmp/z5jp8p-hl.SuYNuD/tmp/harness-runner-RabdmF/report.json

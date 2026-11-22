@@ -1,0 +1,171 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-entities",
+	"symbol": "explorerChange",
+	"cases": [
+		{
+			"name": "added wins over direct, indirect and removed",
+			"input": {
+				"unit": "reports.page.a",
+				"sourceImpact": {
+					"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"expanded": false,
+					"units": {
+						"added": [
+							"reports.page.a"
+						],
+						"direct": [
+							"reports.page.a",
+							"reports.page.b"
+						],
+						"indirect": [
+							"reports.page.b",
+							"reports.page.c"
+						],
+						"removed": [
+							"reports.page.c",
+							"reports.page.d"
+						]
+					},
+					"scenarios": [],
+					"uncertain": [],
+					"changed": []
+				}
+			},
+			"output": "added"
+		},
+		{
+			"name": "direct wins over indirect when both list the unit",
+			"input": {
+				"unit": "reports.page.b",
+				"sourceImpact": {
+					"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"expanded": false,
+					"units": {
+						"added": [
+							"reports.page.a"
+						],
+						"direct": [
+							"reports.page.a",
+							"reports.page.b"
+						],
+						"indirect": [
+							"reports.page.b",
+							"reports.page.c"
+						],
+						"removed": [
+							"reports.page.c",
+							"reports.page.d"
+						]
+					},
+					"scenarios": [],
+					"uncertain": [],
+					"changed": []
+				}
+			},
+			"output": "direct"
+		},
+		{
+			"name": "indirect wins over removed when both list the unit",
+			"input": {
+				"unit": "reports.page.c",
+				"sourceImpact": {
+					"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"expanded": false,
+					"units": {
+						"added": [
+							"reports.page.a"
+						],
+						"direct": [
+							"reports.page.a",
+							"reports.page.b"
+						],
+						"indirect": [
+							"reports.page.b",
+							"reports.page.c"
+						],
+						"removed": [
+							"reports.page.c",
+							"reports.page.d"
+						]
+					},
+					"scenarios": [],
+					"uncertain": [],
+					"changed": []
+				}
+			},
+			"output": "indirect"
+		},
+		{
+			"name": "removed is the last list checked",
+			"input": {
+				"unit": "reports.page.d",
+				"sourceImpact": {
+					"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"expanded": false,
+					"units": {
+						"added": [
+							"reports.page.a"
+						],
+						"direct": [
+							"reports.page.a",
+							"reports.page.b"
+						],
+						"indirect": [
+							"reports.page.b",
+							"reports.page.c"
+						],
+						"removed": [
+							"reports.page.c",
+							"reports.page.d"
+						]
+					},
+					"scenarios": [],
+					"uncertain": [],
+					"changed": []
+				}
+			},
+			"output": "removed"
+		},
+		{
+			"name": "a unit no list names has no mark",
+			"input": {
+				"unit": "reports.page.e",
+				"sourceImpact": {
+					"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"expanded": false,
+					"units": {
+						"added": [
+							"reports.page.a"
+						],
+						"direct": [
+							"reports.page.a",
+							"reports.page.b"
+						],
+						"indirect": [
+							"reports.page.b",
+							"reports.page.c"
+						],
+						"removed": [
+							"reports.page.c",
+							"reports.page.d"
+						]
+					},
+					"scenarios": [],
+					"uncertain": [],
+					"changed": []
+				}
+			},
+			"output": null
+		},
+		{
+			"name": "an absent source-impact record has no mark",
+			"input": {
+				"unit": "reports.page.a",
+				"sourceImpact": null
+			},
+			"output": null
+		}
+	]
+}

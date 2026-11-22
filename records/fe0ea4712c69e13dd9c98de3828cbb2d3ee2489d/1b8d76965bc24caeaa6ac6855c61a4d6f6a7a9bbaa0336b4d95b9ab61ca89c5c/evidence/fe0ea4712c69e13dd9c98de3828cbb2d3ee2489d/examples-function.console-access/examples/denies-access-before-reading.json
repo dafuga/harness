@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.console-access",
+	"symbol": "consoleAccess",
+	"cases": [
+		{
+			"name": "denies when the policy is false",
+			"input": {
+				"policy": "false"
+			},
+			"output": {
+				"statuses": [
+					403,
+					403,
+					403,
+					403
+				],
+				"body": "Forbidden",
+				"opened": []
+			}
+		},
+		{
+			"name": "denies when the policy is rejected",
+			"input": {
+				"policy": "rejected"
+			},
+			"output": {
+				"statuses": [
+					403,
+					403,
+					403,
+					403
+				],
+				"body": "Forbidden",
+				"opened": []
+			}
+		},
+		{
+			"name": "denies when the policy is not exactly true",
+			"input": {
+				"policy": "not exactly true"
+			},
+			"output": {
+				"statuses": [
+					403,
+					403,
+					403,
+					403
+				],
+				"body": "Forbidden",
+				"opened": []
+			}
+		}
+	]
+}

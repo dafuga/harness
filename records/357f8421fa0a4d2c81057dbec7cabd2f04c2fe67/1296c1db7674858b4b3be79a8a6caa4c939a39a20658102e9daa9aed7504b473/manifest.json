@@ -1,0 +1,233 @@
+{
+	"schemaVersion": 1,
+	"record": "1296c1db7674858b4b3be79a8a6caa4c939a39a20658102e9daa9aed7504b473",
+	"source": {
+		"commit": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+		"tree": "98bb54cd0d4b35fa6f64f2a09749e5bde73d699c"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "25142e74232250a41013a4e26b40a630798b5c868d1c1b7ea239eb92e0a6df79",
+			"bytes": 33831,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/explorer-artifact-reads-stored-media-by-hash.json",
+			"sha256": "03d231c9cac377805e98ff19de1540ce813aa7cd3b86e3eed0edb68c22f03bcb",
+			"bytes": 1615,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-explorer-artifact-reads-stored-media-by-hash.txt",
+			"sha256": "2ad838101ba761175224ff501eb7ed7d760bb94dab3192025b7b9d10e3afc864",
+			"bytes": 482,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-explorer-artifact-reads-stored-media-by-hash.json",
+			"sha256": "78578b77be69a72f799a1e83e9dc9c27860cfeedff99446007a3d88c00496a49",
+			"bytes": 2289,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/explorer-artifact-joins-base-without-separator.json",
+			"sha256": "50695a0eff6be07dd9ffb44be44e2d7dc968ea0c4d2825ac89559de058f7689c",
+			"bytes": 401,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-explorer-artifact-joins-base-without-separator.txt",
+			"sha256": "2ad838101ba761175224ff501eb7ed7d760bb94dab3192025b7b9d10e3afc864",
+			"bytes": 482,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-explorer-artifact-joins-base-without-separator.json",
+			"sha256": "dddfb944d711850f6026e7a1a2077a948f0ac06e648bda2fa0e64fc20096e0fd",
+			"bytes": 882,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/explorer-artifact-hash-mismatch-stays-text.json",
+			"sha256": "624cbfe3c6eda94a5535933d9f03de2139383e4a44efde375485eb9ed0522165",
+			"bytes": 698,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-explorer-artifact-hash-mismatch-stays-text.txt",
+			"sha256": "2ad838101ba761175224ff501eb7ed7d760bb94dab3192025b7b9d10e3afc864",
+			"bytes": 482,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-explorer-artifact-hash-mismatch-stays-text.json",
+			"sha256": "e09c10660dd8bfa38a5cb6db8ef3ac159ee723b5f256efec7fa6945e20d99021",
+			"bytes": 2070,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/explorer-artifact-http-error-unverified.json",
+			"sha256": "04e9b665b1b0225f405be4c5c96a1c1767c75e9e0935fa7bb04bf4431fa00442",
+			"bytes": 399,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-explorer-artifact-http-error-unverified.txt",
+			"sha256": "2ad838101ba761175224ff501eb7ed7d760bb94dab3192025b7b9d10e3afc864",
+			"bytes": 482,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-explorer-artifact-http-error-unverified.json",
+			"sha256": "81193ae78955c983a85a5e9fd5074fd940c6f4d291e305c2618c40aacee07d09",
+			"bytes": 1102,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/explorer-artifact-absent-capture-gap-or-default.json",
+			"sha256": "0c8b2b20d9a6afaf0ace7889c71b6f38c200714e8e6698bd0db89d5b39cf895e",
+			"bytes": 660,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-explorer-artifact-absent-capture-gap-or-default.txt",
+			"sha256": "2ad838101ba761175224ff501eb7ed7d760bb94dab3192025b7b9d10e3afc864",
+			"bytes": 482,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-explorer-artifact-absent-capture-gap-or-default.json",
+			"sha256": "cdbb6ab544623a9b4a6d217733c597f6ad9e59a8f543660b0b33bd1f7f9b1def",
+			"bytes": 1337,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/explorer-artifact-fetcher-rejection-propagates.json",
+			"sha256": "cbdbaf75882092301d7598e17135038e9e2e0759e74b9c1a8e062c84c73f1e88",
+			"bytes": 266,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-explorer-artifact-fetcher-rejection-propagates.txt",
+			"sha256": "2ad838101ba761175224ff501eb7ed7d760bb94dab3192025b7b9d10e3afc864",
+			"bytes": 482,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-explorer-artifact-fetcher-rejection-propagates.json",
+			"sha256": "dbc408534f7bfe14b1776bb97b2bc1fdb80f737839d916561f3fb4d9cba5279a",
+			"bytes": 654,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/explorer-artifact-payload-types.json",
+			"sha256": "261d0a3a7c74f4807acbb0c72df8e096cb08e7e64089a60067436d176cb81e30",
+			"bytes": 2135,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-explorer-artifact-payload-types.txt",
+			"sha256": "2ad838101ba761175224ff501eb7ed7d760bb94dab3192025b7b9d10e3afc864",
+			"bytes": 482,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-explorer-artifact-payload-types.json",
+			"sha256": "1892d2ce12645273282e85d68dad6269c8ad06fd8f3734d1c97dce5dcb0b7ad2",
+			"bytes": 1913,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/artifact-behavior-first-request-and-response-name.json",
+			"sha256": "f5c0201cecf22c217b630adbe3a1d0acffc0593a6cc3358900117724b13ee320",
+			"bytes": 945,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-artifact-behavior-first-request-and-response-name.txt",
+			"sha256": "2ad838101ba761175224ff501eb7ed7d760bb94dab3192025b7b9d10e3afc864",
+			"bytes": 482,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-artifact-behavior-first-request-and-response-name.json",
+			"sha256": "c4cacec337c96263ed466f8281d3cc1bc65b0af724aec955fb25f7266a7bf176",
+			"bytes": 1191,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/artifact-behavior-non-object-documents-null.json",
+			"sha256": "2838d8909d55966364527398dc936dd36df44ec41aaaa95e2d483b2e1e9db40b",
+			"bytes": 518,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-artifact-behavior-non-object-documents-null.txt",
+			"sha256": "2ad838101ba761175224ff501eb7ed7d760bb94dab3192025b7b9d10e3afc864",
+			"bytes": 482,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-artifact-behavior-non-object-documents-null.json",
+			"sha256": "2ca81760effcb6c557a582a65f1ecc9fcb9c76ea99742401e57a486fa205aee4",
+			"bytes": 720,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/artifact-text-display-and-thrown-type-error.json",
+			"sha256": "2e67bb4708af13789766d5e996132e2122713c97e1a36e9a03a56b97e048f742",
+			"bytes": 760,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-artifact-text-display-and-thrown-type-error.txt",
+			"sha256": "2ad838101ba761175224ff501eb7ed7d760bb94dab3192025b7b9d10e3afc864",
+			"bytes": 482,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-artifact/examples/test-examples-reports.function.explorer-artifact.test.ts-artifact-text-display-and-thrown-type-error.json",
+			"sha256": "b8c2e1a1108870b3349b60e9d887ddac641552e875163790efb673a6289b05e4",
+			"bytes": 994,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-reports.function.explorer-artifact-examples.log",
+			"sha256": "2ad838101ba761175224ff501eb7ed7d760bb94dab3192025b7b9d10e3afc864",
+			"bytes": 482,
+			"storage": "git"
+		}
+	]
+}

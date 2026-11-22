@@ -1,0 +1,16 @@
+
+Running 9 tests using 1 worker
+
+(node:65503) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/explorer-shell-pieces.spec.ts:29:2 › the icons are one set and a verdict has two looks at desktop width (345ms)
+  ✓  2 tests/e2e/explorer-shell-pieces.spec.ts:84:2 › the tab that is shown stays whole in its strip, however it was chosen, at desktop width (408ms)
+  ✓  3 tests/e2e/explorer-shell-pieces.spec.ts:131:2 › actions and tabs are followed in the page, and the console that was keeps its look at desktop width (850ms)
+  ✓  4 tests/e2e/explorer-shell-pieces.spec.ts:29:2 › the icons are one set and a verdict has two looks at tablet width (266ms)
+  ✓  5 tests/e2e/explorer-shell-pieces.spec.ts:84:2 › the tab that is shown stays whole in its strip, however it was chosen, at tablet width (381ms)
+  ✓  6 tests/e2e/explorer-shell-pieces.spec.ts:131:2 › actions and tabs are followed in the page, and the console that was keeps its look at tablet width (795ms)
+  ✓  7 tests/e2e/explorer-shell-pieces.spec.ts:29:2 › the icons are one set and a verdict has two looks at mobile width (256ms)
+  ✓  8 tests/e2e/explorer-shell-pieces.spec.ts:84:2 › the tab that is shown stays whole in its strip, however it was chosen, at mobile width (471ms)
+  ✓  9 tests/e2e/explorer-shell-pieces.spec.ts:131:2 › actions and tabs are followed in the page, and the console that was keeps its look at mobile width (770ms)
+
+  9 passed (5.4s)

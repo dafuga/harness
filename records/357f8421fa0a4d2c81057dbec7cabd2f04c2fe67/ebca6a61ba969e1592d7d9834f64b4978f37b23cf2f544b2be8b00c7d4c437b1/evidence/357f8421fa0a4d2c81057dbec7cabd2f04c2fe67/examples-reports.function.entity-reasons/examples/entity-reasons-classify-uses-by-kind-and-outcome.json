@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-reasons",
+	"symbol": "reasonUses",
+	"cases": [
+		{
+			"name": "uses of one attempt grouped by kind and outcome in input order",
+			"input": {
+				"uses": [
+					{
+						"subject": "cpu sample",
+						"kind": "simplification",
+						"outcome": "not applicable"
+					},
+					{
+						"subject": "cpu sample",
+						"kind": "performance",
+						"outcome": "not applicable"
+					},
+					{
+						"subject": "cpu client",
+						"kind": "simplification",
+						"outcome": "improved"
+					},
+					{
+						"subject": "cpu client",
+						"kind": "performance",
+						"outcome": "not applicable"
+					}
+				]
+			},
+			"output": [
+				{
+					"kind": "simplification",
+					"outcome": "not applicable",
+					"subjects": [
+						"cpu sample"
+					]
+				},
+				{
+					"kind": "performance",
+					"outcome": "not applicable",
+					"subjects": [
+						"cpu sample",
+						"cpu client"
+					]
+				},
+				{
+					"kind": "simplification",
+					"outcome": "improved",
+					"subjects": [
+						"cpu client"
+					]
+				}
+			]
+		},
+		{
+			"name": "a subject listed twice in the input is listed twice in its group",
+			"input": {
+				"uses": [
+					{
+						"subject": "cpu sample",
+						"kind": "performance",
+						"outcome": "not applicable"
+					},
+					{
+						"subject": "cpu sample",
+						"kind": "performance",
+						"outcome": "not applicable"
+					}
+				]
+			},
+			"output": [
+				{
+					"kind": "performance",
+					"outcome": "not applicable",
+					"subjects": [
+						"cpu sample",
+						"cpu sample"
+					]
+				}
+			]
+		}
+	]
+}

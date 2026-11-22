@@ -1,0 +1,379 @@
+{
+	"id": "9bb66424ed3ce52335f9f6deb7d067dd46c08666f24caf2ccacd3b9f49ec1dce",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-hl.xwaYHF/source",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T15:12:47.634Z",
+	"finishedAt": "2026-11-20T15:13:04.006Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cfb49b515cacc084047d75cdf10a295ab3790ecaf878e2b75e06463793f628bf",
+			"source": "cbf5fb170c4db458f39bcc4ba18996e377a782371040baa39d1667f04bf87635",
+			"contract": "6f2e8a598fb220dd111fe8085fb28c645ee24019cc4b1f25315b141a569962d7",
+			"runtime": "ec246a1eb80a7c06e7ccbd8601bab05e75d00122b0ad9d09eec95bbe94f31c19",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts",
+					"hash": "36741c54d766dd2689e542099ca02135cd07760b"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.types.ts",
+					"hash": "758395e715dd7c7d824deb57b07849f373ef164e"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/artifactCases.ts",
+					"hash": "f5a0a857433ab39a3aa86c795bab10681a76db3f"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.01212500000002592,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 87638016,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.006124999999959376,
+			"method": "Arithmetic mean of 3 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 280313856,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.49429166666671637,
+			"method": "Arithmetic mean of 3 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 280313856,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "examples-reports.endpoint.harness-data-path:examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.endpoint.harness-data-path.test.ts",
+			"status": "passed",
+			"durationMs": 4264,
+			"log": {
+				"path": "logs/examples-reports.endpoint.harness-data-path-examples.log",
+				"bytes": 538,
+				"sha256": "82372872eac2beb56bb99de68f4c1a38769914d33ee74424f9c45ab1c29af25d"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "examples-reports.endpoint.harness-data-path",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "normal-index-query",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "normal-index-query",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-data-path/examples/normal-index-query.json",
+							"sha256": "836edbda4ce32c00dcd738cf6ba1f2ad5c46a1792cab5effd7251f77ef795b92",
+							"bytes": 456,
+							"capturedAt": "2026-11-20T15:13:02.158Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "normal-index-query",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.endpoint.harness-data-path.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-data-path/examples/test-examples-reports.endpoint.harness-data-path.test.ts-normal-index-query.txt",
+							"sha256": "82372872eac2beb56bb99de68f4c1a38769914d33ee74424f9c45ab1c29af25d",
+							"bytes": 538,
+							"capturedAt": "2026-11-20T15:13:02.159Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "normal-index-query",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-data-path/examples/test-examples-reports.endpoint.harness-data-path.test.ts-normal-index-query.json",
+							"sha256": "f2a12e3fc3d76a0f0f1f92edd3c36d10ebdbdea13ef12dfbef2e0b46ef29ce0c",
+							"bytes": 796,
+							"capturedAt": "2026-11-20T15:13:02.159Z"
+						}
+					]
+				},
+				{
+					"id": "missing-filename-not-found",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "missing-filename-not-found",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-data-path/examples/missing-filename-not-found.json",
+							"sha256": "156bef99b70d9466a771b101b7ed6e27bdf59afc65b0551cada40e7cf26c382a",
+							"bytes": 595,
+							"capturedAt": "2026-11-20T15:13:02.158Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "missing-filename-not-found",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.endpoint.harness-data-path.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-data-path/examples/test-examples-reports.endpoint.harness-data-path.test.ts-missing-filename-not-found.txt",
+							"sha256": "82372872eac2beb56bb99de68f4c1a38769914d33ee74424f9c45ab1c29af25d",
+							"bytes": 538,
+							"capturedAt": "2026-11-20T15:13:02.159Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "missing-filename-not-found",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-data-path/examples/test-examples-reports.endpoint.harness-data-path.test.ts-missing-filename-not-found.json",
+							"sha256": "8f3414a5571a18ed45561e91550ec480bdad640828528b89e48a7ead48dd17be",
+							"bytes": 828,
+							"capturedAt": "2026-11-20T15:13:02.159Z"
+						}
+					]
+				},
+				{
+					"id": "owner-refusal-forbidden",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "owner-refusal-forbidden",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-data-path/examples/owner-refusal-forbidden.json",
+							"sha256": "7ee33c7d138ae55bee2afb77a9ac3c4ab4f0346568c0ccd17206de0eb0f21956",
+							"bytes": 661,
+							"capturedAt": "2026-11-20T15:13:02.159Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "owner-refusal-forbidden",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.endpoint.harness-data-path.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-data-path/examples/test-examples-reports.endpoint.harness-data-path.test.ts-owner-refusal-forbidden.txt",
+							"sha256": "82372872eac2beb56bb99de68f4c1a38769914d33ee74424f9c45ab1c29af25d",
+							"bytes": 538,
+							"capturedAt": "2026-11-20T15:13:02.159Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "owner-refusal-forbidden",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.endpoint.harness-data-path/examples/test-examples-reports.endpoint.harness-data-path.test.ts-owner-refusal-forbidden.json",
+							"sha256": "7aa4e17666aa74812cf6e8f11e7eca117cafc524c2d082626cb31cf7e41e0f2f",
+							"bytes": 826,
+							"capturedAt": "2026-11-20T15:13:02.159Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to reports.endpoint.harness-data-path: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}

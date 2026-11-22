@@ -1,0 +1,72 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.console-policy",
+	"symbol": "consolePolicy",
+	"cases": [
+		{
+			"name": "a server bound to all interfaces",
+			"input": {
+				"bind": "0.0.0.0",
+				"peer": "127.0.0.1"
+			},
+			"output": false
+		},
+		{
+			"name": "a bind spelled in the long IPv6 loopback form",
+			"input": {
+				"bind": "0:0:0:0:0:0:0:1",
+				"peer": "127.0.0.1"
+			},
+			"output": false
+		},
+		{
+			"name": "a remote IPv4 peer",
+			"input": {
+				"bind": "127.0.0.1",
+				"peer": "192.0.2.10"
+			},
+			"output": false
+		},
+		{
+			"name": "a remote IPv4-mapped IPv6 peer",
+			"input": {
+				"bind": "127.0.0.1",
+				"peer": "::ffff:198.51.100.7"
+			},
+			"output": false
+		},
+		{
+			"name": "a lookalike hostname peer",
+			"input": {
+				"bind": "127.0.0.1",
+				"peer": "127.0.0.1.example.test"
+			},
+			"output": false
+		},
+		{
+			"name": "an empty peer address",
+			"input": {
+				"bind": "127.0.0.1",
+				"peer": ""
+			},
+			"output": false
+		},
+		{
+			"name": "no peer address provided",
+			"input": {
+				"bind": "127.0.0.1",
+				"peer": "not provided"
+			},
+			"output": false
+		},
+		{
+			"name": "a peer lookup that throws",
+			"input": {
+				"bind": "127.0.0.1",
+				"peer": "throws"
+			},
+			"output": false
+		}
+	]
+}

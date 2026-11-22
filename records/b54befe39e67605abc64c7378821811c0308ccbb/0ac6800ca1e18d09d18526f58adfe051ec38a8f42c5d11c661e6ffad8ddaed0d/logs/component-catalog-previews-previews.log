@@ -1,0 +1,19 @@
+
+Running 12 tests using 1 worker
+
+(node:23459) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-frame at desktop (950ms)
+  ✓   2 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-frame:unindexed at desktop (930ms)
+  ✓   3 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-frame:registry-optional at desktop (892ms)
+  ✓   4 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-frame:source-open at desktop (955ms)
+  ✓   5 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-frame at tablet (558ms)
+  ✓   6 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-frame:unindexed at tablet (576ms)
+  ✓   7 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-frame:registry-optional at tablet (558ms)
+  ✓   8 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-frame:source-open at tablet (652ms)
+  ✓   9 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-frame at mobile (553ms)
+  ✓  10 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-frame:unindexed at mobile (568ms)
+  ✓  11 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-frame:registry-optional at mobile (562ms)
+  ✓  12 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-frame:source-open at mobile (646ms)
+
+  12 passed (10.7s)

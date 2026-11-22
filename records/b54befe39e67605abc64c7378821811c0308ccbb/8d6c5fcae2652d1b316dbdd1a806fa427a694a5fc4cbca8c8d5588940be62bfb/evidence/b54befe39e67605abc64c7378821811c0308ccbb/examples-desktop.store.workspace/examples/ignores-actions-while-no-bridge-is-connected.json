@@ -1,0 +1,22 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.workspace",
+	"symbol": "navigate, loadProjects, refresh",
+	"cases": [
+		{
+			"name": "navigate, list and refresh before connect",
+			"input": {
+				"url": "/harness/branch/main/pages"
+			},
+			"output": {
+				"snapshot": null,
+				"entity": null,
+				"projects": [],
+				"busy": false,
+				"error": "",
+				"pushed": 0
+			}
+		}
+	]
+}

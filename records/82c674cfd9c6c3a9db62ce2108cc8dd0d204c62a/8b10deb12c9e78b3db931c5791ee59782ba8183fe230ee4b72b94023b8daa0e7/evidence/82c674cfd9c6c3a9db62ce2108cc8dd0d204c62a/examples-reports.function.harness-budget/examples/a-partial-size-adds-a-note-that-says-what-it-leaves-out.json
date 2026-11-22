@@ -1,0 +1,28 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-budget",
+	"symbol": "harnessBudget",
+	"cases": [
+		{
+			"name": "partial value with passed baseline",
+			"input": {
+				"found": {
+					"unit": "reports.function.harness-budget",
+					"metric": "size",
+					"unitOfMeasure": "bytes",
+					"value": 2048,
+					"workload": null,
+					"profile": null,
+					"partial": "generated source only"
+				},
+				"baseline": 2048
+			},
+			"output": {
+				"value": "2048 bytes",
+				"limit": "frozen at 2048",
+				"note": "Partial: generated source only"
+			}
+		}
+	]
+}

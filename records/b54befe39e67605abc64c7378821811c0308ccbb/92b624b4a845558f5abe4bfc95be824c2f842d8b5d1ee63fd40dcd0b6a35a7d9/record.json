@@ -1,0 +1,1089 @@
+{
+	"id": "92b624b4a845558f5abe4bfc95be824c2f842d8b5d1ee63fd40dcd0b6a35a7d9",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-ui.E7GO8J/source",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T11:08:31.946Z",
+	"finishedAt": "2026-11-20T11:09:34.944Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cfb49b515cacc084047d75cdf10a295ab3790ecaf878e2b75e06463793f628bf",
+			"source": "cbf5fb170c4db458f39bcc4ba18996e377a782371040baa39d1667f04bf87635",
+			"contract": "6f2e8a598fb220dd111fe8085fb28c645ee24019cc4b1f25315b141a569962d7",
+			"runtime": "ec246a1eb80a7c06e7ccbd8601bab05e75d00122b0ad9d09eec95bbe94f31c19",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts",
+					"hash": "36741c54d766dd2689e542099ca02135cd07760b"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.types.ts",
+					"hash": "758395e715dd7c7d824deb57b07849f373ef164e"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/artifactCases.ts",
+					"hash": "f5a0a857433ab39a3aa86c795bab10681a76db3f"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.tooltip-place",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "bdf876e600099f4afd29f957edefa4874fd01af6b28e6b49fb9e885534119661",
+			"source": "cdbaad1a85393e28e00b0d19d1465affbda3575a3eaeebc0158f53c58f70eb5a",
+			"contract": "6a6b8316f74a4049d3a288ed6e1b928ed03f481ed01939bb398bc01bfd753b21",
+			"runtime": "1d9f8598d5dfe0fc423a90b7df65d2db67752ed8851795a6a1c374f4e44be292",
+			"files": [
+				{
+					"path": "packages/reports/src/components/shared-primitives/status/tooltipPlace.ts",
+					"hash": "bfd04bc3a064e9b76c7d4d5bd1bb3772cc9167c7"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/tooltipPlace.ts",
+					"hash": "7ad8f31747a065373d268aaccd7c558455d0f658"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.012165999999979249,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91275264,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.tooltip-place",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.006637599999993427,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-98cbbb731abd691a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.tooltip-place",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91668480,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-98cbbb731abd691a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0036457500000111054,
+			"method": "Arithmetic mean of 8 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91668480,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.1945416250000136,
+			"method": "Arithmetic mean of 8 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91684864,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "examples-reports.function.tooltip-place:examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.tooltip-place.test.ts",
+			"status": "passed",
+			"durationMs": 2207,
+			"log": {
+				"path": "logs/examples-reports.function.tooltip-place-examples.log",
+				"bytes": 427,
+				"sha256": "b48b0b24f268fe0d53da21ff1e77e989bd977df322d27b27cd96e39bd05441e9"
+			}
+		},
+		{
+			"id": "explorer-shell:pieces",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts tests/e2e/explorer-shell-pieces.spec.ts",
+			"status": "passed",
+			"durationMs": 6019,
+			"log": {
+				"path": "logs/explorer-shell-pieces.log",
+				"bytes": 1572,
+				"sha256": "9b82f27a81d5a27cf43bfdf25767cfc277c2f5c2ac687f1d55fdbd6fb1ed98e1"
+			}
+		},
+		{
+			"id": "explorer-shell:search",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts tests/e2e/explorer-shell-search.spec.ts",
+			"status": "passed",
+			"durationMs": 3166,
+			"log": {
+				"path": "logs/explorer-shell-search.log",
+				"bytes": 1093,
+				"sha256": "147e6967dca86ecad6ef6940ca71b0d25abfb3b1f4fea6cc4eed8eb6224b4c6a"
+			}
+		},
+		{
+			"id": "explorer-shell:verdict",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts tests/e2e/explorer-shell-verdict.spec.ts",
+			"status": "passed",
+			"durationMs": 4793,
+			"log": {
+				"path": "logs/explorer-shell-verdict.log",
+				"bytes": 1160,
+				"sha256": "4f83b3eed1a3a4094650de0beba1058fc170c35665ddd77ae49052bad9c355dc"
+			}
+		},
+		{
+			"id": "explorer-shell:bar",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts tests/e2e/explorer-shell.spec.ts",
+			"status": "passed",
+			"durationMs": 7505,
+			"log": {
+				"path": "logs/explorer-shell-bar.log",
+				"bytes": 1821,
+				"sha256": "49c340d5aa7b70800b55bcf63669931775c74de62ad914935b7c73546ac9b162"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "examples-reports.function.tooltip-place",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "places-below-centred-with-the-gap",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "places-below-centred-with-the-gap",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/places-below-centred-with-the-gap.json",
+							"sha256": "97d61bbeb549fe271df118e35036b326cb8b5f7c209497c9f99ace6fadad682b",
+							"bytes": 465,
+							"capturedAt": "2026-11-20T11:09:07.348Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "places-below-centred-with-the-gap",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.tooltip-place.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/test-examples-reports.function.tooltip-place.test.ts-places-below-centred-with-the-gap.txt",
+							"sha256": "b48b0b24f268fe0d53da21ff1e77e989bd977df322d27b27cd96e39bd05441e9",
+							"bytes": 427,
+							"capturedAt": "2026-11-20T11:09:07.349Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "places-below-centred-with-the-gap",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/test-examples-reports.function.tooltip-place.test.ts-places-below-centred-with-the-gap.json",
+							"sha256": "d645866f410cfa8cd0c08d31bd921a0cd092cc6accc6c0e4c07ea9bef49abab5",
+							"bytes": 592,
+							"capturedAt": "2026-11-20T11:09:07.350Z"
+						}
+					]
+				},
+				{
+					"id": "clamps-to-the-screen-edges",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "clamps-to-the-screen-edges",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/clamps-to-the-screen-edges.json",
+							"sha256": "730a43a4e6c39d6a6ee9f32cb151c2bd711f947525dfa2739a93fe76f5252529",
+							"bytes": 788,
+							"capturedAt": "2026-11-20T11:09:07.349Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "clamps-to-the-screen-edges",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.tooltip-place.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/test-examples-reports.function.tooltip-place.test.ts-clamps-to-the-screen-edges.txt",
+							"sha256": "b48b0b24f268fe0d53da21ff1e77e989bd977df322d27b27cd96e39bd05441e9",
+							"bytes": 427,
+							"capturedAt": "2026-11-20T11:09:07.349Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "clamps-to-the-screen-edges",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/test-examples-reports.function.tooltip-place.test.ts-clamps-to-the-screen-edges.json",
+							"sha256": "c9520dc29a76e16079f3b46aaa10d75c30cef4f481451d9c978331167bf85b78",
+							"bytes": 821,
+							"capturedAt": "2026-11-20T11:09:07.350Z"
+						}
+					]
+				},
+				{
+					"id": "overwide-tooltip-starts-at-the-margin",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "overwide-tooltip-starts-at-the-margin",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/overwide-tooltip-starts-at-the-margin.json",
+							"sha256": "dd8b69e91eb006cf5233cf34f4d408a4e3af747aac30b21e368161990eba6871",
+							"bytes": 465,
+							"capturedAt": "2026-11-20T11:09:07.349Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "overwide-tooltip-starts-at-the-margin",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.tooltip-place.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/test-examples-reports.function.tooltip-place.test.ts-overwide-tooltip-starts-at-the-margin.txt",
+							"sha256": "b48b0b24f268fe0d53da21ff1e77e989bd977df322d27b27cd96e39bd05441e9",
+							"bytes": 427,
+							"capturedAt": "2026-11-20T11:09:07.349Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "overwide-tooltip-starts-at-the-margin",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/test-examples-reports.function.tooltip-place.test.ts-overwide-tooltip-starts-at-the-margin.json",
+							"sha256": "496eded71880b0fca89c7dd96388217746c1dd3cc8c4e967068ecdb3af2ea422",
+							"bytes": 849,
+							"capturedAt": "2026-11-20T11:09:07.350Z"
+						}
+					]
+				},
+				{
+					"id": "opens-above-without-room-below",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "opens-above-without-room-below",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/opens-above-without-room-below.json",
+							"sha256": "68233d1266eaed77c3f035b637f8c284ab275e7ccee861cdf3de7006ddcec8f6",
+							"bytes": 465,
+							"capturedAt": "2026-11-20T11:09:07.349Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "opens-above-without-room-below",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.tooltip-place.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/test-examples-reports.function.tooltip-place.test.ts-opens-above-without-room-below.txt",
+							"sha256": "b48b0b24f268fe0d53da21ff1e77e989bd977df322d27b27cd96e39bd05441e9",
+							"bytes": 427,
+							"capturedAt": "2026-11-20T11:09:07.349Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "opens-above-without-room-below",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/test-examples-reports.function.tooltip-place.test.ts-opens-above-without-room-below.json",
+							"sha256": "6fcd444f2fbd537ceb57216452e950d0a3ca310792b9c38c4e672419c668e5b5",
+							"bytes": 554,
+							"capturedAt": "2026-11-20T11:09:07.350Z"
+						}
+					]
+				},
+				{
+					"id": "exact-fit-uses-no-height",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "exact-fit-uses-no-height",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/exact-fit-uses-no-height.json",
+							"sha256": "2fc4d069de40274222cfddf8f53c4ab85343ae874e818b41c596b2741e49b74e",
+							"bytes": 1142,
+							"capturedAt": "2026-11-20T11:09:07.349Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "exact-fit-uses-no-height",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.tooltip-place.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/test-examples-reports.function.tooltip-place.test.ts-exact-fit-uses-no-height.txt",
+							"sha256": "b48b0b24f268fe0d53da21ff1e77e989bd977df322d27b27cd96e39bd05441e9",
+							"bytes": 427,
+							"capturedAt": "2026-11-20T11:09:07.349Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "exact-fit-uses-no-height",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/test-examples-reports.function.tooltip-place.test.ts-exact-fit-uses-no-height.json",
+							"sha256": "82fe0245b65fb12f24269d4883488eb3fc8a9a91de36336248c027e53b6d31f0",
+							"bytes": 1188,
+							"capturedAt": "2026-11-20T11:09:07.350Z"
+						}
+					]
+				},
+				{
+					"id": "takes-the-roomier-side-below",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "takes-the-roomier-side-below",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/takes-the-roomier-side-below.json",
+							"sha256": "942b960c96ff790fa67ccd0585fc156f120db3eac9bea1759680244d9e21be01",
+							"bytes": 485,
+							"capturedAt": "2026-11-20T11:09:07.349Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "takes-the-roomier-side-below",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.tooltip-place.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/test-examples-reports.function.tooltip-place.test.ts-takes-the-roomier-side-below.txt",
+							"sha256": "b48b0b24f268fe0d53da21ff1e77e989bd977df322d27b27cd96e39bd05441e9",
+							"bytes": 427,
+							"capturedAt": "2026-11-20T11:09:07.350Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "takes-the-roomier-side-below",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/test-examples-reports.function.tooltip-place.test.ts-takes-the-roomier-side-below.json",
+							"sha256": "379656278ba050dfdc613b9d624a3645e38d13485308e3dcf5eb0b4d2c60b923",
+							"bytes": 630,
+							"capturedAt": "2026-11-20T11:09:07.350Z"
+						}
+					]
+				},
+				{
+					"id": "tie-prefers-the-side-below",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "tie-prefers-the-side-below",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/tie-prefers-the-side-below.json",
+							"sha256": "212340d60634c463483bc23d96b4eab72848e0ff7dba0a63f2f44ef0edec7fa4",
+							"bytes": 490,
+							"capturedAt": "2026-11-20T11:09:07.349Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "tie-prefers-the-side-below",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.tooltip-place.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/test-examples-reports.function.tooltip-place.test.ts-tie-prefers-the-side-below.txt",
+							"sha256": "b48b0b24f268fe0d53da21ff1e77e989bd977df322d27b27cd96e39bd05441e9",
+							"bytes": 427,
+							"capturedAt": "2026-11-20T11:09:07.350Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "tie-prefers-the-side-below",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/test-examples-reports.function.tooltip-place.test.ts-tie-prefers-the-side-below.json",
+							"sha256": "0b93e0078a69ac3dca68f2ae661e8fd0c27cedd2da6f905f39a4151d5482ef54",
+							"bytes": 630,
+							"capturedAt": "2026-11-20T11:09:07.350Z"
+						}
+					]
+				},
+				{
+					"id": "short-screen-takes-the-roomier-side-above",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "short-screen-takes-the-roomier-side-above",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/short-screen-takes-the-roomier-side-above.json",
+							"sha256": "3f2819a53b05cbb74fb8607a5c1e6c12c5df7ec47efec1e1e0c2665a697e9194",
+							"bytes": 492,
+							"capturedAt": "2026-11-20T11:09:07.349Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "short-screen-takes-the-roomier-side-above",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.tooltip-place.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/test-examples-reports.function.tooltip-place.test.ts-short-screen-takes-the-roomier-side-above.txt",
+							"sha256": "b48b0b24f268fe0d53da21ff1e77e989bd977df322d27b27cd96e39bd05441e9",
+							"bytes": 427,
+							"capturedAt": "2026-11-20T11:09:07.350Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "short-screen-takes-the-roomier-side-above",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.tooltip-place/examples/test-examples-reports.function.tooltip-place.test.ts-short-screen-takes-the-roomier-side-above.json",
+							"sha256": "cbcb6622c32c530f4540a4abb8e7e23cb3e76b64763dbc8743b63b40b6d15c47",
+							"bytes": 656,
+							"capturedAt": "2026-11-20T11:09:07.350Z"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "explorer-shell",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "current",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "current",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/bar/current-desktop.png",
+							"sha256": "5f8bdf102a6c8185c9d67937a8fb5795190081fb4e9a0ec4c877b5f870e051b8",
+							"bytes": 52285,
+							"capturedAt": "2026-11-20T11:09:33.152Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "current",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/bar/current-tablet.png",
+							"sha256": "ea4a25d649d357d48934b53d550fd81d75ad1f94093d2b89ea74ed605b39d225",
+							"bytes": 46887,
+							"capturedAt": "2026-11-20T11:09:33.168Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "current",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/bar/current-mobile.png",
+							"sha256": "c0b64ef7f7648b59d06b567dfac3bfaa8825996565819921f97425d191e749ac",
+							"bytes": 41367,
+							"capturedAt": "2026-11-20T11:09:33.179Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "historical",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "historical",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/bar/historical-desktop.png",
+							"sha256": "f2019f787f49095ab59df8cbb9f684d9769c8e4997483f62fab93a4f3d635050",
+							"bytes": 68838,
+							"capturedAt": "2026-11-20T11:09:33.159Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "historical",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/bar/historical-tablet.png",
+							"sha256": "2efdb486839294d09ce197115c4f1843ba3fa2b65081a89284dd4cc7a5e02c9c",
+							"bytes": 63143,
+							"capturedAt": "2026-11-20T11:09:33.173Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "historical",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/bar/historical-mobile.png",
+							"sha256": "1dfbe4d309dd7298ef5133958ae06ae01610fd7ce3ab0e350dff6cbb73bec7ed",
+							"bytes": 54247,
+							"capturedAt": "2026-11-20T11:09:33.183Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "returned",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "returned",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/bar/returned-desktop.png",
+							"sha256": "c54629548e2eec625348e384ab33bfa7608059323d3bb99a97a708def9929509",
+							"bytes": 61506,
+							"capturedAt": "2026-11-20T11:09:33.161Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "returned",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/bar/returned-tablet.png",
+							"sha256": "6c3ddc7f0928b7139bfdf6493003ec908c65f0a74ba87d7e11f0d4359f322c8d",
+							"bytes": 56011,
+							"capturedAt": "2026-11-20T11:09:33.175Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "returned",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/bar/returned-mobile.png",
+							"sha256": "023cafc0492561c14500d5f8d5f225a3a807e28698c8fa0bdf4d88317dc45001",
+							"bytes": 46144,
+							"capturedAt": "2026-11-20T11:09:33.184Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "pieces",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/pieces/pieces-desktop.png",
+							"sha256": "c72cdb2e497158393b3825392237b09db85853104c5cd7bd434bd7c8de8dd910",
+							"bytes": 190152,
+							"capturedAt": "2026-11-20T11:09:14.517Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/pieces/pieces-tablet.png",
+							"sha256": "df8ad217d86eb71c7974c45072550b48f96b033678ed50facca11f7a49c84867",
+							"bytes": 188701,
+							"capturedAt": "2026-11-20T11:09:14.532Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/pieces/pieces-mobile.png",
+							"sha256": "ffa40e8a433424f7d167cdaa39d7d5ca473d5365f3d806b51dcf456908be4a80",
+							"bytes": 192315,
+							"capturedAt": "2026-11-20T11:09:14.545Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "pieces-verdict",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces-verdict",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/verdict/pieces-verdict-desktop.png",
+							"sha256": "c71a3e49a869657a9b08f23d31b2f79d679e7ba91c16432d5817c9f121dfc544",
+							"bytes": 197242,
+							"capturedAt": "2026-11-20T11:09:24.575Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces-verdict",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/verdict/pieces-verdict-tablet.png",
+							"sha256": "79a71903da4b96c9a759db384ed4b0689780d0cabb62a06124293703009bf7b5",
+							"bytes": 195257,
+							"capturedAt": "2026-11-20T11:09:24.580Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces-verdict",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/verdict/pieces-verdict-mobile.png",
+							"sha256": "e9a809f37d99869e1ef91f1216baf88ce8091e9376e03bd91c0e8730bed9f397",
+							"bytes": 200779,
+							"capturedAt": "2026-11-20T11:09:24.584Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "pieces-used",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces-used",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/pieces/pieces-used-desktop.png",
+							"sha256": "ac6982f99cfd74b897f12cd577abe67faa33ebacc218dfad5937fa003ca3d481",
+							"bytes": 193711,
+							"capturedAt": "2026-11-20T11:09:14.527Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces-used",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/pieces/pieces-used-tablet.png",
+							"sha256": "bba1f78b741b04e690bb3208340a53b3e4b74a134f97f99e439f080ee7ac2f92",
+							"bytes": 194298,
+							"capturedAt": "2026-11-20T11:09:14.541Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces-used",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/pieces/pieces-used-mobile.png",
+							"sha256": "ad80412bcbd33e141f6300fb92d3c98c2d8919e31cb4976f281abf5cd2f04ad0",
+							"bytes": 195268,
+							"capturedAt": "2026-11-20T11:09:14.553Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "pieces-tabs",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces-tabs",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/pieces/pieces-tabs-desktop.png",
+							"sha256": "e221e2f6eccb632bdaf200c906b825df67a01267e3770b2e22f4fe46d36dc55b",
+							"bytes": 190682,
+							"capturedAt": "2026-11-20T11:09:14.522Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces-tabs",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/pieces/pieces-tabs-tablet.png",
+							"sha256": "cda10da19284bb642f0eca3c7d1e5d537934777a95f8d036ebbc004b67e6fd72",
+							"bytes": 188667,
+							"capturedAt": "2026-11-20T11:09:14.536Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "pieces-tabs",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-shell/pieces/pieces-tabs-mobile.png",
+							"sha256": "9a701b9962f8eb2d86f3fd17ad5902dc4d0f1c3a0ff6b6537bfe8edbe632c351",
+							"bytes": 192435,
+							"capturedAt": "2026-11-20T11:09:14.549Z",
+							"server": {
+								"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"entity-preview"
+	],
+	"builds": [
+		{
+			"id": "shell-fixture",
+			"directory": "packages/reports/output/shell-fixture",
+			"buildId": "785265e6084b8d76e17ea0e3b32982dbd42004c76a0b701dde0d1cdcda7782af",
+			"files": 11
+		}
+	],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to reports.function.tooltip-place: only its scenario states ran, so this record is partial and never a full pass.",
+		"Scoped to reports.function.tooltip-place: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}

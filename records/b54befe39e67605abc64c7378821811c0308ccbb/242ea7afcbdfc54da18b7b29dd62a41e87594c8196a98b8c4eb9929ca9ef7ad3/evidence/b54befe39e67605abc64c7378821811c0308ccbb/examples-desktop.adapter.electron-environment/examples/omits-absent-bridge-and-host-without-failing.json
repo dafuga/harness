@@ -1,0 +1,43 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.adapter.electron-environment",
+	"symbol": "connect",
+	"cases": [
+		{
+			"name": "connect with an empty host",
+			"input": {
+				"harness": "absent"
+			},
+			"output": {
+				"kind": "electron",
+				"local": true,
+				"bridge": null,
+				"host": null
+			}
+		},
+		{
+			"name": "connect with remote control but no bridge",
+			"input": {
+				"harness": "absent",
+				"harnessRemote": "nine functions"
+			},
+			"output": {
+				"kind": "electron",
+				"local": true,
+				"bridge": null,
+				"host": [
+					"approvePairing",
+					"closePairing",
+					"createPairing",
+					"denyPairing",
+					"disable",
+					"enable",
+					"onStatus",
+					"revokeDevice",
+					"status"
+				]
+			}
+		}
+	]
+}

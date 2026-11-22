@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.workspace-route",
+	"symbol": "workspaceRoute",
+	"cases": [
+		{
+			"name": "malformed project name",
+			"input": {
+				"path": "/projects/%E0%A4%A/harness/pages"
+			},
+			"error": {
+				"name": "URIError",
+				"message": "URI malformed"
+			}
+		},
+		{
+			"name": "malformed branch name",
+			"input": {
+				"path": "/projects/p/harness/branch/%E0%A4%A/pages"
+			},
+			"error": {
+				"name": "URIError",
+				"message": "URI malformed"
+			}
+		},
+		{
+			"name": "malformed entity name",
+			"input": {
+				"path": "/projects/p/harness/pages/page%E0%A4%A/source"
+			},
+			"error": {
+				"name": "URIError",
+				"message": "URI malformed"
+			}
+		},
+		{
+			"name": "well-formed escapes around the same entity read normally",
+			"input": {
+				"path": "/projects/p/harness/pages/page%3Aok/source"
+			},
+			"output": {
+				"projectId": "p",
+				"branch": null,
+				"commit": null,
+				"category": "pages",
+				"entityId": "page:ok",
+				"suffix": "source"
+			}
+		}
+	]
+}

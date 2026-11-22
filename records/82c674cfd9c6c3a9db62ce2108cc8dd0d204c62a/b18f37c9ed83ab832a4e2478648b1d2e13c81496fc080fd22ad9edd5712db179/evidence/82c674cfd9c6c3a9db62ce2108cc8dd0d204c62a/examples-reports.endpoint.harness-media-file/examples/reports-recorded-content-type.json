@@ -1,0 +1,17 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.endpoint.harness-media-file",
+	"symbol": "GET",
+	"cases": [
+		{
+			"name": "png media reports image/png",
+			"input": {
+				"file": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png"
+			},
+			"output": {
+				"contentType": "image/png"
+			}
+		}
+	]
+}

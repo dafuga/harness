@@ -1,0 +1,31 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.prepare-project-run",
+	"symbol": "prepareProjectRun",
+	"cases": [
+		{
+			"name": "create plan for the open project",
+			"input": {
+				"projectId": "9f2c7a61-b4e3-4a8d-9f01-2c6b5a7d8e90",
+				"intent": "create",
+				"mode": "plan",
+				"provider": "codex",
+				"model": "gpt-5.1-codex",
+				"effort": "medium"
+			},
+			"output": {
+				"calls": [
+					"assertProject:9f2c7a61-b4e3-4a8d-9f01-2c6b5a7d8e90",
+					"mutable",
+					"select:codex:gpt-5.1-codex:medium"
+				],
+				"root": "project-root-fixture",
+				"revision": "rev-fixture",
+				"planning": "plan-fixture",
+				"idIsUuidV4": true,
+				"signalAborted": false
+			}
+		}
+	]
+}

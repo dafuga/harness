@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-behavior",
+	"symbol": "entityBehavior",
+	"cases": [
+		{
+			"name": "equal results are unchanged",
+			"input": {
+				"mode": "commit"
+			},
+			"output": {
+				"label": "Behavior unchanged",
+				"recorded": true,
+				"passed": true,
+				"unknown": false,
+				"groups": [
+					[
+						"order-filter",
+						"match",
+						"passed",
+						"passed"
+					],
+					[
+						"order-filter",
+						"no-match",
+						"passed",
+						"passed"
+					]
+				],
+				"reasons": []
+			}
+		},
+		{
+			"name": "scenario titles are the host own",
+			"input": {
+				"scenario": "order-filter"
+			},
+			"output": [
+				{
+					"id": "order-filter",
+					"title": "Search across synthetic orders",
+					"before": "passed",
+					"after": "passed"
+				}
+			]
+		}
+	]
+}

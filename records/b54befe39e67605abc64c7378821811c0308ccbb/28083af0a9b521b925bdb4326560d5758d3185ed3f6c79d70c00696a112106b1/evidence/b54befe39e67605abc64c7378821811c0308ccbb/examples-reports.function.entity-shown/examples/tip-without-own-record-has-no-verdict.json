@@ -1,0 +1,120 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-shown",
+	"symbol": "entityShown",
+	"cases": [
+		{
+			"name": "tip with a record of the parent commit only",
+			"input": {
+				"commit": "c725e9337e913674d8b859665a97c2ea5d62c2da",
+				"unit": "app.function.filter-orders",
+				"records": "parent"
+			},
+			"output": {
+				"contract": [
+					{
+						"label": "Inputs",
+						"value": "orders, search text"
+					},
+					{
+						"label": "Output",
+						"value": "matching orders"
+					}
+				],
+				"measure": {
+					"size": [
+						{
+							"label": "Source size",
+							"value": "Not measured",
+							"rawValue": null,
+							"unitOfMeasure": "bytes"
+						},
+						{
+							"label": "Emitted size",
+							"target": "none",
+							"value": "Not measured",
+							"rawValue": null,
+							"unitOfMeasure": "bytes",
+							"note": "This unit declares no process or Wasm output."
+						},
+						{
+							"label": "Complexity",
+							"value": "Not measured",
+							"rawValue": null
+						}
+					],
+					"performance": [
+						{
+							"workload": "thousand orders",
+							"metric": "p95 ms",
+							"target": "",
+							"profile": "",
+							"value": "Not measured",
+							"rawValue": null,
+							"tolerance": "5%",
+							"over": false
+						}
+					]
+				},
+				"recordId": null
+			}
+		},
+		{
+			"name": "tip with no records at all",
+			"input": {
+				"commit": "c725e9337e913674d8b859665a97c2ea5d62c2da",
+				"unit": "app.function.filter-orders",
+				"records": "none"
+			},
+			"output": {
+				"contract": [
+					{
+						"label": "Inputs",
+						"value": "orders, search text"
+					},
+					{
+						"label": "Output",
+						"value": "matching orders"
+					}
+				],
+				"measure": {
+					"size": [
+						{
+							"label": "Source size",
+							"value": "Not measured",
+							"rawValue": null,
+							"unitOfMeasure": "bytes"
+						},
+						{
+							"label": "Emitted size",
+							"target": "none",
+							"value": "Not measured",
+							"rawValue": null,
+							"unitOfMeasure": "bytes",
+							"note": "This unit declares no process or Wasm output."
+						},
+						{
+							"label": "Complexity",
+							"value": "Not measured",
+							"rawValue": null
+						}
+					],
+					"performance": [
+						{
+							"workload": "thousand orders",
+							"metric": "p95 ms",
+							"target": "",
+							"profile": "",
+							"value": "Not measured",
+							"rawValue": null,
+							"tolerance": "5%",
+							"over": false
+						}
+					]
+				},
+				"recordId": null
+			}
+		}
+	]
+}

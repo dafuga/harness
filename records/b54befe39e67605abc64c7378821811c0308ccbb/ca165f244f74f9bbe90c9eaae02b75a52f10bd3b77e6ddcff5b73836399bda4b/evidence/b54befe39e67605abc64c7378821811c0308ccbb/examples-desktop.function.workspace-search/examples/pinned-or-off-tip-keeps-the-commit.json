@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.workspace-search",
+	"symbol": "workspaceSearch",
+	"cases": [
+		{
+			"name": "pinned earlier commit",
+			"input": {
+				"shown": {
+					"project": "Alpha",
+					"commit": "cccccccccccccccccccccccccccccccccccccccc",
+					"atTip": false,
+					"pinned": true,
+					"busy": false,
+					"entities": 2
+				}
+			},
+			"output": {
+				"scope": {
+					"label": "Alpha at commit ccccccc",
+					"pinned": "ccccccc"
+				},
+				"commits": [
+					"cccccccccccccccccccccccccccccccccccccccc",
+					"cccccccccccccccccccccccccccccccccccccccc"
+				],
+				"first": "/projects/local-alpha/harness/branch/feat%2Falpha/commit/cccccccccccccccccccccccccccccccccccccccc/layouts/app.shell.order-frame"
+			}
+		},
+		{
+			"name": "earlier commit not pinned and not at tip",
+			"input": {
+				"shown": {
+					"project": "Alpha",
+					"commit": "cccccccccccccccccccccccccccccccccccccccc",
+					"atTip": false,
+					"pinned": false,
+					"busy": false,
+					"entities": 2
+				}
+			},
+			"output": {
+				"scope": {
+					"label": "Alpha at commit ccccccc",
+					"pinned": "ccccccc"
+				},
+				"second": "/projects/local-alpha/harness/branch/feat%2Falpha/commit/cccccccccccccccccccccccccccccccccccccccc/functions/desktop.function.workspace-search"
+			}
+		}
+	]
+}

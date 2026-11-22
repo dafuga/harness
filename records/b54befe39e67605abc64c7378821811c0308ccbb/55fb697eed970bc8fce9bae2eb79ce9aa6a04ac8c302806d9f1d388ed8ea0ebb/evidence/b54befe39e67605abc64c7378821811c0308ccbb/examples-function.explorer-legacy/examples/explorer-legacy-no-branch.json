@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.explorer-legacy",
+	"symbol": "explorerLegacy",
+	"cases": [
+		{
+			"name": "unit on a commit no branch reaches",
+			"input": {
+				"branch": null,
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"view": "map",
+				"unit": "function.clock"
+			},
+			"output": {
+				"branch": null,
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"category": "functions",
+				"entity": "function.clock"
+			}
+		},
+		{
+			"name": "page on a commit no branch reaches",
+			"input": {
+				"branch": null,
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"view": "activity"
+			},
+			"output": {
+				"branch": null,
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"category": "pages"
+			}
+		}
+	]
+}

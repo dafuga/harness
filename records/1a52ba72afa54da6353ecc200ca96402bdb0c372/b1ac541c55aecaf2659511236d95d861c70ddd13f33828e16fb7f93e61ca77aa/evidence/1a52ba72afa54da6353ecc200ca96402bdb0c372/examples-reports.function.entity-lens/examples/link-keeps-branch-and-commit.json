@@ -1,0 +1,47 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-lens",
+	"symbol": "entityLens",
+	"cases": [
+		{
+			"name": "category and entity from the link",
+			"input": "to category and entity",
+			"output": {
+				"branch": "feature/orders",
+				"commit": "8b41d0720e252681deac809969b3faf8181dac30",
+				"category": "components",
+				"entity": "app.component.order-list"
+			}
+		},
+		{
+			"name": "link names a commit",
+			"input": "to commit",
+			"output": {
+				"branch": "feature/orders",
+				"commit": "3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6",
+				"category": "pages",
+				"entity": "app.page.orders"
+			}
+		},
+		{
+			"name": "branch tip stays at the tip",
+			"input": "from commit null",
+			"output": {
+				"branch": "feature/orders",
+				"commit": null,
+				"category": "pages",
+				"entity": "app.page.orders"
+			}
+		},
+		{
+			"name": "no branch is invented",
+			"input": "from branch null",
+			"output": {
+				"branch": null,
+				"commit": "8b41d0720e252681deac809969b3faf8181dac30",
+				"category": "configs"
+			}
+		}
+	]
+}

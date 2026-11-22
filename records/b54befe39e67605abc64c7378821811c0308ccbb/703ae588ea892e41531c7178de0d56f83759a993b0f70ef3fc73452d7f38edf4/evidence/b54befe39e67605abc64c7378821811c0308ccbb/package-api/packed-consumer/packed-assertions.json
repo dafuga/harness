@@ -1,0 +1,90 @@
+{
+  "typeCheck": {
+    "clean": {
+      "exitCode": 0,
+      "output": ""
+    },
+    "invalid": {
+      "exitCode": 2,
+      "diagnostic": "TS2322"
+    }
+  },
+  "runners": [
+    {
+      "runner": "bun",
+      "kinds": [
+        "module",
+        "wasm",
+        "process",
+        "http"
+      ],
+      "invalidErrors": [
+        "function.commit-identity: contract input unsupported has unknown type"
+      ],
+      "responses": [
+        {
+          "ok": true,
+          "output": {
+            "contract": "impact-kernel/1"
+          }
+        },
+        {
+          "ok": true,
+          "output": {
+            "contract": "impact-kernel/1"
+          }
+        },
+        {
+          "ok": true,
+          "output": {
+            "contract": "impact-kernel/1"
+          }
+        },
+        {
+          "ok": true,
+          "output": {
+            "contract": "impact-kernel/1"
+          }
+        }
+      ]
+    },
+    {
+      "runner": "node",
+      "kinds": [
+        "module",
+        "wasm",
+        "process",
+        "http"
+      ],
+      "invalidErrors": [
+        "function.commit-identity: contract input unsupported has unknown type"
+      ],
+      "responses": [
+        {
+          "ok": true,
+          "output": {
+            "contract": "impact-kernel/1"
+          }
+        },
+        {
+          "ok": true,
+          "output": {
+            "contract": "impact-kernel/1"
+          }
+        },
+        {
+          "ok": true,
+          "output": {
+            "contract": "impact-kernel/1"
+          }
+        },
+        {
+          "ok": true,
+          "output": {
+            "contract": "impact-kernel/1"
+          }
+        }
+      ]
+    }
+  ]
+}

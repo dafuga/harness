@@ -1,0 +1,13 @@
+
+Running 6 tests using 1 worker
+
+(node:6050) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/units/explorer-shell-unit-reports.style.harness.spec.ts:23:3 › reports.style.harness:problem at desktop (658ms)
+  ✓  2 tests/e2e/units/explorer-shell-unit-reports.style.harness.spec.ts:23:3 › reports.style.harness:missing at desktop (607ms)
+  ✓  3 tests/e2e/units/explorer-shell-unit-reports.style.harness.spec.ts:23:3 › reports.style.harness:problem at tablet (610ms)
+  ✓  4 tests/e2e/units/explorer-shell-unit-reports.style.harness.spec.ts:23:3 › reports.style.harness:missing at tablet (615ms)
+  ✓  5 tests/e2e/units/explorer-shell-unit-reports.style.harness.spec.ts:23:3 › reports.style.harness:problem at mobile (609ms)
+  ✓  6 tests/e2e/units/explorer-shell-unit-reports.style.harness.spec.ts:23:3 › reports.style.harness:missing at mobile (612ms)
+
+  6 passed (5.4s)

@@ -1,0 +1,55 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-history",
+	"symbol": "entityHistory",
+	"cases": [
+		{
+			"name": "filter timings: middle with before from first, ci-linux with none; first with none",
+			"input": {
+				"unit": "app.function.filter-orders",
+				"rows": [
+					"8b41d0720e252681deac809969b3faf8181dac30",
+					"3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6"
+				]
+			},
+			"output": [
+				[
+					"8b41d0720e252681deac809969b3faf8181dac30",
+					[
+						{
+							"profile": "bun-reference",
+							"workload": "thousand-orders",
+							"metric": "p95-ms",
+							"target": null,
+							"unit": "ms",
+							"before": 0.15,
+							"after": 0.12
+						},
+						{
+							"profile": "ci-linux",
+							"workload": "thousand-orders",
+							"metric": "p95-ms",
+							"target": null,
+							"unit": "ms",
+							"after": 0.31
+						}
+					]
+				],
+				[
+					"3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6",
+					[
+						{
+							"profile": "bun-reference",
+							"workload": "thousand-orders",
+							"metric": "p95-ms",
+							"target": null,
+							"unit": "ms",
+							"after": 0.15
+						}
+					]
+				]
+			]
+		}
+	]
+}

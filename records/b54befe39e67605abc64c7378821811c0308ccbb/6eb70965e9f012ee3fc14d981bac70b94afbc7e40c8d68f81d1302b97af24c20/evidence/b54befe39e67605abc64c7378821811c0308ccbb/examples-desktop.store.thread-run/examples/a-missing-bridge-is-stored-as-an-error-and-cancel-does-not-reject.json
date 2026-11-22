@@ -1,0 +1,20 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.thread-run",
+	"symbol": "start, cancel",
+	"cases": [
+		{
+			"name": "start, cancel",
+			"input": {
+				"mode": "plan"
+			},
+			"output": {
+				"started": false,
+				"cancelled": null,
+				"errorName": "TypeError",
+				"active": false
+			}
+		}
+	]
+}

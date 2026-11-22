@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-shell",
+	"symbol": "harnessShell",
+	"cases": [
+		{
+			"name": "no scope",
+			"input": {
+				"scope": null
+			},
+			"output": {
+				"home": {
+					"href": "/reports",
+					"to": null
+				},
+				"categories": [
+					{
+						"id": "pages",
+						"label": "Pages",
+						"icon": "pages",
+						"active": false,
+						"href": null,
+						"to": null
+					},
+					{
+						"id": "modules",
+						"label": "Code",
+						"icon": "layers",
+						"active": false,
+						"href": null,
+						"to": null
+					},
+					{
+						"id": "translations",
+						"label": "Translations",
+						"icon": "web",
+						"active": false,
+						"href": null,
+						"to": null
+					},
+					{
+						"id": "platforms",
+						"label": "Platforms",
+						"icon": "platforms",
+						"active": false,
+						"href": null,
+						"to": null
+					}
+				],
+				"modules": [],
+				"revision": null
+			}
+		}
+	]
+}

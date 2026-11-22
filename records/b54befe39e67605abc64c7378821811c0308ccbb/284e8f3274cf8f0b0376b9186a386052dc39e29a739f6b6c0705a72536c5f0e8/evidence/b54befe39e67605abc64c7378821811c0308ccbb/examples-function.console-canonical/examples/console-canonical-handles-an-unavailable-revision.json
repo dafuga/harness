@@ -1,0 +1,23 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.console-canonical",
+	"symbol": "defaultCommit",
+	"cases": [
+		{
+			"name": "unindexed commit falls back to the main tip",
+			"input": {
+				"asked": "ffffffffffffffffffffffffffffffffffffffff"
+			},
+			"output": "cccccccccccccccccccccccccccccccccccccccc"
+		},
+		{
+			"name": "unindexed commit in empty history gives an empty commit",
+			"input": {
+				"asked": "ffffffffffffffffffffffffffffffffffffffff",
+				"index": "empty"
+			},
+			"output": ""
+		}
+	]
+}

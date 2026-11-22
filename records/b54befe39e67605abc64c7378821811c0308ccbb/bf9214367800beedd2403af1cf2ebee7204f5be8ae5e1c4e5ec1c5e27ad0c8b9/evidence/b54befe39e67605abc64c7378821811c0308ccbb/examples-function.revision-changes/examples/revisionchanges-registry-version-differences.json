@@ -1,0 +1,143 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.revision-changes",
+	"symbol": "revisionChanges",
+	"cases": [
+		{
+			"name": "a changed contract or dependency version is a direct change",
+			"input": {
+				"impact": null,
+				"registry": {
+					"available": true,
+					"units": [
+						{
+							"id": "function.slugify",
+							"version": "v2"
+						},
+						{
+							"id": "config.titles",
+							"version": "c2"
+						},
+						{
+							"id": "function.clock",
+							"version": "k1"
+						}
+					]
+				},
+				"parent": {
+					"available": true,
+					"units": [
+						{
+							"id": "function.slugify",
+							"version": "v1"
+						},
+						{
+							"id": "config.titles",
+							"version": "c1"
+						},
+						{
+							"id": "function.clock",
+							"version": "k1"
+						}
+					]
+				},
+				"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+			},
+			"output": {
+				"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"direct": [
+					"config.titles",
+					"function.slugify"
+				],
+				"added": [],
+				"removed": []
+			}
+		},
+		{
+			"name": "a unit only in the commit is added and one only in the parent is removed",
+			"input": {
+				"impact": null,
+				"registry": {
+					"available": true,
+					"units": [
+						{
+							"id": "function.new",
+							"version": "n1"
+						},
+						{
+							"id": "function.kept",
+							"version": "k1"
+						}
+					]
+				},
+				"parent": {
+					"available": true,
+					"units": [
+						{
+							"id": "function.gone",
+							"version": "g1"
+						},
+						{
+							"id": "function.kept",
+							"version": "k1"
+						}
+					]
+				},
+				"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+			},
+			"output": {
+				"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"direct": [],
+				"added": [
+					"function.new"
+				],
+				"removed": [
+					"function.gone"
+				]
+			}
+		},
+		{
+			"name": "a unit the impact lists as added is not also direct when its version moved",
+			"input": {
+				"impact": {
+					"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"units": {
+						"direct": [],
+						"indirect": [],
+						"added": [
+							"function.extra"
+						],
+						"removed": []
+					}
+				},
+				"registry": {
+					"available": true,
+					"units": [
+						{
+							"id": "function.extra",
+							"version": "e2"
+						}
+					]
+				},
+				"parent": {
+					"available": true,
+					"units": [
+						{
+							"id": "function.extra",
+							"version": "e1"
+						}
+					]
+				}
+			},
+			"output": {
+				"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"direct": [],
+				"added": [
+					"function.extra"
+				],
+				"removed": []
+			}
+		}
+	]
+}

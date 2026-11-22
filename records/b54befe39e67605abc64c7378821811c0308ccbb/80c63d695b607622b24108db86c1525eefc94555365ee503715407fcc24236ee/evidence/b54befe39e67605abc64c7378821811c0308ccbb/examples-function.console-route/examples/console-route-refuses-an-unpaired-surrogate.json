@@ -1,0 +1,19 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.console-route",
+	"symbol": "consoleRoutePath",
+	"cases": [
+		{
+			"name": "a branch holding a lone high surrogate",
+			"input": {
+				"route": {
+					"branch": "\ud800",
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"view": "map"
+				}
+			},
+			"error": "URIError"
+		}
+	]
+}

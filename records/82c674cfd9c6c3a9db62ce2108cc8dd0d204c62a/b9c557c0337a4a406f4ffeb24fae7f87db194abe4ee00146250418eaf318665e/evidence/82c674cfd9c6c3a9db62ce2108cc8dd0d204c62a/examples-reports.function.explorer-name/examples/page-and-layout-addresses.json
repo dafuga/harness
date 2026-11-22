@@ -1,0 +1,101 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-name",
+	"symbol": "explorerAppRoute",
+	"cases": [
+		{
+			"name": "slash title is the page address",
+			"input": {
+				"kind": "page",
+				"title": "/harness/[...view]",
+				"owns": {
+					"source": [],
+					"symbols": []
+				}
+			},
+			"output": "/harness/[...view]"
+		},
+		{
+			"name": "owned page file gives its route address",
+			"input": {
+				"kind": "page",
+				"title": "+page",
+				"owns": {
+					"source": [
+						"src/routes/titles/+page.server.ts",
+						"src/routes/titles/+page.svelte"
+					],
+					"symbols": []
+				}
+			},
+			"output": "/titles"
+		},
+		{
+			"name": "root route file maps to slash",
+			"input": {
+				"kind": "page",
+				"title": "+page",
+				"owns": {
+					"source": [
+						"packages/reports/src/routes/+page.svelte"
+					],
+					"symbols": []
+				}
+			},
+			"output": "/"
+		},
+		{
+			"name": "layout with an owned route page gives its address",
+			"input": {
+				"kind": "layout",
+				"title": "Shell",
+				"owns": {
+					"source": [
+						"src/routes/shell/+page.svelte"
+					],
+					"symbols": []
+				}
+			},
+			"output": "/shell"
+		},
+		{
+			"name": "layout with only a layout file has no address",
+			"input": {
+				"kind": "layout",
+				"title": "+layout",
+				"owns": {
+					"source": [
+						"src/routes/orders/+layout.svelte"
+					],
+					"symbols": []
+				}
+			},
+			"output": null
+		},
+		{
+			"name": "function is not a page and has no address",
+			"input": {
+				"kind": "function",
+				"title": "/not/a/page",
+				"owns": {
+					"source": [],
+					"symbols": []
+				}
+			},
+			"output": null
+		},
+		{
+			"name": "page with no route file and no slash title",
+			"input": {
+				"kind": "page",
+				"title": "Odd",
+				"owns": {
+					"source": [],
+					"symbols": []
+				}
+			},
+			"output": null
+		}
+	]
+}

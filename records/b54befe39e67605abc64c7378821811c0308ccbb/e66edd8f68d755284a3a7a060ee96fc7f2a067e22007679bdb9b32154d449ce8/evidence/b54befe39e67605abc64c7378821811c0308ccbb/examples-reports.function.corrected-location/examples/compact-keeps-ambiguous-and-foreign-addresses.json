@@ -1,0 +1,99 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.corrected-location",
+	"symbol": "compactHelperLocation",
+	"cases": [
+		{
+			"name": "two owners of the helper",
+			"input": {
+				"branch": "feat/x",
+				"commit": null,
+				"category": "functions",
+				"helper": "formatDuration",
+				"tab": "examples",
+				"entity": "function.duration"
+			},
+			"output": {
+				"branch": "feat/x",
+				"commit": null,
+				"category": "functions",
+				"helper": "formatDuration",
+				"tab": "examples",
+				"entity": "function.duration"
+			}
+		},
+		{
+			"name": "current entity is not the sole owner",
+			"input": {
+				"branch": "feat/x",
+				"commit": null,
+				"category": "functions",
+				"helper": "formatDuration",
+				"tab": "examples",
+				"entity": "function.other-duration"
+			},
+			"output": {
+				"branch": "feat/x",
+				"commit": null,
+				"category": "functions",
+				"helper": "formatDuration",
+				"tab": "examples",
+				"entity": "function.other-duration"
+			}
+		},
+		{
+			"name": "no entity to compact",
+			"input": {
+				"branch": "feat/x",
+				"commit": null,
+				"category": "functions",
+				"helper": "formatDuration",
+				"tab": "examples"
+			},
+			"output": {
+				"branch": "feat/x",
+				"commit": null,
+				"category": "functions",
+				"helper": "formatDuration",
+				"tab": "examples"
+			}
+		},
+		{
+			"name": "address without a helper",
+			"input": {
+				"branch": "feat/x",
+				"commit": null,
+				"category": "functions",
+				"tab": "examples",
+				"entity": "function.duration"
+			},
+			"output": {
+				"branch": "feat/x",
+				"commit": null,
+				"category": "functions",
+				"tab": "examples",
+				"entity": "function.duration"
+			}
+		},
+		{
+			"name": "address in the components category",
+			"input": {
+				"branch": "feat/x",
+				"commit": null,
+				"category": "components",
+				"helper": "formatDuration",
+				"tab": "examples",
+				"entity": "function.duration"
+			},
+			"output": {
+				"branch": "feat/x",
+				"commit": null,
+				"category": "components",
+				"helper": "formatDuration",
+				"tab": "examples",
+				"entity": "function.duration"
+			}
+		}
+	]
+}

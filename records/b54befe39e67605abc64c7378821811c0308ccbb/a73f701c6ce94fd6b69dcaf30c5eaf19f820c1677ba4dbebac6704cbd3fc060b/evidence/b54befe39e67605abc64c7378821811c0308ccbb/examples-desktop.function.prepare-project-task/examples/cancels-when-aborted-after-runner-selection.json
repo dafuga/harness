@@ -1,0 +1,20 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.prepare-project-task",
+	"symbol": "prepareProjectTask",
+	"cases": [
+		{
+			"name": "abort during provider selection",
+			"input": {
+				"provider": "claude",
+				"model": "synthetic-model",
+				"effort": "high"
+			},
+			"error": {
+				"name": "RunCancelled",
+				"message": "The run was cancelled."
+			}
+		}
+	]
+}

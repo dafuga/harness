@@ -1,0 +1,106 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.explorer-route",
+	"symbol": "explorerRoute",
+	"cases": [
+		{
+			"name": "empty path names nothing",
+			"input": {
+				"path": "",
+				"search": ""
+			}
+		},
+		{
+			"name": "bare category without scope",
+			"input": {
+				"path": "/pages",
+				"search": ""
+			}
+		},
+		{
+			"name": "branch name is not percent-decodable",
+			"input": {
+				"path": "/branch/%E0%A4%A/pages",
+				"search": ""
+			}
+		},
+		{
+			"name": "short commit is not a full hash",
+			"input": {
+				"path": "/branch/main/commit/abc/pages",
+				"search": ""
+			}
+		},
+		{
+			"name": "uppercase commit is not a full hash",
+			"input": {
+				"path": "/branch/main/commit/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/pages",
+				"search": ""
+			}
+		},
+		{
+			"name": "unknown category under a commit",
+			"input": {
+				"path": "/branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/map",
+				"search": ""
+			}
+		},
+		{
+			"name": "branch name runs into the category",
+			"input": {
+				"path": "/branch/feature/kept/pages",
+				"search": ""
+			}
+		},
+		{
+			"name": "source is not a section",
+			"input": {
+				"path": "/branch/main/pages/x/source",
+				"search": ""
+			}
+		},
+		{
+			"name": "extra segment after details",
+			"input": {
+				"path": "/branch/main/pages/x/details/extra",
+				"search": ""
+			}
+		},
+		{
+			"name": "screen takes no section",
+			"input": {
+				"path": "/branch/main/dependencies/history",
+				"search": ""
+			}
+		},
+		{
+			"name": "platform takes no section",
+			"input": {
+				"path": "/branch/main/platforms/x/history",
+				"search": ""
+			}
+		},
+		{
+			"name": "helper pane must be known",
+			"input": {
+				"path": "/branch/main/helpers/toKebabCase/bogus",
+				"search": ""
+			}
+		},
+		{
+			"name": "helper owner must be named",
+			"input": {
+				"path": "/branch/main/helpers/toKebabCase/in",
+				"search": ""
+			}
+		},
+		{
+			"name": "module entity must start lowercase",
+			"input": {
+				"path": "/branch/main/plugins/Email",
+				"search": ""
+			}
+		}
+	]
+}

@@ -1,0 +1,47 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-scope",
+	"symbol": "explorerScope",
+	"cases": [
+		{
+			"name": "unbranched commit keeps its first parent",
+			"input": {
+				"branch": null,
+				"commit": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+				"category": "functions"
+			},
+			"output": {
+				"kind": "scope",
+				"scope": {
+					"location": {
+						"branch": null,
+						"commit": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+						"category": "functions"
+					},
+					"mode": "commit",
+					"branch": null,
+					"tip": null,
+					"commit": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+					"atTip": false,
+					"parent": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"summary": {
+						"commit": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+						"parents": [
+							"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						],
+						"subject": "commit e",
+						"author": "Synthetic",
+						"committedAt": "2026-10-10T18:00:00+00:00",
+						"branches": [],
+						"retained": true,
+						"coverage": "verified",
+						"gaps": [],
+						"records": [],
+						"legacy": []
+					}
+				}
+			}
+		}
+	]
+}

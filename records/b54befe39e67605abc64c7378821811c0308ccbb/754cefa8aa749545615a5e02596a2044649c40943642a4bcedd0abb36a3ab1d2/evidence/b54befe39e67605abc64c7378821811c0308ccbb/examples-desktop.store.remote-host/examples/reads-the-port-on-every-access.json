@@ -1,0 +1,20 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.remote-host",
+	"symbol": "enable",
+	"cases": [
+		{
+			"name": "reads-the-port-on-every-access",
+			"input": null,
+			"output": {
+				"beforePort": false,
+				"afterPort": true,
+				"afterFalsy": false,
+				"calls": [
+					"enable"
+				]
+			}
+		}
+	]
+}

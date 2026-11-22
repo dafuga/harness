@@ -1,0 +1,93 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.read-browser-diagnostics",
+	"symbol": "readBrowserDiagnostics",
+	"cases": [
+		{
+			"name": "two records separated by blank lines",
+			"input": {
+				"lines": [
+					{
+						"test": "verification page loads",
+						"file": "tests/e2e/verification.spec.ts",
+						"project": "chromium",
+						"retry": 0,
+						"errors": [
+							{
+								"type": "pageerror",
+								"message": "TypeError: Cannot read properties of undefined",
+								"page": "http://127.0.0.1:4173/verify"
+							}
+						],
+						"expected": []
+					},
+					{
+						"test": "fixture logo is intentionally absent",
+						"file": "tests/e2e/console.spec.ts",
+						"project": "chromium",
+						"retry": 1,
+						"browser": "chromium",
+						"errors": [
+							{
+								"type": "console",
+								"message": "Failed to load resource",
+								"page": "http://127.0.0.1:4173/",
+								"line": 0,
+								"column": 0
+							}
+						],
+						"expected": [
+							{
+								"type": "console",
+								"message": "Failed to load resource",
+								"reason": "Logo is intentionally absent in fixture"
+							}
+						]
+					}
+				]
+			},
+			"output": {
+				"browserErrors": [
+					{
+						"test": "verification page loads",
+						"file": "tests/e2e/verification.spec.ts",
+						"project": "chromium",
+						"retry": 0,
+						"errors": [
+							{
+								"type": "pageerror",
+								"message": "TypeError: Cannot read properties of undefined",
+								"page": "http://127.0.0.1:4173/verify"
+							}
+						],
+						"expected": []
+					},
+					{
+						"test": "fixture logo is intentionally absent",
+						"file": "tests/e2e/console.spec.ts",
+						"project": "chromium",
+						"retry": 1,
+						"browser": "chromium",
+						"errors": [
+							{
+								"type": "console",
+								"message": "Failed to load resource",
+								"page": "http://127.0.0.1:4173/",
+								"line": 0,
+								"column": 0
+							}
+						],
+						"expected": [
+							{
+								"type": "console",
+								"message": "Failed to load resource",
+								"reason": "Logo is intentionally absent in fixture"
+							}
+						]
+					}
+				]
+			}
+		}
+	]
+}

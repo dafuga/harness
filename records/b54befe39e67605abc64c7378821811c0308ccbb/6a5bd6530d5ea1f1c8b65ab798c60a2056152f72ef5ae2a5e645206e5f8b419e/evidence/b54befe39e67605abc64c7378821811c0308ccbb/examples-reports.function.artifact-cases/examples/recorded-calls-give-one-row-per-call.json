@@ -1,0 +1,109 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.artifact-cases",
+	"symbol": "artifactCases",
+	"cases": [
+		{
+			"name": "no unit filter",
+			"input": {
+				"document": {
+					"schemaVersion": 1,
+					"kind": "function-invocations",
+					"unitId": "reports.function.artifact-cases",
+					"symbol": "artifactCases",
+					"cases": [
+						{
+							"name": "Reads a value",
+							"input": {
+								"key": "a"
+							},
+							"output": "alpha"
+						},
+						{
+							"name": "Throws on missing",
+							"input": {
+								"key": "z"
+							},
+							"error": "RangeError"
+						}
+					]
+				}
+			},
+			"output": {
+				"kind": "cases",
+				"source": "invocations",
+				"symbol": "artifactCases",
+				"cases": [
+					{
+						"name": "Reads a value",
+						"input": {
+							"key": "a"
+						},
+						"output": "alpha",
+						"failed": false
+					},
+					{
+						"name": "Throws on missing",
+						"input": {
+							"key": "z"
+						},
+						"error": "RangeError",
+						"failed": true
+					}
+				]
+			}
+		},
+		{
+			"name": "matching unit filter",
+			"input": {
+				"document": {
+					"schemaVersion": 1,
+					"kind": "function-invocations",
+					"unitId": "reports.function.artifact-cases",
+					"symbol": "artifactCases",
+					"cases": [
+						{
+							"name": "Reads a value",
+							"input": {
+								"key": "a"
+							},
+							"output": "alpha"
+						},
+						{
+							"name": "Throws on missing",
+							"input": {
+								"key": "z"
+							},
+							"error": "RangeError"
+						}
+					]
+				},
+				"unit": "reports.function.artifact-cases"
+			},
+			"output": {
+				"kind": "cases",
+				"source": "invocations",
+				"symbol": "artifactCases",
+				"cases": [
+					{
+						"name": "Reads a value",
+						"input": {
+							"key": "a"
+						},
+						"output": "alpha",
+						"failed": false
+					},
+					{
+						"name": "Throws on missing",
+						"input": {
+							"key": "z"
+						},
+						"error": "RangeError",
+						"failed": true
+					}
+				]
+			}
+		}
+	]
+}

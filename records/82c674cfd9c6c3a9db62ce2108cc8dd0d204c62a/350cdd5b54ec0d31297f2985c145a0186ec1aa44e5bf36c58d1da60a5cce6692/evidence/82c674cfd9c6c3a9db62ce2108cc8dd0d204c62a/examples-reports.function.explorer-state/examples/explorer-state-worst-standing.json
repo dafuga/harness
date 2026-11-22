@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-state",
+	"symbol": "coverageWorst",
+	"cases": [
+		{
+			"name": "failure outranks the others",
+			"input": [
+				"passed",
+				"incomplete",
+				"failed",
+				"stale"
+			],
+			"output": "failed"
+		},
+		{
+			"name": "stale outranks missing",
+			"input": [
+				"missing",
+				"stale"
+			],
+			"output": "stale"
+		},
+		{
+			"name": "missing outranks incomplete",
+			"input": [
+				"incomplete",
+				"missing",
+				"passed"
+			],
+			"output": "missing"
+		},
+		{
+			"name": "incomplete outranks passed",
+			"input": [
+				"passed",
+				"incomplete"
+			],
+			"output": "incomplete"
+		},
+		{
+			"name": "inapplicable ignored beside passed",
+			"input": [
+				"inapplicable",
+				"passed"
+			],
+			"output": "passed"
+		},
+		{
+			"name": "only inapplicable is inapplicable",
+			"input": [
+				"inapplicable"
+			],
+			"output": "inapplicable"
+		},
+		{
+			"name": "no standing is inapplicable",
+			"input": [],
+			"output": "inapplicable"
+		}
+	]
+}

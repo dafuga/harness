@@ -1,0 +1,198 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.unit-measurements",
+	"symbol": "unitMeasurements",
+	"cases": [
+		{
+			"name": "python file only: complexity and dependencies have no number",
+			"input": {
+				"unit": {
+					"id": "function.script",
+					"owns": {
+						"source": [
+							"scripts/tool.py"
+						],
+						"symbols": []
+					},
+					"dependencies": [],
+					"runtime": {
+						"targets": [
+							{
+								"kind": "module",
+								"entry": "src/index.ts"
+							}
+						]
+					}
+				},
+				"files": [
+					{
+						"path": "scripts/tool.py",
+						"references": [],
+						"blocks": [],
+						"bytes": 80,
+						"lines": 10,
+						"language": "other",
+						"read": true,
+						"decisions": "unsupported"
+					}
+				],
+				"testedRevision": "0123456789abcdef0123456789abcdef01234567"
+			},
+			"output": [
+				{
+					"unit": "function.script",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "source-bytes",
+					"unitOfMeasure": "bytes",
+					"value": 80,
+					"method": "Sum of the byte sizes of the owned source files.",
+					"artifacts": []
+				},
+				{
+					"unit": "function.script",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "source-lines",
+					"unitOfMeasure": "lines",
+					"value": 10,
+					"method": "Sum of the line counts of the owned source files.",
+					"artifacts": []
+				},
+				{
+					"unit": "function.script",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "complexity",
+					"unitOfMeasure": "points",
+					"method": "Decision points in owned source, plus one per function or method.",
+					"value": null,
+					"unavailable": "Decision points are not counted in Python: scripts/tool.py.",
+					"artifacts": []
+				},
+				{
+					"unit": "function.script",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "dependencies",
+					"unitOfMeasure": "count",
+					"method": "Unit dependencies plus distinct external modules referenced.",
+					"value": null,
+					"unavailable": "References are not read in Python: scripts/tool.py.",
+					"artifacts": []
+				},
+				{
+					"unit": "function.script",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "artifact-bytes",
+					"unitOfMeasure": "bytes",
+					"value": null,
+					"unavailable": "A module unit emits no separate artifact.",
+					"method": "Not applicable.",
+					"artifacts": []
+				}
+			]
+		},
+		{
+			"name": "stylesheet only: a zero count with no note",
+			"input": {
+				"unit": {
+					"id": "function.styles",
+					"owns": {
+						"source": [
+							"src/app.css"
+						],
+						"symbols": []
+					},
+					"dependencies": [],
+					"runtime": {
+						"targets": [
+							{
+								"kind": "module",
+								"entry": "src/index.ts"
+							}
+						]
+					}
+				},
+				"files": [
+					{
+						"path": "src/app.css",
+						"references": [],
+						"blocks": [],
+						"bytes": 60,
+						"lines": 10,
+						"language": "css",
+						"read": true,
+						"decisions": "declarative"
+					}
+				],
+				"testedRevision": "0123456789abcdef0123456789abcdef01234567"
+			},
+			"output": [
+				{
+					"unit": "function.styles",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "source-bytes",
+					"unitOfMeasure": "bytes",
+					"value": 60,
+					"method": "Sum of the byte sizes of the owned source files.",
+					"artifacts": []
+				},
+				{
+					"unit": "function.styles",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "source-lines",
+					"unitOfMeasure": "lines",
+					"value": 10,
+					"method": "Sum of the line counts of the owned source files.",
+					"artifacts": []
+				},
+				{
+					"unit": "function.styles",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "complexity",
+					"unitOfMeasure": "points",
+					"method": "Decision points in owned source, plus one per function or method.",
+					"value": 0,
+					"artifacts": []
+				},
+				{
+					"unit": "function.styles",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "dependencies",
+					"unitOfMeasure": "count",
+					"method": "Unit dependencies plus distinct external modules referenced.",
+					"value": 0,
+					"artifacts": []
+				},
+				{
+					"unit": "function.styles",
+					"workload": null,
+					"profile": null,
+					"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+					"metric": "artifact-bytes",
+					"unitOfMeasure": "bytes",
+					"value": null,
+					"unavailable": "A module unit emits no separate artifact.",
+					"method": "Not applicable.",
+					"artifacts": []
+				}
+			]
+		}
+	]
+}

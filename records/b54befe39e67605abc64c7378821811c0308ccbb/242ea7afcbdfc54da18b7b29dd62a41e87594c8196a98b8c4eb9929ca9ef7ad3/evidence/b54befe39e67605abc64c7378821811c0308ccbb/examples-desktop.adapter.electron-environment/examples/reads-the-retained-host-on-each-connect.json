@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.adapter.electron-environment",
+	"symbol": "connect",
+	"cases": [
+		{
+			"name": "first connect while status is broken",
+			"input": {
+				"harnessRemote": "status not a function"
+			},
+			"output": {
+				"kind": "electron",
+				"local": true,
+				"bridge": {
+					"label": "fixture-bridge"
+				},
+				"host": null
+			}
+		},
+		{
+			"name": "second connect after the host is made whole",
+			"input": {
+				"harnessRemote": "nine functions"
+			},
+			"output": {
+				"kind": "electron",
+				"local": true,
+				"bridge": {
+					"label": "fixture-bridge"
+				},
+				"host": [
+					"approvePairing",
+					"closePairing",
+					"createPairing",
+					"denyPairing",
+					"disable",
+					"enable",
+					"onStatus",
+					"revokeDevice",
+					"status"
+				]
+			}
+		}
+	]
+}

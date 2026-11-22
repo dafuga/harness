@@ -1,0 +1,408 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.recorded-value",
+	"symbol": "recordedValue",
+	"cases": [
+		{
+			"name": "fourteen fields",
+			"input": "object with 14 keys",
+			"output": {
+				"kind": "fields",
+				"fields": [
+					{
+						"name": "k0",
+						"node": {
+							"kind": "scalar",
+							"type": "Number",
+							"text": "0"
+						}
+					},
+					{
+						"name": "k1",
+						"node": {
+							"kind": "scalar",
+							"type": "Number",
+							"text": "1"
+						}
+					},
+					{
+						"name": "k2",
+						"node": {
+							"kind": "scalar",
+							"type": "Number",
+							"text": "2"
+						}
+					},
+					{
+						"name": "k3",
+						"node": {
+							"kind": "scalar",
+							"type": "Number",
+							"text": "3"
+						}
+					},
+					{
+						"name": "k4",
+						"node": {
+							"kind": "scalar",
+							"type": "Number",
+							"text": "4"
+						}
+					},
+					{
+						"name": "k5",
+						"node": {
+							"kind": "scalar",
+							"type": "Number",
+							"text": "5"
+						}
+					},
+					{
+						"name": "k6",
+						"node": {
+							"kind": "scalar",
+							"type": "Number",
+							"text": "6"
+						}
+					},
+					{
+						"name": "k7",
+						"node": {
+							"kind": "scalar",
+							"type": "Number",
+							"text": "7"
+						}
+					},
+					{
+						"name": "k8",
+						"node": {
+							"kind": "scalar",
+							"type": "Number",
+							"text": "8"
+						}
+					},
+					{
+						"name": "k9",
+						"node": {
+							"kind": "scalar",
+							"type": "Number",
+							"text": "9"
+						}
+					},
+					{
+						"name": "k10",
+						"node": {
+							"kind": "scalar",
+							"type": "Number",
+							"text": "10"
+						}
+					},
+					{
+						"name": "k11",
+						"node": {
+							"kind": "scalar",
+							"type": "Number",
+							"text": "11"
+						}
+					}
+				],
+				"remaining": 2
+			}
+		},
+		{
+			"name": "fifteen flat rows",
+			"input": "array of 15 objects",
+			"output": {
+				"kind": "table",
+				"columns": [
+					"id",
+					"state"
+				],
+				"rows": [
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "0"
+						},
+						{
+							"kind": "scalar",
+							"type": "Text",
+							"text": "ok"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "1"
+						},
+						{
+							"kind": "scalar",
+							"type": "Text",
+							"text": "ok"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "2"
+						},
+						{
+							"kind": "scalar",
+							"type": "Text",
+							"text": "ok"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "3"
+						},
+						{
+							"kind": "scalar",
+							"type": "Text",
+							"text": "ok"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "4"
+						},
+						{
+							"kind": "scalar",
+							"type": "Text",
+							"text": "ok"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "5"
+						},
+						{
+							"kind": "scalar",
+							"type": "Text",
+							"text": "ok"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "6"
+						},
+						{
+							"kind": "scalar",
+							"type": "Text",
+							"text": "ok"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "7"
+						},
+						{
+							"kind": "scalar",
+							"type": "Text",
+							"text": "ok"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "8"
+						},
+						{
+							"kind": "scalar",
+							"type": "Text",
+							"text": "ok"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "9"
+						},
+						{
+							"kind": "scalar",
+							"type": "Text",
+							"text": "ok"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "10"
+						},
+						{
+							"kind": "scalar",
+							"type": "Text",
+							"text": "ok"
+						}
+					],
+					[
+						{
+							"kind": "scalar",
+							"type": "Number",
+							"text": "11"
+						},
+						{
+							"kind": "scalar",
+							"type": "Text",
+							"text": "ok"
+						}
+					]
+				],
+				"remaining": 3
+			}
+		},
+		{
+			"name": "nine distinct keys",
+			"input": "nine single-key objects",
+			"output": {
+				"kind": "list",
+				"items": [
+					{
+						"kind": "fields",
+						"fields": [
+							{
+								"name": "key0",
+								"node": {
+									"kind": "scalar",
+									"type": "Number",
+									"text": "0"
+								}
+							}
+						],
+						"remaining": 0
+					},
+					{
+						"kind": "fields",
+						"fields": [
+							{
+								"name": "key1",
+								"node": {
+									"kind": "scalar",
+									"type": "Number",
+									"text": "1"
+								}
+							}
+						],
+						"remaining": 0
+					},
+					{
+						"kind": "fields",
+						"fields": [
+							{
+								"name": "key2",
+								"node": {
+									"kind": "scalar",
+									"type": "Number",
+									"text": "2"
+								}
+							}
+						],
+						"remaining": 0
+					},
+					{
+						"kind": "fields",
+						"fields": [
+							{
+								"name": "key3",
+								"node": {
+									"kind": "scalar",
+									"type": "Number",
+									"text": "3"
+								}
+							}
+						],
+						"remaining": 0
+					},
+					{
+						"kind": "fields",
+						"fields": [
+							{
+								"name": "key4",
+								"node": {
+									"kind": "scalar",
+									"type": "Number",
+									"text": "4"
+								}
+							}
+						],
+						"remaining": 0
+					},
+					{
+						"kind": "fields",
+						"fields": [
+							{
+								"name": "key5",
+								"node": {
+									"kind": "scalar",
+									"type": "Number",
+									"text": "5"
+								}
+							}
+						],
+						"remaining": 0
+					},
+					{
+						"kind": "fields",
+						"fields": [
+							{
+								"name": "key6",
+								"node": {
+									"kind": "scalar",
+									"type": "Number",
+									"text": "6"
+								}
+							}
+						],
+						"remaining": 0
+					},
+					{
+						"kind": "fields",
+						"fields": [
+							{
+								"name": "key7",
+								"node": {
+									"kind": "scalar",
+									"type": "Number",
+									"text": "7"
+								}
+							}
+						],
+						"remaining": 0
+					},
+					{
+						"kind": "fields",
+						"fields": [
+							{
+								"name": "key8",
+								"node": {
+									"kind": "scalar",
+									"type": "Number",
+									"text": "8"
+								}
+							}
+						],
+						"remaining": 0
+					}
+				],
+				"remaining": 0
+			}
+		}
+	]
+}

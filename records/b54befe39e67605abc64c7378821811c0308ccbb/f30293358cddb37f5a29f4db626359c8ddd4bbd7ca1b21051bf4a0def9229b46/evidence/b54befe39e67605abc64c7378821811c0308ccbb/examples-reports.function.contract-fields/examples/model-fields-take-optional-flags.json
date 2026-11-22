@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.contract-fields",
+	"symbol": "contractFields",
+	"cases": [
+		{
+			"name": "interface fields and callable members",
+			"input": "src/models/OrderInput.types.ts",
+			"output": [
+				[
+					"id",
+					true,
+					"missing",
+					false,
+					0
+				],
+				[
+					"note?",
+					false,
+					"missing",
+					false,
+					0
+				],
+				[
+					"resolve",
+					true,
+					"missing",
+					false,
+					0
+				]
+			]
+		}
+	]
+}

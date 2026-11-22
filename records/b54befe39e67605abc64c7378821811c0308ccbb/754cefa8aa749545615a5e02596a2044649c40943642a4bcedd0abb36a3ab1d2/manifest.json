@@ -1,0 +1,333 @@
+{
+	"schemaVersion": 1,
+	"record": "754cefa8aa749545615a5e02596a2044649c40943642a4bcedd0abb36a3ab1d2",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "392340bf360bc10fdb3be2f0073c7f815576778844bb239f19f5e20a972332c9",
+			"bytes": 44662,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.remote-host/examples/absent-port-resolves-every-action-false.json",
+			"sha256": "467c853ed111ec0cb78938dc83b9afd59a6470925655535c0dd37880b306eb67",
+			"bytes": 375,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.remote-host/examples/test-examples-desktop.store.remote-host.test.ts-absent-port-resolves-every-action-false.txt",
+			"sha256": "e8aaa595d83b0958895ac43beef2cfcd6e81a7756d7e477bd9607597c275b327",
+			"bytes": 423,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.remote-host/examples/test-examples-desktop.store.remote-host.test.ts-absent-port-resolves-every-action-false.json",
+			"sha256": "37fdff48a7a9bf502b6265cb1f957b0c74fc720791c71a41e2d9c1147d156266",
+			"bytes": 1618,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.remote-host/examples/reads-the-port-on-every-access.json",
+			"sha256": "c226f95993bf484f7cab058841e03c5a7be6a0a604f487773b389513d78acfe7",
+			"bytes": 332,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.remote-host/examples/test-examples-desktop.store.remote-host.test.ts-reads-the-port-on-every-access.txt",
+			"sha256": "e8aaa595d83b0958895ac43beef2cfcd6e81a7756d7e477bd9607597c275b327",
+			"bytes": 423,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.remote-host/examples/test-examples-desktop.store.remote-host.test.ts-reads-the-port-on-every-access.json",
+			"sha256": "0e2f5b9b955b34f43d838b173e56d1097b844a9894bf7ee0f444900424d3e352",
+			"bytes": 1547,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.remote-host/examples/start-subscribes-once-and-accepts-announcements.json",
+			"sha256": "861b3bb99c86945ce4c416cbfa74529575016e8fcfbc617d945a559c74764176",
+			"bytes": 824,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.remote-host/examples/test-examples-desktop.store.remote-host.test.ts-start-subscribes-once-and-accepts-announcements.txt",
+			"sha256": "e8aaa595d83b0958895ac43beef2cfcd6e81a7756d7e477bd9607597c275b327",
+			"bytes": 423,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.remote-host/examples/test-examples-desktop.store.remote-host.test.ts-start-subscribes-once-and-accepts-announcements.json",
+			"sha256": "7319b430414314a639ff87033377cdae8caf2eaed8e48dfd0bb94ef4725f8070",
+			"bytes": 2291,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.remote-host/examples/actions-accept-the-answered-status.json",
+			"sha256": "847ebcb49faccfd3d0498710c6f738ef6d8ed0ddbb64ea1194e03765e3b088ee",
+			"bytes": 785,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.remote-host/examples/test-examples-desktop.store.remote-host.test.ts-actions-accept-the-answered-status.txt",
+			"sha256": "e8aaa595d83b0958895ac43beef2cfcd6e81a7756d7e477bd9607597c275b327",
+			"bytes": 423,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.remote-host/examples/test-examples-desktop.store.remote-host.test.ts-actions-accept-the-answered-status.json",
+			"sha256": "0f6c05f29e12b198318cb26e578fa5008376feada75a9a5dd9f43726f2844e59",
+			"bytes": 2173,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.remote-host/examples/failures-keep-the-error-and-block-overlap.json",
+			"sha256": "b3e7c2a68d313e34d84a5890b50b930c7a727a0322a5a73f7e1b53a172ff2762",
+			"bytes": 482,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.remote-host/examples/test-examples-desktop.store.remote-host.test.ts-failures-keep-the-error-and-block-overlap.txt",
+			"sha256": "e8aaa595d83b0958895ac43beef2cfcd6e81a7756d7e477bd9607597c275b327",
+			"bytes": 423,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.remote-host/examples/test-examples-desktop.store.remote-host.test.ts-failures-keep-the-error-and-block-overlap.json",
+			"sha256": "0655fb213ecb69cdd68cd88add974d25828440fafb2752d08f72343d0d499612",
+			"bytes": 3167,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.remote-host/examples/dispose-detaches-and-drops-a-late-answer.json",
+			"sha256": "9db1689dfb8b1e1f36d7bbf0c08792edae4d80828bd773a745f643a84f604309",
+			"bytes": 309,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.remote-host/examples/test-examples-desktop.store.remote-host.test.ts-dispose-detaches-and-drops-a-late-answer.txt",
+			"sha256": "e8aaa595d83b0958895ac43beef2cfcd6e81a7756d7e477bd9607597c275b327",
+			"bytes": 423,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.remote-host/examples/test-examples-desktop.store.remote-host.test.ts-dispose-detaches-and-drops-a-late-answer.json",
+			"sha256": "cf521b0242338c055c60cb11bbc0ad8c8d74d1f1b69b523257ce0ab26c6231e1",
+			"bytes": 1126,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/tests-e2e-ui-remote-phone.spec.ts-phone-interaction.txt",
+			"sha256": "1c5e87f1939e46f92a652d37ad37f1c9921db51e4f7ee29c3489e22948eac564",
+			"bytes": 223,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/tests-e2e-ui-remote-host.spec.ts-desktop-interaction.txt",
+			"sha256": "2f8ba762e612906475d2054b13de06fb057f208e9b9cc04f176681d03f2327ad",
+			"bytes": 225,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/cache/tests-e2e-ui-remote-cache.spec.ts-cached-interaction.txt",
+			"sha256": "906d0e734f88f7efce64bd916f34df2328c3eab59a52bad0c09eec813ad9f39c",
+			"bytes": 219,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/tests-e2e-ui-remote-scan.spec.ts-scan-interaction.txt",
+			"sha256": "abf32eb65309a9de975d99bb71aefbb619bb51d1f1a2cea2d694231c60982c41",
+			"bytes": 216,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-start-mobile.png",
+			"sha256": "c59fac5b4a5e12c80aa933698148d945b9d8a6a2afa646b4e9687500d21f5243",
+			"bytes": 30657,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-pending-mobile.png",
+			"sha256": "417bded7731b74bdba96642ad885ee3aa2fc30342183f751026bf24ca4ef9e64",
+			"bytes": 29549,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/remote-phone-scan-denied-mobile.png",
+			"sha256": "4797ee3ecc8a43cb7c4bff6beda0967d4d04353ac311c6bbdb04341c3b25c30a",
+			"bytes": 36064,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/remote-phone-scan-cancelled-mobile.png",
+			"sha256": "d17200ff2a0257df1e83835920d8fbd3d4ebb6ce229827e5b6b1d989999a4b1b",
+			"bytes": 34124,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/remote-phone-scan-invalid-mobile.png",
+			"sha256": "622db55b4136738dc68fd8dcb4ddd157c791de9b0728b1a81904bc21b910e82e",
+			"bytes": 36811,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/remote-phone-scan-expired-mobile.png",
+			"sha256": "15507522ed2cd1e4dbf2ac442f076fba86d70d82e44f48b3d8682b2d1f15c8be",
+			"bytes": 36514,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-connected-mobile.png",
+			"sha256": "e1d84f3e0a906f3736e51588b593fc5435c75ed5b2346b41be41afae6af437f9",
+			"bytes": 36602,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-workspace-mobile.png",
+			"sha256": "479cefe5487a4f2da84d8e2e85776fc68959c9f423e13c18874ded008f19172a",
+			"bytes": 50080,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-offline-mobile.png",
+			"sha256": "035f145d05105492a510e7a58315c31e4695a60cc533ce98872ef9d0b973c778",
+			"bytes": 40852,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-revoked-mobile.png",
+			"sha256": "d40cf1c8e1008b5b6c44986655137cceef32fad9006121ffe54db29fd595c9d6",
+			"bytes": 30369,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-start-desktop.png",
+			"sha256": "b27c687679ab6fd59625490d809df827875aa9eb4fcf791c7a45c866a0b770a1",
+			"bytes": 85135,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-approval-desktop.png",
+			"sha256": "85c254efaf815c735df67efcaaa1cdb0ed4822339298236ca67c13fd206c1472",
+			"bytes": 101853,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-access-desktop.png",
+			"sha256": "e8e1801c06ca428269f43e15083f9b6b4ab0233bea79c1cdbf50008e7491df80",
+			"bytes": 69181,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-code-hidden-desktop.png",
+			"sha256": "6f58c60465e249dfd66fd3d75bc7c1bea809a791c943e4c559eb0f61ccc3e90b",
+			"bytes": 91112,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-code-expired-desktop.png",
+			"sha256": "e1bff879d915a8b893451b016742ec4e81f6b85f96b59ac076b8394b2fcfecd9",
+			"bytes": 93975,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/tablet/tests-e2e-ui-remote-tablet.spec.ts-tablet-interaction.txt",
+			"sha256": "e77b74ad853b2a2cd41f230a8fa9795022353e7fd4a03ee411302dcdde999803",
+			"bytes": 221,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/tablet/remote-tablet-phone-workspace-tablet.png",
+			"sha256": "589be95b668407e73d7dc90ba3408bf619d7f1e439ab9f9541617bf2c1fcda31",
+			"bytes": 58699,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/tablet/remote-tablet-desktop-approval-tablet.png",
+			"sha256": "cb334aefe6765feeda18a256891c623271003f43b724dd71435d7b862fe4c55b",
+			"bytes": 103101,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "logs/remote-mobile-ui-cache.log",
+			"sha256": "906d0e734f88f7efce64bd916f34df2328c3eab59a52bad0c09eec813ad9f39c",
+			"bytes": 219,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-mobile-ui-host.log",
+			"sha256": "2f8ba762e612906475d2054b13de06fb057f208e9b9cc04f176681d03f2327ad",
+			"bytes": 225,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-mobile-ui-phone.log",
+			"sha256": "1c5e87f1939e46f92a652d37ad37f1c9921db51e4f7ee29c3489e22948eac564",
+			"bytes": 223,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-mobile-ui-scan.log",
+			"sha256": "abf32eb65309a9de975d99bb71aefbb619bb51d1f1a2cea2d694231c60982c41",
+			"bytes": 216,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-mobile-ui-tablet.log",
+			"sha256": "e77b74ad853b2a2cd41f230a8fa9795022353e7fd4a03ee411302dcdde999803",
+			"bytes": 221,
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-desktop.store.remote-host-examples.log",
+			"sha256": "e8aaa595d83b0958895ac43beef2cfcd6e81a7756d7e477bd9607597c275b327",
+			"bytes": 423,
+			"storage": "git"
+		}
+	]
+}

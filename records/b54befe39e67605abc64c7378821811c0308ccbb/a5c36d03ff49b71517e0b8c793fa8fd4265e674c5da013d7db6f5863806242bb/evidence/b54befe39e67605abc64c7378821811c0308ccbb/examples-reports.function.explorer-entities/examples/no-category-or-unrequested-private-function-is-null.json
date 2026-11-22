@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-entities",
+	"symbol": "explorerEntity",
+	"cases": [
+		{
+			"name": "a rule has no category, even with private inclusion",
+			"input": {
+				"id": "reports.rule.lint",
+				"kind": "rule",
+				"includePrivate": true
+			},
+			"output": null
+		},
+		{
+			"name": "an unshared function is not listed without private inclusion",
+			"input": {
+				"id": "reports.function.private",
+				"kind": "function",
+				"includePrivate": false
+			},
+			"output": null
+		},
+		{
+			"name": "private inclusion lists an unshared function as a function",
+			"input": {
+				"id": "reports.function.private",
+				"kind": "function",
+				"includePrivate": true
+			},
+			"output": {
+				"id": "reports.function.private",
+				"category": "functions",
+				"role": "Function",
+				"name": "private",
+				"change": null,
+				"appRoute": null,
+				"lastAt": null,
+				"verdict": {
+					"passed": false,
+					"label": "Evidence missing",
+					"reasons": [
+						"No verification record is attached to this commit."
+					]
+				}
+			}
+		},
+		{
+			"name": "a shared function is listed the same without private inclusion",
+			"input": {
+				"id": "reports.function.kebab",
+				"kind": "helper",
+				"includePrivate": false
+			},
+			"output": {
+				"id": "reports.function.kebab",
+				"category": "functions",
+				"role": "Helper",
+				"name": "toKebabCase",
+				"change": null,
+				"appRoute": null,
+				"lastAt": null,
+				"verdict": {
+					"passed": false,
+					"label": "Evidence missing",
+					"reasons": [
+						"No verification record is attached to this commit."
+					]
+				}
+			}
+		}
+	]
+}

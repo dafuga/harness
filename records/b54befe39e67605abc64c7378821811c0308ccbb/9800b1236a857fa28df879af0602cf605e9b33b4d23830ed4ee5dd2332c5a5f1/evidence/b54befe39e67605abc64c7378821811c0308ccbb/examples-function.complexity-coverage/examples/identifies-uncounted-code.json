@@ -1,0 +1,68 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.complexity-coverage",
+	"symbol": "uncountedLanguage",
+	"cases": [
+		{
+			"name": "Rust source",
+			"input": "src/bin/worker.rs",
+			"output": "Rust"
+		},
+		{
+			"name": "Python script",
+			"input": "tools/seed_db.py",
+			"output": "Python"
+		},
+		{
+			"name": "shell script",
+			"input": "scripts/release.sh",
+			"output": "shell"
+		},
+		{
+			"name": "SQL migration",
+			"input": "db/migrations/0001_init.sql",
+			"output": "SQL"
+		},
+		{
+			"name": "Go source",
+			"input": "cmd/api/main.go",
+			"output": "Go"
+		},
+		{
+			"name": "C header",
+			"input": "include/ring.h",
+			"output": "C"
+		},
+		{
+			"name": "C++ source",
+			"input": "src/engine.cpp",
+			"output": "C++"
+		},
+		{
+			"name": "HTML page with an inline script",
+			"input": "web/index.html",
+			"output": "HTML with an inline script"
+		},
+		{
+			"name": "Scala source, an extension no class names",
+			"input": "pkg/theme.scala",
+			"output": ".scala files"
+		},
+		{
+			"name": "an executable with no extension",
+			"input": "bin/deploy",
+			"output": "files without an extension"
+		},
+		{
+			"name": "a dotfile, which has no extension",
+			"input": ".gitignore",
+			"output": "files without an extension"
+		},
+		{
+			"name": "a counted file, which is named anyway",
+			"input": "src/utils/pick.ts",
+			"output": ".ts files"
+		}
+	]
+}

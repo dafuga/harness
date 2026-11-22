@@ -1,0 +1,116 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-shown",
+	"symbol": "entityShown",
+	"cases": [
+		{
+			"name": "function category shows inputs and output",
+			"input": {
+				"unit": "app.function.filter-orders",
+				"category": "functions"
+			},
+			"output": {
+				"contract": [
+					{
+						"label": "Inputs",
+						"value": "orders, search text"
+					},
+					{
+						"label": "Output",
+						"value": "matching orders"
+					}
+				],
+				"measure": {
+					"size": [
+						{
+							"label": "Source size",
+							"value": "800 B",
+							"rawValue": 800,
+							"unitOfMeasure": "bytes"
+						},
+						{
+							"label": "Emitted size",
+							"target": "none",
+							"value": "Not measured",
+							"rawValue": null,
+							"unitOfMeasure": "bytes",
+							"note": "This unit declares no process or Wasm output."
+						},
+						{
+							"label": "Complexity",
+							"value": "Not measured",
+							"rawValue": null
+						}
+					],
+					"performance": [
+						{
+							"workload": "thousand orders",
+							"metric": "p95 ms",
+							"target": "",
+							"profile": "bun-reference",
+							"value": "0.12 ms",
+							"rawValue": 0.12,
+							"unitOfMeasure": "ms",
+							"tolerance": "5%",
+							"over": false
+						}
+					]
+				},
+				"recordId": "deac809969b3faf8181dac308b41d0720e2526810e252681deac809969b3faf8"
+			}
+		},
+		{
+			"name": "component category shows props of the same unit",
+			"input": {
+				"unit": "app.function.filter-orders",
+				"category": "components"
+			},
+			"output": {
+				"contract": [
+					{
+						"label": "Props",
+						"value": "orders, search text"
+					}
+				],
+				"measure": {
+					"size": [
+						{
+							"label": "Source size",
+							"value": "800 B",
+							"rawValue": 800,
+							"unitOfMeasure": "bytes"
+						},
+						{
+							"label": "Emitted size",
+							"target": "none",
+							"value": "Not measured",
+							"rawValue": null,
+							"unitOfMeasure": "bytes",
+							"note": "This unit declares no process or Wasm output."
+						},
+						{
+							"label": "Complexity",
+							"value": "Not measured",
+							"rawValue": null
+						}
+					],
+					"performance": [
+						{
+							"workload": "thousand orders",
+							"metric": "p95 ms",
+							"target": "",
+							"profile": "bun-reference",
+							"value": "0.12 ms",
+							"rawValue": 0.12,
+							"unitOfMeasure": "ms",
+							"tolerance": "5%",
+							"over": false
+						}
+					]
+				},
+				"recordId": "deac809969b3faf8181dac308b41d0720e2526810e252681deac809969b3faf8"
+			}
+		}
+	]
+}

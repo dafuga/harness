@@ -1,0 +1,22 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.nO8NRG/tmp/harness-snapshot-EiEmCV/packages/reports
+
+ ✓ test/preview-lifecycle.test.ts (11 tests) 38072ms
+   ✓ repeated starts on another requested port reuse the same owned preview  1609ms
+   ✓ another history configuration is refused without starting a second preview  1641ms
+   ✓ an occupied preview port is refused instead of silently choosing another  2454ms
+   ✓ an owner that crashes can be restarted without a stale lock or orphan preview  1769ms
+   ✓ simultaneous launches elect one owner while the other reuses it  1105ms
+   ✓ a different checkout is refused without affecting the owner  1626ms
+   ✓ normal shutdown releases both the preview and ownership listeners  1814ms
+   ✓ route indexes stay aligned after the normal SvelteKit sync command  2133ms
+   ✓ the owned preview autonomously recovers after crash  6607ms
+   ✓ the owned preview autonomously recovers after hang  10822ms
+   ✓ the owned preview autonomously recovers after module errors  6492ms
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  00:25:51
+   Duration  38.57s (transform 100ms, setup 143ms, collect 27ms, tests 38.07s, environment 0ms, prepare 36ms)
+
+JSON report written to /tmp/z5jp8p-hl.nO8NRG/tmp/harness-runner-SIGtnl/report.json

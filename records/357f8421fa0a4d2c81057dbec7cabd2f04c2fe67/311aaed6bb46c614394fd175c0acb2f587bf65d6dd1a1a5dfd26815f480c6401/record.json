@@ -1,0 +1,747 @@
+{
+	"id": "311aaed6bb46c614394fd175c0acb2f587bf65d6dd1a1a5dfd26815f480c6401",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/Users/danielfugere/projects/harness-z5jp8p",
+	"source": {
+		"commit": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+		"tree": "98bb54cd0d4b35fa6f64f2a09749e5bde73d699c",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-19T18:45:25.751Z",
+	"finishedAt": "2026-11-19T18:45:38.364Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cfb49b515cacc084047d75cdf10a295ab3790ecaf878e2b75e06463793f628bf",
+			"source": "cbf5fb170c4db458f39bcc4ba18996e377a782371040baa39d1667f04bf87635",
+			"contract": "6f2e8a598fb220dd111fe8085fb28c645ee24019cc4b1f25315b141a569962d7",
+			"runtime": "ec246a1eb80a7c06e7ccbd8601bab05e75d00122b0ad9d09eec95bbe94f31c19",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts",
+					"hash": "36741c54d766dd2689e542099ca02135cd07760b"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.types.ts",
+					"hash": "758395e715dd7c7d824deb57b07849f373ef164e"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/artifactCases.ts",
+					"hash": "f5a0a857433ab39a3aa86c795bab10681a76db3f"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.explorer-artifact",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "6252ef69a3e0abe8cae1ebed9ea800e9d94266a30f001b06086757514d57b3a3",
+			"source": "4d106bd3950c53d25238b418c211b4dce41481c63f71e5bc0af7ad64bf8bac06",
+			"contract": "8eb5529785042d519947dfa34130ffef5c498ca75c0eac36f991fd34fe18de88",
+			"runtime": "5e962b12e10dd16e56b5c3ef8fe4da8bef4a29d1f7430102a07797b1388e1e89",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-reading/explorerArtifact.ts",
+					"hash": "796062a3ce6fa47c8296ca9ba9743880c1c0a66f"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorer-reading/explorerArtifact.ts",
+					"hash": "51540c54c42aaef914a9c521f30a7bb5fb95f892"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorer-reading/explorerArtifact.types.ts",
+					"hash": "4bca572216a5fe270d5fb45de308b66a09ea2987"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerArtifact.ts",
+					"hash": "2c7cd9f255b36fd5af5c5ec48cd088e2af973d05"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerArtifact.types.ts",
+					"hash": "304469567f79a88837308ad0efa0d6eb673ae471"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.explorer-behavior",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "00703283f62e4b474a4e65a864eaca3d31db51794a81accafa7b4f314c26fcf7",
+			"source": "4a220cad3f74a4e729d7da730619631865b0d7242d5400c034a604f0d3865b76",
+			"contract": "5a872376cfc7e4f6debe4c3fc48f6c208ac22aac66dbe36211a945bb48767615",
+			"runtime": "78ac41b0b43bd740e1c4808abfbd56e281bbf41d7c97819b7b4a711a07c87a98",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerBehavior.ts",
+					"hash": "dcd9cc94bb2e7f92d1fd4a834d31779bc18a7ea4"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.explorer-reading",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "a291731182f7a13eb0cd6568636df9dc47beaee8eeee72c40cf4a3421178eef9",
+			"source": "1ef3e1471f653bdd4ada52065332d2c9902c7b243dab0d1932e893258b8f4a83",
+			"contract": "32a9eb116573aeddcffb34d318aa9f8c6afa1c0f51dade9864e8fd168552cacf",
+			"runtime": "a37adc8c86faefafab57ab7e8c8a0dfed380a073664011374bdb5a2cc4ef1c56",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-reading/explorerReading.ts",
+					"hash": "b1867978e435f960d56c51891a1c339fdb5b5a2a"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorer-reading/explorerReading.ts",
+					"hash": "6cde19a3c9db077c3b9ef5f320654cb626b2cdf0"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorer-reading/explorerReading.types.ts",
+					"hash": "a821355aa7e6d8cf4e5dec0f474120f510717109"
+				},
+				{
+					"path": "packages/reports/src/utils/explorerReading.ts",
+					"hash": "53644d022d49eb336eab2e5623235594d935a074"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.harness-evidence",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "570dc5ea7a48dfb46f94d2472c88aaae0356a434c79102d11939023e6aba6bed",
+			"source": "50b5d6bf5f2d92eaab2cf13de3c70142a4575f134129453ff692baa59530eed5",
+			"contract": "5249fa82460dc06ebf86ec96a53d9ec1541f66bcc0d855391a4e10d06ca15d7e",
+			"runtime": "ecc8742270cfae6b6580001aec889fb67cd076f3b695b6575c2d12a2e500cb8a",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/harnessEvidence.ts",
+					"hash": "5abec98febc132455cc927b094e31fae9f33e5b1"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/harnessEvidence.types.ts",
+					"hash": "67e4fa03daae76d33ace89c2ac6194a568b0499d"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.013209000000017568,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91160576,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.harness-evidence",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.007004000000006272,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-2f18d80d02cc4ccc-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.harness-evidence",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92684288,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-2f18d80d02cc4ccc-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-artifact",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.01844990000001303,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-77d81f02b08d5d62-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-artifact",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92782592,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-77d81f02b08d5d62-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-artifact",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.5512791999999991,
+			"method": "Arithmetic mean of 10 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-7fa8ca079fe5b9ef-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-artifact",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92700672,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-7fa8ca079fe5b9ef-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-reading",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.03818750000002069,
+			"method": "Arithmetic mean of 6 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-445a2de690b83400-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-reading",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92815360,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-445a2de690b83400-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-behavior",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.009739750000008485,
+			"method": "Arithmetic mean of 4 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-90b6c99268202d3a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-behavior",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92602368,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-90b6c99268202d3a-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-reading",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.7051112222222223,
+			"method": "Arithmetic mean of 9 successful awaited operations; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-29dc500351a89df4-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 9,
+			"profile": "fae395e860966b98",
+			"testedRevision": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-reading",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92782592,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-29dc500351a89df4-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 9,
+			"profile": "fae395e860966b98",
+			"testedRevision": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0035970000000039213,
+			"method": "Arithmetic mean of 6 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92815360,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.19345133333333328,
+			"method": "Arithmetic mean of 6 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92815360,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "examples-reports.function.explorer-reading:examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.explorer-reading.test.ts",
+			"status": "passed",
+			"durationMs": 1869,
+			"log": {
+				"path": "logs/examples-reports.function.explorer-reading-examples.log",
+				"bytes": 478,
+				"sha256": "1ba2c2503eced3272164fc96cb38e623388b8d2bd00cbb96a8cccf1711dc20a0"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "examples-reports.function.explorer-reading",
+			"status": "passed",
+			"testedRevision": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+			"states": [
+				{
+					"id": "explorer-reading-commit-declared-runs-unchanged",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "explorer-reading-commit-declared-runs-unchanged",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-reading/examples/explorer-reading-commit-declared-runs-unchanged.json",
+							"sha256": "4b1f933eead97c2bcc86b7504b902d7877dc21338ec54ff0ac68baedfb54e2e4",
+							"bytes": 1365,
+							"capturedAt": "2026-11-19T18:45:36.654Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "explorer-reading-commit-declared-runs-unchanged",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.explorer-reading.test.ts.",
+							"status": "passed",
+							"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-reading/examples/test-examples-reports.function.explorer-reading.test.ts-explorer-reading-commit-declared-runs-unchanged.txt",
+							"sha256": "1ba2c2503eced3272164fc96cb38e623388b8d2bd00cbb96a8cccf1711dc20a0",
+							"bytes": 478,
+							"capturedAt": "2026-11-19T18:45:36.655Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "explorer-reading-commit-declared-runs-unchanged",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-reading/examples/test-examples-reports.function.explorer-reading.test.ts-explorer-reading-commit-declared-runs-unchanged.json",
+							"sha256": "0f5ccc3df4a6a3f061f4d237c6e667c6fab5176e473cf4a193853e5698e9fc83",
+							"bytes": 4611,
+							"capturedAt": "2026-11-19T18:45:36.655Z"
+						}
+					]
+				},
+				{
+					"id": "explorer-reading-commit-different-answer-changed",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "explorer-reading-commit-different-answer-changed",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-reading/examples/explorer-reading-commit-different-answer-changed.json",
+							"sha256": "cc984c3b00d8b63e4d8ee634826243665afedf558c05c3ca27330764d231d29c",
+							"bytes": 671,
+							"capturedAt": "2026-11-19T18:45:36.654Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "explorer-reading-commit-different-answer-changed",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.explorer-reading.test.ts.",
+							"status": "passed",
+							"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-reading/examples/test-examples-reports.function.explorer-reading.test.ts-explorer-reading-commit-different-answer-changed.txt",
+							"sha256": "1ba2c2503eced3272164fc96cb38e623388b8d2bd00cbb96a8cccf1711dc20a0",
+							"bytes": 478,
+							"capturedAt": "2026-11-19T18:45:36.655Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "explorer-reading-commit-different-answer-changed",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-reading/examples/test-examples-reports.function.explorer-reading.test.ts-explorer-reading-commit-different-answer-changed.json",
+							"sha256": "7fc661dc66cdaf05c3d7d00d53dedb4e9e695ab2295fa79909146a648c464b8d",
+							"bytes": 3922,
+							"capturedAt": "2026-11-19T18:45:36.655Z"
+						}
+					]
+				},
+				{
+					"id": "explorer-reading-current-read-uncompared",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "explorer-reading-current-read-uncompared",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-reading/examples/explorer-reading-current-read-uncompared.json",
+							"sha256": "ec84c73a9a625e418c813bfeb5540b5a6a363d1325eda798e65631578ffb8129",
+							"bytes": 608,
+							"capturedAt": "2026-11-19T18:45:36.654Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "explorer-reading-current-read-uncompared",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.explorer-reading.test.ts.",
+							"status": "passed",
+							"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-reading/examples/test-examples-reports.function.explorer-reading.test.ts-explorer-reading-current-read-uncompared.txt",
+							"sha256": "1ba2c2503eced3272164fc96cb38e623388b8d2bd00cbb96a8cccf1711dc20a0",
+							"bytes": 478,
+							"capturedAt": "2026-11-19T18:45:36.655Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "explorer-reading-current-read-uncompared",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-reading/examples/test-examples-reports.function.explorer-reading.test.ts-explorer-reading-current-read-uncompared.json",
+							"sha256": "17b94f38d325a8e97e74de12670949e2f79a52327c57ebecce0493794b025715",
+							"bytes": 2649,
+							"capturedAt": "2026-11-19T18:45:36.655Z"
+						}
+					]
+				},
+				{
+					"id": "explorer-reading-appeared-and-removed-results",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "explorer-reading-appeared-and-removed-results",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-reading/examples/explorer-reading-appeared-and-removed-results.json",
+							"sha256": "2ed10639e3211498d3785fb57c9dc062d5a1c8690c6d834efd47455a44de267f",
+							"bytes": 918,
+							"capturedAt": "2026-11-19T18:45:36.654Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "explorer-reading-appeared-and-removed-results",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.explorer-reading.test.ts.",
+							"status": "passed",
+							"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-reading/examples/test-examples-reports.function.explorer-reading.test.ts-explorer-reading-appeared-and-removed-results.txt",
+							"sha256": "1ba2c2503eced3272164fc96cb38e623388b8d2bd00cbb96a8cccf1711dc20a0",
+							"bytes": 478,
+							"capturedAt": "2026-11-19T18:45:36.655Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "explorer-reading-appeared-and-removed-results",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-reading/examples/test-examples-reports.function.explorer-reading.test.ts-explorer-reading-appeared-and-removed-results.json",
+							"sha256": "adde5f3f657f7dd61fe59ae8401263f5ab65b7067376e6b6dacdb611c2de632f",
+							"bytes": 4113,
+							"capturedAt": "2026-11-19T18:45:36.656Z"
+						}
+					]
+				},
+				{
+					"id": "explorer-reading-unreadable-tampered-and-unstored-results",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "explorer-reading-unreadable-tampered-and-unstored-results",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-reading/examples/explorer-reading-unreadable-tampered-and-unstored-results.json",
+							"sha256": "713634881f5b670f2d7144bdfd4508259bc7705d45375087e89b5f711323bf53",
+							"bytes": 2107,
+							"capturedAt": "2026-11-19T18:45:36.654Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "explorer-reading-unreadable-tampered-and-unstored-results",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.explorer-reading.test.ts.",
+							"status": "passed",
+							"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-reading/examples/test-examples-reports.function.explorer-reading.test.ts-explorer-reading-unreadable-tampered-and-unstored-results.txt",
+							"sha256": "1ba2c2503eced3272164fc96cb38e623388b8d2bd00cbb96a8cccf1711dc20a0",
+							"bytes": 478,
+							"capturedAt": "2026-11-19T18:45:36.655Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "explorer-reading-unreadable-tampered-and-unstored-results",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-reading/examples/test-examples-reports.function.explorer-reading.test.ts-explorer-reading-unreadable-tampered-and-unstored-results.json",
+							"sha256": "953508bbbdd73561ff79c60977df6e159a0c35957febe327262e6b2840a2c25f",
+							"bytes": 7280,
+							"capturedAt": "2026-11-19T18:45:36.656Z"
+						}
+					]
+				},
+				{
+					"id": "explorer-reading-artifact-differences-declared-metadata",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "explorer-reading-artifact-differences-declared-metadata",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-reading/examples/explorer-reading-artifact-differences-declared-metadata.json",
+							"sha256": "646cc1f9c7d433cf0075fd97a067da02f3b9954132fa45297cc27f09e847e32b",
+							"bytes": 638,
+							"capturedAt": "2026-11-19T18:45:36.654Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "explorer-reading-artifact-differences-declared-metadata",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.explorer-reading.test.ts.",
+							"status": "passed",
+							"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-reading/examples/test-examples-reports.function.explorer-reading.test.ts-explorer-reading-artifact-differences-declared-metadata.txt",
+							"sha256": "1ba2c2503eced3272164fc96cb38e623388b8d2bd00cbb96a8cccf1711dc20a0",
+							"bytes": 478,
+							"capturedAt": "2026-11-19T18:45:36.655Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "explorer-reading-artifact-differences-declared-metadata",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-reading/examples/test-examples-reports.function.explorer-reading.test.ts-explorer-reading-artifact-differences-declared-metadata.json",
+							"sha256": "6a58f7f788505f8aafd5e7171007df1442f7e0fa1ec8edabfdcdf90ad38a823e",
+							"bytes": 1853,
+							"capturedAt": "2026-11-19T18:45:36.656Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to reports.function.explorer-reading: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}

@@ -1,0 +1,22 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.project-agent-events",
+	"symbol": "projectAgentEvents",
+	"cases": [
+		{
+			"name": "idle agent receives text",
+			"input": "no active run"
+		},
+		{
+			"name": "other run text leaves the reply empty",
+			"input": "run-2",
+			"output": ""
+		},
+		{
+			"name": "other run refresh calls",
+			"input": "run-2",
+			"output": 0
+		}
+	]
+}

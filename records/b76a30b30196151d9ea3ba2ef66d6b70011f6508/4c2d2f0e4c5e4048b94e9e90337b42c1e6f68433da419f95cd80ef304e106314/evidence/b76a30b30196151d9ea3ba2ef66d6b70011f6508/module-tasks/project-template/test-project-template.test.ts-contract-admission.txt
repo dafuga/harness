@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.3R4C0V/tmp/harness-snapshot-xOOB16
+
+ ✓ test/project-template.test.ts (5 tests) 3010ms
+   ✓ generated element atoms preserve native compilation and emitted runtime source  319ms
+   ✓ generated app code and testing foundations obey their formatter and lint settings  1650ms
+   ✓ generated lib code and testing foundations obey their formatter and lint settings  856ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  23:54:31
+   Duration  4.18s (transform 278ms, setup 150ms, collect 732ms, tests 3.01s, environment 0ms, prepare 33ms)
+
+JSON report written to /tmp/z5jp8p-hl.3R4C0V/tmp/harness-runner-oI7HGS/report.json

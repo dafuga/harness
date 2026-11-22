@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-artifact",
+	"symbol": "explorerArtifact",
+	"cases": [
+		{
+			"name": "gap text is the reason",
+			"input": {
+				"media": null,
+				"gap": "Not stored by this build"
+			},
+			"output": {
+				"verified": false,
+				"problem": "Not stored by this build",
+				"text": "",
+				"document": null,
+				"behavior": null
+			}
+		},
+		{
+			"name": "no gap gives the default reason",
+			"input": {
+				"media": null
+			},
+			"output": {
+				"verified": false,
+				"problem": "The artifact is not stored.",
+				"text": "",
+				"document": null,
+				"behavior": null
+			}
+		}
+	]
+}

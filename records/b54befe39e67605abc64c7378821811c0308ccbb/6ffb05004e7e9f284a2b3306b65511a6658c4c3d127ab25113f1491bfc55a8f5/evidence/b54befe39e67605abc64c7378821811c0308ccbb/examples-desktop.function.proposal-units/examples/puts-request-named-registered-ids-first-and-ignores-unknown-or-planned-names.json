@@ -1,0 +1,21 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.proposal-units",
+	"symbol": "proposalUnits",
+	"cases": [
+		{
+			"name": "two registered ids named, one planned and one unknown name",
+			"input": {
+				"category": "functions",
+				"text": "Reuse desktop.component.card then desktop.page.summary, not desktop.function.drafted or desktop.missing.entry."
+			},
+			"output": [
+				"desktop.component.card",
+				"desktop.page.summary",
+				"desktop.function.first",
+				"desktop.function.second"
+			]
+		}
+	]
+}

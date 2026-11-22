@@ -1,0 +1,18 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.remote-host",
+	"symbol": "dispose",
+	"cases": [
+		{
+			"name": "dispose-detaches-and-drops-a-late-answer",
+			"input": null,
+			"output": {
+				"status": null,
+				"released": 1,
+				"busy": false,
+				"error": ""
+			}
+		}
+	]
+}

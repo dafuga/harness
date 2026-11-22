@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.remote-labels",
+	"symbol": "relayName",
+	"cases": [
+		{
+			"name": "absolute URL with port keeps host and port",
+			"input": {
+				"origin": "https://relay.example:8443/relay"
+			},
+			"output": "relay.example:8443"
+		},
+		{
+			"name": "path and query are dropped without a port",
+			"input": {
+				"origin": "https://relay.example/path?token=1"
+			},
+			"output": "relay.example"
+		},
+		{
+			"name": "null origin yields empty text",
+			"input": {
+				"origin": null
+			},
+			"output": ""
+		},
+		{
+			"name": "invalid URL yields empty text",
+			"input": {
+				"origin": "not a url"
+			},
+			"output": ""
+		}
+	]
+}

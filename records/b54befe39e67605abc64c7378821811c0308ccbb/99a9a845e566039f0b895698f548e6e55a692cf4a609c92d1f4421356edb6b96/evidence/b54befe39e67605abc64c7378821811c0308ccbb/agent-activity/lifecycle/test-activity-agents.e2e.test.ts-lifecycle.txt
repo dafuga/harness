@@ -1,0 +1,18 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.mtGXPD/tmp/harness-snapshot-4DWphZ
+
+ ✓ test/activity-agents.e2e.test.ts (7 tests) 60800ms
+   ✓ a repository where no agent ever registered says it does not know, not zero  1390ms
+   ✓ an agent states who it is, and every checkout of its repository sees it; another repository does not  8319ms
+   ✓ a heartbeat keeps an agent working and may restate its work; without one it is stale and not counted  9499ms
+   ✓ a finished or failed agent is listed as that, and a late heartbeat does not bring it back  8305ms
+   ✓ an agent whose process ended is not counted, whatever its heartbeat says  6996ms
+   ✓ many agents register, beat and finish at once without losing or damaging a registration  14971ms
+   ✓ what an owner may state is bounded, and an assignment the registry does not know is marked  11147ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  14:36:54
+   Duration  61.24s (transform 116ms, setup 141ms, collect 38ms, tests 60.80s, environment 0ms, prepare 34ms)
+
+JSON report written to /tmp/z5jp8p-hl.mtGXPD/tmp/harness-runner-ARXITy/report.json

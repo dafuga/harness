@@ -1,0 +1,149 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.revision-changes",
+	"symbol": "revisionChanges",
+	"cases": [
+		{
+			"name": "a stored direct change is kept and its indirect dependents are not",
+			"input": {
+				"impact": {
+					"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"units": {
+						"direct": [
+							"function.slugify"
+						],
+						"indirect": [
+							"service.title",
+							"page.titles"
+						],
+						"added": [],
+						"removed": []
+					}
+				},
+				"registry": {
+					"available": true,
+					"units": [
+						{
+							"id": "function.slugify",
+							"version": "v2"
+						},
+						{
+							"id": "service.title",
+							"version": "v1"
+						},
+						{
+							"id": "page.titles",
+							"version": "p1"
+						}
+					]
+				},
+				"parent": {
+					"available": true,
+					"units": [
+						{
+							"id": "function.slugify",
+							"version": "v1"
+						},
+						{
+							"id": "service.title",
+							"version": "v1"
+						},
+						{
+							"id": "page.titles",
+							"version": "p1"
+						}
+					]
+				}
+			},
+			"output": {
+				"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"direct": [
+					"function.slugify"
+				],
+				"added": [],
+				"removed": []
+			}
+		},
+		{
+			"name": "a stored added unit is not also direct, and a removed one is listed",
+			"input": {
+				"impact": {
+					"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"units": {
+						"direct": [
+							"function.extra",
+							"function.kept"
+						],
+						"indirect": [],
+						"added": [
+							"function.extra"
+						],
+						"removed": [
+							"function.old"
+						]
+					}
+				},
+				"registry": {
+					"available": true,
+					"units": [
+						{
+							"id": "function.extra",
+							"version": "e1"
+						},
+						{
+							"id": "function.kept",
+							"version": "k1"
+						}
+					]
+				}
+			},
+			"output": {
+				"base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"direct": [
+					"function.kept"
+				],
+				"added": [
+					"function.extra"
+				],
+				"removed": [
+					"function.old"
+				]
+			}
+		},
+		{
+			"name": "the fallback base applies when the stored impact has no base",
+			"input": {
+				"impact": {
+					"base": null,
+					"units": {
+						"direct": [
+							"function.a"
+						],
+						"indirect": [],
+						"added": [],
+						"removed": []
+					}
+				},
+				"registry": {
+					"available": true,
+					"units": [
+						{
+							"id": "function.a",
+							"version": "a1"
+						}
+					]
+				},
+				"base": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+			},
+			"output": {
+				"base": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"direct": [
+					"function.a"
+				],
+				"added": [],
+				"removed": []
+			}
+		}
+	]
+}

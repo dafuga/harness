@@ -1,0 +1,43 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pw9HyL
+
+ ❯ test/utils/build-scope.test.ts (7 tests | 1 failed) 16ms
+   ✓ catalog evidence needs just its build, and scenarios union their builds 8ms
+   ✓ evidence without a build, or no evidence at all, needs every build 0ms
+   × an empty declared build list needs no build and keeps only unscoped setup steps 4ms
+     → expected [ [], undefined ] to deeply equal [ [], [] ]
+   ✓ declared builds replace inference from evidence without a build 0ms
+   ✓ a setup step that names no build always runs 0ms
+   ✓ a setup step that names builds runs only when one of them is needed 0ms
+   ✓ 'all' keeps every setup step, in order 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/build-scope.test.ts > an empty declared build list needs no build and keeps only unscoped setup steps
+AssertionError: expected [ [], undefined ] to deeply equal [ [], [] ]
+
+- Expected
++ Received
+
+  [
+    [],
+-   [],
++   undefined,
+  ]
+
+ ❯ test/utils/build-scope.test.ts:73:54
+     71|   return scenarioManifestSchema.parse(JSON.parse(readFileSync(file, 'u…
+     72|  });
+     73|  expect(headless.map((manifest) => manifest.builds)).toEqual([[], []]);
+       |                                                      ^
+     74|  expect(neededBuilds(headless)).toEqual(new Set());
+     75|  expect(commandsFor(needed)).toEqual([
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  19:15:01
+   Duration  3.40s (transform 84ms, setup 125ms, collect 7ms, tests 16ms, environment 0ms, prepare 29ms)
+

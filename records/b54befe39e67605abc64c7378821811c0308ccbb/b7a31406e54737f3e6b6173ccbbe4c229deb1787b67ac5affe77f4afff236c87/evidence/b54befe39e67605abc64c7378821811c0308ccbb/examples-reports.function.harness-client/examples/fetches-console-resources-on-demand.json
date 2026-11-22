@@ -1,0 +1,53 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-client",
+	"symbol": "harnessClient",
+	"cases": [
+		{
+			"name": "no request before a method is called",
+			"input": {
+				"base": "/harness"
+			},
+			"output": {
+				"idle": 0
+			}
+		},
+		{
+			"name": "the index method reads index.json",
+			"input": {
+				"method": "index"
+			},
+			"output": {
+				"path": "/harness/data/index.json"
+			}
+		},
+		{
+			"name": "the revision method reads its commit file",
+			"input": {
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+			},
+			"output": {
+				"path": "/harness/data/revisions/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.json"
+			}
+		},
+		{
+			"name": "the side method reads the path it is given",
+			"input": {
+				"path": "sides/src/app.ts.json"
+			},
+			"output": {
+				"path": "/harness/data/sides/src/app.ts.json"
+			}
+		},
+		{
+			"name": "the activity method reads activity.json",
+			"input": {
+				"method": "activity"
+			},
+			"output": {
+				"path": "/harness/data/activity.json"
+			}
+		}
+	]
+}

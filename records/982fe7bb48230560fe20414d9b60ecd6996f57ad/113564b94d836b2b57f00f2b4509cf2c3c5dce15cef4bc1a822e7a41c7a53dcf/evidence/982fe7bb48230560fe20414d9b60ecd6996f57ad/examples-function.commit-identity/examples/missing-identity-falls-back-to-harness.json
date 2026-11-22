@@ -1,0 +1,18 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.commit-identity",
+	"symbol": "commitIdentity",
+	"cases": [
+		{
+			"name": "no user.name or user.email configured",
+			"input": "no config",
+			"output": {
+				"GIT_AUTHOR_NAME": "Harness",
+				"GIT_AUTHOR_EMAIL": "harness@localhost",
+				"GIT_COMMITTER_NAME": "Harness",
+				"GIT_COMMITTER_EMAIL": "harness@localhost"
+			}
+		}
+	]
+}

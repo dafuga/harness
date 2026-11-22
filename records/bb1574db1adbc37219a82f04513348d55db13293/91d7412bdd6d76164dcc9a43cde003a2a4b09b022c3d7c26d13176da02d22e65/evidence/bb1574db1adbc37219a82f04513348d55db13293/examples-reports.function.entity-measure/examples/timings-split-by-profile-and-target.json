@@ -1,0 +1,60 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-measure",
+	"symbol": "entityMeasure",
+	"cases": [
+		{
+			"name": "two profiles, wasm excluded, unbudgeted timing",
+			"input": {
+				"observations": 6
+			},
+			"output": [
+				{
+					"workload": "thousand orders",
+					"metric": "p95 ms",
+					"target": "process",
+					"profile": "bun-reference",
+					"value": "0.12 ms",
+					"rawValue": 0.12,
+					"unitOfMeasure": "ms",
+					"tolerance": "5%",
+					"over": false
+				},
+				{
+					"workload": "thousand orders",
+					"metric": "p95 ms",
+					"target": "process",
+					"profile": "ci-linux",
+					"value": "0.31 ms",
+					"rawValue": 0.31,
+					"unitOfMeasure": "ms",
+					"tolerance": "5%",
+					"over": false
+				},
+				{
+					"workload": "thousand orders",
+					"metric": "p95 ms",
+					"target": "process",
+					"profile": "",
+					"value": "0.9 ms",
+					"rawValue": 0.9,
+					"unitOfMeasure": "ms",
+					"tolerance": "5%",
+					"over": false
+				},
+				{
+					"workload": "orders export",
+					"metric": "Warm latency per call",
+					"target": "",
+					"profile": "bun-reference",
+					"value": "1.5 ms",
+					"rawValue": 1.5,
+					"unitOfMeasure": "ms",
+					"tolerance": "—",
+					"over": false
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"record": "6c643e2dc1015f1b0e187739e6764eb1b8b09c65b7cd56c6935b9dbc4593e5df",
+	"source": {
+		"commit": "76f242ef89bf4fe75212b9bb8b212c36bfb7ea8b",
+		"tree": "5fb106046be8dff132b8af7998e920d979c5d506"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "d91a4b74de4c6c176c9a92eeed2065bad924ec8ab588ce67cfec9aeb7e8799fc",
+			"bytes": 14703,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/76f242ef89bf4fe75212b9bb8b212c36bfb7ea8b/invocation-boundary/boundary/boundary-module.json",
+			"sha256": "58ea42341744be882804416f7cb40d76fbf3a63c83f153a19497147165618e76",
+			"bytes": 1676,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/76f242ef89bf4fe75212b9bb8b212c36bfb7ea8b/invocation-boundary/runtime/test-services-unit-runtime.test.ts-module.json",
+			"sha256": "8e512b611ff8ea00dd953835eaf847a9a49d311e3a6e55eb90b661112fe9092d",
+			"bytes": 4430,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/76f242ef89bf4fe75212b9bb8b212c36bfb7ea8b/invocation-boundary/boundary/boundary-wasm.json",
+			"sha256": "d7dd4a10dab8035f4f90b39eeaaae448bd29f1a6203923fe074c9e142b1edf79",
+			"bytes": 1661,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/76f242ef89bf4fe75212b9bb8b212c36bfb7ea8b/invocation-boundary/runtime/test-services-unit-runtime.test.ts-wasm.json",
+			"sha256": "7c583fb4c619885454663a78d4e29201a96b1d3445ef85b067d400a95f5d41d9",
+			"bytes": 1421,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/76f242ef89bf4fe75212b9bb8b212c36bfb7ea8b/invocation-boundary/boundary/boundary-process.json",
+			"sha256": "53683171563632cf40629aac40f3af43c06413866c0e08c83d672948e5285a6d",
+			"bytes": 1684,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/76f242ef89bf4fe75212b9bb8b212c36bfb7ea8b/invocation-boundary/runtime/test-services-unit-runtime.test.ts-process.json",
+			"sha256": "c442f4bb59de98d48684086e7f2a46fa579f0e7b81f3b10a49584bef0eac0d07",
+			"bytes": 1524,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/invocation-boundary-boundary.log",
+			"sha256": "0fc0cc854899e7acbe05f5a2dce6561331539d6ccd08fa3b34605c45c53dc467",
+			"bytes": 6411,
+			"storage": "git"
+		},
+		{
+			"path": "logs/invocation-boundary-runtime.log",
+			"sha256": "6507156e0e7626be2fae571d88cbddcaed9186d303b1f3beb8fbf46291d7b3ba",
+			"bytes": 440,
+			"storage": "git"
+		}
+	]
+}

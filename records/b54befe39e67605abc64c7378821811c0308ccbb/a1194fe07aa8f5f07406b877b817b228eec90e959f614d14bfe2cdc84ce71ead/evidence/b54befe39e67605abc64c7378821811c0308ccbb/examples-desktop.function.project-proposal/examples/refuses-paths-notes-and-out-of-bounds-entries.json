@@ -1,0 +1,106 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.project-proposal",
+	"symbol": "projectProposal",
+	"cases": [
+		{
+			"name": "a parent path",
+			"input": {
+				"answer": "a parent path"
+			},
+			"error": "The agent's proposal was not used: its title reads as a path."
+		},
+		{
+			"name": "a hidden name",
+			"input": {
+				"answer": "a hidden name"
+			},
+			"error": "The agent's proposal was not used: its title reads as a path."
+		},
+		{
+			"name": "a Windows path",
+			"input": {
+				"answer": "a Windows path"
+			},
+			"error": "The agent's proposal was not used: its title reads as a path."
+		},
+		{
+			"name": "a long title",
+			"input": {
+				"answer": "a long title"
+			},
+			"error": "The agent's proposal was not used: its title is empty, too long or not text."
+		},
+		{
+			"name": "a long goal",
+			"input": {
+				"answer": "a long goal"
+			},
+			"error": "The agent's proposal was not used: its goal is empty, too long or not text."
+		},
+		{
+			"name": "notes with source",
+			"input": {
+				"answer": "notes with source"
+			},
+			"error": "The agent's proposal was not used: its notes hold source code."
+		},
+		{
+			"name": "long notes",
+			"input": {
+				"answer": "long notes"
+			},
+			"error": "The agent's proposal was not used: its proposal is empty, too long or not text."
+		},
+		{
+			"name": "a repeated error",
+			"input": {
+				"answer": "a repeated error"
+			},
+			"error": "The agent's proposal was not used: its contract repeats an error."
+		},
+		{
+			"name": "more than 24 outputs",
+			"input": {
+				"answer": "more than 24 outputs"
+			},
+			"error": "The agent's proposal was not used: its contract outputs are not a list of at most 24."
+		},
+		{
+			"name": "a long field type",
+			"input": {
+				"answer": "a long field type"
+			},
+			"error": "The agent's proposal was not used: a contract type is empty, too long or not text."
+		},
+		{
+			"name": "a blank error",
+			"input": {
+				"answer": "a blank error"
+			},
+			"error": "The agent's proposal was not used: a contract error is empty, too long or not text."
+		},
+		{
+			"name": "a field with a path",
+			"input": {
+				"answer": "a field with a path"
+			},
+			"error": "The agent's proposal was not used: a contract field has the unknown field path."
+		},
+		{
+			"name": "a contract with states",
+			"input": {
+				"answer": "a contract with states"
+			},
+			"error": "The agent's proposal was not used: its contract has the unknown field states."
+		},
+		{
+			"name": "a contract without errors",
+			"input": {
+				"answer": "a contract without errors"
+			},
+			"error": "The agent's proposal was not used: its contract errors are not a list of at most 24."
+		}
+	]
+}

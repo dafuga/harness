@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-state",
+	"symbol": "reasonText",
+	"cases": [
+		{
+			"name": "located phrase dropped",
+			"input": "The report changed in packages/reports/src/utils/a.ts",
+			"output": "The report changed"
+		},
+		{
+			"name": "other path becomes a file",
+			"input": "See packages/reports/src/utils/a.ts for details",
+			"output": "See a file for details"
+		},
+		{
+			"name": "file name with no folder kept",
+			"input": "See explorerState.ts",
+			"output": "See explorerState.ts"
+		},
+		{
+			"name": "text with no path kept",
+			"input": "No capture of Explorer.",
+			"output": "No capture of Explorer."
+		},
+		{
+			"name": "empty reason stays empty",
+			"input": "",
+			"output": ""
+		}
+	]
+}

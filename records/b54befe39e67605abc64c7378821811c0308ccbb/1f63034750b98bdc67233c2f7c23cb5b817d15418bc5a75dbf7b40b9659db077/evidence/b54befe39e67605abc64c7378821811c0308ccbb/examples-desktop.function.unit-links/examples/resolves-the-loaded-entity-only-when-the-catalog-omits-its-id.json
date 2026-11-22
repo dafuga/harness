@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.unit-links",
+	"symbol": "unitLinks",
+	"cases": [
+		{
+			"name": "entity not yet selected",
+			"input": {
+				"id": "app.page.refunds"
+			},
+			"output": null
+		},
+		{
+			"name": "entity selected and absent from catalog",
+			"input": {
+				"id": "app.page.refunds"
+			},
+			"output": {
+				"to": "/projects/local-alpha/harness/branch/feat%2Falpha/pages/app.page.refunds",
+				"name": "Refunds",
+				"category": "pages"
+			}
+		},
+		{
+			"name": "other entity is not the loaded one",
+			"input": {
+				"id": "app.page.other"
+			},
+			"output": null
+		}
+	]
+}

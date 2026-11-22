@@ -1,0 +1,39 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.select-environment",
+	"symbol": "selectEnvironment",
+	"cases": [
+		{
+			"name": "native shell with preload bridge present",
+			"input": {
+				"Capacitor": "native",
+				"harness": "present",
+				"harnessRemote": "whole"
+			},
+			"output": {
+				"kind": "capacitor",
+				"bridge": "adapter-bridge",
+				"local": false,
+				"host": null,
+				"phone": "phone-control",
+				"account": null
+			}
+		},
+		{
+			"name": "Capacitor without isNativePlatform, harness set",
+			"input": {
+				"Capacitor": "no check",
+				"harness": "present"
+			},
+			"output": {
+				"kind": "electron",
+				"bridge": "preload-bridge",
+				"local": true,
+				"host": null,
+				"phone": null,
+				"account": null
+			}
+		}
+	]
+}

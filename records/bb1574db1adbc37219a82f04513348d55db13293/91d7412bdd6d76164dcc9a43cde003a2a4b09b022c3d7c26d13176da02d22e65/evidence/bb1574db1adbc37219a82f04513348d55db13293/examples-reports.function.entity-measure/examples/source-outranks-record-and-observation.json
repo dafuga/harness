@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-measure",
+	"symbol": "entityMeasure",
+	"cases": [
+		{
+			"name": "source 3456, record 2400, observation 9000",
+			"input": {
+				"record": "passed"
+			},
+			"output": {
+				"size": [
+					{
+						"label": "Source size",
+						"value": "3.5 KB",
+						"rawValue": 3456,
+						"unitOfMeasure": "bytes"
+					},
+					{
+						"label": "Emitted size",
+						"target": "none",
+						"value": "Not measured",
+						"rawValue": null,
+						"unitOfMeasure": "bytes",
+						"note": "This unit declares no process or Wasm output."
+					},
+					{
+						"label": "Complexity",
+						"value": "3",
+						"rawValue": 3
+					}
+				],
+				"performance": []
+			}
+		}
+	]
+}

@@ -1,0 +1,23 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.project-agent-events",
+	"symbol": "projectAgentEvents",
+	"cases": [
+		{
+			"name": "recorded failure reply",
+			"input": "failed event",
+			"output": "Partial.\n\nModel timed out"
+		},
+		{
+			"name": "run id after failure",
+			"input": "failed event",
+			"output": ""
+		},
+		{
+			"name": "settled as not planned",
+			"input": "failed event",
+			"output": false
+		}
+	]
+}

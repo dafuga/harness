@@ -1,0 +1,43 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-reading",
+	"symbol": "artifactDifferences",
+	"cases": [
+		{
+			"name": "declared metadata set aside",
+			"input": {
+				"metadata": true
+			},
+			"output": []
+		},
+		{
+			"name": "undeclared times counted",
+			"input": {
+				"undeclared": true
+			},
+			"output": [
+				"durationMs",
+				"startedAt"
+			]
+		},
+		{
+			"name": "wrong-kind pid kept",
+			"input": {
+				"notAKind": true
+			},
+			"output": [
+				"harnessRun.pid"
+			]
+		},
+		{
+			"name": "text compared whole",
+			"input": {
+				"text": true
+			},
+			"output": [
+				""
+			]
+		}
+	]
+}

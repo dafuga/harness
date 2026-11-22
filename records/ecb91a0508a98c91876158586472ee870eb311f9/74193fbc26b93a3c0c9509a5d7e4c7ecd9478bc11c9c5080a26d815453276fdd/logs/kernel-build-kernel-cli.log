@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.nO8NRG/tmp/harness-snapshot-NszMM3
+
+ ✓ test/kernel.e2e.test.ts (3 tests) 14571ms
+   ✓ kernel parity compares the reference with the built Wasm and native runtimes  1397ms
+   ✓ kernel bench measures identical workloads fairly and records unavailable values honestly  12714ms
+   ✓ kernel serve exposes a runtime over loopback HTTP  458ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  00:29:00
+   Duration  14.96s (transform 66ms, setup 96ms, collect 18ms, tests 14.57s, environment 0ms, prepare 44ms)
+

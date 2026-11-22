@@ -1,0 +1,579 @@
+{
+	"id": "9d574760a5f5a6c6a038b065bf1eaa3f111816564a89b35df0729be307eb456d",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-hl.xwaYHF/source",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T14:01:45.056Z",
+	"finishedAt": "2026-11-20T14:02:00.318Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "function.complexity-coverage",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "e77bd2dea945ea51793863ae6a71237bbc9b8921e80c364e00468c2a2d087404",
+			"source": "8ec30b99c895d76641d085dbaad0dc27f6724b1d61d275c4a0bf814a04ce717f",
+			"contract": "0a9cb49c16ed7d584d9bc19b863a2d762214475f80e06468423b44be843f6ce6",
+			"runtime": "2f262fca54029baecbb19961e093fb837f1e96fbc64dd30705a945dcfaaa859c",
+			"files": [
+				{
+					"path": "src/services/development-tooling/source-index-service/complexityCoverage.ts",
+					"hash": "2769807bfbfc07ba823dcf3e865cf71ae4877612"
+				},
+				{
+					"path": "src/utils/development-tooling/complexityCoverage.ts",
+					"hash": "79ef8b8184c1c210a27fc1c62c58345cca85d25d"
+				},
+				{
+					"path": "src/utils/development-tooling/complexityCoverage.types.ts",
+					"hash": "1abc0305be451f8aa3fdc506b27fbea91799e5e0"
+				}
+			]
+		},
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "function.unit-measurements",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "9f8c9b3f60fba39a0e3b303ce3e7f26ec2424ae5e59b9ade62ca5e52dd6d5414",
+			"source": "c12da87be3f84c16931eaaa2f99270f906e8df2f2a18319da453e60f0b2db990",
+			"contract": "e74074b22671ae28c596fbbd5f18f2fc30f88068a2a5fef94fd8c98bac6b1a1a",
+			"runtime": "cf69259b5136161f57653d675e35b6d185ed328a000ede902c6e1800bd7dc330",
+			"files": [
+				{
+					"path": "src/utils/development-tooling/unitMeasurements.ts",
+					"hash": "04f3579757ba0f35f2b058229cccfd2638b3263c"
+				},
+				{
+					"path": "src/utils/development-tooling/unitMeasurements.types.ts",
+					"hash": "e2f3d35f6c45190ad3bb8e311ec6027596819d69"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cfb49b515cacc084047d75cdf10a295ab3790ecaf878e2b75e06463793f628bf",
+			"source": "cbf5fb170c4db458f39bcc4ba18996e377a782371040baa39d1667f04bf87635",
+			"contract": "6f2e8a598fb220dd111fe8085fb28c645ee24019cc4b1f25315b141a569962d7",
+			"runtime": "ec246a1eb80a7c06e7ccbd8601bab05e75d00122b0ad9d09eec95bbe94f31c19",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts",
+					"hash": "36741c54d766dd2689e542099ca02135cd07760b"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.types.ts",
+					"hash": "758395e715dd7c7d824deb57b07849f373ef164e"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/artifactCases.ts",
+					"hash": "f5a0a857433ab39a3aa86c795bab10681a76db3f"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.013666999999998097,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90996736,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.005145799999991141,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91537408,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.unit-measurements",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0022540999999989706,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-211de4d1381a6ccc-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.unit-measurements",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91537408,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-211de4d1381a6ccc-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.unit-measurements",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.09381237499999884,
+			"method": "Arithmetic mean of 8 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-93b18caabb0687de-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.unit-measurements",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91455488,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-93b18caabb0687de-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.18881699999999454,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91537408,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.complexity-coverage",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.007270999999988703,
+			"method": "Arithmetic mean of 4 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-adf300cfe87c4cc2-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.complexity-coverage",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91439104,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-adf300cfe87c4cc2-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "examples-function.unit-measurements:examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.unit-measurements.test.ts",
+			"status": "passed",
+			"durationMs": 2019,
+			"log": {
+				"path": "logs/examples-function.unit-measurements-examples.log",
+				"bytes": 408,
+				"sha256": "a0633bd92f8e3c7ea1d01c11fd8c241ef47e0e6c790c5d2dce0a757bdad1a5a1"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "examples-function.unit-measurements",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "unitmeasurements-owned-files-and-revision",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "unitmeasurements-owned-files-and-revision",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.unit-measurements/examples/unitmeasurements-owned-files-and-revision.json",
+							"sha256": "22d86e7cb3ec161ecb70c62dae71bbf4385f4d7d436b0a4854be33ede0f7b858",
+							"bytes": 6414,
+							"capturedAt": "2026-11-20T14:01:58.618Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "unitmeasurements-owned-files-and-revision",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.unit-measurements.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.unit-measurements/examples/test-examples-function.unit-measurements.test.ts-unitmeasurements-owned-files-and-revision.txt",
+							"sha256": "a0633bd92f8e3c7ea1d01c11fd8c241ef47e0e6c790c5d2dce0a757bdad1a5a1",
+							"bytes": 408,
+							"capturedAt": "2026-11-20T14:01:58.619Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "unitmeasurements-owned-files-and-revision",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.unit-measurements/examples/test-examples-function.unit-measurements.test.ts-unitmeasurements-owned-files-and-revision.json",
+							"sha256": "dcb9d9ac64539974af81ae90901913d6980c2e4d8ecd95f11629125688bd2270",
+							"bytes": 3864,
+							"capturedAt": "2026-11-20T14:01:58.619Z"
+						}
+					]
+				},
+				{
+					"id": "unitmeasurements-unread-and-unresolved-gaps",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "unitmeasurements-unread-and-unresolved-gaps",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.unit-measurements/examples/unitmeasurements-unread-and-unresolved-gaps.json",
+							"sha256": "36bdb981a8fc9090c851684eabef47ab8409487135d4824b4bc600e69f29222c",
+							"bytes": 3412,
+							"capturedAt": "2026-11-20T14:01:58.618Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "unitmeasurements-unread-and-unresolved-gaps",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.unit-measurements.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.unit-measurements/examples/test-examples-function.unit-measurements.test.ts-unitmeasurements-unread-and-unresolved-gaps.txt",
+							"sha256": "a0633bd92f8e3c7ea1d01c11fd8c241ef47e0e6c790c5d2dce0a757bdad1a5a1",
+							"bytes": 408,
+							"capturedAt": "2026-11-20T14:01:58.619Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "unitmeasurements-unread-and-unresolved-gaps",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.unit-measurements/examples/test-examples-function.unit-measurements.test.ts-unitmeasurements-unread-and-unresolved-gaps.json",
+							"sha256": "f21bc9a94c2169eb6ca5f060b7e0b17191b0da8c66b956a608af55a0fc453d45",
+							"bytes": 1882,
+							"capturedAt": "2026-11-20T14:01:58.619Z"
+						}
+					]
+				},
+				{
+					"id": "unitmeasurements-no-number-only-where-nothing-counted",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "unitmeasurements-no-number-only-where-nothing-counted",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.unit-measurements/examples/unitmeasurements-no-number-only-where-nothing-counted.json",
+							"sha256": "0876999ffa9efe18fc4252a9a7d3d87952117cc0449edf984082e597f2644ae5",
+							"bytes": 5091,
+							"capturedAt": "2026-11-20T14:01:58.618Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "unitmeasurements-no-number-only-where-nothing-counted",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.unit-measurements.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.unit-measurements/examples/test-examples-function.unit-measurements.test.ts-unitmeasurements-no-number-only-where-nothing-counted.txt",
+							"sha256": "a0633bd92f8e3c7ea1d01c11fd8c241ef47e0e6c790c5d2dce0a757bdad1a5a1",
+							"bytes": 408,
+							"capturedAt": "2026-11-20T14:01:58.619Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "unitmeasurements-no-number-only-where-nothing-counted",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.unit-measurements/examples/test-examples-function.unit-measurements.test.ts-unitmeasurements-no-number-only-where-nothing-counted.json",
+							"sha256": "48ba7146a405dc60feba2a4845461b0e22978a1f15e778a9b05f094b53c72706",
+							"bytes": 2114,
+							"capturedAt": "2026-11-20T14:01:58.619Z"
+						}
+					]
+				},
+				{
+					"id": "unitmeasurements-wasm-and-process-apart-unbuilt-stated",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "unitmeasurements-wasm-and-process-apart-unbuilt-stated",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.unit-measurements/examples/unitmeasurements-wasm-and-process-apart-unbuilt-stated.json",
+							"sha256": "edce772c388274cbac490ceaadb4724ffe9e8be9a277ff5c04f9c7c917780bf1",
+							"bytes": 5019,
+							"capturedAt": "2026-11-20T14:01:58.618Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "unitmeasurements-wasm-and-process-apart-unbuilt-stated",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.unit-measurements.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.unit-measurements/examples/test-examples-function.unit-measurements.test.ts-unitmeasurements-wasm-and-process-apart-unbuilt-stated.txt",
+							"sha256": "a0633bd92f8e3c7ea1d01c11fd8c241ef47e0e6c790c5d2dce0a757bdad1a5a1",
+							"bytes": 408,
+							"capturedAt": "2026-11-20T14:01:58.619Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "unitmeasurements-wasm-and-process-apart-unbuilt-stated",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.unit-measurements/examples/test-examples-function.unit-measurements.test.ts-unitmeasurements-wasm-and-process-apart-unbuilt-stated.json",
+							"sha256": "d8654e11232d75313dd5143fe0d23fa17f773fbd2688156b299474ab548545ce",
+							"bytes": 4237,
+							"capturedAt": "2026-11-20T14:01:58.619Z"
+						}
+					]
+				},
+				{
+					"id": "emittedtargets-wasm-and-process-only-in-order",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "emittedtargets-wasm-and-process-only-in-order",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.unit-measurements/examples/emittedtargets-wasm-and-process-only-in-order.json",
+							"sha256": "94648fa41c9964d1a41dbc2179b37fbfa9977951466297c98bae830ac329041b",
+							"bytes": 1237,
+							"capturedAt": "2026-11-20T14:01:58.618Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "emittedtargets-wasm-and-process-only-in-order",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.unit-measurements.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.unit-measurements/examples/test-examples-function.unit-measurements.test.ts-emittedtargets-wasm-and-process-only-in-order.txt",
+							"sha256": "a0633bd92f8e3c7ea1d01c11fd8c241ef47e0e6c790c5d2dce0a757bdad1a5a1",
+							"bytes": 408,
+							"capturedAt": "2026-11-20T14:01:58.619Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "emittedtargets-wasm-and-process-only-in-order",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.unit-measurements/examples/test-examples-function.unit-measurements.test.ts-emittedtargets-wasm-and-process-only-in-order.json",
+							"sha256": "a91347c91fe9f3b03c3d6760ec242839914b530159f30d27c40b289afb06917f",
+							"bytes": 1724,
+							"capturedAt": "2026-11-20T14:01:58.619Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to function.unit-measurements: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}

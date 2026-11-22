@@ -1,0 +1,43 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.browser-error-rows",
+	"symbol": "browserErrorRows",
+	"cases": [
+		{
+			"name": "located error with a page, line, column and stack against a sourced expectation",
+			"input": {
+				"error": {
+					"type": "console",
+					"message": "Unavailable",
+					"page": "/checkout",
+					"source": "orders.js",
+					"line": 3,
+					"column": 4,
+					"stack": "at orders.js:4:5"
+				},
+				"expected": [
+					{
+						"type": "console",
+						"message": "Unavailable",
+						"reason": "Tests retry.",
+						"source": "orders.js"
+					}
+				]
+			},
+			"output": [
+				{
+					"type": "console",
+					"message": "Unavailable",
+					"page": "/checkout",
+					"source": "orders.js",
+					"line": 3,
+					"column": 4,
+					"stack": "at orders.js:4:5",
+					"status": "Expected",
+					"reason": "Tests retry."
+				}
+			]
+		}
+	]
+}

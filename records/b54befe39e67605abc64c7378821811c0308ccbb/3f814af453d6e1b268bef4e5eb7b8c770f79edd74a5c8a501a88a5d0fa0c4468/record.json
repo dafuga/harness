@@ -1,0 +1,1179 @@
+{
+	"id": "3f814af453d6e1b268bef4e5eb7b8c770f79edd74a5c8a501a88a5d0fa0c4468",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-ui.aUz8v3/source",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T11:01:08.015Z",
+	"finishedAt": "2026-11-20T11:03:30.483Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "desktop.adapter.agent-settings",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "91e46394d224a3b7e8aa533580247f0f268ff7945c32d3270373b70b1c6e2e0f",
+			"source": "4023979fb652ef4c5c6b3f58752b456fcd6fb993054aeefe7b2cd574fff75702",
+			"contract": "7f18eaffa09858b2c923eff36da3e894b8c2e9708efd2de2a3e418f9eda73898",
+			"runtime": "9e9e5e90eaa417402e5813edfde87419802e8f0b7e531b7df489673994d26bbe",
+			"files": [
+				{
+					"path": "packages/desktop/src/lib/agents-providers/agent-settings/AgentSettingsAdapter.ts",
+					"hash": "32bc6b57922e5ed38ed6eca0a9292dbf85092f72"
+				},
+				{
+					"path": "packages/desktop/src/lib/agents-providers/agent-settings/AgentSettingsAdapter.types.ts",
+					"hash": "d4c23c2c0086a6aa78c374245db49f860842da4f"
+				}
+			]
+		},
+		{
+			"unit": "desktop.page.settings",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "a98881e7dced566019b4d30dc2fffdfc1cfdf50a3385e1fdabad23901fc361b3",
+			"source": "04f30a9ebf748b490dd097358bd84ba64ed951164842496e05da64b24f714f64",
+			"contract": "0c83201e3b6b07ed317e78d9fd49cd1c94dfefea80c2b2dd66ddd41c93c45c8b",
+			"runtime": "1bae45bb40a9f67adea758cb2226629eb80c6730a7644e597a602a933cb97d8f",
+			"files": [
+				{
+					"path": "packages/desktop/src/routes/settings/+page.svelte",
+					"hash": "5d3b960a0d15e484eaa6025625366e77b96e1858"
+				}
+			]
+		},
+		{
+			"unit": "desktop.store.agent-settings",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "05d3a87a496652b2b5845e541a59cd16d675d15650de200dfac6fa60b91fbb32",
+			"source": "b6a2263f74cc8776efe7fd054f55edb37cd7b57ea9a90017166e1afc7d14c548",
+			"contract": "c49b568b080ddfecf7b3817e5806264d0d720d099870ba6e1e114bf1840c1733",
+			"runtime": "69c5771a168cc0453b01aa14a99fe2811faf20485ccb2512e55aa1482ce3e5a5",
+			"files": [
+				{
+					"path": "packages/desktop/src/lib/agent-settings/agentSettings.svelte.ts",
+					"hash": "34f01ae3a2217a1f756589e6480c88abd334d784"
+				},
+				{
+					"path": "packages/desktop/src/lib/agents-providers/agent-settings/agentSettings.svelte.ts",
+					"hash": "afd6afc77ee4f51f5b069bb4fec29dd6bf3481b2"
+				},
+				{
+					"path": "packages/desktop/src/lib/stores/agentSettings.svelte.ts",
+					"hash": "2f20eb12e065ad809231a225cbfcd497bcc17aa3"
+				}
+			]
+		},
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cfb49b515cacc084047d75cdf10a295ab3790ecaf878e2b75e06463793f628bf",
+			"source": "cbf5fb170c4db458f39bcc4ba18996e377a782371040baa39d1667f04bf87635",
+			"contract": "6f2e8a598fb220dd111fe8085fb28c645ee24019cc4b1f25315b141a569962d7",
+			"runtime": "ec246a1eb80a7c06e7ccbd8601bab05e75d00122b0ad9d09eec95bbe94f31c19",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts",
+					"hash": "36741c54d766dd2689e542099ca02135cd07760b"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.types.ts",
+					"hash": "758395e715dd7c7d824deb57b07849f373ef164e"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/artifactCases.ts",
+					"hash": "f5a0a857433ab39a3aa86c795bab10681a76db3f"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "desktop.page.settings",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 8.799999713897705,
+			"method": "Whole compiled renderer NavigationTiming through loadEventEnd, including shared code; 1440x900; build e720c78af24a4f5cc5bef4fc0a9a3d469a01490f028526bc32dc8961971649a8.",
+			"workload": "settings-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.page.settings",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 3077724,
+			"method": "Chromium Runtime.getHeapUsage after fonts and images settled; whole renderer JavaScript heap, including shared code, not isolated unit memory or process RSS.",
+			"workload": "settings-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.page.settings",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 8.800000190734863,
+			"method": "Whole compiled renderer NavigationTiming through loadEventEnd, including shared code; 920x800; build e720c78af24a4f5cc5bef4fc0a9a3d469a01490f028526bc32dc8961971649a8.",
+			"workload": "settings-920x800",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.page.settings",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 3095292,
+			"method": "Chromium Runtime.getHeapUsage after fonts and images settled; whole renderer JavaScript heap, including shared code, not isolated unit memory or process RSS.",
+			"workload": "settings-920x800",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.page.settings",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 7.699999809265137,
+			"method": "Whole compiled renderer NavigationTiming through loadEventEnd, including shared code; 390x900; build e720c78af24a4f5cc5bef4fc0a9a3d469a01490f028526bc32dc8961971649a8.",
+			"workload": "settings-390x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.page.settings",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 3095380,
+			"method": "Chromium Runtime.getHeapUsage after fonts and images settled; whole renderer JavaScript heap, including shared code, not isolated unit memory or process RSS.",
+			"workload": "settings-390x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.01316700000000992,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90488832,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.store.agent-settings",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.010369142857143743,
+			"method": "Arithmetic mean of 7 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-253b2260280ae283-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 7,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.store.agent-settings",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 99581952,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-253b2260280ae283-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 7,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.005771099999992657,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 99500032,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.23087483333330283,
+			"method": "Arithmetic mean of 6 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 99696640,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.adapter.agent-settings",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.045500000000060936,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-c780dc5b75d29a87-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.adapter.agent-settings",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 99598336,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-c780dc5b75d29a87-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.adapter.agent-settings",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.02404100000001108,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-b7ac4cd221fe421b-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "desktop.adapter.agent-settings",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 99598336,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-b7ac4cd221fe421b-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "agent-settings:model-icons",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/agent-model-choices.spec.ts",
+			"status": "passed",
+			"durationMs": 2801,
+			"log": {
+				"path": "logs/agent-settings-model-icons.log",
+				"bytes": 223,
+				"sha256": "709d1da3ddd9f2d13f544211720874d33d2b6c2ab8039d5488314d410a92e326"
+			}
+		},
+		{
+			"id": "agent-settings:picker-focus",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/agent-picker-focus.spec.ts",
+			"status": "passed",
+			"durationMs": 2438,
+			"log": {
+				"path": "logs/agent-settings-picker-focus.log",
+				"bytes": 223,
+				"sha256": "16bd80beb6e909ae8d2f276cad4a10c198829a8a604acda1569455aa352577f4"
+			}
+		},
+		{
+			"id": "agent-settings:provider-boundaries",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/agent-settings-availability.spec.ts",
+			"status": "passed",
+			"durationMs": 2420,
+			"log": {
+				"path": "logs/agent-settings-provider-boundaries.log",
+				"bytes": 225,
+				"sha256": "2d788925171d7f5f37906b5dc9d6553ba3e0b7eff05e6e7a5c8b192f2fd4f455"
+			}
+		},
+		{
+			"id": "agent-settings:settings-page",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/agent-settings.spec.ts",
+			"status": "passed",
+			"durationMs": 2886,
+			"log": {
+				"path": "logs/agent-settings-settings-page.log",
+				"bytes": 223,
+				"sha256": "6d0dc4b7244e9f638ee006935b438046377a6214bc57334fb3cbbd68da07ba44"
+			}
+		},
+		{
+			"id": "agent-settings:preference-adapter",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/adapters/agent-settings.test.ts",
+			"status": "passed",
+			"durationMs": 1907,
+			"log": {
+				"path": "logs/agent-settings-preference-adapter.log",
+				"bytes": 410,
+				"sha256": "ae3ee1b38c6aa9e3b7005bf9caed882b2ca8968541eb04ed3e212a65f06a26d8"
+			}
+		},
+		{
+			"id": "agent-settings:picker-cleanup-guard",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/agent-picker-cleanup.test.ts",
+			"status": "passed",
+			"durationMs": 3315,
+			"log": {
+				"path": "logs/agent-settings-picker-cleanup-guard.log",
+				"bytes": 413,
+				"sha256": "00ed3fe9437dd889ce21709fe705600625ba9f9c0ab676b67875672785e6b98e"
+			}
+		},
+		{
+			"id": "examples-desktop.store.agent-settings:examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/desktop.store.agent-settings.test.ts",
+			"status": "passed",
+			"durationMs": 2250,
+			"log": {
+				"path": "logs/examples-desktop.store.agent-settings-examples.log",
+				"bytes": 428,
+				"sha256": "668f6ab319ab2629f0981bde0915655736408dc87e06364bc52f1b8cb7c73557"
+			}
+		},
+		{
+			"id": "agent-settings:preference-store",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/stores/agent-settings.test.ts",
+			"status": "passed",
+			"durationMs": 2111,
+			"log": {
+				"path": "logs/agent-settings-preference-store.log",
+				"bytes": 410,
+				"sha256": "2580d1ef62908ce3cc48de607ff34b2e3134c4ec5cd98db72d801487a4c83e3c"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "agent-settings",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "compact-controls",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "agent-compact-icons",
+							"kind": "screenshot",
+							"state": "compact-controls",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over synthetic CLI discoveries; no live agent or image generator runs.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/model-icons/compact-controls-compact-desktop.png",
+							"sha256": "38f417ea589be957df6d492077b97b0e83f280b5f3643d8879fc850299b3a3a9",
+							"bytes": 299592,
+							"capturedAt": "2026-11-20T11:03:02.539Z",
+							"server": {
+								"buildId": "e720c78af24a4f5cc5bef4fc0a9a3d469a01490f028526bc32dc8961971649a8",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "agent-compact-icons",
+							"kind": "screenshot",
+							"state": "compact-controls",
+							"viewport": "phone",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over synthetic CLI discoveries; no live agent or image generator runs.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/model-icons/compact-controls-compact-phone.png",
+							"sha256": "25c2de8efd5055e85ec69327e4bd052811fa42585ead8247cb513d5d61561ccb",
+							"bytes": 117220,
+							"capturedAt": "2026-11-20T11:03:02.542Z",
+							"server": {
+								"buildId": "e720c78af24a4f5cc5bef4fc0a9a3d469a01490f028526bc32dc8961971649a8",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "agent-settings-output",
+							"kind": "output",
+							"state": "compact-controls",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/agent-model-choices.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/model-icons/tests-e2e-agent-model-choices.spec.ts-compact-controls.txt",
+							"sha256": "709d1da3ddd9f2d13f544211720874d33d2b6c2ab8039d5488314d410a92e326",
+							"bytes": 223,
+							"capturedAt": "2026-11-20T11:03:02.546Z"
+						}
+					]
+				},
+				{
+					"id": "model-picker",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "agent-model-picker",
+							"kind": "screenshot",
+							"state": "model-picker",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over synthetic CLI discoveries; no live agent or image generator runs.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/model-icons/model-picker-models-desktop.png",
+							"sha256": "49e2ffb57e6907d60dab8bcb2e167223b6c0cdb93a0c45ff41a901f099e335e8",
+							"bytes": 123855,
+							"capturedAt": "2026-11-20T11:03:02.546Z",
+							"server": {
+								"buildId": "e720c78af24a4f5cc5bef4fc0a9a3d469a01490f028526bc32dc8961971649a8",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "agent-settings-output",
+							"kind": "output",
+							"state": "model-picker",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/agent-model-choices.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/model-icons/tests-e2e-agent-model-choices.spec.ts-model-picker.txt",
+							"sha256": "709d1da3ddd9f2d13f544211720874d33d2b6c2ab8039d5488314d410a92e326",
+							"bytes": 223,
+							"capturedAt": "2026-11-20T11:03:02.547Z"
+						},
+						{
+							"evidence": "agent-settings-output",
+							"kind": "output",
+							"state": "model-picker",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/agent-picker-focus.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/picker-focus/tests-e2e-agent-picker-focus.spec.ts-model-picker.txt",
+							"sha256": "16bd80beb6e909ae8d2f276cad4a10c198829a8a604acda1569455aa352577f4",
+							"bytes": 223,
+							"capturedAt": "2026-11-20T11:03:06.270Z"
+						},
+						{
+							"evidence": "agent-model-picker",
+							"kind": "screenshot",
+							"state": "model-picker",
+							"viewport": "phone",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over synthetic CLI discoveries; no live agent or image generator runs.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/provider-boundaries/model-picker-models-phone.png",
+							"sha256": "fbf56bafa6a5906e6a1ac3c269d2931645ff4bdff4869c5796ea8978549146dc",
+							"bytes": 65334,
+							"capturedAt": "2026-11-20T11:03:09.872Z",
+							"server": {
+								"buildId": "e720c78af24a4f5cc5bef4fc0a9a3d469a01490f028526bc32dc8961971649a8",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "agent-settings-output",
+							"kind": "output",
+							"state": "model-picker",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/agent-settings-availability.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/provider-boundaries/tests-e2e-agent-settings-availability.spec.ts-model-picker.txt",
+							"sha256": "2d788925171d7f5f37906b5dc9d6553ba3e0b7eff05e6e7a5c8b192f2fd4f455",
+							"bytes": 225,
+							"capturedAt": "2026-11-20T11:03:09.872Z"
+						}
+					]
+				},
+				{
+					"id": "settings",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "agent-settings-benchmarks",
+							"kind": "benchmark",
+							"state": "settings",
+							"viewport": "desktop",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/settings-page/settings-settings-desktop-benchmark.json",
+							"sha256": "331c5b6a935244fd96af1329873656d69f3a3d8820b7648a2a381579894b8b0b",
+							"bytes": 703,
+							"capturedAt": "2026-11-20T11:03:13.973Z"
+						},
+						{
+							"evidence": "agent-settings-page",
+							"kind": "screenshot",
+							"state": "settings",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over synthetic CLI discoveries; no live agent or image generator runs.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/settings-page/settings-settings-desktop.png",
+							"sha256": "9225c8ad3a3b5d838f6342d5fce8bdf0a80b0a45b2ddba9d5d8c4c7227939a73",
+							"bytes": 25598,
+							"capturedAt": "2026-11-20T11:03:13.975Z",
+							"server": {
+								"buildId": "e720c78af24a4f5cc5bef4fc0a9a3d469a01490f028526bc32dc8961971649a8",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "agent-settings-benchmarks",
+							"kind": "benchmark",
+							"state": "settings",
+							"viewport": "tablet",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/settings-page/settings-settings-tablet-benchmark.json",
+							"sha256": "c30cc4d0ade14ae56b97ccc482c2d4594dd7efb98724d78cc704dc09cf4b344b",
+							"bytes": 700,
+							"capturedAt": "2026-11-20T11:03:13.975Z"
+						},
+						{
+							"evidence": "agent-settings-tablet",
+							"kind": "screenshot",
+							"state": "settings",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over synthetic CLI discoveries; no live agent or image generator runs.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/settings-page/settings-settings-tablet.png",
+							"sha256": "4c6b9859829b391667e2f18d20b891577d10e2020cc7bd652a0baa87c9476058",
+							"bytes": 23289,
+							"capturedAt": "2026-11-20T11:03:13.976Z",
+							"server": {
+								"buildId": "e720c78af24a4f5cc5bef4fc0a9a3d469a01490f028526bc32dc8961971649a8",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "agent-settings-benchmarks",
+							"kind": "benchmark",
+							"state": "settings",
+							"viewport": "phone",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/settings-page/settings-settings-phone-benchmark.json",
+							"sha256": "9da2affab03d746038430a539361197604da4015a589b64c3f15659104fdc3a7",
+							"bytes": 700,
+							"capturedAt": "2026-11-20T11:03:13.976Z"
+						},
+						{
+							"evidence": "agent-settings-page",
+							"kind": "screenshot",
+							"state": "settings",
+							"viewport": "phone",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Actual compiled renderer over synthetic CLI discoveries; no live agent or image generator runs.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/settings-page/settings-settings-phone.png",
+							"sha256": "69c5b728d3953af76a7f92243b628394261d97767aaf6b5bab087746d82ccdf6",
+							"bytes": 20954,
+							"capturedAt": "2026-11-20T11:03:13.977Z",
+							"server": {
+								"buildId": "e720c78af24a4f5cc5bef4fc0a9a3d469a01490f028526bc32dc8961971649a8",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "agent-settings-output",
+							"kind": "output",
+							"state": "settings",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/agent-settings.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/settings-page/tests-e2e-agent-settings.spec.ts-settings.txt",
+							"sha256": "6d0dc4b7244e9f638ee006935b438046377a6214bc57334fb3cbbd68da07ba44",
+							"bytes": 223,
+							"capturedAt": "2026-11-20T11:03:13.977Z"
+						}
+					]
+				},
+				{
+					"id": "preference-storage",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "agent-settings-output",
+							"kind": "output",
+							"state": "preference-storage",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/adapters/agent-settings.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/preference-adapter/test-adapters-agent-settings.test.ts-preference-storage.txt",
+							"sha256": "ae3ee1b38c6aa9e3b7005bf9caed882b2ca8968541eb04ed3e212a65f06a26d8",
+							"bytes": 410,
+							"capturedAt": "2026-11-20T11:03:17.028Z"
+						},
+						{
+							"evidence": "agent-settings-assertions",
+							"kind": "assertions",
+							"state": "preference-storage",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/preference-adapter/test-adapters-agent-settings.test.ts-preference-storage.json",
+							"sha256": "5b08593b9e187ecb327d4a0aa2c082790aef53cd2dce3519880706d811bde196",
+							"bytes": 7026,
+							"capturedAt": "2026-11-20T11:03:17.028Z"
+						},
+						{
+							"evidence": "agent-settings-output",
+							"kind": "output",
+							"state": "preference-storage",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/stores/agent-settings.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/preference-store/test-stores-agent-settings.test.ts-preference-storage.txt",
+							"sha256": "2580d1ef62908ce3cc48de607ff34b2e3134c4ec5cd98db72d801487a4c83e3c",
+							"bytes": 410,
+							"capturedAt": "2026-11-20T11:03:28.410Z"
+						},
+						{
+							"evidence": "agent-settings-assertions",
+							"kind": "assertions",
+							"state": "preference-storage",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/preference-store/test-stores-agent-settings.test.ts-preference-storage.json",
+							"sha256": "c203efdd08197aa93320e9d7bbf5f32e7eedd03dfa95fe053230b35add22ce5b",
+							"bytes": 3756,
+							"capturedAt": "2026-11-20T11:03:28.410Z"
+						}
+					]
+				},
+				{
+					"id": "provider-boundaries",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "agent-settings-output",
+							"kind": "output",
+							"state": "provider-boundaries",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual playwright output for tests/e2e/agent-settings-availability.spec.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/provider-boundaries/tests-e2e-agent-settings-availability.spec.ts-provider-boundaries.txt",
+							"sha256": "2d788925171d7f5f37906b5dc9d6553ba3e0b7eff05e6e7a5c8b192f2fd4f455",
+							"bytes": 225,
+							"capturedAt": "2026-11-20T11:03:09.872Z"
+						}
+					]
+				},
+				{
+					"id": "cleanup-ownership",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "agent-settings-output",
+							"kind": "output",
+							"state": "cleanup-ownership",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/agent-picker-cleanup.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/picker-cleanup-guard/test-agent-picker-cleanup.test.ts-cleanup-ownership.txt",
+							"sha256": "00ed3fe9437dd889ce21709fe705600625ba9f9c0ab676b67875672785e6b98e",
+							"bytes": 413,
+							"capturedAt": "2026-11-20T11:03:21.528Z"
+						},
+						{
+							"evidence": "agent-settings-assertions",
+							"kind": "assertions",
+							"state": "cleanup-ownership",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/picker-cleanup-guard/test-agent-picker-cleanup.test.ts-cleanup-ownership.json",
+							"sha256": "6f12e176ff9a119d4b7c6b936111045fb7fa1a12892db96839b86518e880bb6c",
+							"bytes": 9364,
+							"capturedAt": "2026-11-20T11:03:21.528Z"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "examples-desktop.store.agent-settings",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "starts-at-the-default-unloaded-state",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "starts-at-the-default-unloaded-state",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.agent-settings/examples/starts-at-the-default-unloaded-state.json",
+							"sha256": "3f9588a5e7ef7cf47fe48b8d783b140a69426d8087751dfcf9754f5b0f6966e0",
+							"bytes": 517,
+							"capturedAt": "2026-11-20T11:03:25.033Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "starts-at-the-default-unloaded-state",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/desktop.store.agent-settings.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.agent-settings/examples/test-examples-desktop.store.agent-settings.test.ts-starts-at-the-default-unloaded-state.txt",
+							"sha256": "668f6ab319ab2629f0981bde0915655736408dc87e06364bc52f1b8cb7c73557",
+							"bytes": 428,
+							"capturedAt": "2026-11-20T11:03:25.034Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "starts-at-the-default-unloaded-state",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.agent-settings/examples/test-examples-desktop.store.agent-settings.test.ts-starts-at-the-default-unloaded-state.json",
+							"sha256": "7e46d4169e81578271c50da1787c6aa1e983dc123b93af4246ac1424efb3d780",
+							"bytes": 1231,
+							"capturedAt": "2026-11-20T11:03:25.035Z"
+						}
+					]
+				},
+				{
+					"id": "load-reads-the-stored-count-once",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "load-reads-the-stored-count-once",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.agent-settings/examples/load-reads-the-stored-count-once.json",
+							"sha256": "206acf5f7365440a6033918d1fc935e6bb7ba620738a73594e7b449a0fc442ce",
+							"bytes": 449,
+							"capturedAt": "2026-11-20T11:03:25.034Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "load-reads-the-stored-count-once",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/desktop.store.agent-settings.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.agent-settings/examples/test-examples-desktop.store.agent-settings.test.ts-load-reads-the-stored-count-once.txt",
+							"sha256": "668f6ab319ab2629f0981bde0915655736408dc87e06364bc52f1b8cb7c73557",
+							"bytes": 428,
+							"capturedAt": "2026-11-20T11:03:25.034Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "load-reads-the-stored-count-once",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.agent-settings/examples/test-examples-desktop.store.agent-settings.test.ts-load-reads-the-stored-count-once.json",
+							"sha256": "3beb732df1d304c3e21e86bf7ab15aa4ad010459ca8d9016995fa2f8da84f984",
+							"bytes": 1060,
+							"capturedAt": "2026-11-20T11:03:25.035Z"
+						}
+					]
+				},
+				{
+					"id": "valid-counts-update-the-shared-preference",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "valid-counts-update-the-shared-preference",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.agent-settings/examples/valid-counts-update-the-shared-preference.json",
+							"sha256": "345d5159194436e56eca81a9b18f79b9057769e881233f35853fda86cfe56d5d",
+							"bytes": 616,
+							"capturedAt": "2026-11-20T11:03:25.034Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "valid-counts-update-the-shared-preference",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/desktop.store.agent-settings.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.agent-settings/examples/test-examples-desktop.store.agent-settings.test.ts-valid-counts-update-the-shared-preference.txt",
+							"sha256": "668f6ab319ab2629f0981bde0915655736408dc87e06364bc52f1b8cb7c73557",
+							"bytes": 428,
+							"capturedAt": "2026-11-20T11:03:25.034Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "valid-counts-update-the-shared-preference",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.agent-settings/examples/test-examples-desktop.store.agent-settings.test.ts-valid-counts-update-the-shared-preference.json",
+							"sha256": "48e793038b9d739a50815aa90429f23955b85757c7953605b7067ed6cbb7580c",
+							"bytes": 1698,
+							"capturedAt": "2026-11-20T11:03:25.035Z"
+						}
+					]
+				},
+				{
+					"id": "unsupported-counts-are-refused-without-writing",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "unsupported-counts-are-refused-without-writing",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.agent-settings/examples/unsupported-counts-are-refused-without-writing.json",
+							"sha256": "c22fa839e079fae852a42436e143c6372cf2ab0128cff312b2bd497c849c8ff8",
+							"bytes": 944,
+							"capturedAt": "2026-11-20T11:03:25.034Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "unsupported-counts-are-refused-without-writing",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/desktop.store.agent-settings.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.agent-settings/examples/test-examples-desktop.store.agent-settings.test.ts-unsupported-counts-are-refused-without-writing.txt",
+							"sha256": "668f6ab319ab2629f0981bde0915655736408dc87e06364bc52f1b8cb7c73557",
+							"bytes": 428,
+							"capturedAt": "2026-11-20T11:03:25.034Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "unsupported-counts-are-refused-without-writing",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.agent-settings/examples/test-examples-desktop.store.agent-settings.test.ts-unsupported-counts-are-refused-without-writing.json",
+							"sha256": "1d954bb3c33cd3d73cc9d28c58d821075520b96259022e819d6c9f1de887097f",
+							"bytes": 2407,
+							"capturedAt": "2026-11-20T11:03:25.035Z"
+						}
+					]
+				},
+				{
+					"id": "failed-saves-are-reported-as-unsaved",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "failed-saves-are-reported-as-unsaved",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.agent-settings/examples/failed-saves-are-reported-as-unsaved.json",
+							"sha256": "6b15ee9482871907ea243019c772c1f728a5f019b6b09eacd40520adaf5c958c",
+							"bytes": 520,
+							"capturedAt": "2026-11-20T11:03:25.034Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "failed-saves-are-reported-as-unsaved",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/desktop.store.agent-settings.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.agent-settings/examples/test-examples-desktop.store.agent-settings.test.ts-failed-saves-are-reported-as-unsaved.txt",
+							"sha256": "668f6ab319ab2629f0981bde0915655736408dc87e06364bc52f1b8cb7c73557",
+							"bytes": 428,
+							"capturedAt": "2026-11-20T11:03:25.035Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "failed-saves-are-reported-as-unsaved",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.agent-settings/examples/test-examples-desktop.store.agent-settings.test.ts-failed-saves-are-reported-as-unsaved.json",
+							"sha256": "2fe27ae4e67bb022f1b1f29badf002424ff5591be59a02042de727d500a9a6fe",
+							"bytes": 1952,
+							"capturedAt": "2026-11-20T11:03:25.035Z"
+						}
+					]
+				},
+				{
+					"id": "defaults-to-the-browser-preference",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "defaults-to-the-browser-preference",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.agent-settings/examples/defaults-to-the-browser-preference.json",
+							"sha256": "45fb233e54ecfbe92234114ca19759a228a50b77f8d2af361907b3638ce605da",
+							"bytes": 473,
+							"capturedAt": "2026-11-20T11:03:25.034Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "defaults-to-the-browser-preference",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/desktop.store.agent-settings.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.agent-settings/examples/test-examples-desktop.store.agent-settings.test.ts-defaults-to-the-browser-preference.txt",
+							"sha256": "668f6ab319ab2629f0981bde0915655736408dc87e06364bc52f1b8cb7c73557",
+							"bytes": 428,
+							"capturedAt": "2026-11-20T11:03:25.035Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "defaults-to-the-browser-preference",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.store.agent-settings/examples/test-examples-desktop.store.agent-settings.test.ts-defaults-to-the-browser-preference.json",
+							"sha256": "4532f3a5cb02a5de554d49e29270eac0b75b7437c06e22a0ef224cf15aaa3cb8",
+							"bytes": 1405,
+							"capturedAt": "2026-11-20T11:03:25.035Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"builds": [
+		{
+			"id": "reports",
+			"directory": "packages/reports/build",
+			"buildId": "f25f1194f137f8e0cff8090dd89d67a2545978c9b2e4261dd197e36f00cb56cc",
+			"files": 722
+		},
+		{
+			"id": "planning",
+			"directory": "packages/planning/dist",
+			"buildId": "3738a3efb5f023b93ea637744c775d7d95870cd7564a986730e1d3e0b409f0c6",
+			"files": 1
+		},
+		{
+			"id": "desktop-renderer",
+			"directory": "packages/desktop/build",
+			"buildId": "e720c78af24a4f5cc5bef4fc0a9a3d469a01490f028526bc32dc8961971649a8",
+			"files": 33
+		},
+		{
+			"id": "desktop-main",
+			"directory": "packages/desktop/dist",
+			"buildId": "d53b64692211dd497563dcb23c7c4a4a220ba33ef92c767f3be8f1bcc166d7eb",
+			"files": 4
+		},
+		{
+			"id": "shell-fixture",
+			"directory": "packages/reports/output/shell-fixture",
+			"buildId": "8a8561fb5f7e80991f1f1b8ef8233e174f1ba8ed0f20113d22ac83ff9f0f91d6",
+			"files": 11
+		},
+		{
+			"id": "entity-preview",
+			"directory": "packages/reports/output/entity-preview",
+			"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+			"files": 504
+		}
+	],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to desktop.store.agent-settings: only its scenario states ran, so this record is partial and never a full pass.",
+		"Scoped to desktop.store.agent-settings: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}

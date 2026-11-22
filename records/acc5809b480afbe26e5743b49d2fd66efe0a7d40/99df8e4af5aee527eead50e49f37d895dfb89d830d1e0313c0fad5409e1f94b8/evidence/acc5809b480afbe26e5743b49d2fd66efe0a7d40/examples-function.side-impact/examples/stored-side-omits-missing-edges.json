@@ -1,0 +1,107 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.side-impact",
+	"symbol": "storedSide",
+	"cases": [
+		{
+			"name": "edge to an unlisted node is omitted from stored edges",
+			"input": {
+				"revision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"config": {
+					"schemaVersion": 1,
+					"workspaces": [
+						{
+							"name": "",
+							"root": "."
+						}
+					],
+					"tests": [
+						"test/",
+						"tests/"
+					],
+					"global": [],
+					"ignored": [
+						"**/*.md",
+						"specification/features/",
+						"specification/loops/",
+						".gitignore"
+					],
+					"references": []
+				},
+				"entries": [],
+				"manifests": [],
+				"scenarios": [],
+				"graph": {
+					"nodes": [
+						{
+							"id": "src/a.ts",
+							"kind": "source"
+						},
+						{
+							"id": "src/b.ts",
+							"kind": "source"
+						}
+					],
+					"edges": [
+						{
+							"from": "src/a.ts",
+							"to": "src/b.ts",
+							"via": ""
+						},
+						{
+							"from": "src/a.ts",
+							"to": "src/missing.ts",
+							"via": ""
+						}
+					],
+					"uncertain": []
+				}
+			},
+			"output": {
+				"schemaVersion": 1,
+				"config": {
+					"schemaVersion": 1,
+					"workspaces": [
+						{
+							"name": "",
+							"root": "."
+						}
+					],
+					"tests": [
+						"test/",
+						"tests/"
+					],
+					"global": [],
+					"ignored": [
+						"**/*.md",
+						"specification/features/",
+						"specification/loops/",
+						".gitignore"
+					],
+					"references": []
+				},
+				"files": [],
+				"units": [],
+				"scenarios": [],
+				"nodes": [
+					[
+						"src/a.ts",
+						"source"
+					],
+					[
+						"src/b.ts",
+						"source"
+					]
+				],
+				"edges": [
+					[
+						0,
+						1
+					]
+				],
+				"uncertain": []
+			}
+		}
+	]
+}

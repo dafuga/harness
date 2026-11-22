@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.agent-settings",
+	"symbol": "setDesignOptions",
+	"cases": [
+		{
+			"name": "set 0",
+			"input": {
+				"designOptions": 0
+			},
+			"output": {
+				"returned": false,
+				"designOptions": 2,
+				"saved": true
+			}
+		},
+		{
+			"name": "set 11",
+			"input": {
+				"designOptions": 11
+			},
+			"output": {
+				"returned": false,
+				"designOptions": 2,
+				"saved": true
+			}
+		},
+		{
+			"name": "set 1.5",
+			"input": {
+				"designOptions": 1.5
+			},
+			"output": {
+				"returned": false,
+				"designOptions": 2,
+				"saved": true
+			}
+		},
+		{
+			"name": "set -1",
+			"input": {
+				"designOptions": -1
+			},
+			"output": {
+				"returned": false,
+				"designOptions": 2,
+				"saved": true
+			}
+		},
+		{
+			"name": "set NaN",
+			"input": {
+				"designOptions": "NaN"
+			},
+			"output": {
+				"returned": false,
+				"designOptions": 2,
+				"saved": true
+			}
+		}
+	]
+}

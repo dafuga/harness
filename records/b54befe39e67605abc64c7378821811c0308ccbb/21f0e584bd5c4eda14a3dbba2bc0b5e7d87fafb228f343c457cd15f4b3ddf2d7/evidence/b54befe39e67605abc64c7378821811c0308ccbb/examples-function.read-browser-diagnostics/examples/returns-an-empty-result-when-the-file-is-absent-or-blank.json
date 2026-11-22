@@ -1,0 +1,29 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.read-browser-diagnostics",
+	"symbol": "readBrowserDiagnostics",
+	"cases": [
+		{
+			"name": "directory without browser-errors.ndjson",
+			"input": {
+				"file": "absent"
+			},
+			"output": {}
+		},
+		{
+			"name": "zero-byte browser-errors.ndjson",
+			"input": {
+				"file": ""
+			},
+			"output": {}
+		},
+		{
+			"name": "whitespace-only browser-errors.ndjson",
+			"input": {
+				"file": "\n   \n\t\n"
+			},
+			"output": {}
+		}
+	]
+}

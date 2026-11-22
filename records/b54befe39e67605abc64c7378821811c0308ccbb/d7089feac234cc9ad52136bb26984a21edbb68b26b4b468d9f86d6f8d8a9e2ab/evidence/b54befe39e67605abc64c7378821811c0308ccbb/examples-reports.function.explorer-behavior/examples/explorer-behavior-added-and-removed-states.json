@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-behavior",
+	"symbol": "explorerBehavior",
+	"cases": [
+		{
+			"name": "a state that appears is added",
+			"input": {
+				"before": "default",
+				"after": "+leap"
+			},
+			"output": {
+				"summary": "changed",
+				"reason": null,
+				"rows": [
+					[
+						"default",
+						"output",
+						"unchanged"
+					],
+					[
+						"leap",
+						"output",
+						"added"
+					]
+				],
+				"scenarios": [
+					{
+						"id": "clock",
+						"title": "Clock",
+						"before": null,
+						"after": null
+					}
+				]
+			}
+		},
+		{
+			"name": "a state that goes is removed",
+			"input": {
+				"before": "+leap",
+				"after": "default"
+			},
+			"output": {
+				"summary": "changed",
+				"reason": null,
+				"rows": [
+					[
+						"default",
+						"output",
+						"unchanged"
+					],
+					[
+						"leap",
+						"output",
+						"removed"
+					]
+				],
+				"scenarios": [
+					{
+						"id": "clock",
+						"title": "Clock",
+						"before": null,
+						"after": null
+					}
+				]
+			}
+		}
+	]
+}

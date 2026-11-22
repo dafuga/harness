@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-name",
+	"symbol": "explorerName",
+	"cases": [
+		{
+			"name": "page title a person wrote is kept",
+			"input": {
+				"id": "reports.page.orders",
+				"kind": "page",
+				"title": "Order history"
+			},
+			"output": "Order history"
+		},
+		{
+			"name": "surrounding spaces are trimmed from a written title",
+			"input": {
+				"id": "component.cart",
+				"kind": "component",
+				"title": "  Cart summary (mini)  "
+			},
+			"output": "Cart summary (mini)"
+		},
+		{
+			"name": "endpoint path is returned unchanged",
+			"input": {
+				"id": "reports.endpoint.records",
+				"kind": "endpoint",
+				"title": "/api/v1/records"
+			},
+			"output": "/api/v1/records"
+		},
+		{
+			"name": "route screen after a parameter names the screen",
+			"input": {
+				"id": "reports.page.function-details",
+				"kind": "page",
+				"title": "/functions/[entity]/details"
+			},
+			"output": "Details"
+		},
+		{
+			"name": "singular collection before parameter with a screen",
+			"input": {
+				"id": "reports.page.function-details-nested",
+				"kind": "page",
+				"title": "/harness/branch/[branch]/[...at]/functions/[entity]/details"
+			},
+			"output": "Function details"
+		},
+		{
+			"name": "known initials are uppercased in a route label",
+			"input": {
+				"id": "reports.page.cli-json",
+				"kind": "page",
+				"title": "/cli/[id]/json"
+			},
+			"output": "JSON"
+		}
+	]
+}

@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-search",
+	"symbol": "entitySearch",
+	"cases": [
+		{
+			"name": "omitted limit",
+			"input": {
+				"query": "row"
+			},
+			"output": [
+				"app.function.row-0",
+				"app.function.row-1",
+				"app.function.row-10",
+				"app.function.row-11",
+				"app.function.row-12",
+				"app.function.row-13",
+				"app.function.row-14",
+				"app.function.row-15",
+				"app.function.row-16",
+				"app.function.row-17",
+				"app.function.row-18",
+				"app.function.row-19",
+				"app.function.row-2",
+				"app.function.row-20",
+				"app.function.row-21",
+				"app.function.row-22",
+				"app.function.row-23",
+				"app.function.row-24",
+				"app.function.row-3",
+				"app.function.row-4"
+			]
+		},
+		{
+			"name": "limit 2",
+			"input": {
+				"query": "row",
+				"limit": 2
+			},
+			"output": [
+				"app.function.row-0",
+				"app.function.row-1"
+			]
+		},
+		{
+			"name": "limit 0",
+			"input": {
+				"query": "row",
+				"limit": 0
+			},
+			"output": []
+		},
+		{
+			"name": "limit -2",
+			"input": {
+				"query": "row",
+				"limit": -2
+			},
+			"output": [
+				"app.function.row-0",
+				"app.function.row-1",
+				"app.function.row-10",
+				"app.function.row-11",
+				"app.function.row-12",
+				"app.function.row-13",
+				"app.function.row-14",
+				"app.function.row-15",
+				"app.function.row-16",
+				"app.function.row-17",
+				"app.function.row-18",
+				"app.function.row-19",
+				"app.function.row-2",
+				"app.function.row-20",
+				"app.function.row-21",
+				"app.function.row-22",
+				"app.function.row-23",
+				"app.function.row-24",
+				"app.function.row-3",
+				"app.function.row-4",
+				"app.function.row-5",
+				"app.function.row-6",
+				"app.function.row-7"
+			]
+		}
+	]
+}

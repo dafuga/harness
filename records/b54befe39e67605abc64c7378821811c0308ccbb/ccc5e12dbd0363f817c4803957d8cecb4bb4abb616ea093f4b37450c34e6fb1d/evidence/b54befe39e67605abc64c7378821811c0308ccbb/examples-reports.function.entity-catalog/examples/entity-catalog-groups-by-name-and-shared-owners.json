@@ -1,0 +1,78 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-catalog",
+	"symbol": "entityCatalog",
+	"cases": [
+		{
+			"name": "components by name",
+			"input": {
+				"category": "components"
+			},
+			"output": [
+				"OrderCard",
+				"OrderList",
+				"SearchBox"
+			]
+		},
+		{
+			"name": "pages list one page",
+			"input": {
+				"category": "pages"
+			},
+			"output": [
+				"Orders page"
+			]
+		},
+		{
+			"name": "services need two owners",
+			"input": {
+				"category": "services"
+			},
+			"output": [
+				"OrderStore"
+			]
+		},
+		{
+			"name": "functions need two consumers",
+			"input": {
+				"category": "functions"
+			},
+			"output": [
+				"filterOrders"
+			]
+		},
+		{
+			"name": "configs one row per variable",
+			"input": {
+				"category": "configs"
+			},
+			"output": [
+				"orderSettings.archivePath",
+				"orderSettings.build.cssCodeSplit",
+				"orderSettings.defaultSort",
+				"orderSettings.designProperties",
+				"orderSettings.emptyLabel",
+				"orderSettings.emptySteps",
+				"orderSettings.enabled",
+				"orderSettings.fallback",
+				"orderSettings.fulfilmentNote",
+				"orderSettings.message",
+				"orderSettings.pageSize",
+				"orderSettings.regions",
+				"orderSettings.remoteEndpoint",
+				"orderSettings.retryCount",
+				"orderSettings.retryDelay",
+				"orderSettings.schema",
+				"orderSettings.steps"
+			]
+		},
+		{
+			"name": "apis empty without endpoints",
+			"input": {
+				"category": "apis"
+			},
+			"output": []
+		}
+	]
+}

@@ -1,0 +1,81 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.thread-anchor",
+	"symbol": "imageTarget",
+	"cases": [
+		{
+			"name": "include the truthy image option with the supplied region",
+			"input": {
+				"version": "v12",
+				"image": {
+					"state": "approved",
+					"viewport": "desktop",
+					"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+					"bytes": 184320,
+					"option": "o2"
+				},
+				"region": {
+					"x": 0.1,
+					"y": 0.2,
+					"width": 0.5,
+					"height": 0.4
+				}
+			},
+			"output": {
+				"version": "v12",
+				"imageSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+				"state": "approved",
+				"viewport": "desktop",
+				"region": {
+					"x": 0.1,
+					"y": 0.2,
+					"width": 0.5,
+					"height": 0.4
+				},
+				"option": "o2"
+			}
+		},
+		{
+			"name": "omit the option key when the image has none",
+			"input": {
+				"version": "v13",
+				"image": {
+					"state": "draft",
+					"viewport": "mobile",
+					"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+					"bytes": 1200
+				},
+				"region": null
+			},
+			"output": {
+				"version": "v13",
+				"imageSha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+				"state": "draft",
+				"viewport": "mobile",
+				"region": null
+			}
+		},
+		{
+			"name": "omit the option key when the image option is empty",
+			"input": {
+				"version": "v13",
+				"image": {
+					"state": "draft",
+					"viewport": "mobile",
+					"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+					"bytes": 1200,
+					"option": ""
+				},
+				"region": null
+			},
+			"output": {
+				"version": "v13",
+				"imageSha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+				"state": "draft",
+				"viewport": "mobile",
+				"region": null
+			}
+		}
+	]
+}

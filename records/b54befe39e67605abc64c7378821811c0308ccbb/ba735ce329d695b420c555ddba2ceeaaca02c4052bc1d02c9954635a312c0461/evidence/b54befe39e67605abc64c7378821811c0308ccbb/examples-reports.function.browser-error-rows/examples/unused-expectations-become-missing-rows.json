@@ -1,0 +1,50 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.browser-error-rows",
+	"symbol": "browserErrorRows",
+	"cases": [
+		{
+			"name": "one matched and one unused expectation in declaration order",
+			"input": {
+				"errors": [
+					{
+						"type": "console",
+						"message": "Unavailable",
+						"page": "/orders",
+						"source": "orders.js"
+					}
+				],
+				"expected": [
+					{
+						"type": "console",
+						"message": "Unavailable",
+						"reason": "Tests retry.",
+						"source": "orders.js"
+					},
+					{
+						"type": "pageerror",
+						"message": "Boom",
+						"reason": "Known crash."
+					}
+				]
+			},
+			"output": [
+				{
+					"type": "console",
+					"message": "Unavailable",
+					"page": "/orders",
+					"source": "orders.js",
+					"status": "Expected",
+					"reason": "Tests retry."
+				},
+				{
+					"type": "pageerror",
+					"message": "Boom",
+					"reason": "Known crash.",
+					"status": "Missing expected error"
+				}
+			]
+		}
+	]
+}

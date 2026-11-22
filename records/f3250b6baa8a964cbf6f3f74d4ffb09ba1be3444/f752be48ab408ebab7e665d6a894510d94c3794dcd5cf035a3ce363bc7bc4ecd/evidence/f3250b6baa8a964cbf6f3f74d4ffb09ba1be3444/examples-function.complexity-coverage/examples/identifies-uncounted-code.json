@@ -1,0 +1,129 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.complexity-coverage",
+	"symbol": "complexityCoverage",
+	"cases": [
+		{
+			"name": "Rust source",
+			"input": {
+				"path": "src/bin/worker.rs"
+			},
+			"output": {
+				"coverage": "unsupported",
+				"language": "Rust"
+			}
+		},
+		{
+			"name": "Python script",
+			"input": {
+				"path": "tools/seed_db.py"
+			},
+			"output": {
+				"coverage": "unsupported",
+				"language": "Python"
+			}
+		},
+		{
+			"name": "shell script",
+			"input": {
+				"path": "scripts/release.sh"
+			},
+			"output": {
+				"coverage": "unsupported",
+				"language": "shell"
+			}
+		},
+		{
+			"name": "SQL migration",
+			"input": {
+				"path": "db/migrations/0001_init.sql"
+			},
+			"output": {
+				"coverage": "unsupported",
+				"language": "SQL"
+			}
+		},
+		{
+			"name": "Go source",
+			"input": {
+				"path": "cmd/api/main.go"
+			},
+			"output": {
+				"coverage": "unsupported",
+				"language": "Go"
+			}
+		},
+		{
+			"name": "C header",
+			"input": {
+				"path": "include/ring.h"
+			},
+			"output": {
+				"coverage": "unsupported",
+				"language": "C"
+			}
+		},
+		{
+			"name": "C++ source",
+			"input": {
+				"path": "src/engine.cpp"
+			},
+			"output": {
+				"coverage": "unsupported",
+				"language": "C++"
+			}
+		},
+		{
+			"name": "HTML page with an inline script",
+			"input": {
+				"path": "web/index.html",
+				"scripted": true
+			},
+			"output": {
+				"coverage": "unsupported",
+				"language": "HTML with an inline script"
+			}
+		},
+		{
+			"name": "Scala source, an extension no class names",
+			"input": {
+				"path": "pkg/theme.scala"
+			},
+			"output": {
+				"coverage": "unsupported",
+				"language": ".scala files"
+			}
+		},
+		{
+			"name": "an executable with no extension",
+			"input": {
+				"path": "bin/deploy"
+			},
+			"output": {
+				"coverage": "unsupported",
+				"language": "files without an extension"
+			}
+		},
+		{
+			"name": "a dotfile, which has no extension",
+			"input": {
+				"path": ".gitignore"
+			},
+			"output": {
+				"coverage": "unsupported",
+				"language": "files without an extension"
+			}
+		},
+		{
+			"name": "a counted file, which is named anyway",
+			"input": {
+				"path": "src/utils/pick.ts"
+			},
+			"output": {
+				"coverage": "counted",
+				"language": ".ts files"
+			}
+		}
+	]
+}

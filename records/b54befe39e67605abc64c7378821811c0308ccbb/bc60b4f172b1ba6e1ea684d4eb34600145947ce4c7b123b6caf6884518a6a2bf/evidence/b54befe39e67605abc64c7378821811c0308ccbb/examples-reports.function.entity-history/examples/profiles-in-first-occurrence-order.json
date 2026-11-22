@@ -1,0 +1,101 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-history",
+	"symbol": "historyProfiles",
+	"cases": [
+		{
+			"name": "timings from the filter history",
+			"input": {
+				"timings": [
+					[
+						"8b41d0720e252681deac809969b3faf8181dac30",
+						[
+							{
+								"profile": "bun-reference",
+								"workload": "thousand-orders",
+								"metric": "p95-ms",
+								"target": null,
+								"unit": "ms",
+								"before": 0.15,
+								"after": 0.12
+							},
+							{
+								"profile": "ci-linux",
+								"workload": "thousand-orders",
+								"metric": "p95-ms",
+								"target": null,
+								"unit": "ms",
+								"after": 0.31
+							}
+						]
+					],
+					[
+						"3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6",
+						[
+							{
+								"profile": "bun-reference",
+								"workload": "thousand-orders",
+								"metric": "p95-ms",
+								"target": null,
+								"unit": "ms",
+								"after": 0.15
+							}
+						]
+					]
+				]
+			},
+			"output": [
+				"bun-reference",
+				"ci-linux"
+			]
+		},
+		{
+			"name": "ci-linux first in the map, bun-reference repeated",
+			"input": {
+				"timings": [
+					[
+						"c725e9337e913674d8b859665a97c2ea5d62c2da",
+						[
+							{
+								"profile": "ci-linux",
+								"workload": "thousand-orders",
+								"metric": "p95-ms",
+								"target": null,
+								"unit": "ms",
+								"after": 0.31
+							},
+							{
+								"profile": "bun-reference",
+								"workload": "thousand-orders",
+								"metric": "p95-ms",
+								"target": null,
+								"unit": "ms",
+								"before": 0.15,
+								"after": 0.12
+							}
+						]
+					],
+					[
+						"3f9c2a180ce54b0df3f6cadf02d1192568f6d7c6",
+						[
+							{
+								"profile": "bun-reference",
+								"workload": "thousand-orders",
+								"metric": "p95-ms",
+								"target": null,
+								"unit": "ms",
+								"before": 0.15,
+								"after": 0.12
+							}
+						]
+					]
+				]
+			},
+			"output": [
+				"ci-linux",
+				"bun-reference"
+			]
+		}
+	]
+}

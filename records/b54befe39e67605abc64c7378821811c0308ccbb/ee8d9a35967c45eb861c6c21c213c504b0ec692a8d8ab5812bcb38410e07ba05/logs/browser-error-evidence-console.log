@@ -1,0 +1,9 @@
+
+Running 2 tests using 1 worker
+
+(node:64501) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/explorer-shell-browser-errors.spec.ts:15:2 › component Tests show expected and missing browser errors at 1440px (319ms)
+  ✓  2 tests/e2e/explorer-shell-browser-errors.spec.ts:15:2 › component Tests show expected and missing browser errors at 390px (270ms)
+
+  2 passed (1.2s)

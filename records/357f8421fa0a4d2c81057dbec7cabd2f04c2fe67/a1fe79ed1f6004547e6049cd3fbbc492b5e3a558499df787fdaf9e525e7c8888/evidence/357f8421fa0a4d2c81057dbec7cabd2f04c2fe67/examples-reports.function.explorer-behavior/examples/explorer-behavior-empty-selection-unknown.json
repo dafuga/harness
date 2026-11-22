@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-behavior",
+	"symbol": "explorerBehavior",
+	"cases": [
+		{
+			"name": "no captures at all",
+			"input": {
+				"before": [],
+				"after": []
+			},
+			"output": {
+				"summary": "unknown",
+				"reason": "Neither side recorded an output, assertions or a trace for this unit.",
+				"rows": [],
+				"scenarios": [
+					{
+						"id": "clock",
+						"title": "Clock",
+						"before": null,
+						"after": null
+					}
+				]
+			}
+		},
+		{
+			"name": "screenshots only",
+			"input": {
+				"before": [
+					"screens"
+				],
+				"after": [
+					"screens"
+				]
+			},
+			"output": {
+				"summary": "unknown",
+				"reason": "Neither side recorded an output, assertions or a trace for this unit.",
+				"rows": [],
+				"scenarios": [
+					{
+						"id": "clock",
+						"title": "Clock",
+						"before": null,
+						"after": null
+					}
+				]
+			}
+		}
+	]
+}

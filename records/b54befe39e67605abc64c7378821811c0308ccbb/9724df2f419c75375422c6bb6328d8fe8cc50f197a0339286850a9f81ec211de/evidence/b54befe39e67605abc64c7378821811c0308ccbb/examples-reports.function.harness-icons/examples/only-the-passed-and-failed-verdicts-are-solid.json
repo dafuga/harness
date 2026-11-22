@@ -1,0 +1,27 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-icons",
+	"symbol": "solidIcons",
+	"cases": [
+		{
+			"name": "solidIcons members",
+			"input": "solidIcons",
+			"output": {
+				"isSet": true,
+				"members": [
+					"failed",
+					"passed"
+				]
+			}
+		},
+		{
+			"name": "icons outside the solid set",
+			"input": "harnessIcons keys not in solidIcons",
+			"output": {
+				"count": 49,
+				"verdictsOutlined": []
+			}
+		}
+	]
+}

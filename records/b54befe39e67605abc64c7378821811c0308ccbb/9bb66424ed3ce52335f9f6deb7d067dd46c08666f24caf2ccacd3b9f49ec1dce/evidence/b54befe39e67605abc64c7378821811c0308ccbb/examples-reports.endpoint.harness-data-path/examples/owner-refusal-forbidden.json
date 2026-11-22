@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.endpoint.harness-data-path",
+	"symbol": "GET",
+	"cases": [
+		{
+			"name": "owner mode on, but the connection comes from a non-loopback peer",
+			"input": {
+				"path": "index.json",
+				"client": "203.0.113.7"
+			},
+			"output": {
+				"status": 403,
+				"type": "text/plain",
+				"body": "Forbidden"
+			}
+		},
+		{
+			"name": "owner mode not set to loopback, even from a loopback peer",
+			"input": {
+				"path": "index.json",
+				"client": "127.0.0.1",
+				"HARNESS_OWNER_MODE": ""
+			},
+			"output": {
+				"status": 403,
+				"type": "text/plain",
+				"body": "Forbidden"
+			}
+		}
+	]
+}

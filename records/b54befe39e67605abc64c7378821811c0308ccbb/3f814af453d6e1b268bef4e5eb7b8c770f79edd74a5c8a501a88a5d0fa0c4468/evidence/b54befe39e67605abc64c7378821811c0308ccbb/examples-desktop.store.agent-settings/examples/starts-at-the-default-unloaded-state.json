@@ -1,0 +1,29 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.agent-settings",
+	"symbol": "createAgentSettingsStore",
+	"cases": [
+		{
+			"name": "factory designOptions and saved before load",
+			"input": {},
+			"output": {
+				"designOptions": 3,
+				"saved": true
+			}
+		},
+		{
+			"name": "module agentSettings before load",
+			"input": {},
+			"output": {
+				"designOptions": 3,
+				"saved": true
+			}
+		},
+		{
+			"name": "adapter read calls before load",
+			"input": {},
+			"output": 0
+		}
+	]
+}

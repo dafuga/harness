@@ -1,0 +1,30 @@
+{
+  "scenario": "Harness explorer over a fixed synthetic history",
+  "environment": "Chromium against the built reports server",
+  "fixture": "Synthetic Git history seeded for the console",
+  "steps": [
+    "Open /harness/branch/main/commit/c5c6b059e4e35a643e1870fb01f9a93cd27962d0/functions/function.slugify/history",
+    "Wait for the commits that changed the function",
+    "Read the address, the heading, the categories and the verification marks"
+  ],
+  "input": {
+    "address": "/harness/branch/main/commit/c5c6b059e4e35a643e1870fb01f9a93cd27962d0/functions/function.slugify/history"
+  },
+  "output": {
+    "address": "/harness/branch/main/commit/c5c6b059e4e35a643e1870fb01f9a93cd27962d0/functions/function.slugify/history",
+    "heading": "slugify",
+    "categories": [
+      "Pages",
+      "Code",
+      "Translations",
+      "Platforms"
+    ],
+    "category": "Code",
+    "branch": "main",
+    "commit": "c5c6b059e4e35a643e1870fb01f9a93cd27962d0",
+    "marks": [
+      "Full coverage passed"
+    ],
+    "paths": []
+  }
+}

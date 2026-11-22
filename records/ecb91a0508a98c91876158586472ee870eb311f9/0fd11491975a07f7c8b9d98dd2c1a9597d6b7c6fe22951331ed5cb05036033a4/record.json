@@ -1,0 +1,534 @@
+{
+	"id": "0fd11491975a07f7c8b9d98dd2c1a9597d6b7c6fe22951331ed5cb05036033a4",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-hl.Q8lpob/source",
+	"source": {
+		"commit": "ecb91a0508a98c91876158586472ee870eb311f9",
+		"tree": "abd6c5656cfb7f28ed60d2f15dc92ec62db8e02b",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T00:32:29.588Z",
+	"finishedAt": "2026-11-20T00:32:50.270Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "reports.endpoint.api-report-audio-comparison",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "68381102461e024103ad301e4c1b3b2314d083816f9edbaf154dae84112dd47f",
+			"source": "44672eb17c9fab87f6b8186c8e91b7409029e49fdb7b0ce7f154e6c86fa42cd0",
+			"contract": "ec796b3e44ea7a0898c5bce9645a00f6be9e8e3590a1602abddde494b2b39106",
+			"runtime": "9604da8a29a7ffb90f7a83c8adfaf254fd65d8f67bfb328252c970542e9f25f3",
+			"files": [
+				{
+					"path": "packages/reports/src/routes/api/report-audio-comparison/+server.ts",
+					"hash": "3919a59d8aded4f78339461a2335a31a02b7a3d6"
+				}
+			]
+		},
+		{
+			"unit": "reports.endpoint.api-report-audio-upload",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "6c278803a3686a78d094461388ed472dcfed8988db22db908c31bc4264777911",
+			"source": "815e21a80cb60854d9f2c58060ce0fa68c91052dd79c76146ffd5cb522f00dbf",
+			"contract": "c141099a6f37b6bd3c236e52e43b5928e4593a5c3fa1e91a1b356dab9b4fe1de",
+			"runtime": "08daf4535216104a2763322f6dc61eae6bba65835cf19f99a7a55d83857383e9",
+			"files": [
+				{
+					"path": "packages/reports/src/routes/api/report-audio-upload/+server.ts",
+					"hash": "67475ddc79ddca7e4cbe6d8181729befc0ab02a9"
+				}
+			]
+		},
+		{
+			"unit": "reports.endpoint.api-report-screenshot-upload",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "6262f46842dad0e0edc516f5cbb0f9aeb853373d55687eba049fb5e9b4847747",
+			"source": "b5e03fa037035553872a9c8617471fa129a71ecb322cb07a71bafa0dc760419e",
+			"contract": "d5664e666f5e5c02c0e18261efce4a9570484ba87226e172ae581c8dad9f0a99",
+			"runtime": "bd9ac2382e1cce2a6d25ea2cd5ef490cde9467b4e2fe84e10e11001096e2926c",
+			"files": [
+				{
+					"path": "packages/reports/src/routes/api/report-screenshot-upload/+server.ts",
+					"hash": "0165f04bd2d7fa7f86709310ff4d836baf7d6258"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.reports-media-admit-upload-request",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "622e26a403e00f8f7d1e1b3e25732376e4d3f2e4076bf5c2b20bb8f15bb45ce3",
+			"source": "916b4b5ce30e9542744f2e5b8607218e90979e051ecf4d03f1d80014bf7ea877",
+			"contract": "855d20a8da0c5cb0748b2ba4985344f85116d37539474d38950a93c2801213c6",
+			"runtime": "9075bdd0deed209b847dc7d0cb3f52e7a33741b435ac0bf9dea1e6a80766ed0f",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/reports-media/admitUploadRequest.ts",
+					"hash": "aeaf11da9ef1bb53ce3ad8f178230b645ae54a04"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.endpoint.api-report-audio-comparison",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 11.552250000000072,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "audio-comparison",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.endpoint.api-report-audio-comparison",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 65214080,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "audio-comparison",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.reports-media-admit-upload-request",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 14.176167000000078,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "audio-comparison",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.reports-media-admit-upload-request",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 65820544,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "audio-comparison",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.endpoint.api-report-audio-upload",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 11.030334000000039,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "audio-upload",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.endpoint.api-report-audio-upload",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 65492544,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "audio-upload",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.reports-media-admit-upload-request",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 13.35108299999996,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "audio-upload",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.reports-media-admit-upload-request",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 65967744,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "audio-upload",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.endpoint.api-report-screenshot-upload",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 11.588874999999973,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "screenshot-upload",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.endpoint.api-report-screenshot-upload",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 63411200,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "screenshot-upload",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.reports-media-admit-upload-request",
+			"metric": "behavior-case-duration-ms",
+			"unitOfMeasure": "ms",
+			"value": 14.192166000000043,
+			"method": "Wall time of the normal behavior case in v26.13.0, including shared code, fixtures and assertions; no isolated-unit attribution or warmup.",
+			"workload": "screenshot-upload",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.reports-media-admit-upload-request",
+			"metric": "worker-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 63820800,
+			"method": "Whole Vitest worker resident set after the behavior case, including shared runtime and fixtures; not isolated unit memory or peak RSS.",
+			"workload": "screenshot-upload",
+			"target": "process",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "upload-request-admission:audio-comparison",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/routes/report-audio-comparison-api.test.ts",
+			"status": "passed",
+			"durationMs": 2272,
+			"log": {
+				"path": "logs/upload-request-admission-audio-comparison.log",
+				"bytes": 422,
+				"sha256": "a5311ce85767c7718823c9e7db0c1e4720ea5226d65665456adc3f8b8611f8f7"
+			}
+		},
+		{
+			"id": "upload-request-admission:audio-upload",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/routes/report-audio-upload-api.test.ts",
+			"status": "passed",
+			"durationMs": 2169,
+			"log": {
+				"path": "logs/upload-request-admission-audio-upload.log",
+				"bytes": 418,
+				"sha256": "847f7e8bab9ee3657e26d3ea5e2deb49152f071013bca0f0ebd30ebc0bd06045"
+			}
+		},
+		{
+			"id": "upload-request-admission:screenshot-upload",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/routes/report-screenshot-upload-api.test.ts",
+			"status": "passed",
+			"durationMs": 2160,
+			"log": {
+				"path": "logs/upload-request-admission-screenshot-upload.log",
+				"bytes": 424,
+				"sha256": "8da832d1d73b8729617ac844eb9ea40199d0f4430ca864f579845ca5349e2dff"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "upload-request-admission",
+			"status": "passed",
+			"testedRevision": "ecb91a0508a98c91876158586472ee870eb311f9",
+			"states": [
+				{
+					"id": "audio-upload",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "behavior-benchmarks",
+							"kind": "benchmark",
+							"state": "audio-upload",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/upload-request-admission/audio-upload/behavior-6609a035-1ddb-43df-bf5a-7ef4a6ff7174.json",
+							"sha256": "d24bc22c705eb82eb3de2c3bcba8612777e4de7755166abba39923e91b0c1c12",
+							"bytes": 686,
+							"capturedAt": "2026-11-20T00:32:45.349Z"
+						},
+						{
+							"evidence": "behavior-benchmarks",
+							"kind": "benchmark",
+							"state": "audio-upload",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/upload-request-admission/audio-upload/behavior-3e591098-269b-4138-8c0b-46ed740b8cee.json",
+							"sha256": "0d78a95776bb0bac341dbc1224e4204962377645392d774ec0b6804bfd381064",
+							"bytes": 707,
+							"capturedAt": "2026-11-20T00:32:45.350Z"
+						},
+						{
+							"evidence": "admission-output",
+							"kind": "output",
+							"state": "audio-upload",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/routes/report-audio-upload-api.test.ts.",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/upload-request-admission/audio-upload/test-routes-report-audio-upload-api.test.ts-audio-upload.txt",
+							"sha256": "847f7e8bab9ee3657e26d3ea5e2deb49152f071013bca0f0ebd30ebc0bd06045",
+							"bytes": 418,
+							"capturedAt": "2026-11-20T00:32:45.350Z"
+						},
+						{
+							"evidence": "admission-assertions",
+							"kind": "assertions",
+							"state": "audio-upload",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/upload-request-admission/audio-upload/test-routes-report-audio-upload-api.test.ts-audio-upload.json",
+							"sha256": "13c93f28a88673f96c7cac7345dcfdc8e7a3a0b81c3d1151dd2dd41b5ddcd210",
+							"bytes": 16421,
+							"capturedAt": "2026-11-20T00:32:45.350Z"
+						}
+					]
+				},
+				{
+					"id": "audio-comparison",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "behavior-benchmarks",
+							"kind": "benchmark",
+							"state": "audio-comparison",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/upload-request-admission/audio-comparison/behavior-4c6db009-b3c7-4157-a9c7-b5106617b93f.json",
+							"sha256": "83eb6f85f6190aceef4d44b40b21a61c9563ca5b3a5817adaf23687f188525b7",
+							"bytes": 702,
+							"capturedAt": "2026-11-20T00:32:42.055Z"
+						},
+						{
+							"evidence": "behavior-benchmarks",
+							"kind": "benchmark",
+							"state": "audio-comparison",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/upload-request-admission/audio-comparison/behavior-1009276f-c114-43fe-b528-81d1a491117d.json",
+							"sha256": "505a3e71ea2e8ce905569b2bac96ba446e3905f48acef19ab7d914833344642b",
+							"bytes": 716,
+							"capturedAt": "2026-11-20T00:32:42.055Z"
+						},
+						{
+							"evidence": "admission-output",
+							"kind": "output",
+							"state": "audio-comparison",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/routes/report-audio-comparison-api.test.ts.",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/upload-request-admission/audio-comparison/test-routes-report-audio-comparison-api.test.ts-audio-comparison.txt",
+							"sha256": "a5311ce85767c7718823c9e7db0c1e4720ea5226d65665456adc3f8b8611f8f7",
+							"bytes": 422,
+							"capturedAt": "2026-11-20T00:32:42.055Z"
+						},
+						{
+							"evidence": "admission-assertions",
+							"kind": "assertions",
+							"state": "audio-comparison",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/upload-request-admission/audio-comparison/test-routes-report-audio-comparison-api.test.ts-audio-comparison.json",
+							"sha256": "0d4aad9ee44219cea8b62ea66ee514b3593cbb51dc204266123b864abd1aed99",
+							"bytes": 17008,
+							"capturedAt": "2026-11-20T00:32:42.056Z"
+						}
+					]
+				},
+				{
+					"id": "screenshot-upload",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "behavior-benchmarks",
+							"kind": "benchmark",
+							"state": "screenshot-upload",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/upload-request-admission/screenshot-upload/behavior-fbf2cd55-5e32-4a87-951d-7a140e121fdb.json",
+							"sha256": "2e9c442360514f92f6138d233256ce0bc326005824519789ee99ef27663e7011",
+							"bytes": 706,
+							"capturedAt": "2026-11-20T00:32:48.619Z"
+						},
+						{
+							"evidence": "behavior-benchmarks",
+							"kind": "benchmark",
+							"state": "screenshot-upload",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/upload-request-admission/screenshot-upload/behavior-c4ae8f1f-47b6-42b6-8703-63722067eec1.json",
+							"sha256": "7b249b1001dcdaa1845e3cdfb28fb6ae08a01ca13b168ac34f6991bbdc0ba235",
+							"bytes": 718,
+							"capturedAt": "2026-11-20T00:32:48.619Z"
+						},
+						{
+							"evidence": "admission-output",
+							"kind": "output",
+							"state": "screenshot-upload",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/routes/report-screenshot-upload-api.test.ts.",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/upload-request-admission/screenshot-upload/test-routes-report-screenshot-upload-api.test.ts-screenshot-upload.txt",
+							"sha256": "8da832d1d73b8729617ac844eb9ea40199d0f4430ca864f579845ca5349e2dff",
+							"bytes": 424,
+							"capturedAt": "2026-11-20T00:32:48.619Z"
+						},
+						{
+							"evidence": "admission-assertions",
+							"kind": "assertions",
+							"state": "screenshot-upload",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/ecb91a0508a98c91876158586472ee870eb311f9/upload-request-admission/screenshot-upload/test-routes-report-screenshot-upload-api.test.ts-screenshot-upload.json",
+							"sha256": "b9c16c78e6698029484e1a4edb728682cd0d178151daaa50a19c076725a60c2e",
+							"bytes": 16536,
+							"capturedAt": "2026-11-20T00:32:48.619Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to reports.function.reports-media-admit-upload-request: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}

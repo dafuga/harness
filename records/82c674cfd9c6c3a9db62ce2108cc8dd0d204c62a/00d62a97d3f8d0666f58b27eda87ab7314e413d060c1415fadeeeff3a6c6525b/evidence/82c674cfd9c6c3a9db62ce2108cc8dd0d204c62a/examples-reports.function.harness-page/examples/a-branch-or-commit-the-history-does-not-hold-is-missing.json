@@ -1,0 +1,468 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-page",
+	"symbol": "harnessPage",
+	"cases": [
+		{
+			"name": "branch is not in the history",
+			"input": {
+				"index": {
+					"branches": [
+						{
+							"name": "feature/kept#1",
+							"head": "dddddddddddddddddddddddddddddddddddddddd"
+						},
+						{
+							"name": "main",
+							"head": "cccccccccccccccccccccccccccccccccccccccc"
+						}
+					],
+					"revisions": [
+						{
+							"commit": "dddddddddddddddddddddddddddddddddddddddd",
+							"parents": [
+								"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+							],
+							"subject": "commit d",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"feature/kept#1"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "cccccccccccccccccccccccccccccccccccccccc",
+							"parents": [
+								"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+							],
+							"subject": "commit c",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"main"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"parents": [
+								"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							],
+							"subject": "commit b",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"feature/kept#1",
+								"main"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"parents": [],
+							"subject": "commit a",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"feature/kept#1",
+								"main"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+							"parents": [
+								"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							],
+							"subject": "commit e",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [],
+							"retained": true,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					],
+					"units": [],
+					"benchmarks": [],
+					"profiles": [],
+					"legacy": [],
+					"truncated": false,
+					"problems": []
+				},
+				"path": "/branch/nowhere/pages",
+				"search": ""
+			},
+			"output": {
+				"kind": "missing",
+				"message": "Branch nowhere is not in this history.",
+				"home": "/branch/main/pages"
+			}
+		},
+		{
+			"name": "commit is on no branch of the named branch",
+			"input": {
+				"index": {
+					"branches": [
+						{
+							"name": "feature/kept#1",
+							"head": "dddddddddddddddddddddddddddddddddddddddd"
+						},
+						{
+							"name": "main",
+							"head": "cccccccccccccccccccccccccccccccccccccccc"
+						}
+					],
+					"revisions": [
+						{
+							"commit": "dddddddddddddddddddddddddddddddddddddddd",
+							"parents": [
+								"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+							],
+							"subject": "commit d",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"feature/kept#1"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "cccccccccccccccccccccccccccccccccccccccc",
+							"parents": [
+								"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+							],
+							"subject": "commit c",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"main"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"parents": [
+								"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							],
+							"subject": "commit b",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"feature/kept#1",
+								"main"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"parents": [],
+							"subject": "commit a",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"feature/kept#1",
+								"main"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+							"parents": [
+								"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							],
+							"subject": "commit e",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [],
+							"retained": true,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					],
+					"units": [],
+					"benchmarks": [],
+					"profiles": [],
+					"legacy": [],
+					"truncated": false,
+					"problems": []
+				},
+				"path": "/branch/main/commit/dddddddddddddddddddddddddddddddddddddddd/pages",
+				"search": ""
+			},
+			"output": {
+				"kind": "missing",
+				"message": "Branch main does not contain commit ddddddd.",
+				"home": "/branch/main/pages"
+			}
+		},
+		{
+			"name": "commit is not in the history",
+			"input": {
+				"index": {
+					"branches": [
+						{
+							"name": "feature/kept#1",
+							"head": "dddddddddddddddddddddddddddddddddddddddd"
+						},
+						{
+							"name": "main",
+							"head": "cccccccccccccccccccccccccccccccccccccccc"
+						}
+					],
+					"revisions": [
+						{
+							"commit": "dddddddddddddddddddddddddddddddddddddddd",
+							"parents": [
+								"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+							],
+							"subject": "commit d",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"feature/kept#1"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "cccccccccccccccccccccccccccccccccccccccc",
+							"parents": [
+								"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+							],
+							"subject": "commit c",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"main"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"parents": [
+								"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							],
+							"subject": "commit b",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"feature/kept#1",
+								"main"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"parents": [],
+							"subject": "commit a",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"feature/kept#1",
+								"main"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+							"parents": [
+								"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							],
+							"subject": "commit e",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [],
+							"retained": true,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					],
+					"units": [],
+					"benchmarks": [],
+					"profiles": [],
+					"legacy": [],
+					"truncated": false,
+					"problems": []
+				},
+				"path": "/branch/main/commit/ffffffffffffffffffffffffffffffffffffffff/pages",
+				"search": ""
+			},
+			"output": {
+				"kind": "missing",
+				"message": "Commit fffffff is not in this history.",
+				"home": "/branch/main/pages"
+			}
+		},
+		{
+			"name": "address names no page",
+			"input": {
+				"index": {
+					"branches": [
+						{
+							"name": "feature/kept#1",
+							"head": "dddddddddddddddddddddddddddddddddddddddd"
+						},
+						{
+							"name": "main",
+							"head": "cccccccccccccccccccccccccccccccccccccccc"
+						}
+					],
+					"revisions": [
+						{
+							"commit": "dddddddddddddddddddddddddddddddddddddddd",
+							"parents": [
+								"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+							],
+							"subject": "commit d",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"feature/kept#1"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "cccccccccccccccccccccccccccccccccccccccc",
+							"parents": [
+								"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+							],
+							"subject": "commit c",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"main"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"parents": [
+								"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							],
+							"subject": "commit b",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"feature/kept#1",
+								"main"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"parents": [],
+							"subject": "commit a",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"feature/kept#1",
+								"main"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						},
+						{
+							"commit": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+							"parents": [
+								"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							],
+							"subject": "commit e",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [],
+							"retained": true,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					],
+					"units": [],
+					"benchmarks": [],
+					"profiles": [],
+					"legacy": [],
+					"truncated": false,
+					"problems": []
+				},
+				"path": "/branch/main/nothing",
+				"search": ""
+			},
+			"output": {
+				"kind": "missing",
+				"message": "This address names no page of the explorer.",
+				"home": "/branch/main/pages"
+			}
+		}
+	]
+}

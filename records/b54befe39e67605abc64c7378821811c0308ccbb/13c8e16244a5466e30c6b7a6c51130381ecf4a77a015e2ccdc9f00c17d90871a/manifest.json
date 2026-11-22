@@ -1,0 +1,107 @@
+{
+	"schemaVersion": 1,
+	"record": "13c8e16244a5466e30c6b7a6c51130381ecf4a77a015e2ccdc9f00c17d90871a",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "6d28030239b7a7fa96cd383de2af15b4e302955a711c555560ca18e3e674e764",
+			"bytes": 25365,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.commit-identity/examples/repository-configured-identity-fills-all-four-keys.json",
+			"sha256": "726e94fadc78891749b330f0ff9cce630635b98eb51320e0863d507809b0d113",
+			"bytes": 448,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.commit-identity/examples/test-examples-function.commit-identity.test.ts-repository-configured-identity-fills-all-four-keys.txt",
+			"sha256": "d3d973530391979012bdf964bf2b7d2245e77e2b84b755a11904584f1d48ae2e",
+			"bytes": 408,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.commit-identity/examples/test-examples-function.commit-identity.test.ts-repository-configured-identity-fills-all-four-keys.json",
+			"sha256": "7bab28344d8261d9651350cd0c463e126466bea9d2e5cfd595745fb84ce91d99",
+			"bytes": 896,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.commit-identity/examples/missing-identity-falls-back-to-harness.json",
+			"sha256": "57029e840a61a71938bf31bda3aa03b65ef55c65053b7a7bd736c58d62fb2177",
+			"bytes": 408,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.commit-identity/examples/test-examples-function.commit-identity.test.ts-missing-identity-falls-back-to-harness.txt",
+			"sha256": "d3d973530391979012bdf964bf2b7d2245e77e2b84b755a11904584f1d48ae2e",
+			"bytes": 408,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.commit-identity/examples/test-examples-function.commit-identity.test.ts-missing-identity-falls-back-to-harness.json",
+			"sha256": "8bdda2c15053d93470256fe441f597daa8d4e6f7e6137669d87bb7e37b655f64",
+			"bytes": 812,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.commit-identity/examples/empty-or-partial-identity-falls-back-per-field.json",
+			"sha256": "a76d66a605110d8d4c5f9db6c736e79c8551090a8ffdb9773f7dd0a83d0151f8",
+			"bytes": 1043,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.commit-identity/examples/test-examples-function.commit-identity.test.ts-empty-or-partial-identity-falls-back-per-field.txt",
+			"sha256": "d3d973530391979012bdf964bf2b7d2245e77e2b84b755a11904584f1d48ae2e",
+			"bytes": 408,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.commit-identity/examples/test-examples-function.commit-identity.test.ts-empty-or-partial-identity-falls-back-per-field.json",
+			"sha256": "a4d5afdb1df6d22bfe4c0da2a8e1279a4c3860512ba7db743f5810c66dfcbdad",
+			"bytes": 1928,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.commit-identity/examples/identity-resolution-leaves-git-config-unchanged.json",
+			"sha256": "4429a7f1c7b2605ec418a8bc66222963970a0d2eebee7fe18735eecf71e7cb63",
+			"bytes": 258,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.commit-identity/examples/test-examples-function.commit-identity.test.ts-identity-resolution-leaves-git-config-unchanged.txt",
+			"sha256": "d3d973530391979012bdf964bf2b7d2245e77e2b84b755a11904584f1d48ae2e",
+			"bytes": 408,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.commit-identity/examples/test-examples-function.commit-identity.test.ts-identity-resolution-leaves-git-config-unchanged.json",
+			"sha256": "18598c2efec62097f3d573a7a9d27669c4e620f867c22ff4aae561533ef04766",
+			"bytes": 1759,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-function.commit-identity-examples.log",
+			"sha256": "d3d973530391979012bdf964bf2b7d2245e77e2b84b755a11904584f1d48ae2e",
+			"bytes": 408,
+			"storage": "git"
+		}
+	]
+}

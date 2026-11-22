@@ -1,0 +1,167 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-category",
+	"symbol": "explorerCategory",
+	"cases": [
+		{
+			"name": "shared pure function, two consumers",
+			"input": {
+				"kind": "function",
+				"source": [],
+				"helpers": [
+					{
+						"name": "case",
+						"source": "src/function.case.ts",
+						"inputs": [],
+						"pure": true,
+						"consumers": [
+							{
+								"unit": "component.first"
+							},
+							{
+								"unit": "component.second"
+							}
+						]
+					}
+				]
+			},
+			"output": "functions"
+		},
+		{
+			"name": "function with no helper record",
+			"input": {
+				"kind": "function",
+				"source": []
+			},
+			"output": null
+		},
+		{
+			"name": "impure function, two consumers",
+			"input": {
+				"kind": "function",
+				"source": [],
+				"helpers": [
+					{
+						"name": "format",
+						"source": "src/utils/format.ts",
+						"inputs": [],
+						"pure": false,
+						"consumers": [
+							{
+								"unit": "component.one"
+							},
+							{
+								"unit": "component.two"
+							}
+						]
+					}
+				]
+			},
+			"output": null
+		},
+		{
+			"name": "pure module, one consumer",
+			"input": {
+				"kind": "module",
+				"source": [],
+				"helpers": [
+					{
+						"name": "format",
+						"source": "src/utils/format.ts",
+						"inputs": [],
+						"pure": true,
+						"consumers": [
+							{
+								"unit": "component.one"
+							}
+						]
+					}
+				]
+			},
+			"output": null
+		},
+		{
+			"name": "pure module, two consumers",
+			"input": {
+				"kind": "module",
+				"source": [],
+				"helpers": [
+					{
+						"name": "format",
+						"source": "src/utils/format.ts",
+						"inputs": [],
+						"pure": true,
+						"consumers": [
+							{
+								"unit": "component.one"
+							},
+							{
+								"unit": "component.two"
+							}
+						]
+					}
+				]
+			},
+			"output": "functions"
+		},
+		{
+			"name": "same consumer listed twice",
+			"input": {
+				"kind": "function",
+				"source": [],
+				"helpers": [
+					{
+						"name": "format",
+						"source": "src/utils/format.ts",
+						"inputs": [],
+						"pure": true,
+						"consumers": [
+							{
+								"unit": "component.one"
+							},
+							{
+								"unit": "component.one"
+							}
+						]
+					}
+				]
+			},
+			"output": null
+		},
+		{
+			"name": "two symbols of one unit",
+			"input": {
+				"kind": "function",
+				"source": [],
+				"helpers": [
+					{
+						"name": "format",
+						"source": "src/utils/format.ts",
+						"inputs": [],
+						"pure": true,
+						"consumers": [
+							{
+								"unit": "function.calls",
+								"symbol": "first"
+							},
+							{
+								"unit": "function.calls",
+								"symbol": "second"
+							}
+						]
+					}
+				]
+			},
+			"output": "functions"
+		},
+		{
+			"name": "validator with no helper record",
+			"input": {
+				"kind": "validator",
+				"source": []
+			},
+			"output": null
+		}
+	]
+}

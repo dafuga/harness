@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"record": "79474781b5fcc502e0b849d6b59704dc3e81743c210aa9fd653f011d01fd5460",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "7d7a5de66d62d481ce55ffaaf872a88e5c904073725d5d8d44188d1057e088d8",
+			"bytes": 29656,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-verdict/examples/passing-states-prove-the-unit.json",
+			"sha256": "80559d6b84a9978fb3a02364e1700cb06ab457c783e7aecbd97c9b68da96d5d1",
+			"bytes": 449,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-verdict/examples/test-examples-reports.function.explorer-verdict.test.ts-passing-states-prove-the-unit.txt",
+			"sha256": "4fe37d8c72ceadc372876fbde322c7edd74a87eebaff4cca1bdfc9f6dea3baad",
+			"bytes": 432,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-verdict/examples/test-examples-reports.function.explorer-verdict.test.ts-passing-states-prove-the-unit.json",
+			"sha256": "58a80e058714f33233aa40603a5490982ff3b805f4b1c3c7f6ff34a17acc6428",
+			"bytes": 765,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-verdict/examples/inherited-or-partial-judged-by-impact-and-viewport.json",
+			"sha256": "acc563364086dae35c6e0a6516d634e8b99e6caf1e297fba9656986dd431da81",
+			"bytes": 1069,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-verdict/examples/test-examples-reports.function.explorer-verdict.test.ts-inherited-or-partial-judged-by-impact-and-viewport.txt",
+			"sha256": "4fe37d8c72ceadc372876fbde322c7edd74a87eebaff4cca1bdfc9f6dea3baad",
+			"bytes": 432,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-verdict/examples/test-examples-reports.function.explorer-verdict.test.ts-inherited-or-partial-judged-by-impact-and-viewport.json",
+			"sha256": "84fe010b71bbad5a7e584a3b06b5853d090fadf8923799c75c43174d84a3169b",
+			"bytes": 2085,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-verdict/examples/missing-evidence-names-its-reason.json",
+			"sha256": "a553eaf64fafec2991f7b62922363f7c9b3b0bbed8f70d2a29264143cb2c1e02",
+			"bytes": 738,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-verdict/examples/test-examples-reports.function.explorer-verdict.test.ts-missing-evidence-names-its-reason.txt",
+			"sha256": "4fe37d8c72ceadc372876fbde322c7edd74a87eebaff4cca1bdfc9f6dea3baad",
+			"bytes": 432,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.explorer-verdict/examples/test-examples-reports.function.explorer-verdict.test.ts-missing-evidence-names-its-reason.json",
+			"sha256": "407e5c37f115e3f47522365bccc83ecc5aa830be71256ad5eb55eab96b4f6398",
+			"bytes": 1934,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-reports.function.explorer-verdict-examples.log",
+			"sha256": "4fe37d8c72ceadc372876fbde322c7edd74a87eebaff4cca1bdfc9f6dea3baad",
+			"bytes": 432,
+			"storage": "git"
+		}
+	]
+}

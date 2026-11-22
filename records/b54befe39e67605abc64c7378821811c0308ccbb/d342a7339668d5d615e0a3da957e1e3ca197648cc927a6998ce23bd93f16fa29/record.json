@@ -1,0 +1,4565 @@
+{
+	"id": "d342a7339668d5d615e0a3da957e1e3ca197648cc927a6998ce23bd93f16fa29",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-ui.E7GO8J/source",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T12:11:43.921Z",
+	"finishedAt": "2026-11-20T12:13:12.422Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "reports.component.entity-contract",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "571a6903788740f86b123b0bf296af88eddd685f43d9932b40fa9c27ad224a8e",
+			"source": "00196965896ec6fc6bcfeba4a8a2d55ca9e4108e35967c476c9e6f8d6d4f89c3",
+			"contract": "dbf5156eb141b7c2f52c1765d6382c294b62ca6a557e3b4630aa866639d1b5ba",
+			"runtime": "86b1d430f3fb421ca5abf424d78759f2e11ed2d91f53b8929eec9a80378a3ded",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-contract/EntityContract.svelte",
+					"hash": "4d06c86a1aaa33660c8bbf53b125168c43ae0685"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-contract/entityContract.css",
+					"hash": "8ab3141b830aabcc7aee47075910a5218b7b296f"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-module-card",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "010ed0f0d309c236275ee014027f7a3c7d21bf8656940f7712bb46d05b67fef4",
+			"source": "6b09eddcc41e46cf5c74b248333203faf489da085e0509016bb017193c9626eb",
+			"contract": "17f5853397c45f736ace220ad2566eb6c2a0c8ba7d6ae4db192bff1bb22270d8",
+			"runtime": "1dc5576710ca90b5080c2407e3e33108db2405f6802cf7c9b7cfe156bacb7f47",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/ExplorerModuleCard.svelte",
+					"hash": "45c82584d25a5f0ebb3a0b7b57fdc4b25955ac78"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/explorerModuleCard.css",
+					"hash": "e709404775c693ad78047267e4bc7e3817560e1e"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "011e19d9b11ff9a109f1097533c1f9e04ca25850171b5b892d86dc0e4ff217dd",
+			"source": "894e18a0e3149f14ed95f65025c2873a561bc1bea46206e3dda6bfe61a8ad1cc",
+			"contract": "21c061b07274954d6a6b1fb38abd6119cc9618c58587bf9ea165ce7282d61bf9",
+			"runtime": "11f8917dd88653dfd066a32dc5867dc7d89ee614e4a373d3f3d99d185a14e43b",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/EntityHeader.svelte",
+					"hash": "fe91cd6961aa344087476feff921f10390f07470"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/EntityHeader.types.ts",
+					"hash": "3ee4814ee2da2a89d96f58d3dba8aa84a05c3069"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "b0d2899c7c61b388e38945dafbd80e0774dff4fccb3d450b175bc29dc010ffe9",
+			"source": "bed098cd9cca7b9d967eaba1f987fd45d3da4417681d712f1e3103630d0d0f65",
+			"contract": "8d84fea84a4b765f8fa970f49d1699d651d1c1c70b6ea3bdacb6eca25b3db70a",
+			"runtime": "76014f1f3d652d62e9524c1106494469ab38737ac54486a025ea5bbfcab194a8",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-relations/EntityRelations.svelte",
+					"hash": "d6a6d4c6b1846777babe8a75bcecc0a35d6f4915"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "7bd082bc8d272b8e175b53b9c3f334c27091b85ae1932cb59df71774893c9349",
+			"source": "5a11804e5670322c19d70ae021113c41427a30dd73c4a45ef27eae1f7000e2e1",
+			"contract": "949c6e2d779765c492b69d57a289efc05246f7810161c34d0c1dae441e53108a",
+			"runtime": "66f31c04f000845dc8afca87fd76a2f90bd3687b02bb25fc011826f618f835fc",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte",
+					"hash": "e8559fc06e423e542652a794d66907267c479637"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-explorer-catalog-screen",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "0943153df0862e7a90045d405a9ec5e1cf4303568a977652545a3d53b858a0eb",
+			"source": "29e08d42010607f7b2cea5a199e3b146fbf8c26a437d256085575de21ecb5942",
+			"contract": "ac2cf37f9455182fcb7fb29f9cef026d926ebcc62c09e70984237c9cd8b56ff2",
+			"runtime": "813c8f80e1dfd8d1631c6f4f87841b3391aa9451ff383a0d86b2c759860a867b",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/ExplorerCatalogScreen.svelte",
+					"hash": "fc864b8e0b2be201a50d1e23cfac13e02f13416a"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-explorer-content",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "b27861bf2f2f9d561990230779b19e0813e13770aba0a9ff380c2fafdafd24b5",
+			"source": "395152af5e05e6e0956b2cb47c580f684947dc1e37c2b410925dc6d0f2f6746a",
+			"contract": "ac3d81204469091f25b1faf548f859111ed7a015e3dfb0852468bd8d9f41c940",
+			"runtime": "a61e8ce182b231796af076181ca56bad8e3ae404d509149912da7c243f65215b",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/ExplorerContent.svelte",
+					"hash": "d59402f34aa30ea6aa5c16991100adf4371edcb4"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/ExplorerContent.types.ts",
+					"hash": "6360fb66db463c4d43ddc6ab15766ebd45fe6a5a"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-explorer-index",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "db866b607b75d06dcecca1ae227c9933b5e3fa6267da3849b22a47e504cc9756",
+			"source": "235f0a3ca0e84757f5b31d3c6a728cd6c82a5b1da6e9656fd0cf91f9cd454646",
+			"contract": "31b95d4c2acb21f4e6ef220dad7aa3ed90793b7bcf7054fea69c2c4794fd07fa",
+			"runtime": "fcaa5151b516f65826c424a5cf3d8be62a9886ce532bb425b7e1376bc92f2ed9",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte",
+					"hash": "a9923e5b75b124ba8c424aa77aa292cb009f1ff0"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/explorer-index/catalogGroups.ts",
+					"hash": "2307b93b6ea00ec6dd632e4277ff96a12e06294f"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/explorer-index/catalogGroups.types.ts",
+					"hash": "14348ec246390cf2306d5c7cf15f98ef1079d4c6"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "bb0357362b5ee170bfa7a1bc10f3e03ef057e9e6c40fd1cd5d6909c30a1e2f5b",
+			"source": "c78db97ea87ce2fee82000816c28d93f7980047e804581976b3aeab8c6e5f28f",
+			"contract": "9f21ac86935c4fe65962d75d62357e724d0be880325fbc311ac155776c690cae",
+			"runtime": "1d1be97a85d725c67a2abc47ae66a6c0fb5535745925ba3a247b092eb95043b4",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte",
+					"hash": "3028589f0f68de46dc367f65ab86a6030a51a077"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "ffaa099717703ed080728be18a5c4677936557162019c22df3429b02392965b3",
+			"source": "cc737e482d7b7a56e3c720bc251e788aa3a337eb91d55c19c4b9c264fdee0259",
+			"contract": "f2c772d241ccba6df291594a5b59feada305c7abc565198d60239854ee07f2d3",
+			"runtime": "e8033f44c25d8381283706d91bbcfc456f2bf1c3f12ca3b8dd572d2740d155b2",
+			"files": [
+				{
+					"path": "packages/reports/src/components/networking-security/ExplorerPermissionsScreen.css",
+					"hash": "6c5df9203839a4b2251e2e95a1e44d7144c9dc09"
+				},
+				{
+					"path": "packages/reports/src/components/networking-security/ExplorerPermissionsScreen.svelte",
+					"hash": "ff6a41ba5f3bd2fbdf05abb4bfd7f48d08299a93"
+				},
+				{
+					"path": "packages/reports/src/components/networking-security/ExplorerPermissionsScreen.types.ts",
+					"hash": "145d0de8e03247d74ae6755c2116e3e06fd6a0d8"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-entry-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 4853780,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-entry-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-catalog-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-catalog-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6292000,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-index",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-index",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6292000,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-module-card",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-module-card",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6292000,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-content",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-content",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6292000,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6292000,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-contract-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6064196,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-contract-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-contract-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6064196,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-contract-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 51,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 8765864,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 51,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 8765864,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 43.80000019073486,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profiles-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 10924408,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profiles-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 45.5,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-guest-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 14450488,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-guest-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 46,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-member-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16691732,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-member-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 46.19999980926514,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-admin-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 18898148,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-admin-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 47.5,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-missing-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 23199032,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-missing-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 41.5,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profiles-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 22567720,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profiles-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 8679696,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 8679696,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15075852,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15075852,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15075852,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 17640336,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 17640336,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-entry-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 4861156,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-entry-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-catalog-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-catalog-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6234408,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-index",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-index",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6234408,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-module-card",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-module-card",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6234408,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-content",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-content",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6234408,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6234408,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-contract-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6050548,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-contract-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-contract-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6050548,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-contract-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 49.09999990463257,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 8770664,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 49.09999990463257,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 8770664,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 47.59999990463257,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profiles-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 10895772,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profiles-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 45.90000009536743,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-guest-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 14433568,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-guest-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 44.299999713897705,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-member-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16706932,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-member-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 45.10000038146973,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-admin-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 18866260,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-admin-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 46.90000009536743,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-missing-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 23158296,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-missing-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 44.89999961853027,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profiles-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 22524412,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profiles-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 8608884,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 8608884,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 14942832,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 14942832,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 14942832,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 17600256,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 17600256,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-entry-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 4872620,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-entry-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-catalog-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-catalog-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6235920,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-index",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-index",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6235920,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-module-card",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-module-card",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6235920,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-content",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-content",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6235920,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6235920,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-contract-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6049012,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-contract-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-contract-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6049012,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-contract-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 48.200000286102295,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 8745212,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 48.200000286102295,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 8745212,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 49.5,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profiles-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 10922992,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profiles-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 43.299999713897705,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-guest-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 14451552,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-guest-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 43.69999980926514,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-member-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16687160,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-member-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 46.5,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-admin-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 18874536,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-admin-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 41.40000009536743,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-missing-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 23175360,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-missing-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 43.69999980926514,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profiles-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 7983456,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profiles-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 11732612,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 11732612,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 18046816,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 18046816,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 18046816,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 20350356,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 20350356,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 50.03379199999995,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16088660,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 49.482000000000426,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-index",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15886536,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-index",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 49.931708999999955,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-guest",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15910680,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-guest",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 50.598917000000256,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-admin",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16096360,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-admin",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 50.0098339999995,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-empty",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15774056,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-empty",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 49.92870800000037,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-unindexed",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15774004,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-unindexed",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 49.98541700000078,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-not-found",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15777840,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-not-found",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 50.080541999999696,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-gap",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16084392,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-gap",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 49.932042000000365,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-empty-data",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15982664,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-empty-data",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 50.05583300000035,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-endpoint",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16092736,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-endpoint",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 50.06483299999854,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-endpoint-empty",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15760272,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-endpoint-empty",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 49.98512499999924,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-endpoint-unindexed",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15761552,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-endpoint-unindexed",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 50.02741700000115,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-index-link-focused",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15911000,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-index-link-focused",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 50.086083000000144,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-index-link-hovered",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15961516,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-index-link-hovered",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 50.056915999999546,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-data-focused",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16087892,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-data-focused",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "explorer-apis:apis",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts test/entity-preview.spec.ts --grep 'APIs catalog'",
+			"status": "passed",
+			"durationMs": 13076,
+			"log": {
+				"path": "logs/explorer-apis-apis.log",
+				"bytes": 41287,
+				"sha256": "0c455b6f36b66e66c9d280dd8ba5e5ac65d4cdc33d396800f5de3d7aea88644e"
+			}
+		},
+		{
+			"id": "component-catalog-previews:previews",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts explorer-shell-component-catalog.spec.ts",
+			"status": "passed",
+			"durationMs": 34787,
+			"log": {
+				"path": "logs/component-catalog-previews-previews.log",
+				"bytes": 7622,
+				"sha256": "33f18fc44a2a9d59ba6cb9a6794013763105b5e5aa7ebdff5aae8c523a38b8cf"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "component-catalog-previews",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "reports-component-networking-security-explorer-permissions-screen",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 791
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-desktop.png",
+							"sha256": "73e56983bd324fd8ccf87280f603bcb1c38415f7580a56d7222db46412dc4338",
+							"bytes": 50697,
+							"capturedAt": "2026-11-20T12:13:10.626Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-networking-security-explorer-permissions-screen",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-profile.json",
+							"sha256": "184a5eba1043e46c592e31cbc696316f3d8cc5e611f5de46bc585b7f1c371a10",
+							"bytes": 799,
+							"capturedAt": "2026-11-20T12:13:10.626Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 771
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-tablet.png",
+							"sha256": "353552e8cf81c3b4f220bbb97cfd4a087b642fa8ca24ee331ee04482b06c8c71",
+							"bytes": 51912,
+							"capturedAt": "2026-11-20T12:13:10.642Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 108,
+								"width": 374,
+								"height": 940
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-mobile.png",
+							"sha256": "e9d1ea000de99269049b969c81e4713f73c285ef243aaebb3ace21c0900ccc01",
+							"bytes": 49692,
+							"capturedAt": "2026-11-20T12:13:10.658Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-networking-security-explorer-permissions-screen-index",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-index",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 462
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-desktop.png",
+							"sha256": "24553bb0bfa9af2f91169b40f0d8b23dc5f4b5f8c8e0d7039f46b6a2eb29339f",
+							"bytes": 32986,
+							"capturedAt": "2026-11-20T12:13:10.627Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-networking-security-explorer-permissions-screen-index",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-profile.json",
+							"sha256": "cb989f21f0de5d799114d2724083201b82df93ff26ccaec477214df295df8a63",
+							"bytes": 812,
+							"capturedAt": "2026-11-20T12:13:10.627Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-index",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 458
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-tablet.png",
+							"sha256": "4b5a2442b77cd71206f73e81249230fb62afd723a8f870cbc32d28cdb2c4113d",
+							"bytes": 31855,
+							"capturedAt": "2026-11-20T12:13:10.643Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-index",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 108,
+								"width": 374,
+								"height": 526
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-mobile.png",
+							"sha256": "3a9174bc476a447e2f370ba7cb27463c98662ed959697e598c6ad9b9be2d017c",
+							"bytes": 31762,
+							"capturedAt": "2026-11-20T12:13:10.659Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-networking-security-explorer-permissions-screen-guest",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-guest",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 726
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-guest-desktop.png",
+							"sha256": "096d950dead524169e6c0c992d840a0e8d67a225746e0065ee0919c3a488b31e",
+							"bytes": 41138,
+							"capturedAt": "2026-11-20T12:13:10.628Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-networking-security-explorer-permissions-screen-guest",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-guest-profile.json",
+							"sha256": "75f67802ecfbb33d9eb1a2a6da23161c9cd2f0bdca84fec343116838ec2daef2",
+							"bytes": 812,
+							"capturedAt": "2026-11-20T12:13:10.628Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-guest",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 723
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-guest-tablet.png",
+							"sha256": "33181cf64259773d63b5fbab7273423e3e84a3d77b2050f0ce458276d773804b",
+							"bytes": 46110,
+							"capturedAt": "2026-11-20T12:13:10.645Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-guest",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 108,
+								"width": 374,
+								"height": 723
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-guest-mobile.png",
+							"sha256": "453fbe90f27e11159f08f1c4f88913ee593743dc5af89168e8b5f649065e68d5",
+							"bytes": 40354,
+							"capturedAt": "2026-11-20T12:13:10.660Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-networking-security-explorer-permissions-screen-admin",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-admin",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 875
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-admin-desktop.png",
+							"sha256": "3193b4a75efea80fa93771f219e8ff8aeff9513bc5f97e836d0f1bbb35fa767b",
+							"bytes": 60805,
+							"capturedAt": "2026-11-20T12:13:10.630Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-networking-security-explorer-permissions-screen-admin",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-admin-profile.json",
+							"sha256": "85b2753f09753689dc711f74963375c23bdec376953f5d4dbcdd2a22ab617b4c",
+							"bytes": 812,
+							"capturedAt": "2026-11-20T12:13:10.630Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-admin",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 839
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-admin-tablet.png",
+							"sha256": "340495747a366891fedd77c6d7dd2607c6732ba9809acff5103be23db93c36ef",
+							"bytes": 60732,
+							"capturedAt": "2026-11-20T12:13:10.647Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-admin",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 108,
+								"width": 374,
+								"height": 1178
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-admin-mobile.png",
+							"sha256": "3f0cd91253c53f461db10bf5acd5aca145534a1978100bf72b60b4f9b528061b",
+							"bytes": 60868,
+							"capturedAt": "2026-11-20T12:13:10.661Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-networking-security-explorer-permissions-screen-empty",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-empty",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 240
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-empty-desktop.png",
+							"sha256": "1ee1f88b0c9754f969f0f17a093ac4ed8d37272a277e19086761510c15ecb1c3",
+							"bytes": 29707,
+							"capturedAt": "2026-11-20T12:13:10.631Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-networking-security-explorer-permissions-screen-empty",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-empty-profile.json",
+							"sha256": "152ab92c79fdf4a8cfa8e225be3d10877eb2dfcb48a1efa7b6dde48cd519ecda",
+							"bytes": 810,
+							"capturedAt": "2026-11-20T12:13:10.631Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-empty",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 237
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-empty-tablet.png",
+							"sha256": "170288d7657cc779a63c514a1deba1f4cf311399ff2b254ba4616dba3b54f8b1",
+							"bytes": 29247,
+							"capturedAt": "2026-11-20T12:13:10.647Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-empty",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 108,
+								"width": 374,
+								"height": 329
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-empty-mobile.png",
+							"sha256": "5377693f6ef7850d2dc9cf031189bf811e2da527887099ed9975f1b1d105403c",
+							"bytes": 28475,
+							"capturedAt": "2026-11-20T12:13:10.662Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-networking-security-explorer-permissions-screen-unindexed",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-unindexed",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 240
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-unindexed-desktop.png",
+							"sha256": "0b6445def9bd1b552612dcba6014342f4f636926eb8cfba07572cee82d28c6a3",
+							"bytes": 30359,
+							"capturedAt": "2026-11-20T12:13:10.632Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-networking-security-explorer-permissions-screen-unindexed",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-unindexed-profile.json",
+							"sha256": "41533c9a6577470d155b4d63331046f35cac0e12520d25218289cb1ca29074be",
+							"bytes": 819,
+							"capturedAt": "2026-11-20T12:13:10.632Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-unindexed",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 237
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-unindexed-tablet.png",
+							"sha256": "29de2d1fc63ba4f05880c6a9baae210f57b8f91e69be0c70eaa3bad2cef7e262",
+							"bytes": 29898,
+							"capturedAt": "2026-11-20T12:13:10.648Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-unindexed",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 108,
+								"width": 374,
+								"height": 357
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-unindexed-mobile.png",
+							"sha256": "ec576f67d8e4c29c268f45953b02a2d362e1a8fb666d6c29963a2047f61653fd",
+							"bytes": 30226,
+							"capturedAt": "2026-11-20T12:13:10.662Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-networking-security-explorer-permissions-screen-not-found",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-not-found",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 208
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-not-found-desktop.png",
+							"sha256": "58ce1a8795c32d435d16f46255bdc1cbfd38c705a6dddebe57a19c576d58071c",
+							"bytes": 16020,
+							"capturedAt": "2026-11-20T12:13:10.632Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-networking-security-explorer-permissions-screen-not-found",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-not-found-profile.json",
+							"sha256": "95036a58df87e45536a91c21a938e4159d1ef8dd15601f4307afc8864ba0bd0a",
+							"bytes": 819,
+							"capturedAt": "2026-11-20T12:13:10.632Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-not-found",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 205
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-not-found-tablet.png",
+							"sha256": "3c34a2037812f62b8b0febdfa369184c41f708e0da21d5f4b039dcd49c05d19b",
+							"bytes": 16407,
+							"capturedAt": "2026-11-20T12:13:10.649Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-not-found",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 108,
+								"width": 374,
+								"height": 233
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-not-found-mobile.png",
+							"sha256": "e6848a1eb845443fd0a60406cc1c31d7363ae588b1e370258fcc8368ecc56260",
+							"bytes": 14679,
+							"capturedAt": "2026-11-20T12:13:10.663Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-networking-security-explorer-permissions-screen-gap",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-gap",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 829
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-gap-desktop.png",
+							"sha256": "fb14ae344d6b16b37cf68bef52842e39281dbaf48b9802d73bb2735e356bfc04",
+							"bytes": 56676,
+							"capturedAt": "2026-11-20T12:13:10.634Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-networking-security-explorer-permissions-screen-gap",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-gap-profile.json",
+							"sha256": "1d6f676f17e3cba7856690d26ca7594574bb09a60c7e20c5457e5386f545d2d1",
+							"bytes": 808,
+							"capturedAt": "2026-11-20T12:13:10.634Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-gap",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 810
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-gap-tablet.png",
+							"sha256": "378f759d77445c80a0ee860561fb8dd0dc7856a7d6a1009b98e9d4565487aa84",
+							"bytes": 57519,
+							"capturedAt": "2026-11-20T12:13:10.650Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-gap",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 108,
+								"width": 374,
+								"height": 1003
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-gap-mobile.png",
+							"sha256": "f568c23bfe72bb24f0ea2016d5d924db84d27580c24d7929cb1cc82372c34ea9",
+							"bytes": 55689,
+							"capturedAt": "2026-11-20T12:13:10.664Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-networking-security-explorer-permissions-screen-empty-data",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-empty-data",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 764
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-empty-data-desktop.png",
+							"sha256": "b9825b85e2c3e25aa9a4b01b6f9ee8f1e57c37157986bfe330792fea7cfa615e",
+							"bytes": 45069,
+							"capturedAt": "2026-11-20T12:13:10.635Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-networking-security-explorer-permissions-screen-empty-data",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-empty-data-profile.json",
+							"sha256": "5aafdb4bddd9662a7fbebbcfd4df654aeed6abe920517cd0cb8edbb4897552d2",
+							"bytes": 822,
+							"capturedAt": "2026-11-20T12:13:10.635Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-empty-data",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 760
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-empty-data-tablet.png",
+							"sha256": "a34cb641eec0d65799138d8de5086f305907feafcb9bcac97695b8d67b512bea",
+							"bytes": 48324,
+							"capturedAt": "2026-11-20T12:13:10.652Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-empty-data",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 108,
+								"width": 374,
+								"height": 761
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-empty-data-mobile.png",
+							"sha256": "d1aa442dcaaa78edb6a3b9fb6ec74ca8453bf9be11c8ac31e98fb3fe41321c0f",
+							"bytes": 43053,
+							"capturedAt": "2026-11-20T12:13:10.665Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-networking-security-explorer-permissions-screen-endpoint",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-endpoint",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 521
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-desktop.png",
+							"sha256": "54b0f6faa10352061bb4eb370565fe75bca2993f46e517f7a921058b84fee3ae",
+							"bytes": 33876,
+							"capturedAt": "2026-11-20T12:13:10.636Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-networking-security-explorer-permissions-screen-endpoint",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-profile.json",
+							"sha256": "5b4f4c10e6c7cff6d32320d7a8ce5bcb9350d396ae0b0d7672cf6667a752971d",
+							"bytes": 817,
+							"capturedAt": "2026-11-20T12:13:10.636Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-endpoint",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 490
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-tablet.png",
+							"sha256": "e072a9c738a7f007f552640b79273dcdf0f585b5bb0aa27b0626b3ed92312311",
+							"bytes": 32950,
+							"capturedAt": "2026-11-20T12:13:10.653Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-endpoint",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 108,
+								"width": 374,
+								"height": 828
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-mobile.png",
+							"sha256": "5ea378432e37ad1e9be82a016cfe8637b034f328730a0a13b51a07e7581ed1d6",
+							"bytes": 35032,
+							"capturedAt": "2026-11-20T12:13:10.666Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-networking-security-explorer-permissions-screen-endpoint-empty",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-endpoint-empty",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 181
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-empty-desktop.png",
+							"sha256": "4ec7142b6ea202b0fa5b702e5ad8f55c615751f6345cc6b60c41216afc9ab32b",
+							"bytes": 13035,
+							"capturedAt": "2026-11-20T12:13:10.637Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-networking-security-explorer-permissions-screen-endpoint-empty",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-empty-profile.json",
+							"sha256": "eb256f8d17129ca9f854462ac02dd4a610b6c907caf2ccc30192123b678a2f22",
+							"bytes": 829,
+							"capturedAt": "2026-11-20T12:13:10.637Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-endpoint-empty",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 181
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-empty-tablet.png",
+							"sha256": "4cf0dd84060e8a6432f792dc2d51df5bbb576fb51329731294d6650e21b640c8",
+							"bytes": 14589,
+							"capturedAt": "2026-11-20T12:13:10.653Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-endpoint-empty",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 108,
+								"width": 374,
+								"height": 209
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-empty-mobile.png",
+							"sha256": "114f3e858b2a9a108b3bd5395ec186058b506650c1a12d678824e566a5299338",
+							"bytes": 14109,
+							"capturedAt": "2026-11-20T12:13:10.666Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 181
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed-desktop.png",
+							"sha256": "308ac4fa19952c66745887ec0b1e3d1250012413af8f41262e3002504ae245b5",
+							"bytes": 12894,
+							"capturedAt": "2026-11-20T12:13:10.637Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed-profile.json",
+							"sha256": "38eb95529431fe044b2e2851e504448dc45013524d17d67ab983085c7739585b",
+							"bytes": 837,
+							"capturedAt": "2026-11-20T12:13:10.637Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 181
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed-tablet.png",
+							"sha256": "7978aca7f35e056311f87f7d03c17a36393f69de3720c99bc476cbcc08911653",
+							"bytes": 14442,
+							"capturedAt": "2026-11-20T12:13:10.654Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 108,
+								"width": 374,
+								"height": 209
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-endpoint-unindexed-mobile.png",
+							"sha256": "4fa41b329b2f9cad2d0885d16d62cc924019d89ad432fb3a4d1bf105c329a045",
+							"bytes": 13369,
+							"capturedAt": "2026-11-20T12:13:10.666Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-networking-security-explorer-permissions-screen-index-link-focused",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-index-link-focused",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 462
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-link-focused-desktop.png",
+							"sha256": "d09d4802b4221d7a1e3d2fa2b6edc01f82ccd6062e91a22bf8eba3e8a7e347b8",
+							"bytes": 33071,
+							"capturedAt": "2026-11-20T12:13:10.638Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-networking-security-explorer-permissions-screen-index-link-focused",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-link-focused-profile.json",
+							"sha256": "95b4e3c5719688425df9580ec22522b8a74739afeefd18247a442e6945084bc3",
+							"bytes": 837,
+							"capturedAt": "2026-11-20T12:13:10.638Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-index-link-focused",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 458
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-link-focused-tablet.png",
+							"sha256": "46d8e527a6074fc923ee725ba6ff7f6991732780bb2cd7ae38e7fbf8932552ec",
+							"bytes": 31942,
+							"capturedAt": "2026-11-20T12:13:10.655Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-index-link-focused",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 108,
+								"width": 374,
+								"height": 526
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-link-focused-mobile.png",
+							"sha256": "c2ca64512e4f0c7ba488d26872673a5f1d7d58fb11c20233ef126b8c32fbf8a0",
+							"bytes": 31843,
+							"capturedAt": "2026-11-20T12:13:10.667Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-networking-security-explorer-permissions-screen-index-link-hovered",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-index-link-hovered",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 462
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-link-hovered-desktop.png",
+							"sha256": "06ceb99d9c75021fc3183952753e756d45345549d8ff1e2d31c9b45c0291125d",
+							"bytes": 32965,
+							"capturedAt": "2026-11-20T12:13:10.639Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-networking-security-explorer-permissions-screen-index-link-hovered",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-link-hovered-profile.json",
+							"sha256": "c3a6ff913336b7cbb7953c8a7054ef8ed29eb0388690e0102dfdf7c8bdc854e6",
+							"bytes": 838,
+							"capturedAt": "2026-11-20T12:13:10.639Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-index-link-hovered",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 458
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-link-hovered-tablet.png",
+							"sha256": "af02f92320204f571638dc083365c6ee22b761e46c73c3ff45613233423fdb77",
+							"bytes": 31832,
+							"capturedAt": "2026-11-20T12:13:10.656Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-index-link-hovered",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 108,
+								"width": 374,
+								"height": 526
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-index-link-hovered-mobile.png",
+							"sha256": "11540bf2f17c95491d94fb1fb19c0191bdfed1e55136245c86a45af97c5593c6",
+							"bytes": 31754,
+							"capturedAt": "2026-11-20T12:13:10.668Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-networking-security-explorer-permissions-screen-data-focused",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-data-focused",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 791
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-data-focused-desktop.png",
+							"sha256": "b5bfd8c17001af22994cc35d4ea79117b44efa29a3034286773e5f868762acd5",
+							"bytes": 50827,
+							"capturedAt": "2026-11-20T12:13:10.641Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-networking-security-explorer-permissions-screen-data-focused",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-data-focused-profile.json",
+							"sha256": "9307b660951624d3572fbb5c412ade49292de7dfba29a0b928ada5363041b757",
+							"bytes": 826,
+							"capturedAt": "2026-11-20T12:13:10.641Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-data-focused",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 771
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-data-focused-tablet.png",
+							"sha256": "2ad2a63adc614b1ad67304e1d093ea537bc3d7c67c4b23712f067c105bc30b02",
+							"bytes": 51991,
+							"capturedAt": "2026-11-20T12:13:10.657Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-networking-security-explorer-permissions-screen-data-focused",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 108,
+								"width": 374,
+								"height": 940
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/component-catalog-previews/previews/reports-component-networking-security-explorer-permissions-screen-data-focused-mobile.png",
+							"sha256": "cb94b7b82864afc8f90f56ca8bffd99714c813e4fd9f392a217307af9334c60a",
+							"bytes": 49762,
+							"capturedAt": "2026-11-20T12:13:10.669Z",
+							"server": {
+								"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "explorer-apis",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "permission-profiles",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "permission-profiles",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profiles-desktop.png",
+							"sha256": "ce113ae371b72d6cc4677af6862a5e1eadce67053fe1d1234d16c500bf98fe69",
+							"bytes": 69061,
+							"capturedAt": "2026-11-20T12:12:34.949Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "reports.component.networking-security-explorer-permissions-screen",
+							"kind": "benchmark",
+							"state": "permission-profiles",
+							"viewport": "desktop",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profiles-desktop.json",
+							"sha256": "9c57bd5c476d6b60acaa1930d7115506b255f19d2285d1ee3f971b2a837ef66f",
+							"bytes": 713,
+							"capturedAt": "2026-11-20T12:12:34.949Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "permission-profiles",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profiles-tablet.png",
+							"sha256": "be4ad6f25f71d2c5c48ca9a1724e03e3505e93be253c3a3e18f7c76f2bf49d7d",
+							"bytes": 65728,
+							"capturedAt": "2026-11-20T12:12:34.982Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "reports.component.networking-security-explorer-permissions-screen",
+							"kind": "benchmark",
+							"state": "permission-profiles",
+							"viewport": "tablet",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profiles-tablet.json",
+							"sha256": "beda47e77e282e6c55d648b9d1746ff7e1494740ef567e7b9fc2bda695466029",
+							"bytes": 713,
+							"capturedAt": "2026-11-20T12:12:34.982Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "permission-profiles",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profiles-mobile.png",
+							"sha256": "279a403bbf1a1ce536b8f01bb49ed14cc79c0b9eecadb3e6a60b93542c606c7e",
+							"bytes": 54827,
+							"capturedAt": "2026-11-20T12:12:35.004Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "reports.component.networking-security-explorer-permissions-screen",
+							"kind": "benchmark",
+							"state": "permission-profiles",
+							"viewport": "mobile",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profiles-mobile.json",
+							"sha256": "01d08ab593c693555f22110dca6a73585570cceb51e026497a3b73ad14eda025",
+							"bytes": 698,
+							"capturedAt": "2026-11-20T12:12:35.004Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "permission-profile-guest",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "permission-profile-guest",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-guest-desktop.png",
+							"sha256": "768cc2a024d329545848db2af4bcc49eb56fec9f37f21841cc41133a0b6a919e",
+							"bytes": 84732,
+							"capturedAt": "2026-11-20T12:12:34.951Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "reports.component.networking-security-explorer-permissions-screen",
+							"kind": "benchmark",
+							"state": "permission-profile-guest",
+							"viewport": "desktop",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-guest-desktop.json",
+							"sha256": "7cc7d86f0e8ef9fdac2f02148df267fc2832cd763820c7a68ddb210c271230e4",
+							"bytes": 710,
+							"capturedAt": "2026-11-20T12:12:34.951Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "permission-profile-guest",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-guest-tablet.png",
+							"sha256": "9bfbcd5971c6c7d32e01a5ae2b6df9e8a5be944a812332802361887d84c2ac28",
+							"bytes": 75454,
+							"capturedAt": "2026-11-20T12:12:34.984Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "reports.component.networking-security-explorer-permissions-screen",
+							"kind": "benchmark",
+							"state": "permission-profile-guest",
+							"viewport": "tablet",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-guest-tablet.json",
+							"sha256": "54ba518ec4900542d0f155501eed10441b063b836b2e285a3139c706ee01f782",
+							"bytes": 723,
+							"capturedAt": "2026-11-20T12:12:34.984Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "permission-profile-guest",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-guest-mobile.png",
+							"sha256": "075ee25afd7178674616f82c261c0fac681170a3a828f0823836f19934eb85c4",
+							"bytes": 63443,
+							"capturedAt": "2026-11-20T12:12:35.005Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "reports.component.networking-security-explorer-permissions-screen",
+							"kind": "benchmark",
+							"state": "permission-profile-guest",
+							"viewport": "mobile",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-guest-mobile.json",
+							"sha256": "56068db4fbba25592edc4be67bdc9b1ea42e9f6a2d746e6ad7ca8bef97ecf8e3",
+							"bytes": 722,
+							"capturedAt": "2026-11-20T12:12:35.005Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "permission-profile-member",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "permission-profile-member",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-member-desktop.png",
+							"sha256": "d359120ca3408e230b831f9776a2cb09cad8ec8f36d6bd9a19f9128a67d17f71",
+							"bytes": 88379,
+							"capturedAt": "2026-11-20T12:12:34.954Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "reports.component.networking-security-explorer-permissions-screen",
+							"kind": "benchmark",
+							"state": "permission-profile-member",
+							"viewport": "desktop",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-member-desktop.json",
+							"sha256": "903e29e636046cb3682e461798c3ac74dfde291a6c1c4622c525d1f3233897e6",
+							"bytes": 710,
+							"capturedAt": "2026-11-20T12:12:34.954Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "permission-profile-member",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-member-tablet.png",
+							"sha256": "101db9eec47bf56d90bf02737b6de0915a3e3404f07f7f941427d319c4780c8b",
+							"bytes": 83268,
+							"capturedAt": "2026-11-20T12:12:34.986Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "reports.component.networking-security-explorer-permissions-screen",
+							"kind": "benchmark",
+							"state": "permission-profile-member",
+							"viewport": "tablet",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-member-tablet.json",
+							"sha256": "2a3cfd90e375ff9a53924476525f59fe9ad9a6b01f598dbf541e8238869c04e6",
+							"bytes": 726,
+							"capturedAt": "2026-11-20T12:12:34.986Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "permission-profile-member",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-member-mobile.png",
+							"sha256": "5c38a37985051a23d66809182be155c34d10dd0849780bb21dc06c72f1aa0c58",
+							"bytes": 72665,
+							"capturedAt": "2026-11-20T12:12:35.006Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "reports.component.networking-security-explorer-permissions-screen",
+							"kind": "benchmark",
+							"state": "permission-profile-member",
+							"viewport": "mobile",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-member-mobile.json",
+							"sha256": "bf18085ab1acbc3f7783ca427d62ff0e50610b26ded8b815d65a0cb7fe6e0c2b",
+							"bytes": 723,
+							"capturedAt": "2026-11-20T12:12:35.007Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "permission-profile-admin",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "permission-profile-admin",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-admin-desktop.png",
+							"sha256": "31d8a16d5c615a27359adcce0258ec8bb4306f8011a7445ff5c6b43bab605d7c",
+							"bytes": 99363,
+							"capturedAt": "2026-11-20T12:12:34.957Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "reports.component.networking-security-explorer-permissions-screen",
+							"kind": "benchmark",
+							"state": "permission-profile-admin",
+							"viewport": "desktop",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-admin-desktop.json",
+							"sha256": "86116c1281689fdae1f72dabdce59fc90e08e1aade573bb2eae0e035d8fce636",
+							"bytes": 723,
+							"capturedAt": "2026-11-20T12:12:34.957Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "permission-profile-admin",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-admin-tablet.png",
+							"sha256": "3d65e7fc39a34a591a626d42444e4969fcda4d7aec723a792af9b8922fcc1260",
+							"bytes": 91704,
+							"capturedAt": "2026-11-20T12:12:34.988Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "reports.component.networking-security-explorer-permissions-screen",
+							"kind": "benchmark",
+							"state": "permission-profile-admin",
+							"viewport": "tablet",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-admin-tablet.json",
+							"sha256": "7b618c844270c1d2e1c4ea63b9817c469147b602de577ef564bbcad992a139c2",
+							"bytes": 723,
+							"capturedAt": "2026-11-20T12:12:34.988Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "permission-profile-admin",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-admin-mobile.png",
+							"sha256": "a5b61b21c9aab4f610b666df38b022b32efcbe713aa2aca182a732148b74f7a4",
+							"bytes": 83746,
+							"capturedAt": "2026-11-20T12:12:35.008Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "reports.component.networking-security-explorer-permissions-screen",
+							"kind": "benchmark",
+							"state": "permission-profile-admin",
+							"viewport": "mobile",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-admin-mobile.json",
+							"sha256": "3f0fa63670ca9ff56791f8fd0d29a4c69ae6ae75124a3b20c7d1d8204b55149c",
+							"bytes": 708,
+							"capturedAt": "2026-11-20T12:12:35.008Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "permission-profile-missing",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "permission-profile-missing",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-missing-desktop.png",
+							"sha256": "dd903c1b17e4a6575cd361ab33d09dcde522d6e4722623a452874af857db3eab",
+							"bytes": 57201,
+							"capturedAt": "2026-11-20T12:12:34.959Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "reports.component.networking-security-explorer-permissions-screen",
+							"kind": "benchmark",
+							"state": "permission-profile-missing",
+							"viewport": "desktop",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-missing-desktop.json",
+							"sha256": "d94fdfe02a8b611e34b968bec79a4e16f376be00776a716a2a038f62dacb935c",
+							"bytes": 714,
+							"capturedAt": "2026-11-20T12:12:34.959Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "permission-profile-missing",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-missing-tablet.png",
+							"sha256": "663bf5e92d9e96aefcc69934a9c204e5205362e73f4d20e253d3d36a136680ed",
+							"bytes": 49707,
+							"capturedAt": "2026-11-20T12:12:34.989Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "reports.component.networking-security-explorer-permissions-screen",
+							"kind": "benchmark",
+							"state": "permission-profile-missing",
+							"viewport": "tablet",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-missing-tablet.json",
+							"sha256": "366b186afac19876153ff41ac2610ae7c70a981256cb9e35e2f8d0126072e28e",
+							"bytes": 727,
+							"capturedAt": "2026-11-20T12:12:34.989Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "permission-profile-missing",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profile-missing-mobile.png",
+							"sha256": "ed83edf0973da0a26982894beafa2864b9fd51118ae045b169d5fbe806a63bd3",
+							"bytes": 40961,
+							"capturedAt": "2026-11-20T12:12:35.009Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "reports.component.networking-security-explorer-permissions-screen",
+							"kind": "benchmark",
+							"state": "permission-profile-missing",
+							"viewport": "mobile",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profile-missing-mobile.json",
+							"sha256": "e64bfb9a69a8052358c009318cdbdd97969efa5123853e567b58252722ddafff",
+							"bytes": 725,
+							"capturedAt": "2026-11-20T12:12:35.009Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				},
+				{
+					"id": "permission-profiles-empty",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "permission-profiles-empty",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profiles-empty-desktop.png",
+							"sha256": "fec740b95a5b9e27fd56c402d2b5cd1276320088ff4859fc8ce1f4f389f6ded5",
+							"bytes": 70849,
+							"capturedAt": "2026-11-20T12:12:34.962Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "reports.component.networking-security-explorer-permissions-screen",
+							"kind": "benchmark",
+							"state": "permission-profiles-empty",
+							"viewport": "desktop",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profiles-empty-desktop.json",
+							"sha256": "4e5ed623b326ac77c0b8ae4883adb56fe9c1b5fc56634ec4d06109861e9eeab9",
+							"bytes": 712,
+							"capturedAt": "2026-11-20T12:12:34.962Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "permission-profiles-empty",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profiles-empty-tablet.png",
+							"sha256": "fa5520dedf4d68f8bc0b939a2f29b6055aca11ddca28922771eee99a22831bb8",
+							"bytes": 63854,
+							"capturedAt": "2026-11-20T12:12:34.991Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "reports.component.networking-security-explorer-permissions-screen",
+							"kind": "benchmark",
+							"state": "permission-profiles-empty",
+							"viewport": "tablet",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profiles-empty-tablet.json",
+							"sha256": "a59e0666f7176dddb0cfa164e9b09437dc7f2b878e9f4e414694d90bc2872437",
+							"bytes": 725,
+							"capturedAt": "2026-11-20T12:12:34.991Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "permission-profiles-empty",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/api-screens-permission-profiles-empty-mobile.png",
+							"sha256": "bc9f41ba2a06d4538552dcc5bddcc0641bacd482cb9e56e7c7c67bf9087799ca",
+							"bytes": 53676,
+							"capturedAt": "2026-11-20T12:12:35.010Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						},
+						{
+							"evidence": "reports.component.networking-security-explorer-permissions-screen",
+							"kind": "benchmark",
+							"state": "permission-profiles-empty",
+							"viewport": "mobile",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/explorer-apis/apis/reports.component.networking-security-explorer-permissions-screen-permission-profiles-empty-mobile.json",
+							"sha256": "5e7e73a8529d4f218c2fa6fe3cac0a031c8aad0f2457df689f68ae2876ed6593",
+							"bytes": 722,
+							"capturedAt": "2026-11-20T12:12:35.010Z",
+							"server": {
+								"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+								"revision": "b54befe39e67605abc64c7378821811c0308ccbb"
+							}
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main"
+	],
+	"builds": [
+		{
+			"id": "shell-fixture",
+			"directory": "packages/reports/output/shell-fixture",
+			"buildId": "af0c01b2bac2eb16fcf80be6b4efd61f03517788c01ef29bdfcc0493d112813b",
+			"files": 11
+		},
+		{
+			"id": "entity-preview",
+			"directory": "packages/reports/output/entity-preview",
+			"buildId": "33e27ce87944dd2fb80a49b6f1d07244d2830bfe15d818091301f601db6379c2",
+			"files": 504
+		}
+	],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to reports.component.networking-security-explorer-permissions-screen: only its scenario states ran, so this record is partial and never a full pass.",
+		"Scoped to reports.component.networking-security-explorer-permissions-screen: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}

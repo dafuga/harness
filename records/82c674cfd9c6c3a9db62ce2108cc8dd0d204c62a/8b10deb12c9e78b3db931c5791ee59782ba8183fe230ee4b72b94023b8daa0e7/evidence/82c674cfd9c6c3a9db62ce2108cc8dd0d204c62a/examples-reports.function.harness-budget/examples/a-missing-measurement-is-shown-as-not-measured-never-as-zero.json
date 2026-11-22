@@ -1,0 +1,28 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-budget",
+	"symbol": "harnessBudget",
+	"cases": [
+		{
+			"name": "missing measurement, declared",
+			"input": {},
+			"output": {
+				"value": "not measured at this revision",
+				"limit": "freeze declared; no reviewed limit is recorded at this revision"
+			}
+		},
+		{
+			"name": "missing measurement, undeclared",
+			"input": {
+				"known": {
+					"declared": false
+				}
+			},
+			"output": {
+				"value": "not measured at this revision",
+				"limit": "no limit is recorded at this revision"
+			}
+		}
+	]
+}

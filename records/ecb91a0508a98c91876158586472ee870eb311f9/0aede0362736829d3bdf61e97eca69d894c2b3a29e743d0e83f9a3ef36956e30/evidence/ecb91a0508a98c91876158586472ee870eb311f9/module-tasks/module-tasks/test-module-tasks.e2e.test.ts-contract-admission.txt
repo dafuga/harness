@@ -1,0 +1,19 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.Q8lpob/tmp/harness-snapshot-edTSsc
+
+ ✓ test/module-tasks.e2e.test.ts (8 tests) 52047ms
+   ✓ module task creation requires a wanted contract and leaves source HEAD and edits intact  3853ms
+   ✓ tasks share a stable goal-first prompt and keep their wanted contracts after a fresh fetch  9047ms
+   ✓ assigned worker preserves explicit claude-haiku-5-5 intelligence high  8348ms
+   ✓ assigned worker preserves explicit gpt-6-luna intelligence max  8164ms
+   ✓ auto falls back to Luna 6 max only for confirmed Claude quota (quota)  6439ms
+   ✓ auto falls back to Luna 6 max only for confirmed Claude quota (auth)  5571ms
+   ✓ explicit Claude quota failure never silently substitutes another model  4692ms
+   ✓ competing workers claim once and writes outside the module require review as failed  5930ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  00:24:55
+   Duration  52.51s (transform 129ms, setup 138ms, collect 67ms, tests 52.05s, environment 0ms, prepare 41ms)
+
+JSON report written to /tmp/z5jp8p-hl.Q8lpob/tmp/harness-runner-VqsGpJ/report.json

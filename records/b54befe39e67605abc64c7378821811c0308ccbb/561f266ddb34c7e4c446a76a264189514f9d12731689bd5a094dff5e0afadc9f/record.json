@@ -1,0 +1,1486 @@
+{
+	"id": "561f266ddb34c7e4c446a76a264189514f9d12731689bd5a094dff5e0afadc9f",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-hl.pPvxJz/source",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T14:22:54.956Z",
+	"finishedAt": "2026-11-20T14:23:10.660Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cfb49b515cacc084047d75cdf10a295ab3790ecaf878e2b75e06463793f628bf",
+			"source": "cbf5fb170c4db458f39bcc4ba18996e377a782371040baa39d1667f04bf87635",
+			"contract": "6f2e8a598fb220dd111fe8085fb28c645ee24019cc4b1f25315b141a569962d7",
+			"runtime": "ec246a1eb80a7c06e7ccbd8601bab05e75d00122b0ad9d09eec95bbe94f31c19",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts",
+					"hash": "36741c54d766dd2689e542099ca02135cd07760b"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.types.ts",
+					"hash": "758395e715dd7c7d824deb57b07849f373ef164e"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/artifactCases.ts",
+					"hash": "f5a0a857433ab39a3aa86c795bab10681a76db3f"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.capture-provenance",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "f61f5d8a7e9dbc8b382f5e321b7d8da9cc44b0960d18b4afe367f49220b9cadb",
+			"source": "48afba4c79823aea7c724812e30e9e5dee268129db2be85ba565cde5d942d535",
+			"contract": "0e648cac048bc28c053e6392a71f8a924924bdbba7fbb29a9e8793309d21fcb2",
+			"runtime": "efbdbb94db9a9a7599943bfcaf91e2dfa2a0d9b30e6987ff1bb9728734aa7799",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/reports-media/captureProvenance.ts",
+					"hash": "267186937ba51cb6f223b0bba231924b7d9cc5af"
+				},
+				{
+					"path": "packages/reports/src/utils/reports-media/captureProvenance.types.ts",
+					"hash": "23bfd40f73bc043033cdcd3364fdc19d852bc456"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "c5c595e7c454cf5873b553766447da753e02e2913ae60fe85f5180e3f3139bc8",
+			"source": "cc205c7cd59f6629e9a5c35a9cbbfac1ac4bd214e1dc08de4d5256195be535f3",
+			"contract": "9e17d5c6795f2d562ee55e6e4bfb6770a23e5e5259a07ef884663b750986fbde",
+			"runtime": "4754dbb18f516f6bf9f91bd6508a816227bfec4da8a1d01e13ac174f631adf3d",
+			"files": [
+				{
+					"path": "packages/reports/src/helpers/strings/shortCommit.ts",
+					"hash": "b3d5af260003f96fd70d6a374fbb05f88b0c67b9"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/entityLens.ts",
+					"hash": "729f8b6b1f4d4d1f1cf59ee79556fba4550811ff"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/entityLens.types.ts",
+					"hash": "9c958c94340d1dbf04e320f96238ea07280039ec"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "42b94adfdb145d0951cf9fc565c856e461a8913078ef472099880f37acee32d7",
+			"source": "c83c8dca876fc161968be068733eb884f047fbe5c5c8653420441ef5a2fdd8fd",
+			"contract": "c843e72db3942e52ab61c17e792b83fd8b6280a27f3cf1c2400b814b7880df41",
+			"runtime": "0beb5a307ad8888a7624107047c74894ff21de792113fdbaf5cef7d29115edc4",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/entity-screens/videoCapture.ts",
+					"hash": "b339651a866953de67563867f73a51f179a82e7f"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/entityScreens.ts",
+					"hash": "660772cc2bbb5fe4be348be8fa9bd45abcea8715"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/entityScreens.types.ts",
+					"hash": "bc233a913874189963acee7af17ae766f7f2efe9"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.evidence-media",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "04dfe69d8fd18b4fe670cad31bdf8b7280eadee9d010dd76fde0c0ddea69c5d6",
+			"source": "751c548639aafc65797de7c13140731e354d4cb6d11c0c65494b9f86db8b98f0",
+			"contract": "a0d70890efcba12166160a8fb4a0ee6f3c8fd10164b0fe5e86e0214598c266cc",
+			"runtime": "4f6a8c59835466d93607932771c342371a5afe98a102d10388f8f0045b36aa6c",
+			"files": [
+				{
+					"path": "packages/reports/src/helpers/strings/formatDuration.ts",
+					"hash": "c09a1eefa0345928ae26715a1e636a5423c2d6f1"
+				},
+				{
+					"path": "packages/reports/src/utils/verification-evidence/evidenceMedia.ts",
+					"hash": "a135d17e35d4d3e47f849f6a78a1755d53506682"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.explorer-coverage",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "c83d72df5ce0965459699cd176a0da19ab5957b5eceefeb85b96d46736c9d97c",
+			"source": "146c28c0feb14f08feeea484b8addfe7863da1082e3358c37afeefb6ee7725a8",
+			"contract": "1e381640853d9aca11fd05e819f72b69e49fa0babce343a0c04e86e9793dfb27",
+			"runtime": "5289fe7981a5020b0c3576f25cc86df15fa25ff901d9d71d40e6ea3ece0cc107",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerCoverage.ts",
+					"hash": "5f02f8bc50c426805fc0169bb0534ceeaa87771f"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerCoverage.types.ts",
+					"hash": "2baa95d3d2957a9a3aeb5c3d38294dab825ade29"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-verdict/explorerCoverage.ts",
+					"hash": "9cd855916e64a965941faeb95235b47ec4c3ccd2"
+				},
+				{
+					"path": "packages/reports/src/utils/explorerCoverage.ts",
+					"hash": "350157c7c631223b662f07a5bf5e195db5e36e1d"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.explorer-evidence",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "04239bc17d300c65bdf8c81ed1f4e8bf73d712fbf5f6b0e652f9eedd1517b4fd",
+			"source": "27942001c0682148b836950b1ad7f23ee4d0d364bf14f93ec872c4956f3d45e1",
+			"contract": "14f4cda4959d5d63fe82ca38bd1c58615f40d7ea3aa02f393d8544334ae52abe",
+			"runtime": "209c9dd51ade1203cf2c44bd9479c27cfe7e742bf51829cd19765fa478b7898c",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerEvidence.ts",
+					"hash": "5ec02b959b91664c4c1b0548493f3897adcf3384"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerEvidence.types.ts",
+					"hash": "e3f7eb818413ce76775e1d5f2a6281e940fe0899"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.explorer-evidence-focused-captures",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "4140ce324d54f2bdb5c4760a41e4b4fec7c179117cb072dfb9cb6b36175a11f9",
+			"source": "adcfe3ae8d1045ef5893d66d5a32ae7cabbb6077965c9904c3e40b090892d8df",
+			"contract": "e9a8a7a6470162cf2ac9b17e25fc7a27ebb7af49c30206d8c3fc98d974e55224",
+			"runtime": "b5221d8224e57b98ff029f5480101c00d5664b1b655cb0fd4cc5b712a6c681af",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorer-evidence/focusedCaptures.ts",
+					"hash": "21faf3af8ce49d02d8f7c8103b21e27243ad07f0"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "5ecb2ee243b76d84ceb997b0bc613ff298231da730e97d4435f31d7e5c5b033b",
+			"source": "810e7745cfec8ff3eed5aa0ea21113b6f16175d164bbaaef42e653a002177f55",
+			"contract": "bee8cb08deaeb7c692d978ae59f4ba386f51e596e179ba302f6b8336bb5826c0",
+			"runtime": "9236f6349c738026696a775d464d099a0d53ba556ffb8040cd3b2e11cdfd3c5b",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerState.ts",
+					"hash": "b554483bc75a303595d7175881d62a576bd66e81"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerState.ts",
+					"hash": "9d4b5cca6280d994b62f3662b1cfcfd6fee9c0d9"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerState.types.ts",
+					"hash": "cdb817e6f218eb1f4d90b5187dad8bd3e621f376"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.explorer-ui-explorer-comparison",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "3baa05cab51678bcfe7bbd033cb23a3feff9002144d44074d7131918e98a19d4",
+			"source": "763b7ee4e3c113dceb34deb25165a2ec9d7b6cc9bf5566b6fb73841bfbcd95ae",
+			"contract": "e3f488d71d8d181e1fe4b48b992a6a5cb56846cfe002e265e0b0a90773ed14c9",
+			"runtime": "37f3b630729176a5efbe6a7f8b0ae3addaec9d963f3281b1333f65baac8dbf50",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorerComparison.ts",
+					"hash": "e9229515df76adc407737cf356d05af684bade70"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.explorer-verdict",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "25e0f609b594eac45f4250833062a125cbba27d1287c88c9de044f4cdc44323e",
+			"source": "d9bfcd525e02c51518c8fa612c0173df5480207d4d09d3899b0676aa2318277a",
+			"contract": "74204875e824a79a6b3d8ee98456c4520ff2612104d9a3e819e13168e344dc0a",
+			"runtime": "109530ae8418ff4d2e933914b9a609af2a06ee6c88aab0488306c8c2defb07cf",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.ts",
+					"hash": "002b9c7fb90249f69dab3640274293d9f636abcc"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.types.ts",
+					"hash": "d6897cdffe9f87d2ec10fc7a9f53664666fff7d9"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-verdict/explorerVerdict.ts",
+					"hash": "791c97936f722f90b7aedae9a48fb5a67ea86ce7"
+				},
+				{
+					"path": "packages/reports/src/utils/explorerVerdict.ts",
+					"hash": "53994b169759b025eb1e7d4a7b6bf204735be39f"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.harness-evidence",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "570dc5ea7a48dfb46f94d2472c88aaae0356a434c79102d11939023e6aba6bed",
+			"source": "50b5d6bf5f2d92eaab2cf13de3c70142a4575f134129453ff692baa59530eed5",
+			"contract": "5249fa82460dc06ebf86ec96a53d9ec1541f66bcc0d855391a4e10d06ca15d7e",
+			"runtime": "ecc8742270cfae6b6580001aec889fb67cd076f3b695b6575c2d12a2e500cb8a",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/harnessEvidence.ts",
+					"hash": "5abec98febc132455cc927b094e31fae9f33e5b1"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/harnessEvidence.types.ts",
+					"hash": "67e4fa03daae76d33ace89c2ac6194a568b0499d"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.013291000000094755,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91455488,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.04393749999996999,
+			"method": "Arithmetic mean of 2 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-202329c29a36f7c5-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 2,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91815936,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-202329c29a36f7c5-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 2,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0037863749999900165,
+			"method": "Arithmetic mean of 8 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92291072,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.2021616249999738,
+			"method": "Arithmetic mean of 8 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92291072,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.008475199999952564,
+			"method": "Arithmetic mean of 5 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-028f7e55d943ddd3-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91963392,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-028f7e55d943ddd3-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-verdict",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.004983200000003763,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-4fb89cbbfd62a26c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-verdict",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92225536,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-4fb89cbbfd62a26c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-coverage",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.005637400000011894,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-35e2904dabde7ca4-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-coverage",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92241920,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-35e2904dabde7ca4-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.01360819999999876,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-09c51f9cd840e85f-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92143616,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-09c51f9cd840e85f-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-coverage",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.004041499999982534,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-d778bb1721985d21-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-coverage",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92241920,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-d778bb1721985d21-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.00189180000000988,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-b54eed54ca79a158-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92110848,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-b54eed54ca79a158-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0021040999999968335,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-d3c3237f76c0a976-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92110848,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-d3c3237f76c0a976-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.035262499999976174,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-e9c78def319d17ea-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-state",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92110848,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-e9c78def319d17ea-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-verdict",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.12827288888886162,
+			"method": "Arithmetic mean of 9 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-86aeba88e5eb698f-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 9,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-verdict",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92274688,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-86aeba88e5eb698f-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 9,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-ui-explorer-comparison",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.006529199999999946,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-f2e10140a22606a9-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-ui-explorer-comparison",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92176384,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-f2e10140a22606a9-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-evidence-focused-captures",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.022356444444476944,
+			"method": "Arithmetic mean of 9 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-fb3b925736e3b692-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 9,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-evidence-focused-captures",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92274688,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-fb3b925736e3b692-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 9,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"callable": "shortCommit",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0013416000000006534,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-d93514c411714566-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"callable": "shortCommit",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92028928,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-d93514c411714566-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.capture-provenance",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.02980409999997846,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-370721e1d87688db-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.capture-provenance",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92110848,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-370721e1d87688db-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-ui-explorer-comparison",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.006239625000006299,
+			"method": "Arithmetic mean of 8 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3f8f09c8e09f712b-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-ui-explorer-comparison",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92274688,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3f8f09c8e09f712b-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-evidence-focused-captures",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.01625537499997165,
+			"method": "Arithmetic mean of 8 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-c00b22c3a8b731ea-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-evidence-focused-captures",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92274688,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-c00b22c3a8b731ea-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-ui-explorer-comparison",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.004054400000040914,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-ca52e7d1c18961a8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-ui-explorer-comparison",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92274688,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-ca52e7d1c18961a8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-evidence",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.39597924999998213,
+			"method": "Arithmetic mean of 8 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-f7dced6a1b76bff0-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-evidence",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92274688,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-f7dced6a1b76bff0-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 8,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.harness-evidence",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.007633500000008553,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-2f18d80d02cc4ccc-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.harness-evidence",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92274688,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-2f18d80d02cc4ccc-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.evidence-media",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.007550000000014734,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-fce1b2ec679a5b20-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.evidence-media",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92274688,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-fce1b2ec679a5b20-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.004145700000003671,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-1d19c54396e11de8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92274688,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-1d19c54396e11de8-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.11377050000004374,
+			"method": "Arithmetic mean of 4 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-7e449f87e7c48687-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92192768,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-7e449f87e7c48687-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0647913333333463,
+			"method": "Arithmetic mean of 3 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-c8b28d03bda61d4b-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92274688,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-c8b28d03bda61d4b-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.030999857142855296,
+			"method": "Arithmetic mean of 7 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-9064a1d2c7e79d05-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 7,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92274688,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-9064a1d2c7e79d05-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 7,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-evidence-focused-captures",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0038470000000264313,
+			"method": "Arithmetic mean of 3 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-fc4fe407e0d2d6f9-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-evidence-focused-captures",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92258304,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-fc4fe407e0d2d6f9-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-ui-explorer-comparison",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.090041000000042,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-fef6fae469aee43e-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-ui-explorer-comparison",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 92274688,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-fef6fae469aee43e-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "examples-reports.function.entity-screens:examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.entity-screens.test.ts",
+			"status": "passed",
+			"durationMs": 2435,
+			"log": {
+				"path": "logs/examples-reports.function.entity-screens-examples.log",
+				"bytes": 431,
+				"sha256": "2e7c3149bb863e7bc9d28b0d15ad8e98c8afd8770d009c9d55c3b354533642f2"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "examples-reports.function.entity-screens",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "entity-screens-options-required-states-and-sized-viewports",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "entity-screens-options-required-states-and-sized-viewports",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/entity-screens-options-required-states-and-sized-viewports.json",
+							"sha256": "f0884740289df6a06adee54f5e64fbf94d9a5acac27b5513140e30aa72f398d1",
+							"bytes": 767,
+							"capturedAt": "2026-11-20T14:23:08.759Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "entity-screens-options-required-states-and-sized-viewports",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.entity-screens.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/test-examples-reports.function.entity-screens.test.ts-entity-screens-options-required-states-and-sized-viewports.txt",
+							"sha256": "2e7c3149bb863e7bc9d28b0d15ad8e98c8afd8770d009c9d55c3b354533642f2",
+							"bytes": 431,
+							"capturedAt": "2026-11-20T14:23:08.761Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "entity-screens-options-required-states-and-sized-viewports",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/test-examples-reports.function.entity-screens.test.ts-entity-screens-options-required-states-and-sized-viewports.json",
+							"sha256": "efe094555c517d68edadc04389bc742e5f5aae641959047d808ef5d7e4eab133",
+							"bytes": 1724,
+							"capturedAt": "2026-11-20T14:23:08.762Z"
+						}
+					]
+				},
+				{
+					"id": "entity-screens-pick-exact-and-first-choice-fallback",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "entity-screens-pick-exact-and-first-choice-fallback",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/entity-screens-pick-exact-and-first-choice-fallback.json",
+							"sha256": "d8aa9ca8ca5d3ea014cd14da6b3d04f1c363398393d07172cf0545f849dace32",
+							"bytes": 1078,
+							"capturedAt": "2026-11-20T14:23:08.759Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "entity-screens-pick-exact-and-first-choice-fallback",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.entity-screens.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/test-examples-reports.function.entity-screens.test.ts-entity-screens-pick-exact-and-first-choice-fallback.txt",
+							"sha256": "2e7c3149bb863e7bc9d28b0d15ad8e98c8afd8770d009c9d55c3b354533642f2",
+							"bytes": 431,
+							"capturedAt": "2026-11-20T14:23:08.761Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "entity-screens-pick-exact-and-first-choice-fallback",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/test-examples-reports.function.entity-screens.test.ts-entity-screens-pick-exact-and-first-choice-fallback.json",
+							"sha256": "84a5c3eababcfee8f6b893920396856085f0ef0d6dac37d762a7fb0de38768a4",
+							"bytes": 2312,
+							"capturedAt": "2026-11-20T14:23:08.762Z"
+						}
+					]
+				},
+				{
+					"id": "entity-screens-tip-exact-state-and-viewport-capture",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "entity-screens-tip-exact-state-and-viewport-capture",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/entity-screens-tip-exact-state-and-viewport-capture.json",
+							"sha256": "b98051e969a4877a2216e6e088bcf3951f596ff5d8244352afb2c07e61fc6a72",
+							"bytes": 781,
+							"capturedAt": "2026-11-20T14:23:08.759Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "entity-screens-tip-exact-state-and-viewport-capture",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.entity-screens.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/test-examples-reports.function.entity-screens.test.ts-entity-screens-tip-exact-state-and-viewport-capture.txt",
+							"sha256": "2e7c3149bb863e7bc9d28b0d15ad8e98c8afd8770d009c9d55c3b354533642f2",
+							"bytes": 431,
+							"capturedAt": "2026-11-20T14:23:08.762Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "entity-screens-tip-exact-state-and-viewport-capture",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/test-examples-reports.function.entity-screens.test.ts-entity-screens-tip-exact-state-and-viewport-capture.json",
+							"sha256": "1c4e9e5db8b28387f4082a36e59719a770713f3783a9c62524f9af38459e1584",
+							"bytes": 2259,
+							"capturedAt": "2026-11-20T14:23:08.762Z"
+						}
+					]
+				},
+				{
+					"id": "entity-screens-commit-without-parent-gap-names-initial",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "entity-screens-commit-without-parent-gap-names-initial",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/entity-screens-commit-without-parent-gap-names-initial.json",
+							"sha256": "75dae8b8aec54543cbb00f4a134fea28994363905de1dfdbd22a545bfab24c3a",
+							"bytes": 1056,
+							"capturedAt": "2026-11-20T14:23:08.759Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "entity-screens-commit-without-parent-gap-names-initial",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.entity-screens.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/test-examples-reports.function.entity-screens.test.ts-entity-screens-commit-without-parent-gap-names-initial.txt",
+							"sha256": "2e7c3149bb863e7bc9d28b0d15ad8e98c8afd8770d009c9d55c3b354533642f2",
+							"bytes": 431,
+							"capturedAt": "2026-11-20T14:23:08.762Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "entity-screens-commit-without-parent-gap-names-initial",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/test-examples-reports.function.entity-screens.test.ts-entity-screens-commit-without-parent-gap-names-initial.json",
+							"sha256": "7948f2cb9d0f1c9647fbbe5fd3dc87b2cd7efabb7554fd33e2f2399adecb45f7",
+							"bytes": 2066,
+							"capturedAt": "2026-11-20T14:23:08.762Z"
+						}
+					]
+				},
+				{
+					"id": "entity-screens-function-without-scenario-has-no-screenshot",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "entity-screens-function-without-scenario-has-no-screenshot",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/entity-screens-function-without-scenario-has-no-screenshot.json",
+							"sha256": "e0c505889302fda2971df2a9d5adafd03c83b0d5c7ecd63d369efc9e8825eed7",
+							"bytes": 461,
+							"capturedAt": "2026-11-20T14:23:08.759Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "entity-screens-function-without-scenario-has-no-screenshot",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.entity-screens.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/test-examples-reports.function.entity-screens.test.ts-entity-screens-function-without-scenario-has-no-screenshot.txt",
+							"sha256": "2e7c3149bb863e7bc9d28b0d15ad8e98c8afd8770d009c9d55c3b354533642f2",
+							"bytes": 431,
+							"capturedAt": "2026-11-20T14:23:08.762Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "entity-screens-function-without-scenario-has-no-screenshot",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/test-examples-reports.function.entity-screens.test.ts-entity-screens-function-without-scenario-has-no-screenshot.json",
+							"sha256": "ac01afc404b337802e1075b509459131740a35a2cb68d763100f48ff20bbfc9c",
+							"bytes": 2004,
+							"capturedAt": "2026-11-20T14:23:08.762Z"
+						}
+					]
+				},
+				{
+					"id": "entity-screens-missing-media-stays-a-gap-not-a-substitute",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "entity-screens-missing-media-stays-a-gap-not-a-substitute",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/entity-screens-missing-media-stays-a-gap-not-a-substitute.json",
+							"sha256": "c1650dcbfa9630d149286894757a535e74cc45fad7a5a254e4100d7317ac6a15",
+							"bytes": 858,
+							"capturedAt": "2026-11-20T14:23:08.759Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "entity-screens-missing-media-stays-a-gap-not-a-substitute",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.entity-screens.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/test-examples-reports.function.entity-screens.test.ts-entity-screens-missing-media-stays-a-gap-not-a-substitute.txt",
+							"sha256": "2e7c3149bb863e7bc9d28b0d15ad8e98c8afd8770d009c9d55c3b354533642f2",
+							"bytes": 431,
+							"capturedAt": "2026-11-20T14:23:08.762Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "entity-screens-missing-media-stays-a-gap-not-a-substitute",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/test-examples-reports.function.entity-screens.test.ts-entity-screens-missing-media-stays-a-gap-not-a-substitute.json",
+							"sha256": "67d3ba99c6984cb0838e7507a84746c377404b8379e7acff129db4cf6026ef00",
+							"bytes": 2193,
+							"capturedAt": "2026-11-20T14:23:08.762Z"
+						}
+					]
+				},
+				{
+					"id": "entity-screens-catalog-preview-exact-or-explicit-focused-fallback",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "entity-screens-catalog-preview-exact-or-explicit-focused-fallback",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/entity-screens-catalog-preview-exact-or-explicit-focused-fallback.json",
+							"sha256": "322bc27099c31bf31f43ffe77e4935d5e35933f66a75fc5381e4d1359a0dda65",
+							"bytes": 1507,
+							"capturedAt": "2026-11-20T14:23:08.759Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "entity-screens-catalog-preview-exact-or-explicit-focused-fallback",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.entity-screens.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/test-examples-reports.function.entity-screens.test.ts-entity-screens-catalog-preview-exact-or-explicit-focused-fallback.txt",
+							"sha256": "2e7c3149bb863e7bc9d28b0d15ad8e98c8afd8770d009c9d55c3b354533642f2",
+							"bytes": 431,
+							"capturedAt": "2026-11-20T14:23:08.762Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "entity-screens-catalog-preview-exact-or-explicit-focused-fallback",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/test-examples-reports.function.entity-screens.test.ts-entity-screens-catalog-preview-exact-or-explicit-focused-fallback.json",
+							"sha256": "cf30415943bb05a837b707c47bcfc5ca6fadb9c4fb7e6408ff38f4ae14fd16f7",
+							"bytes": 2125,
+							"capturedAt": "2026-11-20T14:23:08.762Z"
+						}
+					]
+				},
+				{
+					"id": "entity-screens-gallery-before-then-after-with-order",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "entity-screens-gallery-before-then-after-with-order",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/entity-screens-gallery-before-then-after-with-order.json",
+							"sha256": "72d6dba681b4f3d672936493a18e2b7be30960c5d20ab086d558b50cd5f54fa3",
+							"bytes": 3089,
+							"capturedAt": "2026-11-20T14:23:08.760Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "entity-screens-gallery-before-then-after-with-order",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.entity-screens.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/test-examples-reports.function.entity-screens.test.ts-entity-screens-gallery-before-then-after-with-order.txt",
+							"sha256": "2e7c3149bb863e7bc9d28b0d15ad8e98c8afd8770d009c9d55c3b354533642f2",
+							"bytes": 431,
+							"capturedAt": "2026-11-20T14:23:08.762Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "entity-screens-gallery-before-then-after-with-order",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-screens/examples/test-examples-reports.function.entity-screens.test.ts-entity-screens-gallery-before-then-after-with-order.json",
+							"sha256": "716282363a99b581c3a5a213c505b94899ad278bcec08f05e6fdf9df86005d71",
+							"bytes": 1931,
+							"capturedAt": "2026-11-20T14:23:08.762Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to reports.function.entity-screens: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}

@@ -1,0 +1,337 @@
+{
+	"schemaVersion": 1,
+	"record": "f30293358cddb37f5a29f4db626359c8ddd4bbd7ca1b21051bf4a0def9229b46",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "f7f1a5ca60f80d997928c2495c19f3705ac3973c2f42f6a4090d737ffb014206",
+			"bytes": 3346754,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/type-labels-drop-only-quoted-modules.json",
+			"sha256": "054db6c09434cade128e4a668cd82d0d0c8701b4142ed4bad80980bd433fbab3",
+			"bytes": 756,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/test-examples-reports.function.contract-fields.test.ts-type-labels-drop-only-quoted-modules.txt",
+			"sha256": "66207c06633b8dad0b7e6e12a7775f60915f8d6762a390f590d1ecdc717d5120",
+			"bytes": 431,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/test-examples-reports.function.contract-fields.test.ts-type-labels-drop-only-quoted-modules.json",
+			"sha256": "ab32d4155a18ae220bbe987e3596185d216fac7373b6ebee7bb89236708f7528",
+			"bytes": 784,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/declared-fields-keep-metadata.json",
+			"sha256": "b5ef326140502e27422bffce256bc9eb0ef9a6e38f765c207c805d3ee5b10a16",
+			"bytes": 840,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/test-examples-reports.function.contract-fields.test.ts-declared-fields-keep-metadata.txt",
+			"sha256": "66207c06633b8dad0b7e6e12a7775f60915f8d6762a390f590d1ecdc717d5120",
+			"bytes": 431,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/test-examples-reports.function.contract-fields.test.ts-declared-fields-keep-metadata.json",
+			"sha256": "9b51ccb1aec135c1b7d6f8b41d76514ecfa2d7bb0fe306f04d3921c8e10f4088",
+			"bytes": 1623,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/illustrative-and-missing-examples.json",
+			"sha256": "4686b6a0466499c024f1b640afc5b8b03e3c45d6c9df3111f3bf3caae85e0281",
+			"bytes": 1884,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/test-examples-reports.function.contract-fields.test.ts-illustrative-and-missing-examples.txt",
+			"sha256": "66207c06633b8dad0b7e6e12a7775f60915f8d6762a390f590d1ecdc717d5120",
+			"bytes": 431,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/test-examples-reports.function.contract-fields.test.ts-illustrative-and-missing-examples.json",
+			"sha256": "7a84538e09ccfdd5ee3b52cfe2c18a3feab4248d2ba29a87948959a06e44f2a5",
+			"bytes": 1996,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/declared-falsy-examples-are-kept.json",
+			"sha256": "52f0a16b01bb1700db1e25cc528c03b0d1edb38be234682cfe1d920ee7f392a2",
+			"bytes": 370,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/test-examples-reports.function.contract-fields.test.ts-declared-falsy-examples-are-kept.txt",
+			"sha256": "66207c06633b8dad0b7e6e12a7775f60915f8d6762a390f590d1ecdc717d5120",
+			"bytes": 431,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/test-examples-reports.function.contract-fields.test.ts-declared-falsy-examples-are-kept.json",
+			"sha256": "63c6a2d7c235893ba66622064f33b7d956a61644323fe91773aef01dfb106da7",
+			"bytes": 774,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/model-fields-take-optional-flags.json",
+			"sha256": "925a8f9995fbbe4babe859920c9decb2749a736ac5b1762ef7eeac93d3156758",
+			"bytes": 492,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/test-examples-reports.function.contract-fields.test.ts-model-fields-take-optional-flags.txt",
+			"sha256": "66207c06633b8dad0b7e6e12a7775f60915f8d6762a390f590d1ecdc717d5120",
+			"bytes": 431,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/test-examples-reports.function.contract-fields.test.ts-model-fields-take-optional-flags.json",
+			"sha256": "20a4195aa59d30ba854fb9b9530220f365f32ffaa9aecd169730d557cc888f39",
+			"bytes": 1589,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/callable-parameters-and-returns-keep-names.json",
+			"sha256": "ea197ca482a2d376fdb046982e210fc47afca877e519d5896de1fe14cbb06bef",
+			"bytes": 745,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/test-examples-reports.function.contract-fields.test.ts-callable-parameters-and-returns-keep-names.txt",
+			"sha256": "66207c06633b8dad0b7e6e12a7775f60915f8d6762a390f590d1ecdc717d5120",
+			"bytes": 431,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/test-examples-reports.function.contract-fields.test.ts-callable-parameters-and-returns-keep-names.json",
+			"sha256": "66276e75a06a7a2e724c395e29018081206d5730af5f287b8763f368d5d84578",
+			"bytes": 1896,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/void-callables-say-no-value.json",
+			"sha256": "eff4cd25ad359305a1a15264dc30077f13c265370266f4bfbc8e0147cf226415",
+			"bytes": 369,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/test-examples-reports.function.contract-fields.test.ts-void-callables-say-no-value.txt",
+			"sha256": "66207c06633b8dad0b7e6e12a7775f60915f8d6762a390f590d1ecdc717d5120",
+			"bytes": 431,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/test-examples-reports.function.contract-fields.test.ts-void-callables-say-no-value.json",
+			"sha256": "d284a11375aed76d9afe1fb3d6d9de90ecd002f82b62714bbb10f7199ec3deac",
+			"bytes": 1445,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/serializer-errors-reach-the-caller.json",
+			"sha256": "e2cae5831699d3305046fa9d1e9bc88d0ba2884f4462f870b03f36337474a2f4",
+			"bytes": 451,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/test-examples-reports.function.contract-fields.test.ts-serializer-errors-reach-the-caller.txt",
+			"sha256": "66207c06633b8dad0b7e6e12a7775f60915f8d6762a390f590d1ecdc717d5120",
+			"bytes": 431,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.contract-fields/examples/test-examples-reports.function.contract-fields.test.ts-serializer-errors-reach-the-caller.json",
+			"sha256": "04dafb3a2ea6561268b532eea5d87c518b71954a752761f02c622813607af5f9",
+			"bytes": 1260,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-desktop.png",
+			"sha256": "0e36c7dede8113512abf809c4d7f153075fc1a3bcd27c645a19c827f4ba456c8",
+			"bytes": 92874,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-flow.json",
+			"sha256": "64dbb61a8aa303fd3d75de1c509d403498ce01a354c238d85184703820881e93",
+			"bytes": 939,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-checks.json",
+			"sha256": "fbbca6947c924cc00b7586ba55c5fd1a5bafdf8581bab3123996a1d17e63ca46",
+			"bytes": 456,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-tablet.png",
+			"sha256": "d9796d819e4a60fec2292e19942293ba65c2e59a20c11be80ca9f638e4853c95",
+			"bytes": 80393,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-mobile.png",
+			"sha256": "f6218f0669d2ebcb2689aa0741666544d7f6a28600692f95ec42be2ace7133fe",
+			"bytes": 58175,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-commit-desktop.png",
+			"sha256": "1d598d53c7faab119e22b569093232483ea6fbc60136f1caa2babf288ceece93",
+			"bytes": 93668,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-commit-flow.json",
+			"sha256": "7c3ae7f1dd72bcc3bbb4c4773f6a09f6919cf2e41d053ba7f6b70b834f8a0127",
+			"bytes": 1050,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-commit-checks.json",
+			"sha256": "fbbca6947c924cc00b7586ba55c5fd1a5bafdf8581bab3123996a1d17e63ca46",
+			"bytes": 456,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-commit-tablet.png",
+			"sha256": "60150b688f1cb1a6ce19807884820add40c06b0a50f5df688d11298b53615271",
+			"bytes": 80844,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-commit-mobile.png",
+			"sha256": "3dc0ddaed5456d28e516c90320a88471491ad2a57cb2ed671fb9d8ada152ae61",
+			"bytes": 58325,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-example-desktop.png",
+			"sha256": "0cbfa7eae0d8b6d1f5bc07cef1eac3b3ccb5257dfdbe9b072fd0b9513b789f90",
+			"bytes": 92814,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-example-flow.json",
+			"sha256": "23d8f6e73c79f5efaa9f0a20cb6baf3a4a0f7cc2d319e2c4ff12b7556a5826a3",
+			"bytes": 943,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-example-checks.json",
+			"sha256": "fbbca6947c924cc00b7586ba55c5fd1a5bafdf8581bab3123996a1d17e63ca46",
+			"bytes": 456,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-example-tablet.png",
+			"sha256": "d3870111745353a5588448d591eb59510f98a73acf0b653e3af48c19756dd737",
+			"bytes": 77631,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-example-mobile.png",
+			"sha256": "6e7e3519d423c9142fef8e1146330604158d47511da71fa49060e73ad3f791c2",
+			"bytes": 55315,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-example-commit-desktop.png",
+			"sha256": "8ed6f5f7623f64e15fb85b14a0c96f0b16b82fff4925f8f2c7e0678340b90e1a",
+			"bytes": 93513,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-example-commit-flow.json",
+			"sha256": "34d34e10b689460947d1685c73b1532aefdb5d0b57b2815236885019bf78ba8e",
+			"bytes": 1054,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-example-commit-checks.json",
+			"sha256": "fbbca6947c924cc00b7586ba55c5fd1a5bafdf8581bab3123996a1d17e63ca46",
+			"bytes": 456,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-example-commit-tablet.png",
+			"sha256": "72b948439ca84611f880d0452696c1f12d642f1d8cde4f7a267043282ecccede",
+			"bytes": 78294,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/harness-console/evidence/contract-example-commit-mobile.png",
+			"sha256": "b2b5cb5f41c4466cc7542afe48cfb1aab18606aafa6e833147ffc8218499c5fe",
+			"bytes": 55361,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "logs/examples-reports.function.contract-fields-examples.log",
+			"sha256": "66207c06633b8dad0b7e6e12a7775f60915f8d6762a390f590d1ecdc717d5120",
+			"bytes": 431,
+			"storage": "git"
+		},
+		{
+			"path": "logs/harness-console-evidence.log",
+			"sha256": "ba2aaa0574d15414862104410ebb742911eae5c2ecbb9a455c12d19787094157",
+			"bytes": 41016,
+			"storage": "git"
+		}
+	]
+}

@@ -1,0 +1,20 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.thread-run",
+	"symbol": "createThreadRunStore",
+	"cases": [
+		{
+			"name": "createThreadRunStore",
+			"input": null,
+			"output": {
+				"distinct": true,
+				"runId": "",
+				"status": "",
+				"streaming": "",
+				"error": "",
+				"active": false
+			}
+		}
+	]
+}

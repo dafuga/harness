@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-reading",
+	"symbol": "explorerReading",
+	"cases": [
+		{
+			"name": "declared runs with other times and pids",
+			"input": {
+				"mode": "commit",
+				"before": {
+					"input": [
+						"  Hello World  "
+					],
+					"output": [
+						"hello world"
+					],
+					"harnessRun": {
+						"version": 1,
+						"startedAt": "2026-10-10T10:00:00Z",
+						"durationMs": 12,
+						"pid": 41
+					},
+					"trace": [
+						{
+							"call": "slugify",
+							"harnessRun": {
+								"version": 1,
+								"at": 1
+							}
+						}
+					]
+				},
+				"after": {
+					"input": [
+						"  Hello World  "
+					],
+					"output": [
+						"hello world"
+					],
+					"harnessRun": {
+						"version": 1,
+						"startedAt": "2026-10-11T09:00:00Z",
+						"durationMs": 7,
+						"pid": 97
+					},
+					"trace": [
+						{
+							"call": "slugify",
+							"harnessRun": {
+								"version": 1,
+								"at": 9
+							}
+						}
+					]
+				}
+			},
+			"output": {
+				"summary": "unchanged",
+				"reason": null,
+				"change": "unchanged",
+				"differences": [],
+				"beforeRead": {
+					"output": [
+						"hello world"
+					],
+					"verified": true,
+					"problem": null
+				},
+				"afterRead": {
+					"output": [
+						"hello world"
+					],
+					"verified": true,
+					"problem": null
+				}
+			}
+		}
+	]
+}

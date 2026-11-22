@@ -1,0 +1,148 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.adapter.electron-environment",
+	"symbol": "connect",
+	"cases": [
+		{
+			"name": "connect with status not a function",
+			"input": {
+				"missing": "status"
+			},
+			"output": {
+				"kind": "electron",
+				"local": true,
+				"bridge": {
+					"label": "fixture-bridge"
+				},
+				"host": null
+			}
+		},
+		{
+			"name": "connect with enable not a function",
+			"input": {
+				"missing": "enable"
+			},
+			"output": {
+				"kind": "electron",
+				"local": true,
+				"bridge": {
+					"label": "fixture-bridge"
+				},
+				"host": null
+			}
+		},
+		{
+			"name": "connect with disable not a function",
+			"input": {
+				"missing": "disable"
+			},
+			"output": {
+				"kind": "electron",
+				"local": true,
+				"bridge": {
+					"label": "fixture-bridge"
+				},
+				"host": null
+			}
+		},
+		{
+			"name": "connect with createPairing not a function",
+			"input": {
+				"missing": "createPairing"
+			},
+			"output": {
+				"kind": "electron",
+				"local": true,
+				"bridge": {
+					"label": "fixture-bridge"
+				},
+				"host": null
+			}
+		},
+		{
+			"name": "connect with closePairing not a function",
+			"input": {
+				"missing": "closePairing"
+			},
+			"output": {
+				"kind": "electron",
+				"local": true,
+				"bridge": {
+					"label": "fixture-bridge"
+				},
+				"host": null
+			}
+		},
+		{
+			"name": "connect with approvePairing not a function",
+			"input": {
+				"missing": "approvePairing"
+			},
+			"output": {
+				"kind": "electron",
+				"local": true,
+				"bridge": {
+					"label": "fixture-bridge"
+				},
+				"host": null
+			}
+		},
+		{
+			"name": "connect with denyPairing not a function",
+			"input": {
+				"missing": "denyPairing"
+			},
+			"output": {
+				"kind": "electron",
+				"local": true,
+				"bridge": {
+					"label": "fixture-bridge"
+				},
+				"host": null
+			}
+		},
+		{
+			"name": "connect with revokeDevice not a function",
+			"input": {
+				"missing": "revokeDevice"
+			},
+			"output": {
+				"kind": "electron",
+				"local": true,
+				"bridge": {
+					"label": "fixture-bridge"
+				},
+				"host": null
+			}
+		},
+		{
+			"name": "connect with onStatus not a function",
+			"input": {
+				"missing": "onStatus"
+			},
+			"output": {
+				"kind": "electron",
+				"local": true,
+				"bridge": {
+					"label": "fixture-bridge"
+				},
+				"host": null
+			}
+		},
+		{
+			"name": "connect with no harnessRemote at all",
+			"input": {
+				"harnessRemote": "absent"
+			},
+			"output": {
+				"kind": "electron",
+				"local": true,
+				"bridge": {
+					"label": "fixture-bridge"
+				},
+				"host": null
+			}
+		}
+	]
+}

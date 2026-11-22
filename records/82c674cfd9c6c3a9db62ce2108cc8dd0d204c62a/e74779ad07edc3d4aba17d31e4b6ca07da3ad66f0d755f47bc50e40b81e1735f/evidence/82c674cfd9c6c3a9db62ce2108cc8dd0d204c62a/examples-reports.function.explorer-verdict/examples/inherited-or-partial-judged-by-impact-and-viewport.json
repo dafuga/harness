@@ -1,0 +1,50 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-verdict",
+	"symbol": "explorerVerdict",
+	"cases": [
+		{
+			"name": "inherited from an origin this commit does not affect",
+			"input": {
+				"unit": "reports.function.explorer-verdict",
+				"impact": "unaffected"
+			},
+			"output": {
+				"passed": true,
+				"label": "Full coverage passed",
+				"reasons": []
+			}
+		},
+		{
+			"name": "inherited from an origin this commit affects",
+			"input": {
+				"unit": "reports.function.explorer-verdict",
+				"impact": "affected"
+			},
+			"output": {
+				"passed": false,
+				"label": "Evidence stale",
+				"reasons": [
+					"Titles page was inherited from bbbbbbb, but this commit affects it."
+				]
+			}
+		},
+		{
+			"name": "one viewport of a required state only",
+			"input": {
+				"unit": "reports.function.explorer-verdict",
+				"viewports": [
+					"desktop"
+				]
+			},
+			"output": {
+				"passed": false,
+				"label": "Coverage incomplete",
+				"reasons": [
+					"No capture of Titles page: empty at mobile."
+				]
+			}
+		}
+	]
+}

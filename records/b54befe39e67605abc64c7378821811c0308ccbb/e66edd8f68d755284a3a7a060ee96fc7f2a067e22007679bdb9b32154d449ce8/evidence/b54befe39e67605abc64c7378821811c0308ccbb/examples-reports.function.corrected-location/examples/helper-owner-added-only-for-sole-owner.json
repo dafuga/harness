@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.corrected-location",
+	"symbol": "correctedLocation",
+	"cases": [
+		{
+			"name": "one listed owner of the helper",
+			"input": {
+				"branch": "feat/x",
+				"commit": null,
+				"category": "functions",
+				"helper": "formatDuration",
+				"tab": "examples"
+			},
+			"output": {
+				"branch": "feat/x",
+				"commit": null,
+				"category": "functions",
+				"helper": "formatDuration",
+				"tab": "examples",
+				"entity": "function.duration"
+			}
+		},
+		{
+			"name": "no listed owner of the helper",
+			"input": {
+				"branch": "feat/x",
+				"commit": null,
+				"category": "functions",
+				"helper": "formatDuration",
+				"tab": "examples"
+			},
+			"output": null
+		},
+		{
+			"name": "two listed owners of the helper",
+			"input": {
+				"branch": "feat/x",
+				"commit": null,
+				"category": "functions",
+				"helper": "formatDuration",
+				"tab": "examples"
+			},
+			"output": null
+		},
+		{
+			"name": "sole owner at a commit",
+			"input": {
+				"branch": "feat/x",
+				"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"category": "functions",
+				"helper": "formatDuration",
+				"tab": "examples"
+			},
+			"output": {
+				"branch": "feat/x",
+				"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"category": "functions",
+				"helper": "formatDuration",
+				"tab": "examples",
+				"entity": "function.other-duration"
+			}
+		}
+	]
+}

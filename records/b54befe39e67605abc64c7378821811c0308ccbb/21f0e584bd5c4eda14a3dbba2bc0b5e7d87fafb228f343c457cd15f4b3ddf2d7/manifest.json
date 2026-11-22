@@ -1,0 +1,186 @@
+{
+	"schemaVersion": 1,
+	"record": "21f0e584bd5c4eda14a3dbba2bc0b5e7d87fafb228f343c457cd15f4b3ddf2d7",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "91d3fb53f5cd75b9547da793b796a2662af04929cb144729dc79bd6dd2678bc9",
+			"bytes": 500887,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/browser-error-evidence/desktop/browser-errors-desktop-desktop.png",
+			"sha256": "39833f82c58fdb65cf763c5a06053a5ef149668b571ea9ff902ad104e3da62e6",
+			"bytes": 1915484,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/browser-error-evidence/desktop/browser-errors-desktop-mobile.png",
+			"sha256": "9947d084b275a759667454f640ada8cf2283dc830ba0ef67fec51a20dc2137b5",
+			"bytes": 1057058,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/browser-error-evidence/console/browser-errors-console-desktop.png",
+			"sha256": "b0ed2c6afa802028238c1aa8c5bbfbe9a7cd766826f81036edf7e84df0502ca6",
+			"bytes": 101678,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/browser-error-evidence/console/browser-errors-console-mobile.png",
+			"sha256": "bb7452ed0d4af0ed9e32b61066c4af2051489dcfc96abb02d594ab9ad8fb76fa",
+			"bytes": 91232,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.read-browser-diagnostics/examples/returns-an-empty-result-when-the-file-is-absent-or-blank.json",
+			"sha256": "e24be8a05b8ead1d666037b6787dc0df5e7df9ad054bf3d741f8740d10e068cb",
+			"bytes": 505,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.read-browser-diagnostics/examples/test-examples-function.read-browser-diagnostics.test.ts-returns-an-empty-result-when-the-file-is-absent-or-blank.txt",
+			"sha256": "6c6924a3aad3820eb929ccd74cc79506135807f8b577346730da35ad6581cb16",
+			"bytes": 415,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.read-browser-diagnostics/examples/test-examples-function.read-browser-diagnostics.test.ts-returns-an-empty-result-when-the-file-is-absent-or-blank.json",
+			"sha256": "5f9a2207abfe2af1804a6d609e2723311f03751b5be95a0acff2c435b9ff70cf",
+			"bytes": 1059,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.read-browser-diagnostics/examples/parses-each-nonblank-diagnostic-line-in-order.json",
+			"sha256": "3570d0801f1324cd36240f7c84122a0341d76896ef5b273d648ad1a977fc3ecc",
+			"bytes": 2160,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.read-browser-diagnostics/examples/test-examples-function.read-browser-diagnostics.test.ts-parses-each-nonblank-diagnostic-line-in-order.txt",
+			"sha256": "6c6924a3aad3820eb929ccd74cc79506135807f8b577346730da35ad6581cb16",
+			"bytes": 415,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.read-browser-diagnostics/examples/test-examples-function.read-browser-diagnostics.test.ts-parses-each-nonblank-diagnostic-line-in-order.json",
+			"sha256": "12d582ae4441785efbc9568d3d4f4570c66333cc4e1f4922ce9a77716029c845",
+			"bytes": 1715,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.read-browser-diagnostics/examples/returns-a-failure-for-a-nonregular-or-symlinked-entry.json",
+			"sha256": "4bc3245f160a20d7c31e4726300443d7ad3271ca6083cc06e85d1336e0af204d",
+			"bytes": 590,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.read-browser-diagnostics/examples/test-examples-function.read-browser-diagnostics.test.ts-returns-a-failure-for-a-nonregular-or-symlinked-entry.txt",
+			"sha256": "6c6924a3aad3820eb929ccd74cc79506135807f8b577346730da35ad6581cb16",
+			"bytes": 415,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.read-browser-diagnostics/examples/test-examples-function.read-browser-diagnostics.test.ts-returns-a-failure-for-a-nonregular-or-symlinked-entry.json",
+			"sha256": "61d8b4d42e3413be9fa6323782b9abd8b9ea1ce785d13b742c34b203d0258133",
+			"bytes": 1128,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.read-browser-diagnostics/examples/enforces-the-2000000-byte-limit-exactly.json",
+			"sha256": "4e09b803e2b9520b4e3d259334d484540cff75d465acd4e1d57e73e4e7c1f7c3",
+			"bytes": 852,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.read-browser-diagnostics/examples/test-examples-function.read-browser-diagnostics.test.ts-enforces-the-2000000-byte-limit-exactly.txt",
+			"sha256": "6c6924a3aad3820eb929ccd74cc79506135807f8b577346730da35ad6581cb16",
+			"bytes": 415,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.read-browser-diagnostics/examples/test-examples-function.read-browser-diagnostics.test.ts-enforces-the-2000000-byte-limit-exactly.json",
+			"sha256": "2b76b9efc482fa0474f6bf0b1582deeb6e696eff9b5980c2ad00db44738f385c",
+			"bytes": 1484,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.read-browser-diagnostics/examples/returns-a-failure-without-partial-records.json",
+			"sha256": "10b628744cc70362bf5a08443faca0660684c254b7e500a3a7b9b17927b4bdc6",
+			"bytes": 1918,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.read-browser-diagnostics/examples/test-examples-function.read-browser-diagnostics.test.ts-returns-a-failure-without-partial-records.txt",
+			"sha256": "6c6924a3aad3820eb929ccd74cc79506135807f8b577346730da35ad6581cb16",
+			"bytes": 415,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.read-browser-diagnostics/examples/test-examples-function.read-browser-diagnostics.test.ts-returns-a-failure-without-partial-records.json",
+			"sha256": "78088b1eb82b8742c3dd875774601d4ea9edba0752751e20c3ecef0857d21073",
+			"bytes": 1720,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-function.read-browser-diagnostics-examples.log",
+			"sha256": "6c6924a3aad3820eb929ccd74cc79506135807f8b577346730da35ad6581cb16",
+			"bytes": 415,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-console.log",
+			"sha256": "2adacead43f8ce281909132aeb5936659f89eefc4c8335f24b4d61d26b864baa",
+			"bytes": 497,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-persistence.log",
+			"sha256": "2e7989c5bf7f9bd70554bdbe4c461b991a8ad0ebd9289a845ff372ac9fa9610e",
+			"bytes": 958,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-classification.log",
+			"sha256": "14e2744e95c634732696111c4c0dd5343e5a09020b54490b7a44bd5d7cda5fe5",
+			"bytes": 389,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-hosted.log",
+			"sha256": "a87e0bfcabd3f7c2dc50ce747fb1b90f007517fad68ca8ec36f7ca684e234386",
+			"bytes": 452,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-desktop.log",
+			"sha256": "e5eaf0aac79e0a14d893029929f502c591ba8df9570c6188951a5230e8b1a53c",
+			"bytes": 219,
+			"storage": "git"
+		}
+	]
+}

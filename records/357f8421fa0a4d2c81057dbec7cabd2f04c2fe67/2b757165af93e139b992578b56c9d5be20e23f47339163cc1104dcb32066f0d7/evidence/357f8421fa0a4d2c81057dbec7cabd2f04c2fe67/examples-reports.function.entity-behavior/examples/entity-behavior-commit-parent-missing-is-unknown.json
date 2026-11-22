@@ -1,0 +1,47 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-behavior",
+	"symbol": "entityBehavior",
+	"cases": [
+		{
+			"name": "missing parent is unknown",
+			"input": {
+				"parent": "empty"
+			},
+			"output": {
+				"label": "Behavior unknown",
+				"recorded": true,
+				"passed": true,
+				"unknown": true,
+				"groups": [
+					[
+						"order-filter",
+						"match",
+						"missing",
+						"passed"
+					],
+					[
+						"order-filter",
+						"no-match",
+						"missing",
+						"passed"
+					]
+				],
+				"reasons": [
+					"No verification record is attached to this commit."
+				]
+			}
+		},
+		{
+			"name": "missing side is a null capture",
+			"input": {
+				"side": "before"
+			},
+			"output": {
+				"outcome": "missing",
+				"capture": null
+			}
+		}
+	]
+}

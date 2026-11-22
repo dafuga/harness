@@ -1,0 +1,18 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.3R4C0V/tmp/harness-snapshot-veR31D
+
+ ✓ test/services/agents-providers/module-task.test.ts (8 tests) 3752ms
+   ✓ admission rejects missing contracts, unknown modules and mutable task identities  407ms
+   ✓ retry preserves abandoned claims and refuses to steal an active owner  682ms
+   ✓ API quotes use versioned rates and preserve unknown models (claude-haiku-5-5, 100 input)  545ms
+   ✓ API quotes use versioned rates and preserve unknown models (claude-haiku-5-5, 100001 input)  531ms
+   ✓ API quotes use versioned rates and preserve unknown models (gpt-6.1-sol, 100 input)  524ms
+   ✓ API quotes use versioned rates and preserve unknown models (gpt-6-astra, 100 input)  537ms
+   ✓ API quotes use versioned rates and preserve unknown models (unpriced-model, 100 input)  517ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  23:51:55
+   Duration  4.74s (transform 474ms, setup 141ms, collect 578ms, tests 3.75s, environment 0ms, prepare 34ms)
+
+JSON report written to /tmp/z5jp8p-hl.3R4C0V/tmp/harness-runner-OdZKxr/report.json

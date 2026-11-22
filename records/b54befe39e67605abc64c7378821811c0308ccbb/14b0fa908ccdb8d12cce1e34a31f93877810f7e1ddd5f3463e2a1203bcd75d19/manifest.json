@@ -1,0 +1,270 @@
+{
+	"schemaVersion": 1,
+	"record": "14b0fa908ccdb8d12cce1e34a31f93877810f7e1ddd5f3463e2a1203bcd75d19",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "fdbf6a6971f96f61220e08f7f076f6b6885427ae7a14e66e4c819144192c2a40",
+			"bytes": 42444,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.scan-notice/examples/maps-each-known-scan-failure-code-to-its-notice.json",
+			"sha256": "0c65118d504e6be4310bb8af011f45b500ae5c8710b72abe91bcac4ee4a9e59c",
+			"bytes": 573,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.scan-notice/examples/test-examples-desktop.function.scan-notice.test.ts-maps-each-known-scan-failure-code-to-its-notice.txt",
+			"sha256": "2aa0d4c32c73cdde774031695f125e5e4b8eb1906de32486e7863438f35589a5",
+			"bytes": 425,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.scan-notice/examples/test-examples-desktop.function.scan-notice.test.ts-maps-each-known-scan-failure-code-to-its-notice.json",
+			"sha256": "a2dca7b900b1e1955865919c3b7bfba0b5f36b7b04cf6895e6cb2f7767d1041a",
+			"bytes": 1307,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.scan-notice/examples/passes-unrecognized-causes-through-as-their-string-form.json",
+			"sha256": "bab2b18845445924cd64d8840dd290736ada904795210095cc10d44bb3d8a7d8",
+			"bytes": 730,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.scan-notice/examples/test-examples-desktop.function.scan-notice.test.ts-passes-unrecognized-causes-through-as-their-string-form.txt",
+			"sha256": "2aa0d4c32c73cdde774031695f125e5e4b8eb1906de32486e7863438f35589a5",
+			"bytes": 425,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.scan-notice/examples/test-examples-desktop.function.scan-notice.test.ts-passes-unrecognized-causes-through-as-their-string-form.json",
+			"sha256": "ed2aa1dec7554caaa3e1d1add58ce0afd601a2c8efecec751cf2b020ccd6e74b",
+			"bytes": 2551,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.scan-notice/examples/publishes-the-known-codes-and-the-naming-instruction.json",
+			"sha256": "fe53b67c149ae8b868cac81ccccc970d851c8df6b911926a38975674626142d8",
+			"bytes": 575,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.scan-notice/examples/test-examples-desktop.function.scan-notice.test.ts-publishes-the-known-codes-and-the-naming-instruction.txt",
+			"sha256": "2aa0d4c32c73cdde774031695f125e5e4b8eb1906de32486e7863438f35589a5",
+			"bytes": 425,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.scan-notice/examples/test-examples-desktop.function.scan-notice.test.ts-publishes-the-known-codes-and-the-naming-instruction.json",
+			"sha256": "4939a97f9b5bdfeadf66750c8356764b263847dcb534ecace89e12090a141e1d",
+			"bytes": 1287,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/tests-e2e-ui-remote-phone.spec.ts-phone-interaction.txt",
+			"sha256": "7d25a4ae73fd1a34cb61accb981f3b3d9289d87c504b2360cf2a562554ff9582",
+			"bytes": 223,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/tests-e2e-ui-remote-host.spec.ts-desktop-interaction.txt",
+			"sha256": "8406a863ce329c867e0d9d783daae6f134b84f10940c1f94a3e5134993605d0c",
+			"bytes": 225,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/cache/tests-e2e-ui-remote-cache.spec.ts-cached-interaction.txt",
+			"sha256": "a03433796ad14e44c3dae8d9f0b217788a85fc848316b1c81d182d3ab38b5a46",
+			"bytes": 219,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/tests-e2e-ui-remote-scan.spec.ts-scan-interaction.txt",
+			"sha256": "f91bdfb37407cc607d43f34d2cb43397a09bab475fef15bcc319df2b32757913",
+			"bytes": 216,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-start-mobile.png",
+			"sha256": "c59fac5b4a5e12c80aa933698148d945b9d8a6a2afa646b4e9687500d21f5243",
+			"bytes": 30657,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-pending-mobile.png",
+			"sha256": "417bded7731b74bdba96642ad885ee3aa2fc30342183f751026bf24ca4ef9e64",
+			"bytes": 29549,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/remote-phone-scan-denied-mobile.png",
+			"sha256": "4797ee3ecc8a43cb7c4bff6beda0967d4d04353ac311c6bbdb04341c3b25c30a",
+			"bytes": 36064,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/remote-phone-scan-cancelled-mobile.png",
+			"sha256": "d17200ff2a0257df1e83835920d8fbd3d4ebb6ce229827e5b6b1d989999a4b1b",
+			"bytes": 34124,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/remote-phone-scan-invalid-mobile.png",
+			"sha256": "6df51d903234cd2553627072b97a65571f89e685b7a4ffbf57cb8cdbe951a526",
+			"bytes": 36816,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/remote-phone-scan-expired-mobile.png",
+			"sha256": "8d4d3583ee7c0823f4c3b6732b2f609e611d412c11bca3fcfa80b4795c042f47",
+			"bytes": 36513,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-connected-mobile.png",
+			"sha256": "e1d84f3e0a906f3736e51588b593fc5435c75ed5b2346b41be41afae6af437f9",
+			"bytes": 36602,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-workspace-mobile.png",
+			"sha256": "479cefe5487a4f2da84d8e2e85776fc68959c9f423e13c18874ded008f19172a",
+			"bytes": 50080,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-offline-mobile.png",
+			"sha256": "035f145d05105492a510e7a58315c31e4695a60cc533ce98872ef9d0b973c778",
+			"bytes": 40852,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-revoked-mobile.png",
+			"sha256": "d40cf1c8e1008b5b6c44986655137cceef32fad9006121ffe54db29fd595c9d6",
+			"bytes": 30369,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-start-desktop.png",
+			"sha256": "b27c687679ab6fd59625490d809df827875aa9eb4fcf791c7a45c866a0b770a1",
+			"bytes": 85135,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-approval-desktop.png",
+			"sha256": "85c254efaf815c735df67efcaaa1cdb0ed4822339298236ca67c13fd206c1472",
+			"bytes": 101853,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-access-desktop.png",
+			"sha256": "59d9e16b40d08d2f7c5931c51153f66ca22e5eb39d3fa3f9e417ee01d4283506",
+			"bytes": 69142,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-code-hidden-desktop.png",
+			"sha256": "6f58c60465e249dfd66fd3d75bc7c1bea809a791c943e4c559eb0f61ccc3e90b",
+			"bytes": 91112,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-code-expired-desktop.png",
+			"sha256": "e1bff879d915a8b893451b016742ec4e81f6b85f96b59ac076b8394b2fcfecd9",
+			"bytes": 93975,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/tablet/tests-e2e-ui-remote-tablet.spec.ts-tablet-interaction.txt",
+			"sha256": "13ad24e4a508f1768c947521ca3cd2767513d6a04592555a5046529f18fb4a67",
+			"bytes": 221,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/tablet/remote-tablet-phone-workspace-tablet.png",
+			"sha256": "589be95b668407e73d7dc90ba3408bf619d7f1e439ab9f9541617bf2c1fcda31",
+			"bytes": 58699,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/tablet/remote-tablet-desktop-approval-tablet.png",
+			"sha256": "cb334aefe6765feeda18a256891c623271003f43b724dd71435d7b862fe4c55b",
+			"bytes": 103101,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "logs/remote-mobile-ui-cache.log",
+			"sha256": "a03433796ad14e44c3dae8d9f0b217788a85fc848316b1c81d182d3ab38b5a46",
+			"bytes": 219,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-mobile-ui-host.log",
+			"sha256": "8406a863ce329c867e0d9d783daae6f134b84f10940c1f94a3e5134993605d0c",
+			"bytes": 225,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-mobile-ui-phone.log",
+			"sha256": "7d25a4ae73fd1a34cb61accb981f3b3d9289d87c504b2360cf2a562554ff9582",
+			"bytes": 223,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-mobile-ui-scan.log",
+			"sha256": "f91bdfb37407cc607d43f34d2cb43397a09bab475fef15bcc319df2b32757913",
+			"bytes": 216,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-mobile-ui-tablet.log",
+			"sha256": "13ad24e4a508f1768c947521ca3cd2767513d6a04592555a5046529f18fb4a67",
+			"bytes": 221,
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-desktop.function.scan-notice-examples.log",
+			"sha256": "2aa0d4c32c73cdde774031695f125e5e4b8eb1906de32486e7863438f35589a5",
+			"bytes": 425,
+			"storage": "git"
+		}
+	]
+}

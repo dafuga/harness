@@ -1,0 +1,3728 @@
+{
+	"id": "51974970834a48717eaa111e11ba53f73db67b7abea39713409df71dc6a8c025",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/Users/danielfugere/projects/harness-z5jp8p",
+	"source": {
+		"commit": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+		"tree": "38ec8c752651564f2a570e33fd19855abade1162",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-19T20:05:36.211Z",
+	"finishedAt": "2026-11-19T20:06:52.719Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "reports.component.entity-contract",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "571a6903788740f86b123b0bf296af88eddd685f43d9932b40fa9c27ad224a8e",
+			"source": "00196965896ec6fc6bcfeba4a8a2d55ca9e4108e35967c476c9e6f8d6d4f89c3",
+			"contract": "dbf5156eb141b7c2f52c1765d6382c294b62ca6a557e3b4630aa866639d1b5ba",
+			"runtime": "86b1d430f3fb421ca5abf424d78759f2e11ed2d91f53b8929eec9a80378a3ded",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-contract/EntityContract.svelte",
+					"hash": "4d06c86a1aaa33660c8bbf53b125168c43ae0685"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-contract/entityContract.css",
+					"hash": "8ab3141b830aabcc7aee47075910a5218b7b296f"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-module-card",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "010ed0f0d309c236275ee014027f7a3c7d21bf8656940f7712bb46d05b67fef4",
+			"source": "6b09eddcc41e46cf5c74b248333203faf489da085e0509016bb017193c9626eb",
+			"contract": "17f5853397c45f736ace220ad2566eb6c2a0c8ba7d6ae4db192bff1bb22270d8",
+			"runtime": "1dc5576710ca90b5080c2407e3e33108db2405f6802cf7c9b7cfe156bacb7f47",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/ExplorerModuleCard.svelte",
+					"hash": "45c82584d25a5f0ebb3a0b7b57fdc4b25955ac78"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/explorerModuleCard.css",
+					"hash": "e709404775c693ad78047267e4bc7e3817560e1e"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "011e19d9b11ff9a109f1097533c1f9e04ca25850171b5b892d86dc0e4ff217dd",
+			"source": "894e18a0e3149f14ed95f65025c2873a561bc1bea46206e3dda6bfe61a8ad1cc",
+			"contract": "21c061b07274954d6a6b1fb38abd6119cc9618c58587bf9ea165ce7282d61bf9",
+			"runtime": "11f8917dd88653dfd066a32dc5867dc7d89ee614e4a373d3f3d99d185a14e43b",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/EntityHeader.svelte",
+					"hash": "fe91cd6961aa344087476feff921f10390f07470"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/EntityHeader.types.ts",
+					"hash": "3ee4814ee2da2a89d96f58d3dba8aa84a05c3069"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "b0d2899c7c61b388e38945dafbd80e0774dff4fccb3d450b175bc29dc010ffe9",
+			"source": "bed098cd9cca7b9d967eaba1f987fd45d3da4417681d712f1e3103630d0d0f65",
+			"contract": "8d84fea84a4b765f8fa970f49d1699d651d1c1c70b6ea3bdacb6eca25b3db70a",
+			"runtime": "76014f1f3d652d62e9524c1106494469ab38737ac54486a025ea5bbfcab194a8",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-relations/EntityRelations.svelte",
+					"hash": "d6a6d4c6b1846777babe8a75bcecc0a35d6f4915"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "7bd082bc8d272b8e175b53b9c3f334c27091b85ae1932cb59df71774893c9349",
+			"source": "5a11804e5670322c19d70ae021113c41427a30dd73c4a45ef27eae1f7000e2e1",
+			"contract": "949c6e2d779765c492b69d57a289efc05246f7810161c34d0c1dae441e53108a",
+			"runtime": "66f31c04f000845dc8afca87fd76a2f90bd3687b02bb25fc011826f618f835fc",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte",
+					"hash": "e8559fc06e423e542652a794d66907267c479637"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-explorer-catalog-screen",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "0943153df0862e7a90045d405a9ec5e1cf4303568a977652545a3d53b858a0eb",
+			"source": "29e08d42010607f7b2cea5a199e3b146fbf8c26a437d256085575de21ecb5942",
+			"contract": "ac2cf37f9455182fcb7fb29f9cef026d926ebcc62c09e70984237c9cd8b56ff2",
+			"runtime": "813c8f80e1dfd8d1631c6f4f87841b3391aa9451ff383a0d86b2c759860a867b",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/ExplorerCatalogScreen.svelte",
+					"hash": "fc864b8e0b2be201a50d1e23cfac13e02f13416a"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-explorer-content",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "b27861bf2f2f9d561990230779b19e0813e13770aba0a9ff380c2fafdafd24b5",
+			"source": "395152af5e05e6e0956b2cb47c580f684947dc1e37c2b410925dc6d0f2f6746a",
+			"contract": "ac3d81204469091f25b1faf548f859111ed7a015e3dfb0852468bd8d9f41c940",
+			"runtime": "a61e8ce182b231796af076181ca56bad8e3ae404d509149912da7c243f65215b",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/ExplorerContent.svelte",
+					"hash": "d59402f34aa30ea6aa5c16991100adf4371edcb4"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/ExplorerContent.types.ts",
+					"hash": "6360fb66db463c4d43ddc6ab15766ebd45fe6a5a"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-explorer-index",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "db866b607b75d06dcecca1ae227c9933b5e3fa6267da3849b22a47e504cc9756",
+			"source": "235f0a3ca0e84757f5b31d3c6a728cd6c82a5b1da6e9656fd0cf91f9cd454646",
+			"contract": "31b95d4c2acb21f4e6ef220dad7aa3ed90793b7bcf7054fea69c2c4794fd07fa",
+			"runtime": "fcaa5151b516f65826c424a5cf3d8be62a9886ce532bb425b7e1376bc92f2ed9",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte",
+					"hash": "a9923e5b75b124ba8c424aa77aa292cb009f1ff0"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/explorer-index/catalogGroups.ts",
+					"hash": "2307b93b6ea00ec6dd632e4277ff96a12e06294f"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/explorer-index/catalogGroups.types.ts",
+					"hash": "14348ec246390cf2306d5c7cf15f98ef1079d4c6"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "bb0357362b5ee170bfa7a1bc10f3e03ef057e9e6c40fd1cd5d6909c30a1e2f5b",
+			"source": "c78db97ea87ce2fee82000816c28d93f7980047e804581976b3aeab8c6e5f28f",
+			"contract": "9f21ac86935c4fe65962d75d62357e724d0be880325fbc311ac155776c690cae",
+			"runtime": "1d1be97a85d725c67a2abc47ae66a6c0fb5535745925ba3a247b092eb95043b4",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte",
+					"hash": "3028589f0f68de46dc367f65ab86a6030a51a077"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "ffaa099717703ed080728be18a5c4677936557162019c22df3429b02392965b3",
+			"source": "cc737e482d7b7a56e3c720bc251e788aa3a337eb91d55c19c4b9c264fdee0259",
+			"contract": "f2c772d241ccba6df291594a5b59feada305c7abc565198d60239854ee07f2d3",
+			"runtime": "e8033f44c25d8381283706d91bbcfc456f2bf1c3f12ca3b8dd572d2740d155b2",
+			"files": [
+				{
+					"path": "packages/reports/src/components/networking-security/ExplorerPermissionsScreen.css",
+					"hash": "6c5df9203839a4b2251e2e95a1e44d7144c9dc09"
+				},
+				{
+					"path": "packages/reports/src/components/networking-security/ExplorerPermissionsScreen.svelte",
+					"hash": "ff6a41ba5f3bd2fbdf05abb4bfd7f48d08299a93"
+				},
+				{
+					"path": "packages/reports/src/components/networking-security/ExplorerPermissionsScreen.types.ts",
+					"hash": "145d0de8e03247d74ae6755c2116e3e06fd6a0d8"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-entry-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 4870296,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-entry-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-catalog-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-catalog-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6290988,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-index",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-index",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6290988,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-module-card",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-module-card",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6290988,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-content",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-content",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6290988,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6290988,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-contract-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6034196,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-contract-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-contract-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6034196,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-contract-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 46.80000019073486,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 8764864,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 46.80000019073486,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 8764864,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 41.59999990463257,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profiles-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 10930108,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profiles-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 40.69999980926514,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-guest-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 14467088,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-guest-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 39.80000019073486,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-member-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16697000,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-member-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 41.19999980926514,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-admin-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 18876708,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-admin-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 41.200000286102295,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-missing-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 23179412,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-missing-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 40.5,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profiles-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 22536616,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profiles-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 10010152,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 10010152,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16404240,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16404240,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16404240,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 18938972,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 18938972,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-empty-1440x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-entry-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 4870392,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-entry-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-catalog-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-catalog-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6196752,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-index",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-index",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6196752,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-module-card",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-module-card",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6196752,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-content",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-content",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6196752,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6196752,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-contract-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6060844,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-contract-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-contract-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6060844,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-contract-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 58.80000019073486,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 8820280,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 58.80000019073486,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 8820280,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 47.80000019073486,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profiles-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 10925640,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profiles-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 43.5,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-guest-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 14452048,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-guest-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 45.5,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-member-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16660940,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-member-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 48.19999980926514,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-admin-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 18895264,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-admin-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 46,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-missing-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 23199364,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-missing-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 45.40000009536743,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profiles-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 22549580,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profiles-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 26271296,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 26271296,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 14233420,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 14233420,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 14233420,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16092784,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16092784,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-empty-834x1112",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-entry-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 4857828,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-entry-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-catalog-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-catalog-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6277808,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-index",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-index",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6277808,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-module-card",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-module-card",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6277808,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-content",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-explorer-content",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6277808,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-navbar",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6277808,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-catalog-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-contract-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6054952,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-contract-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-contract-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 6054952,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-contract-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 47.69999980926514,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 8769116,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 47.69999980926514,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 8769116,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 44.5,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profiles-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 10922828,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profiles-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 48.40000009536743,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-guest-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 14450040,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-guest-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 47.09999990463257,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-member-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16671344,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-member-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 47.200000286102295,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-admin-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 18905764,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-admin-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 43.89999961853027,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profile-missing-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 23198720,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profile-missing-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 40.90000009536743,
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "permission-profiles-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 22535704,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "permission-profiles-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 8688852,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "api-permissions-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 8688852,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "api-permissions-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15078436,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15078436,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-header",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15078436,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-sections",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 17612884,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": null,
+			"unavailable": "No fresh document navigation for this UI state.",
+			"method": "Whole fixture document NavigationTiming; shared code included, not isolated component latency.",
+			"workload": "page-apis-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-entity-relations",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 17612884,
+			"method": "Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.",
+			"workload": "page-apis-empty-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 49.99612499999989,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16176356,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 49.92866700000013,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-empty",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15943896,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-empty",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 49.986625000000004,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-errors",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16267180,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-errors",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 50.13166699999965,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-last",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16168376,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-last",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 49.90862500000003,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-example-open",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16326344,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-example-open",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 49.92158399999971,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-function",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16300276,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-function",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 49.914834000000155,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-function-error",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16328972,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-function-error",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 50.02808300000015,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-service",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16445324,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-service",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 50.504125000001295,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-model",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16353624,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-model",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 51.1820000000007,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-model-bare",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15907300,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-model-bare",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 50.10795800000051,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-types",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16292864,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-types",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 49.74341699999968,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-config",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.entity-contract",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 16124552,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-config",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "explorer-apis:apis",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts test/entity-preview.spec.ts --grep 'APIs catalog'",
+			"status": "passed",
+			"durationMs": 12678,
+			"log": {
+				"path": "logs/explorer-apis-apis.log",
+				"bytes": 47914,
+				"sha256": "64893b9c51db712a8a4336fb12b29c077851ed5475558fbd83cd5723b5e55767"
+			}
+		},
+		{
+			"id": "component-catalog-previews:previews",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts explorer-shell-component-catalog.spec.ts",
+			"status": "passed",
+			"durationMs": 27808,
+			"log": {
+				"path": "logs/component-catalog-previews-previews.log",
+				"bytes": 4902,
+				"sha256": "9661a7813db644e29105e67544a1cb3209257223933796ed273076c3c8ab600f"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "component-catalog-previews",
+			"status": "passed",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"states": [
+				{
+					"id": "reports-component-entity-contract",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 392
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-desktop.png",
+							"sha256": "9c98c0ff3aa492931e5a0418535fec5ba9bcbb2407731ac9d58f99d5e17256be",
+							"bytes": 37003,
+							"capturedAt": "2026-11-19T20:06:50.884Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-entity-contract",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-profile.json",
+							"sha256": "064bb514800cc753c5ac3d1159251a80bc4bdeb4dd924ae389dec78819a096a1",
+							"bytes": 735,
+							"capturedAt": "2026-11-19T20:06:50.885Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 604
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-tablet.png",
+							"sha256": "5912defb74c8bdeb7ef033d35369937a8325438037f6630eeaf8486f186fa88a",
+							"bytes": 39206,
+							"capturedAt": "2026-11-19T20:06:50.898Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 374,
+								"height": 628
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-mobile.png",
+							"sha256": "29b1511dedfe0192baff4a25868c6bf83694e570cc7f77cfefcc5afd240486b0",
+							"bytes": 34701,
+							"capturedAt": "2026-11-19T20:06:50.911Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-entity-contract-empty",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-empty",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 297
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-empty-desktop.png",
+							"sha256": "3c3b1391ac47841829ff4441f40d1fe474218829f3fbdcf54dae68dc9fa933fd",
+							"bytes": 20037,
+							"capturedAt": "2026-11-19T20:06:50.885Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-entity-contract-empty",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-empty-profile.json",
+							"sha256": "b1bee12500b7a1ac9a91ff1b8254fc44c96816517639715e222e463453faadd4",
+							"bytes": 747,
+							"capturedAt": "2026-11-19T20:06:50.885Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-empty",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 297
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-empty-tablet.png",
+							"sha256": "3f2dda3c9f38e901ea17cd68274034e879b668b4516e79fb5fc4b3ef05f4fea8",
+							"bytes": 20457,
+							"capturedAt": "2026-11-19T20:06:50.899Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-empty",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 374,
+								"height": 321
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-empty-mobile.png",
+							"sha256": "4fcf7dbf9819f482c6496925b84fd680e151fde21498bafc1f736752c886d1d8",
+							"bytes": 18689,
+							"capturedAt": "2026-11-19T20:06:50.911Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-entity-contract-errors",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-errors",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 446
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-errors-desktop.png",
+							"sha256": "a248a9909e8a26a8039a07ae101db7b7e7e0f4bf717de65dc63d65e4a83e4d7e",
+							"bytes": 44646,
+							"capturedAt": "2026-11-19T20:06:50.887Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-entity-contract-errors",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-errors-profile.json",
+							"sha256": "a0d65490b1456d91ea6c47bbe71bb695b068f5ab6652de173566c75c5a6cc2fd",
+							"bytes": 750,
+							"capturedAt": "2026-11-19T20:06:50.887Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-errors",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 681
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-errors-tablet.png",
+							"sha256": "f96487ed57f1dfe2548f07568daa48114aa870cb766e66be88d16cee528bdd67",
+							"bytes": 45047,
+							"capturedAt": "2026-11-19T20:06:50.900Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-errors",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 374,
+								"height": 706
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-errors-mobile.png",
+							"sha256": "2ba2dc0b0eb5324dfeef3eb034ca3d2bc97d1f3273ff7fb512ff9fdabaa9a54a",
+							"bytes": 40443,
+							"capturedAt": "2026-11-19T20:06:50.912Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-entity-contract-last",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-last",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 429
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-last-desktop.png",
+							"sha256": "1e41177adef3e6de8a8212be568ea68dfb477718ab729cacf10e1f16af9b3653",
+							"bytes": 44127,
+							"capturedAt": "2026-11-19T20:06:50.888Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-entity-contract-last",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-last-profile.json",
+							"sha256": "e81dda0d641326b3d0cdb0b6fd52158b0457aa1a7743d7eccb7526dd80cf6b67",
+							"bytes": 745,
+							"capturedAt": "2026-11-19T20:06:50.888Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-last",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 640
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-last-tablet.png",
+							"sha256": "6c285a2ef6737300eebabc3f6d8d33bc682d5fc36e0d91c1f487f8bcab5c2c27",
+							"bytes": 46773,
+							"capturedAt": "2026-11-19T20:06:50.901Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-last",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 374,
+								"height": 689
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-last-mobile.png",
+							"sha256": "aa00c7472226cea66c209fa05dbfb70c8af68b44faedc8123052e82ebf167673",
+							"bytes": 41632,
+							"capturedAt": "2026-11-19T20:06:50.913Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-entity-contract-example-open",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-example-open",
+							"viewport": "desktop",
+							"clip": {
+								"x": 72,
+								"y": 141,
+								"width": 776,
+								"height": 418
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-example-open-desktop.png",
+							"sha256": "2ae26c6f5f7090b241675ec68045173c2bda8dbbf71046c40636a17580026de0",
+							"bytes": 32771,
+							"capturedAt": "2026-11-19T20:06:50.889Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-entity-contract-example-open",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-example-open-profile.json",
+							"sha256": "d0c5adc1dce0ac3f83240d8aea67ee2f33759e7a048317b0c03e15970b08f6a8",
+							"bytes": 761,
+							"capturedAt": "2026-11-19T20:06:50.889Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-example-open",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 241,
+								"width": 752,
+								"height": 418
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-example-open-tablet.png",
+							"sha256": "a849aa9a949d7ac17f4409d9c90128572ae95092351e30a06cd80c9340a4d337",
+							"bytes": 31103,
+							"capturedAt": "2026-11-19T20:06:50.902Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-example-open",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 185,
+								"width": 374,
+								"height": 474
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-example-open-mobile.png",
+							"sha256": "26f301ff3f8ef6c56b8bac9678abde782c7ab1e63c532646b02f30195b5c1f60",
+							"bytes": 30116,
+							"capturedAt": "2026-11-19T20:06:50.913Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-entity-contract-function",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-function",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 441
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-function-desktop.png",
+							"sha256": "123243ea400c95a8acde3f16a8dace3a2e494a347b838a1464ed25a211963758",
+							"bytes": 42595,
+							"capturedAt": "2026-11-19T20:06:50.890Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-entity-contract-function",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-function-profile.json",
+							"sha256": "bca0a9e26193e4395795cd96d892ec293beeff98018cc466d30048cbb906b2b7",
+							"bytes": 753,
+							"capturedAt": "2026-11-19T20:06:50.890Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-function",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 677
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-function-tablet.png",
+							"sha256": "199d13fd47bc5e62debd0c55c4ccc635eb3b3faafba993ec1130353449f37ecf",
+							"bytes": 43456,
+							"capturedAt": "2026-11-19T20:06:50.903Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-function",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 374,
+								"height": 677
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-function-mobile.png",
+							"sha256": "d104aa29e093c5e70966e5765523f0ad55ac0cc277f69679fa8988f94c9b69d4",
+							"bytes": 37314,
+							"capturedAt": "2026-11-19T20:06:50.914Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-entity-contract-function-error",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-function-error",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 530
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-function-error-desktop.png",
+							"sha256": "e0c0b1b889bae7fe7f612e6d4b1856b7db9ecc7c9fc465a14546642706e9dbb0",
+							"bytes": 49203,
+							"capturedAt": "2026-11-19T20:06:50.891Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-entity-contract-function-error",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-function-error-profile.json",
+							"sha256": "3eeff46658e5b3fab6806b8a9e836cd0cc6a649cae20ddb4d756858185d03ef0",
+							"bytes": 766,
+							"capturedAt": "2026-11-19T20:06:50.891Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-function-error",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 753
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-function-error-tablet.png",
+							"sha256": "29de2d84cd8f3adc746ade30aae07b0c79f0bcf21a1c88943f8b1005c3b76466",
+							"bytes": 48472,
+							"capturedAt": "2026-11-19T20:06:50.904Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-function-error",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 374,
+								"height": 753
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-function-error-mobile.png",
+							"sha256": "e1dd4596b3c7f5d6233b0c4930db660b5cf96a9c2b317d2dcc4320f5808ee00c",
+							"bytes": 41207,
+							"capturedAt": "2026-11-19T20:06:50.915Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-entity-contract-service",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-service",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 880
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-service-desktop.png",
+							"sha256": "8010c6cb93858efc60be9228e85cc303425f56e2f2dd572a62d077600926d88a",
+							"bytes": 82401,
+							"capturedAt": "2026-11-19T20:06:50.893Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-entity-contract-service",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-service-profile.json",
+							"sha256": "c4f0e3d97ac520ca3b8b8fb2a12011eea112a1b2c8e9683e4b884e46b0e60201",
+							"bytes": 751,
+							"capturedAt": "2026-11-19T20:06:50.893Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-service",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 1102
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-service-tablet.png",
+							"sha256": "0dc47a6c6fbbc1654889fc303cfb29971cac7844d69a59acb13b6f0575d81fa7",
+							"bytes": 77042,
+							"capturedAt": "2026-11-19T20:06:50.906Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-service",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 374,
+								"height": 1127
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-service-mobile.png",
+							"sha256": "1a63e0ccbd2ca72debc1444b60272c2b654a48f98ff18ab7e1c8b3e6d608f227",
+							"bytes": 67932,
+							"capturedAt": "2026-11-19T20:06:50.917Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-entity-contract-model",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-model",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 768
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-model-desktop.png",
+							"sha256": "92a8e5e28f3febd40fd15acbf5b115eb402bfa0676db4b2b5887e05eaf5f84a2",
+							"bytes": 68506,
+							"capturedAt": "2026-11-19T20:06:50.894Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-entity-contract-model",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-model-profile.json",
+							"sha256": "6a520a075a9f4a56ddfd8573892f079f204b2b63937dccedbbfaaa0a3d264566",
+							"bytes": 748,
+							"capturedAt": "2026-11-19T20:06:50.895Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-model",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 1067
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-model-tablet.png",
+							"sha256": "365f0735fa0526ac3bf858c1cce4e37be45d410fdbf0ff0db980bbc5663f8e22",
+							"bytes": 63928,
+							"capturedAt": "2026-11-19T20:06:50.907Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-model",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 374,
+								"height": 1092
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-model-mobile.png",
+							"sha256": "ce6fddb6ad555b45b3a48addc619c31b9f0a5adb2498176a71697683a80edf6f",
+							"bytes": 59284,
+							"capturedAt": "2026-11-19T20:06:50.918Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-entity-contract-model-bare",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-model-bare",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 196
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-model-bare-desktop.png",
+							"sha256": "7aeae41913bbe1b0c093df11338b52243ce23af6075cd704932b8218bcde9b42",
+							"bytes": 11467,
+							"capturedAt": "2026-11-19T20:06:50.895Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-entity-contract-model-bare",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-model-bare-profile.json",
+							"sha256": "f09acd10367f6b38f1a93e3f6555790e90b929db10505dfef3841c73337ba548",
+							"bytes": 756,
+							"capturedAt": "2026-11-19T20:06:50.895Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-model-bare",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 196
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-model-bare-tablet.png",
+							"sha256": "f2b544865f6aba389283c38c0e4be411acc6a21e72f874adac001af2b994436a",
+							"bytes": 11585,
+							"capturedAt": "2026-11-19T20:06:50.908Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-model-bare",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 374,
+								"height": 220
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-model-bare-mobile.png",
+							"sha256": "c70e82752bb49eb28e22677caca89cc9c7a3d86cbf124c7a9eb7b75f77149ccb",
+							"bytes": 10903,
+							"capturedAt": "2026-11-19T20:06:50.918Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-entity-contract-types",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-types",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 563
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-types-desktop.png",
+							"sha256": "61eed710f32026f0ca786c8c43c665772096e7969c3f741eae3458f31bba006d",
+							"bytes": 60109,
+							"capturedAt": "2026-11-19T20:06:50.896Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-entity-contract-types",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-types-profile.json",
+							"sha256": "132490c209a8a0b2b688ee381e9b2cda839205e50e0a27ee6b909f6e1a18f29c",
+							"bytes": 747,
+							"capturedAt": "2026-11-19T20:06:50.896Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-types",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 922
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-types-tablet.png",
+							"sha256": "d652b4dc352ca523495f723e07791bc56884d97a79178ecf317d77f4e8400163",
+							"bytes": 60200,
+							"capturedAt": "2026-11-19T20:06:50.909Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-types",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 374,
+								"height": 947
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-types-mobile.png",
+							"sha256": "880fdf3fc9f314525f110bc820e9963d298c2d94a43da5c26e024e271c834089",
+							"bytes": 55597,
+							"capturedAt": "2026-11-19T20:06:50.919Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-entity-contract-config",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-config",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 76,
+								"width": 896,
+								"height": 427
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-config-desktop.png",
+							"sha256": "0be0f911a8194b3c57a17cb12fb16ac256dd0d31019ca6b442e28bf3ed036933",
+							"bytes": 28467,
+							"capturedAt": "2026-11-19T20:06:50.897Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-entity-contract-config",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-config-profile.json",
+							"sha256": "df89a6a24ae13360ce6f1b7a7b9bc0afd10910fd6e7c4cecc4fd4f8f9722ce1b",
+							"bytes": 749,
+							"capturedAt": "2026-11-19T20:06:50.897Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-config",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 752,
+								"height": 451
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-config-tablet.png",
+							"sha256": "94c5c4e4dca0f790e329bd8c67f7935deffe30329d9e0a7976b491ea164250da",
+							"bytes": 27192,
+							"capturedAt": "2026-11-19T20:06:50.910Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-entity-contract-config",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 70,
+								"width": 374,
+								"height": 475
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/component-catalog-previews/previews/reports-component-entity-contract-config-mobile.png",
+							"sha256": "56230efbaf9d803241d183c6f8d804126f335c3a056354e6bb4d44ec8696eadf",
+							"bytes": 24858,
+							"capturedAt": "2026-11-19T20:06:50.920Z",
+							"server": {
+								"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "explorer-apis",
+			"status": "passed",
+			"testedRevision": "30e8ae2352428d08911cac7c066ceff553d55d6f",
+			"states": [
+				{
+					"id": "api-contract",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "api-contract",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/explorer-apis/apis/api-screens-api-contract-desktop.png",
+							"sha256": "e1e672f409b21a44a6d4dc4c459e6eba03315915c507186d37f5c48bb8cab11d",
+							"bytes": 115257,
+							"capturedAt": "2026-11-19T20:06:22.051Z",
+							"server": {
+								"buildId": "9cef88f31c171cf106b134a29ab77a5bac358162db75cb19a2b824ffb28e25c7",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "reports.component.entity-contract",
+							"kind": "benchmark",
+							"state": "api-contract",
+							"viewport": "desktop",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/explorer-apis/apis/reports.component.entity-contract-api-contract-desktop.json",
+							"sha256": "251604aa95e651df352e44c157d97315be606b6edbf44e8b552f321f4e212903",
+							"bytes": 685,
+							"capturedAt": "2026-11-19T20:06:22.051Z",
+							"server": {
+								"buildId": "9cef88f31c171cf106b134a29ab77a5bac358162db75cb19a2b824ffb28e25c7",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "reports.component.harness-entity-header",
+							"kind": "benchmark",
+							"state": "api-contract",
+							"viewport": "desktop",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/explorer-apis/apis/reports.component.harness-entity-header-api-contract-desktop.json",
+							"sha256": "702a386b5f746e3a12de45d5f1ace2d3307e15d4c2f842f5e697337f9fad7ad4",
+							"bytes": 697,
+							"capturedAt": "2026-11-19T20:06:22.051Z",
+							"server": {
+								"buildId": "9cef88f31c171cf106b134a29ab77a5bac358162db75cb19a2b824ffb28e25c7",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "api-contract",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/explorer-apis/apis/api-screens-api-contract-tablet.png",
+							"sha256": "c4758df870495ed26c7a47300368156110bc5ce45fb5ca85323854d6d61bec2e",
+							"bytes": 108119,
+							"capturedAt": "2026-11-19T20:06:22.087Z",
+							"server": {
+								"buildId": "9cef88f31c171cf106b134a29ab77a5bac358162db75cb19a2b824ffb28e25c7",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "reports.component.entity-contract",
+							"kind": "benchmark",
+							"state": "api-contract",
+							"viewport": "tablet",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/explorer-apis/apis/reports.component.entity-contract-api-contract-tablet.json",
+							"sha256": "21456ca7bf8340a9be8b6301f5ecec8251eff8450845472721dc7e1cc50cb9da",
+							"bytes": 685,
+							"capturedAt": "2026-11-19T20:06:22.087Z",
+							"server": {
+								"buildId": "9cef88f31c171cf106b134a29ab77a5bac358162db75cb19a2b824ffb28e25c7",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "reports.component.harness-entity-header",
+							"kind": "benchmark",
+							"state": "api-contract",
+							"viewport": "tablet",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/explorer-apis/apis/reports.component.harness-entity-header-api-contract-tablet.json",
+							"sha256": "07b819a5edd40413e78a3794a87ae811d50f7f6f1cb31469ffdfbb357bce7062",
+							"bytes": 697,
+							"capturedAt": "2026-11-19T20:06:22.087Z",
+							"server": {
+								"buildId": "9cef88f31c171cf106b134a29ab77a5bac358162db75cb19a2b824ffb28e25c7",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "api-screens",
+							"kind": "screenshot",
+							"state": "api-contract",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Real full-page capture of the shared explorer over a synthetic history.",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/explorer-apis/apis/api-screens-api-contract-mobile.png",
+							"sha256": "9b39af79ea7c28fa1792b7c230deb8be4a0a139982d1413b08dd9b7e9582042f",
+							"bytes": 95109,
+							"capturedAt": "2026-11-19T20:06:22.108Z",
+							"server": {
+								"buildId": "9cef88f31c171cf106b134a29ab77a5bac358162db75cb19a2b824ffb28e25c7",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "reports.component.entity-contract",
+							"kind": "benchmark",
+							"state": "api-contract",
+							"viewport": "mobile",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/explorer-apis/apis/reports.component.entity-contract-api-contract-mobile.json",
+							"sha256": "bd2e3dc8f81631eb8f9f3b4e0f44a0fcea63a67254148bcb9a12787c6017b4ba",
+							"bytes": 683,
+							"capturedAt": "2026-11-19T20:06:22.108Z",
+							"server": {
+								"buildId": "9cef88f31c171cf106b134a29ab77a5bac358162db75cb19a2b824ffb28e25c7",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						},
+						{
+							"evidence": "reports.component.harness-entity-header",
+							"kind": "benchmark",
+							"state": "api-contract",
+							"viewport": "mobile",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/30e8ae2352428d08911cac7c066ceff553d55d6f/explorer-apis/apis/reports.component.harness-entity-header-api-contract-mobile.json",
+							"sha256": "32bd8c3b8cf0298d5cdcc1d678165bbb7aa32b5797ac33b15b848c3aff2bdd26",
+							"bytes": 695,
+							"capturedAt": "2026-11-19T20:06:22.108Z",
+							"server": {
+								"buildId": "9cef88f31c171cf106b134a29ab77a5bac358162db75cb19a2b824ffb28e25c7",
+								"revision": "30e8ae2352428d08911cac7c066ceff553d55d6f"
+							}
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main"
+	],
+	"builds": [
+		{
+			"id": "shell-fixture",
+			"directory": "packages/reports/output/shell-fixture",
+			"buildId": "61941b3e9b6eb67cc71690fc3fee5670bd5e9bf65d0d23c7b606e7d0710cb81c",
+			"files": 11
+		},
+		{
+			"id": "entity-preview",
+			"directory": "packages/reports/output/entity-preview",
+			"buildId": "9cef88f31c171cf106b134a29ab77a5bac358162db75cb19a2b824ffb28e25c7",
+			"files": 504
+		}
+	],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to reports.component.entity-contract: only its scenario states ran, so this record is partial and never a full pass.",
+		"Scoped to reports.component.entity-contract: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}

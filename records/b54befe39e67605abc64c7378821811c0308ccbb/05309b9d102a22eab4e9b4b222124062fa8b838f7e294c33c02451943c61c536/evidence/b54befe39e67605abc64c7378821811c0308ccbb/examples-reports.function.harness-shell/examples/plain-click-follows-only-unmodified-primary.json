@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-shell",
+	"symbol": "plainClick",
+	"cases": [
+		{
+			"name": "primary plain",
+			"input": {},
+			"output": true
+		},
+		{
+			"name": "middle button",
+			"input": {
+				"button": 1
+			},
+			"output": false
+		},
+		{
+			"name": "secondary button",
+			"input": {
+				"button": 2
+			},
+			"output": false
+		},
+		{
+			"name": "meta key",
+			"input": {
+				"metaKey": true
+			},
+			"output": false
+		},
+		{
+			"name": "control key",
+			"input": {
+				"ctrlKey": true
+			},
+			"output": false
+		},
+		{
+			"name": "shift key",
+			"input": {
+				"shiftKey": true
+			},
+			"output": false
+		},
+		{
+			"name": "alt key",
+			"input": {
+				"altKey": true
+			},
+			"output": false
+		},
+		{
+			"name": "already prevented",
+			"input": {
+				"defaultPrevented": true
+			},
+			"output": false
+		}
+	]
+}

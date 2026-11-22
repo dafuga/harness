@@ -1,0 +1,68 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.entity-references",
+	"symbol": "isUnitId",
+	"cases": [
+		{
+			"name": "valid id a.b",
+			"input": "a.b",
+			"output": true
+		},
+		{
+			"name": "valid id app.page.orders",
+			"input": "app.page.orders",
+			"output": true
+		},
+		{
+			"name": "valid id desktop.component.message-list",
+			"input": "desktop.component.message-list",
+			"output": true
+		},
+		{
+			"name": "valid id c.d-e2",
+			"input": "c.d-e2",
+			"output": true
+		},
+		{
+			"name": "invalid id orders",
+			"input": "orders",
+			"output": false
+		},
+		{
+			"name": "invalid id 1app.page",
+			"input": "1app.page",
+			"output": false
+		},
+		{
+			"name": "invalid id app.2page",
+			"input": "app.2page",
+			"output": false
+		},
+		{
+			"name": "invalid id app_page.x",
+			"input": "app_page.x",
+			"output": false
+		},
+		{
+			"name": "invalid id app.page:x",
+			"input": "app.page:x",
+			"output": false
+		},
+		{
+			"name": "invalid id (empty)",
+			"input": "",
+			"output": false
+		},
+		{
+			"name": "id of exactly 200 characters",
+			"input": "a.bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+			"output": true
+		},
+		{
+			"name": "id of 201 characters",
+			"input": "a.bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+			"output": false
+		}
+	]
+}

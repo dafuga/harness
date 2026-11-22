@@ -1,0 +1,89 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.artifact-cases",
+	"symbol": "artifactCases",
+	"cases": [
+		{
+			"name": "another unit is a gap",
+			"input": {
+				"document": {
+					"schemaVersion": 1,
+					"kind": "function-invocations",
+					"unitId": "reports.function.artifact-cases",
+					"symbol": "artifactCases",
+					"cases": [
+						{
+							"name": "Reads a value",
+							"input": 1,
+							"output": 2
+						}
+					]
+				},
+				"unit": "reports.component.other"
+			},
+			"output": {
+				"kind": "gap",
+				"why": "Its cases are of another unit, reports.function.artifact-cases."
+			}
+		},
+		{
+			"name": "no unit keeps the calls",
+			"input": {
+				"document": {
+					"schemaVersion": 1,
+					"kind": "function-invocations",
+					"unitId": "reports.function.artifact-cases",
+					"symbol": "artifactCases",
+					"cases": [
+						{
+							"name": "Reads a value",
+							"input": 1,
+							"output": 2
+						}
+					]
+				}
+			},
+			"output": {
+				"kind": "cases",
+				"source": "invocations",
+				"symbol": "artifactCases",
+				"cases": [
+					{
+						"name": "Reads a value",
+						"input": 1,
+						"output": 2,
+						"failed": false
+					}
+				]
+			}
+		},
+		{
+			"name": "legacy observation is not filtered",
+			"input": {
+				"document": {
+					"input": {
+						"a": 1
+					},
+					"output": 2
+				},
+				"unit": "reports.component.other"
+			},
+			"output": {
+				"kind": "cases",
+				"source": "observation",
+				"symbol": null,
+				"cases": [
+					{
+						"name": "Test observation",
+						"input": {
+							"a": 1
+						},
+						"output": 2,
+						"failed": false
+					}
+				]
+			}
+		}
+	]
+}

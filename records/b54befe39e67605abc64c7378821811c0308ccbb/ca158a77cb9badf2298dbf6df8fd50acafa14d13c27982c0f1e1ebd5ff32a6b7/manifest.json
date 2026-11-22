@@ -1,0 +1,233 @@
+{
+	"schemaVersion": 1,
+	"record": "ca158a77cb9badf2298dbf6df8fd50acafa14d13c27982c0f1e1ebd5ff32a6b7",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "ae3de82695218365a777c4bd225f3f57efcea7df183edcd0f6d2240dfe735abf",
+			"bytes": 30576,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/an-unavailable-size-is-shown-as-unavailable-and-not-frozen-never-zero.json",
+			"sha256": "8c614a9c11044aed17cdae531ce35dcb952d06e22782f7cda609d13450955b16",
+			"bytes": 1059,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-an-unavailable-size-is-shown-as-unavailable-and-not-frozen-never-zero.txt",
+			"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+			"bytes": 433,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-an-unavailable-size-is-shown-as-unavailable-and-not-frozen-never-zero.json",
+			"sha256": "08a13630228adb0f3303da7020f8944976d281ee79c82dc424acfe4f0aa50bf6",
+			"bytes": 1632,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/a-counted-zero-keeps-its-value-and-its-baseline-limit.json",
+			"sha256": "f218da2d6ba505ee1decc1aa34efe5ade012138f423498ea16720832c56c578b",
+			"bytes": 857,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-counted-zero-keeps-its-value-and-its-baseline-limit.txt",
+			"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+			"bytes": 433,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-counted-zero-keeps-its-value-and-its-baseline-limit.json",
+			"sha256": "3f8232ce08325e9c526292850559ae0c47f78ba5258bfba949a2b3477fc0acd0",
+			"bytes": 1147,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/a-partial-size-adds-a-note-that-says-what-it-leaves-out.json",
+			"sha256": "0b7d979786c2e0bf318a2248aa4843829ba86d4744a8253b5fd3b6aaa57679e8",
+			"bytes": 596,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-partial-size-adds-a-note-that-says-what-it-leaves-out.txt",
+			"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+			"bytes": 433,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-partial-size-adds-a-note-that-says-what-it-leaves-out.json",
+			"sha256": "36929319b21becab058f2aa2a780f50a4bf4bd119be58710aae475237ca86617",
+			"bytes": 751,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/a-finding-baseline-takes-priority-over-the-ledger-limit.json",
+			"sha256": "c21bc6605fb19930ccbd131f4e4c15ef3c27bbd1bc92969e080c2c57da044033",
+			"bytes": 980,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-finding-baseline-takes-priority-over-the-ledger-limit.txt",
+			"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+			"bytes": 433,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-finding-baseline-takes-priority-over-the-ledger-limit.json",
+			"sha256": "f3971bcd87b301233c86e077b2f8c6caa5315690f12ea4390d0d937f3343b887",
+			"bytes": 866,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/a-ledger-limit-applies-when-this-revision-has-no-measurement.json",
+			"sha256": "3f0589ee2e60e8fc23cd81de2557b2fc4eb696bff420eebef2efd7cfa10aa4df",
+			"bytes": 385,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-ledger-limit-applies-when-this-revision-has-no-measurement.txt",
+			"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+			"bytes": 433,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-ledger-limit-applies-when-this-revision-has-no-measurement.json",
+			"sha256": "99bf293a151ed21dd0b368f1e92f55f006e1b9a52848bf3518248321cf5668c6",
+			"bytes": 729,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/a-missing-measurement-is-shown-as-not-measured-never-as-zero.json",
+			"sha256": "be858b3afb711495f809611ea86a7c9cca24712d73d6870855e5b9b9d0f2706a",
+			"bytes": 597,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-missing-measurement-is-shown-as-not-measured-never-as-zero.txt",
+			"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+			"bytes": 433,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-missing-measurement-is-shown-as-not-measured-never-as-zero.json",
+			"sha256": "f8078db50642f74465a14f259c858a563a4f7357db2acf5690afd0d760ea89f9",
+			"bytes": 1558,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/a-declared-freeze-without-a-reviewed-number-states-that-no-limit-is-recorded.json",
+			"sha256": "239657f5255746c85c58a71490a0da21b21bec724aac60b65acf5bbdf7d6bc85",
+			"bytes": 1347,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-declared-freeze-without-a-reviewed-number-states-that-no-limit-is-recorded.txt",
+			"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+			"bytes": 433,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-declared-freeze-without-a-reviewed-number-states-that-no-limit-is-recorded.json",
+			"sha256": "d6916960bef62f6d2b8c1dcb4c045f0ed5c88d18236e7c10134b5b128036b5fe",
+			"bytes": 1559,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/an-exceeded-size-adds-a-growth-note-only-when-its-baseline-is-present.json",
+			"sha256": "96a48b42d94c2019bac0e2f58fd083b29061cfd0f091b855491b597f85c4ba59",
+			"bytes": 968,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-an-exceeded-size-adds-a-growth-note-only-when-its-baseline-is-present.txt",
+			"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+			"bytes": 433,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-an-exceeded-size-adds-a-growth-note-only-when-its-baseline-is-present.json",
+			"sha256": "2317b8b1cb357d76110017cef0ba243f34df3fa64dea7094514e43485b56ace7",
+			"bytes": 1538,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/an-unmeasured-ledger-marker-says-the-size-is-not-frozen-while-keeping-its-value.json",
+			"sha256": "a8ee25d67be9de7ecb0caf1219ab7a2a71f00d6bfbfa9d2ec7cea4442c4895e1",
+			"bytes": 601,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-an-unmeasured-ledger-marker-says-the-size-is-not-frozen-while-keeping-its-value.txt",
+			"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+			"bytes": 433,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-an-unmeasured-ledger-marker-says-the-size-is-not-frozen-while-keeping-its-value.json",
+			"sha256": "6e4742a294293368190bd50ef9de41198bcc74c7d53c24e877467b5563475cd2",
+			"bytes": 809,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/a-null-value-without-a-reason-is-unavailable-and-not-frozen-not-zero.json",
+			"sha256": "4ff61a9728bc7b06748105061af3b4dc0fba0356d98f4524ca3e3eb3bc2b7812",
+			"bytes": 515,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-null-value-without-a-reason-is-unavailable-and-not-frozen-not-zero.txt",
+			"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+			"bytes": 433,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.harness-budget/examples/test-examples-reports.function.harness-budget.test.ts-a-null-value-without-a-reason-is-unavailable-and-not-frozen-not-zero.json",
+			"sha256": "858ce7224e653802b6ddf94df1f3235790fcacdc6795cdb223ea549e50000c55",
+			"bytes": 1088,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-reports.function.harness-budget-examples.log",
+			"sha256": "74a8c1f3a4ec90948104df23ab501e75f0bc79bf08639ba58ec06be5db1174e0",
+			"bytes": 433,
+			"storage": "git"
+		}
+	]
+}

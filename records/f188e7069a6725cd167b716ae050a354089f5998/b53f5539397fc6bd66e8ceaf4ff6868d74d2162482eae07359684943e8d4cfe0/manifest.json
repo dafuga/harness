@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"record": "b53f5539397fc6bd66e8ceaf4ff6868d74d2162482eae07359684943e8d4cfe0",
+	"source": {
+		"commit": "f188e7069a6725cd167b716ae050a354089f5998",
+		"tree": "bd2737cb80320b4fc1b3670a386611787247542c"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "6438723dc0d47adb00cbddc121ba71c9ab079a0b18ae4eeeca43610f8133a3e0",
+			"bytes": 11864,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/f188e7069a6725cd167b716ae050a354089f5998/examples-reports.script.seed-harness-console/examples/importing-the-console-seeder-writes-and-deletes-nothing.json",
+			"sha256": "5da81bb3767867072cf893db35a1d30c565bfa013e0a4872cfc6386c7078f095",
+			"bytes": 818,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/f188e7069a6725cd167b716ae050a354089f5998/examples-reports.script.seed-harness-console/examples/test-seed-harness-console.test.ts-importing-the-console-seeder-writes-and-deletes-nothing.txt",
+			"sha256": "df723b214946c331f85d4ccea0b9332a60b3a139480c287907f737b7561f5fd5",
+			"bytes": 553,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/f188e7069a6725cd167b716ae050a354089f5998/examples-reports.script.seed-harness-console/examples/test-seed-harness-console.test.ts-importing-the-console-seeder-writes-and-deletes-nothing.json",
+			"sha256": "b01988f258692ac4a90665fe1e696f82dab0526bc0b21fa2d382f97e5a475ac8",
+			"bytes": 1771,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/f188e7069a6725cd167b716ae050a354089f5998/examples-reports.script.seed-harness-console/examples/importing-the-console-seeder-without-a-run-root-does-not-throw.json",
+			"sha256": "0e4806a60d1a33a8ac714e3bfd2260e5617a3a26c76c8d5fbab010a9664a0e9f",
+			"bytes": 741,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/f188e7069a6725cd167b716ae050a354089f5998/examples-reports.script.seed-harness-console/examples/test-seed-harness-console.test.ts-importing-the-console-seeder-without-a-run-root-does-not-throw.txt",
+			"sha256": "df723b214946c331f85d4ccea0b9332a60b3a139480c287907f737b7561f5fd5",
+			"bytes": 553,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/f188e7069a6725cd167b716ae050a354089f5998/examples-reports.script.seed-harness-console/examples/test-seed-harness-console.test.ts-importing-the-console-seeder-without-a-run-root-does-not-throw.json",
+			"sha256": "468c06754198c6c409d9f31ec38a7069f00f8ca381a179ee923ef0a519b39545",
+			"bytes": 1207,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-reports.script.seed-harness-console-examples.log",
+			"sha256": "df723b214946c331f85d4ccea0b9332a60b3a139480c287907f737b7561f5fd5",
+			"bytes": 553,
+			"storage": "git"
+		}
+	]
+}

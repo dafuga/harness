@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-ui.fQNaSi/tmp/harness-snapshot-8IbjDM/packages/desktop
+
+ ✓ test/change-reply.test.ts (4 tests) 31854ms
+   ✓ a completed change keeps the reply of its agent and names the entity it implements  8168ms
+   ✓ a failed change keeps the text its agent streamed before failing  7917ms
+   ✓ a cancelled change keeps what was said before the cancellation  7598ms
+   ✓ a change whose agent said nothing keeps the notice alone  8149ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  13:29:56
+   Duration  33.30s (transform 744ms, setup 190ms, collect 983ms, tests 31.85s, environment 0ms, prepare 54ms)
+
+JSON report written to /tmp/z5jp8p-ui.fQNaSi/tmp/harness-runner-Iz1DiW/report.json

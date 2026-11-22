@@ -1,0 +1,51 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-lens",
+	"symbol": "entityLens",
+	"cases": [
+		{
+			"name": "same entity keeps the helper",
+			"input": "to the same function",
+			"output": {
+				"branch": "feature/orders",
+				"commit": "8b41d0720e252681deac809969b3faf8181dac30",
+				"category": "functions",
+				"entity": "app.function.filter-orders",
+				"helper": "filterOrders",
+				"tab": "contract"
+			}
+		},
+		{
+			"name": "other entity drops the helper",
+			"input": "to another entity",
+			"output": {
+				"branch": "feature/orders",
+				"commit": "8b41d0720e252681deac809969b3faf8181dac30",
+				"category": "functions",
+				"entity": "app.page.orders"
+			}
+		},
+		{
+			"name": "link names its own helper",
+			"input": "to helper sortOrders",
+			"output": {
+				"branch": "feature/orders",
+				"commit": "8b41d0720e252681deac809969b3faf8181dac30",
+				"category": "functions",
+				"entity": "app.function.filter-orders",
+				"helper": "sortOrders"
+			}
+		},
+		{
+			"name": "pages category never keeps a helper",
+			"input": "from pages with a helper",
+			"output": {
+				"branch": "feature/orders",
+				"commit": "8b41d0720e252681deac809969b3faf8181dac30",
+				"category": "pages",
+				"entity": "app.page.orders"
+			}
+		}
+	]
+}

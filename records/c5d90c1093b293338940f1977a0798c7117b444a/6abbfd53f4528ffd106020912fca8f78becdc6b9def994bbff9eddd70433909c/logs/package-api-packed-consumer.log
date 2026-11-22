@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-package-api.ImUvpkCG/tmp/harness-snapshot-XTGHiN
+
+ ✓ test/packaged-api.e2e.test.ts (2 tests) 15866ms
+   ✓ public API type build retains configured entry paths across owned workspaces  2528ms
+   ✓ a packed consumer imports typed contracts and calls real adapters without the CLI  13336ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  17:58:05
+   Duration  16.44s (transform 107ms, setup 129ms, collect 238ms, tests 15.87s, environment 0ms, prepare 31ms)
+

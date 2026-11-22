@@ -1,0 +1,1096 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.hosted-evidence-record",
+	"symbol": "hostedEvidenceRecord",
+	"cases": [
+		{
+			"name": "minimal truthful hosted record",
+			"input": {
+				"id": "desktop.function.hosted-evidence-record",
+				"status": "passed",
+				"valid": true,
+				"problems": [],
+				"failures": [],
+				"source": {
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"base": null
+				},
+				"profile": "ci",
+				"startedAt": "2026-11-19T12:00:00Z",
+				"finishedAt": "2026-11-19T12:00:02Z",
+				"tests": [
+					{
+						"id": "examples",
+						"kind": "unit",
+						"target": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+						"status": "passed",
+						"durationMs": 1200,
+						"browserErrors": [
+							{
+								"test": "renders the example record",
+								"file": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+								"project": "desktop",
+								"retry": 0,
+								"errors": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"page": "/"
+									}
+								],
+								"expected": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"reason": "documented example"
+									}
+								]
+							}
+						]
+					}
+				],
+				"scenarios": [
+					{
+						"id": "browser-error-evidence",
+						"status": "passed",
+						"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"inherited": false,
+						"origin": {
+							"record": "record-1",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"states": [
+							{
+								"id": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+								"coverage": "required",
+								"captures": [
+									{
+										"evidence": "examples-output",
+										"kind": "output",
+										"state": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+										"status": "passed",
+										"path": "examples/output.txt",
+										"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"mediaType": "text/plain",
+										"capturedAt": "2026-11-19T12:00:00Z",
+										"media": "examples-output.txt"
+									}
+								]
+							}
+						]
+					}
+				],
+				"measurements": [
+					{
+						"unit": "desktop.function.hosted-evidence-record",
+						"metric": "source-bytes",
+						"unitOfMeasure": "bytes",
+						"value": 1605,
+						"workload": null,
+						"profile": null
+					}
+				],
+				"budgets": {
+					"findings": []
+				}
+			},
+			"output": {
+				"success": true,
+				"issues": [],
+				"path": null
+			}
+		},
+		{
+			"name": "well-formed but contradictory record",
+			"input": {
+				"id": "desktop.function.hosted-evidence-record",
+				"status": "passed",
+				"valid": true,
+				"problems": [],
+				"failures": [
+					"examples"
+				],
+				"source": {
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"base": null
+				},
+				"profile": "ci",
+				"startedAt": "2026-11-19T12:00:00Z",
+				"finishedAt": "2026-11-19T12:00:02Z",
+				"tests": [
+					{
+						"id": "examples",
+						"kind": "unit",
+						"target": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+						"status": "passed",
+						"durationMs": 1200,
+						"browserErrors": [
+							{
+								"test": "renders the example record",
+								"file": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+								"project": "desktop",
+								"retry": 0,
+								"errors": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"page": "/"
+									}
+								],
+								"expected": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"reason": "documented example"
+									}
+								]
+							}
+						]
+					}
+				],
+				"scenarios": [
+					{
+						"id": "browser-error-evidence",
+						"status": "passed",
+						"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"inherited": false,
+						"origin": {
+							"record": "record-1",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"states": [
+							{
+								"id": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+								"coverage": "required",
+								"captures": [
+									{
+										"evidence": "examples-output",
+										"kind": "output",
+										"state": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+										"status": "passed",
+										"path": "examples/output.txt",
+										"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"mediaType": "text/plain",
+										"capturedAt": "2026-11-19T12:00:00Z",
+										"media": "examples-output.txt"
+									}
+								]
+							}
+						]
+					}
+				],
+				"measurements": [
+					{
+						"unit": "desktop.function.hosted-evidence-record",
+						"metric": "source-bytes",
+						"unitOfMeasure": "bytes",
+						"value": 1605,
+						"workload": null,
+						"profile": null
+					}
+				],
+				"budgets": {
+					"findings": []
+				}
+			},
+			"output": {
+				"success": true,
+				"issues": [],
+				"path": null
+			}
+		},
+		{
+			"name": "undeclared root key",
+			"input": {
+				"id": "desktop.function.hosted-evidence-record",
+				"status": "passed",
+				"valid": true,
+				"problems": [],
+				"failures": [],
+				"source": {
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"base": null
+				},
+				"profile": "ci",
+				"startedAt": "2026-11-19T12:00:00Z",
+				"finishedAt": "2026-11-19T12:00:02Z",
+				"tests": [
+					{
+						"id": "examples",
+						"kind": "unit",
+						"target": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+						"status": "passed",
+						"durationMs": 1200,
+						"browserErrors": [
+							{
+								"test": "renders the example record",
+								"file": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+								"project": "desktop",
+								"retry": 0,
+								"errors": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"page": "/"
+									}
+								],
+								"expected": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"reason": "documented example"
+									}
+								]
+							}
+						]
+					}
+				],
+				"scenarios": [
+					{
+						"id": "browser-error-evidence",
+						"status": "passed",
+						"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"inherited": false,
+						"origin": {
+							"record": "record-1",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"states": [
+							{
+								"id": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+								"coverage": "required",
+								"captures": [
+									{
+										"evidence": "examples-output",
+										"kind": "output",
+										"state": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+										"status": "passed",
+										"path": "examples/output.txt",
+										"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"mediaType": "text/plain",
+										"capturedAt": "2026-11-19T12:00:00Z",
+										"media": "examples-output.txt"
+									}
+								]
+							}
+						]
+					}
+				],
+				"measurements": [
+					{
+						"unit": "desktop.function.hosted-evidence-record",
+						"metric": "source-bytes",
+						"unitOfMeasure": "bytes",
+						"value": 1605,
+						"workload": null,
+						"profile": null
+					}
+				],
+				"budgets": {
+					"findings": []
+				},
+				"extra": true
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					"unrecognized_keys"
+				],
+				"path": ""
+			}
+		},
+		{
+			"name": "uppercase source commit",
+			"input": {
+				"id": "desktop.function.hosted-evidence-record",
+				"status": "passed",
+				"valid": true,
+				"problems": [],
+				"failures": [],
+				"source": {
+					"commit": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+					"base": null
+				},
+				"profile": "ci",
+				"startedAt": "2026-11-19T12:00:00Z",
+				"finishedAt": "2026-11-19T12:00:02Z",
+				"tests": [
+					{
+						"id": "examples",
+						"kind": "unit",
+						"target": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+						"status": "passed",
+						"durationMs": 1200,
+						"browserErrors": [
+							{
+								"test": "renders the example record",
+								"file": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+								"project": "desktop",
+								"retry": 0,
+								"errors": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"page": "/"
+									}
+								],
+								"expected": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"reason": "documented example"
+									}
+								]
+							}
+						]
+					}
+				],
+				"scenarios": [
+					{
+						"id": "browser-error-evidence",
+						"status": "passed",
+						"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"inherited": false,
+						"origin": {
+							"record": "record-1",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"states": [
+							{
+								"id": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+								"coverage": "required",
+								"captures": [
+									{
+										"evidence": "examples-output",
+										"kind": "output",
+										"state": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+										"status": "passed",
+										"path": "examples/output.txt",
+										"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"mediaType": "text/plain",
+										"capturedAt": "2026-11-19T12:00:00Z",
+										"media": "examples-output.txt"
+									}
+								]
+							}
+						]
+					}
+				],
+				"measurements": [
+					{
+						"unit": "desktop.function.hosted-evidence-record",
+						"metric": "source-bytes",
+						"unitOfMeasure": "bytes",
+						"value": 1605,
+						"workload": null,
+						"profile": null
+					}
+				],
+				"budgets": {
+					"findings": []
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					"invalid_format"
+				],
+				"path": "source.commit"
+			}
+		},
+		{
+			"name": "infinite measurement value",
+			"input": {
+				"id": "desktop.function.hosted-evidence-record",
+				"status": "passed",
+				"valid": true,
+				"problems": [],
+				"failures": [],
+				"source": {
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"base": null
+				},
+				"profile": "ci",
+				"startedAt": "2026-11-19T12:00:00Z",
+				"finishedAt": "2026-11-19T12:00:02Z",
+				"tests": [
+					{
+						"id": "examples",
+						"kind": "unit",
+						"target": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+						"status": "passed",
+						"durationMs": 1200,
+						"browserErrors": [
+							{
+								"test": "renders the example record",
+								"file": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+								"project": "desktop",
+								"retry": 0,
+								"errors": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"page": "/"
+									}
+								],
+								"expected": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"reason": "documented example"
+									}
+								]
+							}
+						]
+					}
+				],
+				"scenarios": [
+					{
+						"id": "browser-error-evidence",
+						"status": "passed",
+						"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"inherited": false,
+						"origin": {
+							"record": "record-1",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"states": [
+							{
+								"id": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+								"coverage": "required",
+								"captures": [
+									{
+										"evidence": "examples-output",
+										"kind": "output",
+										"state": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+										"status": "passed",
+										"path": "examples/output.txt",
+										"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"mediaType": "text/plain",
+										"capturedAt": "2026-11-19T12:00:00Z",
+										"media": "examples-output.txt"
+									}
+								]
+							}
+						]
+					}
+				],
+				"measurements": [
+					{
+						"unit": "desktop.function.hosted-evidence-record",
+						"metric": "source-bytes",
+						"unitOfMeasure": "bytes",
+						"value": null,
+						"workload": null,
+						"profile": null
+					}
+				],
+				"budgets": {
+					"findings": []
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					"invalid_type"
+				],
+				"path": "measurements.0.value"
+			}
+		},
+		{
+			"name": "undeclared test key",
+			"input": {
+				"id": "desktop.function.hosted-evidence-record",
+				"status": "passed",
+				"valid": true,
+				"problems": [],
+				"failures": [],
+				"source": {
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"base": null
+				},
+				"profile": "ci",
+				"startedAt": "2026-11-19T12:00:00Z",
+				"finishedAt": "2026-11-19T12:00:02Z",
+				"tests": [
+					{
+						"id": "examples",
+						"kind": "unit",
+						"target": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+						"status": "passed",
+						"durationMs": 1200,
+						"browserErrors": [
+							{
+								"test": "renders the example record",
+								"file": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+								"project": "desktop",
+								"retry": 0,
+								"errors": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"page": "/"
+									}
+								],
+								"expected": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"reason": "documented example"
+									}
+								]
+							}
+						],
+						"extra": true
+					}
+				],
+				"scenarios": [
+					{
+						"id": "browser-error-evidence",
+						"status": "passed",
+						"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"inherited": false,
+						"origin": {
+							"record": "record-1",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"states": [
+							{
+								"id": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+								"coverage": "required",
+								"captures": [
+									{
+										"evidence": "examples-output",
+										"kind": "output",
+										"state": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+										"status": "passed",
+										"path": "examples/output.txt",
+										"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"mediaType": "text/plain",
+										"capturedAt": "2026-11-19T12:00:00Z",
+										"media": "examples-output.txt"
+									}
+								]
+							}
+						]
+					}
+				],
+				"measurements": [
+					{
+						"unit": "desktop.function.hosted-evidence-record",
+						"metric": "source-bytes",
+						"unitOfMeasure": "bytes",
+						"value": 1605,
+						"workload": null,
+						"profile": null
+					}
+				],
+				"budgets": {
+					"findings": []
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					"unrecognized_keys"
+				],
+				"path": "tests.0"
+			}
+		},
+		{
+			"name": "unknown test status",
+			"input": {
+				"id": "desktop.function.hosted-evidence-record",
+				"status": "passed",
+				"valid": true,
+				"problems": [],
+				"failures": [],
+				"source": {
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"base": null
+				},
+				"profile": "ci",
+				"startedAt": "2026-11-19T12:00:00Z",
+				"finishedAt": "2026-11-19T12:00:02Z",
+				"tests": [
+					{
+						"id": "examples",
+						"kind": "unit",
+						"target": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+						"status": "ok",
+						"durationMs": 1200,
+						"browserErrors": [
+							{
+								"test": "renders the example record",
+								"file": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+								"project": "desktop",
+								"retry": 0,
+								"errors": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"page": "/"
+									}
+								],
+								"expected": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"reason": "documented example"
+									}
+								]
+							}
+						]
+					}
+				],
+				"scenarios": [
+					{
+						"id": "browser-error-evidence",
+						"status": "passed",
+						"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"inherited": false,
+						"origin": {
+							"record": "record-1",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"states": [
+							{
+								"id": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+								"coverage": "required",
+								"captures": [
+									{
+										"evidence": "examples-output",
+										"kind": "output",
+										"state": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+										"status": "passed",
+										"path": "examples/output.txt",
+										"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"mediaType": "text/plain",
+										"capturedAt": "2026-11-19T12:00:00Z",
+										"media": "examples-output.txt"
+									}
+								]
+							}
+						]
+					}
+				],
+				"measurements": [
+					{
+						"unit": "desktop.function.hosted-evidence-record",
+						"metric": "source-bytes",
+						"unitOfMeasure": "bytes",
+						"value": 1605,
+						"workload": null,
+						"profile": null
+					}
+				],
+				"budgets": {
+					"findings": []
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					"invalid_value"
+				],
+				"path": "tests.0.status"
+			}
+		},
+		{
+			"name": "diagnostic with unknown error type",
+			"input": {
+				"id": "desktop.function.hosted-evidence-record",
+				"status": "passed",
+				"valid": true,
+				"problems": [],
+				"failures": [],
+				"source": {
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"base": null
+				},
+				"profile": "ci",
+				"startedAt": "2026-11-19T12:00:00Z",
+				"finishedAt": "2026-11-19T12:00:02Z",
+				"tests": [
+					{
+						"id": "examples",
+						"kind": "unit",
+						"target": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+						"status": "passed",
+						"durationMs": 1200,
+						"browserErrors": [
+							{
+								"test": "renders the example record",
+								"file": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+								"project": "desktop",
+								"retry": 0,
+								"errors": [
+									{
+										"type": "warning",
+										"message": "expected example warning",
+										"page": "/"
+									}
+								],
+								"expected": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"reason": "documented example"
+									}
+								]
+							}
+						]
+					}
+				],
+				"scenarios": [
+					{
+						"id": "browser-error-evidence",
+						"status": "passed",
+						"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"inherited": false,
+						"origin": {
+							"record": "record-1",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"states": [
+							{
+								"id": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+								"coverage": "required",
+								"captures": [
+									{
+										"evidence": "examples-output",
+										"kind": "output",
+										"state": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+										"status": "passed",
+										"path": "examples/output.txt",
+										"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"mediaType": "text/plain",
+										"capturedAt": "2026-11-19T12:00:00Z",
+										"media": "examples-output.txt"
+									}
+								]
+							}
+						]
+					}
+				],
+				"measurements": [
+					{
+						"unit": "desktop.function.hosted-evidence-record",
+						"metric": "source-bytes",
+						"unitOfMeasure": "bytes",
+						"value": 1605,
+						"workload": null,
+						"profile": null
+					}
+				],
+				"budgets": {
+					"findings": []
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					"invalid_value"
+				],
+				"path": "tests.0.browserErrors.0.errors.0.type"
+			}
+		},
+		{
+			"name": "capture with malformed digest",
+			"input": {
+				"id": "desktop.function.hosted-evidence-record",
+				"status": "passed",
+				"valid": true,
+				"problems": [],
+				"failures": [],
+				"source": {
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"base": null
+				},
+				"profile": "ci",
+				"startedAt": "2026-11-19T12:00:00Z",
+				"finishedAt": "2026-11-19T12:00:02Z",
+				"tests": [
+					{
+						"id": "examples",
+						"kind": "unit",
+						"target": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+						"status": "passed",
+						"durationMs": 1200,
+						"browserErrors": [
+							{
+								"test": "renders the example record",
+								"file": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+								"project": "desktop",
+								"retry": 0,
+								"errors": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"page": "/"
+									}
+								],
+								"expected": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"reason": "documented example"
+									}
+								]
+							}
+						]
+					}
+				],
+				"scenarios": [
+					{
+						"id": "browser-error-evidence",
+						"status": "passed",
+						"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"inherited": false,
+						"origin": {
+							"record": "record-1",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"states": [
+							{
+								"id": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+								"coverage": "required",
+								"captures": [
+									{
+										"evidence": "examples-output",
+										"kind": "output",
+										"state": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+										"status": "passed",
+										"path": "examples/output.txt",
+										"sha256": "not-a-digest",
+										"mediaType": "text/plain",
+										"capturedAt": "2026-11-19T12:00:00Z",
+										"media": "examples-output.txt"
+									}
+								]
+							}
+						]
+					}
+				],
+				"measurements": [
+					{
+						"unit": "desktop.function.hosted-evidence-record",
+						"metric": "source-bytes",
+						"unitOfMeasure": "bytes",
+						"value": 1605,
+						"workload": null,
+						"profile": null
+					}
+				],
+				"budgets": {
+					"findings": []
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					"invalid_format"
+				],
+				"path": "scenarios.0.states.0.captures.0.sha256"
+			}
+		},
+		{
+			"name": "identifier over 300 characters",
+			"input": {
+				"id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+				"status": "passed",
+				"valid": true,
+				"problems": [],
+				"failures": [],
+				"source": {
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"base": null
+				},
+				"profile": "ci",
+				"startedAt": "2026-11-19T12:00:00Z",
+				"finishedAt": "2026-11-19T12:00:02Z",
+				"tests": [
+					{
+						"id": "examples",
+						"kind": "unit",
+						"target": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+						"status": "passed",
+						"durationMs": 1200,
+						"browserErrors": [
+							{
+								"test": "renders the example record",
+								"file": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+								"project": "desktop",
+								"retry": 0,
+								"errors": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"page": "/"
+									}
+								],
+								"expected": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"reason": "documented example"
+									}
+								]
+							}
+						]
+					}
+				],
+				"scenarios": [
+					{
+						"id": "browser-error-evidence",
+						"status": "passed",
+						"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"inherited": false,
+						"origin": {
+							"record": "record-1",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"states": [
+							{
+								"id": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+								"coverage": "required",
+								"captures": [
+									{
+										"evidence": "examples-output",
+										"kind": "output",
+										"state": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+										"status": "passed",
+										"path": "examples/output.txt",
+										"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"mediaType": "text/plain",
+										"capturedAt": "2026-11-19T12:00:00Z",
+										"media": "examples-output.txt"
+									}
+								]
+							}
+						]
+					}
+				],
+				"measurements": [
+					{
+						"unit": "desktop.function.hosted-evidence-record",
+						"metric": "source-bytes",
+						"unitOfMeasure": "bytes",
+						"value": 1605,
+						"workload": null,
+						"profile": null
+					}
+				],
+				"budgets": {
+					"findings": []
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					"too_big"
+				],
+				"path": "id"
+			}
+		},
+		{
+			"name": "missing required identifier",
+			"input": {
+				"status": "passed",
+				"valid": true,
+				"problems": [],
+				"failures": [],
+				"source": {
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"base": null
+				},
+				"profile": "ci",
+				"startedAt": "2026-11-19T12:00:00Z",
+				"finishedAt": "2026-11-19T12:00:02Z",
+				"tests": [
+					{
+						"id": "examples",
+						"kind": "unit",
+						"target": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+						"status": "passed",
+						"durationMs": 1200,
+						"browserErrors": [
+							{
+								"test": "renders the example record",
+								"file": "test/examples/desktop.function.hosted-evidence-record.test.ts",
+								"project": "desktop",
+								"retry": 0,
+								"errors": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"page": "/"
+									}
+								],
+								"expected": [
+									{
+										"type": "console",
+										"message": "expected example warning",
+										"reason": "documented example"
+									}
+								]
+							}
+						]
+					}
+				],
+				"scenarios": [
+					{
+						"id": "browser-error-evidence",
+						"status": "passed",
+						"testedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"inherited": false,
+						"origin": {
+							"record": "record-1",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"states": [
+							{
+								"id": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+								"coverage": "required",
+								"captures": [
+									{
+										"evidence": "examples-output",
+										"kind": "output",
+										"state": "accepts-minimal-hosted-records-and-refuses-invalid-nested-data",
+										"status": "passed",
+										"path": "examples/output.txt",
+										"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"mediaType": "text/plain",
+										"capturedAt": "2026-11-19T12:00:00Z",
+										"media": "examples-output.txt"
+									}
+								]
+							}
+						]
+					}
+				],
+				"measurements": [
+					{
+						"unit": "desktop.function.hosted-evidence-record",
+						"metric": "source-bytes",
+						"unitOfMeasure": "bytes",
+						"value": 1605,
+						"workload": null,
+						"profile": null
+					}
+				],
+				"budgets": {
+					"findings": []
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					"invalid_type"
+				],
+				"path": "id"
+			}
+		}
+	]
+}

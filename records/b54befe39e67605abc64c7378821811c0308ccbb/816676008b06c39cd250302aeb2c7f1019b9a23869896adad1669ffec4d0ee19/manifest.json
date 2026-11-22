@@ -1,0 +1,270 @@
+{
+	"schemaVersion": 1,
+	"record": "816676008b06c39cd250302aeb2c7f1019b9a23869896adad1669ffec4d0ee19",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "c466f16827fd0146a7fceff1e1900cf48fd29dc9bb476a9b6265debbf4099fe5",
+			"bytes": 46929,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.select-environment/examples/native-shell-takes-precedence.json",
+			"sha256": "dbaac7b5788fbd5022b776fc329ec5376b76389b2320f9053d8a7de06ebbee6e",
+			"bytes": 781,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.select-environment/examples/test-examples-desktop.function.select-environment.test.ts-native-shell-takes-precedence.txt",
+			"sha256": "01824f8f5d17097f14b130cfc51e40e2716fc208afa5e2963942966c050331c3",
+			"bytes": 433,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.select-environment/examples/test-examples-desktop.function.select-environment.test.ts-native-shell-takes-precedence.json",
+			"sha256": "9d2d0e15259d36b4deb68f5b33ae6dee5e0bd097fae7f6fc174053f7432dbe7c",
+			"bytes": 3494,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.select-environment/examples/preload-bridge-selects-electron.json",
+			"sha256": "0a932a1dc7df452ed0f6bfe2ddf08c54314c579e8397eaff97073d5b8d4cef94",
+			"bytes": 1010,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.select-environment/examples/test-examples-desktop.function.select-environment.test.ts-preload-bridge-selects-electron.txt",
+			"sha256": "01824f8f5d17097f14b130cfc51e40e2716fc208afa5e2963942966c050331c3",
+			"bytes": 433,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.select-environment/examples/test-examples-desktop.function.select-environment.test.ts-preload-bridge-selects-electron.json",
+			"sha256": "55c9c6f6c16b667944c146a094b8e41dc5b7870aa142ee4bd6f2a659f6cda814",
+			"bytes": 2464,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.select-environment/examples/web-without-bridge.json",
+			"sha256": "d211d99446170d94360ff06e11a5c7a621c0e18a755f1683e151e795da7929d5",
+			"bytes": 1040,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.select-environment/examples/test-examples-desktop.function.select-environment.test.ts-web-without-bridge.txt",
+			"sha256": "01824f8f5d17097f14b130cfc51e40e2716fc208afa5e2963942966c050331c3",
+			"bytes": 433,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.function.select-environment/examples/test-examples-desktop.function.select-environment.test.ts-web-without-bridge.json",
+			"sha256": "933cec6e9961c9be7e349847d76d32287c8db32b5d0adc40fc5111e9ea3124a3",
+			"bytes": 1809,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/tests-e2e-ui-remote-phone.spec.ts-phone-interaction.txt",
+			"sha256": "6049910c986d09260aace838b75323856f75da8a72e850dfaee8a9a5f20c9aa1",
+			"bytes": 222,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/tests-e2e-ui-remote-host.spec.ts-desktop-interaction.txt",
+			"sha256": "99b75df2b9d858b6d1c4f559f4a1d20355293e0a0530bd817b3bb59669a3b7b3",
+			"bytes": 223,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/cache/tests-e2e-ui-remote-cache.spec.ts-cached-interaction.txt",
+			"sha256": "a084c419904ea0710cb4aee307c0c5f2e46d3c25c7bf84d7ae2deea3ab231598",
+			"bytes": 219,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/tests-e2e-ui-remote-scan.spec.ts-scan-interaction.txt",
+			"sha256": "6abdf6185908bc900b286b9bea6ce80bd512edd372deabf84a90203b1f683931",
+			"bytes": 216,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-start-mobile.png",
+			"sha256": "c59fac5b4a5e12c80aa933698148d945b9d8a6a2afa646b4e9687500d21f5243",
+			"bytes": 30657,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-pending-mobile.png",
+			"sha256": "417bded7731b74bdba96642ad885ee3aa2fc30342183f751026bf24ca4ef9e64",
+			"bytes": 29549,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/remote-phone-scan-denied-mobile.png",
+			"sha256": "4797ee3ecc8a43cb7c4bff6beda0967d4d04353ac311c6bbdb04341c3b25c30a",
+			"bytes": 36064,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/remote-phone-scan-cancelled-mobile.png",
+			"sha256": "d17200ff2a0257df1e83835920d8fbd3d4ebb6ce229827e5b6b1d989999a4b1b",
+			"bytes": 34124,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/remote-phone-scan-invalid-mobile.png",
+			"sha256": "622db55b4136738dc68fd8dcb4ddd157c791de9b0728b1a81904bc21b910e82e",
+			"bytes": 36811,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/scan/remote-phone-scan-expired-mobile.png",
+			"sha256": "15507522ed2cd1e4dbf2ac442f076fba86d70d82e44f48b3d8682b2d1f15c8be",
+			"bytes": 36514,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-connected-mobile.png",
+			"sha256": "e1d84f3e0a906f3736e51588b593fc5435c75ed5b2346b41be41afae6af437f9",
+			"bytes": 36602,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-workspace-mobile.png",
+			"sha256": "479cefe5487a4f2da84d8e2e85776fc68959c9f423e13c18874ded008f19172a",
+			"bytes": 50080,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-offline-mobile.png",
+			"sha256": "035f145d05105492a510e7a58315c31e4695a60cc533ce98872ef9d0b973c778",
+			"bytes": 40852,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/phone/remote-phone-revoked-mobile.png",
+			"sha256": "d40cf1c8e1008b5b6c44986655137cceef32fad9006121ffe54db29fd595c9d6",
+			"bytes": 30369,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-start-desktop.png",
+			"sha256": "b27c687679ab6fd59625490d809df827875aa9eb4fcf791c7a45c866a0b770a1",
+			"bytes": 85135,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-approval-desktop.png",
+			"sha256": "85c254efaf815c735df67efcaaa1cdb0ed4822339298236ca67c13fd206c1472",
+			"bytes": 101853,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-access-desktop.png",
+			"sha256": "060b6e988ebc1d7032ca4cf019ed44f3f12473e3726cfd639247cfe830f9876d",
+			"bytes": 69161,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-code-hidden-desktop.png",
+			"sha256": "6f58c60465e249dfd66fd3d75bc7c1bea809a791c943e4c559eb0f61ccc3e90b",
+			"bytes": 91112,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/host/remote-desktop-code-expired-desktop.png",
+			"sha256": "e1bff879d915a8b893451b016742ec4e81f6b85f96b59ac076b8394b2fcfecd9",
+			"bytes": 93975,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/tablet/tests-e2e-ui-remote-tablet.spec.ts-tablet-interaction.txt",
+			"sha256": "36a122605a44a89c8ff61dd3818b2f290423558d52521b0abd48b5f1fd2d6175",
+			"bytes": 221,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/tablet/remote-tablet-phone-workspace-tablet.png",
+			"sha256": "589be95b668407e73d7dc90ba3408bf619d7f1e439ab9f9541617bf2c1fcda31",
+			"bytes": 58699,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/remote-mobile-ui/tablet/remote-tablet-desktop-approval-tablet.png",
+			"sha256": "cb334aefe6765feeda18a256891c623271003f43b724dd71435d7b862fe4c55b",
+			"bytes": 103101,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "logs/remote-mobile-ui-cache.log",
+			"sha256": "a084c419904ea0710cb4aee307c0c5f2e46d3c25c7bf84d7ae2deea3ab231598",
+			"bytes": 219,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-mobile-ui-host.log",
+			"sha256": "99b75df2b9d858b6d1c4f559f4a1d20355293e0a0530bd817b3bb59669a3b7b3",
+			"bytes": 223,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-mobile-ui-phone.log",
+			"sha256": "6049910c986d09260aace838b75323856f75da8a72e850dfaee8a9a5f20c9aa1",
+			"bytes": 222,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-mobile-ui-scan.log",
+			"sha256": "6abdf6185908bc900b286b9bea6ce80bd512edd372deabf84a90203b1f683931",
+			"bytes": 216,
+			"storage": "git"
+		},
+		{
+			"path": "logs/remote-mobile-ui-tablet.log",
+			"sha256": "36a122605a44a89c8ff61dd3818b2f290423558d52521b0abd48b5f1fd2d6175",
+			"bytes": 221,
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-desktop.function.select-environment-examples.log",
+			"sha256": "01824f8f5d17097f14b130cfc51e40e2716fc208afa5e2963942966c050331c3",
+			"bytes": 433,
+			"storage": "git"
+		}
+	]
+}

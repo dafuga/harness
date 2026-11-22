@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.xwaYHF/tmp/harness-snapshot-SeIaOl/packages/reports
+
+ ✓ test/examples/reports.endpoint.harness-data-path.test.ts (3 tests) 2105ms
+   ✓ GET for index.json from the owner loopback peer answers 200 with the stored index text  1611ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  15:12:59
+   Duration  2.51s (transform 897ms, setup 129ms, collect 30ms, tests 2.10s, environment 0ms, prepare 37ms)
+
+JSON report written to /tmp/z5jp8p-hl.xwaYHF/tmp/harness-runner-4u8aRi/report.json

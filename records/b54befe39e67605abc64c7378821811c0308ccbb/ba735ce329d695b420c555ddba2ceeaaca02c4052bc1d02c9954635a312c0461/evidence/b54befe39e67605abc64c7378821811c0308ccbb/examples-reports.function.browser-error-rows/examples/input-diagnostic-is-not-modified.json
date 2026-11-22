@@ -1,0 +1,59 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.browser-error-rows",
+	"symbol": "browserErrorRows",
+	"cases": [
+		{
+			"name": "two errors, one expectation; input compared before and after",
+			"input": {
+				"test": "Retries",
+				"file": "orders.spec.ts",
+				"project": "chromium",
+				"retry": 0,
+				"errors": [
+					{
+						"type": "console",
+						"message": "Unavailable",
+						"page": "/orders",
+						"source": "orders.js"
+					},
+					{
+						"type": "console",
+						"message": "Other",
+						"page": "/orders",
+						"source": "orders.js"
+					}
+				],
+				"expected": [
+					{
+						"type": "console",
+						"message": "Unavailable",
+						"reason": "Tests retry.",
+						"source": "orders.js"
+					}
+				]
+			},
+			"output": {
+				"rows": [
+					{
+						"type": "console",
+						"message": "Unavailable",
+						"page": "/orders",
+						"source": "orders.js",
+						"status": "Expected",
+						"reason": "Tests retry."
+					},
+					{
+						"type": "console",
+						"message": "Other",
+						"page": "/orders",
+						"source": "orders.js",
+						"status": "Unexpected"
+					}
+				],
+				"inputUnchanged": true
+			}
+		}
+	]
+}

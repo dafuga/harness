@@ -1,0 +1,43 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-budget",
+	"symbol": "harnessBudget",
+	"cases": [
+		{
+			"name": "zero with baseline zero",
+			"input": {
+				"found": {
+					"unit": "reports.function.harness-budget",
+					"metric": "size",
+					"unitOfMeasure": "bytes",
+					"value": 0,
+					"workload": null,
+					"profile": null
+				},
+				"baseline": 0
+			},
+			"output": {
+				"value": "0 bytes",
+				"limit": "frozen at 0"
+			}
+		},
+		{
+			"name": "zero without finding",
+			"input": {
+				"found": {
+					"unit": "reports.function.harness-budget",
+					"metric": "size",
+					"unitOfMeasure": "bytes",
+					"value": 0,
+					"workload": null,
+					"profile": null
+				}
+			},
+			"output": {
+				"value": "0 bytes",
+				"limit": "freeze declared; no reviewed limit is recorded at this revision"
+			}
+		}
+	]
+}

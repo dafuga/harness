@@ -1,0 +1,184 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.comparison-types",
+	"symbol": "comparisonSchema",
+	"cases": [
+		{
+			"name": "request digest in upper-case hex",
+			"input": {
+				"request": "10AB7097012B0FBCE547679DA3AB226BEE437A8B00BD910AB431EDAB57896C53",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 10
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					{
+						"path": "request",
+						"message": "must be a sha256 hex digest"
+					}
+				]
+			}
+		},
+		{
+			"name": "request digest of 63 hex characters",
+			"input": {
+				"request": "0ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 10
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					{
+						"path": "request",
+						"message": "must be a sha256 hex digest"
+					}
+				]
+			}
+		},
+		{
+			"name": "blank protocol after trimming",
+			"input": {
+				"request": "10ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53",
+				"boundary": "public-invocation",
+				"protocol": "   ",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 10
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					{
+						"path": "protocol",
+						"message": "Too small: expected string to have >=1 characters"
+					}
+				]
+			}
+		},
+		{
+			"name": "boundary outside the allowed two",
+			"input": {
+				"request": "10ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53",
+				"boundary": "whole-run",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 10
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					{
+						"path": "boundary",
+						"message": "Invalid option: expected one of \"public-invocation\"|\"fixture\""
+					}
+				]
+			}
+		},
+		{
+			"name": "negative warm-up count",
+			"input": {
+				"request": "10ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": -1,
+					"rounds": 5,
+					"iterations": 10
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					{
+						"path": "sampling.warmup",
+						"message": "Too small: expected number to be >=0"
+					}
+				]
+			}
+		},
+		{
+			"name": "zero rounds",
+			"input": {
+				"request": "10ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 0,
+					"iterations": 10
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					{
+						"path": "sampling.rounds",
+						"message": "Too small: expected number to be >=1"
+					}
+				]
+			}
+		},
+		{
+			"name": "zero iterations",
+			"input": {
+				"request": "10ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 0
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					{
+						"path": "sampling.iterations",
+						"message": "Too small: expected number to be >=1"
+					}
+				]
+			}
+		},
+		{
+			"name": "fractional iterations",
+			"input": {
+				"request": "10ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 2.5
+				}
+			},
+			"output": {
+				"success": false,
+				"issues": [
+					{
+						"path": "sampling.iterations",
+						"message": "Invalid input: expected int, received number"
+					}
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,55 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-page",
+	"symbol": "harnessPage",
+	"cases": [
+		{
+			"name": "branch head is not a revision of the history",
+			"input": {
+				"index": {
+					"branches": [
+						{
+							"name": "main",
+							"head": "cccccccccccccccccccccccccccccccccccccccc"
+						},
+						{
+							"name": "stale",
+							"head": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
+						}
+					],
+					"revisions": [
+						{
+							"commit": "cccccccccccccccccccccccccccccccccccccccc",
+							"parents": [],
+							"subject": "commit c",
+							"author": "Synthetic",
+							"committedAt": "2026-10-10T18:00:00+00:00",
+							"branches": [
+								"main"
+							],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					],
+					"units": [],
+					"benchmarks": [],
+					"profiles": [],
+					"legacy": [],
+					"truncated": false,
+					"problems": []
+				},
+				"path": "/branch/stale/pages",
+				"search": ""
+			},
+			"output": {
+				"kind": "missing",
+				"message": "The tip of branch stale (zzzzzzz) is not in this history.",
+				"home": "/branch/main/pages"
+			}
+		}
+	]
+}

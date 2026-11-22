@@ -1,0 +1,50 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.workspace-route",
+	"symbol": "isWorkspacePath",
+	"cases": [
+		{
+			"name": "legacy prefix",
+			"input": {
+				"path": "/harness/pages"
+			},
+			"output": true
+		},
+		{
+			"name": "project prefix with no category",
+			"input": {
+				"path": "/projects/p/harness"
+			},
+			"output": true
+		},
+		{
+			"name": "unknown category and abbreviated commit are not checked by recognition",
+			"input": {
+				"path": "/projects/p/harness/branch/main/commit/abc1234/reports"
+			},
+			"output": true
+		},
+		{
+			"name": "other project section is not a workspace",
+			"input": {
+				"path": "/projects/p/members"
+			},
+			"output": false
+		},
+		{
+			"name": "empty project segment is not a workspace",
+			"input": {
+				"path": "/projects//harness/pages"
+			},
+			"output": false
+		},
+		{
+			"name": "a longer word is not the harness prefix",
+			"input": {
+				"path": "/harnessx/pages"
+			},
+			"output": false
+		}
+	]
+}

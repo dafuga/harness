@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.nO8NRG/tmp/harness-snapshot-SugQtZ/packages/desktop
+
+ ✓ test/local-transport-teardown.test.ts (5 tests) 4756ms
+   ✓ a page socket whose handshake is never answered is still connecting when its test ends  1184ms
+   ✓ the teardown returns only once the socket it cancelled has closed  1167ms
+   ✓ an error the teardown did not cause is thrown by it, once the socket has closed  1194ms
+   ✓ the same error raised before the teardown is not its doing, and is thrown as well  1196ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  00:18:18
+   Duration  8.00s (transform 1.79s, setup 135ms, collect 2.88s, tests 4.76s, environment 0ms, prepare 36ms)
+
+JSON report written to /tmp/z5jp8p-hl.nO8NRG/tmp/harness-runner-CRwAfI/report.json

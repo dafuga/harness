@@ -1,0 +1,34 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-behavior",
+	"symbol": "explorerBehavior",
+	"cases": [
+		{
+			"name": "different bytes differ",
+			"input": {
+				"before": "1",
+				"after": "2"
+			},
+			"output": {
+				"summary": "differs",
+				"reason": "The recorded results differ in bytes; reading them says whether the behaviour does.",
+				"rows": [
+					[
+						"default",
+						"output",
+						"differs"
+					]
+				],
+				"scenarios": [
+					{
+						"id": "clock",
+						"title": "Clock",
+						"before": null,
+						"after": null
+					}
+				]
+			}
+		}
+	]
+}

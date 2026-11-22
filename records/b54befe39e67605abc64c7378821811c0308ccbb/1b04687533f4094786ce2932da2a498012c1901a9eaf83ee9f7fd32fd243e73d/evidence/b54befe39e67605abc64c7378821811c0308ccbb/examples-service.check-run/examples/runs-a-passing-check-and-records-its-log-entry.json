@@ -1,0 +1,34 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "service.check-run",
+	"symbol": "CheckRunService.run",
+	"cases": [
+		{
+			"name": "printf passed runs in the snapshot and records a passed entry",
+			"input": {
+				"command": "printf passed",
+				"timeoutMs": 30000
+			},
+			"output": {
+				"passed": true,
+				"failures": [],
+				"gathered": [],
+				"entry": {
+					"id": "src/services/CheckRunService.test.ts",
+					"kind": "unit",
+					"runner": "command",
+					"target": "module",
+					"status": "passed",
+					"durationMs": 194,
+					"log": {
+						"path": "logs/src-services-CheckRunService.test.ts.log",
+						"bytes": 6,
+						"sha256": "284d1e8c4918248233df17642bbb940c001e1fa856c18aab86ba6dbe7813eb13"
+					}
+				},
+				"log": "passed"
+			}
+		}
+	]
+}

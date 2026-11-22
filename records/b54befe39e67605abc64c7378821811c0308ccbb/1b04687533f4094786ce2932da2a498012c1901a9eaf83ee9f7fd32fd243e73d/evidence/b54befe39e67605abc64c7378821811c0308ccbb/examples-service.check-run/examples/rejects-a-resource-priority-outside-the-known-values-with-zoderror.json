@@ -1,0 +1,15 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "service.check-run",
+	"symbol": "CheckRunService.run",
+	"cases": [
+		{
+			"name": "an unknown HARNESS_RESOURCE_PRIORITY rejects before any check starts",
+			"input": {
+				"HARNESS_RESOURCE_PRIORITY": "urgent"
+			},
+			"error": "ZodError"
+		}
+	]
+}

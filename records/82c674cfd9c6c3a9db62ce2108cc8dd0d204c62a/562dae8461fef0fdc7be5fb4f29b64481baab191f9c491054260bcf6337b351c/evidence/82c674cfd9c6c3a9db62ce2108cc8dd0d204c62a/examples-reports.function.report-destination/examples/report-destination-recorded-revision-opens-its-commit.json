@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.report-destination",
+	"symbol": "reportDestination",
+	"cases": [
+		{
+			"name": "commit on main and feature",
+			"input": {
+				"revision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+			},
+			"output": "/branch/main/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages"
+		},
+		{
+			"name": "commit on no branch",
+			"input": {
+				"revision": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+			},
+			"output": "/commit/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee/pages"
+		},
+		{
+			"name": "commit preferring master",
+			"input": {
+				"revision": "gggggggggggggggggggggggggggggggggggggggg",
+				"branches": [
+					"feature/x",
+					"master"
+				]
+			},
+			"output": "/branch/master/commit/gggggggggggggggggggggggggggggggggggggggg/pages"
+		},
+		{
+			"name": "commit on the first branch",
+			"input": {
+				"revision": "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",
+				"branches": [
+					"release",
+					"feature/y"
+				]
+			},
+			"output": "/branch/release/commit/hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh/pages"
+		}
+	]
+}

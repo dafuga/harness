@@ -1,0 +1,107 @@
+{
+	"schemaVersion": 1,
+	"record": "08530d44fe51836619625eb3112195d0b31a501959778150b934f83116166cbf",
+	"source": {
+		"commit": "357f8421fa0a4d2c81057dbec7cabd2f04c2fe67",
+		"tree": "98bb54cd0d4b35fa6f64f2a09749e5bde73d699c"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "1303ce6defd829dea2853e4da1e022846e2c34330fa175b26fac5fa59f2957ad",
+			"bytes": 19448,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-scope/examples/explorer-scope-branch-tip-default.json",
+			"sha256": "a14bdb530d06d1b96a2360c953110d2ecf3bf2056e34de239e9560a0bf100ad5",
+			"bytes": 2171,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-scope/examples/test-examples-reports.function.explorer-scope.test.ts-explorer-scope-branch-tip-default.txt",
+			"sha256": "c705346ee6fb130d011206b01dc8b240bb0a7c3d48b0d7922cd85eb7694132aa",
+			"bytes": 474,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-scope/examples/test-examples-reports.function.explorer-scope.test.ts-explorer-scope-branch-tip-default.json",
+			"sha256": "5417966bd40efa88a431c7a3058a221d739c600a3207b1fb31e4069ea93d80ba",
+			"bytes": 1475,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-scope/examples/explorer-scope-selected-historical-commit.json",
+			"sha256": "50bce5b5191feb38cfe10cb64da00047a89c66d2182413e85d91f00c345c13c1",
+			"bytes": 3309,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-scope/examples/test-examples-reports.function.explorer-scope.test.ts-explorer-scope-selected-historical-commit.txt",
+			"sha256": "c705346ee6fb130d011206b01dc8b240bb0a7c3d48b0d7922cd85eb7694132aa",
+			"bytes": 474,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-scope/examples/test-examples-reports.function.explorer-scope.test.ts-explorer-scope-selected-historical-commit.json",
+			"sha256": "92b4bda91ca8d4db46f732d430ad05d6b6ccddb0730be0c5a8190bb16437ed05",
+			"bytes": 1817,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-scope/examples/explorer-scope-unbranched-commit-without-tip.json",
+			"sha256": "27147fc56ffea20520c4c9b8aacf37a56526ce30a59fea6a0773b662e0381c6a",
+			"bytes": 1142,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-scope/examples/test-examples-reports.function.explorer-scope.test.ts-explorer-scope-unbranched-commit-without-tip.txt",
+			"sha256": "c705346ee6fb130d011206b01dc8b240bb0a7c3d48b0d7922cd85eb7694132aa",
+			"bytes": 474,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-scope/examples/test-examples-reports.function.explorer-scope.test.ts-explorer-scope-unbranched-commit-without-tip.json",
+			"sha256": "1f6c6f0c551744efec433ed436432604da4b1e0c815fd5cef65f8ce2ab3fbac5",
+			"bytes": 979,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-scope/examples/explorer-scope-absent-branch-or-revision-missing.json",
+			"sha256": "8d9e821080687e4eca6729e943f63e37aff219b4c4a107b46e229d3a08bde034",
+			"bytes": 1485,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-scope/examples/test-examples-reports.function.explorer-scope.test.ts-explorer-scope-absent-branch-or-revision-missing.txt",
+			"sha256": "c705346ee6fb130d011206b01dc8b240bb0a7c3d48b0d7922cd85eb7694132aa",
+			"bytes": 474,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/357f8421fa0a4d2c81057dbec7cabd2f04c2fe67/examples-reports.function.explorer-scope/examples/test-examples-reports.function.explorer-scope.test.ts-explorer-scope-absent-branch-or-revision-missing.json",
+			"sha256": "fe491cc120f6f3d2384c661d65345196429333877200d0f7f82035506b0519b4",
+			"bytes": 1195,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-reports.function.explorer-scope-examples.log",
+			"sha256": "c705346ee6fb130d011206b01dc8b240bb0a7c3d48b0d7922cd85eb7694132aa",
+			"bytes": 474,
+			"storage": "git"
+		}
+	]
+}

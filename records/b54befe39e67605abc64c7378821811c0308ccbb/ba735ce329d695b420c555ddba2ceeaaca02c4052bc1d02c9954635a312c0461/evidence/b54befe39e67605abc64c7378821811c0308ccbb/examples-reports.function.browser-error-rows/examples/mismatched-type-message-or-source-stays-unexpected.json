@@ -1,0 +1,101 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.browser-error-rows",
+	"symbol": "browserErrorRows",
+	"cases": [
+		{
+			"name": "source, type and message differences against an exact expectation",
+			"input": {
+				"errors": [
+					{
+						"type": "console",
+						"message": "Unavailable",
+						"page": "/orders",
+						"source": "other.js"
+					},
+					{
+						"type": "pageerror",
+						"message": "Unavailable",
+						"page": "/orders",
+						"source": "orders.js"
+					},
+					{
+						"type": "console",
+						"message": "Unavailable later",
+						"page": "/orders",
+						"source": "orders.js"
+					}
+				],
+				"expected": [
+					{
+						"type": "console",
+						"message": "Unavailable",
+						"reason": "Tests retry.",
+						"source": "orders.js"
+					}
+				]
+			},
+			"output": [
+				{
+					"type": "console",
+					"message": "Unavailable",
+					"page": "/orders",
+					"source": "other.js",
+					"status": "Unexpected"
+				},
+				{
+					"type": "pageerror",
+					"message": "Unavailable",
+					"page": "/orders",
+					"source": "orders.js",
+					"status": "Unexpected"
+				},
+				{
+					"type": "console",
+					"message": "Unavailable later",
+					"page": "/orders",
+					"source": "orders.js",
+					"status": "Unexpected"
+				},
+				{
+					"type": "console",
+					"message": "Unavailable",
+					"reason": "Tests retry.",
+					"source": "orders.js",
+					"status": "Missing expected error"
+				}
+			]
+		},
+		{
+			"name": "sourceless expectation matches an error from any source",
+			"input": {
+				"errors": [
+					{
+						"type": "console",
+						"message": "Unavailable",
+						"page": "/orders",
+						"source": "elsewhere.js"
+					}
+				],
+				"expected": [
+					{
+						"type": "console",
+						"message": "Unavailable",
+						"reason": "Any source."
+					}
+				]
+			},
+			"output": [
+				{
+					"type": "console",
+					"message": "Unavailable",
+					"page": "/orders",
+					"source": "elsewhere.js",
+					"status": "Expected",
+					"reason": "Any source."
+				}
+			]
+		}
+	]
+}

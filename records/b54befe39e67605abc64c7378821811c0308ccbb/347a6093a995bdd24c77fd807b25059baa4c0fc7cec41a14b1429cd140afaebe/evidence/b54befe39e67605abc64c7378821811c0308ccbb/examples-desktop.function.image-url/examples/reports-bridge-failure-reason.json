@@ -1,0 +1,28 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.image-url",
+	"symbol": "imageUrl",
+	"cases": [
+		{
+			"name": "Error cause",
+			"input": {
+				"cause": "Error: Missing image"
+			},
+			"output": [
+				"",
+				"Error: Missing image"
+			]
+		},
+		{
+			"name": "string cause",
+			"input": {
+				"cause": "denied"
+			},
+			"output": [
+				"",
+				"denied"
+			]
+		}
+	]
+}

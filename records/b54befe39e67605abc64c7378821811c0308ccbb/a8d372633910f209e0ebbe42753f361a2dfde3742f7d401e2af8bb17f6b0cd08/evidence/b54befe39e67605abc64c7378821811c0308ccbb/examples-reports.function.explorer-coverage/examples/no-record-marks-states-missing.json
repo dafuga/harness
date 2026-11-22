@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-coverage",
+	"symbol": "explorerCoverage",
+	"cases": [
+		{
+			"name": "no record for the commit",
+			"input": "record null",
+			"output": {
+				"scenario": "titles-page",
+				"title": "Titles page",
+				"kind": "ui",
+				"standing": "missing",
+				"reasons": [
+					"No verification record is attached to this commit."
+				],
+				"tests": [
+					{
+						"id": "page",
+						"status": null
+					}
+				],
+				"inheritedFrom": null,
+				"states": [
+					{
+						"state": "empty",
+						"declared": "required",
+						"standing": "missing",
+						"reasons": [],
+						"slots": []
+					}
+				]
+			}
+		}
+	]
+}

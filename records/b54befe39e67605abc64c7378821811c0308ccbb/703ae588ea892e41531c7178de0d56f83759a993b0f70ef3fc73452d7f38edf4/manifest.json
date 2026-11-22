@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"record": "703ae588ea892e41531c7178de0d56f83759a993b0f70ef3fc73452d7f38edf4",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "c5aeb201f8d58305ae2c6b8bf8b1903549b2f5a0636a0401f42652ecdd24e41c",
+			"bytes": 110681,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/package-api/packed-consumer/consumer-output.json",
+			"sha256": "719d39cac6da90a838d6bacb3af92733fe524008c7c36efe5121c4576a11b87c",
+			"bytes": 8583,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/package-api/packed-consumer/packed-assertions.json",
+			"sha256": "4ac6f28d99fa47738ff47e9179bd4d8eb00e9478f66ff9388469c6e60c0bfe75",
+			"bytes": 1675,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/package-api-packed-consumer.log",
+			"sha256": "d7bc96991e32c80834f61b0803677538a040c4aa6ed071a2df2542e92c648512",
+			"bytes": 503,
+			"storage": "git"
+		}
+	]
+}

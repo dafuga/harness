@@ -1,0 +1,18 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.report-destination",
+	"symbol": "reportDestination",
+	"cases": [
+		{
+			"name": "branch with an unpaired surrogate",
+			"input": {
+				"revision": "dddddddddddddddddddddddddddddddddddddddd",
+				"branches": [
+					"bad\ud800branch"
+				]
+			},
+			"error": "URIError: URI malformed"
+		}
+	]
+}

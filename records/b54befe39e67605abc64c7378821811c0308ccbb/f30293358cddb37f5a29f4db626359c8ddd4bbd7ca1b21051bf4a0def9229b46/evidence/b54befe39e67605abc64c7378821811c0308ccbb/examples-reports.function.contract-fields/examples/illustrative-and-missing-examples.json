@@ -1,0 +1,112 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.contract-fields",
+	"symbol": "fieldOf",
+	"cases": [
+		{
+			"name": "string",
+			"input": "string",
+			"output": {
+				"source": "illustrative",
+				"examples": [
+					"\"example\""
+				]
+			}
+		},
+		{
+			"name": "number",
+			"input": "number",
+			"output": {
+				"source": "illustrative",
+				"examples": [
+					"1"
+				]
+			}
+		},
+		{
+			"name": "string | undefined",
+			"input": "string | undefined",
+			"output": {
+				"source": "illustrative",
+				"examples": [
+					"\"example\""
+				]
+			}
+		},
+		{
+			"name": "\"open\" | \"closed\"",
+			"input": "\"open\" | \"closed\"",
+			"output": {
+				"source": "illustrative",
+				"examples": [
+					"\"open\""
+				]
+			}
+		},
+		{
+			"name": "Record<string, number>",
+			"input": "Record<string, number>",
+			"output": {
+				"source": "illustrative",
+				"examples": [
+					"{}"
+				]
+			}
+		},
+		{
+			"name": "markup",
+			"input": "markup",
+			"output": {
+				"source": "illustrative",
+				"examples": [
+					"<p>Example</p>"
+				]
+			}
+		},
+		{
+			"name": "string[][][][]",
+			"input": "string[][][][]",
+			"output": {
+				"source": "illustrative",
+				"examples": [
+					"[\n  [\n    [\n      [\n        \"example\"\n      ]\n    ]\n  ]\n]"
+				]
+			}
+		},
+		{
+			"name": "string[][][][][]",
+			"input": "string[][][][][]",
+			"output": {
+				"source": "missing",
+				"examples": []
+			}
+		},
+		{
+			"name": "PrivateContext",
+			"input": "PrivateContext",
+			"output": {
+				"source": "missing",
+				"examples": []
+			}
+		},
+		{
+			"name": "string | PrivateContext",
+			"input": "string | PrivateContext",
+			"output": {
+				"source": "missing",
+				"examples": []
+			}
+		},
+		{
+			"name": "string with an empty example list",
+			"input": "string",
+			"output": {
+				"source": "illustrative",
+				"examples": [
+					"\"example\""
+				]
+			}
+		}
+	]
+}

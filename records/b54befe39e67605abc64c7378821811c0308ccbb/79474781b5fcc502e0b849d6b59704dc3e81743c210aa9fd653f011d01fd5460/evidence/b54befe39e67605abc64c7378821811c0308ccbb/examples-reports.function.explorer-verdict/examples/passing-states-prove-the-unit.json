@@ -1,0 +1,20 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-verdict",
+	"symbol": "explorerVerdict",
+	"cases": [
+		{
+			"name": "every required state has passed captures of this commit",
+			"input": {
+				"unit": "reports.function.explorer-verdict",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+			},
+			"output": {
+				"passed": true,
+				"label": "Full coverage passed",
+				"reasons": []
+			}
+		}
+	]
+}

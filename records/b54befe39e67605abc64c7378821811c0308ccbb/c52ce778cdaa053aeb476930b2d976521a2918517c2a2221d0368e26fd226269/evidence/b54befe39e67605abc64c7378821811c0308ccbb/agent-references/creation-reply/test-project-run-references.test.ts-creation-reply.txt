@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-ui.7bySlZ/tmp/harness-snapshot-lSxXVR/packages/desktop
+
+ ✓ test/project-run-references.test.ts (3 tests) 8483ms
+   ✓ a pages request is asked with a registered function it names, and its checked notes are said  4884ms
+   ✓ an answer in plain words is said before the run is refused as no proposal  1781ms
+   ✓ a broken or fenced JSON answer is never said  1802ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  10:15:14
+   Duration  9.50s (transform 524ms, setup 140ms, collect 663ms, tests 8.48s, environment 0ms, prepare 39ms)
+
+JSON report written to /tmp/z5jp8p-ui.7bySlZ/tmp/harness-runner-13Tb43/report.json

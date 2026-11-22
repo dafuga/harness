@@ -1,0 +1,207 @@
+{
+	"schemaVersion": 1,
+	"record": "ba735ce329d695b420c555ddba2ceeaaca02c4052bc1d02c9954635a312c0461",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "973724ef44971e917f9e3a2ce130052af15cc495e15af7fc7b1da14af471aa3a",
+			"bytes": 502751,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/browser-error-evidence/desktop/browser-errors-desktop-desktop.png",
+			"sha256": "39833f82c58fdb65cf763c5a06053a5ef149668b571ea9ff902ad104e3da62e6",
+			"bytes": 1915484,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/browser-error-evidence/desktop/browser-errors-desktop-mobile.png",
+			"sha256": "9947d084b275a759667454f640ada8cf2283dc830ba0ef67fec51a20dc2137b5",
+			"bytes": 1057058,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/browser-error-evidence/console/browser-errors-console-desktop.png",
+			"sha256": "b0ed2c6afa802028238c1aa8c5bbfbe9a7cd766826f81036edf7e84df0502ca6",
+			"bytes": 101678,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/browser-error-evidence/console/browser-errors-console-mobile.png",
+			"sha256": "bb7452ed0d4af0ed9e32b61066c4af2051489dcfc96abb02d594ab9ad8fb76fa",
+			"bytes": 91232,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.browser-error-rows/examples/exact-type-message-and-source-match-once.json",
+			"sha256": "13d10f6e97385149c70a369957bdd04a2f298477cfcad3cf2a9567f46ee57f9b",
+			"bytes": 1080,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.browser-error-rows/examples/test-examples-reports.function.browser-error-rows.test.ts-exact-type-message-and-source-match-once.txt",
+			"sha256": "43e90d1ac9bcaf3d5285b58e9d37356a388e5f342aa776a08eb9b2aa9cf2dffc",
+			"bytes": 434,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.browser-error-rows/examples/test-examples-reports.function.browser-error-rows.test.ts-exact-type-message-and-source-match-once.json",
+			"sha256": "3a1c32a34b7f07a5bdede5233e7ba067c80dc39736fadf72b165c031263bf2d0",
+			"bytes": 1157,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.browser-error-rows/examples/mismatched-type-message-or-source-stays-unexpected.json",
+			"sha256": "782e4a5cdab160a716cc7227e39465089fece469e2ce0eccac96b769f9e39ec4",
+			"bytes": 2029,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.browser-error-rows/examples/test-examples-reports.function.browser-error-rows.test.ts-mismatched-type-message-or-source-stays-unexpected.txt",
+			"sha256": "43e90d1ac9bcaf3d5285b58e9d37356a388e5f342aa776a08eb9b2aa9cf2dffc",
+			"bytes": 434,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.browser-error-rows/examples/test-examples-reports.function.browser-error-rows.test.ts-mismatched-type-message-or-source-stays-unexpected.json",
+			"sha256": "51be4d437c1691d3e1e8c7866fd1d7775c5271d91ecad71bbb429d9bde24254d",
+			"bytes": 1968,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.browser-error-rows/examples/unused-expectations-become-missing-rows.json",
+			"sha256": "fbe8f6e31a966ff3d3a17a8f4b90760dcf15f9fa5dfc12473b40c98edf6c4c81",
+			"bytes": 985,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.browser-error-rows/examples/test-examples-reports.function.browser-error-rows.test.ts-unused-expectations-become-missing-rows.txt",
+			"sha256": "43e90d1ac9bcaf3d5285b58e9d37356a388e5f342aa776a08eb9b2aa9cf2dffc",
+			"bytes": 434,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.browser-error-rows/examples/test-examples-reports.function.browser-error-rows.test.ts-unused-expectations-become-missing-rows.json",
+			"sha256": "45c17fa1f39cffae84f88ee900f76c168841754c0ea812d9263822b060f0bfef",
+			"bytes": 1504,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.browser-error-rows/examples/line-column-stack-and-page-are-not-compared.json",
+			"sha256": "0ceb4806fa7f06e1dd3f92c6d2e6a61b86ad2056fd020294e356a282ff9aef5b",
+			"bytes": 894,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.browser-error-rows/examples/test-examples-reports.function.browser-error-rows.test.ts-line-column-stack-and-page-are-not-compared.txt",
+			"sha256": "43e90d1ac9bcaf3d5285b58e9d37356a388e5f342aa776a08eb9b2aa9cf2dffc",
+			"bytes": 434,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.browser-error-rows/examples/test-examples-reports.function.browser-error-rows.test.ts-line-column-stack-and-page-are-not-compared.json",
+			"sha256": "1e431c31c79e3634629083623ba7e7c1a8e6901c4706c22a57bb4b97db8f0e65",
+			"bytes": 971,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.browser-error-rows/examples/input-diagnostic-is-not-modified.json",
+			"sha256": "8a55f8a4b6409224bcdfa7024e48ec40df2e718dc334a7d413abe7e2c24c18ef",
+			"bytes": 1174,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.browser-error-rows/examples/test-examples-reports.function.browser-error-rows.test.ts-input-diagnostic-is-not-modified.txt",
+			"sha256": "43e90d1ac9bcaf3d5285b58e9d37356a388e5f342aa776a08eb9b2aa9cf2dffc",
+			"bytes": 434,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.browser-error-rows/examples/test-examples-reports.function.browser-error-rows.test.ts-input-diagnostic-is-not-modified.json",
+			"sha256": "3f63d156f5326274302f4a5bc162b4f731424c9e5cf6ae7705366aa502fdf886",
+			"bytes": 2371,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.browser-error-rows/examples/clean-runs-without-expectations-return-no-rows.json",
+			"sha256": "7b79a350e1d546632a2dfcd9f05674ee02aab98e22fc1f84d9b89b0a5edaed29",
+			"bytes": 278,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.browser-error-rows/examples/test-examples-reports.function.browser-error-rows.test.ts-clean-runs-without-expectations-return-no-rows.txt",
+			"sha256": "43e90d1ac9bcaf3d5285b58e9d37356a388e5f342aa776a08eb9b2aa9cf2dffc",
+			"bytes": 434,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.browser-error-rows/examples/test-examples-reports.function.browser-error-rows.test.ts-clean-runs-without-expectations-return-no-rows.json",
+			"sha256": "ee88156013de484910ae219e30056fd1bda8a2742b66778fa413573c17da8a4c",
+			"bytes": 629,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-reports.function.browser-error-rows-examples.log",
+			"sha256": "43e90d1ac9bcaf3d5285b58e9d37356a388e5f342aa776a08eb9b2aa9cf2dffc",
+			"bytes": 434,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-console.log",
+			"sha256": "b7956c868c06f9deaa3a180bcc05f44241a8637d8d7936836746c545bcc70884",
+			"bytes": 497,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-persistence.log",
+			"sha256": "113af9798e2f2cd299f1cc7d6b42110ffc6e3ba77f5c49d641759566aae795d8",
+			"bytes": 958,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-classification.log",
+			"sha256": "2423685a16d6fc1b98cd475bcb10545df9676c330b2b651be85d94b912280d1d",
+			"bytes": 389,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-hosted.log",
+			"sha256": "72fd7247ca35e5482914c6cb749d5e4de32b7730250aec8e3f30671bd517cb78",
+			"bytes": 452,
+			"storage": "git"
+		},
+		{
+			"path": "logs/browser-error-evidence-desktop.log",
+			"sha256": "029c6f09d96ff09997704e7e68d735ee46b5465b4eb9ee93cce21462fa944d41",
+			"bytes": 219,
+			"storage": "git"
+		}
+	]
+}

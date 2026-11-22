@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"record": "1fdddd3b2bc48fb79f76807c80d2f07997d205299c79e14dae786132f7482a20",
+	"source": {
+		"commit": "27ad13cba529fa0b9cfe4159bfd5e18cda3e2471",
+		"tree": "89d13ee3e4faac4677c689074005f19ed59302d1"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "35cb7ef1224954ca3722da28ea94eeda47a276e6ace8ad82ec81774179e79d2e",
+			"bytes": 12869,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/27ad13cba529fa0b9cfe4159bfd5e18cda3e2471/invocation-boundary/boundary/boundary-module.json",
+			"sha256": "3d58875013fdce46f66ddaf91f176557f9c11292998cfe0b11255d8a7f391ed3",
+			"bytes": 1677,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/27ad13cba529fa0b9cfe4159bfd5e18cda3e2471/invocation-boundary/boundary/boundary-wasm.json",
+			"sha256": "5bdd25553509b304599cbebf2407b524a458e3b5f59c4d445ceab57ddefa41a8",
+			"bytes": 1662,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/27ad13cba529fa0b9cfe4159bfd5e18cda3e2471/invocation-boundary/boundary/boundary-process.json",
+			"sha256": "0aa70ed9f7a8fbd97cd1e052480a6a077db53d801b7872c3ec76b185d71b656b",
+			"bytes": 1683,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/invocation-boundary-boundary.log",
+			"sha256": "a3ef96d5e4ee407a42b3f1b442e235568413d6d6bd2db7b8dd7bc7742c3bc082",
+			"bytes": 6412,
+			"storage": "git"
+		}
+	]
+}

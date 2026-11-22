@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-shown",
+	"symbol": "entityShown",
+	"cases": [
+		{
+			"name": "removed page with its last commit before the shown one",
+			"input": {
+				"commit": "8b41d0720e252681deac809969b3faf8181dac30",
+				"unit": "app.page.orders",
+				"change": "removed"
+			},
+			"output": {
+				"contract": [
+					{
+						"label": "Purpose",
+						"value": "Lists the orders of an account."
+					},
+					{
+						"label": "App route",
+						"value": "/orders"
+					},
+					{
+						"label": "Inputs",
+						"value": "account id, search text"
+					},
+					{
+						"label": "Output",
+						"value": "markup"
+					}
+				],
+				"measure": {
+					"size": [
+						{
+							"label": "Source size",
+							"value": "Not measured",
+							"rawValue": null,
+							"unitOfMeasure": "bytes"
+						},
+						{
+							"label": "Emitted size",
+							"target": "none",
+							"value": "Not measured",
+							"rawValue": null,
+							"unitOfMeasure": "bytes",
+							"note": "This unit declares no process or Wasm output."
+						},
+						{
+							"label": "Complexity",
+							"value": "Not measured",
+							"rawValue": null
+						}
+					],
+					"performance": []
+				},
+				"recordId": "deac809969b3faf8181dac308b41d0720e2526810e252681deac809969b3faf8"
+			}
+		}
+	]
+}

@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"record": "c8f0f5eebafdf251aad37e237c1d3d4148d3276c0573e1a01f2ffb6195dd0e7f",
+	"source": {
+		"commit": "d2597f94fd72ece7e442c597023eb1f9041fc507",
+		"tree": "64bda26c88dd2c9a22674b8709f9eb95214eb0fc"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "399dadca414da90e9360e25f851f703c4b74edfb4cd5b73faf671cd7b506c4f3",
+			"bytes": 7657,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/d2597f94fd72ece7e442c597023eb1f9041fc507/visual-reports.style.harness/states/problem-desktop.png",
+			"sha256": "9da68ceb667fbb029ca33676f2d100694f562ce9ccd4890aae992913951705ba",
+			"bytes": 27554,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/d2597f94fd72ece7e442c597023eb1f9041fc507/visual-reports.style.harness/states/problem-tablet.png",
+			"sha256": "48eb68be4f24f2c75c7d4f969447d3805f8e3637d3a1776df345faa5faacb1a1",
+			"bytes": 27095,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/d2597f94fd72ece7e442c597023eb1f9041fc507/visual-reports.style.harness/states/problem-mobile.png",
+			"sha256": "4534ae478f6772649fc702404ff7454b5df3a3a137f39c99c6853601bc90f10e",
+			"bytes": 23558,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/d2597f94fd72ece7e442c597023eb1f9041fc507/visual-reports.style.harness/states/missing-desktop.png",
+			"sha256": "1fddabb49f91f1a1189d88197327a32696e0b6380b5d4f3ec32d2adea903d015",
+			"bytes": 28642,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/d2597f94fd72ece7e442c597023eb1f9041fc507/visual-reports.style.harness/states/missing-tablet.png",
+			"sha256": "3ae26ceb77900938c11803484b9416111afffa89aaf300c76f4a592185bd4e4e",
+			"bytes": 28347,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/d2597f94fd72ece7e442c597023eb1f9041fc507/visual-reports.style.harness/states/missing-mobile.png",
+			"sha256": "bc48bb2e9f09da9c4485c587c10944dcd28bef316be267bd8d4a0a5fbe7bf971",
+			"bytes": 24667,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "logs/visual-reports.style.harness-states.log",
+			"sha256": "b4e6e41e6d14c57268254fc26c9f157ed28328ae0668a49221d1981ec51bfe21",
+			"bytes": 1471,
+			"storage": "git"
+		}
+	]
+}

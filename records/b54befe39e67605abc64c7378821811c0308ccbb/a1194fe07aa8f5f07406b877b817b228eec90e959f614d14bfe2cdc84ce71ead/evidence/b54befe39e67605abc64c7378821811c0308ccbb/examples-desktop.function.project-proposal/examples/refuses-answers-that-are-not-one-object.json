@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.project-proposal",
+	"symbol": "projectProposal",
+	"cases": [
+		{
+			"name": "too long",
+			"input": {
+				"answer": "too long"
+			},
+			"error": "The agent's proposal was not used: it is too long."
+		},
+		{
+			"name": "prose around the object",
+			"input": {
+				"answer": "prose around the object"
+			},
+			"error": "The agent's proposal was not used: it is not one JSON object."
+		},
+		{
+			"name": "a list",
+			"input": {
+				"answer": "a list"
+			},
+			"error": "The agent's proposal was not used: it is not one JSON object."
+		},
+		{
+			"name": "null",
+			"input": {
+				"answer": "null"
+			},
+			"error": "The agent's proposal was not used: it is not one JSON object."
+		},
+		{
+			"name": "an unknown field",
+			"input": {
+				"answer": "an unknown field"
+			},
+			"error": "The agent's proposal was not used: it has the unknown field path."
+		},
+		{
+			"name": "a long unknown field",
+			"input": {
+				"answer": "a long unknown field"
+			},
+			"error": "The agent's proposal was not used: it has the unknown field xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx."
+		},
+		{
+			"name": "an unknown category",
+			"input": {
+				"answer": "an unknown category"
+			},
+			"error": "The agent's proposal was not used: its category is unknown."
+		}
+	]
+}

@@ -1,0 +1,78 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.recorded-value",
+	"symbol": "recordedValue",
+	"cases": [
+		{
+			"name": "text",
+			"input": "text",
+			"output": {
+				"kind": "scalar",
+				"type": "Text",
+				"text": "passed"
+			}
+		},
+		{
+			"name": "fraction",
+			"input": "fraction",
+			"output": {
+				"kind": "scalar",
+				"type": "Number",
+				"text": "42.5"
+			}
+		},
+		{
+			"name": "flag",
+			"input": "flag",
+			"output": {
+				"kind": "scalar",
+				"type": "Boolean",
+				"text": "true"
+			}
+		},
+		{
+			"name": "no value",
+			"input": "no value",
+			"output": {
+				"kind": "scalar",
+				"type": "Null",
+				"text": "null"
+			}
+		},
+		{
+			"name": "absent value",
+			"input": "absent value",
+			"output": {
+				"kind": "notice",
+				"text": "Not recorded"
+			}
+		},
+		{
+			"name": "empty text",
+			"input": "empty text",
+			"output": {
+				"kind": "notice",
+				"text": "Empty text"
+			}
+		},
+		{
+			"name": "big integer",
+			"input": "big integer",
+			"output": {
+				"kind": "scalar",
+				"type": "bigint",
+				"text": "12"
+			}
+		},
+		{
+			"name": "symbol",
+			"input": "symbol",
+			"output": {
+				"kind": "scalar",
+				"type": "symbol",
+				"text": "Symbol(tag)"
+			}
+		}
+	]
+}

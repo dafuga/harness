@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"record": "8a393298d7d0f5f32f50729e1b1e4c80d7a83753a05a19e44637b123a0fa3573",
+	"source": {
+		"commit": "fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d",
+		"tree": "914a6e8113f2007a6803b225ce5b435815f6b64e"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "895baa318dac6c9085842770d8181063b184403a00765f14047253e66f3ff045",
+			"bytes": 21435,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d/examples-function.budget-findings/examples/compares-reviewed-limits.json",
+			"sha256": "32f7c0fa7efe8b7e112be345f2397fa31e008a7f9b43c2e2c1b39410aa9fb500",
+			"bytes": 4064,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d/examples-function.budget-findings/examples/test-examples-function.budget-findings.test.ts-compares-reviewed-limits.txt",
+			"sha256": "2a8afb66f612b82634715dfd1f3303d66899bc732c4f24550c961c82c1479912",
+			"bytes": 450,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d/examples-function.budget-findings/examples/test-examples-function.budget-findings.test.ts-compares-reviewed-limits.json",
+			"sha256": "4523a8cf5f89af54552bdeb336b92977c97e10854d5497b72d7eaceee007487b",
+			"bytes": 2208,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d/examples-function.budget-findings/examples/preserves-unavailable-evidence.json",
+			"sha256": "3bfdfc60b25c46a0e358b0b3ddfb059c2739916ad71a75d6105c7815420a06dd",
+			"bytes": 8353,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d/examples-function.budget-findings/examples/test-examples-function.budget-findings.test.ts-preserves-unavailable-evidence.txt",
+			"sha256": "2a8afb66f612b82634715dfd1f3303d66899bc732c4f24550c961c82c1479912",
+			"bytes": 450,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d/examples-function.budget-findings/examples/test-examples-function.budget-findings.test.ts-preserves-unavailable-evidence.json",
+			"sha256": "bfccb2c69ba696846501cd9b44e7ed62c523292e93f4e2f41753ba57e745c001",
+			"bytes": 2536,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d/examples-function.budget-findings/examples/applies-compatible-performance-comparisons.json",
+			"sha256": "9de5cee38932a0e3304c44bba1cb2a76de4a445e2ee3ea148e863a8fc09bcecf",
+			"bytes": 7699,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d/examples-function.budget-findings/examples/test-examples-function.budget-findings.test.ts-applies-compatible-performance-comparisons.txt",
+			"sha256": "2a8afb66f612b82634715dfd1f3303d66899bc732c4f24550c961c82c1479912",
+			"bytes": 450,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d/examples-function.budget-findings/examples/test-examples-function.budget-findings.test.ts-applies-compatible-performance-comparisons.json",
+			"sha256": "0d35e620633ad488a1245fdd6993ab7adf10d3995ef6e2a16c9fd2a5fcc9984b",
+			"bytes": 2317,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-function.budget-findings-examples.log",
+			"sha256": "2a8afb66f612b82634715dfd1f3303d66899bc732c4f24550c961c82c1479912",
+			"bytes": 450,
+			"storage": "git"
+		}
+	]
+}

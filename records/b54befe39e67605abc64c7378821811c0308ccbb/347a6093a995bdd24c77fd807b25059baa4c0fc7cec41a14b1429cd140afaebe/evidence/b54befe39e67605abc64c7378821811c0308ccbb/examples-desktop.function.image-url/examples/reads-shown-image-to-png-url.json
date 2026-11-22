@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.image-url",
+	"symbol": "imageUrl",
+	"cases": [
+		{
+			"name": "initial callback before read",
+			"input": {
+				"request": {
+					"entityId": "design-image-42",
+					"version": "v3",
+					"sha256": "ba7816bf00000000000000000000000000000000000000000000000000000000"
+				}
+			},
+			"output": [
+				"",
+				""
+			]
+		},
+		{
+			"name": "bridge image request with commit and context",
+			"input": {
+				"request": {
+					"entityId": "design-image-42",
+					"version": "v3",
+					"sha256": "ba7816bf00000000000000000000000000000000000000000000000000000000"
+				},
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"context": {
+					"projectId": "project-7"
+				}
+			},
+			"output": {
+				"entityId": "design-image-42",
+				"version": "v3",
+				"sha256": "ba7816bf00000000000000000000000000000000000000000000000000000000",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"projectId": "project-7"
+			}
+		},
+		{
+			"name": "PNG object URL after read",
+			"input": {
+				"byteLength": 4,
+				"type": "image/png"
+			},
+			"output": [
+				"blob:example-1",
+				""
+			]
+		},
+		{
+			"name": "revoked after release",
+			"input": {
+				"release": true
+			},
+			"output": "blob:example-1"
+		}
+	]
+}

@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.explorer-legacy",
+	"symbol": "explorerLegacy",
+	"cases": [
+		{
+			"name": "history view of a service",
+			"input": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"view": "history",
+				"unit": "service.title"
+			},
+			"output": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"category": "services",
+				"entity": "service.title",
+				"section": "history"
+			}
+		},
+		{
+			"name": "growth view of a function",
+			"input": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"view": "growth",
+				"unit": "function.slugify"
+			},
+			"output": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"category": "functions",
+				"entity": "function.slugify",
+				"section": "history"
+			}
+		},
+		{
+			"name": "map view of a service",
+			"input": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"view": "map",
+				"unit": "service.title"
+			},
+			"output": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"category": "services",
+				"entity": "service.title"
+			}
+		},
+		{
+			"name": "compare view with a base",
+			"input": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"view": "compare",
+				"base": "9b1e4d7a2c6f0e8b3a5d1c9f7e2b4a6d8c0e3f15",
+				"unit": "function.slugify"
+			},
+			"output": {
+				"branch": "feature/kept#1",
+				"commit": "3f9a0c2d7e1b4a6f8c5d9e0b2a7f4c1d8e6b3a50",
+				"category": "functions",
+				"entity": "function.slugify"
+			}
+		}
+	]
+}

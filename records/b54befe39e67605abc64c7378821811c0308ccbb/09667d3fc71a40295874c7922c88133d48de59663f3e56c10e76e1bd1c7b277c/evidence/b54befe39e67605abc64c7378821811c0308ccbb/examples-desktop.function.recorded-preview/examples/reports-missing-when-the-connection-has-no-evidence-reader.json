@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.recorded-preview",
+	"symbol": "recordedPreview",
+	"cases": [
+		{
+			"name": "workspace whose bridge has no evidence reader",
+			"input": {
+				"entityId": "app.page.orders",
+				"thumbnail": {
+					"source": "recorded",
+					"scenario": "orders-page",
+					"state": "default",
+					"viewport": "desktop"
+				},
+				"bridgeHasEvidence": false
+			},
+			"output": {
+				"states": [
+					{
+						"status": "loading",
+						"reason": "",
+						"caption": ""
+					},
+					{
+						"status": "missing",
+						"reason": "Recorded screenshots cannot be read on this connection.",
+						"caption": ""
+					}
+				],
+				"objectUrlsCreated": 0
+			}
+		}
+	]
+}

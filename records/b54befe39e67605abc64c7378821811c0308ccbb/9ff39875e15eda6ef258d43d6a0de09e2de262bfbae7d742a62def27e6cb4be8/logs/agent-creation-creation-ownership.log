@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-ui.rmAjls/tmp/harness-snapshot-aCFQSU/packages/desktop
+
+ ✓ test/project-conversation-ownership.test.ts (2 tests) 10939ms
+   ✓ project creation excludes another client until the owning request finishes  5266ms
+   ✓ visual creation reuses GPT Image and saves a reviewable committed version  5656ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  10:43:45
+   Duration  12.05s (transform 571ms, setup 149ms, collect 738ms, tests 10.94s, environment 0ms, prepare 41ms)
+
+JSON report written to /tmp/z5jp8p-ui.rmAjls/tmp/harness-runner-TylhJf/report.json

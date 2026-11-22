@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-measure",
+	"symbol": "entityMeasure",
+	"cases": [
+		{
+			"name": "no measurements, timing budget, null record",
+			"input": {
+				"record": null
+			},
+			"output": {
+				"size": [
+					{
+						"label": "Source size",
+						"value": "Not measured",
+						"rawValue": null,
+						"unitOfMeasure": "bytes"
+					},
+					{
+						"label": "Emitted size",
+						"target": "none",
+						"value": "Not measured",
+						"rawValue": null,
+						"unitOfMeasure": "bytes",
+						"note": "This unit declares no process or Wasm output."
+					},
+					{
+						"label": "Complexity",
+						"value": "Not measured",
+						"rawValue": null
+					}
+				],
+				"performance": [
+					{
+						"workload": "thousand orders",
+						"metric": "p95 ms",
+						"target": "",
+						"profile": "",
+						"value": "Not measured",
+						"rawValue": null,
+						"tolerance": "5%",
+						"over": false
+					}
+				]
+			}
+		}
+	]
+}

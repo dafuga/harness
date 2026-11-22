@@ -1,0 +1,26 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-search",
+	"symbol": "entitySearch",
+	"cases": [
+		{
+			"name": "order",
+			"input": {
+				"query": "order"
+			},
+			"output": [
+				{
+					"id": "app.page.order",
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"same": true
+				},
+				{
+					"id": "app.component.order-list",
+					"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"same": true
+				}
+			]
+		}
+	]
+}

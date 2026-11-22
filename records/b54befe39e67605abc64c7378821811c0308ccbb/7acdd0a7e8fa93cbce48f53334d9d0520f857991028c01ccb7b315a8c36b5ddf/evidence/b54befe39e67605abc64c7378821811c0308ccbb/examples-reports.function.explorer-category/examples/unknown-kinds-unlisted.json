@@ -1,0 +1,72 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-category",
+	"symbol": "explorerCategory",
+	"cases": [
+		{
+			"name": "audit rule",
+			"input": {
+				"kind": "audit",
+				"source": []
+			},
+			"output": null
+		},
+		{
+			"name": "guide",
+			"input": {
+				"kind": "guide",
+				"source": []
+			},
+			"output": null
+		},
+		{
+			"name": "template",
+			"input": {
+				"kind": "template",
+				"source": []
+			},
+			"output": null
+		},
+		{
+			"name": "script",
+			"input": {
+				"kind": "script",
+				"source": []
+			},
+			"output": null
+		},
+		{
+			"name": "style sheet",
+			"input": {
+				"kind": "style",
+				"source": []
+			},
+			"output": null
+		},
+		{
+			"name": "entry point",
+			"input": {
+				"kind": "entry",
+				"source": []
+			},
+			"output": null
+		},
+		{
+			"name": "module without a helper record",
+			"input": {
+				"kind": "module",
+				"source": []
+			},
+			"output": null
+		},
+		{
+			"name": "unknown kind",
+			"input": {
+				"kind": "never-heard-of",
+				"source": []
+			},
+			"output": null
+		}
+	]
+}

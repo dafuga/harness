@@ -1,0 +1,22 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "service.check-run",
+	"symbol": "CheckRunService.run",
+	"cases": [
+		{
+			"name": "scenario checkout exports its scope and prefixes the exit failure",
+			"input": {
+				"scenario": "checkout",
+				"name": "checkout-form",
+				"command": "printf \"%s %s %s\" \"$HARNESS_SCENARIO\" \"$HARNESS_VERIFY_REVISION\" \"$HARNESS_EVIDENCE_DIR\"; exit 4"
+			},
+			"output": {
+				"failures": [
+					"checkout: test checkout-form failed with exit code 4"
+				],
+				"printed": "checkout 0123456789abcdef0123456789abcdef01234567 <scratch>/evidence/0123456789abcdef0123456789abcdef01234567/checkout/checkout-form"
+			}
+		}
+	]
+}

@@ -1,0 +1,64 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.navbar-search",
+	"symbol": "navbarSearch",
+	"cases": [
+		{
+			"name": "held result at the tip",
+			"input": {
+				"given": [
+					{
+						"id": "app.shell.order-frame",
+						"category": "layouts",
+						"name": "Order frame",
+						"purpose": "",
+						"terms": [],
+						"commit": "0505050505050505050505050505050505050505"
+					}
+				]
+			},
+			"output": {
+				"entries": [
+					{
+						"id": "app.shell.order-frame",
+						"category": "layouts",
+						"name": "Order frame",
+						"purpose": "",
+						"terms": [],
+						"commit": "0505050505050505050505050505050505050505"
+					}
+				],
+				"scope": {
+					"label": "At the tip of feature/shell#1",
+					"pinned": null
+				},
+				"at": [
+					{
+						"branch": "feature/shell#1",
+						"commit": null,
+						"category": "layouts",
+						"entity": "app.shell.order-frame"
+					},
+					null
+				]
+			}
+		},
+		{
+			"name": "empty set at the tip",
+			"input": {
+				"given": []
+			},
+			"output": {
+				"entries": [],
+				"scope": {
+					"label": "At the tip of feature/shell#1",
+					"pinned": null
+				},
+				"at": [
+					null
+				]
+			}
+		}
+	]
+}

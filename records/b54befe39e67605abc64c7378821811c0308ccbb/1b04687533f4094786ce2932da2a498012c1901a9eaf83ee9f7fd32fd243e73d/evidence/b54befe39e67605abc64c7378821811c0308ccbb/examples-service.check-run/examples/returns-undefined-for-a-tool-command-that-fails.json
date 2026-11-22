@@ -1,0 +1,16 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "service.check-run",
+	"symbol": "CheckRunService.version",
+	"cases": [
+		{
+			"name": "a tool exiting 2 after printing yields no version",
+			"input": {
+				"id": "node",
+				"command": "printf v1; exit 2"
+			},
+			"output": null
+		}
+	]
+}

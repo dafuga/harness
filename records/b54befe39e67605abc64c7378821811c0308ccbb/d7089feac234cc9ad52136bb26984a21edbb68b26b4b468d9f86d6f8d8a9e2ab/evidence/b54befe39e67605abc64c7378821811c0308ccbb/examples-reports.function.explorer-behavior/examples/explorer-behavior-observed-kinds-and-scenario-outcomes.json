@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-behavior",
+	"symbol": "explorerBehavior",
+	"cases": [
+		{
+			"name": "benchmark and screenshot are not behaviour",
+			"input": {
+				"kinds": [
+					"output",
+					"assertions",
+					"trace"
+				]
+			},
+			"output": {
+				"summary": "unchanged",
+				"reason": null,
+				"rows": [
+					[
+						"default",
+						"output",
+						"unchanged"
+					]
+				],
+				"scenarios": [
+					{
+						"id": "clock",
+						"title": "Clock",
+						"before": "passed",
+						"after": "failed"
+					}
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,69 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-behavior",
+	"symbol": "behaviorSummary",
+	"cases": [
+		{
+			"name": "no rows is unknown",
+			"input": {
+				"rows": []
+			},
+			"output": [
+				"unknown",
+				"Neither side recorded an output, assertions or a trace for this unit."
+			]
+		},
+		{
+			"name": "an unknown row decides",
+			"input": {
+				"rows": [
+					"unknown",
+					"differs"
+				]
+			},
+			"output": [
+				"unknown",
+				"A result of one side is rejected, stale or not stored, so it cannot be compared."
+			]
+		},
+		{
+			"name": "differing bytes only differ",
+			"input": {
+				"rows": [
+					"differs",
+					"unchanged"
+				]
+			},
+			"output": [
+				"differs",
+				"The recorded results differ in bytes; reading them says whether the behaviour does."
+			]
+		},
+		{
+			"name": "all unchanged is unchanged",
+			"input": {
+				"rows": [
+					"unchanged"
+				]
+			},
+			"output": [
+				"unchanged",
+				null
+			]
+		},
+		{
+			"name": "an added row is changed",
+			"input": {
+				"rows": [
+					"unchanged",
+					"added"
+				]
+			},
+			"output": [
+				"changed",
+				null
+			]
+		}
+	]
+}

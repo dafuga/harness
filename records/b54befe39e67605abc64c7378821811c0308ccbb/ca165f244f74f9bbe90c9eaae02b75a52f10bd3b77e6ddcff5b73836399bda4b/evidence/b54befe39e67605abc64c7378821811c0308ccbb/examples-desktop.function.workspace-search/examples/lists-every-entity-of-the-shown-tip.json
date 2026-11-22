@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.workspace-search",
+	"symbol": "workspaceSearch",
+	"cases": [
+		{
+			"name": "tip revision, not pinned, two entities",
+			"input": {
+				"shown": {
+					"project": "Alpha",
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"atTip": true,
+					"pinned": false,
+					"busy": false,
+					"entities": 2
+				}
+			},
+			"output": {
+				"entries": [
+					{
+						"id": "app.shell.order-frame",
+						"category": "layouts",
+						"name": "Order frame",
+						"purpose": "Order frame summary",
+						"terms": [],
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+					},
+					{
+						"id": "desktop.function.workspace-search",
+						"category": "functions",
+						"name": "workspaceSearch",
+						"purpose": "workspaceSearch summary",
+						"terms": [],
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+					}
+				],
+				"scope": {
+					"label": "Alpha at the tip of feat/alpha",
+					"pinned": null
+				},
+				"first": "/projects/local-alpha/harness/branch/feat%2Falpha/layouts/app.shell.order-frame"
+			}
+		}
+	]
+}

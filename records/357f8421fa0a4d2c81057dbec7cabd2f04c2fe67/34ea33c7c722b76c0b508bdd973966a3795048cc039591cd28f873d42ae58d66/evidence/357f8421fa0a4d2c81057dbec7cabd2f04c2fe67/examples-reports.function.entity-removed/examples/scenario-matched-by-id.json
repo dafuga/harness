@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-removed",
+	"symbol": "entityRemoved",
+	"cases": [
+		{
+			"name": "new id with the same title is a removal",
+			"input": {
+				"before": [
+					{
+						"scenario": "orders-page",
+						"states": [
+							"default",
+							"empty",
+							"denied"
+						]
+					}
+				],
+				"after": [
+					{
+						"scenario": "orders-page-v2",
+						"states": [
+							"default",
+							"empty",
+							"denied"
+						]
+					}
+				]
+			},
+			"output": [
+				"Orders page over synthetic orders: the scenario, with its states default, empty, denied."
+			]
+		}
+	]
+}

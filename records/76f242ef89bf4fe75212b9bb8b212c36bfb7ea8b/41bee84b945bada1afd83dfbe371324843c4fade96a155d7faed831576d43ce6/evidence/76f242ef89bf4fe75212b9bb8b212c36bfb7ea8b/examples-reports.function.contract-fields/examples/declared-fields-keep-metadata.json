@@ -1,0 +1,48 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.contract-fields",
+	"symbol": "fieldOf",
+	"cases": [
+		{
+			"name": "orders.itemLimit",
+			"input": "orders.itemLimit",
+			"output": {
+				"name": "Item limit",
+				"type": "number",
+				"required": false,
+				"default": 0,
+				"description": "Most rows shown.",
+				"source": "declared",
+				"examples": [
+					{
+						"form": "literal",
+						"value": 5,
+						"text": "5"
+					},
+					{
+						"form": "literal",
+						"value": 0,
+						"text": "0"
+					}
+				]
+			}
+		},
+		{
+			"name": "view.Preview",
+			"input": "view.Preview",
+			"output": {
+				"name": "Rendered markup",
+				"type": "markup",
+				"source": "declared",
+				"examples": [
+					{
+						"form": "markup",
+						"value": "<p>Hi</p>",
+						"text": "<p>Hi</p>"
+					}
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,42 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.report-destination",
+	"symbol": "reportDestination",
+	"cases": [
+		{
+			"name": "null index with a report",
+			"input": {
+				"index": null,
+				"report": {
+					"id": "run-1",
+					"revision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+				}
+			},
+			"output": ""
+		},
+		{
+			"name": "index with no revisions",
+			"input": {
+				"index": {
+					"revisions": []
+				},
+				"report": {
+					"id": "run-1",
+					"revision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+				}
+			},
+			"output": ""
+		},
+		{
+			"name": "no revisions and no report",
+			"input": {
+				"index": {
+					"revisions": []
+				},
+				"report": null
+			},
+			"output": ""
+		}
+	]
+}

@@ -1,0 +1,54 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.browser-error-rows",
+	"symbol": "browserErrorRows",
+	"cases": [
+		{
+			"name": "one expectation and two identical-looking errors",
+			"input": {
+				"errors": [
+					{
+						"type": "console",
+						"message": "Unavailable",
+						"page": "/orders",
+						"source": "orders.js"
+					},
+					{
+						"type": "console",
+						"message": "Unavailable",
+						"page": "/orders",
+						"source": "orders.js",
+						"stack": "Repeated error"
+					}
+				],
+				"expected": [
+					{
+						"type": "console",
+						"message": "Unavailable",
+						"reason": "Tests retry.",
+						"source": "orders.js"
+					}
+				]
+			},
+			"output": [
+				{
+					"type": "console",
+					"message": "Unavailable",
+					"page": "/orders",
+					"source": "orders.js",
+					"status": "Expected",
+					"reason": "Tests retry."
+				},
+				{
+					"type": "console",
+					"message": "Unavailable",
+					"page": "/orders",
+					"source": "orders.js",
+					"stack": "Repeated error",
+					"status": "Unexpected"
+				}
+			]
+		}
+	]
+}

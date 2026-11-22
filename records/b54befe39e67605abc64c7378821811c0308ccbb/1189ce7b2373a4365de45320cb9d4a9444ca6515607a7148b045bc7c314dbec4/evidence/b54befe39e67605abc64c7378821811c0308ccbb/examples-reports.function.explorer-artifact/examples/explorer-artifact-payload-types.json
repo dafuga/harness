@@ -1,0 +1,101 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-artifact",
+	"symbol": "explorerArtifact",
+	"cases": [
+		{
+			"name": "object payload gives behavior",
+			"input": {
+				"body": "{\"scenario\":\"Clock reads a value\",\"steps\":[\"Start the service\"],\"input\":{\"value\":\"09:30\"},\"output\":{\"value\":\"09:30\"},\"assertions\":[{\"name\":\"The value is returned\",\"passed\":true}]}"
+			},
+			"output": {
+				"verified": true,
+				"problem": null,
+				"text": "{\"scenario\":\"Clock reads a value\",\"steps\":[\"Start the service\"],\"input\":{\"value\":\"09:30\"},\"output\":{\"value\":\"09:30\"},\"assertions\":[{\"name\":\"The value is returned\",\"passed\":true}]}",
+				"document": {
+					"scenario": "Clock reads a value",
+					"steps": [
+						"Start the service"
+					],
+					"input": {
+						"value": "09:30"
+					},
+					"output": {
+						"value": "09:30"
+					},
+					"assertions": [
+						{
+							"name": "The value is returned",
+							"passed": true
+						}
+					]
+				},
+				"behavior": {
+					"scenario": "Clock reads a value",
+					"environment": null,
+					"fixture": null,
+					"steps": [
+						"Start the service"
+					],
+					"input": {
+						"value": "09:30"
+					},
+					"output": {
+						"value": "09:30"
+					},
+					"assertions": [
+						{
+							"name": "The value is returned",
+							"passed": true
+						}
+					],
+					"trace": [],
+					"other": {}
+				}
+			}
+		},
+		{
+			"name": "array payload gives no behavior",
+			"input": {
+				"body": "[1,2]"
+			},
+			"output": {
+				"verified": true,
+				"problem": null,
+				"text": "[1,2]",
+				"document": [
+					1,
+					2
+				],
+				"behavior": null
+			}
+		},
+		{
+			"name": "number payload gives no behavior",
+			"input": {
+				"body": "42"
+			},
+			"output": {
+				"verified": true,
+				"problem": null,
+				"text": "42",
+				"document": 42,
+				"behavior": null
+			}
+		},
+		{
+			"name": "text payload is kept as text",
+			"input": {
+				"body": "plain output"
+			},
+			"output": {
+				"verified": true,
+				"problem": null,
+				"text": "plain output",
+				"document": null,
+				"behavior": null
+			}
+		}
+	]
+}

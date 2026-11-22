@@ -1,0 +1,28 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.created-thread",
+	"symbol": "createdThread",
+	"cases": [
+		{
+			"name": "read after project changed",
+			"input": "project-b",
+			"output": null
+		},
+		{
+			"name": "second read after project change",
+			"input": "project-b",
+			"output": null
+		},
+		{
+			"name": "read for a different entity",
+			"input": "function.other",
+			"output": null
+		},
+		{
+			"name": "read for the original entity afterwards",
+			"input": "function.format-time",
+			"output": null
+		}
+	]
+}

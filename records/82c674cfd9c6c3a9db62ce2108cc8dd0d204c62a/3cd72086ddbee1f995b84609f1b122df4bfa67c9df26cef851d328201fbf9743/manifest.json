@@ -1,0 +1,128 @@
+{
+	"schemaVersion": 1,
+	"record": "3cd72086ddbee1f995b84609f1b122df4bfa67c9df26cef851d328201fbf9743",
+	"source": {
+		"commit": "82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a",
+		"tree": "ae3b340e875a03f1e7b7535ee9d40e95f540a55f"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "90b5d9cbaeb6d672b8d2658b2a250838c133d3ad84ff114b1a65212b38bb52b4",
+			"bytes": 19096,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/fetches-console-resources-on-demand.json",
+			"sha256": "4ac63f0b9bde70afeed101a847c68afcf41eaafbe3de11ad40d4b80d1fe6b147",
+			"bytes": 1048,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-fetches-console-resources-on-demand.txt",
+			"sha256": "35bc973f404e4eb0badd3aa862acba77bf4a133e62210292ab99acdbd461fa43",
+			"bytes": 476,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-fetches-console-resources-on-demand.json",
+			"sha256": "266e0becc72d7a3cfde2bff52909147855e5f1b7cdc1ee161f4e9ae7b99d2cf0",
+			"bytes": 1596,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/shared-client-caches-each-path.json",
+			"sha256": "20e3f5bbf0966ea8e518f631961f2b7090de21e6f2589ee54446e51d78e80a0d",
+			"bytes": 739,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-shared-client-caches-each-path.txt",
+			"sha256": "35bc973f404e4eb0badd3aa862acba77bf4a133e62210292ab99acdbd461fa43",
+			"bytes": 476,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-shared-client-caches-each-path.json",
+			"sha256": "28ca3ad504a7a7caf2a83b9bbbf49741a08a1a2721e443afa870a310b7d446a2",
+			"bytes": 1690,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/injected-fetcher-uses-separate-client.json",
+			"sha256": "2892c676ead8eb3f987e5a8a916068d4939189fd8a175f016fc5253ea18cf88f",
+			"bytes": 816,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-injected-fetcher-uses-separate-client.txt",
+			"sha256": "35bc973f404e4eb0badd3aa862acba77bf4a133e62210292ab99acdbd461fa43",
+			"bytes": 476,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-injected-fetcher-uses-separate-client.json",
+			"sha256": "35ddced58c5098a03374dffbe1460aedb920f2633cb629815ad2437dbaaa8deb",
+			"bytes": 1987,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/failed-response-retries-request.json",
+			"sha256": "3c3bc58ee45bab504b0823bd5f9b5f95fefd47d23125c88ecb7e364305d1445e",
+			"bytes": 794,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-failed-response-retries-request.txt",
+			"sha256": "35bc973f404e4eb0badd3aa862acba77bf4a133e62210292ab99acdbd461fa43",
+			"bytes": 476,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-failed-response-retries-request.json",
+			"sha256": "4f3073aacf7bc79725a5ce1d34d8ba75b47070f3a418c8a6c866511d08babf16",
+			"bytes": 2251,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/fetch-and-json-rejections-evict-request.json",
+			"sha256": "fc563c4567d3aa5276028ade5a74d5294956fbeab4100d0ebb047e4924543e46",
+			"bytes": 711,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-fetch-and-json-rejections-evict-request.txt",
+			"sha256": "35bc973f404e4eb0badd3aa862acba77bf4a133e62210292ab99acdbd461fa43",
+			"bytes": 476,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/82c674cfd9c6c3a9db62ce2108cc8dd0d204c62a/examples-reports.function.harness-client/examples/test-examples-reports.function.harness-client.test.ts-fetch-and-json-rejections-evict-request.json",
+			"sha256": "03d4dd492b12dd6e30909a6256a77828390cf85a16e2bb693886d18f428f8ea9",
+			"bytes": 1293,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-reports.function.harness-client-examples.log",
+			"sha256": "35bc973f404e4eb0badd3aa862acba77bf4a133e62210292ab99acdbd461fa43",
+			"bytes": 476,
+			"storage": "git"
+		}
+	]
+}

@@ -1,0 +1,45 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-budget",
+	"symbol": "harnessBudget",
+	"cases": [
+		{
+			"name": "unavailable with unavailable finding",
+			"input": {
+				"found": {
+					"unit": "reports.function.harness-budget",
+					"metric": "size",
+					"unitOfMeasure": "bytes",
+					"value": null,
+					"workload": null,
+					"profile": null,
+					"unavailable": "source could not be measured"
+				},
+				"status": "unavailable"
+			},
+			"output": {
+				"value": "unavailable: source could not be measured",
+				"limit": "not frozen: reviewed as not measurable"
+			}
+		},
+		{
+			"name": "unavailable without finding",
+			"input": {
+				"found": {
+					"unit": "reports.function.harness-budget",
+					"metric": "size",
+					"unitOfMeasure": "bytes",
+					"value": null,
+					"workload": null,
+					"profile": null,
+					"unavailable": "source could not be measured"
+				}
+			},
+			"output": {
+				"value": "unavailable: source could not be measured",
+				"limit": "not frozen: no value to freeze"
+			}
+		}
+	]
+}

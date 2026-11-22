@@ -1,0 +1,25 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.thread-run",
+	"symbol": "event",
+	"cases": [
+		{
+			"name": "event",
+			"input": {
+				"runId": "run-2",
+				"kind": "failed",
+				"message": "agent stopped"
+			},
+			"output": {
+				"thrown": "refresh down",
+				"refreshSawRunId": [
+					""
+				],
+				"runId": "",
+				"error": "agent stopped",
+				"active": false
+			}
+		}
+	]
+}

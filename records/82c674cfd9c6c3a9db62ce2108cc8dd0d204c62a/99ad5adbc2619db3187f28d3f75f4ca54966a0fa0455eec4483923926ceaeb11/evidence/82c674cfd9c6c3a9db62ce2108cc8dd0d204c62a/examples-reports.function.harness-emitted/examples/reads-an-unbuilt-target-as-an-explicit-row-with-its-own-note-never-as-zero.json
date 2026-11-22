@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-emitted",
+	"symbol": "harnessEmitted",
+	"cases": [
+		{
+			"name": "Exceeded process and unbuilt Wasm rows keep their notes",
+			"input": {
+				"unit": {
+					"id": "kernel.impact",
+					"runtime": {
+						"kind": "process",
+						"targets": [
+							{
+								"kind": "process",
+								"entry": "target/process"
+							},
+							{
+								"kind": "wasm",
+								"entry": "target/wasm"
+							}
+						]
+					},
+					"emitted": {
+						"limits": {
+							"process": 3,
+							"wasm": 1
+						},
+						"unmeasured": {}
+					}
+				},
+				"record": {
+					"measurements": [
+						{
+							"unit": "kernel.impact",
+							"metric": "artifact-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 7,
+							"workload": null,
+							"profile": null,
+							"target": "process"
+						},
+						{
+							"unit": "kernel.impact",
+							"metric": "artifact-bytes",
+							"unitOfMeasure": "bytes",
+							"value": null,
+							"workload": null,
+							"profile": null,
+							"target": "wasm",
+							"unavailable": "target/wasm was not built in the verified snapshot."
+						}
+					],
+					"budgets": {
+						"findings": [
+							{
+								"unit": "kernel.impact",
+								"metric": "artifact-bytes",
+								"target": "process",
+								"status": "exceeded",
+								"baseline": 3,
+								"measured": 7
+							},
+							{
+								"unit": "kernel.impact",
+								"metric": "artifact-bytes",
+								"target": "wasm",
+								"status": "missing-measurement",
+								"baseline": 1,
+								"measured": null
+							}
+						]
+					}
+				}
+			},
+			"output": [
+				{
+					"target": "process",
+					"label": "process (native)",
+					"value": "7 bytes",
+					"limit": "frozen at 3 bytes",
+					"note": "Grew from 3 to 7 bytes without a recorded approval."
+				},
+				{
+					"target": "wasm",
+					"label": "Wasm",
+					"value": "unavailable: target/wasm was not built in the verified snapshot.",
+					"limit": "frozen at 1 byte",
+					"note": "Was 1 byte at its baseline and can no longer be measured."
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,88 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-icons",
+	"symbol": "categoryIcon",
+	"cases": [
+		{
+			"name": "pages",
+			"input": "pages",
+			"output": {
+				"icon": "pages",
+				"drawn": true
+			}
+		},
+		{
+			"name": "apis",
+			"input": "apis",
+			"output": {
+				"icon": "route",
+				"drawn": true
+			}
+		},
+		{
+			"name": "layouts",
+			"input": "layouts",
+			"output": {
+				"icon": "layouts",
+				"drawn": true
+			}
+		},
+		{
+			"name": "components",
+			"input": "components",
+			"output": {
+				"icon": "components",
+				"drawn": true
+			}
+		},
+		{
+			"name": "functions",
+			"input": "functions",
+			"output": {
+				"icon": "functions",
+				"drawn": true
+			}
+		},
+		{
+			"name": "configs",
+			"input": "configs",
+			"output": {
+				"icon": "configs",
+				"drawn": true
+			}
+		},
+		{
+			"name": "services",
+			"input": "services",
+			"output": {
+				"icon": "services",
+				"drawn": true
+			}
+		},
+		{
+			"name": "models",
+			"input": "models",
+			"output": {
+				"icon": "database",
+				"drawn": true
+			}
+		},
+		{
+			"name": "types",
+			"input": "types",
+			"output": {
+				"icon": "code",
+				"drawn": true
+			}
+		},
+		{
+			"name": "platforms",
+			"input": "platforms",
+			"output": {
+				"icon": "platforms",
+				"drawn": true
+			}
+		}
+	]
+}

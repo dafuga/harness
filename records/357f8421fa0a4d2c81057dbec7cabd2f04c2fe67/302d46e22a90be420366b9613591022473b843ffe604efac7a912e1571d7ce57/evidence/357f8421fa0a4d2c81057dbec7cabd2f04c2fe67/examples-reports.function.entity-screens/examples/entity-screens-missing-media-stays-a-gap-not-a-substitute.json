@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-screens",
+	"symbol": "catalogShot",
+	"cases": [
+		{
+			"name": "empty mobile without media",
+			"input": {
+				"scenario": "orders-page",
+				"state": "empty",
+				"viewport": "mobile"
+			},
+			"output": null
+		},
+		{
+			"name": "default mobile keeps its picture",
+			"input": {
+				"state": "default"
+			},
+			"output": {
+				"category": "orders-page",
+				"state": "default",
+				"viewport": "mobile",
+				"file": "c725e93-default-mobile.png",
+				"phase": "current",
+				"missing": false,
+				"status": "passed",
+				"source": "c725e9337e913674d8b859665a97c2ea5d62c2da",
+				"standing": "Fresh capture",
+				"note": "Captured from build build-1 of revision c725e9337e913674d8b859665a97c2ea5d62c2da. Tested at c725e93 by passing record d8b859665a97."
+			}
+		}
+	]
+}

@@ -1,0 +1,19 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.changed-units",
+	"symbol": "changedUnits",
+	"cases": [
+		{
+			"name": "three unowned paths, one repeated",
+			"input": {
+				"paths": [
+					"docs/notes.md",
+					"docs/notes.md",
+					"scratch/private-name.ts"
+				]
+			},
+			"output": "3 files outside any unit."
+		}
+	]
+}

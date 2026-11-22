@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.qr-symbol",
+	"symbol": "qrSymbol",
+	"cases": [
+		{
+			"name": "empty text",
+			"input": {
+				"textLength": 0
+			},
+			"error": {
+				"name": "QrRefusedError",
+				"message": "This cannot be shown as a QR code.",
+				"isError": true
+			}
+		},
+		{
+			"name": "space in text",
+			"input": {
+				"textLength": 3
+			},
+			"error": {
+				"name": "QrRefusedError",
+				"message": "This cannot be shown as a QR code.",
+				"isError": true
+			}
+		},
+		{
+			"name": "newline in text",
+			"input": {
+				"textLength": 3
+			},
+			"error": {
+				"name": "QrRefusedError",
+				"message": "This cannot be shown as a QR code.",
+				"isError": true
+			}
+		},
+		{
+			"name": "non-ASCII letter",
+			"input": {
+				"textLength": 13
+			},
+			"error": {
+				"name": "QrRefusedError",
+				"message": "This cannot be shown as a QR code.",
+				"isError": true
+			}
+		},
+		{
+			"name": "one character over the byte limit",
+			"input": {
+				"textLength": 321
+			},
+			"error": {
+				"name": "QrRefusedError",
+				"message": "This cannot be shown as a QR code.",
+				"isError": true
+			}
+		}
+	]
+}

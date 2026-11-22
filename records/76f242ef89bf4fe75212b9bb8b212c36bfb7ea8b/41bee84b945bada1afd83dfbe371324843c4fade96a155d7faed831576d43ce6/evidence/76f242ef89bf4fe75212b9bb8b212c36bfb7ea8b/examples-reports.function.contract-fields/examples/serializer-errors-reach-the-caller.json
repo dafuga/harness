@@ -1,0 +1,23 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.contract-fields",
+	"symbol": "fieldOf",
+	"cases": [
+		{
+			"name": "bigint example",
+			"input": "number example 1n",
+			"error": "TypeError"
+		},
+		{
+			"name": "circular example",
+			"input": "object example with a cycle",
+			"error": "TypeError"
+		},
+		{
+			"name": "deep example",
+			"input": "object example 20000 levels deep",
+			"error": "RangeError"
+		}
+	]
+}

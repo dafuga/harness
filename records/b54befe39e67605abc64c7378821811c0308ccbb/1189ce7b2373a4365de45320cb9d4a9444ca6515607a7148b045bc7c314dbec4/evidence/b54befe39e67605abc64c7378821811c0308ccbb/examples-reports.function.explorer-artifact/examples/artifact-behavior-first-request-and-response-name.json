@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-artifact",
+	"symbol": "artifactBehavior",
+	"cases": [
+		{
+			"name": "inputs wins over request, response over actual",
+			"input": {
+				"request": {
+					"size": 3
+				},
+				"inputs": {
+					"size": 4
+				},
+				"actual": 8,
+				"response": 7
+			},
+			"output": {
+				"scenario": null,
+				"environment": null,
+				"fixture": null,
+				"steps": [],
+				"input": {
+					"size": 4
+				},
+				"output": 7,
+				"assertions": [],
+				"trace": [],
+				"other": {
+					"request": {
+						"size": 3
+					},
+					"actual": 8
+				}
+			}
+		},
+		{
+			"name": "a present input key wins even when empty",
+			"input": "input undefined, request set",
+			"output": {
+				"scenario": null,
+				"environment": null,
+				"fixture": null,
+				"steps": [],
+				"assertions": [],
+				"trace": [],
+				"other": {
+					"request": {
+						"size": 3
+					}
+				}
+			}
+		}
+	]
+}

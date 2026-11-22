@@ -1,0 +1,13 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-artifact",
+	"symbol": "explorerArtifact",
+	"cases": [
+		{
+			"name": "fetcher rejection is rethrown",
+			"input": "a fetcher that rejects",
+			"error": "TypeError"
+		}
+	]
+}

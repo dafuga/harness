@@ -1,0 +1,64 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-history",
+	"symbol": "historyDetail",
+	"cases": [
+		{
+			"name": "a unit the registry does not hold has no version or verdict",
+			"input": {
+				"commit": "8b41d0720e252681deac809969b3faf8181dac30",
+				"unit": "app.function.never"
+			},
+			"output": {
+				"sourceSize": null,
+				"sourceComplexity": null,
+				"known": true,
+				"present": false,
+				"change": null,
+				"version": null,
+				"explanations": [],
+				"verdict": null
+			}
+		},
+		{
+			"name": "a revision whose registry is unavailable is not known",
+			"input": {
+				"commit": "8b41d0720e252681deac809969b3faf8181dac30",
+				"unit": "app.function.filter-orders",
+				"registry": "unavailable"
+			},
+			"output": {
+				"sourceSize": null,
+				"sourceComplexity": null,
+				"known": false,
+				"present": true,
+				"change": "direct",
+				"version": "v-app.function.filter-orders",
+				"explanations": [
+					{
+						"unit": "app.function.filter-orders",
+						"symbol": "filterOrders",
+						"change": "modified",
+						"behavior": "Matches orders regardless of case.",
+						"simplification": {
+							"attempt": "Removed the second normalization.",
+							"outcome": "improved"
+						},
+						"performance": {
+							"attempt": "Normalizes once per request.",
+							"outcome": "improved"
+						}
+					}
+				],
+				"verdict": {
+					"passed": false,
+					"label": "Evidence missing",
+					"reasons": [
+						"No unit registry is stored at this revision."
+					]
+				}
+			}
+		}
+	]
+}

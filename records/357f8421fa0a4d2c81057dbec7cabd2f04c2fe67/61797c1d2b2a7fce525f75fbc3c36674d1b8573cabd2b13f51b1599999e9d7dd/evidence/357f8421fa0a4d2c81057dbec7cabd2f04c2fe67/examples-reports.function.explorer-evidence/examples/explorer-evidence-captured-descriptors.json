@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-evidence",
+	"symbol": "explorerEvidence",
+	"cases": [
+		{
+			"name": "after: the head commit screens",
+			"input": {
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"mode": "commit",
+				"parent": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+			},
+			"output": [
+				{
+					"scenario": "titles-page",
+					"state": "empty",
+					"viewport": "desktop",
+					"standing": "fresh",
+					"usable": true,
+					"current": true,
+					"inheritedFrom": null
+				},
+				{
+					"scenario": "titles-page",
+					"state": "empty",
+					"viewport": "mobile",
+					"standing": "fresh",
+					"usable": true,
+					"current": true,
+					"inheritedFrom": null
+				}
+			]
+		},
+		{
+			"name": "before: the first parent screens",
+			"input": {
+				"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"role": "parent"
+			},
+			"output": [
+				{
+					"scenario": "titles-page",
+					"state": "empty",
+					"viewport": "desktop",
+					"standing": "fresh",
+					"usable": true,
+					"current": true,
+					"inheritedFrom": null
+				},
+				{
+					"scenario": "titles-page",
+					"state": "empty",
+					"viewport": "mobile",
+					"standing": "fresh",
+					"usable": true,
+					"current": true,
+					"inheritedFrom": null
+				}
+			]
+		}
+	]
+}

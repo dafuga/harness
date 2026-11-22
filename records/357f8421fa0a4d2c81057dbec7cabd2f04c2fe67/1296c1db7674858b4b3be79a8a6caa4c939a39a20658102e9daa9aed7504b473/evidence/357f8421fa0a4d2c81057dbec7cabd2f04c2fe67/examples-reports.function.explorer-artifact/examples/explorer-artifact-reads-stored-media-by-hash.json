@@ -1,0 +1,64 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-artifact",
+	"symbol": "explorerArtifact",
+	"cases": [
+		{
+			"name": "stored media is fetched by its hash name",
+			"input": {
+				"media": "media/9bf8692dbb6f95e37274b8353971b2c4a80db36ae8164d82b998502af8d4f3ba.json",
+				"sha256": "9bf8692dbb6f95e37274b8353971b2c4a80db36ae8164d82b998502af8d4f3ba",
+				"mediaBase": "/harness/media/"
+			},
+			"output": {
+				"address": "/harness/media/9bf8692dbb6f95e37274b8353971b2c4a80db36ae8164d82b998502af8d4f3ba.json",
+				"artifact": {
+					"verified": true,
+					"problem": null,
+					"text": "{\"scenario\":\"Clock reads a value\",\"steps\":[\"Start the service\"],\"input\":{\"value\":\"09:30\"},\"output\":{\"value\":\"09:30\"},\"assertions\":[{\"name\":\"The value is returned\",\"passed\":true}]}",
+					"document": {
+						"scenario": "Clock reads a value",
+						"steps": [
+							"Start the service"
+						],
+						"input": {
+							"value": "09:30"
+						},
+						"output": {
+							"value": "09:30"
+						},
+						"assertions": [
+							{
+								"name": "The value is returned",
+								"passed": true
+							}
+						]
+					},
+					"behavior": {
+						"scenario": "Clock reads a value",
+						"environment": null,
+						"fixture": null,
+						"steps": [
+							"Start the service"
+						],
+						"input": {
+							"value": "09:30"
+						},
+						"output": {
+							"value": "09:30"
+						},
+						"assertions": [
+							{
+								"name": "The value is returned",
+								"passed": true
+							}
+						],
+						"trace": [],
+						"other": {}
+					}
+				}
+			}
+		}
+	]
+}

@@ -1,0 +1,31 @@
+
+Running 24 tests using 1 worker
+
+(node:46532) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen at desktop (1.7s)
+  ✓   2 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:empty at desktop (929ms)
+  ✓   3 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:unindexed at desktop (878ms)
+  ✓   4 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:search at desktop (1.7s)
+  ✓   5 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:no-matches at desktop (1.7s)
+  ✓   6 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:functions at desktop (890ms)
+  ✓   7 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:configs at desktop (945ms)
+  ✓   8 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:layouts at desktop (1.1s)
+  ✓   9 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen at tablet (695ms)
+  ✓  10 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:empty at tablet (564ms)
+  ✓  11 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:unindexed at tablet (593ms)
+  ✓  12 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:search at tablet (779ms)
+  ✓  13 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:no-matches at tablet (698ms)
+  ✓  14 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:functions at tablet (598ms)
+  ✓  15 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:configs at tablet (629ms)
+  ✓  16 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:layouts at tablet (645ms)
+  ✓  17 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen at mobile (672ms)
+  ✓  18 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:empty at mobile (577ms)
+  ✓  19 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:unindexed at mobile (574ms)
+  ✓  20 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:search at mobile (723ms)
+  ✓  21 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:no-matches at mobile (692ms)
+  ✓  22 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:functions at mobile (577ms)
+  ✓  23 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:configs at mobile (595ms)
+  ✓  24 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.harness-explorer-catalog-screen:layouts at mobile (628ms)
+
+  24 passed (22.5s)

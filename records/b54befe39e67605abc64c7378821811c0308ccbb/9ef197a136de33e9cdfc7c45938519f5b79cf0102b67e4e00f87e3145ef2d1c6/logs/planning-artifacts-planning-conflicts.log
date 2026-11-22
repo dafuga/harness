@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-ui.aUz8v3/tmp/harness-snapshot-PXHEG1/packages/planning
+
+ ✓ test/planning-conflicts.test.ts (2 tests) 3308ms
+   ✓ Git index locks refuse mutations without advancing HEAD or leaving planning files  1051ms
+   ✓ PNG designs require usable Git LFS filters without mutating repository state on refusal  2250ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  11:27:50
+   Duration  3.88s (transform 223ms, setup 140ms, collect 207ms, tests 3.31s, environment 0ms, prepare 34ms)
+
+JSON report written to /tmp/z5jp8p-ui.aUz8v3/tmp/harness-runner-Uvy1Ye/report.json

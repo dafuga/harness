@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-screens",
+	"symbol": "entityScreens",
+	"cases": [
+		{
+			"name": "first commit before gap",
+			"input": {
+				"parent": null,
+				"pick": {
+					"scenario": "orders-page",
+					"state": "default",
+					"viewport": "desktop"
+				}
+			},
+			"output": {
+				"before": {
+					"category": "orders-page",
+					"file": "",
+					"phase": "before",
+					"missing": true,
+					"status": "not-proven",
+					"note": "This is the first commit of its history: there is no parent to compare with."
+				},
+				"after": {
+					"category": "orders-page",
+					"state": "default",
+					"viewport": "desktop",
+					"file": "8b41d07-default-desktop.png",
+					"phase": "after",
+					"missing": false,
+					"status": "passed",
+					"source": "8b41d0720e252681deac809969b3faf8181dac30",
+					"standing": "Fresh capture",
+					"note": "Captured from build build-1 of revision 8b41d0720e252681deac809969b3faf8181dac30. Tested at 8b41d07 by passing record deac809969b3."
+				}
+			}
+		}
+	]
+}

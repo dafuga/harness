@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.created-thread",
+	"symbol": "createdThread",
+	"cases": [
+		{
+			"name": "stored selection after remember",
+			"input": {
+				"entityId": "function.format-time",
+				"threadId": "thread-1"
+			},
+			"output": {
+				"entityId": "function.format-time",
+				"threadId": "thread-1",
+				"projectId": "project-a"
+			}
+		},
+		{
+			"name": "first read returns the listed thread",
+			"input": {
+				"id": "function.format-time",
+				"threads": [
+					{
+						"id": "thread-1"
+					},
+					{
+						"id": "thread-2"
+					}
+				]
+			},
+			"output": {
+				"id": "thread-1"
+			}
+		},
+		{
+			"name": "second read finds the consumed selection gone",
+			"input": {
+				"id": "function.format-time",
+				"threads": [
+					{
+						"id": "thread-1"
+					},
+					{
+						"id": "thread-2"
+					}
+				]
+			},
+			"output": null
+		}
+	]
+}

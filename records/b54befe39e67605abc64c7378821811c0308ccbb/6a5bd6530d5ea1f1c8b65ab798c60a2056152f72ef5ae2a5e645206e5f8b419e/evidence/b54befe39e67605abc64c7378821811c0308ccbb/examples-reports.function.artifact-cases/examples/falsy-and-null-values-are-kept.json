@@ -1,0 +1,92 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.artifact-cases",
+	"symbol": "artifactCases",
+	"cases": [
+		{
+			"name": "recorded falsy outputs and nulls",
+			"input": {
+				"document": {
+					"schemaVersion": 1,
+					"kind": "function-invocations",
+					"unitId": "reports.function.artifact-cases",
+					"symbol": "artifactCases",
+					"cases": [
+						{
+							"name": "Zero count",
+							"input": [],
+							"output": 0
+						},
+						{
+							"name": "False flag",
+							"input": {},
+							"output": false
+						},
+						{
+							"name": "Null result",
+							"input": null,
+							"output": null
+						},
+						{
+							"name": "Empty list",
+							"input": "none",
+							"output": []
+						}
+					]
+				}
+			},
+			"output": {
+				"kind": "cases",
+				"source": "invocations",
+				"symbol": "artifactCases",
+				"cases": [
+					{
+						"name": "Zero count",
+						"input": [],
+						"output": 0,
+						"failed": false
+					},
+					{
+						"name": "False flag",
+						"input": {},
+						"output": false,
+						"failed": false
+					},
+					{
+						"name": "Null result",
+						"input": null,
+						"output": null,
+						"failed": false
+					},
+					{
+						"name": "Empty list",
+						"input": "none",
+						"output": [],
+						"failed": false
+					}
+				]
+			}
+		},
+		{
+			"name": "legacy null request and empty response",
+			"input": {
+				"request": null,
+				"response": []
+			},
+			"output": {
+				"kind": "cases",
+				"source": "observation",
+				"symbol": null,
+				"cases": [
+					{
+						"name": "Test observation",
+						"input": null,
+						"output": [],
+						"failed": false
+					}
+				]
+			}
+		}
+	]
+}

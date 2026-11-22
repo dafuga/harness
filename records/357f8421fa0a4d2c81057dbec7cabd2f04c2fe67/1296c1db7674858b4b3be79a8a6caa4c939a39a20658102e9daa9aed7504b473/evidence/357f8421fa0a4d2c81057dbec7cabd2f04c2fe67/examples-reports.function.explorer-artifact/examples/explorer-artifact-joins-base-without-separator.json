@@ -1,0 +1,18 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-artifact",
+	"symbol": "explorerArtifact",
+	"cases": [
+		{
+			"name": "base without a trailing slash",
+			"input": {
+				"mediaBase": "/harness/media"
+			},
+			"output": {
+				"address": "/harness/media9bf8692dbb6f95e37274b8353971b2c4a80db36ae8164d82b998502af8d4f3ba.json",
+				"verified": true
+			}
+		}
+	]
+}

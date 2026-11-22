@@ -1,0 +1,15 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.service.project-task",
+	"symbol": "ProjectTaskService.run",
+	"cases": [
+		{
+			"name": "ask agent writes a project file",
+			"input": {
+				"mode": "ask"
+			},
+			"error": "The read-only agent changed files. Changes were preserved for review."
+		}
+	]
+}

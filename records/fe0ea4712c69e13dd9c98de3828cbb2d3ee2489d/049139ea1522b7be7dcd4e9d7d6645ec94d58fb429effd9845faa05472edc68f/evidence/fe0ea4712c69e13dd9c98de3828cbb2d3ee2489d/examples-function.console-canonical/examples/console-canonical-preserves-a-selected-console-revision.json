@@ -1,0 +1,22 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.console-canonical",
+	"symbol": "defaultCommit",
+	"cases": [
+		{
+			"name": "indexed commit asked for is kept",
+			"input": {
+				"asked": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+			},
+			"output": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+		},
+		{
+			"name": "retained commit asked for is kept",
+			"input": {
+				"asked": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+			},
+			"output": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+		}
+	]
+}

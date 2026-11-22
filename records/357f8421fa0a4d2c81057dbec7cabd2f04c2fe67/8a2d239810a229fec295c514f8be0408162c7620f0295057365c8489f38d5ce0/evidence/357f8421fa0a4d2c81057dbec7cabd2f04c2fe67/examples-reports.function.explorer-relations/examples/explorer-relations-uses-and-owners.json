@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-relations",
+	"symbol": "explorerRelations",
+	"cases": [
+		{
+			"name": "page uses components and configs",
+			"input": {
+				"id": "app.page.orders"
+			},
+			"output": {
+				"pages": [],
+				"layouts": [],
+				"components": [
+					"app.component.order-list",
+					"app.component.search-box"
+				],
+				"functions": [],
+				"configs": [
+					"app.config.order-settings"
+				],
+				"services": [],
+				"types": [],
+				"apis": [],
+				"models": [],
+				"usedBy": [],
+				"support": []
+			}
+		},
+		{
+			"name": "function used by a component",
+			"input": {
+				"id": "app.function.filter-orders"
+			},
+			"output": {
+				"pages": [
+					"app.page.orders"
+				],
+				"layouts": [],
+				"components": [],
+				"functions": [],
+				"configs": [],
+				"services": [],
+				"types": [],
+				"apis": [],
+				"models": [],
+				"usedBy": [
+					"app.component.order-list"
+				],
+				"support": []
+			}
+		},
+		{
+			"name": "service shared by two components",
+			"input": {
+				"id": "app.service.order-store"
+			},
+			"output": {
+				"pages": [
+					"app.page.orders"
+				],
+				"layouts": [],
+				"components": [],
+				"functions": [],
+				"configs": [],
+				"services": [],
+				"types": [],
+				"apis": [],
+				"models": [],
+				"usedBy": [
+					"app.component.order-list",
+					"app.component.search-box"
+				],
+				"support": []
+			}
+		}
+	]
+}

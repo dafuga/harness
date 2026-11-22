@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.explorer-route",
+	"symbol": "explorerRoutePath",
+	"cases": [
+		{
+			"name": "function details become the contract tab",
+			"input": {
+				"branch": "main",
+				"commit": null,
+				"category": "functions",
+				"entity": "function.slugify",
+				"section": "details"
+			},
+			"output": "/branch/main/functions/function.slugify?tab=contract"
+		},
+		{
+			"name": "pinned helper with a contract pane",
+			"input": {
+				"branch": "main",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"category": "functions",
+				"helper": "toKebabCase",
+				"entity": "function.case",
+				"tab": "contract"
+			},
+			"output": "/branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/helpers/toKebabCase/in/function.case/contract"
+		},
+		{
+			"name": "helper history pane is a path segment",
+			"input": {
+				"branch": "main",
+				"commit": null,
+				"category": "functions",
+				"helper": "toKebabCase",
+				"entity": "function.case",
+				"section": "history"
+			},
+			"output": "/branch/main/helpers/toKebabCase/in/function.case/history"
+		},
+		{
+			"name": "pinned styles screen has no branch",
+			"input": {
+				"branch": null,
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"category": "pages",
+				"screen": "styles"
+			},
+			"output": "/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/styles"
+		},
+		{
+			"name": "module resource screen keeps its entity",
+			"input": {
+				"branch": "main",
+				"commit": null,
+				"category": "pages",
+				"screen": "module-resources",
+				"entity": "email.email"
+			},
+			"output": "/branch/main/module-resources/email.email"
+		},
+		{
+			"name": "unpaired surrogate throws a URIError",
+			"input": {
+				"branch": "main",
+				"commit": null,
+				"category": "functions",
+				"entity": "\ud800"
+			},
+			"error": "URIError"
+		}
+	]
+}

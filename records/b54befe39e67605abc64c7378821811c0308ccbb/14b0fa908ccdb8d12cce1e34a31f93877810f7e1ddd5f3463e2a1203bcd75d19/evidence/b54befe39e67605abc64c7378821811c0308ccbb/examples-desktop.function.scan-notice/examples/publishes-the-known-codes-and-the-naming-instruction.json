@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.scan-notice",
+	"symbol": "scanFailures",
+	"cases": [
+		{
+			"name": "known scan-failure codes",
+			"input": {
+				"output": "scanFailures"
+			},
+			"output": [
+				"camera-denied",
+				"camera-unavailable",
+				"scan-cancelled",
+				"offer-invalid",
+				"offer-unsupported",
+				"offer-environment",
+				"offer-expired"
+			]
+		},
+		{
+			"name": "phone naming instruction",
+			"input": {
+				"output": "nameNotice"
+			},
+			"output": "Give this phone a name of up to 80 characters."
+		}
+	]
+}

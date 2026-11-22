@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-search-entries",
+	"symbol": "explorerSearchEntries",
+	"cases": [
+		{
+			"name": "displayed revision at commit a",
+			"input": "entities of head",
+			"output": [
+				{
+					"id": "app.function.format-time",
+					"category": "functions",
+					"name": "formatTime",
+					"purpose": "What app.function.format-time is for.",
+					"terms": [
+						"placedAt",
+						"zone",
+						"elapsed",
+						"in-future"
+					],
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				},
+				{
+					"id": "app.page.orders",
+					"category": "services",
+					"name": "Orders",
+					"purpose": "What app.page.orders is for.",
+					"terms": [],
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				},
+				{
+					"id": "app.service.refunds",
+					"category": "services",
+					"name": "Refund service",
+					"purpose": "What app.service.refunds is for.",
+					"terms": [
+						"orderId",
+						"refused"
+					],
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				}
+			]
+		}
+	]
+}

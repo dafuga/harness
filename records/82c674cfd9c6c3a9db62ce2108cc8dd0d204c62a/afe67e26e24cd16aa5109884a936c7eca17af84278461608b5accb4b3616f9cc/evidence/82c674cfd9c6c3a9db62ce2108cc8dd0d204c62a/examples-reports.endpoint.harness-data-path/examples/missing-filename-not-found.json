@@ -1,0 +1,31 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.endpoint.harness-data-path",
+	"symbol": "GET",
+	"cases": [
+		{
+			"name": "owner loopback peer requests /harness/data with no path param",
+			"input": {
+				"client": "127.0.0.1"
+			},
+			"output": {
+				"status": 404,
+				"type": "text/plain",
+				"body": "Not found"
+			}
+		},
+		{
+			"name": "owner loopback peer requests /harness/data/ with an empty path",
+			"input": {
+				"path": "",
+				"client": "127.0.0.1"
+			},
+			"output": {
+				"status": 404,
+				"type": "text/plain",
+				"body": "Not found"
+			}
+		}
+	]
+}

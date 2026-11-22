@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-measure",
+	"symbol": "byteSize",
+	"cases": [
+		{
+			"name": "count 800",
+			"input": {
+				"count": 800
+			},
+			"output": "800 B"
+		},
+		{
+			"name": "count -2400",
+			"input": {
+				"count": -2400
+			},
+			"output": "-2.4 KB"
+		},
+		{
+			"name": "count 1000",
+			"input": {
+				"count": 1000
+			},
+			"output": "1 KB"
+		},
+		{
+			"name": "count 999999",
+			"input": {
+				"count": 999999
+			},
+			"output": "1000 KB"
+		},
+		{
+			"name": "count 1000000",
+			"input": {
+				"count": 1000000
+			},
+			"output": "1 MB"
+		},
+		{
+			"name": "count -3400000",
+			"input": {
+				"count": -3400000
+			},
+			"output": "-3.4 MB"
+		},
+		{
+			"name": "count 0",
+			"input": {
+				"count": 0
+			},
+			"output": "0 B"
+		}
+	]
+}

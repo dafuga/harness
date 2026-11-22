@@ -1,0 +1,454 @@
+{
+	"id": "fcb7961b3551c5c2faa05d5bfe47b3bb4802fdd7fef94059c8ac99e35e0e3012",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/Users/danielfugere/projects/harness-z5jp8p",
+	"source": {
+		"commit": "fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d",
+		"tree": "914a6e8113f2007a6803b225ce5b435815f6b64e",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-19T16:57:08.422Z",
+	"finishedAt": "2026-11-19T16:57:20.001Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "function.complexity-coverage",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "e77bd2dea945ea51793863ae6a71237bbc9b8921e80c364e00468c2a2d087404",
+			"source": "8ec30b99c895d76641d085dbaad0dc27f6724b1d61d275c4a0bf814a04ce717f",
+			"contract": "0a9cb49c16ed7d584d9bc19b863a2d762214475f80e06468423b44be843f6ce6",
+			"runtime": "2f262fca54029baecbb19961e093fb837f1e96fbc64dd30705a945dcfaaa859c",
+			"files": [
+				{
+					"path": "src/services/development-tooling/source-index-service/complexityCoverage.ts",
+					"hash": "2769807bfbfc07ba823dcf3e865cf71ae4877612"
+				},
+				{
+					"path": "src/utils/development-tooling/complexityCoverage.ts",
+					"hash": "79ef8b8184c1c210a27fc1c62c58345cca85d25d"
+				},
+				{
+					"path": "src/utils/development-tooling/complexityCoverage.types.ts",
+					"hash": "1abc0305be451f8aa3fdc506b27fbea91799e5e0"
+				}
+			]
+		},
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cfb49b515cacc084047d75cdf10a295ab3790ecaf878e2b75e06463793f628bf",
+			"source": "cbf5fb170c4db458f39bcc4ba18996e377a782371040baa39d1667f04bf87635",
+			"contract": "6f2e8a598fb220dd111fe8085fb28c645ee24019cc4b1f25315b141a569962d7",
+			"runtime": "ec246a1eb80a7c06e7ccbd8601bab05e75d00122b0ad9d09eec95bbe94f31c19",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts",
+					"hash": "36741c54d766dd2689e542099ca02135cd07760b"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.types.ts",
+					"hash": "758395e715dd7c7d824deb57b07849f373ef164e"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/artifactCases.ts",
+					"hash": "f5a0a857433ab39a3aa86c795bab10681a76db3f"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.012082999999989852,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90226688,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.005528000000002938,
+			"method": "Arithmetic mean of 6 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90570752,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d",
+			"artifacts": []
+		},
+		{
+			"unit": "function.complexity-coverage",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.004199900000006096,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-6a7c68b3dd180b15-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d",
+			"artifacts": []
+		},
+		{
+			"unit": "function.complexity-coverage",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90537984,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-6a7c68b3dd180b15-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.20702799999999874,
+			"method": "Arithmetic mean of 3 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90570752,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d",
+			"artifacts": []
+		},
+		{
+			"unit": "function.complexity-coverage",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.002395799999996484,
+			"method": "Arithmetic mean of 10 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-adf300cfe87c4cc2-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d",
+			"artifacts": []
+		},
+		{
+			"unit": "function.complexity-coverage",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90554368,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-adf300cfe87c4cc2-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 10,
+			"profile": "fae395e860966b98",
+			"testedRevision": "fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "examples-function.complexity-coverage:examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.complexity-coverage.test.ts",
+			"status": "passed",
+			"durationMs": 1465,
+			"log": {
+				"path": "logs/examples-function.complexity-coverage-examples.log",
+				"bytes": 453,
+				"sha256": "2566775205b77a8f6bee2058229df7226ac519333a9671dd04cd129d9e8dfc60"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "examples-function.complexity-coverage",
+			"status": "passed",
+			"testedRevision": "fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d",
+			"states": [
+				{
+					"id": "counts-supported-source",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "counts-supported-source",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d/examples-function.complexity-coverage/examples/counts-supported-source.json",
+							"sha256": "4580f3da9f1ffddec763f7c758ed5f646038576a42ebb6852bc054997a20f659",
+							"bytes": 1106,
+							"capturedAt": "2026-11-19T16:57:18.503Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "counts-supported-source",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.complexity-coverage.test.ts.",
+							"status": "passed",
+							"path": "evidence/fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d/examples-function.complexity-coverage/examples/test-examples-function.complexity-coverage.test.ts-counts-supported-source.txt",
+							"sha256": "2566775205b77a8f6bee2058229df7226ac519333a9671dd04cd129d9e8dfc60",
+							"bytes": 453,
+							"capturedAt": "2026-11-19T16:57:18.504Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "counts-supported-source",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d/examples-function.complexity-coverage/examples/test-examples-function.complexity-coverage.test.ts-counts-supported-source.json",
+							"sha256": "202bf6cf4b7e33302630dd91fa5109d01e6d47d66b745f4f78ab3b51fdd70e91",
+							"bytes": 720,
+							"capturedAt": "2026-11-19T16:57:18.504Z"
+						}
+					]
+				},
+				{
+					"id": "recognizes-declarative-files",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "recognizes-declarative-files",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d/examples-function.complexity-coverage/examples/recognizes-declarative-files.json",
+							"sha256": "2a6d3846f46221bc13d8925b1ac838f68ea6d22ca290a3a14472418cc7f0aa88",
+							"bytes": 1480,
+							"capturedAt": "2026-11-19T16:57:18.504Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "recognizes-declarative-files",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.complexity-coverage.test.ts.",
+							"status": "passed",
+							"path": "evidence/fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d/examples-function.complexity-coverage/examples/test-examples-function.complexity-coverage.test.ts-recognizes-declarative-files.txt",
+							"sha256": "2566775205b77a8f6bee2058229df7226ac519333a9671dd04cd129d9e8dfc60",
+							"bytes": 453,
+							"capturedAt": "2026-11-19T16:57:18.504Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "recognizes-declarative-files",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d/examples-function.complexity-coverage/examples/test-examples-function.complexity-coverage.test.ts-recognizes-declarative-files.json",
+							"sha256": "33ad062d799c80223842860001f178c36afa3dd15fe2f492dc4ddbd38d0f35b3",
+							"bytes": 944,
+							"capturedAt": "2026-11-19T16:57:18.504Z"
+						}
+					]
+				},
+				{
+					"id": "identifies-uncounted-code",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "identifies-uncounted-code",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d/examples-function.complexity-coverage/examples/identifies-uncounted-code.json",
+							"sha256": "33b46ae5c579e9b11bbc61dc832eae19710d5eef7c9b8325b212c03e4c52d8e1",
+							"bytes": 1377,
+							"capturedAt": "2026-11-19T16:57:18.504Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "identifies-uncounted-code",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.complexity-coverage.test.ts.",
+							"status": "passed",
+							"path": "evidence/fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d/examples-function.complexity-coverage/examples/test-examples-function.complexity-coverage.test.ts-identifies-uncounted-code.txt",
+							"sha256": "2566775205b77a8f6bee2058229df7226ac519333a9671dd04cd129d9e8dfc60",
+							"bytes": 453,
+							"capturedAt": "2026-11-19T16:57:18.504Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "identifies-uncounted-code",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/fe0ea4712c69e13dd9c98de3828cbb2d3ee2489d/examples-function.complexity-coverage/examples/test-examples-function.complexity-coverage.test.ts-identifies-uncounted-code.json",
+							"sha256": "9bdf62339525cf80831537cc7bb070cdbffebbc8cf381cc3c79e4d1038c42c19",
+							"bytes": 1661,
+							"capturedAt": "2026-11-19T16:57:18.504Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to function.complexity-coverage: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}

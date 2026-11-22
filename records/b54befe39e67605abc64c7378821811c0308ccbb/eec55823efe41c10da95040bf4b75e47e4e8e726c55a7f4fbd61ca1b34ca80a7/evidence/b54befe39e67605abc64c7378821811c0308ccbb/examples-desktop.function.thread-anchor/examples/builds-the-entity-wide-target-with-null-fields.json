@@ -1,0 +1,19 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.thread-anchor",
+	"symbol": "entityTarget",
+	"cases": [
+		{
+			"name": "entity-wide target has null version, hash, state, viewport and region",
+			"input": {},
+			"output": {
+				"version": null,
+				"imageSha256": null,
+				"state": null,
+				"viewport": null,
+				"region": null
+			}
+		}
+	]
+}

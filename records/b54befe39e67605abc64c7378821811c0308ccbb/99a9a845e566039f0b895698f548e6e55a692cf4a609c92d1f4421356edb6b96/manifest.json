@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"record": "99a9a845e566039f0b895698f548e6e55a692cf4a609c92d1f4421356edb6b96",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "3f641055f1191d84da0737bbb38b3df8079b3032f2c3152f7edfa892eceba061",
+			"bytes": 2781470,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-activity/lifecycle/test-activity-agents.e2e.test.ts-lifecycle.txt",
+			"sha256": "33d2d437602a96ba0368fbcc32747e348555c71726d3858d822077b707548daf",
+			"bytes": 1125,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-activity/lifecycle/test-activity-agents.e2e.test.ts-lifecycle.json",
+			"sha256": "19bec99706a45c40c61e8a786e4432cc217195b66a227124a32eb92054f43545",
+			"bytes": 21341,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-activity-lifecycle.log",
+			"sha256": "33d2d437602a96ba0368fbcc32747e348555c71726d3858d822077b707548daf",
+			"bytes": 1125,
+			"storage": "git"
+		}
+	]
+}

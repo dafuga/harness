@@ -1,0 +1,1 @@
+{"scenario":"Read pinned evidence through Git","input":{"commit":"2150969952d4335c9eecdbcbbb8b4b02787441d4","paths":["logs/a.txt","logs/copy.txt","media/binary\nname.png","missing"]},"output":{"filesRead":["logs/a.txt","logs/copy.txt","media/binary\nname.png"],"binaryBytes":[0,10,255,0,13],"blobReaderProcesses":1}}

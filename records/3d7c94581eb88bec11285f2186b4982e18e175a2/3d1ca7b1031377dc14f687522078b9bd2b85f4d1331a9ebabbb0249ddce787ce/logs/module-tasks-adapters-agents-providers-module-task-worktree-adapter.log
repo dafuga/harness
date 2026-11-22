@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.jtbbur/tmp/harness-snapshot-VB4zfs
+
+ ✓ test/adapters/agents-providers/module-task-worktree-adapter.test.ts (2 tests) 1080ms
+   ✓ submission checkpoint preserves source HEAD and both staged and unstaged work  620ms
+   ✓ a task worktree whose HEAD moved is refused with its named error  419ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  23:14:07
+   Duration  1.82s (transform 260ms, setup 221ms, collect 240ms, tests 1.08s, environment 0ms, prepare 36ms)
+
+JSON report written to /tmp/z5jp8p-hl.jtbbur/tmp/harness-runner-UCZQKm/report.json

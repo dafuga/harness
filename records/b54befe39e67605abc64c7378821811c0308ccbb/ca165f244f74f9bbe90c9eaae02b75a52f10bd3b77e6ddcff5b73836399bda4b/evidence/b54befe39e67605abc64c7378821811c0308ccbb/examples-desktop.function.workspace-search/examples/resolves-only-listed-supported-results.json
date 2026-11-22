@@ -1,0 +1,25 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.workspace-search",
+	"symbol": "workspaceSearch",
+	"cases": [
+		{
+			"name": "listed result of the tip, and four results at no listed address",
+			"input": {
+				"listed": "entries of the shown tip",
+				"copy": "a spread copy of a listed entry",
+				"otherRevision": "entry of a pinned earlier commit",
+				"otherProject": "entry of another project",
+				"unsupported": "entry whose category is not supported"
+			},
+			"output": {
+				"listed": "/projects/local-alpha/harness/branch/feat%2Falpha/layouts/app.shell.order-frame",
+				"copy": null,
+				"otherRevision": null,
+				"otherProject": null,
+				"unsupported": null
+			}
+		}
+	]
+}

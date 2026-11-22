@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.harness-shell",
+	"symbol": "harnessShell",
+	"cases": [
+		{
+			"name": "installed order 10 and unset",
+			"input": "four entries",
+			"output": [
+				{
+					"id": "module-library",
+					"label": "Plugins",
+					"icon": "layers",
+					"active": false,
+					"href": "/reports/main/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/pages/modules",
+					"to": {
+						"branch": "main",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "pages",
+						"screen": "modules"
+					}
+				},
+				{
+					"id": "resource:alpha.notes",
+					"label": "Notes",
+					"icon": "code",
+					"active": false,
+					"href": "/reports/main/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/pages/module-resources",
+					"to": {
+						"branch": "main",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "pages",
+						"screen": "module-resources",
+						"entity": "alpha.notes"
+					}
+				}
+			]
+		}
+	]
+}

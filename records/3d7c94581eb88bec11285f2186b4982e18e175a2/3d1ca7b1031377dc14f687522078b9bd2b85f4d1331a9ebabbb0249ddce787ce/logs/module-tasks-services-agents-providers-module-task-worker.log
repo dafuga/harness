@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.jtbbur/tmp/harness-snapshot-VB4zfs
+
+ ✓ test/services/agents-providers/module-task-worker.test.ts (2 tests) 2666ms
+   ✓ module filters and assignment claims select once, then preserve changes for review  1510ms
+   ✓ incomplete review commits a repair base, requeues once, and keeps prior work and contract  1142ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  23:16:16
+   Duration  3.63s (transform 462ms, setup 135ms, collect 562ms, tests 2.67s, environment 0ms, prepare 35ms)
+
+JSON report written to /tmp/z5jp8p-hl.jtbbur/tmp/harness-runner-JQ9IVa/report.json

@@ -1,0 +1,25 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-search",
+	"symbol": "entitySearch",
+	"cases": [
+		{
+			"name": "order list",
+			"input": {
+				"query": "order list"
+			},
+			"output": [
+				"app.component.order-list",
+				"app.component.order-table"
+			]
+		},
+		{
+			"name": "order missing",
+			"input": {
+				"query": "order missing"
+			},
+			"output": []
+		}
+	]
+}

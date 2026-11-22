@@ -1,0 +1,28 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.entity-evidence",
+	"symbol": "createEntityEvidenceStore",
+	"cases": [
+		{
+			"name": "reads when the same target is shown again",
+			"input": {},
+			"output": 1
+		},
+		{
+			"name": "reads after the target changes",
+			"input": {},
+			"output": 1
+		},
+		{
+			"name": "reads after the bridge changes",
+			"input": {},
+			"output": 1
+		},
+		{
+			"name": "URL revoked on target change",
+			"input": {},
+			"output": 1
+		}
+	]
+}

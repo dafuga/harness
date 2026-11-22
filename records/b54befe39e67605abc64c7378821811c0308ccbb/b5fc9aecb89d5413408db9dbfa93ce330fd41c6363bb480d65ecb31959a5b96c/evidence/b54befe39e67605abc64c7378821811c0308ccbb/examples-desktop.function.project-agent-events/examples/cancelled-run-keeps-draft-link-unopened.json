@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.project-agent-events",
+	"symbol": "projectAgentEvents",
+	"cases": [
+		{
+			"name": "status for a saved draft",
+			"input": "cancelled event",
+			"output": "Cancelled. A draft was saved."
+		},
+		{
+			"name": "draft kept as link",
+			"input": {
+				"category": "function",
+				"entityId": "function.format-time",
+				"threadId": "thread-1",
+				"requestSaved": false
+			},
+			"output": {
+				"category": "function",
+				"entityId": "function.format-time",
+				"threadId": "thread-1",
+				"requestSaved": false
+			}
+		},
+		{
+			"name": "no navigation",
+			"input": {
+				"category": "function",
+				"entityId": "function.format-time",
+				"threadId": "thread-1",
+				"requestSaved": false
+			},
+			"output": 0
+		}
+	]
+}

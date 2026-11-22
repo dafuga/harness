@@ -1,0 +1,22 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.contract-fields",
+	"symbol": "fieldOf",
+	"cases": [
+		{
+			"name": "false, zero, null, empty text and empty object",
+			"input": "PrivateContext",
+			"output": {
+				"source": "declared",
+				"examples": [
+					"false",
+					"0",
+					"null",
+					"\"\"",
+					"{}"
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,64 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "planning.function.plan-reads",
+	"symbol": "planReads",
+	"cases": [
+		{
+			"name": "rev-parse --verify bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb^{commit}",
+			"input": {
+				"args": [
+					"rev-parse",
+					"--verify",
+					"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb^{commit}"
+				]
+			},
+			"output": {
+				"answer": "0f36b7bb61efd50896251d3f4d0fb9c5c30ed475e61af5d358ebfdf8797679c1",
+				"reachedGit": 1
+			}
+		},
+		{
+			"name": "rev-parse --verify bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb^{commit}",
+			"input": {
+				"args": [
+					"rev-parse",
+					"--verify",
+					"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb^{commit}"
+				]
+			},
+			"output": {
+				"answer": "e720745027c02f22e3ad00aeb4e98d746c15e5baa6ac751305c6a7dfa72e913c",
+				"reachedGit": 2
+			}
+		},
+		{
+			"name": "rev-parse --verify 0f36b7bb61efd50896251d3f4d0fb9c5c30ed475e61af5d358ebfdf8797679c1^{commit}",
+			"input": {
+				"args": [
+					"rev-parse",
+					"--verify",
+					"0f36b7bb61efd50896251d3f4d0fb9c5c30ed475e61af5d358ebfdf8797679c1^{commit}"
+				]
+			},
+			"output": {
+				"answer": "0f36b7bb61efd50896251d3f4d0fb9c5c30ed475e61af5d358ebfdf8797679c1",
+				"reachedGit": 3
+			}
+		},
+		{
+			"name": "rev-parse --verify 0f36b7bb61efd50896251d3f4d0fb9c5c30ed475e61af5d358ebfdf8797679c1^{commit}",
+			"input": {
+				"args": [
+					"rev-parse",
+					"--verify",
+					"0f36b7bb61efd50896251d3f4d0fb9c5c30ed475e61af5d358ebfdf8797679c1^{commit}"
+				]
+			},
+			"output": {
+				"answer": "0f36b7bb61efd50896251d3f4d0fb9c5c30ed475e61af5d358ebfdf8797679c1",
+				"reachedGit": 3
+			}
+		}
+	]
+}

@@ -1,0 +1,301 @@
+{
+	"schemaVersion": 1,
+	"record": "3c73b64138733499f83606cb6ceee7fc6b8634c3bd67b215a451b9de7de3563b",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "f30b2f97f75c6ca3619e7e8931a8ae12ad59412426057f3aca46ab875126aba6",
+			"bytes": 660203,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/project-task/test-services-project-task.test.ts-project-change-boundary.txt",
+			"sha256": "7e8d42038b9ca16c6c52d4d59dbf30fb4c98841a945b3f1426bd69530c8a9347",
+			"bytes": 899,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-references/project-task/test-services-project-task.test.ts-project-change-boundary.json",
+			"sha256": "6f1af02cd952b9cdec5e0a588eaabbca74c6853b1cd27d6a93f9516a30e6399a",
+			"bytes": 951,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/answers-ask-without-writes.json",
+			"sha256": "54f93f82a203c4bdfab973d53acbf57f07250e71f35a359625d5abed0e67c78f",
+			"bytes": 303,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/test-examples-desktop.service.project-task.test.ts-answers-ask-without-writes.txt",
+			"sha256": "f79ebde6285f8d6d7af6c48dd010d041f4b88df3f7b92d1381fe2037d4fe0187",
+			"bytes": 430,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/test-examples-desktop.service.project-task.test.ts-answers-ask-without-writes.json",
+			"sha256": "0b8a0cf120ae117f17a999805a93499ef04e186ab5e6bcb0b6a871c4967972f5",
+			"bytes": 1760,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/records-change-without-environment.json",
+			"sha256": "7cad05f1a30a9398374fc242b89663cb1ffa72eba3142b61300012c524e00098",
+			"bytes": 330,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/test-examples-desktop.service.project-task.test.ts-records-change-without-environment.txt",
+			"sha256": "f79ebde6285f8d6d7af6c48dd010d041f4b88df3f7b92d1381fe2037d4fe0187",
+			"bytes": 430,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/test-examples-desktop.service.project-task.test.ts-records-change-without-environment.json",
+			"sha256": "ee503ee734661a80085e34ca5fe1b60090a008778824897091f450e7dff998a9",
+			"bytes": 1740,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/refuses-ask-file-change.json",
+			"sha256": "88af153fdaa836b474e11e4d29d379d944998264de9344375044a119c459a5f6",
+			"bytes": 328,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/test-examples-desktop.service.project-task.test.ts-refuses-ask-file-change.txt",
+			"sha256": "f79ebde6285f8d6d7af6c48dd010d041f4b88df3f7b92d1381fe2037d4fe0187",
+			"bytes": 430,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/test-examples-desktop.service.project-task.test.ts-refuses-ask-file-change.json",
+			"sha256": "00e428746500207c4e880b887f661d7d59e086e2e4f208374b5b92f35ff5db77",
+			"bytes": 955,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/refuses-ask-host-operation.json",
+			"sha256": "86c941767ddff98fd23750e4c6e7ddc30142ca71a9c1c1efd3e5219125e5a8e0",
+			"bytes": 338,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/test-examples-desktop.service.project-task.test.ts-refuses-ask-host-operation.txt",
+			"sha256": "f79ebde6285f8d6d7af6c48dd010d041f4b88df3f7b92d1381fe2037d4fe0187",
+			"bytes": 430,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/test-examples-desktop.service.project-task.test.ts-refuses-ask-host-operation.json",
+			"sha256": "e8e656999832ffc6c3ab7467062f4b6b2c6d46f001cf60624563ffde8f6572e3",
+			"bytes": 1272,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/reports-cancellation-after-abort.json",
+			"sha256": "ece688b53303b2bef8d852c2730ed254a602cc11653060ac17b40c537df9d7b0",
+			"bytes": 273,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/test-examples-desktop.service.project-task.test.ts-reports-cancellation-after-abort.txt",
+			"sha256": "f79ebde6285f8d6d7af6c48dd010d041f4b88df3f7b92d1381fe2037d4fe0187",
+			"bytes": 430,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/test-examples-desktop.service.project-task.test.ts-reports-cancellation-after-abort.json",
+			"sha256": "70b720e796665759d66a8cd2cc2b934111737d08992076910b6f8d284853867d",
+			"bytes": 906,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/recording-error-replaces-cancellation.json",
+			"sha256": "7333808fb537d455f79004208d25921a73bd2a4172379366ac9f07eaa7ca9b38",
+			"bytes": 332,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/test-examples-desktop.service.project-task.test.ts-recording-error-replaces-cancellation.txt",
+			"sha256": "f79ebde6285f8d6d7af6c48dd010d041f4b88df3f7b92d1381fe2037d4fe0187",
+			"bytes": 430,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/test-examples-desktop.service.project-task.test.ts-recording-error-replaces-cancellation.json",
+			"sha256": "8a991789ee85929140ad9862a4573fed1ea596d0aa44c22f676f612ebd9cc077",
+			"bytes": 694,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/propagates-agent-failure.json",
+			"sha256": "d6f037b2c364c862c78d0be78eeb0813c8a4d7b86413c9a19cbe159d34180115",
+			"bytes": 276,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/test-examples-desktop.service.project-task.test.ts-propagates-agent-failure.txt",
+			"sha256": "f79ebde6285f8d6d7af6c48dd010d041f4b88df3f7b92d1381fe2037d4fe0187",
+			"bytes": 430,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/test-examples-desktop.service.project-task.test.ts-propagates-agent-failure.json",
+			"sha256": "46e674db385bd907d9179cc45b38feb1c5c79354dea5082529daf85ab9a630e0",
+			"bytes": 925,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/promotes-environment-change.json",
+			"sha256": "e76354e7db1c370509bca785fbba6683bb4d69c07a02a41118eb40fe1fa741b4",
+			"bytes": 307,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/test-examples-desktop.service.project-task.test.ts-promotes-environment-change.txt",
+			"sha256": "f79ebde6285f8d6d7af6c48dd010d041f4b88df3f7b92d1381fe2037d4fe0187",
+			"bytes": 430,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.service.project-task/examples/test-examples-desktop.service.project-task.test.ts-promotes-environment-change.json",
+			"sha256": "e690f33c0b674cb9184c7bf186bd8147fd93568bda6010adee7f3f37228af127",
+			"bytes": 1135,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-reference-views.log",
+			"sha256": "256b2214ded30352137bfd599212b3dce04b3302e2e91128f5ab915fce7c9b5c",
+			"bytes": 231,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-references-ui.log",
+			"sha256": "f7fa4f9e13c5bf5b807d46ec8be5056ca0b13f06651a75a344278241ca08d218",
+			"bytes": 231,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-change-owners.log",
+			"sha256": "67b3dbb39717dfdd21eab473089cd9c6bfe0476ebeeb1d86ad22c444f5cf5db8",
+			"bytes": 510,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-change-reply.log",
+			"sha256": "6260d36cf0fd79801be6cf0e970c30d9c5487dec9cc817c89964ab3532eff92d",
+			"bytes": 737,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-reference-text.log",
+			"sha256": "c532083f28398a62cecfb14f9c047fbc7da1c194138336776aa6ee89d7f800d7",
+			"bytes": 414,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-reference-parsing.log",
+			"sha256": "b21921f6c361ea5d2dcc20133e7c05b6fa66c49e148ec9ab3b2395666ff1e086",
+			"bytes": 408,
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-desktop.service.project-task-examples.log",
+			"sha256": "f79ebde6285f8d6d7af6c48dd010d041f4b88df3f7b92d1381fe2037d4fe0187",
+			"bytes": 430,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-message-references.log",
+			"sha256": "010bf34f5663a26e6b0611acbd2037a431511d96a5671cd4ed7be35b1d1ac5bd",
+			"bytes": 412,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-project-agent-said.log",
+			"sha256": "3c62e8425b3762e16813a848b30543593a4c69fd4b86a7a08e3a6c9c3dde548e",
+			"bytes": 410,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-creation-reply.log",
+			"sha256": "0a6593ef974990f6e90142e5ffbb81b054dc85123fb5a6354985154e0d5cdbbf",
+			"bytes": 673,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-run-context-references.log",
+			"sha256": "6bcab6bb86f3de07e327c6deef76bcf2e891d24d38f95850d918799488caae79",
+			"bytes": 410,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-project-task.log",
+			"sha256": "7e8d42038b9ca16c6c52d4d59dbf30fb4c98841a945b3f1426bd69530c8a9347",
+			"bytes": 899,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-changed-units.log",
+			"sha256": "124a5504174c423448481f78497b59d514a956d9243d2b8f5be2949a9baf0cdd",
+			"bytes": 407,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-reference-grammar.log",
+			"sha256": "79d0abef29564247cdb76de11bebae8a5232cd9e890928835913b23df3e341ce",
+			"bytes": 411,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-proposal-units.log",
+			"sha256": "98ad22b10a1d09ce1b47627938c854de2faa303260d887a0fe9cdc84b045812d",
+			"bytes": 408,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-reference-prompt.log",
+			"sha256": "92753e4b638775283313082fefd0f037fb1f35b326f8ea693f0b6f22fe2d0766",
+			"bytes": 412,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-references-reference-links.log",
+			"sha256": "f2745fbe9bcf489055133b359c6b7a58d8cc1f88d1d67c722963b4f67355cb68",
+			"bytes": 407,
+			"storage": "git"
+		}
+	]
+}

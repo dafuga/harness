@@ -1,0 +1,53 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-catalog",
+	"symbol": "catalogFilter",
+	"cases": [
+		{
+			"name": "no entity matches",
+			"input": {
+				"search": "nothing-matches"
+			},
+			"output": []
+		},
+		{
+			"name": "no shared component",
+			"input": {
+				"usage": "shared"
+			},
+			"output": []
+		},
+		{
+			"name": "unknown verification",
+			"input": {
+				"verification": "unknown"
+			},
+			"output": []
+		},
+		{
+			"name": "unchanged pages",
+			"input": {
+				"changedOnly": true,
+				"category": "pages"
+			},
+			"output": []
+		},
+		{
+			"name": "empty input",
+			"input": {
+				"rows": []
+			},
+			"output": []
+		},
+		{
+			"name": "unknown group",
+			"input": {
+				"groups": [
+					"billing"
+				]
+			},
+			"output": []
+		}
+	]
+}

@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/tmp/z5jp8p-hl.WEUOiD/tmp/harness-snapshot-rnUhK6
+
+ ✓ test/services/agents-providers/module-task-analytics-service.test.ts (2 tests) 616ms
+   ✓ committed task history emits stable IDs and excludes raw prompt text  607ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  21:56:49
+   Duration  1.52s (transform 432ms, setup 126ms, collect 533ms, tests 616ms, environment 0ms, prepare 30ms)
+
+JSON report written to /tmp/z5jp8p-hl.WEUOiD/tmp/harness-runner-RBAlbd/report.json
+stderr | test/services/agents-providers/module-task-analytics-service.test.ts > committed task history emits stable IDs and excludes raw prompt text
+Warning: Harness module task analytics could not be recorded.
+

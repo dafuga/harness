@@ -1,0 +1,15 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.service.project-task",
+	"symbol": "ProjectTaskService.run",
+	"cases": [
+		{
+			"name": "agent rejects before writing",
+			"input": {
+				"mode": "change"
+			},
+			"error": "model unavailable"
+		}
+	]
+}

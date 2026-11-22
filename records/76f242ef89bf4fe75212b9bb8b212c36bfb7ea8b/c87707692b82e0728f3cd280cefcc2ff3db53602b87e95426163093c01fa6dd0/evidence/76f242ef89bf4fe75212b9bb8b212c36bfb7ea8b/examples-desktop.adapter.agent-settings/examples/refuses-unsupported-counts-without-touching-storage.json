@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.adapter.agent-settings",
+	"symbol": "write",
+	"cases": [
+		{
+			"name": "write 0",
+			"input": {
+				"designOptions": 0
+			},
+			"output": false
+		},
+		{
+			"name": "write 11",
+			"input": {
+				"designOptions": 11
+			},
+			"output": false
+		},
+		{
+			"name": "write 1.5",
+			"input": {
+				"designOptions": 1.5
+			},
+			"output": false
+		},
+		{
+			"name": "write NaN",
+			"input": {
+				"designOptions": null
+			},
+			"output": false
+		}
+	]
+}

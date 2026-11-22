@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.entity-evidence",
+	"symbol": "createEntityEvidenceStore",
+	"cases": [
+		{
+			"name": "object URL made for the shown capture",
+			"input": {
+				"file": "1d7fff556b1abb2fdb7970e2a8a97a670f7cee5b1f2b30121e97c8244f4c505f.png"
+			},
+			"output": "blob:example-capture"
+		},
+		{
+			"name": "revoked by reset",
+			"input": {},
+			"output": 1
+		},
+		{
+			"name": "state after reset",
+			"input": {},
+			"output": {
+				"status": "idle",
+				"result": null,
+				"error": "",
+				"refusals": {}
+			}
+		}
+	]
+}

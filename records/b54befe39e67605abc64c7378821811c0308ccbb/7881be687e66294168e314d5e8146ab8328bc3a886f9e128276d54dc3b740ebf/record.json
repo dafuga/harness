@@ -1,0 +1,522 @@
+{
+	"id": "7881be687e66294168e314d5e8146ab8328bc3a886f9e128276d54dc3b740ebf",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-hl.mtGXPD/source",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T14:46:36.329Z",
+	"finishedAt": "2026-11-20T14:46:50.350Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "function.console-access",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "6770cb1f7f9f8cd6a7d3e4f556450b9a94e6978cd4354701c8787244c5d88968",
+			"source": "f9807552c7302c9f77b209f64d7b6440c19671026421bd52524ff460544d3017",
+			"contract": "d44c76140ecd139eb03a82b93b51bfec3b6b063630810a5039bc39072615f4e9",
+			"runtime": "8995cfcada79cb4f622bd8a1977b9343c3e19165d163d92f19bd283e7195fb77",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/explorer-ui/console-server/consoleAccess.ts",
+					"hash": "1cf49196c131ff2f56c74f5d5f507838c85d65ba"
+				},
+				{
+					"path": "src/utils/explorer-ui/consoleAccess.ts",
+					"hash": "4e237a4fd3aee42cc7b67030c7082b365b9a7ac0"
+				}
+			]
+		},
+		{
+			"unit": "function.console-bundle",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "78901f52ac878c3d8538552cae9a9865ed367f74e5ee6e9597224462997e62ed",
+			"source": "c0b28b8d552f070a68b73caa28e8d4539eb705d7c1c741f02d7fc8660918a973",
+			"contract": "0d37d66bbeb8c2a58daca06fa1e7fc600114b004644e7ec264ad4726df488a97",
+			"runtime": "1c04243f904df85c4ee1b27d6acd8bd6e1790caf906578852011692356b04769",
+			"files": [
+				{
+					"path": "src/utils/development-tooling/consoleBundle.ts",
+					"hash": "bc8f5cd792c7bd5a26d1d253d7c342c2b386f079"
+				},
+				{
+					"path": "src/utils/development-tooling/consoleBundle.types.ts",
+					"hash": "8bee5d4a387c9a5ae79219ee14303cf0cb234f4f"
+				}
+			]
+		},
+		{
+			"unit": "function.console-route",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "6ec5b58ccbb5bed38b1ed0bf5b87222851cea1e276732641dbd21b116fc4721e",
+			"source": "9583416eabae30c6520c6b3ca6a5e776abc165f907bb672858e7813376e8d761",
+			"contract": "cd80c3a2cacc3b5141423571d8ba2a56af0fdbf1300dff17b2f8941ecd858993",
+			"runtime": "1557e0e54028f47ff8c9bec26d840596f9ae20f8ff155783fdb701f5f0dfefa1",
+			"files": [
+				{
+					"path": "packages/reports/src/components/projects-sessions/project-activity/consoleRoute.ts",
+					"hash": "6e36ec26186114b3a01260d49c23c718305ff1ce"
+				},
+				{
+					"path": "src/utils/projects-sessions/console-canonical/consoleRoute.ts",
+					"hash": "8b8f47dff640b27217ad65a401d9efbb1d270cae"
+				},
+				{
+					"path": "src/utils/projects-sessions/consoleRoute.ts",
+					"hash": "71b6fab8f360048b791dbf2be33ccc9ad693331a"
+				},
+				{
+					"path": "src/utils/projects-sessions/consoleRoute.types.ts",
+					"hash": "b5a8a1a85cd9604ecb005c4362ec396a06d3df29"
+				}
+			]
+		},
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cfb49b515cacc084047d75cdf10a295ab3790ecaf878e2b75e06463793f628bf",
+			"source": "cbf5fb170c4db458f39bcc4ba18996e377a782371040baa39d1667f04bf87635",
+			"contract": "6f2e8a598fb220dd111fe8085fb28c645ee24019cc4b1f25315b141a569962d7",
+			"runtime": "ec246a1eb80a7c06e7ccbd8601bab05e75d00122b0ad9d09eec95bbe94f31c19",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts",
+					"hash": "36741c54d766dd2689e542099ca02135cd07760b"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.types.ts",
+					"hash": "758395e715dd7c7d824deb57b07849f373ef164e"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/artifactCases.ts",
+					"hash": "f5a0a857433ab39a3aa86c795bab10681a76db3f"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.012499999999988631,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90783744,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.console-route",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.01229200000000219,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-806be672a827affa-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.console-route",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90914816,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-806be672a827affa-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.console-bundle",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.03195799999997462,
+			"method": "Arithmetic mean of 1 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-bdac4b5ec4ed7577-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.console-bundle",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90996736,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-bdac4b5ec4ed7577-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.005673333333334085,
+			"method": "Arithmetic mean of 6 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91865088,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.console-access",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.007229166666670987,
+			"method": "Arithmetic mean of 6 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-1603ffa24ae4faa4-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.console-access",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91766784,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-1603ffa24ae4faa4-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 6,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.1996383333333256,
+			"method": "Arithmetic mean of 3 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 91865088,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 3,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "examples-function.console-access:examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/function.console-access.test.ts",
+			"status": "passed",
+			"durationMs": 1878,
+			"log": {
+				"path": "logs/examples-function.console-access-examples.log",
+				"bytes": 405,
+				"sha256": "1821546dfa52ea74e2b861292d449f93be38364666c2e78c64d39ab1617a1742"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "examples-function.console-access",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "serves-authorized-revision-data",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "serves-authorized-revision-data",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.console-access/examples/serves-authorized-revision-data.json",
+							"sha256": "f6dce505b27c18380d5344014a651518fca103c27672cfb8ac7466dd3f3f26ab",
+							"bytes": 490,
+							"capturedAt": "2026-11-20T14:46:48.720Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "serves-authorized-revision-data",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.console-access.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.console-access/examples/test-examples-function.console-access.test.ts-serves-authorized-revision-data.txt",
+							"sha256": "1821546dfa52ea74e2b861292d449f93be38364666c2e78c64d39ab1617a1742",
+							"bytes": 405,
+							"capturedAt": "2026-11-20T14:46:48.721Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "serves-authorized-revision-data",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.console-access/examples/test-examples-function.console-access.test.ts-serves-authorized-revision-data.json",
+							"sha256": "f0313a80d9a65a461b942c60b9e4434ac8ff72eea9b3c7a1efa9fc42409c1bba",
+							"bytes": 793,
+							"capturedAt": "2026-11-20T14:46:48.721Z"
+						}
+					]
+				},
+				{
+					"id": "denies-access-before-reading",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "denies-access-before-reading",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.console-access/examples/denies-access-before-reading.json",
+							"sha256": "8159410e862caaf67d46ff75aac5e9380433450549158088e7c27d917e68e7d4",
+							"bytes": 834,
+							"capturedAt": "2026-11-20T14:46:48.720Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "denies-access-before-reading",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.console-access.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.console-access/examples/test-examples-function.console-access.test.ts-denies-access-before-reading.txt",
+							"sha256": "1821546dfa52ea74e2b861292d449f93be38364666c2e78c64d39ab1617a1742",
+							"bytes": 405,
+							"capturedAt": "2026-11-20T14:46:48.721Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "denies-access-before-reading",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.console-access/examples/test-examples-function.console-access.test.ts-denies-access-before-reading.json",
+							"sha256": "f22d6a08ee5665d4ca5825be95347bdbedaaf70662d197f88f5853eee6f24ede",
+							"bytes": 1487,
+							"capturedAt": "2026-11-20T14:46:48.721Z"
+						}
+					]
+				},
+				{
+					"id": "distinguishes-missing-authorized-artifacts",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "distinguishes-missing-authorized-artifacts",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.console-access/examples/distinguishes-missing-authorized-artifacts.json",
+							"sha256": "0d12fdaadf574e72761b9cb2dc2c3c42ae9e95907ba7becd17983330fb380975",
+							"bytes": 1402,
+							"capturedAt": "2026-11-20T14:46:48.720Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "distinguishes-missing-authorized-artifacts",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/function.console-access.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.console-access/examples/test-examples-function.console-access.test.ts-distinguishes-missing-authorized-artifacts.txt",
+							"sha256": "1821546dfa52ea74e2b861292d449f93be38364666c2e78c64d39ab1617a1742",
+							"bytes": 405,
+							"capturedAt": "2026-11-20T14:46:48.721Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "distinguishes-missing-authorized-artifacts",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-function.console-access/examples/test-examples-function.console-access.test.ts-distinguishes-missing-authorized-artifacts.json",
+							"sha256": "ba9802cdd3edcb3c921e59680d66083a84d82c2a21a0ad1b25ad2e084c58509a",
+							"bytes": 989,
+							"capturedAt": "2026-11-20T14:46:48.721Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to function.console-access: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}

@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.report-destination",
+	"symbol": "reportDestination",
+	"cases": [
+		{
+			"name": "report found by its id",
+			"input": {
+				"id": "imported-run"
+			},
+			"output": "/branch/main/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages"
+		},
+		{
+			"name": "unheld revision uses the linkage",
+			"input": {
+				"id": "imported-run",
+				"revision": "ffffffffffffffffffffffffffffffffffffffff"
+			},
+			"output": "/branch/main/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages"
+		},
+		{
+			"name": "held revision before the linkage",
+			"input": {
+				"id": "imported-run",
+				"revision": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+			},
+			"output": "/commit/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee/pages"
+		},
+		{
+			"name": "unlinked report opens the home",
+			"input": {
+				"id": "loose-run"
+			},
+			"output": "/branch/main/pages"
+		}
+	]
+}

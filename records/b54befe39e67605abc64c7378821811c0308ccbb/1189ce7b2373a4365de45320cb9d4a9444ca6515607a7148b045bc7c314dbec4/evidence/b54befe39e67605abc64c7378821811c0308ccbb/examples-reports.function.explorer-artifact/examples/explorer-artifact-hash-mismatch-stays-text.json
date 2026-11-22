@@ -1,0 +1,21 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-artifact",
+	"symbol": "explorerArtifact",
+	"cases": [
+		{
+			"name": "recorded hash differs from the bytes",
+			"input": {
+				"sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+			},
+			"output": {
+				"verified": false,
+				"problem": "The bytes that were read do not have the recorded SHA-256.",
+				"text": "{\"scenario\":\"Clock reads a value\",\"steps\":[\"Start the service\"],\"input\":{\"value\":\"09:30\"},\"output\":{\"value\":\"09:30\"},\"assertions\":[{\"name\":\"The value is returned\",\"passed\":true}]}",
+				"document": null,
+				"behavior": null
+			}
+		}
+	]
+}

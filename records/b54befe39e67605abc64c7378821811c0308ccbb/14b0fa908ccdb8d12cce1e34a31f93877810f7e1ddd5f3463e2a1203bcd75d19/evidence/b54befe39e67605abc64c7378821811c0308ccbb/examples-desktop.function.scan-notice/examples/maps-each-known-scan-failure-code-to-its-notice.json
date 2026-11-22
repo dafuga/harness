@@ -1,0 +1,24 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.scan-notice",
+	"symbol": "scanNotice",
+	"cases": [
+		{
+			"name": "camera denied object",
+			"input": {
+				"cause": {
+					"code": "camera-denied"
+				}
+			},
+			"output": "Camera access is off for Harness. Turn it on in Settings, then scan again."
+		},
+		{
+			"name": "offer expired error with plugin code",
+			"input": {
+				"cause": "Error(\"native words\") with code offer-expired"
+			},
+			"output": "That code has expired. Choose New code on your computer and scan again."
+		}
+	]
+}

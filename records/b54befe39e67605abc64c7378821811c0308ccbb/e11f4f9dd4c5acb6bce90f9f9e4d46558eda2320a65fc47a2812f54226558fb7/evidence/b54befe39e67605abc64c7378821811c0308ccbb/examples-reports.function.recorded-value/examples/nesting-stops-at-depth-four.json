@@ -1,0 +1,115 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.recorded-value",
+	"symbol": "recordedValue",
+	"cases": [
+		{
+			"name": "object at depth four",
+			"input": {
+				"a": {
+					"b": {
+						"c": {
+							"d": {
+								"e": 1
+							}
+						}
+					}
+				}
+			},
+			"output": {
+				"kind": "fields",
+				"fields": [
+					{
+						"name": "a",
+						"node": {
+							"kind": "fields",
+							"fields": [
+								{
+									"name": "b",
+									"node": {
+										"kind": "fields",
+										"fields": [
+											{
+												"name": "c",
+												"node": {
+													"kind": "fields",
+													"fields": [
+														{
+															"name": "d",
+															"node": {
+																"kind": "notice",
+																"text": "Open Full recorded values to see more."
+															}
+														}
+													],
+													"remaining": 0
+												}
+											}
+										],
+										"remaining": 0
+									}
+								}
+							],
+							"remaining": 0
+						}
+					}
+				],
+				"remaining": 0
+			}
+		},
+		{
+			"name": "scalar at depth four",
+			"input": {
+				"a": {
+					"b": {
+						"c": {
+							"d": "x"
+						}
+					}
+				}
+			},
+			"output": {
+				"kind": "fields",
+				"fields": [
+					{
+						"name": "a",
+						"node": {
+							"kind": "fields",
+							"fields": [
+								{
+									"name": "b",
+									"node": {
+										"kind": "fields",
+										"fields": [
+											{
+												"name": "c",
+												"node": {
+													"kind": "fields",
+													"fields": [
+														{
+															"name": "d",
+															"node": {
+																"kind": "scalar",
+																"type": "Text",
+																"text": "x"
+															}
+														}
+													],
+													"remaining": 0
+												}
+											}
+										],
+										"remaining": 0
+									}
+								}
+							],
+							"remaining": 0
+						}
+					}
+				],
+				"remaining": 0
+			}
+		}
+	]
+}

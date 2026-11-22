@@ -1,0 +1,460 @@
+{
+	"id": "10c3129eba7bb7bf9cf5a1b9185603db44e6f3a32b4bb85f360caa726659b5a0",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/private/tmp/z5jp8p-hl.mtGXPD/source",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-20T14:06:14.007Z",
+	"finishedAt": "2026-11-20T14:06:28.842Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "function.record-capture",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41e40bb7a2b44b7fa1da3881ebf1a687d3d8471d42fd0a7c44d584361255ff42",
+			"source": "142bfa1513b076860925e3bac72e4361c1edd5901abe0b7061ebac711646346a",
+			"contract": "025908d6c17bb9a51a22fa8f85c40b9ea26bb9161a5d016c554aa7e340c15a52",
+			"runtime": "a289759bf06513632380a5baa8ac1f6a9a916c1d1905e0de6a7be531f7936431",
+			"files": [
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.ts",
+					"hash": "316c75b906d532b1a5b376f345b7de8e00da1f4d"
+				},
+				{
+					"path": "src/utils/reports-media/record-capture/recordCapture.types.ts",
+					"hash": "8e36a063513222284548df76d240d4a45f6626a9"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cfb49b515cacc084047d75cdf10a295ab3790ecaf878e2b75e06463793f628bf",
+			"source": "cbf5fb170c4db458f39bcc4ba18996e377a782371040baa39d1667f04bf87635",
+			"contract": "6f2e8a598fb220dd111fe8085fb28c645ee24019cc4b1f25315b141a569962d7",
+			"runtime": "ec246a1eb80a7c06e7ccbd8601bab05e75d00122b0ad9d09eec95bbe94f31c19",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts",
+					"hash": "36741c54d766dd2689e542099ca02135cd07760b"
+				},
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.types.ts",
+					"hash": "758395e715dd7c7d824deb57b07849f373ef164e"
+				},
+				{
+					"path": "packages/reports/src/utils/explorer-ui/artifactCases.ts",
+					"hash": "f5a0a857433ab39a3aa86c795bab10681a76db3f"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.entity-removed",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "932c620854c4d3eba3961e10b9305db61765591d13c011b012e107c7b2d8f78f",
+			"source": "099d2e9a7ef8c3db58c4efc609b62e3099fe780e4a9291fa55a5a4aa30b5d74a",
+			"contract": "45d8822e305fd0aa3fcc7a1dd44e66a21200c64b45ca5f520ee8aa2ff3cd0dce",
+			"runtime": "72f4b3b0dd8793db386530d9af35d3f7e1c3849cabf97f08ef40a88e7a9c6d97",
+			"files": [
+				{
+					"path": "packages/reports/src/components/explorer-ui/entity-tests/entityRemoved.ts",
+					"hash": "dc38d6bba9022cfce7420399e68f03a47921d1d0"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.012249999999994543,
+			"method": "Arithmetic mean of 1 successful completed source scopes; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.artifact-cases",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90275840,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-initialization-node-26.13.0-9f2131fc842b1cdd-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.entity-removed",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.010819444444444394,
+			"method": "Arithmetic mean of 9 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-4af7b71f5e253a96-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 9,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.entity-removed",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90570752,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-4af7b71f5e253a96-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 9,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.0041037499999845295,
+			"method": "Arithmetic mean of 4 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90587136,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-190ecef516117d31-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "latency-observed-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.2049999999999983,
+			"method": "Arithmetic mean of 4 successful synchronous returns; includes clock and observer overhead, with no replay or warmup.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		},
+		{
+			"unit": "function.record-capture",
+			"metric": "process-peak-rss-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 90587136,
+			"method": "Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.",
+			"workload": "source-first-10-successes-node-26.13.0-3002c2a5d724e55c-9e8c1385c0ee4d4f",
+			"target": "module",
+			"samples": 4,
+			"profile": "fae395e860966b98",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "examples-reports.function.entity-removed:examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts vitest test/examples/reports.function.entity-removed.test.ts",
+			"status": "passed",
+			"durationMs": 2191,
+			"log": {
+				"path": "logs/examples-reports.function.entity-removed-examples.log",
+				"bytes": 428,
+				"sha256": "56bbca6d6468c39e742035ce19b75d74a8069d4bfd5d3d8eb05a96b010e3e38e"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "examples-reports.function.entity-removed",
+			"status": "passed",
+			"testedRevision": "b54befe39e67605abc64c7378821811c0308ccbb",
+			"states": [
+				{
+					"id": "removed-scenario-and-state",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "removed-scenario-and-state",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-removed/examples/removed-scenario-and-state.json",
+							"sha256": "11c6edb5865e6bbe17b88eb24adb1c306e841741746ee9bb57f2b1f054d73ce6",
+							"bytes": 2065,
+							"capturedAt": "2026-11-20T14:06:27.065Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "removed-scenario-and-state",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.entity-removed.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-removed/examples/test-examples-reports.function.entity-removed.test.ts-removed-scenario-and-state.txt",
+							"sha256": "56bbca6d6468c39e742035ce19b75d74a8069d4bfd5d3d8eb05a96b010e3e38e",
+							"bytes": 428,
+							"capturedAt": "2026-11-20T14:06:27.065Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "removed-scenario-and-state",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-removed/examples/test-examples-reports.function.entity-removed.test.ts-removed-scenario-and-state.json",
+							"sha256": "23f915e0344a871a65d6412020d6bd7937063bcdb3f9669f3e720c7bb333b863",
+							"bytes": 1711,
+							"capturedAt": "2026-11-20T14:06:27.066Z"
+						}
+					]
+				},
+				{
+					"id": "present-entity-adds-nothing",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "present-entity-adds-nothing",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-removed/examples/present-entity-adds-nothing.json",
+							"sha256": "d0e25b5727c3c5ddba887b6906c88666d3d42bea8201e2994d2a604675ccec69",
+							"bytes": 1690,
+							"capturedAt": "2026-11-20T14:06:27.065Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "present-entity-adds-nothing",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.entity-removed.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-removed/examples/test-examples-reports.function.entity-removed.test.ts-present-entity-adds-nothing.txt",
+							"sha256": "56bbca6d6468c39e742035ce19b75d74a8069d4bfd5d3d8eb05a96b010e3e38e",
+							"bytes": 428,
+							"capturedAt": "2026-11-20T14:06:27.065Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "present-entity-adds-nothing",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-removed/examples/test-examples-reports.function.entity-removed.test.ts-present-entity-adds-nothing.json",
+							"sha256": "f04db3c6de86d11ddae9a268a05d067f1119c4388bf0fbe64524d5d1ff924a38",
+							"bytes": 1303,
+							"capturedAt": "2026-11-20T14:06:27.066Z"
+						}
+					]
+				},
+				{
+					"id": "scenario-matched-by-id",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "scenario-matched-by-id",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-removed/examples/scenario-matched-by-id.json",
+							"sha256": "83d8e67606a5ceded7b9367c4cc0ab5e7b7e165d26dc01881bccb1f7e35a9170",
+							"bytes": 636,
+							"capturedAt": "2026-11-20T14:06:27.065Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "scenario-matched-by-id",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.entity-removed.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-removed/examples/test-examples-reports.function.entity-removed.test.ts-scenario-matched-by-id.txt",
+							"sha256": "56bbca6d6468c39e742035ce19b75d74a8069d4bfd5d3d8eb05a96b010e3e38e",
+							"bytes": 428,
+							"capturedAt": "2026-11-20T14:06:27.066Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "scenario-matched-by-id",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-removed/examples/test-examples-reports.function.entity-removed.test.ts-scenario-matched-by-id.json",
+							"sha256": "975f38cf6aa7138f5b68f8335a903ca64e8644d352d25b5459cfe72eba1d229a",
+							"bytes": 823,
+							"capturedAt": "2026-11-20T14:06:27.066Z"
+						}
+					]
+				},
+				{
+					"id": "no-parent-revision",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "examples-cases",
+							"kind": "trace",
+							"state": "no-parent-revision",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-removed/examples/no-parent-revision.json",
+							"sha256": "a5dcb4610a9ab3fe52ae32ac17a581f98ebe2a60da2af584773654dc578c3274",
+							"bytes": 504,
+							"capturedAt": "2026-11-20T14:06:27.065Z"
+						},
+						{
+							"evidence": "examples-output",
+							"kind": "output",
+							"state": "no-parent-revision",
+							"mediaType": "text/plain",
+							"note": "Supplemental actual vitest output for test/examples/reports.function.entity-removed.test.ts.",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-removed/examples/test-examples-reports.function.entity-removed.test.ts-no-parent-revision.txt",
+							"sha256": "56bbca6d6468c39e742035ce19b75d74a8069d4bfd5d3d8eb05a96b010e3e38e",
+							"bytes": 428,
+							"capturedAt": "2026-11-20T14:06:27.066Z"
+						},
+						{
+							"evidence": "examples-assertions",
+							"kind": "assertions",
+							"state": "no-parent-revision",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-reports.function.entity-removed/examples/test-examples-reports.function.entity-removed.test.ts-no-parent-revision.json",
+							"sha256": "bbfa8f887e9f7ce6454856036419ce334e607a920db6b11b4d270412fae0913a",
+							"bytes": 581,
+							"capturedAt": "2026-11-20T14:06:27.066Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"shell-fixture",
+		"entity-preview"
+	],
+	"builds": [],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to reports.function.entity-removed: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}

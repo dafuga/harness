@@ -1,0 +1,27 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.agent-settings",
+	"symbol": "load",
+	"cases": [
+		{
+			"name": "first load keeps the stored count",
+			"input": {
+				"stored": 9
+			},
+			"output": 9
+		},
+		{
+			"name": "second and third load keep the first count",
+			"input": {
+				"stored": 4
+			},
+			"output": 9
+		},
+		{
+			"name": "adapter read calls after three loads",
+			"input": {},
+			"output": 1
+		}
+	]
+}

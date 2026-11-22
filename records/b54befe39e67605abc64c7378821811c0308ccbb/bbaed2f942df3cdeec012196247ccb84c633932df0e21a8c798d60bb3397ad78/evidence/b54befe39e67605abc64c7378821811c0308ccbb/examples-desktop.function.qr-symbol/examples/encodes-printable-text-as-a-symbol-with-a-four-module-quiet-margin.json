@@ -1,0 +1,22 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.qr-symbol",
+	"symbol": "qrSymbol",
+	"cases": [
+		{
+			"name": "encode a short offer",
+			"input": {
+				"text": "OFFER-42"
+			},
+			"output": {
+				"size": 21,
+				"quiet": 4,
+				"runCount": 115,
+				"insideMargin": true,
+				"path": "M4 4h7v1h-7zM16 4h1v1h-1zM18 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM14 5h2v1h-2zM18 5h1v1h-1zM24 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM12 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h3v1h-3zM24 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h1v1h-1zM16 7h1v1h-1zM18 7h1v1h-1zM20 7h3v1h-3zM24 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM15 8h2v1h-2zM18 8h1v1h-1zM20 8h3v1h-3zM24 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h3v1h-3zM16 9h1v1h-1zM18 9h1v1h-1zM24 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h7v1h-7zM12 11h1v1h-1zM14 11h3v1h-3zM4 12h1v1h-1zM6 12h5v1h-5zM14 12h1v1h-1zM16 12h1v1h-1zM18 12h5v1h-5zM9 13h1v1h-1zM11 13h4v1h-4zM16 13h1v1h-1zM19 13h1v1h-1zM21 13h4v1h-4zM6 14h2v1h-2zM9 14h2v1h-2zM15 14h1v1h-1zM17 14h1v1h-1zM20 14h4v1h-4zM6 15h1v1h-1zM8 15h2v1h-2zM11 15h1v1h-1zM19 15h4v1h-4zM4 16h2v1h-2zM7 16h1v1h-1zM10 16h2v1h-2zM14 16h2v1h-2zM17 16h1v1h-1zM20 16h1v1h-1zM23 16h1v1h-1zM12 17h2v1h-2zM15 17h5v1h-5zM22 17h1v1h-1zM4 18h7v1h-7zM16 18h1v1h-1zM18 18h2v1h-2zM21 18h1v1h-1zM23 18h1v1h-1zM4 19h1v1h-1zM10 19h1v1h-1zM12 19h1v1h-1zM14 19h6v1h-6zM22 19h1v1h-1zM4 20h1v1h-1zM6 20h3v1h-3zM10 20h1v1h-1zM12 20h3v1h-3zM16 20h1v1h-1zM19 20h1v1h-1zM21 20h1v1h-1zM23 20h1v1h-1zM4 21h1v1h-1zM6 21h3v1h-3zM10 21h1v1h-1zM12 21h3v1h-3zM16 21h1v1h-1zM20 21h1v1h-1zM4 22h1v1h-1zM6 22h3v1h-3zM10 22h1v1h-1zM12 22h1v1h-1zM14 22h2v1h-2zM17 22h1v1h-1zM19 22h2v1h-2zM4 23h1v1h-1zM10 23h1v1h-1zM14 23h1v1h-1zM22 23h1v1h-1zM24 23h1v1h-1zM4 24h7v1h-7zM12 24h1v1h-1zM15 24h1v1h-1zM17 24h1v1h-1zM22 24h1v1h-1z",
+				"readBack": "OFFER-42"
+			}
+		}
+	]
+}

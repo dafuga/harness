@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-usage",
+	"symbol": "usageIdentity",
+	"cases": [
+		{
+			"name": "caller with a symbol",
+			"input": {
+				"entity": {
+					"id": "page.a",
+					"category": "pages",
+					"caller": {
+						"symbol": "load",
+						"sourceOnly": false
+					}
+				}
+			},
+			"output": "page.a#load"
+		},
+		{
+			"name": "caller with an empty symbol keeps the hash",
+			"input": {
+				"entity": {
+					"id": "page.a",
+					"category": "pages",
+					"caller": {
+						"symbol": "",
+						"sourceOnly": true
+					}
+				}
+			},
+			"output": "page.a#"
+		},
+		{
+			"name": "no caller entry is the unit id alone",
+			"input": {
+				"entity": {
+					"id": "page.a",
+					"category": "pages"
+				}
+			},
+			"output": "page.a"
+		}
+	]
+}

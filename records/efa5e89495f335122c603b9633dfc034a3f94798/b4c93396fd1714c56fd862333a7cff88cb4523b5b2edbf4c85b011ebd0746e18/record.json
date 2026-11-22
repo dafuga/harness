@@ -1,0 +1,1054 @@
+{
+	"id": "b4c93396fd1714c56fd862333a7cff88cb4523b5b2edbf4c85b011ebd0746e18",
+	"schemaVersion": 1,
+	"componentSchemaVersion": 2,
+	"repository": "/Users/danielfugere/projects/harness-z5jp8p-video-guides",
+	"source": {
+		"commit": "efa5e89495f335122c603b9633dfc034a3f94798",
+		"tree": "5fa151e490cec890c9124137816bb91d9fa3b987",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		},
+		{
+			"id": "ffmpeg",
+			"version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+		},
+		{
+			"id": "ffprobe",
+			"version": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+		},
+		{
+			"id": "node",
+			"version": "v26.13.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.1 (GitHub; darwin arm64; go 1.27.3)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-11-22T11:05:14.740Z",
+	"finishedAt": "2026-11-22T11:07:17.553Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "reports.component.shared-primitives-loading-state",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "e64b7594a44a9e5dbf9641f6b5361c7106cd79571b5986e6e11ca1e0c687c20f",
+			"source": "198bd020875047af5c78ed1d2f3db07baa952d3ef8d9b1fd657993c604bd911d",
+			"contract": "7c91265d79253e56e9b373a6baad64447a6164b292f9cdf8b39ce5f4c1626718",
+			"runtime": "d3535b85063e367d68110424d5c9c33296ca0606004e7dc2f40499b4c97e280e",
+			"files": [
+				{
+					"path": "packages/reports/src/components/shared-primitives/LoadingState.svelte",
+					"hash": "1f3a5e89748e12ff5a9359f8e98affaab6beee55"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.component.shared-primitives-loading-state",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 645.2000002861023,
+			"method": "Whole document Chromium NavigationTiming through loadEventEnd, including fixture/shared units; build 3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009.",
+			"workload": "video-loading-spinner-920x700",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "efa5e89495f335122c603b9633dfc034a3f94798",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.shared-primitives-loading-state",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 18264496,
+			"method": "Chromium used JavaScript heap after fonts/images settled; whole document including fixture/shared runtime, not isolated unit memory or process RSS.",
+			"workload": "video-loading-spinner-920x700",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "efa5e89495f335122c603b9633dfc034a3f94798",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.shared-primitives-loading-state",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 595.5,
+			"method": "Whole document Chromium NavigationTiming through loadEventEnd, including fixture/shared units; build 3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009.",
+			"workload": "video-loading-spinner-768x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "efa5e89495f335122c603b9633dfc034a3f94798",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.shared-primitives-loading-state",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 18279256,
+			"method": "Chromium used JavaScript heap after fonts/images settled; whole document including fixture/shared runtime, not isolated unit memory or process RSS.",
+			"workload": "video-loading-spinner-768x900",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "efa5e89495f335122c603b9633dfc034a3f94798",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.shared-primitives-loading-state",
+			"metric": "browser-navigation-ms",
+			"unitOfMeasure": "ms",
+			"value": 630.6000003814697,
+			"method": "Whole document Chromium NavigationTiming through loadEventEnd, including fixture/shared units; build 3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009.",
+			"workload": "video-loading-spinner-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "efa5e89495f335122c603b9633dfc034a3f94798",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.shared-primitives-loading-state",
+			"metric": "browser-js-heap-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 18185924,
+			"method": "Chromium used JavaScript heap after fonts/images settled; whole document including fixture/shared runtime, not isolated unit memory or process RSS.",
+			"workload": "video-loading-spinner-390x844",
+			"target": "http",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "efa5e89495f335122c603b9633dfc034a3f94798",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.shared-primitives-loading-state",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 49.44312500000001,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "efa5e89495f335122c603b9633dfc034a3f94798",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.shared-primitives-loading-state",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15630020,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "efa5e89495f335122c603b9633dfc034a3f94798",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.shared-primitives-loading-state",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 49.921749999999975,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-default-label",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "efa5e89495f335122c603b9633dfc034a3f94798",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.shared-primitives-loading-state",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15636400,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-default-label",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "efa5e89495f335122c603b9633dfc034a3f94798",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.shared-primitives-loading-state",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 50.02754099999993,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-long",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "efa5e89495f335122c603b9633dfc034a3f94798",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.shared-primitives-loading-state",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15636424,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-long",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "efa5e89495f335122c603b9633dfc034a3f94798",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.shared-primitives-loading-state",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 49.8876250000003,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-inline",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "efa5e89495f335122c603b9633dfc034a3f94798",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.shared-primitives-loading-state",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15635492,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-inline",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "efa5e89495f335122c603b9633dfc034a3f94798",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.shared-primitives-loading-state",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 66.73899999999958,
+			"method": "Median of five real Chromium remounts after one warmup. Includes fixture, settling and browser-protocol overhead; not isolated component latency.",
+			"workload": "representative-browser-mount-loading",
+			"target": "module",
+			"samples": 5,
+			"profile": "fae395e860966b98",
+			"testedRevision": "efa5e89495f335122c603b9633dfc034a3f94798",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.shared-primitives-loading-state",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 15658156,
+			"method": "Chromium used JavaScript heap after the representative render and explicit garbage collection. Includes the fixture and Svelte runtime; not incremental allocation or peak RSS.",
+			"workload": "representative-browser-mount-loading",
+			"target": "module",
+			"samples": 1,
+			"profile": "fae395e860966b98",
+			"testedRevision": "efa5e89495f335122c603b9633dfc034a3f94798",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [],
+		"units": {
+			"direct": [],
+			"indirect": [],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": []
+	},
+	"tests": [
+		{
+			"id": "loading-state-video-pilot:record-video-pilot",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun packages/reports/tests/e2e/record-video-pilot.ts loading-state-video-pilot",
+			"status": "passed",
+			"durationMs": 66900,
+			"log": {
+				"path": "logs/loading-state-video-pilot-record-video-pilot.log",
+				"bytes": 330,
+				"sha256": "3ac301d03e325c439a5f04e4060cdd022d26f104d836dff1d864059687aa2e2e"
+			}
+		},
+		{
+			"id": "component-catalog-previews:previews",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test --config src/configs/development-tooling/shellPlaywrightConfig.ts explorer-shell-component-catalog.spec.ts",
+			"status": "passed",
+			"durationMs": 13986,
+			"log": {
+				"path": "logs/component-catalog-previews-previews.log",
+				"bytes": 2394,
+				"sha256": "acf41d2fb500dc0cd85420f1bbd86c915c08197434caf5e46c4047ca16974f61"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "component-catalog-previews",
+			"status": "passed",
+			"testedRevision": "efa5e89495f335122c603b9633dfc034a3f94798",
+			"states": [
+				{
+					"id": "reports-component-shared-primitives-loading-state",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-shared-primitives-loading-state",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 324,
+								"width": 896,
+								"height": 88
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-desktop.png",
+							"sha256": "9416af8a930d51e380fb19adfee0286ad74e7222eceb1438774f6b6cc8b8c048",
+							"bytes": 4080,
+							"capturedAt": "2026-11-22T11:07:15.897Z",
+							"server": {
+								"buildId": "3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009",
+								"revision": "efa5e89495f335122c603b9633dfc034a3f94798"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-shared-primitives-loading-state",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-profile.json",
+							"sha256": "5e381dbb9a3f8d8d048ed12adcae4042536d45788eb2c93d8d4512c746ce168d",
+							"bytes": 767,
+							"capturedAt": "2026-11-22T11:07:15.897Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-shared-primitives-loading-state",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 424,
+								"width": 752,
+								"height": 88
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-tablet.png",
+							"sha256": "2cc00f15a5b2d037adbb7250a6aa17864aad155220bc940a7b2a9bebce3dc458",
+							"bytes": 4052,
+							"capturedAt": "2026-11-22T11:07:15.899Z",
+							"server": {
+								"buildId": "3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009",
+								"revision": "efa5e89495f335122c603b9633dfc034a3f94798"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-shared-primitives-loading-state",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 396,
+								"width": 374,
+								"height": 88
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-mobile.png",
+							"sha256": "5a91c95bbf3ae3c734fc97aeb5a599e4c591462bf742a98876cc851495f26da8",
+							"bytes": 3784,
+							"capturedAt": "2026-11-22T11:07:15.901Z",
+							"server": {
+								"buildId": "3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009",
+								"revision": "efa5e89495f335122c603b9633dfc034a3f94798"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-shared-primitives-loading-state-default-label",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-shared-primitives-loading-state-default-label",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 324,
+								"width": 896,
+								"height": 88
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-default-label-desktop.png",
+							"sha256": "5eb0e8bf5324b091eca8d2634b27b77a1ef7c165cd45cb1003a0e59a419f0a83",
+							"bytes": 2974,
+							"capturedAt": "2026-11-22T11:07:15.898Z",
+							"server": {
+								"buildId": "3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009",
+								"revision": "efa5e89495f335122c603b9633dfc034a3f94798"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-shared-primitives-loading-state-default-label",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-default-label-profile.json",
+							"sha256": "3f017c71bd1d764a39fc11994a7a4efef5dda54c05a251347747d1a66eb39ece",
+							"bytes": 796,
+							"capturedAt": "2026-11-22T11:07:15.898Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-shared-primitives-loading-state-default-label",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 424,
+								"width": 752,
+								"height": 88
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-default-label-tablet.png",
+							"sha256": "34eecdadc294a8d2f9433ff164ad398120d2dcc4317eb692f6c4ea715bf3b30b",
+							"bytes": 2938,
+							"capturedAt": "2026-11-22T11:07:15.900Z",
+							"server": {
+								"buildId": "3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009",
+								"revision": "efa5e89495f335122c603b9633dfc034a3f94798"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-shared-primitives-loading-state-default-label",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 396,
+								"width": 374,
+								"height": 88
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-default-label-mobile.png",
+							"sha256": "0574e7e1f10cb2e03cbc3fb207f860acaff213ce33e8c9dc046aa330da928491",
+							"bytes": 2721,
+							"capturedAt": "2026-11-22T11:07:15.901Z",
+							"server": {
+								"buildId": "3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009",
+								"revision": "efa5e89495f335122c603b9633dfc034a3f94798"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-shared-primitives-loading-state-long",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-shared-primitives-loading-state-long",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 324,
+								"width": 896,
+								"height": 88
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-long-desktop.png",
+							"sha256": "9b33926bbdddab8cd53d1c751d0340dffba9bc3f2f865ee258b540160712bf4b",
+							"bytes": 8498,
+							"capturedAt": "2026-11-22T11:07:15.898Z",
+							"server": {
+								"buildId": "3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009",
+								"revision": "efa5e89495f335122c603b9633dfc034a3f94798"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-shared-primitives-loading-state-long",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-long-profile.json",
+							"sha256": "7e27994c1ee84d23c384a94a0543742a3721a7a4cb574d651e502a66debcb061",
+							"bytes": 777,
+							"capturedAt": "2026-11-22T11:07:15.898Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-shared-primitives-loading-state-long",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 424,
+								"width": 752,
+								"height": 88
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-long-tablet.png",
+							"sha256": "377ed9a791aab3744a415bba121fca06760a51daa48dbb6ff589a2cca53fac5a",
+							"bytes": 8406,
+							"capturedAt": "2026-11-22T11:07:15.900Z",
+							"server": {
+								"buildId": "3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009",
+								"revision": "efa5e89495f335122c603b9633dfc034a3f94798"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-shared-primitives-loading-state-long",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 396,
+								"width": 374,
+								"height": 108
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-long-mobile.png",
+							"sha256": "62e0f9d35287ce9f9645b2a4f1cd35342e876efe8ad154d04825833a44f08d93",
+							"bytes": 8254,
+							"capturedAt": "2026-11-22T11:07:15.901Z",
+							"server": {
+								"buildId": "3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009",
+								"revision": "efa5e89495f335122c603b9633dfc034a3f94798"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-shared-primitives-loading-state-inline",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-shared-primitives-loading-state-inline",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 88,
+								"width": 224,
+								"height": 41
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-inline-desktop.png",
+							"sha256": "3877ceb8c155d68dcd4fec66e7dde51d5214a62d276531e7cbadb5015fb30a0b",
+							"bytes": 3582,
+							"capturedAt": "2026-11-22T11:07:15.899Z",
+							"server": {
+								"buildId": "3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009",
+								"revision": "efa5e89495f335122c603b9633dfc034a3f94798"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-shared-primitives-loading-state-inline",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-inline-profile.json",
+							"sha256": "53fd037fe401c753198902703f7cff9cee43633aafbb8c678da3cbe35f2b39de",
+							"bytes": 780,
+							"capturedAt": "2026-11-22T11:07:15.899Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-shared-primitives-loading-state-inline",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 82,
+								"width": 225,
+								"height": 41
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-inline-tablet.png",
+							"sha256": "425aaa836963db1c9b440a45369f2f653ceb96501df48e83de44ad467e43317b",
+							"bytes": 3336,
+							"capturedAt": "2026-11-22T11:07:15.900Z",
+							"server": {
+								"buildId": "3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009",
+								"revision": "efa5e89495f335122c603b9633dfc034a3f94798"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-shared-primitives-loading-state-inline",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 82,
+								"width": 224,
+								"height": 41
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-inline-mobile.png",
+							"sha256": "3ff659d0f191760e7f9f2974c2038a2091ff5502ad569ec95c9dcbc10ff19a6a",
+							"bytes": 3421,
+							"capturedAt": "2026-11-22T11:07:15.902Z",
+							"server": {
+								"buildId": "3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009",
+								"revision": "efa5e89495f335122c603b9633dfc034a3f94798"
+							}
+						}
+					]
+				},
+				{
+					"id": "reports-component-shared-primitives-loading-state-loading",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-shared-primitives-loading-state-loading",
+							"viewport": "desktop",
+							"clip": {
+								"x": 12,
+								"y": 317,
+								"width": 896,
+								"height": 95
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-loading-desktop.png",
+							"sha256": "5c3554388e7058b0c0a96b511802a8c9de1dd08fe2ad4543caa399db736f9489",
+							"bytes": 4129,
+							"capturedAt": "2026-11-22T11:07:15.899Z",
+							"server": {
+								"buildId": "3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009",
+								"revision": "efa5e89495f335122c603b9633dfc034a3f94798"
+							}
+						},
+						{
+							"evidence": "profiles",
+							"kind": "benchmark",
+							"state": "reports-component-shared-primitives-loading-state-loading",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-loading-profile.json",
+							"sha256": "43001cabb1686d847f6044ecad55ade72d2eb51d7efd74eea985835023a50144",
+							"bytes": 783,
+							"capturedAt": "2026-11-22T11:07:15.899Z"
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-shared-primitives-loading-state-loading",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 418,
+								"width": 752,
+								"height": 94
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-loading-tablet.png",
+							"sha256": "4a65dfd77c1b5f301e09bb8c766f4a396cbb5868ca6f6cf389c0ea28d965a050",
+							"bytes": 4089,
+							"capturedAt": "2026-11-22T11:07:15.901Z",
+							"server": {
+								"buildId": "3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009",
+								"revision": "efa5e89495f335122c603b9633dfc034a3f94798"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "reports-component-shared-primitives-loading-state-loading",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 390,
+								"width": 374,
+								"height": 94
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/component-catalog-previews/previews/reports-component-shared-primitives-loading-state-loading-mobile.png",
+							"sha256": "d3143a7e6fcee07ea15bf5964950f94cc09edb096e768f35f6b224429fa10ae2",
+							"bytes": 3813,
+							"capturedAt": "2026-11-22T11:07:15.902Z",
+							"server": {
+								"buildId": "3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009",
+								"revision": "efa5e89495f335122c603b9633dfc034a3f94798"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "loading-state-video-pilot",
+			"status": "passed",
+			"testedRevision": "efa5e89495f335122c603b9633dfc034a3f94798",
+			"states": [
+				{
+					"id": "loading",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "page-benchmarks",
+							"kind": "benchmark",
+							"state": "loading",
+							"viewport": "desktop",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/loading-state-video-pilot/record-video-pilot/metrics-loading-spinner-desktop.json",
+							"sha256": "2a652652b51ef9405053a962c76fde08bd0ef9e51bb8f0b326affe3367bae77f",
+							"bytes": 773,
+							"capturedAt": "2026-11-22T11:06:58.599Z"
+						},
+						{
+							"evidence": "page-benchmarks",
+							"kind": "benchmark",
+							"state": "loading",
+							"viewport": "tablet",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/loading-state-video-pilot/record-video-pilot/metrics-loading-spinner-tablet.json",
+							"sha256": "33f70acb9ef3c37827656202007b69bd311d9651a823a57011e4033996fb3489",
+							"bytes": 761,
+							"capturedAt": "2026-11-22T11:06:58.599Z"
+						},
+						{
+							"evidence": "page-benchmarks",
+							"kind": "benchmark",
+							"state": "loading",
+							"viewport": "mobile",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/loading-state-video-pilot/record-video-pilot/metrics-loading-spinner-mobile.json",
+							"sha256": "fd07bcb4c2167b49937f1b820b3ec7f1e4b24038ac98412946b6140934ebad1d",
+							"bytes": 773,
+							"capturedAt": "2026-11-22T11:06:58.599Z"
+						},
+						{
+							"video": {
+								"schemaVersion": 1,
+								"clipId": "loading-spinner",
+								"unit": "reports.component.shared-primitives-loading-state",
+								"inputHash": "fa1c212fb6e6de498d24491a91d36bca52c77aa85b36e8adf7557dfa20b092d6",
+								"entry": "loading",
+								"exit": "loading",
+								"entrySignature": "10e086d5a4b6e893558250d80feced941dfa763648804093227e3c236ffbec69",
+								"exitSignature": "10e086d5a4b6e893558250d80feced941dfa763648804093227e3c236ffbec69",
+								"states": [
+									{
+										"id": "loading",
+										"atSeconds": 0.36666666666666664
+									},
+									{
+										"id": "loading",
+										"atSeconds": 2.466666666666667
+									}
+								],
+								"edges": [],
+								"profile": "normal",
+								"width": 920,
+								"height": 700,
+								"frameRate": 30,
+								"sourceFrameRate": 60.03566872776201,
+								"frameCount": 93,
+								"poster": {
+									"file": "50a08b9ab76dbd4614648ac3d25f2070fa79470942b0be68fedf5375da5a45db.png",
+									"sha256": "9ec769ba2595362f97899a4a6ec2d92b9d1400995be8d034c9e1109db544f1b2",
+									"bytes": 29562,
+									"timeSeconds": 2.466666666666667
+								},
+								"addressedFlags": []
+							},
+							"videoReference": {
+								"batch": "68cc9d48423df535c64428fe0d59bcf570b25f33425e11256ea3380b280def37"
+							},
+							"evidence": "motion",
+							"kind": "video",
+							"state": "loading",
+							"viewport": "desktop",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/loading-state-video-pilot/record-video-pilot/50a08b9ab76dbd4614648ac3d25f2070fa79470942b0be68fedf5375da5a45db.mp4",
+							"sha256": "797d2ff8976228db9ff698722e7c4e44cd445aafe16bd41b863512944202cf7b",
+							"bytes": 24305,
+							"mediaType": "video/mp4",
+							"capturedAt": "2026-11-22T11:06:46.967Z",
+							"provenance": "actual-capture",
+							"durationSeconds": 3.1,
+							"server": {
+								"buildId": "3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009",
+								"revision": "efa5e89495f335122c603b9633dfc034a3f94798"
+							}
+						},
+						{
+							"video": {
+								"schemaVersion": 1,
+								"clipId": "loading-spinner",
+								"unit": "reports.component.shared-primitives-loading-state",
+								"inputHash": "fd9cf794c49b018c701568d7a9428c7b4716960ce356cee6e1d2c896a182e1c2",
+								"entry": "loading",
+								"exit": "loading",
+								"entrySignature": "faf2fa96c5adb206fc22d8c20d3eac28060f90a2a9245b1aca9f94036481cce0",
+								"exitSignature": "faf2fa96c5adb206fc22d8c20d3eac28060f90a2a9245b1aca9f94036481cce0",
+								"states": [
+									{
+										"id": "loading",
+										"atSeconds": 0.3333333333333333
+									},
+									{
+										"id": "loading",
+										"atSeconds": 2.466666666666667
+									}
+								],
+								"edges": [],
+								"profile": "normal",
+								"width": 768,
+								"height": 900,
+								"frameRate": 30,
+								"sourceFrameRate": 60.000721162513976,
+								"frameCount": 93,
+								"poster": {
+									"file": "7085a8faff86bbeb27de6428d8a5026ef09e03817f6d539fb3978ccbae21d12e.png",
+									"sha256": "6e7d6c1ac0331e097370bf05547e968f0ee2ea3bf87800df9c4a5d2505c8a54f",
+									"bytes": 26043,
+									"timeSeconds": 2.466666666666667
+								},
+								"addressedFlags": []
+							},
+							"videoReference": {
+								"batch": "68cc9d48423df535c64428fe0d59bcf570b25f33425e11256ea3380b280def37"
+							},
+							"evidence": "motion",
+							"kind": "video",
+							"state": "loading",
+							"viewport": "tablet",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/loading-state-video-pilot/record-video-pilot/7085a8faff86bbeb27de6428d8a5026ef09e03817f6d539fb3978ccbae21d12e.mp4",
+							"sha256": "0adfb18016629dadf9bfaa5099146d65f7b679b8258dae84fa202ec9d2ddd7ff",
+							"bytes": 25360,
+							"mediaType": "video/mp4",
+							"capturedAt": "2026-11-22T11:06:51.540Z",
+							"provenance": "actual-capture",
+							"durationSeconds": 3.1,
+							"server": {
+								"buildId": "3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009",
+								"revision": "efa5e89495f335122c603b9633dfc034a3f94798"
+							}
+						},
+						{
+							"video": {
+								"schemaVersion": 1,
+								"clipId": "loading-spinner",
+								"unit": "reports.component.shared-primitives-loading-state",
+								"inputHash": "93cc4301386dc7d6468607e7c1af7ca58d979899d138434bac4be3896445559f",
+								"entry": "loading",
+								"exit": "loading",
+								"entrySignature": "db2e90e0b7a3b6c0e66c019cb833b3736e5bd7666512ed3090112cda45da765f",
+								"exitSignature": "db2e90e0b7a3b6c0e66c019cb833b3736e5bd7666512ed3090112cda45da765f",
+								"states": [
+									{
+										"id": "loading",
+										"atSeconds": 0.3333333333333333
+									},
+									{
+										"id": "loading",
+										"atSeconds": 2.466666666666667
+									}
+								],
+								"edges": [],
+								"profile": "normal",
+								"width": 390,
+								"height": 844,
+								"frameRate": 30,
+								"sourceFrameRate": 60.007126747850684,
+								"frameCount": 93,
+								"poster": {
+									"file": "ad6b324ba2e8f419d083d3d61e3136ee315d1708c065f96516d094609b4a1fc6.png",
+									"sha256": "ceed75d7de57becf53ab7deb87a993b6fb65aec6f206a1629188a43ea8baef93",
+									"bytes": 24668,
+									"timeSeconds": 2.466666666666667
+								},
+								"addressedFlags": []
+							},
+							"videoReference": {
+								"batch": "68cc9d48423df535c64428fe0d59bcf570b25f33425e11256ea3380b280def37"
+							},
+							"evidence": "motion",
+							"kind": "video",
+							"state": "loading",
+							"viewport": "mobile",
+							"status": "passed",
+							"path": "evidence/efa5e89495f335122c603b9633dfc034a3f94798/loading-state-video-pilot/record-video-pilot/ad6b324ba2e8f419d083d3d61e3136ee315d1708c065f96516d094609b4a1fc6.mp4",
+							"sha256": "a5f9806aa33605d0603f825bb25259263fe0c12513a9da010e636d7cfb39cc08",
+							"bytes": 22999,
+							"mediaType": "video/mp4",
+							"capturedAt": "2026-11-22T11:06:56.156Z",
+							"provenance": "actual-capture",
+							"durationSeconds": 3.1,
+							"server": {
+								"buildId": "3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009",
+								"revision": "efa5e89495f335122c603b9633dfc034a3f94798"
+							}
+						}
+					]
+				}
+			],
+			"videoCoverage": []
+		}
+	],
+	"videoBatches": [
+		{
+			"schemaVersion": 1,
+			"kind": "harness-video-batch",
+			"batch": "68cc9d48423df535c64428fe0d59bcf570b25f33425e11256ea3380b280def37",
+			"evidence": {
+				"commit": "700b7884ee8d39335e8827b558748fd76636dfa4",
+				"path": "video-batches/68cc9d48423df535c64428fe0d59bcf570b25f33425e11256ea3380b280def37",
+				"manifest": "db7c2b3a3574c3fc3cb42caed57a8269dcb03147427f5ecccf03360a4301fa00"
+			}
+		}
+	],
+	"skippedBuilds": [
+		"reports",
+		"planning",
+		"desktop-renderer",
+		"desktop-main",
+		"entity-preview"
+	],
+	"builds": [
+		{
+			"id": "shell-fixture",
+			"directory": "packages/reports/output/shell-fixture",
+			"buildId": "3ad8232116ae26572b247711516970af681e6a4df4e63e136a82c3e4297ee009",
+			"files": 11
+		}
+	],
+	"budgets": {
+		"status": "passed",
+		"findings": []
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "passed"
+	},
+	"failures": [
+		"Scoped to reports.component.shared-primitives-loading-state: only its scenario states ran, so this record is partial and never a full pass.",
+		"Scoped to reports.component.shared-primitives-loading-state: only its scenario states ran, so this record is partial and never a full pass."
+	]
+}

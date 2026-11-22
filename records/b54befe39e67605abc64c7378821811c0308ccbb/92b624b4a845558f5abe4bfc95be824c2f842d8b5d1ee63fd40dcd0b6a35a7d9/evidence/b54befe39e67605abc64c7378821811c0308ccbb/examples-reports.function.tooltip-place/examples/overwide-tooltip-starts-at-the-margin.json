@@ -1,0 +1,31 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.tooltip-place",
+	"symbol": "tooltipPlace",
+	"cases": [
+		{
+			"name": "wider than the screen",
+			"input": {
+				"mark": {
+					"left": 180,
+					"top": 100,
+					"width": 32,
+					"height": 32
+				},
+				"tip": {
+					"width": 500,
+					"height": 80
+				},
+				"view": {
+					"width": 390,
+					"height": 844
+				}
+			},
+			"output": {
+				"left": 8,
+				"top": 140
+			}
+		}
+	]
+}

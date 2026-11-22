@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.proposal-units",
+	"symbol": "proposalUnits",
+	"cases": [
+		{
+			"name": "functions request with a planned function entry",
+			"input": {
+				"category": "functions",
+				"listed": 6
+			},
+			"output": [
+				"desktop.function.first",
+				"desktop.function.second",
+				"desktop.function.third",
+				"desktop.page.summary",
+				"desktop.component.card"
+			]
+		},
+		{
+			"name": "pages request over the same catalog",
+			"input": {
+				"category": "pages",
+				"listed": 6
+			},
+			"output": [
+				"desktop.page.summary",
+				"desktop.component.card",
+				"desktop.function.first",
+				"desktop.function.second",
+				"desktop.function.third"
+			]
+		}
+	]
+}

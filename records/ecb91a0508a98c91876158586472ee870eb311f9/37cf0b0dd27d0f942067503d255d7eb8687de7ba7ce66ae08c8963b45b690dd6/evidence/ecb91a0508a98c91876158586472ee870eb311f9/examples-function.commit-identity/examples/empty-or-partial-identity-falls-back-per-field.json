@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.commit-identity",
+	"symbol": "commitIdentity",
+	"cases": [
+		{
+			"name": "empty user.name keeps configured email",
+			"input": "user.name=\"\", user.email set",
+			"output": {
+				"GIT_AUTHOR_NAME": "Harness",
+				"GIT_AUTHOR_EMAIL": "repo-owner@example.invalid",
+				"GIT_COMMITTER_NAME": "Harness",
+				"GIT_COMMITTER_EMAIL": "repo-owner@example.invalid"
+			}
+		},
+		{
+			"name": "empty user.email keeps configured name",
+			"input": "user.name set, user.email=\"\"",
+			"output": {
+				"GIT_AUTHOR_NAME": "Repo Owner",
+				"GIT_AUTHOR_EMAIL": "harness@localhost",
+				"GIT_COMMITTER_NAME": "Repo Owner",
+				"GIT_COMMITTER_EMAIL": "harness@localhost"
+			}
+		},
+		{
+			"name": "unset user.email keeps configured name",
+			"input": "user.name set, user.email unset",
+			"output": {
+				"GIT_AUTHOR_NAME": "Repo Owner",
+				"GIT_AUTHOR_EMAIL": "harness@localhost",
+				"GIT_COMMITTER_NAME": "Repo Owner",
+				"GIT_COMMITTER_EMAIL": "harness@localhost"
+			}
+		}
+	]
+}

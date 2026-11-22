@@ -1,0 +1,67 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-y3R8Q6
+
+ ❯ test/units-guide-headless-cli.test.ts (3 tests | 2 failed) 2162ms
+   × unprefixed headless states are attributed without borrowing another unit’s states 7ms
+     → expected [] to deeply equal [ 'shared-ready' ]
+   × the desktop agent HTTP adapter has headless boundary coverage 1ms
+     → expected [] to deeply equal [ 'revision-authority', …(7) ]
+   ✓ guide CLI gives a headless state no devices and keeps devices on UI states  2150ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/units-guide-headless-cli.test.ts > unprefixed headless states are attributed without borrowing another unit’s states
+AssertionError: expected [] to deeply equal [ 'shared-ready' ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [[39m
+[32m-   "shared-ready",[39m
+[32m- ][39m
+[31m+ [][39m
+
+ ❯ test/units-guide-headless-cli.test.ts:40:52
+     38|   ]
+     39|  };
+     40|  expect(headlessStateNames([fixture], entity, [])).toEqual(['shared-re…
+       |                                                    ^
+     41|  expect(headlessStateNames([explicit], entity, [])).toEqual(['owned-re…
+     42| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/units-guide-headless-cli.test.ts > the desktop agent HTTP adapter has headless boundary coverage
+AssertionError: expected [] to deeply equal [ 'revision-authority', …(7) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [[39m
+[32m-   "revision-authority",[39m
+[32m-   "revocation",[39m
+[32m-   "encrypted-relay",[39m
+[32m-   "relay-reconnect",[39m
+[32m-   "human-authority",[39m
+[32m-   "local-authority",[39m
+[32m-   "local-socket",[39m
+[32m-   "host-authority",[39m
+[32m- ][39m
+[31m+ [][39m
+
+ ❯ test/units-guide-headless-cli.test.ts:47:54
+     45|  const scenario = scenarioManifestSchema.parse(remoteBoundaries);
+     46|  const adapter = 'desktop.adapter.agent-http';
+     47|  expect(headlessStateNames([scenario], adapter, [])).toEqual(
+       |                                                      ^
+     48|   scenario.states.map((state) => state.id)
+     49|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  17:16:21
+   Duration  6.84s (transform 531ms, setup 180ms, collect 964ms, tests 2.16s, environment 0ms, prepare 38ms)
+

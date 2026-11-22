@@ -1,0 +1,132 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-scope",
+	"symbol": "explorerScope",
+	"cases": [
+		{
+			"name": "ancestor stays selected",
+			"input": {
+				"branch": "main",
+				"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				"category": "functions"
+			},
+			"output": {
+				"kind": "scope",
+				"scope": {
+					"location": {
+						"branch": "main",
+						"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"category": "functions"
+					},
+					"mode": "commit",
+					"branch": "main",
+					"tip": "cccccccccccccccccccccccccccccccccccccccc",
+					"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"atTip": false,
+					"parent": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"summary": {
+						"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"parents": [
+							"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						],
+						"subject": "commit b",
+						"author": "Synthetic",
+						"committedAt": "2026-10-10T18:00:00+00:00",
+						"branches": [
+							"main",
+							"feature/x"
+						],
+						"retained": false,
+						"coverage": "verified",
+						"gaps": [],
+						"records": [],
+						"legacy": []
+					}
+				}
+			}
+		},
+		{
+			"name": "selected tip is still a commit selection",
+			"input": {
+				"branch": "main",
+				"commit": "cccccccccccccccccccccccccccccccccccccccc",
+				"category": "functions"
+			},
+			"output": {
+				"kind": "scope",
+				"scope": {
+					"location": {
+						"branch": "main",
+						"commit": "cccccccccccccccccccccccccccccccccccccccc",
+						"category": "functions"
+					},
+					"mode": "commit",
+					"branch": "main",
+					"tip": "cccccccccccccccccccccccccccccccccccccccc",
+					"commit": "cccccccccccccccccccccccccccccccccccccccc",
+					"atTip": true,
+					"parent": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					"summary": {
+						"commit": "cccccccccccccccccccccccccccccccccccccccc",
+						"parents": [
+							"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"dddddddddddddddddddddddddddddddddddddddd"
+						],
+						"subject": "commit c",
+						"author": "Synthetic",
+						"committedAt": "2026-10-10T18:00:00+00:00",
+						"branches": [
+							"main"
+						],
+						"retained": false,
+						"coverage": "verified",
+						"gaps": [],
+						"records": [],
+						"legacy": []
+					}
+				}
+			}
+		},
+		{
+			"name": "first commit of history has no parent",
+			"input": {
+				"branch": "main",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"category": "functions"
+			},
+			"output": {
+				"kind": "scope",
+				"scope": {
+					"location": {
+						"branch": "main",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "functions"
+					},
+					"mode": "commit",
+					"branch": "main",
+					"tip": "cccccccccccccccccccccccccccccccccccccccc",
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					"atTip": false,
+					"parent": null,
+					"summary": {
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"parents": [],
+						"subject": "commit a",
+						"author": "Synthetic",
+						"committedAt": "2026-10-10T18:00:00+00:00",
+						"branches": [
+							"main",
+							"feature/x"
+						],
+						"retained": false,
+						"coverage": "verified",
+						"gaps": [],
+						"records": [],
+						"legacy": []
+					}
+				}
+			}
+		}
+	]
+}

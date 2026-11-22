@@ -1,0 +1,22 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-behavior",
+	"symbol": "entityBehavior",
+	"cases": [
+		{
+			"name": "no recorded result is said so",
+			"input": {
+				"mode": "current"
+			},
+			"output": {
+				"label": "No end-to-end result is recorded",
+				"recorded": false,
+				"passed": false,
+				"unknown": true,
+				"groups": [],
+				"reasons": []
+			}
+		}
+	]
+}

@@ -1,0 +1,22 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.reference-prompt",
+	"symbol": "referencePrompt",
+	"cases": [
+		{
+			"name": "invalid and duplicate ids are dropped, first occurrence kept",
+			"input": {
+				"ids": [
+					"desktop.function.reference-prompt",
+					"Bad Id",
+					"desktop.function.entity-references",
+					"desktop.function.reference-prompt",
+					"single",
+					"desktop.function.run-context"
+				]
+			},
+			"output": "Name a unit as [[unit:<id>]] with its registered id, never by a file name, a path or a\nguessed id. Name a unit that is not listed here in plain words.\nUnits you may name: [[unit:desktop.function.reference-prompt]], [[unit:desktop.function.entity-references]], [[unit:desktop.function.run-context]]"
+		}
+	]
+}

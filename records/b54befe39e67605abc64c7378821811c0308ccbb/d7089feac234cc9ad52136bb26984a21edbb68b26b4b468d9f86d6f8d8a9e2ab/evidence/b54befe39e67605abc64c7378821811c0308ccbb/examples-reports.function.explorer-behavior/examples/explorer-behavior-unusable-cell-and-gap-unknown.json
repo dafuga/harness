@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.explorer-behavior",
+	"symbol": "explorerBehavior",
+	"cases": [
+		{
+			"name": "rejected result is unknown",
+			"input": {
+				"before": "failed",
+				"after": "passed"
+			},
+			"output": {
+				"summary": "unknown",
+				"reason": "A result of one side is rejected, stale or not stored, so it cannot be compared.",
+				"rows": [
+					[
+						"default",
+						"output",
+						"unknown"
+					]
+				],
+				"scenarios": [
+					{
+						"id": "clock",
+						"title": "Clock",
+						"before": null,
+						"after": null
+					}
+				]
+			}
+		},
+		{
+			"name": "missing record is unknown",
+			"input": {
+				"before": "no record",
+				"after": "record"
+			},
+			"output": {
+				"summary": "unknown",
+				"reason": "No verification record is attached to this commit.",
+				"rows": [
+					[
+						"default",
+						"output",
+						"unknown"
+					]
+				],
+				"scenarios": [
+					{
+						"id": "clock",
+						"title": "Clock",
+						"before": null,
+						"after": null
+					}
+				]
+			}
+		},
+		{
+			"name": "mixed profiles are refused",
+			"input": {
+				"before": "p1",
+				"after": "p2"
+			},
+			"output": {
+				"summary": "unknown",
+				"reason": "The two sides were recorded under different profiles (p1 and p2).",
+				"rows": [
+					[
+						"default",
+						"output",
+						"unknown"
+					]
+				],
+				"scenarios": [
+					{
+						"id": "clock",
+						"title": "Clock",
+						"before": null,
+						"after": null
+					}
+				]
+			}
+		}
+	]
+}

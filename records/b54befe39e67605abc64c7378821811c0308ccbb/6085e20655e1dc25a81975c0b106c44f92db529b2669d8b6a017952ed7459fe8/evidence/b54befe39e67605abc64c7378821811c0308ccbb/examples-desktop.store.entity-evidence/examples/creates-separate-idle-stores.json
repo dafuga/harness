@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.store.entity-evidence",
+	"symbol": "createEntityEvidenceStore",
+	"cases": [
+		{
+			"name": "first store before show",
+			"input": {},
+			"output": {
+				"status": "idle",
+				"result": null,
+				"error": "",
+				"refusals": {}
+			}
+		},
+		{
+			"name": "second store is untouched by the first show",
+			"input": {},
+			"output": {
+				"status": "idle",
+				"result": null,
+				"error": "",
+				"refusals": {}
+			}
+		},
+		{
+			"name": "bridge reads after first show",
+			"input": {},
+			"output": 1
+		}
+	]
+}

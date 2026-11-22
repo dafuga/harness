@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "reports.function.entity-measure",
+	"symbol": "entityMeasure",
+	"cases": [
+		{
+			"name": "null record, Not measured",
+			"input": {
+				"record": null
+			},
+			"output": {
+				"size": [
+					{
+						"label": "Source size",
+						"value": "Not measured",
+						"rawValue": null,
+						"unitOfMeasure": "bytes"
+					},
+					{
+						"label": "Emitted size · Wasm",
+						"target": "wasm",
+						"value": "Not measured",
+						"rawValue": null,
+						"unitOfMeasure": "bytes"
+					},
+					{
+						"label": "Complexity",
+						"value": "Not measured",
+						"rawValue": null
+					}
+				],
+				"performance": []
+			}
+		},
+		{
+			"name": "null record, observed 18000 bytes",
+			"input": {
+				"observations": 1
+			},
+			"output": {
+				"size": [
+					{
+						"label": "Source size",
+						"value": "Not measured",
+						"rawValue": null,
+						"unitOfMeasure": "bytes"
+					},
+					{
+						"label": "Emitted size · Wasm",
+						"target": "wasm",
+						"value": "18 KB",
+						"rawValue": 18000,
+						"unitOfMeasure": "bytes"
+					},
+					{
+						"label": "Complexity",
+						"value": "Not measured",
+						"rawValue": null
+					}
+				],
+				"performance": []
+			}
+		}
+	]
+}

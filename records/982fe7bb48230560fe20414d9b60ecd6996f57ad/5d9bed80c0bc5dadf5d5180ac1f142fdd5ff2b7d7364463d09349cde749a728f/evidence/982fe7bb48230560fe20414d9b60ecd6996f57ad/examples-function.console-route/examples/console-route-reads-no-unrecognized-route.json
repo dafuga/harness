@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.console-route",
+	"symbol": "consoleRoute",
+	"cases": [
+		{
+			"name": "an empty path",
+			"input": {
+				"path": ""
+			},
+			"output": {
+				"type": "undefined"
+			}
+		},
+		{
+			"name": "a path with no view",
+			"input": {
+				"path": "/branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+			},
+			"output": {
+				"type": "undefined"
+			}
+		},
+		{
+			"name": "an unknown view",
+			"input": {
+				"path": "/branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/bogus"
+			},
+			"output": {
+				"type": "undefined"
+			}
+		},
+		{
+			"name": "a commit that is not lowercase hex",
+			"input": {
+				"path": "/commit/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/map"
+			},
+			"output": {
+				"type": "undefined"
+			}
+		},
+		{
+			"name": "an empty branch segment",
+			"input": {
+				"path": "/branch//commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/map"
+			},
+			"output": {
+				"type": "undefined"
+			}
+		},
+		{
+			"name": "a branch with a malformed escape",
+			"input": {
+				"path": "/branch/%E0%A4%A/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/map"
+			},
+			"output": {
+				"type": "undefined"
+			}
+		}
+	]
+}

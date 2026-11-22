@@ -1,0 +1,43 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.project-agent-actions",
+	"symbol": "projectAgentActions",
+	"cases": [
+		{
+			"name": "change over 25 prior messages",
+			"input": {
+				"messages": 25,
+				"lastLength": 5000
+			},
+			"output": {
+				"intent": "task",
+				"branch": "main",
+				"commit": "abc123",
+				"environment": "preview",
+				"lengths": [
+					9,
+					9,
+					9,
+					9,
+					9,
+					10,
+					10,
+					10,
+					10,
+					10,
+					10,
+					10,
+					10,
+					10,
+					10,
+					10,
+					10,
+					10,
+					10,
+					4000
+				]
+			}
+		}
+	]
+}

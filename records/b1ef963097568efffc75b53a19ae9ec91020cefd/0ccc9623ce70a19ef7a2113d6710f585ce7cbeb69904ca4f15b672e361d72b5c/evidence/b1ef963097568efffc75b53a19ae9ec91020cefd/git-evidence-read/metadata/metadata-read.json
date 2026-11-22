@@ -1,0 +1,1 @@
+{"scenario":"Read ordered manifest text without one Git process per file","input":{"requestedFiles":145,"repeatedPath":"manifest-0"},"output":{"returnedTexts":145,"repeatedText":"contents of manifest-0\n","maximumConcurrentReads":64}}

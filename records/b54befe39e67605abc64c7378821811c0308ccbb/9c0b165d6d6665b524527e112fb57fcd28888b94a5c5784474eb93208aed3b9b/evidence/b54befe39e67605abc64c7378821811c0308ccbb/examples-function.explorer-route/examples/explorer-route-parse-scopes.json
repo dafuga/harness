@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "function.explorer-route",
+	"symbol": "explorerRoute",
+	"cases": [
+		{
+			"name": "current branch function details",
+			"input": {
+				"path": "/branch/feature%2Fkept%231/functions/function.slugify/details",
+				"search": ""
+			},
+			"output": {
+				"branch": "feature/kept#1",
+				"commit": null,
+				"category": "functions",
+				"entity": "function.slugify",
+				"section": "details"
+			}
+		},
+		{
+			"name": "pinned commit function history",
+			"input": {
+				"path": "/branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/functions/function.slugify/history",
+				"search": ""
+			},
+			"output": {
+				"branch": "main",
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"category": "functions",
+				"entity": "function.slugify",
+				"section": "history"
+			}
+		},
+		{
+			"name": "commit without branch keeps a config entity",
+			"input": {
+				"path": "/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/configs/config.site",
+				"search": ""
+			},
+			"output": {
+				"branch": null,
+				"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"category": "configs",
+				"entity": "config.site"
+			}
+		},
+		{
+			"name": "module screen takes its entity from the second segment",
+			"input": {
+				"path": "/branch/main/plugins/email",
+				"search": ""
+			},
+			"output": {
+				"branch": "main",
+				"commit": null,
+				"category": "pages",
+				"screen": "modules",
+				"entity": "email"
+			}
+		}
+	]
+}

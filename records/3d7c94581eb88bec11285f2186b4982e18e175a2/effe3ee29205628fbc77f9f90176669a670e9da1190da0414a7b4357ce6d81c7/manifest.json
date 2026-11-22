@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"record": "effe3ee29205628fbc77f9f90176669a670e9da1190da0414a7b4357ce6d81c7",
+	"source": {
+		"commit": "3d7c94581eb88bec11285f2186b4982e18e175a2",
+		"tree": "f860006614807fd82cd1d9fa26fcd4921628eb08"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "a8b307690cd5e5f760fbd9c43ad60a84033abd6518dc931216a2adfc7abd609a",
+			"bytes": 14667,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/3d7c94581eb88bec11285f2186b4982e18e175a2/upload-request-admission/screenshot-upload/behavior-7bccc1c2-77f6-4df6-8876-0914fc204fd2.json",
+			"sha256": "712a669c9d1f5480df36e3932599aaa0a5635c7d0bc7d65aecd2feb9df5e731a",
+			"bytes": 706,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/3d7c94581eb88bec11285f2186b4982e18e175a2/upload-request-admission/screenshot-upload/behavior-c8f39efe-1a81-4a66-bffe-8db856f67322.json",
+			"sha256": "b45e3b718da1812345b016ac712fa69e96fad47a76c3513e2ef6d4556d2c23e4",
+			"bytes": 718,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/3d7c94581eb88bec11285f2186b4982e18e175a2/upload-request-admission/screenshot-upload/test-routes-report-screenshot-upload-api.test.ts-screenshot-upload.txt",
+			"sha256": "329b9e53b03ca5e438f23c4a98834855e30cd423a99c65bfc7de2636631277ce",
+			"bytes": 424,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/3d7c94581eb88bec11285f2186b4982e18e175a2/upload-request-admission/screenshot-upload/test-routes-report-screenshot-upload-api.test.ts-screenshot-upload.json",
+			"sha256": "0e6c20e342eb72c12460db0a2653419aade3b1a6abc3979bbdf5beb429e0d833",
+			"bytes": 16536,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/upload-request-admission-audio-comparison.log",
+			"sha256": "8a22613750983b2042fe5fcb10381ddf670206a3d43941b98d45171438b87352",
+			"bytes": 422,
+			"storage": "git"
+		},
+		{
+			"path": "logs/upload-request-admission-audio-upload.log",
+			"sha256": "5c48b2c83148f15952f7b52ac17ba3f17e6c173aec146e01c2a8538f4658707c",
+			"bytes": 418,
+			"storage": "git"
+		},
+		{
+			"path": "logs/upload-request-admission-screenshot-upload.log",
+			"sha256": "329b9e53b03ca5e438f23c4a98834855e30cd423a99c65bfc7de2636631277ce",
+			"bytes": 424,
+			"storage": "git"
+		}
+	]
+}

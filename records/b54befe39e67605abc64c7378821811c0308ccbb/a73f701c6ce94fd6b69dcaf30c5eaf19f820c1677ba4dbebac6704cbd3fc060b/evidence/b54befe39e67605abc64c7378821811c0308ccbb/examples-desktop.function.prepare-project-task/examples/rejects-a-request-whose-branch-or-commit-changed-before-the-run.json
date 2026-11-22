@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "desktop.function.prepare-project-task",
+	"symbol": "prepareProjectTask",
+	"cases": [
+		{
+			"name": "refreshed branch differs",
+			"input": {
+				"requestBranch": "main",
+				"requestCommit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"refreshed": {
+					"branch": "feature",
+					"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				}
+			},
+			"error": {
+				"name": "ProjectRevisionChangedError",
+				"message": "The project revision changed. Refresh before asking the agent."
+			}
+		},
+		{
+			"name": "refreshed commit differs",
+			"input": {
+				"requestBranch": "main",
+				"requestCommit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"refreshed": {
+					"branch": "main",
+					"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+				}
+			},
+			"error": {
+				"name": "ProjectRevisionChangedError",
+				"message": "The project revision changed. Refresh before asking the agent."
+			}
+		}
+	]
+}

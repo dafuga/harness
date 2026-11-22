@@ -1,0 +1,324 @@
+{
+	"schemaVersion": 1,
+	"record": "534199fa00416c79323c10237e5347c64872d215df2149b792f9f7282f3630a1",
+	"source": {
+		"commit": "b54befe39e67605abc64c7378821811c0308ccbb",
+		"tree": "44f93c2fccd4cff05d7dc4145469ea7966fd9032"
+	},
+	"status": "failed",
+	"files": [
+		{
+			"path": "record.json",
+			"sha256": "906ed62b4f4a5fb75ad1de6a5149310f09f87bc8735ca2600dfe2a0c1e9dd181",
+			"bytes": 42667,
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/model-icons/compact-controls-compact-desktop.png",
+			"sha256": "38f417ea589be957df6d492077b97b0e83f280b5f3643d8879fc850299b3a3a9",
+			"bytes": 299592,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/model-icons/compact-controls-compact-phone.png",
+			"sha256": "25c2de8efd5055e85ec69327e4bd052811fa42585ead8247cb513d5d61561ccb",
+			"bytes": 117220,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/model-icons/tests-e2e-agent-model-choices.spec.ts-compact-controls.txt",
+			"sha256": "18ec4734efdf84ce14ddc66471bce34ff653918e4e2de56397c44c5c4a1bce37",
+			"bytes": 223,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/model-icons/model-picker-models-desktop.png",
+			"sha256": "49e2ffb57e6907d60dab8bcb2e167223b6c0cdb93a0c45ff41a901f099e335e8",
+			"bytes": 123855,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/model-icons/tests-e2e-agent-model-choices.spec.ts-model-picker.txt",
+			"sha256": "18ec4734efdf84ce14ddc66471bce34ff653918e4e2de56397c44c5c4a1bce37",
+			"bytes": 223,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/picker-focus/tests-e2e-agent-picker-focus.spec.ts-model-picker.txt",
+			"sha256": "ea45f9a9f75d446ee1b593d820b8ff986eaf764747010376cec74ee2edbc1de5",
+			"bytes": 223,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/provider-boundaries/model-picker-models-phone.png",
+			"sha256": "fbf56bafa6a5906e6a1ac3c269d2931645ff4bdff4869c5796ea8978549146dc",
+			"bytes": 65334,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/provider-boundaries/tests-e2e-agent-settings-availability.spec.ts-model-picker.txt",
+			"sha256": "8f485848fffa8fe498dceae8db831d76fdc262dc96b70d8f156fa22e237d3587",
+			"bytes": 225,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/settings-page/settings-settings-desktop-benchmark.json",
+			"sha256": "6dcecd2e043c40ac177997280821625f84be734865273be128c7eaf1e02442cd",
+			"bytes": 703,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/settings-page/settings-settings-desktop.png",
+			"sha256": "9225c8ad3a3b5d838f6342d5fce8bdf0a80b0a45b2ddba9d5d8c4c7227939a73",
+			"bytes": 25598,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/settings-page/settings-settings-tablet-benchmark.json",
+			"sha256": "ca07e6b4447d06b4ea3d00e72d4e328cc2864f534a7679958d7a42f3a39f1ca5",
+			"bytes": 701,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/settings-page/settings-settings-tablet.png",
+			"sha256": "4c6b9859829b391667e2f18d20b891577d10e2020cc7bd652a0baa87c9476058",
+			"bytes": 23289,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/settings-page/settings-settings-phone-benchmark.json",
+			"sha256": "c37f368dd97f5680f0652857fc0c2337a5d7d9c9319818cf30fa8bfbc187fc78",
+			"bytes": 700,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/settings-page/settings-settings-phone.png",
+			"sha256": "69c5b728d3953af76a7f92243b628394261d97767aaf6b5bab087746d82ccdf6",
+			"bytes": 20954,
+			"mediaType": "image/png",
+			"storage": "lfs"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/settings-page/tests-e2e-agent-settings.spec.ts-settings.txt",
+			"sha256": "c755c85c2cb6a447ca3d76a60d414b32cc924cfdbf562f111f02f8c81a4b1682",
+			"bytes": 223,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/preference-adapter/test-adapters-agent-settings.test.ts-preference-storage.txt",
+			"sha256": "c4d854e1a806306ced3706636d4d6b4a2d6765b5eb2ba3261c7aa2c8d8a9db2e",
+			"bytes": 410,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/preference-adapter/test-adapters-agent-settings.test.ts-preference-storage.json",
+			"sha256": "54f1183e5a9cd8b537ea7162192937b586d8e10a1ac1f0aa5a80a67d7566d3cb",
+			"bytes": 7026,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/preference-store/test-stores-agent-settings.test.ts-preference-storage.txt",
+			"sha256": "4ad7d149fc092f6a7a022574e123db041e8f0bcd09d757aa33970c7b0004b7ec",
+			"bytes": 410,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/preference-store/test-stores-agent-settings.test.ts-preference-storage.json",
+			"sha256": "43fd9da00183ad50955edbcbd92597c34c9315ba7fb4950dab8365b2621a8270",
+			"bytes": 3756,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/provider-boundaries/tests-e2e-agent-settings-availability.spec.ts-provider-boundaries.txt",
+			"sha256": "8f485848fffa8fe498dceae8db831d76fdc262dc96b70d8f156fa22e237d3587",
+			"bytes": 225,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/picker-cleanup-guard/test-agent-picker-cleanup.test.ts-cleanup-ownership.txt",
+			"sha256": "d1648326641428547d0f5f4bbf4e7e406615a7218baaf1c41eecb71d3aa07a36",
+			"bytes": 413,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/agent-settings/picker-cleanup-guard/test-agent-picker-cleanup.test.ts-cleanup-ownership.json",
+			"sha256": "d67d891ed0332f877db2fc40651626bfe642867a7d14e803d0b30787ca60b0f3",
+			"bytes": 9364,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.adapter.agent-settings/examples/defaults-to-three-without-storage.json",
+			"sha256": "87972f0f188ac86e7a05a79102d0263a1c6d8e2c2389c3a88add4c42b780a32b",
+			"bytes": 333,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.adapter.agent-settings/examples/test-examples-desktop.adapter.agent-settings.test.ts-defaults-to-three-without-storage.txt",
+			"sha256": "e4962903dd1e3a30cba1e13957c562eedd4279dbf20c3cd0c4be70f2f1875370",
+			"bytes": 427,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.adapter.agent-settings/examples/test-examples-desktop.adapter.agent-settings.test.ts-defaults-to-three-without-storage.json",
+			"sha256": "697b1ac6b6a610bfcfb0d349ab756fa9841dd0d6985fcbc9277e2e1460611236",
+			"bytes": 760,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.adapter.agent-settings/examples/persists-each-allowed-count.json",
+			"sha256": "bc49318fbc80e67861c538561130954e5a5a420486604550ad59a11cbb244527",
+			"bytes": 433,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.adapter.agent-settings/examples/test-examples-desktop.adapter.agent-settings.test.ts-persists-each-allowed-count.txt",
+			"sha256": "e4962903dd1e3a30cba1e13957c562eedd4279dbf20c3cd0c4be70f2f1875370",
+			"bytes": 427,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.adapter.agent-settings/examples/test-examples-desktop.adapter.agent-settings.test.ts-persists-each-allowed-count.json",
+			"sha256": "4ed751dec9aae91c21296f4cf62c5986080495dcbed8bd16f97aff9bbc161da2",
+			"bytes": 2053,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.adapter.agent-settings/examples/refuses-unsupported-counts-without-touching-storage.json",
+			"sha256": "3a71c2fcb1fad085ec125e8a88e4c3386f4b96fe67cb1856b59a36ae73603cbc",
+			"bytes": 519,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.adapter.agent-settings/examples/test-examples-desktop.adapter.agent-settings.test.ts-refuses-unsupported-counts-without-touching-storage.txt",
+			"sha256": "e4962903dd1e3a30cba1e13957c562eedd4279dbf20c3cd0c4be70f2f1875370",
+			"bytes": 427,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.adapter.agent-settings/examples/test-examples-desktop.adapter.agent-settings.test.ts-refuses-unsupported-counts-without-touching-storage.json",
+			"sha256": "e36ed45d3ae2696b8eabecf97ed8d25e0099184bfb0419e614bad02fae5b2cc4",
+			"bytes": 1755,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.adapter.agent-settings/examples/falls-back-to-three-for-malformed-data.json",
+			"sha256": "3de21af8de24a5711cbc0dd90e7bd4a32691c20b6ba4fee959ded4eae0b27feb",
+			"bytes": 915,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.adapter.agent-settings/examples/test-examples-desktop.adapter.agent-settings.test.ts-falls-back-to-three-for-malformed-data.txt",
+			"sha256": "e4962903dd1e3a30cba1e13957c562eedd4279dbf20c3cd0c4be70f2f1875370",
+			"bytes": 427,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.adapter.agent-settings/examples/test-examples-desktop.adapter.agent-settings.test.ts-falls-back-to-three-for-malformed-data.json",
+			"sha256": "d30d38e83b0826b0336ff2563da7ab31c4388d3e91193a1de491f08abd340501",
+			"bytes": 1969,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.adapter.agent-settings/examples/reports-storage-failures.json",
+			"sha256": "97a60625c3415c24c842218f2b52b9b99a5998c9e2076df946fa60bb91d06b21",
+			"bytes": 354,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.adapter.agent-settings/examples/test-examples-desktop.adapter.agent-settings.test.ts-reports-storage-failures.txt",
+			"sha256": "e4962903dd1e3a30cba1e13957c562eedd4279dbf20c3cd0c4be70f2f1875370",
+			"bytes": 427,
+			"mediaType": "text/plain",
+			"storage": "git"
+		},
+		{
+			"path": "evidence/b54befe39e67605abc64c7378821811c0308ccbb/examples-desktop.adapter.agent-settings/examples/test-examples-desktop.adapter.agent-settings.test.ts-reports-storage-failures.json",
+			"sha256": "9478e9f37dbde049e0dba5979b58389284bb7c414c28fe769e68656875dfdd29",
+			"bytes": 772,
+			"mediaType": "application/json",
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-settings-model-icons.log",
+			"sha256": "18ec4734efdf84ce14ddc66471bce34ff653918e4e2de56397c44c5c4a1bce37",
+			"bytes": 223,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-settings-picker-focus.log",
+			"sha256": "ea45f9a9f75d446ee1b593d820b8ff986eaf764747010376cec74ee2edbc1de5",
+			"bytes": 223,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-settings-provider-boundaries.log",
+			"sha256": "8f485848fffa8fe498dceae8db831d76fdc262dc96b70d8f156fa22e237d3587",
+			"bytes": 225,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-settings-settings-page.log",
+			"sha256": "c755c85c2cb6a447ca3d76a60d414b32cc924cfdbf562f111f02f8c81a4b1682",
+			"bytes": 223,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-settings-preference-adapter.log",
+			"sha256": "c4d854e1a806306ced3706636d4d6b4a2d6765b5eb2ba3261c7aa2c8d8a9db2e",
+			"bytes": 410,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-settings-picker-cleanup-guard.log",
+			"sha256": "d1648326641428547d0f5f4bbf4e7e406615a7218baaf1c41eecb71d3aa07a36",
+			"bytes": 413,
+			"storage": "git"
+		},
+		{
+			"path": "logs/examples-desktop.adapter.agent-settings-examples.log",
+			"sha256": "e4962903dd1e3a30cba1e13957c562eedd4279dbf20c3cd0c4be70f2f1875370",
+			"bytes": 427,
+			"storage": "git"
+		},
+		{
+			"path": "logs/agent-settings-preference-store.log",
+			"sha256": "4ad7d149fc092f6a7a022574e123db041e8f0bcd09d757aa33970c7b0004b7ec",
+			"bytes": 410,
+			"storage": "git"
+		}
+	]
+}
