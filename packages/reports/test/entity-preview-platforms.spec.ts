@@ -2,6 +2,12 @@ import { expect, test } from '../../../test/support/browserTest';
 import { capture, fits, open, ready, viewports } from './entityPreviewPage';
 import { commits } from './entityUnits';
 import { startRoute } from './entityPreviewPlatformEvidence';
+import { exercisePlatformFilters } from './entityPreviewPlatformFilters';
+import {
+	exercisePlatformCatalogGaps,
+	exercisePlatformHistory,
+	exercisePlatformRevisionRecovery
+} from './entityPreviewPlatformHistory';
 
 const platforms = [
 	['Web', 'web', 'orders-web'],
@@ -56,6 +62,8 @@ for (const [viewport, size] of Object.entries(viewports)) {
 		}
 		await startRoute(page);
 		await page.getByRole('combobox', { name: 'Commit', exact: true }).selectOption(commits.first);
+		await expect(page.getByText('Not recorded', { exact: true })).toHaveCount(4);
+		await expect(page.getByRole('main')).not.toContainText('SvelteKit on Cloudflare');
 		await page.getByRole('link', { name: 'View Web configuration', exact: true }).click();
 		await expect(page.getByRole('main')).toContainText(
 			'No platform catalog is indexed at this revision.'
@@ -65,6 +73,33 @@ for (const [viewport, size] of Object.entries(viewports)) {
 		);
 		await expect(page.getByRole('main')).not.toContainText('orders-web');
 		await capture(page, `platforms-missing-${viewport}`);
+	});
+}
+
+for (const [viewport, size] of Object.entries(viewports)) {
+	test(`platform history keeps its addresses and source links at ${viewport} width`, async ({
+		page
+	}) => {
+		await page.setViewportSize(size);
+		await exercisePlatformHistory(page, viewport);
+	});
+	test(`platform catalog gaps and unknown targets recover at ${viewport} width`, async ({
+		page
+	}) => {
+		await page.setViewportSize(size);
+		await exercisePlatformCatalogGaps(page, viewport);
+	});
+	test(`platforms recover from a failed revision load at ${viewport} width`, async ({ page }) => {
+		await page.setViewportSize(size);
+		await exercisePlatformRevisionRecovery(page, viewport);
+	});
+	test(`platform search covers all fixture card sets and status intersections at ${viewport} width`, async ({
+		page
+	}) => {
+		await page.setViewportSize(size);
+		await open(page, { category: 'platforms' }, 'platforms');
+		await exercisePlatformFilters(page, viewport);
+		expect(await fits(page)).toBe(true);
 	});
 }
 

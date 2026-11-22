@@ -1,6 +1,7 @@
 export type PreviewVariant =
 	| 'apis'
 	| 'platforms'
+	| 'platforms-invalid'
 	| 'source'
 	| ''
 	| 'legacy'
