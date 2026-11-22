@@ -1,0 +1,162 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.accounts-access-vault-broker-client",
+	"uid": "u_euoiys4fni",
+	"kind": "adapter",
+	"title": "VaultBrokerClientAdapter",
+	"responsibility": "Calls the Credential Vault broker over its Unix socket.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/accounts-access/VaultBrokerClientAdapter.ts",
+			"src/adapters/accounts-access/VaultBrokerClientAdapter.types.ts"
+		],
+		"symbols": [
+			"VaultBrokerClientAdapter",
+			"VaultBrokerClientAdapter.constructor",
+			"VaultBrokerClientAdapter.call",
+			"VaultBrokerClientConfig",
+			"VaultBrokerClientConfig"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "VaultBrokerClientAdapter.constructor.config",
+				"type": "VaultBrokerClientConfig",
+				"required": true,
+				"description": "Broker socket path and an optional timeout, 10 s by default."
+			},
+			{
+				"name": "VaultBrokerClientAdapter.call.path",
+				"type": "string",
+				"required": true,
+				"description": "Broker route, such as /v1/session/requests."
+			},
+			{
+				"name": "VaultBrokerClientAdapter.call.body",
+				"type": "unknown",
+				"required": true,
+				"description": "JSON-serializable request body.",
+				"unknownReason": "Each route has its own body; the broker validates it."
+			}
+		],
+		"outputs": [
+			{
+				"name": "VaultBrokerClientAdapter.call",
+				"type": "Promise<T>",
+				"description": "The decoded JSON body of a 2xx response."
+			}
+		],
+		"errors": [
+			{
+				"name": "VaultBrokerError",
+				"type": "thrown",
+				"description": "504 'Broker timed out.' when no response arrives within the timeout."
+			},
+			{
+				"name": "VaultBrokerError",
+				"type": "thrown",
+				"description": "503 'The Credential Vault broker is not reachable.' when the socket cannot be reached."
+			},
+			{
+				"name": "VaultBrokerError",
+				"type": "thrown",
+				"description": "The broker's status and error message, or 'Broker refused the call.', for any non-2xx response."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "VaultBrokerClientAdapter.call",
+				"inputs": [
+					{
+						"name": "VaultBrokerClientAdapter.call.path",
+						"type": "string",
+						"required": true,
+						"description": "Broker route, such as /v1/session/requests."
+					},
+					{
+						"name": "VaultBrokerClientAdapter.call.body",
+						"type": "unknown",
+						"required": true,
+						"description": "JSON-serializable request body.",
+						"unknownReason": "Each route has its own body; the broker validates it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultBrokerClientAdapter.call",
+						"type": "Promise<T>",
+						"description": "The decoded JSON body of a 2xx response."
+					}
+				],
+				"errors": [
+					{
+						"name": "VaultBrokerError",
+						"type": "thrown",
+						"description": "504 'Broker timed out.' when no response arrives within the timeout."
+					},
+					{
+						"name": "VaultBrokerError",
+						"type": "thrown",
+						"description": "503 'The Credential Vault broker is not reachable.' when the socket cannot be reached."
+					},
+					{
+						"name": "VaultBrokerError",
+						"type": "thrown",
+						"description": "The broker's status and error message, or 'Broker refused the call.', for any non-2xx response."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "VaultBrokerClientAdapter.constructor",
+				"inputs": [
+					{
+						"name": "VaultBrokerClientAdapter.constructor.config",
+						"type": "VaultBrokerClientConfig",
+						"required": true,
+						"description": "Broker socket path and an optional timeout, 10 s by default."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultBrokerClientAdapter.constructor",
+						"type": "unknown",
+						"description": "A client for one socket."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "validator.accounts-access-vault-wire",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/accounts-access/VaultBrokerClientAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/accounts-access/VaultBrokerClientAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
