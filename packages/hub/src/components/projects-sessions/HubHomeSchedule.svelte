@@ -44,7 +44,7 @@
 	{/if}
 	{#if !connected}
 		<hx-p class="po-sessions"
-			>Claude scheduled routines are unavailable. <hx-a
+			>Claude routine dates are unknown. <hx-a
 				href="https://claude.ai/code/routines"
 				target="_blank"
 				rel="noreferrer">Open Claude routines</hx-a

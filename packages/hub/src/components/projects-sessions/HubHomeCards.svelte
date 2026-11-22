@@ -10,6 +10,7 @@
 		initials,
 		overviewTone,
 		lowestLimit,
+		missingQuotaProviders,
 		providerNames,
 		warningFor
 	} from './hubHomePresentation';
@@ -24,7 +25,7 @@
 	let { view, open, send }: { view: HomeView; open: OpenHomeSection; send: SendHomeChat } =
 		$props();
 	const working = $derived(view.agents?.filter((agent) => agent.state === 'working').length ?? 0);
-	const warning = $derived(lowestLimit(view.quota ?? []));
+	const warning = $derived(lowestLimit(view.quota ?? [], view.now));
 	const attention = $derived(
 		view.agents?.filter((agent) => agent.state === 'needs-you').length ?? 0
 	);
@@ -95,9 +96,11 @@
 		total={view.quota?.length}
 		summary={view.quota === null
 			? 'Reading subscriptions…'
-			: warning
-				? `Tightest: ${providerNames[warning.subscription.provider]} ${warning.limit.label.toLowerCase()}, ${warning.limit.left}% left`
-				: count(view.quota.length, 'subscription')}
+			: !view.quotaConnected
+				? 'Unknown'
+				: warning
+					? `Tightest: ${providerNames[warning.subscription.provider]} ${warning.limit.label.toLowerCase()}, ${warning.limit.left}% left`
+					: count(view.quota.length, 'subscription')}
 		open={() => open('quota')}
 	>
 		{#snippet badge()}
@@ -122,9 +125,12 @@
 						>{count(view.quota.length - 2, 'more subscription')}</hx-p
 					>{/if}
 			</hx-div>
+			{#each missingQuotaProviders(view.quota) as provider (provider)}
+				<hx-p class="po-sessions">{provider} quota is unknown.</hx-p>
+			{/each}
 		{:else}
 			{@render empty(
-				view.quotaConnected ? 'No subscriptions connected.' : 'Provider readings are unavailable.'
+				view.quotaConnected ? 'No subscriptions connected.' : 'Provider quota is unknown.'
 			)}
 		{/if}
 	</HubHomeCard>

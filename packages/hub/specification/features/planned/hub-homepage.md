@@ -59,16 +59,66 @@ configured overview publishing continues to work independently. The new Hub chat
 created by migration `0005-hub-home-chat.sql`. Messages expire after two minutes if no native
 publisher claims them. A claimed message with an ambiguous result is shown as unconfirmed.
 
-Codex reads subscription limits from the signed-in local Codex app server on the owner desktop.
-The app retains up to seven daily readings of weekly allowance. These readings describe the
-subscription balance and reset times. For other subscriptions and Claude cloud routines, the
-desktop accepts normalized display data from an owner-managed JSON file named by
-`HARNESS_HUB_HOME_PROVIDER_FILE`. The file contains `routines` and `quota` arrays or null for
-an unavailable source, and must be readable by the owner desktop. The supported fields are
-defined by `homeProviderPayload.ts`. Only display metadata belongs in the file. Provider items
-are read about every five minutes and quota readings older than one hour are shown as stale.
+The owner desktop reads the Claude and Codex quota and Claude routine dates from a single
+owner-managed JSON file. Set `HARNESS_HUB_HOME_PROVIDER_FILE` to its absolute path on the
+same computer as the verified native connection. The file is read about every five minutes.
+Replace it atomically when updating it, and keep its permissions restricted to the owner.
+Only display metadata belongs in this file. A later collector can update the same format.
 
-Claude Code documents interactive scheduled-task listing and its usage page. An automated feed
-for personal Claude cloud routines and subscription windows still needs a supported owner-host
-source. Empty and unavailable states remain distinct. Low and almost-out states warn on the
-page without changing agent scheduling.
+```json
+{
+	"routinesReadAt": "2026-11-22T08:00:00Z",
+	"routines": [
+		{
+			"id": "morning-review",
+			"title": "Morning review",
+			"at": "2026-11-22T09:00:00Z",
+			"agent": null,
+			"machine": "Claude cloud",
+			"source": "claude",
+			"recurring": true,
+			"paused": false
+		}
+	],
+	"quota": [
+		{
+			"id": "claude-personal",
+			"provider": "claude",
+			"plan": "Max",
+			"account": null,
+			"readAt": "2026-11-22T08:00:00Z",
+			"limits": [{ "id": "weekly", "label": "Weekly", "left": 47, "resetsAt": null }],
+			"credits": null,
+			"history": [{ "day": "2026-11-22", "used": 53 }],
+			"agents": []
+		},
+		{
+			"id": "codex-personal",
+			"provider": "codex",
+			"plan": "Pro",
+			"account": null,
+			"readAt": "2026-11-22T08:00:00Z",
+			"limits": [
+				{ "id": "weekly", "label": "Weekly", "left": 81, "resetsAt": "2026-11-26T13:00:00Z" }
+			],
+			"credits": null,
+			"history": [],
+			"agents": []
+		}
+	]
+}
+```
+
+Use UTC ISO 8601 timestamps ending in `Z`. History dates use `YYYY-MM-DD`. Percentages
+range from 0 to 100. Use stable identifiers for routines, subscriptions, and limits. The
+file may contain up to 200 routines and 20 subscriptions, with up to 10 limits, seven history
+entries, and 10 agent descriptions per subscription. Agent entries have `name` and
+`description` strings. `null` means unknown, while an empty array indicates a verified
+empty list. Set `routinesReadAt` whenever supplying a known routine list. The validator is
+`homeProviderPayload.ts` in Reports. Invalid or unreadable files are treated as unknown.
+
+Hub shows unknown for missing or stale provider data. Routine freshness comes from
+`routinesReadAt` and quota freshness comes from each subscription’s `readAt`. A missing
+timestamp, a timestamp in the future, or a reading over an hour old is unknown. The scheduled
+view still includes current Tracker due dates. Stale quota does not contribute numbers,
+history, or warnings. Low and almost-out warnings are informational.

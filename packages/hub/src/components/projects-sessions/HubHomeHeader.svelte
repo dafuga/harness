@@ -18,7 +18,7 @@
 	import type { HomeView } from './hubHomeView.types';
 	let { view }: { view: HomeView } = $props();
 	const { session } = browserContext();
-	const warning = $derived(lowestLimit(view.quota ?? []));
+	const warning = $derived(lowestLimit(view.quota ?? [], view.now));
 	const machines = $derived(view.overview?.status === 'ready' ? view.overview.machines : []);
 	let accountOpen = $state(false);
 </script>

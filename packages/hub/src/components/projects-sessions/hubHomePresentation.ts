@@ -1,4 +1,5 @@
 // @harness-uid u_okueohjk4j
+import { homeProviderReadingIsStale } from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
 import type {
 	HomeAgent,
 	HomeAgentState,
@@ -82,8 +83,9 @@ export function warningFor(left: number) {
 	return null;
 }
 
-export function lowestLimit(subscriptions: HomeSubscription[]) {
+export function lowestLimit(subscriptions: HomeSubscription[], now: number) {
 	return subscriptions
+		.filter((subscription) => !staleReading(subscription.readAt, now))
 		.flatMap((subscription) =>
 			subscription.limits
 				.filter((limit) => warningFor(limit.left))
@@ -92,8 +94,14 @@ export function lowestLimit(subscriptions: HomeSubscription[]) {
 		.sort((left, right) => left.limit.left - right.limit.left)[0];
 }
 
-export function staleReading(readAt: string, now: number) {
-	return now - Date.parse(readAt) > 60 * 60 * 1000;
+export function staleReading(readAt: string | null | undefined, now: number) {
+	return homeProviderReadingIsStale(readAt, now);
+}
+
+export function missingQuotaProviders(subscriptions: HomeSubscription[]): string[] {
+	return (['claude', 'codex'] as const)
+		.filter((provider) => !subscriptions.some((subscription) => subscription.provider === provider))
+		.map((provider) => providerNames[provider]);
 }
 
 export function warningLabel(limit: HomeLimit) {
@@ -129,7 +137,7 @@ export function when(time: string) {
 }
 
 export function quotaReset(time: string | null, now: number) {
-	if (!time) return 'Reset time unavailable';
+	if (!time) return 'Reset time unknown';
 	const minutes = Math.max(0, Math.ceil((Date.parse(time) - now) / 60000));
 	if (!minutes) return 'Reset due';
 	const hours = Math.floor(minutes / 60);

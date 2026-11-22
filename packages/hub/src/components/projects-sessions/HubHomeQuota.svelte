@@ -4,6 +4,7 @@
 <script lang="ts">
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import type { HomeSubscription } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+	import { missingQuotaProviders } from './hubHomePresentation';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 	import HubQuotaSubscription from './HubQuotaSubscription.svelte';
 	let {
@@ -19,7 +20,7 @@
 	<HubHomeSkeleton rows={5} />
 {:else if !quota.length}
 	<EmptyState as="div" className="hh-empty">
-		{connected ? 'No subscriptions connected.' : 'Provider readings are unavailable.'}
+		{connected ? 'No subscriptions connected.' : 'Provider quota is unknown.'}
 		<hx-button type="button" class="po-action" onclick={reload}>Check for readings</hx-button>
 	</EmptyState>
 {:else}
@@ -28,4 +29,7 @@
 			<HubQuotaSubscription {subscription} {now} detailed {reload} />
 		{/each}
 	</hx-div>
+	{#each missingQuotaProviders(quota) as provider (provider)}
+		<hx-p class="po-sessions">{provider} quota is unknown.</hx-p>
+	{/each}
 {/if}

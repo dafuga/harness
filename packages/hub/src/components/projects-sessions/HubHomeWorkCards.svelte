@@ -113,6 +113,9 @@
 	{:else}
 		{@render empty('Nothing is scheduled.')}
 	{/if}
+	{#if view.schedule !== null && !view.routinesConnected}
+		<hx-p class="po-sessions">Claude routine dates are unknown.</hx-p>
+	{/if}
 </HubHomeCard>
 
 <HubHomeCard

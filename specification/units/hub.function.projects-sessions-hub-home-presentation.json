@@ -25,6 +25,7 @@
 			"warningFor",
 			"lowestLimit",
 			"staleReading",
+			"missingQuotaProviders",
 			"warningLabel",
 			"runDay",
 			"runTime",
@@ -95,16 +96,28 @@
 				"description": "Normalized provider subscription windows to compare."
 			},
 			{
-				"name": "staleReading.readAt",
-				"type": "string",
+				"name": "lowestLimit.now",
+				"type": "number",
 				"required": true,
-				"description": "ISO timestamp of the last quota reading."
+				"description": "Current time in milliseconds since the Unix epoch."
+			},
+			{
+				"name": "staleReading.readAt",
+				"type": "string | null | undefined",
+				"required": true,
+				"description": "ISO observation time, or null or undefined when the provider reading is unknown."
 			},
 			{
 				"name": "staleReading.now",
 				"type": "number",
 				"required": true,
 				"description": "Current time in milliseconds since the Unix epoch."
+			},
+			{
+				"name": "missingQuotaProviders.subscriptions",
+				"type": "HomeSubscription[]",
+				"required": true,
+				"description": "Normalized subscriptions currently listed on the Hub home."
 			},
 			{
 				"name": "warningLabel.limit",
@@ -266,12 +279,12 @@
 			{
 				"name": "lowestLimit",
 				"type": "unknown",
-				"description": "Subscription window with the lowest remaining percentage among warnings, if any."
+				"description": "Fresh subscription window with the lowest remaining percentage among warnings, if any."
 			},
 			{
 				"name": "staleReading",
 				"type": "unknown",
-				"description": "Whether the last subscription reading is over one hour old."
+				"description": "Whether the timestamp is missing, invalid, ahead of the clock or older than one hour."
 			},
 			{
 				"name": "warningLabel",
@@ -467,13 +480,19 @@
 						"type": "HomeSubscription[]",
 						"required": true,
 						"description": "Normalized provider subscription windows to compare."
+					},
+					{
+						"name": "lowestLimit.now",
+						"type": "number",
+						"required": true,
+						"description": "Current time in milliseconds since the Unix epoch."
 					}
 				],
 				"outputs": [
 					{
 						"name": "lowestLimit",
 						"type": "unknown",
-						"description": "Subscription window with the lowest remaining percentage among warnings, if any."
+						"description": "Fresh subscription window with the lowest remaining percentage among warnings, if any."
 					}
 				],
 				"errors": [],
@@ -484,9 +503,9 @@
 				"inputs": [
 					{
 						"name": "staleReading.readAt",
-						"type": "string",
+						"type": "string | null | undefined",
 						"required": true,
-						"description": "ISO timestamp of the last quota reading."
+						"description": "ISO observation time, or null or undefined when the provider reading is unknown."
 					},
 					{
 						"name": "staleReading.now",
@@ -499,7 +518,27 @@
 					{
 						"name": "staleReading",
 						"type": "unknown",
-						"description": "Whether the last subscription reading is over one hour old."
+						"description": "Whether the timestamp is missing, invalid, ahead of the clock or older than one hour."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "missingQuotaProviders",
+				"inputs": [
+					{
+						"name": "missingQuotaProviders.subscriptions",
+						"type": "HomeSubscription[]",
+						"required": true,
+						"description": "Normalized subscriptions currently listed on the Hub home."
+					}
+				],
+				"outputs": [
+					{
+						"name": "missingQuotaProviders",
+						"type": "string[]",
+						"description": "Display names of providers with no listed subscription."
 					}
 				],
 				"errors": [],
@@ -739,6 +778,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-provider-payload",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",

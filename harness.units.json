@@ -68,6 +68,12 @@
 	],
 	"references": [
 		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomePresentation.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeProviderPayload",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeProviderPayload.ts",
+			"reason": "Apply the same freshness boundary to owner-host data and the Hub display."
+		},
+		{
 			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",

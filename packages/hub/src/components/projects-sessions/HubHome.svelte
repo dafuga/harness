@@ -14,7 +14,7 @@
 	import { browserContext } from '../../utils/development-tooling/browserContext';
 	import { watchWhileVisible } from '../../routes/tracker-overview/overviewClient';
 	import { homeSnapshot, readHome } from './hubHomeClient';
-	import { soonestWork } from './hubHomePresentation';
+	import { soonestWork, staleReading } from './hubHomePresentation';
 	import type { HomeView, ReadHomeResult } from './hubHomeView.types';
 	import HubHomeHeader from './HubHomeHeader.svelte';
 	import HubHomeCards from './HubHomeCards.svelte';
@@ -34,6 +34,10 @@
 	let flight = 0;
 	let opener: HTMLElement | null = null;
 	const snapshot = $derived(homeSnapshot(home));
+	const routinesConnected = $derived(
+		Array.isArray(snapshot?.providers.routines) &&
+			!staleReading(snapshot.providers.routinesReadAt, now)
+	);
 	const overview = $derived(
 		snapshot?.overview ?? (home ? { status: 'unavailable' as const } : null)
 	);
@@ -41,14 +45,16 @@
 		overview,
 		agents: snapshot?.agents ?? (home ? [] : null),
 		plans: snapshot?.plans ?? (home ? [] : null),
-		schedule: snapshot?.scheduled ?? (home ? [] : null),
+		schedule:
+			snapshot?.scheduled.filter((run) => routinesConnected || run.source === 'tracker') ??
+			(home ? [] : null),
 		quota: snapshot?.providers.quota ?? (home ? [] : null),
 		projects: list,
 		projectSnapshots,
 		work: soonestWork(overview),
 		owner: home?.granted ?? false,
 		trackerConnected: overview?.status === 'ready',
-		routinesConnected: Array.isArray(snapshot?.providers.routines),
+		routinesConnected,
 		quotaConnected: Array.isArray(snapshot?.providers.quota),
 		now
 	});
