@@ -47,6 +47,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.agents-providers-provider-sign-in",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.analytics",
 			"via": "import",
 			"origin": "derived"
@@ -138,6 +143,11 @@
 		},
 		{
 			"unit": "command.new",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-harbor-inspection",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -13,6 +13,7 @@ import type { VerificationRecord } from '../../core/verification-evidence/verifi
 import { componentVersion } from '../../utils/development-tooling/componentVersion';
 import { recordLineage } from '../../utils/development-tooling/recordLineage';
 import { recordIntact } from '../../utils/verification-evidence/sealRecord';
+import { recordFiles } from '../../utils/verification-evidence/evidenceManifest';
 import { loadSide } from '../../workflows/development-tooling/loadRevisions';
 import { SourceIndexService } from '../development-tooling/source-index-service/SourceIndexService';
 
@@ -121,11 +122,7 @@ export class VerificationCheckService {
 
 	/** Every file this run produced must still exist with the hash the record states. */
 	private evidence(record: VerificationRecord, directory: string): string[] {
-		const captures = record.scenarios
-			.filter((scenario) => scenario.status !== 'referenced')
-			.flatMap((scenario) => scenario.states.flatMap((state) => state.captures));
-		const files = [...captures, ...record.tests.map((test) => test.log)];
-		return files.flatMap((file) => {
+		return recordFiles(record).flatMap((file) => {
 			const path = join(directory, file.path);
 			if (!existsSync(path)) return [`evidence ${file.path} is missing`];
 			const hash = createHash('sha256').update(readFileSync(path)).digest('hex');

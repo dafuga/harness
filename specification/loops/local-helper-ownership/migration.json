@@ -5855,6 +5855,27 @@
 			"commit": "7a2e13ba28bf8ccf067589ff5c93c1f1b3f7eed9",
 			"reason": "Retain the reviewed change: verification record: optional skippedBuilds next to builds.",
 			"definition": "4d7b575accd81204242458a749178423430b0bf3b26a9ebf0d7f7f08fa04ebc9"
+		},
+		{
+			"unit": "function.record-capture",
+			"name": "evidenceRequested",
+			"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+			"reason": "Request Lite nonvisual evidence with screenshots disabled.",
+			"definition": "79827b5746203cb94aec2f57930e58abed1358e15a16b258577f93abd979d354"
+		},
+		{
+			"unit": "function.scenario-coverage",
+			"name": "scenarioCoverage",
+			"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+			"reason": "Keep the full scenario contract and report the capture slots deferred by Lite.",
+			"definition": "95ad3a8f12b7c690bab7a5ac5a40ef3ede8e1ec5d59e4d25d3c9a841aa7cf864"
+		},
+		{
+			"unit": "function.verify-plan",
+			"name": "verifyPlan",
+			"commit": "aeb3dc02ff4edff5678b323b877ff5dfcfc99111",
+			"reason": "Plan headless Godot and carry explicit full-only check declarations.",
+			"definition": "e1989ceaf1101c7c077deacc444004af602bc41803fc60f7869d0d7ee2f1791a"
 		}
 	],
 	"retiredOwners": [

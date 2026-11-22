@@ -1,7 +1,11 @@
 // @harness-uid u_lnqhwcablp
 import type { ScenarioManifest } from '../../core/development-tooling/unitTypes';
 import type { Gathered } from './gatherCaptures';
-import type { ScenarioResult } from '../../core/verification-evidence/verificationTypes';
+import type {
+	ScenarioResult,
+	VerificationRecord
+} from '../../core/verification-evidence/verificationTypes';
+import type { RequiredCapture } from './scenarioRequirements';
 
 export interface CoverageInput {
 	scenario: ScenarioManifest;
@@ -10,6 +14,7 @@ export interface CoverageInput {
 	gathered: Gathered[];
 	/** True when a check that produced these captures failed or timed out. */
 	checkFailed: boolean;
+	lite?: { deferredChecks: boolean };
 	/** The builds the project declares, and the identity of each one setup compiled. */
 	builds?: { declared: string[]; compiled: Map<string, string> };
 }
@@ -17,6 +22,13 @@ export interface CoverageInput {
 export interface CoverageResult {
 	states: ScenarioResult['states'];
 	failures: string[];
+	pending?: RequiredCapture[];
+}
+
+export interface ScenarioJudgement {
+	result: ScenarioResult;
+	failures: string[];
+	pending?: NonNullable<VerificationRecord['lite']>['pendingEvidence'];
 }
 
 export type Evidence = ScenarioManifest['evidence'][number];

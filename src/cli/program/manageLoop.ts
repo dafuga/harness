@@ -30,6 +30,7 @@ import {
 	type LoopStep
 } from '../../workflows/development-tooling/loop-state/loopState';
 import { enforceRegressionStep } from '../../workflows/verification-evidence/record-regression/recordRegression';
+import { requireSiblingReport } from '../../workflows/development-tooling/sibling-bug-sweep/loopSiblingReport';
 import { newLoopState } from './manage-loop/newLoopState';
 
 export {
@@ -96,6 +97,8 @@ export async function completeLoopStep(input: CompleteLoopStepInput): Promise<Lo
 	if (state.enforceOrder && pending && pending.id !== step)
 		fail(`Complete loop step "${pending.id}" before "${step}".`);
 	await enforceRegressionStep(loopRoot(input), state, step);
+	if (step === 'siblings' && state.templateLineage?.includes('bug-fix'))
+		await requireSiblingReport(loopRoot(input), loop, evidence);
 	await auditLoopCompletion(loopRoot(input), state);
 
 	const completedAt = timestamp(input.now);

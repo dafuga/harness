@@ -12,11 +12,11 @@
 			"src/adapters/execution-runtimes/BoundedCommandAdapter.ts",
 			"src/adapters/execution-runtimes/BoundedCommandAdapter.types.ts",
 			"src/adapters/execution-runtimes/bounded-command-adapter/commandDeadlines.ts",
+			"src/adapters/execution-runtimes/bounded-command-adapter/commandEnvironment.ts",
 			"src/adapters/execution-runtimes/bounded-command-adapter/commandFailure.ts",
 			"src/adapters/execution-runtimes/bounded-command-adapter/commandOutput.ts"
 		],
 		"symbols": [
-			"commandEnvironment",
 			"BoundedCommandAdapter",
 			"BoundedCommandAdapter.checked",
 			"BoundedCommandAdapter.run",
@@ -24,9 +24,11 @@
 			"BoundedCommandOptions",
 			"BoundedCommandResult",
 			"commandDeadlines",
+			"commandEnvironment",
 			"BoundedCommandOptions",
 			"BoundedCommandResult",
 			"commandDeadlines",
+			"commandEnvironment",
 			"BoundedCommandFailure",
 			"BoundedCommandFailure.constructor",
 			"commandLabel",
@@ -37,19 +39,6 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [
-			{
-				"name": "commandEnvironment.extra",
-				"type": "Record<string, string | undefined>",
-				"required": false,
-				"default": {},
-				"description": "Caller-supplied child environment entries are merged after inherited allowlisted variables, so they override matching inherited keys; values may be strings or undefined. It defaults to an empty object.",
-				"examples": [
-					{
-						"TASK_MODE": "verify",
-						"CI": "1"
-					}
-				]
-			},
 			{
 				"name": "BoundedCommandAdapter.checked.command",
 				"type": "string",
@@ -156,6 +145,19 @@
 				]
 			},
 			{
+				"name": "commandEnvironment.extra",
+				"type": "Record<string, string | undefined>",
+				"required": false,
+				"default": {},
+				"description": "Caller-supplied child environment entries are merged after inherited allowlisted variables, so they override matching inherited keys; values may be strings or undefined. It defaults to an empty object.",
+				"examples": [
+					{
+						"TASK_MODE": "verify",
+						"CI": "1"
+					}
+				]
+			},
+			{
 				"name": "BoundedCommandFailure.constructor.message",
 				"type": "string",
 				"required": true,
@@ -256,39 +258,6 @@
 		],
 		"errorStatus": "declared",
 		"operations": [
-			{
-				"name": "commandEnvironment",
-				"inputs": [
-					{
-						"name": "commandEnvironment.extra",
-						"type": "Record<string, string | undefined>",
-						"required": false,
-						"default": {},
-						"description": "Caller-supplied child environment entries are merged after inherited allowlisted variables, so they override matching inherited keys; values may be strings or undefined. It defaults to an empty object.",
-						"examples": [
-							{
-								"TASK_MODE": "verify",
-								"CI": "1"
-							}
-						]
-					}
-				],
-				"outputs": [
-					{
-						"name": "commandEnvironment",
-						"type": "Record<string, string | undefined>",
-						"description": "Contains currently defined inherited variables from the adapter's allowlist plus all caller extras; caller entries overwrite inherited values.",
-						"examples": [
-							{
-								"PATH": "/usr/bin",
-								"TASK_MODE": "verify"
-							}
-						]
-					}
-				],
-				"errors": [],
-				"errorStatus": "declared"
-			},
 			{
 				"name": "BoundedCommandAdapter.checked",
 				"inputs": [
@@ -477,6 +446,39 @@
 						"description": "Thrown for invalid timeoutMs or maxBuffer bounds, a command and argument shape outside the direct-probe allowlist, or a synchronous child-process error."
 					}
 				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "commandEnvironment",
+				"inputs": [
+					{
+						"name": "commandEnvironment.extra",
+						"type": "Record<string, string | undefined>",
+						"required": false,
+						"default": {},
+						"description": "Caller-supplied child environment entries are merged after inherited allowlisted variables, so they override matching inherited keys; values may be strings or undefined. It defaults to an empty object.",
+						"examples": [
+							{
+								"TASK_MODE": "verify",
+								"CI": "1"
+							}
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "commandEnvironment",
+						"type": "Record<string, string | undefined>",
+						"description": "Contains currently defined inherited variables from the adapter's allowlist plus all caller extras; caller entries overwrite inherited values.",
+						"examples": [
+							{
+								"PATH": "/usr/bin",
+								"TASK_MODE": "verify"
+							}
+						]
+					}
+				],
+				"errors": [],
 				"errorStatus": "declared"
 			},
 			{
