@@ -1,0 +1,243 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.accounts-access-vault-audit",
+	"uid": "u_hgig2hgaul",
+	"kind": "repository",
+	"title": "VaultAuditRepository",
+	"responsibility": "Appends Credential Vault request and lease events to a private journal with allowlisted fields only, never secret values.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/accounts-access/VaultAuditRepository.ts",
+			"src/repositories/accounts-access/VaultAuditRepository.types.ts"
+		],
+		"symbols": [
+			"VaultAuditRepository",
+			"VaultAuditRepository.constructor",
+			"VaultAuditRepository.append",
+			"VaultAuditRepository.read",
+			"VaultAuditRepository.outstanding",
+			"VaultAuditEvent",
+			"VaultAuditFields",
+			"VaultAuditEventName",
+			"VaultAuditFields",
+			"VaultAuditEvent"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "VaultAuditRepository.constructor.directory",
+				"type": "string",
+				"required": true,
+				"description": "Journal directory; created with mode 0700."
+			},
+			{
+				"name": "VaultAuditRepository.append.entry",
+				"type": "VaultAuditFields",
+				"required": true,
+				"description": "Request id, item, site, action, method, recipe digest, host and optional lease and cause; other fields are dropped."
+			},
+			{
+				"name": "VaultAuditRepository.append.event",
+				"type": "VaultAuditEventName",
+				"required": true,
+				"description": "Event name, such as request, approval, delivery or lease-end."
+			}
+		],
+		"outputs": [
+			{
+				"name": "VaultAuditRepository.append",
+				"type": "VaultAuditEvent",
+				"description": "The record written, with its event and ISO time; the line is fsynced."
+			},
+			{
+				"name": "VaultAuditRepository.read",
+				"type": "VaultAuditEvent[]",
+				"description": "Every record in order, or none when the journal does not exist."
+			},
+			{
+				"name": "VaultAuditRepository.outstanding",
+				"type": "VaultAuditEvent[]",
+				"description": "The last event of each request or lease with no terminal event."
+			}
+		],
+		"errors": [
+			{
+				"name": "VaultBrokerError",
+				"type": "thrown",
+				"description": "500 'Refused a malformed audit record.' when a field is not an allowlisted identifier, digest or enum."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "'Partial audit write.' when the line is not written whole."
+			},
+			{
+				"name": "NodeJS.ErrnoException",
+				"type": "thrown",
+				"description": "A file-system error when the journal cannot be opened, written or synced."
+			},
+			{
+				"name": "NodeJS.ErrnoException",
+				"type": "thrown",
+				"description": "A file-system error other than a missing journal."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "A journal line that is not JSON."
+			},
+			{
+				"name": "NodeJS.ErrnoException",
+				"type": "thrown",
+				"description": "A file-system error from read."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "VaultAuditRepository.append",
+				"inputs": [
+					{
+						"name": "VaultAuditRepository.append.entry",
+						"type": "VaultAuditFields",
+						"required": true,
+						"description": "Request id, item, site, action, method, recipe digest, host and optional lease and cause; other fields are dropped."
+					},
+					{
+						"name": "VaultAuditRepository.append.event",
+						"type": "VaultAuditEventName",
+						"required": true,
+						"description": "Event name, such as request, approval, delivery or lease-end."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultAuditRepository.append",
+						"type": "VaultAuditEvent",
+						"description": "The record written, with its event and ISO time; the line is fsynced."
+					}
+				],
+				"errors": [
+					{
+						"name": "VaultBrokerError",
+						"type": "thrown",
+						"description": "500 'Refused a malformed audit record.' when a field is not an allowlisted identifier, digest or enum."
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "'Partial audit write.' when the line is not written whole."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "A file-system error when the journal cannot be opened, written or synced."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VaultAuditRepository.read",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "VaultAuditRepository.read",
+						"type": "VaultAuditEvent[]",
+						"description": "Every record in order, or none when the journal does not exist."
+					}
+				],
+				"errors": [
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "A file-system error other than a missing journal."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "A journal line that is not JSON."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VaultAuditRepository.outstanding",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "VaultAuditRepository.outstanding",
+						"type": "VaultAuditEvent[]",
+						"description": "The last event of each request or lease with no terminal event."
+					}
+				],
+				"errors": [
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "A file-system error from read."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "A journal line that is not JSON."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "VaultAuditRepository.constructor",
+				"inputs": [
+					{
+						"name": "VaultAuditRepository.constructor.directory",
+						"type": "string",
+						"required": true,
+						"description": "Journal directory; created with mode 0700."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultAuditRepository.constructor",
+						"type": "unknown",
+						"description": "A repository writing audit.jsonl in the directory."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.accounts-access-vault-wire",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/accounts-access/VaultAuditRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/accounts-access/VaultAuditRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

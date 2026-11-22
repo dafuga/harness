@@ -12,6 +12,15 @@ unitIds:
   - function.accounts-access-vault-teardown
   - function.accounts-access-vault-security-audit
   - function.accounts-access-vault-phone-view
+  - adapter.accounts-access-vault-seal
+  - repository.accounts-access-vault-device
+  - repository.accounts-access-vault-audit
+  - service.accounts-access-vault-broker
+  - service.accounts-access-vault-lease-keeper
+  - adapter.accounts-access-vault-broker-server
+  - adapter.accounts-access-vault-broker-client
+  - validator.accounts-access-vault-wire
+  - command.accounts-access-credential
 owner: null
 reviewedAt: null
 ---
@@ -136,7 +145,22 @@ Phase 1 is in this change. All modules are pure and use synthetic data in their 
 
 Later phases, each its own reviewed PR with tests:
 
-- **Phase 2, broker in Harness (synthetic vault only).** `VaultSealAdapter`, `VaultDeviceRepository`, `VaultAuditRepository`, `VaultBrokerService`, `src/commands/accounts-access/CredentialCommand.ts` (`harness credential request|status|attach|finish|recipe digest|recipe verify`) and `src/workflows/accounts-access/runCredentialRequest.ts`. E2E against a fake vault and fake phone signer, ported from the broker's suite.
+- **Phase 2, broker in Harness (synthetic vault only), built on `b9e3w0`.**
+
+  | Unit                                          | Source                                                         | Responsibility                                                              |
+  | --------------------------------------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------- |
+  | `adapter.accounts-access-vault-seal`          | `src/adapters/accounts-access/VaultSealAdapter.ts`             | Broker v1 sealing and P-256 proofs, plus `CB-DEVICE-V2` approval input      |
+  | `repository.accounts-access-vault-device`     | `src/repositories/accounts-access/VaultDeviceRepository.ts`    | Enrolled phones, roles and single-use 30 s challenges                       |
+  | `repository.accounts-access-vault-audit`      | `src/repositories/accounts-access/VaultAuditRepository.ts`     | Owner-only append-only journal with allowlisted, secret-free fields         |
+  | `service.accounts-access-vault-broker`        | `src/services/accounts-access/VaultBrokerService.ts`           | Request queue, V2 approval and scope checks, single delivery                |
+  | `service.accounts-access-vault-lease-keeper`  | `src/services/accounts-access/VaultLeaseKeeperService.ts`      | Lease issue, one-time CDP token attach, relay admission, teardown plans     |
+  | `adapter.accounts-access-vault-broker-server` | `src/adapters/accounts-access/VaultBrokerServerAdapter.ts`     | JSON over an owner-only Unix socket with an injected peer-UID check         |
+  | `adapter.accounts-access-vault-broker-client` | `src/adapters/accounts-access/VaultBrokerClientAdapter.ts`     | Unix socket client                                                          |
+  | `validator.accounts-access-vault-wire`        | `src/validators/accounts-access/VaultWireValidator.ts`         | Wire schemas; refusals name the field, never its value                      |
+  | `command.accounts-access-credential`          | `src/commands/accounts-access/CredentialCommand.ts`, workflows | `harness credential serve\|request\|status\|cancel\|attach\|finish\|recipe` |
+
+  `CB-DEVICE-V2` signs the V1 lines with `CB-DEVICE-V2` as the first line, followed by the recipe digest, runner fingerprint, method and `<mode>:<leaseMs>`. An approval restates method, mode, account, session, action, host and lease length, and any difference is refused, so a changed scope needs a fresh approval. Only an `oauth-device` approval carries no sealed credential. A CDP lease is issued only when the broker knows the session's kernel-verified OS user. On macOS the phase 2 socket relies on its owner-only directory and reports no peer, so leases there wait for the phase 3 `getpeereid` check. Tests use a fake phone signer, a fake runner, synthetic canaries and the broker's v1 crypto vector.
+
 - **Phase 3, executor and CDP relay (synthetic site).** `deploy/vault/Dockerfile`, `src/adapters/accounts-access/VaultBrowserDockerAdapter.ts`, the in-container pipe bridge and the host CDP relay. Fixtures prove that no TCP listener exists, another OS user and a wrong token cannot connect to the socket, the nftables ruleset rejects a non-allowlisted host from inside the container, canary passwords and OTPs never reach the session, and teardown leaves no labelled resource. This runs on MB2 as the `harness-vault` user.
 - **Phase 4, Harness iOS Vault.** Vault inbox, recipe digest display, the read or write action and lease length, OTP entry with SMS autofill, sealed delivery and the private view, tested on a physical enrolled iPhone.
 - **Phase 5, real sites.** These need Daniel's approval on his phone first, one site at a time, in the order of the migration plan.

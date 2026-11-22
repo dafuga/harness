@@ -1,0 +1,513 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.accounts-access-vault-seal",
+	"uid": "u_cepoq63qyy",
+	"kind": "adapter",
+	"title": "VaultSealAdapter",
+	"responsibility": "Seal, open and sign credential vault envelopes with the broker's X25519, HKDF, ChaCha20-Poly1305 and P-256 algorithms.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/accounts-access/VaultSealAdapter.ts",
+			"src/adapters/accounts-access/VaultSealAdapter.types.ts"
+		],
+		"symbols": [
+			"VaultSealAdapter",
+			"VaultSealAdapter.hash",
+			"VaultSealAdapter.keyFingerprint",
+			"VaultSealAdapter.deviceSigningInput",
+			"VaultSealAdapter.approvalSigningInput",
+			"VaultSealAdapter.signingKey",
+			"VaultSealAdapter.isAuthentic",
+			"VaultSealAdapter.seal",
+			"VaultSealAdapter.open",
+			"VaultSealAdapter.runnerKey",
+			"VaultApprovalBinding",
+			"VaultRunnerKey",
+			"VaultApprovalBinding",
+			"VaultRunnerKey"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "VaultSealAdapter.hash.bytes",
+				"type": "Uint8Array",
+				"required": true,
+				"description": "Bytes to digest."
+			},
+			{
+				"name": "VaultSealAdapter.keyFingerprint.publicKey",
+				"type": "string",
+				"required": true,
+				"description": "Base64url public key."
+			},
+			{
+				"name": "VaultSealAdapter.deviceSigningInput.origin",
+				"type": "string",
+				"required": true,
+				"description": "Approval origin the phone signs for."
+			},
+			{
+				"name": "VaultSealAdapter.deviceSigningInput.path",
+				"type": "string",
+				"required": true,
+				"description": "Device route path, such as /v1/device/requests."
+			},
+			{
+				"name": "VaultSealAdapter.deviceSigningInput.proof",
+				"type": "Omit<VaultProof, 'signature'>",
+				"required": true,
+				"description": "Device id, nonce and base64url payload of the proof."
+			},
+			{
+				"name": "VaultSealAdapter.approvalSigningInput.origin",
+				"type": "string",
+				"required": true,
+				"description": "Approval origin the phone signs for."
+			},
+			{
+				"name": "VaultSealAdapter.approvalSigningInput.proof",
+				"type": "Omit<VaultProof, 'signature'>",
+				"required": true,
+				"description": "Device id, nonce and base64url decision payload."
+			},
+			{
+				"name": "VaultSealAdapter.approvalSigningInput.binding",
+				"type": "VaultApprovalBinding",
+				"required": true,
+				"description": "Recipe digest, runner fingerprint, method, mode and lease length the broker recorded for the request."
+			},
+			{
+				"name": "VaultSealAdapter.signingKey.encoded",
+				"type": "string",
+				"required": true,
+				"description": "Uncompressed P-256 public key, 65 bytes, base64url."
+			},
+			{
+				"name": "VaultSealAdapter.isAuthentic.key",
+				"type": "KeyObject",
+				"required": true,
+				"description": "Pinned P-256 verification key."
+			},
+			{
+				"name": "VaultSealAdapter.isAuthentic.input",
+				"type": "Buffer",
+				"required": true,
+				"description": "Signing input from deviceSigningInput or approvalSigningInput."
+			},
+			{
+				"name": "VaultSealAdapter.isAuthentic.signature",
+				"type": "string",
+				"required": true,
+				"description": "Base64url IEEE P1363 ECDSA signature."
+			},
+			{
+				"name": "VaultSealAdapter.seal.recipientPublicKey",
+				"type": "string",
+				"required": true,
+				"description": "Recipient X25519 public key, base64url."
+			},
+			{
+				"name": "VaultSealAdapter.seal.requestId",
+				"type": "string",
+				"required": true,
+				"description": "Request id, used as the AEAD associated data."
+			},
+			{
+				"name": "VaultSealAdapter.seal.plaintext",
+				"type": "Uint8Array",
+				"required": true,
+				"description": "Bytes to seal."
+			},
+			{
+				"name": "VaultSealAdapter.open.privateKey",
+				"type": "KeyObject",
+				"required": true,
+				"description": "Recipient X25519 private key."
+			},
+			{
+				"name": "VaultSealAdapter.open.requestId",
+				"type": "string",
+				"required": true,
+				"description": "Request id the envelope was sealed for."
+			},
+			{
+				"name": "VaultSealAdapter.open.sealed",
+				"type": "VaultSealed",
+				"required": true,
+				"description": "Sender public key, salt and ciphertext with its tag."
+			}
+		],
+		"outputs": [
+			{
+				"name": "VaultSealAdapter.hash",
+				"type": "string",
+				"description": "Lowercase hex SHA-256 digest."
+			},
+			{
+				"name": "VaultSealAdapter.keyFingerprint",
+				"type": "string",
+				"description": "Hex SHA-256 of the decoded key bytes."
+			},
+			{
+				"name": "VaultSealAdapter.deviceSigningInput",
+				"type": "Buffer",
+				"description": "The CB-DEVICE-V1 lines: version, origin, path, device id, nonce and payload digest."
+			},
+			{
+				"name": "VaultSealAdapter.approvalSigningInput",
+				"type": "Buffer",
+				"description": "The V1 lines headed CB-DEVICE-V2, followed by recipe digest, runner fingerprint, method and <mode>:<leaseMs>."
+			},
+			{
+				"name": "VaultSealAdapter.signingKey",
+				"type": "KeyObject",
+				"description": "The P-256 verification key."
+			},
+			{
+				"name": "VaultSealAdapter.isAuthentic",
+				"type": "boolean",
+				"description": "True when the signature verifies over the input."
+			},
+			{
+				"name": "VaultSealAdapter.seal",
+				"type": "VaultSealed",
+				"description": "The envelope: an ephemeral sender key, a random salt and ChaCha20-Poly1305 ciphertext."
+			},
+			{
+				"name": "VaultSealAdapter.open",
+				"type": "Buffer",
+				"description": "The decrypted plaintext; the derived key is zeroed afterwards."
+			},
+			{
+				"name": "VaultSealAdapter.runnerKey",
+				"type": "VaultRunnerKey",
+				"description": "A fresh X25519 runner key with its fingerprint and an open() that works once."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "'Invalid device key.' when an enrolled signing key is not a 65-byte uncompressed P-256 point."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "'Invalid X25519 agreement.' when the recipient key yields an all-zero shared secret."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by node:crypto when the recipient public key is not a valid X25519 key."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "'Could not open the phone approval.' for any key, tag or decoding failure, so nothing about the cause leaks."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "'The runner key was already used.' when the returned key's open() is called a second time."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "VaultSealAdapter.hash",
+				"inputs": [
+					{
+						"name": "VaultSealAdapter.hash.bytes",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Bytes to digest."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultSealAdapter.hash",
+						"type": "string",
+						"description": "Lowercase hex SHA-256 digest."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VaultSealAdapter.keyFingerprint",
+				"inputs": [
+					{
+						"name": "VaultSealAdapter.keyFingerprint.publicKey",
+						"type": "string",
+						"required": true,
+						"description": "Base64url public key."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultSealAdapter.keyFingerprint",
+						"type": "string",
+						"description": "Hex SHA-256 of the decoded key bytes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VaultSealAdapter.deviceSigningInput",
+				"inputs": [
+					{
+						"name": "VaultSealAdapter.deviceSigningInput.origin",
+						"type": "string",
+						"required": true,
+						"description": "Approval origin the phone signs for."
+					},
+					{
+						"name": "VaultSealAdapter.deviceSigningInput.path",
+						"type": "string",
+						"required": true,
+						"description": "Device route path, such as /v1/device/requests."
+					},
+					{
+						"name": "VaultSealAdapter.deviceSigningInput.proof",
+						"type": "Omit<VaultProof, 'signature'>",
+						"required": true,
+						"description": "Device id, nonce and base64url payload of the proof."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultSealAdapter.deviceSigningInput",
+						"type": "Buffer",
+						"description": "The CB-DEVICE-V1 lines: version, origin, path, device id, nonce and payload digest."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VaultSealAdapter.approvalSigningInput",
+				"inputs": [
+					{
+						"name": "VaultSealAdapter.approvalSigningInput.origin",
+						"type": "string",
+						"required": true,
+						"description": "Approval origin the phone signs for."
+					},
+					{
+						"name": "VaultSealAdapter.approvalSigningInput.proof",
+						"type": "Omit<VaultProof, 'signature'>",
+						"required": true,
+						"description": "Device id, nonce and base64url decision payload."
+					},
+					{
+						"name": "VaultSealAdapter.approvalSigningInput.binding",
+						"type": "VaultApprovalBinding",
+						"required": true,
+						"description": "Recipe digest, runner fingerprint, method, mode and lease length the broker recorded for the request."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultSealAdapter.approvalSigningInput",
+						"type": "Buffer",
+						"description": "The V1 lines headed CB-DEVICE-V2, followed by recipe digest, runner fingerprint, method and <mode>:<leaseMs>."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VaultSealAdapter.signingKey",
+				"inputs": [
+					{
+						"name": "VaultSealAdapter.signingKey.encoded",
+						"type": "string",
+						"required": true,
+						"description": "Uncompressed P-256 public key, 65 bytes, base64url."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultSealAdapter.signingKey",
+						"type": "KeyObject",
+						"description": "The P-256 verification key."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "'Invalid device key.' when an enrolled signing key is not a 65-byte uncompressed P-256 point."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VaultSealAdapter.isAuthentic",
+				"inputs": [
+					{
+						"name": "VaultSealAdapter.isAuthentic.key",
+						"type": "KeyObject",
+						"required": true,
+						"description": "Pinned P-256 verification key."
+					},
+					{
+						"name": "VaultSealAdapter.isAuthentic.input",
+						"type": "Buffer",
+						"required": true,
+						"description": "Signing input from deviceSigningInput or approvalSigningInput."
+					},
+					{
+						"name": "VaultSealAdapter.isAuthentic.signature",
+						"type": "string",
+						"required": true,
+						"description": "Base64url IEEE P1363 ECDSA signature."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultSealAdapter.isAuthentic",
+						"type": "boolean",
+						"description": "True when the signature verifies over the input."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VaultSealAdapter.seal",
+				"inputs": [
+					{
+						"name": "VaultSealAdapter.seal.recipientPublicKey",
+						"type": "string",
+						"required": true,
+						"description": "Recipient X25519 public key, base64url."
+					},
+					{
+						"name": "VaultSealAdapter.seal.requestId",
+						"type": "string",
+						"required": true,
+						"description": "Request id, used as the AEAD associated data."
+					},
+					{
+						"name": "VaultSealAdapter.seal.plaintext",
+						"type": "Uint8Array",
+						"required": true,
+						"description": "Bytes to seal."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultSealAdapter.seal",
+						"type": "VaultSealed",
+						"description": "The envelope: an ephemeral sender key, a random salt and ChaCha20-Poly1305 ciphertext."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "'Invalid X25519 agreement.' when the recipient key yields an all-zero shared secret."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by node:crypto when the recipient public key is not a valid X25519 key."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VaultSealAdapter.open",
+				"inputs": [
+					{
+						"name": "VaultSealAdapter.open.privateKey",
+						"type": "KeyObject",
+						"required": true,
+						"description": "Recipient X25519 private key."
+					},
+					{
+						"name": "VaultSealAdapter.open.requestId",
+						"type": "string",
+						"required": true,
+						"description": "Request id the envelope was sealed for."
+					},
+					{
+						"name": "VaultSealAdapter.open.sealed",
+						"type": "VaultSealed",
+						"required": true,
+						"description": "Sender public key, salt and ciphertext with its tag."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultSealAdapter.open",
+						"type": "Buffer",
+						"description": "The decrypted plaintext; the derived key is zeroed afterwards."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "'Could not open the phone approval.' for any key, tag or decoding failure, so nothing about the cause leaks."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VaultSealAdapter.runnerKey",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "VaultSealAdapter.runnerKey",
+						"type": "VaultRunnerKey",
+						"description": "A fresh X25519 runner key with its fingerprint and an open() that works once."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "'The runner key was already used.' when the returned key's open() is called a second time."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.accounts-access-vault-wire",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/accounts-access/VaultSealAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/accounts-access/VaultSealAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
