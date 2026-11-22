@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"id": "function.accounts-access-vault-security-audit",
+	"uid": "u_eaaw6eeoc4",
+	"kind": "function",
+	"title": "vaultSecurityAudit",
+	"responsibility": "Judges a provider security log over a Credential Vault lease window.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/accounts-access/vaultSecurityAudit.ts"],
+		"symbols": ["vaultSecurityAudit"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "vaultSecurityAudit.value",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "vaultSecurityAudit",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "vaultSecurityAudit",
+				"inputs": [
+					{
+						"name": "vaultSecurityAudit.value",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "vaultSecurityAudit",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/accounts-access/vaultSecurityAudit.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/accounts-access/vaultSecurityAudit.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

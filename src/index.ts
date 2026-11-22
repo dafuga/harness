@@ -217,3 +217,14 @@ export { TrackerAdapterLeaseAdapter } from './adapters/projects-sessions/Tracker
 export { TrackerDispatchRepository } from './repositories/projects-sessions/TrackerDispatchRepository';
 export { TrackerDispatchSchedulerService } from './services/projects-sessions/TrackerDispatchSchedulerService';
 export { TrackerSupervisorService } from './services/projects-sessions/TrackerSupervisorService';
+export { vaultRecipe } from './utils/accounts-access/vaultRecipe';
+export { vaultMethod } from './utils/accounts-access/vaultMethod';
+export { vaultGatewayPolicy } from './utils/accounts-access/vaultGatewayPolicy';
+export { vaultPageScrub } from './utils/accounts-access/vaultPageScrub';
+export { vaultLease } from './utils/accounts-access/vaultLease';
+export { vaultExecutorHost } from './utils/accounts-access/vaultExecutorHost';
+export { vaultEgressRules } from './utils/accounts-access/vaultEgressRules';
+export { vaultOtpRoute } from './utils/accounts-access/vaultOtpRoute';
+export { vaultTeardown } from './utils/accounts-access/vaultTeardown';
+export { vaultSecurityAudit } from './utils/accounts-access/vaultSecurityAudit';
+export { vaultPhoneView } from './utils/accounts-access/vaultPhoneView';
