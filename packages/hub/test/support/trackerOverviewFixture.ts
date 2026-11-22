@@ -86,6 +86,7 @@ export function overviewFixture(options: { owner?: string | null } = {}) {
 	});
 	return {
 		bucket,
+		homeDeps: () => deps(owner),
 		owner,
 		advance(milliseconds: number) {
 			clock += milliseconds;

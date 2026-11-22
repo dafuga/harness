@@ -1,3 +1,4 @@
+import { isHubHomePreview } from './hubHomeCatalogData';
 import { allStatesSnapshot, NOW } from '../projectOverviewFixture';
 import { previewMountMarkup } from './previewMountMarkup';
 import { recordPreviewCapture } from './recordPreviewCapture';
@@ -65,7 +66,10 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 				get: (target, name) => (name === 'now' ? () => now : Reflect.get(target, name))
 			});
 		},
-		overviewPreviews.has(id) || id.includes('project-overview-project-overview')
+		id === 'hub.page.root' ||
+			isHubHomePreview(id) ||
+			overviewPreviews.has(id) ||
+			id.includes('project-overview-project-overview')
 			? NOW
 			: Date.parse('2026-10-20T10:00:05Z')
 	);
@@ -79,6 +83,8 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 export async function readyPreview(page: Page, id: string, variant = '') {
 	const content = page.locator(`[data-preview-unit="${id}"]`);
 	await expect(content).toBeAttached();
+	if (id === 'hub.component.projects-sessions-hub-home-dialogs')
+		await expect(content.getByRole('dialog', { name: 'Plans' })).toBeVisible();
 	if (isBrokenPreviewImage(id, variant))
 		await expect(content.locator('.image-button').first()).toBeDisabled();
 	await applyActivityPreviewContext(page, content, id);
@@ -126,8 +132,10 @@ async function readyRoute(page: Page, id: string) {
 		await expect(
 			page.getByRole('cell', { name: 'ada@example.invalid', exact: true })
 		).toBeVisible();
-	if (id === 'hub.page.root')
-		await expect(page.getByRole('region', { name: 'Owned by you', exact: true })).toBeVisible();
+	if (id === 'hub.page.root' || id === 'hub.component.projects-sessions-hub-home')
+		await expect(page.getByRole('heading', { name: /working, .* need[s]? you/ })).toBeVisible();
+	else if (isHubHomePreview(id))
+		await expect(page.locator('[data-catalog-home-part]')).toBeAttached();
 }
 const overviewPreviews = new Set([
 	'desktop.page.projects',

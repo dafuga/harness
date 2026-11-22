@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "hub-home",
+	"title": "Signed-in Harness Hub home",
+	"kind": "ui",
+	"units": ["hub.page.root"],
+	"states": [
+		{
+			"id": "default",
+			"title": "Signed-in home and dialogs show the owner’s work",
+			"coverage": "required",
+			"units": ["hub.page.root"]
+		},
+		{
+			"id": "busy",
+			"title": "Bounded previews and low quota warnings",
+			"coverage": "required",
+			"units": ["hub.page.root"]
+		},
+		{
+			"id": "empty",
+			"title": "Empty cards keep all six destinations",
+			"coverage": "required",
+			"units": ["hub.page.root"]
+		},
+		{
+			"id": "loading",
+			"title": "Cards and dialogs reserve room while data loads",
+			"coverage": "required",
+			"units": ["hub.page.root"]
+		}
+	],
+	"viewports": [
+		{
+			"id": "phone",
+			"width": 390,
+			"height": 844
+		},
+		{
+			"id": "tablet",
+			"width": 834,
+			"height": 1194
+		},
+		{
+			"id": "laptop",
+			"width": 1440,
+			"height": 900
+		},
+		{
+			"id": "wide",
+			"width": 1920,
+			"height": 1080
+		}
+	],
+	"tests": [
+		{
+			"id": "hub-home",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test tests/e2e/hub-home.spec.ts --workers=1",
+			"cwd": "packages/hub"
+		}
+	],
+	"evidence": [
+		{
+			"id": "home-screen",
+			"kind": "screenshot",
+			"states": ["default", "busy", "empty", "loading"],
+			"viewports": ["phone", "tablet", "laptop", "wide"],
+			"provenance": "actual-capture",
+			"capture": "full-page",
+			"build": "hub",
+			"required": true
+		}
+	]
+}

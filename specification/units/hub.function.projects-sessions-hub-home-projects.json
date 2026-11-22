@@ -1,0 +1,116 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.projects-sessions-hub-home-projects",
+	"uid": "u_xdo57l4rk2",
+	"kind": "function",
+	"title": "hubHomeProjects",
+	"responsibility": "Groups hosted catalog entries by kind and collects recent phases for the home project preview.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/hubHomeProjects.ts"],
+		"symbols": ["projectInventory", "inventorySummary"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "projectInventory.snapshot",
+				"type": "ProjectSnapshot",
+				"required": true,
+				"description": "The current published snapshot, if available for the operation."
+			},
+			{
+				"name": "inventorySummary.inventory",
+				"type": "ReturnType<typeof projectInventory>",
+				"required": true,
+				"description": "Grouped counts and changes from a published catalog."
+			}
+		],
+		"outputs": [
+			{
+				"name": "projectInventory",
+				"type": "unknown",
+				"description": "Counts of published apps, pages and components and the sorted recent changes."
+			},
+			{
+				"name": "inventorySummary",
+				"type": "unknown",
+				"description": "Compact sentence listing the three catalog counts."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "projectInventory",
+				"inputs": [
+					{
+						"name": "projectInventory.snapshot",
+						"type": "ProjectSnapshot",
+						"required": true,
+						"description": "The current published snapshot, if available for the operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "projectInventory",
+						"type": "unknown",
+						"description": "Counts of published apps, pages and components and the sorted recent changes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "inventorySummary",
+				"inputs": [
+					{
+						"name": "inventorySummary.inventory",
+						"type": "ReturnType<typeof projectInventory>",
+						"required": true,
+						"description": "Grouped counts and changes from a published catalog."
+					}
+				],
+				"outputs": [
+					{
+						"name": "inventorySummary",
+						"type": "unknown",
+						"description": "Compact sentence listing the three catalog counts."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/hubHomeProjects.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/hubHomeProjects.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

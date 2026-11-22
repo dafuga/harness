@@ -11,6 +11,8 @@
 	import ExplorerIndexPreview from './ExplorerIndexPreview.svelte';
 	import ExplorerFramePreview from './ExplorerFramePreview.svelte';
 	import NativeAtomPreview from './NativeAtomPreview.svelte';
+	import HubHomeCatalogPreview from './HubHomeCatalogPreview.svelte';
+	import { isHubHomePreview } from './hubHomeCatalogData';
 	let { id: requested }: { id: string } = $props();
 	const id = untrack(() => requested);
 	const unit = previewUnits.find((unit) => unit.id === id);
@@ -139,6 +141,8 @@
 							</Controls>
 						</SvelteFlow>
 					</div>
+				{:else if isHubHomePreview(id)}
+					<HubHomeCatalogPreview {id} {Component} />
 				{:else if unit.source?.includes('/atoms/')}
 					<NativeAtomPreview {Component} source={unit.source} {variant} />
 				{:else}

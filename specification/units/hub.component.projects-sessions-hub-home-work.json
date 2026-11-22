@@ -1,0 +1,149 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-work",
+	"uid": "u_fahyrdozii",
+	"kind": "component",
+	"title": "HubHomeWork",
+	"responsibility": "Shows work ordered by due date above the existing grouped Project Overview.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"hub.component.projects-sessions-hub-home-row",
+			"hub.component.projects-sessions-hub-home-skeleton",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.projects-sessions-project-overview-project-overview",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeWork.svelte"],
+		"symbols": ["HubHomeWork", "HubHomeWork.trailing"]
+	},
+	"contract": {
+		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
+		"inputs": [
+			{
+				"name": "HubHomeWork.overview",
+				"type": "OverviewSnapshot | null",
+				"required": true,
+				"description": "Tracker status and grouped project activity shown under active work."
+			},
+			{
+				"name": "HubHomeWork.work",
+				"type": "ReturnType<typeof soonestWork>",
+				"required": true,
+				"description": "In-progress and blocked work items enriched with project labels and due dates."
+			},
+			{
+				"name": "HubHomeWork.now",
+				"type": "number",
+				"required": true,
+				"description": "Current time in milliseconds since the Unix epoch."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeWork",
+				"type": "markup",
+				"description": "Shows work ordered by due date above the existing grouped Project Overview."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "HubHomeWork.trailing",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeWork.trailing",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-row",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-skeleton",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-project-overview-project-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-project-overview-project-overview-presentation",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/HubHomeWork.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/HubHomeWork.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
