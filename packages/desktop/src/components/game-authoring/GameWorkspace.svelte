@@ -141,7 +141,7 @@
 	>
 	<hx-header class="row" style="flex-wrap:wrap">
 		<hx-h1 style="flex:1;margin:0">Game Views</hx-h1>
-		<GameWorkspaceChips {demo} {commit} {readonly} {dirty} />
+		<GameWorkspaceChips {commit} {readonly} {dirty} />
 		{#if !demo && editable}
 			<hx-button class="primary" disabled={!savable} onclick={save}>Save</hx-button>
 		{/if}

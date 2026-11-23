@@ -5,9 +5,9 @@
 	import { onDestroy, untrack } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 	import type { GamePreviewProps as Props } from '../../../models/game-authoring/GamePreview.types';
-	import Select from '$shared/Select.svelte';
 	import GameLiveVideo from '../GameLiveVideo.svelte';
 	import GameControls from '../GameControls.svelte';
+	import GameLiveAi from '../GameLiveAi.svelte';
 	import { gameRenderOptions } from './gameRenderOptions';
 	import { arrowDirection, atSpawn, levelKey, previewSummary } from './gamePreviewReading';
 	const models = gameRenderOptions();
@@ -49,6 +49,8 @@
 			rate: pick.rate
 		})
 	);
+	/** The quiet line is for an off control or a run in progress; a ready control names its price in the dialog. */
+	const line = $derived(available && !busy && !note ? '' : summary);
 	$effect(() => {
 		const style = view.style;
 		untrack(() => live?.setPrompt(style));
@@ -177,19 +179,19 @@
 	<!-- The readout stays outside the canvas, so the AI capture never includes it. -->
 	<GameControls {view} {run} {step} {reset} />
 	<hx-div class="row">
-		<Select label="AI video model" bind:value={choice} disabled={!available || busy}>
-			{#each Object.entries(models) as [key, item] (key)}
-				<hx-option value={key}>{item.label} · ${item.rate.toFixed(2)}/min</hx-option>
-			{/each}
-		</Select>
-		{#if busy}
-			<hx-button onclick={() => halt('Stopped.')}>Stop AI video</hx-button>
-		{:else}
-			<hx-button class="gold" disabled={!available} onclick={start}>Start AI video</hx-button>
-		{/if}
-		<hx-small role="status">{summary}</hx-small>
+		<GameLiveAi
+			bind:choice
+			{models}
+			limit={cap}
+			rate={pick.rate}
+			{available}
+			{busy}
+			status={line}
+			{error}
+			{start}
+			stop={() => halt('Stopped.')}
+		/>
 	</hx-div>
-	{#if error}<hx-p class="error" role="alert">{error}</hx-p>{/if}
 </hx-section>
 
 <style>
