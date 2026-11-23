@@ -14,6 +14,16 @@
 			"path": ".env.cloudflare-auth/",
 			"rule": "folder-name-pattern",
 			"reason": "Git-ignored project credential runtime cache uses the established .env prefix; source rules and limits still apply."
+		},
+		{
+			"path": "src/components/shared-primitives/Select.svelte",
+			"rule": "native-list-box",
+			"reason": "Expanded mode is the native list box GameViewFields uses; a6fdvd U8 replaces it with list rows, then remove this entry."
+		},
+		{
+			"path": "tests/e2e/support/component-previews/NativeAtomPreview.svelte",
+			"rule": "native-list-box",
+			"reason": "Test-only catalog preview that renders a native select size on purpose to show the native atom."
 		}
 	]
 }
