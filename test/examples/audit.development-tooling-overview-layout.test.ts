@@ -1,22 +1,25 @@
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { afterAll, test } from 'vitest';
+import { afterAll, beforeAll, test } from 'vitest';
 import { auditOverviewLayout } from '../../src/audit/development-tooling/overviewLayout';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
+import { createTempDirectory } from '../support/temporary';
 
 const symbol = 'auditOverviewLayout';
-const root = mkdtempSync(join(tmpdir(), 'harness-overview-layout-'));
-mkdirSync(join(root, 'src/components'), { recursive: true });
-writeFileSync(
-	join(root, 'src/components/CreateForm.svelte'),
-	'<hx-form aria-label="New project"><hx-input name="name" /></hx-form>'
-);
-writeFileSync(
-	join(root, 'src/components/ProjectList.svelte'),
-	'<hx-ul><hx-li>Alpha</hx-li></hx-ul>'
-);
+let root = '';
+beforeAll(async () => {
+	root = await createTempDirectory('harness-overview-layout-');
+	mkdirSync(join(root, 'src/components'), { recursive: true });
+	writeFileSync(
+		join(root, 'src/components/CreateForm.svelte'),
+		'<hx-form aria-label="New project"><hx-input name="name" /></hx-form>'
+	);
+	writeFileSync(
+		join(root, 'src/components/ProjectList.svelte'),
+		'<hx-ul><hx-li>Alpha</hx-li></hx-ul>'
+	);
+});
 afterAll(() => rmSync(root, { recursive: true, force: true }));
 
 const limits = {
