@@ -14,6 +14,7 @@
 		],
 		"symbols": [
 			"loadVaultPhone",
+			"vaultMacStatus",
 			"isVaultPhoneMethod",
 			"vaultPhone",
 			"VaultPhoneMethod",
@@ -29,6 +30,16 @@
 				"type": "string",
 				"required": false,
 				"description": "Optional absolute path to the desktop fixture configuration. An omitted, unreadable, or invalid path leaves the inbox disabled."
+			},
+			{
+				"name": "vaultMacStatus.config",
+				"type": "VaultPhoneConfig",
+				"required": true
+			},
+			{
+				"name": "vaultMacStatus.devices",
+				"type": "RemoteHostStatus['devices']",
+				"required": true
 			},
 			{
 				"name": "isVaultPhoneMethod.method",
@@ -93,7 +104,30 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "vaultMacStatus",
+				"inputs": [
+					{
+						"name": "vaultMacStatus.config",
+						"type": "VaultPhoneConfig",
+						"required": true
+					},
+					{
+						"name": "vaultMacStatus.devices",
+						"type": "RemoteHostStatus['devices']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "vaultMacStatus",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "isVaultPhoneMethod",
@@ -113,7 +147,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "vaultPhone",
