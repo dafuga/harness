@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"revision": "d8b9917b360491cc63b3829600746cf8a524b8bf",
+	"bugClass": {
+		"id": "stale-tracker-endpoint-snapshot-drop",
+		"title": "Stale tracker endpoint drops the full snapshot",
+		"cause": "A client or transport is hard-coded to an older tracker read endpoint and expects its response to be the collection itself. After the tracker migrates that data to a fixed status endpoint with a nested array, the request fails or response parsing yields no items, and the client discards the entire snapshot instead of reading the new shape.",
+		"criteria": "Classify another site when a runtime client or transport reads tracker state through a legacy endpoint or parses its response as the collection, and an endpoint or response-shape change can therefore make a whole snapshot disappear. The cause qualifies whether the stale endpoint causes request failure or the client fails to extract a collection nested in a status response. Do not classify merely because code references a tracker endpoint if it tolerates migration or falls back to the fixed status response and its machines array.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "/machines",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "/items?status=all",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "/runs?limit=500",
+				"weight": 3
+			}
+		],
+		"contextTerms": ["tracker", "machines", "snapshot"],
+		"pathHints": [
+			{
+				"contains": "src/services/",
+				"weight": 5
+			},
+			{
+				"contains": "src/adapters/",
+				"weight": 4
+			},
+			{
+				"contains": "src/core/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": 2
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "worker",
+				"weight": -1
+			},
+			{
+				"contains": "server",
+				"weight": -1
+			}
+		]
+	}
+}
