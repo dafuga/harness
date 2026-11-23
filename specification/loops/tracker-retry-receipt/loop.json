@@ -2,11 +2,9 @@
 	"name": "tracker-retry-receipt",
 	"goal": "Persist a successful native retry and its earlier retry credit atomically without modifying retained legacy receipts.",
 	"createdAt": "2026-11-23T00:06:48.224Z",
-	"updatedAt": "2026-11-23T00:07:29.898Z",
+	"updatedAt": "2026-11-23T00:12:17.016Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T00:09:52.201Z",
+			"evidence": "Checkpoint 22e0d620d910 at 1064ef3557 failed with Tracker attempt version changed."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T00:09:54.545Z",
+			"evidence": "Retry credit uses the shared version increment and applies only to revisioned local receipts. The SQLite regression fixture is unchanged."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T00:12:17.016Z",
+			"evidence": "The unchanged SQLite regression passed at e13e7efaa1 in the same sanitized runtime as red. Runtime measurements are stored in the green checkpoint."
 		},
 		{
 			"id": "siblings",
