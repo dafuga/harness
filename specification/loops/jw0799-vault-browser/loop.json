@@ -2,7 +2,7 @@
 	"name": "jw0799-vault-browser",
 	"goal": "Prove synthetic Credential Vault browser execution, with one authenticated Unix CDP connection per lease, scoped egress and verified teardown",
 	"createdAt": "2026-11-22T16:33:25.329Z",
-	"updatedAt": "2026-11-22T16:56:59.777Z",
+	"updatedAt": "2026-11-23T16:06:09.606Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -31,6 +31,11 @@
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		},
+		{
+			"id": "cross-uid",
+			"title": "Qualify a real two-UID synthetic CDP handoff on MB2.",
 			"status": "pending"
 		}
 	],

@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { createHash, randomUUID } from 'node:crypto';
+import { randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { setTimeout } from 'node:timers/promises';
@@ -14,26 +14,27 @@ import {
 } from '../../../src/adapters/agents-providers/managed-provider-docker-adapter/dockerControl';
 import { vaultDockerLabel } from '../../../src/adapters/accounts-access/vault-browser-docker-adapter/browserDockerJournal';
 import type { VaultCreated } from '../../../src/services/accounts-access/VaultBrokerService.types';
-import { vaultRecipe } from '../../../src/utils/accounts-access/vaultRecipe';
-import type { VaultRecipeInput } from '../../../src/utils/accounts-access/vaultRecipe.types';
 import type { VaultApproval } from '../../../src/validators/accounts-access/VaultWireValidator.types';
 import { approval, sessionRequest, sign, vaultBroker } from './broker';
+import type { VaultTestRequester } from './crossUserCdp.types';
 import { canary } from './phone';
-import { reviewed } from './recipe';
+import { signedFixtureRecipe } from './recipe';
 
 export const approved = 'https://console.example.test';
 export const denied = 'https://outside.example.test';
 const context = process.env.HARNESS_TEST_VAULT_DOCKER_CONTEXT;
 
-export async function browserFixture(image: string, capture = false) {
-	const fixture = vaultBroker();
+export async function browserFixture(
+	image: string,
+	capture = false,
+	requester?: VaultTestRequester
+) {
+	const fixture = vaultBroker(requester?.runDirectory);
 	fixture.clock.now = Date.now();
 	const { recipe, script } = signedFixtureRecipe(capture);
-	const binary = join(fixture.state, 'peer.node');
-	execFileSync('bash', ['deploy/vault/build-peer.sh', binary]);
-	const peer = new VaultPeerAdapter({ binary });
 	const uid = process.getuid?.();
 	if (uid === undefined) throw new Error('The fixture needs a Unix user.');
+	const requestUid = requester?.uid ?? uid;
 	const runner = fixture.seal.runnerKey();
 	const input = sessionRequest(runner, {
 		origins: [approved],
@@ -46,26 +47,24 @@ export async function browserFixture(image: string, capture = false) {
 		seccomp: join(process.cwd(), 'deploy/vault/seccomp.json'),
 		journal: join(fixture.state, 'docker')
 	});
-	const socketPath = join(fixture.state, 'broker', 'vault.sock');
-	const server = new VaultBrokerServerAdapter({
-		...fixture,
-		socketPath,
-		peerUid: (socket) => peer.uid(socket)
-	});
-	await server.listen();
-	const client = new VaultBrokerClientAdapter({ socketPath });
+	const { server, client, peer } = await serveFixtureBroker(fixture);
 	try {
-		const { ticket, approved } = await approveFixture(fixture, client, input, uid);
-		const openSecret = () => runner.open(ticket.requestId, approved.sealed!);
+		const { ticket, approved } = await approveFixture(
+			fixture,
+			requester ? undefined : client,
+			input,
+			requestUid
+		);
 		return {
 			...fixture,
 			client,
 			docker,
 			input,
 			uid,
+			requestUid,
 			peer,
 			ticket,
-			openSecret,
+			openSecret: () => runner.open(ticket.requestId, approved.sealed!),
 			recipe,
 			script,
 			approved,
@@ -77,51 +76,42 @@ export async function browserFixture(image: string, capture = false) {
 	}
 }
 
+async function serveFixtureBroker(fixture: ReturnType<typeof vaultBroker>) {
+	const binary = join(fixture.state, 'peer.node');
+	execFileSync('bash', ['deploy/vault/build-peer.sh', binary]);
+	const peer = new VaultPeerAdapter({ binary });
+	const socketPath = join(fixture.state, 'broker', 'vault.sock');
+	const server = new VaultBrokerServerAdapter({
+		...fixture,
+		socketPath,
+		peerUid: (socket) => peer.uid(socket)
+	});
+	await server.listen();
+	return { server, client: new VaultBrokerClientAdapter({ socketPath }), peer };
+}
+
 async function approveFixture(
 	fixture: ReturnType<typeof vaultBroker>,
-	client: VaultBrokerClientAdapter,
+	client: VaultBrokerClientAdapter | undefined,
 	input: ReturnType<typeof sessionRequest>,
 	uid: number
 ) {
-	const created = await client.call<VaultCreated>('/v1/session/requests', input);
+	const created = client
+		? await client.call<VaultCreated>('/v1/session/requests', input)
+		: fixture.broker.create(input, uid);
 	const ticket = { requestId: created.requestId, receipt: created.receipt };
 	const password = Buffer.from(JSON.stringify({ password: canary.password }));
 	const sealed = fixture.phone.seal.seal(input.runnerPublicKey, ticket.requestId, password);
 	password.fill(0);
 	const decision = approval(input, created, fixture, { sealed, otpIncluded: false });
-	await client.call('/v1/device/decision', sign(fixture, input, decision));
+	const signed = sign(fixture, input, decision);
+	if (client) await client.call('/v1/device/decision', signed);
+	else fixture.broker.decide(signed);
 	const proof = fixture.broker.claim(ticket, uid);
 	const approved = JSON.parse(
 		Buffer.from(proof.approval.payload, 'base64url').toString()
 	) as VaultApproval;
 	return { ticket, approved };
-}
-
-function signedFixtureRecipe(capture: boolean) {
-	const input = JSON.parse(
-		readFileSync('deploy/vault/recipes/example-console.json', 'utf8')
-	) as VaultRecipeInput;
-	const original = readFileSync('deploy/vault/recipes/example-console.browser.json');
-	const script = capture ? captureRecipe(input, original) : original;
-	const { review, reviewers } = reviewed(input, Date.now());
-	return { recipe: vaultRecipe(input, review, reviewers), script };
-}
-
-function captureRecipe(input: VaultRecipeInput, original: Buffer): Buffer {
-	const script = JSON.parse(original.toString());
-	script.steps.at(-1).next = '/capture';
-	script.capture = { trigger: '#generate', result: '/created', value: '#generated' };
-	const program = Buffer.from(JSON.stringify(script));
-	input.actions = [{ id: 'capture-secret', mode: 'write', start: '/capture' }];
-	input.methods = [
-		{
-			kind: 'browser',
-			actions: ['capture-secret'],
-			reason: 'Synthetic browser capture action.',
-			scriptSha256: createHash('sha256').update(program).digest('hex')
-		}
-	];
-	return program;
 }
 
 export async function withHttpsFixture(

@@ -1,8 +1,10 @@
-import { generateKeyPairSync, sign } from 'node:crypto';
+import { createHash, generateKeyPairSync, sign } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import {
 	recipeDigest,
 	recipeSchema,
-	reviewSigningInput
+	reviewSigningInput,
+	vaultRecipe
 } from '../../../src/utils/accounts-access/vaultRecipe';
 import type { VaultRecipeInput } from '../../../src/utils/accounts-access/vaultRecipe.types';
 
@@ -48,4 +50,31 @@ export function reviewed(input: VaultRecipeInput, reviewedAt: number) {
 			{ id: 'daniel', publicKey: publicKey.export({ type: 'spki', format: 'pem' }).toString() }
 		]
 	};
+}
+
+export function signedFixtureRecipe(capture: boolean) {
+	const input = JSON.parse(
+		readFileSync('deploy/vault/recipes/example-console.json', 'utf8')
+	) as VaultRecipeInput;
+	const original = readFileSync('deploy/vault/recipes/example-console.browser.json');
+	const script = capture ? captureRecipe(input, original) : original;
+	const { review, reviewers } = reviewed(input, Date.now());
+	return { recipe: vaultRecipe(input, review, reviewers), script };
+}
+
+function captureRecipe(input: VaultRecipeInput, original: Buffer): Buffer {
+	const script = JSON.parse(original.toString());
+	script.steps.at(-1).next = '/capture';
+	script.capture = { trigger: '#generate', result: '/created', value: '#generated' };
+	const program = Buffer.from(JSON.stringify(script));
+	input.actions = [{ id: 'capture-secret', mode: 'write', start: '/capture' }];
+	input.methods = [
+		{
+			kind: 'browser',
+			actions: ['capture-secret'],
+			reason: 'Synthetic browser capture action.',
+			scriptSha256: createHash('sha256').update(program).digest('hex')
+		}
+	];
+	return program;
 }
