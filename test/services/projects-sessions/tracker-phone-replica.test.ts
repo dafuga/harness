@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
+import { expect } from '../../verificationExpect';
 import { measureWorkload } from '../../support/measureWorkload';
 
 import { hub, phoneWrite, updatedAt } from './trackerPhoneFixture';
