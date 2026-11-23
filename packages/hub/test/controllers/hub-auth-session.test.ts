@@ -104,7 +104,7 @@ test('an internal failure is an opaque 500', async () => {
 	expect(response.status).toBe(500);
 });
 
-test('the Google browser callback enrolls one device and removal is account scoped', async () => {
+test('Google sign-in lists the current browser and native device with account-scoped removal', async () => {
 	const hub = await hubFixture();
 	const browser = hub.browser();
 	const other = hub.browser();
@@ -112,6 +112,7 @@ test('the Google browser callback enrolls one device and removal is account scop
 	const finish = '/api/auth/native/return';
 	const exchange = '/api/auth/native/exchange';
 	const devices = '/api/auth/native/devices';
+	const account = '/api/account/devices';
 	const verifier = randomToken();
 	const proof = { nonce: randomToken(), resource: 'projects' };
 	const response = await browser.post(start, {
@@ -153,8 +154,36 @@ test('the Google browser callback enrolls one device and removal is account scop
 	]);
 	expect(await (await other.get(devices)).json()).toEqual({ devices: [] });
 	expect(await errorOf(await other.post(devices, { id: list[0].id }))).toBe('404 not-found');
+	const accountResponse = await browser.get(account);
+	expect(accountResponse.status).toBe(200);
+	const inventory = (await accountResponse.json()) as {
+		devices: AccountDevice[];
+		currentDeviceId: string;
+	};
+	expect(inventory.devices).toEqual([
+		{
+			id: inventory.currentDeviceId,
+			name: 'Web browser',
+			lastSeenAt: new Date(hub.now()).toISOString()
+		},
+		list[0]
+	]);
+	const browserDevice = { id: inventory.currentDeviceId };
+	expect(await errorOf(await hub.browser().get(account))).toBe('401 session-required');
+	expect(await errorOf(await browser.get(account, bearer))).toBe('401 session-required');
+	expect(await errorOf(await other.post(account, browserDevice))).toBe('404 not-found');
+	expect(await errorOf(await other.post(devices, browserDevice))).toBe('404 not-found');
+	expect(
+		await errorOf(await browser.post(account, browserDevice, { origin: 'https://evil.example' }))
+	).toBe('403 origin-denied');
 	expect(await hub.auth.actor(browser.request('/api/projects', { headers: bearer }))).toEqual(ada);
 	expect(await errorOf(await browser.get(devices, bearer))).toBe('401 session-required');
 	expect((await browser.post(devices, { id: list[0].id })).status).toBe(200);
 	expect(await hub.auth.actor(browser.request('/api/projects', { headers: bearer }))).toBeNull();
+	const secondBrowser = hub.browser();
+	await hub.signIn(secondBrowser);
+	expect(await errorOf(await secondBrowser.post(devices, browserDevice))).toBe('404 not-found');
+	expect((await secondBrowser.post(account, browserDevice)).status).toBe(200);
+	expect(await errorOf(await browser.get(account))).toBe('401 session-required');
+	expect(await hub.auth.actor(secondBrowser.request('/api/projects'))).toEqual(ada);
 });
