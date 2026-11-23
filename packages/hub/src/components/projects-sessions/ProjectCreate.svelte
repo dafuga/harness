@@ -53,8 +53,7 @@
 	}
 </script>
 
-<hx-section class="hub-card">
-	<hx-h2>New shared project</hx-h2>
+<hx-div class="project-create">
 	{#if !github}<hx-p class="muted">{error || 'Checking the GitHub connection…'}</hx-p>
 	{:else if !github.configured}<hx-p class="muted" role="status">
 			Project creation isn’t set up yet.
@@ -90,4 +89,21 @@
 					: ''}</hx-small
 			>{#if error}<hx-p class="error" role="alert">{error}</hx-p>{/if}
 		</hx-form>{/if}
-</hx-section>
+</hx-div>
+
+<style>
+	.project-create {
+		display: grid;
+		gap: var(--hx-space-14);
+	}
+	.project-create p {
+		margin: 0;
+	}
+	.project-create .hub-form {
+		max-width: none;
+	}
+	.project-create .outline {
+		justify-self: start;
+		min-height: 44px;
+	}
+</style>

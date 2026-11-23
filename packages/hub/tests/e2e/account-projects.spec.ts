@@ -124,7 +124,7 @@ test('a signed-in non-owner sees the project list and no overview link on /proje
 	const refused = hosted.waitForHubStatus(page, '/api/tracker-overview', 403);
 	await page.goto('/projects');
 	await (await refused).finished();
-	await expect(page.getByRole('heading', { name: 'Shared projects' })).toBeVisible();
+	await page.getByRole('button', { name: 'New project', exact: true }).click();
 	await expect(page.getByText('Project creation isn’t set up yet.')).toBeVisible();
 	await expect(page.getByRole('link', { name: 'Connect GitHub' })).toHaveCount(0);
 	await expect(page.getByRole('link', { name: 'Project overview', exact: true })).toHaveCount(0);
@@ -205,7 +205,7 @@ for (const viewport of viewports) {
 		await expect(page.getByRole('link', { name: 'Project overview', exact: true })).toHaveCount(0);
 		await expect(page.locator(overviewRoot)).toHaveCount(0);
 		await expect(page.getByText('Shared projects aren’t set up yet.')).toBeVisible();
-		await expect(page.getByRole('heading', { name: 'New shared project' })).toHaveCount(0);
+		await expect(page.getByRole('button', { name: 'New project' })).toHaveCount(0);
 		await expect(page.getByRole('alert')).toHaveCount(0);
 		await attachShot(page, testInfo, 'non-owner', viewport);
 	});

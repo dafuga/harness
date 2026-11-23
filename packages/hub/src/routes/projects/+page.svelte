@@ -1,10 +1,12 @@
 <!-- @harness-tier page -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_hubproj222 -->
+<!-- @harness-view overview -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import type { ProjectSummary } from 'collaboration';
 	import { ProjectSyncService } from '$desktop/services/projects-sessions/ProjectSyncService';
+	import Modal from '$shared/Modal.svelte';
 	import ProjectOverview from '$shared/projects-sessions/project-overview/ProjectOverview.svelte';
 	import HubFrame from '../../components/shared-primitives/HubFrame.svelte';
 	import LoginPanel from '../../components/accounts-access/login-panel/LoginPanel.svelte';
@@ -32,6 +34,8 @@
 	let asked = 0;
 	/** What the GitHub connection ended with. The reason for a failure is never in the address. */
 	const github = new URLSearchParams(location.search).get('github');
+	/** The New project form opens in a dialog over the list, never inline on this overview. */
+	let creating = $state(false);
 	async function readOwnerOverview(id: string) {
 		const turn = ++overviewAsked;
 		overviewController?.abort();
@@ -104,21 +108,23 @@
 <svelte:head><title>Harness · Shared projects</title></svelte:head>
 <HubFrame>
 	<hx-h1>Shared projects</hx-h1>
-	{#if !session.actor}<LoginPanel />{:else}{#if owned}<hx-p class="overview-link"
-				><hx-a href={resolve('/tracker-overview')}>Project overview</hx-a></hx-p
-			>
-			<ProjectOverview
-				snapshot={owned.snapshot}
-				standalone={false}
-			/>{/if}{#if github === 'connected'}<hx-p role="status">
-				GitHub is connected.
-			</hx-p>{:else if github === 'failed'}<hx-p class="error" role="alert">
-				GitHub could not be connected. Try again.
-			</hx-p>{/if}{#if listFailure === 'setup'}<hx-p class="muted" role="status"
-				>Shared projects aren’t set up yet.</hx-p
-			>{:else}{#if listFailure === 'read'}<hx-p class="error" role="alert"
-					>Shared projects couldn’t be loaded. Try again shortly.</hx-p
-				>{:else if !list}<hx-p class="muted">Loading projects…</hx-p>{/if}{#if list}<ProjectList
-					projects={list}
-				/><ProjectCreate created={open} />{/if}{/if}{/if}
+	{#if !session.actor}<LoginPanel />{:else}
+		{#if list}<hx-div class="hub-actions">
+				<hx-button
+					type="button"
+					class="primary"
+					aria-haspopup="dialog"
+					onclick={() => (creating = true)}>New project</hx-button
+				>
+			</hx-div>{/if}
+		<ProjectList projects={list} failure={listFailure} overview={Boolean(owned)} />
+		{#if github === 'connected'}<hx-p class="muted" role="status">GitHub is connected.</hx-p
+			>{:else if github === 'failed'}<hx-p class="error" role="alert"
+				>GitHub could not be connected. Try again.</hx-p
+			>{/if}
+		{#if owned}<ProjectOverview snapshot={owned.snapshot} standalone={false} />{/if}
+		<Modal open={creating} title="New project" variant="text" onClose={() => (creating = false)}
+			><ProjectCreate created={open} /></Modal
+		>
+	{/if}
 </HubFrame>

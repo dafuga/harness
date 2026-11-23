@@ -51,7 +51,7 @@ test('the account menu lists devices and removes only the selected device', asyn
 	await page.goto('/');
 	await page.getByRole('button', { name: 'Account', exact: true }).click();
 	await page.getByRole('link', { name: 'Devices', exact: true }).click();
-	await expect(page.getByRole('heading', { name: 'Devices' })).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'Devices', exact: true })).toBeVisible();
 	await expect(page.getByText('Office Mac')).toBeVisible();
 	await expect(page.getByText('Last seen', { exact: false })).toBeVisible();
 	if (process.env.TAKE_SCREENSHOT === 'true') {

@@ -1,0 +1,109 @@
+import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
+import { atlas, hostedFixture } from './hosted-fixture';
+import { hubHomeFixture } from './hub-home-fixture';
+import { overviewFixture } from './tracker-overview-fixture';
+
+/** The UI design patterns on the Hub overviews: actions above one list, forms only in dialogs. */
+const sizes = [
+	{ id: 'phone', width: 390, height: 844 },
+	{ id: 'laptop', width: 1440, height: 900 }
+] as const;
+test.setTimeout(60_000);
+
+async function box(locator: Locator) {
+	const found = await locator.boundingBox();
+	if (!found) throw new Error('The element has no layout box.');
+	return found;
+}
+
+/** Nothing on the overview asks for input until a dialog is opened, and nothing scrolls sideways. */
+async function overview(page: Page) {
+	await expect(page.locator('form, input, select, textarea')).toHaveCount(0);
+	const overflow = await page.evaluate(
+		() => document.documentElement.scrollWidth - document.documentElement.clientWidth
+	);
+	expect(overflow).toBe(0);
+}
+
+/** Opens a dialog from its button and proves it fits the screen. */
+async function dialog(page: Page, name: string) {
+	const opener = page.getByRole('button', { name, exact: true });
+	expect((await box(opener)).height).toBeGreaterThanOrEqual(44);
+	await opener.click();
+	const opened = page.getByRole('dialog', { name });
+	await expect(opened).toBeVisible();
+	const bounds = await box(opened);
+	expect(bounds.x).toBeGreaterThanOrEqual(0);
+	expect(bounds.x + bounds.width).toBeLessThanOrEqual(page.viewportSize()!.width);
+	return opened;
+}
+
+/** One action row sits above the one list card it acts on. */
+async function above(action: Locator, list: Locator) {
+	const top = await box(list);
+	const button = await box(action);
+	expect(button.y + button.height).toBeLessThanOrEqual(top.y);
+}
+
+for (const size of sizes) {
+	test(`shared projects keep New project in a dialog at ${size.id}`, async ({ page }) => {
+		await page.setViewportSize(size);
+		await overviewFixture(page, 'ready');
+		await page.goto('/projects');
+		const list = page.getByRole('region', { name: 'Your projects' });
+		await expect(list.getByRole('link', { name: 'Open Atlas' })).toBeVisible();
+		await expect(list.getByRole('link', { name: 'Project overview' })).toBeVisible();
+		await expect(page.locator('main button.primary')).toHaveCount(1);
+		const create = page.getByRole('button', { name: 'New project', exact: true });
+		await above(create, list);
+		const name = await box(list.getByRole('link', { name: 'Open Atlas' }));
+		const role = await box(list.getByText('owner', { exact: true }));
+		expect(name.x).toBeLessThan(role.x);
+		await overview(page);
+		const opened = await dialog(page, 'New project');
+		await expect(opened.getByLabel('Repository', { exact: true })).toBeVisible();
+		await expect(opened.getByRole('button', { name: 'Create project' })).toBeVisible();
+		await page.keyboard.press('Escape');
+		await expect(opened).toHaveCount(0);
+	});
+
+	test(`members invite from a dialog above the people list at ${size.id}`, async ({ page }) => {
+		await page.setViewportSize(size);
+		await hostedFixture(page);
+		await page.goto(`/projects/${atlas}/members`);
+		const people = page.getByRole('region', { name: 'People' });
+		await expect(people.getByRole('listitem')).toHaveCount(2);
+		await above(page.getByRole('button', { name: 'Invite someone', exact: true }), people);
+		await overview(page);
+		const opened = await dialog(page, 'Invite someone');
+		await expect(opened.getByRole('textbox', { name: 'Email', exact: true })).toBeVisible();
+	});
+
+	test(`devices list in one card with full-size remove buttons at ${size.id}`, async ({ page }) => {
+		await page.setViewportSize(size);
+		await hostedFixture(page);
+		const device = { id: 'fixture-device', name: 'Office Mac', lastSeenAt: '2026-11-23T12:00Z' };
+		await page.route('**/api/auth/native/devices', (route) =>
+			route.fulfill({ json: { devices: [device] } })
+		);
+		await page.goto('/devices');
+		const list = page.getByRole('region', { name: 'Signed-in devices' });
+		const remove = list.getByRole('button', { name: 'Remove Office Mac' });
+		await expect(remove).toBeVisible();
+		expect((await box(remove)).height).toBeGreaterThanOrEqual(44);
+		await overview(page);
+	});
+
+	test(`Hub home opens the agent chat from a button at ${size.id}`, async ({ page }) => {
+		await page.setViewportSize(size);
+		await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
+		await hubHomeFixture(page, 'default');
+		await page.goto('/');
+		const agents = page.getByRole('region', { name: 'Agents', exact: true });
+		await expect(agents.getByText('Chief of Staff').first()).toBeVisible();
+		await overview(page);
+		await agents.getByRole('button', { name: 'Message an agent', exact: true }).click();
+		const chat = page.getByRole('dialog').getByRole('region', { name: 'Chat with Chief of Staff' });
+		await expect(chat.getByRole('textbox', { name: 'Message', exact: true })).toBeVisible();
+	});
+}

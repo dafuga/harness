@@ -47,22 +47,28 @@ test('signed in without projects, the page explains how a project appears', asyn
 	const github = { configured: true, connected: false, login: null };
 	await hostedFixture(page, { empty: true, github });
 	await page.goto('/projects');
-	await expect(page.getByRole('heading', { name: 'No shared projects yet' })).toBeVisible();
-	await expect(page.getByText(/invitation link\s+and its code/)).toBeVisible();
-	await expect(page.getByRole('link', { name: 'Connect GitHub', exact: true })).toHaveAttribute(
+	const list = page.getByRole('region', { name: 'Your projects' });
+	await expect(list.getByText(/^No shared projects yet\./)).toBeVisible();
+	await expect(list.getByText(/invitation\s+link and code/)).toBeVisible();
+	await page.getByRole('button', { name: 'New project', exact: true }).click();
+	const dialog = page.getByRole('dialog', { name: 'New project' });
+	await expect(dialog.getByRole('link', { name: 'Connect GitHub', exact: true })).toHaveAttribute(
 		'href',
 		'/api/github/connect'
 	);
-	await expect(page.getByText(/The server checks that you\s+administer/)).toBeVisible();
+	await expect(dialog.getByText(/The server checks that you\s+administer/)).toBeVisible();
 	await expect(page.getByRole('button', { name: 'Create project', exact: true })).toHaveCount(0);
 });
 
 test('a project is created from a repository the server listed', async ({ page }) => {
 	const state = await hostedFixture(page);
 	await page.goto('/projects');
-	await page.getByLabel('Repository', { exact: true }).selectOption('42');
-	await page.getByRole('textbox', { name: 'Project name', exact: true }).fill('Atlas docs');
-	await page.getByRole('button', { name: 'Create project', exact: true }).click();
+	await expect(page.getByLabel('Repository', { exact: true })).toHaveCount(0);
+	await page.getByRole('button', { name: 'New project', exact: true }).click();
+	const dialog = page.getByRole('dialog', { name: 'New project' });
+	await dialog.getByLabel('Repository', { exact: true }).selectOption('42');
+	await dialog.getByRole('textbox', { name: 'Project name', exact: true }).fill('Atlas docs');
+	await dialog.getByRole('button', { name: 'Create project', exact: true }).click();
 	await expect
 		.poll(() => state.calls.find((call) => call.method === 'POST' && call.path === '/api/projects'))
 		.toMatchObject({ body: { name: 'Atlas docs', repositoryId: 42 } });
@@ -75,7 +81,13 @@ test('an owner invites by a link and a code that are shown apart, and no email i
 	const state = await hostedFixture(page);
 	await page.goto(`/projects/${atlas}/members`);
 	await expect(page.getByRole('heading', { name: 'Members of Atlas' })).toBeVisible();
-	await expect(page.getByRole('row', { name: /Ben Example/ })).toContainText('commenter');
+	const people = page.getByRole('region', { name: 'People' });
+	await expect(people.getByRole('listitem').filter({ hasText: 'Ben Example' })).toContainText(
+		'commenter'
+	);
+	await expect(page.getByRole('textbox', { name: 'Email', exact: true })).toHaveCount(0);
+	await page.getByRole('button', { name: 'Invite someone', exact: true }).click();
+	await expect(page.getByRole('dialog', { name: 'Invite someone' })).toBeVisible();
 	await page.getByRole('textbox', { name: 'Email', exact: true }).fill('cara@example.invalid');
 	await page.getByLabel('Role', { exact: true }).selectOption('viewer');
 	await page.getByRole('button', { name: 'Create invitation', exact: true }).click();

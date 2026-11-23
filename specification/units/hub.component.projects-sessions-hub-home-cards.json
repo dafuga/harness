@@ -11,7 +11,6 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.projects-sessions-hub-home-card",
-			"hub.component.projects-sessions-hub-home-composer",
 			"hub.component.projects-sessions-hub-home-row",
 			"hub.component.projects-sessions-hub-home-skeleton",
 			"hub.component.projects-sessions-hub-home-work-cards",
@@ -56,12 +55,6 @@
 				"type": "OpenHomeSection",
 				"required": true,
 				"description": "Opens the relevant home section and accepts an agent identifier when applicable."
-			},
-			{
-				"name": "HubHomeCards.send",
-				"type": "SendHomeChat",
-				"required": true,
-				"description": "Submits the agent note or answer to the owner chat queue and returns its receipt."
 			}
 		],
 		"outputs": [
@@ -169,11 +162,6 @@
 	"dependencies": [
 		{
 			"unit": "hub.component.projects-sessions-hub-home-card",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.component.projects-sessions-hub-home-composer",
 			"via": "import",
 			"origin": "derived"
 		},

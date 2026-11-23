@@ -1,6 +1,7 @@
 <!-- @harness-tier page -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_yd5wcp6sz3 -->
+<!-- @harness-view overview -->
 <script lang="ts">
 	import ProjectOverview from '$shared/projects-sessions/project-overview/ProjectOverview.svelte';
 	import Notice from '$shared/explorer-ui/explorer-kit/Notice.svelte';
