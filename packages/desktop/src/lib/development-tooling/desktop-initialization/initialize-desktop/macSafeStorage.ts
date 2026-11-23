@@ -1,13 +1,25 @@
 // @harness-uid u_3en7p2purk
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { lstatSync, mkdirSync } from 'node:fs';
+import { existsSync, lstatSync, mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { App } from 'electron';
 
+function migrationHelper(): string | undefined {
+	const resources = process.resourcesPath;
+	return resources ? resolve(resources, '../Helpers/HarnessKeychainMigration') : undefined;
+}
+
+/** Bundles made from Electron's stock executable may report isPackaged=false. */
+function macRelease(app: App): boolean {
+	if (process.platform !== 'darwin') return false;
+	const helper = migrationHelper();
+	return app.isPackaged || Boolean(helper && existsSync(helper));
+}
+
 /** The packaged Mac app uses a new Safe Storage name and keeps the previous profile. */
 export function preserveMacProfile(app: App): void {
-	if (process.platform !== 'darwin' || !app.isPackaged) return;
+	if (!macRelease(app)) return;
 	const directory = resolve(app.getPath('appData'), 'harness-desktop');
 	if (app.commandLine.hasSwitch('user-data-dir')) {
 		const profile = resolve(app.commandLine.getSwitchValue('user-data-dir'));
@@ -23,13 +35,14 @@ export function preserveMacProfile(app: App): void {
 
 /** The migration stays inside Keychain Services. The process exposes only an exit status. */
 export function migrateMacSafeStorage(app: App): boolean {
-	if (process.platform !== 'darwin' || !app.isPackaged) return true;
+	if (!macRelease(app)) return true;
 	const directory = app.getPath('userData');
 	const needsLegacyKey = ['session.enc', 'remote.enc'].some((file) =>
 		Boolean(lstatSync(resolve(directory, file), { throwIfNoEntry: false }))
 	);
 	if (!needsLegacyKey) return true;
-	const helper = resolve(process.resourcesPath, '../Helpers/HarnessKeychainMigration');
+	const helper = migrationHelper();
+	if (!helper) return false;
 	const args = [app.getName()];
 	if (app.commandLine.hasSwitch('harness-migrate-safe-storage')) args.push('--interactive');
 	return spawnSync(helper, args, { stdio: 'ignore' }).status === 0;
