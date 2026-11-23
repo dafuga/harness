@@ -6,12 +6,16 @@ import { withTempDir } from '../../support/temporary';
 import { checkHarborMcp } from './harborMcpFixture';
 import { buildProgram } from '../../../src/cli/program';
 import { loadCliProgram } from '../../../src/cli/loadCliProgram';
+import { commandLoaders } from '../../../src/cli/commandLoaders';
 
 test('cheap root help matches the synchronous compatibility command surface', async () => {
 	const lazy = await measureWorkload('entry.command-help', 'root-help-metadata', () =>
 		loadCliProgram([])
 	);
 	expect(lazy.helpInformation()).toBe(buildProgram().helpInformation());
+	expect(lazy.commands.map((command) => command.name()).sort()).toEqual(
+		[...Object.keys(commandLoaders), 'plugin'].sort()
+	);
 });
 
 test('selected command registrations preserve every help surface and alias', async () => {
