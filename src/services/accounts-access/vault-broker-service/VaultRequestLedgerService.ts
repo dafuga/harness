@@ -35,7 +35,7 @@ export class VaultRequestLedgerService {
 	create(
 		input: VaultSessionRequest,
 		uid: number | null,
-		preflightExpiresAt = Infinity
+		preflightExpiresAt: number = Infinity
 	): VaultCreated {
 		const all = [...this.requests.values()];
 		if (all.filter((entry) => this.live(entry)).length >= vaultRequestLimits.queue) {

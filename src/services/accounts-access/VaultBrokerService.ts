@@ -51,7 +51,7 @@ export class VaultBrokerService {
 	create(
 		input: VaultSessionRequest,
 		uid: number | null,
-		preflightExpiresAt = Infinity
+		preflightExpiresAt: number = Infinity
 	): VaultCreated {
 		return this.ledger.create(input, uid, preflightExpiresAt);
 	}

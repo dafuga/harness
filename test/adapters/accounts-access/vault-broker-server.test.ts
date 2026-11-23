@@ -158,6 +158,27 @@ test('the owner reads safe request states while other Unix peers are refused', a
 	};
 	expect(await snapshot()).toEqual([row]);
 
+	await expectPinnedMac(run, row);
+
+	const decision = sign(run, input, approval(input, created, run));
+	await run.client.call('/v1/device/decision', decision);
+	expect(await snapshot()).toEqual([{ ...row, status: 'approved' }]);
+	const ticket = { requestId: created.requestId, receipt: created.receipt };
+	await run.client.call('/v1/session/cancel', ticket);
+	expect(await snapshot()).toEqual([{ ...row, status: 'canceled' }]);
+
+	const next = sessionRequest(run.seal.runnerKey());
+	await run.client.call('/v1/session/requests', { ...next, preflight: run.authorization(next) });
+	run.clock.now += 45_000;
+	expect(await snapshot()).toMatchObject([{ status: 'expired' }, { status: 'canceled' }]);
+	expect(run.audit.read().filter(({ event }) => event === 'expiry')).toHaveLength(1);
+	for (const uid of [null, owner + 1]) {
+		const other = await served(uid);
+		await expect(other.client.call(path, {})).rejects.toMatchObject({ status: 403 });
+	}
+});
+
+async function expectPinnedMac(run: Awaited<ReturnType<typeof served>>, row: object) {
 	const config = {
 		phone: 'ab'.repeat(20),
 		deviceId: run.phone.deviceId,
@@ -184,21 +205,4 @@ test('the owner reads safe request states while other Unix peers are refused', a
 		phone: null,
 		requests: null
 	});
-
-	const decision = sign(run, input, approval(input, created, run));
-	await run.client.call('/v1/device/decision', decision);
-	expect(await snapshot()).toEqual([{ ...row, status: 'approved' }]);
-	const ticket = { requestId: created.requestId, receipt: created.receipt };
-	await run.client.call('/v1/session/cancel', ticket);
-	expect(await snapshot()).toEqual([{ ...row, status: 'canceled' }]);
-
-	const next = sessionRequest(run.seal.runnerKey());
-	await run.client.call('/v1/session/requests', { ...next, preflight: run.authorization(next) });
-	run.clock.now += 45_000;
-	expect(await snapshot()).toMatchObject([{ status: 'expired' }, { status: 'canceled' }]);
-	expect(run.audit.read().filter(({ event }) => event === 'expiry')).toHaveLength(1);
-	for (const uid of [null, owner + 1]) {
-		const other = await served(uid);
-		await expect(other.client.call(path, {})).rejects.toMatchObject({ status: 403 });
-	}
-});
+}
