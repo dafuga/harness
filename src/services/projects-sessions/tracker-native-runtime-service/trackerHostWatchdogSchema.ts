@@ -17,7 +17,8 @@ export const watchdogScan = z
 			x: z.int().nonnegative(),
 			y: z.int().nonnegative(),
 			screen: z.string().max(64_000).nullable(),
-			cwd: z.string().max(4096).optional()
+			cwd: z.string().max(4096).optional(),
+			contextTokens: z.int().nonnegative().optional()
 		})
 	)
 	.max(100)
@@ -33,6 +34,7 @@ export const trackerWatchdogAlerts = z.record(
 		item_id: z.string(),
 		host: z.string(),
 		kind: z.string(),
+		session: z.string().nullable().optional(),
 		reason: z.string(),
 		identity: z.string(),
 		at: z.number()

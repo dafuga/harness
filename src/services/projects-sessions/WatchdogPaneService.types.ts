@@ -7,7 +7,10 @@ export type StartupPromptKind =
 	| 'API key confirmation'
 	| 'permission mode confirmation'
 	| 'hook trust'
-	| 'settings error';
+	| 'settings error'
+	| 'resume picker'
+	| 'working-directory picker'
+	| 'agent command center';
 
 export interface StartupDialog {
 	cli: WatchdogCli;
@@ -33,6 +36,7 @@ export interface WatchdogPane {
 	/** Current visible screen, read against an unchanged pane identity. */
 	screen: string | null;
 	cwd?: string;
+	contextTokens?: number;
 }
 
 export interface WatchdogNote {

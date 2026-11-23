@@ -38,10 +38,11 @@ async function proveTmuxPaneIdentity(root: string) {
 	expect(keys[6]).toMatch(/201.*%9|%9.*201/);
 	expect(keys[7]).toContain("Don'\\''t send; run this");
 	expect(keys[7]).toContain('send-keys -t %9 Enter');
+	expect(readFileSync(join(root, 'submitted'), 'utf8')).toBe('2');
 }
 
 const tmuxFixture = `
-const { readFileSync, writeFileSync } = require('node:fs');
+const { existsSync, readFileSync, writeFileSync } = require('node:fs');
 const { dirname, join } = require('node:path');
 const args = process.argv.slice(2);
 const dir = dirname(process.argv[1]);
@@ -50,11 +51,19 @@ if (args[1] === 'default') {
 	process.exit(1);
 }
 const raw = readFileSync(join(dir, 'layout'), 'utf8');
+const submitted = join(dir, 'submitted');
+const keys = join(dir, 'keys.json');
+const count = existsSync(submitted) ? Number(readFileSync(submitted, 'utf8')) : 0;
 switch (args[2]) {
 	case 'list-panes': case 'display-message': process.stdout.write(raw + '\\n'); break;
-	case 'capture-pane': process.stdout.write('fixture\\n\\n› \\n\\n100% context left\\n'); break;
+	case 'capture-pane':
+		if (count === 1) process.stdout.write("fixture\\n\\n› Don't send; run this\\n\\n100% context left\\n");
+		else if (count === 2) process.stdout.write('fixture\\n\\n• Working (0s · esc to interrupt)\\n');
+		else process.stdout.write('fixture\\n\\n› \\n\\n100% context left\\n');
+		break;
 	case 'if-shell':
-		writeFileSync(join(dir, 'keys.json'), JSON.stringify(args));
+		if (count === 0) writeFileSync(keys, JSON.stringify(args));
+		writeFileSync(submitted, String(count + 1));
 		process.stdout.write('tracker-watchdog-sent\\n');
 		break;
 	default: process.exit(2);

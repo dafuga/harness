@@ -12,9 +12,11 @@ import { measureWorkload } from '../../support/measureWorkload';
 
 const itemId = 'abc123def4';
 const node = 'daniel-primary-mbp';
+const missingId = 'missing123';
+const stuckId = 'queued1234';
+const requestId = 'waiting123';
 const minute = 60_000;
 const firstPoll = 1_800_000_000_000;
-
 test('journals one idle nudge, escalates a stale pane and forwards its alert once to the primary CoS', () =>
 	measureWorkload(
 		'service.projects-sessions-tracker-native-runtime',
@@ -83,6 +85,17 @@ async function assertDryRun(runtime: TrackerNativeRuntimeService, trace: string)
 		sessions: [{ id: itemId, action: 'nudge' }]
 	});
 	expect(existsSync(trace)).toBe(false);
+	runtime.store.appendLocal({
+		itemId: missingId,
+		fields: { title: 'Task without a session', status: 'in_progress', kind: 'task', computer: node }
+	});
+	await expect(
+		runtime.watchdog!.inspect(missingId, new AbortController().signal)
+	).resolves.toMatchObject({
+		recovery: [{ item_id: missingId, host: node, kind: 'missing', session: null }]
+	});
+	runtime.store.appendLocal({ itemId: missingId, fields: { status: 'ignored' } });
+	expect(existsSync(trace)).toBe(false);
 }
 
 async function verifyAlert(runtime: TrackerNativeRuntimeService) {
@@ -129,13 +142,14 @@ test('retains the legacy MB2 observed row while its pane is live and closes it w
 	));
 
 async function proveObserved(root: string) {
+	let clock = firstPoll;
 	const executable = join(root, 'watchdog');
 	const db = new DatabaseSync(':memory:');
 	writeFileSync(executable, `#!${process.execPath}\n${watchdogDriver}`, { mode: 0o700 });
 	const runtime = new TrackerNativeRuntimeService(db, {
 		node: 'harbor-mbp-2',
 		role: 'spoke',
-		now: () => firstPoll,
+		now: () => clock,
 		hostEffects: { watchdog: { driver: executable } }
 	});
 	try {
@@ -149,6 +163,7 @@ async function proveObserved(root: string) {
 			fields: { title: 'Observed task', kind: 'task', status: 'open' }
 		});
 		const signal = new AbortController().signal;
+		await verifyStaleLaunch(runtime, db, signal);
 		await runtime.watchdog!.tick(signal);
 		expect(db.prepare('SELECT state FROM runs WHERE id = 9').get()).toMatchObject({
 			state: 'observed'
@@ -161,11 +176,44 @@ async function proveObserved(root: string) {
 		);
 		expect(response.ok).toBe(true);
 		await runtime.watchdog!.tick(signal);
+		expect(db.prepare('SELECT state FROM runs WHERE id = 9').get()).toMatchObject({
+			state: 'observed'
+		});
+		clock += 10 * minute;
+		await runtime.watchdog!.tick(signal);
 		expect(db.prepare('SELECT id,state,outcome,watch_pane FROM runs').all()).toEqual([
 			{ id: 9, state: 'finished', outcome: 'abandoned', watch_pane: 'synthetic-pane' }
 		]);
 		expect(existsSync(join(root, 'effects.ndjson'))).toBe(false);
+		expect(runtime.watchdog!.alerts()).toMatchObject([
+			{ item_id: itemId, host: 'harbor-mbp-2', kind: 'finished', session: 'auto-abc123' }
+		]);
 	} finally {
 		db.close();
 	}
+}
+
+async function verifyStaleLaunch(
+	runtime: TrackerNativeRuntimeService,
+	db: DatabaseSync,
+	signal: AbortSignal
+) {
+	const host = runtime.store.node;
+	for (const id of [stuckId, requestId]) {
+		runtime.store.appendLocal({
+			itemId: id,
+			fields: { title: 'Queued fixture', kind: 'task', status: 'open', computer: host, auto: id }
+		});
+	}
+	db.prepare(
+		`INSERT INTO runs(id,item_id,rung,cli,model,state,queued_at,auto_token)
+		VALUES (10,?,'manual','codex','gpt-6.2-sol','queued',?,?)`
+	).run(stuckId, firstPoll - 11 * minute, stuckId);
+	expect((await runtime.watchdog!.inspect(stuckId, signal)).recovery).toMatchObject([
+		{ item_id: stuckId, host, kind: 'launch-stuck', reason: expect.stringContaining('#10') }
+	]);
+	expect((await runtime.watchdog!.inspect(requestId, signal)).recovery).toEqual([]);
+	runtime.store.appendLocal({ itemId: stuckId, fields: { status: 'ignored' } });
+	runtime.store.appendLocal({ itemId: requestId, fields: { status: 'ignored' } });
+	db.prepare('DELETE FROM runs WHERE id = 10').run();
 }

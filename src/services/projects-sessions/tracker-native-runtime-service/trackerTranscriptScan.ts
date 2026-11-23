@@ -35,7 +35,7 @@ export function trackerTranscriptScan(
 	};
 }
 
-async function* transcriptFiles(directory: string, depth = 0): AsyncGenerator<string> {
+export async function* transcriptFiles(directory: string, depth = 0): AsyncGenerator<string> {
 	if (depth > 4) return;
 	try {
 		for await (const entry of await opendir(directory)) {

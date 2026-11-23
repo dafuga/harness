@@ -1,0 +1,74 @@
+{
+	"name": "tracker-session-health",
+	"goal": "Prove ten-minute native Tracker health detection, verified prompt submission, conservative recovery and CoS visibility on both Macs.",
+	"createdAt": "2026-11-23T22:41:50.806Z",
+	"updatedAt": "2026-11-23T23:03:39.823Z",
+	"template": "regression-prevention",
+	"templateLineage": ["regression-prevention"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
+			"status": "complete",
+			"completedAt": "2026-11-23T22:43:30.965Z",
+			"evidence": "Native tick runs idle/startup only and legacy recovery services are disconnected. Native tmux reports key delivery without verifying Codex submission. Prior Tracker incidents are ztgxwd, 1r5v1k, mymm0t, and wkk03d."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
+			"status": "complete",
+			"completedAt": "2026-11-23T22:43:32.762Z",
+			"evidence": "Extend the existing native runtime watchdog test to exercise the operation from its dry-run API and verify durable CoS visibility, plus the existing tmux pane-identity workload to verify key submission."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-23T23:01:06.852Z",
+			"evidence": "Exact test on b33f384f7c; Codex composer still contained the draft after one Enter."
+		},
+		{
+			"id": "propose",
+			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
+			"status": "complete",
+			"completedAt": "2026-11-23T23:01:08.754Z",
+			"evidence": "Use native Tracker dispatch and ownership checks. Confirm Codex submission against the original pane, and recheck live inventory before recovery."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
+			"status": "complete",
+			"completedAt": "2026-11-23T23:01:10.332Z",
+			"evidence": "Native watchdog health scan, context handoff, startup and queue alerts, verified input, and CoS routing."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-23T23:03:37.622Z",
+			"evidence": "Exact frozen test failed at a33cfd4f2b6d94f9e07b9a0dc9ff71a3608640a3 and passed at 5b916e8c558fbbfaf00caad0c1e3c59d84ed82e4."
+		},
+		{
+			"id": "guard",
+			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
+			"status": "complete",
+			"completedAt": "2026-11-23T23:03:39.823Z",
+			"evidence": "An isolated worktree with the original tmux adapter and the full frozen test corpus rejected the one-Enter implementation. The implementation-only follow-up passed the unchanged guard."
+		},
+		{
+			"id": "verify",
+			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -19,6 +19,8 @@ export function formatTrackerHostBrief(item: TrackerItem, completion: string): s
 		item.notes && `## Task\n\n${item.notes.slice(0, 32000)}`,
 		notes.length > 0 && `## Recent notes\n\n${notes.join('\n')}`,
 		`Start by running \`tracker start ${id}\`.`,
+		'Keep working through verification. Pause only when the task is done or a true blocker prevents further work.',
+		'At 150,000 active context tokens, leave a short Tracker handoff with the exact worktree, branch, completed work, pending checks and next step.',
 		'',
 		completion
 	]

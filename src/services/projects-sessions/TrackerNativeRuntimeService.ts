@@ -21,7 +21,10 @@ import { TrackerPersistenceService } from './TrackerPersistenceService';
 import type { TrackerSpokeLoopService } from './TrackerSpokeLoopService';
 import { TrackerRecurringService } from './TrackerRecurringService';
 import { configuredHostAdapter } from './tracker-native-runtime-service/trackerHostAdapter';
-import { trackerHostWatchdog } from './tracker-native-runtime-service/trackerHostWatchdog';
+import {
+	configuredHostWatchdog,
+	type trackerHostWatchdog
+} from './tracker-native-runtime-service/trackerHostWatchdog';
 import { configuredHostDispatch } from './tracker-native-runtime-service/trackerHostLaunch';
 import { composeTrackerDispatch } from './tracker-native-runtime-service/nativeTrackerDispatch';
 import { trackerDueItemPreview } from './tracker-native-runtime-service/readTrackerDuePreview';
@@ -63,7 +66,6 @@ export class TrackerNativeRuntimeService {
 		this.ladderConfig = options.ladderConfig;
 		this.now = now ?? Date.now;
 		this.hostEffectsHeld = options.hostEffectsHeld === true;
-		this.watchdog = configuredHostWatchdog(store, hostEffects?.watchdog, this.now);
 		const runs = new TrackerRunReadRepository(database, node);
 		this.notifications = composeNotifications(store, options);
 		const recurring = composeRecurrence(store, options, this.notifications);
@@ -77,6 +79,7 @@ export class TrackerNativeRuntimeService {
 			scheduler: this.scheduler,
 			duePreview: this.duePreview
 		} = composeTrackerDispatch(store, workerOptions));
+		this.watchdog = configuredHostWatchdog(this, hostEffects?.watchdog);
 		this.items = composeItemApi(this, runs, options, recurring?.repo);
 		({ tick: this.telemetry, samples: this.fleetSamples } = composeTrackerTelemetry(
 			store,
@@ -208,11 +211,3 @@ export {
 	TrackerRecurringRepository,
 	TrackerRecurringService
 };
-
-function configuredHostWatchdog(
-	store: TrackerPersistenceService,
-	watchdog: NonNullable<TrackerNativeRuntimeOptions['hostEffects']>['watchdog'],
-	now: () => number
-) {
-	return watchdog ? trackerHostWatchdog(store, watchdog, now) : undefined;
-}

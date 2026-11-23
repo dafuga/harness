@@ -106,7 +106,9 @@ export function matchesTrackerTmuxPane(
 	);
 }
 
-export function trackerTmuxKeys(paneId: string, message: string): string {
+export function trackerTmuxKeys(paneId: string, message?: string): string {
+	const enter = `send-keys -t ${paneId} Enter ; display-message -p tracker-watchdog-sent`;
+	if (message === undefined) return enter;
 	const literal = "'" + message.replaceAll("'", "'\\''") + "'";
-	return `send-keys -t ${paneId} -l ${literal} ; send-keys -t ${paneId} Enter ; display-message -p tracker-watchdog-sent`;
+	return `send-keys -t ${paneId} -l ${literal} ; ${enter}`;
 }

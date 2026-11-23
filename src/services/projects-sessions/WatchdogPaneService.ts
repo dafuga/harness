@@ -8,6 +8,8 @@ import type {
 	WatchdogRun
 } from './WatchdogPaneService.types';
 
+import { codexStartupMenus } from './watchdog-pane-service/codexStartupMenus';
+
 const escape = '\u001b';
 const controls = new RegExp(escape + '\\[[0-9;:]*m', 'g');
 const faint = new RegExp('^' + escape + '\\[(?:2|2;[0-9;]+)m');
@@ -15,6 +17,7 @@ const manualName = /^auto-([a-z0-9]{6,10})$/;
 const busy =
 	/\b(?:esc to (?:interrupt|cancel)|ctrl\+c to interrupt|queued messages?|waiting for (?:approval|permission)|usage limit|out of credits|credit balance is too low)\b/i;
 const alertMenus = [
+	...codexStartupMenus,
 	{
 		cli: 'codex',
 		kind: 'sign-in',

@@ -21,6 +21,7 @@ export function recordStartupAlerts(
 				itemId: action.id,
 				kind: 'startup',
 				reason: action.reason,
+				session: action.pane,
 				identity: action.identity
 			},
 			snapshot.now,
@@ -44,23 +45,30 @@ function clearStartupAlert(
 
 export function recordWatchdogAlert(
 	store: TrackerPersistenceService,
-	{
-		itemId,
-		kind,
-		reason,
-		identity
-	}: { itemId: string; kind: string; reason: string; identity: string },
+	input: {
+		itemId: string;
+		kind: string;
+		reason: string;
+		identity: string;
+		session?: string | null;
+		key?: string;
+		localOnly?: boolean;
+	},
 	at: number,
-	question: string | null = `${store.node}: ${reason} Chief of Staff, please inspect the session.`
+	question:
+		| string
+		| null = `${store.node}: ${input.reason} Chief of Staff, please inspect the session.`
 ): void {
-	const key = `${itemId}:${kind}`;
+	const { itemId, kind, reason, identity, session, localOnly } = input;
+	const key = input.key ?? `${itemId}:${kind}`;
 	const alerts = readWatchdogAlerts(store);
-	if (alerts[key]?.identity === identity) return;
+	if (alerts[key]?.identity === identity && alerts[key]?.reason === reason) return;
 	const alert = {
 		id: `${store.node}:${key}:${at}`,
 		item_id: itemId,
 		kind,
 		host: store.node,
+		session,
 		reason,
 		identity,
 		at
@@ -73,7 +81,8 @@ export function recordWatchdogAlert(
 			question
 		})
 	};
-	store.appendLocal({ itemId, fields }, () =>
-		store.writeMeta({ watchdog_alerts: JSON.stringify({ ...alerts, [key]: alert }) })
-	);
+	const persist = () =>
+		store.writeMeta({ watchdog_alerts: JSON.stringify({ ...alerts, [key]: alert }) });
+	if (localOnly) persist();
+	else store.appendLocal({ itemId, fields }, persist);
 }
