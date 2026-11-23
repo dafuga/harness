@@ -126,12 +126,14 @@
 			{
 				"name": "phoneTrackerPull.scopeParts",
 				"type": "readonly string[]",
-				"required": true
+				"required": true,
+				"description": "The authenticated host ID, phone device ID and pairing generation. The adapter derives the Tracker cursor scope from these values."
 			},
 			{
 				"name": "phoneTrackerPull.fetcher",
 				"type": "TrackerPhoneFetcher",
-				"required": true
+				"required": true,
+				"description": "The injected HTTP function that reads the Tracker native hub on loopback."
 			}
 		],
 		"outputs": [
@@ -170,10 +172,31 @@
 				"name": "RemoteDeviceSessionsService.end",
 				"type": "void",
 				"description": "No value is returned. Every device currently in the entry map is revoked, detached, and ended."
+			},
+			{
+				"name": "phoneTrackerPull",
+				"type": "(input: Record<string, unknown>) => Promise<unknown>",
+				"description": "Returns an async reader for the bound device scope. The reader accepts version 1 and at most one cursor or continuation, and resolves to the hub's decoded JSON response of at most 128 KiB."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "invalidTrackerPull",
+				"type": "RemoteFailure",
+				"description": "An unsupported version, malformed position, failed HTTP response, missing body or oversized response rejects the pull with the corresponding remote failure code."
+			},
+			{
+				"name": "invalidProjectionJson",
+				"type": "SyntaxError",
+				"description": "The hub response body could not be parsed as JSON."
+			},
+			{
+				"name": "trackerPullTransport",
+				"type": "TypeError | DOMException",
+				"description": "The default fetch or response stream rejects on transport failure, an unreadable body or the eight-second request timeout."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RemoteDeviceSessionsService.connected",
@@ -356,22 +379,41 @@
 					{
 						"name": "phoneTrackerPull.scopeParts",
 						"type": "readonly string[]",
-						"required": true
+						"required": true,
+						"description": "The authenticated host ID, phone device ID and pairing generation. The adapter derives the Tracker cursor scope from these values."
 					},
 					{
 						"name": "phoneTrackerPull.fetcher",
 						"type": "TrackerPhoneFetcher",
-						"required": true
+						"required": true,
+						"description": "The injected HTTP function that reads the Tracker native hub on loopback."
 					}
 				],
 				"outputs": [
 					{
 						"name": "phoneTrackerPull",
-						"type": "unknown"
+						"type": "(input: Record<string, unknown>) => Promise<unknown>",
+						"description": "Returns an async reader for the bound device scope. The reader accepts version 1 and at most one cursor or continuation, and resolves to the hub's decoded JSON response of at most 128 KiB."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "invalidTrackerPull",
+						"type": "RemoteFailure",
+						"description": "An unsupported version, malformed position, failed HTTP response, missing body or oversized response rejects the pull with the corresponding remote failure code."
+					},
+					{
+						"name": "invalidProjectionJson",
+						"type": "SyntaxError",
+						"description": "The hub response body could not be parsed as JSON."
+					},
+					{
+						"name": "trackerPullTransport",
+						"type": "TypeError | DOMException",
+						"description": "The default fetch or response stream rejects on transport failure, an unreadable body or the eight-second request timeout."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
