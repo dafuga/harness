@@ -35,7 +35,12 @@ async function proveManagedWorker({ root, git }: TemporaryRepo) {
 	const launcher = trackerManagedHostLauncher(managed, { client: scoped, platform: 'darwin' });
 	const docker = launchInput(root, 1, 'docker');
 	const native = launchInput(root, 2, 'native');
-	const claude = launchInput(root, 3, 'native');
+	const claude = {
+		...native,
+		runId: 3,
+		key: JSON.stringify([native.itemId, 'reserved-claude-fixture', 1]),
+		selection: { provider: 'claude', model: 'claude-sonnet-4-6', intelligence: 'high' }
+	} satisfies TrackerHostStartRequest;
 	for (const input of [docker, native, claude]) {
 		expect(await launcher.start(input, signal)).toMatchObject({
 			status: 'started',
@@ -88,7 +93,7 @@ function launchInput(
 	runId: number,
 	backend: 'native' | 'docker'
 ): TrackerHostStartRequest {
-	const itemId = ['abc123def4', 'def123abc4', 'abc456def4'][runId - 1];
+	const itemId = ['abc123def4', 'def123abc4'][runId - 1];
 	const brief =
 		'# Fixture\n' +
 		(backend === 'docker' ? 'note '.repeat(5000) : '') +
@@ -103,10 +108,7 @@ function launchInput(
 		key: JSON.stringify([itemId, 'reserved-fixture', 1]),
 		platform: backend === 'docker' ? 'linux' : 'macos',
 		queuedAt: Date.now() - 1000,
-		selection:
-			runId === 3
-				? { provider: 'claude', model: 'claude-opus-5-5', intelligence: 'high' }
-				: { provider: 'codex', model: 'gpt-6.2-sol', intelligence: 'high' }
+		selection: { provider: 'codex', model: 'gpt-6.2-sol', intelligence: 'high' }
 	};
 }
 
@@ -141,10 +143,17 @@ function verifyWorkerInvocations(profiles: { native: string; docker: string }) {
 		brief: expect.stringContaining('First run tracker done.')
 	});
 	expect(Buffer.byteLength(docker[0].brief)).toBeLessThan(16_000);
+	expect(docker[0].cwd).toMatch(/\/effects\/[a-f0-9]{64}\/worktree$/);
+	verifyNativeInvocations(native, docker[0].cwd);
+}
+
+function verifyNativeInvocations(
+	native: { argv: string[]; cwd: string }[],
+	dockerWorktree: string
+) {
 	expect(native[0]).toMatchObject({
 		argv: [
-			'--sandbox',
-			'workspace-write',
+			'--dangerously-bypass-approvals-and-sandbox',
 			'-m',
 			'gpt-6.2-sol',
 			'-c',
@@ -157,8 +166,15 @@ function verifyWorkerInvocations(profiles: { native: string; docker: string }) {
 		legacy: '/dev/null/tracker',
 		guestAuthFile: null
 	});
-	expect(docker[0].cwd).toMatch(/\/effects\/[a-f0-9]{64}\/worktree$/);
-	expect(native[0].cwd).not.toBe(docker[0].cwd);
+	expect(native[1].argv).toEqual([
+		'--dangerously-skip-permissions',
+		'--model',
+		'claude-sonnet-4-6',
+		'--effort',
+		'high',
+		expect.stringContaining('def123abc4')
+	]);
+	expect(native[0].cwd).not.toBe(dockerWorktree);
 }
 
 function verifySecretSafety(profiles: { native: string; docker: string }, briefs: string[]) {

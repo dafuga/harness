@@ -34,7 +34,17 @@ const tmuxProgram = `
 const { spawnSync } = require('node:child_process');
 const args = process.argv.slice(2);
 if (args.includes('list-panes')) process.exit(0);
-if (args.includes('show-environment')) process.exit(1);
+if (args.includes('show-environment')) {
+	const { existsSync, readFileSync } = require('node:fs');
+	const mode = require('node:path').join(__dirname, 'tmux-presence');
+	const reply = existsSync(mode) ? readFileSync(mode, 'utf8') : '';
+	if (reply.startsWith('HARNESS_TRACKER_ATTEMPT=')) {
+		process.stdout.write(reply);
+		process.exit(0);
+	}
+	process.stderr.write(reply || 'no such session: ' + args[args.indexOf('-t') + 1]);
+	process.exit(1);
+}
 if (!args.includes('new-session')) process.exit(2);
 const dir = args.indexOf('-c');
 const [command, ...workerArgs] = args.slice(dir + 2);

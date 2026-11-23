@@ -1,4 +1,4 @@
-import { chmodSync, readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test, vi } from 'vitest';
@@ -66,7 +66,10 @@ async function proveHostLaunch(root: string) {
 		expect(runState(db, dockerId)).toMatchObject({ state: 'queued' });
 		db.close();
 		db = new DatabaseSync(path);
-		await verifyResumedHost(runtime(), db, fixture.trace);
+		const resumed = runtime();
+		await verifyResumedHost(resumed, db, fixture.trace);
+		writeFileSync(fixture.trace + '.released', '');
+		await verifyNewLaunch(resumed, db);
 	} finally {
 		db.close();
 	}
@@ -98,6 +101,27 @@ async function verifyResumedHost(
 	expect(starts[0].brief).toMatch(/tracker done docker[\s\S]+only as the final step/);
 }
 
+async function verifyNewLaunch(runtime: TrackerNativeRuntimeService, db: DatabaseSync) {
+	db.prepare("UPDATE runs SET state = 'finished', outcome = 'abandoned' WHERE item_id = ?").run(
+		macId
+	);
+	for (const id of [dockerId, macId]) {
+		const previous = db.prepare('SELECT auto_token FROM runs WHERE item_id = ?').get(id);
+		if (id === dockerId) expect((await request(runtime, id, 'reopen')).ok).toBe(true);
+		const relaunched = await (await request(runtime, id, 'launch')).json();
+		expect(relaunched.auto).toEqual(expect.any(String));
+		expect.soft(relaunched.auto).not.toBe(previous?.auto_token);
+	}
+	await runtime.scheduler!.tick(signal);
+	await runtime.scheduler!.tick(signal);
+	expect(
+		db.prepare('SELECT item_id, attempt FROM runs WHERE id > 2 ORDER BY item_id').all()
+	).toEqual([
+		{ item_id: dockerId, attempt: 1 },
+		{ item_id: macId, attempt: 1 }
+	]);
+}
+
 function request(runtime: TrackerNativeRuntimeService, id: string, action: string) {
 	return runtime.items.handle(
 		new Request(`http://tracker-fixture.invalid/items/${id}/${action}`, {
@@ -114,7 +138,9 @@ function runState(db: DatabaseSync, id: string) {
 function hostFixture(root: string) {
 	const driver = join(root, 'driver');
 	const trace = join(root, 'starts.ndjson');
-	writeHostFixtureFiles(root, { driver, trace });
+	writeFileSync(driver, `#!${process.execPath}\n${fixtureDriver}`, { mode: 0o700 });
+	writeFileSync(trace, '', { mode: 0o600 });
+	writeFileSync(join(root, 'secret'), 'fixture-sync-secret-for-host-effects', { mode: 0o600 });
 	const config = {
 		version: 1,
 		node: 'daniel-primary-mbp',
@@ -164,19 +190,6 @@ function hostFixture(root: string) {
 	return { effects, load, trace };
 }
 
-function writeHostFixtureFiles(
-	root: string,
-	{ driver, trace }: { driver: string; trace: string }
-): void {
-	for (const [file, contents] of [
-		[driver, `#!${process.execPath}\n${fixtureDriver}`],
-		[trace, ''],
-		[join(root, 'secret'), 'fixture-sync-secret-for-host-effects']
-	])
-		writeFileSync(file, contents, { mode: 0o600 });
-	chmodSync(driver, 0o700);
-}
-
 const fixtureDriver = `
 const { appendFileSync, readFileSync } = require('node:fs');
 const { dirname, join } = require('node:path');
@@ -185,14 +198,17 @@ const input = JSON.parse(readFileSync(0, 'utf8'));
 const trace = join(dirname(process.argv[1]), 'starts.ndjson');
 const starts = () => readFileSync(trace, 'utf8').trim().split('\\n').filter(Boolean).map(JSON.parse);
 if (operation === 'inspect') {
-	process.stdout.write(JSON.stringify(starts().map(({ session }) => session)));
+	const released = require('node:fs').existsSync(trace + '.released');
+	process.stdout.write(JSON.stringify(starts().slice(released ? 2 : 0).map(({ session }) => session)));
 } else if (operation === 'start') {
 	const { itemId, key, platform, backend, brief, queuedAt } = input;
-	const session = { itemId, key, id: 'session-' + itemId, state: 'live', startedAt: queuedAt };
+	const retry = starts().some((entry) => entry.itemId === itemId);
+	const id = 'session-' + itemId + (retry ? '-relaunch' : '');
+	const session = { itemId, key, id, state: 'live', startedAt: queuedAt };
 	appendFileSync(trace, JSON.stringify({
 		itemId, platform, backend, brief, session, secretInherited: Boolean(process.env.FIXTURE_TRACKER_SECRET)
 	}) + '\\n');
-	if (itemId === 'docker1234') process.exit(1);
+	if (itemId === 'docker1234' && !retry) process.exit(1);
 	process.stdout.write(JSON.stringify({ status: 'started', session }));
 } else {
 	process.exit(2);

@@ -30,6 +30,14 @@ export class TrackerRunReadRepository {
 		return runs.sort((left, right) => compareQueue(right, left)).slice(0, cap);
 	}
 
+	launchConsumed(itemId: string, token: string): boolean {
+		const attempts = this.list({ itemId }).filter(({ auto_token }) => auto_token === token);
+		return (
+			attempts.length > 0 &&
+			attempts.every(({ state, outcome }) => state === 'finished' && outcome !== 'blocked')
+		);
+	}
+
 	finished(): TrackerListedRun[] {
 		return this.rows("WHERE state = 'finished'");
 	}
