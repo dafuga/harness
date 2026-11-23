@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"revision": "adfe4ac3bce117b877ce23e104f0cd03815a344a",
+	"bugClass": {
+		"id": "capability-error-stringification",
+		"title": "Capability errors displayed as generic strings",
+		"cause": "A shared project capability rejection is rendered in a browser component by coercing the error or its cause to a string, which can expose an implementation-oriented value instead of presenting a deliberate user-facing message. The same cause applies independently to the signed-in Hub Projects list or ProjectCreate when they display that shared rejection; direct invite and members pages are outside this class.",
+		"criteria": "Include a site when a signed-in project-list or project-creation browser view catches or receives a shared project-capability rejection and displays it using generic string coercion or raw error text. Either view independently qualifies. Exclude direct invite and members pages, and exclude cases that map the rejection to an intentional user-facing message before rendering.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "String(cause)",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "String(error)",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "{cause}",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "{error.message}",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "catch (cause)",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "catch (error)",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "String",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "onMount",
+				"weight": 1
+			}
+		],
+		"contextTerms": ["capability", "cause", "error", "project", "projects"],
+		"pathHints": [
+			{
+				"contains": "packages/hub/",
+				"weight": 5
+			},
+			{
+				"contains": ".svelte",
+				"weight": 3
+			},
+			{
+				"contains": "invite",
+				"weight": -3
+			},
+			{
+				"contains": "members",
+				"weight": -3
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "src/cli/",
+				"weight": -2
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": -2
+			}
+		]
+	}
+}

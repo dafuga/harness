@@ -15,7 +15,7 @@
 	import type { OverviewOutcome } from '../tracker-overview/overviewClient.types';
 	const { session, projects } = browserContext();
 	let list = $state<ProjectSummary[] | null>(null);
-	let error = $state('');
+	let listFailure = $state<'setup' | 'read' | null>(null);
 	/** Who the server names; the same person answered again changes nothing here. */
 	const actor = $derived(session.actor?.id ?? null);
 	const configured = $derived(session.status?.configured === true);
@@ -64,16 +64,20 @@
 			const value = await projects.list();
 			if (turn !== asked || id !== actor) return;
 			list = value;
-			error = '';
+			listFailure = null;
 		} catch (cause) {
-			if (turn === asked && id === actor) error = String(cause);
+			if (turn !== asked || id !== actor) return;
+			listFailure =
+				cause instanceof Error && 'code' in cause && cause.code === 'collaboration-disabled'
+					? 'setup'
+					: 'read';
 		}
 	}
 	/** Another person, or nobody, takes the list off the page before anything else is read. */
 	$effect(() => {
 		const id = actor;
 		list = null;
-		error = '';
+		listFailure = null;
 		if (id) void load(id);
 		return () => asked++;
 	});
@@ -110,8 +114,11 @@
 				GitHub is connected.
 			</hx-p>{:else if github === 'failed'}<hx-p class="error" role="alert">
 				GitHub could not be connected. Try again.
-			</hx-p>{/if}{#if error}<hx-p class="error" role="alert">{error}</hx-p
-			>{/if}{#if list}<ProjectList projects={list} />{:else if !error}<hx-p class="muted"
-				>Loading projects…</hx-p
-			>{/if}<ProjectCreate created={open} />{/if}
+			</hx-p>{/if}{#if listFailure === 'setup'}<hx-p class="muted" role="status"
+				>Shared projects aren’t set up yet.</hx-p
+			>{:else}{#if listFailure === 'read'}<hx-p class="error" role="alert"
+					>Shared projects couldn’t be loaded. Try again shortly.</hx-p
+				>{:else if !list}<hx-p class="muted">Loading projects…</hx-p>{/if}{#if list}<ProjectList
+					projects={list}
+				/><ProjectCreate created={open} />{/if}{/if}{/if}
 </HubFrame>

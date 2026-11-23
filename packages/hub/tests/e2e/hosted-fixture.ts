@@ -4,6 +4,7 @@ import { ada, clientId, credential, hostedData, type HostedData } from './hosted
 import { emailAnswer } from './hosted-email';
 import { nativeAnswer } from './hosted-native';
 import { projectAnswer } from './hosted-projects';
+import type { ExpectedBrowserError } from '../../../../test/support/browserTest.types';
 export * from './hosted-data';
 
 const gis = `window.google = { accounts: { id: {
@@ -93,3 +94,29 @@ export async function hostedFixture(page: Page, options: Partial<HostedState> = 
 }
 
 export type { HostedCall, HostedState, Answer } from './hosted-fixture.types';
+
+export const githubUnavailable = { configured: false, connected: false, login: null };
+
+export function waitForHubStatus(page: Page, path: string, status: number) {
+	return page.waitForResponse(
+		(response) => new URL(response.url()).pathname === path && response.status() === status
+	);
+}
+
+/** Match the production projects response when shared collaboration is disabled. */
+export async function disableCollaboration(
+	page: Page,
+	browserErrors: { expectError(error: ExpectedBrowserError): void },
+	origin: string
+) {
+	browserErrors.expectError({
+		type: 'console',
+		message:
+			'Failed to load resource: the server responded with a status of 503 (Service Unavailable)',
+		source: new URL('/api/projects', origin).href,
+		reason: 'Shared collaboration is intentionally disabled in this setup state.'
+	});
+	await page.route('**/api/projects', (route) =>
+		route.fulfill({ status: 503, json: { error: 'collaboration-disabled' } })
+	);
+}

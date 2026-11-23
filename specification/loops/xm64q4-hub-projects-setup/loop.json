@@ -1,0 +1,69 @@
+{
+	"name": "xm64q4-hub-projects-setup",
+	"goal": "Show a friendly setup state on Hub Projects when shared collaboration or GitHub are unavailable while preserving signed-in owner boundaries.",
+	"createdAt": "2026-11-23T11:58:08.978Z",
+	"updatedAt": "2026-11-23T12:25:24.460Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-23T11:59:26.702Z",
+			"evidence": "Live authenticated Hub reported BrowserApiRequestError on /projects with collaboration-disabled. Unavailable collaboration uses a friendly setup state. GitHub configuration shows a friendly fallback. Owner and non-owner authorization remain server-enforced."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-23T11:59:27.828Z",
+			"evidence": "The standardized account Projects tests mocked a configured GitHub and successful collaboration list even for signed-in non-owners. Strengthen those tests using the production 503 and an unconfigured GitHub status, retaining assertions for account-specific overview access."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-23T12:18:06.335Z",
+			"evidence": "The unchanged compiled app and signed-in browser fixtures reproduced the missing setup and creation notices."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-23T12:18:45.246Z",
+			"evidence": "Added neutral fallback for collaboration-disabled and unconfigured GitHub, preserved the owner-only section, and replaced error-object rendering in project listing and creation with safe messages."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-23T12:19:15.843Z",
+			"evidence": "The unchanged compiled Hub signed-in Projects browser regression passed all cases on harbor-mbp-2."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "complete",
+			"completedAt": "2026-11-23T12:24:21.232Z",
+			"evidence": "siblings-68cea3b0-ad5f-42a4-a5f6-e002b4c14de6.json"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "complete",
+			"completedAt": "2026-11-23T12:25:24.460Z",
+			"evidence": "The matched compiled Hub browser run passed all 16 cases on harbor-mbp-2 with one worker. Inspected before and after pixels at all three viewports. Hub typecheck and changed runtime lint passed. Root check stops at main formatting debt, and Hub units and audits match main. The paired run used compiled app assets without TCP when the secondary Mac exhausted ephemeral ports."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
