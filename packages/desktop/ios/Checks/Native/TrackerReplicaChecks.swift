@@ -62,6 +62,8 @@ func trackerReplicaChecks() {
     let status = tool(bench, "tracker_status")
     check(status["freshness"] as? String == "current", "tracker: terminal delta confirms freshness")
     check(data(status)["unresolvedFlags"] as? Int == 2, "tracker: both snapshot pages were committed together")
+    check(tool(bench, "tracker_write_status")["code"] as? String == "denied",
+          "tracker: the replica read grant cannot access the write outbox")
 
     let saved = bench.vault.record
     bench.close(link, .lost)
