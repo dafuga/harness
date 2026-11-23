@@ -1,5 +1,5 @@
-#!/bin/sh
-set -eu
+#!/usr/bin/env bash
+set -euo pipefail
 
 source_dir=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 source_skill="$source_dir/secret-safe-computer-use/SKILL.md"

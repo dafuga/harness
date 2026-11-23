@@ -8,9 +8,10 @@ import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
 
 export function recordTrackerTranscriptExposure(
 	store: TrackerPersistenceService,
-	{ type, byte, session, identity, itemId }: TrackerTranscriptExposure,
+	exposure: TrackerTranscriptExposure,
 	now: number
 ): void {
+	const { type, byte, session, identity, itemId } = exposure;
 	const event = createHash('sha256')
 		.update(JSON.stringify([identity, type]))
 		.digest('hex');

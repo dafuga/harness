@@ -164,7 +164,7 @@ function verifyWorkerInvocations(profiles: { native: string; docker: string }) {
 function verifySecretSafety(profiles: { native: string; docker: string }, briefs: string[]) {
 	const skill = 'skills/secret-safe-computer-use/SKILL.md';
 	const home = profiles.native;
-	const install = spawnSync('/bin/sh', ['deploy/vault/install-secret-safe-skill.sh'], {
+	const install = spawnSync('/bin/bash', ['deploy/vault/install-secret-safe-skill.sh'], {
 		env: { PATH: process.env.PATH, HOME: home }
 	});
 	expect(install.status).toBe(0);

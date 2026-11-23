@@ -515,28 +515,8 @@
 				"required": true
 			},
 			{
-				"name": "recordTrackerTranscriptExposure.type",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "recordTrackerTranscriptExposure.byte",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "recordTrackerTranscriptExposure.session",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "recordTrackerTranscriptExposure.identity",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "recordTrackerTranscriptExposure.itemId",
-				"type": "unknown",
+				"name": "recordTrackerTranscriptExposure.exposure",
+				"type": "TrackerTranscriptExposure",
 				"required": true
 			},
 			{
@@ -1577,28 +1557,8 @@
 						"required": true
 					},
 					{
-						"name": "recordTrackerTranscriptExposure.type",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "recordTrackerTranscriptExposure.byte",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "recordTrackerTranscriptExposure.session",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "recordTrackerTranscriptExposure.identity",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "recordTrackerTranscriptExposure.itemId",
-						"type": "unknown",
+						"name": "recordTrackerTranscriptExposure.exposure",
+						"type": "TrackerTranscriptExposure",
 						"required": true
 					},
 					{

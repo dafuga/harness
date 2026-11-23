@@ -54,7 +54,7 @@ sudo bash deploy/vault/mb2-executor-account.sh undo
 
 ## Secret-safe session setup
 
-Run `sh deploy/vault/install-secret-safe-skill.sh` as the session owner to install the
+Run `bash deploy/vault/install-secret-safe-skill.sh` as the session owner to install the
 same skill for Codex and Claude. For a managed profile, set its `HOME` or provide its
 `CODEX_HOME` and `CLAUDE_CONFIG_DIR` explicitly. The Harness Tracker launcher also
 puts the rule at the head of the brief for native and Docker workers. See
