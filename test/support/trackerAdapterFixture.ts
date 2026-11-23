@@ -213,3 +213,7 @@ export function readFollowUpFixtureItems(database: DatabaseSync) {
 			.get()
 	};
 }
+
+export function sourceRun(database: DatabaseSync): unknown {
+	return database.prepare('SELECT cursor, last_run, last_error FROM adapter_sources').get();
+}

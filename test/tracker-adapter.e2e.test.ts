@@ -6,6 +6,7 @@ import {
 	adapterFixture,
 	adapterIssue,
 	adapterSourceId,
+	sourceRun,
 	sqliteFixtureLease
 } from './support/trackerAdapterFixture';
 
@@ -216,8 +217,4 @@ async function verifyReopen(fixture: ReturnType<typeof adapterFixture>): Promise
 function refuseInsert(database: DatabaseSync, table: 'adapter_links' | 'adapter_events'): void {
 	database.exec(`CREATE TRIGGER refuse_receipt BEFORE INSERT ON ${table}
 		BEGIN SELECT RAISE(ABORT, 'fixture receipt refused'); END`);
-}
-
-function sourceRun(database: DatabaseSync): unknown {
-	return database.prepare('SELECT cursor, last_run, last_error FROM adapter_sources').get();
 }
