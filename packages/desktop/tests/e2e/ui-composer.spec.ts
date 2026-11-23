@@ -131,7 +131,7 @@ test('on a phone the Project chat is a bottom sheet over a scrim, and the page b
 	await expect(panel(page)).toBeHidden();
 });
 
-test('only the chosen design option is gold; the others read as secondary buttons', async ({
+test('only the chosen design option is outlined gold; others and one-option groups read as secondary', async ({
 	page
 }) => {
 	await page.setViewportSize(laptop);
@@ -164,8 +164,10 @@ test('only the chosen design option is gold; the others read as secondary button
 	});
 	const chosen = await normal(await painted(2));
 	expect(chosen.pressed).toBe('true');
-	expect(chosen.color).not.toBe(chosen.background);
-	expect(chosen.background).toBe(gold);
+	// Outlined, not filled: the screen keeps one filled primary button.
+	expect(chosen.border).toBe(gold);
+	expect(chosen.color).toBe(gold);
+	expect(chosen.background).not.toBe(gold);
 	for (const other of [1, 3]) {
 		const plain = await normal(await painted(other));
 		expect(plain.pressed).toBe('false');
@@ -174,5 +176,22 @@ test('only the chosen design option is gold; the others read as secondary button
 		expect(plain.border).not.toBe(gold);
 		expect(plain.color).not.toBe(chosen.color);
 	}
+	// A one-option group (the only viewport) has nothing to choose and is not marked gold.
+	const single = page.getByRole('group', { name: 'Viewport', exact: true }).getByRole('button');
+	await expect(single).toHaveCount(1);
+	const only = await normal(
+		await single.evaluate((node) => {
+			const style = getComputedStyle(node);
+			return {
+				pressed: node.getAttribute('aria-pressed'),
+				background: style.backgroundColor,
+				border: style.borderTopColor,
+				color: style.color
+			};
+		})
+	);
+	expect(only.background).toBe(secondary);
+	expect(only.border).not.toBe(gold);
+	expect(only.color).not.toBe(gold);
 	await expect(optionGroup(page)).toBeVisible();
 });

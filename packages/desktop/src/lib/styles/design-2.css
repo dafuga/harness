@@ -23,12 +23,17 @@ pre {
 .segmented-choice button:last-child {
 	border-radius: 0 var(--hx-radius-xsmall) var(--hx-radius-xsmall) 0;
 }
-/* The chosen option is the one gold button; the others keep the secondary button treatment. */
+/* The chosen option is outlined gold, as the composer's chosen mode is; the others keep the
+   secondary button treatment, and the screen's one filled button stays its primary action. */
 .segmented-choice button.active {
-	background: var(--hx-color-primary);
-	/* The workspace's .active text is !important gold; this !important, with its higher selector, wins. */
-	color: var(--hx-color-primary-contrast) !important;
-	border-color: var(--hx-color-primary);
+	background: var(--hx-color-primary-wash);
+}
+/* A group with one option offers no choice, so its only button is not marked as chosen. The
+   workspace's .active rule is !important, so this one must be too. */
+.segmented-choice button.active:only-child {
+	background: var(--hx-color-surface-raised);
+	color: var(--hx-color-text) !important;
+	border-color: var(--hx-color-border) !important;
 }
 
 .behavior-notes p {
