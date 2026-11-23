@@ -7,7 +7,11 @@ import { trackerNodeRuntime } from '../../../src/services/projects-sessions/trac
 import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { withTempDir } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
-import { retainedTrackerTmuxFixture } from '../../support/trackerManagedProcessFixture';
+import {
+	retainedTrackerTmuxFixture,
+	seedRetainedRuns,
+	startLinkedItem
+} from '../../support/trackerManagedProcessFixture';
 
 const node = 'daniel-primary-mbp';
 const now = 1_800_000_000_000;
@@ -29,7 +33,7 @@ async function proveHostCapacity(root: string) {
 	const signal = new AbortController().signal;
 	const closed = join(root, 'closed');
 	try {
-		seedRetainedRuns(db);
+		seedRetainedRuns(db, now);
 		runtime.store.appendLocal({
 			itemId: 'old008abcd',
 			fields: { title: 'Finished fixture', kind: 'task', status: 'done' }
@@ -47,17 +51,19 @@ async function proveHostCapacity(root: string) {
 		expect(existsSync(closed)).toBe(false);
 		clock += 300_000;
 		writeFileSync(join(root, 'busy'), '');
-		await runtime.scheduler!.tick(signal);
-		expect(existsSync(closed)).toBe(false);
+		await expectPaneRetained(runtime, signal, closed);
 		writeFileSync(join(root, 'busy'), 'idle');
 		db.prepare("UPDATE runs SET tmux = 'auto-old008-r8' WHERE id = 7").run();
-		await runtime.scheduler!.tick(signal);
-		expect(existsSync(closed)).toBe(false);
+		await expectPaneRetained(runtime, signal, closed);
 		db.prepare("UPDATE runs SET tmux = 'auto-old007-r7' WHERE id = 7").run();
 		writeFileSync(join(root, 'attached'), '');
-		await runtime.scheduler!.tick(signal);
-		expect(existsSync(closed)).toBe(false);
+		await expectPaneRetained(runtime, signal, closed);
 		rmSync(join(root, 'attached'));
+		await startLinkedItem(runtime);
+		await expectPaneRetained(runtime, signal, closed);
+		runtime.store.appendLocal({ itemId: 'linked0001', fields: { status: 'done' } });
+		await expectPaneRetained(runtime, signal, closed);
+		clock += 600_000;
 		await runtime.scheduler!.tick(signal);
 		expect(readFileSync(closed, 'utf8')).toContain('kill-session -t %9');
 		await runtime.scheduler!.tick(signal);
@@ -72,21 +78,13 @@ async function proveHostCapacity(root: string) {
 	}
 }
 
-function seedRetainedRuns(db: DatabaseSync) {
-	for (let id = 1; id <= 8; id++) {
-		db.prepare(
-			`INSERT INTO runs(id,item_id,auto_token,rung,cli,model,state,queued_at,started_at,ended_at,tmux)
-			VALUES (?,?,'legacy','sol','codex','gpt-6.2-sol',?,?,?,?,?)`
-		).run(
-			id,
-			'old00' + id + 'abcd',
-			id === 8 ? 'finished' : 'running',
-			now,
-			now,
-			id === 8 ? now : null,
-			'auto-old00' + id + '-r' + id
-		);
-	}
+async function expectPaneRetained(
+	runtime: TrackerNativeRuntimeService,
+	signal: AbortSignal,
+	closed: string
+) {
+	await runtime.scheduler!.tick(signal);
+	expect(existsSync(closed)).toBe(false);
 }
 
 function queueCapacityItem(runtime: TrackerNativeRuntimeService, id: string, flagged: boolean) {

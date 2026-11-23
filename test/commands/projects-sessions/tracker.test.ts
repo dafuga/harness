@@ -91,6 +91,13 @@ test('native show prints the full human item and returns the enriched JSON for a
 		runs: [{ id: 1, model: 'fixture-model', outcome: 'done' }],
 		launch_status: null
 	});
+	vi.stubEnv('TRACKER_RUN_ID', '42');
+	const started = await run('start', 'taskfi', '--json');
+	expect(started.code).toBe(0);
+	expect(JSON.parse(started.out)).toMatchObject({ id: fixtureItem, status: 'in_progress' });
+	expect((vi.mocked(fetch).mock.lastCall?.[1] as RequestInit).body).toBe(
+		JSON.stringify({ session_run: '42' })
+	);
 	expect(await run('show', 'absent')).toMatchObject({
 		code: 1,
 		out: '',

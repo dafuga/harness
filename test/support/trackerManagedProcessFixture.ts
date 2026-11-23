@@ -1,5 +1,8 @@
+import type { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
+import type { DatabaseSync } from 'node:sqlite';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { expect } from 'vitest';
 
 export const fixtureDockerImage = 'sha256:' + 'a'.repeat(64);
 
@@ -89,3 +92,32 @@ if (command === 'list-panes' || command === 'display-message') {
 	process.stdout.write('tracker-session-closed\\n');
 } else process.exit(2);
 `;
+
+export function seedRetainedRuns(db: DatabaseSync, now: number) {
+	for (let id = 1; id <= 8; id++) {
+		db.prepare(
+			`INSERT INTO runs(id,item_id,auto_token,rung,cli,model,state,queued_at,started_at,ended_at,tmux)
+			VALUES (?,?,'legacy','sol','codex','gpt-6.2-sol',?,?,?,?,?)`
+		).run(
+			id,
+			'old00' + id + 'abcd',
+			id === 8 ? 'finished' : 'running',
+			now,
+			now,
+			id === 8 ? now : null,
+			'auto-old00' + id + '-r' + id
+		);
+	}
+}
+
+export async function startLinkedItem(runtime: TrackerNativeRuntimeService) {
+	runtime.store.appendLocal({
+		itemId: 'linked0001',
+		fields: { title: 'Work started from the retained pane', kind: 'task', status: 'open' }
+	});
+	const request = new Request('http://tracker-fixture.invalid/items/linked0001/start', {
+		method: 'POST',
+		body: JSON.stringify({ session_run: '8' })
+	});
+	expect((await runtime.items.handle(request)).ok).toBe(true);
+}
