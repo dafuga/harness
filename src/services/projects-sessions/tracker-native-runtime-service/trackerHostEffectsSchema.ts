@@ -5,6 +5,19 @@ import { z } from 'zod';
 const absolutePath = z.string().refine(isAbsolute);
 const driver = absolutePath;
 const adapterPolicy = {
+	manual: z.literal(true).optional(),
+	followUp: z
+		.strictObject({
+			target: z.string().regex(/^[a-z0-9][a-z0-9-]*\/[a-z0-9_.-]+$/),
+			author: z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9-]{0,38}$/),
+			titlePrefix: z.string().trim().min(1).max(80),
+			issueInstructions: z.string().trim().min(1).max(6000),
+			instructions: z.string().trim().min(1).max(6000),
+			coveredComments: z
+				.record(z.string().regex(/^[1-9][0-9]{0,15}$/), z.string().regex(/^[0-9a-z]{10}$/))
+				.optional()
+		})
+		.optional(),
 	scheduleDue: z.literal(true).optional(),
 	dueDisk: z
 		.strictObject({ freePct: z.number().positive().max(100), freeGB: z.number().positive() })

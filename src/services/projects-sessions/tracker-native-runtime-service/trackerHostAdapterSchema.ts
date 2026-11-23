@@ -5,21 +5,19 @@ const author = z.object({ login: z.string().max(100), type: z.string().max(40).o
 const date = z.iso.datetime({ offset: true });
 const label = z.object({ name: z.string().max(100) });
 
-export const adapterIssues = z
-	.array(
-		z.object({
-			id: z.int().positive(),
-			number: z.int().positive(),
-			title: z.string().max(1024),
-			state: z.enum(['open', 'closed']),
-			created_at: date,
-			updated_at: date,
-			labels: z.array(label).max(100),
-			pull_request: z.unknown().optional(),
-			user: author.nullish().transform((user) => user ?? undefined)
-		})
-	)
-	.max(5000);
+export const adapterIssue = z.object({
+	id: z.int().positive(),
+	number: z.int().positive(),
+	title: z.string().max(1024),
+	state: z.enum(['open', 'closed']),
+	created_at: date,
+	updated_at: date,
+	labels: z.array(label).max(100),
+	pull_request: z.unknown().optional(),
+	user: author.nullish().transform((user) => user ?? undefined)
+});
+
+export const adapterIssues = z.array(adapterIssue).max(5000);
 
 export const adapterTimeline = z
 	.array(
@@ -38,6 +36,11 @@ export const adapterComments = z
 		z.object({
 			id: z.int().positive(),
 			issue_url: z.string().max(512),
+			body: z
+				.string()
+				.nullish()
+				.transform((body) => body ?? undefined),
+			author_association: z.string().optional(),
 			created_at: date,
 			user: author.nullish().transform((user) => user ?? undefined),
 			performed_via_github_app: z.unknown().optional()

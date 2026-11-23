@@ -9,7 +9,10 @@ import {
 	formatNativeTrackerRunRead,
 	nativeItemPrefix
 } from './formatNativeTrackerItem';
-import { formatNativeTrackerInspection } from './formatNativeTrackerInspection';
+import {
+	formatNativeTrackerAdapterRun,
+	formatNativeTrackerInspection
+} from './formatNativeTrackerInspection';
 import type {
 	NativeTrackerInspection,
 	NativeTrackerItem,
@@ -34,7 +37,7 @@ export async function runNativeTracker(args: string[], path: string): Promise<nu
 	if (!args.length || args[0] === 'help' || args.includes('--help') || args.includes('-h')) {
 		console.log(
 			`Usage: tracker <command> [arguments] [--json]\nNative commands: ${nativeTrackerCommands}\n` +
-				'Inspection subcommands: autolaunch [status|dry-run], adapter list, backup list'
+				'Subcommands: autolaunch [status|dry-run], adapter list|run <source> [--backfill-comments] [--dry-run], backup list'
 		);
 		return 0;
 	}
@@ -80,7 +83,7 @@ async function sendNativeTracker(
 			'x-harness-tracker-role': config.role
 		},
 		redirect: 'error',
-		signal: AbortSignal.timeout(15_000)
+		signal: AbortSignal.timeout(request.path.startsWith('/adapters/run?') ? 120_000 : 15_000)
 	});
 	const data = response.headers.get('content-type')?.startsWith('application/json')
 		? await response.json()
@@ -149,6 +152,12 @@ function renderNativeTracker(
 }
 
 function renderNativeTrackerItemOrReport(command: string, data: unknown, first?: string): void {
+	if (command === 'adapter' && first === 'run') {
+		console.log(
+			formatNativeTrackerAdapterRun(data as Parameters<typeof formatNativeTrackerAdapterRun>[0])
+		);
+		return;
+	}
 	const rendered =
 		formatNativeTrackerInspection(command, data as NativeTrackerInspection) ??
 		formatNativeTrackerRunRead(command, data as NativeTrackerRunRead);

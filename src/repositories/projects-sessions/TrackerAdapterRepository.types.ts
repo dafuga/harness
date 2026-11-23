@@ -37,6 +37,9 @@ export interface TrackerAdapterItem {
 
 export interface TrackerAdapterCandidate {
 	id: string;
+	kind: string | null;
+	notes: string | null;
+	adapter_instructions: string | null;
 	title: string;
 	agent: string | null;
 	project: string | null;

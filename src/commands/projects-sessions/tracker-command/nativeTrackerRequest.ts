@@ -34,7 +34,7 @@ function nativeTrackerRequest(
 	const item =
 		itemQuery(command, words, values) ??
 		runReadRequest(command, words, values) ??
-		nativeTrackerInspectionRequest(command, words);
+		nativeTrackerInspectionRequest(command, words, values);
 	if (item) return item;
 	if (nativeTrackerIdVerbs.has(command)) return itemAction(command, words, values);
 	if (words.length) throw new TypeError(`usage: tracker ${command}`);

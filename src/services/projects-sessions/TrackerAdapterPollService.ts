@@ -7,6 +7,7 @@ import type {
 	TrackerAdapterPollDependencies,
 	TrackerAdapterPollOptions,
 	TrackerAdapterPollResult,
+	TrackerAdapterReadQuery,
 	TrackerAdapterWriteError
 } from './TrackerAdapterPollService.types';
 import type { TrackerPersistenceService } from './TrackerPersistenceService';
@@ -33,6 +34,7 @@ export type {
 } from './TrackerAdapterPollService.types';
 
 const overlapMs = 5_000;
+const commentBackfillMs = 7 * 86_400_000;
 const intakeError = 'Tracker adapter intake failed';
 const writeBackError = 'Tracker adapter write-back failed';
 
@@ -62,7 +64,7 @@ export class TrackerAdapterPollService {
 	}
 
 	async tick(signal: AbortSignal): Promise<void> {
-		if (!this.status().active || !this.sources.isInitialized()) return;
+		if (this.dependencies.manual || !this.status().active || !this.sources.isInitialized()) return;
 		const errors: unknown[] = [];
 		for (const id of this.sources.dueSourceIds(this.now())) {
 			signal.throwIfAborted();
@@ -111,32 +113,59 @@ export class TrackerAdapterPollService {
 		signal: AbortSignal
 	): Promise<TrackerAdapterPollResult> {
 		const startedAt = this.now();
-		const dryRun = options.dryRun ?? false;
-		const query = { since: source.cursor - overlapMs, backfill: options.backfill ?? false, signal };
+		const dryRun = Boolean(options.dryRun);
+		const commentsOnly = Boolean(options.backfillComments);
+		const query = {
+			since: commentsOnly ? startedAt - commentBackfillMs : source.cursor - overlapMs,
+			backfill: Boolean(options.backfill),
+			signal
+		};
 		try {
-			const context = {
-				repository: this.repository,
-				store: this.store,
-				dependencies: this.dependencies,
-				policy: this.dependencies.intakePolicy?.(source)
-			};
-			const { actions, events } = await readTrackerIssues(context, source, query, dryRun);
-			const result = { status: 'polled' as const, id: source.id, dry_run: dryRun, actions };
-			assertTrackerPollActive(signal);
-			if (dryRun) return { ...result, events: 0, synced_back: 0, sync_errors: [] };
-			const comments = await readTrackerComments(context, source, query);
-			assertTrackerPollActive(signal);
+			const context = this.intakeContext(source);
+			const result = await pollIntake(context, source, query, { dryRun, commentsOnly });
+			if (dryRun || commentsOnly) return { ...result, synced_back: 0, sync_errors: [] };
 			this.sources.advance(source.id, startedAt);
 			const sync = await syncBack(context, source, signal);
 			assertTrackerPollActive(signal);
 			this.sources.recordRun(source.id, this.now(), sync.sync_errors[0]?.error ?? null);
-			return { ...result, events: events + comments, ...sync };
+			return { ...result, ...sync };
 		} catch {
 			assertTrackerPollActive(signal);
-			if (!dryRun) this.sources.recordRun(source.id, this.now(), intakeError);
+			if (!dryRun && !commentsOnly) this.sources.recordRun(source.id, this.now(), intakeError);
 			throw new TrackerAdapterPollError(intakeError);
 		}
 	}
+
+	private intakeContext(source: TrackerAdapterSource): TrackerAdapterIntakeContext {
+		return {
+			repository: this.repository,
+			store: this.store,
+			dependencies: this.dependencies,
+			policy: this.dependencies.intakePolicy?.(source)
+		};
+	}
+}
+
+async function pollIntake(
+	context: TrackerAdapterIntakeContext,
+	source: TrackerAdapterSource,
+	query: TrackerAdapterReadQuery,
+	options: { dryRun: boolean; commentsOnly: boolean }
+) {
+	if (options.commentsOnly && query.backfill)
+		throw new TypeError('Only one backfill mode is allowed');
+	const issues = options.commentsOnly
+		? { actions: [], events: 0 }
+		: await readTrackerIssues(context, source, query, options.dryRun);
+	const comments = await readTrackerComments(context, source, query, options);
+	assertTrackerPollActive(query.signal);
+	return {
+		status: 'polled' as const,
+		id: source.id,
+		dry_run: options.dryRun,
+		actions: [...issues.actions, ...comments.actions],
+		events: issues.events + comments.events
+	};
 }
 
 async function syncBack(
