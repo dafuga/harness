@@ -1,7 +1,6 @@
 // @harness-uid u_l3f5bpp55y
 import type { RetainedArtifact, SnapshotDrift } from './SnapshotAdapter.types';
 import { TarExtractError } from './SnapshotAdapter.types';
-import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { constants, existsSync, type Stats } from 'node:fs';
 import { mkdir, mkdtemp, lstat, open, readFile, readlink, rm, symlink } from 'node:fs/promises';
@@ -11,6 +10,7 @@ import { dirname, join, resolve } from 'node:path';
 import type { TreeEntry } from '../../../core/development-tooling/sourceTypes';
 import { pathMatches } from '../../../core/development-tooling/unitsConfig';
 import { declaredOutput, snapshotAdditions } from './snapshotAdditions';
+import { BoundedCommandAdapter } from '../../execution-runtimes/BoundedCommandAdapter';
 import { CommitTreeAdapter } from '../../git-source-history/CommitTreeAdapter';
 import { GitAdapter } from '../../git-source-history/GitAdapter';
 
@@ -30,14 +30,19 @@ export class SnapshotAdapter {
 
 	/** `outputs` are the declared patterns under which setup and checks may create files. */
 	static async create(root: string, commit: string, outputs: string[]): Promise<SnapshotAdapter> {
-		const directory = await mkdtemp(join(tmpdir(), 'harness-snapshot-'));
-		const archive = await new GitAdapter(root).bytes(['archive', '--format=tar', commit]);
-		await extract(archive, directory);
-		const entries = await (await CommitTreeAdapter.open(root, commit)).list();
-		const snapshot = new SnapshotAdapter(directory, entries, outputs);
-		const hashes = await snapshot.hashes(entries);
-		snapshot.exported.push(...entries.filter((entry, index) => hashes[index] === entry.hash));
-		return snapshot;
+		const workspace = await mkdtemp(join(tmpdir(), 'harness-snapshot-'));
+		const directory = join(workspace, 'source');
+		try {
+			await exportCommit(root, commit, directory);
+			const entries = await (await CommitTreeAdapter.open(root, commit)).list();
+			const snapshot = new SnapshotAdapter(directory, entries, outputs);
+			const hashes = await snapshot.hashes(entries);
+			snapshot.exported.push(...entries.filter((entry, index) => hashes[index] === entry.hash));
+			return snapshot;
+		} catch (error) {
+			await rm(workspace, { recursive: true, force: true }).catch(() => undefined);
+			throw error;
+		}
 	}
 
 	/** Shares a path from the checkout, such as installed dependencies, when it exists there. */
@@ -112,7 +117,7 @@ export class SnapshotAdapter {
 	}
 
 	remove(): Promise<void> {
-		return rm(this.directory, { recursive: true, force: true });
+		return rm(dirname(this.directory), { recursive: true, force: true });
 	}
 
 	private async hash(path: string): Promise<string | undefined> {
@@ -132,19 +137,13 @@ export class SnapshotAdapter {
 	}
 }
 
-function extract(archive: Buffer, directory: string): Promise<void> {
-	const tar = spawn('tar', ['-x', '-C', directory], { stdio: ['pipe', 'ignore', 'pipe'] });
-	const errors: Buffer[] = [];
-	tar.stderr.on('data', (chunk: Buffer) => errors.push(chunk));
-	tar.stdin.end(archive);
-	return new Promise((resolve, reject) => {
-		tar.once('error', reject);
-		tar.once('close', (code) =>
-			code === 0
-				? resolve()
-				: reject(new TarExtractError(`tar failed: ${Buffer.concat(errors).toString()}`))
-		);
-	});
+async function exportCommit(root: string, commit: string, directory: string): Promise<void> {
+	const archive = join(dirname(directory), 'snapshot.tar');
+	await mkdir(directory);
+	await new GitAdapter(root).run(['archive', '--format=tar', `--output=${archive}`, commit]);
+	const tar = await new BoundedCommandAdapter().run('tar', ['-xf', archive, '-C', directory]);
+	if (tar.code !== 0) throw new TarExtractError(`tar failed: ${tar.stderr}`);
+	await rm(archive);
 }
 
 const RETAINED_PATH = 'artifacts/export';

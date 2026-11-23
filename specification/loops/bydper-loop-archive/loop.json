@@ -2,7 +2,7 @@
 	"name": "bydper-loop-archive",
 	"goal": "Record genuine red and green checkpoints when the committed snapshot exceeds 8 MiB",
 	"createdAt": "2026-11-23T17:33:48.235Z",
-	"updatedAt": "2026-11-23T17:34:35.136Z",
+	"updatedAt": "2026-11-23T17:38:10.064Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T17:38:10.064Z",
+			"evidence": "The committed loop CLI test fixture contains a 129 MiB tracked file. The unchanged Vitest command fails because the nested loop record red command aborts with BoundedCommandFailure: Command output limit exceeded."
 		},
 		{
 			"id": "implement",
