@@ -1,6 +1,6 @@
 <!-- @harness-tier layout -->
 <!-- @harness-atoms ../../../reports/src/components/shared-primitives/atoms -->
-<!-- @harness-uid u_tnnhjdmit3 -->
+<!-- @harness-uid u_f5w3bdi732 -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';

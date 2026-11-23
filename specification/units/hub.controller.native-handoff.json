@@ -100,7 +100,17 @@
 	},
 	"dependencies": [
 		{
+			"unit": "hub.function.auth-fail",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.function.auth-http",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.repository.session",
 			"via": "import",
 			"origin": "derived"
 		},

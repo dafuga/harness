@@ -35,6 +35,12 @@
 					"Sign in with Google to open the reports your team shared with you.",
 					"Sign in with the Google account that received your project invitation."
 				]
+			},
+			{
+				"name": "LoginPanel.compact",
+				"type": "boolean",
+				"required": false,
+				"default": false
 			}
 		],
 		"outputs": [

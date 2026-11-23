@@ -1,0 +1,135 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.accounts-access-account-sign-in",
+	"uid": "u_2vrw624qcu",
+	"kind": "component",
+	"title": "AccountSignIn",
+	"responsibility": "Owns the AccountSignIn Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-h1",
+			"reports.component.shared-primitives-atoms-html-img",
+			"reports.component.shared-primitives-atoms-html-main",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-span"
+		]
+	},
+	"owns": {
+		"source": ["packages/desktop/src/components/accounts-access/AccountSignIn.svelte"],
+		"symbols": ["AccountSignIn"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "AccountSignIn.status",
+				"type": "NativeHostedStatus",
+				"required": false,
+				"default": "undefined (omitted)"
+			},
+			{
+				"name": "AccountSignIn.error",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "AccountSignIn.busy",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "AccountSignIn.connect",
+				"type": "(google: boolean) => void",
+				"required": true
+			},
+			{
+				"name": "AccountSignIn.cancel",
+				"type": "() => void",
+				"required": true
+			},
+			{
+				"name": "AccountSignIn.retry",
+				"type": "() => void",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "AccountSignIn",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.hosted-address",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h1",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-img",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-main",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/accounts-access/AccountSignIn.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/accounts-access/AccountSignIn.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

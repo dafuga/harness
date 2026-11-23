@@ -31,6 +31,12 @@
 				"type": "Snippet",
 				"required": true,
 				"description": "A required Svelte snippet supplies the page content. It is rendered once in the main area below the header."
+			},
+			{
+				"name": "HubFrame.section",
+				"type": "string",
+				"required": false,
+				"default": "Shared projects"
 			}
 		],
 		"outputs": [

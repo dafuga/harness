@@ -1,0 +1,55 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.page.public-site-about",
+	"uid": "u_g4abbhn2nc",
+	"kind": "page",
+	"title": "/(public-site)/about",
+	"responsibility": "Owns the /(public-site)/about route page.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": ["hub.component.public-site-home-page"]
+	},
+	"owns": {
+		"source": ["packages/hub/src/routes/(public-site)/about/+page.svelte"],
+		"symbols": ["+page"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "+page",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.public-site-home-page",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/routes/(public-site)/about/+page.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/routes/(public-site)/about/+page.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

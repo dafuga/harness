@@ -86,3 +86,5 @@ Every object of the previous pack must still be listed.
 Lite verification retains implementation commit `41db0c528` for the rebased record assembly, and the earlier Lite and component snapshot reviews remain present.
 The sibling bug sweep retains implementation commit `6a64ad413` for the loop siblings command, the bug-fix sibling step, evaluator process reuse and regression proof environments.
 Verified artifact retention retains implementation commit `4c5ed1baf` for retention and cancellation beside Lite verification, plus the earlier artifact, cancellation and reconciliation reviews.
+Google sign-in retains implementation commit `58700be943` for the native account bridge, the
+Hub handoff and device storage changes, and the iOS account adapter.

@@ -10,9 +10,13 @@
 	"composition": {
 		"level": "page",
 		"uses": [
+			"hub.component.login-panel",
 			"hub.component.projects-sessions-hub-home",
-			"hub.component.public-site-home-page",
-			"reports.component.shared-primitives-atoms-html-main"
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h1",
+			"reports.component.shared-primitives-atoms-html-main",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-span"
 		]
 	},
 	"owns": {
@@ -42,12 +46,12 @@
 	},
 	"dependencies": [
 		{
-			"unit": "hub.component.projects-sessions-hub-home",
+			"unit": "hub.component.login-panel",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.component.public-site-home-page",
+			"unit": "hub.component.projects-sessions-hub-home",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -57,7 +61,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h1",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-main",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		}

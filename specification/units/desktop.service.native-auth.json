@@ -15,6 +15,7 @@
 		"symbols": [
 			"NativeAuthService",
 			"NativeAuthService.constructor",
+			"NativeAuthService.admitted",
 			"NativeAuthService.connect",
 			"NativeAuthService.status",
 			"NativeAuthService.disconnect",
@@ -32,6 +33,12 @@
 				"type": "AuthOptions",
 				"required": true,
 				"description": "The AuthOptions object the constructor stores as this.options; origin, http, store and open are required, and now, clearCache and onDisconnect are optional. origin is the expected origin of handoff verification URLs and of the stored credential, and now (used for handoff expiry and poll timing) defaults to Date.now() when omitted."
+			},
+			{
+				"name": "NativeAuthService.connect.google",
+				"type": "boolean",
+				"required": false,
+				"default": false
 			}
 		],
 		"outputs": [
@@ -109,8 +116,27 @@
 		"errorStatus": "declared",
 		"operations": [
 			{
-				"name": "NativeAuthService.connect",
+				"name": "NativeAuthService.admitted",
 				"inputs": [],
+				"outputs": [
+					{
+						"name": "NativeAuthService.admitted",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "NativeAuthService.connect",
+				"inputs": [
+					{
+						"name": "NativeAuthService.connect.google",
+						"type": "boolean",
+						"required": false,
+						"default": false
+					}
+				],
 				"outputs": [
 					{
 						"name": "NativeAuthService.connect",
@@ -260,12 +286,22 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.service.native-account-status",
+			"unit": "desktop.service.accounts-access-google-browser-callback",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.validator.native-handoff",
+			"unit": "desktop.service.accounts-access-native-sign-in",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.accounts-access-native-sign-in-error",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.native-account-status",
 			"via": "import",
 			"origin": "derived"
 		},

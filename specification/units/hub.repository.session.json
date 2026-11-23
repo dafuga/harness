@@ -14,12 +14,15 @@
 		],
 		"symbols": [
 			"BROWSER_TTL",
+			"DEVICE_ACTIVITY_INTERVAL",
 			"NATIVE_TTL",
 			"SessionRepository",
 			"SessionRepository.constructor",
 			"SessionRepository.issue",
 			"SessionRepository.find",
 			"SessionRepository.live",
+			"SessionRepository.devices",
+			"SessionRepository.removeDevice",
 			"SessionRepository.revoke",
 			"SessionRepository.revokeIssuedFrom",
 			"SessionRepositoryOptions",
@@ -71,6 +74,21 @@
 				"required": true,
 				"description": "Hash key passed directly to SessionStore.find by live. A record is returned only when it exists, has revokedAt === null, and expires strictly after the current clock value.",
 				"examples": ["d4d8393b52e2d1186c50d8af9c290b6a5f3471c8e2d9a6403b7c1f85a6e40d72"]
+			},
+			{
+				"name": "SessionRepository.devices.actorId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SessionRepository.removeDevice.actorId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SessionRepository.removeDevice.deviceId",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "SessionRepository.revoke.record",
@@ -331,6 +349,47 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "SessionRepository.devices",
+				"inputs": [
+					{
+						"name": "SessionRepository.devices.actorId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SessionRepository.devices",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SessionRepository.removeDevice",
+				"inputs": [
+					{
+						"name": "SessionRepository.removeDevice.actorId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SessionRepository.removeDevice.deviceId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SessionRepository.removeDevice",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "SessionRepository.revoke",

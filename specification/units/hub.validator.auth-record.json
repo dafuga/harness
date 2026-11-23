@@ -13,6 +13,7 @@
 			"packages/hub/src/validators/accounts-access/AuthRecordValidator.types.ts"
 		],
 		"symbols": [
+			"accountDevice",
 			"AuthRecordValidator",
 			"AuthRecordValidator.challenge",
 			"AuthRecordValidator.session",
@@ -29,6 +30,11 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "accountDevice.value",
+				"type": "unknown",
+				"required": true
+			},
 			{
 				"name": "AuthRecordValidator.challenge.value",
 				"type": "unknown",
@@ -343,6 +349,24 @@
 		],
 		"errorStatus": "declared",
 		"operations": [
+			{
+				"name": "accountDevice",
+				"inputs": [
+					{
+						"name": "accountDevice.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "accountDevice",
+						"type": "AccountDevice"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "AuthRecordValidator.challenge",
 				"inputs": [

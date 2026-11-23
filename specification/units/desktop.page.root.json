@@ -10,10 +10,10 @@
 	"composition": {
 		"level": "page",
 		"uses": [
-			"desktop.component.hosted-connection",
 			"desktop.component.project-gate",
 			"desktop.component.remote-connection",
 			"desktop.component.workspace-shell",
+			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-p"
 		]
 	},
@@ -52,11 +52,6 @@
 	},
 	"dependencies": [
 		{
-			"unit": "desktop.component.hosted-connection",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "desktop.component.project-gate",
 			"via": "import",
 			"origin": "derived"
@@ -72,17 +67,17 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.function.select-environment",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "desktop.function.workspace-route",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.project-sync",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -108,6 +103,11 @@
 		},
 		{
 			"unit": "desktop.style.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
 			"via": "import",
 			"origin": "derived"
 		},
