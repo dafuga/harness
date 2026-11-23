@@ -1,0 +1,20 @@
+headless-run: local Linux VM, up to 1 CPUs. Artifacts: /Users/danielfugere/.local/state/headless-run/artifacts-2MFnZ8
+[WebServer] $ bun run sync:shared && vite dev --host 127.0.0.1 --port 5798 --strictPort --port "5913"
+[WebServer] $ bun run --cwd ../desktop svelte-kit sync && bun run --cwd ../reports svelte-kit sync
+[WebServer] ▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+[WebServer] 
+[WebServer]     tsconfig.json:2:12:
+[WebServer]       2 │   "extends": "./.svelte-kit/tsconfig.json",
+[WebServer]         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[WebServer] 
+
+Running 6 tests using 1 worker
+
+  ✓  1 tests/e2e/hub-gate-pages.spec.ts:59:2 › the invitation page is one narrow gate at phone (1.1s)
+  ✓  2 tests/e2e/hub-gate-pages.spec.ts:73:2 › the device approval page is one narrow gate at phone (1.1s)
+  ✓  3 tests/e2e/hub-gate-pages.spec.ts:59:2 › the invitation page is one narrow gate at tablet (523ms)
+  ✓  4 tests/e2e/hub-gate-pages.spec.ts:73:2 › the device approval page is one narrow gate at tablet (624ms)
+  ✓  5 tests/e2e/hub-gate-pages.spec.ts:59:2 › the invitation page is one narrow gate at laptop (1.0s)
+  ✓  6 tests/e2e/hub-gate-pages.spec.ts:73:2 › the device approval page is one narrow gate at laptop (1.1s)
+
+  6 passed (10.7s)
