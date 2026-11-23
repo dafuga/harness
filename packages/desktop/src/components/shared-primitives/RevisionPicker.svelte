@@ -6,7 +6,7 @@
 
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import { displayTime, revisionTime } from '../../utils/shared-primitives/revisionTime';
-	import { relativeTime } from '../../utils/shared-primitives/relativeTime';
+	import { relativeTime } from './revision-picker/relativeTime';
 	import ChoiceDialog from './ChoiceDialog.svelte';
 	import ChoiceRow from './ChoiceRow.svelte';
 	import ChoiceRows from './ChoiceRows.svelte';
@@ -59,7 +59,7 @@
 	/** The date of a commit, as a quiet relative label; empty when the commit is not listed. */
 	function dated(hash: string): string {
 		const item = snapshot?.commits.find((entry) => entry.hash === hash);
-		return item ? relativeTime(item.committedAt ?? item.authoredAt) : '';
+		return item ? relativeTime(item.committedAt ?? item.authoredAt, Date.now()) : '';
 	}
 	/** Branch navigation resumes live updates without a commit in the URL. */
 	function chooseBranch(close?: () => void, target = branch) {
@@ -84,14 +84,15 @@
 		<hx-div class="revision-choices">
 			<ChoiceDialog label="Choose branch" title="" width={320} maxHeight={320} gap={10}>
 				{#snippet icon()}<Icon name="branch" size={18} /><hx-span>Branch</hx-span>{/snippet}
-				{#snippet children(close: () => void)}{#if snapshot.branches.length > filterAbove}<hx-input
-							type="search"
-							aria-label="Filter branches"
-							placeholder="Filter branches"
-							value={filter}
-							oninput={(event) => (filter = event.currentTarget.value)}
-						/>{/if}
+				{#snippet children(close: () => void)}
 					<ChoiceRows label="Branches">
+						{#if snapshot.branches.length > filterAbove}<hx-input
+								type="search"
+								aria-label="Filter branches"
+								placeholder="Filter branches"
+								value={filter}
+								oninput={(event) => (filter = event.currentTarget.value)}
+							/>{/if}
 						{#each shownBranches as item (item.name)}<ChoiceRow
 								name={item.name}
 								meta={dated(item.tip)}
@@ -109,7 +110,7 @@
 				{#snippet children(close: () => void)}<ChoiceRows label="Commits">
 						{#each snapshot.commits as item (item.hash)}<ChoiceRow
 								name={item.subject || shortCommit(item.hash)}
-								meta={`${shortCommit(item.hash)} · ${relativeTime(item.committedAt ?? item.authoredAt)}`}
+								meta={`${shortCommit(item.hash)} · ${relativeTime(item.committedAt ?? item.authoredAt, Date.now())}`}
 								current={item.hash === commit}
 								onchoose={() => chooseCommit(close, item.hash)}
 							/>{/each}

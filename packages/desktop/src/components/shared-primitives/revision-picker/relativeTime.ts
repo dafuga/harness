@@ -8,7 +8,7 @@ const units: [Intl.RelativeTimeFormatUnit, number][] = [
 ];
 
 /** @pure A recorded instant as a short relative date ("3 days ago"), or Unknown when it is absent. */
-export function relativeTime(instant: string | null | undefined, now: number = Date.now()): string {
+export function relativeTime(instant: string | null | undefined, now: number): string {
 	const time = instant ? Date.parse(instant) : Number.NaN;
 	if (!Number.isFinite(time)) return 'Unknown';
 	const elapsed = time - now;
