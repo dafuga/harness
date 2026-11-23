@@ -26,11 +26,10 @@
 	}
 </script>
 
-<hx-section class="hub-card">
-	<hx-h2>Enter your invitation code</hx-h2>
-	<hx-p>
-		Signed in as {session.actor?.email}. The invitation works for the Google account it was made
-		for, once.
+<hx-section class="hub-card gate-card">
+	<hx-p class="muted">
+		Signed in as {session.actor?.email}. The invitation works once, for the Google account it was
+		made for.
 	</hx-p>
 	<hx-form
 		class="hub-form"
@@ -41,9 +40,10 @@
 	>
 		<hx-label
 			>Invitation code<hx-input
+				class="code-field"
 				bind:value={code}
 				required
-				autocomplete="off"
+				autocomplete="one-time-code"
 				spellcheck="false"
 			/></hx-label
 		>

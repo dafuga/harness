@@ -46,23 +46,29 @@
 	}
 </script>
 
-<hx-section class="hub-card">
+<hx-section class="hub-card gate-card">
 	{#if framed}<hx-p>Open this page in its own browser tab to approve a device.</hx-p>
-	{:else if done}<hx-h2>Approved</hx-h2>
-		<hx-p role="status">
-			Return to your Harness device; it connects within a few seconds. Signing out here also
-			disconnects it.
+	{:else if done}<hx-p role="status">
+			<hx-strong>Approved.</hx-strong> Return to your Harness device; it connects within a few seconds.
+			Signing out here also disconnects it.
 		</hx-p>{:else if request === 'reading'}<hx-p class="muted">Reading the request…</hx-p>
-	{:else if request === 'expired'}<hx-h2>This request has expired</hx-h2>
-		<hx-p>Start again on your Harness device to get a new code.</hx-p>
-	{:else if request === 'approved'}<hx-h2>This request was already approved</hx-h2>
-		<hx-p>Nothing more is needed here.</hx-p>
-	{:else}<hx-h2>A Harness device asks to connect</hx-h2>
-		<hx-p>
-			It asks to open <hx-strong>{scope}</hx-strong> as {session.actor?.email}. Your project role
-			controls access: readers can view, commenters can also comment, and writers can ask agents to
-			make changes.
+	{:else if request === 'expired'}<hx-p>
+			<hx-strong>This request has expired.</hx-strong> Start again on your Harness device to get a new
+			code.
 		</hx-p>
+	{:else if request === 'approved'}<hx-p>
+			<hx-strong>This request was already approved.</hx-strong> Nothing more is needed here.
+		</hx-p>
+	{:else}<hx-p class="muted">
+			It can open <hx-strong>{scope}</hx-strong> as {session.actor?.email}.
+		</hx-p>
+		<hx-details>
+			<hx-summary>What this allows</hx-summary>
+			<hx-p>
+				Your project role controls access: readers can view, commenters can also comment, and
+				writers can ask agents to make changes.
+			</hx-p>
+		</hx-details>
 		<hx-p>
 			Approve only what you started yourself on your own Harness device just now. Never type a code
 			that someone sent you.
@@ -76,9 +82,11 @@
 		>
 			<hx-label
 				>Code shown on your Harness device<hx-input
+					class="code-field"
+					placeholder="ABCD-EFGH"
 					bind:value={code}
 					required
-					autocomplete="off"
+					autocomplete="one-time-code"
 					autocapitalize="characters"
 					spellcheck="false"
 				/></hx-label
