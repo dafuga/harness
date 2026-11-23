@@ -34,7 +34,13 @@ async function proveManagedWorker({ root, git }: TemporaryRepo) {
 	const launcher = trackerManagedHostLauncher(managed, { client: scoped, platform: 'darwin' });
 	const docker = launchInput(root, 1, 'docker');
 	const native = launchInput(root, 2, 'native');
-	for (const input of [docker, native]) {
+	const claude = {
+		...native,
+		runId: 3,
+		key: JSON.stringify([native.itemId, 'reserved-claude-fixture', 1]),
+		selection: { provider: 'claude', model: 'claude-sonnet-4-6', intelligence: 'high' }
+	} satisfies TrackerHostStartRequest;
+	for (const input of [docker, native, claude]) {
 		expect(await launcher.start(input, signal)).toMatchObject({
 			status: 'started',
 			session: { key: input.key, state: 'exited', exitCode: 0 }
@@ -114,7 +120,7 @@ function verifyWorkerInvocations(profiles: { native: string; docker: string }) {
 	const docker = read(profiles.docker);
 	const native = read(profiles.native);
 	expect(docker).toHaveLength(1);
-	expect(native).toHaveLength(1);
+	expect(native).toHaveLength(2);
 	expect(docker[0]).toMatchObject({
 		argv: [
 			'task',
@@ -135,10 +141,17 @@ function verifyWorkerInvocations(profiles: { native: string; docker: string }) {
 		brief: expect.stringContaining('First run tracker done.')
 	});
 	expect(Buffer.byteLength(docker[0].brief)).toBeLessThan(16_000);
+	expect(docker[0].cwd).toMatch(/\/effects\/[a-f0-9]{64}\/worktree$/);
+	verifyNativeInvocations(native, docker[0].cwd);
+}
+
+function verifyNativeInvocations(
+	native: { argv: string[]; cwd: string }[],
+	dockerWorktree: string
+) {
 	expect(native[0]).toMatchObject({
 		argv: [
-			'--sandbox',
-			'workspace-write',
+			'--dangerously-bypass-approvals-and-sandbox',
 			'-m',
 			'gpt-6.2-sol',
 			'-c',
@@ -151,6 +164,13 @@ function verifyWorkerInvocations(profiles: { native: string; docker: string }) {
 		legacy: '/dev/null/tracker',
 		guestAuthFile: null
 	});
-	expect(docker[0].cwd).toMatch(/\/effects\/[a-f0-9]{64}\/worktree$/);
-	expect(native[0].cwd).not.toBe(docker[0].cwd);
+	expect(native[1].argv).toEqual([
+		'--dangerously-skip-permissions',
+		'--model',
+		'claude-sonnet-4-6',
+		'--effort',
+		'high',
+		expect.stringContaining('def123abc4')
+	]);
+	expect(native[0].cwd).not.toBe(dockerWorktree);
 }
