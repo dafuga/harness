@@ -20,6 +20,7 @@ import type {
 import { serveCredentialBroker } from '../../src/workflows/accounts-access/serveCredentialBroker';
 import { syntheticExecutor } from '../../test/support/credential-vault/executor';
 import { reviewed, syntheticRecipe } from '../../test/support/credential-vault/recipe';
+import { runPhoneQualificationSession } from './phone-qualification-session';
 
 const outcomes = {
 	approved: 'approved',
@@ -33,7 +34,7 @@ const expectedToken = 'synthetic-ios-api-token';
 async function qualify(configPath: string, pinPath: string, peerAddon: string, expected: string) {
 	const config = loadVaultPhone(resolve(configPath));
 	const uid = process.getuid?.();
-	if (!config || !uid || !Object.hasOwn(outcomes, expected))
+	if (!config || !uid || (expected !== 'session' && !Object.hasOwn(outcomes, expected)))
 		throw new Error('Fixture inputs are invalid.');
 	prepareSocket(config.socketPath, uid);
 	const state = mkdtempSync(join(tmpdir(), 'vault-phone-'));
@@ -62,11 +63,12 @@ async function qualify(configPath: string, pinPath: string, peerAddon: string, e
 			peerAddon: resolve(peerAddon)
 		});
 		const client = new VaultBrokerClientAdapter({ socketPath: config.socketPath });
-		await provePhoneDecision(client, executor, {
-			uid,
-			expected: expected as keyof typeof outcomes,
-			signal: stop.signal
-		});
+		const signal = stop.signal;
+		const prove = (expected: keyof typeof outcomes) =>
+			provePhoneDecision(client, executor, { uid, signal, expected });
+		if (expected === 'session')
+			await runPhoneQualificationSession(Object.keys(outcomes) as (keyof typeof outcomes)[], prove);
+		else await prove(expected as keyof typeof outcomes);
 	} finally {
 		try {
 			await service?.close();
@@ -112,13 +114,13 @@ async function provePhoneDecision(
 	console.log('Open the synthetic request on the paired iPhone.');
 	if (expected === 'expired') console.log('Keep the review open until the offer expires.');
 	if (expected === 'interrupted')
-		console.log('With review open, interrupt the requester with SIGINT.');
+		console.log('With review open, send SIGINT to requester PID ' + process.pid + '.');
 	if (expected === 'approved' || expected === 'denied')
 		console.log('Choose the ' + expected + ' decision.');
 	await waitForDecision(client, { ticket, expected, expiresAt, signal });
 	if (expected === 'approved') await verifyDelivery(client, ticket, runner.open);
+	else await verifyRefusal(client, ticket);
 	if (expected === 'expired' || expected === 'interrupted') {
-		await verifyRefusal(client, ticket);
 		console.log('PASS broker fixture: ' + expected + '. Try the stale decision on iPhone now.');
 		await setTimeout(20_000);
 		await verifyRefusal(client, ticket);
@@ -174,7 +176,7 @@ async function verifyRefusal(client: VaultBrokerClientAdapter, ticket: VaultTick
 		if (error instanceof VaultBrokerError && error.status === 409) return;
 		throw error;
 	}
-	throw new Error('An expired or canceled request was claimable.');
+	throw new Error('A refused request was claimable.');
 }
 
 async function verifyDelivery(
@@ -199,19 +201,17 @@ async function verifyDelivery(
 	}
 }
 
-const args = process.argv.slice(2);
-if (args.length !== 4) {
+const [configPath, pinPath, peerAddon, expected] = process.argv.slice(2);
+if (!configPath || !pinPath || !peerAddon || !expected) {
 	console.error(
-		'Usage: node phone-qualification.mjs <remote-config> <public-pin> <peer-addon> <approved|denied|expired|interrupted>'
+		'Usage: node phone-qualification.mjs <remote-config> <public-pin> <peer-addon> <session|approved|denied|expired|interrupted>'
 	);
 	process.exitCode = 2;
 } else {
-	try {
-		await qualify(args[0], args[1], args[2], args[3]);
-	} catch {
+	await qualify(configPath, pinPath, peerAddon, expected).catch(() => {
 		console.error(
-			'Vault qualification did not pass. Check the synthetic configuration, pin, and phone decision.'
+			'Vault qualification failed. Check the synthetic configuration, pin, and device decision.'
 		);
 		process.exitCode = 1;
-	}
+	});
 }

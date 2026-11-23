@@ -70,13 +70,10 @@ Keychain entries.
 The native Vault inbox belongs to the standard Harness iOS app (`com.dafuga.harness`). The
 paired broker route belongs to the standard Harness Mac app (`dev.harness.desktop`).
 
-For this synthetic test only, use a Debug build with bundle ID `com.dafuga.harness.vaultfixture`
-and set `SWIFT_ACTIVE_COMPILATION_CONDITIONS='DEBUG HARNESS_VAULT_FIXTURE'`. Run the local renderer
-sync before building in Xcode. This build is for development and acceptance only. Keep the
-installed Harness app and its pairing intact.
-Pair the fixture app with the test desktop using Harness Remote. The desktop's public
-`window.harnessRemote.status()` response lists each approved device's `deviceId` and `generation`.
-Select the IDs of the fixture app's pairing.
+Use the signed **main Harness** app for the single assisted iPhone session. Before involving the
+phone owner, verify the exact app build and the approved Harness Remote pairing. Preserve the
+phone's existing app and pairing. The test operator can use the Mac app's public device ID and
+pairing generation from `window.harnessRemote.status()` to configure the broker bridge.
 
 Create an owner-only local directory with a short path such as `/tmp/vaultphone.<suffix>`. Save a
 `remote.json` file with the parameters below. Set `HARNESS_VAULT_PHONE_CONFIG` to the absolute path
@@ -102,32 +99,33 @@ add-on and the fixture runner in that directory. Use the same local account for 
 the fixture broker for this test.
 
 ```sh
-bun run --cwd packages/desktop cap:sync
 bash deploy/vault/build-peer.sh "$fixture_dir/peer.node"
 bun build deploy/vault/phone-qualification.ts --target node --outfile "$fixture_dir/phone-qualification.mjs"
-node "$fixture_dir/phone-qualification.mjs" "$fixture_dir/remote.json" "$fixture_dir/public-pin.txt" "$fixture_dir/peer.node" approved
-node "$fixture_dir/phone-qualification.mjs" "$fixture_dir/remote.json" "$fixture_dir/public-pin.txt" "$fixture_dir/peer.node" denied
+node "$fixture_dir/phone-qualification.mjs" "$fixture_dir/remote.json" "$fixture_dir/public-pin.txt" "$fixture_dir/peer.node" session
 ```
 
-Open and review a fresh request for each run, then select the matching decision and use Face ID.
-The fixture prints one PASS line after the runner verifies the decision and, for approval, the
-sealed test token. The run uses a disposable local broker and contacts no provider. In the fixture
-build, use **Legacy test** to review and save a fresh synthetic legacy entry with Face ID. The
-fixture shows a receipt after it reopens the same login from the device-only Keychain.
+The operator advances the requests with Enter. The broker stays up across all four requests so
+the Mac can refresh **Phone access → Vault requests** and collect the matched request states.
+Have the iPhone owner use **Open synthetic requests** and Face ID to refresh the inbox before
+each stage. Each new offer uses a fresh request ID.
 
-To qualify expiry and interruption, run the same command with `expired` or `interrupted` as
-its final argument. In each case, open the synthetic request on the signed iPhone and keep its
-review open. For expiry, wait for the broker's 30-second offer to lapse. For interruption, send
-`SIGINT` to the requester while review is open. After the broker prints its terminal result, try
-to approve the stale request on the phone within 20 seconds. Record the iPhone's unavailable
-message and refresh to confirm the request disappears. The runner checks that neither request can
-be claimed. A broker result alone does not record the iPhone observation.
+1. Review and approve the first `example-console` request with Face ID. The runner checks that
+   the signed decision delivered the synthetic token. The Mac can then read **Approval delivered**.
+2. Review and deny the next request with Face ID. Verify **Denied** on the Mac.
+3. Open a fresh review and hold it until the runner reports expiry after 30 seconds. Try to
+   approve, acknowledge **Vault request unavailable**, and refresh to confirm the offer is gone.
+4. Open the last review. The operator sends SIGINT to the runner PID while the review is open.
+   When the broker reports cancellation, try the stale approval. Complete Face ID if prompted,
+   acknowledge **Vault request unavailable**, and refresh to confirm the offer is gone.
 
-On the Mac, open **Phone access** and refresh **Vault requests** while the fixture broker is
-running. Compare the request and its decision with the phone. The panel reads the same local
-broker socket as the configured pairing, using the broker owner's verified Unix identity. It
-shows the paired phone's name, the request reference, site, action and lifecycle state. Open
-**Vault requests** on that iPhone to review and decide with Face ID.
+The operator records the iPhone observations and Mac states before exiting. The runner confirms
+denied, expired, and interrupted requests cannot be claimed. Single modes `approved`, `denied`,
+`expired`, and `interrupted` also remain available for standalone developer rehearsals.
+
+For developer-only legacy Keychain rehearsal, use a Debug build with bundle ID
+`com.dafuga.harness.vaultfixture` and `SWIFT_ACTIVE_COMPILATION_CONDITIONS='DEBUG HARNESS_VAULT_FIXTURE'`.
+Run the local renderer sync before building it. **Legacy test** reviews and saves a synthetic
+entry with Face ID and returns a receipt after reopening it from the device-only Keychain.
 
 ## Executor admission
 
