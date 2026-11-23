@@ -45,6 +45,8 @@ test('watchdog flags the launched item and reopens a closed rotation on a new hi
 async function proveWatchdog(root: string) {
 	const database = new DatabaseSync(':memory:');
 	const file = join(root, 'tracker.json');
+	const syncSecretFile = join(root, 'sync');
+	writeFileSync(syncSecretFile, 'synthetic-tracker-sync-key', { mode: 0o600 });
 	writeFileSync(
 		file,
 		JSON.stringify({
@@ -54,7 +56,7 @@ async function proveWatchdog(root: string) {
 			apiPort: 49291,
 			syncPort: 49292,
 			database: join(root, 'journal'),
-			syncSecretFile: join(root, 'sync'),
+			syncSecretFile,
 			legacyFenceFile: join(root, 'fence'),
 			hostEffects: {
 				mode: 'active',
