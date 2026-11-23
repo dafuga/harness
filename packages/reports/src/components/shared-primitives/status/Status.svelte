@@ -45,11 +45,15 @@
 	const id = $props.id();
 	let iconOpen = $state(false);
 	const description = $derived(reason || 'No verification recorded for this revision.');
+	// Only a verification that was run has a mark of its own: passed or failed. Any other status is
+	// an absence, shown as a muted chip, because absence is not failure.
+	const settled = $derived(status === 'verified' || status === 'failed');
 	// Proven is one value. Missing, stale, unknown and anything else that arrives is not proven.
 	let proven = $derived(passed === true);
 	let words = $derived(label ?? (proven ? 'Full coverage passed' : 'Verification failed'));
 	let unknown = $derived(
-		!proven && /missing|stale|incomplete|unknown|not proven|not recorded|no .*recorded/i.test(words)
+		!proven &&
+			/missing|stale|incomplete|unknown|not proven|not verified|not recorded|no .*recorded/i.test(words)
 	);
 	let why = $derived(proven ? [] : reasons);
 	// What asks for the tooltip: a pointer over the mark or over the tooltip itself, the keyboard
@@ -118,13 +122,15 @@
 		><hx-button
 			class="verification"
 			class:passed={status === 'verified'}
+			class:not-verified={!settled}
 			aria-label={description}
 			title={description}
 			onclick={() => (iconOpen = true)}
 			onblur={() => (iconOpen = false)}
 			onfocus={() => (iconOpen = true)}
 			onmouseenter={() => (iconOpen = true)}
-			onmouseleave={() => (iconOpen = false)}>{status === 'verified' ? '✓' : '×'}</hx-button
+			onmouseleave={() => (iconOpen = false)}
+			>{settled ? (status === 'verified' ? '✓' : '×') : 'Not verified'}</hx-button
 		>
 		{#if iconOpen}
 			<hx-span class="reason" role="status">{description}</hx-span>
