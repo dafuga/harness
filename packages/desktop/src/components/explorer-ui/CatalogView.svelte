@@ -96,8 +96,12 @@
 			placeholder={`Search ${workspace.category}…`}
 			bind:value={search}
 		/><FilterDialog {active} onreset={resetFilters}
-			><hx-label class="checkbox"
-				><hx-input type="checkbox" bind:checked={changed} /> Changed only</hx-label
+			><hx-label class="switch-row"
+				><hx-span>Changed only</hx-span><hx-input
+					type="checkbox"
+					role="switch"
+					bind:checked={changed}
+				/></hx-label
 			><hx-label class="filter-field"
 				><hx-span>Verification</hx-span><Select
 					label="Verification filter"
@@ -146,5 +150,49 @@
 		flex: 1 1 0;
 		min-width: 0;
 		min-height: 48px;
+	}
+	/* A 44px row: the name on the left, the switch on the right; the whole row toggles it. */
+	.switch-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--hx-space-12);
+		min-height: 44px;
+		cursor: pointer;
+	}
+	.switch-row > input {
+		position: relative;
+		flex: none;
+		appearance: none;
+		width: 44px;
+		height: 26px;
+		margin: 0;
+		border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+		border-radius: 999px;
+		background: var(--hx-color-surface);
+		cursor: pointer;
+	}
+	.switch-row > input::before {
+		content: '';
+		position: absolute;
+		top: 4px;
+		left: 4px;
+		width: 16px;
+		height: 16px;
+		border-radius: 50%;
+		background: var(--hx-color-text-muted);
+		transition: transform 120ms ease;
+	}
+	.switch-row > input:checked {
+		border-color: var(--hx-color-primary);
+		background: var(--hx-color-primary);
+	}
+	.switch-row > input:checked::before {
+		background: var(--hx-color-surface);
+		transform: translateX(18px);
+	}
+	.switch-row > input:focus-visible {
+		outline: var(--hx-border-thick) solid var(--hx-color-primary);
+		outline-offset: var(--hx-border-thick);
 	}
 </style>
