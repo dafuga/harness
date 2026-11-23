@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/models/development-tooling/Environment.types.ts",
-			"packages/desktop/src/models/development-tooling/EnvironmentValues.ts"
+			"packages/desktop/src/models/development-tooling/EnvironmentValues.ts",
+			"packages/desktop/src/models/development-tooling/PhoneTracker.types.ts"
 		],
 		"symbols": [
 			"nativeAccountContext",
@@ -55,7 +56,11 @@
 			"RemotePairingOffer",
 			"RemotePairingRequest",
 			"remoteContext",
-			"nativeAccountContext"
+			"nativeAccountContext",
+			"PhoneTrackerTool",
+			"PhoneTrackerToolSchema",
+			"PhoneTrackerResult",
+			"PhoneTrackerTools"
 		]
 	},
 	"contract": {
