@@ -16,18 +16,26 @@ test.runIf(process.platform === 'darwin')(
 				writeFileSync(join(directory, 'dist', entry), '');
 			}
 			const env = { PATH: process.env.PATH, HOME: directory };
-			const run = (args: string[], identity?: string) =>
+			const run = (args: string[], identity?: string, origin?: string) =>
 				spawnSync('bun', [script, ...args], {
 					cwd: directory,
 					encoding: 'utf8',
-					env: { ...env, HARNESS_MAC_SIGN_IDENTITY: identity }
+					env: {
+						...env,
+						HARNESS_MAC_SIGN_IDENTITY: identity,
+						HARNESS_RELEASE_HUB_ORIGIN: origin
+					}
 				});
+			const origin = 'https://hub.example.invalid';
+			const missingOrigin = run([]);
+			expect(missingOrigin.status).not.toBe(0);
+			expect(missingOrigin.stderr).toContain('HARNESS_RELEASE_HUB_ORIGIN');
 			for (const identity of [undefined, '', '-', 'Daniel']) {
-				const result = run([], identity);
+				const result = run([], identity, origin);
 				expect(result.status, `Release packaging must refuse identity ${identity}`).not.toBe(0);
 				expect(result.stderr, String(identity)).toContain('HARNESS_MAC_SIGN_IDENTITY');
 			}
-			const missingKeychain = run([], '0'.repeat(40));
+			const missingKeychain = run([], '0'.repeat(40), origin);
 			expect(missingKeychain.status).not.toBe(0);
 			expect(missingKeychain.stderr).toContain('harness-signing.keychain-db');
 			expect(readdirSync(join(directory, 'dist')).sort()).toEqual(['main.cjs', 'preload.cjs']);

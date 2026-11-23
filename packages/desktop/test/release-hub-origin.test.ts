@@ -89,3 +89,40 @@ test.each([
 	},
 	120000
 );
+
+test.runIf(process.platform === 'darwin')(
+	'iOS Release selects the production Hub and refuses missing or invalid build settings',
+	() => {
+		const project = join(desktopRoot, 'ios/App/App.xcodeproj/project.pbxproj');
+		const plist = spawnSync('/usr/bin/plutil', ['-convert', 'json', '-o', '-', project], {
+			encoding: 'utf8'
+		});
+		expect(plist.status, plist.stderr).toBe(0);
+		const { objects } = JSON.parse(plist.stdout);
+		const target = Object.values(objects).find(
+			(entry) => (entry as { isa?: string }).isa === 'PBXNativeTarget'
+		) as { buildConfigurationList: string; buildPhases: string[] };
+		const configurations: string[] = objects[target.buildConfigurationList].buildConfigurations;
+		const release = configurations
+			.map((id) => objects[id])
+			.find((config) => config.name === 'Release');
+		const production = 'https://dafuga-harness.pages.dev';
+		expect(release.buildSettings.HARNESS_HUB_ORIGIN).toBe(production);
+		const phase = target.buildPhases
+			.map((id) => objects[id])
+			.find((entry) => entry.name === 'Validate Harness Hub origin');
+		expect(phase?.shellScript).toBeTruthy();
+		const run = (configuration: string, value?: string) =>
+			spawnSync(phase.shellPath, ['-c', phase.shellScript], {
+				encoding: 'utf8',
+				env: { CONFIGURATION: configuration, HARNESS_HUB_ORIGIN: value }
+			});
+		expect(run('Debug').status).toBe(0);
+		expect(run('Release', production).status).toBe(0);
+		for (const invalid of [undefined, '', 'http://hub.example.invalid', production + '/sign-in']) {
+			const result = run('Release', invalid);
+			expect(result.status).not.toBe(0);
+			expect(result.stderr).toContain('HARNESS_HUB_ORIGIN');
+		}
+	}
+);
