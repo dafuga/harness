@@ -26,6 +26,8 @@ export interface TrackerDispatchRunner {
 		key: string,
 		signal: AbortSignal
 	): Promise<TrackerDispatchEvent | undefined>;
+	/** Confirm that the exact reservation has neither a host session nor any startup receipt. */
+	confirmNeverStarted?(run: TrackerRunReceipt, signal: AbortSignal): Promise<boolean>;
 }
 
 export interface TrackerDispatchSchedulerOptions {

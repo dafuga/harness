@@ -117,7 +117,7 @@ test('a project link opens its project, full commit, entity and History', async 
 		`Branch tip ${tip.slice(0, 7)} committed`
 	);
 	await page.keyboard.press('Escape');
-	await expect(page.getByRole('link', { name: 'pages › Alpha activity' })).toHaveAttribute(
+	await expect(page.getByRole('link', { name: '‹ pages', exact: true })).toHaveAttribute(
 		'href',
 		pinned
 	);

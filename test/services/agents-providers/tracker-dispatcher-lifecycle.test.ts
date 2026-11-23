@@ -59,7 +59,7 @@ test('an observed exit can recover a session that started and finished before ad
 
 test('claim and retry results are released only after the receipt transaction commits', async () => {
 	const fixture = dispatcherFixture();
-	const { service, runs, failure, item } = fixture;
+	const { service, runs, failure, item, changeItem } = fixture;
 	await service.request(sampleId, { source: 'manual', token: sampleToken });
 	failure.commit = true;
 	await expect(service.claim(sampleId, sampleToken)).rejects.toThrow('injected commit failure');
@@ -83,6 +83,12 @@ test('claim and retry results are released only after the receipt transaction co
 		rung: run.rung
 	});
 	expect(runs()).toHaveLength(2);
+	changeItem({ launch: null });
+	expect(await service.prepare(sampleId, retry!)).toMatchObject({
+		status: 'recorded',
+		run: { id: retry!.id, state: 'finished', outcome: 'abandoned', started_at: null }
+	});
+	expect(item()).toMatchObject({ status: 'open', launch: null });
 });
 
 test('startup retries keep the rung and exhaust atomically when start keeps failing', async () => {

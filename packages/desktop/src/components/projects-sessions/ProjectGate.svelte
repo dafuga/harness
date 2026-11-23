@@ -89,7 +89,7 @@
 					onclick={() => choose?.(item.id)}
 					><hx-strong>{item.name}</hx-strong><hx-small
 						>{item.kind === 'shared' ? 'Shared project' : item.root || place}</hx-small
-					></hx-button
+					>{#if !local}<hx-span class="recent-chevron" aria-hidden="true"></hx-span>{/if}</hx-button
 				>{:else}<hx-p class="muted recent-empty">{empty}</hx-p>{/each}
 		</hx-section>{/if}
 	{#if phone}<hx-p class="phone-hint"

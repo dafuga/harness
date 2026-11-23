@@ -179,9 +179,11 @@
 	}
 	.entity-tabs {
 		gap: 0;
+		flex-wrap: nowrap;
 		overflow: auto;
 	}
 	.entity-tabs button {
+		flex: none;
 		font-size: var(--hx-type-size-xs);
 		padding: var(--hx-space-12);
 	}

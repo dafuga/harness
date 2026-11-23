@@ -44,6 +44,13 @@
 	const action = $derived(
 		(status && actions[status.state as keyof typeof actions]) || 'Disconnect'
 	);
+	/** The footer's one line: a connected computer and this phone; the awake note lives in the dialog. */
+	const compactTitle = $derived.by(() => {
+		if (!labels) return '';
+		return status?.state === 'online' && status.device
+			? `${labels.title} · ${status.device.name}`
+			: labels.title;
+	});
 	const how =
 		'In Harness on your computer, turn on phone access and choose Pair a phone. Then scan the code it shows.';
 	const fixture = 'Debug build for a test fixture: a relay on this machine is accepted.';
@@ -59,8 +66,8 @@
 				class="remote-connection compact"
 				aria-label="Computer connection"
 			>
-				<hx-span class="remote-title">{labels.title}</hx-span>
-				{#if labels.detail}<hx-small class:remote-note={status.state !== 'online'}
+				<hx-span class="remote-title">{compactTitle}</hx-span>
+				{#if labels.detail && status.state !== 'online'}<hx-small class="remote-note"
 						>{labels.detail}</hx-small
 					>{/if}
 				<hx-button type="button" disabled={store.busy} onclick={() => void store.disconnect()}

@@ -51,8 +51,7 @@ export function prepareRetry(
 	if (run.state !== 'queued' || run.dispatch_at !== undefined || run.cli === 'none') {
 		return skip('ignored', 'attempt is no longer awaiting dispatch');
 	}
-	if (item?.launch?.token !== run.auto_token)
-		return skip('held', 'launch request changed or is missing');
+	if (item?.launch?.token !== run.auto_token) return cancelUnstartedRun(snapshot, run, now);
 	const hold = claimHold(snapshot, { item, grant, run }, policy, now);
 	if (hold) return skip('held', hold);
 	const rung = {
@@ -65,6 +64,27 @@ export function prepareRetry(
 	const problem = policy.admit(item, item.launch, rung);
 	if (problem) return skip('held', problem);
 	return reserveStart(item, { run, rung }, policy, now);
+}
+
+export function cancelUnstartedRun(
+	snapshot: TrackerDispatchSnapshot,
+	run: TrackerRunReceipt,
+	now: number
+): TrackerDispatchDecision {
+	const { item, activeSessionKeys } = snapshot;
+	const hasSession = [run.session_id, run.host_session_id, run.tmux].some(Boolean);
+	if (
+		run.state !== 'queued' ||
+		run.started_at !== null ||
+		hasSession ||
+		item?.launch?.token === run.auto_token ||
+		activeSessionKeys?.includes(attemptKey(run))
+	) {
+		return skip('ignored', 'attempt is not a cancelled, unstarted launch');
+	}
+	return recordRun(
+		finishRun(run, { outcome: 'abandoned', reason: 'launch cancelled before startup', now })
+	);
 }
 
 function claimHold(
