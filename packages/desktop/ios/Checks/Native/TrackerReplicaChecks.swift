@@ -156,6 +156,51 @@ func trackerReplicaBudgetChecks() {
     }
 }
 
+func trackerWriteOutboxChecks() {
+    let root = temporary("tracker-outbox")
+    defer { try? FileManager.default.removeItem(at: root) }
+    let scope = String(repeating: "a", count: 64)
+    let store = TrackerReplicaStore(root: root)
+    store.enter(scope)
+    var stage = "snapshot"
+    do {
+        let initial = snapshot([item("fixture001"), item("fixture002")], cursor: "seq-1")
+        _ = try store.apply(TrackerReplicaPage.decode(initial), expected: store.state(), now: Date())
+        stage = "prepare confirmation"
+        let first = try store.prepareWrite(scope: scope, action: "note", input: ["id": "fixture001", "text": "Draft"])
+        stage = "read empty outbox"
+        let pending = try store.writeStatus()
+        check(pending.isEmpty, "tracker write: preparing confirmation enqueues nothing")
+        stage = "insert first intent"
+        try store.enqueueWrite(first.intent)
+        let later = try store.prepareWrite(scope: scope, action: "note", input: ["id": "fixture001", "text": "Later"])
+        try store.enqueueWrite(later.intent)
+        let other = try store.prepareWrite(scope: scope, action: "note", input: ["id": "fixture002", "text": "Other"])
+        try store.enqueueWrite(other.intent)
+        let restarted = TrackerReplicaStore(root: root)
+        restarted.enter(scope)
+        let recovered = try restarted.nextWrite()
+        check(recovered?.intentId == first.intent.intentId, "tracker write: relaunch preserves the first device intent")
+        let shown = restarted.tool("tracker_show", input: ["id": "fixture001"], online: false, now: Date())
+        check(!String(describing: shown).contains("Draft"), "tracker write: queued text is absent from canonical reads")
+        try restarted.finishWrite(first.intent, conflict: "attention")
+        let eligible = try restarted.nextWrite()
+        check(eligible?.intentId == other.intent.intentId, "tracker write: conflict blocks only the matching item")
+        try restarted.finishWrite(other.intent, conflict: nil)
+        let blocked = try restarted.nextWrite()
+        check(blocked == nil, "tracker write: same-item intents cannot bypass a conflict")
+        let review = try restarted.prepareDiscard(scope: scope, input: ["intentId": first.intent.intentId])
+        try restarted.discardConflict(review.intent)
+        let unblocked = try restarted.nextWrite()
+        check(unblocked?.intentId == later.intent.intentId, "tracker write: discarding the conflict releases later intents")
+        try restarted.purgeWrites()
+        let erased = try restarted.writeStatus()
+        check(erased.isEmpty, "tracker write: revocation discards outbox payloads")
+    } catch {
+        check(false, "tracker write: outbox failed at \(stage): \(error)")
+    }
+}
+
 private func fillTrackerFixture(_ store: TrackerReplicaStore, now: Date) throws {
     for batch in 0..<8 {
         let rows = (0..<100).map { item("budget-\(100 * batch + $0)", "Tracker fixture " + String(repeating: "x", count: 80)) }

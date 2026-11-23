@@ -34,6 +34,7 @@ final class RemoteSession {
     let trackerStore: TrackerReplicaStore
     var trackerAuthority: String?
     var trackerRequest: UUID?
+    var trackerWriteRequest: String?
     var trackerTimer: DispatchWorkItem?
     var trackerDelay: Double = 60
     var trackerForeground = true

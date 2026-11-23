@@ -5,10 +5,12 @@ import { TrackerNativeRuntimeService } from '../../../src/services/projects-sess
 /** The fixture uses the native hub projection in memory. No real Tracker process is contacted. */
 export function fixturePhoneTracker() {
 	const db = new DatabaseSync(':memory:');
+	const writeGrant = { device: '', token: 'synthetic-mobile-fixture-write-token' };
 	const { store, items } = new TrackerNativeRuntimeService(db, {
 		role: 'hub',
 		node: 'fixture',
-		storage: { databaseId: () => 'fixture-mobile-tracker' }
+		storage: { databaseId: () => 'fixture-mobile-tracker' },
+		phoneWrite: writeGrant
 	});
 	const id = 'testphone1';
 	store.appendLocal({
@@ -26,6 +28,10 @@ export function fixturePhoneTracker() {
 	return {
 		fetcher: (input: RequestInfo | URL, init?: RequestInit) =>
 			items.handle(new Request(input, init)),
+		approveWrites: (device: string) => {
+			writeGrant.device = device;
+			return writeGrant;
+		},
 		finish: () => store.appendLocal({ itemId: id, fields: { status: 'done', resolved: true } }),
 		close: () => db.close()
 	};

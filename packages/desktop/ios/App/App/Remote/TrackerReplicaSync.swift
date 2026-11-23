@@ -23,6 +23,7 @@ extension RemoteSession {
 
     func trackerTool(_ name: String, input: [String: Any], done: @escaping ([String: Any]) -> Void) {
         queue.async {
+            if name == "tracker_write_status", input.isEmpty { return done(self.trackerWriteStatus()) }
             guard self.trackerScope != nil else {
                 return done(["source": "local_tracker", "lastSyncedAt": NSNull(),
                              "freshness": "unavailable", "partial": true, "code": "denied"])
@@ -42,6 +43,7 @@ extension RemoteSession {
         if next == "online" {
             trackerDelay = 60
             pullTracker()
+            drainTrackerWrites()
         } else if next != "connecting" {
             cancelTracker()
             if trackerBackground != nil { finishTrackerBackground(.failed) }
@@ -53,6 +55,14 @@ extension RemoteSession {
         if trackerAuthority != next { cancelTracker() }
         trackerAuthority = next
         trackerStore.enter(next)
+        if trackerWriteScope == nil {
+            cancelTrackerWrites()
+            guard next != nil else { return }
+            do { try trackerStore.purgeWrites() } catch {
+                trackerStore.purge()
+                trackerStore.enter(next)
+            }
+        }
     }
 
     func cancelTracker() {
@@ -60,6 +70,7 @@ extension RemoteSession {
         trackerTimer = nil
         trackerRequest = nil
         requests.failMethod(Self.trackerMethod, .superseded)
+        cancelTrackerWrites()
     }
 
     func pullTracker() {
@@ -117,7 +128,12 @@ extension RemoteSession {
             let more = try trackerStore.apply(page, expected: position, now: trackerStore.now())
             if trackerBackground != nil { return acceptTrackerBackground(page, more: more) }
             trackerDelay = 60
-            if more { queue.async { [weak self] in self?.pullTracker() } } else { scheduleTracker(60) }
+            if more {
+                queue.async { [weak self] in self?.pullTracker() }
+            } else {
+                drainTrackerWrites()
+                scheduleTracker(60)
+            }
         } catch let failure as RemoteFailure where RemoteFailure.denials.contains(failure.code) {
             removeTrackerGrant()
         } catch {

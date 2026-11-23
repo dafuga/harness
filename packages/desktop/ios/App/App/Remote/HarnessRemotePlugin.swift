@@ -30,7 +30,44 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
         guard let name = call.getString("name"), let input = call.options["input"] as? [String: Any] else {
             return call.reject(RemoteFailure.invalid.message, RemoteFailure.invalid.code)
         }
-        session.trackerTool(name, input: input) { call.resolve($0) }
+        if ["tracker_note", "tracker_flag", "tracker_answer", "tracker_discard_write"].contains(name) {
+            confirmTrackerWrite(String(name.dropFirst(8)), input: input, call: call)
+        } else {
+            session.trackerTool(name, input: input) { call.resolve($0) }
+        }
+    }
+
+    private func confirmTrackerWrite(_ action: String, input: [String: Any], call: CAPPluginCall) {
+        session.prepareTrackerWrite(action, input: input) { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self = self else { return call.reject("The write could not be confirmed.") }
+                switch result {
+                case .failure(let failure):
+                    call.resolve(self.session.trackerWriteReply(code: failure.rawValue))
+                case .success(let confirmation):
+                    self.presentTrackerWrite(confirmation, call: call)
+                }
+            }
+        }
+    }
+
+    @MainActor
+    private func presentTrackerWrite(_ confirmation: TrackerReplicaConfirmation, call: CAPPluginCall) {
+        guard let presenter = bridge?.viewController, presenter.presentedViewController == nil,
+            UIApplication.shared.applicationState == .active
+        else { return call.resolve(session.trackerWriteReply(code: "unavailable")) }
+        let intent = confirmation.intent
+        let message = [confirmation.itemTitle, confirmation.question, intent.text].compactMap { $0 }.joined(separator: "\n\n")
+        let title = confirmation.discard ? "Discard queued Tracker write" : "Queue Tracker " + intent.action
+        let button = confirmation.discard ? "Discard" : "Queue " + intent.action
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { [session] _ in
+            call.resolve(session.trackerWriteReply(code: "cancelled"))
+        })
+        alert.addAction(UIAlertAction(title: button, style: confirmation.discard ? .destructive : .default) { [session] _ in
+            session.confirmTrackerWrite(confirmation) { call.resolve($0) }
+        })
+        presenter.present(alert, animated: true)
     }
 
     @objc func refreshTracker(_ call: CAPPluginCall) {

@@ -99,6 +99,7 @@ async function fixtureHost(relay: Relay, state: string, root: string) {
 		project: { id, name },
 		allowTracker: (deviceId: string) => {
 			shared.trackerPhone = deviceId;
+			shared.trackerWrite = tracker.approveWrites(deviceId);
 		}
 	};
 }

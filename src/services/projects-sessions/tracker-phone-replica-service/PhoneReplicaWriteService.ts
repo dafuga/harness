@@ -15,7 +15,9 @@ import type {
 const opaqueHash = /^[a-f0-9]{64}$/;
 const uuid = /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/;
 const allowedFields = new Set(['version', 'intentId', 'itemId', 'action', 'text', 'revision']);
-const digest = (value: string) => createHash('sha256').update(value).digest();
+function digest(value: string): Buffer {
+	return createHash('sha256').update(value).digest();
+}
 
 /** Commits an authorized phone intent and its replay receipt under the Tracker journal lock. */
 export class PhoneReplicaWriteService {

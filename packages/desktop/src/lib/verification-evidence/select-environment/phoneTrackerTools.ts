@@ -5,7 +5,22 @@ import type {
 } from '../../../models/development-tooling/PhoneTracker.types';
 import type { RemoteNativePlugin } from '../../../models/development-tooling/Environment.types';
 
-/** A model runner can register these schemas and invoke only the app's local read port. */
+const confirmedWrites = {
+	note: 'Append a note',
+	flag: 'Flag an item',
+	answer: 'Answer the current flag'
+} as const;
+const writeInput = {
+	type: 'object',
+	properties: {
+		id: { type: 'string', minLength: 6, maxLength: 80 },
+		text: { type: 'string', minLength: 1, maxLength: 512 }
+	},
+	required: ['id', 'text'],
+	additionalProperties: false
+};
+
+/** The native dispatcher owns local reads and requires an on-phone confirmation for writes. */
 export const trackerToolSchemas = [
 	{
 		name: 'tracker_status',
@@ -40,7 +55,27 @@ export const trackerToolSchemas = [
 			required: ['query'],
 			additionalProperties: false
 		}
-	}
+	},
+	{
+		name: 'tracker_write_status',
+		description: 'List queued Tracker write intents and conflicts on this phone.',
+		inputSchema: { type: 'object', properties: {}, additionalProperties: false }
+	},
+	{
+		name: 'tracker_discard_write',
+		description: 'Discard a blocked intent after the user reviews and confirms on the phone.',
+		inputSchema: {
+			type: 'object',
+			properties: { intentId: { type: 'string', minLength: 36, maxLength: 36 } },
+			required: ['intentId'],
+			additionalProperties: false
+		}
+	},
+	...(['note', 'flag', 'answer'] as const).map((action) => ({
+		name: `tracker_${action}` as const,
+		description: confirmedWrites[action] + ' after the user confirms it on the phone.',
+		inputSchema: writeInput
+	}))
 ] as const satisfies readonly PhoneTrackerToolSchema[];
 
 export function phoneTrackerTools(plugin: RemoteNativePlugin): PhoneTrackerTools | undefined {

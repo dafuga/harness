@@ -31,7 +31,9 @@ export function phoneTrackerPush(
 ) {
 	const scope = trackerScope(scopeParts);
 	return async (input: Record<string, unknown>, signal: AbortSignal) => {
-		const body = JSON.stringify(input);
+		const intent = { ...input };
+		delete intent.epoch;
+		const body = JSON.stringify(intent);
 		if (Buffer.byteLength(body) > 4096) throw new RemoteFailure('too-large');
 		const response = await fetcher(new URL(source + '/write'), {
 			method: 'POST',

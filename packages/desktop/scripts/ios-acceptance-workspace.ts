@@ -10,7 +10,12 @@ import {
 	shot
 } from './ios-acceptance-run';
 import type { Acceptance } from './ios-acceptance-run';
-import { trackerForeground, trackerOffline } from './ios-acceptance-tracker';
+import {
+	trackerForeground,
+	trackerOffline,
+	trackerOutboxEmpty,
+	trackerWritePrompt
+} from './ios-acceptance-tracker';
 import { keychainGroups } from './ios-acceptance-simulator';
 import { overviewSnapshot } from '../tests/e2e/support/projectOverviewNativeFixture';
 
@@ -146,6 +151,7 @@ export async function workspace(run: Acceptance): Promise<void> {
 export async function savedCopies(run: Acceptance): Promise<void> {
 	const { record, page } = run;
 	await trackerForeground(run);
+	await trackerWritePrompt(run);
 	record.begin('Saved copies while the computer is away');
 	await control(run, '/suspend');
 	const away = await seen(run, footerText, 'Offline cached view', 'the view becomes a cached one');
@@ -154,6 +160,7 @@ export async function savedCopies(run: Acceptance): Promise<void> {
 	const kept = 'closed and started again meanwhile, the app is still paired: offline, not unpaired';
 	await seen(run, panelText, 'Computer offline', kept);
 	await trackerOffline(run);
+	await trackerOutboxEmpty(run, 'the outbox stays empty after relaunch without confirmation');
 	record.check(
 		(await openDesign(run)) === 'loaded',
 		'the project and its image come from the saved copies of the phone'

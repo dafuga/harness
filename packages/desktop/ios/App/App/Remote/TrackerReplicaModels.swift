@@ -54,6 +54,7 @@ struct TrackerReplicaItem: Codable {
     let notes: [Note]
     let flag: Flag?
     let runs: [Run]
+    let attentionRevision: String?
 
     var header: TrackerItemHeader {
         TrackerItemHeader(id: id, title: title, project: project, status: status, updatedAt: updatedAt, dueAt: dueAt)
@@ -66,6 +67,7 @@ struct TrackerReplicaItem: Codable {
             && notes.count <= 10 && notes.allSatisfy(Self.validNote)
             && (flag.map(Self.validFlag) ?? true)
             && runs.count <= 5 && runs.allSatisfy(Self.validRun)
+            && (attentionRevision.map { $0.range(of: "^[a-f0-9]{64}$", options: .regularExpression) != nil } ?? true)
     }
 
     private static func validNote(_ note: Note) -> Bool {
