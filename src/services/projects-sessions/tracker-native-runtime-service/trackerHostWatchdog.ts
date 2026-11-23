@@ -17,6 +17,7 @@ import {
 	readWatchdogAlerts,
 	watchdogItem
 } from './trackerHostWatchdogState';
+import { trackerTranscriptScan } from './trackerTranscriptScan';
 import { trackerWatchdogPort } from './trackerWatchdogPort';
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
 
@@ -30,6 +31,7 @@ export function trackerHostWatchdog(
 	now: () => number
 ) {
 	const driver = trackerWatchdogPort(config, store.node);
+	const scanTranscripts = trackerTranscriptScan(store, config.transcriptRoots ?? [], now);
 	const items = new TrackerItemReadRepository(store.database);
 	const idle = new WatchdogIdleService();
 	const startup = new WatchdogStartupService();
@@ -56,6 +58,7 @@ export function trackerHostWatchdog(
 			};
 		},
 		async tick(signal: AbortSignal) {
+			if (config.transcriptRoots?.length) await scanTranscripts(signal);
 			const panes = await driver.scan(signal);
 			signal.throwIfAborted();
 			if (!panes) return;

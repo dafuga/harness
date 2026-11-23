@@ -1,0 +1,47 @@
+{
+	"name": "secret-safe-computer-use",
+	"goal": "Keep secrets out of model-facing browser output and route detected transcript exposures to Tracker",
+	"createdAt": "2026-11-23T10:55:58.671Z",
+	"updatedAt": "2026-11-23T11:07:10.468Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-23T11:07:10.071Z",
+			"evidence": "Tracker yj58yj scope recorded. Use synthetic provider fixtures, type-only journal reports, and launch brief proof."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-23T11:07:10.270Z",
+			"evidence": "Added shared launch preamble, isolated installer, script-only sink and incremental Tracker scan."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-23T11:07:10.468Z",
+			"evidence": "37 focused Vitest tests and 5 CLI transfer tests passed. Docker browser run is pending."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

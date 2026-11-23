@@ -1,4 +1,5 @@
 // @harness-uid u_fyf7e7kyi5
+import { trackerSecretSafetyRule } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerSecretSafetyRule';
 import { join } from 'node:path';
 import { runTrackerHostCommand } from '../tracker-host-process-adapter/trackerHostCommand';
 import type { TrackerHostStartRequest } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
@@ -83,7 +84,10 @@ export function trackerSocket(node: string): string {
 }
 
 export function managedBrief(input: TrackerHostStartRequest): string {
-	const { backend, itemId, brief } = input;
+	const { backend, itemId } = input;
+	const brief = input.brief.startsWith(trackerSecretSafetyRule)
+		? input.brief
+		: trackerSecretSafetyRule + '\n\n' + input.brief.replace(trackerSecretSafetyRule + '\n\n', '');
 	const source = Buffer.from(brief);
 	if (backend !== 'docker' || source.length <= 15_900) return brief;
 	const completion = brief.indexOf('## Completion and worktree cleanup');

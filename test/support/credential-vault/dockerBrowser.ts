@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { setTimeout } from 'node:timers/promises';
@@ -25,10 +25,10 @@ export const approved = 'https://console.example.test';
 export const denied = 'https://outside.example.test';
 const context = process.env.HARNESS_TEST_VAULT_DOCKER_CONTEXT;
 
-export async function browserFixture(image: string) {
+export async function browserFixture(image: string, capture = false) {
 	const fixture = vaultBroker();
 	fixture.clock.now = Date.now();
-	const { recipe, script } = signedFixtureRecipe();
+	const { recipe, script } = signedFixtureRecipe(capture);
 	const binary = join(fixture.state, 'peer.node');
 	execFileSync('bash', ['deploy/vault/build-peer.sh', binary]);
 	const peer = new VaultPeerAdapter({ binary });
@@ -37,6 +37,7 @@ export async function browserFixture(image: string) {
 	const runner = fixture.seal.runnerKey();
 	const input = sessionRequest(runner, {
 		origins: [approved],
+		...(capture && { action: 'capture-secret', mode: 'write' as const }),
 		recipe: { site: recipe.recipe.site, revision: recipe.recipe.revision, digest: recipe.digest }
 	});
 	const docker = new VaultBrowserDockerAdapter({
@@ -96,19 +97,38 @@ async function approveFixture(
 	return { ticket, approved };
 }
 
-function signedFixtureRecipe() {
+function signedFixtureRecipe(capture: boolean) {
 	const input = JSON.parse(
 		readFileSync('deploy/vault/recipes/example-console.json', 'utf8')
 	) as VaultRecipeInput;
-	const script = readFileSync('deploy/vault/recipes/example-console.browser.json');
+	const original = readFileSync('deploy/vault/recipes/example-console.browser.json');
+	const script = capture ? captureRecipe(input, original) : original;
 	const { review, reviewers } = reviewed(input, Date.now());
 	return { recipe: vaultRecipe(input, review, reviewers), script };
+}
+
+function captureRecipe(input: VaultRecipeInput, original: Buffer): Buffer {
+	const script = JSON.parse(original.toString());
+	script.steps.at(-1).next = '/capture';
+	script.capture = { trigger: '#generate', result: '/created', value: '#generated' };
+	const program = Buffer.from(JSON.stringify(script));
+	input.actions = [{ id: 'capture-secret', mode: 'write', start: '/capture' }];
+	input.methods = [
+		{
+			kind: 'browser',
+			actions: ['capture-secret'],
+			reason: 'Synthetic browser capture action.',
+			scriptSha256: createHash('sha256').update(program).digest('hex')
+		}
+	];
+	return program;
 }
 
 export async function withHttpsFixture(
 	image: string,
 	channel: 'sms' | 'email',
-	use: (context: { id: string; ip: string; securityLog(): Promise<string> }) => Promise<void>
+	use: (context: { id: string; ip: string; securityLog(): Promise<string> }) => Promise<void>,
+	capture = false
 ) {
 	const engine = await dockerDaemon(context);
 	const docker = (args: string[]) => dockerControl(engine, args);
@@ -125,6 +145,7 @@ export async function withHttpsFixture(
 			'--pull=never',
 			'--network=' + id,
 			'--env=VAULT_FIXTURE_OTP=' + channel,
+			...(capture ? ['--env=VAULT_CAPTURE=yes'] : []),
 			'--label=' + label,
 			'--entrypoint=/usr/bin/python3',
 			image,

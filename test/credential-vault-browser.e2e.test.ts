@@ -125,3 +125,47 @@ async function expectMissingToken(endpoint: string, uid: number): Promise<void> 
 	refused.resume();
 	expect(refused.statusCode).toBe(403);
 }
+
+test.skipIf(!image)(
+	'writes a synthetic DOM secret to the private sink before browser teardown',
+	() => withHttpsFixture(image!, 'sms', proveSecretCapture, true),
+	60_000
+);
+
+async function proveSecretCapture({
+	id,
+	ip,
+	securityLog
+}: {
+	id: string;
+	ip: string;
+	securityLog(): Promise<string>;
+}) {
+	const run = await browserFixture(image!, true);
+	try {
+		const guest = await run.docker.launch({
+			origins: [approved],
+			redirects: [],
+			network: { id, hosts: { [new URL(approved).hostname]: ip } }
+		});
+		const written: boolean[] = [];
+		try {
+			await loginSyntheticFixture(run, guest.pipe, 'sms', async (bytes) => {
+				written.push(Buffer.from(bytes).equals(Buffer.from('synthetic-capture-canary')));
+			});
+			expect(written).toEqual([true]);
+			const log = JSON.parse(await securityLog());
+			expect(log.active).toBe(0);
+			expect(log.events.map(({ kind }: { kind: string }) => kind)).toEqual([
+				'login',
+				'write',
+				'other'
+			]);
+		} finally {
+			await guest.close();
+			await assertFixtureRemoved(guest.owner);
+		}
+	} finally {
+		await run.close();
+	}
+}

@@ -72,7 +72,8 @@ async function resetRootAutoAttach(
 export async function loginSyntheticFixture(
 	run: Awaited<ReturnType<typeof browserFixture>>,
 	pipe: VaultCdpPipe,
-	channel: 'sms' | 'email'
+	channel: 'sms' | 'email',
+	storeCaptured?: (bytes: Uint8Array) => Promise<void>
 ) {
 	await withPrivateBrowser(pipe, async (browser) => {
 		const [context] = browser.contexts();
@@ -93,9 +94,16 @@ export async function loginSyntheticFixture(
 		const executor = new VaultBrowserRecipeService({
 			newPage: () => context.newPage(),
 			openSecret: run.openSecret,
-			openOtp
+			openOtp,
+			secretDestination: () => storeCaptured
 		});
 		await executor.run({ recipe: run.recipe, approval: run.approved, script: run.script });
+		if (storeCaptured) {
+			expect(context.pages()).toEqual(startingPages);
+			const logout = await context.newPage();
+			await logout.goto(run.recipe.recipe.origins[0] + '/logout');
+			await logout.close();
+		}
 		for (const page of startingPages) await page.close();
 	});
 }

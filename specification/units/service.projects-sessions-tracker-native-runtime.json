@@ -36,6 +36,11 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogSchema.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogState.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerLegacyExitReceipt.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerSecretSafetyRule.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptExposure.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptExposure.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptPatterns.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptScan.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogPort.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogPort.types.ts"
 		],
@@ -111,6 +116,11 @@
 			"readWatchdogAlerts",
 			"finishObservedRuns",
 			"trackerLegacyExitReceipt",
+			"trackerSecretSafetyRule",
+			"recordTrackerTranscriptExposure",
+			"TrackerTranscriptExposure",
+			"trackerTranscriptMatches",
+			"trackerTranscriptScan",
 			"trackerWatchdogPort",
 			"TrackerWatchdogPort"
 		]
@@ -500,6 +510,66 @@
 				"required": true
 			},
 			{
+				"name": "recordTrackerTranscriptExposure.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "recordTrackerTranscriptExposure.type",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "recordTrackerTranscriptExposure.byte",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "recordTrackerTranscriptExposure.session",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "recordTrackerTranscriptExposure.identity",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "recordTrackerTranscriptExposure.itemId",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "recordTrackerTranscriptExposure.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerTranscriptMatches.bytes",
+				"type": "Buffer",
+				"required": true
+			},
+			{
+				"name": "trackerTranscriptMatches.offset",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerTranscriptScan.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerTranscriptScan.roots",
+				"type": "readonly string[]",
+				"required": true
+			},
+			{
+				"name": "trackerTranscriptScan.now",
+				"type": "() => number",
+				"required": true
+			},
+			{
 				"name": "trackerWatchdogPort.config",
 				"type": "NonNullable<TrackerHostEffects['watchdog']>",
 				"required": true
@@ -681,6 +751,22 @@
 			},
 			{
 				"name": "trackerLegacyExitReceipt",
+				"type": "unknown"
+			},
+			{
+				"name": "trackerSecretSafetyRule",
+				"type": "unknown"
+			},
+			{
+				"name": "recordTrackerTranscriptExposure",
+				"type": "void"
+			},
+			{
+				"name": "trackerTranscriptMatches",
+				"type": "unknown"
+			},
+			{
+				"name": "trackerTranscriptScan",
 				"type": "unknown"
 			},
 			{
@@ -1483,6 +1569,105 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "recordTrackerTranscriptExposure",
+				"inputs": [
+					{
+						"name": "recordTrackerTranscriptExposure.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "recordTrackerTranscriptExposure.type",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "recordTrackerTranscriptExposure.byte",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "recordTrackerTranscriptExposure.session",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "recordTrackerTranscriptExposure.identity",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "recordTrackerTranscriptExposure.itemId",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "recordTrackerTranscriptExposure.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordTrackerTranscriptExposure",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerTranscriptMatches",
+				"inputs": [
+					{
+						"name": "trackerTranscriptMatches.bytes",
+						"type": "Buffer",
+						"required": true
+					},
+					{
+						"name": "trackerTranscriptMatches.offset",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerTranscriptMatches",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerTranscriptScan",
+				"inputs": [
+					{
+						"name": "trackerTranscriptScan.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerTranscriptScan.roots",
+						"type": "readonly string[]",
+						"required": true
+					},
+					{
+						"name": "trackerTranscriptScan.now",
+						"type": "() => number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerTranscriptScan",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "trackerWatchdogPort",
 				"inputs": [
 					{
@@ -1570,6 +1755,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-normalize-tracker-item-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-plan-tracker-item-mutation",
 			"via": "import",
 			"origin": "derived"
 		},

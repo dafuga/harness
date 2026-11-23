@@ -50,7 +50,7 @@ const providerProgram = `
 const { appendFileSync, readFileSync } = require('node:fs');
 const { join } = require('node:path');
 const argv = process.argv.slice(2);
-const briefPath = argv.includes('--brief') ? argv[argv.indexOf('--brief') + 1] : null;
+const briefPath = argv.includes('--brief') ? argv[argv.indexOf('--brief') + 1] : argv.at(-1)?.match(/^Read your brief at (.+) and do that work/)[1];
 appendFileSync(join(process.env.HOME, 'invoked.ndjson'), JSON.stringify({
 	argv, cwd: process.cwd(), image: process.env.HARNESS_TASK_DOCKER_IMAGE ?? null,
 	secret: Boolean(process.env.FIXTURE_SECRET), brief: briefPath && readFileSync(briefPath, 'utf8'),

@@ -1,0 +1,4 @@
+{"event":"loop.created","timestamp":"2026-11-23T10:55:58.671Z","name":"secret-safe-computer-use","goal":"Keep secrets out of model-facing browser output and route detected transcript exposures to Tracker","template":"feature","templateLineage":["feature"]}
+{"event":"step.completed","timestamp":"2026-11-23T11:07:10.071Z","loop":"secret-safe-computer-use","step":"spec","evidence":"Tracker yj58yj scope recorded. Use synthetic provider fixtures, type-only journal reports, and launch brief proof."}
+{"event":"step.completed","timestamp":"2026-11-23T11:07:10.270Z","loop":"secret-safe-computer-use","step":"implement","evidence":"Added shared launch preamble, isolated installer, script-only sink and incremental Tracker scan."}
+{"event":"step.completed","timestamp":"2026-11-23T11:07:10.468Z","loop":"secret-safe-computer-use","step":"test","evidence":"37 focused Vitest tests and 5 CLI transfer tests passed. Docker browser run is pending."}

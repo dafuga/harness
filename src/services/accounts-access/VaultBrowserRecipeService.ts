@@ -1,4 +1,5 @@
 // @harness-uid u_xhiaeoubra
+import { captureVaultBrowserSecret } from './vault-browser-recipe-service/captureVaultBrowserSecret';
 import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { verifyVaultRecipeScript } from '../../utils/accounts-access/vaultRecipe';
 import { vaultOtpRoute } from '../../utils/accounts-access/vaultOtpRoute';
@@ -6,7 +7,8 @@ import type { VaultOtpChannel } from '../../utils/accounts-access/vaultRecipe.ty
 import type {
 	VaultBrowserRecipeInput,
 	VaultBrowserRecipeConfig,
-	VaultBrowserRecipePage
+	VaultBrowserRecipePage,
+	VaultSecretSink
 } from './VaultBrowserRecipeService.types';
 import {
 	readVaultScript,
@@ -36,20 +38,28 @@ export class VaultBrowserRecipeService {
 		) {
 			throw new ExpectedCliError('Signed script routes do not match the reviewed login scope.');
 		}
+		const sink = program.capture && this.secretWriter(approval, action.mode);
 		await this.login(origin, program, recipe.recipe.otp);
 		await this.verifyAction(
-			origin + action.start,
-			recipe.recipe.account.identity,
-			action.id,
-			program
+			{ url: origin + action.start, identity: recipe.recipe.account.identity, action: action.id },
+			program,
+			sink
 		);
 	}
 
+	private secretWriter(
+		approval: VaultBrowserRecipeInput['approval'],
+		mode: string
+	): VaultSecretSink {
+		const writer = mode === 'write' ? this.config.secretDestination?.(approval) : undefined;
+		if (!writer) throw new ExpectedCliError('The reviewed secret destination is unavailable.');
+		return writer;
+	}
+
 	private async verifyAction(
-		url: string,
-		identity: string,
-		action: string,
-		program: ReturnType<typeof vaultBrowserScript.parse>
+		{ url, identity, action }: { url: string; identity: string; action: string },
+		program: ReturnType<typeof vaultBrowserScript.parse>,
+		secretSink?: VaultSecretSink
 	): Promise<void> {
 		const page = await this.config.newPage();
 		try {
@@ -60,9 +70,15 @@ export class VaultBrowserRecipeService {
 				(await page.locator(program.capability).textContent()) !== action
 			)
 				throw new ExpectedCliError('Identity or capability verification failed.');
+			if (program.capture && secretSink)
+				await captureVaultBrowserSecret(page, new URL(url).origin, program.capture, secretSink);
 		} catch {
+			if (program.capture)
+				throw new ExpectedCliError('Secret capture stopped. Check provider state before retrying.');
 			await page.close();
 			throw new ExpectedCliError('Could not verify the synthetic browser account and capability.');
+		} finally {
+			if (program.capture) await closeCapturePage(page);
 		}
 	}
 
@@ -114,5 +130,13 @@ export class VaultBrowserRecipeService {
 		} finally {
 			bytes.fill(0);
 		}
+	}
+}
+
+async function closeCapturePage(page: VaultBrowserRecipePage): Promise<void> {
+	try {
+		await page.close();
+	} catch {
+		throw new ExpectedCliError('Destroy the capture browser before any handoff.');
 	}
 }
