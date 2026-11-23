@@ -23,6 +23,7 @@ test('the approval page names what is asked, and takes the typed code in a body,
 	await page.getByRole('button', { name: 'Sign in with Google' }).click();
 	await expect(page.getByText('every shared project you can open, now and later')).toBeVisible();
 	await expect(page.getByText(/Never type a code\s+that someone sent you/)).toBeVisible();
+	await page.getByText('What this allows', { exact: true }).click();
 	await expect(page.getByText(/writers\s+can\s+ask\s+agents\s+to\s+make\s+changes/)).toBeVisible();
 	if (process.env.TAKE_SCREENSHOT === 'true') {
 		await page.evaluate(() => document.fonts.ready);
@@ -38,7 +39,7 @@ test('the approval page names what is asked, and takes the typed code in a body,
 	await expect(page.getByRole('alert')).toContainText(/wrong, expired or already used/);
 	await page.getByRole('textbox', field).fill(` ${userCode.toLowerCase()} `);
 	await page.getByRole('button', approve).click();
-	await expect(page.getByRole('heading', { name: 'Approved', exact: true })).toBeVisible();
+	await expect(page.getByRole('status')).toContainText('Approved.');
 	await expect(page.getByRole('textbox')).toHaveCount(0);
 	expect(approvals().map((call) => call.body)).toEqual([
 		{ handoffId: handoff, userCode: 'WXYZ-0000' },
@@ -59,7 +60,7 @@ test('a request for one project names that project', async ({ page }) => {
 test('an expired request offers nothing to approve', async ({ page }) => {
 	const state = await hostedFixture(page, { native: { status: 'expired', resource: 'projects' } });
 	await page.goto(`/native/${handoff}`);
-	await expect(page.getByRole('heading', { name: 'This request has expired' })).toBeVisible();
+	await expect(page.getByText('This request has expired.')).toBeVisible();
 	await expect(page.getByRole('textbox')).toHaveCount(0);
 	expect(state.calls.filter((call) => call.path.endsWith('/native/approve'))).toEqual([]);
 });
