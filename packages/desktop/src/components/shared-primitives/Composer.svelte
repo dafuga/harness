@@ -17,13 +17,14 @@
 		notice = '',
 		failureReported = false,
 		placeholder = '',
+		opening = '',
 		visual = false,
 		fixedVisual = false,
 		compact = false,
 		comment,
 		send
 	}: {
-		/** What this context allows, Comment first. Empty when nothing can be sent. */
+		/** What this context allows, in any order: the field always shows Comment · Ask · Plan · Change. */
 		modes: ComposeMode[];
 		providers: ProviderState[];
 		approved: boolean;
@@ -33,6 +34,8 @@
 		failureReported?: boolean;
 		/** What an agent request is asked to describe here, where it is not the next design. */
 		placeholder?: string;
+		/** What an empty conversation says in its field, in place of the mode's own hint. */
+		opening?: string;
 		/** Whether a Plan here asks for the device's number of visual design options. */
 		visual?: boolean;
 		/** Direct entity Plans use the mockup authoring models. */
@@ -43,6 +46,9 @@
 		send: (request: RunDraft) => Promise<boolean>;
 	} = $props();
 	const labels = { comment: 'Comment', ask: 'Ask', plan: 'Plan', change: 'Change' };
+	/** One order everywhere; the caller's list decides only which modes appear and the default. */
+	const order: ComposeMode[] = ['comment', 'ask', 'plan', 'change'];
+	const shown = $derived(order.filter((item) => modes.includes(item)));
 	let text = $state('');
 	let failed = $state(false);
 	let chosen = $state<ComposeMode | null>(null);
@@ -60,6 +66,7 @@
 	const blocked = $derived(!mode || running || !text.trim() || unready);
 	const hint = $derived(notice || (mode ? 'For people. A comment never starts an agent.' : ''));
 	const prompt = $derived.by(() => {
+		if (opening) return opening;
 		if (request === 'ask') return 'Ask a question…';
 		return request ? placeholder || 'Describe the next design…' : 'Leave a comment…';
 	});
@@ -102,7 +109,7 @@
 		<Notice>Approve the current exact design before sending changes.</Notice>
 	{/if}
 	{#if modes.length > 1}<hx-div class="mode-options" role="group" aria-label="Request mode">
-			{#each modes as item (item)}<hx-button
+			{#each shown as item (item)}<hx-button
 					type="button"
 					class:active={mode === item}
 					aria-pressed={mode === item}

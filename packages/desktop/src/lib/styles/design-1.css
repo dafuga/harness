@@ -61,13 +61,13 @@
 	color: var(--hx-color-primary);
 	font-size: var(--hx-type-size-2xl);
 }
+/* No frame of its own: the field's focus ring is the only outline a composer shows. */
 .composer {
-	border: var(--hx-border-thin) solid var(--hx-color-primary);
+	border: 0;
 	border-radius: var(--hx-radius-small);
 	padding: var(--hx-space-12);
 	margin-top: var(--hx-space-14);
 	background: var(--hx-color-surface-raised);
-	box-shadow: 0 0 0 var(--hx-border-heavy) var(--hx-color-primary-wash);
 }
 .composer textarea {
 	display: block;

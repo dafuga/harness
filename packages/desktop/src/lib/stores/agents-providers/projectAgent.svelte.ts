@@ -52,9 +52,8 @@ class ProjectAgentState {
 	get notice() {
 		if (this.workspace.error) return 'Chat unavailable: ' + this.workspace.error;
 		if (this.workspace.busy) return 'Loading project…';
-		return this.allowed
-			? 'Ask a question, plan a design, or request a code change.'
-			: this.workspace.capabilities.reason || 'Read-only project access.';
+		// Where an agent may be asked, the empty chat's field says what it is for; the header stays bare.
+		return this.allowed ? '' : this.workspace.capabilities.reason || 'Read-only project access.';
 	}
 	/** Reads who can be asked and follows the runs; what it returns stops following them. */
 	listen(): (() => void) | undefined {

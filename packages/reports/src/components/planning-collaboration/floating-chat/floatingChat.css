@@ -115,3 +115,29 @@ header p {
 		max-height: calc(100dvh - var(--fc-above) - 12px - env(safe-area-inset-top, 0px));
 	}
 }
+/* The scrim is drawn only while a phone panel is a sheet; a click on it closes the panel. */
+.floating-chat-scrim {
+	display: none;
+}
+/* On a phone the open panel is a bottom sheet across the screen, over a scrim of the page. */
+@media (max-width: 560px) {
+	.floating-chat-scrim:not([hidden]) {
+		display: block;
+		position: fixed;
+		inset: 0;
+		z-index: var(--hx-layer-floating);
+		background: var(--hx-color-scrim);
+		cursor: pointer;
+	}
+	.floating-chat-panel {
+		right: 0;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		max-height: min(85dvh, calc(100dvh - var(--floating-chat-top, 168px)));
+		padding-bottom: env(safe-area-inset-bottom, 0px);
+		border-width: var(--hx-border-thin) 0 0;
+		border-radius: var(--hx-radius-xlarge) var(--hx-radius-xlarge) 0 0;
+		box-shadow: var(--hx-shadow-sheet);
+	}
+}
