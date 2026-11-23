@@ -322,6 +322,13 @@ the CLI. The inventory used local installation files and did not probe MB2.
 | `backup list`                                                                                                                                                             | `GET /backup/list` reports regular backup files in `~/backups/tracker` or an absolute `backupDirectory` in native config. The native scheduler is external. The listing reports file metadata without opening backup contents.                                                     |
 | `status`, `sync`, `ensure`, `help`                                                                                                                                        | Native status, sync and health routes, plus local help. Native `ensure` checks the configured supervisor listener.                                                                                                                                                                 |
 
+To replace a pending managed launch, run `tracker unlaunch <item>` and then
+`tracker launch <item>`. The launcher retires a cancelled retry that was never
+dispatched. After five minutes from dispatch, it also retires a cancelled
+reservation if the exact tmux session is absent and no startup or exit marker
+exists. The old row remains in run history as abandoned. Live or uncertain
+attempts continue to fence a new launch.
+
 - [ ] Wire owner-approved admin commands for `autolaunch pause/resume/clear-quota`
       and `reject`. Verify host admission, launcher limits, `ready/skipped`,
       repository mappings and live provider hold data before claiming full

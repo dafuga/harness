@@ -1,7 +1,15 @@
-import { existsSync, readFileSync, readdirSync, unlinkSync, writeFileSync } from 'node:fs';
+import {
+	existsSync,
+	mkdirSync,
+	readFileSync,
+	readdirSync,
+	unlinkSync,
+	writeFileSync
+} from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
+import { trackerManagedToken } from '../../../src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedLaunchReceipt';
 import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { loadTrackerNodeConfig } from '../../../src/services/projects-sessions/tracker-node-service/trackerNodeConfig';
 import { trackerNodeRuntime } from '../../../src/services/projects-sessions/tracker-node-service/trackerNodeRuntime';
@@ -24,14 +32,14 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 	const database = new DatabaseSync(':memory:');
 	const signal = new AbortController().signal;
 	try {
-		const runtime = new TrackerNativeRuntimeService(
-			database,
-			trackerNodeRuntime(foregroundConfig(root, config), (scope) => {
+		const runtime = new TrackerNativeRuntimeService(database, {
+			...trackerNodeRuntime(foregroundConfig(root, config), (scope) => {
 				expect(scope).toMatchObject({ itemId, apiPort: 49281 });
 				expect(JSON.parse(scope.key)).toEqual([itemId, expect.any(String), 1]);
 				writeFileSync(scope.path, 'synthetic host-signer fixture', { flag: 'wx', mode: 0o600 });
-			})
-		);
+			}),
+			now: () => Date.now()
+		});
 		runtime.store.appendLocal({
 			itemId,
 			fields: { title: 'Synthetic Docker work', status: 'open', kind: 'task', project: 'Harness' }
@@ -58,8 +66,63 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 		expect(launched.guestAuthFile.startsWith(launched.cwd + '/')).toBe(false);
 		expect(existsSync(launched.guestAuthFile)).toBe(false);
 		await verifyLostSession(runtime, database, config.stateDirectory);
+		await verifyCancelledClaim(runtime, database, config.stateDirectory);
 	} finally {
 		database.close();
+	}
+}
+
+async function verifyCancelledClaim(
+	runtime: TrackerNativeRuntimeService,
+	database: DatabaseSync,
+	attempts: string
+) {
+	const signal = new AbortController().signal;
+	const tick = () => runtime.scheduler!.tick(signal);
+	expect((await itemRequest(runtime, 'done')).ok).toBe(true);
+	await tick();
+	for (const action of ['reopen', 'unlaunch', 'launch']) {
+		expect((await itemRequest(runtime, action)).ok).toBe(true);
+	}
+	const token = database.prepare('SELECT auto FROM items WHERE id = ?').get(itemId)!.auto;
+	const directory = join(attempts, trackerManagedToken(node, JSON.stringify([itemId, token, 1])));
+	mkdirSync(directory, { mode: 0o700 });
+	await tick();
+	const runs = () =>
+		database
+			.prepare('SELECT id,state,outcome,started_at FROM runs WHERE id >= 4 ORDER BY id')
+			.all();
+	const held = [{ id: 4, state: 'queued', outcome: null, started_at: null }];
+	expect(runs()).toEqual(held);
+	expect((await itemRequest(runtime, 'unlaunch')).ok).toBe(true);
+	expect((await itemRequest(runtime, 'launch')).ok).toBe(true);
+	await tick();
+	expect(runs()).toEqual(held);
+
+	const clock = vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 6 * 60_000);
+	const probe = join(attempts, '..', 'tmux-presence');
+	try {
+		for (const reply of ['tmux inventory permission denied', 'HARNESS_TRACKER_ATTEMPT=live']) {
+			writeFileSync(probe, reply);
+			await tick();
+			expect(runs()).toEqual(held);
+		}
+		unlinkSync(probe);
+		const marker = join(directory, 'started.tmp');
+		writeFileSync(marker, 'synthetic partial startup marker', { mode: 0o600 });
+		await tick();
+		expect(runs()).toEqual(held);
+		unlinkSync(marker);
+		await tick();
+		expect(runs()).toEqual([
+			{ id: 4, state: 'finished', outcome: 'abandoned', started_at: null },
+			{ id: 5, state: 'running', outcome: null, started_at: expect.any(Number) }
+		]);
+		expect((await itemRequest(runtime, 'done')).ok).toBe(true);
+		await tick();
+		expect(runs()).toHaveLength(2);
+	} finally {
+		clock.mockRestore();
 	}
 }
 
