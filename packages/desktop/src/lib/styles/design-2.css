@@ -23,8 +23,12 @@ pre {
 .segmented-choice button:last-child {
 	border-radius: 0 var(--hx-radius-xsmall) var(--hx-radius-xsmall) 0;
 }
+/* The chosen option is the one gold button; the others keep the secondary button treatment. */
 .segmented-choice button.active {
-	background: var(--hx-color-primary-wash);
+	background: var(--hx-color-primary);
+	/* The workspace's .active text is !important gold; this !important, with its higher selector, wins. */
+	color: var(--hx-color-primary-contrast) !important;
+	border-color: var(--hx-color-primary);
 }
 
 .behavior-notes p {

@@ -4,6 +4,9 @@
 <script lang="ts">
 	import { tick, type Snippet } from 'svelte';
 	import HarnessIcon from '../explorer-ui/HarnessIcon.svelte';
+	import { inertBehind } from './floating-chat/inertBehind';
+	/** The phone width at which the panel is a bottom sheet over a scrim, as floatingChat.css draws it. */
+	const sheetQuery = '(max-width: 560px)';
 	let {
 		open = $bindable(false),
 		label,
@@ -37,6 +40,11 @@
 	function track() {
 		if (body) following = body.scrollHeight - body.scrollTop - body.clientHeight < 32;
 	}
+	// On a phone the open panel is a sheet: the page behind it takes no input until it closes.
+	$effect(() => {
+		if (!open || !root || !window.matchMedia(sheetQuery).matches) return;
+		return inertBehind(root);
+	});
 	$effect(() => {
 		if (!body) return;
 		reveal();
@@ -71,7 +79,13 @@
 	>{/snippet}
 <svelte:window onkeydown={escape} />
 <hx-div class="floating-chat" bind:this={root}>
-	{#if open || kept}<hx-aside
+	{#if open || kept}<hx-div
+			class="floating-chat-scrim"
+			role="presentation"
+			hidden={!open}
+			onclick={() => show(false)}
+		></hx-div>
+		<hx-aside
 			id="{id}-panel"
 			class="floating-chat-panel"
 			aria-label={panelLabel}

@@ -25,6 +25,8 @@
 		agent.saved ? workspace.path(agent.saved.category, agent.saved.entityId) : ''
 	);
 	const quiet = $derived(!agent.messages.length && !agent.asked);
+	/** What the empty chat is for; once there is a conversation the field asks for the next step. */
+	const invitation = 'Ask a question, plan a design, or request a code change.';
 	function pending(author: 'user' | 'agent', text: string) {
 		if (!agent.active) return false;
 		const end = agent.messages.slice(-2);
@@ -97,6 +99,7 @@
 					running={agent.active || workspace.busy}
 					failureReported={Boolean(agent.error)}
 					placeholder={`Describe the ${kind} to add…`}
+					opening={quiet && agent.allowed ? invitation : ''}
 					comment={(text) => agent.comment(text)}
 					send={agent.send}
 				/>
