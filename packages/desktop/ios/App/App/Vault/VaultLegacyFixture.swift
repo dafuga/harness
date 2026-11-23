@@ -1,4 +1,4 @@
-#if DEBUG
+#if DEBUG && HARNESS_VAULT_FIXTURE
 import CryptoKit
 import Foundation
 import LocalAuthentication

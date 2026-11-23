@@ -1,8 +1,9 @@
-#if DEBUG
+#if DEBUG && HARNESS_VAULT_FIXTURE
 import UIKit
 
 extension VaultInboxController {
     func addLegacyFixtureControl() {
+        guard Bundle.main.bundleIdentifier == "com.dafuga.harness.vaultfixture" else { return }
         let button = UIBarButtonItem(title: "Legacy test", style: .plain, target: self, action: #selector(legacyTest))
         navigationItem.rightBarButtonItems = (navigationItem.rightBarButtonItems ?? []) + [button]
     }
