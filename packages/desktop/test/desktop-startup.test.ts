@@ -1,5 +1,6 @@
 import type { Listener } from './desktop-startup.test.types';
 import { beforeEach, expect, test, vi } from 'vitest';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 /** Electron as the main process sees it: app events, one window, its page and native dialogs. */
@@ -16,7 +17,6 @@ const state = vi.hoisted(() => {
 		listeners,
 		lock: vi.fn(() => true),
 		setPath: vi.fn(),
-		packaged: false,
 		quit: vi.fn(),
 		on: vi.fn(app.on),
 		ready: vi.fn(() => new Promise<void>(() => undefined)),
@@ -37,9 +37,7 @@ function browserWindow() {
 }
 vi.mock('electron', () => ({
 	app: {
-		get isPackaged() {
-			return state.packaged;
-		},
+		isPackaged: false,
 		commandLine: { hasSwitch: vi.fn(() => false) },
 		requestSingleInstanceLock: state.lock,
 		quit: state.quit,
@@ -86,7 +84,6 @@ beforeEach(() => {
 	vi.clearAllMocks();
 	state.app.map.clear();
 	state.windows.length = 0;
-	state.packaged = false;
 	state.lock.mockReturnValue(true);
 	state.ready.mockImplementation(() => new Promise<void>(() => undefined));
 });
@@ -101,8 +98,22 @@ const event = () => ({ preventDefault: vi.fn() });
 const settled = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 test('only the first app instance reaches readiness and backend startup', async () => {
-	state.packaged = true;
-	await import('../src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop');
+	const bundle = mkdtempSync(join(tmpdir(), 'desktop-signed-layout-'));
+	const resources = Object.getOwnPropertyDescriptor(process, 'resourcesPath');
+	try {
+		mkdirSync(join(bundle, 'Resources'));
+		mkdirSync(join(bundle, 'Helpers'));
+		writeFileSync(join(bundle, 'Helpers/HarnessKeychainMigration'), 'fixture');
+		Object.defineProperty(process, 'resourcesPath', {
+			configurable: true,
+			value: join(bundle, 'Resources')
+		});
+		await import('../src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop');
+	} finally {
+		if (resources) Object.defineProperty(process, 'resourcesPath', resources);
+		else Reflect.deleteProperty(process, 'resourcesPath');
+		rmSync(bundle, { recursive: true, force: true });
+	}
 	expect(state.lock).toHaveBeenCalledOnce();
 	expect(state.ready).toHaveBeenCalledOnce();
 	if (process.platform === 'darwin') {
