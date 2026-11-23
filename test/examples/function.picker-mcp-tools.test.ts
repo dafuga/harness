@@ -1,11 +1,9 @@
+import type { Call, Service } from './function.picker-mcp-tools.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { pickerMcpTools } from '../../src/utils/development-tooling/pickerMcpTools';
 import { UnknownPickerOperationError } from '../../src/utils/development-tooling/pickerMcpTools.types';
-
-type Service = Parameters<typeof pickerMcpTools>[0];
-type Call = { member: string; args: unknown[] };
 
 const switchInput = {
 	session_id: 'session-4f2a',

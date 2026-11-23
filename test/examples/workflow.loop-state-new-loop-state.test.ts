@@ -1,3 +1,4 @@
+import type { Input } from './workflow.loop-state-new-loop-state.test.types';
 import { test } from 'vitest';
 import { newLoopState } from '../../src/cli/program/manage-loop/newLoopState';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -5,14 +6,6 @@ import { expect } from '../verificationExpect';
 import { withTempDir } from '../support/temporary';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-
-type Input = {
-	name: string;
-	goal: string;
-	createdAt: string;
-	kind?: 'coding' | 'planning';
-	plan?: string;
-};
 
 const inputs: Input[] = [
 	{

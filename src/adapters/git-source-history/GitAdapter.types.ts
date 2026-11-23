@@ -12,7 +12,4 @@ export interface GitResult {
 	stderr: string;
 }
 
-/** A Git command that exited non-zero; the message gives its arguments and trimmed stderr. */
-export class GitCommandError extends Error {
-	override name = 'GitCommandError';
-}
+export { GitCommandError } from './GitCommandError';

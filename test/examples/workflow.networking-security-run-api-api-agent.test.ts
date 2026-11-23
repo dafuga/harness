@@ -1,9 +1,8 @@
+import type { ApiClient } from './workflow.networking-security-run-api-api-agent.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { apiAgent, apiEventCursor, apiEvents } from '../../src/workflows/networking-security/run-api/apiAgent';
-
-type ApiClient = Parameters<typeof apiAgent>[0];
 
 function client(input: Record<string, unknown>, data: unknown, options: Record<string, unknown> = {}) {
 	const calls: unknown[][] = [];

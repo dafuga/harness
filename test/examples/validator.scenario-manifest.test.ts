@@ -1,3 +1,4 @@
+import { registryScenario } from './validator.scenario-manifest.fixture';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -5,57 +6,6 @@ import { ScenarioManifestValidator } from '../../src/validators/ScenarioManifest
 import { videoScriptExports } from '../../src/validators/verification-evidence/scenario-manifest-validator/videoScriptExports';
 
 const validator = new ScenarioManifestValidator();
-
-const registryScenario = {
-	schemaVersion: 1,
-	id: 'unit-registry-ownership',
-	title: 'Registry ownership admission and source qualification',
-	kind: 'headless',
-	units: ['validator.unit-registry', 'workflow.manage-units'],
-	states: [
-		{
-			id: 'registry-ownership',
-			title:
-				'Existing ownership and identity matrix including duplicate IDs, canonical boundaries and public/type-only compatibility',
-			coverage: 'required',
-			units: ['validator.unit-registry', 'workflow.manage-units']
-		}
-	],
-	viewports: [],
-	tests: [
-		{
-			id: 'ownership',
-			kind: 'unit',
-			runner: 'command',
-			target: 'bun test/verification-output.ts vitest test/services/unit-index.test.ts',
-			cwd: '.',
-			timeoutMs: 180000
-		}
-	],
-	evidence: [
-		{
-			id: 'ownership-output',
-			kind: 'output',
-			states: ['registry-ownership'],
-			viewports: [],
-			required: true
-		},
-		{
-			id: 'ownership-assertions',
-			kind: 'assertions',
-			states: ['registry-ownership'],
-			viewports: [],
-			required: true
-		},
-		{
-			id: 'behavior-benchmarks',
-			kind: 'benchmark',
-			states: ['registry-ownership'],
-			viewports: [],
-			required: true
-		}
-	]
-};
 
 function summarize(result: { value?: { id: string }; errors: string[] }) {
 	return {

@@ -1,3 +1,7 @@
+import type {
+	Case,
+	Summary
+} from './entry.program-history-prune-scan-verification-cache.test.types';
 import { mkdir, symlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -5,13 +9,6 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { scanVerificationCache } from '../../src/cli/program/history-prune/scanVerificationCache';
-
-type Case = Parameters<typeof recordExampleCases>[1][number];
-type Summary = {
-	entries: Array<{ path: string; protectionReasons: string[] }>;
-	valid: unknown[];
-	problems: string[];
-};
 
 const STORE = '.cache/harness/verification';
 const EMPTY_COMMIT = 'c'.repeat(40);

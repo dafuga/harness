@@ -1,3 +1,4 @@
+import type { Cases, Repository } from './workflow.benchmark-definition.test.types';
 import { mkdirSync, realpathSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -9,9 +10,6 @@ import {
 	prepareBenchmark
 } from '../../src/cli/program/benchmark-service/benchmarkDefinition';
 import type { BenchmarkRunners } from '../../src/cli/program/benchmark-service/benchmarkDefinition';
-
-type Repository = Parameters<Parameters<typeof withTempRepo>[0]>[0];
-type Cases = Parameters<typeof recordExampleCases>[1];
 
 const unitId = 'workflow.benchmark-definition';
 const identity = ['-c', 'user.name=Benchmark Fixture', '-c', 'user.email=fixture@example.invalid'];

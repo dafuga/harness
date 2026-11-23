@@ -1,13 +1,9 @@
-import type { Command } from 'commander';
+import type { ProgramSummary, Loader, ErrorSummary } from './entry.load-cli-program.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { commandLoaders } from '../../src/cli/commandLoaders';
 import { loadCliProgram } from '../../src/cli/loadCliProgram';
-
-type ProgramSummary = { name: string; version: string | null; commands: string[] };
-type ErrorSummary = { name: string; message: string };
-type Loader = (program: Command) => Promise<void>;
 
 async function summarise(args: readonly string[]): Promise<ProgramSummary> {
 	const program = await loadCliProgram(args);

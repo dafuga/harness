@@ -1,9 +1,8 @@
+import type { PickerEnv } from './function.picker-paths.test.types';
 import { test } from 'vitest';
 import { pickerPaths } from '../../src/cli/program/codex-picker-command/pickerPaths';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-type PickerEnv = { CODEX_HOME?: string; HARNESS_PICKER_HOME?: string };
 
 function clearPickerEnv() {
 	delete process.env.CODEX_HOME;

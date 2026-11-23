@@ -1,3 +1,4 @@
+import type { Input } from './workflow.benchmark-trial.test.types';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -5,8 +6,6 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { runBenchmarkTrial } from '../../src/cli/program/benchmark-service/benchmarkTrial';
-
-type Input = Parameters<typeof runBenchmarkTrial>[0];
 
 const TRIAL_ID = 'trial-1';
 

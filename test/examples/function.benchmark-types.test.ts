@@ -1,5 +1,7 @@
+import { parsing } from './function.benchmark-types.fixture';
+
 import { test } from 'vitest';
-import { z } from 'zod';
+
 import {
 	benchMeasurementSchema,
 	calibrationNote,
@@ -75,29 +77,6 @@ const dirty = {
 	measurements: [],
 	default: { ...measuredDefault, basis: 'unmeasured', candidates: [], excluded: [] }
 };
-
-type Parser = { parse(value: unknown): unknown };
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
-
-/** Parses each input as a caller does; a refusal is kept as the reasons the schema gives. */
-function parsing(schema: Parser) {
-	return (name: string, input: unknown): ExampleCase => {
-		try {
-			return { name, input, output: schema.parse(input) };
-		} catch (error) {
-			return { name, input, error: reasons(error) };
-		}
-	};
-}
-
-/** The path and message of each refusal, in the order zod gives them; the root is named record. */
-function reasons(error: unknown): string[] {
-	if (!(error instanceof z.ZodError)) throw error;
-	return error.issues.map((issue) => {
-		const where = issue.path.length > 0 ? issue.path.join('.') : 'record';
-		return `${where}: ${issue.message}`;
-	});
-}
 
 /** A copy of the record without one field, for a record that leaves that field out. */
 function without(record: Record<string, unknown>, key: string): Record<string, unknown> {

@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"src/services/agents-providers/ModuleTaskWorkerService.ts",
+			"src/services/agents-providers/module-task-worker-service/WorkerOutsideModuleError.ts",
 			"src/services/agents-providers/module-task-worker-service/preflightClaim.ts",
 			"src/services/agents-providers/module-task-worker-service/providerCooldown.ts",
 			"src/services/agents-providers/module-task-worker-service/providerCooldown.types.ts",
@@ -21,6 +22,7 @@
 			"ModuleTaskWorkerService",
 			"ModuleTaskWorkerService.constructor",
 			"ModuleTaskWorkerService.once",
+			"WorkerOutsideModuleError",
 			"preflightClaim",
 			"defaultQuotaPauseMs",
 			"cooldownFile",

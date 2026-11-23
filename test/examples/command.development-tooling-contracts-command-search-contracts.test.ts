@@ -1,9 +1,8 @@
+import type { Entry } from './command.development-tooling-contracts-command-search-contracts.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { searchContracts } from '../../src/commands/development-tooling/contracts-command/searchContracts';
-
-type Entry = Parameters<typeof searchContracts>[0][number];
 
 const META = {
 	unitId: 'command.development-tooling-contracts-command-search-contracts',

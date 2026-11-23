@@ -1,3 +1,4 @@
+import type { ErrorValue, Options } from './module.catalog.test.types';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { test } from 'vitest';
@@ -5,9 +6,6 @@ import { CatalogRepository } from '../../src/lib/git-source-history/catalog';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-type Options = Parameters<CatalogRepository['entities']>[0];
-type ErrorValue = { name: string; message: string };
 
 const paginationMessage = 'Invalid catalog pagination';
 

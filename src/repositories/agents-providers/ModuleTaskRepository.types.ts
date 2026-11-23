@@ -46,7 +46,5 @@ export interface TaskRunResult extends TaskSelection {
 export interface TaskRunner {
 	run(input: TaskRunInput): Promise<TaskRunResult>;
 }
-/** The task ref kept moving under concurrent writers, so the update gave up after 16 attempts. */
-export class TaskQueueContentionError extends Error {
-	override name = 'TaskQueueContentionError';
-}
+
+export { TaskQueueContentionError } from './TaskQueueContentionError';

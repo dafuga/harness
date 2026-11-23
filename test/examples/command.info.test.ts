@@ -1,21 +1,9 @@
+import type { Registration, Invocation } from './command.info.test.types';
 import { Command } from 'commander';
 import { test, vi } from 'vitest';
 import { registerInfoCommand } from '../../src/cli/program/info';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-type Registration = {
-	name: string;
-	description: string;
-	arguments: Array<{ name: string; required: boolean }>;
-	options: string[];
-};
-
-type Invocation = {
-	registration: Registration;
-	printed: string[];
-	error: { name: string; message: string } | null;
-};
 
 function summarizeError(error: unknown): { name: string; message: string } {
 	return error instanceof Error

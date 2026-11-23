@@ -1,5 +1,6 @@
 // @harness-uid u_3fffcewbke
-/** An update whose input sets the configured primary key, which cannot be updated. */
-export class PrimaryKeyUpdateError extends Error {
-	override name = 'PrimaryKeyUpdateError';
-}
+
+export { PrimaryKeyUpdateError } from './PrimaryKeyUpdateError';
+
+/** A stored field value: a scalar its type accepts, null, or an object for json and blob fields. */
+export type SqliteFieldValue = string | number | boolean | null | object;

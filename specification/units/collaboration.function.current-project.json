@@ -305,9 +305,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CollaborationInputError",
 				"type": "thrown",
-				"description": "Thrown as a plain Error (not an ExpectedCliError instance) with message 'Collaboration <code>' and a code property: 'invalid-input' for an invalid actor, project id or records, 'forbidden' when the project or the actor's membership is missing or the membership role is not in roles, and 'conflict' after five unsuccessful compare-and-swap writes. Errors from the transaction callback and the repository propagate unchanged."
+				"description": "Thrown as CollaborationInputError with message 'Collaboration <code>' and a code property: 'invalid-input' for an invalid actor, project id or records, 'forbidden' when the project or the actor's membership is missing or the membership role is not in roles, and 'conflict' after five unsuccessful compare-and-swap writes. Errors from the transaction callback and the repository propagate unchanged."
 			}
 		],
 		"errorStatus": "declared",

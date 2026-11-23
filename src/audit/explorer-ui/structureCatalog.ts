@@ -49,6 +49,7 @@ export const allowedTestFolders = new Set([
 	'config',
 	'controllers',
 	'decorators',
+	'examples',
 	'forms',
 	'guides',
 	'helpers',

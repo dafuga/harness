@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/cli/program/UnreadableInputFileError.ts",
 			"src/cli/program/responseCheckInput.ts",
 			"src/cli/program/responseCheckInput.types.ts"
 		],
 		"symbols": [
+			"UnreadableInputFileError",
 			"responseInputLimit",
 			"responseCheckSettings",
 			"readResponseCheckInput",

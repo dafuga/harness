@@ -1,3 +1,4 @@
+import type { Cases } from './service.module-system-module-tree.test.types';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -7,7 +8,6 @@ import { withTempDir } from '../support/temporary';
 import { moduleTree } from '../../src/services/module-system/moduleTree';
 
 const unitId = 'service.module-system-module-tree';
-type Cases = Parameters<typeof recordExampleCases>[1];
 
 function record(symbol: string, state: string, cases: Cases) {
 	return recordExampleCases({ unitId, symbol, state, evidence: 'examples-cases', file: `${state}.json` }, cases);

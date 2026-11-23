@@ -1,3 +1,4 @@
+import type { Cases } from './repository.explanation.test.types';
 import { appendFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -9,8 +10,6 @@ import { ExplanationRepository } from '../../src/repositories/verification-evide
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
 
 const appended: Explanation = {
 	unit: 'repository.explanation',

@@ -8,8 +8,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/benchmark-service/benchmarkEvents.types.ts"],
-		"symbols": ["RunnerEvent", "IncompleteBenchmarkSubmissionError"]
+		"source": [
+			"src/cli/program/benchmark-service/IncompleteBenchmarkSubmissionError.ts",
+			"src/cli/program/benchmark-service/benchmarkEvents.types.ts"
+		],
+		"symbols": [
+			"IncompleteBenchmarkSubmissionError",
+			"RunnerEvent",
+			"IncompleteBenchmarkSubmissionError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

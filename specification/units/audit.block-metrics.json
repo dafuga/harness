@@ -29,7 +29,7 @@
 				"name": "parameterCount.line",
 				"type": "string",
 				"required": true,
-				"description": "Source-code line scanned to estimate a function's parameter count. The helper uses only the first parenthesized substring and counts comma-separated segments, so it is not a syntax-aware parser.",
+				"description": "TypeScript source line containing a function, callback or method signature. An object binding, generic type or default expression can contain commas without adding parameters.",
 				"examples": ["function combine(left, right) {", "run()"]
 			},
 			{
@@ -75,7 +75,7 @@
 			{
 				"name": "parameterCount",
 				"type": "number",
-				"description": "Estimated count of comma-separated segments in the first parenthesized part of the input line. It returns zero when no parenthesized part is found or that part trims to empty; it does not parse language syntax.",
+				"description": "Number of parameter declarations in the first function-like signature the parser recognizes. A plain parenthesized list still uses the comma-separated fallback, and an empty list returns zero.",
 				"examples": [2, 0]
 			},
 			{
@@ -113,7 +113,7 @@
 						"name": "parameterCount.line",
 						"type": "string",
 						"required": true,
-						"description": "Source-code line scanned to estimate a function's parameter count. The helper uses only the first parenthesized substring and counts comma-separated segments, so it is not a syntax-aware parser.",
+						"description": "TypeScript source line containing a function, callback or method signature. An object binding, generic type or default expression can contain commas without adding parameters.",
 						"examples": ["function combine(left, right) {", "run()"]
 					}
 				],
@@ -121,7 +121,7 @@
 					{
 						"name": "parameterCount",
 						"type": "number",
-						"description": "Estimated count of comma-separated segments in the first parenthesized part of the input line. It returns zero when no parenthesized part is found or that part trims to empty; it does not parse language syntax.",
+						"description": "Number of parameter declarations in the first function-like signature the parser recognizes. A plain parenthesized list still uses the comma-separated fallback, and an empty list returns zero.",
 						"examples": [2, 0]
 					}
 				],

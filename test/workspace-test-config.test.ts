@@ -15,10 +15,8 @@ import { join, resolve } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
 
 /**
- * The root Vitest config is inherited by a workspace that has none of its own: Vitest finds it
- * above the workspace and resolves the config's relative paths from that workspace. A copy of the
- * real root config and its helpers, run by real Vitest from the root and from such a workspace,
- * collects exactly the tests of each, with the workspace's own setup.
+ * Run Vitest from the root and a workspace that inherits its config. Each run must find only
+ * its own tests and resolve setup paths from the directory where it runs.
  */
 const repository = resolve(import.meta.dirname, '..');
 const roots: string[] = [];
@@ -30,6 +28,7 @@ function project(config?: string): string {
 		'vitest.config.ts',
 		'src/utils/execution-runtimes/resourceWorkers.ts',
 		'src/utils/execution-runtimes/resourceWorkers.types.ts',
+		'src/core/execution-runtimes/InvalidTestWorkerCeilingError.ts',
 		'test/svelteKitConfigs.ts',
 		'test/setup.ts'
 	]) {

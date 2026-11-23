@@ -1,10 +1,8 @@
+import type { FetchCall, Reply } from './adapter.networking-security-harness-http.test.types';
 import { afterEach, test, vi } from 'vitest';
 import { HarnessHttpAdapter } from '../../src/adapters/networking-security/HarnessHttpAdapter';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-type FetchCall = { url: string; method: string; headers: Record<string, string>; redirect: string; body?: string };
-type Reply = Awaited<ReturnType<HarnessHttpAdapter['request']>>;
 const unitId = 'adapter.networking-security-harness-http';
 const config = { url: 'https://harness.example.com', token: 'example-harness-token' };
 const local = { url: 'http://localhost:3000', timeout: 5000 };

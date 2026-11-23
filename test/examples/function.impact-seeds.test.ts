@@ -1,12 +1,10 @@
+import type { Changes, Manifest } from './function.impact-seeds.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { impactSeeds } from '../../src/services/reports-media/impact-service/impactSeeds';
 import type { Sides } from '../../src/services/reports-media/impact-service/impactSeeds.types';
 import type { ImpactSeeds } from '../../src/utils/reports-media/impactSeeds';
-
-type Changes = Parameters<typeof impactSeeds>[0];
-type Manifest = { id: string; status: string; owns: { source: string[] } };
 
 const UNIT = 'function.impact-seeds';
 const OWNED = 'src/services/reports-media/impact-service/impactSeeds.ts';

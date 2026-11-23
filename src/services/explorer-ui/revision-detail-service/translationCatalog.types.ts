@@ -8,7 +8,4 @@ export interface TranslationScan {
 	consumers: Map<string, Set<string>>;
 }
 
-/** A JSON resource path that is not repository-relative or that would leave the repository. */
-export class ResourcePathError extends Error {
-	override name = 'ResourcePathError';
-}
+export { ResourcePathError } from './ResourcePathError';

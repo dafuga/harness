@@ -1,3 +1,5 @@
+import { covered, meta, report, noUsage, dryRunReport } from './audit.clean-code-render.fixture';
+import type { Case } from './audit.clean-code-render.test.types';
 import { test } from 'vitest';
 import {
 	cleanCodeExitCode,
@@ -14,20 +16,10 @@ import type {
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
 
-/**
- * runAudit calls cleanCodeExitCode with the audit result and renderCleanCode with the clean-code
- * report. Each state calls the real export with its inputs and records what came back.
- */
-
-type Case = Parameters<typeof recordExampleCases>[1][number];
-
 const base = { unitId: 'audit.clean-code-render', evidence: 'examples-cases' };
-const covered = 'src/audit/development-tooling/cleanCodeRender.ts';
-const meta = { rubricVersion: 'clean-code-v1', requestedModel: 'jev-1.13.0', minConfidence: 0.85 };
 const rubricLine = 'Rubric: clean-code-v1; model: jev-1.13.0; confidence threshold: 0.85';
 const usage = { input_tokens: 9120, output_tokens: 734 };
 const incompleteUsage = { input_tokens: 4870, output_tokens: 512 };
-const noUsage = { input_tokens: 0, output_tokens: 0 };
 const coverage: AuditResult['coverage'] = {
 	profile: 'app',
 	adapters: [
@@ -120,27 +112,9 @@ const cachedFile: FileReview = {
 		})
 	]
 };
-
-const coverageOf = { selectedFiles: [covered], excludedPaths: [], unsupportedFiles: [] };
-function report(
-	mode: CleanCodeReport['mode'],
-	status: CleanCodeReport['status'],
-	files: FileReview[],
-	total: CleanCodeReport['usage']
-): CleanCodeReport {
-	return { mode, status, ...meta, coverage: coverageOf, files, usage: total };
-}
 const gateReport = report('gate', 'violations', [violatingFile], usage);
 const incompleteReport = report('advisory', 'incomplete', [incompleteFile], incompleteUsage);
 const cachedReport = report('advisory', 'needs-review', [cachedFile], noUsage);
-const dryRunReport: CleanCodeReport = {
-	...report('advisory', 'dry-run', [], noUsage),
-	coverage: {
-		selectedFiles: ['src/audit/cleanCodeRender.ts', covered],
-		excludedPaths: [{ path: 'dist/', reason: 'Artifact directory or symlink' }],
-		unsupportedFiles: ['package.json']
-	}
-};
 
 function auditWith(cleanCode?: CleanCodeReport, findings: AuditFinding[] = []): AuditResult {
 	return { findings, coverage, cleanCode };

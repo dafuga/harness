@@ -9,10 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/verification-evidence/task-completion-service/TaskCompletionSourceAuditError.ts",
 			"src/services/verification-evidence/task-completion-service/sourceAudit.ts",
 			"src/services/verification-evidence/task-completion-service/sourceAudit.types.ts"
 		],
-		"symbols": ["sourceAudit", "TaskCompletionSourceAuditError"]
+		"symbols": ["TaskCompletionSourceAuditError", "sourceAudit", "TaskCompletionSourceAuditError"]
 	},
 	"contract": {
 		"origin": "declared",

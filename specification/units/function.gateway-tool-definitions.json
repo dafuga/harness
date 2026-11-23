@@ -9,10 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/core/development-tooling/GatewayToolDefinitionError.ts",
 			"src/utils/development-tooling/gatewayToolDefinitions.ts",
 			"src/utils/development-tooling/gatewayToolDefinitions.types.ts"
 		],
-		"symbols": ["gatewayToolDefinitions", "GatewayToolDefinitionError"]
+		"symbols": [
+			"GatewayToolDefinitionError",
+			"gatewayToolDefinitions",
+			"GatewayToolDefinitionError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

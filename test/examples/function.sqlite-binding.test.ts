@@ -1,10 +1,9 @@
+import type { Field } from './function.sqlite-binding.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { sqliteBinding } from '../../src/utils/development-tooling/sqliteBinding';
 import { InvalidSqliteFieldValueError } from '../../src/utils/development-tooling/sqliteBinding.types';
-
-type Field = Parameters<typeof sqliteBinding>[1];
 
 const jsonField = { type: 'json', nullable: false } as const;
 const nullableString = { type: 'string', nullable: true } as const;

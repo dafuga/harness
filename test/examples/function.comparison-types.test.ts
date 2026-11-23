@@ -1,3 +1,4 @@
+import type { ExampleCase } from './function.comparison-types.test.types';
 import { createHash } from 'node:crypto';
 import { test } from 'vitest';
 import {
@@ -9,14 +10,6 @@ import {
 } from '../../src/core/comparisonTypes';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-/**
- * The registered comparison schema is run on complete and incomplete benchmark contexts. Each
- * call's input and the schema's actual result, or the issues it reports, is asserted and recorded
- * as the cases of its state.
- */
-
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
 
 const requestDigest = createHash('sha256')
 	.update('{"input":{"values":[2,3]},"operation":"sum"}')

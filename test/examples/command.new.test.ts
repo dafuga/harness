@@ -22,14 +22,18 @@ const EXPECTED_SUBCOMMANDS = [
 	{
 		name: 'app',
 		arguments: [{ name: 'name', required: true }],
-		options: [{ flags: '--force', defaultValue: null }]
+		options: [
+			{ flags: '--force', defaultValue: null },
+			{ flags: '--adapter <adapter>', defaultValue: null }
+		]
 	},
 	{
 		name: 'game',
 		arguments: [{ name: 'name', required: true }],
 		options: [
 			{ flags: '--force', defaultValue: null },
-			{ flags: '--dimension <dimension>', defaultValue: '2d' }
+			{ flags: '--dimension <dimension>', defaultValue: '2d' },
+			{ flags: '--engine <engine>', defaultValue: null }
 		]
 	},
 	{

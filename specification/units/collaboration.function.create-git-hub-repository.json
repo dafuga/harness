@@ -33,7 +33,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CollaborationInputError",
 				"type": "thrown",
 				"description": "Raised for invalid configuration or failed GitHub operations, including a non-private repository, an invalid ref or path, invalid records, unavailable GitHub, or an unconfirmed ref update. A stale compare-and-swap returns null instead of throwing."
 			}
@@ -59,7 +59,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CollaborationInputError",
 						"type": "thrown",
 						"description": "Raised for invalid configuration or failed GitHub operations, including a non-private repository, an invalid ref or path, invalid records, unavailable GitHub, or an unconfirmed ref update. A stale compare-and-swap returns null instead of throwing."
 					}

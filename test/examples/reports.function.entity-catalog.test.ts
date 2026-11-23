@@ -1,3 +1,4 @@
+import type { Category, Options, Row, Entity } from './reports.function.entity-catalog.test.types';
 import { test } from 'vitest';
 import {
 	catalogFilter,
@@ -9,11 +10,6 @@ import { record, revision } from '../../packages/reports/test/entityFixture';
 import { commits, ids } from '../../packages/reports/test/entityUnits';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-type Category = Parameters<typeof entityCatalog>[1];
-type Options = Parameters<typeof entityCatalog>[3];
-type Entity = ReturnType<typeof explorerEntities>[number];
-type Row = ReturnType<typeof entityCatalog>[number];
 
 const head = revision(commits.middle, [record(commits.middle)]);
 const entities = explorerEntities(head);

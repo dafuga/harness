@@ -1,22 +1,14 @@
+import type {
+	Program,
+	Subcommand,
+	Chain,
+	Action,
+	Case
+} from './entry.program-loop-lifecycle.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { registerLoopLifecycleCommands } from '../../src/cli/program/loopLifecycle';
-
-type Action = (...args: unknown[]) => unknown;
-interface Subcommand {
-	name: string;
-	options: string[];
-	description?: string;
-	action?: Action;
-}
-interface Chain {
-	option(flags: string): Chain;
-	description(text: string): Chain;
-	action(fn: Action): Chain;
-}
-type Program = Parameters<typeof registerLoopLifecycleCommands>[0];
-type Case = { name: string; input: unknown; error: unknown };
 
 const unitId = 'entry.program-loop-lifecycle';
 const symbol = 'registerLoopLifecycleCommands';

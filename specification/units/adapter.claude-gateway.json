@@ -10,13 +10,15 @@
 	"owns": {
 		"source": [
 			"src/cli/program/codex-gateway-service/ClaudeGatewayAdapter.ts",
-			"src/cli/program/codex-gateway-service/ClaudeGatewayAdapter.types.ts"
+			"src/cli/program/codex-gateway-service/ClaudeGatewayAdapter.types.ts",
+			"src/cli/program/codex-gateway-service/InvalidToolContinuationError.ts"
 		],
 		"symbols": [
 			"ClaudeGatewayAdapter",
 			"ClaudeGatewayAdapter.constructor",
 			"ClaudeGatewayAdapter.validate",
 			"ClaudeGatewayAdapter.start",
+			"InvalidToolContinuationError",
 			"InvalidToolContinuationError"
 		]
 	},

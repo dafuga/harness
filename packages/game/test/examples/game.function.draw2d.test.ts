@@ -1,11 +1,9 @@
+import { run } from './game.function.draw2d.fixture';
+import type { View, Call } from './game.function.draw2d.test.types';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { Canvas2dAdapter, create2d, draw2d } from '../../src/adapters/game-authoring/Canvas2dAdapter';
-
-type Run = Parameters<typeof draw2d>[1];
-type View = Parameters<typeof draw2d>[2];
-type Call = { method: string; args: unknown[] };
 
 const UNIT = 'game.function.draw2d';
 
@@ -34,19 +32,6 @@ const gardenLane = {
 		]
 	}
 } as unknown as View;
-
-function run(state: Record<string, unknown>): Run {
-	return {
-		viewId: 'courtyard',
-		progress: { courtyard: [] },
-		tick: 2,
-		seed: 67634689,
-		state,
-		completed: [],
-		events: [],
-		trace: []
-	} as unknown as Run;
-}
 
 function fakeCanvas(width: number, height: number, hasContext = true) {
 	const calls: Call[] = [];

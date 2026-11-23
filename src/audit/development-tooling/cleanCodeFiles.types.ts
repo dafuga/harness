@@ -5,6 +5,4 @@ export interface ReviewInputFile {
 	hash: string;
 }
 
-export class InvalidReviewInputError extends Error {
-	override name = 'InvalidReviewInputError';
-}
+export { InvalidReviewInputError } from './InvalidReviewInputError';

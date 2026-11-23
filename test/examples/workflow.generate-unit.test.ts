@@ -1,11 +1,10 @@
+import type { ExampleCase } from './workflow.generate-unit.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir, withTempRepo } from '../support/temporary';
 import { generateUnit } from '../../src/cli/program/generateUnit';
 import type { GenerateUnitInput } from '../../src/cli/program/generateUnit.types';
-
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
 
 async function captureError(work: Promise<unknown>): Promise<unknown> {
 	try {

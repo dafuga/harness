@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"src/cli/program/benchmark-service/benchmark-definition/CodexBenchmarkAdapter.ts",
-			"src/cli/program/benchmark-service/benchmark-definition/CodexBenchmarkAdapter.types.ts"
+			"src/cli/program/benchmark-service/benchmark-definition/CodexBenchmarkAdapter.types.ts",
+			"src/cli/program/benchmark-service/benchmark-definition/CodexRunError.ts"
 		],
 		"symbols": [
 			"CodexBenchmarkAdapter",
@@ -18,6 +19,7 @@
 			"CodexBenchmarkAdapter.preflight",
 			"CodexBenchmarkAdapter.run",
 			"CodexBenchmarkAdapter.command",
+			"CodexRunError",
 			"CodexRunError"
 		]
 	},

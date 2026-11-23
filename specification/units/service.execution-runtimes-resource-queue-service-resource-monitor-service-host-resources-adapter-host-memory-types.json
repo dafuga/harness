@@ -9,9 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/HostMemoryReadError.ts",
 			"src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/hostMemory.types.ts"
 		],
-		"symbols": ["Memory", "HostMemoryReadError"]
+		"symbols": ["HostMemoryReadError", "Memory", "HostMemoryReadError"]
 	},
 	"contract": {
 		"origin": "declared",

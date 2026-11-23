@@ -1,3 +1,4 @@
+import type { Spawn, Launch } from './script.desktop-experiment-launcher.test.types';
 import { dirname, join } from 'node:path';
 import { test, vi } from 'vitest';
 import { expect } from '../verificationExpect';
@@ -8,13 +9,6 @@ vi.mock('node:os', () => ({ homedir: () => '/made-up/home' }));
 const dataPath = join('/made-up/home', 'Library/Application Support/Codex Harness Experimental');
 const executable = join(dirname(process.execPath), 'CodexHarnessElectron');
 const meta = { unitId: 'script.desktop-experiment-launcher', symbol: 'module' };
-
-type Spawn = (command: string[], options: unknown) => unknown;
-interface Launch {
-	spawned: string[][];
-	exitCode?: number;
-	error?: string;
-}
 
 // Runs the script's top-level code with a fake Bun.spawn, a no-op process.exit and a fake argv.
 async function launch(args: string[], spawn: Spawn): Promise<Launch> {

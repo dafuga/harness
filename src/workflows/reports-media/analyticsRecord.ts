@@ -1,4 +1,5 @@
 // @harness-uid u_rtalczfelr
+import type { FingerprintValue } from './analyticsRecord.types';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import { randomUUID, createHash } from 'node:crypto';
 import { realpath, readFile } from 'node:fs/promises';
@@ -58,14 +59,6 @@ export async function recordAnalytics(
 		console.error('Warning: Harness analytics could not be recorded.');
 	}
 }
-/** JSON.stringify input; nested undefined is allowed, top-level undefined throws. */
-type FingerprintValue =
-	| string
-	| number
-	| boolean
-	| null
-	| readonly (FingerprintValue | undefined)[]
-	| { [key: string]: FingerprintValue | undefined };
 export function fingerprint(value: FingerprintValue): string {
 	return createHash('sha256').update(JSON.stringify(value)).digest('hex');
 }

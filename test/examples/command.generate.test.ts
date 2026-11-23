@@ -1,3 +1,4 @@
+import type { Written, Stop, Described, ExampleCase } from './command.generate.test.types';
 import { Command, CommanderError, type Option } from 'commander';
 import { test } from 'vitest';
 import { registerGenerateCommand } from '../../src/cli/program/generate';
@@ -5,25 +6,6 @@ import { ExpectedCliError } from '../../src/core/development-tooling/errors';
 import { scaffoldKinds } from '../../src/templates/development-tooling/scaffoldTypes';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-/**
- * registerGenerateCommand is called on a program the way buildProgram calls it. Commander runs an
- * action only when it dispatches to that subcommand, so these examples dispatch only to inputs that
- * stop before any generator writes: help, commander's own refusals, and the --level check. Other
- * actions write into the working directory, so they are not dispatched here. Registration stores
- * nothing, so no temporary directory is needed.
- */
-
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
-type Written = { stdout: string[]; stderr: string[] };
-type Stop = { argv: string[]; written: Written; error: Error };
-type Described = {
-	name: string;
-	description: string;
-	arguments: Array<{ name: string; required: boolean }>;
-	options: Array<{ flags: string; default?: unknown }>;
-	commands: string[];
-};
 
 /** A program named as buildProgram names it. Output is captured and exits are thrown, not made. */
 function harnessProgram(written: Written): Command {

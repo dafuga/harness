@@ -1,3 +1,4 @@
+import type { Index, Manifests, Scenarios } from './service.source-graph.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -7,11 +8,6 @@ import {
 	scenarioNode,
 	SourceGraphService
 } from '../../src/services/development-tooling/SourceGraphService';
-
-type Build = SourceGraphService['build'];
-type Index = Parameters<Build>[0];
-type Manifests = Parameters<Build>[1];
-type Scenarios = NonNullable<Parameters<Build>[2]>;
 
 const graphService = new SourceGraphService();
 

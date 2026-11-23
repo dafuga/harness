@@ -1,10 +1,9 @@
+import type { Media } from './service.legacy-history.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempRepo } from '../support/temporary';
 import { LegacyHistoryService } from '../../src/cli/program/LegacyHistoryService';
-
-type Media = Parameters<LegacyHistoryService['entries']>[0];
 
 // No evidence tip exists, so the media service is never reached.
 const unusedMedia = {} as Media;

@@ -10,12 +10,14 @@
 	"owns": {
 		"source": [
 			"src/serializers/agents-providers/claude-tools-serializer/ClaudeToolsSerializer.ts",
-			"src/serializers/agents-providers/claude-tools-serializer/ClaudeToolsSerializer.types.ts"
+			"src/serializers/agents-providers/claude-tools-serializer/ClaudeToolsSerializer.types.ts",
+			"src/serializers/agents-providers/claude-tools-serializer/UnsupportedToolShapeError.ts"
 		],
 		"symbols": [
 			"ClaudeToolsSerializer",
 			"ClaudeToolsSerializer.constructor",
 			"ClaudeToolsSerializer.server",
+			"UnsupportedToolShapeError",
 			"UnsupportedToolShapeError"
 		]
 	},

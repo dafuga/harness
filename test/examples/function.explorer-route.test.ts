@@ -1,13 +1,9 @@
+import { parseRows, unitId } from './function.explorer-route.fixture';
 import { test } from 'vitest';
-import {
-	explorerRoute,
-	explorerRoutePath,
-	type ExplorerLocation
-} from '../../src/utils/explorerRoute';
+import { explorerRoutePath, type ExplorerLocation } from '../../src/utils/explorerRoute';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
 
-const unitId = 'function.explorer-route';
 const sha = 'a'.repeat(40);
 const main = (fields: Partial<ExplorerLocation>) =>
 	({ branch: 'main', commit: null, ...fields }) as ExplorerLocation;
@@ -20,22 +16,6 @@ const fnPath = '/branch/main/functions/function.slugify';
 const cardPath = '/branch/main/components/card';
 const pagePath = '/branch/main/pages/page.orders';
 const helperPath = '/branch/main/helpers/toKebabCase/in/function.case';
-
-function parseRows(
-	state: string,
-	rows: readonly (readonly [string, string, string, ExplorerLocation | undefined])[]
-): void {
-	const cases = rows.map(([name, path, search]) => ({
-		name,
-		input: { path, search },
-		output: explorerRoute(path, search)
-	}));
-	expect(cases.map((item) => item.output)).toEqual(rows.map((row) => row[3]));
-	recordExampleCases(
-		{ unitId, symbol: 'explorerRoute', state, evidence: 'examples-cases', file: `${state}.json` },
-		cases
-	);
-}
 
 function serializeRows(
 	state: string,

@@ -1,8 +1,13 @@
+import type {
+	Result,
+	Row,
+	ExampleCase,
+	Selectors
+} from './command.development-tooling-contracts-command-contract-revisions.test.types';
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'vitest';
 import { GitAdapter } from '../../src/adapters/git-source-history/GitAdapter';
-import type { ContractHistoryOptions } from '../../src/commands/development-tooling/contracts-command/contractHistory.types';
 import {
 	contractComparison,
 	firstContractParent,
@@ -12,18 +17,6 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempRepo } from '../support/temporary';
 import type { TemporaryRepo } from '../support/temporary.types';
 import { expect } from '../verificationExpect';
-
-/**
- * Each state runs the real git binary in a temporary repository from withTempRepo, and calls the
- * three operations through a GitAdapter bound to that root, as readContractDiff and readContractLog
- * do. A row is [name, input, expected]: the call is recorded with its input and with what came back,
- * or the error class and message it threw, and the assertion compares that same outcome.
- */
-
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
-type Result = { value: unknown } | { error: { type: string; message: string } };
-type Row<I> = [name: string, input: I, expected: Result];
-type Selectors = ContractHistoryOptions & { revisions?: string[] };
 
 const zeroId = '0'.repeat(40);
 const ok = (value: unknown): Result => ({ value });

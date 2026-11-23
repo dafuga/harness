@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"src/adapters/WasmModuleRuntimeAdapter.ts",
+			"src/adapters/execution-runtimes/wasm-runtime-adapter/RuntimeUnavailableError.ts",
 			"src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
 			"src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.types.ts",
 			"src/adapters/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts"
@@ -19,6 +20,7 @@
 			"WasmModuleRuntimeAdapter",
 			"WasmSource",
 			"WasmLoader",
+			"RuntimeUnavailableError",
 			"wasmUnavailable",
 			"WasmModuleRuntimeAdapter",
 			"WasmModuleRuntimeAdapter.constructor",

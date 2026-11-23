@@ -1,3 +1,4 @@
+import { gridFolder, contract, gridManifest } from './function.planning-artifact-paths.fixture';
 import { createHash } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
@@ -30,21 +31,11 @@ const version = `${folder}/designs/v001`;
 const designs = [`${version}/design.json`, `${version}/prompt.md`, `${version}/notes.md`];
 const approval = `${folder}/designs/approvals/0b9e4c1a-2d3f-4a5b-8c6d-7e8f9a0b1c2d.json`;
 const readme = 'src/services/billing-ledger/README.md';
-const gridFolder = 'src/components/evidence-grid';
 const gridPlanPath = `${gridFolder}/plan.json`;
 const gridManifestPath = 'specification/units/reports.component.evidence-grid.json';
 const gridThread = `${gridFolder}/threads/3f1c9a2e-6b7d-4e8f-9a0b-1c2d3e4f5a6b/messages.ndjson`;
 const gridImage = `${gridFolder}/designs/v002/hero-desktop.png`;
 const gridArtifacts = [gridPlanPath, gridThread, gridImage];
-
-const contract = {
-	responsibility: 'Describes one unit and the planning artifacts it owns.',
-	inputs: [],
-	outputs: [],
-	errors: [],
-	states: [],
-	viewports: []
-};
 const functionPlan = {
 	unitId,
 	category: 'function',
@@ -66,22 +57,6 @@ const gridPlan = {
 	path: gridFolder,
 	title: 'Evidence grid',
 	goal: 'Shows the evidence rows of one report as a grid.'
-};
-const gridEntry = `${gridFolder}/index.ts`;
-const gridManifest = {
-	schemaVersion: 1,
-	id: 'reports.component.evidence-grid',
-	kind: 'component',
-	title: 'Evidence grid',
-	responsibility: contract.responsibility,
-	responsibilityOrigin: 'declared',
-	status: 'active',
-	owns: { source: [gridEntry], symbols: ['EvidenceGrid'] },
-	contract: { origin: 'declared', inputs: [], outputs: [], errors: [], errorStatus: 'none-found' },
-	dependencies: [],
-	runtime: { kind: 'module', entry: gridEntry, targets: [{ kind: 'module', entry: gridEntry }] },
-	scenarios: [],
-	budgets: { size: 'frozen', complexity: 'frozen', performance: [] }
 };
 
 const planDirs = ['src/', 'src/functions/', `${folder}/`];

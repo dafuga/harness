@@ -1,11 +1,10 @@
+import type { Recorded } from './validator.response-check-input.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { ResponseCheckInputValidator } from '../../src/validators/verification-evidence/ResponseCheckInputValidator';
 
 const validator = new ResponseCheckInputValidator();
-
-type Recorded = { name: string; input: unknown; output: unknown } | { name: string; input: unknown; error: unknown };
 
 function criterion(id: string, description: string): Record<string, unknown> {
 	return { id, description };

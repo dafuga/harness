@@ -1,26 +1,9 @@
+import type { Written, Stopped, Described, ExampleCase } from './command.resources.test.types';
 import { Command, CommanderError, type Option } from 'commander';
 import { test } from 'vitest';
 import { registerResourcesCommand } from '../../src/cli/program/ResourcesCommand';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-/**
- * registerResourcesCommand is called on a program the way buildProgram calls it. The status,
- * configure and run actions read the resource home from the environment and sample this machine,
- * so they are not dispatched here. The examples show what was attached, and that commander refuses
- * help and bad input before any action runs. Registration stores nothing: no temporary directory.
- */
-
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
-type Written = { stdout: string[]; stderr: string[] };
-type Stopped = { written: Written; stop: CommanderError };
-type Described = {
-	name: string;
-	description: string;
-	arguments: Array<{ name: string; required: boolean }>;
-	options: Array<{ flags: string; default?: unknown }>;
-	commands: Described[];
-};
 
 /** A program named as buildProgram names it. Output is captured and exits are thrown, not made. */
 function harnessProgram(written: Written): Command {

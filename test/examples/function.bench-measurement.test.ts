@@ -1,12 +1,10 @@
+import type { Build, Measurement } from './function.bench-measurement.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { sizeMeasurements } from '../../src/cli/program/run-kernel-bench/benchMeasurement';
 import { kernelUnits, benchMeasurement } from '../../src/utils/verification-evidence/benchMeasurement';
 import type { MeasureContext, Entry } from '../../src/utils/verification-evidence/benchMeasurement.types';
-
-type Build = Parameters<typeof sizeMeasurements>[1];
-type Measurement = ReturnType<typeof benchMeasurement>;
 
 const commit = '0123456789abcdef0123456789abcdef01234567';
 const linuxContext: MeasureContext = { profile: 'linux-x64', commit };

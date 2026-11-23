@@ -1,3 +1,4 @@
+import type { Selection } from './service.provider-switch-apply.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -8,8 +9,6 @@ import type {
 	SwitchRequest,
 	SwitchStore
 } from '../../src/core/development-tooling/pickerTypes';
-
-type Selection = SwitchRequest['target'];
 
 const CODEX = 'codex-session_7';
 const before: Selection = { provider: 'openai', model: 'gpt-5', effort: 'low' };

@@ -12,10 +12,15 @@
 	},
 	"owns": {
 		"source": [
+			"src/templates/module-system/UnknownStandardScaffoldError.ts",
 			"src/templates/module-system/standardCodeModules.ts",
 			"src/templates/module-system/standardCodeModules.types.ts"
 		],
-		"symbols": ["standardCodeModules", "UnknownStandardScaffoldError"]
+		"symbols": [
+			"UnknownStandardScaffoldError",
+			"standardCodeModules",
+			"UnknownStandardScaffoldError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

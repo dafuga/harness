@@ -1,3 +1,4 @@
+import type { CollectedInput } from './audit.clean-code-discovery.test.types';
 import { test } from 'vitest';
 import { chmodSync, writeFileSync } from 'node:fs';
 import { extname, join } from 'node:path';
@@ -8,8 +9,6 @@ import {
 	discoverCleanCodeFiles,
 	matchesExclusion
 } from '../../src/audit/development-tooling/cleanCodeDiscovery';
-
-type CollectedInput = Parameters<typeof discoverCleanCodeFiles>[1];
 
 const sourceFiles = [
 	'README.md',

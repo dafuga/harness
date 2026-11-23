@@ -1,5 +1,6 @@
 // @harness-uid u_xetkmrxgc7
 import { createHash } from 'node:crypto';
+import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { EvidenceBranchRepository } from '../../../../repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
 import {
 	evidenceManifestSchema,
@@ -20,7 +21,12 @@ export async function recordDescriptor(
 	const result: AttachedRecordDescriptor = { pointer, integrity: 'metadata-only', problems: [] },
 		{ tree } = repository;
 	if (!(await tree.exists(pointer.commit)))
-		return { ...result, problems: ['evidence commit is not available; run harness history fetch'] };
+		return {
+			...result,
+			problems: [
+				`evidence commit ${shortCommit(pointer.commit)} is not available; run harness history fetch`
+			]
+		};
 	if (within === null || (within && !(await tree.contains(within, pointer.commit))))
 		return { ...result, problems: ['evidence commit is not part of the pinned evidence'] };
 	const text = await metadataBlob(repository, pointer, 'manifest.json');

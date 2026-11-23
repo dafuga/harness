@@ -1,3 +1,5 @@
+import { storedEntry } from './command.development-tooling-contracts-command-contract-states.fixture';
+import type { State } from './command.development-tooling-contracts-command-contract-states.test.types';
 import { mkdir, readdir, symlink, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { test } from 'vitest';
@@ -19,37 +21,6 @@ const unitId = 'command.development-tooling-contracts-command-contract-states';
 const symbol = 'attachContractStates';
 const evidence = 'examples-cases';
 const scenarios = 'specification/scenarios';
-type State = ScenarioManifest['states'][number];
-
-/** A stored entry as readContractCatalog builds it: the parsed manifest and no states yet. */
-function storedEntry(id: string, scenarioIds: string[] = []): ContractEntry {
-	const source = `src/${id}.ts`;
-	const manifest: ContractEntry['manifest'] = {
-		schemaVersion: 1,
-		id,
-		kind: 'command',
-		title: id,
-		responsibility: `Example unit ${id}.`,
-		responsibilityOrigin: 'declared',
-		status: 'active',
-		owns: { source: [source], symbols: [] },
-		contract: { origin: 'declared', inputs: [], outputs: [], errors: [], errorStatus: 'declared' },
-		dependencies: [],
-		runtime: { kind: 'module', entry: source, targets: [{ kind: 'module', entry: source }] },
-		scenarios: scenarioIds,
-		budgets: { size: 'frozen', complexity: 'frozen', performance: [] }
-	};
-	return {
-		id,
-		kind: 'command',
-		title: id,
-		path: source,
-		contractPath: `specification/units/${id}.json`,
-		responsibility: manifest.responsibility,
-		manifest,
-		states: []
-	};
-}
 
 /** A declared scenario with one unit check and no evidence; units lists the entries it covers. */
 function declaredScenario(id: string, units: string[], states: State[]): ScenarioManifest {

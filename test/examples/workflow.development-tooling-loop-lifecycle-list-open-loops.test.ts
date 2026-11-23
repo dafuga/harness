@@ -1,3 +1,4 @@
+import type { Step } from './workflow.development-tooling-loop-lifecycle-list-open-loops.test.types';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -12,8 +13,6 @@ import type {
 	OpenLoop,
 	OpenLoopList
 } from '../../src/workflows/development-tooling/loop-lifecycle/listOpenLoops.types';
-
-type Step = { id: string; title: string; status: 'pending' | 'complete' };
 
 const NOW = '2026-11-16T00:00:00.000Z';
 const DAY_MS = 86_400_000;

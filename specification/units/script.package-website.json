@@ -8,8 +8,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["scripts/package-website.ts", "scripts/package-website.types.ts"],
-		"symbols": ["ReportCliBundleError"]
+		"source": [
+			"scripts/ReportCliBundleError.ts",
+			"scripts/package-website.ts",
+			"scripts/package-website.types.ts"
+		],
+		"symbols": ["ReportCliBundleError", "ReportCliBundleError"]
 	},
 	"contract": {
 		"origin": "declared",

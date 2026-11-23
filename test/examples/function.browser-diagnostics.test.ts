@@ -1,17 +1,9 @@
+import type { Refusal, ExampleCase } from './function.browser-diagnostics.test.types';
 import { test } from 'vitest';
 import { browserDiagnosticSchema } from '../../src/core/development-tooling/browserDiagnostics';
 import type { BrowserDiagnostic } from '../../src/core/development-tooling/browserDiagnostics.types';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-/**
- * browserDiagnosticSchema is called the way its callers call it: one test attempt's value goes to
- * safeParse. Each accepted value must come back unchanged, and each refused value must name the
- * exact path and zod code of every problem. No browser is launched; only the parser is exercised.
- */
-
-type Refusal = { code: string; path: string };
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
 
 const complete: BrowserDiagnostic = {
 	test: 'Shows the dashboard with its recorded browser errors',

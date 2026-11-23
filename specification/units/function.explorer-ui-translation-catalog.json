@@ -10,6 +10,8 @@
 	"owns": {
 		"source": [
 			"src/core/explorer-ui/Translation.types.ts",
+			"src/services/explorer-ui/revision-detail-service/ResourcePathError.ts",
+			"src/services/explorer-ui/revision-detail-service/UnreadableDictionaryError.ts",
 			"src/services/explorer-ui/revision-detail-service/translationCatalog.ts",
 			"src/services/explorer-ui/revision-detail-service/translationCatalog.types.ts",
 			"src/services/explorer-ui/revision-detail-service/translationMessages.ts",
@@ -18,6 +20,8 @@
 		"symbols": [
 			"TranslationRow",
 			"TranslationCatalog",
+			"ResourcePathError",
+			"UnreadableDictionaryError",
 			"translationCatalog",
 			"TranslationScan",
 			"ResourcePathError",

@@ -1,3 +1,4 @@
+import type { ExampleCase } from './audit.architecture-rules.test.types';
 import { extname } from 'node:path';
 import { test } from 'vitest';
 import {
@@ -8,15 +9,6 @@ import type { AuditFile } from '../../src/audit/development-tooling/adapters/typ
 import type { AuditFinding } from '../../src/audit/development-tooling/types';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-/**
- * The two functions of architectureRules are called as the TypeScript and Svelte adapters call
- * them: auditTypePlacement with an AuditFile, and auditArchitecture with a file's path and its
- * lines. What each was given and what it returned is asserted and recorded as the cases of its
- * state.
- */
-
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
 
 const limits = {
 	maxFileLines: 220,

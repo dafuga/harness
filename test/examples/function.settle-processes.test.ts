@@ -1,11 +1,9 @@
+import type { Outcome, Cases } from './function.settle-processes.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { haltProcesses, settleProcesses } from '../../src/utils/reports-media/run-isolated/settleProcesses';
 import type { SettleTiming } from '../../src/utils/reports-media/settleProcesses';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
-type Outcome = Awaited<ReturnType<typeof settleProcesses>>;
 
 const group = 4242;
 const context = { authority: () => null, group };

@@ -1,13 +1,9 @@
+import type { Run, View, Context, Drawn } from './game.function.software3d.test.types';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { Canvas2dContextUnavailableError } from '../../src/adapters/game-authoring/Canvas2dContextUnavailableError';
 import { Software3dAdapter } from '../../src/adapters/game-authoring/Software3dAdapter';
-
-type Run = Parameters<Software3dAdapter['render']>[0];
-type View = Parameters<Software3dAdapter['render']>[1];
-type Context = ReturnType<typeof makeContext>;
-type Drawn = ReturnType<typeof drawWith>;
 
 const KEY_HELD = { x: 2, y: 0, hasKey: true, doorOpen: false };
 const KEY_LOOSE = { x: 1.5, y: 4.5, hasKey: false, doorOpen: false };
@@ -52,7 +48,7 @@ function runWith(state: Record<string, unknown>): Run {
 }
 
 /** A fake 2D context that records fills, background rectangles and clears. */
-function makeContext() {
+export function makeContext() {
 	return {
 		fillStyle: '',
 		strokeStyle: '',
@@ -80,7 +76,7 @@ function makeCanvas(context: Context | null) {
 	return { width: 320, height: 200, dataset: {} as Record<string, string>, getContext: () => context };
 }
 
-function drawWith(run: Run, view: View) {
+export function drawWith(run: Run, view: View) {
 	const context = makeContext();
 	const canvas = makeCanvas(context);
 	new Software3dAdapter(asCanvas(canvas)).render(run, view);

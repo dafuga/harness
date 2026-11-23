@@ -1,3 +1,4 @@
+import type { Generated } from './template.app-pieces.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -9,8 +10,6 @@ import {
 	storeFiles,
 	viewFiles
 } from '../../src/templates/development-tooling/appPieces';
-
-type Generated = { path: string; contents: string };
 
 const unitId = 'template.app-pieces';
 

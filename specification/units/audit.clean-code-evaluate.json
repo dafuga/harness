@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/audit/development-tooling/JevModelMismatchError.ts",
 			"src/audit/development-tooling/cleanCodeEvaluate.ts",
 			"src/audit/development-tooling/cleanCodeEvaluate.types.ts"
 		],
 		"symbols": [
+			"JevModelMismatchError",
 			"evaluateCleanCodeFile",
 			"JevEvaluator",
 			"JevEvaluator",

@@ -1,39 +1,10 @@
+import { auditCase } from './audit.adapters-cpp.fixture';
+
 import { test } from 'vitest';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { dirname, extname, join, relative } from 'node:path';
-import { cppAdapter } from '../../src/audit/development-tooling/adapters/cpp';
-import type { AuditFile } from '../../src/audit/development-tooling/adapters/types';
-import { maskTemplateLiterals, splitLines } from '../../src/audit/development-tooling/commonRules';
-import { harnessRuleLimits } from '../../src/rules/explorer-ui/catalog';
+
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-type Case = Parameters<typeof recordExampleCases>[1][number];
-
-/** Writes a source into the project folder and reads it back the way the audit collector does. */
-async function projectFile(root: string, path: string, contents: string): Promise<AuditFile> {
-	const absolutePath = join(root, path);
-	await mkdir(dirname(absolutePath), { recursive: true });
-	await writeFile(absolutePath, contents);
-	const text = (await readFile(absolutePath)).toString('utf8');
-	return {
-		absolutePath,
-		relativePath: relative(root, absolutePath),
-		extension: extname(path).toLowerCase(),
-		contents: text,
-		lines: splitLines(text),
-		structuralLines: splitLines(maskTemplateLiterals(text)),
-		limits: harnessRuleLimits,
-		size: Buffer.byteLength(text)
-	};
-}
-
-/** Audits one source as the collector calls the adapter and keeps what was given and what came back. */
-async function auditCase(root: string, name: string, path: string, text: string): Promise<Case> {
-	const file = await projectFile(root, path, text);
-	return { name, input: { path, contents: text }, output: cppAdapter.audit(file) };
-}
 
 /** The finding the adapter returns for a rule, with its path relative to the project folder. */
 function finding(path: string, rule: string, message: string) {

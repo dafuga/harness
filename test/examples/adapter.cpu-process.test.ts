@@ -1,3 +1,4 @@
+import { processors, rejectionOf, processes } from './adapter.cpu-process.fixture';
 import { chmodSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import type * as OperatingSystem from 'node:os';
 import { join } from 'node:path';
@@ -27,13 +28,6 @@ afterEach(() => {
 	host.cpus = undefined;
 	vi.unstubAllEnvs();
 });
-
-const processor: OperatingSystem.CpuInfo = {
-	model: 'Fixture CPU',
-	speed: 2400,
-	times: { user: 8000, nice: 0, sys: 8000, idle: 44000, irq: 0 }
-};
-const processors = [processor, processor, processor, processor];
 const cpu = { idle: 176000, total: 240000, cores: 4 };
 const psTable = [
 	'  101     1 0:01.50 /usr/local/bin/harness dev',
@@ -44,14 +38,6 @@ const psTable = [
 	'  606     1 00:02.00 /usr/sbin/cron -f',
 	'not a process row'
 ].join('\n');
-const processes = [
-	{ pid: 101, parentPid: 1, cpuMs: 1500, role: 'harness', label: 'Harness' },
-	{ pid: 202, parentPid: 1, cpuMs: 93784000, role: 'codex', label: 'Codex app' },
-	{ pid: 303, parentPid: 1, cpuMs: 5250, role: 'codex', label: 'Codex app' },
-	{ pid: 404, parentPid: 303, cpuMs: 400, role: 'agent', label: 'Codex CLI' },
-	{ pid: 505, parentPid: 1, cpuMs: 12000, role: 'agent', label: 'Claude' },
-	{ pid: 606, parentPid: 1, cpuMs: 2000 }
-];
 const catTable = (table: string) => `/bin/cat '${table}'`;
 
 /** A fake ps first on PATH: it records its arguments and LC_ALL in argv, then runs its tail. */
@@ -69,16 +55,6 @@ function installPs(root: string, tail: (table: string) => string): { argv: strin
 	chmodSync(script, 0o700);
 	vi.stubEnv('PATH', bin);
 	return { argv, table };
-}
-
-/** Resolves to the error a call rejects with; a call that resolves fails the test. */
-async function rejectionOf(run: () => Promise<unknown>): Promise<unknown> {
-	try {
-		await run();
-	} catch (error) {
-		return error;
-	}
-	throw new Error('Expected the call to reject.');
 }
 
 /** The name and message that JSON evidence keeps, since an Error serialises to {}. */

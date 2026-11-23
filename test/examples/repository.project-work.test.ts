@@ -1,3 +1,4 @@
+import type { Repo } from './repository.project-work.test.types';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { test } from 'vitest';
@@ -6,11 +7,6 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir, withTempRepo } from '../support/temporary';
 import { ProjectWorkRepository } from '../../src/repositories/projects-sessions/ProjectWorkRepository';
 import type { Checkout } from '../../src/repositories/projects-sessions/ProjectWorkRepository.types';
-
-interface Repo {
-	root: string;
-	git: (...args: string[]) => string;
-}
 
 const identity = ['-c', 'user.name=Example', '-c', 'user.email=example@example.invalid'];
 

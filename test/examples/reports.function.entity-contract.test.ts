@@ -1,39 +1,17 @@
+import { unit, field } from './reports.function.entity-contract.fixture';
+import type { Cases } from './reports.function.entity-contract.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import * as contract from '../../packages/reports/src/utils/explorer-ui/entityContract';
-import type {
-	HarnessScenario,
-	HarnessUnit
-} from '../../packages/reports/src/models/explorer-ui/Harness.types';
+import type { HarnessScenario } from '../../packages/reports/src/models/explorer-ui/Harness.types';
 
 const { entityContract, humanize, requiredStates } = contract;
-type Cases = Parameters<typeof recordExampleCases>[1];
 const unitId = 'reports.function.entity-contract';
 const record = (symbol: string, state: string, cases: Cases) => {
 	const file = `${state}.json`;
 	return recordExampleCases({ unitId, symbol, state, evidence: 'examples-cases', file }, cases);
 };
-
-const unit = (
-	patch: Partial<HarnessUnit> & Pick<HarnessUnit, 'id' | 'kind' | 'title'>
-): HarnessUnit => ({
-	status: 'active',
-	responsibility: `${patch.title} as described.`,
-	dependencies: [],
-	scenarios: [],
-	owns: { source: [], symbols: [] },
-	contract: { inputs: [], outputs: [], errors: [] },
-	runtime: { kind: 'module', targets: [] },
-	budgets: { size: 'frozen', complexity: 'frozen', performance: [] },
-	version: 'fixture',
-	...patch
-});
-const field = (name: string, description?: string, type = 'string') => ({
-	name,
-	type,
-	description
-});
 const state = (id: string, coverage: string, units: string[] = []) => ({ id, coverage, units });
 const scenario = (id: string, names: string[], states: HarnessScenario['states']) => ({
 	id,

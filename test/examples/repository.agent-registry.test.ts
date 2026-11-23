@@ -1,3 +1,4 @@
+import type { Registration, Beat, End } from './repository.agent-registry.test.types';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -5,10 +6,6 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { AgentRegistryRepository } from '../../src/services/agents-providers/agent-activity-service/AgentRegistryRepository';
-
-type Registration = Parameters<AgentRegistryRepository['register']>[0];
-type Beat = Parameters<AgentRegistryRepository['beat']>[1];
-type End = Parameters<AgentRegistryRepository['finish']>[1];
 
 const meta = (symbol: string, state: string) => ({
 	unitId: 'repository.agent-registry',

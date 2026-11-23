@@ -32,6 +32,4 @@ export interface VideoGatherSession {
 	sidecar?: GatherVideoSidecar;
 }
 
-export class VideoReferenceAdmissionError extends Error {
-	override name = 'VideoReferenceAdmissionError';
-}
+export { VideoReferenceAdmissionError } from './VideoReferenceAdmissionError';

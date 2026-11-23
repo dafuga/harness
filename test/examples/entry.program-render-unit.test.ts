@@ -1,3 +1,4 @@
+import type { Operations, Manifest, Detail } from './entry.program-render-unit.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -5,10 +6,6 @@ import { indent, fields, errorRows, operationRows } from '../../src/cli/program/
 import { renderContract } from '../../src/cli/program/renderContract';
 import { groupTests, renderUnit } from '../../src/cli/program/renderUnit';
 import type { Field } from '../../src/cli/program/renderUnit.types';
-
-type Manifest = Parameters<typeof renderContract>[0];
-type Detail = Parameters<typeof renderUnit>[0];
-type Operations = Parameters<typeof operationRows>[0];
 
 const projectFields: Field[] = [
 	{ name: 'project.id', type: 'string', required: true, description: 'Project identifier.', examples: ['project-42'] },

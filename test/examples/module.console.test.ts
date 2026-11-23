@@ -1,9 +1,8 @@
+import type { ConsoleRequest } from './module.console.test.types';
 import { test } from 'vitest';
 import { denyAll } from '../../src/lib/console';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-
-type ConsoleRequest = Parameters<typeof denyAll>[0];
 
 const requests = [
 	{ name: 'GET console page', method: 'GET', path: '/console' },

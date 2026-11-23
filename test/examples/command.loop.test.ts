@@ -19,6 +19,8 @@ test('Registers the loop command tree', () => {
 	const expectedSubcommands = [
 		'list',
 		'close <loop>',
+		'siblings [loop]',
+		'review-bugs <base>',
 		'record <loop>',
 		'create <name>',
 		'add <loop> <step>',

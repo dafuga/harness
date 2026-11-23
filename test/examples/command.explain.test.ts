@@ -1,3 +1,4 @@
+import type { Repository } from './command.explain.test.types';
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { Command } from 'commander';
@@ -6,8 +7,6 @@ import { registerExplainCommand } from '../../src/cli/program/ExplainCommand';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempRepo } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-type Repository = { root: string; git: (...args: string[]) => string };
 
 const rangeOptions = ['--base <revision>', '--head <revision>'];
 const identity = ['-c', 'user.name=Example', '-c', 'user.email=example@example.invalid'];

@@ -1,3 +1,4 @@
+import type { Outcome } from './audit.adapters-typescript.test.types';
 import { extname } from 'node:path';
 import { test } from 'vitest';
 import type { AuditFile, AuditStructure } from '../../src/audit/development-tooling/adapters/types';
@@ -7,15 +8,6 @@ import type { AuditFinding } from '../../src/audit/development-tooling/types';
 import { harnessRuleLimits } from '../../src/rules/explorer-ui/catalog';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-/**
- * The TypeScript and JavaScript adapter is called the way the project auditor calls it. Each file
- * is split into the lines the rules read, then audit(file) returns its findings. Its declared
- * auditStructure is called with a project's file and folder lists. What it was given and what it
- * returned is asserted and recorded as the cases of its state.
- */
-
-type Outcome = { name: string; input: unknown; output: AuditFinding[] };
 
 const text = (...lines: string[]) => lines.join('\n');
 const ruleAndPath = (findings: AuditFinding[]) =>

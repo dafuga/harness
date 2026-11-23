@@ -1,11 +1,12 @@
+import type {
+	Source,
+	PlanInput
+} from './workflow.verification-evidence-run-verify-verification-service-verify-plan-report.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { verifyPlanReport } from '../../src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport';
 import type { VerifyPlanReport } from '../../src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.types';
-
-type PlanInput = Parameters<typeof verifyPlanReport>[0];
-type Source = VerifyPlanReport['source'];
 
 const SERVICE = 'src/workflows/verification-evidence/run-verify/verification-service';
 const UNIT = `${SERVICE}/verifyPlanReport.test.ts`;

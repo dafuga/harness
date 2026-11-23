@@ -9,10 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/core/development-tooling/InvalidSqliteFieldValueError.ts",
 			"src/utils/development-tooling/sqliteBinding.ts",
 			"src/utils/development-tooling/sqliteBinding.types.ts"
 		],
-		"symbols": ["sqliteBinding", "InvalidSqliteFieldValueError"]
+		"symbols": ["InvalidSqliteFieldValueError", "sqliteBinding", "InvalidSqliteFieldValueError"]
 	},
 	"contract": {
 		"origin": "declared",

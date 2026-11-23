@@ -1,11 +1,12 @@
+import { fixtureRunners } from './workflow.run-benchmark.fixture';
 import { chmodSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { withTempDir } from '../support/temporary';
 import { test, vi } from 'vitest';
 import { BenchmarkRepository } from '../../src/repositories/agents-providers/BenchmarkRepository';
 import { benchmarkSchedule, runBenchmark } from '../../src/cli/program/benchmark-service/runBenchmark';
-import type { BenchmarkRunners } from '../../src/cli/program/benchmark-service/benchmarkDefinition.types';
-import type { BenchmarkRun, BenchmarkRunner } from '../../src/core/agents-providers/subagentBenchmarkTypes';
+
+import type { BenchmarkRun } from '../../src/core/agents-providers/subagentBenchmarkTypes';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempRepo } from '../support/temporary';
 import type { TemporaryRepo } from '../support/temporary.types';
@@ -28,27 +29,6 @@ const scheduleRun = {
 		budget: { repetitions: 1 }
 	}
 } as BenchmarkRun;
-
-function fixtureRunners(): BenchmarkRunners {
-	const codex: BenchmarkRunner = {
-		preflight: async () => 'codex fixture 1',
-		run: async ({ candidate, cwd }) => {
-			writeFileSync(join(cwd, 'component.ts'), 'export const value = 1;\n');
-			return {
-				session: `${candidate.id}-session`,
-				reportedModel: candidate.model,
-				usage: { inputTokens: 12, outputTokens: 3 }
-			};
-		}
-	};
-	const claude: BenchmarkRunner = {
-		preflight: async () => 'claude fixture 1',
-		run: async ({ candidate }) => {
-			throw new Error(`${candidate.id} fixture failure`);
-		}
-	};
-	return { codex, claude };
-}
 
 function commitBenchmarkFixture(repo: TemporaryRepo): void {
 	writeFileSync(join(repo.root, 'component.ts'), 'export const value = 0;\n');

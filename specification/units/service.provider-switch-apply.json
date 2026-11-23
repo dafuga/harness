@@ -10,12 +10,14 @@
 	"owns": {
 		"source": [
 			"src/services/agents-providers/ProviderSwitchApplyService.ts",
-			"src/services/agents-providers/ProviderSwitchApplyService.types.ts"
+			"src/services/agents-providers/ProviderSwitchApplyService.types.ts",
+			"src/services/agents-providers/SwitchVerificationError.ts"
 		],
 		"symbols": [
 			"ProviderSwitchApplyService",
 			"ProviderSwitchApplyService.constructor",
 			"ProviderSwitchApplyService.apply",
+			"SwitchVerificationError",
 			"SwitchVerificationError"
 		]
 	},

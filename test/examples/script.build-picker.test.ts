@@ -1,3 +1,4 @@
+import type { PanelSummary } from './script.build-picker.test.types';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -12,8 +13,6 @@ const pickerScript = 'window.pickerReady = "model-picker";';
 const pickerEntry = 'export const picker: string = "model-picker";\nconsole.log(picker);\n';
 const reportsStyle = '.picker { color: #123456; }';
 const fallbackStyle = '.picker { color: #abcdef; }';
-
-type PanelSummary = { title: string; styleColor: string | null; hasScript: boolean; serverBundled: boolean };
 
 async function writeFiles(root: string, files: Record<string, string>): Promise<void> {
 	for (const [path, content] of Object.entries(files)) {

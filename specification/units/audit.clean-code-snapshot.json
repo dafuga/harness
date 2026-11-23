@@ -10,12 +10,14 @@
 	"owns": {
 		"source": [
 			"src/audit/cleanCodeSnapshot.ts",
+			"src/audit/verification-evidence/ReviewContextBudgetExceededError.ts",
 			"src/audit/verification-evidence/cleanCodeSnapshot.ts",
 			"src/audit/verification-evidence/cleanCodeSnapshot.types.ts"
 		],
 		"symbols": [
 			"maxReviewStateBytes",
 			"snapshotCleanCodeFile",
+			"ReviewContextBudgetExceededError",
 			"maxReviewStateBytes",
 			"snapshotCleanCodeFile",
 			"ReviewSnapshot",

@@ -1,3 +1,4 @@
+import type { Task } from './adapter.sqlite.test.types';
 import { createRequire } from 'node:module';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -25,8 +26,6 @@ const taskModels: readonly SqliteModel[] = [
 		}
 	}
 ];
-
-type Task = { id: number; name: string; updatedAt: string; [key: string]: unknown };
 
 async function withDatabase(use: (db: SqliteDatabase) => Promise<void> | void): Promise<void> {
 	await withTempDir('sqlite-adapter-examples-', async (directory) => {

@@ -1,35 +1,50 @@
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { withTempDir } from '../support/temporary';
+import { withTempDir, withTempRepo } from '../support/temporary';
+import { indexUnits } from '../../src/cli/program/manageUnits';
+import { projectAt, slugifySource } from '../support/unitProject';
 import { backfillUids } from '../../src/workflows/development-tooling/backfill-uids/backfillUids';
 
 const unitId = 'workflow.development-tooling-backfill-uids-backfill-uids';
 const state = 'plans-uid-assignments-without-writing';
 
 test('Plans UID assignments without writing', async () => {
-	const input = {};
-	const report = await backfillUids(input);
-	const output = {
-		units: report.units,
-		assigned: report.assigned.slice(0, 3),
-		annotated: report.annotated.slice(0, 3),
-		registryOnly: report.registryOnly.slice(0, 3),
-		conflicts: report.conflicts.slice(0, 3),
-		written: report.written
-	};
-	expect(report.units).toBeGreaterThan(0);
-	expect(report.written).toBe(0);
-	recordExampleCases(
-		{
-			unitId,
-			symbol: 'backfillUids',
-			state,
-			evidence: 'examples-cases',
-			file: `${state}.json`
-		},
-		[{ name: 'active repository units are planned without modification', input, output }]
-	);
+	await withTempRepo(async ({ root }) => {
+		const project = projectAt(root);
+		const source = 'src/utils/slugify.ts';
+		const manifest = 'specification/units/function.slugify.json';
+		await project.write(source, slugifySource);
+		await indexUnits({ root, write: true });
+		const before = await project.read(manifest);
+		const report = await backfillUids({ root });
+		expect(report).toEqual({
+			units: 1,
+			assigned: [{ id: 'function.slugify', uid: expect.stringMatching(/^u_[a-z0-9]{10}$/) }],
+			annotated: [source],
+			registryOnly: [],
+			conflicts: [],
+			written: 0
+		});
+		expect(await project.read(source)).toBe(slugifySource);
+		expect(await project.read(manifest)).toBe(before);
+		recordExampleCases(
+			{
+				unitId,
+				symbol: 'backfillUids',
+				state,
+				evidence: 'examples-cases',
+				file: `${state}.json`
+			},
+			[
+				{
+					name: 'an unlabelled source and registry entry are planned without modification',
+					input: { root: 'fixture project with function.slugify' },
+					output: report
+				}
+			]
+		);
+	});
 });
 
 const errorState = 'throws-error-when-loading-units-fails';

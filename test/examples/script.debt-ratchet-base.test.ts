@@ -1,23 +1,13 @@
+import type { Repository, Environment, Case } from './script.debt-ratchet-base.test.types';
 import { execFileSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'vitest';
 import { ratchetBaseVariable, selectRatchetBase } from '../../scripts/debt-ratchet-base';
-import type { GitRead, RatchetBase } from '../../scripts/debt-ratchet-base.types';
+import type { GitRead } from '../../scripts/debt-ratchet-base.types';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempRepo } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-/**
- * selectRatchetBase is called the way check-debt-ratchets calls it: with a reader that runs one
- * git command in the checkout and throws when git fails, and with the environment map. Each state
- * builds one temporary Git fixture with withTempRepo, removed afterwards. Environment values are
- * made-up examples; none is read from the process.
- */
-
-type Repository = { root: string; git: (...args: string[]) => string };
-type Environment = Record<string, string>;
-type Case = { name: string; input: { env: Environment; refs: string[] }; output: RatchetBase };
 
 const emptyTree = '4b825dc642cb6eb9a060e54bf8d69288fbee4904';
 const zeroCommit = '0'.repeat(40);

@@ -1,10 +1,9 @@
+import type { Cases } from './module.history.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { lfsPointer, lfsStored } from '../../src/utils/verification-evidence/lfsPointer';
 import { refKind, sourceArchiveRef } from '../../src/utils/git-source-history/historyRefs';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
 
 const shot = { sha256: 'a'.repeat(64), bytes: 2048 };
 

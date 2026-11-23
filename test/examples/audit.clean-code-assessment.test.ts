@@ -1,3 +1,4 @@
+import type { Choice, Answer, ReviewStatus, Cases } from './audit.clean-code-assessment.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -11,11 +12,6 @@ import type {
 	PrincipleAssessment
 } from '../../src/audit/development-tooling/cleanCodeTypes';
 import type { JevEvaluation } from '../../src/core/agents-providers/jevTypes';
-
-type Answer = JevEvaluation['answers'][string];
-type Choice = Answer['choice'];
-type ReviewStatus = FileReview['status'];
-type Cases = Parameters<typeof recordExampleCases>[1];
 
 const sampleChoices: Array<[string, Choice, number]> = [
 	['meaningful-names', 'meets', 0.93],

@@ -13,7 +13,8 @@
 	"owns": {
 		"source": [
 			"src/services/networking-security/PermissionCatalogService.ts",
-			"src/services/networking-security/PermissionCatalogService.types.ts"
+			"src/services/networking-security/PermissionCatalogService.types.ts",
+			"src/services/networking-security/ProfileIdentityError.ts"
 		],
 		"symbols": [
 			"profileSchema",
@@ -23,6 +24,7 @@
 			"PermissionProfile",
 			"PermissionCatalog",
 			"PermissionSourceTree",
+			"ProfileIdentityError",
 			"ProfileIdentityError"
 		]
 	},

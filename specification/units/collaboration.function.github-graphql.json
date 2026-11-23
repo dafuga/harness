@@ -81,9 +81,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CollaborationInputError",
 				"type": "thrown",
-				"description": "Every failure makes the promise reject with a plain Error whose message is 'Collaboration github-unavailable' and whose code property is 'github-unavailable', including an entry count outside 1 to 64, a failed token or fetch call, a non-OK or oversized response, invalid JSON or a non-empty GraphQL errors array, a repository databaseId mismatch, and any blob that fails the checks. No other error type escapes githubGraphql."
+				"description": "Every failure makes the promise reject with CollaborationInputError whose message is 'Collaboration github-unavailable' and whose code property is 'github-unavailable', including an entry count outside 1 to 64, a failed token or fetch call, a non-OK or oversized response, invalid JSON or a non-empty GraphQL errors array, a repository databaseId mismatch, and any blob that fails the checks. No other error type escapes githubGraphql."
 			}
 		],
 		"errorStatus": "declared",
@@ -156,9 +156,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CollaborationInputError",
 						"type": "thrown",
-						"description": "Every failure makes the promise reject with a plain Error whose message is 'Collaboration github-unavailable' and whose code property is 'github-unavailable', including an entry count outside 1 to 64, a failed token or fetch call, a non-OK or oversized response, invalid JSON or a non-empty GraphQL errors array, a repository databaseId mismatch, and any blob that fails the checks. No other error type escapes githubGraphql."
+						"description": "Every failure makes the promise reject with CollaborationInputError whose message is 'Collaboration github-unavailable' and whose code property is 'github-unavailable', including an entry count outside 1 to 64, a failed token or fetch call, a non-OK or oversized response, invalid JSON or a non-empty GraphQL errors array, a repository databaseId mismatch, and any blob that fails the checks. No other error type escapes githubGraphql."
 					}
 				],
 				"errorStatus": "declared"

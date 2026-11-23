@@ -20,6 +20,15 @@ test('Defines server email delivery and reusable mailer scaffolds', () => {
 
 	expect(output.version).toBe('1.0.0');
 	expect(output.setupFiles).toContain('src/services/email/email.server.ts');
+	const types = emailModule.setup.find(
+		(file) => file.path === 'src/services/email/EmailService.types.ts'
+	);
+	expect(types?.contents).not.toContain('class EmailServiceError');
+	expect(types?.contents).toContain("export { EmailServiceError } from './EmailServiceError';");
+	const error = emailModule.setup.find(
+		(file) => file.path === 'src/services/email/EmailServiceError.ts'
+	);
+	expect(error?.contents).toContain('class EmailServiceError extends Error');
 	expect(output.resource.files[1]?.firstLine).toContain('import type');
 	recordExampleCases(
 		{

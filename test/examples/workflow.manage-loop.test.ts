@@ -23,18 +23,18 @@ const STEP = 'run-smoke-checks';
 const STEP_TITLE = 'Run the smoke checks.';
 const EVIDENCE = 'Smoke checks passed on the release candidate.';
 const MODEL = 'example-model';
-const NOW = () => '2026-11-15T09:00:00.000Z';
+const fixtureNow = () => '2026-11-15T09:00:00.000Z';
 
 function createInput(root: string): CreateLoopInput {
-	return { root, name: LOOP, goal: GOAL, now: NOW, agentModel: MODEL };
+	return { root, name: LOOP, goal: GOAL, now: fixtureNow, agentModel: MODEL };
 }
 
 function addInput(root: string): AddLoopStepInput {
-	return { root, loop: LOOP, step: STEP, title: STEP_TITLE, now: NOW };
+	return { root, loop: LOOP, step: STEP, title: STEP_TITLE, now: fixtureNow };
 }
 
 function completeInput(root: string): CompleteLoopStepInput {
-	return { root, loop: LOOP, step: STEP, evidence: EVIDENCE, now: NOW };
+	return { root, loop: LOOP, step: STEP, evidence: EVIDENCE, now: fixtureNow };
 }
 
 function readInput(root: string): ReadLoopInput {

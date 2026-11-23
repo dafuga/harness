@@ -1,3 +1,4 @@
+import type { Queue } from './service.resource-monitor.test.types';
 import { test } from 'vitest';
 import type {
 	ResourceRequest,
@@ -7,8 +8,6 @@ import { ResourceMonitorService } from '../../src/services/execution-runtimes/re
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-type Queue = ConstructorParameters<typeof ResourceMonitorService>[0]['queue'];
 
 const SAMPLE: ResourceSnapshot = {
 	status: 'available',

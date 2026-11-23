@@ -1,3 +1,5 @@
+import { PROJECT, STEP, EVALUATION } from './repository.analytics.fixture';
+import type { Step } from './repository.analytics.test.types';
 import { spawnSync } from 'node:child_process';
 import { mkdirSync, realpathSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -9,14 +11,9 @@ import { withTempDir } from '../support/temporary';
 import { InvalidRetentionCutoffError } from '../../src/repositories/reports-media/InvalidRetentionCutoffError';
 import { UnsupportedAnalyticsSchemaVersionError } from '../../src/repositories/reports-media/UnsupportedAnalyticsSchemaVersionError';
 
-// AnalyticsRepository needs bun:sqlite, which the Node-hosted vitest run cannot load,
-// so each test sends its steps to a bun child process that calls the real repository.
-type Step = Record<string, unknown>;
-
 const REPOSITORY_PATH = fileURLToPath(
 	new URL('../../src/repositories/reports-media/AnalyticsRepository.ts', import.meta.url)
 );
-const PROJECT = '/workspace/projects/harness-app';
 const CUTOFF = '2025-01-01T00:00:00.000Z';
 const LOOP = {
 	id: '3b9f6c2a-1d4e-4f8a-9b27-5c0e7d1a6f43',
@@ -24,23 +21,6 @@ const LOOP = {
 	project: PROJECT,
 	kind: 'loop',
 	action: 'created'
-};
-const STEP = {
-	id: 'd41e8b07-6c3a-4a92-8f15-0b7e2d9c4a61',
-	timestamp: '2026-11-14T10:05:47.910Z',
-	project: PROJECT,
-	kind: 'step',
-	action: 'completed',
-	durationMs: 2214
-};
-const EVALUATION = {
-	id: 'c04f9e2b71a6d385e0f4b92c7a1d6e53f8b20c9a4d7e1f6b3a52c08d9e4f7b16',
-	timestamp: '2026-11-13T16:42:03.118Z',
-	project: PROJECT,
-	kind: 'evaluation',
-	action: 'evaluated',
-	checkType: 'response',
-	historical: true
 };
 
 function dated(id: string, timestamp: string, extra: Step = {}): Step {
@@ -58,35 +38,33 @@ function meta(symbol: string, state: string) {
 }
 
 function childScript(): string {
-	return [
-		`const { AnalyticsRepository } = await import(${JSON.stringify(REPOSITORY_PATH)});`,
-		"const { Database } = await import('bun:sqlite');",
-		'const steps = JSON.parse(process.argv[2]);',
-		'let repo;',
-		'function sql(step) {',
-		'  const db = new Database(step.home + "/analytics.sqlite");',
-		'  try { db.exec(step.sql); } finally { db.close(); }',
-		'}',
-		'async function run(step) {',
-		'  try {',
-		"    if (step.op === 'open') repo = await AnalyticsRepository.open(step.home);",
-		"    else if (step.op === 'construct') repo = new AnalyticsRepository(step.home, step.options);",
-		"    else if (step.op === 'record') repo.record(step.event);",
-		"    else if (step.op === 'recordImported') repo.recordImported(step.event);",
-		"    else if (step.op === 'events') return repo.events();",
-		"    else if (step.op === 'prune') return repo.prune(step.before, step.apply);",
-		"    else if (step.op === 'reconcile') await repo.reconcileHistorical(step.root, step.project);",
-		"    else if (step.op === 'close') repo.close();",
-		"    else if (step.op === 'sql') sql(step);",
-		'    return null;',
-		'  } catch (error) {',
-		'    return { error: { name: error.name, message: error.message } };',
-		'  }',
-		'}',
-		'const results = [];',
-		'for (const step of steps) results.push(await run(step));',
-		'process.stdout.write(JSON.stringify(results));'
-	].join('\n');
+	return `const { AnalyticsRepository } = await import(${JSON.stringify(REPOSITORY_PATH)});
+const { Database } = await import('bun:sqlite');
+const steps = JSON.parse(process.argv[2]);
+let repo;
+function sql(step) {
+  const db = new Database(step.home + "/analytics.sqlite");
+  try { db.exec(step.sql); } finally { db.close(); }
+}
+async function run(step) {
+  try {
+    if (step.op === 'open') repo = await AnalyticsRepository.open(step.home);
+    else if (step.op === 'construct') repo = new AnalyticsRepository(step.home, step.options);
+    else if (step.op === 'record') repo.record(step.event);
+    else if (step.op === 'recordImported') repo.recordImported(step.event);
+    else if (step.op === 'events') return repo.events();
+    else if (step.op === 'prune') return repo.prune(step.before, step.apply);
+    else if (step.op === 'reconcile') await repo.reconcileHistorical(step.root, step.project);
+    else if (step.op === 'close') repo.close();
+    else if (step.op === 'sql') sql(step);
+    return null;
+  } catch (error) {
+    return { error: { name: error.name, message: error.message } };
+  }
+}
+const results = [];
+for (const step of steps) results.push(await run(step));
+process.stdout.write(JSON.stringify(results));`;
 }
 
 function runSteps(directory: string, steps: Step[]): unknown[] {

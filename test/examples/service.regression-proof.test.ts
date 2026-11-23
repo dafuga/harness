@@ -1,3 +1,5 @@
+import { unit, scenario } from './service.regression-proof.fixture';
+import type { Gathered } from './service.regression-proof.test.types';
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -7,31 +9,11 @@ import { withTempDir } from '../support/temporary';
 import { environmentProfile } from '../../src/workflows/verification-evidence/record-regression/RegressionProofService';
 import { focusedScreens } from '../../src/workflows/verification-evidence/record-regression/focusedScreens';
 
-type Gathered = Parameters<typeof focusedScreens>[0][number];
-type Scenario = Parameters<typeof focusedScreens>[2]['scenarios'][number];
-
 const commit = '5c0e8a7d2f41b96e3a0d8c17f4b2e9a6d1c35f80';
 const otherCommit = 'a37d0c9e5b218f4d6e0a7c3b91f25d8e4c60b7a2';
 const buildId = '8a4d2f7c1e96b03d5a2f8c4e7b1d90a3f6e2c85b4d7a1f09e3c6b28d5a7f41e0';
-const unit = 'reports.component.evidence-grid';
 const file = 'evidence-grid-desktop.png';
 const baseEnv = { CI: 'true', NODE_ENV: 'test', TZ: 'UTC' };
-
-function scenario(): Scenario {
-	return {
-		schemaVersion: 1,
-		id: 'reports.evidence-grid',
-		title: 'Evidence grid in the reports view',
-		kind: 'ui',
-		units: [unit],
-		states: [{ id: 'populated', title: 'Grid with recorded captures', coverage: 'required' }],
-		viewports: [{ id: 'desktop', width: 1280, height: 800 }],
-		tests: [{ id: 'reports.evidence-grid.e2e', kind: 'e2e', runner: 'playwright', target: 'x.ts' }],
-		evidence: [
-			{ id: unit, kind: 'screenshot', states: ['populated'], viewports: ['desktop'], provenance: 'actual-capture', capture: 'viewport', required: true }
-		]
-	};
-}
 
 function gathered(revision: string, decoded: boolean): Gathered {
 	const server = { buildId, revision };

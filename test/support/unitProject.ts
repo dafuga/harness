@@ -82,16 +82,15 @@ export async function checkGeneratedAppContracts(project: UnitProject): Promise<
 	expect(checked.exitCode).toBe(1);
 	const report = JSON.parse(checked.stdout) as CheckReport;
 	expect(report.contractFailures).toEqual({
-		entities: 3,
-		issues: 7,
+		entities: 2,
+		issues: 6,
 		unknownTypes: 2,
 		emptyProps: 0,
 		missingRequired: 0,
-		bareErrors: 1
+		bareErrors: 0
 	});
 	expect([...new Set(report.errors)].sort()).toEqual(
 		[
-			'script.atomic-components: contract error Error is a bare Error',
 			'script.atomic-syntax: contract input atomicSyntax.content has unknown type',
 			'script.atomic-syntax: contract input walkAtomicMarkup.node has unknown type',
 			'script.atomic-syntax: contract input walkAtomicMarkup.callback has unknown type',

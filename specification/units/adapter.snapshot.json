@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.ts",
-			"src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.types.ts"
+			"src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.types.ts",
+			"src/adapters/verification-evidence/snapshot-adapter/TarExtractError.ts"
 		],
 		"symbols": [
 			"SnapshotAdapter",
@@ -25,7 +26,8 @@
 			"SnapshotDrift",
 			"SnapshotDrift",
 			"TarExtractError",
-			"RetainedArtifact"
+			"RetainedArtifact",
+			"TarExtractError"
 		]
 	},
 	"contract": {

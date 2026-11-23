@@ -9,10 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/core/execution-runtimes/InvalidResourceCommandInputError.ts",
 			"src/utils/execution-runtimes/resourceCommand.ts",
 			"src/utils/execution-runtimes/resourceCommand.types.ts"
 		],
-		"symbols": ["resourceCommand", "InvalidResourceCommandInputError"]
+		"symbols": [
+			"InvalidResourceCommandInputError",
+			"resourceCommand",
+			"InvalidResourceCommandInputError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

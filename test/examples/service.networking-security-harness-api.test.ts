@@ -1,3 +1,4 @@
+import type { ErrorCase } from './service.networking-security-harness-api.test.types';
 import { test, vi } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -9,8 +10,6 @@ const LOOPBACK = 'http://127.0.0.1:5690';
 const TOKEN_MESSAGE = 'Supply the name of a token environment variable.';
 const TIMEOUT_MESSAGE = 'API timeout must be an integer between 1 and 3600000 milliseconds.';
 const PROJECT_MESSAGE = 'Select a hosted project with --project or HARNESS_API_PROJECT.';
-
-type ErrorCase = { name: string; message: string };
 
 function errorOf(action: () => unknown): ErrorCase {
 	try {

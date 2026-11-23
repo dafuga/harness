@@ -1,3 +1,4 @@
+import type { Cases } from './service.module-system-module-writes.test.types';
 import { mkdir, readdir, readFile, symlink } from 'node:fs/promises';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -5,8 +6,6 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { writeModuleFiles, moduleOutputPath } from '../../src/services/module-system/moduleWrites';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
 
 const UNIT = 'service.module-system-module-writes';
 const SOURCE = 'src/services/reports/evidence-grid.ts';

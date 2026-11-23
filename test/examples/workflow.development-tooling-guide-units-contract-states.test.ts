@@ -1,3 +1,4 @@
+import type { Contract, Groups } from './workflow.development-tooling-guide-units-contract-states.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -10,9 +11,6 @@ import {
 const unitId = 'workflow.development-tooling-guide-units-contract-states';
 const entity = 'workflow.development-tooling-guide-units-contract-states';
 const slotPrefix = 'workflow-development-tooling-guide-units-contract-states';
-
-type Contract = Parameters<typeof contractStates>[0];
-type Groups = Parameters<typeof mergeUnitStates>[0];
 
 function cardContract(): Contract {
 	return {

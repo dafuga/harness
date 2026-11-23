@@ -1,3 +1,4 @@
+import type { Request, Session } from './service.claude-query.test.types';
 import { test, vi } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -20,9 +21,6 @@ async function* fakeStream(): AsyncGenerator<unknown> {
 	fake.onStart?.();
 	for (const message of fake.messages) yield message;
 }
-
-type Request = Parameters<ClaudeQueryService['run']>[0];
-type Session = Parameters<ClaudeQueryService['run']>[1];
 
 const request: Request = {
 	model: 'claude-opus-5-5',

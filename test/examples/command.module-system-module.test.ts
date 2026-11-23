@@ -1,16 +1,10 @@
+import type { CommandShape } from './command.module-system-module.test.types';
 import { Command } from 'commander';
 import { test } from 'vitest';
 import { ModuleCommand } from '../../src/commands/module-system/ModuleCommand';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-type CommandShape = {
-	name: string;
-	arguments: Array<{ name: string; required: boolean }>;
-	options: string[];
-	commands: CommandShape[];
-};
 
 function describeCommand(command: Command): CommandShape {
 	return {

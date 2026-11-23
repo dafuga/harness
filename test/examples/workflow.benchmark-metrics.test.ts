@@ -1,11 +1,8 @@
+import type { Run, Usage, Trial } from './workflow.benchmark-metrics.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { benchmarkMetrics } from '../../src/cli/program/benchmark-service/benchmarkMetrics';
-
-type Run = Parameters<typeof benchmarkMetrics>[0];
-type Trial = Run['trials'][number];
-type Usage = Trial['turns'][number]['usage'];
 
 const candidate = {
 	id: 'codex-gpt-6-luna',

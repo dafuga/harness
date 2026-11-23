@@ -10,10 +10,11 @@
 	"owns": {
 		"source": [
 			"scripts/build-kernel.ts",
+			"scripts/build-kernel/CommandFailedError.ts",
 			"scripts/build-kernel/build-kernel.ts",
 			"scripts/build-kernel/build-kernel.types.ts"
 		],
-		"symbols": ["CommandFailedError"]
+		"symbols": ["CommandFailedError", "CommandFailedError"]
 	},
 	"contract": {
 		"origin": "declared",

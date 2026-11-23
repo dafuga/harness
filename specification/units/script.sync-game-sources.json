@@ -8,8 +8,17 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["scripts/sync-game-sources.ts", "scripts/sync-game-sources.types.ts"],
-		"symbols": ["gameSourceLayout", "embeddedSource", "UnembeddedImportError"]
+		"source": [
+			"scripts/UnembeddedImportError.ts",
+			"scripts/sync-game-sources.ts",
+			"scripts/sync-game-sources.types.ts"
+		],
+		"symbols": [
+			"UnembeddedImportError",
+			"gameSourceLayout",
+			"embeddedSource",
+			"UnembeddedImportError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

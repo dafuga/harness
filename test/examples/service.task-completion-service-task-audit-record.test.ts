@@ -1,3 +1,4 @@
+import type { Repository } from './service.task-completion-service-task-audit-record.test.types';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { test } from 'vitest';
@@ -5,8 +6,6 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempRepo } from '../support/temporary';
 import { taskAuditRecord } from '../../src/services/verification-evidence/task-completion-service/taskAuditRecord';
-
-type Repository = { root: string; git: (...args: string[]) => string };
 
 const unitId = 'service.task-completion-service-task-audit-record';
 const commit = 'a31f7c5e09d2b84f16c3e7a0d95b2f48c6e1d30a';

@@ -1,3 +1,4 @@
+import type { IsolatedRun, ChildProcess } from './function.isolated-child.test.types';
 import { chmod, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -8,9 +9,6 @@ import {
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-type IsolatedRun = Parameters<typeof isolatedChild>[0];
-type ChildProcess = ReturnType<typeof isolatedChild>;
 
 const BASE_ENV = { PATH: '/usr/bin:/bin' };
 const CAPTURE_BODY = `printf '%s|%s|%s\\n' "$1" "$2" "$3"

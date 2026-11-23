@@ -1,3 +1,9 @@
+import {
+	unitId,
+	scenario,
+	examplesCommand
+} from './workflow.verification-evidence-run-verify-verify-plan-workflow.fixture';
+import type { Cases } from './workflow.verification-evidence-run-verify-verify-plan-workflow.test.types';
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { test } from 'vitest';
@@ -7,10 +13,6 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir, withTempRepo } from '../support/temporary';
 import type { TemporaryRepo } from '../support/temporary.types';
 import { expect } from '../verificationExpect';
-
-/** Each state calls verifyPlan on a Git fixture; its arguments and its report or error are recorded. */
-const unitId = 'workflow.verification-evidence-run-verify-verify-plan-workflow';
-const examplesCommand = `bun test/verification-output.ts vitest test/examples/${unitId}.test.ts`;
 const scenarioFile = `specification/scenarios/examples-${unitId}.json`;
 const selectionNote =
 	'No locally cached passing base was provable without restoring evidence. Planned from an empty base; a run may restore proof and select fewer checks.';
@@ -22,22 +24,7 @@ const sources = {
 	'test/alpha.test.ts': "import { alpha } from '../src/alpha';\n\nexport const checked = alpha;\n",
 	'test/beta.test.ts': 'export const beta = true;\n'
 };
-const scenario = {
-	schemaVersion: 1,
-	id: `examples-${unitId}`,
-	title: `${unitId} examples`,
-	kind: 'headless',
-	units: [unitId],
-	builds: [],
-	states: [{ id: 'entity-plan', title: 'Entity plan', coverage: 'required' }],
-	viewports: [],
-	tests: [{ id: 'examples', kind: 'unit', runner: 'command', target: examplesCommand, cwd: '.' }],
-	evidence: [
-		{ id: 'examples-cases', kind: 'trace', states: ['entity-plan'], viewports: [], required: true }
-	]
-};
 const scenarioText = `${JSON.stringify(scenario, null, '\t')}\n`;
-type Cases = Parameters<typeof recordExampleCases>[1];
 
 /** Writes the files into the repository, commits them and returns the commit's full revision. */
 function commit(repository: TemporaryRepo, files: Record<string, string>, message: string): string {

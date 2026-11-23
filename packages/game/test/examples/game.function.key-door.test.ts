@@ -1,9 +1,8 @@
+import type { CaseRow } from './game.function.key-door.test.types';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { keyDoor, exampleDocument } from '../../src/utils/game-authoring/keyDoor';
-
-type CaseRow = { name: string; input: unknown; output: unknown };
 
 const start = { x: 0, y: 0, hasKey: false, doorOpen: false, choice: '', outcome: '' };
 const behind = { ...start, x: 2.5, y: -1.25 };

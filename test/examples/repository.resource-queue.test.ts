@@ -1,3 +1,5 @@
+import { managedJob, now, addJobs, recordState, batchJob } from './repository.resource-queue.fixture';
+import type { Job } from './repository.resource-queue.test.types';
 import { test } from 'vitest';
 import type {
 	ResourceConfig,
@@ -5,36 +7,11 @@ import type {
 	ResourceSnapshot
 } from '../../src/core/execution-runtimes/resourceTypes';
 import { ResourceQueueRepository } from '../../src/services/execution-runtimes/resource-queue-service/ResourceQueueRepository';
-import { recordExampleCases } from '../support/recordExampleCases';
+
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-type Job = Omit<ResourceJob, 'sequence'>;
-type Cases = Parameters<typeof recordExampleCases>[1];
-
-const now = 1794737700000;
 const missingId = '6e2f9a1c-3b7d-4e5a-8c21-9f0d4b6a7e35';
 const telemetryNotice = 'Resource telemetry is unavailable or stale';
-const managedJob: Job = {
-	id: '550e8400-e29b-41d4-a716-446655440000',
-	priority: 'coding',
-	cpus: 1,
-	memoryMiB: 512,
-	label: 'Managed work',
-	ownerPid: 12345,
-	ownerStarted: '2026-11-15T10:15:00.000Z',
-	state: 'queued',
-	createdAt: now,
-	heartbeatAt: now,
-	notice: null
-};
-const batchJob: Job = {
-	...managedJob,
-	id: '6f1c2b7e-4a3d-4c8e-9b2a-1d5e7f9a0b13',
-	priority: 'agent-test',
-	cpus: 2,
-	memoryMiB: 1024
-};
 const invalidJob: Job = { ...managedJob, cpus: 0 };
 const running: Partial<ResourceJob> = { state: 'running', heartbeatAt: now + 5000, notice: null };
 const worker: Partial<ResourceJob> = { workerPid: 34567 };
@@ -74,20 +51,6 @@ function withQueue(prefix: string, run: (queue: ResourceQueueRepository) => void
 	});
 }
 
-/** Records one state's named cases as its examples trace. */
-function recordState(symbol: string, state: string, cases: Cases): void {
-	recordExampleCases(
-		{
-			unitId: 'repository.resource-queue',
-			symbol,
-			state,
-			evidence: 'examples-cases',
-			file: `${state}.json`
-		},
-		cases
-	);
-}
-
 /** The error a call throws, or undefined when it returns normally. */
 function thrownBy(action: () => unknown): unknown {
 	try {
@@ -96,18 +59,6 @@ function thrownBy(action: () => unknown): unknown {
 		return error;
 	}
 	return undefined;
-}
-
-function addJobs(queue: ResourceQueueRepository): void {
-	expect(queue.add(managedJob)).toBeUndefined();
-	expect(queue.add(batchJob)).toBeUndefined();
-	const jobs = queue.all();
-	expect(jobs).toEqual([{ ...managedJob, sequence: 1 }, { ...batchJob, sequence: 2 }]);
-	recordState('ResourceQueueRepository.add', 'adds-jobs-and-lists-them-in-sequence-order', [
-		{ name: 'add stores the managed job and returns no value', input: managedJob, output: null },
-		{ name: 'add stores the batch job after it', input: batchJob, output: null },
-		{ name: 'all lists both jobs in sequence order', input: {}, output: jobs }
-	]);
 }
 
 test('Adds jobs and lists them in sequence order', () =>

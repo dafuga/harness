@@ -1,7 +1,6 @@
 // @harness-uid u_r35cbtisci
-export class CaptureReadError extends Error {
-	override name = 'CaptureReadError';
-}
+
+export { CaptureReadError } from './CaptureReadError';
 
 /** Optional byte caps from `harness.verify.json`; a missing cap means no limit. */
 export interface CaptureLimits {

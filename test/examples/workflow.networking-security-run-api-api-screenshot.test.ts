@@ -1,3 +1,4 @@
+import type { Client } from './workflow.networking-security-run-api-api-screenshot.test.types';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
@@ -6,8 +7,6 @@ import { apiScreenshot } from '../../src/workflows/networking-security/run-api/a
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-type Client = Parameters<typeof apiScreenshot>[0];
 
 const unitId = 'workflow.networking-security-run-api-api-screenshot';
 const entityId = 'reports.component.regression-proof';

@@ -11,12 +11,14 @@
 		"source": [
 			"scripts/prepare-desktop-experiment/DesktopExperimentService.ts",
 			"scripts/prepare-desktop-experiment/DesktopExperimentService.types.ts",
+			"scripts/prepare-desktop-experiment/DesktopPatchAnchorError.ts",
 			"src/services/DesktopExperimentService.ts"
 		],
 		"symbols": [
 			"DesktopExperimentService",
 			"DesktopExperimentService.plan",
 			"replaceOnce",
+			"DesktopPatchAnchorError",
 			"DesktopPatchAnchorError",
 			"DesktopExperimentService",
 			"replaceOnce"

@@ -1,16 +1,9 @@
+import type { RecordedMeasurement } from './function.choose-runtime.test.types';
 import { test } from 'vitest';
 import { chooseRuntime } from '../../src/utils/execution-runtimes/chooseRuntime';
 import type { RuntimeChoiceInput } from '../../src/utils/execution-runtimes/chooseRuntime.types';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-/**
- * chooseRuntime is called the way UnitRuntimeService calls it: the measurements of one workload and
- * profile go in, and the runtime it chose comes back with its candidates and exclusions. Each state
- * is one behaviour the contract shows; its cases are what was given and what was returned.
- */
-
-type RecordedMeasurement = RuntimeChoiceInput['measurements'][number];
 
 const unitId = 'function.choose-runtime';
 const symbol = 'chooseRuntime';

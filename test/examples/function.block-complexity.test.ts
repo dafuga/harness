@@ -1,18 +1,13 @@
+import type {
+	MaskedSource,
+	ExampleCase,
+	TemplateMarkup
+} from './function.block-complexity.test.types';
 import { test } from 'vitest';
 import { blockComplexity } from '../../src/utils/development-tooling/blockComplexity';
 import { templateComplexity } from '../../src/services/development-tooling/source-index-service/blockComplexity';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
-
-/**
- * Each public operation is called the way its callers call it: blockComplexity with masked source
- * and a function base, templateComplexity with Svelte markup. What each call was given and what it
- * returned is asserted and recorded as the cases of its state.
- */
-
-type ExampleCase = Parameters<typeof recordExampleCases>[1][number];
-type MaskedSource = { masked: string; base: 0 | 1 };
-type TemplateMarkup = { markup: string };
 
 /** Measures masked source as the complexity pass does; the input and the count are kept. */
 function measured(name: string, input: MaskedSource): ExampleCase {

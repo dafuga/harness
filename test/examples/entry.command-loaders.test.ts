@@ -1,12 +1,10 @@
+import type { LoaderName, LoaderCase } from './entry.command-loaders.test.types';
 import { Command } from 'commander';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { commandLoaders } from '../../src/cli/commandLoaders';
-
-type LoaderName = keyof typeof commandLoaders;
-type LoaderCase = { name: string; input: unknown; output: unknown };
 
 const selectedLoaders: LoaderName[] = ['units', 'verify', 'history'];
 const brokenLoaders: LoaderName[] = ['units', 'verify'];

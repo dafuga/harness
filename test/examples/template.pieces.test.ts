@@ -1,11 +1,9 @@
+import type { Cases, Kind } from './template.pieces.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { pieceFiles } from '../../src/templates/development-tooling/pieces';
 import type { PieceContext } from '../../src/templates/development-tooling/pieces.types';
-
-type Kind = Parameters<typeof pieceFiles>[0];
-type Cases = Parameters<typeof recordExampleCases>[1];
 
 const UTIL_STATE = 'plans-a-util-file-from-a-piece-name';
 const MIGRATION_STATE = 'plans-a-migration-whose-comment-copies-the-name';

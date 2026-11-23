@@ -9,10 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/explorer-ui/revision-detail-service/InvalidPlatformCatalogManifestError.ts",
 			"src/services/explorer-ui/revision-detail-service/platformCatalog.ts",
 			"src/services/explorer-ui/revision-detail-service/platformCatalog.types.ts"
 		],
-		"symbols": ["readPlatformCatalog", "InvalidPlatformCatalogManifestError"]
+		"symbols": [
+			"InvalidPlatformCatalogManifestError",
+			"readPlatformCatalog",
+			"InvalidPlatformCatalogManifestError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

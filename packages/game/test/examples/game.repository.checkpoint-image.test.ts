@@ -1,3 +1,4 @@
+import type { Cases } from './game.repository.checkpoint-image.test.types';
 import { Buffer } from 'node:buffer';
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -17,8 +18,6 @@ const ZERO_PATH = 'static/game/checkpoints/' + '0'.repeat(64) + '.png';
 const UPPER_PATH = 'static/game/checkpoints/' + 'A'.repeat(64) + '.png';
 const OUTSIDE_PATH = 'static/game/notes.png';
 const SAVED_PATTERN = /^static\/game\/checkpoints\/[a-f0-9]{64}\.png$/;
-
-type Cases = Parameters<typeof recordExampleCases>[1];
 
 async function withRoot(run: (root: string) => Promise<void>): Promise<void> {
 	const root = mkdtempSync(join(tmpdir(), 'checkpoint-image-'));

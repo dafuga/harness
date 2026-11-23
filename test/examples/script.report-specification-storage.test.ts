@@ -1,3 +1,4 @@
+import type { ExampleCase } from './script.report-specification-storage.test.types';
 import { mkdir, symlink, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { test } from 'vitest';
@@ -5,8 +6,6 @@ import { specificationStorageReport } from '../../scripts/report-specification-s
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-type ExampleCase = { name: string; input: unknown; output: unknown };
 
 const unitsHeadsUpBytes = 16777216;
 const ledgerHeadsUpBytes = 2097152;

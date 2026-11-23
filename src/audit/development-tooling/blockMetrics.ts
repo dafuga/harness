@@ -1,8 +1,26 @@
 // @harness-uid u_x6wpxjpmml
+import ts from 'typescript';
+
+/** Counts parameter declarations, including object bindings and complex defaults as one each. */
 export function parameterCount(line: string): number {
+	const direct = parsedParameterCount(line);
+	if (direct !== undefined) return direct;
 	const match = line.match(/\(([^)]*)\)/);
 	if (!match?.[1].trim()) return 0;
-	return match[1].split(',').filter(Boolean).length;
+	return (
+		parsedParameterCount(`class Signature {\n${line}\n}`) ??
+		match[1].split(',').filter(Boolean).length
+	);
+}
+
+function parsedParameterCount(text: string): number | undefined {
+	const tree = ts.createSourceFile('signature.ts', text, ts.ScriptTarget.Latest, false);
+	return firstParameterCount(tree);
+}
+
+function firstParameterCount(node: ts.Node): number | undefined {
+	if (ts.isFunctionLike(node)) return node.parameters.length;
+	return ts.forEachChild(node, firstParameterCount);
 }
 
 export function complexityPoints(line: string): number {

@@ -1,10 +1,9 @@
+import type { Cases } from './service.picker-preview.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import type { ProviderSwitchService } from '../../src/services/agents-providers/ProviderSwitchService';
 import { PickerPreviewService } from '../../src/cli/program/codex-picker-command/PickerPreviewService';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
 
 const origin = 'http://localhost';
 const markup = '<html><body>Model picker</body></html>';

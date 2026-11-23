@@ -1,3 +1,4 @@
+import type { EvaluationOutcome } from './template.module-system-builtin-modules.test.types';
 import { test, vi } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -55,11 +56,6 @@ test('Admits every bundled capability in order', () => {
 		bundledCases()
 	);
 });
-
-interface EvaluationOutcome {
-	thrown: boolean;
-	message: string;
-}
 
 async function evaluateWithInvalidEmailEntry(): Promise<EvaluationOutcome> {
 	vi.resetModules();

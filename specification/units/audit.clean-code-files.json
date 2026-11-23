@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"src/audit/cleanCodeFiles.ts",
+			"src/audit/development-tooling/InvalidReviewInputError.ts",
 			"src/audit/development-tooling/cleanCodeFiles.ts",
 			"src/audit/development-tooling/cleanCodeFiles.types.ts"
 		],
@@ -17,6 +18,7 @@
 			"reviewHash",
 			"readReviewInput",
 			"reviewInputsCurrent",
+			"InvalidReviewInputError",
 			"reviewHash",
 			"readReviewInput",
 			"reviewInputsCurrent",

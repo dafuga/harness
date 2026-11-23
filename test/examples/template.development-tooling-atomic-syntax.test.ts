@@ -1,12 +1,10 @@
+import type { WalkNode, Cases } from './template.development-tooling-atomic-syntax.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { atomicSyntax, walkAtomicMarkup } from '../../src/templates/development-tooling/atomicSyntax';
 
 const unitId = 'template.development-tooling-atomic-syntax';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
-type WalkNode = Parameters<typeof walkAtomicMarkup>[0];
 
 const HEADER_SOURCE = `<!-- @harness-atoms forms -->
 <!-- @harness-tier molecule -->
