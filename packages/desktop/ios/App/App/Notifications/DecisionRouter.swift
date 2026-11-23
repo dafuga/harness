@@ -32,7 +32,7 @@ enum DecisionRoute: Equatable {
     case revoked
     /// The reference is not in the fresh inbox. Refresh the inbox before routing it again.
     case unknown
-    /// The reference exists in this source under the other category.
+    /// The source reference is ambiguous or belongs to the other category.
     case mismatch
 }
 
@@ -56,10 +56,12 @@ struct DecisionRouter {
 
     mutating func route(_ alert: DecisionAlert) -> DecisionRoute {
         guard !revokedSources.contains(alert.source) else { return .revoked }
-        guard let entry = entries.first(where: { $0.source == alert.source && $0.reference == alert.reference })
-        else { return .unknown }
+        var matches = entries.lazy.filter {
+            $0.source == alert.source && $0.reference == alert.reference
+        }.makeIterator()
+        guard let entry = matches.next() else { return .unknown }
+        guard matches.next() == nil, entry.category == alert.category else { return .mismatch }
         let target = DecisionTarget(category: alert.category, reference: alert.reference, source: alert.source)
-        guard entry.category == alert.category else { return .mismatch }
         guard entry.state == .pending else { return .stale(target) }
         let key = "\(alert.source)/\(alert.reference)"
         return routed.insert(key).inserted ? .review(target) : .duplicate(target)

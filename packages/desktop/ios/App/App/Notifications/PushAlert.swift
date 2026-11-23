@@ -2,7 +2,7 @@ import Foundation
 
 /// The one entry point for every alert the app receives on its single APNs topic. A notification
 /// carries exactly one secret-free custom object: `harnessDecision` (Tracker or deploy) or
-/// `vaultRequest` (a Vault approval). Both or neither refuses the alert.
+/// `vaultRequest` (a Vault approval), alongside the Apple notification dictionary.
 enum PushAlert: Equatable {
     case decision(DecisionAlert)
     case vaultRequest(VaultRequestAlert)
@@ -10,7 +10,7 @@ enum PushAlert: Equatable {
     init?(userInfo: [AnyHashable: Any]) {
         let decision = userInfo[DecisionAlert.key] != nil
         let vault = userInfo[VaultRequestAlert.key] != nil
-        guard decision != vault else { return nil }
+        guard userInfo.count == 2, userInfo["aps"] is [String: Any], decision != vault else { return nil }
         if decision {
             guard let alert = DecisionAlert(userInfo: userInfo) else { return nil }
             self = .decision(alert)
