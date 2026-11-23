@@ -7,13 +7,13 @@
 	"states": [
 		{
 			"id": "owner",
-			"title": "The verified owner sees the live tracker cards, beside that account\u2019s hosted projects",
+			"title": "The verified owner sees that account\u2019s hosted projects and a Project overview link to the live tracker cards on /tracker-overview",
 			"coverage": "required",
 			"units": ["hub.page.projects"]
 		},
 		{
 			"id": "non-owner",
-			"title": "Another verified account receives no tracker cards or owner navigation",
+			"title": "Another verified account receives no Project overview link or tracker cards",
 			"coverage": "required",
 			"units": ["hub.page.projects"]
 		},

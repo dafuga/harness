@@ -7,7 +7,6 @@
 	import type { ProjectSummary } from 'collaboration';
 	import { ProjectSyncService } from '$desktop/services/projects-sessions/ProjectSyncService';
 	import Modal from '$shared/Modal.svelte';
-	import ProjectOverview from '$shared/projects-sessions/project-overview/ProjectOverview.svelte';
 	import HubFrame from '../../components/shared-primitives/HubFrame.svelte';
 	import LoginPanel from '../../components/accounts-access/login-panel/LoginPanel.svelte';
 	import ProjectCreate from '../../components/projects-sessions/ProjectCreate.svelte';
@@ -23,7 +22,9 @@
 	const configured = $derived(session.status?.configured === true);
 	/**
 	 * What the owner endpoint answered for this account. Only an owner answer carries a snapshot, so
-	 * the Project Overview and its link are offered to the owner the server names and to nobody else.
+	 * the Project overview link is offered to the owner the server names and to nobody else. The
+	 * tracker board itself lives on /tracker-overview, one click away: the list is this page's one
+	 * main piece.
 	 */
 	let overview = $state<OverviewOutcome | null>(null);
 	const owned = $derived(overview?.kind === 'owner' ? overview : null);
@@ -122,7 +123,6 @@
 			>{:else if github === 'failed'}<hx-p class="error" role="alert"
 				>GitHub could not be connected. Try again.</hx-p
 			>{/if}
-		{#if owned}<ProjectOverview snapshot={owned.snapshot} standalone={false} />{/if}
 		<Modal open={creating} title="New project" variant="text" onClose={() => (creating = false)}
 			><ProjectCreate created={open} /></Modal
 		>

@@ -22,8 +22,11 @@ The list card style is shared in `packages/hub/src/lib/styles/hub-list.css` (`.h
    row is the project name and repository (opens the project) with the role and, for owners, a
    quiet Members link on the right. The quiet **Project overview** link sits in the card header.
    Loading, not-set-up and read errors are the card's empty-state line, so the card never hides.
-3. **Quiet status:** the GitHub connected or failed line sits below the card. The owner's live
-   tracker board follows, unchanged.
+3. **Quiet status:** the GitHub connected or failed line sits below the card.
+4. **Tracker board (Daniel, 23 Nov, option B; a6fdvd):** the owner's live tracker board no longer
+   sits under the list, which made a second main piece. It is on the Project overview page
+   (`/tracker-overview`), one click away through the card's **Project overview** link, which only
+   the owner sees. The `project-overview-hub-projects` scenario says so.
 
 ## Members (`/projects/<id>/members`)
 
