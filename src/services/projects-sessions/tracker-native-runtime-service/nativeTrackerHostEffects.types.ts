@@ -13,10 +13,12 @@ export type TrackerHostEffectsMode =
 export interface TrackerHostEffects {
 	workerClient?: TrackerWorkerClient;
 	launch?: TrackerHostLaunchConfig;
-	watchdog?: ({ driver: string } | { tmux: string }) & {
-		chiefOfStaff?: true;
-		transcriptRoots?: string[];
-	};
+	watchdog?:
+		| (({ driver: string } | { tmux: string }) & {
+				chiefOfStaff?: true;
+				transcriptRoots?: string[];
+		  })
+		| { transcriptRoots: string[]; chiefOfStaff?: never };
 	adapter?: TrackerHostAdapterConfig & { leaseFile: string };
 }
 

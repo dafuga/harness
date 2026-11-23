@@ -17,6 +17,7 @@
 			"TrackerRunReadRepository",
 			"TrackerRunReadRepository.constructor",
 			"TrackerRunReadRepository.list",
+			"TrackerRunReadRepository.launchConsumed",
 			"TrackerRunReadRepository.finished",
 			"TrackerRunReadRepository.activeLocal",
 			"TrackerRunReadRepository.pendingEvents",
@@ -50,6 +51,16 @@
 				"type": "TrackerRunFilters",
 				"required": false,
 				"default": {}
+			},
+			{
+				"name": "TrackerRunReadRepository.launchConsumed.itemId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerRunReadRepository.launchConsumed.token",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "TrackerRunReadRepository.historyRowsFor.peer",
@@ -113,6 +124,10 @@
 				"type": "TrackerListedRun[]"
 			},
 			{
+				"name": "TrackerRunReadRepository.launchConsumed",
+				"type": "boolean"
+			},
+			{
 				"name": "TrackerRunReadRepository.finished",
 				"type": "TrackerListedRun[]"
 			},
@@ -170,6 +185,29 @@
 					{
 						"name": "TrackerRunReadRepository.list",
 						"type": "TrackerListedRun[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRunReadRepository.launchConsumed",
+				"inputs": [
+					{
+						"name": "TrackerRunReadRepository.launchConsumed.itemId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerRunReadRepository.launchConsumed.token",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerRunReadRepository.launchConsumed",
+						"type": "boolean"
 					}
 				],
 				"errors": [],

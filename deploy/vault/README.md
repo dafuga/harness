@@ -63,6 +63,8 @@ puts the rule at the head of the brief for native and Docker workers. See
 Enable transcript detection on a Tracker node by adding `transcriptRoots` to its
 existing watchdog configuration. List the actual Codex `sessions` and Claude
 `projects` directories, including managed profiles when present. Use absolute paths.
+On nodes without a pane watchdog, set `hostEffects.watchdog` to an object containing
+only `transcriptRoots` to enable scanning without pane inspection, nudging or recovery.
 The scanner reads newly written text in JSONL files named with provider session UUIDs.
 It also sees tool output embedded in those records. It never opens screenshot images,
 audio, or other binary attachments. Restrict access to transcripts and configure

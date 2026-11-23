@@ -8,8 +8,9 @@ import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
 export function trackerWatchdogPort(
 	config: NonNullable<TrackerHostEffects['watchdog']>,
 	node: string
-): TrackerWatchdogPort {
+): TrackerWatchdogPort | undefined {
 	if ('tmux' in config) return tmuxPort(new TrackerTmuxAdapter({ executable: config.tmux, node }));
+	if (!('driver' in config)) return undefined;
 	const driver = new TrackerHostProcessAdapter(config.driver);
 	return {
 		async scan(signal) {

@@ -143,8 +143,8 @@
 				"required": true
 			},
 			{
-				"name": "trackerManagedEvidence.live",
-				"type": "boolean",
+				"name": "trackerManagedEvidence.presence",
+				"type": "'live' | 'absent' | 'unknown'",
 				"required": true
 			},
 			{
@@ -515,8 +515,8 @@
 						"required": true
 					},
 					{
-						"name": "trackerManagedEvidence.live",
-						"type": "boolean",
+						"name": "trackerManagedEvidence.presence",
+						"type": "'live' | 'absent' | 'unknown'",
 						"required": true
 					}
 				],
