@@ -198,5 +198,10 @@
 		"id": "packages/reports/test/entity-preview-platforms.spec.ts",
 		"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}",
 		"timeoutMs": 600000
+	},
+	{
+		"id": "packages/reports/test/entity-preview-unrecorded-measures.spec.ts",
+		"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}",
+		"timeoutMs": 600000
 	}
 ]

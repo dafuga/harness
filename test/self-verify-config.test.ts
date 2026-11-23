@@ -66,7 +66,7 @@ test('named check profiles preserve all existing check IDs, commands and effecti
 		command: check.command,
 		timeoutMs: check.timeoutMs ?? config.timeouts.test
 	}));
-	expect(actual).toHaveLength(40);
+	expect(actual).toHaveLength(41);
 	expect(actual).toEqual(checksBaseline);
 });
 
