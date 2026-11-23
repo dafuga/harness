@@ -1,12 +1,11 @@
-import { chmod, mkdtemp, readFile, rm, stat, symlink, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { chmod, readFile, stat, symlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import type { PlatformAuditEvent } from '../../../src/core/agents-providers/platformAdapter.types';
 import { PlatformAuditLogRepository } from '../../../src/repositories/agents-providers/PlatformAuditLogRepository';
+import { withTempDir } from '../../support/temporary';
 
 test('appends private audit records and rejects a public file or symlink', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'harness-platform-audit-'));
 	const event: PlatformAuditEvent = {
 		kind: 'send-attempt',
 		platform: 'slack',
@@ -17,7 +16,7 @@ test('appends private audit records and rejects a public file or symlink', async
 		requestId: 'fixture-request',
 		channelId: 'CAPPROVED'
 	};
-	try {
+	await withTempDir('harness-platform-audit-', async (root) => {
 		const path = join(root, 'platform.jsonl');
 		const log = new PlatformAuditLogRepository(path);
 		await Promise.all([log.append(event), log.append({ ...event, requestId: 'second-request' })]);
@@ -39,7 +38,5 @@ test('appends private audit records and rejects a public file or symlink', async
 		await symlink(path, linkedFile);
 		await expect(new PlatformAuditLogRepository(linkedFile).append(event)).rejects.toThrow();
 		expect(await readFile(publicFile, 'utf8')).toBe('');
-	} finally {
-		await rm(root, { recursive: true, force: true });
-	}
+	});
 });
