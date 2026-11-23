@@ -1,0 +1,200 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-slack",
+	"uid": "u_3raczg2p4i",
+	"kind": "adapter",
+	"title": "SlackAdapter",
+	"responsibility": "Owns the SlackAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/SlackAdapter.ts",
+			"src/adapters/agents-providers/SlackAdapter.types.ts"
+		],
+		"symbols": [
+			"SlackAdapter",
+			"SlackAdapter.constructor",
+			"SlackAdapter.identity",
+			"SlackAdapter.send",
+			"SlackAdapter.subscribe",
+			"SlackAdapterConfig",
+			"SlackCredentialScope",
+			"SlackInstallation",
+			"SlackVaultAccess",
+			"SlackInstallation",
+			"SlackCredentialScope",
+			"SlackVaultAccess",
+			"SlackAdapterConfig"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "SlackAdapter.constructor.config",
+				"type": "SlackAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "SlackAdapter.send.message",
+				"type": "PlatformMessage",
+				"required": true
+			},
+			{
+				"name": "SlackAdapter.subscribe.handler",
+				"type": "PlatformEventHandler",
+				"required": true
+			},
+			{
+				"name": "SlackAdapter.subscribe.signal",
+				"type": "AbortSignal",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "SlackAdapter.identity",
+				"type": "Promise<PlatformIdentity>"
+			},
+			{
+				"name": "SlackAdapter.send",
+				"type": "Promise<PlatformSendResult>"
+			},
+			{
+				"name": "SlackAdapter.subscribe",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "SlackRequestError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SlackAdapter.identity",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SlackAdapter.identity",
+						"type": "Promise<PlatformIdentity>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SlackAdapter.send",
+				"inputs": [
+					{
+						"name": "SlackAdapter.send.message",
+						"type": "PlatformMessage",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SlackAdapter.send",
+						"type": "Promise<PlatformSendResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SlackAdapter.subscribe",
+				"inputs": [
+					{
+						"name": "SlackAdapter.subscribe.handler",
+						"type": "PlatformEventHandler",
+						"required": true
+					},
+					{
+						"name": "SlackAdapter.subscribe.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SlackAdapter.subscribe",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SlackAdapter.constructor",
+				"inputs": [
+					{
+						"name": "SlackAdapter.constructor.config",
+						"type": "SlackAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SlackAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-slack-adapter-slack-post-queue",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-adapter-slack-request-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-adapter-slack-subscription",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-adapter-slack-web-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-adapter-slack-wire",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-platform-adapter-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/SlackAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/SlackAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,133 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-slack-adapter-slack-wire",
+	"uid": "u_cc6eqlqdar",
+	"kind": "adapter",
+	"title": "slackWire",
+	"responsibility": "Owns the slackWire integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/agents-providers/slack-adapter/slackWire.ts"],
+		"symbols": [
+			"slackTimestamp",
+			"channelId",
+			"teamId",
+			"appId",
+			"botId",
+			"userId",
+			"authReply",
+			"postReply",
+			"socketAddress",
+			"envelope",
+			"callback",
+			"parseSlackMessage"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "parseSlackMessage.input",
+				"type": "PlatformMessage",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "slackTimestamp",
+				"type": "unknown"
+			},
+			{
+				"name": "channelId",
+				"type": "unknown"
+			},
+			{
+				"name": "teamId",
+				"type": "unknown"
+			},
+			{
+				"name": "appId",
+				"type": "unknown"
+			},
+			{
+				"name": "botId",
+				"type": "unknown"
+			},
+			{
+				"name": "userId",
+				"type": "unknown"
+			},
+			{
+				"name": "authReply",
+				"type": "unknown"
+			},
+			{
+				"name": "postReply",
+				"type": "unknown"
+			},
+			{
+				"name": "socketAddress",
+				"type": "unknown"
+			},
+			{
+				"name": "envelope",
+				"type": "unknown"
+			},
+			{
+				"name": "callback",
+				"type": "unknown"
+			},
+			{
+				"name": "parseSlackMessage",
+				"type": "PlatformMessage | undefined"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "parseSlackMessage",
+				"inputs": [
+					{
+						"name": "parseSlackMessage.input",
+						"type": "PlatformMessage",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseSlackMessage",
+						"type": "PlatformMessage | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-platform-adapter-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/slack-adapter/slackWire.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/slack-adapter/slackWire.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

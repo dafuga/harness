@@ -52,7 +52,24 @@
 			"runtimeReply",
 			"RuntimeReply",
 			"runtimeResponse",
-			"runtimeResponseText"
+			"runtimeResponseText",
+			"SlackAdapter",
+			"SlackAdapterConfig",
+			"SlackCredentialScope",
+			"SlackInstallation",
+			"SlackVaultAccess",
+			"PlatformAdapterRegistryService",
+			"PlatformAdapter",
+			"PlatformAuditEvent",
+			"PlatformEvent",
+			"PlatformEventHandler",
+			"PlatformFailureCode",
+			"PlatformIdentity",
+			"PlatformMessage",
+			"PlatformReceipt",
+			"PlatformSendResult",
+			"PlatformAuditLogRepository",
+			"PlatformMessagingService"
 		]
 	},
 	"contract": {
@@ -65,6 +82,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-slack",
+			"via": "reexport",
+			"origin": "derived"
+		},
 		{
 			"unit": "adapter.handler-runtime",
 			"via": "reexport",
@@ -92,6 +114,11 @@
 		},
 		{
 			"unit": "adapter.wasm-runtime",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-platform-adapter-types",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -137,6 +164,21 @@
 		},
 		{
 			"unit": "function.unit-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-platform-audit-log",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-platform-adapter-registry",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-platform-messaging",
 			"via": "reexport",
 			"origin": "derived"
 		},

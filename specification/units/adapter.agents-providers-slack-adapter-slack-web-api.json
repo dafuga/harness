@@ -1,0 +1,158 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-slack-adapter-slack-web-api",
+	"uid": "u_gobadi5tr6",
+	"kind": "adapter",
+	"title": "SlackWebApi",
+	"responsibility": "Owns the SlackWebApi integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/agents-providers/slack-adapter/SlackWebApi.ts"],
+		"symbols": [
+			"SlackWebApi",
+			"SlackWebApi.constructor",
+			"SlackWebApi.identity",
+			"SlackWebApi.post",
+			"SlackWebApi.openSocket"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "SlackWebApi.constructor.config",
+				"type": "SlackAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "SlackWebApi.post.message",
+				"type": "PlatformMessage",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "SlackWebApi.identity",
+				"type": "Promise<PlatformIdentity>"
+			},
+			{
+				"name": "SlackWebApi.post",
+				"type": "Promise<PlatformReceipt>"
+			},
+			{
+				"name": "SlackWebApi.openSocket",
+				"type": "Promise<URL>"
+			}
+		],
+		"errors": [
+			{
+				"name": "SlackRequestError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SlackWebApi.identity",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SlackWebApi.identity",
+						"type": "Promise<PlatformIdentity>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SlackWebApi.post",
+				"inputs": [
+					{
+						"name": "SlackWebApi.post.message",
+						"type": "PlatformMessage",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SlackWebApi.post",
+						"type": "Promise<PlatformReceipt>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SlackWebApi.openSocket",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SlackWebApi.openSocket",
+						"type": "Promise<URL>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SlackWebApi.constructor",
+				"inputs": [
+					{
+						"name": "SlackWebApi.constructor.config",
+						"type": "SlackAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SlackWebApi.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-slack",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-adapter-slack-request-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-adapter-slack-wire",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-platform-adapter-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/slack-adapter/SlackWebApi.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/slack-adapter/SlackWebApi.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
