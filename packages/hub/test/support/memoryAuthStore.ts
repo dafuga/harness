@@ -35,26 +35,36 @@ function sessions(rows: Rows<SessionRecord>): SessionStore {
 		async find(idHash) {
 			return structuredClone(rows.get(idHash) ?? null);
 		},
-		async devices(actorId, now) {
+		async devices(actorId, now, nativeOnly = false, currentDeviceId = null) {
 			return [...rows.values()]
 				.filter(
 					(row) =>
-						row.actor.id === actorId && row.device && row.revokedAt === null && row.expiresAt > now
+						row.actor.id === actorId &&
+						(!nativeOnly || row.kind === 'native') &&
+						row.device &&
+						row.revokedAt === null &&
+						row.expiresAt > now
 				)
 				.map((row) => structuredClone(row.device!))
-				.sort((a, b) => b.lastSeenAt.localeCompare(a.lastSeenAt) || a.id.localeCompare(b.id))
+				.sort(
+					(a, b) =>
+						Number(b.id === currentDeviceId) - Number(a.id === currentDeviceId) ||
+						b.lastSeenAt.localeCompare(a.lastSeenAt) ||
+						a.id.localeCompare(b.id)
+				)
 				.slice(0, 100);
 		},
-		async removeDevice(actorId, deviceId, now) {
+		async removeDevice(actorId, deviceId, now, nativeOnly = false) {
 			const row = [...rows.values()].find(
 				(row) =>
 					row.actor.id === actorId &&
+					(!nativeOnly || row.kind === 'native') &&
 					row.device?.id === deviceId &&
 					row.revokedAt === null &&
 					row.expiresAt > now
 			);
 			if (!row) return false;
-			row.revokedAt = now;
+			await this.revoke(row.idHash, now);
 			return true;
 		},
 		async touchDevice(idHash, now) {

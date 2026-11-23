@@ -24,7 +24,7 @@ import {
 import type { AuthRoute } from '../../../../utils/verification-evidence/authHttp';
 import { AuthRequestValidator } from '../../../../validators/accounts-access/AuthRequestValidator';
 
-/** HTTP entry for `/api/auth/*` and `/api/github/*`. Takes a Request, returns a Response. */
+/** HTTP entry for sign-in, account devices and GitHub connection. */
 export class HubAuthController {
 	private readonly input = new AuthRequestValidator();
 	private readonly routes: Map<string, AuthRoute>;
@@ -39,7 +39,7 @@ export class HubAuthController {
 		]);
 	}
 
-	/** Null for paths outside the two namespaces. Every failure becomes a coded JSON error. */
+	/** Null for paths this controller does not own. Every failure becomes a coded JSON error. */
 	async handle(request: Request): Promise<Response | null> {
 		const path = authPath(request);
 		if (path === null) return null;
