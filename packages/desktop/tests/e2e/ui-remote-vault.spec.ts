@@ -20,9 +20,11 @@ test('the Mac refreshes sanitized Vault states and directs decisions to its pair
 		page.evaluate(
 			({ phone, entries }) => {
 				const host = (window as unknown as RemoteHost).__remoteHost;
-				Object.assign(host.status, { vault: { phone, requests: entries } });
+				const devices = phone ? [{ ...phone, projects: [], projectIds: [], agents: false }] : [];
+				const target = phone && { name: phone.name, online: phone.online };
+				Object.assign(host.status, { devices, vault: { phone: target, requests: entries } });
 			},
-			{ phone: paired ? { name: phone.name, online } : null, entries }
+			{ phone: paired ? { deviceId: phone.deviceId, name: phone.name, online } : null, entries }
 		);
 
 	await state([{ ...row, status: 'pending' }]);

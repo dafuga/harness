@@ -2,6 +2,7 @@ import { statSync } from 'node:fs';
 import { getuid } from 'node:process';
 import { dirname, join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
+import { vaultMacStatus } from '../../../packages/desktop/src/services/networking-security/remote-host-service/vaultPhone';
 import { VaultBrokerClientAdapter } from '../../../src/adapters/accounts-access/VaultBrokerClientAdapter';
 import { VaultBrokerServerAdapter } from '../../../src/adapters/accounts-access/VaultBrokerServerAdapter';
 import { VaultRunnerPreflightService } from '../../../src/services/accounts-access/VaultRunnerPreflightService';
@@ -156,6 +157,33 @@ test('the owner reads safe request states while other Unix peers are refused', a
 		status: 'pending'
 	};
 	expect(await snapshot()).toEqual([row]);
+
+	const config = {
+		phone: 'ab'.repeat(20),
+		deviceId: run.phone.deviceId,
+		generation: 3,
+		origin,
+		socketPath: run.socketPath
+	};
+	const paired = {
+		deviceId: config.phone,
+		generation: 3,
+		name: 'Fixture iPhone',
+		online: true,
+		platform: 'ios',
+		projectIds: [],
+		agents: false,
+		approvedAt: new Date().toISOString(),
+		lastSeenAt: null
+	};
+	await expect(vaultMacStatus(config, [paired])).resolves.toEqual({
+		phone: { name: paired.name, online: true },
+		requests: [row]
+	});
+	await expect(vaultMacStatus(config, [{ ...paired, generation: 4 }])).resolves.toEqual({
+		phone: null,
+		requests: null
+	});
 
 	const decision = sign(run, input, approval(input, created, run));
 	await run.client.call('/v1/device/decision', decision);
