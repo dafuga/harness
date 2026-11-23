@@ -126,3 +126,31 @@ test('rejects another scope cursor, malformed scope and replica reads from a spo
 		spoke.db.close();
 	}
 });
+
+test('pages a fixed snapshot and discards it if an item is withdrawn', async () => {
+	const fixture = hub();
+	try {
+		for (let index = 0; index < 110; index++) {
+			const itemId = 'fixture' + String(index).padStart(3, '0');
+			fixture.item(itemId, { title: 'Fixture item ' + index, status: 'open' });
+		}
+		const first = await (await fixture.pull()).json();
+		expect(first.rows).toHaveLength(100);
+		expect(first.cursor).toBeNull();
+		expect(first.continuation).toEqual(expect.any(String));
+		fixture.item('fixture100', { status: 'done' });
+		const final = await (await fixture.pull('&continuation=' + first.continuation)).json();
+		expect(final.rows).toHaveLength(10);
+		expect(final.rows[0]).toMatchObject({ id: 'fixture100', status: 'open' });
+		expect(final.snapshotId).toBe(first.snapshotId);
+		const changed = await (await fixture.pull('&cursor=' + final.cursor)).json();
+		expect(changed.operations).toMatchObject([{ id: 'fixture100', row: { status: 'done' } }]);
+		fixture.item('fixture105', { sensitive: true });
+		expect(await (await fixture.pull('&continuation=' + first.continuation)).json()).toEqual({
+			kind: 'reset',
+			reason: 'snapshot'
+		});
+	} finally {
+		fixture.db.close();
+	}
+});
