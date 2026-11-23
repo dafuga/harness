@@ -12,6 +12,7 @@ import { measureWorkload } from '../../support/measureWorkload';
 
 const itemId = 'abc123def4';
 const node = 'daniel-primary-mbp';
+const missingId = 'missing123';
 const minute = 60_000;
 const firstPoll = 1_800_000_000_000;
 
@@ -81,6 +82,16 @@ async function assertDryRun(runtime: TrackerNativeRuntimeService, trace: string)
 	expect(await response.json()).toMatchObject({
 		available: true,
 		sessions: [{ id: itemId, action: 'nudge' }]
+	});
+	expect(existsSync(trace)).toBe(false);
+	runtime.store.appendLocal({
+		itemId: missingId,
+		fields: { title: 'Task without a session', status: 'in_progress', kind: 'task', computer: node }
+	});
+	await expect(
+		runtime.watchdog!.inspect(missingId, new AbortController().signal)
+	).resolves.toMatchObject({
+		recovery: [{ item_id: missingId, host: node, kind: 'missing', session: null }]
 	});
 	expect(existsSync(trace)).toBe(false);
 }
