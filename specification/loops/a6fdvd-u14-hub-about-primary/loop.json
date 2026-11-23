@@ -2,7 +2,7 @@
 	"name": "a6fdvd-u14-hub-about-primary",
 	"goal": "U14 Hub about page: the hero has one filled primary (Log in); the pending 'Mac app coming soon' becomes a muted chip (not a filled link to #download); no enabled button without an action (specification/designs/full-pass/README.md section U14)",
 	"createdAt": "2026-11-23T17:11:04.837Z",
-	"updatedAt": "2026-11-23T17:15:19.061Z",
+	"updatedAt": "2026-11-23T17:41:53.801Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T17:41:49.899Z",
+			"evidence": "Replayed the committed Hub home-download test at d56f2c246d. Two hero assertions fail: the pending Mac action is a link and Log in lacks the primary styling."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T17:41:51.164Z",
+			"evidence": "The existing U14 fix c8dc99ab84 makes Log in the primary action and renders the pending Mac application as a chip."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T17:41:53.801Z",
+			"evidence": "Replayed the same committed Hub home-download test at c8dc99ab84. All six tests passed."
 		},
 		{
 			"id": "siblings",
