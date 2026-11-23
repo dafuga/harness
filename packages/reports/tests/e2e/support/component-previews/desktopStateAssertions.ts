@@ -78,8 +78,9 @@ const checks: Record<string, (component: Locator, variant: string) => Promise<vo
 			await expect(component.getByRole('combobox', { name: 'Environment' })).toHaveValue(variant);
 	},
 	'status-icon': async (component, variant) => {
-		const failed = ['failed', 'unverified', 'unknown', 'no-reason', 'long'].includes(variant);
-		await expect(component.getByRole('button')).toHaveText(failed ? '×' : '✓');
+		const absent = ['unverified', 'unknown', 'no-reason', 'long'].includes(variant);
+		const mark = variant === 'failed' ? '×' : '✓';
+		await expect(component.getByRole('button')).toHaveText(absent ? 'Not verified' : mark);
 		if (['open', 'long'].includes(variant))
 			await expect(component.getByRole('status')).toBeVisible();
 	},
