@@ -18,6 +18,7 @@ import type {
 import type { RemoteHostDevice } from '../../../adapters/networking-security/RemoteHostStoreAdapter';
 import { phoneTrackerPull, phoneTrackerPush } from './pullPhoneTracker';
 import { DeviceSessionService } from './device-session-service/DeviceSessionService';
+import { vaultPhone } from './vaultPhone';
 
 /**
  * The sessions of the approved phones and the one live connection of each. A connection is
@@ -103,6 +104,7 @@ export class RemoteDeviceSessionsService {
 		const session = new DeviceSessionService({
 			...this.options.shared,
 			...this.trackerPermissions(id, record),
+			vaultCall: vaultPhone(this.options.shared.vaultPhone, record),
 			host: { id, name },
 			device: { id: deviceId, name: record.name },
 			grant: () => this.grant(deviceId),

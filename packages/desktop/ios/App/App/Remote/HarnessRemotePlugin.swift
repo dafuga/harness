@@ -14,6 +14,7 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "scan", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "disconnect", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "request", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "openVault", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "trackerTool", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "refreshTracker", returnType: CAPPluginReturnPromise)
     ]
@@ -73,6 +74,16 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
     @objc func refreshTracker(_ call: CAPPluginCall) {
         session.refreshTracker()
         call.resolve()
+    }
+
+    @objc func openVault(_ call: CAPPluginCall) {
+        DispatchQueue.main.async {
+            guard let presenter = self.bridge?.viewController, presenter.presentedViewController == nil,
+                UIApplication.shared.applicationState == .active else { return call.reject("Vault is unavailable.") }
+            let inbox = VaultInboxController(session: self.session)
+            presenter.present(UINavigationController(rootViewController: inbox), animated: true)
+            call.resolve()
+        }
     }
 
     @objc func status(_ call: CAPPluginCall) {

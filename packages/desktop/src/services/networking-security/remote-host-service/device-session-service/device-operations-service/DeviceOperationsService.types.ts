@@ -3,6 +3,7 @@ import type { ClientProjectsService } from '../ClientProjectsService';
 import type { ProviderDiscoveryService } from '../../../../agents-providers/provider-discovery-service/ProviderDiscoveryService';
 import type { RepositoryArbiterService } from '../../../../projects-sessions/RepositoryArbiterService';
 import type { RemoteGrant } from '../../../../../../../remote/src/index';
+import type { VaultPhoneCall } from '../../vaultPhone.types';
 
 export interface DeviceOperationsOptions {
 	projects: ClientProjectsService;
@@ -12,6 +13,7 @@ export interface DeviceOperationsOptions {
 	grant: () => RemoteGrant;
 	trackerPull?: (input: Fields) => Promise<unknown>;
 	trackerPush?: (input: Fields) => Promise<unknown>;
+	vaultCall?: VaultPhoneCall;
 }
 
 export type Fields = Record<string, unknown>;

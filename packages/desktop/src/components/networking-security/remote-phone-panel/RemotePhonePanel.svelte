@@ -3,6 +3,7 @@
 <!-- @harness-uid u_q7k4xia3g7 -->
 <script lang="ts">
 	import type { RemotePhone } from '../../../lib/stores/networking-security/remotePhone.svelte';
+	import type { RemoteNativeStatus } from '../../../models/development-tooling/Environment.types';
 	import { grantSummary, remoteLabels } from './remoteLabels';
 	import { identityLabel } from '../../../helpers/networking-security/identityLabel';
 	let { store, compact = false }: { store: RemotePhone; compact?: boolean } = $props();
@@ -13,6 +14,19 @@
 	 */
 	let deviceName = $state('iPhone');
 	const status = $derived(store.status);
+	const vault = $derived(
+		status?.state === 'online' && (status as RemoteNativeStatus).methods?.includes('vaultInfo')
+	);
+	let vaultError = $state('');
+
+	async function openVault() {
+		vaultError = '';
+		try {
+			await store.port?.openVault?.();
+		} catch {
+			vaultError = 'Vault is unavailable.';
+		}
+	}
 	const labels = $derived(status ? remoteLabels(status) : null);
 	const actions = { 'pending-approval': 'Cancel', pairing: 'Cancel', revoked: 'Connect again' };
 	const action = $derived(
@@ -55,6 +69,10 @@
 				><hx-small class="muted remote-key">Key {identityLabel(status.device.id)}</hx-small
 				>{/if}<hx-button type="button" disabled={store.busy} onclick={() => void store.disconnect()}
 				>{action}</hx-button
-			>{/if}{#if store.error}<hx-span class="error" role="alert">{store.error}</hx-span>{/if}
+			>{/if}{#if vault && store.port?.openVault}<hx-button type="button" onclick={openVault}
+				>Vault requests</hx-button
+			>{/if}
+		{#if vaultError}<hx-span class="error" role="alert">{vaultError}</hx-span>{/if}
+		{#if store.error}<hx-span class="error" role="alert">{store.error}</hx-span>{/if}
 		{#if store.fixture && !compact}<hx-small class="remote-note">{fixture}</hx-small>{/if}
 	</hx-section>{/if}

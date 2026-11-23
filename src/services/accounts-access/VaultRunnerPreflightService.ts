@@ -33,7 +33,7 @@ export class VaultRunnerPreflightService {
 
 	verify(request: VaultSessionRequest, uid: number | null, proof?: VaultRunnerPreflight): number {
 		const key = this.keys.get(request.host);
-		if (!proof || !key || uid === null || uid <= 0) this.refuse();
+		if (!proof || !key || uid === null || uid <= 0 || !synthetic(request)) this.refuse();
 		const { signature, ...scope } = proof;
 		const now = this.now();
 		if (
@@ -49,6 +49,16 @@ export class VaultRunnerPreflightService {
 	private refuse(): never {
 		throw new VaultBrokerError(403, 'A valid executor preflight is required.');
 	}
+}
+
+function synthetic(request: VaultSessionRequest): boolean {
+	return (
+		request.environment === 'synthetic' &&
+		request.origins.every((origin) => {
+			const url = URL.parse(origin);
+			return url?.protocol === 'https:' && url.hostname.endsWith('.test') && origin === url.origin;
+		})
+	);
 }
 
 function validAt({ issuedAt, expiresAt }: VaultRunnerPreflightScope, now: number): boolean {

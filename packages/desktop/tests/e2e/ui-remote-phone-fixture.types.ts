@@ -6,6 +6,7 @@ export type Call = { method: string; input: { projectId?: string } };
 
 export interface PhoneOptions {
 	state: string;
+	vault?: boolean;
 	origin: string;
 	host: { id: string; name: string };
 	device: { id: string; name: string };

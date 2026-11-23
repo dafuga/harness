@@ -22,6 +22,7 @@ import { LocalClientService } from '../LocalClientService';
 import { LocalTransportService } from '../../../../services/LocalTransportService';
 import { ProviderDiscoveryService } from '../../../../services/agents-providers/provider-discovery-service/ProviderDiscoveryService';
 import { RemoteHostService } from '../../../../services/networking-security/remote-host-service/RemoteHostService';
+import { loadVaultPhone } from '../../../../services/networking-security/remote-host-service/vaultPhone';
 import { RemoteLifecycleService } from '../RemoteLifecycleService';
 import { RepositoryArbiterService } from '../../../../services/projects-sessions/RepositoryArbiterService';
 import { CodexAppServerAdapter } from '../../../../adapters/agents-providers/codex-app-server-adapter/CodexAppServerAdapter';
@@ -120,6 +121,7 @@ function desktopBackend() {
 		open: (url, headers) => sockets.open(url, headers),
 		shared: {
 			...stores,
+			vaultPhone: loadVaultPhone(process.env.HARNESS_VAULT_PHONE_CONFIG),
 			trackerPhone: process.env.HARNESS_TRACKER_PHONE_DEVICE?.trim(),
 			trackerWrite:
 				phoneWriteDevice && phoneWriteToken

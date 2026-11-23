@@ -1,7 +1,7 @@
 import CryptoKit
 import Foundation
 
-struct VaultDeviceChallenge {
+struct VaultDeviceChallenge: Decodable {
     let origin: String
     let deviceId: String
     let nonce: String

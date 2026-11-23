@@ -38,7 +38,8 @@ function installPhoneState(options: PhoneOptions) {
 		device: phone.deviceName ? { id: options.device.id, name: phone.deviceName } : null,
 		grant: paired() ? { projects: options.granted, agents: true } : null,
 		reason: phone.state === 'offline' ? 'The computer is asleep or has no network.' : null,
-		lastOnlineAt: paired() ? options.seenAt : null
+		lastOnlineAt: paired() ? options.seenAt : null,
+		methods: options.vault && phone.state === 'online' ? ['vaultInfo'] : undefined
 	});
 	/** What the native plugin would announce: approval on the desktop, loss of the host, revocation. */
 	const set = (state: string) => {
@@ -86,6 +87,9 @@ function installPhonePlugin() {
 	const { phone, scans, listeners, status, set, request } = host.__remotePhone;
 	const methods: Record<string, (input: never) => Promise<unknown>> = {
 		status: async () => status(),
+		openVault: async () => {
+			host.__calls.push({ op: 'native.openVault' });
+		},
 		/** SYNTHETIC scanner: no camera and no code; it ends the way the test says, or well. */
 		scan: async (input: { deviceName: string }) => {
 			const outcome = scans.shift() ?? 'ok';
@@ -161,10 +165,11 @@ function installPhoneAccount() {
 }
 
 /** A phone in the given state; its computer granted it the two local projects, with agents. */
-export async function remotePhoneFixture(page: Page, state = 'unpaired') {
+export async function remotePhoneFixture(page: Page, state = 'unpaired', vault = false) {
 	const outbox = await projectFixture(page);
 	const options: PhoneOptions = {
 		state,
+		vault,
 		origin: relayOrigin,
 		host: { id: pairing.hostId, name: hostName },
 		device: { id: phone.deviceId, name: deviceName },

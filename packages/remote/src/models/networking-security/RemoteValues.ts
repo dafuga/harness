@@ -78,11 +78,14 @@ export const controlMethods = [
 	'remote.denyPairing',
 	'remote.revokeDevice'
 ] as const;
+export const vaultMethods = ['vaultInfo', 'vaultChallenge', 'vaultQueue', 'vaultDecision'] as const;
+
 export const remoteMethods = [
 	attachMethod,
 	...readMethods,
 	'trackerReplicaPull',
 	'trackerReplicaPush',
+	...vaultMethods,
 	...commentMethods,
 	...agentMethods,
 	...localMethods,
@@ -102,11 +105,13 @@ export const projectlessMethods: readonly RemoteMethod[] = [
 	'deploymentActivities',
 	'trackerReplicaPull',
 	'trackerReplicaPush',
+	...vaultMethods,
 	'providers'
 ];
 /** Answers remembered by request id: re-sending one of these never runs it twice. */
 export const mutationMethods: readonly RemoteMethod[] = [
 	'trackerReplicaPush',
+	...vaultMethods,
 	...commentMethods,
 	...agentMethods,
 	'gameCreate',

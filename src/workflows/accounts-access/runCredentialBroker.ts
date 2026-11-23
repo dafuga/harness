@@ -9,7 +9,10 @@ import type { CredentialBrokerOptions } from './serveCredentialBroker.types';
 
 /** The peer add-on needs Node's accepted socket descriptor, which Bun does not expose. */
 export async function runCredentialBroker(options: CredentialBrokerOptions): Promise<void> {
-	if (!options.peerAddon || !process.versions.bun) return waitForCredentialBroker(options);
+	if (!options.peerAddon || !process.versions.bun) {
+		await waitForCredentialBroker(options);
+		return;
+	}
 	const entries = ['./vault-broker-node.js', '../../../dist/vault-broker-node.js'];
 	const script = entries
 		.map((path) => fileURLToPath(new URL(path, import.meta.url)))

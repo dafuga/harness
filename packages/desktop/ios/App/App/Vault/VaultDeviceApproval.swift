@@ -8,7 +8,7 @@ import Security
 struct VaultDeviceApproval {
     enum Failure: Error { case keychain }
 
-    struct Scope: Encodable {
+    struct Scope: Codable {
         let origin: String
         let deviceId: String
     }

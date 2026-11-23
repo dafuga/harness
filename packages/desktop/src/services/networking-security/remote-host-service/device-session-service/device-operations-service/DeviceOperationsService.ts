@@ -7,7 +7,8 @@ import {
 	attachMethod,
 	commentMethods,
 	readMethods,
-	revisionMethods
+	revisionMethods,
+	vaultMethods
 } from '../../../../../../../remote/src/index';
 import type { RemoteMethod, WireRequest } from '../../../../../../../remote/src/index';
 import type { ProjectSnapshot } from '../../../../../models/development-tooling/Desktop.types';
@@ -18,6 +19,7 @@ import { deviceCapabilities } from './deviceCapabilities';
 import { gitRead } from '../../../../../utils/projects-sessions/gitRead';
 import { IpcRequestValidator } from '../../../../../validators/development-tooling/IpcRequestValidator';
 import type { ClientProject } from '../ClientProjectsService';
+import { isVaultPhoneMethod } from '../../vaultPhone';
 
 function ancestor(root: string, commit: string, tip: string): Promise<boolean> {
 	return gitRead(root, ['merge-base', '--is-ancestor', commit, tip]).then(
@@ -44,7 +46,14 @@ export class DeviceOperationsService {
 		const tracker: RemoteMethod[] = [];
 		if (this.options.trackerPull) tracker.push('trackerReplicaPull');
 		if (this.options.trackerPush) tracker.push('trackerReplicaPush');
-		return [attachMethod, ...reads, ...comments, ...agents, ...tracker];
+		return [
+			attachMethod,
+			...reads,
+			...comments,
+			...agents,
+			...tracker,
+			...(this.options.vaultCall ? vaultMethods : [])
+		];
 	}
 	async handle(request: WireRequest): Promise<unknown> {
 		if (!this.methods().includes(request.method)) throw new RemoteFailure('method-denied');
@@ -56,6 +65,10 @@ export class DeviceOperationsService {
 			return await this.trackerCall(this.options.trackerPull, input);
 		if (method === 'trackerReplicaPush')
 			return await this.trackerCall(this.options.trackerPush, input);
+		if (isVaultPhoneMethod(method)) {
+			const { vaultCall } = this.options;
+			return await this.trackerCall(vaultCall && ((body) => vaultCall(method, body)), input);
+		}
 		if (method === 'providers') return agents ? this.options.providers.list() : [];
 		const project = await this.project(input),
 			payload = this.payload(method, input),

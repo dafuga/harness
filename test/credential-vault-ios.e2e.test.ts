@@ -3,15 +3,14 @@ import { once } from 'node:events';
 import { join } from 'node:path';
 import { createInterface } from 'node:readline';
 import { expect, test } from 'vitest';
-import { VaultDeviceRepository } from '../src/repositories/accounts-access/VaultDeviceRepository';
-import { VaultBrokerService } from '../src/services/accounts-access/VaultBrokerService';
 import type { VaultQueueEntry } from '../src/services/accounts-access/VaultBrokerService.types';
 import type {
 	VaultApproval,
 	VaultProof,
 	VaultSessionRequest
 } from '../src/validators/accounts-access/VaultWireValidator.types';
-import { origin, sessionRequest, vaultBroker } from './support/credential-vault/broker';
+import { origin, sessionRequest, sessionUid, vaultBroker } from './support/credential-vault/broker';
+import { remoteInbox } from './support/credential-vault/remoteInbox';
 import type { NativeVaultTestRun } from './credential-vault-ios.e2e.test.types';
 
 const deviceId = 'synthetic-native-iphone';
@@ -19,7 +18,7 @@ const ios = 'packages/desktop/ios/App/App';
 const refused = { error: 'Native Vault refused the request.' };
 
 test.skipIf(process.platform !== 'darwin')(
-	'Harness iOS signs the broker queue and decisions and seals to the checked runner',
+	'Harness iOS uses the paired inbox and seals to the preflighted runner',
 	async () => {
 		const fixture = vaultBroker();
 		fixture.clock.now = Date.now();
@@ -28,17 +27,17 @@ test.skipIf(process.platform !== 'darwin')(
 		const phone = nativePhone(binary);
 		try {
 			const { signingKey } = await phone.read<{ signingKey: string }>();
-			const now = () => fixture.clock.now;
-			const devices = new VaultDeviceRepository(
-				[{ id: deviceId, signingKey, role: 'approver' }],
-				origin
-			);
-			const broker = new VaultBrokerService(devices, fixture.audit, now);
-			const run = { fixture, phone, devices, broker };
-			await verifyDecision(run, 'browser', 'password', { password: 'synthetic-ios-password' });
-			await verifyDecision(run, 'api-token', 'token', { token: 'synthetic-ios-api-token' });
-			await verifyDecision(run, 'oauth-device', 'grant', null);
-			await verifyDecision(run, 'browser', 'deny', null);
+			const inbox = await remoteInbox(fixture, deviceId, signingKey);
+			try {
+				const run = { fixture, phone, inbox };
+				expect(await inbox.call('vaultInfo', {})).toEqual({ origin, deviceId });
+				await verifyDecision(run, 'browser', 'password', { password: 'synthetic-ios-password' });
+				await verifyDecision(run, 'api-token', 'token', { token: 'synthetic-ios-api-token' });
+				await verifyDecision(run, 'oauth-device', 'grant', null);
+				await verifyDecision(run, 'browser', 'deny', null);
+			} finally {
+				await inbox.close();
+			}
 		} finally {
 			await phone.close();
 		}
@@ -105,19 +104,28 @@ async function verifyDecision(
 	credential: Record<string, string> | null
 ): Promise<void> {
 	const runner = run.fixture.seal.runnerKey();
-	const uid = process.getuid!();
-	const ticket = run.broker.create(sessionRequest(runner, { method }), uid);
-	const queue = await run.phone.write<VaultProof>(challenge(run));
-	const request = run.broker.queue(queue).find((entry) => entry.requestId === ticket.requestId);
+	const ticket = await run.inbox.create(sessionRequest(runner, { method }));
+	const queue = await run.phone.write<VaultProof>(await challenge(run));
+	await expect(
+		run.inbox.call('vaultQueue', { ...queue, deviceId: 'another-phone' })
+	).rejects.toMatchObject({ code: 'method-denied' });
+	const entries = (await run.inbox.call('vaultQueue', queue)) as VaultQueueEntry[];
+	const request = entries.find((entry) => entry.requestId === ticket.requestId);
 	if (!request) throw new Error('The native phone could not read the pending request.');
-	expect(() => run.broker.queue(queue)).toThrow('invalid or expired');
+	await expect(run.inbox.call('vaultQueue', queue)).rejects.toMatchObject({
+		code: 'method-denied'
+	});
 	if (decision === 'password') await verifyNativeRefusals(run, request);
-	const proof = await run.phone.write<VaultProof>({ ...challenge(run), request, decision });
-	expect(run.broker.decide(proof)).toBe(decision === 'deny' ? 'denied' : 'approved');
-	expect(() => run.broker.decide(proof)).toThrow('pending request');
+	const proof = await run.phone.write<VaultProof>({ ...(await challenge(run)), request, decision });
+	expect(await run.inbox.call('vaultDecision', proof)).toEqual({
+		status: decision === 'deny' ? 'denied' : 'approved'
+	});
+	await expect(run.inbox.call('vaultDecision', proof)).rejects.toMatchObject({
+		code: 'method-denied'
+	});
 	if (decision === 'deny') return;
 	const delivered = { requestId: ticket.requestId, receipt: ticket.receipt };
-	const { approval } = run.broker.claim(delivered, uid);
+	const { approval } = run.inbox.broker.claim(delivered, sessionUid);
 	const payload = JSON.parse(
 		Buffer.from(approval.payload, 'base64url').toString()
 	) as VaultApproval;
@@ -133,8 +141,13 @@ async function verifyDecision(
 	}
 }
 
-function challenge(run: NativeVaultTestRun) {
-	return { origin, deviceId, ...run.devices.issue(deviceId) };
+async function challenge(run: NativeVaultTestRun) {
+	return (await run.inbox.call('vaultChallenge', {})) as {
+		origin: string;
+		deviceId: string;
+		nonce: string;
+		expiresAt: number;
+	};
 }
 
 async function verifyNativeRefusals(
@@ -144,9 +157,17 @@ async function verifyNativeRefusals(
 	const wrongKey = { ...request, runnerPublicKey: run.fixture.seal.runnerKey().publicKey };
 	const expired = { ...request, expiresAt: Date.now() - 1 };
 	for (const bad of [wrongKey, expired]) {
-		const result = await run.phone.write({ ...challenge(run), request: bad, decision: 'password' });
+		const result = await run.phone.write({
+			...(await challenge(run)),
+			request: bad,
+			decision: 'password'
+		});
 		expect(result).toEqual(refused);
 	}
-	const wrongMethod = await run.phone.write({ ...challenge(run), request, decision: 'token' });
+	const wrongMethod = await run.phone.write({
+		...(await challenge(run)),
+		request,
+		decision: 'token'
+	});
 	expect(wrongMethod).toEqual(refused);
 }

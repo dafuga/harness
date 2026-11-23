@@ -3,6 +3,7 @@ export * from './models/networking-security/Remote.types';
 export * from './models/networking-security/RemoteSecure.types';
 export * from './models/networking-security/RemoteRelay.types';
 export * from './models/networking-security/RemoteControl.types';
+export { vaultMethods } from './models/networking-security/RemoteValues';
 export * from './models/networking-security/RemoteLocal.types';
 export {
 	type CryptoSource,

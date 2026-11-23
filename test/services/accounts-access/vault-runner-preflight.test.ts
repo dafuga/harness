@@ -35,6 +35,10 @@ test('requires the pinned executor, kernel UID, unchanged scope, and live broker
 	}
 	expect(() => service.verify(request, sessionUid)).toThrow('valid executor preflight');
 	expect(() => service.verify(request, sessionUid, other.attest(request, scope))).toThrow();
+	const live = { ...request, origins: ['https://console.example.com'] };
+	expect(() => service.verify(live, sessionUid, executor.attest(live, scope))).toThrow(
+		'valid executor preflight'
+	);
 	const restarted = new VaultRunnerPreflightService([executor.pin], now);
 	expect(() => restarted.verify(request, sessionUid, proof)).toThrow('valid executor preflight');
 	clock.now = scope.expiresAt;

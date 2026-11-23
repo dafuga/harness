@@ -1,6 +1,7 @@
 // @harness-uid u_jfnzmu243b
 import type { ClientProjectsOptions } from './ClientProjectsService';
 import type { RemoteGrant } from '../../../../../../remote/src/index';
+import type { VaultPhoneCall } from '../vaultPhone.types';
 
 export interface DeviceSessionOptions extends Omit<ClientProjectsOptions, 'emit'> {
 	host: { id: string; name: string };
@@ -8,6 +9,7 @@ export interface DeviceSessionOptions extends Omit<ClientProjectsOptions, 'emit'
 	grant: () => RemoteGrant;
 	trackerPull?: (input: Record<string, unknown>) => Promise<unknown>;
 	trackerPush?: (input: Record<string, unknown>, signal: AbortSignal) => Promise<unknown>;
+	vaultCall?: VaultPhoneCall;
 	epoch?: string;
 	/** Whether the screen is locked, once the computer knows; undefined until then. */
 	locked?: () => boolean | undefined;
