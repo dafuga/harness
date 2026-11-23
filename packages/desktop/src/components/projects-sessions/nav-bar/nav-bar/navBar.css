@@ -206,4 +206,20 @@ header.topbar::before {
 		padding: var(--hx-space-6) var(--hx-space-8);
 		font-size: var(--hx-type-size-compact);
 	}
+	/* Phone: the categories are one row that scrolls sideways, so the header stays short. */
+	.topbar nav,
+	.topbar.has-game nav {
+		display: flex;
+		gap: var(--hx-space-2);
+		overflow-x: auto;
+		overscroll-behavior-inline: contain;
+		scrollbar-width: none;
+	}
+	.topbar nav::-webkit-scrollbar {
+		display: none;
+	}
+	.topbar nav :global(a) {
+		flex: none;
+		padding-inline: var(--hx-space-6);
+	}
 }

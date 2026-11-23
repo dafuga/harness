@@ -56,14 +56,16 @@ async function fits(page: Page, width: number, without: number[]): Promise<void>
 	const navigation = bar(page).getByRole('navigation', { name: 'Catalog categories' });
 	const clipped = await navigation.evaluate((element) => {
 		const frame = element.getBoundingClientRect();
+		// A phone row that scrolls sideways keeps the links it cannot show reachable by scrolling.
+		const scrolls = element.scrollWidth > element.clientWidth;
 		return [...element.querySelectorAll('a')]
 			.filter((link) => {
 				const rect = link.getBoundingClientRect();
 				const label = link.querySelector('span')!;
 				const text = label.getBoundingClientRect();
 				return [
-					rect.left >= Math.max(0, frame.left) - 1,
-					rect.right <= Math.min(innerWidth, frame.right) + 1,
+					scrolls || rect.left >= Math.max(0, frame.left) - 1,
+					scrolls || rect.right <= Math.min(innerWidth, frame.right) + 1,
 					rect.top >= frame.top - 1,
 					rect.bottom <= frame.bottom + 1,
 					text.width > 0,
