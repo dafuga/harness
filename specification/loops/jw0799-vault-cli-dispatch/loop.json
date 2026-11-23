@@ -1,0 +1,65 @@
+{
+	"name": "jw0799-vault-cli-dispatch",
+	"goal": "Every implemented command family is reachable from executable help and dispatch, including Credential Vault.",
+	"createdAt": "2026-11-23T18:53:13.126Z",
+	"updatedAt": "2026-11-23T19:00:10.458Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-23T18:53:28.996Z",
+			"evidence": "The built executable returns unknown command for credential even though the family has an implemented loader."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-23T18:53:29.553Z",
+			"evidence": "The lazy CLI tests compared two lists that both omitted Credential Vault. Compare executable help against every implemented loader and extend the temporary-workspace CLI test with the actual credential subcommand."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-23T18:54:39.069Z",
+			"evidence": "Harness recorded the clean snapshot assertion failure at 5033390aa4. The command list omitted credential."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-23T18:54:40.051Z",
+			"evidence": "Register CredentialCommand in root help metadata and the synchronous compatibility program, activating the existing executable loader."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-23T19:00:10.458Z",
+			"evidence": "The same clean-runner command passed at b595cf1b8e with the exact regression tests and runtime preserved."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

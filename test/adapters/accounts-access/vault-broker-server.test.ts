@@ -3,6 +3,7 @@ import { dirname, join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
 import { VaultBrokerClientAdapter } from '../../../src/adapters/accounts-access/VaultBrokerClientAdapter';
 import { VaultBrokerServerAdapter } from '../../../src/adapters/accounts-access/VaultBrokerServerAdapter';
+import { VaultRunnerPreflightService } from '../../../src/services/accounts-access/VaultRunnerPreflightService';
 import {
 	approval,
 	origin,
@@ -11,6 +12,7 @@ import {
 	sign,
 	vaultBroker
 } from '../../support/credential-vault/broker';
+import { syntheticExecutor } from '../../support/credential-vault/executor';
 import { canary } from '../../support/credential-vault/phone';
 
 const open: VaultBrokerServerAdapter[] = [];
@@ -20,25 +22,45 @@ afterEach(async () => {
 
 async function served(peer: number | null = sessionUid) {
 	const fixture = vaultBroker();
+	const executor = syntheticExecutor();
+	const preflight = new VaultRunnerPreflightService([executor.pin], () => fixture.clock.now);
 	const socketPath = join(fixture.state, 'sock', 'broker.sock');
-	const server = new VaultBrokerServerAdapter({ ...fixture, socketPath, peerUid: () => peer });
+	const server = new VaultBrokerServerAdapter({
+		...fixture,
+		preflight,
+		socketPath,
+		peerUid: () => peer
+	});
 	open.push(server);
 	await server.listen();
-	return { ...fixture, socketPath, client: new VaultBrokerClientAdapter({ socketPath }) };
+	const client = new VaultBrokerClientAdapter({ socketPath });
+	const { brokerId } = await client.call<{ brokerId: string }>('/v1/session/preflight', {});
+	const authorization = (input: ReturnType<typeof sessionRequest>) =>
+		executor.attest(input, {
+			brokerId,
+			uid: sessionUid,
+			issuedAt: fixture.clock.now,
+			expiresAt: fixture.clock.now + 45_000
+		});
+	return { ...fixture, socketPath, client, authorization };
 }
 
 test('a synthetic request goes from session to phone to lease over the socket', async () => {
 	const run = await served();
-	expect(statSync(dirname(run.socketPath)).mode & 0o777).toBe(0o700);
-	expect(statSync(run.socketPath).mode & 0o777).toBe(0o600);
+	expectPrivateSocket(run.socketPath);
 	const runner = run.seal.runnerKey();
 	const input = sessionRequest(runner);
+	const submitted = { ...input, preflight: run.authorization(input) };
 	const created = await run.client.call<{
 		requestId: string;
 		receipt: string;
 		runnerFingerprint: string;
 		expiresAt: number;
-	}>('/v1/session/requests', input);
+	}>('/v1/session/requests', submitted);
+	expect(created.expiresAt).toBe(submitted.preflight.expiresAt);
+	await expect(run.client.call('/v1/session/requests', submitted)).rejects.toMatchObject({
+		status: 409
+	});
 	const ticket = { requestId: created.requestId, receipt: created.receipt };
 	const { nonce } = await run.client.call<{ nonce: string }>('/v1/device/challenge', {
 		deviceId: run.phone.deviceId
@@ -79,6 +101,11 @@ test('a synthetic request goes from session to phone to lease over the socket', 
 	expect(everything).not.toContain(canary.otp);
 });
 
+function expectPrivateSocket(path: string): void {
+	expect(statSync(dirname(path)).mode & 0o777).toBe(0o700);
+	expect(statSync(path).mode & 0o777).toBe(0o600);
+}
+
 test('refusals carry a status and never echo the rejected value', async () => {
 	const run = await served();
 	await expect(run.client.call('/v1/nowhere', {})).rejects.toMatchObject({ status: 404 });
@@ -92,20 +119,20 @@ test('refusals carry a status and never echo the rejected value', async () => {
 	});
 });
 
-test('without a kernel-verified peer the broker files requests but refuses a CDP lease', async () => {
+test('an unattested request or an unknown peer never reaches the phone', async () => {
 	const run = await served(null);
 	const input = sessionRequest(run.seal.runnerKey());
-	const created = await run.client.call<{
-		requestId: string;
-		receipt: string;
-		runnerFingerprint: string;
-		expiresAt: number;
-	}>('/v1/session/requests', input);
-	const ticket = { requestId: created.requestId, receipt: created.receipt };
-	await run.client.call('/v1/device/decision', sign(run, input, approval(input, created, run)));
-	await run.client.call('/v1/session/claim', ticket);
-	const teardown = { logout: null, revoke: null, securityLog: null };
+	const known = await served();
+	await expect(known.client.call('/v1/session/requests', input)).rejects.toMatchObject({
+		status: 403
+	});
 	await expect(
-		run.client.call('/v1/session/lease', { ...ticket, identity: 'owner@example.test', teardown })
+		run.client.call('/v1/session/requests', { ...input, preflight: run.authorization(input) })
 	).rejects.toMatchObject({ status: 403 });
+	for (const server of [run, known]) {
+		const { nonce } = server.devices.issue(server.phone.deviceId);
+		const proof = server.phone.prove(origin, '/v1/device/requests', nonce);
+		expect(await server.client.call('/v1/device/requests', proof)).toEqual([]);
+		expect(server.audit.read()).toEqual([]);
+	}
 });

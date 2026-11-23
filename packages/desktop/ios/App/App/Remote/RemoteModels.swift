@@ -52,13 +52,14 @@ enum RemoteLimits {
 /// What a phone may ask of a computer at most. Folders and hosted sign-in stay on the computer;
 /// what a session really offers is what the computer attached, within these.
 enum RemoteMethods {
+    static let vault: Set<String> = ["vaultInfo", "vaultChallenge", "vaultQueue", "vaultDecision"]
     static let reads: Set<String> = [
         "listProjects", "capabilities", "snapshot", "entity", "history", "source", "image", "evidence",
         "artifact", "messages", "pendingComments", "providers", "trackerReplicaPull"
     ]
-    static let changes: Set<String> = [
+    static let changes = Set([
         "addComment", "createPlan", "openThread", "approve", "startRun", "cancelRun", "trackerReplicaPush"
-    ]
+    ]).union(vault)
     static func allowed(_ method: String) -> Bool {
         reads.contains(method) || changes.contains(method)
     }

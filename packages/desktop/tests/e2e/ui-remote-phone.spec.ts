@@ -23,6 +23,30 @@ const kept = (page: Page) =>
 
 test.use({ viewport: { width: 390, height: 844 } });
 
+test('only the attached Vault grant can open the native request inbox', async ({
+	page
+}, testInfo) => {
+	await remotePhoneFixture(page, 'offline', true);
+	await page.goto('/');
+	const button = page.getByRole('button', { name: 'Vault requests' });
+	await expect(button).toHaveCount(0);
+	await announce(page, 'online');
+	await computer(page)
+		.getByRole('button', { name: `Connected to ${hostName}` })
+		.click();
+	const dialog = page.getByRole('dialog', { name: 'Connection' });
+	await remoteEvidence(page, testInfo, 'phone-vault-entry');
+	await expect(dialog.getByRole('button', { name: 'Vault requests' })).toBeVisible();
+	await dialog.getByRole('button', { name: 'Vault requests' }).click();
+	expect(await made(page, 'native.openVault')).toEqual([{ op: 'native.openVault' }]);
+	expect(await made(page, 'native.request')).not.toContainEqual({
+		op: 'native.request',
+		method: 'vaultInfo'
+	});
+	await announce(page, 'revoked');
+	await expect(button).toHaveCount(0);
+});
+
 test('the Capacitor environment pairs by scanning: no link, code or address is ever typed', async ({
 	page
 }, testInfo) => {

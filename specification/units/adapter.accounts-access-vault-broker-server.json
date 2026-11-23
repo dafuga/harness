@@ -131,6 +131,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.accounts-access-vault-runner-preflight",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "validator.accounts-access-vault-wire",
 			"via": "import",
 			"origin": "derived"

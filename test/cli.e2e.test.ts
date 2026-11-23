@@ -84,6 +84,9 @@ test('CLI scaffolds and checks an app project with routes', async () => {
 
 test('CLI reports edge errors cleanly', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-cli-errors-'));
+	const credential = await runHarness(['credential', '--help'], root);
+	expect(credential.stdout).toContain('Print the broker instance ID.');
+	expect(credential.stdout).toContain('request [options] <recipe> <action>');
 	await runHarness(['new', 'lib', 'demo-lib'], root);
 	const project = join(root, 'demo-lib');
 

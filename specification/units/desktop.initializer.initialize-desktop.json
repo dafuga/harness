@@ -20,6 +20,7 @@
 			"packages/desktop/src/initializers/initializeDesktop.ts",
 			"packages/desktop/src/lib/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 			"packages/desktop/src/lib/desktop-initialization/initializeDesktop.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/desktopPhoneSettings.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.types.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/macSafeStorage.ts"
@@ -28,6 +29,7 @@
 			"initializeDesktop",
 			"initializeDesktop",
 			"initializeDesktop",
+			"desktopPhoneSettings",
 			"initializeDesktop",
 			"desktopBackend",
 			"Backend",
@@ -68,6 +70,18 @@
 		],
 		"errorStatus": "declared",
 		"operations": [
+			{
+				"name": "desktopPhoneSettings",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "desktopPhoneSettings",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "initializeDesktop",
 				"inputs": [],
@@ -186,6 +200,11 @@
 		},
 		{
 			"unit": "desktop.function.trusted-sender",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.vault-phone",
 			"via": "import",
 			"origin": "derived"
 		},

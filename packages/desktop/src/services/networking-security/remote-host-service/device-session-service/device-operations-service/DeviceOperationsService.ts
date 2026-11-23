@@ -7,7 +7,8 @@ import {
 	attachMethod,
 	commentMethods,
 	readMethods,
-	revisionMethods
+	revisionMethods,
+	vaultMethods
 } from '../../../../../../../remote/src/index';
 import type { RemoteMethod, WireRequest } from '../../../../../../../remote/src/index';
 import type { ProjectSnapshot } from '../../../../../models/development-tooling/Desktop.types';
@@ -18,6 +19,7 @@ import { deviceCapabilities } from './deviceCapabilities';
 import { gitRead } from '../../../../../utils/projects-sessions/gitRead';
 import { IpcRequestValidator } from '../../../../../validators/development-tooling/IpcRequestValidator';
 import type { ClientProject } from '../ClientProjectsService';
+import { isVaultPhoneMethod } from '../../vaultPhone';
 
 function ancestor(root: string, commit: string, tip: string): Promise<boolean> {
 	return gitRead(root, ['merge-base', '--is-ancestor', commit, tip]).then(
@@ -41,10 +43,11 @@ export class DeviceOperationsService {
 			agents =
 				this.options.grant().agents && this.options.grant().comments !== false ? agentMethods : [];
 		const comments = this.options.grant().comments === false ? [] : commentMethods;
-		const tracker: RemoteMethod[] = [];
-		if (this.options.trackerPull) tracker.push('trackerReplicaPull');
-		if (this.options.trackerPush) tracker.push('trackerReplicaPush');
-		return [attachMethod, ...reads, ...comments, ...agents, ...tracker];
+		const phone: RemoteMethod[] = [];
+		if (this.options.trackerPull) phone.push('trackerReplicaPull');
+		if (this.options.trackerPush) phone.push('trackerReplicaPush');
+		if (this.options.vaultCall) phone.push(...vaultMethods);
+		return [attachMethod, ...reads, ...comments, ...agents, ...phone];
 	}
 	async handle(request: WireRequest): Promise<unknown> {
 		if (!this.methods().includes(request.method)) throw new RemoteFailure('method-denied');
@@ -53,9 +56,13 @@ export class DeviceOperationsService {
 		if (method === 'listProjects')
 			return projects.map(({ id, name }) => ({ id, name, kind: 'local' }));
 		if (method === 'trackerReplicaPull')
-			return await this.trackerCall(this.options.trackerPull, input);
+			return await this.phoneCall(this.options.trackerPull, input);
 		if (method === 'trackerReplicaPush')
-			return await this.trackerCall(this.options.trackerPush, input);
+			return await this.phoneCall(this.options.trackerPush, input);
+		if (isVaultPhoneMethod(method)) {
+			const { vaultCall } = this.options;
+			return await this.phoneCall(vaultCall && ((body) => vaultCall(method, body)), input);
+		}
 		if (method === 'providers') return agents ? this.options.providers.list() : [];
 		const project = await this.project(input),
 			payload = this.payload(method, input),
@@ -64,7 +71,7 @@ export class DeviceOperationsService {
 		this.live();
 		return this.shaped(method, await operation(payload));
 	}
-	private async trackerCall(
+	private async phoneCall(
 		call: ((input: Fields) => Promise<unknown>) | undefined,
 		input: Fields
 	): Promise<unknown> {

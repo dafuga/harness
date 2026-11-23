@@ -162,6 +162,13 @@ export const commandHelp = [
 		aliases: []
 	},
 	{
+		name: 'credential',
+		signature: 'credential',
+		description: 'Request, attach and finish Credential Vault logins; check site recipes.',
+		term: 'credential [options]',
+		aliases: []
+	},
+	{
 		name: 'permissions',
 		signature: 'permissions',
 		description: 'Read declared user profiles and access grants.',

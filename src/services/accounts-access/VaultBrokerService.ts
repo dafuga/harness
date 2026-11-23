@@ -44,7 +44,11 @@ export class VaultBrokerService {
 		private readonly now: () => number = Date.now
 	) {}
 
-	create(input: VaultSessionRequest, uid: number | null): VaultCreated {
+	create(
+		input: VaultSessionRequest,
+		uid: number | null,
+		preflightExpiresAt = Infinity
+	): VaultCreated {
 		const all = [...this.requests.values()];
 		if (all.filter((entry) => this.live(entry)).length >= vaultRequestLimits.queue) {
 			throw new VaultBrokerError(429, 'The broker queue is full.');
@@ -53,13 +57,15 @@ export class VaultBrokerService {
 		if (all.some((entry) => entry.runnerFingerprint === runnerFingerprint)) {
 			throw new VaultBrokerError(409, 'Use a fresh runner key for each request.');
 		}
-		const { entry, receipt } = newEntry(input, uid, runnerFingerprint, this.now());
-		this.record(entry, 'request');
+		const now = this.now();
+		const expiresAt = Math.min(now + vaultRequestLimits.offerMs, preflightExpiresAt);
+		if (expiresAt <= now) throw new VaultBrokerError(403, 'Executor preflight has expired.');
+		const { entry, receipt } = newEntry(input, uid, runnerFingerprint, expiresAt);
+		this.audit.append(vaultAuditFields(entry), 'request');
 		this.requests.set(entry.id, entry);
 		return { requestId: entry.id, receipt, expiresAt: entry.expiresAt, runnerFingerprint };
 	}
 
-	/** The pending requests for an authenticated phone. */
 	queue(proof: VaultProof): VaultQueueEntry[] {
 		this.devices.authenticate('/v1/device/requests', proof);
 		return [...this.requests.values()]
@@ -88,13 +94,12 @@ export class VaultBrokerService {
 		}
 		if (decision.decision === 'deny') return this.end(entry, 'denied', 'denial');
 		checkApprovalScope(entry, decision, this.now());
-		this.record(entry, 'approval');
+		this.audit.append(vaultAuditFields(entry), 'approval');
 		entry.status = 'approved';
 		entry.approval = { proof, expiresAt: decision.expiresAt };
 		return entry.status;
 	}
 
-	/** Hands the signed approval to the ticket holder once; the runner key opens its envelope. */
 	claim(
 		ticket: VaultTicket,
 		uid: number | null
@@ -119,7 +124,6 @@ export class VaultBrokerService {
 			: entry.status;
 	}
 
-	/** The delivered request a ticket names, for issuing its lease. */
 	delivered(ticket: VaultTicket, uid: number | null): VaultRequestEntry {
 		const entry = this.find(ticket, uid);
 		if (entry.status === 'delivered') return entry;
@@ -145,14 +149,10 @@ export class VaultBrokerService {
 	}
 
 	private end(entry: VaultRequestEntry, status: VaultRequestStatus, event: VaultAuditEventName) {
-		this.record(entry, event);
+		this.audit.append(vaultAuditFields(entry), event);
 		entry.status = status;
 		entry.approval = undefined;
 		return status;
-	}
-
-	private record(entry: VaultRequestEntry, event: VaultAuditEventName): void {
-		this.audit.append(vaultAuditFields(entry), event);
 	}
 }
 
@@ -160,7 +160,7 @@ function newEntry(
 	input: VaultSessionRequest,
 	uid: number | null,
 	fingerprint: string,
-	now: number
+	expiresAt: number
 ) {
 	const receipt = randomBytes(32).toString('base64url');
 	const entry: VaultRequestEntry = {
@@ -170,7 +170,7 @@ function newEntry(
 		receiptDigest: digest(receipt),
 		runnerFingerprint: fingerprint,
 		status: 'pending',
-		expiresAt: now + vaultRequestLimits.offerMs
+		expiresAt
 	};
 	return { entry, receipt };
 }
@@ -180,7 +180,6 @@ function receiptMatches(entry: VaultRequestEntry, receipt: string): boolean {
 	return timingSafeEqual(expected, Buffer.from(digest(receipt), 'hex'));
 }
 
-/** The journal fields of a request: identifiers and digests only. */
 export function vaultAuditFields(entry: VaultRequestEntry) {
 	const { item, site, action, method, recipe, host } = entry.input;
 	return { request: entry.id, item, site, action, method, recipeDigest: recipe.digest, host };

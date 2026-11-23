@@ -63,7 +63,69 @@ Enrollment and end-to-end request submission from a real user session have their
 On macOS, `bunx --no-install vitest run test/credential-vault-ios.e2e.test.ts` compiles the native
 Vault sources and checks them against the Harness broker and the standalone broker's synthetic
 `vault-add` vector from revision `cd792c0`. The test uses a disposable software signing key and no
-Keychain entries. Physical Face ID, pairing and save/reopen are acceptance checks on the iPhone.
+Keychain entries.
+
+## Paired iPhone qualification
+
+The native Vault inbox belongs to the standard Harness iOS app (`com.dafuga.harness`). The
+paired broker route belongs to the standard Harness Mac app (`dev.harness.desktop`).
+
+For this synthetic test only, use a Debug build with bundle ID `com.dafuga.harness.vaultfixture`
+and set `SWIFT_ACTIVE_COMPILATION_CONDITIONS='DEBUG HARNESS_VAULT_FIXTURE'`. Run the local renderer
+sync before building in Xcode. This build is for development and acceptance only. Keep the
+installed Harness app and its pairing intact.
+Pair the fixture app with the test desktop using Harness Remote. The desktop's public
+`window.harnessRemote.status()` response lists each approved device's `deviceId` and `generation`.
+Select the IDs of the fixture app's pairing.
+
+Create an owner-only local directory with a short path such as `/tmp/vaultphone.<suffix>`. Save a
+`remote.json` file with the parameters below. Set `HARNESS_VAULT_PHONE_CONFIG` to the absolute path
+of that file when launching the test desktop. The `socketPath` must be inside the private directory.
+
+```sh
+fixture_dir=$(mktemp -d /tmp/vaultphone.XXXXXX)
+```
+
+```json
+{
+	"phone": "<40 hexadecimal characters from the approved pairing>",
+	"generation": 1,
+	"origin": "https://vault.example.test",
+	"deviceId": "synthetic-native-iphone",
+	"socketPath": "/tmp/vaultphone.<suffix>/broker.sock"
+}
+```
+
+On the iPhone, open **Vault requests** and tap **Show public enrollment key**. Use Face ID, then
+save the displayed public key in `public-pin.txt` in the fixture directory. Build the local peer
+add-on and the fixture runner in that directory. Use the same local account for the desktop and
+the fixture broker for this test.
+
+```sh
+bun run --cwd packages/desktop cap:sync
+bash deploy/vault/build-peer.sh "$fixture_dir/peer.node"
+bun build deploy/vault/phone-qualification.ts --target node --outfile "$fixture_dir/phone-qualification.mjs"
+node "$fixture_dir/phone-qualification.mjs" "$fixture_dir/remote.json" "$fixture_dir/public-pin.txt" "$fixture_dir/peer.node" approved
+node "$fixture_dir/phone-qualification.mjs" "$fixture_dir/remote.json" "$fixture_dir/public-pin.txt" "$fixture_dir/peer.node" denied
+```
+
+Open and review a fresh request for each run, then select the matching decision and use Face ID.
+The fixture prints one PASS line after the runner verifies the decision and, for approval, the
+sealed test token. The run uses a disposable local broker and contacts no provider. In the fixture
+build, use **Legacy test** to review and save a fresh synthetic legacy entry with Face ID. The
+fixture shows a receipt after it reopens the same login from the device-only Keychain.
+
+## Executor admission
+
+Build the CLI and run `credential serve` with `--peer-addon` pointing to `peer.node`. Bun delegates
+the native Unix peer check to the bundled Node worker. Add the isolated executor's Ed25519 public
+key to the broker trust file under `executors`, an array of objects with `host` and `publicKey`
+fields. `credential preflight` returns the public ID of that broker instance. The executor signs the
+complete request with that ID, its intended caller UID, the issuance time, and an expiry at most
+120 seconds away. It supplies the receipt through `credential request --preflight <file>`. The
+broker admits only synthetic HTTPS `.test` requests and limits the offer to the receipt expiry.
+The Docker fixture obtains its runner key and signs after its private browser passes the sandbox
+check.
 
 To undo, stop the dedicated engine and executor first. The script verifies the account and journal
 match, removes their Directory Services records and moves the assigned home out of `/Users`. The

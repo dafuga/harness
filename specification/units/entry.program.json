@@ -42,6 +42,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "command.accounts-access-credential",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.activity",
 			"via": "import",
 			"origin": "derived"

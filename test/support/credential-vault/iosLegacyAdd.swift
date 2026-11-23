@@ -60,5 +60,33 @@ func verifyLegacyAdd(_ path: String) throws -> Bool {
         (try? binding.open(replaced, to: recipient, now: binding.expiresAt - 1)) == nil
     else { return false }
     let swapped = vector.preview.reviewed(as: .login)
-    return (try? binding.open(swapped, to: recipient, now: binding.expiresAt - 1)) == nil
+    guard (try? binding.open(swapped, to: recipient, now: binding.expiresAt - 1)) == nil else { return false }
+    return try verifySaveAndReopen(vector, to: recipient)
+}
+
+private func verifySaveAndReopen(_ vector: LegacyVector, to recipient: VaultLegacyAdd.Recipient) throws -> Bool {
+    let binding = vector.binding
+    let now = binding.expiresAt - 1
+    let offer = VaultLegacyImportReview.Offer(binding: binding, preview: vector.preview.reviewed(as: .preview),
+                                              loginDigest: vector.login.sha256)
+    let review = try VaultLegacyImportReview(offer, to: recipient, now: now)
+    var writes = 0
+    let save: (VaultImportedLogin) throws -> Void = { entry in
+        let record = try JSONEncoder().encode(entry)
+        let reopened = try JSONDecoder().decode(VaultImportedLogin.self, from: record)
+        guard reopened.identity.domain == binding.domain, reopened.identity.service == binding.service,
+            reopened.identity.username == vector.preview.plaintext.username,
+            reopened.password == vector.login.plaintext.password
+        else { throw VaultImportFailure.storage }
+        writes += 1
+    }
+    guard (try? review.save(vector.preview.sealed, to: recipient, now: now, store: save)) == nil,
+        (try? review.save(vector.login.sealed, to: recipient, now: binding.expiresAt, store: save)) == nil,
+        writes == 0
+    else { return false }
+    let failure = try? review.save(vector.login.sealed, to: recipient, now: now) { _ in
+        throw VaultImportFailure.storage
+    }
+    let receipt = try review.save(vector.login.sealed, to: recipient, now: now, store: save)
+    return failure == nil && receipt == binding.addId && writes == 1
 }

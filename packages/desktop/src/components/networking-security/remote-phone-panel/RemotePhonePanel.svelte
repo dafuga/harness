@@ -7,7 +7,8 @@
 	import type { RemotePhone } from '../../../lib/stores/networking-security/remotePhone.svelte';
 	import {
 		nativeAccountContext,
-		type NativeAccountContext
+		type NativeAccountContext,
+		type RemoteNativeStatus
 	} from '../../../models/development-tooling/Environment.types';
 	import { grantSummary, remoteLabels } from './remoteLabels';
 	import { identityLabel } from '../../../helpers/networking-security/identityLabel';
@@ -22,6 +23,22 @@
 	let connection = $state(false);
 	const account = getContext<NativeAccountContext | undefined>(nativeAccountContext);
 	const status = $derived(store.status);
+	const canOpenVault = $derived(
+		status?.state === 'online' &&
+			(status as RemoteNativeStatus).methods?.includes('vaultInfo') &&
+			store.port?.openVault
+	);
+	let vaultError = $state('');
+
+	async function openVault() {
+		vaultError = '';
+		try {
+			await store.port?.openVault?.();
+		} catch {
+			vaultError = 'Vault is unavailable.';
+		}
+	}
+
 	const labels = $derived(status ? remoteLabels(status) : null);
 	const actions = { 'pending-approval': 'Cancel', pairing: 'Cancel', revoked: 'Connect again' };
 	const action = $derived(
@@ -75,6 +92,8 @@
 				{#if status.device}<hx-p class="muted">This phone: {status.device.name}</hx-p>
 					<hx-p class="muted remote-key">Key {identityLabel(status.device.id)}</hx-p>{/if}
 				<hx-div class="connection-actions">
+					{#if canOpenVault}<hx-button type="button" onclick={openVault}>Vault requests</hx-button
+						>{/if}
 					<hx-button type="button" disabled={store.busy} onclick={() => void store.disconnect()}
 						>Disconnect</hx-button
 					>
@@ -82,6 +101,7 @@
 						>Sign out</hx-button
 					>
 				</hx-div>
+				{#if vaultError}<hx-span class="error" role="alert">{vaultError}</hx-span>{/if}
 			</hx-div>
 		</Modal>
 	{:else}

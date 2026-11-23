@@ -86,6 +86,7 @@ export interface RemoteNativeEvents {
  */
 export interface RemoteNativePlugin {
 	status(): Promise<RemoteNativeStatus>;
+	openVault?(): Promise<void>;
 	/** Rejects with one of `remoteScanFailures` as its code when a scan ends without an offer. */
 	scan(input: ScanInput): Promise<RemoteNativeStatus>;
 	disconnect(): Promise<RemoteNativeStatus>;

@@ -48,6 +48,7 @@ export interface RemotePairingRequest {
 
 export interface RemoteDeviceInfo {
 	deviceId: string;
+	generation?: number;
 	name: string;
 	platform: string;
 	projectIds: string[];
@@ -145,6 +146,7 @@ export type RemoteScanFailure = (typeof remoteScanFailures)[number];
 /** The phone's control port, implemented by the native plugin. */
 export interface RemoteMobileControl {
 	status(): Promise<RemoteMobileStatus>;
+	openVault?(): Promise<void>;
 	/**
 	 * Opens the camera and asks with the offer it reads. It answers once a request is under way;
 	 * the phone is connected only after the person approved it on the computer.

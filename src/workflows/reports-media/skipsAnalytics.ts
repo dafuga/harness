@@ -6,6 +6,7 @@ const versionFlags = new Set(['--version', '-V']);
 /** True when the arguments only ask for help, the version or an `info` topic. Reads no state. */
 export function skipsAnalytics(args: readonly string[]): boolean {
 	if (args.length === 0) return true;
+	if (args[0] === 'credential') return true;
 	const terminator = args.indexOf('--');
 	const options = terminator < 0 ? args : args.slice(0, terminator);
 	if (options.includes('--help') || options.includes('-h')) return true;

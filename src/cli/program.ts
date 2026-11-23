@@ -7,6 +7,7 @@ import { registerTaskCommand } from './program/TaskCommand';
 import { TrackerCommand } from '../commands/projects-sessions/TrackerCommand';
 import { ModuleCommand } from '../commands/module-system/ModuleCommand';
 import { ApiCommand } from '../commands/networking-security/ApiCommand';
+import { CredentialCommand } from '../commands/accounts-access/CredentialCommand';
 import { sdkPackage } from '../utils/development-tooling/buildStamp';
 import { registerCodexCommand } from './program/CodexCommand';
 import { registerBenchmarkCommand } from './program/BenchmarkCommand';
@@ -70,6 +71,7 @@ export function buildProgram(): Command {
 	new DeployCommand().register(program);
 	new ModuleCommand().register(program);
 	new ApiCommand().register(program);
+	new CredentialCommand().register(program);
 	new PermissionsCommand().register(program);
 	registerHistoryCommand(program);
 	registerHooksCommand(program);

@@ -49,7 +49,7 @@
 			{
 				"name": "RemotePhonePanel",
 				"type": "markup",
-				"description": "The Computer connection section renders only when status and labels are set: in full mode its unpaired state shows the heading, instructions and a Name of this phone input limited to 80 characters with a Scan QR code button (Scan again when the store reports a scan failure), while other states show the title, any detail and one action (Cancel for pairing or pending-approval, Connect again for revoked, Disconnect otherwise), and full mode adds the grant and this phone's name and key. Store errors render as role=alert text in every state, the unpaired reason does so in full mode, and while the store is busy its buttons are disabled."
+				"description": "The Computer connection section renders when status and labels are set. The full unpaired view guides the phone through scanning a pairing code. When online, the full view opens a Connection dialog with connection details, the grant, the phone identity, Disconnect and Sign out. A phone with the Vault grant and a native inbox port can open Vault requests from this dialog. The compact view shows status and a connection action. Store errors, scan failures and a refused Vault launch are reported in their respective views."
 			}
 		],
 		"errors": [],
@@ -60,6 +60,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.function.remote-labels",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.environment-types",
 			"via": "import",
 			"origin": "derived"
 		},

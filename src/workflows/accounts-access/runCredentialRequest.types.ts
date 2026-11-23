@@ -18,6 +18,8 @@ export interface CredentialRequestOptions extends CredentialRecipeFiles {
 	host: string;
 	/** The login runner's ephemeral X25519 public key, base64url. */
 	runnerKey: string;
+	/** JSON receipt produced by the preflighted executor for this exact request. */
+	preflight?: string;
 	reason: string;
 	/** Method kinds that can run now, for example an enrolled API token. */
 	ready: string[];

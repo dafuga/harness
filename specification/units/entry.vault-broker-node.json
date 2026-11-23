@@ -1,0 +1,45 @@
+{
+	"schemaVersion": 1,
+	"id": "entry.vault-broker-node",
+	"kind": "entry",
+	"title": "vault-broker-node",
+	"responsibility": "Runs the local Credential Vault broker on Node so it can verify Unix peer identities.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/cli/vault-broker-node.ts"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.accounts-access-credential",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/cli/vault-broker-node.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/cli/vault-broker-node.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

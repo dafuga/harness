@@ -53,6 +53,18 @@ export const vaultSessionRequest = z.strictObject({
 	reason: text(500)
 });
 
+export const vaultRunnerPreflight = z.strictObject({
+	brokerId: binary(32),
+	uid: z.number().int().positive(),
+	issuedAt: timestamp,
+	expiresAt: timestamp,
+	signature: binary(64)
+});
+
+export const vaultSessionSubmission = vaultSessionRequest.extend({
+	preflight: vaultRunnerPreflight.optional()
+});
+
 export const vaultTicket = z.strictObject({ requestId: hex(32), receipt: binary(32) });
 
 export const vaultProof = z.strictObject({

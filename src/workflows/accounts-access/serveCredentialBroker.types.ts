@@ -4,8 +4,10 @@ import type { VaultLeaseEnded } from '../../services/accounts-access/VaultLeaseK
 export interface CredentialBrokerOptions {
 	socket: string;
 	state: string;
-	/** JSON file `{ "devices": [{ "id", "role", "signingKey" }] }` of enrolled phones. */
+	/** JSON with enrolled `devices` and executor `executors` public-key pins. */
 	trust: string;
 	origin: string;
+	/** Node-API module used to check the connecting Unix user. */
+	peerAddon?: string;
 	onTeardown?: (plan: VaultLeaseEnded) => void;
 }

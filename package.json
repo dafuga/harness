@@ -81,7 +81,7 @@
 		"format": "bun scripts/with-resources.ts coding -- sh -c 'prettier --write . \"$@\"' --",
 		"format:check": "bun scripts/with-resources.ts agent-test -- sh -c 'prettier --check . \"$@\"' --",
 		"prepack": "bun run build",
-		"build:cli": "bun scripts/with-resources.ts coding -- sh -c 'bun build src/cli/index.ts --target bun --outdir dist \"$@\"' --",
+		"build:cli": "bun scripts/with-resources.ts coding -- sh -c 'bun build src/cli/index.ts --target bun --outdir dist \"$@\" && bun build src/cli/vault-broker-node.ts --target node --outdir dist \"$@\"' --",
 		"test:package": "bun scripts/with-resources.ts agent-test -- sh -c 'vitest run test/packaged-website.e2e.test.ts test/packaged-api.e2e.test.ts test/packaged-verification.e2e.test.ts test/packaged-history.e2e.test.ts test/packaged-edge.e2e.test.ts test/console-install.e2e.test.ts test/console-host-routes.e2e.test.ts test/console-storage.e2e.test.ts test/console-scale.e2e.test.ts test/history-fresh-viewer.e2e.test.ts && vitest run --no-file-parallelism test/reports-concurrent-runs.e2e.test.ts test/reports-frozen-build.e2e.test.ts test/reports-run-pages.e2e.test.ts \"$@\"' --",
 		"report": "bun run src/index.ts report",
 		"dev:reports": "bun run --cwd packages/reports dev",
