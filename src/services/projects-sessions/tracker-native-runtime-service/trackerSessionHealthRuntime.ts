@@ -77,11 +77,8 @@ async function publishIssue(
 	const item = items.find(({ id, deleted }) => id === issue.item_id && !deleted);
 	const recovery = issue.recover && item ? await requestRecovery(store, item, launch, now) : null;
 	const prior = readWatchdogAlerts(store)[healthKey(issue)];
-	const reason = recovery
-		? `${issue.reason} ${recovery}`
-		: prior?.identity === issue.identity
-			? prior.reason
-			: issue.reason;
+	const currentReason = prior?.identity === issue.identity ? prior.reason : issue.reason;
+	const reason = recovery ? `${issue.reason} ${recovery}` : currentReason;
 	recordWatchdogAlert(
 		store,
 		{

@@ -125,11 +125,23 @@ function renderCheck(
 	return open.length ? 5 : 0;
 }
 
+const nativeJsonCommands = new Set([
+	'status',
+	'autolaunch',
+	'history',
+	'watchdog',
+	'needs-attention'
+]);
+
 function renderNativeTracker(
 	command: string,
 	data: unknown,
 	options: { quiet: boolean; first?: string }
 ) {
+	if (nativeJsonCommands.has(command)) {
+		console.log(JSON.stringify(data, null, 2));
+		return;
+	}
 	switch (command) {
 		case 'ensure': {
 			const { pid, node } = data as { pid: number; node: string };
@@ -141,13 +153,6 @@ function renderNativeTracker(
 			return;
 		case 'digest':
 			console.log(String(data).trimEnd());
-			return;
-		case 'status':
-		case 'autolaunch':
-		case 'history':
-		case 'watchdog':
-		case 'needs-attention':
-			console.log(JSON.stringify(data, null, 2));
 			return;
 		case 'list':
 			console.log(

@@ -27,14 +27,11 @@ export async function applyIdleDecision(
 	const key = paneNudgeKey(pane);
 	const previous = Number(store.getMeta(key) ?? 0);
 	if (previous && snapshot.now - previous < sessionHealthInterval) return;
+	const alert = { itemId: decision.id, kind: 'idle', identity: pane.key, session: pane.name };
 	if (decision.action === 'alert' || previous) {
 		const reason =
 			decision.reason ?? `Session ${pane.name} is idle again after a watchdog check-in.`;
-		recordWatchdogAlert(
-			store,
-			{ itemId: decision.id, kind: 'idle', reason, identity: pane.key, session: pane.name },
-			snapshot.now
-		);
+		recordWatchdogAlert(store, { ...alert, reason }, snapshot.now);
 		return;
 	}
 	// A lost acknowledgement must not send the same input twice.
@@ -56,18 +53,8 @@ export async function applyIdleDecision(
 			fields: { 'note+': `watchdog nudge 1/1 sent to ${pane.name} on ${store.node}` }
 		});
 	} else {
-		recordWatchdogAlert(
-			store,
-			{
-				itemId: decision.id,
-				kind: 'idle',
-				reason: `Could not verify submission of the watchdog check-in in ${pane.name}.`,
-				identity: pane.key,
-				session: pane.name
-			},
-			snapshot.now,
-			null
-		);
+		const reason = `Could not verify submission of the watchdog check-in in ${pane.name}.`;
+		recordWatchdogAlert(store, { ...alert, reason }, snapshot.now, null);
 	}
 }
 

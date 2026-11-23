@@ -3,7 +3,8 @@ import { setTimeout as delay } from 'node:timers/promises';
 import { trackerPaneFormat, trackerTmuxKeys } from './trackerTmuxPane';
 import type { TrackerTmuxNudge, TrackerTmuxPane } from '../TrackerTmuxAdapter.types';
 
-const control = /\u001b\[[0-9;:]*m/g;
+const escape = '\u001b';
+const control = new RegExp(escape + '\\[[0-9;:]*m', 'g');
 const codexWorking = /^\s*(?:[•◦·]\s*)?(?:Working|Thinking)\b.*\besc to interrupt\b/imu;
 const claudeWorking = /^\s*[^\w\s]+\s*[^\n]*(?:esc to interrupt|ctrl\+c to interrupt)\b/imu;
 
@@ -23,17 +24,20 @@ async function verifyTrackerTmuxSubmission(
 		const text = current.pane.screen?.replace(control, '');
 		if (!text) continue;
 		if (isWorking(current.pane.y, text, input.cli)) return true;
-		if (
-			attempt > 0 &&
-			!submitted &&
-			input.cli === 'codex' &&
-			hasDraft(current, text, input.message)
-		) {
-			if (!(await effects.submit(current))) return false;
-			submitted = true;
-		}
+		if (submitted || !needsSecondEnter(current, text, input, attempt)) continue;
+		submitted = await effects.submit(current);
+		if (!submitted) return false;
 	}
 	return false;
+}
+
+function needsSecondEnter(
+	current: TrackerTmuxPane,
+	text: string,
+	input: TrackerTmuxNudge,
+	attempt: number
+) {
+	return attempt > 0 && input.cli === 'codex' && hasDraft(current, text, input.message);
 }
 
 function isWorking(cursor: number, text: string, cli: TrackerTmuxNudge['cli']): boolean {

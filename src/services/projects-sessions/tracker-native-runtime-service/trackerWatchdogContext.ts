@@ -65,11 +65,7 @@ async function contextSample(
 		)
 			return undefined;
 		const lines = await readLines(file, Math.max(0, stat.size - tailBytes), tailBytes);
-		const tokens =
-			lines
-				.reverse()
-				.map(contextTokens)
-				.find((value) => value > 0) ?? 0;
+		const tokens = lastContextTokens(lines);
 		return { ...head, tokens };
 	} finally {
 		await file.close();

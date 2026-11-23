@@ -78,7 +78,8 @@ function unownedPane(
 	items: ReadonlyMap<string, TrackerItem>
 ): TrackerSessionHealthIssue | undefined {
 	const current = associated.map((id) => items.get(id)).filter((item) => item && !item.deleted);
-	if (current.some((item) => item?.status !== 'done' && item?.status !== 'ignored')) return;
+	if (current.some((item) => item?.status !== 'done' && item?.status !== 'ignored'))
+		return undefined;
 	const finished = current.length > 0;
 	return {
 		item_id: current[0]?.id ?? sessionName.exec(pane.name)?.[1] ?? 'unknown',
@@ -97,37 +98,51 @@ function itemHealth(
 	item: TrackerItem,
 	live: boolean
 ): TrackerSessionHealthIssue | undefined {
-	const { host, now } = snapshot;
 	const history = snapshot.runs(item.id);
-	const latest = history.at(-1);
-	const target = owner(item, latest);
-	const unassigned = !target || (!trackerFleetNodes.includes(target) && target !== host);
-	if (target !== host && !(snapshot.reportUnassigned && unassigned)) return;
-	const liveRemote = history.some(
+	const target = owner(item, history.at(-1));
+	if (!canInspectItem(snapshot, target, history)) return undefined;
+	const pending = pendingLaunch(snapshot, item, history);
+	if (pending) {
+		return snapshot.now - pending.at >= sessionHealthInterval
+			? stalledIssue(snapshot.host, item, pending.at, pending.run)
+			: undefined;
+	}
+	if (item.status !== 'in_progress' || live) return undefined;
+	const issue = missingIssue(snapshot, item, history);
+	return target === snapshot.host
+		? issue
+		: { ...issue, recover: false, reason: `${issue.reason} No Tracker computer is assigned.` };
+}
+
+function canInspectItem(
+	{ host, reportUnassigned }: TrackerSessionHealthSnapshot,
+	target: string,
+	history: readonly TrackerListedRun[]
+): boolean {
+	const unassigned = !target || !trackerFleetNodes.includes(target);
+	if (target !== host && !(reportUnassigned && unassigned)) return false;
+	return !history.some(
 		(run) => run.node !== host && ['running', 'verifying', 'observed'].includes(run.state)
 	);
-	if (liveRemote) return;
-	const requested = item.auto ? history.filter((run) => run.auto_token === item.auto) : [];
+}
+
+function pendingLaunch(
+	snapshot: TrackerSessionHealthSnapshot,
+	item: TrackerItem,
+	history: readonly TrackerListedRun[]
+) {
 	const queued = history
 		.filter(
 			(run) =>
-				run.node === host &&
+				run.node === snapshot.host &&
 				run.state === 'queued' &&
 				!snapshot.panes.some(({ name, live }) => live && name === run.tmux)
 		)
 		.at(-1);
-	const requestedAt = snapshot.scheduleAt(item.id);
-	const stalledAt = queued?.queued_at ?? (item.auto && !requested.length ? requestedAt : null);
-	if (stalledAt !== null && stalledAt !== undefined) {
-		return now - stalledAt >= sessionHealthInterval
-			? stalledIssue(host, item, stalledAt, queued)
-			: undefined;
-	}
-	if (item.status !== 'in_progress' || live) return;
-	const issue = missingIssue(snapshot, item, latest, history);
-	return unassigned
-		? { ...issue, recover: false, reason: `${issue.reason} No Tracker computer is assigned.` }
-		: issue;
+	if (queued) return { run: queued, at: queued.queued_at ?? snapshot.scheduleAt(item.id) };
+	if (item.auto && !history.some((run) => run.auto_token === item.auto))
+		return { at: snapshot.scheduleAt(item.id) };
+	return undefined;
 }
 
 function owner(item: TrackerItem, latest?: TrackerListedRun): string {
@@ -157,22 +172,15 @@ function stalledIssue(
 function missingIssue(
 	{ host, now, scheduleAt }: TrackerSessionHealthSnapshot,
 	item: TrackerItem,
-	latest: TrackerListedRun | undefined,
 	history: readonly TrackerListedRun[]
 ): TrackerSessionHealthIssue {
 	const localActive = history.some(
 		({ node, state }) => node === host && ['running', 'verifying'].includes(state)
 	);
+	const latest = history.at(-1);
 	const aged = now - Math.max(scheduleAt(item.id), latest?.ended_at ?? 0) >= sessionHealthInterval;
-	const hasBrief = Boolean(item.notes || item.adapter_instructions || latest || item.auto);
-	const recover =
-		aged &&
-		hasBrief &&
-		item.kind === 'task' &&
-		!item.recurring &&
-		!localActive &&
-		!item.schedule_off &&
-		(!item.needs_daniel || item.resolved);
+	const hasBrief = [item.notes, item.adapter_instructions, latest, item.auto].some(Boolean);
+	const recover = aged && hasBrief && !localActive && restartableItem(item);
 	return {
 		item_id: item.id,
 		host,
@@ -182,6 +190,15 @@ function missingIssue(
 		identity: `${latest?.id ?? 'no-run'}:${scheduleAt(item.id)}`,
 		recover
 	};
+}
+
+function restartableItem(item: TrackerItem): boolean {
+	return (
+		item.kind === 'task' &&
+		!item.recurring &&
+		!item.schedule_off &&
+		(!item.needs_daniel || item.resolved)
+	);
 }
 
 function missingReason(

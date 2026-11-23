@@ -3,11 +3,12 @@ import { createHash } from 'node:crypto';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import { WatchdogPaneService } from '../WatchdogPaneService';
-import type { WatchdogPane, WatchdogScan } from '../WatchdogPaneService.types';
+import type { WatchdogItem, WatchdogPane, WatchdogScan } from '../WatchdogPaneService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { trackerSessionItemPrefix } from '../tracker-local-api-service/trackerLocalItemMutation';
 import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
 import { sessionHealthInterval } from './trackerSessionHealth';
+import type { TrackerHandoffAttempt, TrackerHandoffTarget } from './trackerWatchdogContext.types';
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
 
 const contextLimit = 150_000;
@@ -23,24 +24,38 @@ export async function trackerContextHandoffs(
 	const items = new TrackerItemReadRepository(store.database);
 	const handled = new Set<string>();
 	for (const pane of scan.panes) {
-		if (!pane.live) continue;
-		const marker = handoffKey(pane);
-		const requested = Number(store.getMeta(marker) ?? 0);
-		if ((pane.contextTokens ?? 0) <= contextLimit && !requested) continue;
-		const run = scan.runs.find((candidate) => panes.matchesRun(pane, candidate));
-		const row = run
-			? scan.items.find(({ id }) => id === run.itemId)
-			: panes.manualItem(pane, scan.items);
-		if (!row || row.deleted || row.status !== 'in_progress' || (row.needsDaniel && !row.resolved))
-			continue;
+		const target = handoffTarget(store, scan, pane);
+		if (!target) continue;
 		handled.add(pane.key);
 		await progressHandoff(
 			{ store, driver, items, now: scan.now, canRelaunch: scan.canRelaunch },
-			{ pane, id: row.id, requested, runId: run?.id },
+			target,
 			signal
 		);
 	}
 	return handled;
+}
+
+function handoffTarget(
+	store: TrackerPersistenceService,
+	scan: WatchdogScan,
+	pane: WatchdogPane
+): TrackerHandoffTarget | undefined {
+	if (!pane.live) return undefined;
+	const requested = Number(store.getMeta(handoffKey(pane)) ?? 0);
+	if ((pane.contextTokens ?? 0) <= contextLimit && !requested) return undefined;
+	const run = scan.runs.find((candidate) => panes.matchesRun(pane, candidate));
+	const row = run
+		? scan.items.find(({ id }) => id === run.itemId)
+		: panes.manualItem(pane, scan.items);
+	if (!handoffEligible(row)) return undefined;
+	return { pane, id: row.id, requested, runId: run?.id };
+}
+
+function handoffEligible(row?: WatchdogItem): row is WatchdogItem {
+	return (
+		row?.status === 'in_progress' && !row.deleted && (!row.needsDaniel || Boolean(row.resolved))
+	);
 }
 
 function handoffKey(pane: WatchdogPane) {
@@ -77,55 +92,63 @@ async function progressHandoff(
 		now: number;
 		canRelaunch?: boolean;
 	},
-	{
-		pane,
-		id,
-		requested,
-		runId
-	}: { pane: WatchdogPane; id: string; requested: number; runId?: number },
+	target: TrackerHandoffTarget,
 	signal: AbortSignal
 ) {
-	const cli = panes.idlePrompt(pane);
-	const stillIdle = cli && now - pane.activity >= sessionHealthInterval;
-	const attempt = runId && ownedAttempt(store, { id, runId, pane });
-	const safe = Boolean(stillIdle && attempt && !pane.attached);
-	const alert = (reason: string) =>
-		recordWatchdogAlert(
-			store,
-			{
-				itemId: id,
-				session: pane.name,
-				kind: 'context',
-				reason,
-				identity: pane.key
-			},
-			now,
-			null
-		);
-	const reason = `Session ${pane.name} exceeded 150,000 active context tokens.`;
-	if (!safe || !cli || !attempt || !runId || !driver.close || !canRelaunch) {
-		alert(`${reason} Chief of Staff can arrange a handoff when the pane is safe to pause.`);
+	const { pane, id, requested } = target;
+	const attempt = canRelaunch && handoffAttempt(store, target, now);
+	const alert = (detail: string) => contextAlert(store, target, now, detail);
+	if (!attempt || !driver.close) {
+		alert('Chief of Staff can arrange a handoff when the pane is safe to pause.');
 		return;
 	}
 	if (!requested) {
-		const confirmed = await requestHandoff(store, driver, { pane, id, cli, now }, signal);
+		const confirmed = await requestHandoff(
+			store,
+			driver,
+			{ pane, id, cli: attempt.cli, now },
+			signal
+		);
 		alert(
-			`${reason} ${confirmed ? 'Requested a handoff note.' : 'Handoff prompt submission could not be verified.'}`
+			confirmed ? 'Requested a handoff note.' : 'Handoff prompt submission could not be verified.'
 		);
 		return;
 	}
 	const stillComplete = () =>
-		ownedAttempt(store, { id, runId, pane }) === attempt &&
+		ownedAttempt(store, { id, runId: attempt.runId, pane }) === attempt.token &&
 		handoffReady(items.getStored(id), requested, store.node);
 	if (!stillComplete()) {
-		alert(`${reason} Waiting for the handoff note before relaunch.`);
+		alert('Waiting for the handoff note before relaunch.');
 		return;
 	}
-	if (await driver.close({ pane, cli, attempt, stillComplete }, signal)) {
-		alert(
-			`${reason} Saved the handoff and closed the idle pane. Tracker will request a fresh session.`
-		);
-	}
+	if (await driver.close({ pane, cli: attempt.cli, attempt: attempt.token, stillComplete }, signal))
+		alert('Saved the handoff and closed the idle pane. Tracker will request a fresh session.');
+}
+
+function handoffAttempt(
+	store: TrackerPersistenceService,
+	{ pane, id, runId }: TrackerHandoffTarget,
+	now: number
+): TrackerHandoffAttempt | undefined {
+	if (!runId || pane.attached || now - pane.activity < sessionHealthInterval) return undefined;
+	const cli = panes.idlePrompt(pane);
+	const token = ownedAttempt(store, { id, runId, pane });
+	return cli && token ? { cli, token, runId } : undefined;
+}
+
+function contextAlert(
+	store: TrackerPersistenceService,
+	{ pane, id }: TrackerHandoffTarget,
+	now: number,
+	detail: string
+) {
+	const reason = `Session ${pane.name} exceeded 150,000 active context tokens. ${detail}`;
+	recordWatchdogAlert(
+		store,
+		{ itemId: id, session: pane.name, kind: 'context', reason, identity: pane.key },
+		now,
+		null
+	);
 }
 
 function ownedAttempt(
