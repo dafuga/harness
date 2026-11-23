@@ -2,7 +2,7 @@
 	"name": "tkwbkn-native-vault-receipts",
 	"goal": "Show sanitized Vault request and decision states on the Mac and prove the same paired iPhone path with signed physical approval, denial, expiry, and interruption.",
 	"createdAt": "2026-11-23T20:13:17.370Z",
-	"updatedAt": "2026-11-23T20:18:09.960Z",
+	"updatedAt": "2026-11-23T20:37:33.380Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -24,7 +24,9 @@
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T20:37:33.380Z",
+			"evidence": "Isolated app on harbor-mbp-2, source 09fb077cc9: 15 focused Vault and Swift software cases, stamped Mac renderer build a0c24a9f, and one Chromium worker passed. Captured and inspected pending and terminal screenshots. Verified real Unix peer, timeout and SIGINT cleanup. Operator runner c8fc0b7b88 passed the complete four-stage rehearsal with the Swift software signer, one broker, retained receipts, stale-decision refusal and socket cleanup. The signed main-app physical session remains pending."
 		},
 		{
 			"id": "verify",
