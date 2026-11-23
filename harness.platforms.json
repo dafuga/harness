@@ -124,17 +124,21 @@
 				{
 					"name": "Code signing",
 					"value": "HARNESS_MAC_SIGN_IDENTITY",
-					"description": "Optional exact certificate SHA-1 fingerprint. Packaging signs ad hoc when unset."
+					"description": "Exact Developer ID Application certificate SHA-1 fingerprint for PAC8VHDW3G in the dedicated Harness signing keychain. Required when packaging."
 				}
 			],
 			"commands": [
 				{ "name": "Build", "command": "bun run --cwd packages/desktop build" },
 				{ "name": "Run desktop app", "command": "bun run --cwd packages/desktop desktop" },
-				{ "name": "Package macOS app", "command": "bun run --cwd packages/desktop package:mac" }
+				{ "name": "Package macOS app", "command": "bun run --cwd packages/desktop package:mac" },
+				{
+					"name": "Verify macOS app",
+					"command": "bun run --cwd packages/desktop package:mac --verify dist/mac/Harness.app"
+				}
 			],
 			"requirements": [
 				"Run the macOS packaging target on a Mac.",
-				"Configure the intended distribution certificate and notarization process before distributing a public macOS release.",
+				"Configure harness-signing.keychain-db on the Mac release host and notarize public Mac releases.",
 				"Windows and Linux packaging targets are not configured in this repository."
 			],
 			"sources": [
