@@ -6,13 +6,12 @@
 	import { formatTime } from '$reports/helpers/strings/formatTime';
 	import LoginPanel from '../../../components/accounts-access/login-panel/LoginPanel.svelte';
 	import HubFrame from '../../../components/shared-primitives/HubFrame.svelte';
-	import type { AccountDevice } from '../../../models/accounts-access/HubAuth.types';
+	import type { AccountDeviceInventory } from '../../../models/accounts-access/HubAuth.types';
 	import { browserContext } from '../../../utils/development-tooling/browserContext';
 
 	const { session, api } = browserContext();
 	const endpoint = '/api/account/devices';
-	type Inventory = { devices: AccountDevice[]; currentDeviceId: string | null };
-	let listed = $state<{ actor: string; inventory: Inventory }>();
+	let listed = $state<{ actor: string; inventory: AccountDeviceInventory }>();
 	const inventory = $derived(listed?.actor === session.actor?.id ? listed?.inventory : undefined);
 	let removing = $state<string>();
 	let confirm = $state<string>();
@@ -21,7 +20,7 @@
 	async function load(actor: string) {
 		error = '';
 		try {
-			const result = await api.get<Inventory>(endpoint);
+			const result = await api.get<AccountDeviceInventory>(endpoint);
 			if (session.actor?.id === actor) listed = { actor, inventory: result };
 		} catch {
 			if (session.actor?.id === actor) error = 'Could not load devices.';

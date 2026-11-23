@@ -136,6 +136,12 @@ export interface AccountDevice {
 	lastSeenAt: string;
 }
 
+/** GET /api/account/devices for the resolved browser session. */
+export interface AccountDeviceInventory {
+	devices: AccountDevice[];
+	currentDeviceId: string | null;
+}
+
 export interface NativeStartInput {
 	callback?: NativeCallback;
 	deviceName?: string;
