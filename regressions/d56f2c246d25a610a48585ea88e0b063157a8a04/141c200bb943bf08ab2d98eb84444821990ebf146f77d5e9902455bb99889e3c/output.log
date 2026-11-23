@@ -1,0 +1,77 @@
+$ bun run --cwd ../desktop svelte-kit sync && bun run --cwd ../reports svelte-kit sync
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-ZgVw0a/source/packages/hub
+
+5:40:21 PM [vite-plugin-svelte] /private/tmp/harness-snapshot-ZgVw0a/source/packages/hub/src/components/public-site/HomeHero.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/tmp/harness-snapshot-ZgVw0a/source/packages/reports/src/components/shared-primitives/atoms/HtmlSection.svelte, /private/tmp/harness-snapshot-ZgVw0a/source/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/tmp/harness-snapshot-ZgVw0a/source/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/tmp/harness-snapshot-ZgVw0a/source/packages/reports/src/components/shared-primitives/atoms/HtmlH1.svelte, /private/tmp/harness-snapshot-ZgVw0a/source/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/tmp/harness-snapshot-ZgVw0a/source/packages/reports/src/components/shared-primitives/atoms/HtmlA.svelte, /private/tmp/harness-snapshot-ZgVw0a/source/packages/reports/src/components/shared-primitives/atoms/HtmlFigure.svelte, /private/tmp/harness-snapshot-ZgVw0a/source/packages/reports/src/components/shared-primitives/atoms/HtmlCode.svelte, /private/tmp/harness-snapshot-ZgVw0a/source/packages/reports/src/components/shared-primitives/atoms/HtmlOl.svelte, /private/tmp/harness-snapshot-ZgVw0a/source/packages/reports/src/components/shared-primitives/atoms/HtmlLi.svelte, /private/tmp/harness-snapshot-ZgVw0a/source/packages/reports/src/components/shared-primitives/atoms/HtmlFigcaption.svelte
+ ❯ test/components/public-site/home-download.test.ts (6 tests | 2 failed) 9ms
+   ✓ an unpublished Mac build is a disabled button that says why, never a dead link 1ms
+   ✓ a published build is a direct download link and the iPhone app gets its own link 0ms
+   × the hero download goes to the build when there is one, else is a muted chip 4ms
+     → expected '<!--[--><section class="home-hero" ar…' to match /<span class="home-badge"[^>]*>Ma…/span>
+   × the hero has one filled primary: Log in while the Mac build is pending, the download once published 1ms
+     → expected '<!--[--><section class="home-hero" ar…' to match /<a class="home…/projects"[^>]*>Log in<\
+   ✓ the Mac archive is asked for at its Hub path and the iPhone app stays pending 0ms
+   ✓ the hero leads to sign-in and projects under the name that fits the visitor 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/public-site/home-download.test.ts > the hero download goes to the build when there is one, else is a muted chip
+AssertionError: expected '<!--[--><section class="home-hero" ar…' to match /<span class="home-badge"[^>]*>Ma…/span>
+
+- Expected: 
+/<span class="home-badge"[^>]*>Mac app coming soon<\/span>/
+
++ Received: 
+"<!--[--><section class=\"home-hero\" aria-labelledby=\"home-title\"><div class=\"home-hero-copy\"><p class=\"home-kicker\">For people who build software with coding agents</p> <h1 id=\"home-title\" class=\"home-title\">Build with agents. <span class=\"home-accent\">Ship what you can prove.</span></h1> <p class=\"home-lede\">Harness gives every project a clear shape (small focused files, generators and specs) and runs
+			each change as a loop: a failing test first, then the repair, then the proof. Your team sees
+			exactly what was checked before anything merges.</p> <div class=\"home-actions\"><a class=\"home-button home-button-primary home-button-large\" href=\"#download\">Mac app coming soon</a> <a class=\"home-button home-button-large\" href=\"/projects\" data-sveltekit-reload=\"\">Log in</a></div> <p class=\"home-fine\">Mac app · Shared projects in any browser · iPhone app coming soon</p></div> <figure class=\"home-loop\"><div class=\"home-loop-bar\" aria-hidden=\"true\"><span class=\"home-loop-dot\"></span><span class=\"home-loop-dot\"></span><span class=\"home-loop-dot\"></span> <code>harness loop · checkout-flow</code></div> <ol class=\"home-loop-steps\"><!--[--><li class=\"home-loop-step\" data-state=\"spec\"><span class=\"home-loop-mark\" aria-hidden=\"true\"></span> <span class=\"home-loop-label\">Spec: customers can check out</span> <code class=\"home-loop-tag\">spec</code></li><li class=\"home-loop-step\" data-state=\"red\"><span class=\"home-loop-mark\" aria-hidden=\"true\"></span> <span class=\"home-loop-label\">Failing test recorded first</span> <code class=\"home-loop-tag\">red</code></li><li class=\"home-loop-step\" data-state=\"green\"><span class=\"home-loop-mark\" aria-hidden=\"true\"></span> <span class=\"home-loop-label\">Repair passes the same test</span> <code class=\"home-loop-tag\">green</code></li><li class=\"home-loop-step\" data-state=\"proof\"><span class=\"home-loop-mark\" aria-hidden=\"true\"></span> <span class=\"home-loop-label\">Audit, tests and screenshots</span> <code class=\"home-loop-tag\">proof</code></li><!--]--></ol> <figcaption class=\"home-loop-caption\">Every change carries its own evidence.</figcaption></figure></section><!--]-->"
+
+ ❯ test/components/public-site/home-download.test.ts:30:18
+     28| test('the hero download goes to the build when there is one, else is a…
+     29|  const pending = render(HomeHero, { props: { download: '#download' } }…
+     30|  expect(pending).toMatch(/<span class="home-badge"[^>]*>Mac app coming…
+       |                  ^
+     31|  expect(pending).not.toContain('href="#download"');
+     32|  expect(pending).toContain('iPhone app coming soon');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/components/public-site/home-download.test.ts > the hero has one filled primary: Log in while the Mac build is pending, the download once published
+AssertionError: expected '<!--[--><section class="home-hero" ar…' to match /<a class="home…/projects"[^>]*>Log in<\
+
+- Expected: 
+/<a class="home-button home-button-primary home-button-large" href="\/projects"[^>]*>Log in<\/a>/
+
++ Received: 
+"<!--[--><section class=\"home-hero\" aria-labelledby=\"home-title\"><div class=\"home-hero-copy\"><p class=\"home-kicker\">For people who build software with coding agents</p> <h1 id=\"home-title\" class=\"home-title\">Build with agents. <span class=\"home-accent\">Ship what you can prove.</span></h1> <p class=\"home-lede\">Harness gives every project a clear shape (small focused files, generators and specs) and runs
+			each change as a loop: a failing test first, then the repair, then the proof. Your team sees
+			exactly what was checked before anything merges.</p> <div class=\"home-actions\"><a class=\"home-button home-button-primary home-button-large\" href=\"#download\">Mac app coming soon</a> <a class=\"home-button home-button-large\" href=\"/projects\" data-sveltekit-reload=\"\">Log in</a></div> <p class=\"home-fine\">Mac app · Shared projects in any browser · iPhone app coming soon</p></div> <figure class=\"home-loop\"><div class=\"home-loop-bar\" aria-hidden=\"true\"><span class=\"home-loop-dot\"></span><span class=\"home-loop-dot\"></span><span class=\"home-loop-dot\"></span> <code>harness loop · checkout-flow</code></div> <ol class=\"home-loop-steps\"><!--[--><li class=\"home-loop-step\" data-state=\"spec\"><span class=\"home-loop-mark\" aria-hidden=\"true\"></span> <span class=\"home-loop-label\">Spec: customers can check out</span> <code class=\"home-loop-tag\">spec</code></li><li class=\"home-loop-step\" data-state=\"red\"><span class=\"home-loop-mark\" aria-hidden=\"true\"></span> <span class=\"home-loop-label\">Failing test recorded first</span> <code class=\"home-loop-tag\">red</code></li><li class=\"home-loop-step\" data-state=\"green\"><span class=\"home-loop-mark\" aria-hidden=\"true\"></span> <span class=\"home-loop-label\">Repair passes the same test</span> <code class=\"home-loop-tag\">green</code></li><li class=\"home-loop-step\" data-state=\"proof\"><span class=\"home-loop-mark\" aria-hidden=\"true\"></span> <span class=\"home-loop-label\">Audit, tests and screenshots</span> <code class=\"home-loop-tag\">proof</code></li><!--]--></ol> <figcaption class=\"home-loop-caption\">Every change carries its own evidence.</figcaption></figure></section><!--]-->"
+
+ ❯ test/components/public-site/home-download.test.ts:42:18
+     40|  const pending = render(HomeHero, { props: { download: '#download' } }…
+     41|  expect(pending.match(/home-button-primary/g)).toHaveLength(1);
+     42|  expect(pending).toMatch(
+       |                  ^
+     43|   /<a class="home-button home-button-primary home-button-large" href="…
+     44|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 4 passed (6)
+   Start at  17:40:20
+   Duration  690ms (transform 310ms, setup 167ms, collect 314ms, tests 9ms, environment 0ms, prepare 39ms)
+
