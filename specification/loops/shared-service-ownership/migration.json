@@ -5667,14 +5667,22 @@
 			"unit": "hub.function.d1-credential-stores",
 			"from": "packages/hub/src/adapters/d1-auth-store-adapter/d1CredentialStores.ts",
 			"to": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1CredentialStores.ts",
-			"definition": "f3d0353a9ec1af6ce0714d47fc3f576ae457a786eb99ccaa30b5e07cf8382082",
+			"definition": "98a8155fd3794c63b622ad27880bb090df7e3d3bb0284235e4a2240dd93b5bf3",
 			"relocationDefinition": "16943c31f2589ea2d77a5a0d3e1b1e617dd2716ea25f0e109f1d43499d5a40f1",
 			"review": {
-				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+				"commit": "5b8a6af48efd724711dc1a3b94895b7c3444d669",
 				"path": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1CredentialStores.ts",
-				"definition": "f3d0353a9ec1af6ce0714d47fc3f576ae457a786eb99ccaa30b5e07cf8382082",
-				"reason": "Track enrolled devices and revoke them only within their signed-in account."
-			}
+				"definition": "98a8155fd3794c63b622ad27880bb090df7e3d3bb0284235e4a2240dd93b5bf3",
+				"reason": "Type the selected device rows while preserving server-side field validation."
+			},
+			"previousReviews": [
+				{
+					"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+					"path": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1CredentialStores.ts",
+					"definition": "f3d0353a9ec1af6ce0714d47fc3f576ae457a786eb99ccaa30b5e07cf8382082",
+					"reason": "Track enrolled devices and revoke them only within their signed-in account."
+				}
+			]
 		},
 		{
 			"unit": "hub.function.d1-email-stores",

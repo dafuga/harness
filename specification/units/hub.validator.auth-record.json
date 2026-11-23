@@ -32,7 +32,7 @@
 		"inputs": [
 			{
 				"name": "accountDevice.value",
-				"type": "unknown",
+				"type": "Row",
 				"required": true
 			},
 			{
@@ -354,7 +354,7 @@
 				"inputs": [
 					{
 						"name": "accountDevice.value",
-						"type": "unknown",
+						"type": "Row",
 						"required": true
 					}
 				],
