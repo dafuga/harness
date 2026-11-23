@@ -93,6 +93,7 @@ async function assertDryRun(runtime: TrackerNativeRuntimeService, trace: string)
 	).resolves.toMatchObject({
 		recovery: [{ item_id: missingId, host: node, kind: 'missing', session: null }]
 	});
+	runtime.store.appendLocal({ itemId: missingId, fields: { status: 'ignored' } });
 	expect(existsSync(trace)).toBe(false);
 }
 
