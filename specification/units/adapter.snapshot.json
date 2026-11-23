@@ -95,7 +95,7 @@
 			{
 				"name": "SnapshotAdapter.create",
 				"type": "Promise<SnapshotAdapter>",
-				"description": "A newly exported SnapshotAdapter instance for the requested commit. It is available after archive extraction, tracked-tree loading, and the initial hash comparison complete."
+				"description": "A newly exported SnapshotAdapter for the requested commit, available after archive extraction and removal, tracked-tree loading, and the initial hash comparison."
 			},
 			{
 				"name": "SnapshotAdapter.link",
@@ -141,7 +141,7 @@
 			{
 				"name": "SnapshotAdapter.remove",
 				"type": "Promise<void>",
-				"description": "The operation resolves after recursively removing the snapshot directory with force enabled."
+				"description": "The operation resolves after recursively removing the private workspace that contains the snapshot directory."
 			},
 			{
 				"name": "SnapshotAdapter.retainArtifact",
@@ -153,7 +153,7 @@
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "The adapter propagates failures from awaited filesystem, Git, and snapshot-scanning operations. Tar process errors are forwarded, and a nonzero tar exit is converted to an Error containing captured stderr."
+				"description": "The adapter propagates filesystem, Git, bounded command, and snapshot-scanning failures. A nonzero tar exit throws TarExtractError with its captured stderr."
 			},
 			{
 				"name": "Destination write failure",
@@ -195,14 +195,14 @@
 					{
 						"name": "SnapshotAdapter.create",
 						"type": "Promise<SnapshotAdapter>",
-						"description": "A newly exported SnapshotAdapter instance for the requested commit. It is available after archive extraction, tracked-tree loading, and the initial hash comparison complete."
+						"description": "A newly exported SnapshotAdapter for the requested commit, available after archive extraction and removal, tracked-tree loading, and the initial hash comparison."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
 						"type": "thrown",
-						"description": "The operation rejects when its awaited temporary-directory, Git archive or commit-tree work fails. Tar process errors are forwarded, and a nonzero tar exit is converted to an Error containing captured stderr."
+						"description": "The operation rejects if temporary workspace setup, Git archive export, bounded tar execution, or commit-tree loading fails. A nonzero tar exit throws TarExtractError with its captured stderr."
 					}
 				],
 				"errorStatus": "declared"
@@ -356,7 +356,7 @@
 					{
 						"name": "SnapshotAdapter.remove",
 						"type": "Promise<void>",
-						"description": "The operation resolves after recursively removing the snapshot directory with force enabled."
+						"description": "The operation resolves after recursively removing the private workspace that contains the snapshot directory."
 					}
 				],
 				"errors": [
@@ -374,6 +374,11 @@
 	"dependencies": [
 		{
 			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.execution-runtimes-bounded-command",
 			"via": "import",
 			"origin": "derived"
 		},
