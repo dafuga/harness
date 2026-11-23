@@ -1,7 +1,8 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
+import type * as Os from 'node:os';
 import { join } from 'node:path';
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
 import { loadTrackerNodeConfig } from '../../../src/services/projects-sessions/tracker-node-service/trackerNodeConfig';
 import type { TrackerHostStartRequest } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
 import {
@@ -11,6 +12,11 @@ import {
 import { withTempRepo } from '../../support/temporary';
 import type { TemporaryRepo } from '../../support/temporary.types';
 import { measureWorkload } from '../../support/measureWorkload';
+
+vi.mock('node:os', async (importOriginal) => {
+	const os = await importOriginal<typeof Os>();
+	return { ...os, userInfo: () => ({ ...os.userInfo(), username: 'unknown' }) };
+});
 
 const node = 'daniel-primary-mbp';
 const signal = new AbortController().signal;
@@ -41,11 +47,17 @@ async function proveManagedWorker({ root, git }: TemporaryRepo) {
 		key: JSON.stringify([native.itemId, 'reserved-claude-fixture', 1]),
 		selection: { provider: 'claude', model: 'claude-sonnet-4-6', intelligence: 'high' }
 	} satisfies TrackerHostStartRequest;
-	for (const input of [docker, native, claude]) {
-		expect(await launcher.start(input, signal)).toMatchObject({
-			status: 'started',
-			session: { key: input.key, state: 'exited', exitCode: 0 }
-		});
+	vi.stubEnv('HOME', paths.profiles.accountHome);
+	vi.stubEnv('USER', 'untrusted-fixture-user');
+	try {
+		for (const input of [docker, native, claude]) {
+			expect(await launcher.start(input, signal)).toMatchObject({
+				status: 'started',
+				session: { key: input.key, state: 'exited', exitCode: 0 }
+			});
+		}
+	} finally {
+		vi.unstubAllEnvs();
 	}
 	const restarted = trackerManagedHostLauncher(managed, { client: scoped, platform: 'darwin' });
 	const replies = await restarted.inspect(
@@ -112,7 +124,7 @@ function launchInput(
 	};
 }
 
-function verifyWorkerInvocations(profiles: { native: string; docker: string }) {
+function verifyWorkerInvocations(profiles: ReturnType<typeof managedFixtureBindings>['profiles']) {
 	const read = (profile: string) =>
 		readFileSync(join(profile, 'invoked.ndjson'), 'utf8')
 			.trim()
@@ -120,9 +132,11 @@ function verifyWorkerInvocations(profiles: { native: string; docker: string }) {
 			.map((line) => JSON.parse(line));
 	const docker = read(profiles.docker);
 	const native = read(profiles.native);
+	const claude = read(profiles.accountHome);
 	expect(docker).toHaveLength(1);
-	expect(native).toHaveLength(2);
-	verifySecretSafety(profiles, [docker[0].brief, ...native.map(({ brief }) => brief)]);
+	expect(native).toHaveLength(1);
+	expect(claude).toHaveLength(1);
+	verifySecretSafety(profiles, [docker[0].brief, native[0].brief, claude[0].brief]);
 	expect(docker[0]).toMatchObject({
 		argv: [
 			'task',
@@ -139,19 +153,21 @@ function verifyWorkerInvocations(profiles: { native: string; docker: string }) {
 			'high'
 		],
 		image,
+		user: null,
 		secret: false,
 		brief: expect.stringContaining('First run tracker done.')
 	});
 	expect(Buffer.byteLength(docker[0].brief)).toBeLessThan(16_000);
 	expect(docker[0].cwd).toMatch(/\/effects\/[a-f0-9]{64}\/worktree$/);
-	verifyNativeInvocations(native, docker[0].cwd);
+	verifyNativeInvocations(native[0], claude[0], docker[0].cwd);
 }
 
 function verifyNativeInvocations(
-	native: { argv: string[]; cwd: string }[],
+	codex: { cwd: string },
+	claude: { cwd: string },
 	dockerWorktree: string
 ) {
-	expect(native[0]).toMatchObject({
+	expect(codex).toMatchObject({
 		argv: [
 			'--dangerously-bypass-approvals-and-sandbox',
 			'-m',
@@ -161,20 +177,30 @@ function verifyNativeInvocations(
 			expect.stringContaining('def123abc4')
 		],
 		image: null,
+		user: null,
 		secret: false,
 		client: { node, apiPort: client.apiPort },
 		legacy: '/dev/null/tracker',
 		guestAuthFile: null
 	});
-	expect(native[1].argv).toEqual([
-		'--dangerously-skip-permissions',
-		'--model',
-		'claude-sonnet-4-6',
-		'--effort',
-		'high',
-		expect.stringContaining('def123abc4')
-	]);
-	expect(native[0].cwd).not.toBe(dockerWorktree);
+	expect(claude).toMatchObject({
+		argv: [
+			'--dangerously-skip-permissions',
+			'--model',
+			'claude-sonnet-4-6',
+			'--effort',
+			'high',
+			expect.stringContaining('def123abc4')
+		],
+		image: null,
+		user: spawnSync('/usr/bin/id', ['-un'], { encoding: 'utf8' }).stdout.trim(),
+		secret: false,
+		client: { node, apiPort: client.apiPort },
+		legacy: '/dev/null/tracker',
+		guestAuthFile: null
+	});
+	expect(codex.cwd).not.toBe(dockerWorktree);
+	expect(claude.cwd).not.toBe(codex.cwd);
 }
 
 function verifySecretSafety(profiles: { native: string; docker: string }, briefs: string[]) {

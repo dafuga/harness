@@ -1,5 +1,7 @@
 // @harness-uid u_fyf7e7kyi5
+import { execFileSync } from 'node:child_process';
 import { realpathSync, statSync } from 'node:fs';
+import { homedir } from 'node:os';
 import { controlledTrackerExecutable } from '../tracker-host-process-adapter/trackerHostCommand';
 import type { TrackerHostStartRequest } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
 import type {
@@ -44,7 +46,7 @@ export function trackerManagedProviderCommand(
 	const { platform, backend, itemId, selection } = input;
 	if (platform === 'linux' && backend === 'docker' && docker)
 		return {
-			profile: docker.profile,
+			home: docker.profile,
 			image: docker.image,
 			argv: [
 				docker.harness,
@@ -65,32 +67,41 @@ export function trackerManagedProviderCommand(
 	if (platform !== 'macos' || backend !== 'native' || host !== 'darwin' || !native)
 		return undefined;
 	const prompt = `Read your brief at ${briefPath} and do that work. Your tracker item is ${itemId}.`;
-	return {
-		profile: native.profile,
-		argv: nativeTrackerProviderCommand(native, selection, prompt)
-	};
+	return nativeTrackerProviderCommand(native, selection, prompt);
 }
 
 function nativeTrackerProviderCommand(
 	profile: NonNullable<TrackerManagedProfiles['native']>,
 	{ provider, model, intelligence }: TrackerHostStartRequest['selection'],
 	prompt: string
-): string[] {
+): TrackerManagedCommand {
 	if (provider === 'claude')
-		return [
-			profile.claude,
-			'--dangerously-skip-permissions',
-			'--model',
+		return {
+			home: homedir(),
+			username: execFileSync('/usr/bin/id', ['-un'], {
+				encoding: 'utf8',
+				env: {},
+				stdio: ['ignore', 'pipe', 'ignore'],
+				timeout: 5000
+			}).trim(),
+			argv: [
+				profile.claude,
+				'--dangerously-skip-permissions',
+				'--model',
+				model,
+				...(intelligence ? ['--effort', intelligence] : []),
+				prompt
+			]
+		};
+	return {
+		home: profile.profile,
+		argv: [
+			profile.codex,
+			'--dangerously-bypass-approvals-and-sandbox',
+			'-m',
 			model,
-			...(intelligence ? ['--effort', intelligence] : []),
+			...(intelligence ? ['-c', `model_reasoning_effort=${JSON.stringify(intelligence)}`] : []),
 			prompt
-		];
-	return [
-		profile.codex,
-		'--dangerously-bypass-approvals-and-sandbox',
-		'-m',
-		model,
-		...(intelligence ? ['-c', `model_reasoning_effort=${JSON.stringify(intelligence)}`] : []),
-		prompt
-	];
+		]
+	};
 }

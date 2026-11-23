@@ -10,13 +10,15 @@ export function managedFixtureBindings(root: string) {
 	const stateDirectory = join(root, 'effects');
 	const native = join(root, 'native-profile');
 	const docker = join(root, 'docker-profile');
-	for (const dir of [stateDirectory, native, docker]) mkdirSync(dir, { mode: 0o700 });
+	const accountHome = join(root, 'account-home');
+	for (const dir of [stateDirectory, native, docker, accountHome]) mkdirSync(dir, { mode: 0o700 });
+	writeFileSync(join(accountHome, '.claude-session-fixture'), '', { mode: 0o600 });
 	const tmux = fixtureProgram(root, 'tmux', tmuxProgram);
 	const harness = fixtureProgram(root, 'harness', providerProgram);
 	const codex = fixtureProgram(root, 'codex', providerProgram);
 	const claude = fixtureProgram(root, 'claude', providerProgram);
 	return {
-		profiles: { native, docker },
+		profiles: { native, docker, accountHome },
 		config: {
 			tmux,
 			stateDirectory,
@@ -60,13 +62,18 @@ process.exit(1);
 `;
 
 const providerProgram = `
-const { appendFileSync, readFileSync } = require('node:fs');
-const { join } = require('node:path');
+const { appendFileSync, existsSync, readFileSync } = require('node:fs');
+const { basename, join } = require('node:path');
 const argv = process.argv.slice(2);
+if (basename(process.argv[1]) === 'claude') {
+	if (!existsSync(join(process.env.HOME, '.claude-session-fixture'))) process.exit(41);
+	if (process.env.USER !== require('node:os').userInfo().username) process.exit(42);
+}
 const briefPath = argv.includes('--brief') ? argv[argv.indexOf('--brief') + 1] : argv.at(-1)?.match(/^Read your brief at (.+) and do that work/)[1];
 appendFileSync(join(process.env.HOME, 'invoked.ndjson'), JSON.stringify({
 	argv, cwd: process.cwd(), image: process.env.HARNESS_TASK_DOCKER_IMAGE ?? null,
-	secret: Boolean(process.env.FIXTURE_SECRET), brief: briefPath && readFileSync(briefPath, 'utf8'),
+	user: process.env.USER ?? null, secret: Boolean(process.env.FIXTURE_SECRET),
+	brief: briefPath && readFileSync(briefPath, 'utf8'),
 	client: JSON.parse(readFileSync(process.env.HARNESS_TRACKER_CONFIG, 'utf8')),
 	legacy: process.env.HARNESS_TRACKER_LEGACY_BIN,
 	guestAuthFile: process.env.HARNESS_TRACKER_GUEST_AUTH_FILE ?? null

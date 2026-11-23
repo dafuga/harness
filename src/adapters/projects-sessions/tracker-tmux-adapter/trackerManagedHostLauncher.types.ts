@@ -14,7 +14,8 @@ export interface TrackerManagedReceipt {
 }
 
 export interface TrackerManagedCommand {
-	profile: string;
+	home: string;
+	username?: string;
 	argv: string[];
 	image?: string;
 }

@@ -207,7 +207,13 @@ Linux uses plain Docker through the pinned Harness
 adapter. Mac-only projects use interactive native Codex or Claude in the
 retained tmux socket on a registered Mac. The launcher creates a detached
 task worktree and records the attempt key before opening the worker pane.
-Worker profiles are separate private directories. The worker's host-side
+Native Codex and the Docker launcher use separate private profile directories
+as their homes. Native Claude uses the service account's home and login name
+to find its existing Claude Code session. Point `native.claude` at the
+installed Claude Code executable when using the default account configuration.
+A wrapper that overrides `CLAUDE_CONFIG_DIR` can hide the saved sign-in.
+
+The worker's host-side
 Tracker client only receives the verified loopback role and port. The
 generated client file holds inert placeholders for daemon-only paths.
 Use the immutable native `harness` and `tracker` shim in the configured
