@@ -8,10 +8,14 @@ import { TrackerDispatcherService } from '../../../src/services/agents-providers
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
 import {
 	fixturePolicy,
+	liveEvidence,
 	primary,
+	recorded,
 	sampleId,
-	sampleToken
+	sampleToken,
+	started
 } from '../../support/trackerDispatcherFixture';
+import { measureWorkload } from '../../support/measureWorkload';
 
 test('commits one local claim and atomically rolls back an item transition with its run', async () => {
 	const database = new DatabaseSync(':memory:');
@@ -61,6 +65,10 @@ test('commits one local claim and atomically rolls back an item transition with 
 	);
 	database.exec("UPDATE runs SET state = 'finished', outcome = 'done' WHERE id = 1");
 	expect(() => repo.assertLegacyRollbackSafe()).not.toThrow();
+
+	await measureWorkload('service.agents-providers-tracker-dispatcher', 'retry-completion', () =>
+		expectRetryCompletion(database, store, repo, dispatcher)
+	);
 });
 
 async function expectAtomicRollback(
@@ -81,4 +89,51 @@ async function expectAtomicRollback(
 	).rejects.toThrow('fixture write failed');
 	expect(store.maxSeq()).toBe(seq);
 	expect(repo.managedRuns()).toEqual([run]);
+}
+
+async function expectRetryCompletion(
+	database: DatabaseSync,
+	store: TrackerPersistenceService,
+	repo: TrackerDispatchRepository,
+	dispatcher: TrackerDispatcherService
+) {
+	database.exec('DROP TRIGGER reject_item_update');
+	const itemId = 'retry-fixture';
+	const token = 'first-native-request';
+	store.appendLocal({ itemId, fields: { title: 'Retry fixture', kind: 'task', status: 'open' } });
+	await dispatcher.request(itemId, { source: 'manual', token });
+	const initial = started(await dispatcher.claim(itemId, token));
+	const first = recorded(
+		await dispatcher.record(itemId, initial.run, {
+			type: 'session',
+			session: liveEvidence(initial)
+		})
+	).run;
+	database
+		.prepare(
+			`INSERT INTO runs (item_id, auto_token, rung, cli, model, state, outcome, queued_at)
+			VALUES (?, 'retained-request', 'haiku', 'claude', 'claude-haiku-5-5', 'finished', 'failed', ?)`
+		)
+		.run(itemId, first.queued_at - 1);
+	const failed = recorded(
+		await dispatcher.record(itemId, first, { type: 'monitor', session: 'exited', exitCode: 0 })
+	);
+	expect(failed.run).toMatchObject({ state: 'finished', outcome: 'failed' });
+	const next = started(await dispatcher.prepare(itemId, failed.retry!));
+	const retry = recorded(
+		await dispatcher.record(itemId, next.run, { type: 'session', session: liveEvidence(next) })
+	).run;
+	store.appendLocal({ itemId, fields: { status: 'done' } });
+	expect(
+		await dispatcher.record(itemId, retry, { type: 'monitor', session: 'exited' })
+	).toMatchObject({
+		status: 'recorded',
+		run: { state: 'finished', outcome: 'done' }
+	});
+	expect(repo.readSnapshot(itemId).runs).toMatchObject([
+		{ id: first.id, revision: failed.run.revision + 1, outcome: 'failed', redone_by: retry.rung },
+		{ revision: -1, outcome: 'failed', redone_by: null },
+		{ id: retry.id, outcome: 'done' }
+	]);
+	expect(repo.managedRuns()).toEqual([]);
 }
