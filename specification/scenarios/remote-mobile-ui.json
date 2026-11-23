@@ -83,6 +83,11 @@
 			"coverage": "required"
 		},
 		{
+			"id": "phone-vault-entry",
+			"title": "The Connection dialog offers the native Vault inbox to the authorized phone",
+			"coverage": "required"
+		},
+		{
 			"id": "phone-workspace",
 			"title": "phone workspace",
 			"coverage": "required"
@@ -222,6 +227,7 @@
 				"phone-scan-invalid",
 				"phone-scan-expired",
 				"phone-connected",
+				"phone-vault-entry",
 				"phone-workspace",
 				"phone-offline",
 				"phone-revoked"
