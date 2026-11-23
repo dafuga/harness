@@ -32,7 +32,7 @@
 			"desktopBackend",
 			"Backend",
 			"preserveMacProfile",
-			"migrateMacSafeStorage"
+			"prepareDesktopStorage"
 		]
 	},
 	"contract": {
@@ -45,10 +45,10 @@
 				"description": "The Electron application during early startup. Its resource directory locates the signed migration helper and its paths and switches select the profile."
 			},
 			{
-				"name": "migrateMacSafeStorage.app",
+				"name": "prepareDesktopStorage.app",
 				"type": "App",
 				"required": true,
-				"description": "The Electron application during early startup. Its resource directory locates the signed migration helper and its paths and switches select the profile."
+				"description": "The Electron application whose readiness and active profile determine whether Safe Storage migration is needed."
 			}
 		],
 		"outputs": [
@@ -56,9 +56,7 @@
 				"name": "initializeDesktop",
 				"type": "Promise<BrowserWindow | null>",
 				"description": "The desktop window after its renderer loads, or null when another instance owns the profile lock or when the signed Mac app cannot migrate existing encrypted data. Either null path quits before starting the backend.",
-				"examples": [
-					null
-				]
+				"examples": [null]
 			}
 		],
 		"errors": [
@@ -78,9 +76,7 @@
 						"name": "initializeDesktop",
 						"type": "Promise<BrowserWindow | null>",
 						"description": "The desktop window after its renderer loads, or null when another instance owns the profile lock or when the signed Mac app cannot migrate existing encrypted data. Either null path quits before starting the backend.",
-						"examples": [
-							null
-						]
+						"examples": [null]
 					}
 				],
 				"errors": [
@@ -119,27 +115,27 @@
 				"errorStatus": "declared"
 			},
 			{
-				"name": "migrateMacSafeStorage",
+				"name": "prepareDesktopStorage",
 				"inputs": [
 					{
-						"name": "migrateMacSafeStorage.app",
+						"name": "prepareDesktopStorage.app",
 						"type": "App",
 						"required": true,
-						"description": "The Electron application during early startup. Its resource directory locates the signed migration helper and its paths and switches select the profile."
+						"description": "The Electron application whose readiness and active profile determine whether Safe Storage migration is needed."
 					}
 				],
 				"outputs": [
 					{
-						"name": "migrateMacSafeStorage",
-						"type": "boolean",
-						"description": "True when no migration is needed or the signed helper prepared the key. False when the helper is missing or fails, so startup preserves the encrypted files and quits."
+						"name": "prepareDesktopStorage",
+						"type": "Promise<boolean>",
+						"description": "Resolves true when startup can proceed. If migration fails, shows a recovery message, quits, and resolves false without changing the sealed profile files."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
 						"type": "thrown",
-						"description": "Inspecting an existing profile file can throw a filesystem error."
+						"description": "Electron readiness, filesystem inspection, or displaying the recovery message can fail."
 					}
 				],
 				"errorStatus": "declared"
@@ -284,10 +280,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-project-runs"
-	],
+	"scenarios": ["desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

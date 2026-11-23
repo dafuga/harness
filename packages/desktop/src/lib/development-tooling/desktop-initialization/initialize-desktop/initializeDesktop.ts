@@ -36,7 +36,7 @@ import { desktopIpc } from './desktopIpc';
 import { remoteControl } from './remoteControl';
 import { rendererAssets } from './rendererAssets';
 import { trustedSender } from './trustedSender';
-import { migrateMacSafeStorage, preserveMacProfile } from './macSafeStorage';
+import { prepareDesktopStorage, preserveMacProfile } from './macSafeStorage';
 import { NavigationValidator } from '../../../../validators/explorer-ui/NavigationValidator';
 
 protocol.registerSchemesAsPrivileged([
@@ -60,15 +60,7 @@ export async function initializeDesktop(): Promise<BrowserWindow | null> {
 		window?.show();
 		window?.focus();
 	});
-	await app.whenReady();
-	if (!migrateMacSafeStorage(app)) {
-		dialog.showErrorBox(
-			'Harness storage migration',
-			'Existing encrypted data is preserved. See the Mac release instructions to migrate the previous Safe Storage key.'
-		);
-		app.quit();
-		return null;
-	}
+	if (!(await prepareDesktopStorage(app))) return null;
 	const backend = desktopBackend(),
 		port = await backend.transport.listen(),
 		assets = resolve(app.getAppPath(), 'build');

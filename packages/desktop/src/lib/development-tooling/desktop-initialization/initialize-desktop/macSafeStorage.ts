@@ -3,6 +3,7 @@ import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync, lstatSync, mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { dialog } from 'electron';
 import type { App } from 'electron';
 
 function migrationHelper(): string | undefined {
@@ -34,7 +35,7 @@ export function preserveMacProfile(app: App): void {
 }
 
 /** The migration stays inside Keychain Services. The process exposes only an exit status. */
-export function migrateMacSafeStorage(app: App): boolean {
+function migrateMacSafeStorage(app: App): boolean {
 	if (!macRelease(app)) return true;
 	const directory = app.getPath('userData');
 	const needsLegacyKey = ['session.enc', 'remote.enc'].some((file) =>
@@ -46,4 +47,16 @@ export function migrateMacSafeStorage(app: App): boolean {
 	const args = [app.getName()];
 	if (app.commandLine.hasSwitch('harness-migrate-safe-storage')) args.push('--interactive');
 	return spawnSync(helper, args, { stdio: 'ignore' }).status === 0;
+}
+
+/** Starts after Electron is ready and quits safely when legacy data cannot be opened. */
+export async function prepareDesktopStorage(app: App): Promise<boolean> {
+	await app.whenReady();
+	if (migrateMacSafeStorage(app)) return true;
+	dialog.showErrorBox(
+		'Harness storage migration',
+		'Existing encrypted data is preserved. See the Mac release instructions to migrate the previous Safe Storage key.'
+	);
+	app.quit();
+	return false;
 }
