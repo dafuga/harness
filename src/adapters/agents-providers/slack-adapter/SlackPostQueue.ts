@@ -86,10 +86,8 @@ export class SlackPostQueue {
 	}
 }
 
-export function refusedSend(
-	requestId: string,
-	{ code, retryAfterMs }: SlackRequestError
-): PlatformSendResult {
+export function refusedSend(requestId: string, error: SlackRequestError): PlatformSendResult {
+	const { code, retryAfterMs } = error;
 	return {
 		status: code === 'delivery-unknown' ? 'unknown' : 'refused',
 		code,

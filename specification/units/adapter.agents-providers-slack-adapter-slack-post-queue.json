@@ -45,13 +45,8 @@
 				"required": true
 			},
 			{
-				"name": "refusedSend.code",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "refusedSend.retryAfterMs",
-				"type": "unknown",
+				"name": "refusedSend.error",
+				"type": "SlackRequestError",
 				"required": true
 			}
 		],
@@ -105,13 +100,8 @@
 						"required": true
 					},
 					{
-						"name": "refusedSend.code",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "refusedSend.retryAfterMs",
-						"type": "unknown",
+						"name": "refusedSend.error",
+						"type": "SlackRequestError",
 						"required": true
 					}
 				],
