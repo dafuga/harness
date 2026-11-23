@@ -1,5 +1,5 @@
 import { existsSync, mkdirSync, unlinkSync, writeFileSync } from 'node:fs';
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { test } from 'vitest';
 import { SnapshotAdapter } from '../../src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter';
@@ -35,12 +35,13 @@ async function withSnapshot<T>(
 }
 test('Exports files from the requested commit', async () => {
 	await withSnapshot(
-		{ 'package.json': '{"version":"1"}', 'src/app.ts': 'export const version = 1;' },
+		{ 'package.json': '{"version":"1"}', 'asset.bin': 'x'.repeat(9 * 1024 * 1024) },
 		['dist/**'],
 		async (root, commit, snapshot) => {
 			const packageJson = await readFile(join(snapshot.directory, 'package.json'), 'utf8');
 			const outsideCheckout = !resolve(snapshot.directory).startsWith(`${resolve(root)}/`);
 			expect(packageJson).toBe('{"version":"1"}');
+			expect((await stat(join(snapshot.directory, 'asset.bin'))).size).toBe(9 * 1024 * 1024);
 			expect(outsideCheckout).toBe(true);
 			recordExampleCases(
 				{
@@ -61,7 +62,6 @@ test('Exports files from the requested commit', async () => {
 		(root) => writeFileSync(join(root, 'package.json'), '{"version":"2"}')
 	);
 });
-
 test('Finds declared outputs that cover tracked files', async () => {
 	await withSnapshot(
 		{ 'dist/manifest.json': '{}', 'package.json': '{}' },
