@@ -35,25 +35,51 @@
 	<title>Harness · Connect a Harness device</title>
 </svelte:head>
 <HubFrame>
-	<hx-h1>Connect a Harness device</hx-h1>
-	{#if session.actor && browserReturn}
-		<hx-section class="hub-card">
-			<hx-p>Sign in to the Harness app as {session.actor.email}.</hx-p>
-			<hx-button type="button" disabled={submitting} onclick={() => void returnToApp()}>
-				Continue to Harness
-			</hx-button>
-			<hx-button type="button" disabled={submitting} onclick={() => void session.signOut()}>
-				Use another Google account
-			</hx-button>
-			{#if error}<hx-p role="alert">{error}</hx-p>{/if}
-		</hx-section>
-	{:else if session.actor}
-		{#key handoffId}<NativeApproval {handoffId} />{/key}
-	{:else}
-		<LoginPanel
-			reason={browserReturn
-				? 'Sign in with Google to return to the Harness app.'
-				: 'Sign in with Google to approve your Harness device. You then type the code it shows.'}
-		/>
-	{/if}
+	<hx-div class="gate">
+		<hx-h1>Connect a Harness device</hx-h1>
+		{#if session.actor && browserReturn}
+			<hx-section class="hub-card gate-card">
+				<hx-p class="muted">Sign in to the Harness app as {session.actor.email}.</hx-p>
+				<hx-button type="button" disabled={submitting} onclick={() => void returnToApp()}>
+					Continue to Harness
+				</hx-button>
+				<hx-button type="button" disabled={submitting} onclick={() => void session.signOut()}>
+					Use another Google account
+				</hx-button>
+				{#if error}<hx-p role="alert">{error}</hx-p>{/if}
+			</hx-section>
+		{:else if session.actor}
+			{#key handoffId}<NativeApproval {handoffId} />{/key}
+		{:else}
+			<LoginPanel
+				reason={browserReturn
+					? 'Sign in with Google to return to the Harness app.'
+					: 'Sign in with Google to approve your Harness device. You then type the code it shows.'}
+			/>
+		{/if}
+	</hx-div>
 </HubFrame>
+
+<style>
+	.gate {
+		display: grid;
+		gap: var(--hx-space-18);
+		text-align: center;
+	}
+	.gate :global(.gate-card) {
+		justify-self: center;
+		width: min(100%, 480px);
+		text-align: left;
+	}
+	.gate :global(.gate-card > :first-child) {
+		margin-top: 0;
+	}
+	.gate :global(.code-field),
+	.gate :global(.code-field input) {
+		min-height: 44px;
+		font-family: var(--hx-font-family-code);
+	}
+	.gate :global(.gate-card button) {
+		min-height: 44px;
+	}
+</style>
