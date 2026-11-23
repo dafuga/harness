@@ -8,6 +8,7 @@ import { RemoteHostRecordService } from './RemoteHostRecordService';
 import { RemoteHostRuntimeService } from './RemoteHostRuntimeService';
 import { RemoteHostSwitchService } from './remote-host-switch-service/RemoteHostSwitchService';
 import { RemotePairingControlService } from './RemotePairingControlService';
+import { vaultMacStatus } from './vaultPhone';
 
 /**
  * Remote access of this computer: off until the person turns it on, and only with OS encryption.
@@ -77,7 +78,7 @@ export class RemoteHostService {
 			{ value: state } = this.record,
 			supported = this.record.available(),
 			projects = await this.options.shared.registry.list().catch(() => []);
-		return remoteHostStatus({
+		const status = remoteHostStatus({
 			supported,
 			state,
 			runtime,
@@ -86,6 +87,9 @@ export class RemoteHostService {
 			name: this.name(),
 			projects
 		});
+		const vault = this.options.shared.vaultPhone;
+		if (status.enabled && vault) status.vault = await vaultMacStatus(vault, status.devices);
+		return status;
 	}
 	current(): { state: RemoteHostState; runtime: RemoteHostRuntimeService } {
 		const { value: state } = this.record;

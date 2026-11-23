@@ -1,6 +1,8 @@
 import { statSync } from 'node:fs';
+import { getuid } from 'node:process';
 import { dirname, join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
+import { vaultMacStatus } from '../../../packages/desktop/src/services/networking-security/remote-host-service/vaultPhone';
 import { VaultBrokerClientAdapter } from '../../../src/adapters/accounts-access/VaultBrokerClientAdapter';
 import { VaultBrokerServerAdapter } from '../../../src/adapters/accounts-access/VaultBrokerServerAdapter';
 import { VaultRunnerPreflightService } from '../../../src/services/accounts-access/VaultRunnerPreflightService';
@@ -38,7 +40,7 @@ async function served(peer: number | null = sessionUid) {
 	const authorization = (input: ReturnType<typeof sessionRequest>) =>
 		executor.attest(input, {
 			brokerId,
-			uid: sessionUid,
+			uid: peer ?? sessionUid,
 			issuedAt: fixture.clock.now,
 			expiresAt: fixture.clock.now + 45_000
 		});
@@ -136,3 +138,71 @@ test('an unattested request or an unknown peer never reaches the phone', async (
 		expect(server.audit.read()).toEqual([]);
 	}
 });
+
+test('the owner reads safe request states while other Unix peers are refused', async () => {
+	const owner = getuid!();
+	const run = await served(owner);
+	const path = '/v1/operator/requests';
+	const snapshot = () => run.client.call(path, {});
+	const input = { ...sessionRequest(run.seal.runnerKey()), reason: canary.password };
+	const created = await run.client.call<Awaited<ReturnType<typeof run.broker.create>>>(
+		'/v1/session/requests',
+		{ ...input, preflight: run.authorization(input) }
+	);
+	const row = {
+		requestId: created.requestId,
+		site: input.site,
+		action: input.action,
+		expiresAt: created.expiresAt,
+		status: 'pending'
+	};
+	expect(await snapshot()).toEqual([row]);
+
+	await expectPinnedMac(run, row);
+
+	const decision = sign(run, input, approval(input, created, run));
+	await run.client.call('/v1/device/decision', decision);
+	expect(await snapshot()).toEqual([{ ...row, status: 'approved' }]);
+	const ticket = { requestId: created.requestId, receipt: created.receipt };
+	await run.client.call('/v1/session/cancel', ticket);
+	expect(await snapshot()).toEqual([{ ...row, status: 'canceled' }]);
+
+	const next = sessionRequest(run.seal.runnerKey());
+	await run.client.call('/v1/session/requests', { ...next, preflight: run.authorization(next) });
+	run.clock.now += 45_000;
+	expect(await snapshot()).toMatchObject([{ status: 'expired' }, { status: 'canceled' }]);
+	expect(run.audit.read().filter(({ event }) => event === 'expiry')).toHaveLength(1);
+	for (const uid of [null, owner + 1]) {
+		const other = await served(uid);
+		await expect(other.client.call(path, {})).rejects.toMatchObject({ status: 403 });
+	}
+});
+
+async function expectPinnedMac(run: Awaited<ReturnType<typeof served>>, row: object) {
+	const config = {
+		phone: 'ab'.repeat(20),
+		deviceId: run.phone.deviceId,
+		generation: 3,
+		origin,
+		socketPath: run.socketPath
+	};
+	const paired = {
+		deviceId: config.phone,
+		generation: 3,
+		name: 'Fixture iPhone',
+		online: true,
+		platform: 'ios',
+		projectIds: [],
+		agents: false,
+		approvedAt: new Date().toISOString(),
+		lastSeenAt: null
+	};
+	await expect(vaultMacStatus(config, [paired])).resolves.toEqual({
+		phone: { name: paired.name, online: true },
+		requests: [row]
+	});
+	await expect(vaultMacStatus(config, [{ ...paired, generation: 4 }])).resolves.toEqual({
+		phone: null,
+		requests: null
+	});
+}

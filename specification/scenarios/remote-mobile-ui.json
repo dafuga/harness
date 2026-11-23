@@ -118,6 +118,16 @@
 			"coverage": "required"
 		},
 		{
+			"id": "desktop-vault-pending",
+			"title": "Mac shows a pending Vault request and its paired iPhone",
+			"coverage": "required"
+		},
+		{
+			"id": "desktop-vault-decisions",
+			"title": "Mac shows sanitized Vault decision states after refresh",
+			"coverage": "required"
+		},
+		{
 			"id": "desktop-code-hidden",
 			"title": "Pairing code withdrawn: no QR code is shown",
 			"coverage": "required"
@@ -173,7 +183,7 @@
 			"id": "host",
 			"kind": "e2e",
 			"runner": "command",
-			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-remote-host.spec.ts",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-remote-host.spec.ts tests/e2e/ui-remote-vault.spec.ts",
 			"cwd": "packages/desktop",
 			"timeoutMs": 240000
 		},
@@ -246,7 +256,9 @@
 				"desktop-approval",
 				"desktop-access",
 				"desktop-code-hidden",
-				"desktop-code-expired"
+				"desktop-code-expired",
+				"desktop-vault-pending",
+				"desktop-vault-decisions"
 			],
 			"viewports": ["desktop"],
 			"provenance": "actual-capture",

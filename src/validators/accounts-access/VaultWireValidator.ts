@@ -65,6 +65,19 @@ export const vaultSessionSubmission = vaultSessionRequest.extend({
 	preflight: vaultRunnerPreflight.optional()
 });
 
+/** This bounded operator response is safe to send to the local desktop renderer. */
+export const vaultOperatorRequests = z
+	.array(
+		z.strictObject({
+			requestId: hex(32),
+			site: identifier,
+			action: identifier,
+			expiresAt: timestamp,
+			status: z.enum(['pending', 'approved', 'denied', 'delivered', 'expired', 'canceled'])
+		})
+	)
+	.max(16);
+
 export const vaultTicket = z.strictObject({ requestId: hex(32), receipt: binary(32) });
 
 export const vaultProof = z.strictObject({

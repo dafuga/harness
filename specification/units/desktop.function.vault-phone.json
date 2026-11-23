@@ -4,7 +4,7 @@
 	"uid": "u_5uyy7czfil",
 	"kind": "function",
 	"title": "Vault phone bridge",
-	"responsibility": "Proxies synthetic Vault challenges, queue reads and signed decisions for one approved Harness Remote device and generation.",
+	"responsibility": "Proxies signed synthetic Vault phone operations for one approved pairing and reads sanitized Vault status for the local Mac.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -14,6 +14,7 @@
 		],
 		"symbols": [
 			"loadVaultPhone",
+			"vaultMacStatus",
 			"isVaultPhoneMethod",
 			"vaultPhone",
 			"VaultPhoneMethod",
@@ -29,6 +30,18 @@
 				"type": "string",
 				"required": false,
 				"description": "Optional absolute path to the desktop fixture configuration. An omitted, unreadable, or invalid path leaves the inbox disabled."
+			},
+			{
+				"name": "vaultMacStatus.config",
+				"type": "VaultPhoneConfig",
+				"required": true,
+				"description": "Validated local broker socket and the exact approved Remote device ID and pairing generation designated for Vault."
+			},
+			{
+				"name": "vaultMacStatus.devices",
+				"type": "RemoteHostStatus['devices']",
+				"required": true,
+				"description": "Current approved Remote devices. The bridge matches both ID and generation before reading the broker."
 			},
 			{
 				"name": "isVaultPhoneMethod.method",
@@ -64,6 +77,11 @@
 				"name": "vaultPhone",
 				"type": "VaultPhoneCall | undefined",
 				"description": "A scoped broker caller when the approved device and generation match. Requests with valid proofs produce public identity, a challenge, the synthetic queue, or decision status."
+			},
+			{
+				"name": "vaultMacStatus",
+				"type": "Promise<NonNullable<RemoteHostStatus['vault']>>",
+				"description": "Paired phone name and connection status, with a bounded list of recent synthetic request states. A null request list means the local broker could not provide a valid response. A successful empty reply yields an empty list."
 			}
 		],
 		"errors": [
@@ -93,7 +111,33 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "vaultMacStatus",
+				"inputs": [
+					{
+						"name": "vaultMacStatus.config",
+						"type": "VaultPhoneConfig",
+						"required": true,
+						"description": "Validated local broker socket and the exact approved Remote device ID and pairing generation designated for Vault."
+					},
+					{
+						"name": "vaultMacStatus.devices",
+						"type": "RemoteHostStatus['devices']",
+						"required": true,
+						"description": "Current approved Remote devices. The bridge matches both ID and generation before reading the broker."
+					}
+				],
+				"outputs": [
+					{
+						"name": "vaultMacStatus",
+						"type": "Promise<NonNullable<RemoteHostStatus['vault']>>",
+						"description": "Paired phone name and connection status, with a bounded list of recent synthetic request states. A null request list means the local broker could not provide a valid response. A successful empty reply yields an empty list."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "isVaultPhoneMethod",
@@ -113,7 +157,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "vaultPhone",

@@ -35,6 +35,8 @@ test.skipIf(process.platform !== 'darwin')(
 				await verifyDecision(run, 'api-token', 'token', { token: 'synthetic-ios-api-token' });
 				await verifyDecision(run, 'oauth-device', 'grant', null);
 				await verifyDecision(run, 'browser', 'deny', null);
+				await verifyStaleReview(run, 'canceled');
+				await verifyStaleReview(run, 'expired');
 			} finally {
 				await inbox.close();
 			}
@@ -170,4 +172,30 @@ async function verifyNativeRefusals(
 		decision: 'token'
 	});
 	expect(wrongMethod).toEqual(refused);
+}
+
+/** A review held open on the paired client cannot authorize a canceled or expired request. */
+async function verifyStaleReview(run: NativeVaultTestRun, terminal: 'canceled' | 'expired') {
+	const runner = run.fixture.seal.runnerKey();
+	const created = await run.inbox.create(sessionRequest(runner, { method: 'api-token' }));
+	const ticket = { requestId: created.requestId, receipt: created.receipt };
+	const queue = await run.phone.write<VaultProof>(await challenge(run));
+	const entries = (await run.inbox.call('vaultQueue', queue)) as VaultQueueEntry[];
+	const request = entries.find((entry) => entry.requestId === created.requestId);
+	expect(request).toBeDefined();
+	const proof = await run.phone.write<VaultProof>({
+		...(await challenge(run)),
+		request,
+		decision: 'token'
+	});
+
+	if (terminal === 'expired') run.fixture.clock.now = created.expiresAt;
+	else expect(run.inbox.broker.cancel(ticket, sessionUid)).toBe('canceled');
+	await expect(run.inbox.call('vaultDecision', proof)).rejects.toMatchObject({
+		code: 'method-denied'
+	});
+	const refresh = await run.phone.write<VaultProof>(await challenge(run));
+	expect(await run.inbox.call('vaultQueue', refresh)).toEqual([]);
+	expect(run.inbox.broker.status(ticket, sessionUid)).toBe(terminal);
+	expect(() => run.inbox.broker.claim(ticket, sessionUid)).toThrow('Approval is unavailable.');
 }

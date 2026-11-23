@@ -2,6 +2,7 @@
 import { chmodSync, mkdirSync, rmSync } from 'node:fs';
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import { dirname } from 'node:path';
+import { getuid } from 'node:process';
 import { z } from 'zod';
 import { VaultBrokerError } from '../../validators/accounts-access/VaultBrokerError';
 import {
@@ -54,6 +55,11 @@ export class VaultBrokerServerAdapter {
 			'/v1/session/finish': route(vaultLeaseCall, (body, uid) =>
 				keeper.finish(body.lease, body.session, uid)
 			),
+			'/v1/operator/requests': route(z.strictObject({}), (_body, uid) => {
+				if (uid === null || uid !== getuid?.())
+					throw new VaultBrokerError(403, 'The operator must own the broker process.');
+				return broker.operatorRequests();
+			}),
 			'/v1/device/challenge': route(vaultChallenge, (body) => devices.issue(body.deviceId)),
 			'/v1/device/requests': route(vaultProof, (body) => broker.queue(body)),
 			'/v1/device/decision': route(vaultProof, (body) => ({ status: broker.decide(body) }))

@@ -16,6 +16,14 @@
 	 */
 	let open = $state(false);
 	const status = $derived(store.status);
+	const vaultLabels = {
+		pending: 'Waiting for iPhone',
+		approved: 'Approved',
+		denied: 'Denied',
+		delivered: 'Approval delivered',
+		expired: 'Expired',
+		canceled: 'Canceled'
+	};
 	const unavailable = 'Phone access is not available in this app.';
 	/** A code that a phone already scanned is spent: the request takes its place. */
 	const scannable = $derived(
@@ -48,6 +56,32 @@
 							projects={status.projects}
 							{store}
 						/>{/each}<RemoteDevices devices={status.devices} projects={status.projects} {store} />
+					{#if status.vault}
+						{@const vault = status.vault}
+						<hx-section aria-label="Vault requests">
+							<hx-h3>Vault requests</hx-h3>
+							{#if vault.phone}
+								<hx-p
+									>Open Vault requests in Harness on {vault.phone.name} to review with Face ID.</hx-p
+								>
+								{#if !vault.phone.online}<hx-p>Connect {vault.phone.name} to this Mac.</hx-p>{/if}
+								{#if !vault.requests}<hx-p>Vault status is unavailable.</hx-p>
+								{:else if vault.requests.length === 0}<hx-p>No recent Vault requests.</hx-p>
+								{:else}<hx-ul
+										>{#each vault.requests as entry (entry.requestId)}
+											<hx-li
+												>{entry.site} · {entry.action} · {entry.requestId.slice(0, 8)} · {vaultLabels[
+													entry.status
+												]}</hx-li
+											>
+										{/each}</hx-ul
+									>{/if}
+							{:else}<hx-p>The iPhone configured for Vault is no longer paired.</hx-p>{/if}
+							<hx-button type="button" disabled={store.busy} onclick={() => void store.refresh()}>
+								Refresh Vault status
+							</hx-button>
+						</hx-section>
+					{/if}
 					<hx-div class="remote-actions">
 						{#if !scannable}<hx-button
 								type="button"

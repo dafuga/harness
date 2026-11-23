@@ -4,7 +4,7 @@
 	"uid": "u_pqvytes3sn",
 	"kind": "component",
 	"title": "Remote host panel",
-	"responsibility": "Manages computer-side phone access, pairing offers, pending approvals and approved devices.",
+	"responsibility": "Manages computer-side phone access, pairing offers, pending approvals, approved devices, and read-only Vault status.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -15,9 +15,13 @@
 			"desktop.component.remote-offer-code",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h3",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-small",
-			"reports.component.shared-primitives-atoms-html-span"
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-ul"
 		]
 	},
 	"owns": {
@@ -48,7 +52,7 @@
 			{
 				"name": "RemoteHostPanel",
 				"type": "markup",
-				"description": "Renders no markup until the store has a status; then shows phone-access summary or controls based on compact, support, enabled, pairing, request, and device state. In compact mode the body and store error are visible only while open, and an offer already represented by a request is not shown as scannable."
+				"description": "Renders no markup until the store has a status; then shows phone-access summary or controls based on compact, support, enabled, pairing, request, and device state. In compact mode the body and store error are visible only while open, and an offer already represented by a request is not shown as scannable. When configured, it shows the paired phone, sanitized Vault request states and a refresh action."
 			}
 		],
 		"errors": [],
@@ -93,6 +97,21 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-atoms-html-h3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-section",
 			"via": "import",
 			"origin": "derived"
@@ -104,6 +123,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
 			"via": "import",
 			"origin": "derived"
 		}

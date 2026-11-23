@@ -1,0 +1,45 @@
+{
+	"name": "tkwbkn-native-vault-receipts",
+	"goal": "Show sanitized Vault request and decision states on the Mac and prove the same paired iPhone path with signed physical approval, denial, expiry, and interruption.",
+	"createdAt": "2026-11-23T20:13:17.370Z",
+	"updatedAt": "2026-11-23T20:37:33.380Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-23T20:13:36.029Z",
+			"evidence": "Parent scope: draft PR #255 at 395215870b and existing paired iPhone Face ID approval path. Read-only Mac view displays a bounded allowlist for the pinned pairing. Verify request, approved, denied, expiry, interrupted and unavailable states using synthetic fixtures only. Signed physical proof remains separate from automated browser and software rehearsals."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-23T20:18:09.960Z",
+			"evidence": "Reused PR #255 broker and phone inbox. Added owner-only Unix status projection, same pairing-generation selection, Mac refresh and state display, plus synthetic fixture expiry and SIGINT cancellation modes. The focused socket test initially failed with Unknown route and passed on the implementation."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-23T20:37:33.380Z",
+			"evidence": "Isolated app on harbor-mbp-2, source 09fb077cc9: 15 focused Vault and Swift software cases, stamped Mac renderer build a0c24a9f, and one Chromium worker passed. Captured and inspected pending and terminal screenshots. Verified real Unix peer, timeout and SIGINT cleanup. Operator runner c8fc0b7b88 passed the complete four-stage rehearsal with the Swift software signer, one broker, retained receipts, stale-decision refusal and socket cleanup. The signed main-app physical session remains pending."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
