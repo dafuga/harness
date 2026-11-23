@@ -41,7 +41,9 @@ export class DeviceOperationsService {
 			agents =
 				this.options.grant().agents && this.options.grant().comments !== false ? agentMethods : [];
 		const comments = this.options.grant().comments === false ? [] : commentMethods;
-		const tracker = this.options.trackerPull ? ['trackerReplicaPull' as const] : [];
+		const tracker: RemoteMethod[] = [];
+		if (this.options.trackerPull) tracker.push('trackerReplicaPull');
+		if (this.options.trackerPush) tracker.push('trackerReplicaPush');
 		return [attachMethod, ...reads, ...comments, ...agents, ...tracker];
 	}
 	async handle(request: WireRequest): Promise<unknown> {
@@ -50,7 +52,10 @@ export class DeviceOperationsService {
 			{ agents, projects } = this.options.grant();
 		if (method === 'listProjects')
 			return projects.map(({ id, name }) => ({ id, name, kind: 'local' }));
-		if (method === 'trackerReplicaPull') return await this.pullTracker(input);
+		if (method === 'trackerReplicaPull')
+			return await this.trackerCall(this.options.trackerPull, input);
+		if (method === 'trackerReplicaPush')
+			return await this.trackerCall(this.options.trackerPush, input);
 		if (method === 'providers') return agents ? this.options.providers.list() : [];
 		const project = await this.project(input),
 			payload = this.payload(method, input),
@@ -59,11 +64,13 @@ export class DeviceOperationsService {
 		this.live();
 		return this.shaped(method, await operation(payload));
 	}
-	private async pullTracker(input: Fields): Promise<unknown> {
-		const pull = this.options.trackerPull;
-		if (!pull) throw new RemoteFailure('method-denied');
+	private async trackerCall(
+		call: ((input: Fields) => Promise<unknown>) | undefined,
+		input: Fields
+	): Promise<unknown> {
+		if (!call) throw new RemoteFailure('method-denied');
 		this.live();
-		const value = await pull(input);
+		const value = await call(input);
 		this.live();
 		return value;
 	}

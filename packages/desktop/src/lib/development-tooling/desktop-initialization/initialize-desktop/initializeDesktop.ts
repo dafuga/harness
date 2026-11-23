@@ -107,6 +107,8 @@ function desktopBackend() {
 		registration = new RemoteRegistrationAdapter({ origin, credentials: () => hosted.read() }),
 		sockets = new RelaySocketAdapter(),
 		screen: { locked?: boolean } = {};
+	const phoneWriteDevice = process.env.HARNESS_TRACKER_PHONE_WRITE_DEVICE?.trim();
+	const phoneWriteToken = process.env.HARNESS_TRACKER_PHONE_WRITE_TOKEN;
 	const remote = new RemoteHostService({
 		store: new RemoteHostStoreAdapter({
 			file: resolve(directory, 'remote.enc'),
@@ -114,7 +116,14 @@ function desktopBackend() {
 		}),
 		register: (input) => registration.register(input),
 		open: (url, headers) => sockets.open(url, headers),
-		shared: { ...stores, trackerPhone: process.env.HARNESS_TRACKER_PHONE_DEVICE?.trim() },
+		shared: {
+			...stores,
+			trackerPhone: process.env.HARNESS_TRACKER_PHONE_DEVICE?.trim(),
+			trackerWrite:
+				phoneWriteDevice && phoneWriteToken
+					? { device: phoneWriteDevice, token: phoneWriteToken }
+					: undefined
+		},
 		locked: () => screen.locked
 	});
 	remote.onStatus((status) =>

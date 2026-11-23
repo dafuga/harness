@@ -8,7 +8,7 @@ const maxResponseBytes = 128 * 1024;
 
 /** This port trusts the authenticated device session and never uses a caller-supplied scope. */
 export function phoneTrackerPull(scopeParts: readonly string[], fetcher: TrackerPhoneFetcher) {
-	const scope = createHash('sha256').update(JSON.stringify(scopeParts)).digest('hex');
+	const scope = trackerScope(scopeParts);
 	return async (input: Record<string, unknown>) => {
 		const url = new URL(source);
 		url.searchParams.set('scope', scope);
@@ -21,6 +21,40 @@ export function phoneTrackerPull(scopeParts: readonly string[], fetcher: Tracker
 		if (!response.ok) throw new RemoteFailure('failed');
 		return await readProjection(response);
 	};
+}
+
+/** Forward a write using the current authenticated desktop's private loopback grant. */
+export function phoneTrackerPush(
+	scopeParts: readonly string[],
+	grant: { device: string; token: string },
+	fetcher: TrackerPhoneFetcher
+) {
+	const scope = trackerScope(scopeParts);
+	return async (input: Record<string, unknown>, signal: AbortSignal) => {
+		const body = JSON.stringify(input);
+		if (Buffer.byteLength(body) > 4096) throw new RemoteFailure('too-large');
+		const response = await fetcher(new URL(source + '/write'), {
+			method: 'POST',
+			headers: {
+				authorization: 'Bearer ' + grant.token,
+				'content-type': 'application/json',
+				'x-tracker-phone-device': grant.device,
+				'x-tracker-phone-scope': scope
+			},
+			body,
+			redirect: 'error',
+			cache: 'no-store',
+			signal: AbortSignal.any([signal, AbortSignal.timeout(8000)])
+		});
+		if (response.status === 403) throw new RemoteFailure('method-denied');
+		if (response.status >= 400 && response.status < 500) throw new RemoteFailure('invalid-message');
+		if (!response.ok) throw new RemoteFailure('failed');
+		return await readProjection(response);
+	};
+}
+
+function trackerScope(scopeParts: readonly string[]): string {
+	return createHash('sha256').update(JSON.stringify(scopeParts)).digest('hex');
 }
 
 function appendPosition(url: URL, input: Record<string, unknown>) {

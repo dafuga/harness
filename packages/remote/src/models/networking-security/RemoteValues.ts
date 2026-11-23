@@ -82,6 +82,7 @@ export const remoteMethods = [
 	attachMethod,
 	...readMethods,
 	'trackerReplicaPull',
+	'trackerReplicaPush',
 	...commentMethods,
 	...agentMethods,
 	...localMethods,
@@ -100,10 +101,12 @@ export const projectlessMethods: readonly RemoteMethod[] = [
 	'listProjects',
 	'deploymentActivities',
 	'trackerReplicaPull',
+	'trackerReplicaPush',
 	'providers'
 ];
 /** Answers remembered by request id: re-sending one of these never runs it twice. */
 export const mutationMethods: readonly RemoteMethod[] = [
+	'trackerReplicaPush',
 	...commentMethods,
 	...agentMethods,
 	'gameCreate',
