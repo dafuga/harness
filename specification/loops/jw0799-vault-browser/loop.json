@@ -2,7 +2,7 @@
 	"name": "jw0799-vault-browser",
 	"goal": "Prove synthetic Credential Vault browser execution, with one authenticated Unix CDP connection per lease, scoped egress and verified teardown",
 	"createdAt": "2026-11-22T16:33:25.329Z",
-	"updatedAt": "2026-11-23T16:06:09.606Z",
+	"updatedAt": "2026-11-23T18:53:38.467Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -36,7 +36,9 @@
 		{
 			"id": "cross-uid",
 			"title": "Qualify a real two-UID synthetic CDP handoff on MB2.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T18:53:38.467Z",
+			"evidence": "Daniel ran the frozen 69509c6567 fixture on MB2 at 18:49 UTC. The synthetic SMS case verified Chromium CDP handoff across harness-vault and UID 70, wrong-UID denial, logout, security verification and teardown. Email, crash recovery and DOM capture were outside this targeted run."
 		}
 	],
 	"evaluators": [
