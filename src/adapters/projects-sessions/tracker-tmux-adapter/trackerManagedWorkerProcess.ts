@@ -40,7 +40,8 @@ export async function launchTmux(
 	const { node, itemId, runId, token } = receipt;
 	const { script, command, clientPath, guestAuthFile } = execution;
 	const environment = [
-		`HOME=${command.profile}`,
+		`HOME=${command.home}`,
+		...(command.username ? [`USER=${command.username}`] : []),
 		`HARNESS_TRACKER_CONFIG=${clientPath}`,
 		`HARNESS_EXECUTABLE=${trackerExecutable}`,
 		'HARNESS_TRACKER_LEGACY_BIN=/dev/null/tracker',
