@@ -1,0 +1,195 @@
+headless-run: local Linux VM, up to 1 CPUs. Artifacts: /Users/danielfugere/.local/state/headless-run/artifacts-V0n53Y
+[WebServer] $ bun run sync:shared && vite dev --host 127.0.0.1 --port 5798 --strictPort --port "5913"
+[WebServer] $ bun run --cwd ../desktop svelte-kit sync && bun run --cwd ../reports svelte-kit sync
+[WebServer] ▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+[WebServer] 
+[WebServer]     tsconfig.json:2:12:
+[WebServer]       2 │   "extends": "./.svelte-kit/tsconfig.json",
+[WebServer]         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[WebServer] 
+
+Running 6 tests using 1 worker
+
+  ✘  1 tests/e2e/hub-gate-pages.spec.ts:59:2 › the invitation page is one narrow gate at phone (6.0s)
+  ✘  2 tests/e2e/hub-gate-pages.spec.ts:73:2 › the device approval page is one narrow gate at phone (6.0s)
+  ✘  3 tests/e2e/hub-gate-pages.spec.ts:59:2 › the invitation page is one narrow gate at tablet (5.5s)
+  ✘  4 tests/e2e/hub-gate-pages.spec.ts:73:2 › the device approval page is one narrow gate at tablet (6.0s)
+  ✘  5 tests/e2e/hub-gate-pages.spec.ts:59:2 › the invitation page is one narrow gate at laptop (6.0s)
+  ✘  6 tests/e2e/hub-gate-pages.spec.ts:73:2 › the device approval page is one narrow gate at laptop (6.1s)
+
+
+  1) tests/e2e/hub-gate-pages.spec.ts:59:2 › the invitation page is one narrow gate at phone ───────
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.hub-main').getByRole('heading')
+    Expected: 1
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('.hub-main').getByRole('heading') with timeout 5000ms
+      - waiting for locator('.hub-main').getByRole('heading')
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+      23 | 	const main = page.locator('.hub-main');
+      24 | 	await expect(main.getByRole('heading', { level: 1, name: title, exact: true })).toBeVisible();
+    > 25 | 	await expect(main.getByRole('heading')).toHaveCount(1);
+         | 	                                        ^
+      26 | }
+      27 |
+      28 | /** The card is narrow and centred, and the field and its button are touch-sized. */
+        at oneHeading (/workspace/packages/hub/tests/e2e/hub-gate-pages.spec.ts:25:42)
+        at /workspace/packages/hub/tests/e2e/hub-gate-pages.spec.ts:63:3
+
+    Error Context: ../../../tmp/headless-artifacts/hub-gate-pages-the-invitat-ce6b8-is-one-narrow-gate-at-phone/error-context.md
+
+  2) tests/e2e/hub-gate-pages.spec.ts:73:2 › the device approval page is one narrow gate at phone ──
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.hub-main').getByRole('heading')
+    Expected: 1
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('.hub-main').getByRole('heading') with timeout 5000ms
+      - waiting for locator('.hub-main').getByRole('heading')
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+      23 | 	const main = page.locator('.hub-main');
+      24 | 	await expect(main.getByRole('heading', { level: 1, name: title, exact: true })).toBeVisible();
+    > 25 | 	await expect(main.getByRole('heading')).toHaveCount(1);
+         | 	                                        ^
+      26 | }
+      27 |
+      28 | /** The card is narrow and centred, and the field and its button are touch-sized. */
+        at oneHeading (/workspace/packages/hub/tests/e2e/hub-gate-pages.spec.ts:25:42)
+        at /workspace/packages/hub/tests/e2e/hub-gate-pages.spec.ts:77:3
+
+    Error Context: ../../../tmp/headless-artifacts/hub-gate-pages-the-device--fd15b-is-one-narrow-gate-at-phone/error-context.md
+
+  3) tests/e2e/hub-gate-pages.spec.ts:59:2 › the invitation page is one narrow gate at tablet ──────
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.hub-main').getByRole('heading')
+    Expected: 1
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('.hub-main').getByRole('heading') with timeout 5000ms
+      - waiting for locator('.hub-main').getByRole('heading')
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+      23 | 	const main = page.locator('.hub-main');
+      24 | 	await expect(main.getByRole('heading', { level: 1, name: title, exact: true })).toBeVisible();
+    > 25 | 	await expect(main.getByRole('heading')).toHaveCount(1);
+         | 	                                        ^
+      26 | }
+      27 |
+      28 | /** The card is narrow and centred, and the field and its button are touch-sized. */
+        at oneHeading (/workspace/packages/hub/tests/e2e/hub-gate-pages.spec.ts:25:42)
+        at /workspace/packages/hub/tests/e2e/hub-gate-pages.spec.ts:63:3
+
+    Error Context: ../../../tmp/headless-artifacts/hub-gate-pages-the-invitat-e1846-s-one-narrow-gate-at-tablet/error-context.md
+
+  4) tests/e2e/hub-gate-pages.spec.ts:73:2 › the device approval page is one narrow gate at tablet ─
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.hub-main').getByRole('heading')
+    Expected: 1
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('.hub-main').getByRole('heading') with timeout 5000ms
+      - waiting for locator('.hub-main').getByRole('heading')
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+      23 | 	const main = page.locator('.hub-main');
+      24 | 	await expect(main.getByRole('heading', { level: 1, name: title, exact: true })).toBeVisible();
+    > 25 | 	await expect(main.getByRole('heading')).toHaveCount(1);
+         | 	                                        ^
+      26 | }
+      27 |
+      28 | /** The card is narrow and centred, and the field and its button are touch-sized. */
+        at oneHeading (/workspace/packages/hub/tests/e2e/hub-gate-pages.spec.ts:25:42)
+        at /workspace/packages/hub/tests/e2e/hub-gate-pages.spec.ts:77:3
+
+    Error Context: ../../../tmp/headless-artifacts/hub-gate-pages-the-device--0a82d-s-one-narrow-gate-at-tablet/error-context.md
+
+  5) tests/e2e/hub-gate-pages.spec.ts:59:2 › the invitation page is one narrow gate at laptop ──────
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.hub-main').getByRole('heading')
+    Expected: 1
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('.hub-main').getByRole('heading') with timeout 5000ms
+      - waiting for locator('.hub-main').getByRole('heading')
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+      23 | 	const main = page.locator('.hub-main');
+      24 | 	await expect(main.getByRole('heading', { level: 1, name: title, exact: true })).toBeVisible();
+    > 25 | 	await expect(main.getByRole('heading')).toHaveCount(1);
+         | 	                                        ^
+      26 | }
+      27 |
+      28 | /** The card is narrow and centred, and the field and its button are touch-sized. */
+        at oneHeading (/workspace/packages/hub/tests/e2e/hub-gate-pages.spec.ts:25:42)
+        at /workspace/packages/hub/tests/e2e/hub-gate-pages.spec.ts:63:3
+
+    Error Context: ../../../tmp/headless-artifacts/hub-gate-pages-the-invitat-c3b96-s-one-narrow-gate-at-laptop/error-context.md
+
+  6) tests/e2e/hub-gate-pages.spec.ts:73:2 › the device approval page is one narrow gate at laptop ─
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.hub-main').getByRole('heading')
+    Expected: 1
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('.hub-main').getByRole('heading') with timeout 5000ms
+      - waiting for locator('.hub-main').getByRole('heading')
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+      23 | 	const main = page.locator('.hub-main');
+      24 | 	await expect(main.getByRole('heading', { level: 1, name: title, exact: true })).toBeVisible();
+    > 25 | 	await expect(main.getByRole('heading')).toHaveCount(1);
+         | 	                                        ^
+      26 | }
+      27 |
+      28 | /** The card is narrow and centred, and the field and its button are touch-sized. */
+        at oneHeading (/workspace/packages/hub/tests/e2e/hub-gate-pages.spec.ts:25:42)
+        at /workspace/packages/hub/tests/e2e/hub-gate-pages.spec.ts:77:3
+
+    Error Context: ../../../tmp/headless-artifacts/hub-gate-pages-the-device--568c9-s-one-narrow-gate-at-laptop/error-context.md
+
+  6 failed
+    tests/e2e/hub-gate-pages.spec.ts:59:2 › the invitation page is one narrow gate at phone ────────
+    tests/e2e/hub-gate-pages.spec.ts:73:2 › the device approval page is one narrow gate at phone ───
+    tests/e2e/hub-gate-pages.spec.ts:59:2 › the invitation page is one narrow gate at tablet ───────
+    tests/e2e/hub-gate-pages.spec.ts:73:2 › the device approval page is one narrow gate at tablet ──
+    tests/e2e/hub-gate-pages.spec.ts:59:2 › the invitation page is one narrow gate at laptop ───────
+    tests/e2e/hub-gate-pages.spec.ts:73:2 › the device approval page is one narrow gate at laptop ──
