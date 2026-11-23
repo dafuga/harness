@@ -47,7 +47,9 @@ function phoneOf(side: Side, keys: RemoteKeyPair, deviceId: string) {
 	};
 	return { address, client, received, handshake, attach };
 }
-async function setup(trackerEnabled = false) {
+const writeToken = 'synthetic-fixture-write-token-0002';
+
+async function setup(trackerEnabled = false, writeEnabled = false) {
 	const f = await remoteFixture(),
 		hostKeys = await remoteKeys(),
 		deviceKeys = await remoteKeys(),
@@ -70,8 +72,18 @@ async function setup(trackerEnabled = false) {
 		inbox = new Map<string, (packet: SecurePacket) => void>();
 	const { registry, arbiter, providers, renderMockups } = f;
 	const trackerRequests: URL[] = [];
-	const trackerFetcher = async (input: URL | string | Request) => {
-		trackerRequests.push(new URL(String(input)));
+	const trackerFetcher = async (input: URL | string | Request, init?: RequestInit) => {
+		const url = new URL(String(input));
+		trackerRequests.push(url);
+		if (url.pathname.endsWith('/write')) {
+			const headers = new Headers(init?.headers);
+			expect(headers.get('authorization')).toBe('Bearer ' + writeToken);
+			expect(headers.get('x-tracker-phone-device')).toBe(deviceId);
+			expect(headers.get('x-tracker-phone-scope')).toMatch(/^[a-f0-9]{64}$/);
+			expect(url.search).toBe('');
+			const { intentId } = JSON.parse(String(init?.body));
+			return Response.json({ intentId, status: 'accepted' });
+		}
 		return Response.json({ kind: 'snapshot', rows: [], continuation: null, cursor: 'fixture' });
 	};
 	const sessions = new RemoteDeviceSessionsService({
@@ -81,7 +93,8 @@ async function setup(trackerEnabled = false) {
 			providers,
 			renderMockups,
 			outbox: new CommentOutboxService(),
-			...(trackerEnabled ? { trackerPhone: deviceId, trackerFetcher } : {})
+			...(trackerEnabled ? { trackerPhone: deviceId, trackerFetcher } : {}),
+			...(writeEnabled ? { trackerWrite: { device: deviceId, token: writeToken } } : {})
 		},
 		host: () => ({ id: hostId, name: 'Fixture Mac', keys: hostKeys }),
 		device: (id) => records.get(id) ?? null,
@@ -91,6 +104,7 @@ async function setup(trackerEnabled = false) {
 		},
 		drop: (address, code) => drops.push({ address, code })
 	});
+
 	const phone = (keys: RemoteKeyPair = deviceKeys, id = deviceId) =>
 		phoneOf({ sessions, inbox, hostId, hostKey: hostKeys.publicKey }, keys, id);
 	return { f, sessions, records, sent, drops, phone, deviceId, deviceKeys, trackerRequests };
@@ -179,4 +193,24 @@ test('only the authorized paired phone can pull the local Tracker projection', a
 		code: 'method-denied'
 	});
 	expect(disabled.trackerRequests).toEqual([]);
+}, 30000);
+
+test('keeps phone Tracker writes outside the paired read grant', async () => {
+	const readOnly = await setup(true);
+	const permitted = await setup(true, true);
+	const denied = readOnly.phone(),
+		writer = permitted.phone();
+	expect((await denied.attach()).methods).not.toContain('trackerReplicaPush');
+	expect((await writer.attach()).methods).toContain('trackerReplicaPush');
+	const intentId = '00000000-0000-4000-8000-000000000011';
+	const input = { version: 1, intentId, itemId: 'fixture001', action: 'note', text: 'Fixture' };
+	await expect(denied.client.request('trackerReplicaPush', input)).rejects.toMatchObject({
+		code: 'method-denied'
+	});
+	expect(readOnly.trackerRequests).toHaveLength(0);
+	expect(await writer.client.request('trackerReplicaPush', input)).toEqual({
+		intentId,
+		status: 'accepted'
+	});
+	expect(JSON.stringify(permitted.sent)).not.toContain(writeToken);
 }, 30000);
