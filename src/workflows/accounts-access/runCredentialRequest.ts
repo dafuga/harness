@@ -11,6 +11,10 @@ import {
 } from '../../utils/accounts-access/vaultRecipe';
 import type { VerifiedRecipe } from '../../utils/accounts-access/vaultRecipe.types';
 import { VaultBrokerError } from '../../validators/accounts-access/VaultBrokerError';
+import {
+	VaultWireValidator,
+	vaultRunnerPreflight
+} from '../../validators/accounts-access/VaultWireValidator';
 import type { VaultSessionRequest } from '../../validators/accounts-access/VaultWireValidator.types';
 import type {
 	CredentialRecipeFiles,
@@ -59,6 +63,14 @@ export async function runCredentialRequest(
 	);
 	const choice = vaultMethod(recipe, options.action, readiness);
 	if (choice.status !== 'selected') return { status: choice.status, reason: choice.reason };
+	if (!options.preflight) {
+		return { status: 'blocked', reason: 'A valid executor preflight is required.' };
+	}
+	const preflight = new VaultWireValidator().json(
+		vaultRunnerPreflight,
+		readFileSync(options.preflight),
+		'executor preflight'
+	);
 	const action = recipe.actions.find(({ id }) => id === options.action);
 	if (!action) throw new VaultBrokerError(400, 'Unknown recipe action.');
 	const input: VaultSessionRequest = {
@@ -79,6 +91,6 @@ export async function runCredentialRequest(
 		reason: options.reason
 	};
 	const client = new VaultBrokerClientAdapter({ socketPath: options.socket });
-	const created = await client.call<VaultCreated>('/v1/session/requests', input);
+	const created = await client.call<VaultCreated>('/v1/session/requests', { ...input, preflight });
 	return { status: 'requested', method: input.method, display: verified.display, ...created };
 }

@@ -15,9 +15,9 @@ import {
 	assertFixtureIsolated,
 	assertFixtureRemoved,
 	browserFixture,
-	denied,
-	withHttpsFixture
+	denied
 } from './support/credential-vault/dockerBrowser';
+import { withHttpsFixture } from './support/credential-vault/httpsFixture';
 import { verifyCrashRecovery } from './support/credential-vault/crashFixture';
 import { loginSyntheticFixture } from './support/credential-vault/privateBrowser';
 import { finishSyntheticFixture } from './support/credential-vault/teardownFixture';
@@ -29,23 +29,15 @@ test.skipIf(!image).each(['sms', 'email'] as const)(
 	'a reviewed %s OTP login stays private before scoped CDP handoff and logout',
 	async (channel) => {
 		await withHttpsFixture(image!, channel, async ({ id, ip, securityLog }) => {
-			const run = await browserFixture(image!);
+			const hosts = { [new URL(approved).hostname]: ip, [new URL(denied).hostname]: ip };
+			const run = await browserFixture(image!, { id, hosts });
+			const { guest } = run;
 			try {
-				const hosts = { [new URL(approved).hostname]: ip, [new URL(denied).hostname]: ip };
-				const guest = await run.docker.launch({
-					origins: [approved],
-					redirects: [],
-					network: { id, hosts }
-				});
-				try {
-					await loginSyntheticFixture(run, guest.pipe, channel);
-					await verifyBrowserLease(run, guest, ip, securityLog);
-				} finally {
-					await guest.close();
-					await assertFixtureRemoved(guest.owner);
-				}
+				await loginSyntheticFixture(run, guest.pipe, channel);
+				await verifyBrowserLease(run, guest, ip, securityLog);
 			} finally {
 				await run.close();
+				await assertFixtureRemoved(guest.owner);
 			}
 		});
 	},
@@ -141,31 +133,27 @@ async function proveSecretCapture({
 	ip: string;
 	securityLog(): Promise<string>;
 }) {
-	const run = await browserFixture(image!, true);
+	const run = await browserFixture(
+		image!,
+		{ id, hosts: { [new URL(approved).hostname]: ip } },
+		true
+	);
+	const { guest } = run;
 	try {
-		const guest = await run.docker.launch({
-			origins: [approved],
-			redirects: [],
-			network: { id, hosts: { [new URL(approved).hostname]: ip } }
-		});
 		const written: boolean[] = [];
-		try {
-			await loginSyntheticFixture(run, guest.pipe, 'sms', async (bytes) => {
-				written.push(Buffer.from(bytes).equals(Buffer.from('synthetic-capture-canary')));
-			});
-			expect(written).toEqual([true]);
-			const log = JSON.parse(await securityLog());
-			expect(log.active).toBe(0);
-			expect(log.events.map(({ kind }: { kind: string }) => kind)).toEqual([
-				'login',
-				'write',
-				'other'
-			]);
-		} finally {
-			await guest.close();
-			await assertFixtureRemoved(guest.owner);
-		}
+		await loginSyntheticFixture(run, guest.pipe, 'sms', async (bytes) => {
+			written.push(Buffer.from(bytes).equals(Buffer.from('synthetic-capture-canary')));
+		});
+		expect(written).toEqual([true]);
+		const log = JSON.parse(await securityLog());
+		expect(log.active).toBe(0);
+		expect(log.events.map(({ kind }: { kind: string }) => kind)).toEqual([
+			'login',
+			'write',
+			'other'
+		]);
 	} finally {
 		await run.close();
+		await assertFixtureRemoved(guest.owner);
 	}
 }

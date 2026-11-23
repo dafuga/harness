@@ -2,7 +2,7 @@
 import { chmodSync, mkdirSync, rmSync } from 'node:fs';
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import { dirname } from 'node:path';
-import type { z } from 'zod';
+import { z } from 'zod';
 import { VaultBrokerError } from '../../validators/accounts-access/VaultBrokerError';
 import {
 	VaultWireValidator,
@@ -10,7 +10,7 @@ import {
 	vaultLeaseCall,
 	vaultLeaseIssue,
 	vaultProof,
-	vaultSessionRequest,
+	vaultSessionSubmission,
 	vaultTicket
 } from '../../validators/accounts-access/VaultWireValidator';
 import type {
@@ -30,11 +30,14 @@ export class VaultBrokerServerAdapter {
 	private server: Server | null = null;
 
 	constructor(private readonly config: VaultBrokerServerConfig) {
-		const { broker, keeper, devices } = config;
+		const { broker, keeper, devices, preflight } = config;
 		const route = <T>(schema: z.ZodType<T>, run: (body: T, uid: number | null) => unknown) =>
 			({ schema, run }) as Route;
 		this.routes = {
-			'/v1/session/requests': route(vaultSessionRequest, (body, uid) => broker.create(body, uid)),
+			'/v1/session/preflight': route(z.strictObject({}), () => ({ brokerId: preflight.brokerId })),
+			'/v1/session/requests': route(vaultSessionSubmission, ({ preflight: proof, ...body }, uid) =>
+				broker.create(body, uid, preflight.verify(body, uid, proof))
+			),
 			'/v1/session/status': route(vaultTicket, (body, uid) => ({
 				status: broker.status(body, uid)
 			})),

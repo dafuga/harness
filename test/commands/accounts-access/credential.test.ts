@@ -1,10 +1,14 @@
 import { Command } from 'commander';
+import { execFileSync } from 'node:child_process';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterAll, afterEach, expect, test, vi } from 'vitest';
 import { VaultSealAdapter } from '../../../src/adapters/accounts-access/VaultSealAdapter';
 import { CredentialCommand } from '../../../src/commands/accounts-access/CredentialCommand';
+import { verifyCredentialRecipe } from '../../../src/workflows/accounts-access/runCredentialRequest';
 import { serveCredentialBroker } from '../../../src/workflows/accounts-access/serveCredentialBroker';
+import { sessionRequest } from '../../support/credential-vault/broker';
+import { syntheticExecutor } from '../../support/credential-vault/executor';
 import { FakePhone } from '../../support/credential-vault/phone';
 import { reviewed, syntheticRecipe } from '../../support/credential-vault/recipe';
 import { createTempDirectory } from '../../support/temporary';
@@ -109,25 +113,65 @@ test('an action with an unready API token is blocked and never becomes a browser
 	expect(result).toEqual({ status: 'blocked', reason: 'The api-token method is not ready.' });
 });
 
-test('a browser action is filed with the broker for phone approval', async () => {
+test('a browser action needs a signed preflight before it is filed for phone approval', async () => {
 	const paths = files();
 	const phone = new FakePhone();
+	const executor = syntheticExecutor();
 	const trust = join(paths.directory, 'trust.json');
 	writeFileSync(
 		trust,
 		JSON.stringify({
-			devices: [{ id: phone.deviceId, role: 'approver', signingKey: phone.signingKey }]
+			devices: [{ id: phone.deviceId, role: 'approver', signingKey: phone.signingKey }],
+			executors: [executor.pin]
 		})
 	);
 	const socket = join(paths.directory, 's', 'broker.sock');
+	const peerAddon = join(paths.directory, 'peer.node');
+	execFileSync('bash', ['deploy/vault/build-peer.sh', peerAddon]);
 	const served = await serveCredentialBroker({
 		socket,
 		state: join(paths.directory, 'state'),
 		trust,
+		peerAddon,
 		origin: 'https://vault.example.test'
 	});
 	closers.push(served.close);
-	const result = await run(requestArgs(paths, 'read-roster', 'browser', socket));
+	const args = requestArgs(paths, 'read-roster', 'browser', socket);
+	expect(await run(args)).toEqual({
+		status: 'blocked',
+		reason: 'A valid executor preflight is required.'
+	});
+	const { brokerId } = (await run(['--socket', socket, 'preflight'])) as { brokerId: string };
+	const runner = new VaultSealAdapter().runnerKey();
+	args[args.indexOf('--runner-key') + 1] = runner.publicKey;
+	const preflight = writePreflight(paths, executor, sessionRequest(runner), brokerId);
+	const result = await run([...args, '--preflight', preflight]);
 	expect(result).toMatchObject({ status: 'requested', method: 'browser' });
 	expect((result as { requestId: string }).requestId).toMatch(/^[0-9a-f]{32}$/u);
 });
+
+function writePreflight(
+	paths: ReturnType<typeof files>,
+	executor: ReturnType<typeof syntheticExecutor>,
+	request: ReturnType<typeof sessionRequest>,
+	brokerId: string
+): string {
+	const { recipe, digest } = verifyCredentialRecipe(paths);
+	const input = {
+		...request,
+		recipe: { site: recipe.site, revision: recipe.revision, digest },
+		origins: recipe.origins,
+		leaseMs: recipe.timeouts.leaseMs,
+		reason: 'Synthetic check.'
+	};
+	const file = join(paths.directory, 'preflight.json');
+	const issuedAt = Date.now();
+	const proof = executor.attest(input, {
+		brokerId,
+		uid: process.getuid!(),
+		issuedAt,
+		expiresAt: issuedAt + 30_000
+	});
+	writeFileSync(file, JSON.stringify(proof));
+	return file;
+}

@@ -5,7 +5,7 @@ import { join, resolve } from 'node:path';
 import { VaultBrokerClientAdapter } from '../../adapters/accounts-access/VaultBrokerClientAdapter';
 import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { runCredentialRequest } from '../../workflows/accounts-access/runCredentialRequest';
-import { serveCredentialBroker } from '../../workflows/accounts-access/serveCredentialBroker';
+import { runCredentialBroker } from '../../workflows/accounts-access/runCredentialBroker';
 import type { CredentialCommandOptions as Options } from './CredentialCommand.types';
 import { CredentialRecipeCommand } from './CredentialRecipeCommand';
 
@@ -41,9 +41,17 @@ export class CredentialCommand {
 			.command('serve')
 			.description('Run the broker on its owner-only Unix socket.')
 			.requiredOption('--state <dir>', 'Private state directory for the audit journal.')
-			.requiredOption('--trust <file>', 'Enrolled phone devices JSON.')
+			.requiredOption('--trust <file>', 'Enrolled phone and executor public keys.')
 			.requiredOption('--origin <url>', 'Approval origin the phones sign for.')
+			.option('--peer-addon <file>', 'Node-API module that checks the caller’s Unix user.')
 			.action(async (options: Options) => this.serve(options));
+		credential
+			.command('preflight')
+			.description('Print the broker instance ID.')
+			.action(async () => {
+				const client = new VaultBrokerClientAdapter({ socketPath: this.socket() });
+				print(await client.call('/v1/session/preflight', {}));
+			});
 		this.registerRequest(credential);
 		for (const [name, description] of Object.entries(calls)) {
 			const command = credential.command(name + ' <id>').description(description);
@@ -68,14 +76,12 @@ export class CredentialCommand {
 			.requiredOption('--environment <id>', 'Environment id.')
 			.requiredOption('--host <id>', 'Executor host id.')
 			.requiredOption('--runner-key <key>', 'Login runner X25519 public key, base64url.')
+			.option('--preflight <file>', 'Signed receipt from the isolated executor.')
 			.requiredOption('--reason <text>', 'Why the session needs this login.')
 			.option('--account <alias>', 'Expected recipe account alias.')
 			.option('--ready <kinds>', 'Comma-separated method kinds that can run now.', '')
 			.action(async (recipe: string, action: string, options: Options) => {
-				const given = Object.fromEntries(fields.map((key) => [key, options[key] ?? ''])) as Record<
-					(typeof fields)[number],
-					string
-				>;
+				const given = requestFields(options);
 				const ready = (options.ready ?? '').split(',').filter(Boolean);
 				const files = this.recipes.files(recipe, options);
 				const socket = this.socket();
@@ -85,6 +91,7 @@ export class CredentialCommand {
 						...given,
 						action,
 						account: options.account,
+						preflight: options.preflight,
 						ready,
 						socket
 					})
@@ -93,17 +100,13 @@ export class CredentialCommand {
 	}
 
 	private async serve(options: Options): Promise<void> {
-		const served = await serveCredentialBroker({
+		await runCredentialBroker({
 			socket: this.socket(),
 			state: resolve(options.state ?? ''),
 			trust: resolve(options.trust ?? ''),
 			origin: options.origin ?? '',
-			onTeardown: print
+			peerAddon: options.peerAddon && resolve(options.peerAddon)
 		});
-		print({ listening: served.socket });
-		await new Promise<void>((done) =>
-			process.once('SIGTERM', () => void served.close().then(done))
-		);
 	}
 
 	private call(name: string, id: string, options: Options): Promise<unknown> {
@@ -124,4 +127,11 @@ export class CredentialCommand {
 				join(homedir(), '.harness', 'vault', 'broker.sock')
 		);
 	}
+}
+
+function requestFields(options: Options): Record<(typeof fields)[number], string> {
+	return Object.fromEntries(fields.map((key) => [key, options[key] ?? ''])) as Record<
+		(typeof fields)[number],
+		string
+	>;
 }

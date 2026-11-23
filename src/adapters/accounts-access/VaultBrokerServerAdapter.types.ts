@@ -4,11 +4,13 @@ import type { z } from 'zod';
 import type { VaultDeviceRepository } from '../../repositories/accounts-access/VaultDeviceRepository';
 import type { VaultBrokerService } from '../../services/accounts-access/VaultBrokerService';
 import type { VaultLeaseKeeperService } from '../../services/accounts-access/VaultLeaseKeeperService';
+import type { VaultRunnerPreflightService } from '../../services/accounts-access/VaultRunnerPreflightService';
 
 export interface VaultBrokerServerConfig {
 	broker: VaultBrokerService;
 	keeper: VaultLeaseKeeperService;
 	devices: VaultDeviceRepository;
+	preflight: VaultRunnerPreflightService;
 	/** Absolute socket path; its directory is created owner-only. */
 	socketPath: string;
 	/** Kernel-verified peer user of a connection, or null when the platform cannot tell. */

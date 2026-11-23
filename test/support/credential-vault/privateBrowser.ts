@@ -47,6 +47,18 @@ export async function withPrivateBrowser<T>(
 	}
 }
 
+export async function verifyFixtureSandbox(pipe: VaultCdpPipe): Promise<void> {
+	await withPrivateBrowser(pipe, async (browser) => {
+		const page = await browser.contexts()[0].newPage();
+		try {
+			await page.goto('chrome://sandbox', { timeout: 5_000 });
+			expect(await page.locator('body').innerText()).toMatch(/Seccomp-BPF sandbox\s+Yes/u);
+		} finally {
+			await page.close();
+		}
+	});
+}
+
 async function resetRootAutoAttach(
 	pipe: VaultCdpPipe,
 	onReply: (done: () => void) => void
