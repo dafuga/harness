@@ -108,6 +108,17 @@ header.topbar::before {
 	height: var(--hx-space-18);
 }
 /* At narrow tablet widths, keep every category label in a complete compact cell. */
+/* On a tablet the search is its icon, so it ends the context row instead of taking a row alone. */
+@media (min-width: 561px) and (max-width: 900px) {
+	header.topbar .topbar-search :global(.entity-search-trigger) {
+		width: 40px;
+		padding: 0;
+		justify-content: center;
+	}
+	header.topbar .topbar-search :global(.entity-search-trigger > span) {
+		display: none;
+	}
+}
 @media (max-width: 760px) {
 	.topbar nav {
 		grid-template-columns: repeat(4, minmax(0, 1fr));

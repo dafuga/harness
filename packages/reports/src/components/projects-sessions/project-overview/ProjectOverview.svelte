@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_n72w2an74r -->
+<!-- @harness-view overview -->
 <script lang="ts">
 	import { tick } from 'svelte';
 	import BrandMark from '../../shared-primitives/BrandMark.svelte';

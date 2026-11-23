@@ -34,29 +34,39 @@
 </hx-section>
 
 <style>
+	/* One card in the home's list style: a title, then a row per setting with its name on the left,
+	   its control on the right and a muted note beneath. */
 	.agent-settings {
 		display: grid;
-		gap: var(--hx-space-10);
-		max-width: 420px;
-		padding: var(--hx-space-18);
+		gap: var(--hx-space-12);
+		padding: var(--hx-space-18) var(--hx-space-20);
 		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-large);
 		background: var(--hx-color-surface);
 	}
 	h2 {
 		margin: 0;
-		font-size: var(--hx-type-size-base);
+		padding-bottom: var(--hx-space-12);
+		border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+		font-size: var(--hx-type-size-sm);
 	}
 	.agent-setting {
-		display: grid;
-		gap: var(--hx-space-6);
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--hx-space-8) var(--hx-space-16);
 	}
-	.agent-setting span {
-		color: var(--hx-color-primary);
-		font-size: var(--hx-type-size-compact);
+	.agent-setting > span {
+		font-weight: var(--hx-style-weight-semibold);
+	}
+	.agent-setting > :global(:last-child) {
+		flex: 0 1 220px;
+		min-width: 0;
 	}
 	small {
 		color: var(--hx-color-text-muted);
+		font-size: var(--hx-type-size-xs);
 	}
 	.agent-settings-error {
 		margin: 0;

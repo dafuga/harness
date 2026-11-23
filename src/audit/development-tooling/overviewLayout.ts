@@ -14,7 +14,8 @@ const relativeImport = /import\s+([A-Z]\w*)\s+from\s+['"](\.{1,2}\/[^'"]+\.svelt
 
 /**
  * Overview screens (marked `<!-- @harness-view overview -->`) show one main piece: they ask for no
- * input outside a dialog and offer at most one primary button.
+ * input outside a dialog and offer at most one primary button. A search landmark (`role="search"`)
+ * narrows the main piece rather than asking for input, so its field is allowed.
  */
 export function auditOverviewLayout(file: AuditFile): AuditFinding[] {
 	if (file.extension !== '.svelte' || !overviewMarker.test(file.contents)) return [];
@@ -58,7 +59,7 @@ function formComponents(file: AuditFile): Set<string> {
 
 const skipped = new Set(['parent', 'metadata', 'expression', 'attributes']);
 
-/** Visits markup nodes without entering a dialog: a dialog may hold a form. */
+/** Visits markup nodes without entering a dialog or a search landmark: either may hold a field. */
 function visitOutsideDialogs(node: unknown, visit: (node: Record<string, unknown>) => void): void {
 	if (!node || typeof node !== 'object') return;
 	if (Array.isArray(node)) {
@@ -67,7 +68,7 @@ function visitOutsideDialogs(node: unknown, visit: (node: Record<string, unknown
 	}
 	const record = node as Record<string, unknown>;
 	if (record.type) {
-		if (isDialog(record)) return;
+		if (isDialog(record) || hasAttribute(record, 'role', 'search')) return;
 		visit(record);
 	}
 	for (const [key, child] of Object.entries(record))
@@ -81,12 +82,22 @@ function isDialog(node: Record<string, unknown>): boolean {
 }
 
 function hasPrimaryClass(node: Record<string, unknown>): boolean {
+	return hasAttribute(node, 'class', /(?:^|\s)primary(?:\s|$)/);
+}
+
+/** A static attribute whose text is `value` or matches it. */
+function hasAttribute(
+	node: Record<string, unknown>,
+	name: string,
+	value: string | RegExp
+): boolean {
 	const attributes = (node.attributes ?? []) as Array<Record<string, unknown>>;
 	return attributes.some((attribute) => {
-		if (attribute.name !== 'class' || !Array.isArray(attribute.value)) return false;
+		if (attribute.name !== name || !Array.isArray(attribute.value)) return false;
 		return attribute.value.some(
 			(part: { type?: string; data?: string }) =>
-				part.type === 'Text' && /(?:^|\s)primary(?:\s|$)/.test(part.data ?? '')
+				part.type === 'Text' &&
+				(typeof value === 'string' ? part.data === value : value.test(part.data ?? ''))
 		);
 	});
 }

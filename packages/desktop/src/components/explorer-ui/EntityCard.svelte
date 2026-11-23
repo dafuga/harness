@@ -87,7 +87,7 @@
 		<WorkspaceLink
 			{workspace}
 			to={workspace.path(entity.category, entity.id, entity.hasPlan ? reviewed : '')}
-			class="outline gold"
+			class={entity.hasPlan ? 'outline gold' : 'outline'}
 			>{entity.hasPlan ? `Review ${reviewed}` : 'Open ' + entity.kind}
 			<hx-span>→</hx-span></WorkspaceLink
 		>
