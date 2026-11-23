@@ -1,0 +1,11 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-t3UPg9/source
+
+ ✓ test/loop.e2e.test.ts (8 tests | 7 skipped) 57165ms
+   ✓ bug-fix CLI records proof and leaves verification pending across failed and passing checks  57161ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 7 skipped (8)
+   Start at  17:58:29
+   Duration  61.76s (transform 260ms, setup 170ms, collect 433ms, tests 57.16s, environment 0ms, prepare 35ms)
+
