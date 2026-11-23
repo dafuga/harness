@@ -1,6 +1,4 @@
 import { execFileSync } from 'node:child_process';
-import { createHash } from 'node:crypto';
-import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect } from 'vitest';
 import { VaultBrowserDockerAdapter } from '../../../src/adapters/accounts-access/VaultBrowserDockerAdapter';
@@ -18,14 +16,13 @@ import {
 import { vaultDockerLabel } from '../../../src/adapters/accounts-access/vault-browser-docker-adapter/browserDockerJournal';
 import type { VaultCreated } from '../../../src/services/accounts-access/VaultBrokerService.types';
 import { VaultRunnerPreflightService } from '../../../src/services/accounts-access/VaultRunnerPreflightService';
-import { vaultRecipe } from '../../../src/utils/accounts-access/vaultRecipe';
-import type { VaultRecipeInput } from '../../../src/utils/accounts-access/vaultRecipe.types';
 import type { VaultApproval } from '../../../src/validators/accounts-access/VaultWireValidator.types';
 import { approval, sessionRequest, sign, vaultBroker } from './broker';
+import type { VaultTestRequester } from './crossUserCdp.types';
 import { syntheticExecutor } from './executor';
 import { canary } from './phone';
 import { verifyFixtureSandbox } from './privateBrowser';
-import { reviewed } from './recipe';
+import { signedFixtureRecipe } from './recipe';
 
 export const approved = 'https://console.example.test';
 export const denied = 'https://outside.example.test';
@@ -34,9 +31,10 @@ const context = process.env.HARNESS_TEST_VAULT_DOCKER_CONTEXT;
 export async function browserFixture(
 	image: string,
 	network: VaultBrowserDockerLaunch['network'],
-	capture = false
+	capture = false,
+	requester?: VaultTestRequester
 ) {
-	const fixture = vaultBroker();
+	const fixture = vaultBroker(requester?.runDirectory);
 	const { recipe, script } = signedFixtureRecipe(capture);
 	const docker = new VaultBrowserDockerAdapter({
 		image,
@@ -44,7 +42,7 @@ export async function browserFixture(
 		seccomp: join(process.cwd(), 'deploy/vault/seccomp.json'),
 		journal: join(fixture.state, 'docker')
 	});
-	const server = await serveFixture(fixture);
+	const server = await serveFixture(fixture, requester?.uid);
 	let guest: VaultBrowserDockerSession | undefined;
 	const close = async () => {
 		try {
@@ -68,7 +66,7 @@ export async function browserFixture(
 			recipe: { site: recipe.recipe.site, revision: recipe.recipe.revision, digest: recipe.digest }
 		});
 		const created = await server.submit(input);
-		const { ticket, approved } = approveFixture(fixture, input, created, server.uid);
+		const { ticket, approved } = approveFixture(fixture, input, created, server.requestUid);
 		return {
 			...fixture,
 			...server,
@@ -87,12 +85,13 @@ export async function browserFixture(
 	}
 }
 
-async function serveFixture(fixture: ReturnType<typeof vaultBroker>) {
+async function serveFixture(fixture: ReturnType<typeof vaultBroker>, requester?: number) {
 	const binary = join(fixture.state, 'peer.node');
 	execFileSync('bash', ['deploy/vault/build-peer.sh', binary]);
 	const peer = new VaultPeerAdapter({ binary });
 	const uid = process.getuid?.();
 	if (uid === undefined) throw new Error('The fixture needs a Unix user.');
+	const requestUid = requester ?? uid;
 	const executor = syntheticExecutor();
 	const preflight = new VaultRunnerPreflightService([executor.pin], () => fixture.clock.now);
 	const socketPath = join(fixture.state, 'broker', 'vault.sock');
@@ -108,13 +107,18 @@ async function serveFixture(fixture: ReturnType<typeof vaultBroker>) {
 		const issuedAt = fixture.clock.now;
 		const proof = executor.attest(input, {
 			brokerId: preflight.brokerId,
-			uid,
+			uid: requestUid,
 			issuedAt,
 			expiresAt: issuedAt + 120_000
 		});
+		// The frozen cross-user fixture uses a private executor call for admission. Its separate
+		// requester proves the kernel identity at the CDP relay, not at this owner-only socket.
+		if (requestUid !== uid) {
+			return fixture.broker.create(input, requestUid, preflight.verify(input, requestUid, proof));
+		}
 		return client.call<VaultCreated>('/v1/session/requests', { ...input, preflight: proof });
 	};
-	return { peer, uid, client, submit, close: () => server.close() };
+	return { peer, uid, requestUid, client, submit, close: () => server.close() };
 }
 
 function approveFixture(
@@ -134,33 +138,6 @@ function approveFixture(
 		Buffer.from(proof.approval.payload, 'base64url').toString()
 	) as VaultApproval;
 	return { ticket, approved };
-}
-
-function signedFixtureRecipe(capture: boolean) {
-	const input = JSON.parse(
-		readFileSync('deploy/vault/recipes/example-console.json', 'utf8')
-	) as VaultRecipeInput;
-	const original = readFileSync('deploy/vault/recipes/example-console.browser.json');
-	const script = capture ? captureRecipe(input, original) : original;
-	const { review, reviewers } = reviewed(input, Date.now());
-	return { recipe: vaultRecipe(input, review, reviewers), script };
-}
-
-function captureRecipe(input: VaultRecipeInput, original: Buffer): Buffer {
-	const script = JSON.parse(original.toString());
-	script.steps.at(-1).next = '/capture';
-	script.capture = { trigger: '#generate', result: '/created', value: '#generated' };
-	const program = Buffer.from(JSON.stringify(script));
-	input.actions = [{ id: 'capture-secret', mode: 'write', start: '/capture' }];
-	input.methods = [
-		{
-			kind: 'browser',
-			actions: ['capture-secret'],
-			reason: 'Synthetic browser capture action.',
-			scriptSha256: createHash('sha256').update(program).digest('hex')
-		}
-	];
-	return program;
 }
 
 export async function assertFixtureRemoved(owner: string): Promise<void> {

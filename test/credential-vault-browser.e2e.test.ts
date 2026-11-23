@@ -19,10 +19,12 @@ import {
 } from './support/credential-vault/dockerBrowser';
 import { withHttpsFixture } from './support/credential-vault/httpsFixture';
 import { verifyCrashRecovery } from './support/credential-vault/crashFixture';
+import { crossUserRequester, verifyCrossUserCdp } from './support/credential-vault/crossUserCdp';
 import { loginSyntheticFixture } from './support/credential-vault/privateBrowser';
 import { finishSyntheticFixture } from './support/credential-vault/teardownFixture';
 
 const image = process.env.HARNESS_TEST_VAULT_DOCKER_IMAGE;
+const requester = crossUserRequester();
 
 // A task-owned image and Docker engine are needed to exercise the Chromium namespace sandbox.
 test.skipIf(!image).each(['sms', 'email'] as const)(
@@ -30,7 +32,7 @@ test.skipIf(!image).each(['sms', 'email'] as const)(
 	async (channel) => {
 		await withHttpsFixture(image!, channel, async ({ id, ip, securityLog }) => {
 			const hosts = { [new URL(approved).hostname]: ip, [new URL(denied).hostname]: ip };
-			const run = await browserFixture(image!, { id, hosts });
+			const run = await browserFixture(image!, { id, hosts }, false, requester);
 			const { guest } = run;
 			try {
 				await loginSyntheticFixture(run, guest.pipe, channel);
@@ -56,7 +58,7 @@ async function verifyBrowserLease(
 	ip: string,
 	securityLog: () => Promise<string>
 ) {
-	const { lease } = run.keeper.issue(run.ticket, run.uid, run.recipe.recipe.teardown);
+	const { lease } = run.keeper.issue(run.ticket, run.requestUid, run.recipe.recipe.teardown);
 	const relay = new VaultCdpRelayAdapter({
 		keeper: run.keeper,
 		lease,
@@ -64,13 +66,23 @@ async function verifyBrowserLease(
 		pipe: guest.pipe
 	});
 	const scope = { lease, session: run.input.session };
+	const crossUser = run.requestUid !== run.uid;
 	try {
 		await relay.listen();
-		const attachment = await run.client.call<VaultAttachment>('/v1/session/attach', scope);
+		const attachment = crossUser
+			? run.keeper.attach(lease, scope.session, run.requestUid)
+			: await run.client.call<VaultAttachment>('/v1/session/attach', scope);
 		await expectMissingToken(attachment.endpoint, run.uid);
-		await verifyOriginPolicy(attachment, guest.owner, ip);
+		if (crossUser) {
+			await verifyCrossUserCdp(attachment);
+			await assertFixtureIsolated(guest.owner, ip);
+		} else {
+			await verifyOriginPolicy(attachment, guest.owner, ip);
+		}
 	} finally {
-		const ended = await run.client.call<VaultLeaseEnded>('/v1/session/finish', scope);
+		const ended = crossUser
+			? run.keeper.finish(lease, scope.session, run.requestUid)
+			: await run.client.call<VaultLeaseEnded>('/v1/session/finish', scope);
 		expect(ended.ended).toBe('finished');
 		await finishSyntheticFixture(
 			ended,
