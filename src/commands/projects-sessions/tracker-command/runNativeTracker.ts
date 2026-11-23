@@ -16,6 +16,7 @@ import {
 import type {
 	NativeTrackerInspection,
 	NativeTrackerItem,
+	NativeTrackerRequest,
 	NativeTrackerRunRead
 } from './nativeTrackerCli.types';
 import { nativeTrackerArgs, nativeTrackerCommands } from './nativeTrackerRequest';
@@ -71,8 +72,7 @@ async function sendNativeTracker(
 	const actor = String(
 		[values.by, process.env.TRACKER_AS].find(Boolean) ?? `${userInfo().username}@${config.node}`
 	);
-	const body =
-		command === 'ignore' || command === 'unignore' ? { ...request.body, by: actor } : request.body;
+	const body = trackerRequestBody(command, request, actor);
 	const response = await fetch(`http://127.0.0.1:${config.apiPort}/native/v1${request.path}`, {
 		method: request.method,
 		body: JSON.stringify(body),
@@ -93,6 +93,12 @@ async function sendNativeTracker(
 	if (values.json) console.log(JSON.stringify(data, null, 2));
 	else renderNativeTracker(command, data, { quiet: Boolean(values.quiet), first: words[0] });
 	return 0;
+}
+
+function trackerRequestBody(command: string, { body }: NativeTrackerRequest, actor: string) {
+	if (command === 'start' && process.env.TRACKER_RUN_ID)
+		return { session_run: process.env.TRACKER_RUN_ID };
+	return command === 'ignore' || command === 'unignore' ? { ...body, by: actor } : body;
 }
 
 function printResponseError(status: number, data: { error?: string; code?: string }) {

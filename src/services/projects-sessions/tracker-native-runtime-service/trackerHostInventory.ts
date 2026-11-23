@@ -3,8 +3,13 @@ import { trackerManagedToken } from '../../../adapters/projects-sessions/tracker
 import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
-import type { WatchdogCli, WatchdogPane } from '../WatchdogPaneService.types';
-import type { TrackerHostLaunchPort, TrackerHostSession } from './trackerHostLaunch.types';
+import type { WatchdogPane } from '../WatchdogPaneService.types';
+import { trackerSessionItemPrefix } from '../tracker-local-api-service/trackerLocalItemMutation';
+import type {
+	CompletedTrackerPaneRun,
+	TrackerHostLaunchPort,
+	TrackerHostSession
+} from './trackerHostLaunch.types';
 
 const completedSessionGrace = 10 * 60_000;
 const runSessionName = /^auto-([a-z0-9]{6,10})-r([1-9][0-9]*)$/;
@@ -140,9 +145,15 @@ function completedTrackerPaneRun(
 ) {
 	const match = runSessionName.exec(pane.name);
 	if (!match || !pane.ready || pane.attached || !pane.runnerSocket) return undefined;
-	const [, itemPrefix, id] = match;
-	if (!Number.isSafeInteger(Number(id))) return undefined;
-	const run = readCompletedTrackerPaneRun(store, pane, Number(id), itemPrefix);
+	const [, itemPrefix, runId] = match;
+	const id = Number(runId);
+	if (!Number.isSafeInteger(id)) return undefined;
+	const run = readCompletedTrackerPaneRun(
+		store,
+		pane,
+		{ id, itemPrefix },
+		now - completedSessionGrace
+	);
 	if (!run) return undefined;
 	const doneAt = trackerClockMilliseconds(run.statusClock ?? '');
 	const idleFor = now - Math.max(doneAt, run.endedAt, pane.activity);
@@ -152,11 +163,10 @@ function completedTrackerPaneRun(
 function readCompletedTrackerPaneRun(
 	store: TrackerPersistenceService,
 	pane: WatchdogPane,
-	id: number,
-	itemPrefix: string
+	{ id, itemPrefix }: { id: number; itemPrefix: string },
+	cutoff: number
 ) {
 	return store.database
-
 		.prepare(
 			`SELECT r.id, r.item_id AS itemId, r.cli, r.auto_token AS auto,
 		r.attempt, r.session_id AS sessionId, r.ended_at AS endedAt,
@@ -175,6 +185,12 @@ function readCompletedTrackerPaneRun(
 			WHERE other.id <> r.id AND (other.tmux = r.tmux OR other.session_name = r.tmux OR other.watch_pane = ?)
 			AND (other.state <> 'finished' OR owner.status IS NOT 'done'
 				OR (owner.needs_daniel = 1 AND owner.resolved = 0))
+		)
+		AND NOT EXISTS (
+			SELECT 1 FROM meta link JOIN items owner ON owner.id = link.v
+			WHERE link.k GLOB '${trackerSessionItemPrefix}' || r.id || ':*' AND owner.deleted = 0
+			AND (owner.status IS NOT 'done' OR (owner.needs_daniel = 1 AND owner.resolved = 0)
+				OR CAST(substr(json_extract(owner.clocks, '$.status'), 1, 15) AS INTEGER) > ?)
 		)`
 		)
 		.get(
@@ -186,17 +202,7 @@ function readCompletedTrackerPaneRun(
 			pane.createdAt + 60_000,
 			pane.key,
 			pane.key,
-			pane.key
-		) as
-		| {
-				id: number;
-				itemId: string;
-				cli: WatchdogCli;
-				auto: string | null;
-				attempt: number;
-				sessionId: string | null;
-				endedAt: number;
-				statusClock: string | null;
-		  }
-		| undefined;
+			pane.key,
+			cutoff
+		) as CompletedTrackerPaneRun | undefined;
 }

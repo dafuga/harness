@@ -283,8 +283,11 @@ capacity or blocks another request for the same item. The dispatch tick sweeps
 the node's own auto-launch socket. It closes a single, detached provider pane
 only when the run and item are complete, ten minutes have passed since the
 latest of completion and pane activity, and Tracker finds no unanswered flag or
-other active owner. It checks the provider prompt and pane identity immediately
-before closing, including the attempt marker for a managed launch.
+other active owner. When a worker runs `tracker start` for another item, the
+local journal also links that item to the worker's run. The pane stays open
+until each linked item is done and its grace period has passed. The sweep checks
+the provider prompt and pane identity immediately before closing, including the
+attempt marker for a managed launch.
 
 Closure leaves provider transcripts and worktrees in place. Tracker adds a note
 with the computer, closed session and provider resume command. Long-lived
