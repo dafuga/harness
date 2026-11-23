@@ -5,8 +5,7 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempRepo } from '../support/temporary';
 import { registerImpactCommand } from '../../src/cli/program/ImpactCommand';
 
-const DESCRIPTION =
-	'Report the units, tests and scenarios a change affects, across base and head.';
+const DESCRIPTION = 'Report the units, tests and scenarios a change affects, across base and head.';
 const MISSING_BASE = 'no-such-revision-for-impact';
 
 async function parseImpact(args: string[]): Promise<Record<string, unknown>> {

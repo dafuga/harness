@@ -15,14 +15,16 @@ function writeLoop(root: string, state?: Record<string, unknown>): void {
 	mkdirSync(directory, { recursive: true });
 	writeFileSync(
 		join(directory, 'loop.json'),
-		JSON.stringify(state ?? {
-			name: 'release',
-			goal: 'Prepare a release',
-			createdAt: '2026-01-01T00:00:00.000Z',
-			updatedAt: '2026-01-01T00:00:00.000Z',
-			steps: [],
-			evaluators: [{ id: 'lint', title: 'Lint', command: 'yarn lint' }]
-		})
+		JSON.stringify(
+			state ?? {
+				name: 'release',
+				goal: 'Prepare a release',
+				createdAt: '2026-01-01T00:00:00.000Z',
+				updatedAt: '2026-01-01T00:00:00.000Z',
+				steps: [],
+				evaluators: [{ id: 'lint', title: 'Lint', command: 'yarn lint' }]
+			}
+		)
 	);
 }
 
@@ -73,8 +75,20 @@ test('Throws ExpectedCliError when the loop file is absent', async () => {
 		const evaluation = evaluateLoop({ root, loop: 'release' });
 		await expect(evaluation).rejects.toThrow('Loop does not exist.');
 		recordExampleCases(
-			{ unitId: 'workflow.loop-evaluate', symbol: 'evaluateLoop', state: 'throws-expectedclierror-when-the-loop-file-is-absent', evidence: 'examples-cases', file: 'throws-expectedclierror-when-the-loop-file-is-absent.json' },
-			[{ name: 'absent loop file is rejected', input: { loop: 'release' }, error: 'Loop does not exist.' }]
+			{
+				unitId: 'workflow.loop-evaluate',
+				symbol: 'evaluateLoop',
+				state: 'throws-expectedclierror-when-the-loop-file-is-absent',
+				evidence: 'examples-cases',
+				file: 'throws-expectedclierror-when-the-loop-file-is-absent.json'
+			},
+			[
+				{
+					name: 'absent loop file is rejected',
+					input: { loop: 'release' },
+					error: 'Loop does not exist.'
+				}
+			]
 		);
 	});
 });
@@ -85,8 +99,20 @@ test('Throws ExpectedCliError when parsed loop state fails validation', async ()
 		const evaluation = evaluateLoop({ root, loop: 'release' });
 		await expect(evaluation).rejects.toThrow('Invalid loop state:');
 		recordExampleCases(
-			{ unitId: 'workflow.loop-evaluate', symbol: 'evaluateLoop', state: 'throws-expectedclierror-when-parsed-loop-state-fails-validat', evidence: 'examples-cases', file: 'throws-expectedclierror-when-parsed-loop-state-fails-validat.json' },
-			[{ name: 'incomplete loop state is rejected', input: { loop: 'release', state: { name: 'release' } }, error: 'Invalid loop state:' }]
+			{
+				unitId: 'workflow.loop-evaluate',
+				symbol: 'evaluateLoop',
+				state: 'throws-expectedclierror-when-parsed-loop-state-fails-validat',
+				evidence: 'examples-cases',
+				file: 'throws-expectedclierror-when-parsed-loop-state-fails-validat.json'
+			},
+			[
+				{
+					name: 'incomplete loop state is rejected',
+					input: { loop: 'release', state: { name: 'release' } },
+					error: 'Invalid loop state:'
+				}
+			]
 		);
 	});
 });
@@ -109,8 +135,27 @@ test('Throws ExpectedCliError when the loaded loop is closed', async () => {
 		const evaluation = evaluateLoop({ root, loop: 'release' });
 		await expect(evaluation).rejects.toThrow('is closed as abandoned');
 		recordExampleCases(
-			{ unitId: 'workflow.loop-evaluate', symbol: 'evaluateLoop', state: 'throws-expectedclierror-when-the-loaded-loop-is-closed', evidence: 'examples-cases', file: 'throws-expectedclierror-when-the-loaded-loop-is-closed.json' },
-			[{ name: 'closed loop cannot be evaluated', input: { loop: 'release', closed: { status: 'abandoned', reason: 'The release was cancelled', closedAt: '2026-01-02T00:00:00.000Z' } }, error: 'Loop "release" is closed as abandoned.' }]
+			{
+				unitId: 'workflow.loop-evaluate',
+				symbol: 'evaluateLoop',
+				state: 'throws-expectedclierror-when-the-loaded-loop-is-closed',
+				evidence: 'examples-cases',
+				file: 'throws-expectedclierror-when-the-loaded-loop-is-closed.json'
+			},
+			[
+				{
+					name: 'closed loop cannot be evaluated',
+					input: {
+						loop: 'release',
+						closed: {
+							status: 'abandoned',
+							reason: 'The release was cancelled',
+							closedAt: '2026-01-02T00:00:00.000Z'
+						}
+					},
+					error: 'Loop "release" is closed as abandoned.'
+				}
+			]
 		);
 	});
 });

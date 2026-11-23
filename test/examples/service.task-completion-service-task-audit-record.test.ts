@@ -20,7 +20,8 @@ const planningInput = {
 		{
 			id: 'plan.overview',
 			passed: true,
-			detail: 'Provide a substantive overview section, including an explicit explanation when none applies.'
+			detail:
+				'Provide a substantive overview section, including an explicit explanation when none applies.'
 		}
 	]
 };
@@ -34,7 +35,9 @@ const codingInput = {
 };
 
 function auditDirectory(repository: Repository): string {
-	return repository.git('rev-parse', '--path-format=absolute', '--git-path', 'harness/task-audits').trim();
+	return repository
+		.git('rev-parse', '--path-format=absolute', '--git-path', 'harness/task-audits')
+		.trim();
 }
 
 async function blockAuditDirectory(repository: Repository): Promise<void> {
@@ -57,7 +60,9 @@ test('Persists a planning and a coding audit under content-addressed ids', async
 		expect(coding.task.units).toEqual(['adapter.git', unitId]);
 		expect(coding.passed).toBe(false);
 		expect(coding.commit).toBeNull();
-		expect(JSON.parse(await readFile(join(directory, `${coding.id}.json`), 'utf8'))).toEqual(coding);
+		expect(JSON.parse(await readFile(join(directory, `${coding.id}.json`), 'utf8'))).toEqual(
+			coding
+		);
 
 		recordExampleCases(
 			{

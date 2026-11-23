@@ -1,7 +1,10 @@
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { hostCpuCounters, resourceCpu } from '../../src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/resourceCpu';
+import {
+	hostCpuCounters,
+	resourceCpu
+} from '../../src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/resourceCpu';
 
 const previous = {
 	at: 4200.5,
@@ -51,7 +54,11 @@ test('Calculates available cores within affinity and quota limits', () => {
 			file: 'calculates-available-cores-within-affinity-and-quota-limits.json'
 		},
 		[
-			{ name: 'affinity and quota bound available cores', input: { previous, current }, output: summary },
+			{
+				name: 'affinity and quota bound available cores',
+				input: { previous, current },
+				output: summary
+			},
 			{
 				name: 'measured quota saturation bounds available cores',
 				input: {

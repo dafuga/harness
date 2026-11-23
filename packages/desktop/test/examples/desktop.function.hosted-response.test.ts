@@ -27,7 +27,11 @@ test('reads response bytes in order up to the limit', async () => {
 			file: 'reads-response-bytes-in-order-up-to-the-limit.json'
 		},
 		[
-			{ name: 'body exactly at limit', input: { chunks: [[65, 66, 67]], limit: 3 }, output: [65, 66, 67] },
+			{
+				name: 'body exactly at limit',
+				input: { chunks: [[65, 66, 67]], limit: 3 },
+				output: [65, 66, 67]
+			},
 			{ name: 'response without a body', input: { body: null, limit: 3 }, output: [] }
 		]
 	);
@@ -52,7 +56,11 @@ test('rejects declared and streamed bodies over the limit', async () => {
 			file: 'rejects-declared-and-streamed-bodies-over-the-limit.json'
 		},
 		[
-			{ name: 'declared length exceeds limit', input: { contentLength: '4', limit: 3 }, error: declared },
+			{
+				name: 'declared length exceeds limit',
+				input: { contentLength: '4', limit: 3 },
+				error: declared
+			},
 			{ name: 'stream crosses limit', input: { chunks: [[1, 2, 3, 4]], limit: 3 }, error: streamed }
 		]
 	);

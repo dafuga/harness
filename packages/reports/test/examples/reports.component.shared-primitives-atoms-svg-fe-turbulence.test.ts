@@ -16,10 +16,10 @@ const where = {
 test('forwards attributes and optional children to the SVG element', () => {
 	const child = createRawSnippet(() => ({ render: () => '<fePointLight x="2" y="3" z="4" />' }));
 	const withoutChildren = render(SvgFeTurbulence, {
-		props: { 'baseFrequency': '0.04 0.08', numOctaves: 2, seed: 7 } as never
+		props: { baseFrequency: '0.04 0.08', numOctaves: 2, seed: 7 } as never
 	}).body.trim();
 	const withChildren = render(SvgFeTurbulence, {
-		props: { 'baseFrequency': '0.1', children: child, 'data-source': 'fixture' } as never
+		props: { baseFrequency: '0.1', children: child, 'data-source': 'fixture' } as never
 	}).body.trim();
 
 	// Svelte's server renderer adds snippet boundary comments around component output.
@@ -39,7 +39,11 @@ test('forwards attributes and optional children to the SVG element', () => {
 		},
 		{
 			name: 'renders optional child markup inside the element',
-			input: { baseFrequency: '0.1', child: '<fePointLight x="2" y="3" z="4" />', 'data-source': 'fixture' },
+			input: {
+				baseFrequency: '0.1',
+				child: '<fePointLight x="2" y="3" z="4" />',
+				'data-source': 'fixture'
+			},
 			output: { body: withChildren }
 		}
 	]);

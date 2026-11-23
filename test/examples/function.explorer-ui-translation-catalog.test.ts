@@ -3,7 +3,10 @@ import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { translationCatalog } from '../../src/services/explorer-ui/revision-detail-service/translationCatalog';
-import { flattenMessages, translationMessages } from '../../src/services/explorer-ui/revision-detail-service/translationMessages';
+import {
+	flattenMessages,
+	translationMessages
+} from '../../src/services/explorer-ui/revision-detail-service/translationMessages';
 import type { TranslationSource } from '../../src/services/explorer-ui/revision-detail-service/translationMessages.types';
 
 const UNIT_ID = 'reports.component.evidence-grid';
@@ -149,7 +152,11 @@ test('Records a non-static locale as a gap', () => {
 test('Catalog rows list the units that call each key', async () => {
 	const catalog = await translationCatalog(fakeTree(reportFiles), units);
 	const bare = await translationCatalog(fakeTree(reportFiles));
-	const rows = catalog.rows.map((row) => ({ key: row.key, values: row.values, usedBy: row.usedBy }));
+	const rows = catalog.rows.map((row) => ({
+		key: row.key,
+		values: row.values,
+		usedBy: row.usedBy
+	}));
 	expect(catalog.locales).toEqual(['en', 'fr']);
 	expect(rows).toEqual([
 		{

@@ -15,16 +15,25 @@ const opaque = 'K9v2Qm7xN4pR8sT3bH6cL1wF5dZ0aG2e';
 const options = { maxAge: 900, sameSite: 'Lax' } satisfies CookieOptions;
 
 test('Reads one valid opaque cookie and rejects invalid matches', () => {
-	const valid = authCookies(new Request('https://example.test', {
-		headers: { cookie: `other=value; ${SESSION_COOKIE}=${opaque}` }
-	}), SESSION_COOKIE);
+	const valid = authCookies(
+		new Request('https://example.test', {
+			headers: { cookie: `other=value; ${SESSION_COOKIE}=${opaque}` }
+		}),
+		SESSION_COOKIE
+	);
 	const missing = authCookies(new Request('https://example.test'), SESSION_COOKIE);
-	const malformed = authCookies(new Request('https://example.test', {
-		headers: { cookie: `${SESSION_COOKIE}=short` }
-	}), SESSION_COOKIE);
-	const duplicate = authCookies(new Request('https://example.test', {
-		headers: { cookie: `${SESSION_COOKIE}=${opaque}; ${SESSION_COOKIE}=${opaque}` }
-	}), SESSION_COOKIE);
+	const malformed = authCookies(
+		new Request('https://example.test', {
+			headers: { cookie: `${SESSION_COOKIE}=short` }
+		}),
+		SESSION_COOKIE
+	);
+	const duplicate = authCookies(
+		new Request('https://example.test', {
+			headers: { cookie: `${SESSION_COOKIE}=${opaque}; ${SESSION_COOKIE}=${opaque}` }
+		}),
+		SESSION_COOKIE
+	);
 	expect([valid, missing, malformed, duplicate]).toEqual([opaque, null, null, null]);
 	recordExampleCases(
 		{
@@ -35,19 +44,42 @@ test('Reads one valid opaque cookie and rejects invalid matches', () => {
 			file: 'reads-one-valid-opaque-cookie-and-rejects-invalid-matches.json'
 		},
 		[
-			{ name: 'one valid selected cookie', input: { cookie: `other=value; ${SESSION_COOKIE}=${opaque}`, name: SESSION_COOKIE }, output: valid },
-			{ name: 'missing cookie header', input: { cookie: null, name: SESSION_COOKIE }, output: missing },
-			{ name: 'malformed short value', input: { cookie: `${SESSION_COOKIE}=short`, name: SESSION_COOKIE }, output: malformed },
-			{ name: 'duplicate selected cookies', input: { cookie: `${SESSION_COOKIE}=${opaque}; ${SESSION_COOKIE}=${opaque}`, name: SESSION_COOKIE }, output: duplicate }
+			{
+				name: 'one valid selected cookie',
+				input: { cookie: `other=value; ${SESSION_COOKIE}=${opaque}`, name: SESSION_COOKIE },
+				output: valid
+			},
+			{
+				name: 'missing cookie header',
+				input: { cookie: null, name: SESSION_COOKIE },
+				output: missing
+			},
+			{
+				name: 'malformed short value',
+				input: { cookie: `${SESSION_COOKIE}=short`, name: SESSION_COOKIE },
+				output: malformed
+			},
+			{
+				name: 'duplicate selected cookies',
+				input: {
+					cookie: `${SESSION_COOKIE}=${opaque}; ${SESSION_COOKIE}=${opaque}`,
+					name: SESSION_COOKIE
+				},
+				output: duplicate
+			}
 		]
 	);
 });
 
 test('Issues a secure host-only cookie header', () => {
 	const header = issueCookie(SESSION_COOKIE, opaque, options);
-	expect(header).toBe(`${SESSION_COOKIE}=${opaque}; Path=/; Max-Age=900; HttpOnly; Secure; SameSite=Lax`);
+	expect(header).toBe(
+		`${SESSION_COOKIE}=${opaque}; Path=/; Max-Age=900; HttpOnly; Secure; SameSite=Lax`
+	);
 	expect([SESSION_COOKIE, CHALLENGE_COOKIE, EMAIL_PROOF_COOKIE]).toEqual([
-		'__Host-harness_session', '__Host-harness_challenge', '__Host-harness_email_proof'
+		'__Host-harness_session',
+		'__Host-harness_challenge',
+		'__Host-harness_email_proof'
 	]);
 	recordExampleCases(
 		{
@@ -57,7 +89,13 @@ test('Issues a secure host-only cookie header', () => {
 			evidence: 'examples-cases',
 			file: 'issues-a-secure-host-only-cookie-header.json'
 		},
-		[{ name: 'session cookie with Lax policy', input: { name: SESSION_COOKIE, value: opaque, options }, output: header }]
+		[
+			{
+				name: 'session cookie with Lax policy',
+				input: { name: SESSION_COOKIE, value: opaque, options },
+				output: header
+			}
+		]
 	);
 });
 
@@ -72,6 +110,12 @@ test('Clears a cookie with an empty value and zero lifetime', () => {
 			evidence: 'examples-cases',
 			file: 'clears-a-cookie-with-an-empty-value-and-zero-lifetime.json'
 		},
-		[{ name: 'expire session cookie with Strict policy', input: { name: SESSION_COOKIE, sameSite: 'Strict' }, output: header }]
+		[
+			{
+				name: 'expire session cookie with Strict policy',
+				input: { name: SESSION_COOKIE, sameSite: 'Strict' },
+				output: header
+			}
+		]
 	);
 });

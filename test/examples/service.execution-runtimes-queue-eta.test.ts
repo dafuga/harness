@@ -122,9 +122,7 @@ test('Extrapolates the tail of a running job past every sample', () => {
 
 	expect(result.status).toBe('estimated');
 	expect(result.p50Ms).toBe(1100);
-	expect(result.warnings).toContain(
-		'Running r exceeds every sample; residual tail extrapolated'
-	);
+	expect(result.warnings).toContain('Running r exceeds every sample; residual tail extrapolated');
 	record('extrapolates-the-tail-of-a-running-job-past-every-sample', [
 		{
 			name: 'running job elapsed 20s beyond a 10s maximum sample',

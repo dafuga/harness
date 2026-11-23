@@ -114,10 +114,7 @@ test('Opens relay sockets with headers and forwards lifecycle', async () => {
 	const adapter = new RelaySocketAdapter();
 	const headers = { Authorization: 'Bearer example-relay-token' };
 	const url = 'wss://relay.example.test/socket';
-	const output = await observeLifecycle(
-		adapter.open(url, headers),
-		ExampleSocket.instances[0]!
-	);
+	const output = await observeLifecycle(adapter.open(url, headers), ExampleSocket.instances[0]!);
 	expect(output).toEqual({
 		url,
 		headers,
@@ -153,7 +150,10 @@ test('Throws RelaySocketConnectionError when socket emits an error', async () =>
 	const headers = { Authorization: 'Bearer example-relay-token' };
 	const socket = adapter.open(url, headers);
 	ExampleSocket.instances[0]!.fire('error');
-	const thrown = await socket.opened.then(() => null, (error: unknown) => error);
+	const thrown = await socket.opened.then(
+		() => null,
+		(error: unknown) => error
+	);
 	const failure = await summarizeFailure(socket.opened);
 	expect(thrown).toBeInstanceOf(RelaySocketConnectionError);
 	expect(failure).toEqual({

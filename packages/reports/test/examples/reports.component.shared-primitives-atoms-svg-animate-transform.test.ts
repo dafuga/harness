@@ -68,7 +68,9 @@ test('spreads attributes onto the animateTransform element', () => {
 
 test('renders supplied children inside the element', () => {
 	const props = { attributeName: 'transform', type: 'rotate', dur: '1s' };
-	const body = markup(render(SvgAnimateTransform, { props: { ...props, children: spinChild } }).body);
+	const body = markup(
+		render(SvgAnimateTransform, { props: { ...props, children: spinChild } }).body
+	);
 	recordExampleCases(where('renders-supplied-children-inside-the-element'), [
 		{
 			name: 'a snippet child is rendered inside the animateTransform element',

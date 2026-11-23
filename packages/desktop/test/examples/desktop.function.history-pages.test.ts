@@ -21,7 +21,10 @@ const newest = event(
 	'Keep first occurrence when combining history pages',
 	'2026-11-09T18:20:44Z'
 );
-const shared = event('4e0a93d7b16c2f58e9d04a7c3b61f2e85d9a0c36', 'Load the next history page on demand');
+const shared = event(
+	'4e0a93d7b16c2f58e9d04a7c3b61f2e85d9a0c36',
+	'Load the next history page on demand'
+);
 const sharedCopy = { ...shared, title: 'Edited copy of the same event' };
 const older = event(
 	'7f2c58b0e4a19d63c7b2e5f08a4d19c6e3b7a25f',

@@ -13,14 +13,21 @@ test('Reads catalog and required states', async () => {
 		const requiredPath = 'packages/reports/required-states.json';
 		const requiredFile = join(directory, requiredPath);
 		await mkdir(join(directory, 'packages/reports'), { recursive: true });
-		await writeFile(requiredFile, JSON.stringify({ entity: 'reports.component.evidence-grid', states: ['', 'default', 'compact'] }));
+		await writeFile(
+			requiredFile,
+			JSON.stringify({
+				entity: 'reports.component.evidence-grid',
+				states: ['', 'default', 'compact']
+			})
+		);
 		const entries: TreeEntry[] = [{ path: catalogPath, hash: 'example-hash' }];
 		const tree = {
 			revision: 'example-revision',
 			list: async () => entries,
-			read: async (path: string) => path === catalogPath
-				? `export const catalog = [{ entity: 'reports.component.evidence-grid', states: ['default', 'compact'] }];`
-				: ''
+			read: async (path: string) =>
+				path === catalogPath
+					? `export const catalog = [{ entity: 'reports.component.evidence-grid', states: ['default', 'compact'] }];`
+					: ''
 		};
 		const result = await stateRegistries(tree, directory, [requiredPath]);
 		expect(result).toHaveLength(2);
@@ -47,8 +54,9 @@ test('Reads catalog and required states', async () => {
 test('Throws ExpectedCliError for an extra required state file', async () => {
 	await withTempDir('state-registries-missing-', async (directory) => {
 		const tree = { revision: 'example', list: async () => [], read: async () => '' };
-		await expect(stateRegistries(tree, directory, ['packages/reports/required-states.json']))
-			.rejects.toThrow('Cannot read required-state file');
+		await expect(
+			stateRegistries(tree, directory, ['packages/reports/required-states.json'])
+		).rejects.toThrow('Cannot read required-state file');
 		recordExampleCases(
 			{
 				unitId: 'workflow.development-tooling-guide-units-state-registries',
@@ -57,7 +65,13 @@ test('Throws ExpectedCliError for an extra required state file', async () => {
 				evidence: 'examples-cases',
 				file: 'throws-expectedclierror-for-an-extra-required-state-file.json'
 			},
-			[{ name: 'reports missing required state file', input: { path: 'packages/reports/required-states.json' }, error: 'Cannot read required-state file "packages/reports/required-states.json".' }]
+			[
+				{
+					name: 'reports missing required state file',
+					input: { path: 'packages/reports/required-states.json' },
+					error: 'Cannot read required-state file "packages/reports/required-states.json".'
+				}
+			]
 		);
 	});
 });
@@ -66,7 +80,9 @@ test('Propagates tree read failures', async () => {
 	const tree = {
 		revision: 'example',
 		list: async () => [{ path: 'packages/reports/required-states.json', hash: 'example' }],
-		read: async () => { throw new Error('tree read failed'); }
+		read: async () => {
+			throw new Error('tree read failed');
+		}
 	};
 	await expect(stateRegistries(tree, '/workspace/project')).rejects.toThrow('tree read failed');
 	recordExampleCases(
@@ -77,6 +93,12 @@ test('Propagates tree read failures', async () => {
 			evidence: 'examples-cases',
 			file: 'propagates-tree-read-failures.json'
 		},
-		[{ name: 'passes through tree read rejection', input: { path: 'packages/reports/required-states.json' }, error: 'tree read failed' }]
+		[
+			{
+				name: 'passes through tree read rejection',
+				input: { path: 'packages/reports/required-states.json' },
+				error: 'tree read failed'
+			}
+		]
 	);
 });

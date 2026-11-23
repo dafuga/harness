@@ -28,7 +28,11 @@ test('Renders a native filter element forwarding its attributes', () => {
 	const props = { id: 'soft-shadow', x: '-10%', y: '-10%', width: '120%', height: '120%' };
 	const body = withoutComments(render(SvgFilter, { props }).body);
 	recordExampleCases(where('renders-a-native-filter-element-forwarding-its-attributes'), [
-		{ name: 'a filter with an id and region is rendered with no children', input: props, output: { body } }
+		{
+			name: 'a filter with an id and region is rendered with no children',
+			input: props,
+			output: { body }
+		}
 	]);
 	expect(body).toMatch(/^<filter\b[^>]*>/);
 	expect(body).toMatch(/<filter\b[^>]*\bid="soft-shadow"/);

@@ -41,7 +41,10 @@ const request: Request = {
 };
 
 function textDelta(text: string): unknown {
-	return { type: 'stream_event', event: { type: 'content_block_delta', delta: { type: 'text_delta', text } } };
+	return {
+		type: 'stream_event',
+		event: { type: 'content_block_delta', delta: { type: 'text_delta', text } }
+	};
 }
 
 const toolDelta = {
@@ -105,10 +108,14 @@ test('Streams text deltas and ends with a done event', async () => {
 		]);
 		expect(session.running).toBe(false);
 		expect(cancelled).toHaveLength(0);
-		record('streams-text-deltas-and-ends-with-a-done-event', 'text deltas are forwarded, tool deltas skipped', {
-			events,
-			running: session.running
-		});
+		record(
+			'streams-text-deltas-and-ends-with-a-done-event',
+			'text deltas are forwarded, tool deltas skipped',
+			{
+				events,
+				running: session.running
+			}
+		);
 	});
 });
 
@@ -125,10 +132,14 @@ test('Emits a Claude query failure as an error event', async () => {
 		]);
 		expect(cancelled).toHaveLength(1);
 		expect(cancelled[0]).toBe(session);
-		record('emits-a-claude-query-failure-as-an-error-event', 'failed result reports error and cancels', {
-			events,
-			cancelledCount: cancelled.length
-		});
+		record(
+			'emits-a-claude-query-failure-as-an-error-event',
+			'failed result reports error and cancels',
+			{
+				events,
+				cancelledCount: cancelled.length
+			}
+		);
 	});
 });
 
@@ -142,9 +153,13 @@ test('Reports a cancelled session with the cancelled message', async () => {
 
 		expect(events).toEqual([{ type: 'error', message: 'Session cancelled' }]);
 		expect(cancelled).toHaveLength(1);
-		record('reports-a-cancelled-session-with-the-cancelled-message', 'aborted signal selects the cancelled message', {
-			events,
-			cancelledCount: cancelled.length
-		});
+		record(
+			'reports-a-cancelled-session-with-the-cancelled-message',
+			'aborted signal selects the cancelled message',
+			{
+				events,
+				cancelledCount: cancelled.length
+			}
+		);
 	});
 });

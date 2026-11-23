@@ -31,7 +31,8 @@ test('accepts complete details and rejects undeclared fields', () => {
 	expect(accepted.success).toBe(true);
 	expect(rejected.success).toBe(false);
 
-	if (!accepted.success || rejected.success) throw new Error('Expected one valid and one rejected detail.');
+	if (!accepted.success || rejected.success)
+		throw new Error('Expected one valid and one rejected detail.');
 
 	recordExampleCases(
 		{

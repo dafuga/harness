@@ -1,5 +1,8 @@
 import { test } from 'vitest';
-import { explanationOutcomes, explanationSchema } from '../../src/core/development-tooling/explanationTypes';
+import {
+	explanationOutcomes,
+	explanationSchema
+} from '../../src/core/development-tooling/explanationTypes';
 import type { Explanation } from '../../src/core/development-tooling/explanationTypes.types';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';

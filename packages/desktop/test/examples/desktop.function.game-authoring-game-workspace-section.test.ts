@@ -18,7 +18,8 @@ function makeView(planned: boolean): GameView {
 		id: 'courtyard',
 		title: 'The courtyard',
 		dimension: planned ? '3d' : '2d',
-		style: 'Lush illustrated garden, warm stone, soft sunlight. Preserve the player, key and door positions.',
+		style:
+			'Lush illustrated garden, warm stone, soft sunlight. Preserve the player, key and door positions.',
 		checkpoints: []
 	};
 	return (planned ? { ...base, planning: PLAN } : base) as unknown as GameView;
@@ -49,10 +50,26 @@ test('Keeps the requested section when the level has no plan', () => {
 			file: 'keeps-the-requested-section-when-the-level-has-no-plan.json'
 		},
 		[
-			{ name: 'undefined view requesting Level', input: { view: undefined, tab: 'Level' }, output: level },
-			{ name: 'unplanned level requesting Level', input: { view: summary(unplanned), tab: 'Level' }, output: fromLevel },
-			{ name: 'unplanned level requesting Preview', input: { view: summary(unplanned), tab: 'Preview' }, output: preview },
-			{ name: 'unplanned level requesting Mechanics', input: { view: summary(unplanned), tab: 'Mechanics' }, output: mechanics }
+			{
+				name: 'undefined view requesting Level',
+				input: { view: undefined, tab: 'Level' },
+				output: level
+			},
+			{
+				name: 'unplanned level requesting Level',
+				input: { view: summary(unplanned), tab: 'Level' },
+				output: fromLevel
+			},
+			{
+				name: 'unplanned level requesting Preview',
+				input: { view: summary(unplanned), tab: 'Preview' },
+				output: preview
+			},
+			{
+				name: 'unplanned level requesting Mechanics',
+				input: { view: summary(unplanned), tab: 'Mechanics' },
+				output: mechanics
+			}
 		]
 	);
 });
@@ -74,8 +91,16 @@ test('Keeps Mechanics open for a planned level', () => {
 			file: 'keeps-mechanics-open-for-a-planned-level.json'
 		},
 		[
-			{ name: 'planned level requesting Mechanics', input: { view: summary(planned), tab: 'Mechanics' }, output: mechanics },
-			{ name: 'planned level requesting Level', input: { view: summary(planned), tab: 'Level' }, output: level }
+			{
+				name: 'planned level requesting Mechanics',
+				input: { view: summary(planned), tab: 'Mechanics' },
+				output: mechanics
+			},
+			{
+				name: 'planned level requesting Level',
+				input: { view: summary(planned), tab: 'Level' },
+				output: level
+			}
 		]
 	);
 });
@@ -96,6 +121,12 @@ test('Moves a planned level off Checkpoints until it is ready', () => {
 			evidence: 'examples-cases',
 			file: 'moves-a-planned-level-off-checkpoints-until-it-is-ready.json'
 		},
-		[{ name: 'planned level requesting Checkpoints', input: { view: summary(planned), tab: requested }, output: section }]
+		[
+			{
+				name: 'planned level requesting Checkpoints',
+				input: { view: summary(planned), tab: requested },
+				output: section
+			}
+		]
 	);
 });

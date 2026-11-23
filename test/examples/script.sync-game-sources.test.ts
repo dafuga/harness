@@ -6,14 +6,20 @@ import { UnembeddedImportError } from '../../scripts/sync-game-sources.types';
 
 test('Rewrites imports for the generated game destination', async () => {
 	const destination = 'validators/LevelValidator.ts';
-	const text = "import { gameStep } from '../../utils/game-authoring/gameStep';\nexport const validate = gameStep;\n";
+	const text =
+		"import { gameStep } from '../../utils/game-authoring/gameStep';\nexport const validate = gameStep;\n";
 	const output = await embeddedSource(destination, text);
 	expect(output).toContain("from '../utils/gameStep'");
-	const cases = [{
-		name: 'rewrites a mapped engine import to its generated destination',
-		input: { destination, text },
-		output: { rewrittenImport: "from '../utils/gameStep'", formatted: output.includes('export const validate = gameStep;') }
-	}];
+	const cases = [
+		{
+			name: 'rewrites a mapped engine import to its generated destination',
+			input: { destination, text },
+			output: {
+				rewrittenImport: "from '../utils/gameStep'",
+				formatted: output.includes('export const validate = gameStep;')
+			}
+		}
+	];
 	recordExampleCases(
 		{
 			unitId: 'script.sync-game-sources',
@@ -39,11 +45,13 @@ test('Rejects imports that are not embedded', async () => {
 	expect(error).toBeInstanceOf(UnembeddedImportError);
 	const actual = error as UnembeddedImportError;
 	const output = { name: actual.name, message: actual.message };
-	const cases = [{
-		name: 'rejects a relative import whose engine source is not embedded',
-		input: { destination, text },
-		error: output
-	}];
+	const cases = [
+		{
+			name: 'rejects a relative import whose engine source is not embedded',
+			input: { destination, text },
+			error: output
+		}
+	];
 	recordExampleCases(
 		{
 			unitId: 'script.sync-game-sources',

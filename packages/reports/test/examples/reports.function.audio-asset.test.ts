@@ -44,7 +44,13 @@ test('Valid WAV receives a content hash and duration', () => {
 			evidence: 'examples-cases',
 			file: 'valid-wav-receives-a-content-hash-and-duration.json'
 		},
-		[{ name: 'valid mono PCM WAV', input: { filename: 'Site-Visit-2026-11-02.WAV', byteLength: bytes.length }, output }]
+		[
+			{
+				name: 'valid mono PCM WAV',
+				input: { filename: 'Site-Visit-2026-11-02.WAV', byteLength: bytes.length },
+				output
+			}
+		]
 	);
 });
 
@@ -65,7 +71,13 @@ test('Invalid size is rejected before the filename', () => {
 			evidence: 'examples-cases',
 			file: 'invalid-size-is-rejected-before-the-filename.json'
 		},
-		[{ name: 'empty content with unsupported extension', input: { filename: 'voice.txt', byteLength: 0 }, error: { name: 'InvalidAudioFileError', message } }]
+		[
+			{
+				name: 'empty content with unsupported extension',
+				input: { filename: 'voice.txt', byteLength: 0 },
+				error: { name: 'InvalidAudioFileError', message }
+			}
+		]
 	);
 });
 
@@ -97,8 +109,16 @@ test('Unsupported formats and mismatched audio content are rejected', () => {
 			file: 'unsupported-formats-and-mismatched-audio-content-are-rejecte.json'
 		},
 		[
-			{ name: 'non-audio extension', input: { filename: 'voice.txt', byteLength: 5 }, error: errorSummary(unsupported) },
-			{ name: 'invalid Ogg container', input: { filename: 'voicemail-0412.ogg', byteLength: 5 }, error: errorSummary(mismatch) }
+			{
+				name: 'non-audio extension',
+				input: { filename: 'voice.txt', byteLength: 5 },
+				error: errorSummary(unsupported)
+			},
+			{
+				name: 'invalid Ogg container',
+				input: { filename: 'voicemail-0412.ogg', byteLength: 5 },
+				error: errorSummary(mismatch)
+			}
 		]
 	);
 });

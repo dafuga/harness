@@ -34,7 +34,9 @@ async function runScript(cliPath: string, exitCode: number): Promise<ScriptRun> 
 	return { calls, exits };
 }
 
-async function runUnstartable(cliPath: string): Promise<{ command: string[]; error: unknown; exits: number[] }> {
+async function runUnstartable(
+	cliPath: string
+): Promise<{ command: string[]; error: unknown; exits: number[] }> {
 	const calls: SpawnCall[] = [];
 	const exits: number[] = [];
 	vi.stubEnv('HARNESS_CLI_PATH', cliPath);
@@ -76,9 +78,7 @@ test('Runs harness audit with the lib profile', async () => {
 
 test('Runs the bundled CLI through bun when set', async () => {
 	const run = await runScript(fakeCliPath, 0);
-	expect(run.calls).toEqual([
-		{ command: ['bun', fakeCliPath, 'audit', '.', '--profile', 'lib'] }
-	]);
+	expect(run.calls).toEqual([{ command: ['bun', fakeCliPath, 'audit', '.', '--profile', 'lib'] }]);
 	expect(run.exits).toEqual([0]);
 
 	recordExampleCases(

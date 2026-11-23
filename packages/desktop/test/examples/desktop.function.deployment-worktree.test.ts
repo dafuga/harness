@@ -61,7 +61,9 @@ test('returns its result and removes the detached checkout', async () =>
 			const commit = (await readFile(join(directory, 'commit.txt'), 'utf8')).trim();
 			return { source: basename(directory), commit };
 		});
-		const commands = (await readFile(join(projectRoot, 'git-commands.log'), 'utf8')).trim().split('\n');
+		const commands = (await readFile(join(projectRoot, 'git-commands.log'), 'utf8'))
+			.trim()
+			.split('\n');
 		const temporaryDirectory = dirname(callbackPath);
 		const output = {
 			result,
@@ -101,8 +103,7 @@ test('returns its result and removes the detached checkout', async () =>
 				}
 			]
 		);
-	})
-);
+	}));
 
 test('rethrows callback failures after cleanup', async () =>
 	withFakeGitProject(async (projectRoot) => {
@@ -158,5 +159,4 @@ test('rethrows callback failures after cleanup', async () =>
 				}
 			]
 		);
-	})
-);
+	}));

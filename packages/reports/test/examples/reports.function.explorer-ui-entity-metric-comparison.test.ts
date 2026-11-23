@@ -30,13 +30,30 @@ function unitFor(id: string, status: string, bytes: number, complexity: number) 
 		responsibility: `Owns the ${ROUTE_PATH} route page.`,
 		dependencies: [],
 		scenarios: [],
-		owns: { source: [`packages/reports/src/routes/harness/branch${ROUTE_PATH}/+page.svelte`], symbols: ['+page'] },
+		owns: {
+			source: [`packages/reports/src/routes/harness/branch${ROUTE_PATH}/+page.svelte`],
+			symbols: ['+page']
+		},
 		contract: { inputs: [], outputs: [{ name: '+page', type: 'markup' }], errors: [] },
 		runtime: { kind: 'module', targets: [] },
 		budgets: { size: 'frozen', complexity: 'frozen', performance: [] },
 		sourceMeasurements: [
-			{ unit: id, metric: 'source-bytes', unitOfMeasure: 'bytes', value: bytes, workload: null, profile: null },
-			{ unit: id, metric: 'complexity', unitOfMeasure: 'points', value: complexity, workload: null, profile: null }
+			{
+				unit: id,
+				metric: 'source-bytes',
+				unitOfMeasure: 'bytes',
+				value: bytes,
+				workload: null,
+				profile: null
+			},
+			{
+				unit: id,
+				metric: 'complexity',
+				unitOfMeasure: 'points',
+				value: complexity,
+				workload: null,
+				profile: null
+			}
 		],
 		version: '5d1e8a03c47b9f26'
 	};
@@ -68,7 +85,11 @@ function entityFor(lastAt?: string): Entity {
 		name: 'Models',
 		purpose: `Owns the ${ROUTE_PATH} route page.`,
 		unit: unitFor(PAGE_ID, 'active', 19104, 44),
-		verdict: { passed: false, label: 'Evidence missing', reasons: ['No verification record is attached to this commit.'] },
+		verdict: {
+			passed: false,
+			label: 'Evidence missing',
+			reasons: ['No verification record is attached to this commit.']
+		},
 		change: null,
 		appRoute: ROUTE_PATH,
 		lastAt
@@ -103,7 +124,12 @@ test('Pairs the first parent Page measure with the head measure', () => {
 		[
 			{
 				name: 'parent and head both carry the active Page',
-				input: { parentCommit: PARENT_COMMIT, headCommit: HEAD_COMMIT, entity: PAGE_ID, helper: null },
+				input: {
+					parentCommit: PARENT_COMMIT,
+					headCommit: HEAD_COMMIT,
+					entity: PAGE_ID,
+					helper: null
+				},
 				output: summary(result)
 			}
 		]
@@ -129,9 +155,17 @@ test('Yields no comparison for a first commit, a helper or a removed Page', () =
 			file: 'yields-no-comparison-for-a-first-commit-a-helper-or-a-remove.json'
 		},
 		[
-			{ name: 'first commit has no parent revision', input: { parent: null, helper: null }, output: null },
+			{
+				name: 'first commit has no parent revision',
+				input: { parent: null, helper: null },
+				output: null
+			},
 			{ name: 'a helper is selected', input: { helper: 'explorerVerdict' }, output: null },
-			{ name: 'entity carries lastAt because the commit removed it', input: { lastAt: PARENT_COMMIT }, output: null },
+			{
+				name: 'entity carries lastAt because the commit removed it',
+				input: { lastAt: PARENT_COMMIT },
+				output: null
+			},
 			{ name: 'route category is not pages', input: { routeCategory: 'harness' }, output: null }
 		]
 	);
@@ -157,9 +191,21 @@ test('Yields no comparison when a registry lacks the active Page', () => {
 			file: 'yields-no-comparison-when-a-registry-lacks-the-active-page.json'
 		},
 		[
-			{ name: 'parent registry lists the Page as retired', input: { parentStatus: 'retired' }, output: null },
-			{ name: 'parent registry has no unit with the entity id', input: { parentUnits: 0 }, output: null },
-			{ name: 'head registry has no unit with the entity id', input: { headUnits: 0 }, output: null }
+			{
+				name: 'parent registry lists the Page as retired',
+				input: { parentStatus: 'retired' },
+				output: null
+			},
+			{
+				name: 'parent registry has no unit with the entity id',
+				input: { parentUnits: 0 },
+				output: null
+			},
+			{
+				name: 'head registry has no unit with the entity id',
+				input: { headUnits: 0 },
+				output: null
+			}
 		]
 	);
 });

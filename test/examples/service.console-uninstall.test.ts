@@ -10,7 +10,11 @@ import { expect } from '../verificationExpect';
 const path = 'src/cli/program/ConsoleUninstallService.ts';
 const hash = (content: string) => createHash('sha256').update(content).digest('hex');
 
-async function installedHost(directory: string, content: string, prior: unknown[] = []): Promise<void> {
+async function installedHost(
+	directory: string,
+	content: string,
+	prior: unknown[] = []
+): Promise<void> {
 	await mkdir(join(directory, 'src/cli/program'), { recursive: true });
 	await writeFile(join(directory, path), content);
 	await writeFile(
@@ -41,9 +45,18 @@ test('Removes unchanged generated files and clears the manifest', async () => {
 		await installedHost(directory, 'generated');
 		const result = await new ConsoleUninstallService().uninstall({ host: directory });
 		expect(result).toMatchObject({ removed: [path], restored: [], kept: [], clean: true });
-		record('removes-unchanged-generated-files-and-clears-the-manifest', { host: '/workspace/project' }, {
-			host: '/workspace/project', removed: [path], restored: [], kept: [], changes: [], clean: true
-		});
+		record(
+			'removes-unchanged-generated-files-and-clears-the-manifest',
+			{ host: '/workspace/project' },
+			{
+				host: '/workspace/project',
+				removed: [path],
+				restored: [],
+				kept: [],
+				changes: [],
+				clean: true
+			}
+		);
 	});
 });
 
@@ -52,9 +65,18 @@ test('Keeps edited generated files as host-owned when requested', async () => {
 		await installedHost(directory, 'host edit');
 		const result = await new ConsoleUninstallService().uninstall({ host: directory, keep: true });
 		expect(result).toMatchObject({ removed: [], kept: [path], clean: false });
-		record('keeps-edited-generated-files-as-host-owned-when-requested',
+		record(
+			'keeps-edited-generated-files-as-host-owned-when-requested',
 			{ host: '/workspace/project', update: false, keep: true },
-			{ host: '/workspace/project', removed: [], restored: [], kept: [path], changes: [], clean: false });
+			{
+				host: '/workspace/project',
+				removed: [],
+				restored: [],
+				kept: [path],
+				changes: [],
+				clean: false
+			}
+		);
 	});
 });
 
@@ -63,18 +85,32 @@ test('Updates edited generated files by recording and removing them', async () =
 		await installedHost(directory, 'host edit');
 		const result = await new ConsoleUninstallService().uninstall({ host: directory, update: true });
 		expect(result).toMatchObject({ removed: [path], restored: [], kept: [], clean: false });
-		expect(result.changes[0]).toMatchObject({ path, action: 'removed', reason: 'edited since it was installed' });
-		record('updates-edited-generated-files-by-recording-and-removing-the',
+		expect(result.changes[0]).toMatchObject({
+			path,
+			action: 'removed',
+			reason: 'edited since it was installed'
+		});
+		record(
+			'updates-edited-generated-files-by-recording-and-removing-the',
 			{ host: '/workspace/project', update: true, keep: false },
-			{ host: '/workspace/project', removed: [path], restored: [], kept: [], changes: [{ path, action: 'removed', reason: 'edited since it was installed' }], clean: false });
+			{
+				host: '/workspace/project',
+				removed: [path],
+				restored: [],
+				kept: [],
+				changes: [{ path, action: 'removed', reason: 'edited since it was installed' }],
+				clean: false
+			}
+		);
 	});
 });
 
 test('Throws ExpectedCliError when no harness-owned console files are installed', async () => {
 	await withTempDir('console-uninstall-missing-', async (directory) => {
 		const input = { host: '/workspace/project' };
-		await expect(new ConsoleUninstallService().uninstall({ host: directory }))
-			.rejects.toThrow(`No console is installed in ${directory}.`);
+		await expect(new ConsoleUninstallService().uninstall({ host: directory })).rejects.toThrow(
+			`No console is installed in ${directory}.`
+		);
 		recordExampleCases(
 			{
 				unitId: 'service.console-uninstall',
@@ -92,8 +128,9 @@ test('Throws ExpectedCliError when edited generated files have no handling optio
 	await withTempDir('console-uninstall-refuse-', async (directory) => {
 		await installedHost(directory, 'host edit');
 		const input = { host: '/workspace/project', update: false, keep: false };
-		await expect(new ConsoleUninstallService().uninstall({ host: directory }))
-			.rejects.toThrow('edited since it was installed');
+		await expect(new ConsoleUninstallService().uninstall({ host: directory })).rejects.toThrow(
+			'edited since it was installed'
+		);
 		recordExampleCases(
 			{
 				unitId: 'service.console-uninstall',
@@ -102,7 +139,13 @@ test('Throws ExpectedCliError when edited generated files have no handling optio
 				evidence: 'examples-cases',
 				file: 'throws-expectedclierror-when-edited-generated-files-have-no.json'
 			},
-			[{ name: 'Edited file refused', input, error: 'Edited generated files require --update or --keep' }]
+			[
+				{
+					name: 'Edited file refused',
+					input,
+					error: 'Edited generated files require --update or --keep'
+				}
+			]
 		);
 	});
 });

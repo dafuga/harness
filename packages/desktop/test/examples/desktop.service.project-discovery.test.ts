@@ -14,10 +14,7 @@ const credential = {
 const rotated = { ...credential, token: 'token-rotated-example' };
 const emptyHub: unknown[] = [];
 const oneHub: unknown[] = [{ id: 'project-1', name: 'My project', kind: 'shared' }];
-const twoHub: unknown[] = [
-	...oneHub,
-	{ id: 'project-2', name: 'Team roadmap', kind: 'shared' }
-];
+const twoHub: unknown[] = [...oneHub, { id: 'project-2', name: 'Team roadmap', kind: 'shared' }];
 const authorityMessage = 'Hosted authority changed during project discovery.';
 
 /** Discovery without a cache never reads snapshots, so this port must stay unused. */

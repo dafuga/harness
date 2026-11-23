@@ -3,7 +3,11 @@ import type { View, Call } from './game.function.draw2d.test.types';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { Canvas2dAdapter, create2d, draw2d } from '../../src/adapters/game-authoring/Canvas2dAdapter';
+import {
+	Canvas2dAdapter,
+	create2d,
+	draw2d
+} from '../../src/adapters/game-authoring/Canvas2dAdapter';
 
 const UNIT = 'game.function.draw2d';
 
@@ -26,18 +30,47 @@ const gardenLane = {
 		depth: 8,
 		spawn: { x: 1.5, z: 4 },
 		objects: [
-			{ id: 'north-wall', kind: 'wall', label: 'North wall', x: 6, z: 0.5, width: 12, depth: 1, height: 2.5 },
-			{ id: 'south-wall', kind: 'wall', label: 'South wall', x: 6, z: 7.5, width: 12, depth: 1, height: 2.5 },
-			{ id: 'gate-pad', kind: 'goal', label: 'Gate pad', x: 10, z: 4, width: 1.5, depth: 1.5, height: 1 }
+			{
+				id: 'north-wall',
+				kind: 'wall',
+				label: 'North wall',
+				x: 6,
+				z: 0.5,
+				width: 12,
+				depth: 1,
+				height: 2.5
+			},
+			{
+				id: 'south-wall',
+				kind: 'wall',
+				label: 'South wall',
+				x: 6,
+				z: 7.5,
+				width: 12,
+				depth: 1,
+				height: 2.5
+			},
+			{
+				id: 'gate-pad',
+				kind: 'goal',
+				label: 'Gate pad',
+				x: 10,
+				z: 4,
+				width: 1.5,
+				depth: 1.5,
+				height: 1
+			}
 		]
 	}
 } as unknown as View;
 
 function fakeCanvas(width: number, height: number, hasContext = true) {
 	const calls: Call[] = [];
-	const method = (name: string) => (...args: unknown[]) => {
-		calls.push({ method: name, args });
-	};
+	const method =
+		(name: string) =>
+		(...args: unknown[]) => {
+			calls.push({ method: name, args });
+		};
 	const ctx = {
 		fillStyle: '',
 		strokeStyle: '',

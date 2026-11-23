@@ -4,10 +4,15 @@ import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
-import { digestFile, oversizeCapture, RecordBudget } from '../../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/captureLimits';
+import {
+	digestFile,
+	oversizeCapture,
+	RecordBudget
+} from '../../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/captureLimits';
 import type { CaptureLimits } from '../../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/captureLimits.types';
 
-const unitId = 'workflow.verification-evidence-run-verify-verification-service-check-run-service-capture-limits';
+const unitId =
+	'workflow.verification-evidence-run-verify-verification-service-check-run-service-capture-limits';
 const abc = 'abc';
 const abcSha = 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad';
 const limitMessage = 'Capture exceeded maxCaptureBytes or remaining maxRecordBytes while reading.';
@@ -94,7 +99,11 @@ test('Refuses a capture read past its byte ceiling', async () => {
 			},
 			[
 				{ name: 'three-byte file with a two-byte ceiling', input: { maxBytes: 2 }, error },
-				{ name: 'three-byte file with a three-byte ceiling', input: { maxBytes: 3 }, output: { bytes: 3 } }
+				{
+					name: 'three-byte file with a three-byte ceiling',
+					input: { maxBytes: 3 },
+					output: { bytes: 3 }
+				}
 			]
 		);
 	});

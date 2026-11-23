@@ -1,4 +1,7 @@
-import type { Replies, Outcome } from './workflow.networking-security-run-api-api-registry.test.types';
+import type {
+	Replies,
+	Outcome
+} from './workflow.networking-security-run-api-api-registry.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -78,7 +81,11 @@ test('Returns id and contract summaries when no id is given', async () => {
 });
 
 test('Returns a saved plan contract for a contracts lookup', async () => {
-	const outcome = await call('contracts', { entity: { data: { contract: savedPlan } } }, 'plan-weekly');
+	const outcome = await call(
+		'contracts',
+		{ entity: { data: { contract: savedPlan } } },
+		'plan-weekly'
+	);
 	expect(outcome).toEqual({ output: savedPlan, calls: ['entity'] });
 	record(
 		'returns-a-saved-plan-contract-for-a-contracts-lookup',

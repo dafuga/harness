@@ -39,7 +39,13 @@ test('Creates and reads a loop state', async () => {
 				evidence: 'examples-cases',
 				file: 'creates-and-reads-a-loop-state.json'
 			},
-			[{ name: 'creates the loop directory and stores its state', input: { paths, state }, output: loaded }]
+			[
+				{
+					name: 'creates the loop directory and stores its state',
+					input: { paths, state },
+					output: loaded
+				}
+			]
 		);
 	});
 });
@@ -61,7 +67,13 @@ test('Writes formatted state and appends a trace event', async () => {
 				evidence: 'examples-cases',
 				file: 'writes-formatted-state-and-appends-a-trace-event.json'
 			},
-			[{ name: 'writes the state and one compact trace line', input: { paths, state, event: { type: 'step-started', step: 'prepare' } }, output: { state: loaded, trace: '{"type":"step-started","step":"prepare"}\n' } }]
+			[
+				{
+					name: 'writes the state and one compact trace line',
+					input: { paths, state, event: { type: 'step-started', step: 'prepare' } },
+					output: { state: loaded, trace: '{"type":"step-started","step":"prepare"}\n' }
+				}
+			]
 		);
 	});
 });
@@ -79,7 +91,13 @@ test('Validates loop identifiers and required text', () => {
 			evidence: 'examples-cases',
 			file: 'validates-loop-identifiers-and-required-text.json'
 		},
-		[{ name: 'trims a valid id and required goal', input: { id: ' release-tracker ', goal: '  Track the release checklist  ' }, output: { id, goal } }]
+		[
+			{
+				name: 'trims a valid id and required goal',
+				input: { id: ' release-tracker ', goal: '  Track the release checklist  ' },
+				output: { id, goal }
+			}
+		]
 	);
 });
 
@@ -96,6 +114,12 @@ test('Uses the supplied clock and recognizes missing files', () => {
 			evidence: 'examples-cases',
 			file: 'uses-the-supplied-clock-and-recognizes-missing-files.json'
 		},
-		[{ name: 'returns the callback value and detects ENOENT', input: { clockValue: time, errorCode: 'ENOENT' }, output: { timestamp: time, missing } }]
+		[
+			{
+				name: 'returns the callback value and detects ENOENT',
+				input: { clockValue: time, errorCode: 'ENOENT' },
+				output: { timestamp: time, missing }
+			}
+		]
 	);
 });

@@ -12,7 +12,10 @@ function project(root: string): VerifyRepo {
 	const files = new Map<string, string>([
 		['harness.verify.json', '{}'],
 		['specification/units/function.packer.json', '{"runtime":{"targets":[]}}'],
-		['src/utils/packer.ts', '// build: p3 w5\nexport function packer(value: string): string {\n\treturn value.toLowerCase();\n}\n']
+		[
+			'src/utils/packer.ts',
+			'// build: p3 w5\nexport function packer(value: string): string {\n\treturn value.toLowerCase();\n}\n'
+		]
 	]);
 	let commits = 0;
 	const project = {

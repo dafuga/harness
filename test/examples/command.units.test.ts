@@ -67,13 +67,15 @@ function unitsOf(program: Command): Command {
 
 /** Each subcommand as its callers see it: its name, its argument labels and its option flags. */
 function subcommands(units: Command): Subcommand[] {
-	return units.commands.map((command): Subcommand => [
-		command.name(),
-		command.registeredArguments.map((argument) =>
-			argument.required ? `<${argument.name()}>` : `[${argument.name()}]`
-		),
-		command.options.map((option) => option.flags)
-	]);
+	return units.commands.map(
+		(command): Subcommand => [
+			command.name(),
+			command.registeredArguments.map((argument) =>
+				argument.required ? `<${argument.name()}>` : `[${argument.name()}]`
+			),
+			command.options.map((option) => option.flags)
+		]
+	);
 }
 
 /** One refused dispatch as a recorded case: the argv given and the commander error it raised. */

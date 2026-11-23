@@ -69,11 +69,19 @@ function pluginFor(config: unknown): DeploymentPlugin {
 	return {
 		id: 'cloudflare',
 		discover: () => Promise.resolve(config),
-		deploy: () => Promise.resolve({ deploymentId: 'deployment-example', url: 'https://desktop-dev.workers.dev' })
+		deploy: () =>
+			Promise.resolve({
+				deploymentId: 'deployment-example',
+				url: 'https://desktop-dev.workers.dev'
+			})
 	} as unknown as DeploymentPlugin;
 }
 
-function reviewedFor(root: string, environment: Environment, fingerprint: string): ReviewedDeployment {
+function reviewedFor(
+	root: string,
+	environment: Environment,
+	fingerprint: string
+): ReviewedDeployment {
 	return {
 		sourceEnvironment: null,
 		plan: {
@@ -155,7 +163,11 @@ test('Rejects a later environment without its predecessor proof', async () => {
 			[
 				{
 					name: 'capture stage with no dev predecessor receipt',
-					input: { environment: 'stage', predecessor: null, configuredEnvironments: ['dev', 'stage'] },
+					input: {
+						environment: 'stage',
+						predecessor: null,
+						configuredEnvironments: ['dev', 'stage']
+					},
 					error: { name: error.name, message: error.message }
 				}
 			]

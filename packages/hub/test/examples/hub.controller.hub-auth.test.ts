@@ -21,9 +21,7 @@ test('Handles outside and unknown auth routes', async () => {
 	const instance = controller();
 	const outside = await instance.handle(new Request('https://hub.example/health'));
 	const unknown = await instance.handle(new Request('https://hub.example/api/auth/missing'));
-	const unknownOutput = unknown
-		? { status: unknown.status, body: await unknown.json() }
-		: null;
+	const unknownOutput = unknown ? { status: unknown.status, body: await unknown.json() } : null;
 
 	expect(outside).toBeNull();
 	expect(unknownOutput).toMatchObject({ status: 404 });

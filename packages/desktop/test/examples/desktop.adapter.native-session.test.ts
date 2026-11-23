@@ -3,7 +3,15 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { NativeSessionAdapter } from '../../src/adapters/networking-security/NativeSessionAdapter';
 import type { NativeEncryption } from '../../src/adapters/networking-security/NativeSessionAdapter.types';
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import {
+	existsSync,
+	mkdirSync,
+	mkdtempSync,
+	readFileSync,
+	readdirSync,
+	rmSync,
+	writeFileSync
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 
@@ -64,7 +72,11 @@ test('Saves an encrypted session and reads it back', async () => {
 		expect(adapter.generation).toBe(2);
 		expect(files).toEqual(['hosted-session.bin']);
 		recordExampleCases(meta('save', state), [
-			{ name: 'Save then read returns the stored credential', input: { credential: CREDENTIAL }, output: read },
+			{
+				name: 'Save then read returns the stored credential',
+				input: { credential: CREDENTIAL },
+				output: read
+			},
 			{
 				name: 'Saved bytes are encrypted and the temp file is renamed away',
 				input: { file: 'hosted-session.bin' },
@@ -83,7 +95,11 @@ test('Refuses to save without OS encryption and reads nothing', async () => {
 		const locked = new NativeSessionAdapter(file, fakeEncryption({ available: false }), 'darwin');
 		const failure = await failureOf(locked.save(CREDENTIAL));
 		const read = await locked.read();
-		const linux = new NativeSessionAdapter(file, fakeEncryption({ backend: 'basic_text' }), 'linux');
+		const linux = new NativeSessionAdapter(
+			file,
+			fakeEncryption({ backend: 'basic_text' }),
+			'linux'
+		);
 		const linuxAvailable = linux.available();
 		const exists = existsSync(file);
 		expect(failure).toEqual({
@@ -94,9 +110,21 @@ test('Refuses to save without OS encryption and reads nothing', async () => {
 		expect(linuxAvailable).toBe(false);
 		expect(exists).toBe(false);
 		recordExampleCases(meta('save', state), [
-			{ name: 'Save is rejected when encryption is unavailable', input: { available: false, credential: CREDENTIAL }, error: failure },
-			{ name: 'Read returns null while the session is unavailable', input: { available: false }, output: read },
-			{ name: 'Linux with a basic_text backend is not available', input: { platform: 'linux', backend: 'basic_text' }, output: linuxAvailable }
+			{
+				name: 'Save is rejected when encryption is unavailable',
+				input: { available: false, credential: CREDENTIAL },
+				error: failure
+			},
+			{
+				name: 'Read returns null while the session is unavailable',
+				input: { available: false },
+				output: read
+			},
+			{
+				name: 'Linux with a basic_text backend is not available',
+				input: { platform: 'linux', backend: 'basic_text' },
+				output: linuxAvailable
+			}
 		]);
 	} finally {
 		rmSync(dir, { recursive: true, force: true });
@@ -114,11 +142,22 @@ test('Rejects a stored session that is missing its token', async () => {
 		const missingToken = await failureOf(adapter.read());
 		writeFileSync(file, 'enc:not-json');
 		const notJson = await failureOf(adapter.read());
-		expect(missingToken).toEqual({ name: 'StoredHostedSessionUnavailableError', message: UNAVAILABLE_MESSAGE });
+		expect(missingToken).toEqual({
+			name: 'StoredHostedSessionUnavailableError',
+			message: UNAVAILABLE_MESSAGE
+		});
 		expect(notJson).toEqual(missingToken);
 		recordExampleCases(meta('read', state), [
-			{ name: 'A stored session without a token is unavailable', input: { stored: partial }, error: missingToken },
-			{ name: 'A stored session that is not JSON is unavailable', input: { stored: 'not-json' }, error: notJson }
+			{
+				name: 'A stored session without a token is unavailable',
+				input: { stored: partial },
+				error: missingToken
+			},
+			{
+				name: 'A stored session that is not JSON is unavailable',
+				input: { stored: 'not-json' },
+				error: notJson
+			}
 		]);
 	} finally {
 		rmSync(dir, { recursive: true, force: true });
@@ -139,8 +178,16 @@ test('Clears a saved session and tolerates a missing file', async () => {
 		expect(removed).toBe(true);
 		expect(adapter.generation).toBe(3);
 		recordExampleCases(meta('clear', state), [
-			{ name: 'Clear removes the saved session file', input: { credential: CREDENTIAL }, output: { read, removed } },
-			{ name: 'Clear again resolves when the file is already gone', input: {}, output: { generation: adapter.generation } }
+			{
+				name: 'Clear removes the saved session file',
+				input: { credential: CREDENTIAL },
+				output: { read, removed }
+			},
+			{
+				name: 'Clear again resolves when the file is already gone',
+				input: {},
+				output: { generation: adapter.generation }
+			}
 		]);
 	} finally {
 		rmSync(dir, { recursive: true, force: true });

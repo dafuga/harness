@@ -33,7 +33,10 @@ const FALLBACK_INPUT: BeginInput = {
 const INVALID_INPUTS: Array<{ name: string; input: unknown }> = [
 	{ name: 'project is empty', input: { project: '', title: 'Missing project', mode: 'feature' } },
 	{ name: 'title is empty', input: { project: '/workspace/project', title: '', mode: 'feature' } },
-	{ name: 'mode is unknown', input: { project: '/workspace/project', title: 'Bad mode', mode: 'review' } }
+	{
+		name: 'mode is unknown',
+		input: { project: '/workspace/project', title: 'Bad mode', mode: 'review' }
+	}
 ];
 
 function summarize(report: Report) {
@@ -64,7 +67,9 @@ function statusItems(statuses: Status[] = []) {
 	return statuses.map((status) => ({ status }));
 }
 
-function reportWith(parts: Partial<Record<'checks' | 'findings' | 'coverage' | 'evidence', Status[]>>): Report {
+function reportWith(
+	parts: Partial<Record<'checks' | 'findings' | 'coverage' | 'evidence', Status[]>>
+): Report {
 	return {
 		...reportState(BASE_INPUT),
 		checks: statusItems(parts.checks) as Report['checks'],
@@ -116,8 +121,16 @@ test('Starts an active report from begin input', () => {
 			file: 'starts-an-active-report-from-begin-input.json'
 		},
 		[
-			{ name: 'feature report with recorded revision', input: BASE_INPUT, output: summarize(started) },
-			{ name: 'suite report falls back to defaults', input: FALLBACK_INPUT, output: summarize(defaulted) }
+			{
+				name: 'feature report with recorded revision',
+				input: BASE_INPUT,
+				output: summarize(started)
+			},
+			{
+				name: 'suite report falls back to defaults',
+				input: FALLBACK_INPUT,
+				output: summarize(defaulted)
+			}
 		]
 	);
 });
@@ -144,14 +157,34 @@ test('Rejects begin input without project, title or valid mode', () => {
 test('Derives the result status from recorded items', () => {
 	const cases: Array<{ name: string; report: Report; status: Status }> = [
 		{ name: 'no checks recorded', report: reportWith({}), status: 'not-proven' },
-		{ name: 'every check skipped', report: reportWith({ checks: ['skipped', 'skipped'] }), status: 'skipped' },
-		{ name: 'checks passed', report: reportWith({ checks: ['passed', 'skipped'] }), status: 'passed' },
-		{ name: 'running evidence blocks', report: reportWith({ checks: ['passed'], evidence: ['running'] }), status: 'blocked' },
-		{ name: 'failed finding beats blocked check', report: reportWith({ checks: ['blocked'], findings: ['failed'] }), status: 'failed' }
+		{
+			name: 'every check skipped',
+			report: reportWith({ checks: ['skipped', 'skipped'] }),
+			status: 'skipped'
+		},
+		{
+			name: 'checks passed',
+			report: reportWith({ checks: ['passed', 'skipped'] }),
+			status: 'passed'
+		},
+		{
+			name: 'running evidence blocks',
+			report: reportWith({ checks: ['passed'], evidence: ['running'] }),
+			status: 'blocked'
+		},
+		{
+			name: 'failed finding beats blocked check',
+			report: reportWith({ checks: ['blocked'], findings: ['failed'] }),
+			status: 'failed'
+		}
 	];
 	const results = cases.map((item) => {
 		expect(resultStatus(item.report)).toBe(item.status);
-		return { name: item.name, input: { checks: item.report.checks.length }, output: resultStatus(item.report) };
+		return {
+			name: item.name,
+			input: { checks: item.report.checks.length },
+			output: resultStatus(item.report)
+		};
 	});
 	recordExampleCases(
 		{
@@ -167,10 +200,26 @@ test('Derives the result status from recorded items', () => {
 
 test('Flags a stale unfinalized report as interrupted', () => {
 	const cases = [
-		{ name: 'active report idle 20 minutes', input: { updatedAt: minutesAgo(20), state: 'active' }, output: true },
-		{ name: 'active report updated 1 minute ago', input: { updatedAt: minutesAgo(1), state: 'active' }, output: false },
-		{ name: 'finalized report idle 20 minutes', input: { updatedAt: minutesAgo(20), state: 'finalized' }, output: false },
-		{ name: 'unparseable updatedAt', input: { updatedAt: 'not-a-time', state: 'active' }, output: false }
+		{
+			name: 'active report idle 20 minutes',
+			input: { updatedAt: minutesAgo(20), state: 'active' },
+			output: true
+		},
+		{
+			name: 'active report updated 1 minute ago',
+			input: { updatedAt: minutesAgo(1), state: 'active' },
+			output: false
+		},
+		{
+			name: 'finalized report idle 20 minutes',
+			input: { updatedAt: minutesAgo(20), state: 'finalized' },
+			output: false
+		},
+		{
+			name: 'unparseable updatedAt',
+			input: { updatedAt: 'not-a-time', state: 'active' },
+			output: false
+		}
 	];
 	const results = cases.map(({ name, input, output }) => {
 		const actual = interrupted(reportUpdatedAt(input.updatedAt, input.state as Report['state']));

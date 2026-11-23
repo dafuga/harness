@@ -141,7 +141,11 @@ test('Ancestry follows indexed parents and stops at gaps', () => {
 			file: 'ancestry-follows-indexed-parents-and-stops-at-gaps.json'
 		},
 		[
-			{ name: 'indexed chain reaches the unindexed gap once', input: { commit: headCommit }, output: chain },
+			{
+				name: 'indexed chain reaches the unindexed gap once',
+				input: { commit: headCommit },
+				output: chain
+			},
 			{ name: 'unindexed start has no parents', input: { commit: unindexedCommit }, output: none }
 		]
 	);
@@ -150,7 +154,9 @@ test('Ancestry follows indexed parents and stops at gaps', () => {
 test('Branch names list indexed branches then retained', () => {
 	const index = mainIndex();
 	const names = branchNames(index);
-	const withoutRetained = branchNames(indexOf([revision(headCommit, { branches: ['main'] })], [{ name: 'main', head: headCommit }]));
+	const withoutRetained = branchNames(
+		indexOf([revision(headCommit, { branches: ['main'] })], [{ name: 'main', head: headCommit }])
+	);
 	expect(names).toEqual(['main', retainedBranch]);
 	expect(withoutRetained).toEqual(['main']);
 	recordExampleCases(
@@ -163,7 +169,11 @@ test('Branch names list indexed branches then retained', () => {
 		},
 		[
 			{ name: 'index with a retained revision', input: { branches: ['main'] }, output: names },
-			{ name: 'index without retained revisions', input: { branches: ['main'] }, output: withoutRetained }
+			{
+				name: 'index without retained revisions',
+				input: { branches: ['main'] },
+				output: withoutRetained
+			}
 		]
 	);
 });
@@ -184,7 +194,11 @@ test('Default commit prefers asked commit then branch head', () => {
 		},
 		[
 			{ name: 'asked commit is indexed', input: { asked: parentCommit }, output: asked },
-			{ name: 'asked commit is unknown, branch head used', input: { asked: unindexedCommit }, output: fallback }
+			{
+				name: 'asked commit is unknown, branch head used',
+				input: { asked: unindexedCommit },
+				output: fallback
+			}
 		]
 	);
 });
@@ -208,7 +222,11 @@ test('Branch of commit gives retained or first branch', () => {
 		[
 			{ name: 'retained revision', input: { commit: parentCommit }, output: retained },
 			{ name: 'revision on a source branch', input: { commit: headCommit }, output: onBranch },
-			{ name: 'unknown commit falls back to first branch', input: { commit: unindexedCommit }, output: unknown }
+			{
+				name: 'unknown commit falls back to first branch',
+				input: { commit: unindexedCommit },
+				output: unknown
+			}
 		]
 	);
 });

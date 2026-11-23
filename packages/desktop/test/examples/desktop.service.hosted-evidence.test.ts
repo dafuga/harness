@@ -38,7 +38,11 @@ test('Returns a verified hosted evidence artifact', async () => {
 		})
 	});
 	const result = await service.artifact(query);
-	expect({ bytes: Array.from(result.bytes), mediaType: result.mediaType, sha256: result.sha256 }).toEqual({
+	expect({
+		bytes: Array.from(result.bytes),
+		mediaType: result.mediaType,
+		sha256: result.sha256
+	}).toEqual({
 		bytes: Array.from(bytes),
 		mediaType: 'image/png',
 		sha256
@@ -55,7 +59,11 @@ test('Returns a verified hosted evidence artifact', async () => {
 			{
 				name: 'Valid PNG artifact returns its bytes, media type, and requested digest',
 				input: { ...query, bytes: Array.from(bytes), principalId: 'principal-42' },
-				output: { bytes: Array.from(result.bytes), mediaType: result.mediaType, sha256: result.sha256 }
+				output: {
+					bytes: Array.from(result.bytes),
+					mediaType: result.mediaType,
+					sha256: result.sha256
+				}
 			}
 		]
 	);
@@ -107,7 +115,11 @@ test('Throws Error when the artifact digest does not match', async () => {
 		[
 			{
 				name: 'Artifact bytes that do not match the requested digest are rejected',
-				input: { ...query, bytes: Array.from(bytes), actualSha256: createHash('sha256').update(bytes).digest('hex') },
+				input: {
+					...query,
+					bytes: Array.from(bytes),
+					actualSha256: createHash('sha256').update(bytes).digest('hex')
+				},
 				error: 'Error: artifact digest does not match'
 			}
 		]

@@ -25,7 +25,9 @@ test('delivers activities with the poll version while the bridge remains current
 		}
 	];
 	const bridge = { deploymentActivities: () => Promise.resolve(activities) };
-	const workspace = { local: true, bridge } as unknown as Parameters<typeof watchDeploymentActivities>[0];
+	const workspace = { local: true, bridge } as unknown as Parameters<
+		typeof watchDeploymentActivities
+	>[0];
 	let delivered: { count: number; version: number } | undefined;
 	const events: Events = {
 		version: () => 7,

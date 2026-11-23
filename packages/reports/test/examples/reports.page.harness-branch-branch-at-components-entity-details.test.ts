@@ -4,9 +4,7 @@ import Page from '../../src/routes/harness/branch/[branch]/[...at]/components/[e
 import { correctedLocation } from '../../src/utils/development-tooling/correctedLocation';
 import { explorerRoute } from '../../../../src/utils/explorer-ui/explorerRoute';
 import { harnessPage } from '../../src/utils/explorer-ui/harness-page/harnessPage';
-import {
-	HarnessDataLoadError
-} from '../../src/utils/explorer-ui/harnessClient.types';
+import { HarnessDataLoadError } from '../../src/utils/explorer-ui/harnessClient.types';
 import { harnessClient } from '../../src/utils/explorer-ui/harnessClient';
 import { history, sha, summary } from '../explorerFixture';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
@@ -126,9 +124,7 @@ test('Reports not-in-history when the history lacks the address', () => {
 	]);
 	expect(notices[0]).toBe('Branch release is not in this history.');
 	expect(notices[1]).toBe(`Commit ${sha('e').slice(0, 7)} is not in this history.`);
-	expect(notices[2]).toBe(
-		`Branch feature/kept does not contain commit ${sha('c').slice(0, 7)}.`
-	);
+	expect(notices[2]).toBe(`Branch feature/kept does not contain commit ${sha('c').slice(0, 7)}.`);
 });
 
 test('Redirects other-category to the category that lists it', () => {
@@ -141,7 +137,11 @@ test('Redirects other-category to the category that lists it', () => {
 		{
 			name: 'a functions address whose component is listed under components',
 			input: { entity, listedUnder: 'components', tab: 'source' },
-			output: { category: moved?.category ?? null, entity: moved?.entity ?? null, tab: moved?.tab ?? null }
+			output: {
+				category: moved?.category ?? null,
+				entity: moved?.entity ?? null,
+				tab: moved?.tab ?? null
+			}
 		},
 		{
 			name: 'the same address when the listed category is already right',

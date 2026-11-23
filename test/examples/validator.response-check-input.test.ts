@@ -63,7 +63,10 @@ const rejectedInputs: Array<{ name: string; input: unknown; message: string }> =
 	},
 	{
 		name: 'duplicate id after trimming',
-		input: [criterion('rollback-plan', 'Explains rollback.'), criterion(' rollback-plan ', 'Again.')],
+		input: [
+			criterion('rollback-plan', 'Explains rollback.'),
+			criterion(' rollback-plan ', 'Again.')
+		],
 		message: 'Criterion ids must be unique.'
 	}
 ];

@@ -1,7 +1,11 @@
 import { test, vi } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { hostMemory, linuxMemory, macMemory } from '../../src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/hostMemory';
+import {
+	hostMemory,
+	linuxMemory,
+	macMemory
+} from '../../src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/hostMemory';
 
 let hostPlatform = 'linux';
 vi.mock('node:os', () => ({
@@ -60,12 +64,8 @@ test('Parses macOS memory counters and pressure', () => {
 });
 
 test('Parses Linux memory counters and pressure', () => {
-	const normal = linuxMemory(
-		'MemTotal:       16384000 kB\nMemAvailable:    8192000 kB\n'
-	);
-	const critical = linuxMemory(
-		'MemTotal:       16384000 kB\nMemAvailable:    409600 kB\n'
-	);
+	const normal = linuxMemory('MemTotal:       16384000 kB\nMemAvailable:    8192000 kB\n');
+	const critical = linuxMemory('MemTotal:       16384000 kB\nMemAvailable:    409600 kB\n');
 	expect([normal, critical.memoryPressure]).toEqual([
 		{
 			memoryTotalBytes: 16777216000,
@@ -109,7 +109,13 @@ test('Throws Invalid memory counters for missing Linux counters', () => {
 	}
 	const state = 'throws-invalid-memory-counters-for-missing-linux-counters';
 	recordExampleCases(
-		{ unitId: 'function.host-memory', symbol: 'linuxMemory', state, evidence: 'examples-cases', file: `${state}.json` },
+		{
+			unitId: 'function.host-memory',
+			symbol: 'linuxMemory',
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
 		[{ name: 'missing available counter', input, error: message }]
 	);
 });
@@ -125,7 +131,13 @@ test('Throws Unsupported resource platform for an unknown platform', async () =>
 		message = (caught as Error).message;
 	}
 	recordExampleCases(
-		{ unitId: 'function.host-memory', symbol: 'hostMemory', state, evidence: 'examples-cases', file: `${state}.json` },
+		{
+			unitId: 'function.host-memory',
+			symbol: 'hostMemory',
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
 		[{ name: 'unsupported platform', input: 'freebsd', error: message }]
 	);
 	hostPlatform = 'linux';
@@ -143,7 +155,13 @@ test('Throws Memory probe failure when Linux memory cannot be read', async () =>
 		message = (caught as Error).message;
 	}
 	recordExampleCases(
-		{ unitId: 'function.host-memory', symbol: 'hostMemory', state, evidence: 'examples-cases', file: `${state}.json` },
+		{
+			unitId: 'function.host-memory',
+			symbol: 'hostMemory',
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
 		[{ name: 'Linux probe rejection', input: '/proc/meminfo', error: message }]
 	);
 });
@@ -159,7 +177,19 @@ test('Throws Error for invalid macOS memory counters', () => {
 		message = (caught as Error).message;
 	}
 	recordExampleCases(
-		{ unitId: 'function.host-memory', symbol: 'macMemory', state, evidence: 'examples-cases', file: `${state}.json` },
-		[{ name: 'missing page size', input: { text: input, pressure: '1', total: 1024 }, error: message }]
+		{
+			unitId: 'function.host-memory',
+			symbol: 'macMemory',
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
+		[
+			{
+				name: 'missing page size',
+				input: { text: input, pressure: '1', total: 1024 },
+				error: message
+			}
+		]
 	);
 });

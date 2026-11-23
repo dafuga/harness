@@ -25,7 +25,11 @@ test('Describes optional hub platform bindings', () => {
 				HARNESS_RELAY_ORIGIN: 'https://relay.example.test'
 			},
 			output: {
-				configured: ['HARNESS_COLLABORATION_OWNER', 'HARNESS_COLLABORATION_REPO', 'HARNESS_RELAY_ORIGIN']
+				configured: [
+					'HARNESS_COLLABORATION_OWNER',
+					'HARNESS_COLLABORATION_REPO',
+					'HARNESS_RELAY_ORIGIN'
+				]
 			}
 		}
 	];

@@ -21,7 +21,11 @@ test('Hashes gateway requests by serialized identity', () => {
 	const reorderedDigest = gatewayReplay(reorderedRequest);
 	const cases = [
 		{ name: 'standard user request', input: request, output: digest },
-		{ name: 'same values in different property order', input: reorderedRequest, output: reorderedDigest }
+		{
+			name: 'same values in different property order',
+			input: reorderedRequest,
+			output: reorderedDigest
+		}
 	];
 
 	expect(digest).toMatch(/^[a-f0-9]{64}$/);
@@ -55,7 +59,13 @@ test('Throws TypeError when request data is cyclic', () => {
 			evidence: 'examples-cases',
 			file: 'throws-typeerror-when-request-data-is-cyclic.json'
 		},
-		[{ name: 'cyclic request input', input: { model: 'gpt-4.1', input: '[cyclic]' }, error: 'TypeError' }]
+		[
+			{
+				name: 'cyclic request input',
+				input: { model: 'gpt-4.1', input: '[cyclic]' },
+				error: 'TypeError'
+			}
+		]
 	);
 });
 
@@ -75,6 +85,12 @@ test('Throws TypeError when request data contains BigInt', () => {
 			evidence: 'examples-cases',
 			file: 'throws-typeerror-when-request-data-contains-bigint.json'
 		},
-		[{ name: 'BigInt nested in request input', input: { model: 'gpt-4.1', content: 'BigInt' }, error: 'TypeError' }]
+		[
+			{
+				name: 'BigInt nested in request input',
+				input: { model: 'gpt-4.1', content: 'BigInt' },
+				error: 'TypeError'
+			}
+		]
 	);
 });

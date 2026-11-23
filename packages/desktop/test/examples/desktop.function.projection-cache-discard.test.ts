@@ -23,10 +23,17 @@ test('discards the scoped lookup and its identified projection', async () => {
 	const directory = mkdtempSync(join(tmpdir(), 'projection-cache-discard-'));
 	try {
 		const scope = '["https://hub.example.com","google:ada","$projects","projects"]';
-		const identity = { origin: 'https://hub.example.com', principal: 'google:ada', project: '$projects', key: 'projects' };
+		const identity = {
+			origin: 'https://hub.example.com',
+			principal: 'google:ada',
+			project: '$projects',
+			key: 'projects'
+		};
 		const files = cacheFiles(directory, scope, identity);
 		await projectionCacheDiscard(directory, scope);
-		const remaining = [files.lookup, files.projection].filter((file) => existsSync(join(directory, file)));
+		const remaining = [files.lookup, files.projection].filter((file) =>
+			existsSync(join(directory, file))
+		);
 		expect(remaining).toEqual([]);
 		recordExampleCases(
 			{
@@ -36,7 +43,13 @@ test('discards the scoped lookup and its identified projection', async () => {
 				evidence: 'examples-cases',
 				file: 'discards-the-scoped-lookup-and-its-identified-projection.json'
 			},
-			[{ name: 'remove lookup and projection for a hosted projects scope', input: { directory: '<temporary-cache>', scope, identity }, output: { lookupRemoved: true, projectionRemoved: true } }]
+			[
+				{
+					name: 'remove lookup and projection for a hosted projects scope',
+					input: { directory: '<temporary-cache>', scope, identity },
+					output: { lookupRemoved: true, projectionRemoved: true }
+				}
+			]
 		);
 	} finally {
 		rmSync(directory, { recursive: true, force: true });
@@ -46,7 +59,8 @@ test('discards the scoped lookup and its identified projection', async () => {
 test('resolves when the scoped lookup is missing', async () => {
 	const directory = mkdtempSync(join(tmpdir(), 'projection-cache-missing-'));
 	try {
-		const scope = '["https://hub.example.com","google:ada","550e8400-e29b-41d4-a716-446655440000","/api/projects/550e8400-e29b-41d4-a716-446655440000/snapshot"]';
+		const scope =
+			'["https://hub.example.com","google:ada","550e8400-e29b-41d4-a716-446655440000","/api/projects/550e8400-e29b-41d4-a716-446655440000/snapshot"]';
 		await expect(projectionCacheDiscard(directory, scope)).resolves.toBeUndefined();
 		recordExampleCases(
 			{
@@ -56,7 +70,13 @@ test('resolves when the scoped lookup is missing', async () => {
 				evidence: 'examples-cases',
 				file: 'resolves-when-the-scoped-lookup-is-missing.json'
 			},
-			[{ name: 'missing lookup for a project snapshot scope', input: { directory: '<temporary-cache>', scope }, output: 'resolved undefined' }]
+			[
+				{
+					name: 'missing lookup for a project snapshot scope',
+					input: { directory: '<temporary-cache>', scope },
+					output: 'resolved undefined'
+				}
+			]
 		);
 	} finally {
 		rmSync(directory, { recursive: true, force: true });

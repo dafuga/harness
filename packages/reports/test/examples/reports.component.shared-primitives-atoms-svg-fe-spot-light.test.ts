@@ -25,7 +25,15 @@ const lightContent = createRawSnippet(() => ({
 const markupOf = (body: string) => body.replace(/<!--.*?-->/g, '');
 
 test('fespotlight renders its attributes and no wrapper', () => {
-	const props = { x: 10, y: 20, z: 30, pointsAtX: 0, pointsAtY: 0, pointsAtZ: 0, specularExponent: 1 };
+	const props = {
+		x: 10,
+		y: 20,
+		z: 30,
+		pointsAtX: 0,
+		pointsAtY: 0,
+		pointsAtZ: 0,
+		specularExponent: 1
+	};
 	const body = markupOf(render(SvgFeSpotLight, { props }).body);
 	recordExampleCases(where('fespotlight-renders-its-attributes-and-no-wrapper'), [
 		{

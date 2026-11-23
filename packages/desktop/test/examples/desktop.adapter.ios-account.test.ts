@@ -152,15 +152,19 @@ function nativeAccountResult(mode: 'status' | 'request'): Record<string, unknown
 	const source = join(directory, 'main.swift');
 	const executable = join(directory, 'account-example');
 	writeFileSync(source, nativeRunner);
-	execFileSync('xcrun', [
-		'swiftc',
-		'-module-cache-path',
-		join(directory, 'modules'),
-		...accountSources,
-		source,
-		'-o',
-		executable
-	], { encoding: 'utf8', timeout: 15_000, stdio: ['ignore', 'pipe', 'pipe'] });
+	execFileSync(
+		'xcrun',
+		[
+			'swiftc',
+			'-module-cache-path',
+			join(directory, 'modules'),
+			...accountSources,
+			source,
+			'-o',
+			executable
+		],
+		{ encoding: 'utf8', timeout: 15_000, stdio: ['ignore', 'pipe', 'pipe'] }
+	);
 	const result = execFileSync(executable, [directory, mode], {
 		encoding: 'utf8',
 		timeout: 2_000,
@@ -175,33 +179,73 @@ test('status shows all public account states', () => {
 	const pending = result.pending as { handoff: Record<string, unknown> };
 	const signedIn = result.signedIn;
 	expect(signedOut).toEqual({ configured: true, state: 'signed-out' });
-	expect(pending).toMatchObject({ configured: true, state: 'pending', handoff: {
-		userCode: 'K8M-2Q', verificationUrl: `https://hub.example.invalid/native/${'h'.repeat(43)}`,
-		expiresAt: '2026-11-15T18:05:00Z', interval: 5
-	} });
-	expect(signedIn).toEqual({ configured: true, state: 'signed-in', actor: {
-		id: '109876543210987654321', name: 'Alex Morgan', email: 'alex.morgan@example.com'
-	} });
+	expect(pending).toMatchObject({
+		configured: true,
+		state: 'pending',
+		handoff: {
+			userCode: 'K8M-2Q',
+			verificationUrl: `https://hub.example.invalid/native/${'h'.repeat(43)}`,
+			expiresAt: '2026-11-15T18:05:00Z',
+			interval: 5
+		}
+	});
+	expect(signedIn).toEqual({
+		configured: true,
+		state: 'signed-in',
+		actor: {
+			id: '109876543210987654321',
+			name: 'Alex Morgan',
+			email: 'alex.morgan@example.com'
+		}
+	});
 	expect(JSON.stringify(result)).not.toContain('fixture-private-session-token');
-	recordExampleCases({ unitId: 'desktop.adapter.ios-account', symbol: 'status', state: stateId,
-		evidence: 'examples-cases', file: `${stateId}.json` }, [
-		{ name: 'no stored account', input: {}, output: signedOut },
-		{ name: 'approval is pending', input: {}, output: result.pending },
-		{ name: 'verified Google account', input: {}, output: signedIn }
-	]);
+	recordExampleCases(
+		{
+			unitId: 'desktop.adapter.ios-account',
+			symbol: 'status',
+			state: stateId,
+			evidence: 'examples-cases',
+			file: `${stateId}.json`
+		},
+		[
+			{ name: 'no stored account', input: {}, output: signedOut },
+			{ name: 'approval is pending', input: {}, output: result.pending },
+			{ name: 'verified Google account', input: {}, output: signedIn }
+		]
+	);
 }, 20_000);
 
 test('request returns project answers and clears a 401 session', () => {
 	const result = nativeAccountResult('request') as {
 		success: { status: number; contentType: string; data: string };
-		unauthorized: { status: number; contentType: string; data: string }; afterUnauthorized: unknown;
+		unauthorized: { status: number; contentType: string; data: string };
+		afterUnauthorized: unknown;
 	};
-	expect(result.success).toEqual({ status: 200, contentType: 'application/json', data: Buffer.from('{"ok":true}').toString('base64') });
-	expect(result.unauthorized).toEqual({ status: 401, contentType: 'application/json', data: Buffer.from('{"error":"session-required"}').toString('base64') });
+	expect(result.success).toEqual({
+		status: 200,
+		contentType: 'application/json',
+		data: Buffer.from('{"ok":true}').toString('base64')
+	});
+	expect(result.unauthorized).toEqual({
+		status: 401,
+		contentType: 'application/json',
+		data: Buffer.from('{"error":"session-required"}').toString('base64')
+	});
 	expect(result.afterUnauthorized).toEqual({ configured: true, state: 'signed-out' });
-	recordExampleCases({ unitId: 'desktop.adapter.ios-account', symbol: 'request', state: requestStateId,
-		evidence: 'examples-cases', file: `${requestStateId}.json` }, [{
-		name: 'read a project snapshot and handle the expired session',
-		input: { method: 'GET', path: projectPath }, output: result
-	}]);
+	recordExampleCases(
+		{
+			unitId: 'desktop.adapter.ios-account',
+			symbol: 'request',
+			state: requestStateId,
+			evidence: 'examples-cases',
+			file: `${requestStateId}.json`
+		},
+		[
+			{
+				name: 'read a project snapshot and handle the expired session',
+				input: { method: 'GET', path: projectPath },
+				output: result
+			}
+		]
+	);
 }, 20_000);

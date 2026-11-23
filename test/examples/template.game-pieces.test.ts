@@ -1,5 +1,9 @@
 import { test } from 'vitest';
-import { gameViewFiles, mechanicFiles, checkpointFiles } from '../../src/templates/game-authoring/gamePieces';
+import {
+	gameViewFiles,
+	mechanicFiles,
+	checkpointFiles
+} from '../../src/templates/game-authoring/gamePieces';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
 

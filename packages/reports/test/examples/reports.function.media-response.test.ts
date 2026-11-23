@@ -50,7 +50,12 @@ test('Returns the complete media body with default headers', async () => {
 
 test('Returns the selected bytes for a valid range', async () => {
 	const response = await summarize(
-		mediaResponse(Buffer.from('image-bytes'), 'image/jpeg', 'bytes=6-10', 'attachment; filename="photo.jpg"')
+		mediaResponse(
+			Buffer.from('image-bytes'),
+			'image/jpeg',
+			'bytes=6-10',
+			'attachment; filename="photo.jpg"'
+		)
 	);
 	expect(response.status).toBe(206);
 	expect(response.body).toBe('bytes');
@@ -62,11 +67,18 @@ test('Returns the selected bytes for a valid range', async () => {
 			evidence: 'examples-cases',
 			file: 'returns-the-selected-bytes-for-a-valid-range.json'
 		},
-		[{
-			name: 'JPEG range requests a byte slice and attachment disposition',
-			input: { bytes: 'image-bytes', mime: 'image/jpeg', range: 'bytes=6-10', disposition: 'attachment; filename="photo.jpg"' },
-			output: response
-		}]
+		[
+			{
+				name: 'JPEG range requests a byte slice and attachment disposition',
+				input: {
+					bytes: 'image-bytes',
+					mime: 'image/jpeg',
+					range: 'bytes=6-10',
+					disposition: 'attachment; filename="photo.jpg"'
+				},
+				output: response
+			}
+		]
 	);
 });
 
@@ -85,8 +97,16 @@ test('Rejects malformed and unsatisfiable ranges', async () => {
 			file: 'rejects-malformed-and-unsatisfiable-ranges.json'
 		},
 		[
-			{ name: 'multiple ranges are unsupported', input: { bytes: 'clip', mime: 'video/mp4', range: 'bytes=1-2,3-3' }, output: malformed },
-			{ name: 'range starts beyond the body', input: { bytes: 'clip', mime: 'video/mp4', range: 'bytes=8-' }, output: unsatisfiable }
+			{
+				name: 'multiple ranges are unsupported',
+				input: { bytes: 'clip', mime: 'video/mp4', range: 'bytes=1-2,3-3' },
+				output: malformed
+			},
+			{
+				name: 'range starts beyond the body',
+				input: { bytes: 'clip', mime: 'video/mp4', range: 'bytes=8-' },
+				output: unsatisfiable
+			}
 		]
 	);
 });

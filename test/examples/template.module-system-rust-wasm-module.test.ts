@@ -7,11 +7,16 @@ test('Declares a reproducible Rust WebAssembly kernel template', () => {
 	const resource = rustWasmModule.resources?.[0];
 	const generatedFiles = (resource?.files ?? []).map(({ path, contents }) => ({
 		path,
-		lines: contents.split('\n').filter((line) =>
-			line.includes('crate-type') || line.includes('sum_squares') ||
-			line.includes('WasmKernel') || line.includes('sumSquares') ||
-			line.includes('invalid work')
-		)
+		lines: contents
+			.split('\n')
+			.filter(
+				(line) =>
+					line.includes('crate-type') ||
+					line.includes('sum_squares') ||
+					line.includes('WasmKernel') ||
+					line.includes('sumSquares') ||
+					line.includes('invalid work')
+			)
 	}));
 	const output = {
 		id: rustWasmModule.id,
@@ -19,11 +24,13 @@ test('Declares a reproducible Rust WebAssembly kernel template', () => {
 		buildCommand: rustWasmModule.packageScripts?.['build:wasm'],
 		generatedFiles
 	};
-	const cases = [{
-		name: 'Rust kernel resource provides its crate, typed service and boundary test',
-		input: { resource: 'kernel', kernelName: 'matrix-sum' },
-		output
-	}];
+	const cases = [
+		{
+			name: 'Rust kernel resource provides its crate, typed service and boundary test',
+			input: { resource: 'kernel', kernelName: 'matrix-sum' },
+			output
+		}
+	];
 
 	expect(output.id).toBe('rust-wasm');
 	expect(generatedFiles.map(({ path }) => path)).toEqual([

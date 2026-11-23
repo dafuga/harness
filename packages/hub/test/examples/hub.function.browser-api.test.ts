@@ -34,7 +34,13 @@ test('Reads same-origin JSON and omits empty query values', async () => {
 			evidence: 'examples-cases',
 			file: 'reads-same-origin-json-and-omits-empty-query-values.json'
 		},
-		[{ name: 'status with one useful query value', input: { path: '/api/status', query: { view: 'compact', empty: '', missing: null } }, output: result }]
+		[
+			{
+				name: 'status with one useful query value',
+				input: { path: '/api/status', query: { view: 'compact', empty: '', missing: null } },
+				output: result
+			}
+		]
 	);
 });
 
@@ -72,7 +78,13 @@ test('Sends JSON writes with same-origin request settings', async () => {
 			evidence: 'examples-cases',
 			file: 'sends-json-writes-with-same-origin-request-settings.json'
 		},
-		[{ name: 'save a preference', input: { method: 'POST', path: '/api/preferences', body: { theme: 'dark' } }, output: result }]
+		[
+			{
+				name: 'save a preference',
+				input: { method: 'POST', path: '/api/preferences', body: { theme: 'dark' } },
+				output: result
+			}
+		]
 	);
 });
 
@@ -119,6 +131,12 @@ test('Reports coded HTTP refusals to the failure callback', async () => {
 			evidence: 'examples-cases',
 			file: 'reports-coded-http-refusals-to-the-failure-callback.json'
 		},
-		[{ name: 'expired session response', input: { path: '/api/profile', status: 401, code: 'SESSION_EXPIRED' }, output: failure }]
+		[
+			{
+				name: 'expired session response',
+				input: { path: '/api/profile', status: 401, code: 'SESSION_EXPIRED' },
+				output: failure
+			}
+		]
 	);
 });

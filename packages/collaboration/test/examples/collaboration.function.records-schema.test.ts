@@ -209,5 +209,20 @@ test('Throws ZodError when records violate integrity rules', () => {
 	const state = 'throws-zoderror-when-records-violate-integrity-rules';
 	expect(error.name).toBe('ZodError');
 	expect(error.issues.map(({ message }) => message)).toContain('Duplicate record identity');
-	recordExampleCases({ unitId: 'collaboration.function.records-schema', symbol: 'recordsSchema', state, evidence: 'examples-cases', file: `${state}.json` }, [{ name: 'duplicate project identities throw a validation error', input: duplicateInput, error }]);
+	recordExampleCases(
+		{
+			unitId: 'collaboration.function.records-schema',
+			symbol: 'recordsSchema',
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
+		[
+			{
+				name: 'duplicate project identities throw a validation error',
+				input: duplicateInput,
+				error
+			}
+		]
+	);
 });

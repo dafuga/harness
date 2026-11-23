@@ -1,7 +1,10 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { remoteHostIdentity, registerRemoteHost } from '../../src/services/networking-security/remote-host-service/remote-host-switch-service/remoteHostIdentity';
+import {
+	remoteHostIdentity,
+	registerRemoteHost
+} from '../../src/services/networking-security/remote-host-service/remote-host-switch-service/remoteHostIdentity';
 import { HubNoRelayError } from '../../src/services/networking-security/remote-host-service/remote-host-switch-service/remoteHostIdentity.types';
 import type { RegisterRemoteHost } from '../../src/utils/networking-security/remoteHostIdentity';
 
@@ -69,7 +72,11 @@ test('registers the host and adopts its accepted relay', async () => {
 	};
 
 	expect(state).toMatchObject({ enabled: true, origin: 'http://localhost:4312', generation: 7 });
-	expect(request).toMatchObject({ hostId: state.hostId, hostKey: state.keys.publicKey, name: 'Studio Mac' });
+	expect(request).toMatchObject({
+		hostId: state.hostId,
+		hostKey: state.keys.publicKey,
+		name: 'Studio Mac'
+	});
 	expect(output.returnedPublicKeyPresent).toBe(true);
 
 	recordExampleCases(

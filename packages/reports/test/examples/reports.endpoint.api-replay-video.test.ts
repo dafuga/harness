@@ -30,11 +30,7 @@ async function failureOf(run: string | null): Promise<Failure> {
 }
 
 test('Rejects a run ID that is not a 36-character hex UUID', async () => {
-	const inputs = [
-		'not-a-report-id',
-		VALID_ID.toUpperCase(),
-		VALID_ID.slice(0, 35)
-	];
+	const inputs = ['not-a-report-id', VALID_ID.toUpperCase(), VALID_ID.slice(0, 35)];
 	const cases = [];
 	for (const run of inputs) {
 		const failure = await failureOf(run);

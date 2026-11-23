@@ -85,48 +85,119 @@ test('Runs an admitted resource request and releases its lease', async () => {
 test('Throws ResourceQueueError when the wait timeout is invalid', async () => {
 	await withTempDir('resource-queue-timeout-', async (home) => {
 		const service = new ResourceQueueService({ home, monitor: { sample: async () => sample() } });
-		const input = { priority: 'coding' as const, cpus: 2, memoryMiB: 4096, label: 'Unit test worker' };
+		const input = {
+			priority: 'coding' as const,
+			cpus: 2,
+			memoryMiB: 4096,
+			label: 'Unit test worker'
+		};
 		try {
-			const action = () => service.run(input, async () => ({ status: 'done' }), { waitTimeoutMs: 0 });
+			const action = () =>
+				service.run(input, async () => ({ status: 'done' }), { waitTimeoutMs: 0 });
 			await expect(action()).rejects.toThrow('Invalid resource queue wait timeout');
-			recordExampleCases({
-				unitId: 'service.resource-queue', symbol: 'run', state: 'throws-resourcequeueerror-when-the-wait-timeout-is-invalid',
-				evidence: 'examples-cases', file: 'throws-resourcequeueerror-when-the-wait-timeout-is-invalid.json'
-			}, [{ name: 'rejects zero wait timeout', input: { ...input, waitTimeoutMs: 0 }, error: 'Invalid resource queue wait timeout' }]);
-		} finally { service.close(); }
+			recordExampleCases(
+				{
+					unitId: 'service.resource-queue',
+					symbol: 'run',
+					state: 'throws-resourcequeueerror-when-the-wait-timeout-is-invalid',
+					evidence: 'examples-cases',
+					file: 'throws-resourcequeueerror-when-the-wait-timeout-is-invalid.json'
+				},
+				[
+					{
+						name: 'rejects zero wait timeout',
+						input: { ...input, waitTimeoutMs: 0 },
+						error: 'Invalid resource queue wait timeout'
+					}
+				]
+			);
+		} finally {
+			service.close();
+		}
 	});
 });
 
 test('Throws ResourceQueueError when the inherited lease is invalid', async () => {
 	await withTempDir('resource-queue-parent-', async (home) => {
-		const service = new ResourceQueueService({ home, env: {}, monitor: { sample: async () => sample() } });
+		const service = new ResourceQueueService({
+			home,
+			env: {},
+			monitor: { sample: async () => sample() }
+		});
 		const input = { priority: 'coding' as const, cpus: 1, memoryMiB: 512, label: 'Nested worker' };
 		try {
-			const action = () => service.run(input, async () => ({ status: 'done' }), { env: { HARNESS_RESOURCE_LEASE: '00000000-0000-4000-8000-000000000000' } });
+			const action = () =>
+				service.run(input, async () => ({ status: 'done' }), {
+					env: { HARNESS_RESOURCE_LEASE: '00000000-0000-4000-8000-000000000000' }
+				});
 			await expect(action()).rejects.toThrow('Invalid inherited resource lease');
-			recordExampleCases({
-				unitId: 'service.resource-queue', symbol: 'run', state: 'throws-resourcequeueerror-when-the-inherited-lease-is-invali',
-				evidence: 'examples-cases', file: 'throws-resourcequeueerror-when-the-inherited-lease-is-invali.json'
-			}, [{ name: 'rejects an unknown parent lease', input: { ...input, inheritedLease: '00000000-0000-4000-8000-000000000000' }, error: 'Invalid inherited resource lease' }]);
-		} finally { service.close(); }
+			recordExampleCases(
+				{
+					unitId: 'service.resource-queue',
+					symbol: 'run',
+					state: 'throws-resourcequeueerror-when-the-inherited-lease-is-invali',
+					evidence: 'examples-cases',
+					file: 'throws-resourcequeueerror-when-the-inherited-lease-is-invali.json'
+				},
+				[
+					{
+						name: 'rejects an unknown parent lease',
+						input: { ...input, inheritedLease: '00000000-0000-4000-8000-000000000000' },
+						error: 'Invalid inherited resource lease'
+					}
+				]
+			);
+		} finally {
+			service.close();
+		}
 	});
 });
 
 test('Throws ResourceQueueError when the queue is full', async () => {
 	await withTempDir('resource-queue-full-', async (home) => {
-		const service = new ResourceQueueService({ home, env: {}, monitor: { sample: async () => sample() } });
-		const input = { priority: 'coding' as const, cpus: 1, memoryMiB: 512, label: 'Unit test worker' };
+		const service = new ResourceQueueService({
+			home,
+			env: {},
+			monitor: { sample: async () => sample() }
+		});
+		const input = {
+			priority: 'coding' as const,
+			cpus: 1,
+			memoryMiB: 512,
+			label: 'Unit test worker'
+		};
 		try {
-			for (let index = 0; index < 512; index += 1) service.queue.add({
-				...input, id: `00000000-0000-4000-8000-${String(index).padStart(12, '0')}`, ownerPid: process.pid,
-				ownerStarted: 'fixture', state: 'queued', createdAt: 1, heartbeatAt: 1, notice: null
-			});
+			for (let index = 0; index < 512; index += 1)
+				service.queue.add({
+					...input,
+					id: `00000000-0000-4000-8000-${String(index).padStart(12, '0')}`,
+					ownerPid: process.pid,
+					ownerStarted: 'fixture',
+					state: 'queued',
+					createdAt: 1,
+					heartbeatAt: 1,
+					notice: null
+				});
 			const action = () => service.run(input, async () => ({ status: 'done' }));
 			await expect(action()).rejects.toThrow('Resource queue is full');
-			recordExampleCases({
-				unitId: 'service.resource-queue', symbol: 'run', state: 'throws-resourcequeueerror-when-the-queue-is-full',
-				evidence: 'examples-cases', file: 'throws-resourcequeueerror-when-the-queue-is-full.json'
-			}, [{ name: 'rejects admission at 512 queued records', input: { ...input, queuedRecords: 512 }, error: 'Resource queue is full' }]);
-		} finally { service.close(); }
+			recordExampleCases(
+				{
+					unitId: 'service.resource-queue',
+					symbol: 'run',
+					state: 'throws-resourcequeueerror-when-the-queue-is-full',
+					evidence: 'examples-cases',
+					file: 'throws-resourcequeueerror-when-the-queue-is-full.json'
+				},
+				[
+					{
+						name: 'rejects admission at 512 queued records',
+						input: { ...input, queuedRecords: 512 },
+						error: 'Resource queue is full'
+					}
+				]
+			);
+		} finally {
+			service.close();
+		}
 	});
 });

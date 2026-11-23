@@ -1,4 +1,7 @@
-import type { Contract, Groups } from './workflow.development-tooling-guide-units-contract-states.test.types';
+import type {
+	Contract,
+	Groups
+} from './workflow.development-tooling-guide-units-contract-states.test.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -21,7 +24,9 @@ function cardContract(): Contract {
 			{ name: 'Card.tags', type: 'string[]', required: true },
 			{ name: 'Card.showBadge', type: 'boolean', required: true }
 		],
-		outputs: [{ name: 'Card.render', type: 'string', description: 'Empty list when nothing matches.' }],
+		outputs: [
+			{ name: 'Card.render', type: 'string', description: 'Empty list when nothing matches.' }
+		],
 		errors: [],
 		errorStatus: 'none-found'
 	};
@@ -34,7 +39,11 @@ function stateGroups(): Groups {
 			{ name: 'empty-state', origin: 'GUESS', reasons: ['Prop unitStateName.state (string).'] }
 		],
 		[
-			{ name: 'loading', origin: 'REQUIRED', reasons: ["Prop Panel.status ('loading' | 'ready')."] },
+			{
+				name: 'loading',
+				origin: 'REQUIRED',
+				reasons: ["Prop Panel.status ('loading' | 'ready')."]
+			},
 			{ name: 'empty-state', origin: 'GUESS', reasons: ['Contract mentions empty.'] }
 		],
 		[]

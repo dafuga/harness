@@ -2,7 +2,10 @@ import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
-import { generateModel, renderGenerateResult } from '../../src/workflows/generate-code/generateCode';
+import {
+	generateModel,
+	renderGenerateResult
+} from '../../src/workflows/generate-code/generateCode';
 import { generationGroup } from '../../src/workflows/generate-code/generationGroup';
 import { groupedFiles } from '../../src/workflows/projects-sessions/generate-code/groupedFiles';
 import { groupedImports } from '../../src/workflows/generate-code/groupedImports';
@@ -95,13 +98,16 @@ test('Keeps planned paths when no category is given', () => {
 test('Rewrites a module address that the generated file moved', () => {
 	const output = groupedImports(IMPORT_SOURCE, BEFORE, AFTER, MOVED);
 	expect(output).toContain("from '../two");
-	recordExampleCases(meta('rewrites-a-module-address-that-the-generated-file-moved', 'groupedImports'), [
-		{
-			name: 'sibling import of an unmoved module from a moved file',
-			input: { contents: IMPORT_SOURCE, before: BEFORE, after: AFTER },
-			output
-		}
-	]);
+	recordExampleCases(
+		meta('rewrites-a-module-address-that-the-generated-file-moved', 'groupedImports'),
+		[
+			{
+				name: 'sibling import of an unmoved module from a moved file',
+				input: { contents: IMPORT_SOURCE, before: BEFORE, after: AFTER },
+				output
+			}
+		]
+	);
 });
 
 test('Leaves ordinary strings untouched', () => {

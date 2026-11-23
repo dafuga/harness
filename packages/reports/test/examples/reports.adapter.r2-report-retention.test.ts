@@ -48,7 +48,10 @@ test('orphans counts old unknown report objects in a dry run', async () => {
 	const input = { known: ['kept-report'], cutoff: 1800000000000, dryRun: true };
 	const adapter = makeAdapter([
 		{ Key: 'report-evidence/runs/old-report/result.json', LastModified: new Date(1790000000000) },
-		{ Key: 'uploaded-screenshots/runs/kept-report/image.png', LastModified: new Date(1790000000000) },
+		{
+			Key: 'uploaded-screenshots/runs/kept-report/image.png',
+			LastModified: new Date(1790000000000)
+		},
 		{ Key: 'published-reports/new-report/report.json', LastModified: new Date(1800000000001) }
 	]);
 	const output = await adapter.orphans(new Set(input.known), input.cutoff, input.dryRun);
@@ -61,6 +64,12 @@ test('orphans counts old unknown report objects in a dry run', async () => {
 			evidence: 'examples-cases',
 			file: 'orphans-counts-old-unknown-report-objects-in-a-dry-run.json'
 		},
-		[{ name: 'old unknown object is counted while known and newer objects are excluded', input, output }]
+		[
+			{
+				name: 'old unknown object is counted while known and newer objects are excluded',
+				input,
+				output
+			}
+		]
 	);
 });

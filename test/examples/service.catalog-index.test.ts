@@ -43,7 +43,11 @@ test('Writes a replacement catalog database', async () => {
 				{
 					name: 'empty history index and snapshots produce the destination catalog',
 					input: { directory: '<temporary-directory>', index: emptyIndex, snapshots },
-					output: { path: '<temporary-directory>/catalog.sqlite', mode, temporaryDirectoriesRemaining: leftovers.length }
+					output: {
+						path: '<temporary-directory>/catalog.sqlite',
+						mode,
+						temporaryDirectoriesRemaining: leftovers.length
+					}
 				}
 			]
 		);
@@ -67,7 +71,13 @@ test('Throws TypeError when directory is not a string', async () => {
 			evidence: 'examples-cases',
 			file: 'throws-typeerror-when-directory-is-not-a-string.json'
 		},
-		[{ name: 'number directory is rejected by path.join', input: { directory, index: emptyIndex, snapshots: [] }, error: 'TypeError' }]
+		[
+			{
+				name: 'number directory is rejected by path.join',
+				input: { directory, index: emptyIndex, snapshots: [] },
+				error: 'TypeError'
+			}
+		]
 	);
 });
 
@@ -89,7 +99,13 @@ test('Throws Error when temporary directory cannot be created', async () => {
 				evidence: 'examples-cases',
 				file: 'throws-error-when-temporary-directory-cannot-be-created.json'
 			},
-			[{ name: 'missing destination directory prevents temporary creation', input: { directory: '<missing-directory>', index: emptyIndex, snapshots: [] }, error: 'Error' }]
+			[
+				{
+					name: 'missing destination directory prevents temporary creation',
+					input: { directory: '<missing-directory>', index: emptyIndex, snapshots: [] },
+					error: 'Error'
+				}
+			]
 		);
 	});
 });

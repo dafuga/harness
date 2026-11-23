@@ -21,7 +21,11 @@ test('Reads a UID annotation from source text', () => {
 		},
 		[
 			{ name: 'source begins with a UID annotation', input: annotated, output: found },
-			{ name: 'source has no UID annotation', input: 'export const enabled = true;\n', output: absent }
+			{
+				name: 'source has no UID annotation',
+				input: 'export const enabled = true;\n',
+				output: absent
+			}
 		]
 	);
 });
@@ -44,9 +48,21 @@ test('Selects UID comment syntax from the source path', () => {
 			file: 'selects-uid-comment-syntax-from-the-source-path.json'
 		},
 		[
-			{ name: 'TypeScript uses a line comment', input: { path: 'src/utils/development-tooling/unitUid.ts', uid }, output: line },
-			{ name: 'Svelte uses an HTML comment', input: { path: 'src/components/Button.svelte', uid }, output: html },
-			{ name: 'canonical native atom suppresses comments', input: { path: 'packages/game/src/atoms/HtmlButton.svelte', uid }, output: suppressed }
+			{
+				name: 'TypeScript uses a line comment',
+				input: { path: 'src/utils/development-tooling/unitUid.ts', uid },
+				output: line
+			},
+			{
+				name: 'Svelte uses an HTML comment',
+				input: { path: 'src/components/Button.svelte', uid },
+				output: html
+			},
+			{
+				name: 'canonical native atom suppresses comments',
+				input: { path: 'packages/game/src/atoms/HtmlButton.svelte', uid },
+				output: suppressed
+			}
 		]
 	);
 });
@@ -75,9 +91,21 @@ test('Adds a UID comment at the appropriate source position', () => {
 			file: 'adds-a-uid-comment-at-the-appropriate-source-position.json'
 		},
 		[
-			{ name: 'plain TypeScript receives a leading comment', input: { path: 'src/utils/development-tooling/unitUid.ts', code: plain, uid }, output: outputs[0] },
-			{ name: 'shebang stays before the UID comment', input: { path: scriptPath, code: shebang, uid }, output: outputs[1] },
-			{ name: 'Svelte comment follows leading Harness comments', input: { path: 'src/components/Example.svelte', code: svelte, uid }, output: outputs[2] }
+			{
+				name: 'plain TypeScript receives a leading comment',
+				input: { path: 'src/utils/development-tooling/unitUid.ts', code: plain, uid },
+				output: outputs[0]
+			},
+			{
+				name: 'shebang stays before the UID comment',
+				input: { path: scriptPath, code: shebang, uid },
+				output: outputs[1]
+			},
+			{
+				name: 'Svelte comment follows leading Harness comments',
+				input: { path: 'src/components/Example.svelte', code: svelte, uid },
+				output: outputs[2]
+			}
 		]
 	);
 });

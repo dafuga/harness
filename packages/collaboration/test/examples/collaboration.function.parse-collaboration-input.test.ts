@@ -62,28 +62,48 @@ test('Parses a verified actor and lowercases its email', () => {
 
 	expect(parsed).toEqual({ ...verifiedActor, email: 'reviewer@example.com' });
 	expect(rejected).toEqual({
-		error: { name: 'CollaborationInputError', code: 'invalid-input', message: 'Collaboration invalid-input' }
+		error: {
+			name: 'CollaborationInputError',
+			code: 'invalid-input',
+			message: 'Collaboration invalid-input'
+		}
 	});
-	recordExampleCases(meta('parseCollaborationInput', 'parses-a-verified-actor-and-lowercases-its-email'), [
-		{ name: 'parse a verified reviewer', input: verifiedActor, output: parsed },
-		{ name: 'parse an unverified reviewer', input: unverified, ...rejected }
-	]);
+	recordExampleCases(
+		meta('parseCollaborationInput', 'parses-a-verified-actor-and-lowercases-its-email'),
+		[
+			{ name: 'parse a verified reviewer', input: verifiedActor, output: parsed },
+			{ name: 'parse an unverified reviewer', input: unverified, ...rejected }
+		]
+	);
 });
 
 test('Rejects an anchor whose image fields are inconsistent', () => {
-	const nullImage = { ...anchor, imageSha256: null, version: null, state: null, viewport: null, region: null };
+	const nullImage = {
+		...anchor,
+		imageSha256: null,
+		version: null,
+		state: null,
+		viewport: null,
+		region: null
+	};
 	const cases = [
 		{ name: 'accept a desktop anchor with an image', input: anchor },
 		{ name: 'accept an anchor with null image fields', input: nullImage },
 		{ name: 'reject an image without a version', input: unanchoredImage }
-	].map((item) => ({ ...item, ...settle(() => parseCollaborationInput(anchorSchema, item.input)) }));
+	].map((item) => ({
+		...item,
+		...settle(() => parseCollaborationInput(anchorSchema, item.input))
+	}));
 
 	expect(cases.map((item) => ('error' in item ? item.error.code : 'accepted'))).toEqual([
 		'accepted',
 		'accepted',
 		'invalid-input'
 	]);
-	recordExampleCases(meta('parseCollaborationInput', 'rejects-an-anchor-whose-image-fields-are-inconsistent'), cases);
+	recordExampleCases(
+		meta('parseCollaborationInput', 'rejects-an-anchor-whose-image-fields-are-inconsistent'),
+		cases
+	);
 });
 
 test('Digests bytes with SHA-256 as lowercase hex', async () => {
@@ -95,9 +115,21 @@ test('Digests bytes with SHA-256 as lowercase hex', async () => {
 	expect(abc).toBe(digestOfAbc);
 	expect(sha384).toHaveLength(96);
 	recordExampleCases(meta('digest', 'digests-bytes-with-sha-256-as-lowercase-hex'), [
-		{ name: 'digest empty input with the default algorithm', input: { bytes: '', algorithm: 'SHA-256' }, output: empty },
-		{ name: 'digest abc with the default algorithm', input: { bytes: 'abc', algorithm: 'SHA-256' }, output: abc },
-		{ name: 'digest abc with SHA-384', input: { bytes: 'abc', algorithm: 'SHA-384' }, output: { length: sha384.length } }
+		{
+			name: 'digest empty input with the default algorithm',
+			input: { bytes: '', algorithm: 'SHA-256' },
+			output: empty
+		},
+		{
+			name: 'digest abc with the default algorithm',
+			input: { bytes: 'abc', algorithm: 'SHA-256' },
+			output: abc
+		},
+		{
+			name: 'digest abc with SHA-384',
+			input: { bytes: 'abc', algorithm: 'SHA-384' },
+			output: { length: sha384.length }
+		}
 	]);
 });
 
@@ -109,7 +141,11 @@ test('Accepts safe repository paths and rejects unsafe ones', () => {
 		'docs\\roadmap.md',
 		'docs//roadmap.md'
 	];
-	const cases = paths.map((value) => ({ name: `check ${value}`, input: value, ...settle(() => safePath(value)) }));
+	const cases = paths.map((value) => ({
+		name: `check ${value}`,
+		input: value,
+		...settle(() => safePath(value))
+	}));
 
 	expect(cases.map((item) => ('error' in item ? item.error.code : 'accepted'))).toEqual([
 		'accepted',
@@ -119,5 +155,8 @@ test('Accepts safe repository paths and rejects unsafe ones', () => {
 		'invalid-path'
 	]);
 	expect(() => fail('invalid-path')).toThrow(CollaborationInputError);
-	recordExampleCases(meta('safePath', 'accepts-safe-repository-paths-and-rejects-unsafe-ones'), cases);
+	recordExampleCases(
+		meta('safePath', 'accepts-safe-repository-paths-and-rejects-unsafe-ones'),
+		cases
+	);
 });

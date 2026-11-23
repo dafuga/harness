@@ -1,7 +1,10 @@
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { writtenMessage, commitMessage } from '../../src/services/git-source-history/commit-message-service/commitMessage';
+import {
+	writtenMessage,
+	commitMessage
+} from '../../src/services/git-source-history/commit-message-service/commitMessage';
 import { commitPrefixes } from '../../src/utils/git-source-history/commitMessage';
 
 test('Written messages follow Git cleanup modes', () => {
@@ -38,12 +41,18 @@ test('Written messages follow Git cleanup modes', () => {
 			},
 			{
 				name: 'verbatim trims only the outer edges',
-				input: { file: '  fix: keep  spaces\n# comment  ', options: { cleanup: 'verbatim', comment: ';' } },
+				input: {
+					file: '  fix: keep  spaces\n# comment  ',
+					options: { cleanup: 'verbatim', comment: ';' }
+				},
 				output: verbatim
 			},
 			{
 				name: 'scissors mode retains comments above the cut',
-				input: { file: 'fix: handle missing values\n# keep this line\n\nbody\n# ------------------------ >8 ------------------------\nignored', options: { cleanup: 'scissors', comment: '#' } },
+				input: {
+					file: 'fix: handle missing values\n# keep this line\n\nbody\n# ------------------------ >8 ------------------------\nignored',
+					options: { cleanup: 'scissors', comment: '#' }
+				},
 				output: scissors
 			}
 		]
@@ -55,9 +64,7 @@ test('Stored messages report prefix and line-ending problems', () => {
 	const missingPrefix = commitMessage('update the changelog');
 	const emptySubject = commitMessage('\nbody');
 	expect(valid).toEqual([]);
-	expect(missingPrefix).toContain(
-		'subject does not start with feat:, fix:, chore: or cleanup:.'
-	);
+	expect(missingPrefix).toContain('subject does not start with feat:, fix:, chore: or cleanup:.');
 	expect(emptySubject).not.toContain(
 		'subject does not start with feat:, fix:, chore: or cleanup:.'
 	);

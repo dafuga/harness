@@ -82,27 +82,77 @@ async function withTemplate(contents: string, use: (directory: string) => Promis
 }
 
 test('Throws ExpectedCliError when task kind is invalid', async () => {
-	const input = { name: 'bad-kind', goal: 'Exercise invalid kind.', createdAt: '2026-11-15T12:00:00.000Z', kind: 'review' } as unknown as Parameters<typeof newLoopState>[1];
-	await expect(newLoopState('/workspace/acme-api', input)).rejects.toMatchObject({ name: 'ExpectedCliError' });
-	const cases = [{ name: 'invalid kind', input, error: { name: 'ExpectedCliError', message: 'Task kind must be coding or planning.' } }];
-	recordExampleCases({ unitId: 'workflow.loop-state-new-loop-state', symbol: 'newLoopState', state: 'throws-expectedclierror-when-task-kind-is-invalid', evidence: 'examples-cases', file: 'throws-expectedclierror-when-task-kind-is-invalid.json' }, cases);
+	const input = {
+		name: 'bad-kind',
+		goal: 'Exercise invalid kind.',
+		createdAt: '2026-11-15T12:00:00.000Z',
+		kind: 'review'
+	} as unknown as Parameters<typeof newLoopState>[1];
+	await expect(newLoopState('/workspace/acme-api', input)).rejects.toMatchObject({
+		name: 'ExpectedCliError'
+	});
+	const cases = [
+		{
+			name: 'invalid kind',
+			input,
+			error: { name: 'ExpectedCliError', message: 'Task kind must be coding or planning.' }
+		}
+	];
+	recordExampleCases(
+		{
+			unitId: 'workflow.loop-state-new-loop-state',
+			symbol: 'newLoopState',
+			state: 'throws-expectedclierror-when-task-kind-is-invalid',
+			evidence: 'examples-cases',
+			file: 'throws-expectedclierror-when-task-kind-is-invalid.json'
+		},
+		cases
+	);
 });
 
 test('Throws SyntaxError when project template JSON is malformed', async () => {
-	const input = { name: 'bad-json', goal: 'Exercise malformed template JSON.', createdAt: '2026-11-15T12:00:00.000Z', from: 'custom' };
+	const input = {
+		name: 'bad-json',
+		goal: 'Exercise malformed template JSON.',
+		createdAt: '2026-11-15T12:00:00.000Z',
+		from: 'custom'
+	};
 	await withTemplate('{', async (root) => {
 		await expect(newLoopState(root, input)).rejects.toBeInstanceOf(SyntaxError);
 		const cases = [{ name: 'malformed template JSON', input, error: { name: 'SyntaxError' } }];
-		recordExampleCases({ unitId: 'workflow.loop-state-new-loop-state', symbol: 'newLoopState', state: 'throws-syntaxerror-when-project-template-json-is-malformed', evidence: 'examples-cases', file: 'throws-syntaxerror-when-project-template-json-is-malformed.json' }, cases);
+		recordExampleCases(
+			{
+				unitId: 'workflow.loop-state-new-loop-state',
+				symbol: 'newLoopState',
+				state: 'throws-syntaxerror-when-project-template-json-is-malformed',
+				evidence: 'examples-cases',
+				file: 'throws-syntaxerror-when-project-template-json-is-malformed.json'
+			},
+			cases
+		);
 	});
 });
 
 test('Throws TypeError when project template steps have the wrong type', async () => {
-	const input = { name: 'bad-steps', goal: 'Exercise invalid template steps.', createdAt: '2026-11-15T12:00:00.000Z', from: 'custom' };
+	const input = {
+		name: 'bad-steps',
+		goal: 'Exercise invalid template steps.',
+		createdAt: '2026-11-15T12:00:00.000Z',
+		from: 'custom'
+	};
 	await withTemplate('{"id":"custom","title":"Custom","steps":{}}', async (root) => {
 		await expect(newLoopState(root, input)).rejects.toBeInstanceOf(TypeError);
 		const cases = [{ name: 'non-array steps', input, error: { name: 'TypeError' } }];
-		recordExampleCases({ unitId: 'workflow.loop-state-new-loop-state', symbol: 'newLoopState', state: 'throws-typeerror-when-project-template-steps-have-the-wrong', evidence: 'examples-cases', file: 'throws-typeerror-when-project-template-steps-have-the-wrong.json' }, cases);
+		recordExampleCases(
+			{
+				unitId: 'workflow.loop-state-new-loop-state',
+				symbol: 'newLoopState',
+				state: 'throws-typeerror-when-project-template-steps-have-the-wrong',
+				evidence: 'examples-cases',
+				file: 'throws-typeerror-when-project-template-steps-have-the-wrong.json'
+			},
+			cases
+		);
 	});
 });
 
@@ -110,9 +160,25 @@ test('Throws Error when project template directory is a file', async () => {
 	await withTempDir('new-loop-state-file-', async (root) => {
 		await mkdir(join(root, 'specification'), { recursive: true });
 		await writeFile(join(root, 'specification', 'loop-templates'), 'not a directory');
-		const input = { name: 'blocked-template', goal: 'Exercise filesystem failure.', createdAt: '2026-11-15T12:00:00.000Z', from: 'bug-fix' };
+		const input = {
+			name: 'blocked-template',
+			goal: 'Exercise filesystem failure.',
+			createdAt: '2026-11-15T12:00:00.000Z',
+			from: 'bug-fix'
+		};
 		await expect(newLoopState(root, input)).rejects.toBeInstanceOf(Error);
-		const cases = [{ name: 'template path is a file', input, error: { name: 'Error', code: 'ENOTDIR' } }];
-		recordExampleCases({ unitId: 'workflow.loop-state-new-loop-state', symbol: 'newLoopState', state: 'throws-error-when-project-template-directory-is-a-file', evidence: 'examples-cases', file: 'throws-error-when-project-template-directory-is-a-file.json' }, cases);
+		const cases = [
+			{ name: 'template path is a file', input, error: { name: 'Error', code: 'ENOTDIR' } }
+		];
+		recordExampleCases(
+			{
+				unitId: 'workflow.loop-state-new-loop-state',
+				symbol: 'newLoopState',
+				state: 'throws-error-when-project-template-directory-is-a-file',
+				evidence: 'examples-cases',
+				file: 'throws-error-when-project-template-directory-is-a-file.json'
+			},
+			cases
+		);
 	});
 });

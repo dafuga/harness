@@ -17,7 +17,13 @@ function createHostedBridge() {
 		},
 		async capabilities(projectId: string) {
 			calls.push({ method: 'capabilities', projectId });
-			return { comments: true, agents: false, planning: false, approval: false, source: 'github' as const };
+			return {
+				comments: true,
+				agents: false,
+				planning: false,
+				approval: false,
+				source: 'github' as const
+			};
 		}
 	};
 	const local = {
@@ -42,9 +48,15 @@ function createHostedBridge() {
 function createBusyBridge() {
 	const session = { projectId: 'local-project', busy: true, pending: 0 };
 	const local = {
-		async listProjects() { return []; },
-		async selectProject(input: { projectId: string }) { return input; },
-		async openProject() { return null; }
+		async listProjects() {
+			return [];
+		},
+		async selectProject(input: { projectId: string }) {
+			return input;
+		},
+		async openProject() {
+			return null;
+		}
 	} as unknown as Bridge;
 	const service = new HostedProjectService(
 		session as ConstructorParameters<typeof HostedProjectService>[0],
@@ -65,7 +77,13 @@ test('Dispatches shared project selection and capabilities', async () => {
 			{ id: 'shared-project', name: 'Shared example', kind: 'shared' }
 		],
 		snapshot: { projectId: 'shared-project', kind: 'shared' },
-		capabilities: { comments: true, agents: false, planning: false, approval: false, source: 'github' },
+		capabilities: {
+			comments: true,
+			agents: false,
+			planning: false,
+			approval: false,
+			source: 'github'
+		},
 		calls: [
 			{ method: 'snapshot', input: { projectId: 'shared-project', branch: null, commit: null } },
 			{ method: 'capabilities', projectId: 'shared-project' }
@@ -94,11 +112,13 @@ test('Throws Error when selecting a project during an active operation', async (
 	await expect(bridge.selectProject!({ projectId: 'shared-project' })).rejects.toThrow(
 		'Wait for the active project operation.'
 	);
-	const cases = [{
-		name: 'Rejects shared project selection while the session is busy',
-		input: { projectId: 'shared-project', busy: true },
-		error: { name: 'Error', message: 'Wait for the active project operation.' }
-	}];
+	const cases = [
+		{
+			name: 'Rejects shared project selection while the session is busy',
+			input: { projectId: 'shared-project', busy: true },
+			error: { name: 'Error', message: 'Wait for the active project operation.' }
+		}
+	];
 	recordExampleCases(
 		{
 			unitId: 'desktop.service.hosted-project',

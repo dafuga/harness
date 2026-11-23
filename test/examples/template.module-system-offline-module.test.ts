@@ -5,9 +5,7 @@ import { offlineModule } from '../../src/templates/module-system/offlineModule';
 
 test('Defines scoped offline module scaffolding', () => {
 	expect(offlineModule.id).toBe('offline');
-	expect(offlineModule.setup[0]?.path).toBe(
-		'src/services/offline/OfflineSyncService.types.ts'
-	);
+	expect(offlineModule.setup[0]?.path).toBe('src/services/offline/OfflineSyncService.types.ts');
 	recordExampleCases(
 		{
 			unitId: 'template.module-system-offline-module',
@@ -26,9 +24,11 @@ test('Defines scoped offline module scaffolding', () => {
 					appOnly: offlineModule.appOnly,
 					setup: offlineModule.setup.map(({ path, contents }) => ({
 						path,
-						lines: contents.split('\n').filter((line) =>
-							/OfflineSyncConfig|scope: string|OfflineStreamFrame|type: 'start'/.test(line)
-						)
+						lines: contents
+							.split('\n')
+							.filter((line) =>
+								/OfflineSyncConfig|scope: string|OfflineStreamFrame|type: 'start'/.test(line)
+							)
 					})),
 					dependencies: offlineModule.dependencies,
 					resources: offlineModule.resources.map(({ id, files }) => ({

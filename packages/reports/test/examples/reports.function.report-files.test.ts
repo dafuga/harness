@@ -94,6 +94,12 @@ test('Atomically writes formatted JSON', async () => {
 			evidence: 'examples-cases',
 			file: 'atomically-writes-formatted-json.json'
 		},
-		[{ name: 'nested report destination', input: { path: 'nested/reports/report-2026-11-15.json', data: input }, output }]
+		[
+			{
+				name: 'nested report destination',
+				input: { path: 'nested/reports/report-2026-11-15.json', data: input },
+				output
+			}
+		]
 	);
 });

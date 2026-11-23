@@ -43,7 +43,15 @@ test('validates hosted evidence field constraints', () => {
 		[
 			{
 				name: 'accepts documented scalar values',
-				input: { string: 'hosted evidence', name: 'capture', sha: '40 lowercase hex', hash: '64 lowercase hex', mode: 'commit', passed: 'passed', number: 12.5 },
+				input: {
+					string: 'hosted evidence',
+					name: 'capture',
+					sha: '40 lowercase hex',
+					hash: '64 lowercase hex',
+					mode: 'commit',
+					passed: 'passed',
+					number: 12.5
+				},
 				output: validFields
 			},
 			{

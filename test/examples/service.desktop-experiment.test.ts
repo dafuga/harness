@@ -1,7 +1,10 @@
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { DesktopExperimentService, replaceOnce } from '../../scripts/prepare-desktop-experiment/DesktopExperimentService';
+import {
+	DesktopExperimentService,
+	replaceOnce
+} from '../../scripts/prepare-desktop-experiment/DesktopExperimentService';
 import { DesktopPatchAnchorError } from '../../scripts/prepare-desktop-experiment/DesktopExperimentService.types';
 
 test('Replaces one exact desktop patch anchor', () => {
@@ -25,7 +28,11 @@ test('Replaces one exact desktop patch anchor', () => {
 });
 
 test('Rejects a missing desktop patch anchor', () => {
-	const input = { source: 'p.app.setName("Codex")', anchor: 'missing-anchor', replacement: 'updated' };
+	const input = {
+		source: 'p.app.setName("Codex")',
+		anchor: 'missing-anchor',
+		replacement: 'updated'
+	};
 	let error: unknown;
 	try {
 		replaceOnce(input.source, input.anchor, input.replacement);

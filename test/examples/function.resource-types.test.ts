@@ -28,9 +28,11 @@ test('Validates resource schemas and stable constants', () => {
 	const config = resourceConfigSchema.parse({});
 	const request = resourceRequestSchema.parse({});
 	const job = resourceJobSchema.parse(jobInput);
-	const priorities = resourcePriorities.filter((priority) => resourcePriority.safeParse(priority).success);
-	const rejected = [resourcePriority, resourceConfigSchema, resourceRequestSchema].map((schema, index) =>
-		schema.safeParse(index === 0 ? 'urgent' : { unexpected: true }).success
+	const priorities = resourcePriorities.filter(
+		(priority) => resourcePriority.safeParse(priority).success
+	);
+	const rejected = [resourcePriority, resourceConfigSchema, resourceRequestSchema].map(
+		(schema, index) => schema.safeParse(index === 0 ? 'urgent' : { unexpected: true }).success
 	);
 	expect({ config, request, job, priorities, mib, scopedVerificationLabel }).toEqual({
 		config: {
@@ -43,10 +45,18 @@ test('Validates resource schemas and stable constants', () => {
 		},
 		request: { priority: 'coding', cpus: 1, memoryMiB: 512, label: 'Managed work' },
 		job: {
-			priority: 'coding', cpus: 1, memoryMiB: 512, label: 'Managed work',
-			id: '123e4567-e89b-42d3-a456-426614174000', sequence: 1, ownerPid: 42,
-			ownerStarted: 'started-at-fixture', state: 'queued', createdAt: 100,
-			heartbeatAt: 100, notice: null
+			priority: 'coding',
+			cpus: 1,
+			memoryMiB: 512,
+			label: 'Managed work',
+			id: '123e4567-e89b-42d3-a456-426614174000',
+			sequence: 1,
+			ownerPid: 42,
+			ownerStarted: 'started-at-fixture',
+			state: 'queued',
+			createdAt: 100,
+			heartbeatAt: 100,
+			notice: null
 		},
 		priorities: ['agent-test', 'coding', 'environment'],
 		mib: 1048576,
@@ -62,7 +72,11 @@ test('Validates resource schemas and stable constants', () => {
 			file: `${state}.json`
 		},
 		[
-			{ name: 'configuration defaults and request defaults', input: {}, output: { config, request } },
+			{
+				name: 'configuration defaults and request defaults',
+				input: {},
+				output: { config, request }
+			},
 			{ name: 'job defaults and required lifecycle fields', input: jobInput, output: job },
 			{
 				name: 'priority order and exported constants',

@@ -24,7 +24,13 @@ test('list returns sorted paths and blob hashes for tracked and untracked files'
 				evidence: 'examples-cases',
 				file: 'list-returns-sorted-paths-and-blob-hashes-for-tracked-and-un.json'
 			},
-			[{ name: 'tracked and untracked files are listed in path order', input: { tracked: 'README.md', untracked: 'src/entry.ts' }, output: entries }]
+			[
+				{
+					name: 'tracked and untracked files are listed in path order',
+					input: { tracked: 'README.md', untracked: 'src/entry.ts' },
+					output: entries
+				}
+			]
 		);
 	});
 }, 20_000);
@@ -46,7 +52,13 @@ test('read returns current UTF-8 file contents on each call', async () => {
 				evidence: 'examples-cases',
 				file: 'read-returns-current-utf-8-file-contents-on-each-call.json'
 			},
-			[{ name: 'reading again observes changed disk text', input: { path: 'README.md', contents: ['first\\n', 'updated\\n'] }, output: second }]
+			[
+				{
+					name: 'reading again observes changed disk text',
+					input: { path: 'README.md', contents: ['first\\n', 'updated\\n'] },
+					output: second
+				}
+			]
 		);
 	});
 }, 20_000);
@@ -63,7 +75,13 @@ test('Throws Error when repository scanning cannot start', async () => {
 				evidence: 'examples-cases',
 				file: 'throws-error-when-repository-scanning-cannot-start.json'
 			},
-			[{ name: 'missing working tree rejects during repository detection', input: { root: join(directory, 'missing-root') }, error: 'Git command could not start' }]
+			[
+				{
+					name: 'missing working tree rejects during repository detection',
+					input: { root: join(directory, 'missing-root') },
+					error: 'Git command could not start'
+				}
+			]
 		);
 	});
 }, 20_000);
@@ -80,7 +98,13 @@ test('Throws Error when read cannot find the requested file', async () => {
 				evidence: 'examples-cases',
 				file: 'throws-error-when-read-cannot-find-the-requested-file.json'
 			},
-			[{ name: 'missing file rejects with a filesystem error', input: { path: 'missing.txt' }, error: 'ENOENT' }]
+			[
+				{
+					name: 'missing file rejects with a filesystem error',
+					input: { path: 'missing.txt' },
+					error: 'ENOENT'
+				}
+			]
 		);
 	});
 }, 20_000);
@@ -97,7 +121,13 @@ test('Throws TypeError when read path is not a string', async () => {
 				evidence: 'examples-cases',
 				file: 'throws-typeerror-when-read-path-is-not-a-string.json'
 			},
-			[{ name: 'numeric path throws before a promise is returned', input: { path: 42 }, error: 'TypeError' }]
+			[
+				{
+					name: 'numeric path throws before a promise is returned',
+					input: { path: 42 },
+					error: 'TypeError'
+				}
+			]
 		);
 	});
 }, 20_000);

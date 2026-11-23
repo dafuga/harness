@@ -4,7 +4,8 @@ import { recordExampleCases } from '../../../../test/support/recordExampleCases'
 import { hostedImage } from '../../src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hostedImage';
 import { InvalidHostedImageError } from '../../src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hostedImage.types';
 
-const png = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';
+const png =
+	'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';
 const digest = '431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460';
 
 test('decodes and validates a cached PNG', () => {

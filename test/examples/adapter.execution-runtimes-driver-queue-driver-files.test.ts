@@ -176,9 +176,21 @@ test('Checks driver process liveness', () => {
 
 test('Classifies primary driver job phases', () => {
 	const cases = [
-		{ name: 'reverify plan', input: 'reverify-driver-queue', output: driverJobType('reverify-driver-queue') },
-		{ name: 'contract task', input: 'p1-contract-check', output: driverJobType('p1-contract-check') },
-		{ name: 'stub task', input: 'p2a-stub-generation', output: driverJobType('p2a-stub-generation') },
+		{
+			name: 'reverify plan',
+			input: 'reverify-driver-queue',
+			output: driverJobType('reverify-driver-queue')
+		},
+		{
+			name: 'contract task',
+			input: 'p1-contract-check',
+			output: driverJobType('p1-contract-check')
+		},
+		{
+			name: 'stub task',
+			input: 'p2a-stub-generation',
+			output: driverJobType('p2a-stub-generation')
+		},
 		{ name: 'smell task', input: 'p2b-smell-review', output: driverJobType('p2b-smell-review') }
 	];
 	expect(cases.map(({ output }) => output)).toEqual(['reverify', 'contract', 'stub', 'smell']);
@@ -196,9 +208,21 @@ test('Classifies primary driver job phases', () => {
 
 test('Classifies remaining driver job phases', () => {
 	const cases = [
-		{ name: 'video capture task', input: 'video-capture-report', output: driverJobType('video-capture-report') },
-		{ name: 'component task', input: 'w3-component-catalog', output: driverJobType('w3-component-catalog') },
-		{ name: 'unmatched task uses code phase', input: 'general-queue-task', output: driverJobType('general-queue-task') }
+		{
+			name: 'video capture task',
+			input: 'video-capture-report',
+			output: driverJobType('video-capture-report')
+		},
+		{
+			name: 'component task',
+			input: 'w3-component-catalog',
+			output: driverJobType('w3-component-catalog')
+		},
+		{
+			name: 'unmatched task uses code phase',
+			input: 'general-queue-task',
+			output: driverJobType('general-queue-task')
+		}
 	];
 	expect(cases.map(({ output }) => output)).toEqual(['video', 'component', 'code']);
 	recordExampleCases(

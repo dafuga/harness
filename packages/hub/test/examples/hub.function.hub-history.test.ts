@@ -27,7 +27,11 @@ test('Reads and orders a source history page', async () => {
 			nextPage: 2,
 			commits: [
 				{ hash: 'older', authoredAt: '2026-11-13T12:00:00.000Z', subject: 'Older change' },
-				{ hash: 'newer', authoredAt: '2026-11-14T12:30:00.000Z', subject: 'Update hosted history reader' }
+				{
+					hash: 'newer',
+					authoredAt: '2026-11-14T12:30:00.000Z',
+					subject: 'Update hosted history reader'
+				}
 			]
 		});
 	});

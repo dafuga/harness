@@ -20,11 +20,17 @@ const identity = {
 };
 
 function memoryCache() {
-	const entries = new Map<string, { identity: typeof identity; sha256: string; bytes: Uint8Array }>();
+	const entries = new Map<
+		string,
+		{ identity: typeof identity; sha256: string; bytes: Uint8Array }
+	>();
 	return {
 		entries,
 		get: async (key: string) => entries.get(key) ?? null,
-		put: async (key: string, entry: { identity: typeof identity; sha256: string; bytes: Uint8Array }) => {
+		put: async (
+			key: string,
+			entry: { identity: typeof identity; sha256: string; bytes: Uint8Array }
+		) => {
 			entries.set(key, entry);
 		},
 		delete: async (key: string) => {
@@ -37,7 +43,11 @@ test('Derives a stable key from the parsed cache identity', async () => {
 	const key = await cacheKey(identity);
 	const omittedRevisionKey = await cacheKey({ ...identity, collaborationRevision: undefined });
 	const cases = [
-		{ name: 'derive a SHA-256 key for the supplied identity', input: { identity }, output: { key } },
+		{
+			name: 'derive a SHA-256 key for the supplied identity',
+			input: { identity },
+			output: { key }
+		},
 		{
 			name: 'normalize an omitted collaboration revision to null',
 			input: { identity: { ...identity, collaborationRevision: undefined } },

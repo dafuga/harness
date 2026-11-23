@@ -38,9 +38,13 @@ function crossOriginSheet(): Sheet {
 }
 
 function toRule(rule: RuleData): unknown {
-	if ('imports' in rule) return instanceOf(ImportRuleType.prototype, { styleSheet: toSheet(rule.imports) });
+	if ('imports' in rule)
+		return instanceOf(ImportRuleType.prototype, { styleSheet: toSheet(rule.imports) });
 	if ('group' in rule) return { cssRules: rule.group.map(toRule) };
-	return instanceOf(StyleRuleType.prototype, { selectorText: rule.selector, style: fakeStyle(rule.decls) });
+	return instanceOf(StyleRuleType.prototype, {
+		selectorText: rule.selector,
+		style: fakeStyle(rule.decls)
+	});
 }
 
 function toSheet(sheet: SheetData): Sheet {
@@ -117,7 +121,13 @@ test('Lists root tokens in declaration order with resolved values', () => {
 			evidence: 'examples-cases',
 			file: 'lists-root-tokens-in-declaration-order-with-resolved-values.json'
 		},
-		[{ name: 'root declares colour, derived and spacing tokens', input: { sheets, computed }, output: tokens }]
+		[
+			{
+				name: 'root declares colour, derived and spacing tokens',
+				input: { sheets, computed },
+				output: tokens
+			}
+		]
 	);
 });
 
@@ -163,7 +173,13 @@ test('Follows imported sheets and keeps the first root declaration', () => {
 			evidence: 'examples-cases',
 			file: 'follows-imported-sheets-and-keeps-the-first-root-declaration.json'
 		},
-		[{ name: 'imported root rule repeats a token and a cross-origin sheet is present', input: { sheets, computed: {} }, output: tokens }]
+		[
+			{
+				name: 'imported root rule repeats a token and a cross-origin sheet is present',
+				input: { sheets, computed: {} },
+				output: tokens
+			}
+		]
 	);
 });
 
@@ -187,6 +203,12 @@ test('Contributes nothing when no root token is readable', () => {
 			evidence: 'examples-cases',
 			file: 'contributes-nothing-when-no-root-token-is-readable.json'
 		},
-		[{ name: 'unreadable sheet, non-root rule and non-token root property', input: { sheets, computed: {} }, output: tokens }]
+		[
+			{
+				name: 'unreadable sheet, non-root rule and non-token root property',
+				input: { sheets, computed: {} },
+				output: tokens
+			}
+		]
 	);
 });

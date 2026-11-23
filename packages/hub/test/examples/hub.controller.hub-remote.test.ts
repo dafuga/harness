@@ -76,9 +76,14 @@ test('Reports disabled remote runtime for a matched action', async () => {
 	} catch (caught) {
 		error = caught;
 	}
-	const output = error instanceof Error
-		? { name: error.name, message: error.message, code: (error as Error & { code?: string }).code }
-		: { value: error };
+	const output =
+		error instanceof Error
+			? {
+					name: error.name,
+					message: error.message,
+					code: (error as Error & { code?: string }).code
+				}
+			: { value: error };
 
 	expect(output).toMatchObject({ code: 'remote-disabled' });
 	recordExampleCases(

@@ -93,7 +93,9 @@ function missingBlobContext(): HubSourceContext {
 
 test('hubRead rejects a path without an eligible regular blob', async () => {
 	const context = missingBlobContext();
-	await expect(hubRead(context, 'packages/hub/src/utils/development-tooling/hubSource.ts')).rejects.toBeDefined();
+	await expect(
+		hubRead(context, 'packages/hub/src/utils/development-tooling/hubSource.ts')
+	).rejects.toBeDefined();
 	recordExampleCases(
 		{
 			unitId: 'hub.function.hub-source',

@@ -86,7 +86,9 @@ test('Throws ExpectedCliError when parity reports problems', async () => {
 	const program = new Command().exitOverride();
 	registerKernelCommand(program);
 	const printed: string[] = [];
-	const log = vi.spyOn(console, 'log').mockImplementation((message) => printed.push(String(message)));
+	const log = vi
+		.spyOn(console, 'log')
+		.mockImplementation((message) => printed.push(String(message)));
 	let caught: unknown;
 	try {
 		await program.parseAsync(['node', 'harness', 'kernel', 'parity']);
@@ -108,7 +110,11 @@ test('Throws ExpectedCliError when parity reports problems', async () => {
 		[
 			{
 				name: 'parity report with one runtime disagreement',
-				input: { command: 'kernel parity', report: { status: 'failed', cases: 1 }, problems: ['runtime results differ'] },
+				input: {
+					command: 'kernel parity',
+					report: { status: 'failed', cases: 1 },
+					problems: ['runtime results differ']
+				},
 				error: { name: 'ExpectedCliError', message: 'runtime results differ' }
 			}
 		]

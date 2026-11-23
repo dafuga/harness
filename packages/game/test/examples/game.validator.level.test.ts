@@ -2,7 +2,11 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { LevelValidator } from '../../src/validators/game-authoring/LevelValidator';
-import type { GameView, LevelLayout, LevelPlanning } from '../../src/models/game-authoring/Game.types';
+import type {
+	GameView,
+	LevelLayout,
+	LevelPlanning
+} from '../../src/models/game-authoring/Game.types';
 
 const layout: LevelLayout = {
 	width: 12,
@@ -29,21 +33,40 @@ const planning: LevelPlanning = {
 };
 function view(): GameView {
 	return {
-		id: 'view-training-yard', title: 'Training Yard', dimension: '3d' as const,
-		style: 'blockout', checkpoints: [], planning, world: layout
+		id: 'view-training-yard',
+		title: 'Training Yard',
+		dimension: '3d' as const,
+		style: 'blockout',
+		checkpoints: [],
+		planning,
+		world: layout
 	};
 }
 
 test('Accepts bounded layouts and rejects wall overlap', () => {
-	const blocked = { ...layout, objects: [{ id: 'wall-north', kind: 'wall', label: 'Wall', x: 1, z: 1, width: 1, depth: 1, height: 2 }] };
+	const blocked = {
+		...layout,
+		objects: [
+			{ id: 'wall-north', kind: 'wall', label: 'Wall', x: 1, z: 1, width: 1, depth: 1, height: 2 }
+		]
+	};
 	const accepted = LevelValidator.layout(layout);
 	const rejected = LevelValidator.layout(blocked);
 	expect(accepted).toBe(true);
 	expect(rejected).toBe(false);
-	recordExampleCases({ unitId: 'game.validator.level', symbol: 'layout', state: 'accepts-bounded-layouts-and-rejects-wall-overlap', evidence: 'examples-cases', file: 'accepts-bounded-layouts-and-rejects-wall-overlap.json' }, [
-		{ name: 'valid goal layout', input: layout, output: accepted },
-		{ name: 'wall overlaps spawn', input: blocked, output: rejected }
-	]);
+	recordExampleCases(
+		{
+			unitId: 'game.validator.level',
+			symbol: 'layout',
+			state: 'accepts-bounded-layouts-and-rejects-wall-overlap',
+			evidence: 'examples-cases',
+			file: 'accepts-bounded-layouts-and-rejects-wall-overlap.json'
+		},
+		[
+			{ name: 'valid goal layout', input: layout, output: accepted },
+			{ name: 'wall overlaps spawn', input: blocked, output: rejected }
+		]
+	);
 });
 
 test('Accepts a valid plan and rejects an invalid approval hash', () => {
@@ -52,10 +75,19 @@ test('Accepts a valid plan and rejects an invalid approval hash', () => {
 	const rejected = LevelValidator.planning(invalid);
 	expect(accepted).toBe(true);
 	expect(rejected).toBe(false);
-	recordExampleCases({ unitId: 'game.validator.level', symbol: 'planning', state: 'accepts-a-valid-plan-and-rejects-an-invalid-approval-hash', evidence: 'examples-cases', file: 'accepts-a-valid-plan-and-rejects-an-invalid-approval-hash.json' }, [
-		{ name: 'valid proposal', input: planning, output: accepted },
-		{ name: 'malformed approval hash', input: invalid, output: rejected }
-	]);
+	recordExampleCases(
+		{
+			unitId: 'game.validator.level',
+			symbol: 'planning',
+			state: 'accepts-a-valid-plan-and-rejects-an-invalid-approval-hash',
+			evidence: 'examples-cases',
+			file: 'accepts-a-valid-plan-and-rejects-an-invalid-approval-hash.json'
+		},
+		[
+			{ name: 'valid proposal', input: planning, output: accepted },
+			{ name: 'malformed approval hash', input: invalid, output: rejected }
+		]
+	);
 });
 
 test('Recognizes a current proposal and a stale brief', () => {
@@ -65,10 +97,19 @@ test('Recognizes a current proposal and a stale brief', () => {
 	const staleResult = LevelValidator.isCurrent(stale);
 	expect(currentResult).toBe(true);
 	expect(staleResult).toBe(false);
-	recordExampleCases({ unitId: 'game.validator.level', symbol: 'isCurrent', state: 'recognizes-a-current-proposal-and-a-stale-brief', evidence: 'examples-cases', file: 'recognizes-a-current-proposal-and-a-stale-brief.json' }, [
-		{ name: 'proposal matches brief and dimension', input: current, output: currentResult },
-		{ name: 'brief changed after proposal', input: stale, output: staleResult }
-	]);
+	recordExampleCases(
+		{
+			unitId: 'game.validator.level',
+			symbol: 'isCurrent',
+			state: 'recognizes-a-current-proposal-and-a-stale-brief',
+			evidence: 'examples-cases',
+			file: 'recognizes-a-current-proposal-and-a-stale-brief.json'
+		},
+		[
+			{ name: 'proposal matches brief and dimension', input: current, output: currentResult },
+			{ name: 'brief changed after proposal', input: stale, output: staleResult }
+		]
+	);
 });
 
 test('Requires matching approval build and world before readiness', () => {
@@ -78,8 +119,17 @@ test('Requires matching approval build and world before readiness', () => {
 	const pendingResult = LevelValidator.isReady(pending);
 	expect(readyResult).toBe(true);
 	expect(pendingResult).toBe(false);
-	recordExampleCases({ unitId: 'game.validator.level', symbol: 'isReady', state: 'requires-matching-approval-build-and-world-before-readiness', evidence: 'examples-cases', file: 'requires-matching-approval-build-and-world-before-readiness.json' }, [
-		{ name: 'approved and built layout matches world', input: ready, output: readyResult },
-		{ name: 'build approval is missing', input: pending, output: pendingResult }
-	]);
+	recordExampleCases(
+		{
+			unitId: 'game.validator.level',
+			symbol: 'isReady',
+			state: 'requires-matching-approval-build-and-world-before-readiness',
+			evidence: 'examples-cases',
+			file: 'requires-matching-approval-build-and-world-before-readiness.json'
+		},
+		[
+			{ name: 'approved and built layout matches world', input: ready, output: readyResult },
+			{ name: 'build approval is missing', input: pending, output: pendingResult }
+		]
+	);
 });

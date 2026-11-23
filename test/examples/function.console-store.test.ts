@@ -2,7 +2,10 @@ import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { consoleStore } from '../../src/utils/development-tooling/consoleStore';
-import type { ConsoleBucket, ConsoleObject } from '../../src/utils/development-tooling/consoleStore.types';
+import type {
+	ConsoleBucket,
+	ConsoleObject
+} from '../../src/utils/development-tooling/consoleStore.types';
 
 function object(text: string, bytes: number[]): ConsoleObject {
 	const content = new Uint8Array(bytes);
@@ -30,7 +33,12 @@ test('Reads prefixed console JSON and media types', async () => {
 	const png = await store.media('logo.png');
 	const unknown = await store.media('archive.bin');
 
-	expect({ json, missing, png, unknown: unknown && { bytes: [...unknown.bytes], type: unknown.type } }).toEqual({
+	expect({
+		json,
+		missing,
+		png,
+		unknown: unknown && { bytes: [...unknown.bytes], type: unknown.type }
+	}).toEqual({
 		json: '{"revision":"r1"}',
 		missing: undefined,
 		png: { bytes: new Uint8Array([137, 80]), type: 'image/png' },
@@ -45,10 +53,34 @@ test('Reads prefixed console JSON and media types', async () => {
 			file: 'reads-prefixed-console-json-and-media-types.json'
 		},
 		[
-			{ name: 'loads prefixed index JSON', input: { prefix: 'console/history///', path: 'index.json' }, output: { key: 'console/history/index.json', json } },
-			{ name: 'returns undefined for absent JSON', input: { prefix: 'console/history///', path: 'missing.json' }, output: { key: 'console/history/missing.json', value: missing } },
-			{ name: 'infers image type from media extension', input: { prefix: 'console/history///', name: 'logo.png' }, output: { key: 'console/history/media/logo.png', bytes: [...(png?.bytes ?? [])], type: png?.type } },
-			{ name: 'uses binary fallback for unknown media extension', input: { prefix: 'console/history///', name: 'archive.bin' }, output: { key: 'console/history/media/archive.bin', bytes: [...(unknown?.bytes ?? [])], type: unknown?.type } }
+			{
+				name: 'loads prefixed index JSON',
+				input: { prefix: 'console/history///', path: 'index.json' },
+				output: { key: 'console/history/index.json', json }
+			},
+			{
+				name: 'returns undefined for absent JSON',
+				input: { prefix: 'console/history///', path: 'missing.json' },
+				output: { key: 'console/history/missing.json', value: missing }
+			},
+			{
+				name: 'infers image type from media extension',
+				input: { prefix: 'console/history///', name: 'logo.png' },
+				output: {
+					key: 'console/history/media/logo.png',
+					bytes: [...(png?.bytes ?? [])],
+					type: png?.type
+				}
+			},
+			{
+				name: 'uses binary fallback for unknown media extension',
+				input: { prefix: 'console/history///', name: 'archive.bin' },
+				output: {
+					key: 'console/history/media/archive.bin',
+					bytes: [...(unknown?.bytes ?? [])],
+					type: unknown?.type
+				}
+			}
 		]
 	);
 });

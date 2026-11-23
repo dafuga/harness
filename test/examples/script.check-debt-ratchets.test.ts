@@ -5,11 +5,28 @@ import { resolve } from 'node:path';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempRepo } from '../support/temporary';
-import { layerRatchet, reuseRatchet, mkdtempCallCount, temporaryCallRatchet } from '../../scripts/check-debt-ratchets';
-import type { LayerEdge, ReuseBaseline, TemporaryCallBaseline } from '../../scripts/check-debt-ratchets.types';
+import {
+	layerRatchet,
+	reuseRatchet,
+	mkdtempCallCount,
+	temporaryCallRatchet
+} from '../../scripts/check-debt-ratchets';
+import type {
+	LayerEdge,
+	ReuseBaseline,
+	TemporaryCallBaseline
+} from '../../scripts/check-debt-ratchets.types';
 
-const reportsEdge: LayerEdge = { from: 'src/domain/reports', to: 'src/ui/components', todo: 'Route the report summary through the view model.' };
-const dbEdge: LayerEdge = { from: 'src/server/db', to: 'src/ui/format', todo: 'Move the date formatter into src/core.' };
+const reportsEdge: LayerEdge = {
+	from: 'src/domain/reports',
+	to: 'src/ui/components',
+	todo: 'Route the report summary through the view model.'
+};
+const dbEdge: LayerEdge = {
+	from: 'src/server/db',
+	to: 'src/ui/format',
+	todo: 'Move the date formatter into src/core.'
+};
 const billingEdge: LayerEdge = {
 	from: 'src/domain/billing',
 	to: 'src/ui/components',
@@ -168,7 +185,8 @@ test('Throws Debt baseline inspection failure when an inventory cannot be read',
 		for (const [file, body] of [
 			['eslint.layer-allowlist.json', '{"edges":[]}'],
 			['eslint.reuse-baseline.json', '{}']
-		]) writeFileSync(resolve(root, file), body);
+		])
+			writeFileSync(resolve(root, file), body);
 		git('add', '.');
 		git('commit', '-m', 'chore: add ratchet fixture');
 		writeFileSync(resolve(root, 'eslint.layer-allowlist.json'), '{');

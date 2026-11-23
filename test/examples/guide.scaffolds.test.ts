@@ -1,7 +1,11 @@
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { scaffoldGuides, scaffoldsGuide, namingGuide } from '../../src/guides/development-tooling/scaffolds';
+import {
+	scaffoldGuides,
+	scaffoldsGuide,
+	namingGuide
+} from '../../src/guides/development-tooling/scaffolds';
 
 test('Lists one guide per scaffold kind with its contains list', () => {
 	const guides = scaffoldGuides();

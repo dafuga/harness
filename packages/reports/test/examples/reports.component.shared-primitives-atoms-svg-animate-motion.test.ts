@@ -46,7 +46,11 @@ test('the children snippet renders as the element content', () => {
 	recordExampleCases(where('the-children-snippet-renders-as-the-element-content'), [
 		{
 			name: 'a motion path that carries an mpath child',
-			input: { path: props.path, dur: props.dur, children: 'snippet rendering <mpath href="#route">' },
+			input: {
+				path: props.path,
+				dur: props.dur,
+				children: 'snippet rendering <mpath href="#route">'
+			},
 			output: { body }
 		}
 	]);

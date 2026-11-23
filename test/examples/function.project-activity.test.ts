@@ -2,12 +2,33 @@ import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { projectActivity } from '../../src/services/projects-sessions/project-activity-service/projectActivity';
-import type { ActivityRevision, ActivitySource } from '../../src/utils/projects-sessions/projectActivity';
+import type {
+	ActivityRevision,
+	ActivitySource
+} from '../../src/utils/projects-sessions/projectActivity';
 
 const REVISIONS: ActivityRevision[] = [
-	{ commit: 'c3', subject: 'Add loop reporting', author: 'Fixture Author', committedAt: '2026-11-15T10:00:00.000Z', branches: ['main'] },
-	{ commit: 'c2', subject: 'Share loop state', author: 'Fixture Author', committedAt: '2026-11-14T10:00:00.000Z', branches: ['main'] },
-	{ commit: 'c1', subject: 'Start loops', author: 'Fixture Author', committedAt: '2026-11-13T10:00:00.000Z', branches: ['main'] }
+	{
+		commit: 'c3',
+		subject: 'Add loop reporting',
+		author: 'Fixture Author',
+		committedAt: '2026-11-15T10:00:00.000Z',
+		branches: ['main']
+	},
+	{
+		commit: 'c2',
+		subject: 'Share loop state',
+		author: 'Fixture Author',
+		committedAt: '2026-11-14T10:00:00.000Z',
+		branches: ['main']
+	},
+	{
+		commit: 'c1',
+		subject: 'Start loops',
+		author: 'Fixture Author',
+		committedAt: '2026-11-13T10:00:00.000Z',
+		branches: ['main']
+	}
 ];
 
 const CHANGES: Record<string, Array<{ path: string; status: string }>> = {
@@ -46,8 +67,20 @@ const ALL_LIMIT = { work: 10, files: 10, reasons: 5, units: 5 };
 const SMALL_LIMIT = { work: 1, files: 1, reasons: 1, units: 1 };
 
 const EXPECTED_WORK = [
-	{ commit: 'c3', units: ['function.loop', 'function.report'], unitCount: 2, reasonCount: 2, files: 3 },
-	{ commit: 'c2', units: ['function.loop', 'function.report'], unitCount: 2, reasonCount: 0, files: 2 },
+	{
+		commit: 'c3',
+		units: ['function.loop', 'function.report'],
+		unitCount: 2,
+		reasonCount: 2,
+		files: 3
+	},
+	{
+		commit: 'c2',
+		units: ['function.loop', 'function.report'],
+		unitCount: 2,
+		reasonCount: 0,
+		files: 2
+	},
 	{ commit: 'c1', units: ['function.loop'], unitCount: 1, reasonCount: 1, files: 1 }
 ];
 

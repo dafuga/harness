@@ -53,7 +53,13 @@ test('Builds a runtime with no relay in local mode', () => {
 			evidence: 'examples-cases',
 			file: 'builds-a-runtime-with-no-relay-in-local-mode.json'
 		},
-		[{ name: 'local environment without relay origin or database', input: localEnv, output: summary }]
+		[
+			{
+				name: 'local environment without relay origin or database',
+				input: localEnv,
+				output: summary
+			}
+		]
 	);
 });
 
@@ -79,8 +85,14 @@ test('Connects collaboration for a configured repository', () => {
 test('Rejects connect when the repository id is invalid', () => {
 	const invalidIds: Array<{ name: string; input: Env }> = [
 		{ name: 'repository id is empty', input: withEnv({ HARNESS_COLLABORATION_REPOSITORY_ID: '' }) },
-		{ name: 'installation id is zero', input: withEnv({ HARNESS_COLLABORATION_INSTALLATION_ID: '0' }) },
-		{ name: 'repository id is not numeric', input: withEnv({ HARNESS_COLLABORATION_REPOSITORY_ID: 'abc' }) }
+		{
+			name: 'installation id is zero',
+			input: withEnv({ HARNESS_COLLABORATION_INSTALLATION_ID: '0' })
+		},
+		{
+			name: 'repository id is not numeric',
+			input: withEnv({ HARNESS_COLLABORATION_REPOSITORY_ID: 'abc' })
+		}
 	];
 	const cases = invalidIds.map(({ name, input }) => ({
 		name,

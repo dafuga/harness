@@ -59,7 +59,11 @@ test('Validates game documents', () => {
 			file: `${documentState}.json`
 		},
 		[
-			{ name: 'accepts the example game', input: valid, output: { version: valid.version, views: valid.views.length } },
+			{
+				name: 'accepts the example game',
+				input: valid,
+				output: { version: valid.version, views: valid.views.length }
+			},
 			{ name: 'rejects an incomplete game', input: invalid, error }
 		]
 	);
@@ -81,7 +85,11 @@ test('Steps a ready view', () => {
 			file: `${stepState}.json`
 		},
 		[
-			{ name: 'moves within the ready view', input: { x: 1, y: 0.5 }, output: { tick: run.tick, x: run.state.x, y: run.state.y } },
+			{
+				name: 'moves within the ready view',
+				input: { x: 1, y: 0.5 },
+				output: { tick: run.tick, x: run.state.x, y: run.state.y }
+			},
 			{ name: 'rejects non-finite movement', input: { x: 'NaN', y: 0 }, error }
 		]
 	);
@@ -102,7 +110,9 @@ test('Throws GameStepRefusedError when level is unready', () => {
 		[
 			{
 				name: 'rejects a view whose planning has no current proposal',
-				input: { planning: { concept: 'draft', description: 'A level awaiting approval and build.' } },
+				input: {
+					planning: { concept: 'draft', description: 'A level awaiting approval and build.' }
+				},
 				error
 			}
 		]

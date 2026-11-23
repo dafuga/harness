@@ -42,7 +42,11 @@ test('Labels requiredness only when recorded as true or false', () => {
 		[
 			{ name: 'timeoutMs is recorded as required', input: required, output: 'Required' },
 			{ name: 'theme is recorded as optional', input: optional, output: 'Optional' },
-			{ name: 'label has no recorded requiredness', input: unrecorded, output: 'Requiredness not recorded' }
+			{
+				name: 'label has no recorded requiredness',
+				input: unrecorded,
+				output: 'Requiredness not recorded'
+			}
 		]
 	);
 });
@@ -71,7 +75,17 @@ test('Shows own defaults as source text and omits absent defaults', () => {
 			{ name: 'theme declares the text default system', input: textDefault, output: '"system"' },
 			{ name: 'timeoutMs declares the number default 0', input: zeroDefault, output: '0' },
 			{ name: 'description declares no default', input: absent, output: null },
-			{ name: 'retries declares the null default', input: { name: 'retries', type: 'number', source: 'illustrative', examples: [], default: null }, output: 'null' }
+			{
+				name: 'retries declares the null default',
+				input: {
+					name: 'retries',
+					type: 'number',
+					source: 'illustrative',
+					examples: [],
+					default: null
+				},
+				output: 'null'
+			}
 		]
 	);
 });
@@ -95,7 +109,11 @@ test('Name words split at each dot and keep empty segments', () => {
 			file: 'name-words-split-at-each-dot-and-keep-empty-segments.json'
 		},
 		[
-			{ name: 'dotted field name splits into two words', input: dotted, output: ['data', 'displayName'] },
+			{
+				name: 'dotted field name splits into two words',
+				input: dotted,
+				output: ['data', 'displayName']
+			},
 			{ name: 'empty segment between dots is kept', input: emptySegment, output: ['a', '', 'b'] },
 			{ name: 'name without dots stays one word', input: plain, output: ['timeoutMs'] }
 		]

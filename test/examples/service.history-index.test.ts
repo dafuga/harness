@@ -3,7 +3,10 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir, withTempRepo } from '../support/temporary';
 import { HistoryIndexService } from '../../src/cli/program/history-index-service/HistoryIndexService';
-import type { BuiltHistory, LegacyReader } from '../../src/cli/program/history-index-service/HistoryIndexService.types';
+import type {
+	BuiltHistory,
+	LegacyReader
+} from '../../src/cli/program/history-index-service/HistoryIndexService.types';
 
 const noLegacy: LegacyReader = async () => [];
 

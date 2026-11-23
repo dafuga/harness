@@ -51,7 +51,10 @@ test('compares source maps and names their digest', () => {
 		named: named(before)
 	};
 	expect(output.missing).toEqual(['packages/desktop/package.json']);
-	expect(output.moved).toEqual(['packages/desktop/package.json', 'packages/desktop/svelte.config.js']);
+	expect(output.moved).toEqual([
+		'packages/desktop/package.json',
+		'packages/desktop/svelte.config.js'
+	]);
 	expect(output.named).toEqual({ digest: output.digest, files: 2 });
 	recordExampleCases(
 		{
@@ -61,7 +64,13 @@ test('compares source maps and names their digest', () => {
 			evidence: 'examples-cases',
 			file: 'compares-source-maps-and-names-their-digest.json'
 		},
-		[{ name: 'changed and added source paths', input: { before: Object.fromEntries(before), after: Object.fromEntries(after) }, output }]
+		[
+			{
+				name: 'changed and added source paths',
+				input: { before: Object.fromEntries(before), after: Object.fromEntries(after) },
+				output
+			}
+		]
 	);
 });
 
@@ -86,7 +95,16 @@ test('finds changes across the three source readings', () => {
 			evidence: 'examples-cases',
 			file: 'finds-changes-across-the-three-source-readings.json'
 		},
-		[{ name: 'renderer changed between reads', input: { before: 'one renderer, native, and fixture reading', after: 'same sets with a changed lockfile' }, output }]
+		[
+			{
+				name: 'renderer changed between reads',
+				input: {
+					before: 'one renderer, native, and fixture reading',
+					after: 'same sets with a changed lockfile'
+				},
+				output
+			}
+		]
 	);
 });
 
@@ -104,7 +122,13 @@ test('Throws Error when a tree path is a file', () => {
 				evidence: 'examples-cases',
 				file: 'throws-error-when-a-tree-path-is-a-file.json'
 			},
-			[{ name: 'file supplied as tree folder', input: { folder: 'temporary regular file' }, error: 'Error' }]
+			[
+				{
+					name: 'file supplied as tree folder',
+					input: { folder: 'temporary regular file' },
+					error: 'Error'
+				}
+			]
 		);
 	} finally {
 		rmSync(folder, { recursive: true, force: true });

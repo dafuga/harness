@@ -29,14 +29,16 @@ async function boundaryExample() {
 		close: () => undefined
 	} satisfies SqliteDatabase;
 	const persistence = {
-		find: async <T>(_table: string, _id: number | string) => ({ accountId: 7 } as T),
-		findBy: async <T>(_table: string, _fields: Record<string, unknown>) => ([{ accountId: 7 }] as T[]),
+		find: async <T>(_table: string, _id: number | string) => ({ accountId: 7 }) as T,
+		findBy: async <T>(_table: string, _fields: Record<string, unknown>) =>
+			[{ accountId: 7 }] as T[],
 		create: async <T>(_table: string, input: Record<string, unknown>) => input as T,
-		update: async <T>(_table: string, _id: number | string, input: Record<string, unknown>) => input as T,
+		update: async <T>(_table: string, _id: number | string, input: Record<string, unknown>) =>
+			input as T,
 		delete: async (_table: string, _id: number | string) => true
 	} satisfies PersistenceAdapter;
 	return {
-		valueKinds: values.map((value) => value === null ? 'null' : typeof value),
+		valueKinds: values.map((value) => (value === null ? 'null' : typeof value)),
 		table: model.table,
 		primaryKey: model.primaryKey,
 		nullableName: field.nullable,
@@ -54,8 +56,11 @@ async function boundaryExample() {
 test('SQLite types describe adapter boundaries', async () => {
 	const output = await boundaryExample();
 	expect(output).toMatchObject({
-		table: 'accounts', primaryKey: 'accountId', nullableName: true,
-		row: { accountId: 7 }, deleted: true
+		table: 'accounts',
+		primaryKey: 'accountId',
+		nullableName: true,
+		row: { accountId: 7 },
+		deleted: true
 	});
 	recordExampleCases(
 		{
@@ -65,10 +70,12 @@ test('SQLite types describe adapter boundaries', async () => {
 			evidence: 'examples-cases',
 			file: 'sqlite-types-describe-adapter-boundaries.json'
 		},
-		[{
-			name: 'account model and SQLite adapter operations',
-			input: { values: ['Ada', 7, '9n', [1, 2], null], table: 'accounts', id: 7 },
-			output
-		}]
+		[
+			{
+				name: 'account model and SQLite adapter operations',
+				input: { values: ['Ada', 7, '9n', [1, 2], null], table: 'accounts', id: 7 },
+				output
+			}
+		]
 	);
 });

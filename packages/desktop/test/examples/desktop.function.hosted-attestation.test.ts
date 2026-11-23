@@ -1,7 +1,10 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { unshownHostedArtifact, hostedAttestation } from '../../src/utils/networking-security/hostedAttestation';
+import {
+	unshownHostedArtifact,
+	hostedAttestation
+} from '../../src/utils/networking-security/hostedAttestation';
 import { UnsupportedHostedMediaDeclarationError } from '../../src/utils/networking-security/hostedAttestation.types';
 
 test('accepts supported hosted media declarations', () => {

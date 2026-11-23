@@ -3,9 +3,17 @@ import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { JobStatisticsService } from '../../src/services/execution-runtimes/JobStatisticsService';
-import type { DurationEstimate, DurationSummary } from '../../src/services/execution-runtimes/JobStatisticsService.types';
+import type {
+	DurationEstimate,
+	DurationSummary
+} from '../../src/services/execution-runtimes/JobStatisticsService.types';
 
-function row(type: string, model: string, durationMs: number | undefined, outcome: Row['outcome']): Row {
+function row(
+	type: string,
+	model: string,
+	durationMs: number | undefined,
+	outcome: Row['outcome']
+): Row {
 	return { type, model, durationMs, outcome } as Row;
 }
 
@@ -27,7 +35,15 @@ test('Summarizes completed durations by type and model', () => {
 	const rounded = summary.map((item) => ({ ...item, meanMs: Math.round(item.meanMs) }));
 
 	expect(rounded).toEqual([
-		{ type: 'contract', model: 'model-a', count: 5, meanMs: 3000, medianMs: 3000, p80Ms: 4000, p90Ms: 5000 },
+		{
+			type: 'contract',
+			model: 'model-a',
+			count: 5,
+			meanMs: 3000,
+			medianMs: 3000,
+			p80Ms: 4000,
+			p90Ms: 5000
+		},
 		{ type: 'stub', model: 'model-b', count: 1, meanMs: 700, medianMs: 700, p80Ms: 700, p90Ms: 700 }
 	]);
 	recordExampleCases(
@@ -55,9 +71,27 @@ test('Selects exact samples and conditions on elapsed running time', () => {
 	const tail = service.estimate('contract', 'model-a', 6000);
 	const fallback = service.estimate('stub', 'model-c');
 
-	expect(exact).toMatchObject({ fallback: 'exact', count: 5, conditionalCount: 5, medianMs: 3000, tailExtrapolated: false });
-	expect(conditioned).toMatchObject({ fallback: 'exact', conditionalCount: 3, medianMs: 1500, meanMs: 1500, tailExtrapolated: false });
-	expect(tail).toMatchObject({ conditionalCount: 0, tailExtrapolated: true, medianMs: 600, p80Ms: 2000, p90Ms: 5000 });
+	expect(exact).toMatchObject({
+		fallback: 'exact',
+		count: 5,
+		conditionalCount: 5,
+		medianMs: 3000,
+		tailExtrapolated: false
+	});
+	expect(conditioned).toMatchObject({
+		fallback: 'exact',
+		conditionalCount: 3,
+		medianMs: 1500,
+		meanMs: 1500,
+		tailExtrapolated: false
+	});
+	expect(tail).toMatchObject({
+		conditionalCount: 0,
+		tailExtrapolated: true,
+		medianMs: 600,
+		p80Ms: 2000,
+		p90Ms: 5000
+	});
 	expect(fallback).toMatchObject({ fallback: 'global', count: 6 });
 	recordExampleCases(
 		{
@@ -68,10 +102,26 @@ test('Selects exact samples and conditions on elapsed running time', () => {
 			file: 'selects-exact-samples-and-conditions-on-elapsed-running-time.json'
 		},
 		[
-			{ name: 'exact distribution with no elapsed time', input: { type: 'contract', model: 'model-a', elapsedMs: 0 }, output: exact },
-			{ name: 'residuals after 2500 ms elapsed', input: { type: 'contract', model: 'model-a', elapsedMs: 2500 }, output: conditioned },
-			{ name: 'elapsed beyond every sample extrapolates the tail', input: { type: 'contract', model: 'model-a', elapsedMs: 6000 }, output: tail },
-			{ name: 'unseen model with thin type history falls back to global', input: { type: 'stub', model: 'model-c', elapsedMs: 0 }, output: fallback }
+			{
+				name: 'exact distribution with no elapsed time',
+				input: { type: 'contract', model: 'model-a', elapsedMs: 0 },
+				output: exact
+			},
+			{
+				name: 'residuals after 2500 ms elapsed',
+				input: { type: 'contract', model: 'model-a', elapsedMs: 2500 },
+				output: conditioned
+			},
+			{
+				name: 'elapsed beyond every sample extrapolates the tail',
+				input: { type: 'contract', model: 'model-a', elapsedMs: 6000 },
+				output: tail
+			},
+			{
+				name: 'unseen model with thin type history falls back to global',
+				input: { type: 'stub', model: 'model-c', elapsedMs: 0 },
+				output: fallback
+			}
 		]
 	);
 });

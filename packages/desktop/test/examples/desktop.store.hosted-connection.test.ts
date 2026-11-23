@@ -14,7 +14,9 @@ test('loads hosted status and refreshes projects', async () => {
 			connectHosted: async () => status,
 			disconnectHosted: async () => status
 		},
-		loadProjects: async () => { loaded.push('projects'); },
+		loadProjects: async () => {
+			loaded.push('projects');
+		},
 		invalidate: () => undefined
 	} as unknown as Workspace;
 	const store: HostedConnection = createHostedConnectionStore(workspace);

@@ -3,7 +3,10 @@ import type { BudgetEvent } from '../../src/core/verification-evidence/budgetTyp
 import type { VerificationRecord } from '../../src/core/verification-evidence/verificationTypes';
 import type { LedgerRead } from '../../src/repositories/verification-evidence/BudgetLedgerRepository.types';
 import { VerificationStoreRepository } from '../../src/repositories/verification-evidence/VerificationStoreRepository';
-import { ledgerGate, registryGate } from '../../src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates';
+import {
+	ledgerGate,
+	registryGate
+} from '../../src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates';
 import type { Registry } from '../../src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.types';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
@@ -20,18 +23,22 @@ const verificationService: ComponentManifest = {
 	responsibilityOrigin: 'declared',
 	status: 'active',
 	owns: {
-		source: ['src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts'],
+		source: [
+			'src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts'
+		],
 		symbols: ['registryGate', 'ledgerGate']
 	},
 	contract: { origin: 'declared', inputs: [], outputs: [], errors: [] },
 	dependencies: [],
 	runtime: {
 		kind: 'module',
-		entry: 'src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts',
+		entry:
+			'src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts',
 		targets: [
 			{
 				kind: 'module',
-				entry: 'src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts'
+				entry:
+					'src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts'
 			}
 		]
 	},
@@ -117,13 +124,23 @@ function collectLedgerCases(store: VerificationStoreRepository, event: BudgetEve
 	};
 	const rewritten = {
 		base: { text: 'previous approved baseline\n', events: [], errors: [] },
-		head: { text: 'rewritten baseline\n', events: [], errors: ['budget ledger line 1 is malformed'] }
+		head: {
+			text: 'rewritten baseline\n',
+			events: [],
+			errors: ['budget ledger line 1 is malformed']
+		}
 	};
 	const stored = { record: { id: recordId, commit: sourceCommit, tree: sourceTree } };
 	const calls = [
 		{ name: 'an empty ledger', ledger: { base, head: base } },
-		{ name: 'an appended baseline citing its stored commit and tree', ledger: { base, head: cited } },
-		{ name: 'an appended baseline citing a different stored tree', ledger: { base, head: wrongTree } },
+		{
+			name: 'an appended baseline citing its stored commit and tree',
+			ledger: { base, head: cited }
+		},
+		{
+			name: 'an appended baseline citing a different stored tree',
+			ledger: { base, head: wrongTree }
+		},
 		{ name: 'ledger text that rewrites its base', ledger: rewritten }
 	];
 	return calls.map(({ name, ledger }) => ({
@@ -170,7 +187,9 @@ test('Registry gate preserves identities and validates previews', () => {
 
 	expect(cases.map(({ output }) => output)).toEqual([
 		[],
-		['unit service.verification-gates was removed from the registry; identities may only be retired'],
+		[
+			'unit service.verification-gates was removed from the registry; identities may only be retired'
+		],
 		['reports.component.evidence-grid: unknown preview scenario reports.scenario.desktop'],
 		[]
 	]);
@@ -192,7 +211,9 @@ test('Ledger gate checks append-only cited records', async () => {
 	expect(outputs).toEqual([
 		[],
 		[],
-		['budget baseline for reports.component.evidence-grid cites record abcdef012345, which is not available'],
+		[
+			'budget baseline for reports.component.evidence-grid cites record abcdef012345, which is not available'
+		],
 		['budget ledger was rewritten; recorded baselines and approvals are append-only']
 	]);
 	recordExampleCases(

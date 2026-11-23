@@ -1,5 +1,8 @@
 import { test } from 'vitest';
-import { atomLibrary, useAtomLibrary } from '../../src/workflows/projects-sessions/generate-code/atomLibrary';
+import {
+	atomLibrary,
+	useAtomLibrary
+} from '../../src/workflows/projects-sessions/generate-code/atomLibrary';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
@@ -16,7 +19,13 @@ test('Defaults to the standard atom library when src is absent', async () => {
 				evidence: 'examples-cases',
 				file: 'defaults-to-the-standard-atom-library-when-src-is-absent.json'
 			},
-			[{ name: 'missing source folder uses the standard library', input: { root: directory }, output }]
+			[
+				{
+					name: 'missing source folder uses the standard library',
+					input: { root: directory },
+					output
+				}
+			]
 		);
 	});
 });
@@ -25,7 +34,8 @@ test('Keeps the planned files when using the standard atom library', () => {
 	const files = [
 		{
 			path: 'src/components/forms/SubmitForm.svelte',
-			contents: "<script>import HtmlButton from '../atoms/HtmlButton.svelte';</script>\n<HtmlButton type=\"submit\">Submit</HtmlButton>"
+			contents:
+				'<script>import HtmlButton from \'../atoms/HtmlButton.svelte\';</script>\n<HtmlButton type="submit">Submit</HtmlButton>'
 		}
 	];
 	const output = useAtomLibrary(files, 'src/components/atoms');

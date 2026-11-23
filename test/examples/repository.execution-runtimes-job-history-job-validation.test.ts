@@ -2,7 +2,10 @@ import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { ZodError } from 'zod';
-import { jobRecord, jobKey } from '../../src/repositories/execution-runtimes/job-history/jobValidation';
+import {
+	jobRecord,
+	jobKey
+} from '../../src/repositories/execution-runtimes/job-history/jobValidation';
 
 const validRecord = {
 	id: 'run-42',

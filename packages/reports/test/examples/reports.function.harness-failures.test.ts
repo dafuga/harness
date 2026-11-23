@@ -50,7 +50,11 @@ test('Groups repeated failure causes and retains totals', () => {
 		},
 		[
 			{ name: 'two records share a baseline cause', input: repeated, output: summarized },
-			{ name: 'six distinct failures show five causes and retain total', input: many, output: limited }
+			{
+				name: 'six distinct failures show five causes and retain total',
+				input: many,
+				output: limited
+			}
 		]
 	);
 });

@@ -70,7 +70,7 @@ test('Renders a missing-state report with its next commands', () => {
 		next: {
 			state: 'default',
 			commands: [
-				"${EDITOR:-vi} 'tests/e2e/component-catalog.spec.ts' # Write/extend \"default\" for workflow.development-tooling-guide-units, then commit the test.",
+				'${EDITOR:-vi} \'tests/e2e/component-catalog.spec.ts\' # Write/extend "default" for workflow.development-tooling-guide-units, then commit the test.',
 				'harness verify run --priority agent-test --entity workflow.development-tooling-guide-units',
 				'harness units guide workflow.development-tooling-guide-units'
 			]

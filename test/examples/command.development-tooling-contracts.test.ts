@@ -145,10 +145,9 @@ test('Throws ExpectedCliError when a read-only query has no matching target', as
 		register(program);
 		let caught: unknown;
 		try {
-			await program.parseAsync(
-				['contracts', 'show', 'missing.unit', '--root', root],
-				{ from: 'user' }
-			);
+			await program.parseAsync(['contracts', 'show', 'missing.unit', '--root', root], {
+				from: 'user'
+			});
 		} catch (error) {
 			caught = error;
 		}
@@ -160,9 +159,9 @@ test('Throws ExpectedCliError when a read-only query has no matching target', as
 			{
 				unitId: 'command.development-tooling-contracts',
 				symbol: 'ContractsCommand.register',
-			state: 'throws-expectedclierror-when-a-read-only-query-has-no-matchi',
+				state: 'throws-expectedclierror-when-a-read-only-query-has-no-matchi',
 				evidence: 'examples-cases',
-			file: 'throws-expectedclierror-when-a-read-only-query-has-no-matchi.json'
+				file: 'throws-expectedclierror-when-a-read-only-query-has-no-matchi.json'
 			},
 			[
 				{

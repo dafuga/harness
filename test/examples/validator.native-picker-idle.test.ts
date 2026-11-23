@@ -17,11 +17,20 @@ const SYSTEM_ERROR = { id: THREAD_ID, status: { type: 'systemError' } };
 const UNCONFIRMED = [
 	{ name: 'last turn still in progress', turns: [{ status: 'failed' }, { status: 'inProgress' }] },
 	{ name: 'last turn completed', turns: [{ status: 'failed' }, { status: 'completed' }] },
-	{ name: 'earlier turn still in progress', turns: [{ status: 'inProgress' }, { status: 'failed' }] }
+	{
+		name: 'earlier turn still in progress',
+		turns: [{ status: 'inProgress' }, { status: 'failed' }]
+	}
 ];
 
 function stateMeta(state: string): Parameters<typeof recordExampleCases>[0] {
-	return { unitId: UNIT_ID, symbol: 'validate', state, evidence: 'examples-cases', file: `${state}.json` };
+	return {
+		unitId: UNIT_ID,
+		symbol: 'validate',
+		state,
+		evidence: 'examples-cases',
+		file: `${state}.json`
+	};
 }
 
 function recordingRpc(thread: unknown): { rpc: PickerRpc; calls: RpcCall[] } {
@@ -33,7 +42,9 @@ function recordingRpc(thread: unknown): { rpc: PickerRpc; calls: RpcCall[] } {
 	return { rpc, calls };
 }
 
-async function rejectionOf(run: () => Promise<unknown>): Promise<{ name: string; message: string }> {
+async function rejectionOf(
+	run: () => Promise<unknown>
+): Promise<{ name: string; message: string }> {
 	try {
 		await run();
 	} catch (caught) {
@@ -63,7 +74,11 @@ test('Accepts a system error whose last turn failed', async () => {
 		{ method: 'thread/read', params: { threadId: THREAD_ID, includeTurns: true } }
 	]);
 	recordExampleCases(stateMeta('accepts-a-system-error-whose-last-turn-failed'), [
-		{ name: 'last turn failed, no running turn', input: { statusType: 'systemError', turns }, output }
+		{
+			name: 'last turn failed, no running turn',
+			input: { statusType: 'systemError', turns },
+			output
+		}
 	]);
 });
 

@@ -131,10 +131,16 @@ test('Materializes LFS files and copies cached bytes', async () => {
 });
 
 test('Throws CollaborationInputError on commit mismatch', async () => {
-	const mismatched = { ...routes(), [`/git/commits/${commit}`]: { sha: other, tree: { sha: tree } } };
+	const mismatched = {
+		...routes(),
+		[`/git/commits/${commit}`]: { sha: other, tree: { sha: tree } }
+	};
 	const source = createGitHubSource(options(mismatched));
 	const error = await source.resolve(repo, commit).catch((failure: unknown) => failure);
-	expect(error).toMatchObject({ code: 'commit-mismatch', message: 'Collaboration commit-mismatch' });
+	expect(error).toMatchObject({
+		code: 'commit-mismatch',
+		message: 'Collaboration commit-mismatch'
+	});
 	recordExampleCases(meta('throws-collaborationinputerror-on-commit-mismatch'), [
 		{
 			name: 'commit endpoint answers with a different sha',

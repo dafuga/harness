@@ -36,7 +36,9 @@ test('Snapshots a target and keeps only its findings', async () => {
 		};
 		expect(maxReviewStateBytes).toBe(24000);
 		expect(state.target).toEqual({ path: input.path, language: '.ts', code: contents });
-		expect(state.auditFindings).toEqual([{ path: input.path, rule: 'complexity', message: 'Simplify this function.' }]);
+		expect(state.auditFindings).toEqual([
+			{ path: input.path, rule: 'complexity', message: 'Simplify this function.' }
+		]);
 		expect(snapshot.inputs).toHaveLength(1);
 		recordExampleCases(
 			{

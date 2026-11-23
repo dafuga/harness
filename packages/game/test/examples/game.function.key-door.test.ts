@@ -37,8 +37,16 @@ test('Keeps the player behind the door until the key is held', () => {
 	expect(closed.y).toBe(-1.25);
 	expect(fromStart.x).toBe(1);
 	record('keeps-the-player-behind-the-door-until-the-key-is-held', 'keyDoor', [
-		{ name: 'no key and door shut: x stops at 3', input: { state: behind, input: moveInput }, output: closed },
-		{ name: 'no key and door shut: short move is kept', input: { state: start, input: { x: 1, y: 0 } }, output: fromStart }
+		{
+			name: 'no key and door shut: x stops at 3',
+			input: { state: behind, input: moveInput },
+			output: closed
+		},
+		{
+			name: 'no key and door shut: short move is kept',
+			input: { state: start, input: { x: 1, y: 0 } },
+			output: fromStart
+		}
 	]);
 });
 
@@ -52,7 +60,11 @@ test('Lets the player pass the door once the key is held', () => {
 	expect(throughOpen.x).toBe(5);
 	record('lets-the-player-pass-the-door-once-the-key-is-held', 'keyDoor', [
 		{ name: 'key held: x may pass 3', input: { state: withKey, input: moveInput }, output: passed },
-		{ name: 'door already open: x is not capped', input: { state: openDoor, input: { x: 0, y: 0 } }, output: throughOpen }
+		{
+			name: 'door already open: x is not capped',
+			input: { state: openDoor, input: { x: 0, y: 0 } },
+			output: throughOpen
+		}
 	]);
 });
 
@@ -66,9 +78,21 @@ test('Clamps movement to the courtyard bounds and rounds it', () => {
 	expect(ceiling.x).toBe(10);
 	expect(floor).toEqual({ ...start, x: 0, y: -3 });
 	record('clamps-movement-to-the-courtyard-bounds-and-rounds-it', 'keyDoor', [
-		{ name: 'sum rounds to two decimals and y clamps at 3', input: { state: { ...start, x: 9.5, y: 2.9, hasKey: true }, input: edgeInput }, output: edge },
-		{ name: 'x clamps at the top edge of 10', input: { state: { ...start, x: 10, hasKey: true }, input: { x: 1, y: 0 } }, output: ceiling },
-		{ name: 'x and y clamp at the bottom edges', input: { state: { ...start, y: -3 }, input: { x: -1, y: -1 } }, output: floor }
+		{
+			name: 'sum rounds to two decimals and y clamps at 3',
+			input: { state: { ...start, x: 9.5, y: 2.9, hasKey: true }, input: edgeInput },
+			output: edge
+		},
+		{
+			name: 'x clamps at the top edge of 10',
+			input: { state: { ...start, x: 10, hasKey: true }, input: { x: 1, y: 0 } },
+			output: ceiling
+		},
+		{
+			name: 'x and y clamp at the bottom edges',
+			input: { state: { ...start, y: -3 }, input: { x: -1, y: -1 } },
+			output: floor
+		}
 	]);
 });
 
@@ -81,9 +105,21 @@ test('Keeps the previous choice unless the input sets one', () => {
 	expect(replaced.choice).toBe('garden');
 	expect(cleared.choice).toBe('');
 	record('keeps-the-previous-choice-unless-the-input-sets-one', 'keyDoor', [
-		{ name: 'no choice in input keeps vault', input: { state: chosen, input: { x: 0, y: 0 } }, output: kept },
-		{ name: 'choice garden replaces vault', input: { state: chosen, input: { x: 0, y: -1, choice: 'garden' } }, output: replaced },
-		{ name: 'empty choice string replaces vault', input: { state: chosen, input: { x: 0, y: 0, choice: '' } }, output: cleared }
+		{
+			name: 'no choice in input keeps vault',
+			input: { state: chosen, input: { x: 0, y: 0 } },
+			output: kept
+		},
+		{
+			name: 'choice garden replaces vault',
+			input: { state: chosen, input: { x: 0, y: -1, choice: 'garden' } },
+			output: replaced
+		},
+		{
+			name: 'empty choice string replaces vault',
+			input: { state: chosen, input: { x: 0, y: 0, choice: '' } },
+			output: cleared
+		}
 	]);
 });
 
@@ -99,6 +135,10 @@ test('Builds a branching courtyard document for 2d or 3d', () => {
 	expect(deep.mechanics[0].id).toBe('movement');
 	record('builds-a-branching-courtyard-document-for-2d-or-3d', 'exampleDocument', [
 		{ name: 'default dimension is 2d', input: {}, output: summarise(flat) },
-		{ name: 'explicit 3d dimension is written to the view', input: { dimension: '3d' }, output: summarise(deep) }
+		{
+			name: 'explicit 3d dimension is written to the view',
+			input: { dimension: '3d' },
+			output: summarise(deep)
+		}
 	]);
 });

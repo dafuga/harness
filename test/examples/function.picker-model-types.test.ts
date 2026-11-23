@@ -28,7 +28,11 @@ test('Selection equality and session IDs are exact', () => {
 			file: 'selection-equality-and-session-ids-are-exact.json'
 		},
 		[
-			{ name: 'identical provider, model and effort', input: { a: first, b: equal }, output: equalResult },
+			{
+				name: 'identical provider, model and effort',
+				input: { a: first, b: equal },
+				output: equalResult
+			},
 			{ name: 'different effort', input: { a: first, b: differentEffort }, output: differentResult }
 		]
 	);

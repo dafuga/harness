@@ -2,7 +2,13 @@ import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { hookScript, managedHook } from '../../src/cli/program/hook-install-service/hookScript';
-import { hookMarker, chainedSuffix, enabledFile, hookStages, stageFile } from '../../src/utils/development-tooling/hookScript';
+import {
+	hookMarker,
+	chainedSuffix,
+	enabledFile,
+	hookStages,
+	stageFile
+} from '../../src/utils/development-tooling/hookScript';
 
 test('Hook scripts render stage-specific chaining and opt-in behavior', () => {
 	const push = hookScript('pre-push');
@@ -54,19 +60,34 @@ test('Hook stage names and marker checks preserve their simple mappings', () => 
 		output: stageFile(stage)
 	}));
 	const markerCases = [
-		{ name: 'ordinary hook is unmanaged', input: { text: '#!/bin/sh\nnpm run lint\n' }, output: false },
-		{ name: 'marker mention counts as managed', input: { text: `echo ${hookMarker}` }, output: true }
+		{
+			name: 'ordinary hook is unmanaged',
+			input: { text: '#!/bin/sh\nnpm run lint\n' },
+			output: false
+		},
+		{
+			name: 'marker mention counts as managed',
+			input: { text: `echo ${hookMarker}` },
+			output: true
+		}
 	];
-	expect(cases.map((entry) => entry.output)).toEqual(['harness-hooks', 'harness-hooks-commit-msg', 'harness-hooks-custom']);
+	expect(cases.map((entry) => entry.output)).toEqual([
+		'harness-hooks',
+		'harness-hooks-commit-msg',
+		'harness-hooks-custom'
+	]);
 	expect(markerCases.map((entry) => managedHook(entry.input.text))).toEqual([false, true]);
-	expect({ hookStages, enabledFile }).toEqual({ hookStages: ['pre-push', 'commit-msg'], enabledFile: 'harness-hooks' });
+	expect({ hookStages, enabledFile }).toEqual({
+		hookStages: ['pre-push', 'commit-msg'],
+		enabledFile: 'harness-hooks'
+	});
 	recordExampleCases(
 		{
 			unitId: 'function.hook-script',
 			symbol: 'stageFile',
-		state: 'hook-stage-names-and-marker-checks-preserve-their-simple-map',
+			state: 'hook-stage-names-and-marker-checks-preserve-their-simple-map',
 			evidence: 'examples-cases',
-		file: 'hook-stage-names-and-marker-checks-preserve-their-simple-map.json'
+			file: 'hook-stage-names-and-marker-checks-preserve-their-simple-map.json'
 		},
 		[...cases, ...markerCases]
 	);

@@ -142,7 +142,9 @@ test('Replaces the catalog projection in one transaction', () => {
 
 	expect(fake.transactions).toBe(1);
 	expect(fake.executed.every((sql) => sql.startsWith('DELETE FROM '))).toBe(true);
-	expect(rowsWith(fake, 'registryAvailable').map((row) => row.values.registryAvailable)).toEqual([true]);
+	expect(rowsWith(fake, 'registryAvailable').map((row) => row.values.registryAvailable)).toEqual([
+		true
+	]);
 	expect(rowsWith(fake, 'unitId')).toHaveLength(1);
 	expect(rowsWith(fake, 'targetId')).toHaveLength(2);
 	expect(rowsWith(fake, 'scenarioId')).toHaveLength(1);
@@ -169,7 +171,9 @@ test('Stores a revision without a registry as unavailable', () => {
 	const service = new CatalogWriteService(fake.adapter);
 	service.replace(emptyIndex, []);
 
-	expect(rowsWith(fake, 'registryAvailable').map((row) => row.values.registryAvailable)).toEqual([false]);
+	expect(rowsWith(fake, 'registryAvailable').map((row) => row.values.registryAvailable)).toEqual([
+		false
+	]);
 	expect(rowsWith(fake, 'unitId')).toHaveLength(0);
 	expect(rowsWith(fake, 'scenarioId')).toHaveLength(0);
 

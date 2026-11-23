@@ -2,7 +2,10 @@ import type { ExampleCase } from './template.development-tooling-atomic-markup.t
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { atomicProjectFiles, atomicMarkup } from '../../src/templates/development-tooling/atomicMarkup';
+import {
+	atomicProjectFiles,
+	atomicMarkup
+} from '../../src/templates/development-tooling/atomicMarkup';
 
 const UNIT_ID = 'template.development-tooling-atomic-markup';
 

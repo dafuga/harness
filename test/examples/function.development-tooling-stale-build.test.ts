@@ -24,7 +24,9 @@ test('Warns only when checkout source is newer than a dist entry', async () => {
 		utimesSync(currentEntry, recent, recent);
 		const current = staleBuild(currentEntry);
 		const outside = staleBuild(source);
-		expect(stale).toBe('Warning: this dist build is older than source; run bun run build:cli before using it.');
+		expect(stale).toBe(
+			'Warning: this dist build is older than source; run bun run build:cli before using it.'
+		);
 		expect(current).toBeUndefined();
 		expect(outside).toBeUndefined();
 		recordExampleCases(
@@ -36,8 +38,16 @@ test('Warns only when checkout source is newer than a dist entry', async () => {
 				file: 'warns-only-when-checkout-source-is-newer-than-a-dist-entry.json'
 			},
 			[
-				{ name: 'source file is newer than dist entry', input: '/fixture/dist/cli.js', output: stale },
-				{ name: 'dist entry is newer than source', input: '/fixture/dist/current.js', output: current },
+				{
+					name: 'source file is newer than dist entry',
+					input: '/fixture/dist/cli.js',
+					output: stale
+				},
+				{
+					name: 'dist entry is newer than source',
+					input: '/fixture/dist/current.js',
+					output: current
+				},
 				{ name: 'entry is outside dist', input: '/fixture/src/cli.ts', output: outside }
 			]
 		);

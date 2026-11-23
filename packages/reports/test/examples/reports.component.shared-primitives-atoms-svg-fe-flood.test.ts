@@ -22,7 +22,12 @@ const where = (state: string) => ({
 });
 
 test('renders the bare feFlood element with its attributes', () => {
-	const props = { id: 'flood-fill', result: 'flood', 'flood-color': 'rgb(0, 128, 255)', 'flood-opacity': '0.5' };
+	const props = {
+		id: 'flood-fill',
+		result: 'flood',
+		'flood-color': 'rgb(0, 128, 255)',
+		'flood-opacity': '0.5'
+	};
 	const body = markup(render(SvgFeFlood, { props }).body);
 	recordExampleCases(where('renders-the-bare-feflood-element-with-its-attributes'), [
 		{
@@ -46,10 +51,15 @@ test('renders a child snippet inside the feFlood element', () => {
 	recordExampleCases(where('renders-a-child-snippet-inside-the-feflood-element'), [
 		{
 			name: 'an feFlood with an id and a snippet supplying one desc child',
-			input: { props: { id: 'flood-described' }, children: 'snippet rendering <desc>Solid flood</desc>' },
+			input: {
+				props: { id: 'flood-described' },
+				children: 'snippet rendering <desc>Solid flood</desc>'
+			},
 			output: { body }
 		}
 	]);
-	expect(body).toMatch(/^<feFlood[^>]*id="flood-described"[^>]*><desc>Solid flood<\/desc><\/feFlood>$/);
+	expect(body).toMatch(
+		/^<feFlood[^>]*id="flood-described"[^>]*><desc>Solid flood<\/desc><\/feFlood>$/
+	);
 	expect(body).not.toContain('children');
 });

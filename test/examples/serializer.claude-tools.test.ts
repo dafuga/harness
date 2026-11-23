@@ -51,7 +51,11 @@ test('Builds a codex SDK server from a function definition', () => {
 
 	expect(server).toMatchObject({ type: 'sdk', name: 'codex' });
 	recordExampleCases(
-		{ ...META, state: 'builds-a-codex-sdk-server-from-a-function-definition', file: 'builds-a-codex-sdk-server-from-a-function-definition.json' },
+		{
+			...META,
+			state: 'builds-a-codex-sdk-server-from-a-function-definition',
+			file: 'builds-a-codex-sdk-server-from-a-function-definition.json'
+		},
 		[
 			{
 				name: 'one function definition with a required query parameter',
@@ -68,7 +72,11 @@ test('Builds a codex SDK server from a custom definition', () => {
 
 	expect(server).toMatchObject({ type: 'sdk', name: 'codex' });
 	recordExampleCases(
-		{ ...META, state: 'builds-a-codex-sdk-server-from-a-custom-definition', file: 'builds-a-codex-sdk-server-from-a-custom-definition.json' },
+		{
+			...META,
+			state: 'builds-a-codex-sdk-server-from-a-custom-definition',
+			file: 'builds-a-codex-sdk-server-from-a-custom-definition.json'
+		},
 		[
 			{
 				name: 'one custom definition receives a string input field',
@@ -90,7 +98,11 @@ test('Rejects a definition whose type is not function or custom', () => {
 	expect((error as Error).name).toBe('GatewayToolDefinitionError');
 	expect((error as Error).message).toContain('Unsupported');
 	recordExampleCases(
-		{ ...META, state: 'rejects-a-definition-whose-type-is-not-function-or-custom', file: 'rejects-a-definition-whose-type-is-not-function-or-custom.json' },
+		{
+			...META,
+			state: 'rejects-a-definition-whose-type-is-not-function-or-custom',
+			file: 'rejects-a-definition-whose-type-is-not-function-or-custom.json'
+		},
 		[
 			{
 				name: 'webhook definition type is rejected while creating its tool',

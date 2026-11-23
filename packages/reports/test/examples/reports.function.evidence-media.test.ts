@@ -36,12 +36,21 @@ test('Formats durations as minutes and hours', () => {
 });
 
 test('Maps evidence file names to MIME types', () => {
-	const outputs = [mediaMime(mp3File), mediaMime(m4aFile), mediaMime(pngFile), mediaMime('report.xyz')];
+	const outputs = [
+		mediaMime(mp3File),
+		mediaMime(m4aFile),
+		mediaMime(pngFile),
+		mediaMime('report.xyz')
+	];
 	expect(outputs).toEqual(['audio/mpeg', 'audio/mp4', 'image/png', 'application/octet-stream']);
 	expect(() => mediaMime(null as unknown as string)).toThrow(TypeError);
 	recordExampleCases(caseMeta('mediaMime', 'maps-evidence-file-names-to-mime-types'), [
 		{ name: 'mp3 asset name maps to audio/mpeg', input: mp3File, output: outputs[0] },
-		{ name: 'upper-case M4A extension is matched case-insensitively', input: m4aFile, output: outputs[1] },
+		{
+			name: 'upper-case M4A extension is matched case-insensitively',
+			input: m4aFile,
+			output: outputs[1]
+		},
 		{ name: 'png asset name maps to image/png', input: pngFile, output: outputs[2] },
 		{ name: 'unknown extension maps to octet-stream', input: 'report.xyz', output: outputs[3] },
 		{ name: 'null file name throws TypeError', input: null, error: 'TypeError' }

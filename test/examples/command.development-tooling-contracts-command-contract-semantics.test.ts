@@ -141,7 +141,13 @@ test('Compares named fields and duplicate dependencies', () => {
 			evidence,
 			file: 'compares-named-fields-and-duplicate-dependencies.json'
 		},
-		[{ name: 'changed operation and two repeated dependency additions', input: { before, after }, output: changes }]
+		[
+			{
+				name: 'changed operation and two repeated dependency additions',
+				input: { before, after },
+				output: changes
+			}
+		]
 	);
 });
 

@@ -2,7 +2,10 @@ import { createPrivateKey, createVerify, generateKeyPairSync } from 'node:crypto
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { githubAppKey, githubAppJwt } from '../../src/lib/verification-evidence/server/auth/installation-token-service/githubAppJwt';
+import {
+	githubAppKey,
+	githubAppJwt
+} from '../../src/lib/verification-evidence/server/auth/installation-token-service/githubAppJwt';
 import type { GithubAppJwtInput } from '../../src/utils/verification-evidence/githubAppJwt';
 
 type Sample = Pick<GithubAppJwtInput, 'appId' | 'now'>;
@@ -34,7 +37,11 @@ function makeKeyPair(): KeyPair {
 		privateKeyEncoding: { type: 'pkcs1', format: 'pem' }
 	});
 	const pkcs8 = createPrivateKey(pair.privateKey).export({ type: 'pkcs8', format: 'pem' });
-	return { pkcs1: pair.privateKey.toString(), pkcs8: pkcs8.toString(), publicKey: pair.publicKey.toString() };
+	return {
+		pkcs1: pair.privateKey.toString(),
+		pkcs8: pkcs8.toString(),
+		publicKey: pair.publicKey.toString()
+	};
 }
 
 function summarizeKey(key: CryptoKey) {
@@ -95,18 +102,21 @@ test('Rejects text outside the key block or an unimportable key', async () => {
 	const expected = { code: 'github-disabled', status: 503, message: 'Hub auth github-disabled' };
 	expect(outside).toEqual(expected);
 	expect(unimportable).toEqual(expected);
-	recordExampleCases(meta('githubAppKey', 'rejects-text-outside-the-key-block-or-an-unimportable-key'), [
-		{
-			name: 'text precedes the PEM block',
-			input: { pem: `key: ${UNIMPORTABLE_PEM}` },
-			error: expected
-		},
-		{
-			name: 'PKCS#8 block whose body WebCrypto cannot import',
-			input: { pem: UNIMPORTABLE_PEM },
-			error: expected
-		}
-	]);
+	recordExampleCases(
+		meta('githubAppKey', 'rejects-text-outside-the-key-block-or-an-unimportable-key'),
+		[
+			{
+				name: 'text precedes the PEM block',
+				input: { pem: `key: ${UNIMPORTABLE_PEM}` },
+				error: expected
+			},
+			{
+				name: 'PKCS#8 block whose body WebCrypto cannot import',
+				input: { pem: UNIMPORTABLE_PEM },
+				error: expected
+			}
+		]
+	);
 });
 
 test('Signs RS256 JWTs valid from one minute back to nine ahead', async () => {
@@ -126,9 +136,12 @@ test('Signs RS256 JWTs valid from one minute back to nine ahead', async () => {
 		claims: { iss: '2231874', iat: 1794745752, exp: 1794746352 },
 		verified: true
 	});
-	recordExampleCases(meta('githubAppJwt', 'signs-rs256-jwts-valid-from-one-minute-back-to-nine-ahead'), SIGNING_SAMPLES.map((sample, index) => ({
-		name: `app ${sample.appId} at ${sample.now}`,
-		input: sample,
-		output: summaries[index]
-	})));
+	recordExampleCases(
+		meta('githubAppJwt', 'signs-rs256-jwts-valid-from-one-minute-back-to-nine-ahead'),
+		SIGNING_SAMPLES.map((sample, index) => ({
+			name: `app ${sample.appId} at ${sample.now}`,
+			input: sample,
+			output: summaries[index]
+		}))
+	);
 });

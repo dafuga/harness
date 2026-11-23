@@ -66,7 +66,12 @@ test('Forwards only nonempty loop and since parameters to the CLI', async () => 
 	const args = readArgs(directory);
 
 	expect(snapshot.summary.events).toBe(2);
-	expect(args.slice(-4)).toEqual(['--loop', 'analytics-backfill', '--since', '2026-11-01T00:00:00.000Z']);
+	expect(args.slice(-4)).toEqual([
+		'--loop',
+		'analytics-backfill',
+		'--since',
+		'2026-11-01T00:00:00.000Z'
+	]);
 	expect(args).not.toContain('--task');
 	expect(args).not.toContain('--project');
 	recordExampleCases(

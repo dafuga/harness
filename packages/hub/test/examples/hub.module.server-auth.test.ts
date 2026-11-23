@@ -151,8 +151,18 @@ test('Resolves the actor only from a live session cookie', async () => {
 	const bearer: Record<string, string> = { authorization: `Bearer ${credential}` };
 	const none: Record<string, string> = {};
 	const examples = [
-		{ name: 'session cookie, sign-in configured', channel: 'cookie', auth: enabled, headers: cookie },
-		{ name: 'same credential as a bearer token', channel: 'bearer', auth: enabled, headers: bearer },
+		{
+			name: 'session cookie, sign-in configured',
+			channel: 'cookie',
+			auth: enabled,
+			headers: cookie
+		},
+		{
+			name: 'same credential as a bearer token',
+			channel: 'bearer',
+			auth: enabled,
+			headers: bearer
+		},
 		{ name: 'no credential, sign-in configured', channel: 'none', auth: enabled, headers: none },
 		{ name: 'session cookie, sign-in disabled', channel: 'cookie', auth: disabled, headers: cookie }
 	];
@@ -222,7 +232,13 @@ test('Refuses repository and token calls without GitHub', async () => {
 	}
 	expect(observed.map(({ error }) => error)).toEqual([REFUSED, REFUSED, REFUSED, REFUSED]);
 	recordExampleCases(
-		{ unitId: UNIT, symbol: 'authorizeRepository', state, evidence: EVIDENCE, file: `${state}.json` },
+		{
+			unitId: UNIT,
+			symbol: 'authorizeRepository',
+			state,
+			evidence: EVIDENCE,
+			file: `${state}.json`
+		},
 		observed
 	);
 });

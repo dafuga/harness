@@ -17,15 +17,17 @@ const detailedRequest = {
 		{ role: 'assistant', content: 'It returns the parsed request object.' },
 		{ role: 'user', content: 'Now list the fields as bullets.' }
 	],
-	tools: [{
-		type: 'function',
-		name: 'read_file',
-		parameters: {
-			type: 'object',
-			properties: { path: { type: 'string' } },
-			required: ['path']
+	tools: [
+		{
+			type: 'function',
+			name: 'read_file',
+			parameters: {
+				type: 'object',
+				properties: { path: { type: 'string' } },
+				required: ['path']
+			}
 		}
-	}],
+	],
 	instructions: 'Answer in plain text.',
 	extra: 'removed by the schema'
 };

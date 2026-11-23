@@ -30,7 +30,11 @@ test('Build identity sorts file records by path', () => {
 		},
 		[
 			{ name: 'two emitted files in path order', input: files, output: identity },
-			{ name: 'the same files supplied in reverse order', input: [...files].reverse(), output: reversedIdentity }
+			{
+				name: 'the same files supplied in reverse order',
+				input: [...files].reverse(),
+				output: reversedIdentity
+			}
 		]
 	);
 });

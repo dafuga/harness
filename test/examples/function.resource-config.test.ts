@@ -84,9 +84,10 @@ test('Returns schema defaults when config.json is absent', async () => {
 
 		expect(config).toEqual(defaults);
 		expect(existsSync(home)).toBe(false);
-		recordExampleCases(meta('resourceConfig', 'returns-schema-defaults-when-config-json-is-absent'), [
-			{ name: 'directory without config.json', input: { configJson: 'absent' }, output: config }
-		]);
+		recordExampleCases(
+			meta('resourceConfig', 'returns-schema-defaults-when-config-json-is-absent'),
+			[{ name: 'directory without config.json', input: { configJson: 'absent' }, output: config }]
+		);
 	});
 });
 
@@ -118,10 +119,13 @@ test('Rejects invalid settings without writing a file', async () => {
 		expect(lowName).toBe('ZodError');
 		expect(unknownName).toBe('ZodError');
 		expect(existsSync(home)).toBe(false);
-		recordExampleCases(meta('saveResourceConfig', 'rejects-invalid-settings-without-writing-a-file'), [
-			{ name: 'cpuReservePercent below 10 is rejected', input: lowCpu, error: lowName },
-			{ name: 'unknown key is rejected', input: unknownKey, error: unknownName }
-		]);
+		recordExampleCases(
+			meta('saveResourceConfig', 'rejects-invalid-settings-without-writing-a-file'),
+			[
+				{ name: 'cpuReservePercent below 10 is rejected', input: lowCpu, error: lowName },
+				{ name: 'unknown key is rejected', input: unknownKey, error: unknownName }
+			]
+		);
 	});
 });
 

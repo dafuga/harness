@@ -126,10 +126,7 @@ test('Refuses non-finite movement and conflicting mechanic writes', () => {
 	} catch (error) {
 		if (error instanceof GameStepRefusedError) rejected.push(error.message);
 	}
-	expect(rejected).toEqual([
-		'Movement must be finite.',
-		'Conflicting mechanic write: choice'
-	]);
+	expect(rejected).toEqual(['Movement must be finite.', 'Conflicting mechanic write: choice']);
 	recordExampleCases(
 		{
 			unitId: 'game.function.game-step',

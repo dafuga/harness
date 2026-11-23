@@ -9,7 +9,11 @@ import { releaseRefusal } from '../../scripts/ios-acceptance-release';
 function failedRun(failure: Error, output: string) {
 	return {
 		record: { begin: () => undefined, check: () => undefined },
-		page: { reset: async () => { throw failure; } },
+		page: {
+			reset: async () => {
+				throw failure;
+			}
+		},
 		udid: 'example-simulator',
 		controlOrigin: 'http://127.0.0.1:43121',
 		project: { id: 'example-project', name: 'Example project' },

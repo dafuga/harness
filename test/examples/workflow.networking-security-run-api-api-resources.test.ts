@@ -2,7 +2,10 @@ import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import type { HarnessApiService } from '../../src/services/networking-security/HarnessApiService';
-import { apiResources, apiResource } from '../../src/workflows/networking-security/run-api/apiResources';
+import {
+	apiResources,
+	apiResource
+} from '../../src/workflows/networking-security/run-api/apiResources';
 
 const state = 'filters-a-catalog-from-the-selected-snapshot';
 const errorState = 'throws-expectedclierror-when-history-page-exceeds-the-limit';
@@ -62,11 +65,13 @@ test('Throws ExpectedCliError when history page exceeds the limit', async () => 
 		error = { name: (caught as Error).name, message: (caught as Error).message };
 	}
 	expect(error?.name).toBe('ExpectedCliError');
-	const cases = [{
-		name: 'history rejects page 10001',
-		input: { resource: 'history', id: 'reports.component.evidence-grid', page: '10001' },
-		error
-	}];
+	const cases = [
+		{
+			name: 'history rejects page 10001',
+			input: { resource: 'history', id: 'reports.component.evidence-grid', page: '10001' },
+			error
+		}
+	];
 	recordExampleCases(
 		{
 			unitId: 'workflow.networking-security-run-api-api-resources',

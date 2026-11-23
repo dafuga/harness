@@ -43,7 +43,8 @@ const key = '1234567890123456789012345678901234567890';
 const directories: string[] = [];
 
 afterEach(() => {
-	for (const directory of directories.splice(0)) rmSync(directory, { recursive: true, force: true });
+	for (const directory of directories.splice(0))
+		rmSync(directory, { recursive: true, force: true });
 });
 
 function createRun(): Acceptance & { checks: string[] } {
@@ -51,11 +52,15 @@ function createRun(): Acceptance & { checks: string[] } {
 	directories.push(output);
 	const checks: string[] = [];
 	fixtures.page.until.mockImplementation(async (_script: string, expected: string) => {
-		if (expected === 'does not accept') return 'That code is for a relay this build of Harness does not accept.';
-		if (expected === 'Debug build for a test fixture') return 'Connect to computer. Debug build for a test fixture';
+		if (expected === 'does not accept')
+			return 'That code is for a relay this build of Harness does not accept.';
+		if (expected === 'Debug build for a test fixture')
+			return 'Connect to computer. Debug build for a test fixture';
 		if (expected === 'Waiting for approval') return 'Waiting for approval';
-		if (expected === 'declined on your computer') return 'Connect to computer; declined on your computer';
-		if (expected === 'Connected to') return `Connected to Harness fixture computer\nAcceptance iPhone\nKey ${key}`;
+		if (expected === 'declined on your computer')
+			return 'Connect to computer; declined on your computer';
+		if (expected === 'Connected to')
+			return `Connected to Harness fixture computer\nAcceptance iPhone\nKey ${key}`;
 		return 'capacitor | Connect to computer | Scan QR code';
 	});
 	fixtures.page.evaluate.mockImplementation(async (script: string) =>

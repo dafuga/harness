@@ -14,16 +14,16 @@ const resolvedSettings = {
 
 test('Resolves console library build settings', () => {
 	expect(resolvedSettings).toEqual({
-	pluginCount: 1,
-	outDir: 'dist/console',
-	emptyOutDir: true,
-	cssCodeSplit: false,
-	lib: {
-		entry: 'src/lib/development-tooling/console.ts',
-		formats: ['iife'],
-		name: 'HarnessConsole',
-		fileName: 'console'
-	}
+		pluginCount: 1,
+		outDir: 'dist/console',
+		emptyOutDir: true,
+		cssCodeSplit: false,
+		lib: {
+			entry: 'src/lib/development-tooling/console.ts',
+			formats: ['iife'],
+			name: 'HarnessConsole',
+			fileName: 'console'
+		}
 	});
 	recordExampleCases(
 		{

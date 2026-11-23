@@ -15,14 +15,20 @@ test('Lists commands with aliases and display terms', () => {
 		aliases: ['g']
 	});
 	expect(info?.term).toBe('info [options] <topic>');
-	const cases = [{
-		name: 'generate alias and info display term',
-		input: ['generate', 'info'],
-		output: {
-			generate: { signature: generate?.signature, term: generate?.term, aliases: generate?.aliases },
-			info: { signature: info?.signature, term: info?.term, aliases: info?.aliases }
+	const cases = [
+		{
+			name: 'generate alias and info display term',
+			input: ['generate', 'info'],
+			output: {
+				generate: {
+					signature: generate?.signature,
+					term: generate?.term,
+					aliases: generate?.aliases
+				},
+				info: { signature: info?.signature, term: info?.term, aliases: info?.aliases }
+			}
 		}
-	}];
+	];
 	recordExampleCases(
 		{
 			unitId: 'entry.command-help',

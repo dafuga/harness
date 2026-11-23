@@ -54,9 +54,7 @@ test('Plans a pinned scoped dependency into the manifest', async () => {
 test('Rejects a version range instead of an exact version', async () => {
 	const error = await failureWithManifest({ name: 'web' }, 'typescript@^5.6.0');
 
-	expect(error.message).toBe(
-		'Use a registry package with an exact version: package@1.2.3.'
-	);
+	expect(error.message).toBe('Use a registry package with an exact version: package@1.2.3.');
 	recordExampleCases(
 		{
 			unitId: UNIT_ID,

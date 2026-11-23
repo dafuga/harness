@@ -58,7 +58,10 @@ function writeProcessFixture(root: string): string[] {
 	const binaryDirectory = join(root, 'bin');
 	const executable = join(binaryDirectory, 'ps');
 	mkdirSync(binaryDirectory, { recursive: true });
-	writeFileSync(executable, `#!/bin/sh\nprintf '%s\\n' ${lines.map((line) => `'${line}'`).join(' ')}\n`);
+	writeFileSync(
+		executable,
+		`#!/bin/sh\nprintf '%s\\n' ${lines.map((line) => `'${line}'`).join(' ')}\n`
+	);
 	chmodSync(executable, 0o700);
 	return lines;
 }
@@ -102,5 +105,4 @@ function runQueueExample(root: string): void {
 }
 
 test('Queues retryable work after each live slot cursor', () =>
-	withTempDir('driver-worker-queue-examples-', runQueueExample)
-);
+	withTempDir('driver-worker-queue-examples-', runQueueExample));

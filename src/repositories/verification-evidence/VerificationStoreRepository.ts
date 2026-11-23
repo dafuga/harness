@@ -33,8 +33,7 @@ export class VerificationStoreRepository {
 	load(reference: string): StoredRecord | undefined {
 		const path = resolve(this.root, reference);
 		if (existsSync(path) && statSync(path).isFile()) return this.read(path);
-		for (const stored of this.records())
-			if (stored.record.id === reference) return stored;
+		for (const stored of this.records()) if (stored.record.id === reference) return stored;
 		return undefined;
 	}
 

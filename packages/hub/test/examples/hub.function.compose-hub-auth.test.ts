@@ -22,7 +22,8 @@ function fixtureParts(): HubAuthParts {
 		},
 		store: {} as HubAuthParts['store'],
 		google: {} as HubAuthParts['google'],
-		fetch: (() => Promise.reject(new Error('network is disabled in this unit test'))) as typeof fetch,
+		fetch: (() =>
+			Promise.reject(new Error('network is disabled in this unit test'))) as typeof fetch,
 		now: () => NOW,
 		tokenCache: new Map(),
 		delivery: null

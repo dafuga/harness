@@ -32,13 +32,16 @@ test('builds-hosted-evidence-path', () => {
 	const output = adapter.path('evidence', query);
 	expect(output).toContain('/api/projects/buildflexity-app/evidence?');
 	const cases = [{ name: 'evidence path', input: { operation: 'evidence', query }, output }];
-	recordExampleCases({
-		unitId: 'desktop.adapter.hosted-evidence',
-		symbol: 'path',
-		state: 'builds-hosted-evidence-path',
-		evidence: 'examples-cases',
-		file: 'builds-hosted-evidence-path.json'
-	}, cases);
+	recordExampleCases(
+		{
+			unitId: 'desktop.adapter.hosted-evidence',
+			symbol: 'path',
+			state: 'builds-hosted-evidence-path',
+			evidence: 'examples-cases',
+			file: 'builds-hosted-evidence-path.json'
+		},
+		cases
+	);
 });
 
 test('reads-hosted-evidence-json', async () => {
@@ -46,13 +49,16 @@ test('reads-hosted-evidence-json', async () => {
 	const output = await adapterWithEvidence('{"evidence":{"count":2}}').evidence(input);
 	expect(output).toEqual({ evidence: { count: 2 } });
 	const cases = [{ name: 'JSON evidence response', input, output }];
-	recordExampleCases({
-		unitId: 'desktop.adapter.hosted-evidence',
-		symbol: 'evidence',
-		state: 'reads-hosted-evidence-json',
-		evidence: 'examples-cases',
-		file: 'reads-hosted-evidence-json.json'
-	}, cases);
+	recordExampleCases(
+		{
+			unitId: 'desktop.adapter.hosted-evidence',
+			symbol: 'evidence',
+			state: 'reads-hosted-evidence-json',
+			evidence: 'examples-cases',
+			file: 'reads-hosted-evidence-json.json'
+		},
+		cases
+	);
 });
 
 test('throws Error for invalid evidence JSON', async () => {
@@ -61,25 +67,34 @@ test('throws Error for invalid evidence JSON', async () => {
 	await expect(adapter.evidence(input)).rejects.toThrow(
 		'This app does not accept the hosted evidence answer.'
 	);
-	const cases = [{
-		name: 'invalid hosted evidence JSON',
-		input,
-		error: { name: 'InvalidHostedEvidenceAnswerError', message: 'This app does not accept the hosted evidence answer.' }
-	}];
-	recordExampleCases({
-		unitId: 'desktop.adapter.hosted-evidence',
-		symbol: 'evidence',
-		state: 'throws-error-for-invalid-evidence-json',
-		evidence: 'examples-cases',
-		file: 'throws-error-for-invalid-evidence-json.json'
-	}, cases);
+	const cases = [
+		{
+			name: 'invalid hosted evidence JSON',
+			input,
+			error: {
+				name: 'InvalidHostedEvidenceAnswerError',
+				message: 'This app does not accept the hosted evidence answer.'
+			}
+		}
+	];
+	recordExampleCases(
+		{
+			unitId: 'desktop.adapter.hosted-evidence',
+			symbol: 'evidence',
+			state: 'throws-error-for-invalid-evidence-json',
+			evidence: 'examples-cases',
+			file: 'throws-error-for-invalid-evidence-json.json'
+		},
+		cases
+	);
 });
 
 test('throws HostedFailureValidator for rejected hosted request', async () => {
 	const origin = 'https://hosted.example';
-	const fetcher = async (input: RequestInfo | URL) => String(input).endsWith('/api/auth/status')
-		? Response.json({ actor: { id: 'example-user', emailVerified: true } })
-		: new Response('unavailable', { status: 503 });
+	const fetcher = async (input: RequestInfo | URL) =>
+		String(input).endsWith('/api/auth/status')
+			? Response.json({ actor: { id: 'example-user', emailVerified: true } })
+			: new Response('unavailable', { status: 503 });
 	const adapter = new HostedEvidenceAdapter({
 		origin,
 		credentials: async () => ({ origin, principalId: 'example-user', token: 'example-token' }),
@@ -87,25 +102,39 @@ test('throws HostedFailureValidator for rejected hosted request', async () => {
 	});
 	const input = { ...query };
 	await expect(adapter.evidence(input)).rejects.toMatchObject({ category: 'failed' });
-	const cases = [{ name: 'hosted service unavailable', input, error: { name: 'HostedFailureValidator', category: 'failed' } }];
-	recordExampleCases({
-		unitId: 'desktop.adapter.hosted-evidence',
-		symbol: 'evidence',
-		state: 'throws-hostedfailurevalidator-for-rejected-hosted-request',
-		evidence: 'examples-cases',
-		file: 'throws-hostedfailurevalidator-for-rejected-hosted-request.json'
-	}, cases);
+	const cases = [
+		{
+			name: 'hosted service unavailable',
+			input,
+			error: { name: 'HostedFailureValidator', category: 'failed' }
+		}
+	];
+	recordExampleCases(
+		{
+			unitId: 'desktop.adapter.hosted-evidence',
+			symbol: 'evidence',
+			state: 'throws-hostedfailurevalidator-for-rejected-hosted-request',
+			evidence: 'examples-cases',
+			file: 'throws-hostedfailurevalidator-for-rejected-hosted-request.json'
+		},
+		cases
+	);
 });
 
 test('throws TypeError for malformed origin URL', () => {
 	const input = { origin: '://invalid', credentials: async () => null };
 	expect(() => new HostedEvidenceAdapter(input)).toThrow(TypeError);
-	const cases = [{ name: 'malformed origin', input: { origin: input.origin }, error: { name: 'TypeError' } }];
-	recordExampleCases({
-		unitId: 'desktop.adapter.hosted-evidence',
-		symbol: 'constructor',
-		state: 'throws-typeerror-for-malformed-origin-url',
-		evidence: 'examples-cases',
-		file: 'throws-typeerror-for-malformed-origin-url.json'
-	}, cases);
+	const cases = [
+		{ name: 'malformed origin', input: { origin: input.origin }, error: { name: 'TypeError' } }
+	];
+	recordExampleCases(
+		{
+			unitId: 'desktop.adapter.hosted-evidence',
+			symbol: 'constructor',
+			state: 'throws-typeerror-for-malformed-origin-url',
+			evidence: 'examples-cases',
+			file: 'throws-typeerror-for-malformed-origin-url.json'
+		},
+		cases
+	);
 });

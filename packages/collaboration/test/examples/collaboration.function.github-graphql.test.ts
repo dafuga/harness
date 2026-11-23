@@ -79,10 +79,13 @@ test('Returns verified blob text for a valid batch', async () => {
 	const sha = gitBlobSha(text);
 	const entry = entryOf(sha, bytesOf(text));
 	const calls: string[] = [];
-	const result = await githubGraphql(optionsWith(respondWith(envelope([blobOf(sha, text)]), calls)), {
-		commit: COMMIT,
-		entries: [entry]
-	});
+	const result = await githubGraphql(
+		optionsWith(respondWith(envelope([blobOf(sha, text)]), calls)),
+		{
+			commit: COMMIT,
+			entries: [entry]
+		}
+	);
 	expect(calls).toEqual(['https://api.github.com/graphql']);
 	expect([...result.keys()]).toEqual([PATH]);
 	expect(new TextDecoder().decode(result.get(PATH))).toBe(text);

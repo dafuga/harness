@@ -44,7 +44,13 @@ function record(
 	cases: Parameters<typeof recordExampleCases>[1]
 ): void {
 	recordExampleCases(
-		{ unitId: 'function.platform-services', symbol, state, evidence: 'examples-cases', file: `${state}.json` },
+		{
+			unitId: 'function.platform-services',
+			symbol,
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
 		cases
 	);
 }
@@ -128,9 +134,17 @@ test('Classifies ordinary command processes as private', async () => {
 		group: 900,
 		probes: makeProbes(privateFacts, '/usr/bin/python3')
 	});
-	expect(verdict).toEqual({ standing: 'private', reason: "the command's own", executable: '/usr/bin/python3' });
+	expect(verdict).toEqual({
+		standing: 'private',
+		reason: "the command's own",
+		executable: '/usr/bin/python3'
+	});
 	record('classifyProcess', 'classifies-ordinary-command-processes-as-private', [
-		{ name: 'a tracked Python process still belongs to the command', input: { known, observed: privateFacts, executable: '/usr/bin/python3' }, output: verdict }
+		{
+			name: 'a tracked Python process still belongs to the command',
+			input: { known, observed: privateFacts, executable: '/usr/bin/python3' },
+			output: verdict
+		}
 	]);
 });
 
@@ -143,7 +157,11 @@ test('Protects shared-service candidates without authority', async () => {
 	expect(verdict.standing).toBe('protected');
 	expect(verdict.reason).toBe('no developer tools vouch for it');
 	record('classifyProcess', 'protects-shared-service-candidates-without-authority', [
-		{ name: 'ibtoold is not private without a developer authority', input: { known, observed: serviceFacts, authority: null }, output: verdict }
+		{
+			name: 'ibtoold is not private without a developer authority',
+			input: { known, observed: serviceFacts, authority: null },
+			output: verdict
+		}
 	]);
 });
 
@@ -175,8 +193,18 @@ test('Delegates a vouched service after system handoff', async () => {
 		record('classifyProcess', 'delegates-a-vouched-service-after-system-handoff', [
 			{
 				name: 'signed ibtoold left its command and the system adopted it',
-				input: { known, observed: serviceFacts, executable: 'Xcode.app/Contents/Developer/usr/bin/ibtoold', authority: 'canonical Xcode fixture', signatureChecks: true },
-				output: { standing: verdict.standing, reason: verdict.reason, executable: 'Xcode.app/Contents/Developer/usr/bin/ibtoold' }
+				input: {
+					known,
+					observed: serviceFacts,
+					executable: 'Xcode.app/Contents/Developer/usr/bin/ibtoold',
+					authority: 'canonical Xcode fixture',
+					signatureChecks: true
+				},
+				output: {
+					standing: verdict.standing,
+					reason: verdict.reason,
+					executable: 'Xcode.app/Contents/Developer/usr/bin/ibtoold'
+				}
 			}
 		]);
 	});
@@ -209,9 +237,29 @@ test('Rechecks process identity and executable before signaling', async () => {
 		shared: false
 	});
 	record('stillPrivate', 'rechecks-process-identity-and-executable-before-signaling', [
-		{ name: 'the private process keeps its identity and executable', input: { known, judgedAs: '/usr/bin/python3', live: '/usr/bin/python3' }, output: still },
-		{ name: 'the live executable changes before the signal', input: { known, judgedAs: '/usr/bin/python3', live: '/usr/bin/ruby' }, output: changed },
-		{ name: 'the PID now has a different start time', input: { known, observedStarted: 'Sat Nov 15 12:34:56 2026', judgedAs: '/usr/bin/python3' }, output: replaced },
-		{ name: 'a guarded service is never considered private', input: { known, judgedAs: '/usr/bin/python3', live: '/Applications/Xcode.app/Contents/Developer/usr/bin/ibtoold' }, output: shared }
+		{
+			name: 'the private process keeps its identity and executable',
+			input: { known, judgedAs: '/usr/bin/python3', live: '/usr/bin/python3' },
+			output: still
+		},
+		{
+			name: 'the live executable changes before the signal',
+			input: { known, judgedAs: '/usr/bin/python3', live: '/usr/bin/ruby' },
+			output: changed
+		},
+		{
+			name: 'the PID now has a different start time',
+			input: { known, observedStarted: 'Sat Nov 15 12:34:56 2026', judgedAs: '/usr/bin/python3' },
+			output: replaced
+		},
+		{
+			name: 'a guarded service is never considered private',
+			input: {
+				known,
+				judgedAs: '/usr/bin/python3',
+				live: '/Applications/Xcode.app/Contents/Developer/usr/bin/ibtoold'
+			},
+			output: shared
+		}
 	]);
 });

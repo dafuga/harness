@@ -1,5 +1,8 @@
 import { test } from 'vitest';
-import type { PickerModel, ProviderSelection } from '../../../../src/core/development-tooling/pickerModelTypes';
+import type {
+	PickerModel,
+	ProviderSelection
+} from '../../../../src/core/development-tooling/pickerModelTypes';
 import type { SwitchRequest } from '../../../../src/core/development-tooling/pickerTypes';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
@@ -41,7 +44,11 @@ const catalog: PickerModel[] = [
 	}
 ];
 
-const knownSelection: ProviderSelection = { provider: 'openai', model: 'gpt-5-codex', effort: 'medium' };
+const knownSelection: ProviderSelection = {
+	provider: 'openai',
+	model: 'gpt-5-codex',
+	effort: 'medium'
+};
 const unknownSelection: ProviderSelection = { provider: 'openai', model: 'gpt-4.1', effort: 'low' };
 
 test('Recognises a picker snapshot by its default provider', () => {
@@ -52,7 +59,8 @@ test('Recognises a picker snapshot by its default provider', () => {
 		request: null,
 		models: [],
 		controlConnected: false,
-		message: 'Desktop control connection unavailable. Requests stay pending; no provider settings change.'
+		message:
+			'Desktop control connection unavailable. Requests stay pending; no provider settings change.'
 	};
 	const queued = { sessions: [] };
 	expect(isSnapshot(snapshot)).toBe(true);
@@ -91,7 +99,11 @@ test('Reads queued sessions or null when no list is present', () => {
 			file: 'reads-queued-sessions-or-null-when-no-list-is-present.json'
 		},
 		[
-			{ name: 'queued response returns its pending switch', input: queued, output: [sessionRequest] },
+			{
+				name: 'queued response returns its pending switch',
+				input: queued,
+				output: [sessionRequest]
+			},
 			{ name: 'empty queue returns an empty list', input: empty, output: [] },
 			{ name: 'non-array sessions value returns null', input: notList, output: null },
 			{ name: 'null response returns null', input: null, output: null }
@@ -167,7 +179,11 @@ test('Uses an Error message or fallback for other throws', () => {
 				input: { cause: { code: 'ETIMEDOUT', message: 'Request timed out' }, fallback: FALLBACK },
 				output: FALLBACK
 			},
-			{ name: 'null gives the fallback', input: { cause: null, fallback: FALLBACK }, output: FALLBACK }
+			{
+				name: 'null gives the fallback',
+				input: { cause: null, fallback: FALLBACK },
+				output: FALLBACK
+			}
 		]
 	);
 });

@@ -15,9 +15,27 @@ test('Generates a sqlite definition with mapped fields and timestamps', () => {
 				tsType: 'Record<string, unknown>',
 				sqlType: 'TEXT'
 			},
-			{ name: 'active', type: 'boolean', column: 'is_active', tsType: 'boolean', sqlType: 'INTEGER' },
-			{ name: 'score', type: 'number', column: 'score_value', tsType: 'number', sqlType: 'INTEGER' },
-			{ name: 'displayName', type: 'text', column: 'display_name', tsType: 'string', sqlType: 'TEXT' }
+			{
+				name: 'active',
+				type: 'boolean',
+				column: 'is_active',
+				tsType: 'boolean',
+				sqlType: 'INTEGER'
+			},
+			{
+				name: 'score',
+				type: 'number',
+				column: 'score_value',
+				tsType: 'number',
+				sqlType: 'INTEGER'
+			},
+			{
+				name: 'displayName',
+				type: 'text',
+				column: 'display_name',
+				tsType: 'string',
+				sqlType: 'TEXT'
+			}
 		]
 	};
 	const output = sqliteModelDefinition(input.table, input.fields);

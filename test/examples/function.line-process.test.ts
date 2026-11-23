@@ -110,6 +110,12 @@ test('Silent child times out and is killed', async () => {
 			evidence: 'examples-cases',
 			file: 'silent-child-times-out-and-is-killed.json'
 		},
-		[{ name: 'no line within 50 ms fails the exchange', input: { line: 'ping', timeoutMs: 50 }, output: reply }]
+		[
+			{
+				name: 'no line within 50 ms fails the exchange',
+				input: { line: 'ping', timeoutMs: 50 },
+				output: reply
+			}
+		]
 	);
 });

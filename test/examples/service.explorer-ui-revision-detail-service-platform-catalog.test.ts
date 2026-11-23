@@ -89,7 +89,11 @@ test('Reports a gap when the platform manifest is invalid', async () => {
 		const catalog = await readPlatformCatalog(treeWith({ 'harness.platforms.json': content }));
 		expect(catalog.entries).toEqual([]);
 		expect(catalog.gap).toContain('Check harness.platforms.json');
-		cases.push({ name: `${name} manifest returns an empty catalog with a gap`, input: { content }, output: catalog });
+		cases.push({
+			name: `${name} manifest returns an empty catalog with a gap`,
+			input: { content },
+			output: catalog
+		});
 	}
 	recordExampleCases(meta('reports-a-gap-when-the-platform-manifest-is-invalid'), cases);
 });

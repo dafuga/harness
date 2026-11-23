@@ -125,7 +125,11 @@ test('Flags an id that differs from its file name', () => {
 			input: { id: ID, file: 'reports.component.evidence-grid.json' },
 			output: summary(elsewhere)
 		},
-		{ name: 'nested path with same id', input: { id: ID, file: `src/units/${FILE}` }, output: summary(nested) }
+		{
+			name: 'nested path with same id',
+			input: { id: ID, file: `src/units/${FILE}` },
+			output: summary(nested)
+		}
 	]);
 });
 
@@ -157,9 +161,11 @@ test('Lists contract findings and skips them when disabled', () => {
 test('Counts contract findings per kind across units', () => {
 	const units = [
 		manifestOf(ID, [unknownState, emptyProps]),
-		manifestOf('reports.component.evidence-grid', [
-			{ name: 'Thing.value', type: 'string', required: true }
-		], [bareError])
+		manifestOf(
+			'reports.component.evidence-grid',
+			[{ name: 'Thing.value', type: 'string', required: true }],
+			[bareError]
+		)
 	];
 	const counts = contractFailureCounts(units);
 	const empty = contractFailureCounts([]);
@@ -173,12 +179,15 @@ test('Counts contract findings per kind across units', () => {
 	});
 	expect(empty.issues).toBe(0);
 
-	recordExampleCases(meta('Counts contract findings per kind across units', 'contractFailureCounts'), [
-		{
-			name: 'two units with findings',
-			input: { units: [ID, 'reports.component.evidence-grid'] },
-			output: counts
-		},
-		{ name: 'no units', input: { units: [] }, output: empty }
-	]);
+	recordExampleCases(
+		meta('Counts contract findings per kind across units', 'contractFailureCounts'),
+		[
+			{
+				name: 'two units with findings',
+				input: { units: [ID, 'reports.component.evidence-grid'] },
+				output: counts
+			},
+			{ name: 'no units', input: { units: [] }, output: empty }
+		]
+	);
 });

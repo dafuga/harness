@@ -57,7 +57,11 @@ vi.mock('../../scripts/ios-acceptance-source', () => ({
 	nativeSources: [],
 	rendererSources: [],
 	sourceFiles: () => new Map<string, string>(),
-	tree: () => new Map([['index.html', 'a'], ['app.js', 'b']]),
+	tree: () =>
+		new Map([
+			['index.html', 'a'],
+			['app.js', 'b']
+		]),
 	treeDigest: (files: Map<string, string>) => `digest:${files.size}`
 }));
 
@@ -136,7 +140,10 @@ test('builds the five products and proves the renderer they carry', () => {
 			'scanFixtureCopy'
 		]);
 		expect(result.facts.debug).toMatchObject({ localNetworking: false, inspectable: false });
-		expect(result.facts.scanFixtureCopy).toMatchObject({ localNetworking: true, inspectable: true });
+		expect(result.facts.scanFixtureCopy).toMatchObject({
+			localNetworking: true,
+			inspectable: true
+		});
 
 		const flags = Object.fromEntries(
 			Object.entries(result.facts).map(([key, fact]) => [
@@ -158,7 +165,11 @@ test('builds the five products and proves the renderer they carry', () => {
 					input: ['debug', 'release', 'fixtureCopy', 'releaseCopy', 'scanFixtureCopy'],
 					output: flags
 				},
-				{ name: 'renderer proof of the built and copied files', input: 'renderer', output: result.renderer },
+				{
+					name: 'renderer proof of the built and copied files',
+					input: 'renderer',
+					output: result.renderer
+				},
 				{ name: 'location of the Release copy', input: 'releaseCopy', output: result.releaseCopy }
 			]
 		);

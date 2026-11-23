@@ -10,7 +10,11 @@ const subject = {
 	symbols: ['EvidenceGrid', 'EvidenceGridProps', 'defaultGridColumns']
 } satisfies LineageSubject;
 
-const predecessor = (id: string, status: 'retired' | 'active', symbols: string[]): ComponentManifest => ({
+const predecessor = (
+	id: string,
+	status: 'retired' | 'active',
+	symbols: string[]
+): ComponentManifest => ({
 	schemaVersion: 1,
 	id,
 	uid: 'u_qk3m7wzd2a',

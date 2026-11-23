@@ -7,7 +7,10 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 
 const unitId = 'hub.migration.0003-auth-grant-generations';
-const migrationUrl = new URL('../../db/migrations/0003-auth-grant-generations.sql', import.meta.url);
+const migrationUrl = new URL(
+	'../../db/migrations/0003-auth-grant-generations.sql',
+	import.meta.url
+);
 
 // Minimal stand-ins for the tables the migration alters; only their existence matters here.
 const baseSchema = `
@@ -15,7 +18,8 @@ CREATE TABLE auth_github_grants (id TEXT PRIMARY KEY, access_token TEXT);
 CREATE TABLE auth_github_states (id TEXT PRIMARY KEY);
 INSERT INTO auth_github_grants (id, access_token) VALUES ('grant-1', 'example-token');
 `;
-const grantsOnlySchema = 'CREATE TABLE auth_github_grants (id TEXT PRIMARY KEY, access_token TEXT);';
+const grantsOnlySchema =
+	'CREATE TABLE auth_github_grants (id TEXT PRIMARY KEY, access_token TEXT);';
 
 function runMigration(db: DatabaseSync): void {
 	db.exec(readFileSync(migrationUrl, 'utf8'));
@@ -58,13 +62,23 @@ test('Adds generation columns with defaults', () => {
 			grantColumns: columnNames(db, 'auth_github_grants'),
 			stateColumns: columnNames(db, 'auth_github_states'),
 			grant: db
-				.prepare('SELECT generation, revoked_at, refreshing_until FROM auth_github_grants WHERE id = ?')
+				.prepare(
+					'SELECT generation, revoked_at, refreshing_until FROM auth_github_grants WHERE id = ?'
+				)
 				.get('grant-1'),
-			state: db.prepare('SELECT grant_generation FROM auth_github_states WHERE id = ?').get('state-1')
+			state: db
+				.prepare('SELECT grant_generation FROM auth_github_states WHERE id = ?')
+				.get('state-1')
 		};
 	});
 
-	expect(summary.grantColumns).toEqual(['id', 'access_token', 'generation', 'revoked_at', 'refreshing_until']);
+	expect(summary.grantColumns).toEqual([
+		'id',
+		'access_token',
+		'generation',
+		'revoked_at',
+		'refreshing_until'
+	]);
 	expect(summary.stateColumns).toEqual(['id', 'grant_generation']);
 	expect(summary.grant).toEqual({ generation: 1, revoked_at: null, refreshing_until: null });
 	expect(summary.state).toEqual({ grant_generation: 0 });

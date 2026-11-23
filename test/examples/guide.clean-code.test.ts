@@ -6,9 +6,7 @@ import { cleanCodeGuide } from '../../src/guides/development-tooling/cleanCode';
 test('Provides clean-code review guidance', () => {
 	expect(cleanCodeGuide.topic).toBe('clean-code');
 	expect(cleanCodeGuide.steps).toHaveLength(5);
-	expect(cleanCodeGuide.rules).toContain(
-		'Normal audits stay offline when cleanCode.mode is off.'
-	);
+	expect(cleanCodeGuide.rules).toContain('Normal audits stay offline when cleanCode.mode is off.');
 	recordExampleCases(
 		{
 			unitId: 'guide.clean-code',

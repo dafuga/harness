@@ -1,7 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'vitest';
-import { evidenceRequested, recordCapture } from '../../src/utils/reports-media/record-capture/recordCapture';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../src/utils/reports-media/record-capture/recordCapture';
 import type { Environment } from '../../src/utils/reports-media/record-capture/recordCapture.types';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
@@ -28,7 +31,11 @@ test('Evidence recording requires both opt-in settings', () => {
 		},
 		[
 			{ name: 'evidence directory and screenshot opt-in are set', input: requested, output: true },
-			{ name: 'nonempty directory has a nonmatching screenshot value', input: alternate, output: false }
+			{
+				name: 'nonempty directory has a nonmatching screenshot value',
+				input: alternate,
+				output: false
+			}
 		]
 	);
 });

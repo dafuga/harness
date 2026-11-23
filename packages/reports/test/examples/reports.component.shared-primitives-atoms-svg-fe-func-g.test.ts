@@ -26,7 +26,11 @@ test('renders feFuncG with attributes and supplied child content', () => {
 		[
 			{
 				name: 'green channel with a child snippet',
-				input: { id: props.id, tableValues: props.tableValues, children: '<feFuncG data-sample="child" />' },
+				input: {
+					id: props.id,
+					tableValues: props.tableValues,
+					children: '<feFuncG data-sample="child" />'
+				},
 				output: { body }
 			}
 		]

@@ -19,8 +19,7 @@ const where = (state: string) => ({
 	file: `${state}.json`
 });
 const markup = (props: Record<string, unknown>) =>
-	render(SvgMarker, { props: props as never })
-		.body.replace(/<!--.*?-->/g, '');
+	render(SvgMarker, { props: props as never }).body.replace(/<!--.*?-->/g, '');
 
 test('Renders a marker with its attributes and no wrapper', () => {
 	const inputs = [
@@ -33,7 +32,9 @@ test('Renders a marker with its attributes and no wrapper', () => {
 		output: { body: markup(input) }
 	}));
 	recordExampleCases(where('renders-a-marker-with-its-attributes-and-no-wrapper'), cases);
-	expect(cases[0].output.body).toBe('<marker id="arrow-head" orient="auto" refX="5" refY="3"></marker>');
+	expect(cases[0].output.body).toBe(
+		'<marker id="arrow-head" orient="auto" refX="5" refY="3"></marker>'
+	);
 	expect(cases[1].output.body).toBe('<marker id="dot" markerUnits="strokeWidth"></marker>');
 	expect(cases[0].output.body).not.toMatch(/<(g|svg|div|span)\b/);
 });

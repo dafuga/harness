@@ -1,7 +1,11 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { platformViews, unrecorded, platformStatus } from '../../src/utils/explorer-ui/explorer-platforms/platformStatus';
+import {
+	platformViews,
+	unrecorded,
+	platformStatus
+} from '../../src/utils/explorer-ui/explorer-platforms/platformStatus';
 import type { PlatformView } from '../../src/utils/explorer-ui/explorer-platforms/platformStatus.types';
 import type { PlatformEntry } from '../../../../src/core/explorer-ui/Platform.types';
 

@@ -8,7 +8,9 @@ const unitId = 'reports.endpoint.verification-evidence-api-video-flags';
 const origin = 'https://reports.example.test';
 
 test('Rejects incomplete current clip query', async () => {
-	const url = new URL('https://reports.example.test/api/video-flags?unit=reports.capture&clipId=clip-a');
+	const url = new URL(
+		'https://reports.example.test/api/video-flags?unit=reports.capture&clipId=clip-a'
+	);
 	const response = await GET({ url });
 	expect(response.status).toBe(400);
 	const body = await response.json();
@@ -16,12 +18,18 @@ test('Rejects incomplete current clip query', async () => {
 	recordExampleCases(
 		{
 			unitId,
-		symbol: 'GET',
+			symbol: 'GET',
 			state: 'rejects-incomplete-current-clip-query',
 			evidence: 'examples-cases',
 			file: 'rejects-incomplete-current-clip-query.json'
 		},
-		[{ name: 'clipId without viewport or hash is rejected', input: { url: url.href }, output: { status: response.status, body } }]
+		[
+			{
+				name: 'clipId without viewport or hash is rejected',
+				input: { url: url.href },
+				output: { status: response.status, body }
+			}
+		]
 	);
 });
 
@@ -44,7 +52,13 @@ test('Rejects cross-origin feedback request', async () => {
 			evidence: 'examples-cases',
 			file: 'rejects-cross-origin-feedback-request.json'
 		},
-		[{ name: 'foreign Origin is rejected before parsing', input: { origin: 'https://other.example.test', contentType: 'application/json' }, output: { status: response.status, body } }]
+		[
+			{
+				name: 'foreign Origin is rejected before parsing',
+				input: { origin: 'https://other.example.test', contentType: 'application/json' },
+				output: { status: response.status, body }
+			}
+		]
 	);
 });
 
@@ -68,6 +82,12 @@ test('Rejects non-JSON feedback content type', async () => {
 			evidence: 'examples-cases',
 			file: 'rejects-non-json-feedback-content-type.json'
 		},
-		[{ name: 'text/plain body is rejected', input: { origin, contentType: 'text/plain', body: 'feedback' }, output: { status: response.status, body } }]
+		[
+			{
+				name: 'text/plain body is rejected',
+				input: { origin, contentType: 'text/plain', body: 'feedback' },
+				output: { status: response.status, body }
+			}
+		]
 	);
 });

@@ -8,7 +8,10 @@ test('keeps short ordinary error messages', () => {
 	const closed = remoteFailureText(new Error('Device session closed before the response arrived.'));
 
 	expect(cancelled).toEqual({ code: 'failed', message: 'Pairing request was cancelled.' });
-	expect(closed).toEqual({ code: 'failed', message: 'Device session closed before the response arrived.' });
+	expect(closed).toEqual({
+		code: 'failed',
+		message: 'Device session closed before the response arrived.'
+	});
 	recordExampleCases(
 		{
 			unitId: 'desktop.function.remote-failure-text',
@@ -18,8 +21,16 @@ test('keeps short ordinary error messages', () => {
 			file: 'keeps-short-ordinary-error-messages.json'
 		},
 		[
-			{ name: 'cancelled pairing request', input: { message: 'Pairing request was cancelled.' }, output: cancelled },
-			{ name: 'closed device session', input: { message: 'Device session closed before the response arrived.' }, output: closed }
+			{
+				name: 'cancelled pairing request',
+				input: { message: 'Pairing request was cancelled.' },
+				output: cancelled
+			},
+			{
+				name: 'closed device session',
+				input: { message: 'Device session closed before the response arrived.' },
+				output: closed
+			}
 		]
 	);
 });
@@ -42,8 +53,16 @@ test('uses generic wording for hidden or unsafe details', () => {
 			file: 'uses-generic-wording-for-hidden-or-unsafe-details.json'
 		},
 		[
-			{ name: 'project root is hidden', input: { message: `Failed under ${root}/config.json`, roots: [root] }, output: hiddenRoot },
-			{ name: 'absolute path is unsafe', input: { message: 'Could not read /var/tmp/session.json' }, output: path },
+			{
+				name: 'project root is hidden',
+				input: { message: `Failed under ${root}/config.json`, roots: [root] },
+				output: hiddenRoot
+			},
+			{
+				name: 'absolute path is unsafe',
+				input: { message: 'Could not read /var/tmp/session.json' },
+				output: path
+			},
 			{ name: 'non-error value has no message', input: 'connection refused', output: nonError }
 		]
 	);

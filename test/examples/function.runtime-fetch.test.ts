@@ -104,9 +104,7 @@ test('Creating the handler leaves the runtime untouched', async () => {
 });
 
 test('Throws Error when the runtime invocation fails', async () => {
-	const handler = runtimeFetch(
-		runtimeWith(() => Promise.reject(new Error('runtime offline')))
-	);
+	const handler = runtimeFetch(runtimeWith(() => Promise.reject(new Error('runtime offline'))));
 	const thrown = await rejectionOf(handler(jsonRequest('{"n":1}')));
 	expect(thrown).toBeInstanceOf(Error);
 	expect(describeError(thrown)).toEqual({ name: 'Error', message: 'runtime offline' });

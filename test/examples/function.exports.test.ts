@@ -5,12 +5,18 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import type { ExportPlan } from '../../src/core/projects-sessions/exports';
-import { applyExports, appendMissingExports } from '../../src/workflows/projects-sessions/generate-code/exports';
+import {
+	applyExports,
+	appendMissingExports
+} from '../../src/workflows/projects-sessions/generate-code/exports';
 
 test('Appends missing named and type exports in plan order', () => {
 	const contents = "export * from './core/exports';\n";
 	const plans = [
-		{ source: './workflows/projects-sessions/generate-code/exports', named: ['applyExports', 'appendMissingExports'] },
+		{
+			source: './workflows/projects-sessions/generate-code/exports',
+			named: ['applyExports', 'appendMissingExports']
+		},
 		{ source: './core/projects-sessions/exports', types: ['ExportPlan'] }
 	] satisfies ExportPlan[];
 	const output = appendMissingExports(contents, plans);
@@ -48,11 +54,13 @@ test('Applies exports to a project entry file only when content changes', async 
 		const changed = await applyExports(root, plans);
 		const updated = await readFile(entry, 'utf8');
 		const unchanged = await applyExports(root, plans);
-		expect([changed, updated.endsWith("export { applyExports } from './workflows/projects-sessions/generate-code/exports';\n"), unchanged]).toEqual([
-			true,
-			true,
-			false
-		]);
+		expect([
+			changed,
+			updated.endsWith(
+				"export { applyExports } from './workflows/projects-sessions/generate-code/exports';\n"
+			),
+			unchanged
+		]).toEqual([true, true, false]);
 		recordExampleCases(
 			{
 				unitId: 'function.exports',

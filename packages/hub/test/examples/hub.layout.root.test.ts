@@ -9,8 +9,14 @@ import { ssr } from '../../src/routes/+layout';
 test('Disables server rendering', () => {
 	expect(ssr).toBe(false);
 	recordExampleCases(
-		{ unitId: 'hub.layout.root', symbol: 'ssr', state: 'disables-server-rendering', evidence: 'examples-cases', file: 'disables-server-rendering.json' },
-		[{ name: 'Hosted pages render in the browser', input: {}, output: false }],
+		{
+			unitId: 'hub.layout.root',
+			symbol: 'ssr',
+			state: 'disables-server-rendering',
+			evidence: 'examples-cases',
+			file: 'disables-server-rendering.json'
+		},
+		[{ name: 'Hosted pages render in the browser', input: {}, output: false }]
 	);
 });
 
@@ -21,7 +27,19 @@ test('Renders the page snippet once without a wrapper', () => {
 	expect(html).not.toContain('<div');
 	expect(html.match(/PAGE_CONTENT/g)).toHaveLength(1);
 	recordExampleCases(
-		{ unitId: 'hub.layout.root', symbol: '+layout', state: 'renders-the-page-snippet-once-without-a-wrapper', evidence: 'examples-cases', file: 'renders-the-page-snippet-once-without-a-wrapper.json' },
-		[{ name: 'Renders supplied page markup once', input: { page: '<p>PAGE_CONTENT</p>' }, output: { html: '<p>PAGE_CONTENT</p>', occurrences: 1, wrapper: false } }],
+		{
+			unitId: 'hub.layout.root',
+			symbol: '+layout',
+			state: 'renders-the-page-snippet-once-without-a-wrapper',
+			evidence: 'examples-cases',
+			file: 'renders-the-page-snippet-once-without-a-wrapper.json'
+		},
+		[
+			{
+				name: 'Renders supplied page markup once',
+				input: { page: '<p>PAGE_CONTENT</p>' },
+				output: { html: '<p>PAGE_CONTENT</p>', occurrences: 1, wrapper: false }
+			}
+		]
 	);
 });

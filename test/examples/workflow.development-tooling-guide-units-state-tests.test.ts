@@ -32,20 +32,15 @@ function contextFor(): GuidanceContext {
 		registries: [],
 		texts: new Map(),
 		testAttributions: new Map(),
-		testSyntax: new Map([
-			[testFile, { test: true, states: new Set(['loading']), matrix: false }]
-		])
+		testSyntax: new Map([[testFile, { test: true, states: new Set(['loading']), matrix: false }]])
 	} as unknown as GuidanceContext;
 }
 
 test('Finds a declared state test', async () => {
 	const input = { state: 'loading', headless: true };
-	const result = await stateTests(
-		contextFor(),
-		{ id: unitId } as ComponentManifest,
-		input.state,
-		{ headless: input.headless }
-	);
+	const result = await stateTests(contextFor(), { id: unitId } as ComponentManifest, input.state, {
+		headless: input.headless
+	});
 	expect(result).toEqual([{ file: testFile, viewports: ['desktop', 'tablet', 'mobile'] }]);
 	recordExampleCases(
 		{
@@ -69,7 +64,9 @@ test('Throws the guidance error unchanged when reading a declared test fails', a
 	const context = contextFor();
 	context.testSyntax.clear();
 	const failure = new Error('fixture guidance read failed');
-	context.tree = { read: async () => Promise.reject(failure) } as unknown as GuidanceContext['tree'];
+	context.tree = {
+		read: async () => Promise.reject(failure)
+	} as unknown as GuidanceContext['tree'];
 	const input = { state: 'loading', headless: true, file: testFile };
 	const result = stateTests(context, { id: unitId } as ComponentManifest, input.state, {
 		headless: input.headless

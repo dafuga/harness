@@ -64,7 +64,11 @@ test('Parses runtime response text', () => {
 		},
 		[
 			{ name: 'valid JSON envelope', input: text, output: parsed },
-			{ name: 'transport text is not JSON', input: 'runtime exited with code 137 before writing a reply', output: malformed },
+			{
+				name: 'transport text is not JSON',
+				input: 'runtime exited with code 137 before writing a reply',
+				output: malformed
+			},
 			{ name: 'JSON value is not an envelope', input: '{"result":42}', output: invalidJsonValue }
 		]
 	);
@@ -88,9 +92,17 @@ test('Applies runtime deadline to call results', async () => {
 			file: 'applies-runtime-deadline-to-call-results.json'
 		},
 		[
-			{ name: 'result arrives within deadline', input: { timeoutMs: 5000, response }, output: settled },
+			{
+				name: 'result arrives within deadline',
+				input: { timeoutMs: 5000, response },
+				output: settled
+			},
 			{ name: 'deadline timer expires', input: { timeoutMs: 0 }, output: timeout },
-			{ name: 'settle checks elapsed time', input: { timeoutMs: 0, response }, output: expired.settle(response) }
+			{
+				name: 'settle checks elapsed time',
+				input: { timeoutMs: 0, response },
+				output: expired.settle(response)
+			}
 		]
 	);
 });

@@ -4,7 +4,11 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { skipsAnalytics } from '../../src/workflows/reports-media/skipsAnalytics';
 
 const lookupInputs = [[], ['help'], ['info', 'topic'], ['--version'], ['-V']];
-const helpInputs = [['export', '--help'], ['run', '-h'], ['export', '--', '--help']];
+const helpInputs = [
+	['export', '--help'],
+	['run', '-h'],
+	['export', '--', '--help']
+];
 const ordinaryInputs = [['export'], ['run', '--', '-h'], ['export', '--', '--help']];
 
 function labelled(inputs: readonly (readonly string[])[], outputs: readonly boolean[]) {

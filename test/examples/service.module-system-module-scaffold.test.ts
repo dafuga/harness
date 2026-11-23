@@ -8,11 +8,9 @@ test('Rejects a resource without a scaffold generator', async () => {
 	await withTempDir('module-scaffold-missing-generator-', async (root) => {
 		let error: unknown;
 		try {
-			await new ModuleScaffoldService().generate(
-				root,
-				{ id: 'invoice-test' } as never,
-				{ name: 'Invoice' }
-			);
+			await new ModuleScaffoldService().generate(root, { id: 'invoice-test' } as never, {
+				name: 'Invoice'
+			});
 		} catch (caught) {
 			error = caught;
 		}
@@ -30,7 +28,11 @@ test('Rejects a resource without a scaffold generator', async () => {
 			[
 				{
 					name: 'missing generator rejects before invoking a scaffold workflow',
-					input: { root: '<temporary directory>', resource: { id: 'invoice-test' }, request: { name: 'Invoice' } },
+					input: {
+						root: '<temporary directory>',
+						resource: { id: 'invoice-test' },
+						request: { name: 'Invoice' }
+					},
 					error: { name: (error as Error).name, message: (error as Error).message }
 				}
 			]

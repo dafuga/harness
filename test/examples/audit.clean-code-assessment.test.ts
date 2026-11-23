@@ -141,14 +141,16 @@ test('Reports the worst file status across a report', () => {
 		['clean', 'incomplete']
 	];
 	expect(reportReviewStatus([])).toBe('not-applicable');
-	expect(reportReviewStatus([fileReview('violations', 'a.ts'), fileReview('incomplete', 'b.ts')])).toBe(
-		'incomplete'
-	);
+	expect(
+		reportReviewStatus([fileReview('violations', 'a.ts'), fileReview('incomplete', 'b.ts')])
+	).toBe('incomplete');
 
 	const cases: Cases = reports.map((statuses) => ({
 		name: statuses.length === 0 ? 'no files' : statuses.join(' + '),
 		input: statuses,
-		output: reportReviewStatus(statuses.map((status, index) => fileReview(status, `file-${index}.ts`)))
+		output: reportReviewStatus(
+			statuses.map((status, index) => fileReview(status, `file-${index}.ts`))
+		)
 	}));
 	recordFor('reports-the-worst-file-status-across-a-report', 'reportReviewStatus', cases);
 });
@@ -159,6 +161,10 @@ test('Throws a TypeError when a principle has no answer', () => {
 	expect((error as Error).name).toBe('TypeError');
 
 	recordFor('throws-a-typeerror-when-a-principle-has-no-answer', 'assessCleanCode', [
-		{ name: 'comments answer missing', input: { missing: 'comments' }, error: { name: 'TypeError' } }
+		{
+			name: 'comments answer missing',
+			input: { missing: 'comments' },
+			error: { name: 'TypeError' }
+		}
 	]);
 });

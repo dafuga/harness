@@ -19,12 +19,19 @@ test('throws-gitadapter-run-error-when-the-repository-root-is-miss', async () =>
 		const root = join(directory, 'missing');
 		let caught: unknown;
 		try {
-			await new LfsAdapter(root).path('9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08');
+			await new LfsAdapter(root).path(
+				'9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08'
+			);
 		} catch (error) {
 			caught = error;
 		}
 		expect(caught).toBeDefined();
-		record('throws-gitadapter-run-error-when-the-repository-root-is-miss', 'LfsAdapter.path', { root }, caught);
+		record(
+			'throws-gitadapter-run-error-when-the-repository-root-is-miss',
+			'LfsAdapter.path',
+			{ root },
+			caught
+		);
 	});
 });
 
@@ -38,7 +45,12 @@ test('throws-gitadapter-exec-error-when-fetch-uses-a-missing-repos', async () =>
 			caught = error;
 		}
 		expect(caught).toBeDefined();
-		record('throws-gitadapter-exec-error-when-fetch-uses-a-missing-repos', 'LfsAdapter.fetch', { remote: 'origin', ref: 'main' }, caught);
+		record(
+			'throws-gitadapter-exec-error-when-fetch-uses-a-missing-repos',
+			'LfsAdapter.fetch',
+			{ remote: 'origin', ref: 'main' },
+			caught
+		);
 	});
 });
 
@@ -55,6 +67,11 @@ test('store-rethrows-rename-error-when-the-object-path-is-a-direct', async () =>
 			caught = error;
 		}
 		expect(caught).toBeDefined();
-		record('store-rethrows-rename-error-when-the-object-path-is-a-direct', 'LfsAdapter.store', { text: 'hello', oid }, caught);
+		record(
+			'store-rethrows-rename-error-when-the-object-path-is-a-direct',
+			'LfsAdapter.store',
+			{ text: 'hello', oid },
+			caught
+		);
 	});
 });

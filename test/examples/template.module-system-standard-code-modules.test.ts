@@ -5,8 +5,15 @@ import { standardCodeModules } from '../../src/templates/module-system/standardC
 
 test('Declares standard internal code modules', () => {
 	expect(standardCodeModules).toHaveLength(12);
-	expect(standardCodeModules.every((module) => module.includedByDefault && module.visibility === 'internal')).toBe(true);
-	expect(standardCodeModules[0].resources[0].generator).toEqual({ kind: 'scaffold', scaffold: 'api' });
+	expect(
+		standardCodeModules.every(
+			(module) => module.includedByDefault && module.visibility === 'internal'
+		)
+	).toBe(true);
+	expect(standardCodeModules[0].resources[0].generator).toEqual({
+		kind: 'scaffold',
+		scaffold: 'api'
+	});
 
 	const output = standardCodeModules.map((module) => ({
 		id: module.id,
@@ -25,7 +32,13 @@ test('Declares standard internal code modules', () => {
 			evidence: 'examples-cases',
 			file: 'declares-standard-internal-code-modules.json'
 		},
-		[{ name: 'all twelve built-in Code capabilities and their generation destinations', input: {}, output }]
+		[
+			{
+				name: 'all twelve built-in Code capabilities and their generation destinations',
+				input: {},
+				output
+			}
+		]
 	);
 });
 
@@ -46,7 +59,13 @@ test('Throws UnknownStandardScaffoldError when a scaffold kind is unavailable', 
 				evidence: 'examples-cases',
 				file: 'throws-unknownstandardscaffolderror-when-a-scaffold-kind-is.json'
 			},
-			[{ name: 'missing API scaffold mapping aborts module construction', input: {}, error: 'UnknownStandardScaffoldError: Unknown standard scaffold.' }]
+			[
+				{
+					name: 'missing API scaffold mapping aborts module construction',
+					input: {},
+					error: 'UnknownStandardScaffoldError: Unknown standard scaffold.'
+				}
+			]
 		);
 	} finally {
 		vi.doUnmock('../../src/templates/development-tooling/scaffoldTypes');

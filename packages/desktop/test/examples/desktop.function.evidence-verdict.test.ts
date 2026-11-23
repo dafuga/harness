@@ -42,15 +42,27 @@ test('Repeats the catalog verdict for idle and planned reads', () => {
 			file: 'repeats-the-catalog-verdict-for-idle-and-planned-reads.json'
 		},
 		[
-			{ name: 'idle read repeats the catalog status and note', input: { status: 'idle', commit }, output: idle },
-			{ name: 'planned read repeats the catalog status and note', input: { status: 'planned', commit }, output: planned }
+			{
+				name: 'idle read repeats the catalog status and note',
+				input: { status: 'idle', commit },
+				output: idle
+			},
+			{
+				name: 'planned read repeats the catalog status and note',
+				input: { status: 'planned', commit },
+				output: planned
+			}
 		]
 	);
 });
 
 test('Reports unavailable and failed reads as unknown', () => {
 	const unavailable = evidenceVerdict(read('unavailable'), entity, commit);
-	const failed = evidenceVerdict(read('failed', 'evidence store responded with status 503'), entity, commit);
+	const failed = evidenceVerdict(
+		read('failed', 'evidence store responded with status 503'),
+		entity,
+		commit
+	);
 
 	expect(unavailable.status).toBe('unknown');
 	expect(unavailable.reason.length).toBeGreaterThan(0);
@@ -66,7 +78,11 @@ test('Reports unavailable and failed reads as unknown', () => {
 			file: 'reports-unavailable-and-failed-reads-as-unknown.json'
 		},
 		[
-			{ name: 'unavailable read gives unknown with a reason', input: { status: 'unavailable', commit }, output: unavailable },
+			{
+				name: 'unavailable read gives unknown with a reason',
+				input: { status: 'unavailable', commit },
+				output: unavailable
+			},
 			{
 				name: 'failed read gives unknown with a reason',
 				input: { status: 'failed', error: 'evidence store responded with status 503', commit },
@@ -100,7 +116,11 @@ test('Refuses to judge evidence read for another commit', () => {
 });
 
 test('Gives unknown when the side does not hold the entity', () => {
-	const gapped = { commit, detail: null, gap: 'The evidence that was read does not include this entity.' };
+	const gapped = {
+		commit,
+		detail: null,
+		gap: 'The evidence that was read does not include this entity.'
+	};
 	const bare = { commit, detail: null };
 	const withGap = evidenceVerdict(readWithAfter(gapped), entity, commit);
 	const withoutGap = evidenceVerdict(readWithAfter(bare), entity, commit);
@@ -118,8 +138,16 @@ test('Gives unknown when the side does not hold the entity', () => {
 			file: 'gives-unknown-when-the-side-does-not-hold-the-entity.json'
 		},
 		[
-			{ name: 'side with no detail repeats its gap', input: { after: gapped, commit }, output: withGap },
-			{ name: 'side with no detail and no gap explains the miss', input: { after: bare, commit }, output: withoutGap }
+			{
+				name: 'side with no detail repeats its gap',
+				input: { after: gapped, commit },
+				output: withGap
+			},
+			{
+				name: 'side with no detail and no gap explains the miss',
+				input: { after: bare, commit },
+				output: withoutGap
+			}
 		]
 	);
 });

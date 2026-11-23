@@ -20,10 +20,7 @@ test('Finds sorted result files in bounded result collections', async () => {
 		const files = resultFiles(directory);
 		const output = files.map((path) => path.slice(directory.length + 1));
 
-		expect(output).toEqual([
-			'results-2026-a/attempt-1/result.json',
-			'results-2026-b/result.json'
-		]);
+		expect(output).toEqual(['results-2026-a/attempt-1/result.json', 'results-2026-b/result.json']);
 		recordExampleCases(
 			{
 				unitId: 'service.execution-runtimes-job-backfill-result-files',

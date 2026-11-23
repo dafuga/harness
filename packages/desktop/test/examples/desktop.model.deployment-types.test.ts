@@ -1,7 +1,10 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { deploymentEnvironments, deploymentSteps } from '../../src/models/development-tooling/DeploymentValues';
+import {
+	deploymentEnvironments,
+	deploymentSteps
+} from '../../src/models/development-tooling/DeploymentValues';
 
 test('lists supported deployment environments', () => {
 	expect(deploymentEnvironments).toEqual(['dev', 'stage', 'preprod', 'prod']);

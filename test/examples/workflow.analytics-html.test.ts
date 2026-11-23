@@ -68,16 +68,16 @@ const snapshot: Parameters<typeof analyticsHtml>[0] = {
 
 test('Renders the full analytics snapshot as safe, sectioned HTML', () => {
 	const html = analyticsHtml(snapshot);
-	const dataBlock = html.match(/<script type="application\/json" id="data">([\s\S]*?)<\/script>/)?.[1] ?? '';
+	const dataBlock =
+		html.match(/<script type="application\/json" id="data">([\s\S]*?)<\/script>/)?.[1] ?? '';
 	const embeddedSnapshot = dataBlock === '' ? null : JSON.parse(dataBlock);
 	const actual = {
 		title: html.includes('<title>Harness Analytics</title>'),
 		generatedLine: html.includes(`Generated ${snapshot.generatedAt}.`),
 		fullSnapshotRoundTrip: JSON.stringify(embeddedSnapshot) === JSON.stringify(snapshot),
-		escapedScriptMarkup: dataBlock.includes(
-			'\\u003c/script>\\u003cscript>alert(1)\\u003c/script>'
-		),
-		sectionRenderer: html.includes("for(const section of ['summary','loops','jev','models'])") &&
+		escapedScriptMarkup: dataBlock.includes('\\u003c/script>\\u003cscript>alert(1)\\u003c/script>'),
+		sectionRenderer:
+			html.includes("for(const section of ['summary','loops','jev','models'])") &&
 			html.includes('JSON.stringify(data[section],null,2)')
 	};
 	const cases = [
@@ -123,7 +123,11 @@ test('Throws TypeError when the snapshot is null or serialization', () => {
 		{ name: 'null snapshot', description: 'null', value: null },
 		{ name: 'undefined snapshot', description: 'undefined', value: undefined },
 		{ name: 'circular snapshot', description: 'self-referencing object', value: circular },
-		{ name: 'BigInt snapshot', description: 'object containing BigInt', value: { value: BigInt(1) } }
+		{
+			name: 'BigInt snapshot',
+			description: 'object containing BigInt',
+			value: { value: BigInt(1) }
+		}
 	];
 	const cases = examples.map(({ name, description, value }) => ({
 		name,
@@ -141,6 +145,9 @@ test('Throws TypeError when the snapshot is null or serialization', () => {
 		cases
 	);
 	expect(cases.map((entry) => entry.error.name)).toEqual([
-		'TypeError', 'TypeError', 'TypeError', 'TypeError'
+		'TypeError',
+		'TypeError',
+		'TypeError',
+		'TypeError'
 	]);
 });

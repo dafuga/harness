@@ -18,7 +18,9 @@ type RecordedCases = Parameters<typeof recordExampleCases>[1];
 function summarise(response: Response) {
 	return {
 		status: response.status,
-		headers: Object.fromEntries(SUMMARISED_HEADERS.map((name) => [name, response.headers.get(name)]))
+		headers: Object.fromEntries(
+			SUMMARISED_HEADERS.map((name) => [name, response.headers.get(name)])
+		)
 	};
 }
 

@@ -76,7 +76,13 @@ test('Throws AbortError when the signal is already aborted', async () => {
 			evidence: 'examples-cases',
 			file: 'throws-aborterror-when-the-signal-is-already-aborted.json'
 		},
-		[{ name: 'default abort reason', input: { ...run, signal: 'already aborted' }, error: { name: 'AbortError' } }]
+		[
+			{
+				name: 'default abort reason',
+				input: { ...run, signal: 'already aborted' },
+				error: { name: 'AbortError' }
+			}
+		]
 	);
 });
 
@@ -109,7 +115,13 @@ test('Throws Error when the log parent is a file', async () => {
 				evidence: 'examples-cases',
 				file: 'throws-error-when-the-log-parent-is-a-file.json'
 			},
-			[{ name: 'file blocks recursive log directory creation', input: { log: run.log }, error: { name: 'Error' } }]
+			[
+				{
+					name: 'file blocks recursive log directory creation',
+					input: { log: run.log },
+					error: { name: 'Error' }
+				}
+			]
 		);
 	});
 });

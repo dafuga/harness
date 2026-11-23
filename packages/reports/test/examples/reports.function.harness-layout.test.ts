@@ -1,7 +1,10 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { mapColumns, harnessLayout } from '../../src/components/explorer-ui/harness-map/harnessLayout';
+import {
+	mapColumns,
+	harnessLayout
+} from '../../src/components/explorer-ui/harness-map/harnessLayout';
 import { nodeSize } from '../../src/utils/explorer-ui/harnessLayout';
 import type { HarnessLayout } from '../../src/utils/explorer-ui/harnessLayout.types';
 

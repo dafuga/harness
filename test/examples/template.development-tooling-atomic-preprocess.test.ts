@@ -96,6 +96,12 @@ test('Skips markup without atom syntax', () => {
 			evidence: 'examples-cases',
 			file: 'skips-markup-without-atom-syntax.json'
 		},
-		[{ name: 'ordinary markup is left for the next preprocessor', input: { filename, content }, output: null }]
+		[
+			{
+				name: 'ordinary markup is left for the next preprocessor',
+				input: { filename, content },
+				output: null
+			}
+		]
 	);
 });

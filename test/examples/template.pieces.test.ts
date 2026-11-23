@@ -17,7 +17,13 @@ const DIMENSION_MESSAGE = 'A game view needs harness.dimension 2d or 3d in packa
 
 function recordState(state: string, cases: Cases): void {
 	recordExampleCases(
-		{ unitId: 'template.pieces', symbol: 'pieceFiles', state, evidence: 'examples-cases', file: `${state}.json` },
+		{
+			unitId: 'template.pieces',
+			symbol: 'pieceFiles',
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
 		cases
 	);
 }
@@ -38,7 +44,11 @@ test('Plans a util file from a piece name', () => {
 	expect(paths.some((path) => path.startsWith('src/utils/'))).toBe(true);
 	expect(files.every((file) => file.contents.length > 0)).toBe(true);
 	recordState(UTIL_STATE, [
-		{ name: 'util kind with a two-word name', input: { kind: 'util', name: 'invoice line' }, output: { paths } }
+		{
+			name: 'util kind with a two-word name',
+			input: { kind: 'util', name: 'invoice line' },
+			output: { paths }
+		}
 	]);
 });
 

@@ -4,8 +4,14 @@ import { join } from 'node:path';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
-import { KernelBenchmarkService, serveKernel } from '../../src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService';
-import type { BenchPlan, WorkloadRun } from '../../src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.types';
+import {
+	KernelBenchmarkService,
+	serveKernel
+} from '../../src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService';
+import type {
+	BenchPlan,
+	WorkloadRun
+} from '../../src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.types';
 
 const plan: BenchPlan = { cli: ['harness'], coldSamples: 5, warmIterations: 100 };
 const context = { profile: 'macos-arm64', commit: '0123456789abcdef0123456789abcdef01234567' };

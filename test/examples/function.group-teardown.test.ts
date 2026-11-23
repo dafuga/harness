@@ -7,7 +7,7 @@ import { groupTeardown } from '../../src/utils/reports-media/run-isolated/groupT
 test('Skips group signaling when the child has no pid', () => {
 	const child = { pid: undefined } as never;
 	const result = signalGroup(child, 'SIGTERM');
-	 expect(result).toBeUndefined();
+	expect(result).toBeUndefined();
 	recordExampleCases(
 		{
 			unitId: 'function.group-teardown',
@@ -28,11 +28,10 @@ test('Returns no processes when descendants have settled', async () => {
 			return [];
 		}
 	};
-	const result = await groupTeardown(
-		{ pid: undefined } as never,
-		descendants as never,
-		{ settleMs: 0, graceMs: 0 }
-	);
+	const result = await groupTeardown({ pid: undefined } as never, descendants as never, {
+		settleMs: 0,
+		graceMs: 0
+	});
 
 	expect(result).toEqual([]);
 	expect(calls).toEqual(['survivors']);

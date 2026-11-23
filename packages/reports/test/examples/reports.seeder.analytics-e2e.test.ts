@@ -81,7 +81,10 @@ test('Throws NonTemporaryAnalyticsStoreError for unsafe analytics path', async (
 				{
 					name: 'rejects an analytics store outside approved temporary roots',
 					input: { root, analytics: '/var/analytics-e2e-unsafe' },
-					error: { name: 'NonTemporaryAnalyticsStoreError', message: 'Fixture requires a temporary analytics store.' }
+					error: {
+						name: 'NonTemporaryAnalyticsStoreError',
+						message: 'Fixture requires a temporary analytics store.'
+					}
 				}
 			]
 		);

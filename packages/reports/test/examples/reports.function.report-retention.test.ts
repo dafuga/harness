@@ -65,10 +65,10 @@ test('Non-finite timestamps throw the retention timestamp error', () => {
 	expect(() => reportRetention({ startedAt: 'not-a-date' }, expiresAt)).toThrow(
 		InvalidReportRetentionTimestampError
 	);
-	expect(() => reportRetention(report, Number.NaN)).toThrow(
-		'Invalid report retention timestamp'
+	expect(() => reportRetention(report, Number.NaN)).toThrow('Invalid report retention timestamp');
+	expect(messages).toEqual(
+		checks.map(() => 'InvalidReportRetentionTimestampError: Invalid report retention timestamp')
 	);
-	expect(messages).toEqual(checks.map(() => 'InvalidReportRetentionTimestampError: Invalid report retention timestamp'));
 	recordExampleCases(
 		{
 			unitId: 'reports.function.report-retention',
@@ -86,11 +86,7 @@ test('Non-finite timestamps throw the retention timestamp error', () => {
 });
 
 test('Retention lifetime and cloud prefixes are fixed constants', () => {
-	const prefixes = [
-		'report-evidence/runs/',
-		'uploaded-screenshots/runs/',
-		'published-reports/'
-	];
+	const prefixes = ['report-evidence/runs/', 'uploaded-screenshots/runs/', 'published-reports/'];
 
 	expect(reportLifetimeMs).toBe(2592000000);
 	expect(reportCloudPrefixes).toEqual(prefixes);

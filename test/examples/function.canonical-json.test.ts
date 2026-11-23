@@ -9,13 +9,14 @@ test('Sorts nested object keys and preserves array order', () => {
 		a: { y: 1, x: 0 },
 		items: [{ z: 4, a: 3 }, 2]
 	};
-	const ordered = [{ b: 2, a: 1 }, { d: 4, c: 3 }];
+	const ordered = [
+		{ b: 2, a: 1 },
+		{ d: 4, c: 3 }
+	];
 	const nestedOutput = canonicalJson(nested);
 	const orderedOutput = canonicalJson(ordered);
 
-	expect(nestedOutput).toBe(
-		'{"a":{"x":0,"y":1},"b":2,"items":[{"a":3,"z":4},2]}'
-	);
+	expect(nestedOutput).toBe('{"a":{"x":0,"y":1},"b":2,"items":[{"a":3,"z":4},2]}');
 	expect(orderedOutput).toBe('[{"a":1,"b":2},{"c":3,"d":4}]');
 	recordExampleCases(
 		{
@@ -85,6 +86,12 @@ test('Throws RangeError when a cyclic value recurses', () => {
 			evidence: 'examples-cases',
 			file: 'throws-rangeerror-when-a-cyclic-value-recurses.json'
 		},
-		[{ name: 'Self reference exhausts recursive sorting', input: { self: '[Circular]' }, error: 'RangeError' }]
+		[
+			{
+				name: 'Self reference exhausts recursive sorting',
+				input: { self: '[Circular]' },
+				error: 'RangeError'
+			}
+		]
 	);
 });

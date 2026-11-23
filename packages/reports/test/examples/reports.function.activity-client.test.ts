@@ -12,13 +12,17 @@ test('Refresh reads activity and reports unavailable responses', async () => {
 	});
 	vi.stubGlobal('setInterval', () => 1);
 	vi.stubGlobal('clearInterval', vi.fn());
-	const fetchMock = vi.fn()
+	const fetchMock = vi
+		.fn()
 		.mockResolvedValueOnce({ ok: true, json: async () => ({ updatedAt: '2026-11-16T10:00:00Z' }) })
 		.mockResolvedValueOnce({ ok: false });
 	vi.stubGlobal('fetch', fetchMock);
 	const readings: unknown[] = [];
 	let missed = 0;
-	const client = activityClient((shown) => readings.push(shown), () => missed++);
+	const client = activityClient(
+		(shown) => readings.push(shown),
+		() => missed++
+	);
 	try {
 		expect(fetchMock).not.toHaveBeenCalled();
 		await client.refresh();

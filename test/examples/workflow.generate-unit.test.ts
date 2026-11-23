@@ -91,9 +91,7 @@ test('Rejects an unsupported unit kind', async () => {
 
 test('Rejects a unit name with invalid characters', async () => {
 	await withTempDir('generate-unit-name-', async (directory) => {
-		const error = await captureError(
-			generateUnit({ name: '-bad/name', root: directory })
-		);
+		const error = await captureError(generateUnit({ name: '-bad/name', root: directory }));
 
 		expect(error).toBeInstanceOf(Error);
 

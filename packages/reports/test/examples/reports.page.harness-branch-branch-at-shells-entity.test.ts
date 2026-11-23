@@ -181,7 +181,5 @@ test('Reports not-in-history when a commit is not held', () => {
 	});
 	recordExampleCases(where('reports-not-in-history-when-a-commit-is-not-held'), cases);
 	expect(cases.map((item) => item.output.kind)).toEqual(['missing', 'missing']);
-	expect(cases[1]!.output.message).toBe(
-		'The tip of branch main (zzzzzzz) is not in this history.'
-	);
+	expect(cases[1]!.output.message).toBe('The tip of branch main (zzzzzzz) is not in this history.');
 });

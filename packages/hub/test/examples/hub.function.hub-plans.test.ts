@@ -71,7 +71,13 @@ test('Converts a plan without designs into a draft catalog record', async () => 
 			evidence: 'examples-cases',
 			file: 'converts-a-plan-without-designs-into-a-draft-catalog-record.json'
 		},
-		[{ name: 'valid plan with no committed design versions', input: { plan, designEntries: [] }, output }]
+		[
+			{
+				name: 'valid plan with no committed design versions',
+				input: { plan, designEntries: [] },
+				output
+			}
+		]
 	);
 });
 

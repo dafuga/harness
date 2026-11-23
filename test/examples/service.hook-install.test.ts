@@ -31,7 +31,13 @@ test('Reports the current hook status', async () => {
 				evidence: 'examples-cases',
 				file: 'reports-the-current-hook-status.json'
 			},
-			[{ name: 'fresh repository has no installed or enabled hooks', input: { root: 'temporary git repository' }, output: summary(status) }]
+			[
+				{
+					name: 'fresh repository has no installed or enabled hooks',
+					input: { root: 'temporary git repository' },
+					output: summary(status)
+				}
+			]
 		);
 	});
 });
@@ -53,7 +59,13 @@ test('Installs wrappers and chains an existing hook', async () => {
 				evidence: 'examples-cases',
 				file: 'installs-wrappers-and-chains-an-existing-hook.json'
 			},
-			[{ name: 'trimmed command enables each stage and preserves prior hook bytes', input: { command: '  harness  ', existingHook: original }, output: summary(status) }]
+			[
+				{
+					name: 'trimmed command enables each stage and preserves prior hook bytes',
+					input: { command: '  harness  ', existingHook: original },
+					output: summary(status)
+				}
+			]
 		);
 	});
 });
@@ -76,7 +88,13 @@ test('Uninstalls wrappers and restores the chained hook', async () => {
 				evidence: 'examples-cases',
 				file: 'uninstalls-wrappers-and-restores-the-chained-hook.json'
 			},
-			[{ name: 'removing the last opt-in restores the prior hook byte for byte', input: { command: 'harness', existingHook: original }, output: summary(status) }]
+			[
+				{
+					name: 'removing the last opt-in restores the prior hook byte for byte',
+					input: { command: 'harness', existingHook: original },
+					output: summary(status)
+				}
+			]
 		);
 	});
 });
@@ -85,7 +103,9 @@ test('Throws ExpectedCliError when hooks path is in the worktree', async () => {
 	await withTempRepo(async (repository) => {
 		const root = realpathSync(repository.root);
 		repository.git('config', 'core.hooksPath', join(root, 'tooling-hooks'));
-		const caught = await new HookInstallService(repository.root).status().catch((error: unknown) => error);
+		const caught = await new HookInstallService(repository.root)
+			.status()
+			.catch((error: unknown) => error);
 		expect(caught).toBeInstanceOf(Error);
 		const message = (caught as Error).message;
 		expect(message).toContain('core.hooksPath points into the working tree');
@@ -97,7 +117,13 @@ test('Throws ExpectedCliError when hooks path is in the worktree', async () => {
 				evidence: 'examples-cases',
 				file: 'throws-expectedclierror-when-hooks-path-is-in-the-worktree.json'
 			},
-			[{ name: 'hooks path inside the working tree raises the expected error', input: { hooksPath: 'tooling-hooks inside the worktree' }, error: message }]
+			[
+				{
+					name: 'hooks path inside the working tree raises the expected error',
+					input: { hooksPath: 'tooling-hooks inside the worktree' },
+					error: message
+				}
+			]
 		);
 	});
 });

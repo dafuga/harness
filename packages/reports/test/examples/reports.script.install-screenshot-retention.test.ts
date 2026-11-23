@@ -1,11 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import {
-	mkdirSync,
-	mkdtempSync,
-	readFileSync,
-	rmSync,
-	writeFileSync
-} from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -88,19 +82,15 @@ function runInstall(options: Options): Run {
 			writeExecutable(join(bin, name), body);
 		}
 		if (options.bun) writeExecutable(join(bin, 'bun'), 'exit 0');
-		const run = spawnSync(
-			'/usr/bin/python3',
-			['-I', driverPath, SCRIPT, summaryPath],
-			{
-				encoding: 'utf8',
-				env: {
-					HOME: join(root, 'home'),
-					PATH: [bin, '/usr/bin', '/bin'].join(':'),
-					CALLS: callsPath,
-					FAIL: options.fail ?? 'none'
-				}
+		const run = spawnSync('/usr/bin/python3', ['-I', driverPath, SCRIPT, summaryPath], {
+			encoding: 'utf8',
+			env: {
+				HOME: join(root, 'home'),
+				PATH: [bin, '/usr/bin', '/bin'].join(':'),
+				CALLS: callsPath,
+				FAIL: options.fail ?? 'none'
 			}
-		);
+		});
 		const facts = JSON.parse(readFileSync(summaryPath, 'utf8')) as Facts;
 		const calls = readFileSync(callsPath, 'utf8')
 			.split('\n')
@@ -137,10 +127,9 @@ test('Writes the 03:00 daily LaunchAgent and loads it', () => {
 	expect(run.plist?.mode).toBe('0o600');
 	expect(output.installedMessage).toBe(true);
 	expect(run.calls).toEqual(['bootout', 'bootstrap', 'print']);
-	recordExampleCases(
-		meta('writes-the-03-00-daily-launchagent-and-loads-it'),
-		[{ name: 'Bun on PATH and every launchctl call succeeds', input, output }]
-	);
+	recordExampleCases(meta('writes-the-03-00-daily-launchagent-and-loads-it'), [
+		{ name: 'Bun on PATH and every launchctl call succeeds', input, output }
+	]);
 });
 
 test('Stops before writing anything when Bun is missing', () => {
@@ -163,10 +152,9 @@ test('Fails with CalledProcessError when bootstrap exits nonzero', () => {
 	expect(run.error?.type).toBe('CalledProcessError');
 	expect(run.error?.returncode).toBe(1);
 	expect(run.calls).toEqual(['bootout', 'bootstrap']);
-	recordExampleCases(
-		meta('fails-with-calledprocesserror-when-bootstrap-exits-nonzero'),
-		[{ name: 'launchctl bootstrap exits 1', input, output }]
-	);
+	recordExampleCases(meta('fails-with-calledprocesserror-when-bootstrap-exits-nonzero'), [
+		{ name: 'launchctl bootstrap exits 1', input, output }
+	]);
 });
 
 test('Ignores a failing bootout and still bootstraps', () => {

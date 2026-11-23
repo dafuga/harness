@@ -85,7 +85,11 @@ function failure(error: unknown): Failure {
 }
 
 /** Verifies every row's credential against the nonce this server issued, in row order. */
-async function verifyRows(service: GoogleIdentityService, sign: Sign, rows: Row[]): Promise<Case[]> {
+async function verifyRows(
+	service: GoogleIdentityService,
+	sign: Sign,
+	rows: Row[]
+): Promise<Case[]> {
 	return Promise.all(
 		rows.map(async ([name, claims, own = sign]) => {
 			const credential = await own(claims);

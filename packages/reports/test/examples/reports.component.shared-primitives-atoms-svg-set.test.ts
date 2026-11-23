@@ -22,7 +22,9 @@ test('forwards set attributes and renders its child snippet', () => {
 	expect(body).not.toContain('children=');
 	expect(rendered.match(/<set\b/g)).toHaveLength(1);
 
-	const withoutChildren = render(SvgSet, { props: { attributeName: 'visibility', to: 'hidden' } }).body;
+	const withoutChildren = render(SvgSet, {
+		props: { attributeName: 'visibility', to: 'hidden' }
+	}).body;
 	const emptyElement = withoutChildren.match(/<set\b[\s\S]*?<\/set>/)?.[0];
 	expect(emptyElement).toBeDefined();
 	expect(emptyElement).toContain('attributeName="visibility"');
