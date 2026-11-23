@@ -1,5 +1,4 @@
 // @harness-uid u_23xwb3xbkg
-import type { VaultApproval, VaultSessionRequest } from './VaultWireValidator.types';
 import { z } from 'zod';
 import { VaultBrokerError } from './VaultBrokerError';
 
@@ -144,23 +143,5 @@ export class VaultWireValidator {
 			throw new VaultBrokerError(400, 'Invalid ' + label + ': not UTF-8 JSON.');
 		}
 		return this.parse(schema, decoded, label);
-	}
-}
-
-export function checkVaultApprovalScope(
-	input: VaultSessionRequest,
-	decision: VaultApproval,
-	now: number,
-	latest: number
-): void {
-	const keys = ['method', 'mode', 'account', 'session', 'action', 'host', 'leaseMs'] as const;
-	if (keys.some((key) => decision[key] !== input[key])) {
-		throw new VaultBrokerError(409, 'The approval scope differs from the request; approve again.');
-	}
-	if ((decision.sealed === null) !== (input.method === 'oauth-device')) {
-		throw new VaultBrokerError(409, 'Only a device grant approval carries no sealed credential.');
-	}
-	if (decision.expiresAt <= now || decision.expiresAt > latest) {
-		throw new VaultBrokerError(409, 'Approval expiry is outside the delivery window.');
 	}
 }
