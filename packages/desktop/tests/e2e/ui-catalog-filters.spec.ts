@@ -16,9 +16,9 @@ test('Changed only is a 44px switch row that toggles by clicking its label', asy
 	await page.goto(agentAt);
 	await page.getByRole('button', { name: 'Filters', exact: true }).click();
 	const dialog = page.getByRole('dialog');
-	const row = dialog.locator('.checkbox');
-	const label = row.getByText('Changed only', { exact: true });
 	const control = dialog.getByRole('switch', { name: 'Changed only', exact: true });
+	const row = control.locator('xpath=..');
+	const label = row.getByText('Changed only', { exact: true });
 	expect((await box(row)).height).toBeGreaterThanOrEqual(44);
 	const labelBox = await box(label);
 	const controlBox = await box(control);

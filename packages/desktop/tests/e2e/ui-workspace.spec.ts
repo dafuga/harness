@@ -69,7 +69,7 @@ test('catalog search, changed filter and conversational plan request', async ({ 
 	await page.getByRole('button', { name: 'Open project', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'Overview', exact: true })).toBeVisible();
 	await page.getByRole('button', { name: 'Filters', exact: true }).click();
-	await page.getByRole('checkbox', { name: 'Changed only', exact: true }).check();
+	await page.getByRole('switch', { name: 'Changed only', exact: true }).check();
 	await page.getByRole('button', { name: 'Done', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'Overview', exact: true })).toHaveCount(0);
 	await page.getByRole('searchbox', { name: 'Search pages', exact: true }).fill('missing');
