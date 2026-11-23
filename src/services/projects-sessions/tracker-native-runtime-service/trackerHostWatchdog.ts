@@ -46,7 +46,7 @@ export function trackerHostWatchdog(
 		alerts,
 		chiefOfStaff,
 		async inspect(id: string | null, signal: AbortSignal) {
-			const panes = await driver?.scan(signal);
+			const panes = await driver.scan(signal);
 			if (!panes) return { computer: store.node, available: false, sessions: [], recovery: [] };
 			const snapshot = watchdogSnapshot(store, items, panes, now());
 			const itemId = id ? items.resolve(id).id : undefined;
@@ -59,7 +59,6 @@ export function trackerHostWatchdog(
 		},
 		async tick(signal: AbortSignal) {
 			if (config.transcriptRoots?.length) await scanTranscripts(signal);
-			if (!driver) return;
 			const panes = await driver.scan(signal);
 			signal.throwIfAborted();
 			if (!panes) return;

@@ -44,28 +44,7 @@ test('watchdog flags the launched item and reopens a closed rotation on a new hi
 
 async function proveWatchdog(root: string) {
 	const database = new DatabaseSync(':memory:');
-	const file = join(root, 'tracker.json');
-	const syncSecretFile = join(root, 'sync');
-	writeFileSync(syncSecretFile, 'synthetic-tracker-sync-key', { mode: 0o600 });
-	writeFileSync(
-		file,
-		JSON.stringify({
-			version: 1,
-			node: 'fixture-node',
-			role: 'hub',
-			apiPort: 49291,
-			syncPort: 49292,
-			database: join(root, 'journal'),
-			syncSecretFile,
-			legacyFenceFile: join(root, 'fence'),
-			hostEffects: {
-				mode: 'active',
-				checkpoint: 'fixture',
-				watchdog: { transcriptRoots: [root] }
-			}
-		})
-	);
-	const config = loadTrackerNodeConfig(file);
+	const config = transcriptOnlyConfig(root);
 	const create = () =>
 		new TrackerNativeRuntimeService(database, { ...trackerNodeRuntime(config), now: () => 1 });
 	const itemId = 'abc123def4';
@@ -112,6 +91,31 @@ async function proveWatchdog(root: string) {
 	} finally {
 		database.close();
 	}
+}
+
+function transcriptOnlyConfig(root: string) {
+	const file = join(root, 'tracker.json');
+	const syncSecretFile = join(root, 'sync');
+	writeFileSync(syncSecretFile, 'synthetic-tracker-sync-key', { mode: 0o600 });
+	writeFileSync(
+		file,
+		JSON.stringify({
+			version: 1,
+			node: 'fixture-node',
+			role: 'hub',
+			apiPort: 49291,
+			syncPort: 49292,
+			database: join(root, 'journal'),
+			syncSecretFile,
+			legacyFenceFile: join(root, 'fence'),
+			hostEffects: {
+				mode: 'active',
+				checkpoint: 'fixture',
+				watchdog: { transcriptRoots: [root] }
+			}
+		})
+	);
+	return loadTrackerNodeConfig(file);
 }
 
 async function assertNewExposureReopens(

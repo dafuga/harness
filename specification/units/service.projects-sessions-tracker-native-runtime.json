@@ -751,7 +751,7 @@
 			},
 			{
 				"name": "trackerWatchdogPort",
-				"type": "TrackerWatchdogPort | undefined"
+				"type": "TrackerWatchdogPort"
 			}
 		],
 		"errors": [
@@ -1644,7 +1644,7 @@
 				"outputs": [
 					{
 						"name": "trackerWatchdogPort",
-						"type": "TrackerWatchdogPort | undefined"
+						"type": "TrackerWatchdogPort"
 					}
 				],
 				"errors": [],
