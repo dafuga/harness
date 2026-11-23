@@ -16,6 +16,8 @@ import type {
 const opaqueHash = /^[a-f0-9]{64}$/;
 const uuid = /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/;
 const allowedFields = new Set(['version', 'intentId', 'itemId', 'action', 'text', 'revision']);
+const writeTextField = { note: 'text', flag: 'question', answer: 'answer' } as const;
+
 function digest(value: string): Buffer {
 	return createHash('sha256').update(value).digest();
 }
@@ -74,8 +76,7 @@ export class PhoneReplicaWriteService {
 
 	private plan(intent: PhoneReplicaIntent, now: number) {
 		const { action, itemId, text } = intent;
-		const body =
-			action === 'note' ? { text } : action === 'flag' ? { question: text } : { answer: text };
+		const body = { [writeTextField[action]]: text };
 		try {
 			return planTrackerItemMutation(
 				{ action, item: this.items.resolve(itemId), body },
@@ -89,15 +90,29 @@ export class PhoneReplicaWriteService {
 }
 
 function parseIntent(fields: Record<string, unknown>): PhoneReplicaIntent {
-	const { version, itemId, intentId, action, text, revision = null } = fields;
-	if (version !== 1 || Object.keys(fields).some((key) => !allowedFields.has(key)))
-		throw trackerItemError('invalid phone write version or fields');
+	checkIntentEnvelope(fields);
+	const { itemId, intentId, action, text, revision = null } = fields;
 	if (typeof itemId !== 'string' || !/^[a-z0-9_-]{1,80}$/.test(itemId))
 		throw trackerItemError('invalid phone item id');
 	if (typeof intentId !== 'string' || !uuid.test(intentId))
 		throw trackerItemError('invalid phone intent id');
 	if (action !== 'note' && action !== 'flag' && action !== 'answer')
 		throw trackerItemError('invalid phone action');
+	return {
+		itemId,
+		intentId,
+		action,
+		text: parseIntentText(text),
+		revision: parseRevision(action, revision)
+	};
+}
+
+function checkIntentEnvelope(fields: Record<string, unknown>): void {
+	if (fields.version !== 1 || Object.keys(fields).some((key) => !allowedFields.has(key)))
+		throw trackerItemError('invalid phone write version or fields');
+}
+
+function parseIntentText(text: unknown): string {
 	if (
 		typeof text !== 'string' ||
 		!text.trim() ||
@@ -105,13 +120,14 @@ function parseIntent(fields: Record<string, unknown>): PhoneReplicaIntent {
 		sanitizeTrackerText(text) !== text
 	)
 		throw trackerItemError('invalid phone write text');
-	if (
-		action === 'note'
-			? revision !== null
-			: typeof revision !== 'string' || !opaqueHash.test(revision)
-	)
-		throw trackerItemError('invalid phone attention revision');
-	return { itemId, intentId, action, text, revision: revision as string | null };
+	return text;
+}
+
+function parseRevision(action: PhoneReplicaIntent['action'], revision: unknown): string | null {
+	if (action === 'note' && revision === null) return null;
+	if (action !== 'note' && typeof revision === 'string' && opaqueHash.test(revision))
+		return revision;
+	throw trackerItemError('invalid phone attention revision');
 }
 
 function matchesAttention(

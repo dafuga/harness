@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { measureWorkload } from '../../support/measureWorkload';
 
-import { hub, phoneWrite, scope, updatedAt } from './trackerPhoneFixture';
+import { hub, phoneWrite, updatedAt } from './trackerPhoneFixture';
 
 function checkSnapshot(first: unknown) {
 	expect(first).toMatchObject({

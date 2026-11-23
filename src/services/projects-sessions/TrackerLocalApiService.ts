@@ -4,7 +4,6 @@ import type { TrackerItemReadRepository } from '../../repositories/projects-sess
 import { checkTrackerItem } from '../../utils/projects-sessions/checkTrackerItem';
 import { planTrackerItemMutation } from '../../utils/projects-sessions/planTrackerItemMutation';
 import type { TrackerItemMutationContext } from '../../utils/projects-sessions/planTrackerItemMutation.types';
-import { trackerItemError } from '../../utils/projects-sessions/trackerItemError';
 import {
 	itemAction,
 	itemMutation,
