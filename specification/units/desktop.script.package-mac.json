@@ -27,22 +27,22 @@
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Thrown at module load when HARNESS_MAC_SIGN_IDENTITY is set (an empty string counts) but is not exactly 40 hexadecimal characters with no surrounding whitespace; the message is 'HARNESS_MAC_SIGN_IDENTITY must be the exact certificate SHA-1 fingerprint.'"
+				"description": "Packaging requires HARNESS_MAC_SIGN_IDENTITY to be an exact 40-character Developer ID Application certificate fingerprint. Verification does not use a signing identity."
 			},
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Thrown at module load when HARNESS_MAC_SIGN_IDENTITY is a valid 40-character fingerprint that is not among the identities parsed from 'security find-identity -v -p codesigning'; the match ignores case, and the message is 'HARNESS_MAC_SIGN_IDENTITY is not an available code-signing identity.'"
+				"description": "Packaging is refused before staging when the dedicated harness-signing.keychain-db is missing or does not contain a Developer ID Application identity matching the selected fingerprint and team PAC8VHDW3G."
 			},
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "execFileSync throws when '/usr/libexec/PlistBuddy' or 'codesign' exits with a non-zero status or fails to start; those calls run on every invocation, while 'security find-identity' can throw the same way only when HARNESS_MAC_SIGN_IDENTITY is set. This file does not catch these errors."
+				"description": "Verification requires an exact stable Developer ID designated requirement for dev.harness.desktop and team PAC8VHDW3G and a valid strict signature, including nested code. An unsupported command line is refused."
 			},
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects with the Node.js error from a failed awaited fs call (mkdir, cp, rm, or writeFile), for example when build, dist/main.cjs, or dist/preload.cjs is missing from the working directory, or with whatever the awaited macIcon(output) call rejects with; this file catches neither."
+				"description": "System command and filesystem errors propagate. A staging, signing or verification failure leaves the existing dist/mac/Harness.app in place."
 			}
 		],
 		"errorStatus": "declared",

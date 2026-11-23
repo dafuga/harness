@@ -32,20 +32,30 @@ bun run desktop
 
 `build` creates the static Svelte renderer and Electron main/preload bundles. Rebuild after source changes before reopening the native app. `bun run dev` serves the browser preview on port 5799; without Electron's bridge, this preview is read-only and cannot open a local project.
 
-On macOS, after a successful build:
+### Package a Mac release
+
+The release uses bundle `dev.harness.desktop` and Developer ID Application team `PAC8VHDW3G`. The release owner provisions `~/Library/Keychains/harness-signing.keychain-db` with the Harness signing identity through the approved private credential path, grants `/usr/bin/codesign` access to that private key, and configures the key's `apple-tool:,apple:,codesign:` partitions. Unlock the dedicated build keychain for the signing job. Enter any one-time setup password only through the approved credential path or the macOS prompt.
+
+Build and package from this directory:
 
 ```sh
-bun run package:mac
-open dist/mac/Harness.app
+HARNESS_RELEASE_HUB_ORIGIN=https://dafuga-harness.pages.dev bun run build
+HARNESS_MAC_SIGN_IDENTITY='<exact-certificate-SHA1>' bun run package:mac
+bun run package:mac --verify dist/mac/Harness.app
 ```
 
-By default packaging signs the local app ad hoc. Rebuilds that change its code can change its signing requirement, which can make macOS ask for access to Harness's existing Keychain item again. Use the same project-authorized certificate for successive builds to keep a stable identity:
+The fingerprint selects the certificate in the dedicated build keychain. Bun can load it from the ignored `.env.local` file in this package. Packaging publishes the bundle to `dist/mac/Harness.app` after verification. For local development, use `bun run desktop`.
+
+Before replacing `/Applications/Harness.app`, run `bun run package:mac --verify <candidate.app>` and keep the previous bundle for rollback. Quit Harness normally so it can finish active work before the replacement. Run the same verification against `/Applications/Harness.app` after installation. Public distribution additionally requires notarization.
+
+Electron keeps the `harness-desktop Safe Storage` item in the login Keychain. It protects existing hosted sessions, remote host credentials, and private keys. If the first verified signed launch prompts for that item after upgrading from an ad hoc build, select **Always Allow** once. Keep the item and app data so existing ciphertext remains decryptable. Run a second signed build and upgrade after that approval and check the macOS log from just before the build:
 
 ```sh
-HARNESS_MAC_SIGN_IDENTITY=<exact-certificate-SHA1> bun run package:mac
+/usr/bin/log show --start '<YYYY-MM-DD HH:MM:SS>' --info --predicate \
+  'process == "securityd" AND eventMessage CONTAINS[c] "displaying keychain prompt"'
 ```
 
-The fingerprint selects an identity already available to `security find-identity -v -p codesigning`; it is not a password or private key. For repeated local builds, Bun can read this setting from this package's ignored `.env.local` file. An invalid or unavailable selection fails before the app is written. Signing is verified after packaging. Moving from ad-hoc signing can still require Keychain approval; compare the designated requirement of successive builds before assuming access is stable. This setting does not change Keychain permissions or disable encryption. Packaging does not notarize, publish, or install a production release.
+Expect zero events for `/usr/bin/codesign` and `/Applications/Harness.app` across that build, installation, and launch.
 
 ## Projects and shared collaboration
 
