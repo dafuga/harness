@@ -1,6 +1,8 @@
 // @harness-uid u_fyf7e7kyi5
 import { mkdirSync, realpathSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import type { TrackerRunReceipt } from '../../../services/agents-providers/TrackerDispatcherService.types';
+import { attemptKey } from '../../../services/agents-providers/tracker-dispatcher-service/launchEligibility';
 import {
 	controlledTrackerExecutable,
 	runTrackerHostCommand
@@ -15,6 +17,7 @@ import type {
 } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
 import {
 	checkTrackerManagedReceipt,
+	hasManagedStartupEvidence,
 	trackerManagedEvidence,
 	trackerManagedToken
 } from './trackerManagedLaunchReceipt';
@@ -54,6 +57,8 @@ export function trackerManagedHostLauncher(
 			}
 			return sessions;
 		},
+		confirmNeverStarted: (run, signal) =>
+			confirmManagedStartupAbsent({ directory, tmux }, run, signal),
 		async start(input, signal) {
 			const token = trackerManagedToken(input.node, input.key);
 			const runDirectory = join(directory, token);
@@ -91,6 +96,28 @@ function validStartInput(input: TrackerHostStartRequest): boolean {
 	);
 }
 
+function managedSessionName(itemId: string, runId: number): string {
+	return `auto-${itemId.slice(0, 6)}-r${runId}`;
+}
+
+async function confirmManagedStartupAbsent(
+	{ directory, tmux }: { directory: string; tmux: string },
+	run: TrackerRunReceipt,
+	signal: AbortSignal
+) {
+	const { node, item_id: itemId, id: runId } = run;
+	const key = attemptKey(run);
+	const path = join(directory, trackerManagedToken(node, key));
+	const name = managedSessionName(itemId, runId);
+	const record = checkTrackerManagedReceipt(path, node, key);
+	if (record && (record.itemId !== itemId || record.runId !== runId || record.tmux !== name))
+		return false;
+	const probe = await managedTmuxEnvironment(tmux, node, name, signal);
+	return (
+		probe.code === 1 && missingTmuxSession(probe.stderr, name) && !hasManagedStartupEvidence(path)
+	);
+}
+
 function reserveLaunchDirectory(path: string): boolean {
 	try {
 		mkdirSync(path, { mode: 0o700 });
@@ -122,7 +149,7 @@ async function prepareManagedLaunch(
 		itemId: input.itemId,
 		runId: input.runId,
 		token: trackerManagedToken(input.node, input.key),
-		tmux: `auto-${input.itemId.slice(0, 6)}-r${input.runId}`,
+		tmux: managedSessionName(input.itemId, input.runId),
 		issuedAt: Date.now()
 	};
 	writeFileSync(briefPath, managedBrief(input), { mode: 0o600, flag: 'wx' });
@@ -147,23 +174,20 @@ async function inspectManagedSession(
 	const path = join(directory, trackerManagedToken(node, key));
 	const record = checkTrackerManagedReceipt(path, node, key);
 	if (!record) return undefined;
-	const result = await runTrackerHostCommand(
-		tmux,
-		[
-			'-L',
-			trackerSocket(node),
-			'show-environment',
-			'-t',
-			`=${record.tmux}`,
-			'HARNESS_TRACKER_ATTEMPT'
-		],
-		signal
-	);
+	const result = await managedTmuxEnvironment(tmux, node, record.tmux, signal);
 	const live =
 		result.code === 0 && result.stdout.trim() === `HARNESS_TRACKER_ATTEMPT=${record.token}`;
 	const absent = result.code === 1 && missingTmuxSession(result.stderr, record.tmux);
 	const presence = live ? 'live' : 'unknown';
 	return trackerManagedEvidence(path, record, absent ? 'absent' : presence);
+}
+
+function managedTmuxEnvironment(tmux: string, node: string, name: string, signal: AbortSignal) {
+	return runTrackerHostCommand(
+		tmux,
+		['-L', trackerSocket(node), 'show-environment', '-t', `=${name}`, 'HARNESS_TRACKER_ATTEMPT'],
+		signal
+	);
 }
 
 function missingTmuxSession(stderr: string, name: string): boolean {

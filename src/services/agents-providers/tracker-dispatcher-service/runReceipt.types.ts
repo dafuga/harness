@@ -72,6 +72,7 @@ export type TrackerDispatchEvent =
 			usage?: TrackerReceiptUsage;
 	  }
 	| { type: 'startup-failed'; reason: string; exitCode?: number | null }
+	| { type: 'never-started' }
 	| { type: 'verified'; passed: boolean; reason?: string; usage?: TrackerReceiptUsage }
 	| { type: 'resume'; session: TrackerSessionEvidence }
 	| { type: 'reject'; reason: string };

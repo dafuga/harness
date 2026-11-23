@@ -67,8 +67,13 @@ Keychain entries.
 
 ## Paired iPhone qualification
 
-Use a separate development build with bundle ID `com.dafuga.harness.vaultfixture`. Run the local
-renderer sync before building in Xcode. Keep the installed Harness app and its pairing intact.
+The native Vault inbox belongs to the standard Harness iOS app (`com.dafuga.harness`). The
+paired broker route belongs to the standard Harness Mac app (`dev.harness.desktop`).
+
+For this synthetic test only, use a Debug build with bundle ID `com.dafuga.harness.vaultfixture`
+and set `SWIFT_ACTIVE_COMPILATION_CONDITIONS='DEBUG HARNESS_VAULT_FIXTURE'`. Run the local renderer
+sync before building in Xcode. This build is for development and acceptance only. Keep the
+installed Harness app and its pairing intact.
 Pair the fixture app with the test desktop using Harness Remote. The desktop's public
 `window.harnessRemote.status()` response lists each approved device's `deviceId` and `generation`.
 Select the IDs of the fixture app's pairing.
@@ -106,9 +111,9 @@ node "$fixture_dir/phone-qualification.mjs" "$fixture_dir/remote.json" "$fixture
 
 Open and review a fresh request for each run, then select the matching decision and use Face ID.
 The fixture prints one PASS line after the runner verifies the decision and, for approval, the
-sealed test token. The run uses a disposable local broker and contacts no provider. In the Debug
-build, use **Legacy test** to review and save a fresh synthetic legacy entry with Face ID. The app
-shows a receipt after it reopens the same login from the device-only Keychain.
+sealed test token. The run uses a disposable local broker and contacts no provider. In the fixture
+build, use **Legacy test** to review and save a fresh synthetic legacy entry with Face ID. The
+fixture shows a receipt after it reopens the same login from the device-only Keychain.
 
 To qualify expiry and interruption, run the same command with `expired` or `interrupted` as
 its final argument. In each case, open the synthetic request on the signed iPhone and keep its

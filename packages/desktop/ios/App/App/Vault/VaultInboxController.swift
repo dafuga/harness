@@ -19,7 +19,7 @@ final class VaultInboxController: UITableViewController {
         title = "Vault"
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(close))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(reload))
-        #if DEBUG
+        #if DEBUG && HARNESS_VAULT_FIXTURE
         addLegacyFixtureControl()
         #endif
         perform { self.inbox = try await VaultInbox(session: self.session) }

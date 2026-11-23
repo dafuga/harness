@@ -1,0 +1,61 @@
+{
+	"name": "a6fdvd-u10-iphone-workspace-footer",
+	"goal": "U10 iPhone workspace footer: a remote (paired) workspace shows one status line 'Synthetic Mac · <phone>' with one Disconnect, no 'Local project'; plus addendum: connected phone home drops the 'Signed in with Google · Sign out' line and Recent projects rows get a chevron (design record specification/designs/full-pass/README.md, section U10)",
+	"createdAt": "2026-11-23T19:24:56.061Z",
+	"updatedAt": "2026-11-23T19:29:23.375Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-23T19:29:20.364Z",
+			"evidence": "Failing behavior: on a paired (online) iPhone workspace the footer shows Local project, a Shared projects line with Disconnect, and a Computer connection line with a second Disconnect; the connected home shows Signed in with Google and no chevron on Recent projects rows. Expected per design record U10 and addendum: one status line 'Connected to Synthetic Mac · Ada iPhone' with one Disconnect, no Local project, no Signed in line on the connected home, chevrons on phone rows."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-23T19:29:21.704Z",
+			"evidence": "Existing ui-remote-phone e2e covers the phone connected state at 320/390 and the paired workspace only through the lost-computer test, which asserts the compact region but not the footer's Disconnect count or Local project text. Reusable change: strengthened the same spec's connected test and added one paired-workspace test in the same file (same fixture, same viewport)."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-23T19:29:23.375Z",
+			"evidence": "Red: loop record a6fdvd-u10-iphone-workspace-footer --phase red at commit 6e456a3c04, command bunx playwright test ui-remote-phone --grep 'paired workspace|connected at' fails at 'Signed in with Google' expected 0 received 1; the paired-workspace test fails at its Connected to Synthetic Mac · Ada iPhone assertion on the same unchanged main."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

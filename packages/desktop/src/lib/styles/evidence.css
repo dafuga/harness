@@ -16,6 +16,23 @@
 .entity-main .runtime-evidence > .row > h2 {
 	flex-basis: 100%;
 }
+/* With nothing recorded the heading and its chip share one line, and the card says so in one
+   muted line under them, not in a boxed empty state. */
+.entity-main .runtime-evidence:has(> .empty) > .row {
+	padding-bottom: 0;
+	border-bottom: 0;
+}
+.entity-main .runtime-evidence:has(> .empty) > .row > h2 {
+	flex-basis: auto;
+}
+.entity-main .runtime-evidence:has(> .empty) .runtime-evidence-chip {
+	display: none;
+}
+.runtime-evidence > .empty {
+	padding: 0;
+	margin: var(--hx-space-8) 0 0;
+	text-align: left;
+}
 .runtime-card {
 	padding: var(--hx-space-16) 0;
 	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);

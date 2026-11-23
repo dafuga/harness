@@ -40,6 +40,7 @@
 			"trackerManagedToken",
 			"checkTrackerManagedReceipt",
 			"trackerManagedEvidence",
+			"hasManagedStartupEvidence",
 			"validateManagedProfiles",
 			"privateTrackerDirectory",
 			"trackerManagedProviderCommand",
@@ -158,6 +159,11 @@
 			{
 				"name": "trackerManagedEvidence.presence",
 				"type": "TrackerManagedPresence",
+				"required": true
+			},
+			{
+				"name": "hasManagedStartupEvidence.directory",
+				"type": "string",
 				"required": true
 			},
 			{
@@ -566,6 +572,24 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "hasManagedStartupEvidence",
+				"inputs": [
+					{
+						"name": "hasManagedStartupEvidence.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hasManagedStartupEvidence",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "validateManagedProfiles",
 				"inputs": [
 					{
@@ -899,6 +923,11 @@
 	"dependencies": [
 		{
 			"unit": "adapter.projects-sessions-tracker-host-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-tracker-dispatcher",
 			"via": "import",
 			"origin": "derived"
 		},

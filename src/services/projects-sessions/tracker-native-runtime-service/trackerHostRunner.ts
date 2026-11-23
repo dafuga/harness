@@ -58,7 +58,8 @@ export function trackerHostRunner(
 			legacySession,
 			async observe(run: TrackerRunReceipt, key: string) {
 				return recordedHostEvent(run, { key, sessions, items, legacySession });
-			}
+			},
+			confirmNeverStarted: driver.confirmNeverStarted?.bind(driver)
 		},
 		sessions(itemId: string) {
 			return {
