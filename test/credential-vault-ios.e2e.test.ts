@@ -12,6 +12,7 @@ import type {
 	VaultSessionRequest
 } from '../src/validators/accounts-access/VaultWireValidator.types';
 import { origin, sessionRequest, vaultBroker } from './support/credential-vault/broker';
+import type { NativeVaultTestRun } from './credential-vault-ios.e2e.test.types';
 
 const deviceId = 'synthetic-native-iphone';
 const ios = 'packages/desktop/ios/App/App';
@@ -92,15 +93,8 @@ function nativePhone(binary: string) {
 	};
 }
 
-type Run = {
-	fixture: ReturnType<typeof vaultBroker>;
-	phone: ReturnType<typeof nativePhone>;
-	devices: VaultDeviceRepository;
-	broker: VaultBrokerService;
-};
-
 async function verifyDecision(
-	run: Run,
+	run: NativeVaultTestRun,
 	method: VaultSessionRequest['method'],
 	decision: string,
 	credential: Record<string, string> | null
@@ -134,11 +128,14 @@ async function verifyDecision(
 	}
 }
 
-function challenge(run: Run) {
+function challenge(run: NativeVaultTestRun) {
 	return { origin, deviceId, ...run.devices.issue(deviceId) };
 }
 
-async function verifyNativeRefusals(run: Run, request: VaultQueueEntry): Promise<void> {
+async function verifyNativeRefusals(
+	run: NativeVaultTestRun,
+	request: VaultQueueEntry
+): Promise<void> {
 	const wrongKey = { ...request, runnerPublicKey: run.fixture.seal.runnerKey().publicKey };
 	const expired = { ...request, expiresAt: Date.now() - 1 };
 	for (const bad of [wrongKey, expired]) {
