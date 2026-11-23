@@ -100,7 +100,8 @@ function planNativeLaunch(
 		computer: target,
 		launch_target: target,
 		launch_source: 'manual',
-		launch_pick: null
+		launch_pick: null,
+		launch_hold: null
 	};
 }
 

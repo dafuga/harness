@@ -37,6 +37,7 @@ const textFields = new Set([
 	'launch_target',
 	'launch_source',
 	'launch_pick',
+	'launch_hold',
 	'schedule_status',
 	'ignored_reason',
 	'ignored_by',

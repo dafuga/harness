@@ -21,6 +21,7 @@ export function serializeTrackerItem(row: TrackerItemRow, notes: SqliteStatement
 		launch_target: nullIfEmpty(row.launch_target),
 		launch_source: nullIfEmpty(row.launch_source),
 		launch_pick: nullIfEmpty(row.launch_pick),
+		launch_hold: nullIfEmpty(row.launch_hold),
 		schedule_off: Boolean(Number(row.schedule_off)),
 		schedule_status: nullIfEmpty(row.schedule_status),
 		model: nullIfEmpty(row.model),

@@ -32,6 +32,13 @@ export interface TrackerLaunchIntent {
 	source: TrackerLaunchSource;
 	target: string | null;
 	scheduledPick?: TrackerLaunchPick;
+	/** Last reason the queued request could not start yet; cleared when a run reserves. */
+	hold?: TrackerLaunchHold;
+}
+
+export interface TrackerLaunchHold {
+	reason: string;
+	at: number;
 }
 
 export interface TrackerDispatchItem extends TrackerLaunchOptions {

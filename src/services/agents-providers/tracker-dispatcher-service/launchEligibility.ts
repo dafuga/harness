@@ -78,6 +78,22 @@ export function skip(
 	return { result: { status, reason } };
 }
 
+/**
+ * Keep a queued request held with its reason. The hold is written only when the reason
+ * changes, so repeated dispatch ticks do not rewrite the item.
+ */
+export function holdQueuedLaunch(
+	intent: TrackerLaunchIntent,
+	reason: string,
+	now: number
+): TrackerDispatchDecision {
+	if (intent.hold?.reason === reason) return skip('held', reason);
+	return {
+		result: { status: 'held', reason },
+		writes: { item: { launch: { ...intent, hold: { reason, at: now } } } }
+	};
+}
+
 export function dueOwner(
 	item: TrackerDispatchItem,
 	due: TrackerDuePolicy,

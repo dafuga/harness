@@ -14,6 +14,7 @@ import {
 	canonicalNode,
 	dueItemHold,
 	hasOpenSession,
+	holdQueuedLaunch,
 	mayScheduleHere,
 	ownsLaunch,
 	skip,
@@ -32,10 +33,10 @@ export function claimLaunch(
 	if (snapshot.runs.some((run) => run.auto_token === token))
 		return skip('held', 'launch token was already claimed');
 	const hold = claimHold(snapshot, { item, grant }, policy, now);
-	if (hold) return skip('held', hold);
+	if (hold) return holdQueuedLaunch(item.launch, hold, now);
 	const pick = item.launch.scheduledPick ?? policy.pickModel(item);
 	const problem = policy.admit(item, item.launch, 'error' in pick ? null : pick.rung);
-	if (problem) return skip('held', problem);
+	if (problem) return holdQueuedLaunch(item.launch, problem, now);
 	const run = queueRun(snapshot, { token, item, pick }, policy, now);
 	if ('error' in pick) return invalidPick(run, pick.error, now);
 	return reserveStart(item, { run, rung: pick.rung }, policy, now);
@@ -176,6 +177,7 @@ function reserveStart(
 		},
 		writes: {
 			runs: [reserved],
+			...(intent.hold && { item: { launch: { ...intent, hold: undefined } } }),
 			...(policy.hub && intent.source === 'due' && { lastDueStartAt: now })
 		}
 	};
