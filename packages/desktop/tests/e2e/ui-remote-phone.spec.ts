@@ -104,6 +104,8 @@ for (const width of [320, 390]) {
 			await expect(panel.getByRole('button', { name: 'Disconnect', exact: true })).toHaveCount(0);
 			await expect(page.getByText(/^Key /)).toHaveCount(0);
 			await expect(page.getByText(`This phone: ${deviceName}`)).toHaveCount(0);
+			await expect(page.getByText('Signed in with Google')).toHaveCount(0);
+			await expect(projects(page).first().locator('.recent-chevron')).toBeVisible();
 			expect(await fits(page)).toBe(true);
 			await remoteEvidence(page, testInfo, 'phone-connected');
 			await chip.click();

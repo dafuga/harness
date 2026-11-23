@@ -105,7 +105,7 @@
 		phone={local && available && workspace.remote.host ? phoneAccess : undefined}
 	>
 		{#if available && !local}<RemoteConnection {workspace} />{/if}
-		{#if account.signedIn}
+		{#if account.signedIn && (local || remote.phone.status?.state !== 'online')}
 			<hx-p class="account-status">
 				Signed in with Google
 				<hx-button type="button" onclick={account.signOut}>Sign out</hx-button>

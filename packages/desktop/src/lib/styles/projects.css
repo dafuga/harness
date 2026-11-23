@@ -102,6 +102,16 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
+/* A trailing chevron on a phone row: a drawn, muted arrow that says the row opens. */
+.recent-chevron {
+	display: block;
+	flex: none;
+	width: var(--hx-space-8);
+	height: var(--hx-space-8);
+	border-top: var(--hx-border-thick) solid var(--hx-color-text-muted);
+	border-right: var(--hx-border-thick) solid var(--hx-color-text-muted);
+	transform: rotate(45deg);
+}
 .recent-empty {
 	margin: 0;
 	padding: var(--hx-space-14) 0;
