@@ -34,7 +34,7 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 Read `harness info ui-design` before designing or changing a screen.
 
 - One main piece per screen. A screen has one main UI piece (a list, a board, a form or a canvas). Everything else is a primary action above it or quiet status below it. Two main pieces need two screens, tabs or a dialog.
-- Forms never sit inline on an overview. Create, edit, connect and settings forms open from a button in a dialog (the shared Modal) or on their own page. Mark overview screens with <!-- @harness-view overview -->; harness audit reports overview-inline-form for a form control or form component outside a dialog there.
+- Forms never sit inline on an overview. Create, edit, connect and settings forms open from a button in a dialog (the shared Modal) or on their own page. Mark overview screens with <!-- @harness-view overview -->; harness audit reports overview-inline-form for a form control or form component outside a dialog there. A search field inside a role="search" landmark only narrows the main piece and is allowed.
 - Primary actions are buttons in one short row above the main piece. A screen has at most one filled primary button (harness audit reports overview-single-primary); the rest are secondary buttons. Labels are short verbs in sentence case, such as New project.
 - Status is quiet. Connection, sync and account state is one short muted line or a small chip beside or below the main piece. Its details and settings open in a dialog; never stack full status panels on a landing screen.
 - Group by job, in this order: primary actions, the main piece, quiet status. Keep to about three groups and let spacing, not borders or headings, separate them.

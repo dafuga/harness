@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_lo2f475bxn -->
+<!-- @harness-view overview -->
 <script lang="ts">
 	import EmptyState from '$shared/explorer-ui/explorer-kit/EmptyState.svelte';
 	import { helperContract } from '../../../../../src/utils/development-tooling/helperContract';
@@ -19,8 +20,22 @@
 	const heading = $derived(
 		workspace.category === 'functions'
 			? 'Helpers'
-			: workspace.category[0].toUpperCase() + workspace.category.slice(1)
+			: workspace.category === 'apis'
+				? 'APIs'
+				: workspace.category[0].toUpperCase() + workspace.category.slice(1)
 	);
+	/** One quiet line: how many are listed, and of how many when search or filters narrow it. */
+	const count = $derived.by(() => {
+		const total = (workspace.snapshot?.entities || []).filter(
+			(e) => e.category === workspace.category
+		).length;
+		const plural = heading === 'APIs' ? heading : heading.toLowerCase();
+		const noun = entities.length === 1 ? plural.replace(/s$/, '') : plural;
+		const narrowed = search || active > 0;
+		return narrowed
+			? `${entities.length} of ${total} ${plural} shown`
+			: `${entities.length} ${noun}`;
+	});
 	const nameOf = (entity: CatalogEntity) =>
 		entity.category === 'functions' && !entity.planned ? entity.title : explorerName(entity);
 	const searchText = (entity: CatalogEntity) => {
@@ -67,11 +82,10 @@
 </script>
 
 <hx-main class="catalog">
-	<hx-p class="breadcrumb">{workspace.snapshot?.project.name} › {heading}</hx-p>
 	<hx-div class="row">
 		<hx-div>
 			<hx-h1>{heading}</hx-h1>
-			<hx-p>Browse {heading.toLowerCase()} and understand your project.</hx-p>
+			<hx-p class="catalog-count" role="status">{count}</hx-p>
 		</hx-div>
 	</hx-div>
 	<!-- Right above the list: its search first, then filters that narrow it together. -->
@@ -122,6 +136,11 @@
 	.catalog-tools {
 		flex-wrap: nowrap;
 		gap: var(--hx-space-10);
+	}
+	.catalog-count {
+		margin: var(--hx-space-4) 0 0;
+		color: var(--hx-color-text-muted);
+		font-size: var(--hx-type-size-sm);
 	}
 	.catalog-tools > input {
 		flex: 1 1 0;

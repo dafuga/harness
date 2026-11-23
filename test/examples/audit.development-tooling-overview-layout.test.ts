@@ -119,3 +119,25 @@ test('Reports more than one primary button on an overview', () => {
 		{ name: 'allows one primary button', ...one }
 	]);
 });
+
+test('Allows a search field that narrows the main piece', () => {
+	const state = 'allows-a-search-field-that-narrows-the-main-piece';
+	const search = run(
+		`${marker}${imports}<hx-div role="search" aria-label="Find projects"><hx-input type="search" aria-label="Search projects" /></hx-div><ProjectList />`
+	);
+	expect(search.output).toEqual([]);
+	const outside = run(`${marker}${imports}<hx-input type="search" /><ProjectList />`);
+	expect(outside.output).toEqual([
+		{
+			path: 'src/components/Home.svelte',
+			rule: 'overview-inline-form',
+			message:
+				'Open hx-input in a dialog or on its own page; an overview screen shows no inline form.'
+		}
+	]);
+
+	recordExampleCases(meta(state), [
+		{ name: 'allows a field inside a search landmark', ...search },
+		{ name: 'reports a field outside one', ...outside }
+	]);
+});
