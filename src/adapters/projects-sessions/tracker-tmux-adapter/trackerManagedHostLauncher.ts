@@ -159,9 +159,18 @@ async function inspectManagedSession(
 		],
 		signal
 	);
-	return trackerManagedEvidence(
-		path,
-		record,
-		result.code === 0 && result.stdout.trim() === `HARNESS_TRACKER_ATTEMPT=${record.token}`
+	const live =
+		result.code === 0 && result.stdout.trim() === `HARNESS_TRACKER_ATTEMPT=${record.token}`;
+	const absent = result.code === 1 && missingTmuxSession(result.stderr, record.tmux);
+	const presence = live ? 'live' : 'unknown';
+	return trackerManagedEvidence(path, record, absent ? 'absent' : presence);
+}
+
+function missingTmuxSession(stderr: string, name: string): boolean {
+	return (
+		stderr.trim() === `no such session: =${name}` ||
+		/^(?:no server running on |no sessions$|error connecting to .+ \(No such file or directory\)$)/.test(
+			stderr.trim()
+		)
 	);
 }

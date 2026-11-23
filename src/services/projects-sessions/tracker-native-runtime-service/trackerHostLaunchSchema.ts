@@ -5,7 +5,7 @@ export const hostSession = z.strictObject({
 	itemId: z.string().min(1).max(80),
 	key: z.string().min(1).max(512),
 	id: z.string().min(1).max(200),
-	state: z.enum(['live', 'exited']),
+	state: z.enum(['live', 'exited', 'lost']),
 	startedAt: z.int().nonnegative(),
 	activityAt: z.int().nonnegative().optional(),
 	exitCode: z.int().min(0).max(255).optional(),

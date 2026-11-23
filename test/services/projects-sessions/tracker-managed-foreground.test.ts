@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, unlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test } from 'vitest';
@@ -27,7 +27,7 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 		const runtime = new TrackerNativeRuntimeService(
 			database,
 			trackerNodeRuntime(foregroundConfig(root, config), (scope) => {
-				expect(scope).toMatchObject({ itemId, runId: 1, apiPort: 49281 });
+				expect(scope).toMatchObject({ itemId, apiPort: 49281 });
 				expect(JSON.parse(scope.key)).toEqual([itemId, expect.any(String), 1]);
 				writeFileSync(scope.path, 'synthetic host-signer fixture', { flag: 'wx', mode: 0o600 });
 			})
@@ -57,9 +57,49 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 		});
 		expect(launched.guestAuthFile.startsWith(launched.cwd + '/')).toBe(false);
 		expect(existsSync(launched.guestAuthFile)).toBe(false);
+		await verifyLostSession(runtime, database, config.stateDirectory);
 	} finally {
 		database.close();
 	}
+}
+
+async function verifyLostSession(
+	runtime: TrackerNativeRuntimeService,
+	database: DatabaseSync,
+	attempts: string
+) {
+	const signal = new AbortController().signal;
+	expect((await itemRequest(runtime, 'reopen')).ok).toBe(true);
+	expect((await itemRequest(runtime, 'unlaunch')).ok).toBe(true);
+	expect((await itemRequest(runtime, 'launch')).ok).toBe(true);
+	await runtime.scheduler!.tick(signal);
+	const active = readdirSync(attempts).find((entry) => {
+		const path = join(attempts, entry, 'receipt.json');
+		return existsSync(path) && JSON.parse(readFileSync(path, 'utf8')).runId === 2;
+	});
+	expect(active).toBeDefined();
+	const attempt = join(attempts, active!);
+	unlinkSync(join(attempt, 'exit'));
+	const probe = join(attempts, '..', 'tmux-presence');
+	const token = readFileSync(join(attempt, 'started'), 'utf8').trim();
+	for (const reply of [`HARNESS_TRACKER_ATTEMPT=${token}`, 'tmux inventory permission denied']) {
+		writeFileSync(probe, reply);
+		await runtime.scheduler!.tick(signal);
+		expect(database.prepare('SELECT state FROM runs WHERE id = 2').get()).toEqual({
+			state: 'running'
+		});
+	}
+	unlinkSync(probe);
+	await runtime.scheduler!.tick(signal);
+	expect(database.prepare('SELECT state,outcome FROM runs WHERE id = 2').get()).toEqual({
+		state: 'finished',
+		outcome: 'abandoned'
+	});
+	expect((await itemRequest(runtime, 'launch')).ok).toBe(true);
+	await runtime.scheduler!.tick(signal);
+	expect(database.prepare('SELECT state FROM runs WHERE id = 3').get()).toEqual({
+		state: 'running'
+	});
 }
 
 function itemRequest(runtime: TrackerNativeRuntimeService, action: string) {
@@ -92,7 +132,11 @@ function foregroundConfig(
 			hostEffects: {
 				mode: 'active',
 				checkpoint: 'fixture',
-				launch: { managed, repositories: { Harness: { repo: root, platform: 'linux' } } }
+				launch: {
+					maxConcurrent: 1,
+					managed,
+					repositories: { Harness: { repo: root, platform: 'linux' } }
+				}
 			}
 		}),
 		{ mode: 0o600 }

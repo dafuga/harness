@@ -55,7 +55,7 @@ export interface TrackerRunReceipt extends TrackerReceiptUsage {
 export interface TrackerSessionEvidence {
 	key: string;
 	id: string;
-	state: 'live' | 'exited';
+	state: 'live' | 'exited' | 'lost';
 	startedAt: number;
 	tmux?: string;
 }
@@ -64,7 +64,7 @@ export type TrackerDispatchEvent =
 	| { type: 'session'; session: TrackerSessionEvidence }
 	| {
 			type: 'monitor';
-			session: 'live' | 'exited' | 'unknown';
+			session: 'live' | 'exited' | 'lost' | 'unknown';
 			activityAt?: number;
 			exitCode?: number | null;
 			verify?: boolean;

@@ -22,6 +22,7 @@ export function monitorRun(
 	const { item } = snapshot;
 	if (item?.deleted) return abandon(run, 'item deleted', clock.now);
 	if (item?.status === 'done') return monitorDone(snapshot, run, event, clock);
+	if (event.session === 'lost') return abandon(run, 'Managed tmux session disappeared', clock.now);
 	if (run.state === 'verifying') {
 		if (!item) return skip('held', 'item missing during verification');
 		return recordRun(reviseRun(run, { state: 'running' }));

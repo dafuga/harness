@@ -38,19 +38,21 @@ export function checkTrackerManagedReceipt(
 export function trackerManagedEvidence(
 	directory: string,
 	receipt: TrackerManagedReceipt,
-	live: boolean
+	presence: 'live' | 'absent' | 'unknown'
 ): TrackerHostSession | undefined {
 	const phase = privateRecord(join(directory, 'started'))?.trim();
 	if (phase !== receipt.token) return undefined;
 	const exitCode = managedExitCode(join(directory, 'exit'));
-	if (!live && exitCode === undefined) return undefined;
+	if (presence === 'unknown' && exitCode === undefined) return undefined;
+	let state: TrackerHostSession['state'] = 'exited';
+	if (exitCode === undefined) state = presence === 'absent' ? 'lost' : 'live';
 	return {
 		itemId: receipt.itemId,
 		key: receipt.key,
 		id: receipt.token,
 		tmux: receipt.tmux,
 		startedAt: receipt.issuedAt,
-		state: exitCode === undefined ? 'live' : 'exited',
+		state,
 		exitCode
 	};
 }
