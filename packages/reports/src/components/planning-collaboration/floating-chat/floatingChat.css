@@ -34,6 +34,10 @@
 	background: var(--hx-color-background);
 	color: var(--hx-color-primary);
 }
+/* While its panel is open the panel's own close button is the way back. */
+.floating-chat-bubble[hidden] {
+	display: none;
+}
 .floating-chat-bubble svg {
 	fill: none;
 	stroke: currentColor;

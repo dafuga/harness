@@ -101,6 +101,7 @@
 		bind:this={bubble}
 		type="button"
 		class="floating-chat-bubble"
+		hidden={open}
 		aria-label={label}
 		aria-expanded={open}
 		aria-controls="{id}-panel"
