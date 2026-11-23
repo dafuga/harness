@@ -132,18 +132,6 @@ export function sqliteFixtureLease(path: string): TrackerAdapterLease {
 	return new TrackerAdapterLeaseAdapter('fixture-owner', path);
 }
 
-export function refuseInsert(
-	database: DatabaseSync,
-	table: 'adapter_links' | 'adapter_events'
-): void {
-	database.exec(`CREATE TRIGGER refuse_receipt BEFORE INSERT ON ${table}
-		BEGIN SELECT RAISE(ABORT, 'fixture receipt refused'); END`);
-}
-
-export function sourceRun(database: DatabaseSync): unknown {
-	return database.prepare('SELECT cursor, last_run, last_error FROM adapter_sources').get();
-}
-
 function fixtureIssueLookup(feed: TrackerAdapterFeed) {
 	return async (_source: unknown, number: string) =>
 		feed.issues.find((issue) => String(issue.number) === number);

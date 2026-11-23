@@ -77,7 +77,7 @@ export function commitTrackerIntake(
 		remote_state: owned ? record.state : null,
 		events_after: record.historical ? now : source.enabled_at,
 		owned: Number(owned),
-		sync_pending: Number(owned && record.syncBack)
+		sync_pending: Number(record.syncBack && (owned || !record.followUp))
 	};
 	const fields = owned
 		? newItemFields(source, record, context, now)
