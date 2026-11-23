@@ -2,7 +2,7 @@
 	"name": "jw0799-vault-ios",
 	"goal": "Prove Harness iOS can sign scoped approvals and seal synthetic entries to the exact runner, then verify physical Face ID and legacy-entry migration.",
 	"createdAt": "2026-11-23T15:03:58.435Z",
-	"updatedAt": "2026-11-23T20:21:15.954Z",
+	"updatedAt": "2026-11-23T20:25:45.089Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -67,7 +67,9 @@
 		{
 			"id": "single-app",
 			"title": "Verify Vault ships in the standard Harness apps and the legacy fixture requires its dedicated test build.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T20:25:45.089Z",
+			"evidence": "At 6c33fb7162 the fixture boundary regression failed on the missing dedicated compile condition. At 89538ccc3f all four iOS source boundary tests passed. Unsigned standard iOS Debug and Release builds declare com.dafuga.harness, include VaultInboxController, and exclude the Legacy test code. The explicitly opted-in Debug fixture declares com.dafuga.harness.vaultfixture and includes the Legacy test code. The standard Harness Mac build emits main and preload bundles, with the paired Vault broker route present in main. On MB2 three focused browser cases and two software iOS cases passed. Physical Face ID and Keychain receipts remain pending."
 		}
 	],
 	"evaluators": [
