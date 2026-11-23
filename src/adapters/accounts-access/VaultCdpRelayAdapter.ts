@@ -1,11 +1,12 @@
 // @harness-uid u_xadic2nwwc
-import { ExpectedCliError } from '../../core/development-tooling/errors';
+import { execFileSync } from 'node:child_process';
 import { chmodSync, lstatSync, mkdirSync, rmdirSync } from 'node:fs';
 import { createServer, type IncomingMessage, type Server } from 'node:http';
 import { dirname } from 'node:path';
 import type { Duplex } from 'node:stream';
 import { clearInterval, setInterval } from 'node:timers';
 import { WebSocket, WebSocketServer } from 'ws';
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { maxCdpFrameBytes } from './vault-cdp-relay-adapter/VaultCdpPipe';
 import type { VaultCdpRelayAdapterConfig } from './VaultCdpRelayAdapter.types';
 
@@ -32,7 +33,9 @@ export class VaultCdpRelayAdapter {
 
 	async listen(): Promise<void> {
 		const directory = dirname(this.path);
-		requireRunDirectory(dirname(directory));
+		const uid = this.config.keeper.relaySessionUid(this.config.lease);
+		const crossUser = uid !== process.getuid?.();
+		requireRunDirectory(dirname(directory), crossUser);
 		mkdirSync(directory, { mode: 0o700 });
 		this.ownsDirectory = true;
 		try {
@@ -41,6 +44,7 @@ export class VaultCdpRelayAdapter {
 				this.server.listen(this.path, resolve);
 			});
 			chmodSync(this.path, 0o600);
+			if (crossUser) grantSessionAccess(this.path, uid);
 			this.startReading();
 		} catch (error) {
 			await this.close();
@@ -120,12 +124,37 @@ export class VaultCdpRelayAdapter {
 	};
 }
 
-function requireRunDirectory(path: string): void {
-	mkdirSync(path, { recursive: true, mode: 0o700 });
-	const parent = lstatSync(path);
-	if (!parent.isDirectory() || parent.uid !== process.getuid?.() || parent.mode & 0o077) {
-		throw new ExpectedCliError('CDP relay needs a private, executor-owned run directory.');
+function requireRunDirectory(path: string, crossUser: boolean): void {
+	if (!crossUser) mkdirSync(path, { recursive: true, mode: 0o700 });
+	const parent = lstatSync(path, { throwIfNoEntry: false });
+	const mode = crossUser ? 0o711 : 0o700;
+	if (
+		parent?.isDirectory() &&
+		parent.uid === process.getuid?.() &&
+		(parent.mode & 0o7777) === mode
+	) {
+		return;
 	}
+	const requirement = crossUser
+		? 'a searchable runtime directory (0711)'
+		: 'a private run directory';
+	throw new ExpectedCliError(`CDP relay needs ${requirement} owned by the executor.`);
+}
+
+function grantSessionAccess(path: string, uid: number): void {
+	if (process.platform !== 'darwin') {
+		throw new ExpectedCliError('Cross-user CDP ACLs require macOS.');
+	}
+	const user = execFileSync('/usr/bin/id', ['-un', String(uid)], {
+		encoding: 'utf8',
+		stdio: ['ignore', 'pipe', 'ignore']
+	}).trim();
+	if (!/^[a-zA-Z_][\w.-]*$/u.test(user)) {
+		throw new ExpectedCliError('Could not resolve the CDP requester to a local ACL identity.');
+	}
+	const principal = `user:${user} allow `;
+	execFileSync('/bin/chmod', ['+a', principal + 'write', path], { stdio: 'ignore' });
+	execFileSync('/bin/chmod', ['+a', principal + 'search', dirname(path)], { stdio: 'ignore' });
 }
 
 function trackPeer(peers: Set<Duplex>, socket: Duplex): void {

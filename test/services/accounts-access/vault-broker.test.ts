@@ -27,7 +27,9 @@ test('an approval signed over the binding is delivered once and opens only in th
 	expect(queue).toHaveLength(1);
 	expect(queue[0]).toMatchObject({ site: 'example-console', mode: 'read', method: 'browser' });
 	expect(queue[0]?.recipe.display).toBe('eeee eeee eeee eeee');
-	expect(queue[0]).not.toHaveProperty('runnerPublicKey');
+	expect(queue[0]?.runnerPublicKey).toBe(run.runner.publicKey);
+	expect(queue[0]?.runnerFingerprint).toBe(run.seal.keyFingerprint(run.runner.publicKey));
+	expect(queue[0]).not.toHaveProperty('receipt');
 	const proof = sign(run, run.input, approval(run.input, run.created, run));
 	expect(run.broker.decide(proof)).toBe('approved');
 	const { approval: delivered } = run.broker.claim(run.ticket, sessionUid);
