@@ -1,7 +1,9 @@
 <!-- @harness-tier page -->
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_xzmlyw4yjt -->
+<!-- @harness-view overview -->
 <script lang="ts">
+	import { formatTime } from '$reports/helpers/strings/formatTime';
 	import LoginPanel from '../../../components/accounts-access/login-panel/LoginPanel.svelte';
 	import HubFrame from '../../../components/shared-primitives/HubFrame.svelte';
 	import type { AccountDevice } from '../../../models/accounts-access/HubAuth.types';
@@ -55,60 +57,46 @@
 		<LoginPanel reason="Sign in with Google to manage the devices on your account." />
 	{:else}
 		<hx-h1>Devices</hx-h1>
-		{#if error}<hx-p role="alert">{error}</hx-p>{/if}
-		{#if devices?.length}
-			<hx-ul class="device-list" aria-label="Signed-in devices">
-				{#each devices as device (device.id)}
-					<hx-li class="hub-card device">
-						<hx-div>
-							<hx-strong>{device.name}</hx-strong>
-							<hx-p class="muted"
-								>Last seen <hx-span>
-									{new Date(device.lastSeenAt).toLocaleString()}
-								</hx-span></hx-p
+		<hx-section class="hub-list" aria-labelledby="hub-devices-title">
+			<hx-div class="hub-list-head"><hx-h2 id="hub-devices-title">Signed-in devices</hx-h2></hx-div>
+			{#if devices?.length}
+				<hx-ul aria-label="Signed-in devices">
+					{#each devices as device (device.id)}
+						<hx-li class="hub-list-row">
+							<hx-span class="hub-list-name"
+								><hx-strong>{device.name}</hx-strong><hx-small
+									>Last seen {formatTime(device.lastSeenAt)}</hx-small
+								></hx-span
 							>
-						</hx-div>
-						{#if confirm === device.id}
-							<hx-button
-								type="button"
-								disabled={Boolean(removing)}
-								onclick={() => void remove(device.id)}>Confirm removal</hx-button
-							>
-							<hx-button
-								type="button"
-								disabled={Boolean(removing)}
-								onclick={() => (confirm = undefined)}>Cancel</hx-button
-							>
-						{:else}
-							<hx-button
-								type="button"
-								aria-label={'Remove ' + device.name}
-								onclick={() => (confirm = device.id)}>Remove</hx-button
-							>
-						{/if}
-					</hx-li>
-				{/each}
-			</hx-ul>
-		{:else if devices}
-			<hx-p>No desktop or iOS devices are signed in.</hx-p>
-		{:else if !error}
-			<hx-p role="status">Loading devices…</hx-p>
-		{/if}
+							<hx-span class="hub-list-meta">
+								{#if confirm === device.id}
+									<hx-button
+										type="button"
+										disabled={Boolean(removing)}
+										onclick={() => void remove(device.id)}>Confirm removal</hx-button
+									>
+									<hx-button
+										type="button"
+										disabled={Boolean(removing)}
+										onclick={() => (confirm = undefined)}>Cancel</hx-button
+									>
+								{:else}
+									<hx-button
+										type="button"
+										aria-label={'Remove ' + device.name}
+										onclick={() => (confirm = device.id)}>Remove</hx-button
+									>
+								{/if}
+							</hx-span>
+						</hx-li>
+					{/each}
+				</hx-ul>
+			{:else if devices}
+				<hx-p class="hub-list-empty">No desktop or iOS devices are signed in.</hx-p>
+			{:else if !error}
+				<hx-p class="hub-list-empty" role="status">Loading devices…</hx-p>
+			{/if}
+			{#if error}<hx-p class="hub-list-empty" role="alert">{error}</hx-p>{/if}
+		</hx-section>
 	{/if}
 </HubFrame>
-
-<style>
-	.device-list {
-		list-style: none;
-		padding: 0;
-		display: grid;
-		gap: var(--hx-space-12);
-	}
-	.device {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: space-between;
-		gap: var(--hx-space-12);
-	}
-</style>

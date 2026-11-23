@@ -47,8 +47,7 @@
 	}
 </script>
 
-<hx-section class="hub-card">
-	<hx-h2>Invite someone</hx-h2>
+<hx-div class="invitation">
 	<hx-form
 		class="hub-form"
 		onsubmit={(event) => {
@@ -91,4 +90,10 @@
 			</hx-div>
 			{#if copied}<hx-p class="muted" role="status">{copied}</hx-p>{/if}
 		</hx-div>{/if}
-</hx-section>
+</hx-div>
+
+<style>
+	.invitation .hub-form {
+		max-width: none;
+	}
+</style>

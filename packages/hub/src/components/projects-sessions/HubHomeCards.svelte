@@ -1,12 +1,14 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_koj2sfjf7g -->
+<!-- @harness-view overview -->
 <script lang="ts">
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import {
 		agentLabels,
 		count,
+		currentAgent,
 		initials,
 		overviewTone,
 		lowestLimit,
@@ -17,16 +19,16 @@
 		warningFor
 	} from './hubHomePresentation';
 	import HubHomeWorkCards from './HubHomeWorkCards.svelte';
-	import type { HomeView, OpenHomeSection, SendHomeChat } from './hubHomeView.types';
+	import type { HomeView, OpenHomeSection } from './hubHomeView.types';
 	import HubHomeCard from './HubHomeCard.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
-	import HubHomeComposer from './HubHomeComposer.svelte';
 	import HubQuotaSubscription from './HubQuotaSubscription.svelte';
 	import { homeDownloadConfig } from '../../configs/public-site/homeDownloadConfig';
 
-	let { view, open, send }: { view: HomeView; open: OpenHomeSection; send: SendHomeChat } =
-		$props();
+	let { view, open }: { view: HomeView; open: OpenHomeSection } = $props();
+	/** The chat opens in the Agents dialog on whoever needs you, as the old inline composer did. */
+	const recipient = $derived(currentAgent(view.agents ?? []));
 	const working = $derived(view.agents?.filter((agent) => agent.state === 'working').length ?? 0);
 	const warning = $derived(lowestLimit(view.quota ?? [], view.now));
 	const lows = $derived(
@@ -103,10 +105,12 @@
 					{attention === 1 ? 'needs' : 'need'} you</Pill
 				>{/if}
 		{/snippet}
-		{#snippet footer()}{#if view.agents}<HubHomeComposer
-					agents={view.agents}
-					{send}
-				/>{/if}{/snippet}
+		{#snippet footer()}{#if recipient}<hx-button
+					type="button"
+					class="po-action hh-message"
+					aria-haspopup="dialog"
+					onclick={() => open('agents', recipient.id)}>Message an agent</hx-button
+				>{/if}{/snippet}
 	</HubHomeCard>
 
 	<HubHomeCard

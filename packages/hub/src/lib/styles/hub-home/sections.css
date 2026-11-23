@@ -27,8 +27,13 @@
 }
 .hh-home .hh-section-foot {
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: flex-end;
+	gap: var(--hx-space-12);
 	margin-top: auto;
+}
+.hh-home .hh-message {
+	margin-right: auto;
 }
 .hh-home .hh-see-all,
 .hh-home .hh-primary,

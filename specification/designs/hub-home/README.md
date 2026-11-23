@@ -85,7 +85,8 @@ Start with:
    using the overview's own `data-extra` phone rule. **See all** names the total ("All 15
    agents"), so the busy state never grows the page.
 5. **Agents is the chat entry point.** Each agent row has a state pill and a **Message** button.
-   The card ends in a composer whose recipient defaults to whoever needs you. The Agents modal is
+   The card ends in a **Message an agent** button that opens the chat in the Agents dialog on
+   whoever needs you (s4mpm1: the home is an overview, so the composer lives only in the dialog). The Agents modal is
    a list grouped by Needs you / Working / Idle / Offline next to a chat pane. Quick-reply buttons
    (for example "Approve Sat 09:00") appear when an agent asks a question. On a phone, the list
    and the chat are two steps of one sheet, with a back button.

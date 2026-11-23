@@ -4,50 +4,76 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import type { ProjectSummary } from 'collaboration';
-	let { projects }: { projects: ProjectSummary[] } = $props();
-	/** The projects this account owns, then the ones it joined; a group without any is not shown. */
-	const groups = $derived(
-		[
-			{ name: 'Owned by you', items: projects.filter((item) => item.role === 'owner') },
-			{ name: 'Shared with you', items: projects.filter((item) => item.role !== 'owner') }
-		].filter((group) => group.items.length)
-	);
+	let {
+		projects,
+		failure = null,
+		overview = false
+	}: {
+		/** Null while the list is read. */
+		projects: ProjectSummary[] | null;
+		/** Why the list could not be read: not set up on this server, or a failed read. */
+		failure?: 'setup' | 'read' | null;
+		/** Offers the quiet Project overview link to the owner the server names. */
+		overview?: boolean;
+	} = $props();
+	/** The projects this account owns come first, then the ones it joined. */
+	const rows = $derived([
+		...(projects ?? []).filter((item) => item.role === 'owner'),
+		...(projects ?? []).filter((item) => item.role !== 'owner')
+	]);
 </script>
 
-{#if projects.length}{#each groups as group (group.name)}<hx-section
-			class="project-list"
-			aria-label={group.name}
-		>
-			<hx-h2>{group.name}</hx-h2>
-			<hx-ul class="project-list">
-				{#each group.items as item (item.id)}<hx-li class="hub-card">
-						<hx-div>
-							<hx-h3>{item.name}</hx-h3>
-							<hx-p class="muted">
-								{item.sourceRepository.owner}/{item.sourceRepository.name} · {item.role}
-							</hx-p>
-						</hx-div>
-						{#if item.role === 'owner'}<hx-a
+<hx-section class="hub-list" aria-labelledby="hub-projects-title">
+	<hx-div class="hub-list-head">
+		<hx-h2 id="hub-projects-title">Your projects</hx-h2>
+		{#if overview}<hx-a href={resolve('/tracker-overview')}>Project overview</hx-a>{/if}
+	</hx-div>
+	{#if failure === 'setup'}<hx-p class="hub-list-empty" role="status"
+			>Shared projects aren’t set up yet.</hx-p
+		>{:else if failure === 'read'}<hx-p class="hub-list-empty" role="alert"
+			>Shared projects couldn’t be loaded. Try again shortly.</hx-p
+		>{:else if !projects}<hx-p class="hub-list-empty">Loading projects…</hx-p
+		>{:else if rows.length}<hx-ul>
+			{#each rows as item (item.id)}<hx-li class="hub-list-row">
+					<hx-a
+						class="hub-list-name"
+						aria-label={`Open ${item.name}`}
+						href={resolve('/projects/[projectId]/harness/[...path]', {
+							projectId: item.id,
+							path: 'pages'
+						})}
+						data-sveltekit-reload
+						><hx-strong>{item.name}</hx-strong><hx-small
+							>{item.sourceRepository.owner}/{item.sourceRepository.name}</hx-small
+						></hx-a
+					>
+					<hx-span class="hub-list-meta"
+						><hx-span class="project-role">{item.role}</hx-span>{#if item.role === 'owner'}<hx-a
+								class="project-members"
 								href={resolve('/projects/[projectId]/members', { projectId: item.id })}
 								data-sveltekit-reload>Members</hx-a
-							>{/if}<hx-a
-							class="outline gold"
-							aria-label={`Open ${item.name}`}
-							href={resolve('/projects/[projectId]/harness/[...path]', {
-								projectId: item.id,
-								path: 'pages'
-							})}
-							data-sveltekit-reload>Open <hx-span>→</hx-span></hx-a
-						>
-					</hx-li>{/each}
-			</hx-ul>
-		</hx-section>{/each}{:else}<hx-section class="hub-card">
-		<hx-h2>No shared projects yet</hx-h2>
-		<hx-p>
-			An owner connects a GitHub repository and creates a project, or sends you an invitation link
-			and its code.
-		</hx-p>
-		<hx-p class="muted">
-			Projects you own or join appear here and on every device signed in with this Google account.
-		</hx-p>
-	</hx-section>{/if}
+							>{/if}</hx-span
+					>
+				</hx-li>{/each}
+		</hx-ul>{:else}<hx-p class="hub-list-empty"
+			>No shared projects yet. Create one from a GitHub repository, or join one with the invitation
+			link and code its owner sends you.</hx-p
+		>{/if}
+</hx-section>
+
+<style>
+	.project-role {
+		text-transform: capitalize;
+	}
+	.project-members {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		color: var(--hx-color-primary);
+	}
+	.hub-list-name {
+		flex: 1 1 12rem;
+		min-height: 44px;
+		align-content: center;
+	}
+</style>

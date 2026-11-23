@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_mqkhzvyhou -->
+<!-- @harness-view overview -->
 <script lang="ts">
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { ProjectSummary } from 'collaboration';
@@ -141,7 +142,7 @@
 					>Shared projects could not be read. Home will try again while it is open.</hx-p
 				>
 			{/if}
-			<HubHomeCards {view} {open} {send} />
+			<HubHomeCards {view} {open} />
 		</hx-main>
 		{#if selected}
 			<HubHomeDialogs

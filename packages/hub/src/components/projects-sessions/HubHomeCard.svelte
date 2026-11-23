@@ -35,8 +35,8 @@
 		{@render badge?.()}
 	</hx-div>
 	<hx-div class="hh-section-body">{@render children()}</hx-div>
-	{@render footer?.()}
 	<hx-div class="hh-section-foot">
+		{@render footer?.()}
 		<hx-button
 			type="button"
 			class="po-action hh-see-all"
