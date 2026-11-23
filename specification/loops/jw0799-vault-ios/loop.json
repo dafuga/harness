@@ -44,6 +44,13 @@
 			"status": "pending"
 		},
 		{
+			"id": "native-storage",
+			"title": "Verify the native reviewed legacy storage contract and receipt.",
+			"status": "complete",
+			"completedAt": "2026-11-23T16:15:05.060Z",
+			"evidence": "Swift verified the sealed legacy vector against its reviewed account and login digest. The synthetic fixture reopened the stored entry and refused expiry, changed envelopes and a failed store without returning a receipt. Device-only Keychain and Face ID code passed iPhoneOS SDK typecheck."
+		},
+		{
 			"id": "runner-preflight",
 			"title": "Verify that only a prepared executor can bind the runner and publish the reviewed request to the inbox.",
 			"status": "pending"
