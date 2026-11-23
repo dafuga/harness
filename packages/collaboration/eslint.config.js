@@ -61,5 +61,13 @@ export default [
 			'max-params': ['error', harnessRuleLimits.maxParameters],
 			'no-nested-ternary': 'error'
 		}
+	},
+	{
+		// Prettier can expand example fixtures and assertions across many physical lines.
+		files: ['test/examples/**/*.test.ts'],
+		rules: {
+			'max-lines': 'off',
+			'max-lines-per-function': 'off'
+		}
 	}
 ];
