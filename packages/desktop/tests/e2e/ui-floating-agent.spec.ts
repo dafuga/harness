@@ -36,7 +36,8 @@ async function scrollToEnd(page: Page) {
 
 async function expectClear(page: Page, target: Locator) {
 	await expect(target).toBeVisible();
-	const floating = await bubble(page).boundingBox();
+	// A hidden button has no box to clear; its absence is the rule being tested.
+	const floating = (await bubble(page).isVisible()) ? await bubble(page).boundingBox() : null;
 	expect(intersects(floating, await target.boundingBox())).toBe(false);
 }
 
@@ -103,6 +104,9 @@ for (const [label, size] of [
 		await page.setViewportSize(size);
 		await designOptionsFixture(page);
 		await page.goto(at(pageRoute));
+		// A laptop opens an entity with its design conversation; that panel closes first.
+		if (size.width > 850)
+			await page.getByRole('button', { name: 'Close conversation', exact: true }).click();
 		await bubble(page).click();
 		await expect(page.getByRole('button', { name: 'Close chat', exact: true })).toBeVisible();
 		await expect(bubble(page)).toBeHidden();
