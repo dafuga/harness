@@ -7,7 +7,8 @@ import type {
 	NativeStartResult
 } from '../../src/models/accounts-access/HubAuth.types';
 import { ORIGIN, ada } from '../support/authFixture';
-import { errorOf, hubFixture } from '../support/hubFixture';
+import { errorOf, hubFixture, type HubFixture } from '../support/hubFixture';
+import type { HubBrowser } from '../support/hubBrowser';
 
 test('logout clears the cookie and invalidates the session on the server', async () => {
 	const hub = await hubFixture();
@@ -104,15 +105,10 @@ test('an internal failure is an opaque 500', async () => {
 	expect(response.status).toBe(500);
 });
 
-test('Google sign-in lists the current browser and native device with account-scoped removal', async () => {
-	const hub = await hubFixture();
-	const browser = hub.browser();
-	const other = hub.browser();
+async function googleNativeAuthorization(hub: HubFixture, browser: HubBrowser) {
 	const start = '/api/auth/native/start';
 	const finish = '/api/auth/native/return';
 	const exchange = '/api/auth/native/exchange';
-	const devices = '/api/auth/native/devices';
-	const account = '/api/account/devices';
 	const verifier = randomToken();
 	const proof = { nonce: randomToken(), resource: 'projects' };
 	const response = await browser.post(start, {
@@ -128,7 +124,6 @@ test('Google sign-in lists the current browser and native device with account-sc
 		'401 session-required'
 	);
 	await hub.signIn(browser);
-	await hub.signIn(other, { sub: 'another-google-subject' });
 	const input = { ...proof, verifier, handoffId: flow.handoffId };
 	const result = await browser.post(finish, { handoffId: flow.handoffId });
 	const callback = new URL(((await result.json()) as { callbackUrl: string }).callbackUrl);
@@ -144,6 +139,17 @@ test('Google sign-in lists the current browser and native device with account-sc
 	expect(await errorOf(await browser.post(exchange, { ...input, callbackCode }))).toBe(
 		'400 handoff-invalid'
 	);
+	return authorization;
+}
+
+test('Google sign-in lists the current browser and native device with account-scoped removal', async () => {
+	const hub = await hubFixture();
+	const browser = hub.browser();
+	const other = hub.browser();
+	const devices = '/api/auth/native/devices';
+	const account = '/api/account/devices';
+	const authorization = await googleNativeAuthorization(hub, browser);
+	await hub.signIn(other, { sub: 'another-google-subject' });
 	const bearer = { authorization: `Bearer ${authorization}` };
 	hub.advance(10 * 60 * 1000);
 	await browser.get('/api/auth/status', bearer);
