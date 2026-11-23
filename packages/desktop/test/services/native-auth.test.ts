@@ -192,3 +192,29 @@ test('a temporary native status failure preserves the encrypted login', async ()
 	await expect(service.status()).rejects.toThrow();
 	expect(store.clear).not.toHaveBeenCalled();
 });
+
+test('a stored session for another Hub is cleared without contacting the current Hub', async () => {
+	const credential = {
+		origin: 'https://other-hub.example.invalid',
+		principalId: 'google:fixture',
+		token: 'synthetic-other-hub-token'
+	};
+	const request = vi.fn(async () =>
+		Response.json({ actor: { id: credential.principalId, emailVerified: true } })
+	);
+	const store = { read: vi.fn(async () => credential), clear: vi.fn(async () => {}) };
+	const http = new HostedHttpAdapter({
+		origin,
+		credentials: store.read,
+		fetch: request as unknown as typeof fetch
+	});
+	const service = new NativeAuthService({
+		origin,
+		http,
+		store: store as unknown as NativeSessionAdapter,
+		open: vi.fn()
+	});
+	expect(await service.status()).toEqual({ configured: true, state: 'signed-out' });
+	expect(request).not.toHaveBeenCalled();
+	expect(store.clear).toHaveBeenCalledOnce();
+});

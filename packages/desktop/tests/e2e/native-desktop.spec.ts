@@ -1,11 +1,21 @@
+import { git, project } from './support/nativeDesktopProjectFixture';
 import { nativeImageFixture } from './native-image-fixture';
 import { nativeCapture } from './native-capture';
+import {
+	completeNativeGoogle,
+	enableFixtureStorage,
+	packagedFixture
+} from './support/nativeGoogleFixture';
+import {
+	electronFixtureEnvironment,
+	makeTemporaryDesktopEntry,
+	startHubSpy
+} from './support/trackerOverviewPublisherFixture';
 import { test, expect, _electron } from '../../../../test/support/browserTest';
 import type { ElectronApplication, Page } from '../../../../test/support/browserTest';
-import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
-import { execFileSync } from 'node:child_process';
+import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join, resolve, isAbsolute } from 'node:path';
+import { join, resolve } from 'node:path';
 import { createRequire } from 'node:module';
 import { createPlanning } from '../../../planning/src/lib/planning/index';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
@@ -13,25 +23,8 @@ import { PlanningFacadeAdapter } from '../../src/adapters/planning-facade-adapte
 
 const desktopRoot = resolve(import.meta.dirname, '../..');
 const electronBinary = createRequire(import.meta.url)('electron') as string;
-const packagedApp = process.env.HARNESS_PACKAGED_APP;
-if (packagedApp && (!isAbsolute(packagedApp) || !packagedApp.endsWith('.app')))
-	throw new Error('HARNESS_PACKAGED_APP must be an absolute macOS .app bundle path.');
+const packagedApp = packagedFixture();
 test.setTimeout(120_000);
-function git(root: string, ...args: string[]) {
-	return execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
-}
-async function project(root: string) {
-	await mkdir(root);
-	git(root, 'init', '-b', 'feat/native');
-	git(root, 'lfs', 'install', '--local');
-	git(root, 'config', 'user.name', 'Harness Native Fixture');
-	git(root, 'config', 'user.email', 'fixture@example.invalid');
-	git(root, 'config', 'commit.gpgsign', 'false');
-	await writeFile(join(root, 'README.md'), 'Disposable native acceptance fixture.\n');
-	git(root, 'add', 'README.md');
-	git(root, 'commit', '-m', 'chore: seed native acceptance');
-	return git(root, 'rev-parse', 'HEAD');
-}
 async function isolation(app: ElectronApplication, page: Page) {
 	const preferences = await app.evaluate(({ BrowserWindow }) => {
 		const contents = BrowserWindow.getAllWindows()[0].webContents;
@@ -185,18 +178,17 @@ test('native isolated window uses real Git LFS planning and rejects historical w
 }) => {
 	const temp = await mkdtemp(join(tmpdir(), 'harness-native-')),
 		root = join(temp, 'repo');
+	const hub = await startHubSpy();
+	const profile = join(temp, 'profile');
 	let app: ElectronApplication | undefined;
 	try {
 		await project(root);
-		const env = Object.fromEntries(
-			Object.entries(process.env).filter(
-				([key, value]) => key !== 'ELECTRON_RUN_AS_NODE' && value !== undefined
-			)
-		) as Record<string, string>;
 		app = await _electron.launch({
 			executablePath: packagedApp ? join(packagedApp, 'Contents/MacOS/Electron') : electronBinary,
-			args: [...(packagedApp ? [] : [desktopRoot]), `--user-data-dir=${join(temp, 'profile')}`],
-			env
+			args: packagedApp
+				? [`--user-data-dir=${profile}`]
+				: [await makeTemporaryDesktopEntry(temp, desktopRoot)],
+			env: { ...electronFixtureEnvironment(), HARNESS_HUB_ORIGIN: hub.origin }
 		});
 		browserErrors.watch(app.context());
 		await app.evaluate(({ dialog }, directory) => {
@@ -204,6 +196,8 @@ test('native isolated window uses real Git LFS planning and rejects historical w
 		}, root);
 		const page = await app.firstWindow();
 		await page.waitForLoadState('domcontentloaded');
+		await enableFixtureStorage(app, profile);
+		await completeNativeGoogle(app, page, hub.login);
 		await isolation(app, page);
 		const unitId = await openDraftThroughUi(page, root);
 		const imageCommit = await committedImage(page, root, unitId);
@@ -211,6 +205,7 @@ test('native isolated window uses real Git LFS planning and rejects historical w
 		await blockedNavigation(app, page);
 	} finally {
 		await app?.close();
+		await hub.close();
 		await rm(temp, { recursive: true, force: true });
 	}
 });

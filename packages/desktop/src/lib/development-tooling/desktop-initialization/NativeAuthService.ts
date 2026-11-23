@@ -61,7 +61,7 @@ export class NativeAuthService {
 			this.clearPending();
 			const credential = await this.options.store.read();
 			try {
-				if (credential)
+				if (credential?.origin === this.options.origin)
 					await this.options.http.request('/api/auth/logout', credential, {
 						method: 'POST',
 						body: '{}'

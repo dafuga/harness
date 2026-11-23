@@ -73,6 +73,7 @@ async function capturePublishedOverview(app: ElectronApplication) {
 		BrowserWindow.getAllWindows()[0].setContentSize(viewport.width, viewport.height);
 	}, size);
 	const page = await app.firstWindow();
+	await page.evaluate(() => window.dispatchEvent(new Event('focus')));
 	await page.getByRole('link', { name: 'Project Overview', exact: true }).click();
 	await expect(page.getByText('fixture-needs', { exact: true }).first()).toBeVisible({
 		timeout: 25_000
