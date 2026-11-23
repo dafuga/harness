@@ -15,7 +15,8 @@ const TRACKER_TIMEOUT_MS = 1500;
 const TRACKER_GET_URLS = {
 	items: `${TRACKER_ORIGIN}/items?status=all&limit=-1`,
 	runs: `${TRACKER_ORIGIN}/runs?limit=500`,
-	machines: `${TRACKER_ORIGIN}/machines`
+	machines: `${TRACKER_ORIGIN}/machines`,
+	status: `${TRACKER_ORIGIN}/status`
 } as const;
 
 const ITEM_STATUSES: ReadonlySet<string> = new Set([
@@ -27,7 +28,7 @@ const ITEM_STATUSES: ReadonlySet<string> = new Set([
 ]);
 const MACHINE_STATUSES: ReadonlySet<string> = new Set(['ok', 'busy', 'overloaded', 'offline']);
 
-/** Read the three fixed tracker operations and validate each response. Any failure rejects. */
+/** Read and validate items, runs and machines. The native tracker exposes machines in /status. */
 export async function readTrackerSources(
 	fetcher: typeof fetch,
 	includeHomeFields = false
@@ -44,7 +45,7 @@ export async function readTrackerSources(
 	};
 }
 
-/** One GET with no redirects, cache, credentials or extra headers, bounded by a timeout. */
+/** Fixed loopback GETs with one deadline, no redirects and no credentials. */
 async function getTrackerJson(fetcher: typeof fetch, url: string): Promise<unknown> {
 	const controller = new AbortController();
 	let timer: ReturnType<typeof setTimeout> | undefined;
@@ -55,25 +56,36 @@ async function getTrackerJson(fetcher: typeof fetch, url: string): Promise<unkno
 		}, TRACKER_TIMEOUT_MS);
 	});
 	try {
-		const response = await Promise.race([
-			fetcher(url, {
-				method: 'GET',
-				redirect: 'error',
-				cache: 'no-store',
-				credentials: 'omit',
-				headers: { accept: 'application/json' },
-				signal: controller.signal
-			}),
-			expired
-		]);
-		if (!response.ok) {
+		const read = (target: string) =>
+			Promise.race([
+				fetcher(target, {
+					method: 'GET',
+					redirect: 'error',
+					cache: 'no-store',
+					credentials: 'omit',
+					headers: { accept: 'application/json' },
+					signal: controller.signal
+				}),
+				expired
+			]);
+		const response = await read(url);
+		if (url === TRACKER_GET_URLS.machines && response.status === 404) {
 			await closeBody(response);
-			throw new Error('tracker read failed');
+			const status = await readTrackerResponse(await read(TRACKER_GET_URLS.status), expired);
+			return asRecord(status, 'status').machines;
 		}
-		return await Promise.race([response.json(), expired]);
+		return await readTrackerResponse(response, expired);
 	} finally {
 		clearTimeout(timer);
 	}
+}
+
+async function readTrackerResponse(response: Response, expired: Promise<never>): Promise<unknown> {
+	if (!response.ok) {
+		await closeBody(response);
+		throw new Error('tracker read failed');
+	}
+	return Promise.race([response.json(), expired]);
 }
 
 async function closeBody(response: Response): Promise<void> {

@@ -2,7 +2,7 @@
 	"name": "overview-native-tracker",
 	"goal": "Read Project Overview from the native Tracker after cutover while preserving fixed loopback reads and fail-closed validation.",
 	"createdAt": "2026-11-23T09:52:43.288Z",
-	"updatedAt": "2026-11-23T09:53:00.585Z",
+	"updatedAt": "2026-11-23T09:55:40.647Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T09:55:38.930Z",
+			"evidence": "Committed ff4b15e536. Fixed-GET case rejected the native 404 fixture with unavailable where ready was expected; 1 failed, 12 passed."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T09:55:40.647Z",
+			"evidence": "Fallback is restricted to a 404 on fixed /machines. Native /status shares the same deadline, and only the validated machines field reaches the overview."
 		},
 		{
 			"id": "green",

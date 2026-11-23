@@ -48,7 +48,7 @@ export type TrackerRunRecord = {
 	ended_at: number | null;
 };
 
-/** A computer from GET /machines. Its session and process counts are not read. */
+/** A computer from /machines or /status.machines. Session and process counts are omitted. */
 export type TrackerMachineRecord = { node: string; status: MachineStatus };
 
 /** Validated responses of the three fixed tracker reads. */
