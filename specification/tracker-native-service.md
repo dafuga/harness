@@ -103,18 +103,31 @@ operator verifies the stopped database and chooses a rollback.
   The target owner must reconcile migrated callback mappings and pending
   delivery receipts before enabling sending. Shell command targets and
   legacy custom webhook headers require separate integration.
-- **Watchdog.** A fenced node can scan retained tmux panes, check startup
-  dialogs, nudge an idle pane after rechecking its identity, and journal
-  alerts. `tracker watchdog alerts` and `tracker watchdog dry-run` use the
-  same loopback routes as the retained client. Dry-run reports idle decisions.
-  Automatic startup trust and missing-session relaunch still require host
-  qualification and are disabled in this draft.
-- **CoS watchdog.** The primary Mac can forward local watchdog alerts into
-  its idle CoS tmux pane. A configured host driver can own peer relay. The
-  separate primary Mac `com.danielfugere.cos-tracker-alert` LaunchAgent
-  continues to own the 30-minute flagged-item tick via
-  `~/chief-of-staff/bin/tracker-alert.py`. It reads `list --flagged --json`
-  through the existing Tracker shim and keeps its own seen-state file.
+- **Watchdog.** Configure `watchdog.tmux` on each fenced node to run a
+  local health scan every ten minutes. Tracker reports missing sessions,
+  startup pickers, stranded launches, orphan panes, and panes left after
+  completion. It submits one check-in to an unflagged idle session and
+  verifies provider activity. Codex receives a second Enter only while
+  the same pane contains the watchdog draft. A second idle period
+  escalates to Chief of Staff. The existing owned-session sweep closes
+  finished idle panes when their linked items and identities allow it.
+- **Recovery and handoff.** Tracker alerts on missing sessions and uses its
+  normal dispatch path to recover eligible items with briefs after a grace
+  period. It rechecks the live pane inventory before requesting recovery.
+  Opt-outs and outstanding flags hold recovery. For active context above
+  150,000 tokens, Tracker requests a short handoff once an owned pane is
+  idle. It closes that pane for a fresh launch only after it verifies the
+  handoff note and original attempt. Busy, attached, and unowned panes
+  require Chief of Staff attention. Transcript roots allow local context
+  measurement without including transcript contents in alerts.
+- **Chief of Staff.** `tracker needs-attention` and `tracker watchdog alerts`
+  show active watchdog alerts with the item, computer, and session.
+  `tracker watchdog dry-run` previews idle, startup, and recovery
+  decisions without taking action. Set `watchdog.chiefOfStaff` on the
+  primary Mac to deliver alerts to its idle CoS tmux pane and include MB2
+  alerts over the existing host-key-verified SSH link. The separate
+  thirty-minute tick continues to read `tracker list --flagged --json` for
+  ordinary decisions that need Daniel.
 - **Adapter polling.** Only the designated primary Mac can poll retained
   GitHub sources. It uses the existing source owner, cursor, and
   `adapter-runner.lock` beside the journal. The GitHub CLI binding uses an

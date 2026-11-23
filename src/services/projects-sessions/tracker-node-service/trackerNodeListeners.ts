@@ -118,6 +118,7 @@ function trackerOperationalApi(
 	switch (`${request.method} ${path}`) {
 		case 'GET /watchdog/dry-run':
 			return trackerWatchdogDryRun(request, runtime);
+		case 'GET /needs-attention':
 		case 'GET /watchdog/alerts':
 			return Response.json(runtime.watchdog?.alerts() ?? []);
 		case 'POST /sync':

@@ -16,30 +16,34 @@ import {
 	matchesTrackerTmuxPane,
 	trackerPaneFormat,
 	trackerSessionName,
-	trackerTmuxKeys,
 	trackerTmuxPane
 } from './tracker-tmux-adapter/trackerTmuxPane';
+
+import {
+	sendTrackerTmuxNudge,
+	trackerTmuxCwd
+} from './tracker-tmux-adapter/verifyTrackerTmuxSubmission';
 
 const noServer =
 	/^(?:no server running on |no sessions|error connecting to .+ \(No such file or directory\))/i;
 const unsafeInput = /[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/u;
+const decisions = new WatchdogPaneService();
 
 /** Observe the legacy sockets without opening a tmux server, and send only after a fresh identity check. */
 export class TrackerTmuxAdapter {
 	private readonly executable: string;
 	private readonly sockets: string[];
-	private readonly decisions = new WatchdogPaneService();
 
 	constructor(config: TrackerTmuxAdapterConfig) {
-		const { executable, node } = config;
-		this.executable = controlledTrackerExecutable(executable);
-		this.sockets = node === 'harbor-mbp-2' ? ['claude', 'default'] : ['default'];
+		this.executable = controlledTrackerExecutable(config.executable);
+		this.sockets = config.node === 'harbor-mbp-2' ? ['claude', 'default'] : ['default'];
 	}
 
 	async scan(signal: AbortSignal, names: RegExp = trackerSessionName): Promise<WatchdogPane[]> {
 		const layouts = await this.layouts(signal, names);
 		const captured = [];
-		for (const layout of layouts.slice(0, 100)) captured.push(await this.capture(layout, signal));
+		for (const layout of layouts.slice(0, 100))
+			captured.push(await this.capture(layout, signal, names === trackerSessionName));
 		return captured.map(({ pane }) => pane);
 	}
 
@@ -56,21 +60,22 @@ export class TrackerTmuxAdapter {
 		);
 		if (!candidate) return false;
 		const observed = await this.capture(candidate, signal);
-		if (this.decisions.idlePrompt(observed.pane) !== cli) return false;
-		const { socket, id, raw } = observed;
-		const result = await this.command(
-			socket,
-			[
-				'if-shell',
-				'-F',
-				'-t',
-				id,
-				`#{==:${trackerPaneFormat},${raw}}`,
-				trackerTmuxKeys(id, message)
-			],
+		if (decisions.idlePrompt(observed.pane) !== cli) return false;
+		return sendTrackerTmuxNudge(
+			input,
+			observed,
+			{
+				command: (args) => this.command(observed.socket, args, signal),
+				capture: async () => {
+					const current = (await this.layouts(signal, names)).find(
+						(entry) =>
+							entry.pane.key === pane.key && entry.pane.name === pane.name && entry.pane.ready
+					);
+					return current && this.capture(current, signal);
+				}
+			},
 			signal
 		);
-		return result.code === 0 && result.stdout.trim() === 'tracker-watchdog-sent';
 	}
 
 	/** Close an unattended owned run only while the same single pane is idle. */
@@ -87,7 +92,7 @@ export class TrackerTmuxAdapter {
 		);
 		if (!candidate) return false;
 		const observed = await this.capture(candidate, signal);
-		if (this.decisions.idlePrompt(observed.pane) !== cli || !stillComplete()) return false;
+		if (decisions.idlePrompt(observed.pane) !== cli || !stillComplete()) return false;
 		const { socket, id, raw } = observed;
 		const identity = `#{==:${trackerPaneFormat},${raw}}`;
 		const owner = `#{==:#{HARNESS_TRACKER_ATTEMPT},${attempt ?? ''}}`;
@@ -120,7 +125,11 @@ export class TrackerTmuxAdapter {
 		return layouts;
 	}
 
-	private async capture(layout: TrackerTmuxPane, signal: AbortSignal): Promise<TrackerTmuxPane> {
+	private async capture(
+		layout: TrackerTmuxPane,
+		signal: AbortSignal,
+		withCwd = false
+	): Promise<TrackerTmuxPane> {
 		const { socket, id, raw, pane } = layout;
 		if (!pane.readable) return layout;
 		const screen = await this.command(socket, ['capture-pane', '-ep', '-t', id], signal);
@@ -130,9 +139,11 @@ export class TrackerTmuxAdapter {
 			['display-message', '-p', '-t', id, trackerPaneFormat],
 			signal
 		);
-		return identity.code === 0 && identity.stdout.trimEnd() === raw
-			? { ...layout, pane: { ...pane, screen: screen.stdout } }
-			: layout;
+		if (identity.code !== 0 || identity.stdout.trimEnd() !== raw) return layout;
+		const cwd = withCwd
+			? await trackerTmuxCwd(id, (args) => this.command(socket, args, signal))
+			: undefined;
+		return { ...layout, pane: { ...pane, screen: screen.stdout, cwd } };
 	}
 
 	private command(socket: string, args: string[], signal: AbortSignal) {

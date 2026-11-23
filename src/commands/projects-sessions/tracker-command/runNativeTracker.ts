@@ -145,6 +145,8 @@ function renderNativeTracker(
 		case 'status':
 		case 'autolaunch':
 		case 'history':
+		case 'watchdog':
+		case 'needs-attention':
 			console.log(JSON.stringify(data, null, 2));
 			return;
 		case 'list':

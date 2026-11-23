@@ -74,6 +74,7 @@ export const nativeTrackerCommandOptions = new Map<
 	['digest', {}],
 	['sync', {}],
 	['watchdog', { item: text }],
+	['needs-attention', {}],
 	['ensure', {}]
 ]);
 

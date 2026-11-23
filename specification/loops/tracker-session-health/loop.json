@@ -2,23 +2,25 @@
 	"name": "tracker-session-health",
 	"goal": "Prove ten-minute native Tracker health detection, verified prompt submission, conservative recovery and CoS visibility on both Macs.",
 	"createdAt": "2026-11-23T22:41:50.806Z",
-	"updatedAt": "2026-11-23T22:41:50.806Z",
+	"updatedAt": "2026-11-23T22:43:32.762Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
 		{
 			"id": "spec",
 			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T22:43:30.965Z",
+			"evidence": "Native tick runs idle/startup only and legacy recovery services are disconnected. Native tmux reports key delivery without verifying Codex submission. Prior Tracker incidents are ztgxwd, 1r5v1k, mymm0t, and wkk03d."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T22:43:32.762Z",
+			"evidence": "Extend the existing native runtime watchdog test to exercise the operation from its dry-run API and verify durable CoS visibility, plus the existing tmux pane-identity workload to verify key submission."
 		},
 		{
 			"id": "red",
