@@ -33,7 +33,7 @@ test('ignores prefix references, Stripe publishable keys and standalone Twilio i
 	expect(trackerTranscriptMatches(Buffer.from(text + ' AC' + 'a'.repeat(32)), 0)).toEqual([]);
 });
 
-test('watchdog flags the launched item and persists one rotation task across restarts', () =>
+test('watchdog flags the launched item and reopens a closed rotation on a new hit', () =>
 	measureWorkload(
 		'service.projects-sessions-tracker-native-runtime',
 		'redacted-transcript-watchdog',
@@ -85,7 +85,35 @@ async function proveWatchdog(root: string) {
 		);
 		// Test the actual durable operation journal, including Tracker notes and flags.
 		expect(JSON.stringify(restarted.store.opsSince(0, 100)).includes(dummy)).toBe(false);
+		await assertNewExposureReopens(restarted, { itemId, log, signal, dummy }, items);
 	} finally {
 		database.close();
 	}
+}
+
+async function assertNewExposureReopens(
+	runtime: TrackerNativeRuntimeService,
+	{
+		itemId,
+		log,
+		signal,
+		dummy
+	}: { itemId: string; log: string; signal: AbortSignal; dummy: string },
+	items: { id: string }[]
+) {
+	const rotation = items.find(({ id }) => id !== itemId)!;
+	const target = 'http://fixture.invalid/items/' + rotation.id;
+	const completed = await runtime.items.handle(
+		new Request(target + '/done', { method: 'POST', body: '{}' })
+	);
+	expect(completed.ok).toBe(true);
+	await runtime.watchdog!.tick(signal);
+	const unchanged = await runtime.items.handle(new Request(target));
+	expect(await unchanged.json()).toMatchObject({ status: 'done' });
+	const anotherDummy = dummy.replaceAll('A', 'B');
+	appendFileSync(log, JSON.stringify({ type: 'tool_output', text: anotherDummy }) + '\n');
+	await runtime.watchdog!.tick(signal);
+	const reopened = await runtime.items.handle(new Request(target));
+	expect(await reopened.json()).toMatchObject({ status: 'open', needs_daniel: true });
+	expect(JSON.stringify(runtime.store.opsSince(0, 100)).includes(anotherDummy)).toBe(false);
 }

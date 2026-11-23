@@ -70,7 +70,8 @@ retention independently.
 
 After enabling, the watchdog records a local starting timestamp and scans files
 modified since that point. It maintains byte cursors across restarts and emits one
-rotation task per credential type per transcript. The Tracker alert carries the
+open rotation task per credential type per transcript. A later occurrence after
+closure reopens that task. The Tracker alert carries the
 credential type, session UUID and byte position. A managed launch marker can link it
 to the source item. Unlinked hits still open a flagged rotation item. Review provider
 metadata to identify and rotate affected credentials without reopening the output.

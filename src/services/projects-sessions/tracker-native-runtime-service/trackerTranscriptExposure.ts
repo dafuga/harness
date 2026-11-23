@@ -16,24 +16,35 @@ export function recordTrackerTranscriptExposure(
 		.update(JSON.stringify([identity, type]))
 		.digest('hex');
 	const marker = 'tracker_secret_report:' + event;
-	if (store.getMeta(marker)) return;
+	const reported = Number(store.getMeta(marker) ?? -1);
+	if (reported >= byte) return;
 	const items = new TrackerItemReadRepository(store.database);
-	const source = sourceItem(items, itemId);
+	const source = storedItem(items, itemId);
+	const rotationId = event.slice(0, 10);
+	const previousRotation = storedItem(items, rotationId);
+	const persist = () => store.writeMeta({ [marker]: String(byte) });
+	if (previousRotation && previousRotation.status !== 'done') {
+		persist();
+		return;
+	}
 	const location = `session ${session}, byte ${byte}`;
 	const question = `${type} detected in ${location}. Rotate all affected credentials via the secret-safe path.`;
-	const rotation = planTrackerItemMutation(
-		{
-			action: 'add',
-			itemId: event.slice(0, 10),
-			body: {
-				title: `Rotate exposed ${type} (${session.slice(0, 8)})`,
-				agent: 'tracker',
-				sensitive: true,
-				notes: source ? `Tracker item ${source.id}. ${question}` : question
-			}
-		},
-		{ now, node: store.node, candidates: [] }
-	);
+	const note = source ? `Tracker item ${source.id}. ${question}` : question;
+	const fields = previousRotation
+		? { status: 'open', resolved: 0, 'note+': note }
+		: planTrackerItemMutation(
+				{
+					action: 'add',
+					itemId: rotationId,
+					body: {
+						title: `Rotate exposed ${type} (${session.slice(0, 8)})`,
+						agent: 'tracker',
+						sensitive: true,
+						notes: note
+					}
+				},
+				{ now, node: store.node, candidates: [] }
+			).fields;
 	if (source)
 		recordWatchdogAlert(
 			store,
@@ -41,18 +52,18 @@ export function recordTrackerTranscriptExposure(
 				itemId: source.id,
 				kind: 'credential exposure: ' + type,
 				reason: question,
-				identity: event
+				identity: event + ':' + byte
 			},
 			now,
-			question
+			source.needs_daniel && !source.resolved ? null : question
 		);
 	store.appendLocal(
-		{ itemId: rotation.itemId, fields: { ...rotation.fields, needs_daniel: 1, question } },
-		() => store.writeMeta({ [marker]: '1' })
+		{ itemId: rotationId, fields: { ...fields, needs_daniel: 1, question } },
+		persist
 	);
 }
 
-function sourceItem(items: TrackerItemReadRepository, id?: string) {
+function storedItem(items: TrackerItemReadRepository, id?: string) {
 	if (!id) return undefined;
 	try {
 		return items.getStored(id);

@@ -16,11 +16,13 @@ const formats = {
 	'Private key': /-----BEGIN (?:[A-Z0-9]+ )*PRIVATE KEY-----\s*(?:\\[rn]\s*)*[A-Za-z0-9+/]{16}/u
 } as const;
 
-/** Return the type and byte position of each format, without returning matched text. */
+/** Return the type and latest byte position of each format, without returning matched text. */
 export function trackerTranscriptMatches(bytes: Buffer, offset: number) {
 	const text = bytes.toString('latin1');
 	return Object.entries(formats).flatMap(([type, pattern]) => {
-		const start = pattern.exec(text)?.index;
+		let start: number | undefined;
+		for (const match of text.matchAll(new RegExp(pattern, pattern.flags + 'g')))
+			start = match.index;
 		return start === undefined ? [] : [{ type, byte: offset + start }];
 	});
 }
