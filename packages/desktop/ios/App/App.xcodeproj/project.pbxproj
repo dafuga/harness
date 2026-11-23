@@ -308,6 +308,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ \"$CONFIGURATION\" = Release ] && [ \"${HARNESS_HUB_ORIGIN:-}\" != 'https://dafuga-harness.pages.dev' ]; then\n    echo 'error: HARNESS_HUB_ORIGIN must be the production Harness Hub HTTPS origin in Release.' >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
