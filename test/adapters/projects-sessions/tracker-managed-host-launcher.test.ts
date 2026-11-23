@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
-import { userInfo } from 'node:os';
+import type * as Os from 'node:os';
 import { join } from 'node:path';
 import { expect, test, vi } from 'vitest';
 import { loadTrackerNodeConfig } from '../../../src/services/projects-sessions/tracker-node-service/trackerNodeConfig';
@@ -12,6 +12,11 @@ import {
 import { withTempRepo } from '../../support/temporary';
 import type { TemporaryRepo } from '../../support/temporary.types';
 import { measureWorkload } from '../../support/measureWorkload';
+
+vi.mock('node:os', async (importOriginal) => {
+	const os = await importOriginal<typeof Os>();
+	return { ...os, userInfo: () => ({ ...os.userInfo(), username: 'unknown' }) };
+});
 
 const node = 'daniel-primary-mbp';
 const signal = new AbortController().signal;
@@ -188,7 +193,7 @@ function verifyNativeInvocations(
 			expect.stringContaining('def123abc4')
 		],
 		image: null,
-		user: userInfo().username,
+		user: spawnSync('/usr/bin/id', ['-un'], { encoding: 'utf8' }).stdout.trim(),
 		secret: false,
 		client: { node, apiPort: client.apiPort },
 		legacy: '/dev/null/tracker',
