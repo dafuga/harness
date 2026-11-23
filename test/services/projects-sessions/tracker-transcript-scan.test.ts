@@ -3,6 +3,8 @@ import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test } from 'vitest';
 import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
+import { loadTrackerNodeConfig } from '../../../src/services/projects-sessions/tracker-node-service/trackerNodeConfig';
+import { trackerNodeRuntime } from '../../../src/services/projects-sessions/tracker-node-service/trackerNodeRuntime';
 import { trackerTranscriptMatches } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptPatterns';
 import { withTempDir } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
@@ -42,15 +44,28 @@ test('watchdog flags the launched item and reopens a closed rotation on a new hi
 
 async function proveWatchdog(root: string) {
 	const database = new DatabaseSync(':memory:');
-	const driver = join(root, 'watchdog');
-	writeFileSync(driver, '#!/bin/sh\necho null\n', { mode: 0o700 });
-	const create = () =>
-		new TrackerNativeRuntimeService(database, {
+	const file = join(root, 'tracker.json');
+	writeFileSync(
+		file,
+		JSON.stringify({
+			version: 1,
 			node: 'fixture-node',
 			role: 'hub',
-			now: () => 1,
-			hostEffects: { watchdog: { driver, transcriptRoots: [root] } }
-		});
+			apiPort: 49291,
+			syncPort: 49292,
+			database: join(root, 'journal'),
+			syncSecretFile: join(root, 'sync'),
+			legacyFenceFile: join(root, 'fence'),
+			hostEffects: {
+				mode: 'active',
+				checkpoint: 'fixture',
+				watchdog: { transcriptRoots: [root] }
+			}
+		})
+	);
+	const config = loadTrackerNodeConfig(file);
+	const create = () =>
+		new TrackerNativeRuntimeService(database, { ...trackerNodeRuntime(config), now: () => 1 });
 	const itemId = 'abc123def4';
 	const runtime = create();
 	runtime.store.appendLocal({ itemId, fields: { title: 'Fixture', kind: 'task', status: 'open' } });
@@ -58,6 +73,12 @@ async function proveWatchdog(root: string) {
 	const signal = new AbortController().signal;
 	const dummy = formats[0][1];
 	try {
+		expect(await runtime.watchdog!.inspect(null, signal)).toMatchObject({
+			available: false,
+			sessions: [],
+			recovery: []
+		});
+
 		writeFileSync(
 			log,
 			JSON.stringify({
