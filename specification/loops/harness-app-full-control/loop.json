@@ -1,0 +1,34 @@
+{
+	"name": "harness-app-full-control",
+	"goal": "Prove an evidence-backed owner capability inventory, finite app acceptance, tracked module gaps and a dependency-based delivery forecast",
+	"createdAt": "2026-11-23T19:30:05.658Z",
+	"updatedAt": "2026-11-23T19:37:38.542Z",
+	"completion": {
+		"version": 1,
+		"kind": "planning",
+		"plan": "specification/features/planned/harness-app-full-control.md"
+	},
+	"steps": [
+		{
+			"id": "inventory",
+			"title": "Reconcile source, PRs, Tracker and operator runbooks",
+			"status": "complete",
+			"completedAt": "2026-11-23T19:35:21.285Z",
+			"evidence": "Read current origin/main at 615b0d62f8, open PR queue and exact named PRs, live Tracker records, CoS runbook, application and transport source, and predecessor release receipts. Inventory distinguishes landed code, open drafts, signed distribution, and physical/live acceptance."
+		},
+		{
+			"id": "gaps",
+			"title": "Register and read back each implementation module",
+			"status": "complete",
+			"completedAt": "2026-11-23T19:35:22.739Z",
+			"evidence": "Verified 11 child IDs under q8vws61w0j using tracker list --agent harness --status all --json. Each item is open, unlaunched and has one scope note; the specification maps each to its cut and dependency."
+		},
+		{
+			"id": "spec",
+			"title": "Check the spec and document release criteria and dates",
+			"status": "complete",
+			"completedAt": "2026-11-23T19:37:38.542Z",
+			"evidence": "Plan audit passed all nine structural checks. All ten direct local references resolve. Prettier 3.8.3 and git diff --check pass for the spec. The forecast states staffing assumptions and both cuts have separately assessable device and authority acceptance."
+		}
+	]
+}
