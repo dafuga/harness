@@ -7,7 +7,8 @@ import type {
 	NativeStartResult
 } from '../../src/models/accounts-access/HubAuth.types';
 import { ORIGIN, ada } from '../support/authFixture';
-import { errorOf, hubFixture } from '../support/hubFixture';
+import { errorOf, hubFixture, type HubFixture } from '../support/hubFixture';
+import type { HubBrowser } from '../support/hubBrowser';
 
 test('logout clears the cookie and invalidates the session on the server', async () => {
 	const hub = await hubFixture();
@@ -104,14 +105,10 @@ test('an internal failure is an opaque 500', async () => {
 	expect(response.status).toBe(500);
 });
 
-test('the Google browser callback enrolls one device and removal is account scoped', async () => {
-	const hub = await hubFixture();
-	const browser = hub.browser();
-	const other = hub.browser();
+async function googleNativeAuthorization(hub: HubFixture, browser: HubBrowser) {
 	const start = '/api/auth/native/start';
 	const finish = '/api/auth/native/return';
 	const exchange = '/api/auth/native/exchange';
-	const devices = '/api/auth/native/devices';
 	const verifier = randomToken();
 	const proof = { nonce: randomToken(), resource: 'projects' };
 	const response = await browser.post(start, {
@@ -127,7 +124,6 @@ test('the Google browser callback enrolls one device and removal is account scop
 		'401 session-required'
 	);
 	await hub.signIn(browser);
-	await hub.signIn(other, { sub: 'another-google-subject' });
 	const input = { ...proof, verifier, handoffId: flow.handoffId };
 	const result = await browser.post(finish, { handoffId: flow.handoffId });
 	const callback = new URL(((await result.json()) as { callbackUrl: string }).callbackUrl);
@@ -143,6 +139,17 @@ test('the Google browser callback enrolls one device and removal is account scop
 	expect(await errorOf(await browser.post(exchange, { ...input, callbackCode }))).toBe(
 		'400 handoff-invalid'
 	);
+	return authorization;
+}
+
+test('Google sign-in lists the current browser and native device with account-scoped removal', async () => {
+	const hub = await hubFixture();
+	const browser = hub.browser();
+	const other = hub.browser();
+	const devices = '/api/auth/native/devices';
+	const account = '/api/account/devices';
+	const authorization = await googleNativeAuthorization(hub, browser);
+	await hub.signIn(other, { sub: 'another-google-subject' });
 	const bearer = { authorization: `Bearer ${authorization}` };
 	hub.advance(10 * 60 * 1000);
 	await browser.get('/api/auth/status', bearer);
@@ -153,8 +160,36 @@ test('the Google browser callback enrolls one device and removal is account scop
 	]);
 	expect(await (await other.get(devices)).json()).toEqual({ devices: [] });
 	expect(await errorOf(await other.post(devices, { id: list[0].id }))).toBe('404 not-found');
+	const accountResponse = await browser.get(account);
+	expect(accountResponse.status).toBe(200);
+	const inventory = (await accountResponse.json()) as {
+		devices: AccountDevice[];
+		currentDeviceId: string;
+	};
+	expect(inventory.devices).toEqual([
+		{
+			id: inventory.currentDeviceId,
+			name: 'Web browser',
+			lastSeenAt: new Date(hub.now()).toISOString()
+		},
+		list[0]
+	]);
+	const browserDevice = { id: inventory.currentDeviceId };
+	expect(await errorOf(await hub.browser().get(account))).toBe('401 session-required');
+	expect(await errorOf(await browser.get(account, bearer))).toBe('401 session-required');
+	expect(await errorOf(await other.post(account, browserDevice))).toBe('404 not-found');
+	expect(await errorOf(await other.post(devices, browserDevice))).toBe('404 not-found');
+	expect(
+		await errorOf(await browser.post(account, browserDevice, { origin: 'https://evil.example' }))
+	).toBe('403 origin-denied');
 	expect(await hub.auth.actor(browser.request('/api/projects', { headers: bearer }))).toEqual(ada);
 	expect(await errorOf(await browser.get(devices, bearer))).toBe('401 session-required');
 	expect((await browser.post(devices, { id: list[0].id })).status).toBe(200);
 	expect(await hub.auth.actor(browser.request('/api/projects', { headers: bearer }))).toBeNull();
+	const secondBrowser = hub.browser();
+	await hub.signIn(secondBrowser);
+	expect(await errorOf(await secondBrowser.post(devices, browserDevice))).toBe('404 not-found');
+	expect((await secondBrowser.post(account, browserDevice)).status).toBe(200);
+	expect(await errorOf(await browser.get(account))).toBe('401 session-required');
+	expect(await hub.auth.actor(secondBrowser.request('/api/projects'))).toEqual(ada);
 });

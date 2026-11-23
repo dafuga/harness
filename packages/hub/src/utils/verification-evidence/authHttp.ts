@@ -89,7 +89,11 @@ export async function readJson(request: Request): Promise<Record<string, unknown
 /** The request path when it is inside the namespaces authentication owns, else null. */
 export function authPath(request: Request): string | null {
 	const path = new URL(request.url).pathname;
-	return path.startsWith('/api/auth/') || path.startsWith('/api/github/') ? path : null;
+	const owned =
+		path.startsWith('/api/auth/') ||
+		path.startsWith('/api/github/') ||
+		path === '/api/account/devices';
+	return owned ? path : null;
 }
 
 export { authRedirect } from '../../lib/verification-evidence/server/auth/github-connection-controller/authHttp';

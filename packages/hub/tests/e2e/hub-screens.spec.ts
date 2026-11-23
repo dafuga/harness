@@ -83,8 +83,8 @@ for (const size of sizes) {
 		await page.setViewportSize(size);
 		await hostedFixture(page);
 		const device = { id: 'fixture-device', name: 'Office Mac', lastSeenAt: '2026-11-23T12:00Z' };
-		await page.route('**/api/auth/native/devices', (route) =>
-			route.fulfill({ json: { devices: [device] } })
+		await page.route('**/api/account/devices', (route) =>
+			route.fulfill({ json: { devices: [device], currentDeviceId: null } })
 		);
 		await page.goto('/devices');
 		const list = page.getByRole('region', { name: 'Signed-in devices' });

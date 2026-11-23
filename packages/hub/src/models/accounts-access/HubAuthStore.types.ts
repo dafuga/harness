@@ -90,8 +90,18 @@ export interface OneTimeStore<T> {
 }
 
 export interface SessionStore {
-	devices(actorId: string, now: number): Promise<AccountDevice[]>;
-	removeDevice(actorId: string, deviceId: string, now: number): Promise<boolean>;
+	devices(
+		actorId: string,
+		now: number,
+		nativeOnly?: boolean,
+		currentDeviceId?: string | null
+	): Promise<AccountDevice[]>;
+	removeDevice(
+		actorId: string,
+		deviceId: string,
+		now: number,
+		nativeOnly?: boolean
+	): Promise<boolean>;
 	touchDevice(idHash: string, now: number): Promise<void>;
 	create(record: SessionRecord): Promise<void>;
 	find(idHash: string): Promise<SessionRecord | null>;

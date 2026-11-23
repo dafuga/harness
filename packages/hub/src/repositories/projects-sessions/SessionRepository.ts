@@ -19,17 +19,14 @@ export class SessionRepository {
 		const credential = randomToken();
 		const createdAt = this.options.now();
 		const { deviceName, ...scope } = grant;
-		const device =
-			grant.kind === 'native'
-				? {
-						id: randomToken(),
-						name: deviceName ?? 'Harness device',
-						lastSeenAt: new Date(createdAt).toISOString()
-					}
-				: undefined;
+		const device = {
+			id: randomToken(),
+			name: deviceName ?? (grant.kind === 'browser' ? 'Web browser' : 'Harness device'),
+			lastSeenAt: new Date(createdAt).toISOString()
+		};
 		const record: SessionRecord = {
 			...scope,
-			...(device ? { device } : {}),
+			device,
 			idHash: await this.options.secrets.hash('session', credential),
 			createdAt,
 			expiresAt: createdAt + (grant.kind === 'native' ? NATIVE_TTL : BROWSER_TTL),
@@ -55,12 +52,18 @@ export class SessionRepository {
 		return record.expiresAt > this.options.now() ? record : null;
 	}
 
-	devices(actorId: string) {
-		return this.options.store.devices(actorId, this.options.now());
+	devices(session: SessionRecord, nativeOnly: boolean) {
+		const currentDeviceId = nativeOnly ? null : (session.device?.id ?? null);
+		return this.options.store.devices(
+			session.actor.id,
+			this.options.now(),
+			nativeOnly,
+			currentDeviceId
+		);
 	}
 
-	removeDevice(actorId: string, deviceId: string) {
-		return this.options.store.removeDevice(actorId, deviceId, this.options.now());
+	removeDevice(actorId: string, deviceId: string, nativeOnly: boolean) {
+		return this.options.store.removeDevice(actorId, deviceId, this.options.now(), nativeOnly);
 	}
 
 	/** Ends the session and every native session it approved. */

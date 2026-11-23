@@ -6,13 +6,13 @@
 	import { formatTime } from '$reports/helpers/strings/formatTime';
 	import LoginPanel from '../../../components/accounts-access/login-panel/LoginPanel.svelte';
 	import HubFrame from '../../../components/shared-primitives/HubFrame.svelte';
-	import type { AccountDevice } from '../../../models/accounts-access/HubAuth.types';
+	import type { AccountDeviceInventory } from '../../../models/accounts-access/HubAuth.types';
 	import { browserContext } from '../../../utils/development-tooling/browserContext';
 
 	const { session, api } = browserContext();
-	const endpoint = '/api/auth/native/devices';
-	let listed = $state<{ actor: string; devices: AccountDevice[] }>();
-	const devices = $derived(listed?.actor === session.actor?.id ? listed?.devices : undefined);
+	const endpoint = '/api/account/devices';
+	let listed = $state<{ actor: string; inventory: AccountDeviceInventory }>();
+	const inventory = $derived(listed?.actor === session.actor?.id ? listed?.inventory : undefined);
 	let removing = $state<string>();
 	let confirm = $state<string>();
 	let error = $state('');
@@ -20,8 +20,8 @@
 	async function load(actor: string) {
 		error = '';
 		try {
-			const result = await api.get<{ devices: AccountDevice[] }>(endpoint);
-			if (session.actor?.id === actor) listed = { actor, devices: result.devices };
+			const result = await api.get<AccountDeviceInventory>(endpoint);
+			if (session.actor?.id === actor) listed = { actor, inventory: result };
 		} catch {
 			if (session.actor?.id === actor) error = 'Could not load devices.';
 		}
@@ -59,9 +59,9 @@
 		<hx-h1>Devices</hx-h1>
 		<hx-section class="hub-list" aria-labelledby="hub-devices-title">
 			<hx-div class="hub-list-head"><hx-h2 id="hub-devices-title">Signed-in devices</hx-h2></hx-div>
-			{#if devices?.length}
+			{#if inventory?.devices.length}
 				<hx-ul aria-label="Signed-in devices">
-					{#each devices as device (device.id)}
+					{#each inventory.devices as device (device.id)}
 						<hx-li class="hub-list-row">
 							<hx-span class="hub-list-name"
 								><hx-strong>{device.name}</hx-strong><hx-small
@@ -69,7 +69,9 @@
 								></hx-span
 							>
 							<hx-span class="hub-list-meta">
-								{#if confirm === device.id}
+								{#if inventory.currentDeviceId === device.id}
+									<hx-small>This browser</hx-small>
+								{:else if confirm === device.id}
 									<hx-button
 										type="button"
 										disabled={Boolean(removing)}
@@ -91,8 +93,8 @@
 						</hx-li>
 					{/each}
 				</hx-ul>
-			{:else if devices}
-				<hx-p class="hub-list-empty">No desktop or iOS devices are signed in.</hx-p>
+			{:else if inventory}
+				<hx-p class="hub-list-empty">No devices are signed in.</hx-p>
 			{:else if !error}
 				<hx-p class="hub-list-empty" role="status">Loading devices…</hx-p>
 			{/if}

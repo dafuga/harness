@@ -19,7 +19,8 @@ const files = [
 	'0001-auth-ephemeral-state.sql',
 	'0003-auth-grant-generations.sql',
 	'0004-auth-email-proofs.sql',
-	'0006-account-devices.sql'
+	'0006-account-devices.sql',
+	'0007-browser-session-devices.sql'
 ];
 const migrations = files.map((file) =>
 	readFileSync(new URL(`../../db/migrations/${file}`, import.meta.url), 'utf8')
@@ -114,11 +115,29 @@ for (const entry of ['utils/d1GrantStore.ts', 'adapters/d1-auth-store-adapter/d1
 export type { sqlite };
 
 test.skipIf(!sqlite)(
-	'device management is scoped to the owner and revokes the exact SQLite session',
+	'browser inventory backfills active sessions and revokes the selected device family',
 	async () => {
-		const { db } = database();
+		const { db, engine } = database();
 		const store = createD1AuthStore(db);
 		const row = sessionRecord();
+		const now = Date.now();
+		const prior = { ...row, createdAt: now - 600_000, expiresAt: now + 60_000 };
+		for (const browser of [
+			{ ...prior, idHash: 'browser-live' },
+			{ ...prior, idHash: 'browser-expired', expiresAt: now - 1_000 },
+			{ ...prior, idHash: 'browser-revoked', revokedAt: now - 1_000 }
+		]) {
+			await store.sessions.create(browser);
+		}
+		engine.exec(migrations.at(-1)!);
+		const [browser] = await store.sessions.devices(row.actor.id, now);
+		expect(browser).toEqual({
+			id: expect.stringMatching(/^[a-f0-9]{32}$/),
+			name: 'Web browser',
+			lastSeenAt: new Date(prior.createdAt).toISOString()
+		});
+		expect((await store.sessions.find('browser-expired'))?.device).toBeUndefined();
+		expect((await store.sessions.find('browser-revoked'))?.device).toBeUndefined();
 		const device = {
 			id: 'd'.repeat(43),
 			name: 'Local Mac',
@@ -126,12 +145,30 @@ test.skipIf(!sqlite)(
 		};
 		await store.sessions.create({ ...row, kind: 'native', device, expiresAt: 2_000_000 });
 		await store.sessions.touchDevice(row.idHash, 600_000);
-		expect(await store.sessions.devices(row.actor.id, 600_001)).toEqual([
+		expect(await store.sessions.devices(row.actor.id, 600_001, true)).toEqual([
 			{ ...device, lastSeenAt: new Date(600_000).toISOString() }
 		]);
 		expect(await store.sessions.removeDevice('google:another', device.id, 600_001)).toBe(false);
 		expect(await store.sessions.removeDevice(row.actor.id, device.id, 600_001)).toBe(true);
 		expect(await store.sessions.find(row.idHash)).toMatchObject({ revokedAt: 600_001 });
-		expect(await store.sessions.devices(row.actor.id, 600_001)).toEqual([]);
+		const child = {
+			...prior,
+			idHash: 'native-child',
+			kind: 'native' as const,
+			parentHash: 'browser-live',
+			device: { ...device, id: 'c'.repeat(43), lastSeenAt: new Date(now).toISOString() }
+		};
+		await store.sessions.create(child);
+		expect(await store.sessions.devices(row.actor.id, now, false, browser.id)).toEqual([
+			browser,
+			child.device
+		]);
+		expect(await store.sessions.devices(row.actor.id, now, true)).toEqual([child.device]);
+		expect(await store.sessions.removeDevice(row.actor.id, browser.id, now, true)).toBe(false);
+		expect(await store.sessions.removeDevice('google:another', browser.id, now)).toBe(false);
+		expect(await store.sessions.removeDevice(row.actor.id, browser.id, now)).toBe(true);
+		expect(await store.sessions.removeDevice(row.actor.id, browser.id, now)).toBe(false);
+		expect(await store.sessions.find(child.idHash)).toMatchObject({ revokedAt: now });
+		expect(await store.sessions.devices(row.actor.id, now)).toEqual([]);
 	}
 );

@@ -76,19 +76,34 @@
 				"examples": ["d4d8393b52e2d1186c50d8af9c290b6a5f3471c8e2d9a6403b7c1f85a6e40d72"]
 			},
 			{
-				"name": "SessionRepository.devices.actorId",
-				"type": "string",
-				"required": true
+				"name": "SessionRepository.devices.session",
+				"type": "SessionRecord",
+				"required": true,
+				"description": "Resolved browser session whose account owns the devices; its device is placed first in the account-wide inventory."
+			},
+			{
+				"name": "SessionRepository.devices.nativeOnly",
+				"type": "boolean",
+				"required": true,
+				"description": "True for the legacy inventory of native sessions, false for the combined browser and native inventory."
 			},
 			{
 				"name": "SessionRepository.removeDevice.actorId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Stable Google actor identifier used to restrict revocation to the authorized account."
 			},
 			{
 				"name": "SessionRepository.removeDevice.deviceId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Public device identifier of the session to revoke."
+			},
+			{
+				"name": "SessionRepository.removeDevice.nativeOnly",
+				"type": "boolean",
+				"required": true,
+				"description": "True when removal is restricted to the legacy native devices endpoint."
 			},
 			{
 				"name": "SessionRepository.revoke.record",
@@ -354,9 +369,16 @@
 				"name": "SessionRepository.devices",
 				"inputs": [
 					{
-						"name": "SessionRepository.devices.actorId",
-						"type": "string",
-						"required": true
+						"name": "SessionRepository.devices.session",
+						"type": "SessionRecord",
+						"required": true,
+						"description": "Resolved browser session whose account owns the devices; its device is placed first in the account-wide inventory."
+					},
+					{
+						"name": "SessionRepository.devices.nativeOnly",
+						"type": "boolean",
+						"required": true,
+						"description": "True for the legacy inventory of native sessions, false for the combined browser and native inventory."
 					}
 				],
 				"outputs": [
@@ -374,12 +396,20 @@
 					{
 						"name": "SessionRepository.removeDevice.actorId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stable Google actor identifier used to restrict revocation to the authorized account."
 					},
 					{
 						"name": "SessionRepository.removeDevice.deviceId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Public device identifier of the session to revoke."
+					},
+					{
+						"name": "SessionRepository.removeDevice.nativeOnly",
+						"type": "boolean",
+						"required": true,
+						"description": "True when removal is restricted to the legacy native devices endpoint."
 					}
 				],
 				"outputs": [

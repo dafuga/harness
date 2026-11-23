@@ -30,7 +30,7 @@ export interface InstallationTokenInput {
 export interface HubAuth {
 	/** Session cookie or `Authorization: Bearer`; null when absent, expired, revoked or out of scope. */
 	actor(request: Request): Promise<Actor | null>;
-	/** Answers only `/api/auth/*` and `/api/github/*`; null for every other path. */
+	/** Answers only sign-in, account device and GitHub connection routes. */
 	handle(request: Request): Promise<Response | null>;
 	/** Re-proves GitHub admin and installation access on every call. Throws AuthFailure. */
 	authorizeRepository(actor: Actor, repositoryId: number): Promise<RepositoryIdentity>;
@@ -134,6 +134,12 @@ export interface AccountDevice {
 	id: string;
 	name: string;
 	lastSeenAt: string;
+}
+
+/** GET /api/account/devices for the resolved browser session. */
+export interface AccountDeviceInventory {
+	devices: AccountDevice[];
+	currentDeviceId: string | null;
 }
 
 export interface NativeStartInput {

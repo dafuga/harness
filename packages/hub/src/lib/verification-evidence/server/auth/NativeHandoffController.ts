@@ -16,8 +16,10 @@ export class NativeHandoffController {
 			'POST /api/auth/native/start': (request) => this.start(request),
 			'POST /api/auth/native/approve': (request) => this.approve(request),
 			'POST /api/auth/native/return': (request) => this.authorizeBrowser(request),
-			'GET /api/auth/native/devices': (request) => this.devices(request),
-			'POST /api/auth/native/devices': (request) => this.removeDevice(request),
+			'GET /api/auth/native/devices': (request) => this.devices(request, true),
+			'POST /api/auth/native/devices': (request) => this.removeDevice(request, true),
+			'GET /api/account/devices': (request) => this.devices(request, false),
+			'POST /api/account/devices': (request) => this.removeDevice(request, false),
 			'POST /api/auth/native/poll': (request) => this.poll(request),
 			'POST /api/auth/native/exchange': (request) => this.exchange(request)
 		};
@@ -41,15 +43,17 @@ export class NativeHandoffController {
 		return authHttp(await this.options.handoff.authorizeBrowser(session, handoffId));
 	}
 
-	private async devices(request: Request): Promise<Response> {
+	private async devices(request: Request, nativeOnly: boolean): Promise<Response> {
 		const session = await this.options.sessions.browser(request);
-		return authHttp({ devices: await this.options.repository.devices(session.actor.id) });
+		const devices = await this.options.repository.devices(session, nativeOnly);
+		const current = nativeOnly ? {} : { currentDeviceId: session.device?.id ?? null };
+		return authHttp({ devices, ...current });
 	}
 
-	private async removeDevice(request: Request): Promise<Response> {
+	private async removeDevice(request: Request, nativeOnly: boolean): Promise<Response> {
 		const session = await this.options.sessions.browser(request);
 		const id = this.input.deviceId(await readJson(request));
-		if (!(await this.options.repository.removeDevice(session.actor.id, id)))
+		if (!(await this.options.repository.removeDevice(session.actor.id, id, nativeOnly)))
 			return authFail('not-found');
 		return authHttp({ ok: true });
 	}

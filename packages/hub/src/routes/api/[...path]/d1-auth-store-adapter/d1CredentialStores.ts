@@ -10,6 +10,19 @@ import type { Row } from '../../../../validators/accounts-access/AuthRecordValid
 const SESSION_COLUMNS =
 	'id_hash, kind, parent_hash, actor_id, actor_email, actor_name, resource, created_at, expires_at, revoked_at, device_id, device_name, last_seen_at';
 
+const SELECT_ACCOUNT_DEVICES = `SELECT device_id, device_name, last_seen_at FROM auth_sessions
+		WHERE actor_id = ? AND device_id IS NOT NULL AND revoked_at IS NULL AND expires_at > ?
+			AND (? = 0 OR kind = 'native')
+		ORDER BY (device_id = ?) DESC, last_seen_at DESC, device_id LIMIT 100`;
+
+const REVOKE_ACCOUNT_DEVICE = `WITH target AS MATERIALIZED (
+		SELECT id_hash FROM auth_sessions
+		WHERE actor_id = ? AND device_id = ? AND revoked_at IS NULL AND expires_at > ?
+			AND (? = 0 OR kind = 'native')
+	)
+	UPDATE auth_sessions SET revoked_at = ? WHERE revoked_at IS NULL AND
+		(id_hash IN target OR parent_hash IN target) RETURNING id_hash`;
+
 function sessions(db: D1Like, records: AuthRecordValidator): SessionStore {
 	return {
 		async create(r) {
@@ -29,17 +42,20 @@ function sessions(db: D1Like, records: AuthRecordValidator): SessionStore {
 			const row = await db.prepare(query).bind(idHash).first();
 			return row ? records.session(row) : null;
 		},
-		async devices(actorId, now) {
-			const query = `SELECT device_id, device_name, last_seen_at FROM auth_sessions
-				WHERE actor_id = ? AND device_id IS NOT NULL AND revoked_at IS NULL AND expires_at > ?
-				ORDER BY last_seen_at DESC, device_id LIMIT 100`;
-			const { results } = await db.prepare(query).bind(actorId, now).all<Row>();
+		async devices(actorId, now, nativeOnly = false, currentDeviceId = null) {
+			const { results } = await db
+				.prepare(SELECT_ACCOUNT_DEVICES)
+				.bind(actorId, now, Number(nativeOnly), currentDeviceId)
+				.all<Row>();
 			return results.map(accountDevice);
 		},
-		async removeDevice(actorId, deviceId, now) {
-			const query = `UPDATE auth_sessions SET revoked_at = ?
-				WHERE actor_id = ? AND device_id = ? AND revoked_at IS NULL AND expires_at > ? RETURNING device_id`;
-			return (await db.prepare(query).bind(now, actorId, deviceId, now).first()) !== null;
+		async removeDevice(actorId, deviceId, now, nativeOnly = false) {
+			return (
+				(await db
+					.prepare(REVOKE_ACCOUNT_DEVICE)
+					.bind(actorId, deviceId, now, Number(nativeOnly), now)
+					.first()) !== null
+			);
 		},
 		async touchDevice(idHash, now) {
 			const query = `UPDATE auth_sessions SET last_seen_at = ?
