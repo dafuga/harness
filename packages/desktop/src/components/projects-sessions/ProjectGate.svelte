@@ -6,9 +6,11 @@
 	import BrandMark from '$shared/BrandMark.svelte';
 	import Modal from '$shared/Modal.svelte';
 	import { resolve } from '$app/paths';
-	import type { Snippet } from 'svelte';
+	import { getContext, type Snippet } from 'svelte';
+	import type { RemotePhone } from '../../lib/stores/networking-security/remotePhone.svelte';
 	import type { DesktopProject } from '../../models/projects-sessions/ProjectContext.types';
 	import GameCreate from '../game-authoring/GameCreate.svelte';
+	import { remoteContext } from '../../models/development-tooling/Environment.types';
 	let {
 		available,
 		local = true,
@@ -45,13 +47,16 @@
 	const overviewLink = $derived((available && local) || overview);
 	/** A new project is made on this device, so a phone or a browser preview offers none. */
 	const creates = $derived(available && local);
+	/** A phone shows only its connect gate until its computer is online; then its projects appear. */
+	const remote = getContext<{ phone: RemotePhone } | undefined>(remoteContext);
+	const gated = $derived(!local && remote?.phone.status?.state !== 'online');
 </script>
 
 <hx-main class="project-gate">
 	<hx-header class="gate-head">
-		<hx-div class="brand-mark"><BrandMark /></hx-div>
+		<hx-div class="brand-mark"><BrandMark size={local ? undefined : 64} /></hx-div>
 		<hx-h1>Harness</hx-h1>
-		<hx-p class="tagline">Understand your project. Design what comes next.</hx-p>
+		{#if local}<hx-p class="tagline">Understand your project. Design what comes next.</hx-p>{/if}
 	</hx-header>
 	{#if local}<hx-div class="gate-actions">
 			<hx-button class="primary" disabled={!available || busy} aria-busy={busy} onclick={open}
@@ -65,24 +70,24 @@
 	{#if local && !available}<hx-p class="muted gate-hint"
 			>Browser preview · read-only. Open the desktop app to choose a local project.</hx-p
 		>{/if}
-	<hx-section class="recent-projects" aria-label="Recent projects">
-		<hx-div class="recent-head">
-			<hx-h2>Recent projects</hx-h2>
-			{#if overviewLink}<hx-a class="project-overview-link" href={resolve('/projects' as '/')}
-					>Project Overview</hx-a
-				>{/if}
-		</hx-div>
-		{#each projects as item (item.id)}<hx-button
-				type="button"
-				class="recent-project"
-				disabled={busy}
-				aria-label={`Open ${item.name}`}
-				onclick={() => choose?.(item.id)}
-				><hx-strong>{item.name}</hx-strong><hx-small
-					>{item.kind === 'shared' ? 'Shared project' : item.root || place}</hx-small
-				></hx-button
-			>{:else}<hx-p class="muted recent-empty">{empty}</hx-p>{/each}
-	</hx-section>
+	{#if !gated}<hx-section class="recent-projects" aria-label="Recent projects">
+			<hx-div class="recent-head">
+				<hx-h2>Recent projects</hx-h2>
+				{#if overviewLink}<hx-a class="project-overview-link" href={resolve('/projects' as '/')}
+						>Project Overview</hx-a
+					>{/if}
+			</hx-div>
+			{#each projects as item (item.id)}<hx-button
+					type="button"
+					class="recent-project"
+					disabled={busy}
+					aria-label={`Open ${item.name}`}
+					onclick={() => choose?.(item.id)}
+					><hx-strong>{item.name}</hx-strong><hx-small
+						>{item.kind === 'shared' ? 'Shared project' : item.root || place}</hx-small
+					></hx-button
+				>{:else}<hx-p class="muted recent-empty">{empty}</hx-p>{/each}
+		</hx-section>{/if}
 	{#if phone}<hx-p class="phone-hint"
 			><hx-span
 				>Connect your phone: open Harness on it and sign in with the same Google account.</hx-span
