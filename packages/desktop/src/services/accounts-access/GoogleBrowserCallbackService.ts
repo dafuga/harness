@@ -6,6 +6,25 @@ const host = '127.0.0.1';
 const path = '/harness-account';
 const finished = '/return-to-harness';
 
+function callbackTarget(request: IncomingMessage, port: number): URL | null {
+	const address = `${host}:${port}`;
+	const origin = `http://${address}`;
+	const target = request.url;
+	if (request.method !== 'GET' || request.headers.host !== address || !target?.startsWith('/'))
+		return null;
+	if (!URL.canParse(target, origin)) return null;
+	const url = new URL(target, origin);
+	return url.origin === origin ? url : null;
+}
+
+function callbackCode(url: URL, state: string): string | null {
+	if (!state || url.pathname !== path || url.searchParams.get('state') !== state) return null;
+	const code = url.searchParams.get('code');
+	return code && /^[A-Za-z0-9_-]{43}$/.test(code) && [...url.searchParams].length === 2
+		? code
+		: null;
+}
+
 /** One ephemeral listener, restricted to the current handoff at a numeric loopback address. */
 export class GoogleBrowserCallbackService {
 	private readonly server: Server = createServer((request, response) =>
@@ -50,37 +69,19 @@ export class GoogleBrowserCallbackService {
 	}
 
 	private receive(request: IncomingMessage, response: ServerResponse): void {
-		const origin = `http://${host}:${this.port}`;
 		response.setHeader('Cache-Control', 'no-store');
 		response.setHeader('Referrer-Policy', 'no-referrer');
 		response.setHeader('X-Content-Type-Options', 'nosniff');
 		response.setHeader('Content-Type', 'text/plain; charset=utf-8');
-		if (
-			request.method !== 'GET' ||
-			request.headers.host !== `${host}:${this.port}` ||
-			!request.url?.startsWith('/') ||
-			!URL.canParse(request.url, origin)
-		)
-			return this.refuse(response);
-
-		const url = new URL(request.url, origin);
-		if (url.origin !== origin) return this.refuse(response);
+		const url = callbackTarget(request, this.port);
+		if (!url) return this.refuse(response);
 		if (url.pathname === finished && !url.search) {
 			response.end('Return to Harness to finish signing in.');
 			if (!this.state) this.server.close();
 			return;
 		}
-		const code = url.searchParams.get('code');
-		const state = url.searchParams.get('state');
-		if (
-			url.pathname !== path ||
-			!this.state ||
-			state !== this.state ||
-			!code ||
-			!/^[A-Za-z0-9_-]{43}$/.test(code) ||
-			[...url.searchParams].length !== 2
-		)
-			return this.refuse(response);
+		const code = callbackCode(url, this.state);
+		if (!code) return this.refuse(response);
 		this.state = '';
 		this.received = code;
 		response.writeHead(303, { Location: finished }).end();

@@ -64,9 +64,14 @@ test('the plugin offers a scan and no way to be handed an address, a code or a l
 	expect(named('HarnessRemoteOpenURL')).toEqual([]);
 });
 
-test('the app asks for the camera in words of its own and registers no link scheme', () => {
+test('the app asks for the camera in words of its own and only registers its system sign-in callback', () => {
 	const plist = read(join(app, 'Info.plist'));
 	expect(plist).toMatch(/<key>NSCameraUsageDescription<\/key>\s*<string>[^<]{20,}<\/string>/);
-	expect(plist).not.toContain('CFBundleURLTypes');
+	const schemes = plist.match(/<key>CFBundleURLSchemes<\/key>\s*<array>([\s\S]*?)<\/array>/);
+	expect(schemes?.[1].match(/<string>[^<]+<\/string>/g)).toEqual([
+		'<string>harness-account</string>'
+	]);
+	const delegate = read(join(app, 'AppDelegate.swift'));
+	expect(delegate).toMatch(/if url\.scheme == HubAccountSession\.googleScheme \{ return false \}/);
 	expect(plist).not.toContain('harnessremote');
 });

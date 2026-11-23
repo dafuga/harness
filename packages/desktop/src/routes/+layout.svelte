@@ -3,6 +3,7 @@
 <!-- @harness-uid u_tnnhjdmit3 -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { onMount, setContext, type Snippet } from 'svelte';
 	import AccountSignIn from '../components/accounts-access/AccountSignIn.svelte';
 	import type { NativeHostedStatus } from '../models/projects-sessions/ProjectContext.types';
@@ -37,7 +38,7 @@
 
 	async function accept(answer: NativeHostedStatus, asked: number) {
 		if (signingIn && answer.state === 'signed-in') {
-			await goto('/', { replaceState: true });
+			await goto(resolve('/'), { replaceState: true });
 			if (!active || asked !== turn) return;
 		}
 		error =

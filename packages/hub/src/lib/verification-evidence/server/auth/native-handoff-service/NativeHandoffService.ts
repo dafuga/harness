@@ -82,6 +82,16 @@ async function validReturn(
 	return Boolean(code && safeEqual(record.codeHash, await codeHash(options, record.id, code)));
 }
 
+async function approvingSession(
+	sessions: NativeHandoffOptions['sessions'],
+	record: NativeExchangeRecord
+) {
+	const parent = record.parentHash ? await sessions.live(record.parentHash) : null;
+	if (parent?.kind !== 'browser' || parent.actor.id !== record.subject)
+		return authFail('handoff-invalid');
+	return parent;
+}
+
 /** Binds the system-browser return or typed-code recovery to the initiating device's PKCE proof. */
 export class NativeHandoffService {
 	constructor(private readonly options: NativeHandoffOptions) {}
@@ -159,10 +169,7 @@ export class NativeHandoffService {
 			return authFail('handoff-invalid');
 		const record = await store.claim(input.handoffId, now());
 		if (!record || !(await this.bound(record, input))) return authFail('handoff-invalid');
-		const parent = record.parentHash ? await sessions.live(record.parentHash) : null;
-		if (parent?.kind !== 'browser' || parent.actor.id !== record.subject) {
-			return authFail('handoff-invalid');
-		}
+		const parent = await approvingSession(sessions, record);
 		const grant = {
 			actor: parent.actor,
 			resource: record.resource,
