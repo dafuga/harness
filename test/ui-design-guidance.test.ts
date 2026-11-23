@@ -1,0 +1,20 @@
+import { expect, test } from 'vitest';
+import {
+	uiDesignPatternRules,
+	uiDesignRules
+} from '../src/templates/development-tooling/uiDesignGuidance';
+
+const u0Rules = [
+	'A floating button never covers content or another control',
+	'Absence is not failure',
+	'Pickers use the shared list rows, never a native list box',
+	'One composer: modes always read Comment · Ask · Plan · Change',
+	'A gate page has one heading'
+];
+
+test('Emits the U0 design rules into the shared UI design guidance', () => {
+	for (const fragment of u0Rules) {
+		expect(uiDesignPatternRules.some((rule) => rule.includes(fragment))).toBe(true);
+		expect(uiDesignRules()).toContain(fragment);
+	}
+});
