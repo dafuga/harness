@@ -1,5 +1,6 @@
 // @harness-uid u_3en7p2purk
 import { spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { lstatSync, mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { App } from 'electron';
@@ -7,8 +8,15 @@ import type { App } from 'electron';
 /** The packaged Mac app uses a new Safe Storage name and keeps the previous profile. */
 export function preserveMacProfile(app: App): void {
 	if (process.platform !== 'darwin' || !app.isPackaged) return;
-	if (app.commandLine.hasSwitch('user-data-dir')) return;
 	const directory = resolve(app.getPath('appData'), 'harness-desktop');
+	if (app.commandLine.hasSwitch('user-data-dir')) {
+		const profile = resolve(app.commandLine.getSwitchValue('user-data-dir'));
+		if (profile !== directory) {
+			const suffix = createHash('sha256').update(profile).digest('hex').slice(0, 16);
+			app.setName(`Harness ${suffix}`);
+		}
+		return;
+	}
 	mkdirSync(directory, { recursive: true, mode: 0o700 });
 	app.setPath('userData', directory);
 }
@@ -22,6 +30,7 @@ export function migrateMacSafeStorage(app: App): boolean {
 	);
 	if (!needsLegacyKey) return true;
 	const helper = resolve(process.resourcesPath, '../Helpers/HarnessKeychainMigration');
-	const args = app.commandLine.hasSwitch('harness-migrate-safe-storage') ? ['--interactive'] : [];
+	const args = [app.getName()];
+	if (app.commandLine.hasSwitch('harness-migrate-safe-storage')) args.push('--interactive');
 	return spawnSync(helper, args, { stdio: 'ignore' }).status === 0;
 }
