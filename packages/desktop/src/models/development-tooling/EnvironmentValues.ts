@@ -18,3 +18,5 @@ export type {
 
 /** Where the page keeps its two connection stores for the components below it. */
 export const remoteContext = 'harness:remote';
+
+export const nativeAccountContext = Symbol('native-account');

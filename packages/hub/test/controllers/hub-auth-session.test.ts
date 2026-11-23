@@ -1,5 +1,11 @@
 import { expect, test } from 'vitest';
 import { SESSION_COOKIE } from '../../src/utils/authCookies';
+import { randomToken, sha256Url } from '../../src/utils/authSecrets';
+import type {
+	AccountDevice,
+	NativeAuthorization,
+	NativeStartResult
+} from '../../src/models/accounts-access/HubAuth.types';
 import { ORIGIN, ada } from '../support/authFixture';
 import { errorOf, hubFixture } from '../support/hubFixture';
 
@@ -96,4 +102,59 @@ test('an internal failure is an opaque 500', async () => {
 	const response = await browser.post('/api/auth/challenge');
 	expect(await response.text()).toBe('{"error":"auth-unavailable"}');
 	expect(response.status).toBe(500);
+});
+
+test('the Google browser callback enrolls one device and removal is account scoped', async () => {
+	const hub = await hubFixture();
+	const browser = hub.browser();
+	const other = hub.browser();
+	const start = '/api/auth/native/start';
+	const finish = '/api/auth/native/return';
+	const exchange = '/api/auth/native/exchange';
+	const devices = '/api/auth/native/devices';
+	const verifier = randomToken();
+	const proof = { nonce: randomToken(), resource: 'projects' };
+	const response = await browser.post(start, {
+		...proof,
+		challenge: await sha256Url(verifier),
+		callback: 49231,
+		deviceName: 'Office Mac'
+	});
+	const flow = (await response.json()) as NativeStartResult;
+	expect(flow.verificationUrl).toBe(`${ORIGIN}/native/${flow.handoffId}?return=1`);
+	expect(flow.userCode).toBe('');
+	expect(await errorOf(await browser.post(finish, { handoffId: flow.handoffId }))).toBe(
+		'401 session-required'
+	);
+	await hub.signIn(browser);
+	await hub.signIn(other, { sub: 'another-google-subject' });
+	const input = { ...proof, verifier, handoffId: flow.handoffId };
+	const result = await browser.post(finish, { handoffId: flow.handoffId });
+	const callback = new URL(((await result.json()) as { callbackUrl: string }).callbackUrl);
+	expect(callback.origin + callback.pathname).toBe('http://127.0.0.1:49231/harness-account');
+	expect(callback.searchParams.get('state')).toBe(flow.handoffId);
+	const callbackCode = callback.searchParams.get('code');
+	expect(callbackCode).toMatch(/^[A-Za-z0-9_-]{43}$/);
+	expect(await errorOf(await browser.post(exchange, input))).toBe('400 handoff-invalid');
+	const redeemed = await browser.post(exchange, { ...input, callbackCode });
+	const { authorization, actor } = (await redeemed.json()) as NativeAuthorization;
+	expect(actor).toEqual(ada);
+	expect(callback.href).not.toContain(authorization);
+	expect(await errorOf(await browser.post(exchange, { ...input, callbackCode }))).toBe(
+		'400 handoff-invalid'
+	);
+	const bearer = { authorization: `Bearer ${authorization}` };
+	hub.advance(10 * 60 * 1000);
+	await browser.get('/api/auth/status', bearer);
+	const list = ((await (await browser.get(devices)).json()) as { devices: AccountDevice[] })
+		.devices;
+	expect(list).toEqual([
+		{ id: expect.any(String), name: 'Office Mac', lastSeenAt: new Date(hub.now()).toISOString() }
+	]);
+	expect(await (await other.get(devices)).json()).toEqual({ devices: [] });
+	expect(await errorOf(await other.post(devices, { id: list[0].id }))).toBe('404 not-found');
+	expect(await hub.auth.actor(browser.request('/api/projects', { headers: bearer }))).toEqual(ada);
+	expect(await errorOf(await browser.get(devices, bearer))).toBe('401 session-required');
+	expect((await browser.post(devices, { id: list[0].id })).status).toBe(200);
+	expect(await hub.auth.actor(browser.request('/api/projects', { headers: bearer }))).toBeNull();
 });

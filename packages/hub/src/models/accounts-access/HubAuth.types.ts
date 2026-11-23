@@ -128,7 +128,17 @@ export interface GithubRepositories {
 }
 
 /** POST /api/auth/native/start body. `resource` is `projects` or `project:<projectId>`. */
+export type NativeCallback = 'ios' | number;
+
+export interface AccountDevice {
+	id: string;
+	name: string;
+	lastSeenAt: string;
+}
+
 export interface NativeStartInput {
+	callback?: NativeCallback;
+	deviceName?: string;
 	challenge: string;
 	nonce: string;
 	resource: string;
@@ -157,6 +167,7 @@ export interface NativePollResult {
 
 /** POST /api/auth/native/exchange body. Accepted once per handoff. */
 export interface NativeExchangeInput {
+	callbackCode?: string;
 	handoffId: string;
 	verifier: string;
 	nonce: string;

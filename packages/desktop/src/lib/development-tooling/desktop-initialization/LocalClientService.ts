@@ -25,6 +25,7 @@ const limits = {
 };
 const closeCodes: Record<string, number> = { 'too-large': 4413, 'too-many-requests': 4429 };
 const isEvent = (text: string) => text.startsWith('{"type":"event"');
+const accountMethods = new Set(['hostedStatus', 'connectHosted', 'disconnectHosted']);
 const soon = (step: () => void) => void setImmediate(step);
 const words = (error: unknown) =>
 	error instanceof Error && error.message ? error.message : 'The operation failed.';
@@ -63,7 +64,11 @@ export class LocalClientService {
 			limits,
 			methods: () => operations.methods(),
 			describe: () => ({ host, device: null, grant: null }),
-			handle: (request) => operations.handle(request),
+			handle: (request) => {
+				if (options.accountRequired && !auth?.admitted && !accountMethods.has(request.method))
+					throw new Error('Sign in to Harness to continue.');
+				return operations.handle(request);
+			},
 			explain: (error) => ({ code: 'failed', message: words(error) })
 		});
 		this.releaseAgent = options.shared.remote?.onRunEvent?.((event) =>

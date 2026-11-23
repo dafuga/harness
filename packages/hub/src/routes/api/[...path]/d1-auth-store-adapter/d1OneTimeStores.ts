@@ -13,7 +13,11 @@ import type { AuthRecordValidator } from '../../../../validators/accounts-access
 const CLAIM = 'WHERE id_hash = ? AND expires_at > ? RETURNING *';
 
 const EXCHANGE_COLUMNS =
-	'id, challenge, nonce_hash, code_hash, resource, audience, action, environment, origin, status, subject, parent_hash, expires_at';
+	'id, challenge, nonce_hash, code_hash, resource, audience, action, environment, origin, status, subject, parent_hash, expires_at, callback, device_name';
+const APPROVE_EXCHANGE = `UPDATE auth_native_exchanges
+	SET status = 'approved', subject = ?, parent_hash = ?, code_hash = COALESCE(?, code_hash),
+		expires_at = MIN(expires_at, COALESCE(?, expires_at))
+	WHERE id = ? AND status = 'pending' AND code_hash = ? AND expires_at > ? RETURNING id`;
 
 function challenges(db: D1Like, records: AuthRecordValidator): OneTimeStore<ChallengeRecord> {
 	return {
@@ -57,7 +61,7 @@ function githubStates(db: D1Like, records: AuthRecordValidator): OneTimeStore<Gi
 function exchanges(db: D1Like, records: AuthRecordValidator): ExchangeStore {
 	return {
 		async create(r) {
-			const insert = `INSERT INTO auth_native_exchanges (${EXCHANGE_COLUMNS}) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+			const insert = `INSERT INTO auth_native_exchanges (${EXCHANGE_COLUMNS}) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 			const scope = [r.resource, r.audience, r.action, r.environment, r.origin];
 			await db
 				.prepare(insert)
@@ -70,7 +74,9 @@ function exchanges(db: D1Like, records: AuthRecordValidator): ExchangeStore {
 					r.status,
 					r.subject,
 					r.parentHash,
-					r.expiresAt
+					r.expiresAt,
+					r.callback === undefined ? null : String(r.callback),
+					r.deviceName ?? null
 				)
 				.run();
 		},
@@ -82,11 +88,17 @@ function exchanges(db: D1Like, records: AuthRecordValidator): ExchangeStore {
 			return row ? records.exchange(row) : null;
 		},
 		async approve(a) {
-			const update =
-				"UPDATE auth_native_exchanges SET status = 'approved', subject = ?, parent_hash = ? WHERE id = ? AND status = 'pending' AND code_hash = ? AND expires_at > ? RETURNING id";
 			const row = await db
-				.prepare(update)
-				.bind(a.subject, a.parentHash, a.id, a.codeHash, a.now)
+				.prepare(APPROVE_EXCHANGE)
+				.bind(
+					a.subject,
+					a.parentHash,
+					a.callbackCodeHash ?? null,
+					a.callbackExpiresAt ?? null,
+					a.id,
+					a.codeHash,
+					a.now
+				)
 				.first();
 			return row !== null;
 		},

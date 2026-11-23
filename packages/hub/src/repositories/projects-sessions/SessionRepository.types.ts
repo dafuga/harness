@@ -12,6 +12,7 @@ export interface SessionRepositoryOptions {
 }
 
 export interface SessionGrant {
+	deviceName?: string;
 	kind: SessionKind;
 	actor: Actor;
 	resource: string;

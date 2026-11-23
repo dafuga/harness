@@ -9,6 +9,8 @@ const limits: Record<string, number> = {
 	'/api/auth/native/start': 10,
 	'/api/auth/native/poll': 60,
 	'/api/auth/native/approve': 10,
+	'/api/auth/native/return': 10,
+	'/api/auth/native/devices': 10,
 	'/api/auth/native/exchange': 10,
 	'/api/remote/hosts': 10
 };

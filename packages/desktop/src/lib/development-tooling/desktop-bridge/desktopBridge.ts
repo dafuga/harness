@@ -84,10 +84,10 @@ function authentication(session: ProjectSessionService) {
 	return {
 		hostedStatus: () =>
 			session.auth?.status() ?? Promise.resolve({ configured: false, state: 'signed-out' }),
-		connectHosted: async () => {
+		connectHosted: async (input?: { google?: boolean }) => {
 			if (!session.auth)
 				throw new HostedSignInNotConfiguredError('Hosted sign-in is not configured.');
-			return session.auth.connect();
+			return session.auth.connect(input?.google === true);
 		},
 		disconnectHosted: () =>
 			session.auth?.disconnect() ?? Promise.resolve({ configured: false, state: 'signed-out' })

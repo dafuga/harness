@@ -12,7 +12,7 @@ reviewedAt: null
 
 The Hub root is the public front door of Harness for signed-out visitors. It says what Harness is and who it is for, how a change moves from spec to proof, and where to download the Mac app. Its Log in control opens `/projects`, where Google sign-in and the authorized project cards live.
 
-The page is `src/components/public-site/HomePage.svelte`, rendered by `src/routes/+page.svelte`. Download links come from `src/configs/public-site/homeDownloadConfig.ts`; `src/utils/public-site/publishedDownload.ts` confirms the Mac archive.
+The page is `src/components/public-site/HomePage.svelte`, rendered by `src/routes/(public-site)/about/+page.svelte`. Download links come from `src/configs/public-site/homeDownloadConfig.ts`; `src/utils/public-site/publishedDownload.ts` confirms the Mac archive.
 
 ## Acceptance Criteria
 

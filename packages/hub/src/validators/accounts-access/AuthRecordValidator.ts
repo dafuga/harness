@@ -13,6 +13,8 @@ import type {
 	VerifiedEmailRecord
 } from '../../models/accounts-access/HubAuthStore.types';
 
+import type { AccountDevice, NativeCallback } from '../../models/accounts-access/HubAuth.types';
+
 const kinds = ['browser', 'native'] as const;
 const statuses = ['pending', 'approved', 'consumed'] as const;
 const environments: readonly HubEnvironment[] = ['local', 'staging', 'production'];
@@ -44,6 +46,24 @@ function oneOf<T extends string>(row: Row, key: string, allowed: readonly T[]): 
 	return allowed.includes(value as T) ? (value as T) : corrupt();
 }
 
+export function accountDevice(value: unknown): AccountDevice {
+	const row = rowOf(value);
+	const id = text(row, 'device_id');
+	return {
+		id,
+		name: text(row, 'device_name'),
+		lastSeenAt: new Date(integer(row, 'last_seen_at')).toISOString()
+	};
+}
+
+function callback(row: Row): NativeCallback | undefined {
+	const value = optional(row, 'callback', text);
+	if (value === null) return undefined;
+	if (value === 'ios') return value;
+	if (!/^\d{4,5}$/.test(value) || Number(value) < 1024 || Number(value) > 65535) return corrupt();
+	return Number(value);
+}
+
 /** Turns a stored row into a typed record, or throws. A row is never coerced into shape. */
 export class AuthRecordValidator {
 	challenge(value: unknown): ChallengeRecord {
@@ -60,6 +80,7 @@ export class AuthRecordValidator {
 		const row = rowOf(value);
 		return {
 			idHash: text(row, 'id_hash'),
+			...(row.device_id ? { device: accountDevice(row) } : {}),
 			kind: oneOf(row, 'kind', kinds),
 			parentHash: optional(row, 'parent_hash', text),
 			actor: {
@@ -146,6 +167,8 @@ export class AuthRecordValidator {
 		const row = rowOf(value);
 		return {
 			id: text(row, 'id'),
+			...(row.callback ? { callback: callback(row) } : {}),
+			...(row.device_name ? { deviceName: text(row, 'device_name') } : {}),
 			challenge: text(row, 'challenge'),
 			nonceHash: text(row, 'nonce_hash'),
 			codeHash: text(row, 'code_hash'),

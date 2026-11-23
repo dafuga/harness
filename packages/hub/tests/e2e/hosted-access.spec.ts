@@ -141,7 +141,7 @@ test('the same Google account automatically discovers owned and joined projects 
 		const second = await hostedFixture(other, { data: state.data });
 		await macRelease(other, 'page');
 		await page.goto('/projects');
-		await other.goto('/');
+		await other.goto('/about');
 		await other.getByRole('main').getByRole('link', { name: 'Your projects' }).click();
 		await expect(other).toHaveURL(/\/projects$/);
 		await expect(other.getByRole('link', { name: 'Open Atlas', exact: true })).toBeVisible();

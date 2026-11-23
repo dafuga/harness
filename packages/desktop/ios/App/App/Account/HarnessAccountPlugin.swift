@@ -1,3 +1,4 @@
+import AuthenticationServices
 import Capacitor
 import Foundation
 import UIKit
@@ -7,7 +8,7 @@ import UIKit
 /// the nonce and the session stay in HubAccountSession, and nothing of them is logged or handed
 /// over. A build without `HarnessHubOrigin` says it is not configured and asks nobody.
 @objc(HarnessAccountPlugin)
-public class HarnessAccountPlugin: CAPPlugin, CAPBridgedPlugin {
+public class HarnessAccountPlugin: CAPPlugin, CAPBridgedPlugin, ASWebAuthenticationPresentationContextProviding {
     public let identifier = "HarnessAccountPlugin"
     public let jsName = "HarnessAccount"
     public let pluginMethods: [CAPPluginMethod] = [
@@ -20,9 +21,46 @@ public class HarnessAccountPlugin: CAPPlugin, CAPBridgedPlugin {
     private let session = HubAccountSession(
         origin: HubAccountPolicy.origin(Bundle.main.object(forInfoDictionaryKey: HubAccountPolicy.infoKey)))
 
-    /// Google sign-in happens in the system browser, on the Hub's own approval page.
+    private var authentication: ASWebAuthenticationSession?
+    private var authenticationState: String?
+
+    /// Google sign-in uses the Hub in the system authentication session.
     override public func load() {
         session.open = { page in DispatchQueue.main.async { UIApplication.shared.open(page) } }
+        session.deviceName = "Harness " + UIDevice.current.model
+        session.authenticate = { [weak self] page, state in
+            DispatchQueue.main.async { self?.authenticate(page, state: state) }
+        }
+        session.cancelAuthentication = { [weak self] in
+            DispatchQueue.main.async { self?.authentication?.cancel() }
+        }
+    }
+
+    private func authenticate(_ page: URL, state: String) {
+        let callback: (URL?, Error?) -> Void = { [weak self] url, _ in
+            DispatchQueue.main.async {
+                guard let self = self, self.authenticationState == state else { return }
+                self.authenticationState = nil
+                self.authentication = nil
+                self.session.browserReturned(url, state: state)
+            }
+        }
+        let flow: ASWebAuthenticationSession
+        if #available(iOS 17.4, *) {
+            flow = ASWebAuthenticationSession(url: page, callback: .customScheme(HubAccountSession.googleScheme),
+                completionHandler: callback)
+        } else {
+            flow = ASWebAuthenticationSession(url: page, callbackURLScheme: HubAccountSession.googleScheme,
+                completionHandler: callback)
+        }
+        authenticationState = state
+        authentication = flow
+        flow.presentationContextProvider = self
+        if !flow.start() { callback(nil, nil) }
+    }
+
+    public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        bridge?.viewController?.view.window ?? ASPresentationAnchor()
     }
 
     @objc func status(_ call: CAPPluginCall) {
@@ -30,7 +68,9 @@ public class HarnessAccountPlugin: CAPPlugin, CAPBridgedPlugin {
     }
 
     @objc func connect(_ call: CAPPluginCall) {
-        session.connect { HarnessAccountPlugin.settle(call, $0) }
+        let settle: HubAccountSession.Status = { HarnessAccountPlugin.settle(call, $0) }
+        if call.getBool("google") == true { session.connectGoogle(settle) }
+        else { session.connect(settle) }
     }
 
     @objc func disconnect(_ call: CAPPluginCall) {

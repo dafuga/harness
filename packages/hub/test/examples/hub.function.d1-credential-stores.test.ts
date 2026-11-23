@@ -25,6 +25,9 @@ function fixture() {
 					bound = values;
 					return statement;
 				},
+				async all<T>(): Promise<{ results: T[] }> {
+					return { results: [] };
+				},
 				async run(): Promise<unknown> {
 					calls.push({ query, values: bound });
 					return {};
@@ -78,6 +81,9 @@ test('Creates a session with its stored fields', async () => {
 		'workspace-1',
 		100,
 		200,
+		null,
+		null,
+		null,
 		null
 	]);
 	recordExampleCases(

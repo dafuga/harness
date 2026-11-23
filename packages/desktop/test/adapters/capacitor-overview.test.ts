@@ -93,7 +93,7 @@ test('a paired phone with an owner account reads the overview with one fixed GET
 	expect(plugin.request, 'the computer is never asked for the overview').not.toHaveBeenCalled();
 });
 
-test('the overview waits for both the computer status and the account to be known', async () => {
+test('the overview waits for the account without waiting for computer status', async () => {
 	const f = native(online);
 	const account = accountOf();
 	const environment = new CapacitorEnvironmentAdapter({
@@ -102,16 +102,16 @@ test('the overview waits for both the computer status and the account to be know
 	}).connect();
 	const bridge = environment.bridge!;
 	await bridge.hostedStatus!();
-	expect(bridge.projectOverview, 'the computer has not reported yet').toBeUndefined();
-	await environment.phone!.status();
+	expect(f.plugin.status).not.toHaveBeenCalled();
 	expect(typeof bridge.projectOverview).toBe('function');
 	expect(account.request).not.toHaveBeenCalled();
 });
 
-test('an unpaired phone offers no overview and reads nothing, even when signed in', async () => {
-	const { account, bridge } = await phoneWith(unpaired);
-	expect(bridge.projectOverview).toBeUndefined();
-	expect(account.request).not.toHaveBeenCalled();
+test('an unpaired owner reads the overview from the Hub', async () => {
+	const { account, bridge, plugin } = await phoneWith(unpaired);
+	await expect(bridge.projectOverview!()).resolves.toEqual(ready);
+	expect(account.request).toHaveBeenCalledOnce();
+	expect(plugin.request).not.toHaveBeenCalled();
 });
 
 test('a signed-out account offers no overview while the computer is online', async () => {
@@ -121,15 +121,15 @@ test('a signed-out account offers no overview while the computer is online', asy
 	expect(account.request).not.toHaveBeenCalled();
 });
 
-test('losing the pairing while the overview is read discards the answer and offers no overview', async () => {
+test('losing the pairing keeps the pending Hub overview read', async () => {
 	let answer!: (value: unknown) => void;
 	const request = vi.fn(() => new Promise((resolve) => (answer = resolve)));
 	const f = await phoneWith(online, accountOf(request as never));
 	const pending = f.bridge.projectOverview!();
 	f.emit('status', { ...unpaired, state: 'revoked' });
 	answer(replyOf(200, ready));
-	await expect(pending).resolves.toEqual({ status: 'unavailable' });
-	expect(f.bridge.projectOverview).toBeUndefined();
+	await expect(pending).resolves.toEqual(ready);
+	expect(f.bridge.projectOverview).toBeTypeOf('function');
 });
 
 test('an authorized 503 reads as unavailable and keeps the offer', async () => {
@@ -168,14 +168,14 @@ test('a switch to another account asks again, after a denial of the first', asyn
 	expect(typeof f.bridge.projectOverview).toBe('function');
 });
 
-test('a change of computer while online discards the pending read of the old one', async () => {
+test('changing computers keeps the pending Hub overview read', async () => {
 	let answer!: (value: unknown) => void;
 	const request = vi.fn(() => new Promise((resolve) => (answer = resolve)));
 	const f = await phoneWith(online, accountOf(request as never));
 	const pending = f.bridge.projectOverview!();
 	f.emit('status', { ...online, host: { id: 'b2'.repeat(20), name: 'Other Mac' } });
 	answer(replyOf(200, ready));
-	await expect(pending).resolves.toEqual({ status: 'unavailable' });
+	await expect(pending).resolves.toEqual(ready);
 });
 
 test('an answer asked before an account switch is discarded', async () => {

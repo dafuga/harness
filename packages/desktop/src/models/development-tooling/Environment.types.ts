@@ -7,6 +7,14 @@ import type { RemoteMethod } from '../../../../remote/src/models/Remote.types';
 import type { WireChannel } from '../../../../remote/src/models/Remote.types';
 import type { NativeHostedStatus } from '../projects-sessions/ProjectContext.types';
 
+export { nativeAccountContext } from './EnvironmentValues';
+
+export interface NativeAccountContext {
+	readonly environment?: Environment;
+	readonly signedIn: boolean;
+	signOut(): void;
+}
+
 export type EnvironmentKind = 'electron' | 'capacitor' | 'web';
 
 /** The control port of this runtime, if it has one: never both. */
@@ -108,7 +116,7 @@ export type AccountNativeStatus = Omit<NativeHostedStatus, 'state'> & { state: s
  */
 export interface AccountNativePlugin {
 	status(): Promise<AccountNativeStatus>;
-	connect(): Promise<AccountNativeStatus>;
+	connect(input?: { google?: boolean }): Promise<AccountNativeStatus>;
 	disconnect(): Promise<AccountNativeStatus>;
 	request(call: AccountNativeCall): Promise<AccountNativeReply>;
 }

@@ -185,7 +185,12 @@ async function openWindow(backend: Backend): Promise<BrowserWindow> {
 	const choose = () => chooseProject(window, dialog);
 	/* The window's own client: its session and runs, served over the loopback socket. */
 	const control = remoteControl(backend.remote),
-		client = new LocalClientService({ shared: backend.shared, choose, control });
+		client = new LocalClientService({
+			shared: backend.shared,
+			choose,
+			control,
+			accountRequired: app.isPackaged || Boolean(backend.shared.auth)
+		});
 	windows.current = { window, client };
 	window.on('closed', () => {
 		client.end();

@@ -8,6 +8,8 @@ export class IpcRequestValidator {
 	parse(channel: string, input: unknown): unknown {
 		if (!(Object.values(channels) as string[]).includes(channel))
 			throw new UnknownDesktopOperationError('Unknown desktop operation.');
+		if (channel === channels.connectHosted)
+			return { google: (input as { google?: unknown } | null)?.google === true };
 		if (channel.startsWith('game:')) return gamePayload(channel, input);
 		const context = new ProjectContextValidator();
 		const extended = context.operation(channel, input);

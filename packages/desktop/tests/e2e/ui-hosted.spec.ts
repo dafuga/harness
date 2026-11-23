@@ -18,21 +18,48 @@ const entity = (project: string, branch: string, rest = '') =>
 	`/projects/${project}/harness/branch/${branch}/pages/page%3Aactivity${rest}`;
 const saved = '2026-10-12T08:00:00.000Z';
 
-test('connecting shows a code and the validated address, asks no faster than told, and takes no address', async ({
-	page
-}) => {
+test('desktop Google sign-in gates direct links and lands on Home', async ({ page }) => {
+	await hostedFixture(page, 'signed-out');
+	await page.goto('/settings');
+	const google = page.getByRole('button', { name: 'Sign in with Google' });
+	await expect(google).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'Settings' })).toHaveCount(0);
+	expect(await made(page, 'listProjects')).toEqual([]);
+	if (process.env.TAKE_SCREENSHOT === 'true') {
+		await page.evaluate(async () => {
+			await document.fonts.ready;
+			await Promise.all(
+				[...document.querySelectorAll('main img')].map((image) =>
+					(image as HTMLImageElement).decode()
+				)
+			);
+		});
+		await page.screenshot({
+			path: `/tmp/harness-desktop-account-${process.env.SCREENSHOT_LABEL}.png`
+		});
+	}
+	await google.click();
+	await expect(page.getByRole('status')).toHaveText('Waiting for Google…');
+	await expect(page.getByText(userCode, { exact: true })).toHaveCount(0);
+	await page.getByRole('button', { name: 'Cancel', exact: true }).click();
+	await expect(google).toBeVisible();
+	await google.click();
+	await page.evaluate(() => {
+		(window as unknown as { __hosted: { state: string } }).__hosted.state = 'signed-in';
+	});
+	await expect(page).toHaveURL(/\/$/);
+	await expect(page.getByRole('button', { name: 'Open Gamma', exact: true })).toBeVisible();
+	await page.getByRole('button', { name: 'Sign out', exact: true }).click();
+	await expect(google).toBeVisible();
+	await expect(page.getByRole('button', { name: 'Open Alpha', exact: true })).toHaveCount(0);
+});
+
+test('typed-code recovery displays the code and polls at the Hub interval', async ({ page }) => {
 	await hostedFixture(page, 'signed-out');
 	await page.goto('/');
-	const panel = page.getByRole('region', { name: 'Shared projects' });
-	const shared = page.getByRole('button', { name: 'Open Gamma', exact: true });
-	await expect(page.getByRole('button', { name: 'Open Alpha', exact: true })).toBeVisible();
-	await expect(shared).toHaveCount(0);
-	await panel.getByRole('button', { name: 'Connect shared projects', exact: true }).click();
-	await expect(panel.getByText(userCode, { exact: true })).toBeVisible();
-	await expect(panel.getByText(verificationUrl, { exact: true })).toBeVisible();
-	await expect(panel.getByText('Waiting for your approval…')).toBeVisible();
-	await expect(page.getByRole('textbox', { disabled: false })).toHaveCount(0);
-	await expect(page.getByText(/verifier|nonce|secret|token/i)).toHaveCount(0);
+	await page.getByRole('button', { name: 'Use a one-time code' }).click();
+	await expect(page.getByText(userCode, { exact: true })).toBeVisible();
+	await expect(page.getByText(verificationUrl, { exact: true })).toBeVisible();
 	expect(page.url()).not.toContain(userCode);
 	const before = (await hosted(page)).polls;
 	await page.waitForTimeout(2500);
@@ -42,13 +69,8 @@ test('connecting shows a code and the validated address, asks no faster than tol
 	await page.evaluate(() => {
 		(window as unknown as { __hosted: { state: string } }).__hosted.state = 'signed-in';
 	});
-	await expect(panel.getByText('Shared projects · Ada Example')).toBeVisible();
-	await expect(panel.getByText(userCode, { exact: true })).toHaveCount(0);
-	await expect(shared).toBeVisible();
-	await panel.getByRole('button', { name: 'Disconnect', exact: true }).click();
-	await expect(panel.getByRole('button', { name: 'Connect shared projects' })).toBeVisible();
-	await expect(shared).toHaveCount(0);
-	await expect(page.getByRole('button', { name: 'Open Alpha', exact: true })).toBeVisible();
+	await expect(page.getByRole('button', { name: 'Open Gamma', exact: true })).toBeVisible();
+	await expect(page.getByText(userCode, { exact: true })).toHaveCount(0);
 });
 
 test('an offline event makes the shown shared project read-only before anything else changes', async ({

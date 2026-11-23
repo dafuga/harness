@@ -7,8 +7,7 @@ import {
 	captureHomeScenario,
 	contrast,
 	homeViewports,
-	macRelease,
-	projectsPage
+	macRelease
 } from './hosted-home';
 
 const archive = '/downloads/Harness-mac-arm64.zip';
@@ -25,22 +24,25 @@ const views = [
 	{ name: 'desktop', width: 1280, height: 800 }
 ] as const;
 
-test('a visitor reads the public homepage and Log in opens /projects', async ({ page }) => {
+test('a visitor reads the public About page and Log in opens the Hub gate', async ({ page }) => {
 	const state = await hostedFixture(page, { signedIn: false });
 	await macRelease(page, 'page');
-	const reached = await projectsPage(page);
-	await page.goto('/');
+	await page.goto('/about');
 	await expect(hero(page)).toBeVisible();
 	await expect(page).toHaveTitle('Harness · Build with agents');
 	await expect(page.getByRole('heading', { name: 'Shared projects' })).toHaveCount(0);
 	await expect(page.getByRole('button', { name: 'Sign in with Google' })).toHaveCount(0);
 	const entries = page.getByRole('link', { name: 'Log in', exact: true });
 	await expect(entries).toHaveCount(3);
-	for (const entry of await entries.all()) await expect(entry).toHaveAttribute('href', '/projects');
+	for (const entry of await entries.all()) await expect(entry).toHaveAttribute('href', '/');
 	await page.getByRole('banner').getByRole('link', { name: 'Log in' }).click();
-	await expect(page).toHaveURL(/\/projects$/);
-	expect(reached).toEqual(['/projects']);
-	expect(state.calls.map((call) => call.path)).toEqual(['/api/auth/status']);
+	await expect(page).toHaveURL(/\/$/);
+	await expect(page.getByRole('button', { name: 'Sign in with Google' })).toBeVisible();
+	expect(state.calls.map((call) => call.path)).toEqual([
+		'/api/auth/status',
+		'/api/auth/status',
+		'/api/auth/challenge'
+	]);
 });
 
 test('a signed-in person gets the six-section Hub home', async ({ page }) => {
@@ -79,7 +81,7 @@ test('a published Mac archive becomes the download link', async ({ page }) => {
 });
 
 async function published(page: Page) {
-	await page.goto('/');
+	await page.goto('/about');
 	const link = download(page).getByRole('link', { name: 'Download for Mac' });
 	await expect(link).toHaveAttribute('href', archive);
 	await expect(link).toHaveAttribute('download', '');
@@ -96,7 +98,7 @@ for (const answer of ['missing', 'page'] as const)
 		await page.setViewportSize({ width: 920, height: 960 });
 		await hostedFixture(page, { signedIn: false });
 		const asked = await macRelease(page, answer);
-		await page.goto('/');
+		await page.goto('/about');
 		await expect.poll(() => asked.length).toBe(1);
 		await expect(download(page).getByText(/Mac build is being prepared/)).toBeVisible();
 		await capture(page, `home-tablet-mac-${answer}`);
@@ -119,7 +121,7 @@ for (const view of views)
 			await page.setViewportSize({ width: view.width, height: view.height });
 			await hostedFixture(page, { signedIn: false });
 			await macRelease(page, 'page');
-			await page.goto('/');
+			await page.goto('/about');
 			await expect(download(page).getByText(/Mac build is being prepared/)).toBeVisible();
 			await capture(page, `home-${view.name}-${scheme}`);
 			await expect(download(page).getByRole('button', { name: pendingMac })).toBeVisible();

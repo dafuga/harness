@@ -16,7 +16,6 @@ final class MemoryAccountVault: HubAccountVault {
     }
 }
 
-/// A Hub a check plays by method and path. It records every request; `holding` keeps answers back.
 final class FakeHub: HubAccountTransport {
     var routes: [String: (URLRequest) -> HubAccountReply] = [:]
     var seen: [URLRequest] = []
@@ -71,6 +70,7 @@ final class AccountBench {
         session = HubAccountSession(origin: origin, vault: vault, transport: hub)
         session.now = { [unowned self] in self.time }
         session.open = { [unowned self] in self.opened.append($0) }
+        session.authenticate = { [unowned self] page, _ in self.opened.append(page) }
     }
     func status() -> Result<[String: Any], HubAccountFailure>? { awaited(session.status) }
     func connect() -> Result<[String: Any], HubAccountFailure>? { awaited(session.connect) }
@@ -78,9 +78,9 @@ final class AccountBench {
     func request(_ path: String, _ method: String = "GET") -> Result<HubAccountReply, HubAccountFailure>? { awaited { self.session.request(HubAccountCall(method: method, path: path), $0) } }
     /// Connects to a Hub whose sign-in the person approves; `change` alters what its exchange answers.
     @discardableResult
-    func waiting(_ change: [String: Any] = [:], page: String? = nil) -> Result<[String: Any], HubAccountFailure>? {
-        let start: [String: Any] = ["handoffId": hubHandoff, "userCode": "WXYZ-2345", "interval": 2, "verificationUrl":
-            page ?? "\(hubOrigin.absoluteString)/native/\(hubHandoff)", "expiresAt": ISO8601DateFormatter().string(from: time + 300)]
+    func waiting(_ change: [String: Any] = [:], page: String? = nil, google: Bool = false) -> Result<[String: Any], HubAccountFailure>? {
+        let start: [String: Any] = ["handoffId": hubHandoff, "userCode": google ? "" : "WXYZ-2345", "interval": 2, "verificationUrl":
+            page ?? "\(hubOrigin.absoluteString)/native/\(hubHandoff)" + (google ? "?return=1" : ""), "expiresAt": ISO8601DateFormatter().string(from: time + 300)]
         hub.routes["POST /api/auth/native/start"] = { _ in hubJSON(200, start) }
         hub.routes["POST /api/auth/native/poll"] = { _ in hubJSON(200, ["status": "approved"]) }
         hub.routes["POST /api/auth/native/exchange"] = { request in
@@ -90,7 +90,7 @@ final class AccountBench {
             return hubJSON(200, issued.merging(change) { $1 })
         }
         hub.routes["GET /api/auth/status"] = { _ in hubJSON(200, ["configured": true, "actor": hubAda]) }
-        return connect()
+        return google ? awaited(session.connectGoogle) : connect()
     }
     func signIn() {
         waiting()

@@ -17,9 +17,9 @@
 	/** The public front door for everyone: what Harness is, the app, and the way to your projects. */
 	const { session } = browserContext();
 	const { mac: release, ios } = homeDownloadConfig;
-	const home = resolve('/');
+	const home = resolve('/about');
 	/** Sign-in and the signed-in person's projects are one page; the homepage only links to it. */
-	const projects = '/projects';
+	const projects = $derived(session.actor ? '/projects' : '/');
 	const entry = $derived(session.actor ? 'Your projects' : 'Log in');
 	/** Null until the Hub confirms it serves the archive; publishing switches it on, no rebuild. */
 	let mac = $state<string | null>(null);

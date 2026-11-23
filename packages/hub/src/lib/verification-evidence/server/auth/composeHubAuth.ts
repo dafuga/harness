@@ -40,7 +40,7 @@ export function composeHubAuth(parts: HubAuthParts): HubAuth {
 	const github = githubServices(parts, secrets);
 	const scope = { store: store.exchanges, sessions: repository, secrets, origin, environment };
 	const handoff = new NativeHandoffService({ ...scope, now });
-	const native = new NativeHandoffController({ handoff, sessions });
+	const native = new NativeHandoffController({ handoff, sessions, repository });
 	const connection = new GithubConnectionController({ origin, sessions, github });
 	const proof = { store, sessions: repository, secrets, delivery: parts.delivery, now };
 	const emailProofs = new EmailProofService(proof);

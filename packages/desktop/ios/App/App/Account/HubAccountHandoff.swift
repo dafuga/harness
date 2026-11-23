@@ -13,8 +13,10 @@ struct HubAccountProof {
     var challenge: String { RemoteCoding.base64url(RemoteCoding.sha256(Data(verifier.utf8))) }
     var start: [String: Any] { ["challenge": challenge, "nonce": nonce, "resource": Self.resource] }
 
-    func exchange(_ handoffId: String) -> [String: Any] {
-        ["handoffId": handoffId, "verifier": verifier, "nonce": nonce, "resource": Self.resource]
+    func exchange(_ handoffId: String, callbackCode: String?) -> [String: Any] {
+        var value: [String: Any] = ["handoffId": handoffId, "verifier": verifier, "nonce": nonce, "resource": Self.resource]
+        if let callbackCode = callbackCode { value["callbackCode"] = callbackCode }
+        return value
     }
 }
 
@@ -28,7 +30,7 @@ enum HubAccountDates {
     }
 }
 
-/// A sign-in that waits until a person approves this phone's code in their browser.
+/// One sign-in as it waits for a system-browser return or typed-code recovery.
 struct HubAccountHandoff {
     let handoffId: String
     let userCode: String
@@ -39,6 +41,7 @@ struct HubAccountHandoff {
     let proof: HubAccountProof
     /// The account generation it was started under, and when the Hub may be asked again.
     var generation = 0
+    var returning = false
     var next: Date
 
     /// The start answer as the protocol states it, or nil: an opaque id, the approval page of
@@ -46,21 +49,23 @@ struct HubAccountHandoff {
     init?(_ answer: [String: Any], origin: URL, proof: HubAccountProof, now: Date) {
         let page = "\(origin.absoluteString)/native/"
         guard let id = answer["handoffId"] as? String, Self.opaque(id),
-            answer["verificationUrl"] as? String == page + id,
-            let code = answer["userCode"] as? String, (1...40).contains(code.count),
+            let code = answer["userCode"] as? String, code.count <= 40,
+            answer["verificationUrl"] as? String == page + id + (code.isEmpty ? "?return=1" : ""),
             let interval = answer["interval"] as? Int, (1...30).contains(interval),
             let expiry = answer["expiresAt"] as? String, let expiresAt = HubAccountDates.parse(expiry),
             expiresAt > now, expiresAt.timeIntervalSince(now) <= HubAccountLimits.handoffSeconds
         else { return nil }
         handoffId = id
         userCode = code
-        verificationUrl = page + id
+        verificationUrl = page + id + (code.isEmpty ? "?return=1" : "")
         self.expiry = expiry
         self.expiresAt = expiresAt
         self.interval = interval
         self.proof = proof
         next = now.addingTimeInterval(Double(interval))
     }
+
+    var usesBrowserReturn: Bool { userCode.isEmpty }
 
     /// What the page shows: the code and the page to type it on. No verifier, nonce or session.
     var object: [String: Any] {
@@ -89,37 +94,45 @@ struct HubAccountHandoff {
     }
 }
 
-/// Signing in. The phone asks for a code, opens the approval page in the system browser, and
-/// asks again no sooner than the Hub's interval until the code is approved or expires. There is
-/// no callback address: a page is opened, never the app.
+/// Sign-in uses a scoped system-browser callback, with typed-code polling available for recovery.
 extension HubAccountSession {
-    func connect(_ done: @escaping Status) {
+    func connect(_ done: @escaping Status) { begin(google: false, done) }
+
+    func connectGoogle(_ done: @escaping Status) { begin(google: true, done) }
+
+    private func begin(google: Bool, _ done: @escaping Status) {
         queue.async {
             guard let origin = self.origin else { return done(.failure(.notConfigured)) }
             if self.handoff.map({ $0.expiresAt <= self.now() }) == true { self.handoff = nil }
             if self.live() != nil || self.handoff != nil { return done(.success(self.snapshot)) }
             let proof = HubAccountProof()
-            let call = HubAccountCall(method: "POST", path: "/api/auth/native/start", body: RemoteCoding.json(proof.start))
+            var input = proof.start
+            if google {
+                input["callback"] = "ios"
+                input["deviceName"] = self.deviceName
+            }
+            let call = HubAccountCall(method: "POST", path: "/api/auth/native/start", body: RemoteCoding.json(input))
             self.send(call, origin, nil) { result in
                 switch result {
                 case .failure(let failure): done(.failure(failure))
-                case .success(let reply): done(self.started(reply, origin, proof))
+                case .success(let reply): done(self.started(reply, origin, proof, google))
                 }
             }
         }
     }
 
     private func started(
-        _ reply: HubAccountReply, _ origin: URL, _ proof: HubAccountProof
+        _ reply: HubAccountReply, _ origin: URL, _ proof: HubAccountProof, _ google: Bool
     ) -> Result<[String: Any], HubAccountFailure> {
         guard credential == nil, self.handoff == nil else { return .success(snapshot) }
         guard reply.status == 200, let answer = RemoteCoding.object(reply.data),
-            var waiting = HubAccountHandoff(answer, origin: origin, proof: proof, now: now()),
+            var waiting = HubAccountHandoff(answer, origin: origin, proof: proof, now: now()), waiting.usesBrowserReturn == google,
             let page = URL(string: waiting.verificationUrl)
         else { return .failure(reply.status == 200 ? .failed : .hub(reply)) }
         waiting.generation = generation
         self.handoff = waiting
-        self.open(page)
+        if google { self.authenticate(page, waiting.handoffId) }
+        else { self.open(page) }
         return .success(snapshot)
     }
 
@@ -127,10 +140,10 @@ extension HubAccountSession {
     func poll(_ handoff: HubAccountHandoff, _ origin: URL, _ done: @escaping Status) {
         let time = now()
         guard handoff.expiresAt > time, handoff.generation == generation else {
-            self.handoff = nil
+            erase()
             return done(.success(snapshot))
         }
-        guard handoff.next <= time else { return done(.success(snapshot)) }
+        guard !handoff.usesBrowserReturn, handoff.next <= time else { return done(.success(snapshot)) }
         self.handoff?.next = time.addingTimeInterval(Double(handoff.interval))
         let body = RemoteCoding.json(["handoffId": handoff.handoffId])
         send(HubAccountCall(method: "POST", path: "/api/auth/native/poll", body: body), origin, nil) { result in
@@ -155,8 +168,10 @@ extension HubAccountSession {
 
     /// The one exchange of an approved code: the verifier proves this phone asked for it. A
     /// session is kept only when it is bound to this sign-in; any other one issued is ended.
-    private func exchange(_ handoff: HubAccountHandoff, _ origin: URL, _ done: @escaping Status) {
-        let body = RemoteCoding.json(handoff.proof.exchange(handoff.handoffId))
+    func exchange(
+        _ handoff: HubAccountHandoff, _ origin: URL, callbackCode: String? = nil, _ done: @escaping Status
+    ) {
+        let body = RemoteCoding.json(handoff.proof.exchange(handoff.handoffId, callbackCode: callbackCode))
         let call = HubAccountCall(method: "POST", path: "/api/auth/native/exchange", body: body)
         guard let request = HubAccountPolicy.request(origin, call, token: nil) else { return done(.failure(.refused)) }
         let asked = generation

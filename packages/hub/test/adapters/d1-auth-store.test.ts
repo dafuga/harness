@@ -18,7 +18,8 @@ const sqlite = await import('node:sqlite').catch(() => null);
 const files = [
 	'0001-auth-ephemeral-state.sql',
 	'0003-auth-grant-generations.sql',
-	'0004-auth-email-proofs.sql'
+	'0004-auth-email-proofs.sql',
+	'0006-account-devices.sql'
 ];
 const migrations = files.map((file) =>
 	readFileSync(new URL(`../../db/migrations/${file}`, import.meta.url), 'utf8')
@@ -28,6 +29,7 @@ function statement(engine: Engine, query: string, values: Value[] = []): D1State
 	return {
 		bind: (...next) => statement(engine, query, next as Value[]),
 		first: async <T>() => (engine.prepare(query).get(...values) ?? null) as T | null,
+		all: async <T>() => ({ results: engine.prepare(query).all(...values) as T[] }),
 		run: async () => engine.prepare(query).run(...values)
 	};
 }

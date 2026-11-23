@@ -1,9 +1,8 @@
 // @harness-uid u_bt6e76o6y5
 import type { Pending, AuthOptions } from './NativeAuthService.types';
 import { NativeSignInError } from './NativeAuthService.types';
-import { randomBytes, createHash } from 'node:crypto';
+import { NativeSignInService } from '../../../services/accounts-access/NativeSignInService';
 import type { NativeHostedStatus } from '../../../models/projects-sessions/ProjectContext.types';
-import { NativeHandoffValidator } from '../../../validators/development-tooling/NativeHandoffValidator';
 import { NativeAccountStatusService } from './NativeAccountStatusService';
 import { responseRecord } from '../../../validators/projects-sessions/RemoteProjectResponseValidator';
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
@@ -37,19 +36,29 @@ async function readOverview(options: AuthOptions): Promise<OverviewSnapshot> {
 
 export class NativeAuthService {
 	private pending: Pending | null = null;
+	private signedIn = false;
 	private queue: Promise<unknown> = Promise.resolve();
-	private validator = new NativeHandoffValidator();
-	constructor(private options: AuthOptions) {}
-	connect(): Promise<NativeHostedStatus> {
-		return this.serial(() => this.begin());
+	private readonly signIn: NativeSignInService;
+	private generation = 0;
+	constructor(private options: AuthOptions) {
+		this.signIn = new NativeSignInService(options);
+	}
+	get admitted(): boolean {
+		return this.signedIn;
+	}
+
+	connect(google = false): Promise<NativeHostedStatus> {
+		return this.serial(() => this.begin(google));
 	}
 	status(): Promise<NativeHostedStatus> {
 		return this.serial(() => this.refresh());
 	}
 	disconnect(): Promise<NativeHostedStatus> {
+		this.generation++;
+		this.signedIn = false;
 		return this.serial(async () => {
 			this.options.onDisconnect?.();
-			this.pending = null;
+			this.clearPending();
 			const credential = await this.options.store.read();
 			try {
 				if (credential)
@@ -69,40 +78,27 @@ export class NativeAuthService {
 	}
 
 	private serial(action: () => Promise<NativeHostedStatus>): Promise<NativeHostedStatus> {
-		const next = this.queue.then(action);
+		const generation = this.generation;
+		const next = this.queue.then(action).then((status) => {
+			if (generation === this.generation) this.signedIn = status.state === 'signed-in';
+			return status;
+		});
 		this.queue = next.catch(() => undefined);
 		return next;
 	}
-	private async begin(): Promise<NativeHostedStatus> {
-		if (!this.options.store.available())
-			throw new NativeSignInError('OS encryption is required for hosted sessions.');
-		const verifier = randomBytes(32).toString('base64url'),
-			nonce = randomBytes(24).toString('base64url'),
-			resource = 'projects';
-		const challenge = createHash('sha256').update(verifier).digest('base64url');
-		const result = await this.options.http.publicJson('/api/auth/native/start', {
-			challenge,
-			nonce,
-			resource
-		});
-		const handoff = this.validator.start(result, this.options.origin, this.now());
-		const { handoffId, ...publicHandoff } = handoff;
-		const status: NativeHostedStatus = {
-			configured: true,
-			state: 'pending',
-			handoff: publicHandoff
-		};
-		this.pending = {
-			handoffId,
-			verifier,
-			nonce,
-			resource,
-			status,
-			next: this.now() + handoff.interval * 1000
-		};
-		await this.options.open(handoff.verificationUrl);
-		return status;
+	private async begin(google: boolean): Promise<NativeHostedStatus> {
+		if (this.pending) return this.pending.status;
+		if (this.signedIn) return this.refresh();
+		const fresh = await this.signIn.prepare(google);
+		this.pending = fresh;
+		return fresh.status;
 	}
+
+	private clearPending() {
+		this.pending?.callback?.close();
+		this.pending = null;
+	}
+
 	private async refresh(): Promise<NativeHostedStatus> {
 		if (this.pending) return this.poll(this.pending);
 		const credential = await this.options.store.read();
@@ -114,11 +110,17 @@ export class NativeAuthService {
 	}
 	private async poll(pending: Pending): Promise<NativeHostedStatus> {
 		if (Date.parse(pending.status.handoff!.expiresAt) <= this.now()) {
-			this.pending = null;
+			this.clearPending();
 			return { configured: true, state: 'signed-out' };
 		}
 		if (pending.next > this.now()) return pending.status;
 		pending.next = this.now() + pending.status.handoff!.interval * 1000;
+		if (pending.callback) {
+			const code = pending.callback.take();
+			if (!code) return pending.status;
+			this.pending = null;
+			return this.signIn.exchange(pending, code);
+		}
 		const result = responseRecord(
 			await this.options.http.publicJson('/api/auth/native/poll', { handoffId: pending.handoffId })
 		);
@@ -126,21 +128,9 @@ export class NativeAuthService {
 		this.pending = null;
 		if (result.status !== 'approved')
 			throw new NativeSignInError('Native handoff expired or was refused.');
-		const { handoffId, verifier, nonce, resource } = pending;
-		const resultExchange = await this.options.http.publicJson('/api/auth/native/exchange', {
-			handoffId,
-			verifier,
-			nonce,
-			resource
-		});
-		const accepted = this.validator.exchange(
-			resultExchange,
-			{ origin: this.options.origin, nonce, resource },
-			this.now()
-		);
-		await this.options.store.save(accepted.credential);
-		return accepted.status;
+		return this.signIn.exchange(pending);
 	}
+
 	private now(): number {
 		return this.options.now?.() ?? Date.now();
 	}

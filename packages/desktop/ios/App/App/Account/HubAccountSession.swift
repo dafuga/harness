@@ -1,7 +1,7 @@
 import Foundation
 
 /// This phone's own session at the Harness Hub (hub-authentication.md). A person signs in with
-/// Google in the browser and approves this phone by the code it shows; the phone keeps the
+/// Google in a system browser session; the phone keeps the
 /// session it is issued. The origin, the verifier, the nonce and the session stay on this side:
 /// the page is told a public status and the answers of project reads. Signing in is in
 /// HubAccountHandoff.swift. Every state change happens on `queue`, one at a time.
@@ -15,6 +15,9 @@ final class HubAccountSession {
     let transport: HubAccountTransport
     /// Opens an address in the system browser; the plugin hands in the one of iOS.
     var open: (URL) -> Void = { _ in }
+    var authenticate: (URL, String) -> Void = { _, _ in }
+    var cancelAuthentication: () -> Void = {}
+    var deviceName = "Harness iPhone"
     var now: () -> Date = { Date() }
     var credential: HubAccountCredential?
     var handoff: HubAccountHandoff?
@@ -96,6 +99,7 @@ final class HubAccountSession {
         vault.wipe()
         credential = nil
         handoff = nil
+        cancelAuthentication()
         generation += 1
     }
 
@@ -128,7 +132,9 @@ extension HubAccountSession {
         guard let kept = live() else { return done(.success(snapshot)) }
         send(Self.statusCall, origin, kept.token) { result in
             switch result {
-            case .failure(let failure): done(failure == .superseded ? .success(self.snapshot) : .failure(failure))
+            case .failure(let failure):
+                if failure == .offline || failure == .superseded { done(.success(self.snapshot)) }
+                else { done(.failure(failure)) }
             case .success(let reply): done(self.confirmed(reply, kept, origin))
             }
         }
@@ -165,4 +171,38 @@ extension HubAccountSession {
             done(.success(status))
         }
     }
+}
+
+/// Accepts a return only from the authentication attempt currently waiting in this session.
+extension HubAccountSession {
+    static let googleScheme = "harness-account"
+
+    func browserReturned(_ url: URL?, state: String) {
+        queue.async {
+            guard let waiting = self.handoff, waiting.usesBrowserReturn, !waiting.returning, waiting.handoffId == state,
+                waiting.generation == self.generation, let origin = self.origin else { return }
+            guard waiting.expiresAt > self.now(), let url = url,
+                let code = Self.browserCode(url, state: state) else {
+                self.handoff = nil
+                return
+            }
+            self.handoff?.returning = true
+            self.exchange(waiting, origin, callbackCode: code) { _ in
+                if self.handoff?.handoffId == state { self.handoff = nil }
+            }
+        }
+    }
+
+    static func browserCode(_ url: URL, state: String) -> String? {
+        guard let value = URLComponents(url: url, resolvingAgainstBaseURL: false),
+            value.scheme == googleScheme, value.host == "callback", value.path == "/sign-in",
+            value.user == nil, value.password == nil, value.port == nil, value.fragment == nil,
+            let items = value.queryItems, items.count == 2,
+            items.first(where: { $0.name == "state" })?.value == state,
+            let code = items.first(where: { $0.name == "code" })?.value,
+            HubAccountPolicy.matches(code, "\\A[A-Za-z0-9_-]{43}\\z")
+        else { return nil }
+        return code
+    }
+
 }

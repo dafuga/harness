@@ -85,17 +85,8 @@ export function fields(query: Query = {}): Record<string, string> {
 	return Object.fromEntries(kept);
 }
 
-/** Plain JSON data: the values that may cross the native bridge. */
-export type PlainJson =
-	| string
-	| number
-	| boolean
-	| null
-	| PlainJson[]
-	| { [key: string]: PlainJson };
-
 /** Only plain data crosses the native bridge: no proxy, no undefined. */
-export function plain(body: PlainJson | undefined): unknown {
+export function plain(body: unknown): unknown {
 	return JSON.parse(JSON.stringify(body ?? {}));
 }
 
