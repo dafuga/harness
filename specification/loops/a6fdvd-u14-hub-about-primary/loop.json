@@ -1,0 +1,65 @@
+{
+	"name": "a6fdvd-u14-hub-about-primary",
+	"goal": "U14 Hub about page: the hero has one filled primary (Log in); the pending 'Mac app coming soon' becomes a muted chip (not a filled link to #download); no enabled button without an action (specification/designs/full-pass/README.md section U14)",
+	"createdAt": "2026-11-23T17:11:04.837Z",
+	"updatedAt": "2026-11-23T17:41:53.801Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-23T17:15:17.915Z",
+			"evidence": "Failing behaviour: on /about (HomeHero, pending Mac build) the hero shows 'Mac app coming soon' as a filled primary link to #download, so two controls look enabled and the hero has two filled-looking actions. Expected (design record specification/designs/full-pass/README.md U14): Log in is the one filled primary in the hero; the pending Mac name is a muted chip (span.home-badge), not a link or button; once published, Download for Mac is the one filled primary."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-23T17:15:19.061Z",
+			"evidence": "Existing standardized tests covered the hero's link targets and labels (packages/hub/test/components/public-site/home-download.test.ts, 'the hero download goes to the build...') and the hosted-home e2e pending test (packages/hub/tests/e2e/hosted-home.spec.ts 'a missing|page Mac archive keeps the download pending'), but they asserted the pending hero as a link to #download, so no test counted filled primaries in the hero or checked that the pending name is not an action. Gap: the assertion for one filled primary per hero and the no-dead-action rule. Repair: strengthen those two existing tests in place (no new file)."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-23T17:41:49.899Z",
+			"evidence": "Replayed the committed Hub home-download test at d56f2c246d. Two hero assertions fail: the pending Mac action is a link and Log in lacks the primary styling."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-23T17:41:51.164Z",
+			"evidence": "The existing U14 fix c8dc99ab84 makes Log in the primary action and renders the pending Mac application as a chip."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-23T17:41:53.801Z",
+			"evidence": "Replayed the same committed Hub home-download test at c8dc99ab84. All six tests passed."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

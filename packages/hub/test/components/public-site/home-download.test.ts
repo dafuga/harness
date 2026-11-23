@@ -25,14 +25,29 @@ test('a published build is a direct download link and the iPhone app gets its ow
 	);
 });
 
-test('the hero download goes to the build when there is one, else to the download section', () => {
+test('the hero download goes to the build when there is one, else is a muted chip', () => {
 	const pending = render(HomeHero, { props: { download: '#download' } }).body;
-	expect(pending).toMatch(/<a[^>]*href="#download"[^>]*>Mac app coming soon/);
+	expect(pending).toMatch(/<span class="home-badge"[^>]*>Mac app coming soon<\/span>/);
+	expect(pending).not.toContain('href="#download"');
 	expect(pending).toContain('iPhone app coming soon');
 	const ready = render(HomeHero, { props: { download: '/downloads/Harness.dmg', iosReady: true } });
 	expect(ready.body).toMatch(/<a[^>]*href="\/downloads\/Harness\.dmg"/);
 	expect(ready.body).toContain('Download for Mac');
 	expect(ready.body).not.toContain('coming soon');
+});
+
+test('the hero has one filled primary: Log in while the Mac build is pending, the download once published', () => {
+	const pending = render(HomeHero, { props: { download: '#download' } }).body;
+	expect(pending.match(/home-button-primary/g)).toHaveLength(1);
+	expect(pending).toMatch(
+		/<a class="home-button home-button-primary home-button-large" href="\/projects"[^>]*>Log in<\/a>/
+	);
+	expect(pending).not.toMatch(/<(a|button)[^>]*>Mac app coming soon/);
+	const ready = render(HomeHero, { props: { download: '/downloads/Harness.dmg', iosReady: true } });
+	expect(ready.body.match(/home-button-primary/g)).toHaveLength(1);
+	expect(ready.body).toMatch(
+		/<a class="home-button home-button-primary home-button-large" href="\/downloads\/Harness\.dmg"[^>]*>Download for Mac<\/a>/
+	);
 });
 
 test('the Mac archive is asked for at its Hub path and the iPhone app stays pending', () => {

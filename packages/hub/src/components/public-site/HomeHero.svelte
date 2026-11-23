@@ -13,8 +13,11 @@
 		projects = '/projects',
 		entry = 'Log in'
 	}: { download: string; iosReady?: boolean; projects?: string; entry?: string } = $props();
-	/** Until the archive is published the hero leads to the download section and says so. */
-	const macLabel = $derived(download.startsWith('#') ? 'Mac app coming soon' : 'Download for Mac');
+	/**
+	 * Until the archive is published the hero has one filled primary, Log in, and the pending Mac
+	 * build is a muted chip, not an action. Once it is published the download is the primary.
+	 */
+	const pending = $derived(download.startsWith('#'));
 	const loop = [
 		{ label: 'Spec: customers can check out', state: 'spec' },
 		{ label: 'Failing test recorded first', state: 'red' },
@@ -35,12 +38,21 @@
 			exactly what was checked before anything merges.
 		</hx-p>
 		<hx-div class="home-actions">
-			<hx-a class="home-button home-button-primary home-button-large" href={download}
-				>{macLabel}</hx-a
-			>
-			<hx-a class="home-button home-button-large" href={projects} data-sveltekit-reload
-				>{entry}</hx-a
-			>
+			{#if pending}
+				<hx-a
+					class="home-button home-button-primary home-button-large"
+					href={projects}
+					data-sveltekit-reload>{entry}</hx-a
+				>
+				<hx-span class="home-badge">Mac app coming soon</hx-span>
+			{:else}
+				<hx-a class="home-button home-button-primary home-button-large" href={download}
+					>Download for Mac</hx-a
+				>
+				<hx-a class="home-button home-button-large" href={projects} data-sveltekit-reload
+					>{entry}</hx-a
+				>
+			{/if}
 		</hx-div>
 		<hx-p class="home-fine">
 			Mac app · Shared projects in any browser · {iosReady

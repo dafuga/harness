@@ -24,6 +24,10 @@
 	gap: var(--hx-space-12);
 	margin-bottom: var(--hx-space-16);
 }
+.home-actions .home-badge {
+	align-self: center;
+	align-items: center;
+}
 .home-loop {
 	margin: 0;
 	overflow: hidden;
