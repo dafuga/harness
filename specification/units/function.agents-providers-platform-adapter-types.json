@@ -4,8 +4,8 @@
 	"uid": "u_lwm3byiwhu",
 	"kind": "function",
 	"title": "platformAdapter",
-	"responsibility": "Owns the platformAdapter shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Describes messaging identities, messages, delivery outcomes, inbound events and audit metadata shared by platform adapters.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/core/agents-providers/platformAdapter.types.ts"],
@@ -23,7 +23,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": [],
