@@ -9,9 +9,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/scripts/mac-safe-storage-migration.c",
 			"packages/desktop/scripts/package-mac.ts",
-			"packages/desktop/scripts/package-mac.types.ts",
-			"packages/desktop/scripts/mac-safe-storage-migration.c"
+			"packages/desktop/scripts/package-mac.types.ts"
 		],
 		"symbols": ["MacPackageError"]
 	},

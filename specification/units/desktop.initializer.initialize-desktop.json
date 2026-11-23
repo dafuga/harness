@@ -30,18 +30,35 @@
 			"initializeDesktop",
 			"initializeDesktop",
 			"desktopBackend",
-			"Backend"
+			"Backend",
+			"preserveMacProfile",
+			"migrateMacSafeStorage"
 		]
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "preserveMacProfile.app",
+				"type": "App",
+				"required": true,
+				"description": "The Electron application during early startup. Its resource directory locates the signed migration helper and its paths and switches select the profile."
+			},
+			{
+				"name": "migrateMacSafeStorage.app",
+				"type": "App",
+				"required": true,
+				"description": "The Electron application during early startup. Its resource directory locates the signed migration helper and its paths and switches select the profile."
+			}
+		],
 		"outputs": [
 			{
 				"name": "initializeDesktop",
 				"type": "Promise<BrowserWindow | null>",
-				"description": "The BrowserWindow this call opened, returned after its loadURL('harness://app/') promise resolves, or null when another instance already holds the single-instance lock, in which case this process calls app.quit() and starts no backend. The module's own import-time call discards this value, so only other callers of the exported function receive it.",
-				"examples": [null]
+				"description": "The desktop window after its renderer loads, or null when another instance owns the profile lock or when the signed Mac app cannot migrate existing encrypted data. Either null path quits before starting the backend.",
+				"examples": [
+					null
+				]
 			}
 		],
 		"errors": [
@@ -60,8 +77,10 @@
 					{
 						"name": "initializeDesktop",
 						"type": "Promise<BrowserWindow | null>",
-						"description": "The BrowserWindow this call opened, returned after its loadURL('harness://app/') promise resolves, or null when another instance already holds the single-instance lock, in which case this process calls app.quit() and starts no backend. The module's own import-time call discards this value, so only other callers of the exported function receive it.",
-						"examples": [null]
+						"description": "The desktop window after its renderer loads, or null when another instance owns the profile lock or when the signed Mac app cannot migrate existing encrypted data. Either null path quits before starting the backend.",
+						"examples": [
+							null
+						]
 					}
 				],
 				"errors": [
@@ -69,6 +88,58 @@
 						"name": "rejection",
 						"type": "thrown",
 						"description": "Whatever value a step of the startup sequence rejects or throws with (the transport listen, the remote start, the window's loadURL, or a constructor or setup call), passed on unchanged because the function has no try/catch. The module's import-time call logs such a value and exits the app with code 1, and the function defines no error type of its own."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "preserveMacProfile",
+				"inputs": [
+					{
+						"name": "preserveMacProfile.app",
+						"type": "App",
+						"required": true,
+						"description": "The Electron application during early startup. Its resource directory locates the signed migration helper and its paths and switches select the profile."
+					}
+				],
+				"outputs": [
+					{
+						"name": "preserveMacProfile",
+						"type": "void",
+						"description": "Keeps an explicit profile or sets the existing harness-desktop profile before the single-instance lock. Explicit separate profiles also receive a stable Safe Storage name."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Preparing the chosen profile can throw a filesystem or Electron path error."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "migrateMacSafeStorage",
+				"inputs": [
+					{
+						"name": "migrateMacSafeStorage.app",
+						"type": "App",
+						"required": true,
+						"description": "The Electron application during early startup. Its resource directory locates the signed migration helper and its paths and switches select the profile."
+					}
+				],
+				"outputs": [
+					{
+						"name": "migrateMacSafeStorage",
+						"type": "boolean",
+						"description": "True when no migration is needed or the signed helper prepared the key. False when the helper is missing or fails, so startup preserves the encrypted files and quits."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Inspecting an existing profile file can throw a filesystem error."
 					}
 				],
 				"errorStatus": "declared"
@@ -213,7 +284,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
