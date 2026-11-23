@@ -105,9 +105,12 @@ for (const answer of ['missing', 'page'] as const)
 		const pending = download(page).getByRole('button', { name: pendingMac, exact: true });
 		await expect(pending).toBeDisabled();
 		await expect(pending).toHaveAccessibleDescription(/Mac build is being prepared/);
-		await expect(page.getByRole('link', { name: pendingMac, exact: true })).toHaveAttribute(
-			'href',
-			'#download'
+		const heroRegion = page.getByRole('region', { name: /Build with agents/ });
+		await expect(heroRegion.getByText(pendingMac, { exact: true })).toBeVisible();
+		await expect(heroRegion.getByRole('link', { name: pendingMac })).toHaveCount(0);
+		await expect(heroRegion.getByRole('button')).toHaveCount(0);
+		await expect(heroRegion.getByRole('link', { name: 'Log in', exact: true })).toHaveClass(
+			/home-button-primary/
 		);
 		await expect(page.locator(`a[href="${archive}"]`)).toHaveCount(0);
 		await expect(download(page).getByText('iPhone app · Coming soon')).toBeVisible();
