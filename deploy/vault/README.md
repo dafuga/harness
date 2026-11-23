@@ -28,8 +28,7 @@ the accepted socket descriptor. Missing peer credentials fail closed. The fixtur
 user and checks a private lease socket. The macOS relay can grant a separate requester search on its
 mode-0700 lease directory and write access on its mode-0600 socket using ACLs. This needs a trusted,
 executor-owned mode-0711 runtime directory whose ancestors the requester can traverse. The requester
-also needs the lease token and must pass `getpeereid`. A live two-user fixture still needs to prove
-the handoff on MB2 before use outside this fixture.
+also needs the lease token and must pass `getpeereid`.
 
 ## MB2 account provisioning
 
@@ -50,6 +49,14 @@ Daniel can run `sudo bash deploy/vault/mb2-executor-engine.sh start`. This start
 no-host-mount Colima profile and checks the dedicated Docker socket and context. Use the same
 command with `stop` to restore the stopped state. Do not rerun account provisioning after reboot.
 Engine health and the earlier synthetic fixture pass are separate from cross-user acceptance.
+
+On MB2, `mb2-cross-user.sh` qualifies the existing synthetic SMS fixture on the dedicated
+engine. It runs the fixture supervisor as `harness-vault` and uses the unprivileged system test
+identity `_www` to inspect the roster through the actual Chromium lease. The owner UID is refused
+even with that attachment. The launcher hashes the reviewed source archive, bundled client and Bun
+binary before starting the test processes. The attachment travels over private pipes, and the
+temporary files and guest are removed after the run. This fixture exercises the relay boundary.
+Enrollment and end-to-end request submission from a real user session have their own acceptance.
 
 ## Native approval and legacy wire checks
 

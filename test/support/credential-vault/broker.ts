@@ -49,7 +49,7 @@ export function sessionRequest(
 }
 
 /** A broker, lease keeper and enrolled fake phone on a controllable clock. */
-export function vaultBroker() {
+export function vaultBroker(runDirectory?: string) {
 	const clock = { now: 1_800_000_000_000 };
 	const now = () => clock.now;
 	const phone = new FakePhone();
@@ -64,7 +64,12 @@ export function vaultBroker() {
 	);
 	const audit = new VaultAuditRepository(join(state, 'audit'));
 	const broker = new VaultBrokerService(devices, audit, now);
-	const keeper = new VaultLeaseKeeperService(broker, audit, join(state, 'run'), now);
+	const keeper = new VaultLeaseKeeperService(
+		broker,
+		audit,
+		runDirectory ?? join(state, 'run'),
+		now
+	);
 	return { clock, phone, seal, state, devices, audit, broker, keeper };
 }
 
