@@ -1,25 +1,51 @@
 import { expect, test } from 'vitest';
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, readdirSync, rmSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { resolve, join } from 'node:path';
 
 test.runIf(process.platform === 'darwin')(
-	'packaging refuses ambiguous or unavailable signing identities before writing the app',
+	'packaging refuses missing signing configuration and rejects ad hoc release artifacts',
 	() => {
 		const directory = mkdtempSync(join(tmpdir(), 'harness-signing-'));
 		const script = resolve(import.meta.dirname, '../scripts/package-mac.ts');
 		try {
-			for (const identity of ['', '-', 'Daniel', '0'.repeat(40)]) {
-				const run = spawnSync('bun', [script], {
+			mkdirSync(join(directory, 'build'));
+			mkdirSync(join(directory, 'dist'));
+			for (const entry of ['main.cjs', 'preload.cjs']) {
+				writeFileSync(join(directory, 'dist', entry), '');
+			}
+			const env = { PATH: process.env.PATH, HOME: directory };
+			const run = (args: string[], identity?: string) =>
+				spawnSync('bun', [script, ...args], {
 					cwd: directory,
 					encoding: 'utf8',
-					env: { ...process.env, HARNESS_MAC_SIGN_IDENTITY: identity }
+					env: { ...env, HARNESS_MAC_SIGN_IDENTITY: identity }
 				});
-				expect(run.status, identity).not.toBe(0);
-				expect(run.stderr, identity).toContain('HARNESS_MAC_SIGN_IDENTITY');
-				expect(readdirSync(directory)).toEqual([]);
+			for (const identity of [undefined, '', '-', 'Daniel']) {
+				const result = run([], identity);
+				expect(result.status, `Release packaging must refuse identity ${identity}`).not.toBe(0);
+				expect(result.stderr, String(identity)).toContain('HARNESS_MAC_SIGN_IDENTITY');
 			}
+			const missingKeychain = run([], '0'.repeat(40));
+			expect(missingKeychain.status).not.toBe(0);
+			expect(missingKeychain.stderr).toContain('harness-signing.keychain-db');
+			expect(readdirSync(join(directory, 'dist')).sort()).toEqual(['main.cjs', 'preload.cjs']);
+
+			const artifact = join(directory, 'unsigned-harness');
+			cpSync('/usr/bin/true', artifact);
+			const sign = spawnSync('/usr/bin/codesign', [
+				'--force',
+				'--identifier',
+				'dev.harness.desktop',
+				'--sign',
+				'-',
+				artifact
+			]);
+			expect(sign.status, sign.stderr.toString()).toBe(0);
+			const verify = run(['--verify', artifact]);
+			expect(verify.status).not.toBe(0);
+			expect(verify.stderr).toContain('Harness Developer ID release requirement');
 		} finally {
 			rmSync(directory, { recursive: true, force: true });
 		}

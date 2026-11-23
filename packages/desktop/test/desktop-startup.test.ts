@@ -1,6 +1,8 @@
 import type { Listener } from './desktop-startup.test.types';
 import { beforeEach, expect, test, vi } from 'vitest';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 /** Electron as the main process sees it: app events, one window, its page and native dialogs. */
 const state = vi.hoisted(() => {
 	const listeners = () => {
@@ -14,6 +16,7 @@ const state = vi.hoisted(() => {
 		windows,
 		listeners,
 		lock: vi.fn(() => true),
+		setPath: vi.fn(),
 		quit: vi.fn(),
 		on: vi.fn(app.on),
 		ready: vi.fn(() => new Promise<void>(() => undefined)),
@@ -34,11 +37,14 @@ function browserWindow() {
 }
 vi.mock('electron', () => ({
 	app: {
+		isPackaged: false,
+		commandLine: { hasSwitch: vi.fn(() => false) },
 		requestSingleInstanceLock: state.lock,
 		quit: state.quit,
 		on: state.on,
 		whenReady: state.ready,
 		getPath: () => tmpdir(),
+		setPath: state.setPath,
 		getAppPath: () => tmpdir()
 	},
 	BrowserWindow: browserWindow,
@@ -92,9 +98,33 @@ const event = () => ({ preventDefault: vi.fn() });
 const settled = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 test('only the first app instance reaches readiness and backend startup', async () => {
-	await import('../src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop');
+	const bundle = mkdtempSync(join(tmpdir(), 'desktop-signed-layout-'));
+	const resources = Object.getOwnPropertyDescriptor(process, 'resourcesPath');
+	try {
+		mkdirSync(join(bundle, 'Resources'));
+		mkdirSync(join(bundle, 'Helpers'));
+		writeFileSync(join(bundle, 'Helpers/HarnessKeychainMigration'), 'fixture');
+		Object.defineProperty(process, 'resourcesPath', {
+			configurable: true,
+			value: join(bundle, 'Resources')
+		});
+		await import('../src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop');
+	} finally {
+		if (resources) Object.defineProperty(process, 'resourcesPath', resources);
+		else Reflect.deleteProperty(process, 'resourcesPath');
+		rmSync(bundle, { recursive: true, force: true });
+	}
 	expect(state.lock).toHaveBeenCalledOnce();
 	expect(state.ready).toHaveBeenCalledOnce();
+	if (process.platform === 'darwin') {
+		expect(
+			state.setPath,
+			'signed Mac startup keeps the existing desktop profile'
+		).toHaveBeenCalledWith('userData', join(tmpdir(), 'harness-desktop'));
+		expect(state.setPath.mock.invocationCallOrder[0]).toBeLessThan(
+			state.lock.mock.invocationCallOrder[0]
+		);
+	}
 	expect(state.lock.mock.invocationCallOrder[0]).toBeLessThan(
 		state.ready.mock.invocationCallOrder[0]
 	);

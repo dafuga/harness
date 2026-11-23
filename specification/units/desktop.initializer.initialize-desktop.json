@@ -21,7 +21,8 @@
 			"packages/desktop/src/lib/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 			"packages/desktop/src/lib/desktop-initialization/initializeDesktop.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.types.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.types.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/macSafeStorage.ts"
 		],
 		"symbols": [
 			"initializeDesktop",
@@ -29,17 +30,32 @@
 			"initializeDesktop",
 			"initializeDesktop",
 			"desktopBackend",
-			"Backend"
+			"Backend",
+			"preserveMacProfile",
+			"prepareDesktopStorage"
 		]
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "preserveMacProfile.app",
+				"type": "App",
+				"required": true,
+				"description": "The Electron application during early startup. Its resource directory locates the signed migration helper and its paths and switches select the profile."
+			},
+			{
+				"name": "prepareDesktopStorage.app",
+				"type": "App",
+				"required": true,
+				"description": "The Electron application whose readiness and active profile determine whether Safe Storage migration is needed."
+			}
+		],
 		"outputs": [
 			{
 				"name": "initializeDesktop",
 				"type": "Promise<BrowserWindow | null>",
-				"description": "The BrowserWindow this call opened, returned after its loadURL('harness://app/') promise resolves, or null when another instance already holds the single-instance lock, in which case this process calls app.quit() and starts no backend. The module's own import-time call discards this value, so only other callers of the exported function receive it.",
+				"description": "The desktop window after its renderer loads, or null when another instance owns the profile lock or when the signed Mac app cannot migrate existing encrypted data. Either null path quits before starting the backend.",
 				"examples": [null]
 			}
 		],
@@ -59,7 +75,7 @@
 					{
 						"name": "initializeDesktop",
 						"type": "Promise<BrowserWindow | null>",
-						"description": "The BrowserWindow this call opened, returned after its loadURL('harness://app/') promise resolves, or null when another instance already holds the single-instance lock, in which case this process calls app.quit() and starts no backend. The module's own import-time call discards this value, so only other callers of the exported function receive it.",
+						"description": "The desktop window after its renderer loads, or null when another instance owns the profile lock or when the signed Mac app cannot migrate existing encrypted data. Either null path quits before starting the backend.",
 						"examples": [null]
 					}
 				],
@@ -68,6 +84,58 @@
 						"name": "rejection",
 						"type": "thrown",
 						"description": "Whatever value a step of the startup sequence rejects or throws with (the transport listen, the remote start, the window's loadURL, or a constructor or setup call), passed on unchanged because the function has no try/catch. The module's import-time call logs such a value and exits the app with code 1, and the function defines no error type of its own."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "preserveMacProfile",
+				"inputs": [
+					{
+						"name": "preserveMacProfile.app",
+						"type": "App",
+						"required": true,
+						"description": "The Electron application during early startup. Its resource directory locates the signed migration helper and its paths and switches select the profile."
+					}
+				],
+				"outputs": [
+					{
+						"name": "preserveMacProfile",
+						"type": "void",
+						"description": "Keeps an explicit profile or sets the existing harness-desktop profile before the single-instance lock. Explicit separate profiles also receive a stable Safe Storage name."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Preparing the chosen profile can throw a filesystem or Electron path error."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "prepareDesktopStorage",
+				"inputs": [
+					{
+						"name": "prepareDesktopStorage.app",
+						"type": "App",
+						"required": true,
+						"description": "The Electron application whose readiness and active profile determine whether Safe Storage migration is needed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "prepareDesktopStorage",
+						"type": "Promise<boolean>",
+						"description": "Resolves true when startup can proceed. If migration fails, shows a recovery message, quits, and resolves false without changing the sealed profile files."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Electron readiness, filesystem inspection, or displaying the recovery message can fail."
 					}
 				],
 				"errorStatus": "declared"

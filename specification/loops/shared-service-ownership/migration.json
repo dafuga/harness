@@ -1572,13 +1572,13 @@
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-			"definition": "e25b8420c7df981d1cbeda1dde62442dec3e558bae0cf23581afa908186998a5",
+			"definition": "c23a9f77b3ec7aae8079517932436745a3d1952c9cef9da4011fbb9ea786f9cb",
 			"relocationDefinition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b",
 			"review": {
-				"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+				"commit": "0ca8d9573fd317da3589a4d4e81cdebda5e3d958",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-				"definition": "e25b8420c7df981d1cbeda1dde62442dec3e558bae0cf23581afa908186998a5",
-				"reason": "Passes the approved phone device settings and the dedicated write grant to the private device service."
+				"definition": "c23a9f77b3ec7aae8079517932436745a3d1952c9cef9da4011fbb9ea786f9cb",
+				"reason": "Prepare app-owned macOS Safe Storage after Electron is ready and before opening the desktop backend."
 			},
 			"previousReviews": [
 				{
@@ -1616,6 +1616,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 					"definition": "c1bbd7d1999edfb784fef50abd8adae7529c5d2ae74235179a307ce21cf914f4",
 					"reason": "Connect the native Google browser callback to the hosted account service."
+				},
+				{
+					"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "e25b8420c7df981d1cbeda1dde62442dec3e558bae0cf23581afa908186998a5",
+					"reason": "Passes the approved phone device settings and the dedicated write grant to the private device service."
 				}
 			]
 		},
