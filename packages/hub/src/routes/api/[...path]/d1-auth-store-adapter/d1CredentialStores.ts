@@ -5,6 +5,7 @@ import type { SessionStore } from '../../../../models/accounts-access/HubAuthSto
 import { DEVICE_ACTIVITY_INTERVAL } from '../../../../repositories/projects-sessions/SessionRepository';
 import { accountDevice } from '../../../../validators/accounts-access/AuthRecordValidator';
 import type { AuthRecordValidator } from '../../../../validators/accounts-access/AuthRecordValidator';
+import type { Row } from '../../../../validators/accounts-access/AuthRecordValidator.types';
 
 const SESSION_COLUMNS =
 	'id_hash, kind, parent_hash, actor_id, actor_email, actor_name, resource, created_at, expires_at, revoked_at, device_id, device_name, last_seen_at';
@@ -32,7 +33,7 @@ function sessions(db: D1Like, records: AuthRecordValidator): SessionStore {
 			const query = `SELECT device_id, device_name, last_seen_at FROM auth_sessions
 				WHERE actor_id = ? AND device_id IS NOT NULL AND revoked_at IS NULL AND expires_at > ?
 				ORDER BY last_seen_at DESC, device_id LIMIT 100`;
-			const { results } = await db.prepare(query).bind(actorId, now).all();
+			const { results } = await db.prepare(query).bind(actorId, now).all<Row>();
 			return results.map(accountDevice);
 		},
 		async removeDevice(actorId, deviceId, now) {

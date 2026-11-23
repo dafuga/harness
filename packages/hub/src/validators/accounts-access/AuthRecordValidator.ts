@@ -46,7 +46,7 @@ function oneOf<T extends string>(row: Row, key: string, allowed: readonly T[]): 
 	return allowed.includes(value as T) ? (value as T) : corrupt();
 }
 
-export function accountDevice(value: unknown): AccountDevice {
+export function accountDevice(value: Row): AccountDevice {
 	const row = rowOf(value);
 	const id = text(row, 'device_id');
 	return {
