@@ -58,7 +58,7 @@ struct VaultLegacyAdd: Decodable {
         return try ChaChaPoly.open(envelope, using: key, authenticating: aad)
     }
 
-    private func authenticated(_ purpose: Purpose) throws -> Data {
+    func authenticated(_ purpose: Purpose) throws -> Data {
         let fields = ["CB-VAULT-ADD-V1", origin, addId, recipientDeviceId, importKeyFingerprint,
                       service, domain, String(expiresAt), purpose.rawValue]
         guard fields.allSatisfy({ $0.utf8.allSatisfy { (32...126).contains($0) } })

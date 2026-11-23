@@ -50,6 +50,7 @@ function deviceOf(
 		online = runtime ? runtime.online(deviceId) : false;
 	return {
 		deviceId,
+		generation: device.generation,
 		name,
 		platform,
 		projectIds,

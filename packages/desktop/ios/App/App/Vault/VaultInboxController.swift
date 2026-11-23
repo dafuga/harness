@@ -19,6 +19,9 @@ final class VaultInboxController: UITableViewController {
         title = "Vault"
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(close))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(reload))
+        #if DEBUG
+        addLegacyFixtureControl()
+        #endif
         perform { self.inbox = try await VaultInbox(session: self.session) }
     }
 
@@ -32,7 +35,7 @@ final class VaultInboxController: UITableViewController {
         }
     }
 
-    private func perform(_ action: @escaping @MainActor () async throws -> Void) {
+    func perform(_ action: @escaping @MainActor () async throws -> Void) {
         guard !busy else { return }
         busy = true
         tableView.allowsSelection = false
@@ -106,7 +109,7 @@ final class VaultInboxController: UITableViewController {
         }
     }
 
-    private func show(_ title: String, message: String?) {
+    func show(_ title: String, message: String?) {
         guard viewIfLoaded?.window != nil, presentedViewController == nil else { return }
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Done", style: .default))

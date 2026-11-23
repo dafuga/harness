@@ -4,22 +4,24 @@ import Security
 
 /// The app calls this after the user reviews the native preview. Its receipt carries only the add ID.
 enum VaultLegacyImportKeychain {
+    typealias Recipient = (LAContext) throws -> VaultLegacyAdd.Recipient
+
     static func preview(
-        _ offer: VaultLegacyImportReview.Offer, to recipient: VaultLegacyAdd.Recipient
+        _ offer: VaultLegacyImportReview.Offer, to recipient: Recipient
     ) async throws -> VaultLegacyImportReview {
         try requireCurrent(offer.binding.expiresAt)
         let context = try await VaultFaceID.authenticate("Review the account for this Harness Vault import")
         defer { context.invalidate() }
-        return try VaultLegacyImportReview(offer, to: recipient, now: now)
+        return try VaultLegacyImportReview(offer, to: recipient(context), now: now)
     }
 
     static func confirm(
-        _ review: VaultLegacyImportReview, login: VaultLegacyAdd.Box, to recipient: VaultLegacyAdd.Recipient
+        _ review: VaultLegacyImportReview, login: VaultLegacyAdd.Box, to recipient: Recipient
     ) async throws -> String {
         try requireCurrent(review.expiresAt)
         let context = try await VaultFaceID.authenticate("Save the reviewed login in Harness Vault")
         defer { context.invalidate() }
-        return try review.save(login, to: recipient, now: now) { entry in
+        return try review.save(login, to: recipient(context), now: now) { entry in
             try saveAndReopen(entry, context: context)
         }
     }

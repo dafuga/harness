@@ -2,7 +2,7 @@
 	"name": "jw0799-vault-cli-dispatch",
 	"goal": "Every implemented command family is reachable from executable help and dispatch, including Credential Vault.",
 	"createdAt": "2026-11-23T18:53:13.126Z",
-	"updatedAt": "2026-11-23T18:54:40.051Z",
+	"updatedAt": "2026-11-23T19:00:10.458Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T19:00:10.458Z",
+			"evidence": "The same clean-runner command passed at b595cf1b8e with the exact regression tests and runtime preserved."
 		},
 		{
 			"id": "siblings",

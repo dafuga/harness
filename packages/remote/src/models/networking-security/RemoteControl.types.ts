@@ -48,6 +48,7 @@ export interface RemotePairingRequest {
 
 export interface RemoteDeviceInfo {
 	deviceId: string;
+	generation?: number;
 	name: string;
 	platform: string;
 	projectIds: string[];
