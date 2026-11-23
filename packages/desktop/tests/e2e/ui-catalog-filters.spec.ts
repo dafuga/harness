@@ -30,3 +30,24 @@ test('Changed only is a 44px switch row that toggles by clicking its label', asy
 	await label.click();
 	await expect(control).not.toBeChecked();
 });
+
+test('Done is the one filled primary button and Reset filters stays secondary', async ({
+	page
+}) => {
+	await page.setViewportSize({ width: 390, height: 844 });
+	await agentSettingsFixture(page);
+	await page.goto(agentAt);
+	await page.getByRole('button', { name: 'Filters', exact: true }).click();
+	const dialog = page.getByRole('dialog');
+	const done = dialog.getByRole('button', { name: 'Done', exact: true });
+	const reset = dialog.getByRole('button', { name: 'Reset filters', exact: true });
+	await expect(done).toBeVisible();
+	await expect(reset).toBeVisible();
+	const background = (locator: Locator) =>
+		locator.evaluate((element) => getComputedStyle(element).backgroundColor);
+	const doneFill = await background(done);
+	const resetFill = await background(reset);
+	const surface = await background(dialog);
+	expect(doneFill).not.toBe(resetFill);
+	expect(doneFill).not.toBe(surface);
+});
