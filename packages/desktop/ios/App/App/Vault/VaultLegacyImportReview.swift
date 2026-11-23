@@ -12,7 +12,7 @@ struct VaultImportedLogin: Codable {
 }
 
 enum VaultImportFailure: Error {
-    case invalidPayload, faceID, storage, conflict
+    case invalidPayload, storage, conflict
 }
 
 /// Keeps the reviewed account and the original offer together until the login can be saved.
