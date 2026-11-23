@@ -150,7 +150,12 @@ test.each([
 test(
 	'headless scenario commands record every actual test and required evidence state',
 	async () => {
-		for (const id of ['git-evidence-read', 'upload-request-admission', 'unit-registry-ownership']) {
+		for (const id of [
+			'git-evidence-read',
+			'upload-request-admission',
+			'tracker-phone-replica',
+			'unit-registry-ownership'
+		]) {
 			const scenario = scenarioManifestSchema.parse(
 				JSON.parse(readFileSync(join(root, 'specification/scenarios', id + '.json'), 'utf8'))
 			);

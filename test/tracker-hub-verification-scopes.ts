@@ -1,6 +1,21 @@
 import type { VerificationScope } from './verification-targets';
 
 export const trackerHubVerificationScopes: Record<string, VerificationScope> = {
+	'tracker-phone-replica': {
+		package: 'root',
+		vitest: {
+			'test/services/projects-sessions/tracker-phone-replica.test.ts': {
+				'bootstraps a redacted snapshot and sends a replayable delta for a run without an item edit':
+					'snapshot-and-delta',
+				'rejects another scope cursor, malformed scope and replica reads from a spoke':
+					'scope-and-role',
+				'pages a fixed snapshot and discards it if an item is withdrawn': 'snapshot-continuation',
+				'commits scoped phone notes and answers with durable receipts and flag comparisons':
+					'queued-writes'
+			}
+		},
+		playwright: {}
+	},
 	'tracker-hub-sync': {
 		package: 'root',
 		vitest: {
