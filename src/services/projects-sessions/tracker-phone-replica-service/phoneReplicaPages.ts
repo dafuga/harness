@@ -13,6 +13,7 @@ export function snapshotPage(snapshot: PhoneReplicaSnapshot, offset: number) {
 	return {
 		kind: 'snapshot',
 		snapshotId: id,
+		requestContinuation: offset === 0 ? null : `${id}:${offset}`,
 		rows: page.map(({ json }) => JSON.parse(json) as PhoneTrackerRow),
 		cursor: end < rows.length ? null : cursor,
 		continuation: end < rows.length ? `${id}:${end}` : null,

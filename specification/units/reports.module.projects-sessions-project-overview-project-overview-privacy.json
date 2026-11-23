@@ -17,12 +17,6 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "sanitizeText.text",
-				"type": "string",
-				"required": true,
-				"description": "The text to inspect before displaying it."
-			},
-			{
 				"name": "isIncludedItem.item",
 				"type": "TrackerItemRecord",
 				"required": true,
@@ -44,26 +38,6 @@
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
-			{
-				"name": "sanitizeText",
-				"inputs": [
-					{
-						"name": "sanitizeText.text",
-						"type": "string",
-						"required": true,
-						"description": "The text to inspect before displaying it."
-					}
-				],
-				"outputs": [
-					{
-						"name": "sanitizeText",
-						"type": "string",
-						"description": "Input text with recognised credential text replaced by the redaction marker."
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
 			{
 				"name": "isIncludedItem",
 				"inputs": [
@@ -88,6 +62,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.projects-sessions-sanitize-tracker-text",
+			"via": "reexport",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.module.projects-sessions-project-overview-project-overview-tracker",
 			"via": "import",

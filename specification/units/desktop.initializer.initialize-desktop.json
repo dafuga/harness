@@ -32,7 +32,9 @@
 				"name": "initializeDesktop",
 				"type": "Promise<BrowserWindow | null>",
 				"description": "The BrowserWindow this call opened, returned after its loadURL('harness://app/') promise resolves, or null when another instance already holds the single-instance lock, in which case this process calls app.quit() and starts no backend. The module's own import-time call discards this value, so only other callers of the exported function receive it.",
-				"examples": [null]
+				"examples": [
+					null
+				]
 			}
 		],
 		"errors": [
@@ -52,7 +54,9 @@
 						"name": "initializeDesktop",
 						"type": "Promise<BrowserWindow | null>",
 						"description": "The BrowserWindow this call opened, returned after its loadURL('harness://app/') promise resolves, or null when another instance already holds the single-instance lock, in which case this process calls app.quit() and starts no backend. The module's own import-time call discards this value, so only other callers of the exported function receive it.",
-						"examples": [null]
+						"examples": [
+							null
+						]
 					}
 				],
 				"errors": [
@@ -204,10 +208,21 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	}
+	},
+	"configControls": [
+		{
+			"source": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+			"name": "HARNESS_TRACKER_PHONE_DEVICE",
+			"audience": "operator",
+			"purpose": "Grant the named approved phone read access to the local Tracker projection."
+		}
+	]
 }

@@ -8,12 +8,32 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/ios-acceptance-workspace.ts"],
-		"symbols": ["pairedOverview", "workspace", "savedCopies", "reconnection"]
+		"source": [
+			"packages/desktop/scripts/ios-acceptance-tracker.ts",
+			"packages/desktop/scripts/ios-acceptance-workspace.ts"
+		],
+		"symbols": [
+			"trackerForeground",
+			"trackerOffline",
+			"pairedOverview",
+			"workspace",
+			"savedCopies",
+			"reconnection"
+		]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "trackerForeground.run",
+				"type": "Acceptance",
+				"required": true
+			},
+			{
+				"name": "trackerOffline.run",
+				"type": "Acceptance",
+				"required": true
+			},
 			{
 				"name": "pairedOverview.run",
 				"type": "Acceptance",
@@ -75,6 +95,42 @@
 		],
 		"errorStatus": "declared",
 		"operations": [
+			{
+				"name": "trackerForeground",
+				"inputs": [
+					{
+						"name": "trackerForeground.run",
+						"type": "Acceptance",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerForeground",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerOffline",
+				"inputs": [
+					{
+						"name": "trackerOffline.run",
+						"type": "Acceptance",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerOffline",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "pairedOverview",
 				"inputs": [

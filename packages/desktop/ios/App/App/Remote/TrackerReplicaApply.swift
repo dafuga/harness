@@ -22,7 +22,8 @@ extension TrackerReplicaStore {
     private func replace(
         _ page: TrackerReplicaPage, state: inout TrackerReplicaState, db: TrackerReplicaSQLite
     ) throws -> Bool {
-        guard page.validSnapshot, state.cursor == nil, let rows = page.rows, let stamp = page.hubTime,
+        guard page.validSnapshot, state.cursor == nil, state.continuation == page.requestContinuation,
+            let rows = page.rows, let stamp = page.hubTime,
             TrackerReplicaItem.short(stamp, 40), let partial = page.partial
         else { throw TrackerReplicaError.invalidPage }
         let stage = String(state.staging)

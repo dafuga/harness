@@ -1,0 +1,78 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-sanitize-tracker-text",
+	"uid": "u_bfsz4eggiq",
+	"kind": "function",
+	"title": "sanitizeTrackerText",
+	"responsibility": "Redact known credential formats, private network URLs and absolute runtime paths from Tracker display text.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/projects-sessions/sanitizeTrackerText.ts"
+		],
+		"symbols": [
+			"sanitizeTrackerText"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "sanitizeTrackerText.text",
+				"type": "string",
+				"required": true,
+				"description": "Tracker text that may contain a known credential or private location."
+			}
+		],
+		"outputs": [
+			{
+				"name": "sanitizeTrackerText",
+				"type": "string",
+				"description": "The input text with matched sensitive content replaced by [redacted]."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sanitizeTrackerText",
+				"inputs": [
+					{
+						"name": "sanitizeTrackerText.text",
+						"type": "string",
+						"required": true,
+						"description": "Tracker text that may contain a known credential or private location."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sanitizeTrackerText",
+						"type": "string",
+						"description": "The input text with matched sensitive content replaced by [redacted]."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/sanitizeTrackerText.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/sanitizeTrackerText.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

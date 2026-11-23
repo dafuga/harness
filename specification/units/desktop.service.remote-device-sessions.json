@@ -11,7 +11,8 @@
 		"source": [
 			"packages/desktop/src/services/RemoteDeviceSessionsService.ts",
 			"packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
-			"packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.types.ts"
+			"packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.types.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/pullPhoneTracker.ts"
 		],
 		"symbols": [
 			"RemoteDeviceSessionsService",
@@ -28,9 +29,11 @@
 			"RemoteDeviceSessionsService.end",
 			"DeviceAddress",
 			"RemoteDeviceSessionsOptions",
+			"TrackerPhoneFetcher",
 			"DeviceAddress",
 			"RemoteDeviceSessionsOptions",
-			"Entry"
+			"Entry",
+			"phoneTrackerPull"
 		]
 	},
 	"contract": {
@@ -119,6 +122,16 @@
 						"online": true
 					}
 				]
+			},
+			{
+				"name": "phoneTrackerPull.scopeParts",
+				"type": "readonly string[]",
+				"required": true
+			},
+			{
+				"name": "phoneTrackerPull.fetcher",
+				"type": "TrackerPhoneFetcher",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -336,6 +349,29 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "phoneTrackerPull",
+				"inputs": [
+					{
+						"name": "phoneTrackerPull.scopeParts",
+						"type": "readonly string[]",
+						"required": true
+					},
+					{
+						"name": "phoneTrackerPull.fetcher",
+						"type": "TrackerPhoneFetcher",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "phoneTrackerPull",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [

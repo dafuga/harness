@@ -12,6 +12,7 @@ export interface PhoneTrackerResult {
 	lastSyncedAt: string | null;
 	freshness: 'current' | 'stale' | 'unavailable';
 	partial: boolean;
+	coverage?: { items: number; closedDays: number; notesPerItem: number; runsPerItem: number };
 	code?: string;
 	data?: unknown;
 }

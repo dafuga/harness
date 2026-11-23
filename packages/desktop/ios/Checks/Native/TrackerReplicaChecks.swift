@@ -13,9 +13,12 @@ private func item(_ id: String, _ title: String = "Review Ünicode 100%") -> [St
     ]
 }
 
-private func snapshot(_ rows: [[String: Any]], cursor: String? = nil, more: String? = nil) -> [String: Any] {
+private func snapshot(
+    _ rows: [[String: Any]], cursor: String? = nil, more: String? = nil, from: String? = nil
+) -> [String: Any] {
     return ["kind": "snapshot", "snapshotId": "fixture-snapshot", "hubTime": stamp, "partial": true,
-            "rows": rows, "cursor": cursor as Any? ?? NSNull(), "continuation": more as Any? ?? NSNull()]
+            "rows": rows, "cursor": cursor as Any? ?? NSNull(), "continuation": more as Any? ?? NSNull(),
+            "requestContinuation": from as Any? ?? NSNull()]
 }
 
 private func delta(_ before: String, _ after: String, more: Bool = false, rows: [[String: Any]] = []) -> [String: Any] {
@@ -53,7 +56,7 @@ func trackerReplicaChecks() {
     bench.answer(link, trackerMethod, value: snapshot([item("fixture001")], more: "page-two"))
     check(next(bench, key: "continuation", value: "page-two"), "tracker: snapshot continuation is used")
     check(tool(bench, "tracker_status")["code"] as? String == "noReplica", "tracker: staged rows are invisible")
-    bench.answer(link, trackerMethod, value: snapshot([item("fixture002", "Second item")], cursor: "seq-2"))
+    bench.answer(link, trackerMethod, value: snapshot([item("fixture002", "Second item")], cursor: "seq-2", from: "page-two"))
     check(next(bench, key: "cursor", value: "seq-2"), "tracker: final page commits and follows with delta")
     bench.answer(link, trackerMethod, value: delta("seq-2", "seq-2"))
     let status = tool(bench, "tracker_status")
@@ -122,4 +125,41 @@ func trackerCursorAndBackgroundChecks() {
     check(background.closed && completions == 1, "tracker: expiration closes the socket and completes once")
     let cursor = bench.session.queue.sync { try? bench.session.trackerStore.state().cursor }
     check(cursor == "seq-2", "tracker: a late page cannot advance the cursor after expiration")
+}
+
+/// This fixture exercises SQLite and model reads with a larger copy than the session examples.
+func trackerReplicaBudgetChecks() {
+    let root = temporary("tracker-budget")
+    defer { try? FileManager.default.removeItem(at: root) }
+    let store = TrackerReplicaStore(root: root)
+    store.enter("fixture-scope")
+    let start = ProcessInfo.processInfo.systemUptime
+    let clock = Date(timeIntervalSince1970: 1_800_000_000)
+    do {
+        try fillTrackerFixture(store, now: clock)
+        let write = ProcessInfo.processInfo.systemUptime - start
+        let readStart = ProcessInfo.processInfo.systemUptime
+        let result = store.tool("tracker_search", input: ["query": "budget-"], online: false, now: clock)
+        let read = ProcessInfo.processInfo.systemUptime - readStart
+        let file = root.appendingPathComponent("fixture-scope/tracker.sqlite").path
+        let bytes = try FileManager.default.attributesOfItem(atPath: file)[.size] as? Int ?? 0
+        check((data(result)["items"] as? [[String: Any]])?.count == 10, "tracker: a larger replica still caps search results")
+        check(bytes > 0 && bytes < 24 * 1024 * 1024, "tracker: sample replica stays within the SQLite budget")
+        print("tracker fixture: 800 items, SQLite \(bytes) bytes, write \(write) s, search \(read) s")
+        let expired = store.tool("tracker_status", input: [:], online: false, now: clock.addingTimeInterval(7 * 86_400))
+        check(expired["code"] as? String == "denied" && !FileManager.default.fileExists(atPath: file),
+              "tracker: an expired offline grant cannot read its copy and erases it")
+    } catch {
+        check(false, "tracker: representative SQLite fixture can be stored and queried")
+    }
+}
+
+private func fillTrackerFixture(_ store: TrackerReplicaStore, now: Date) throws {
+    for batch in 0..<8 {
+        let rows = (0..<100).map { item("budget-\(100 * batch + $0)", "Tracker fixture " + String(repeating: "x", count: 80)) }
+        let input = try store.state()
+        let page = snapshot(rows, cursor: batch == 7 ? "last" : nil,
+                            more: batch < 7 ? "page-\(batch)" : nil, from: input.continuation)
+        _ = try store.apply(TrackerReplicaPage.decode(page), expected: input, now: now)
+    }
 }

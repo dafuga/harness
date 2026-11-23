@@ -109,6 +109,7 @@ struct TrackerReplicaPage: Decodable {
     let kind: String
     let snapshotId: String?
     let requestCursor: String?
+    let requestContinuation: String?
     let cursor: String?
     let continuation: String?
     let rows: [TrackerReplicaItem]?
@@ -128,7 +129,7 @@ struct TrackerReplicaPage: Decodable {
     }
 
     private var positionFieldsFit: Bool {
-        let tokens = [cursor, requestCursor, continuation, snapshotId].compactMap { $0 }
+        let tokens = [cursor, requestCursor, continuation, requestContinuation, snapshotId].compactMap { $0 }
         return tokens.allSatisfy { !$0.isEmpty && TrackerReplicaItem.short($0, 512) }
     }
 

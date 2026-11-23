@@ -12,7 +12,8 @@
 			"packages/desktop/src/adapters/CapacitorEnvironmentAdapter.ts",
 			"packages/desktop/src/lib/select-environment/CapacitorEnvironmentAdapter.ts",
 			"packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-			"packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.types.ts"
+			"packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.types.ts",
+			"packages/desktop/src/lib/verification-evidence/select-environment/phoneTrackerTools.ts"
 		],
 		"symbols": [
 			"remotePluginName",
@@ -28,7 +29,9 @@
 			"CapacitorEnvironmentAdapter.constructor",
 			"CapacitorEnvironmentAdapter.connect",
 			"CapacitorEnvironmentAdapterConfig",
-			"CapacitorEnvironmentAdapterConfig"
+			"CapacitorEnvironmentAdapterConfig",
+			"trackerToolSchemas",
+			"phoneTrackerTools"
 		]
 	},
 	"contract": {
@@ -43,6 +46,11 @@
 				"examples": [
 					{}
 				]
+			},
+			{
+				"name": "phoneTrackerTools.plugin",
+				"type": "RemoteNativePlugin",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -79,6 +87,24 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "phoneTrackerTools",
+				"inputs": [
+					{
+						"name": "phoneTrackerTools.plugin",
+						"type": "RemoteNativePlugin",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "phoneTrackerTools",
+						"type": "PhoneTrackerTools | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": [

@@ -15,8 +15,8 @@ enum TrackerRefresh {
             guard let refresh = task as? BGAppRefreshTask else {
                 return task.setTaskCompleted(success: false)
             }
-            refresh.expirationHandler = { session.expireTrackerBackground() }
-            DispatchQueue.main.async { run(refresh) }
+            let id = UUID()
+            DispatchQueue.main.async { run(refresh, id: id) }
         }
     }
 
@@ -44,13 +44,14 @@ enum TrackerRefresh {
         }
     }
 
-    private static func run(_ task: BGAppRefreshTask) {
+    private static func run(_ task: BGAppRefreshTask, id: UUID) {
         session.start()
         schedule()
         guard available else { return task.setTaskCompleted(success: true) }
-        session.beginTrackerBackground { result in
+        session.beginTrackerBackground(id: id) { result in
             task.setTaskCompleted(success: result != .failed)
         }
+        task.expirationHandler = { session.expireTrackerBackground(id) }
     }
 
     private static var available: Bool {

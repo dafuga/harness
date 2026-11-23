@@ -7,6 +7,7 @@ enum TrackerRefreshResult: Equatable {
 }
 
 struct TrackerBackgroundAttempt {
+    let id: UUID
     let complete: (TrackerRefreshResult) -> Void
     let expiration: DispatchWorkItem
     var remaining = 2

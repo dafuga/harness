@@ -9,10 +9,14 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/scripts/fixturePhoneTracker.ts",
+			"packages/desktop/scripts/fixturePhoneTracker.types.ts",
 			"packages/desktop/scripts/remote-fixture-host.ts",
 			"packages/desktop/scripts/remote-fixture-host.types.ts"
 		],
 		"symbols": [
+			"fixturePhoneTracker",
+			"FixtureTrackerPorts",
 			"startRemoteFixture",
 			"RemoteFixtureOptions",
 			"FixtureRelayRegistrationError",
@@ -58,6 +62,18 @@
 		],
 		"errorStatus": "declared",
 		"operations": [
+			{
+				"name": "fixturePhoneTracker",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "fixturePhoneTracker",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "startRemoteFixture",
 				"inputs": [
@@ -145,6 +161,11 @@
 		},
 		{
 			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime",
 			"via": "import",
 			"origin": "derived"
 		}

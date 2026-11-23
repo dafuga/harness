@@ -14,7 +14,7 @@ extension RemoteSession {
         }
     }
 
-    func beginTrackerBackground(_ done: @escaping (TrackerRefreshResult) -> Void) {
+    func beginTrackerBackground(id: UUID = UUID(), _ done: @escaping (TrackerRefreshResult) -> Void) {
         queue.async {
             guard !self.trackerForeground, self.trackerBackground == nil,
                 let scope = self.trackerScope
@@ -23,14 +23,17 @@ extension RemoteSession {
             guard let position = try? self.trackerStore.state(), position.cursor != nil
             else { return done(.unchanged) }
             let deadline = DispatchWorkItem { [weak self] in self?.finishTrackerBackground(.failed) }
-            self.trackerBackground = TrackerBackgroundAttempt(complete: done, expiration: deadline)
+            self.trackerBackground = TrackerBackgroundAttempt(id: id, complete: done, expiration: deadline)
             self.queue.asyncAfter(deadline: .now() + 15, execute: deadline)
             if self.state == "online" { self.pullTracker() } else { self.connect() }
         }
     }
 
-    func expireTrackerBackground() {
-        queue.async { self.finishTrackerBackground(.failed) }
+    func expireTrackerBackground(_ id: UUID? = nil) {
+        queue.async {
+            guard id == nil || id == self.trackerBackground?.id else { return }
+            self.finishTrackerBackground(.failed)
+        }
     }
 
     func acceptTrackerBackground(_ page: TrackerReplicaPage, more: Bool) {

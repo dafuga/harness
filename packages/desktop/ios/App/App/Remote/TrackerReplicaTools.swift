@@ -14,6 +14,7 @@ extension TrackerReplicaStore {
             guard let stamp = state.lastSyncedAt else { return withError(reply, "noReplica") }
             reply["lastSyncedAt"] = stamp
             reply["partial"] = state.partial
+            reply["coverage"] = ["items": 2000, "closedDays": 30, "notesPerItem": 10, "runsPerItem": 5]
             let recent = state.caughtUpAt.map { now.timeIntervalSince1970 - $0 < 300 } ?? false
             reply["freshness"] = online && recent ? "current" : "stale"
             reply["data"] = try queryTool(name, input: input, slot: String(state.slot))

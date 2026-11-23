@@ -1,0 +1,436 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-phone-replica",
+	"uid": "u_st4dufvqxm",
+	"kind": "service",
+	"title": "TrackerPhoneReplicaService",
+	"responsibility": "Serve a cursor-based read-only projection of eligible Tracker items, notes, flags and runs for a paired phone.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/TrackerPhoneReplicaService.ts",
+			"src/services/projects-sessions/tracker-phone-replica-service/PhoneReplicaFeed.ts",
+			"src/services/projects-sessions/tracker-phone-replica-service/PhoneReplicaFeed.types.ts",
+			"src/services/projects-sessions/tracker-phone-replica-service/phoneReplicaPages.ts",
+			"src/services/projects-sessions/tracker-phone-replica-service/phoneReplicaPages.types.ts",
+			"src/services/projects-sessions/tracker-phone-replica-service/phoneReplicaRows.ts",
+			"src/services/projects-sessions/tracker-phone-replica-service/phoneReplicaRows.types.ts"
+		],
+		"symbols": [
+			"TrackerPhoneReplicaService",
+			"TrackerPhoneReplicaService.constructor",
+			"TrackerPhoneReplicaService.pull",
+			"PhoneReplicaFeed",
+			"PhoneReplicaFeed.constructor",
+			"PhoneReplicaFeed.current",
+			"PhoneReplicaFeed.refresh",
+			"PhoneReplicaFeed.head",
+			"PhoneReplicaFeed.floor",
+			"PhoneReplicaFeed.after",
+			"ProjectionRow",
+			"FeedRow",
+			"expiredSnapshot",
+			"invalidCursor",
+			"snapshotPage",
+			"deltaPage",
+			"PhoneReplicaSnapshot",
+			"phoneReplicaRows",
+			"PhoneItemSource",
+			"PhoneNoteSource",
+			"PhoneRunSource",
+			"PhoneTrackerRow"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerPhoneReplicaService.constructor.store",
+				"type": "TrackerPersistenceService",
+				"required": true,
+				"description": "The native hub’s authoritative SQLite journal."
+			},
+			{
+				"name": "TrackerPhoneReplicaService.constructor.now",
+				"type": "() => number",
+				"required": true,
+				"description": "Returns wall-clock milliseconds for retention and response timestamps."
+			},
+			{
+				"name": "TrackerPhoneReplicaService.pull.query",
+				"type": "URLSearchParams",
+				"required": true,
+				"description": "A validated paired scope and optional delta cursor or snapshot continuation."
+			},
+			{
+				"name": "PhoneReplicaFeed.constructor.store",
+				"type": "TrackerPersistenceService",
+				"required": true,
+				"description": "The hub journal that owns the source and derived feed tables."
+			},
+			{
+				"name": "PhoneReplicaFeed.refresh.now",
+				"type": "number",
+				"required": true,
+				"description": "Wall-clock milliseconds used to set feed operation age and select recent items."
+			},
+			{
+				"name": "PhoneReplicaFeed.after.sequence",
+				"type": "string",
+				"required": true,
+				"description": "The decimal SQLite sequence from the previous consumed operation."
+			},
+			{
+				"name": "snapshotPage.snapshot",
+				"type": "PhoneReplicaSnapshot",
+				"required": true,
+				"description": "The projected rows and high-water cursor frozen for one snapshot."
+			},
+			{
+				"name": "snapshotPage.offset",
+				"type": "number",
+				"required": true,
+				"description": "The first row the device has yet to consume."
+			},
+			{
+				"name": "deltaPage.rows",
+				"type": "FeedRow[]",
+				"required": true,
+				"description": "Candidate operation rows ordered by increasing hub sequence."
+			},
+			{
+				"name": "deltaPage.input",
+				"type": "{ cursor: string; sequence: string; now: number }",
+				"required": true,
+				"description": "The requested cursor, its sequence and the hub clock."
+			},
+			{
+				"name": "phoneReplicaRows.db",
+				"type": "SqliteDatabase",
+				"required": true,
+				"description": "The native SQLite handle for a consistent view of item and run data."
+			},
+			{
+				"name": "phoneReplicaRows.node",
+				"type": "string",
+				"required": true,
+				"description": "The origin label for locally recorded runs."
+			},
+			{
+				"name": "phoneReplicaRows.now",
+				"type": "number",
+				"required": true,
+				"description": "Wall-clock milliseconds used to select closed items in retention."
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerPhoneReplicaService.pull",
+				"type": "Response"
+			},
+			{
+				"name": "PhoneReplicaFeed.current",
+				"type": "ProjectionRow[]"
+			},
+			{
+				"name": "PhoneReplicaFeed.refresh",
+				"type": "void"
+			},
+			{
+				"name": "PhoneReplicaFeed.head",
+				"type": "string"
+			},
+			{
+				"name": "PhoneReplicaFeed.floor",
+				"type": "bigint"
+			},
+			{
+				"name": "PhoneReplicaFeed.after",
+				"type": "FeedRow[]"
+			},
+			{
+				"name": "expiredSnapshot",
+				"type": "unknown"
+			},
+			{
+				"name": "invalidCursor",
+				"type": "unknown"
+			},
+			{
+				"name": "snapshotPage",
+				"type": "unknown"
+			},
+			{
+				"name": "deltaPage",
+				"type": "unknown"
+			},
+			{
+				"name": "phoneReplicaRows",
+				"type": "PhoneTrackerRow[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerPhoneReplicaService.pull",
+				"inputs": [
+					{
+						"name": "TrackerPhoneReplicaService.pull.query",
+						"type": "URLSearchParams",
+						"required": true,
+						"description": "A validated paired scope and optional delta cursor or snapshot continuation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerPhoneReplicaService.pull",
+						"type": "Response"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PhoneReplicaFeed.current",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "PhoneReplicaFeed.current",
+						"type": "ProjectionRow[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PhoneReplicaFeed.refresh",
+				"inputs": [
+					{
+						"name": "PhoneReplicaFeed.refresh.now",
+						"type": "number",
+						"required": true,
+						"description": "Wall-clock milliseconds used to set feed operation age and select recent items."
+					}
+				],
+				"outputs": [
+					{
+						"name": "PhoneReplicaFeed.refresh",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PhoneReplicaFeed.head",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "PhoneReplicaFeed.head",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PhoneReplicaFeed.floor",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "PhoneReplicaFeed.floor",
+						"type": "bigint"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PhoneReplicaFeed.after",
+				"inputs": [
+					{
+						"name": "PhoneReplicaFeed.after.sequence",
+						"type": "string",
+						"required": true,
+						"description": "The decimal SQLite sequence from the previous consumed operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "PhoneReplicaFeed.after",
+						"type": "FeedRow[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "snapshotPage",
+				"inputs": [
+					{
+						"name": "snapshotPage.snapshot",
+						"type": "PhoneReplicaSnapshot",
+						"required": true,
+						"description": "The projected rows and high-water cursor frozen for one snapshot."
+					},
+					{
+						"name": "snapshotPage.offset",
+						"type": "number",
+						"required": true,
+						"description": "The first row the device has yet to consume."
+					}
+				],
+				"outputs": [
+					{
+						"name": "snapshotPage",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "deltaPage",
+				"inputs": [
+					{
+						"name": "deltaPage.rows",
+						"type": "FeedRow[]",
+						"required": true,
+						"description": "Candidate operation rows ordered by increasing hub sequence."
+					},
+					{
+						"name": "deltaPage.input",
+						"type": "{ cursor: string; sequence: string; now: number }",
+						"required": true,
+						"description": "The requested cursor, its sequence and the hub clock."
+					}
+				],
+				"outputs": [
+					{
+						"name": "deltaPage",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "phoneReplicaRows",
+				"inputs": [
+					{
+						"name": "phoneReplicaRows.db",
+						"type": "SqliteDatabase",
+						"required": true,
+						"description": "The native SQLite handle for a consistent view of item and run data."
+					},
+					{
+						"name": "phoneReplicaRows.node",
+						"type": "string",
+						"required": true,
+						"description": "The origin label for locally recorded runs."
+					},
+					{
+						"name": "phoneReplicaRows.now",
+						"type": "number",
+						"required": true,
+						"description": "Wall-clock milliseconds used to select closed items in retention."
+					}
+				],
+				"outputs": [
+					{
+						"name": "phoneReplicaRows",
+						"type": "PhoneTrackerRow[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerPhoneReplicaService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerPhoneReplicaService.constructor.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "TrackerPhoneReplicaService.constructor.now",
+						"type": "() => number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerPhoneReplicaService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "PhoneReplicaFeed.constructor",
+				"inputs": [
+					{
+						"name": "PhoneReplicaFeed.constructor.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PhoneReplicaFeed.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.sqlite",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-sanitize-tracker-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerPhoneReplicaService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerPhoneReplicaService.ts"
+			}
+		]
+	},
+	"scenarios": [
+		"tracker-phone-replica"
+	],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	},
+	"documentation": "specification/features/planned/phone-tracker-replica.md"
+}
