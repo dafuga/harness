@@ -1,0 +1,67 @@
+{
+	"name": "overview-native-tracker",
+	"goal": "Read Project Overview from the native Tracker after cutover while preserving fixed loopback reads and fail-closed validation.",
+	"createdAt": "2026-11-23T09:52:43.288Z",
+	"updatedAt": "2026-11-23T10:05:06.251Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-23T09:52:59.457Z",
+			"evidence": "Native hub after cutover returns 200 for /items and /runs, 404 for /machines and 200 for /status with a machines array. Existing Explorer and publisher fail closed before projection."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-23T09:53:00.585Z",
+			"evidence": "The tracked readProjectOverview standard transport case exercised only a tracker with /machines. Extend it to also require native /status.machines on a dedicated 404 while preserving strict URL, HTTP and response assertions."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-23T09:55:38.930Z",
+			"evidence": "Committed ff4b15e536. Fixed-GET case rejected the native 404 fixture with unavailable where ready was expected; 1 failed, 12 passed."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-23T09:55:40.647Z",
+			"evidence": "Fallback is restricted to a 404 on fixed /machines. Native /status shares the same deadline, and only the validated machines field reaches the overview."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-23T09:59:40.884Z",
+			"evidence": "Frozen red failed on ff4b15e536; the same committed test and runtime passed all 13 cases on ebded0133e. Reports focused suites passed all 57."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "complete",
+			"completedAt": "2026-11-23T10:05:06.251Z",
+			"evidence": "siblings-3b10f391-e2fd-478e-9c71-d1e0a66dbea4.json"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

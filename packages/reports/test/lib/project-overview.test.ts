@@ -7,6 +7,7 @@ import {
 	TRACKER_ITEMS_URL,
 	TRACKER_MACHINES_URL,
 	TRACKER_RUNS_URL,
+	TRACKER_STATUS_URL,
 	jsonReply,
 	syntheticTrackerFetch
 } from './project-overview-fixtures';
@@ -65,8 +66,32 @@ const UNAVAILABLE_CASES: [string, Parameters<typeof syntheticTrackerFetch>[0]][]
 	['upstream never answers', { items: () => new Promise<Response>(() => {}) }]
 ];
 
+async function expectNativeTrackerTransport(): Promise<void> {
+	const native = syntheticTrackerFetch({ machines: () => new Response(null, { status: 404 }) });
+	const snapshot = await readProjectOverview(native.fetcher, NOW);
+
+	expect(JSON.parse(JSON.stringify(snapshot))).toStrictEqual(EXPECTED_SNAPSHOT);
+	expect(native.calls.toSorted((a, b) => a.url.localeCompare(b.url))).toStrictEqual(
+		[...FIXED_CALLS, { ...FIXED_CALLS[0], url: TRACKER_STATUS_URL }].toSorted((a, b) =>
+			a.url.localeCompare(b.url)
+		)
+	);
+
+	const malformed = syntheticTrackerFetch({
+		machines: () => new Response(null, { status: 404 }),
+		status: jsonReply({ machines: [{ node: 'box', status: 'sleeping' }] })
+	});
+	expect(await readProjectOverview(malformed.fetcher, NOW)).toStrictEqual({
+		status: 'unavailable'
+	});
+
+	const failed = syntheticTrackerFetch({ machines: () => new Response(null, { status: 500 }) });
+	expect(await readProjectOverview(failed.fetcher, NOW)).toStrictEqual({ status: 'unavailable' });
+	expect(failed.calls.map(({ url }) => url)).not.toContain(TRACKER_STATUS_URL);
+}
+
 describe('readProjectOverview', () => {
-	it('reads only the three fixed GET tracker operations, without redirects or credentials', async () => {
+	it('reads only fixed GET tracker operations, without redirects or credentials', async () => {
 		const { fetcher, calls } = syntheticTrackerFetch();
 
 		await readProjectOverview(fetcher, NOW);
@@ -74,6 +99,8 @@ describe('readProjectOverview', () => {
 		expect([...calls].sort((a, b) => a.url.localeCompare(b.url))).toStrictEqual(
 			[...FIXED_CALLS].sort((a, b) => a.url.localeCompare(b.url))
 		);
+
+		await expectNativeTrackerTransport();
 	});
 
 	it('projects the synthetic tracker into the exact overview states', async () => {

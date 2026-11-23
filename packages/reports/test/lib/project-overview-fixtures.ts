@@ -11,11 +11,13 @@ export const NOW = Date.parse('2026-11-20T20:41:00.000Z');
 export const TRACKER_ITEMS_URL = 'http://127.0.0.1:7701/items?status=all&limit=-1';
 export const TRACKER_RUNS_URL = 'http://127.0.0.1:7701/runs?limit=500';
 export const TRACKER_MACHINES_URL = 'http://127.0.0.1:7701/machines';
+export const TRACKER_STATUS_URL = 'http://127.0.0.1:7701/status';
 
 const ROUTE_BY_URL: Record<string, TrackerRoute> = {
 	[TRACKER_ITEMS_URL]: 'items',
 	[TRACKER_RUNS_URL]: 'runs',
-	[TRACKER_MACHINES_URL]: 'machines'
+	[TRACKER_MACHINES_URL]: 'machines',
+	[TRACKER_STATUS_URL]: 'status'
 };
 
 export function jsonReply(body: unknown): TrackerReply {
@@ -33,6 +35,7 @@ export function syntheticTrackerFetch(overrides: Partial<Record<TrackerRoute, Tr
 		items: jsonReply(syntheticItems()),
 		runs: jsonReply(syntheticRuns()),
 		machines: jsonReply(syntheticMachines()),
+		status: jsonReply({ machines: syntheticMachines() }),
 		...overrides
 	};
 	const fetcher = (async (input: RequestInfo | URL, init?: RequestInit) => {

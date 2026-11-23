@@ -4,7 +4,7 @@
 	"uid": "u_nves237tvx",
 	"kind": "module",
 	"title": "projectOverviewTracker",
-	"responsibility": "Reads and validates three fixed local tracker resources without following redirects or forwarding credentials.",
+	"responsibility": "Reads local tracker items, runs and machines through fixed loopback GETs. Reads native /status.machines when /machines returns 404.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
