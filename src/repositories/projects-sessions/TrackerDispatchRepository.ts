@@ -1,4 +1,5 @@
 // @harness-uid u_ksy76trvsj
+import type { SqliteDatabase } from '../../core/development-tooling/sqliteTypes';
 import type {
 	TrackerDispatchDecision,
 	TrackerDispatchResult,
@@ -87,26 +88,7 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 	}
 
 	stuckRequests() {
-		const now = this.options.now?.() ?? Date.now();
-		const pending = this.store.database
-			.prepare(
-				`SELECT i.id, i.title, i.clocks,
-			nullif(coalesce(i.launch_target, i.computer), 'auto') AS computer
-			FROM items i WHERE i.deleted = 0 AND i.title IS NOT NULL AND i.status IN ('open','in_progress')
-			AND i.auto IS NOT NULL AND NOT EXISTS
-				(SELECT 1 FROM runs r WHERE r.item_id = i.id AND r.auto_token = i.auto AND r.started_at IS NOT NULL)
-			AND NOT EXISTS
-				(SELECT 1 FROM remote_runs r WHERE r.item_id = i.id AND r.auto_token = i.auto AND r.started_at IS NOT NULL)
-			ORDER BY i.id`
-			)
-			.all() as { id: string; title: string; clocks: string; computer: string | null }[];
-		return pending.flatMap(({ clocks, ...item }) => {
-			const clock = (JSON.parse(clocks) as { auto?: string }).auto;
-			const requested = clock && trackerClockMilliseconds(clock);
-			return requested && now - requested >= 300_000
-				? [{ ...item, requested_at: new Date(requested).toISOString() }]
-				: [];
-		});
+		return trackerStuckRequests(this.store.database, this.options.now?.() ?? Date.now());
 	}
 
 	readSnapshot(itemId: string): TrackerDispatchSnapshot {
@@ -151,4 +133,32 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 				.get(itemId, recent)
 		);
 	}
+}
+
+function trackerStuckRequests(database: SqliteDatabase, now: number) {
+	const pending = database
+		.prepare(
+			`SELECT i.id, i.title, i.clocks, (i.needs_daniel = 1 AND i.resolved = 0) AS flagged,
+		nullif(coalesce(i.launch_target, i.computer), 'auto') AS computer
+		FROM items i WHERE i.deleted = 0 AND i.title IS NOT NULL AND i.status IN ('open','in_progress')
+		AND i.auto IS NOT NULL AND NOT EXISTS
+			(SELECT 1 FROM runs r WHERE r.item_id = i.id AND r.auto_token = i.auto AND r.started_at IS NOT NULL)
+		AND NOT EXISTS
+			(SELECT 1 FROM remote_runs r WHERE r.item_id = i.id AND r.auto_token = i.auto AND r.started_at IS NOT NULL)
+		ORDER BY i.id`
+		)
+		.all() as {
+		id: string;
+		title: string;
+		clocks: string;
+		computer: string | null;
+		flagged: number;
+	}[];
+	return pending.flatMap(({ clocks, ...item }) => {
+		const clock = (JSON.parse(clocks) as { auto?: string }).auto;
+		const requested = clock && trackerClockMilliseconds(clock);
+		return requested && now - requested >= 300_000
+			? [{ ...item, requested_at: new Date(requested).toISOString() }]
+			: [];
+	});
 }

@@ -28,6 +28,7 @@ export function trackerHostLaunch(
 		tmuxExecutable?: string;
 		adapter?: TrackerHostAdapterConfig;
 		workerClient?: TrackerWorkerClient;
+		now?: () => number;
 	} = {}
 ): NonNullable<TrackerNativeRuntimeOptions['dispatch']> {
 	const { adapter } = effects;
@@ -44,7 +45,8 @@ export function trackerHostLaunch(
 		: undefined;
 	const host = trackerHostRunner(store, driver, routeFor, {
 		tmux,
-		legacyRunDirectory: config.legacyRunDirectory
+		legacyRunDirectory: config.legacyRunDirectory,
+		now: effects.now
 	});
 	const admit = trackerHostAdmission(store, { config, adapter, routeFor }, host.inventory);
 	return {
@@ -96,13 +98,15 @@ function pickHostModel(item: TrackerDispatchItem) {
 /** Build the host launch dispatch from configured host effects, when launch is enabled. */
 export function configuredHostDispatch(
 	store: TrackerPersistenceService,
-	effects: TrackerNativeRuntimeOptions['hostEffects']
+	effects: TrackerNativeRuntimeOptions['hostEffects'],
+	now: () => number
 ) {
 	const { launch, watchdog, adapter, workerClient } = effects ?? {};
 	return launch
 		? trackerHostLaunch(store, launch, {
 				workerClient,
 				adapter,
+				now,
 				tmuxExecutable: watchdog && 'tmux' in watchdog ? watchdog.tmux : undefined
 			})
 		: undefined;

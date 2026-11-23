@@ -32,10 +32,12 @@ export class TrackerDispatchSchedulerService {
 	status() {
 		return {
 			enabled: this.options.policy?.enabled !== false,
-			stuck: this.repository.stuckRequests().map((item) => ({
+			stuck: this.repository.stuckRequests().map(({ flagged, ...item }) => ({
 				...item,
 				computer: item.computer ?? 'box',
-				reason: this.waits.get(item.id) ?? 'ready but has not started'
+				reason: flagged
+					? 'waiting on Daniel (flagged)'
+					: (this.waits.get(item.id) ?? 'ready but has not started')
 			}))
 		};
 	}

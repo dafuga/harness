@@ -7,6 +7,7 @@ import type {
 	TrackerHostLaunchConfig
 } from './nativeTrackerHostEffects.types';
 import type { TrackerHostRoute, TrackerHostSession } from './trackerHostLaunch.types';
+import { finishedTrackerSession } from './trackerHostInventory';
 
 export function trackerHostAdmission(
 	store: TrackerPersistenceService,
@@ -57,10 +58,15 @@ function occupiedHostSlots(
 			JSON.stringify([item_id, auto_token, attempt])
 		)
 	);
-	const independent = sessions.filter(
-		({ state, key, legacyRunId }) =>
-			state === 'live' && !(keys.has(key) || (legacyRunId !== undefined && runIds.has(legacyRunId)))
-	);
+	const independent = sessions.filter((session) => {
+		const { state, key, legacyRunId } = session;
+		return (
+			state === 'live' &&
+			!keys.has(key) &&
+			(legacyRunId === undefined || !runIds.has(legacyRunId)) &&
+			!finishedTrackerSession(store, session)
+		);
+	});
 	return reserved.length + independent.length;
 }
 

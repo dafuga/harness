@@ -276,6 +276,21 @@ in the batch and return the same receipt shape). The bridge owns any
 cross-host reads. The direct tmux binding uses the default socket on the
 primary Mac and the `claude` and default sockets on MB2.
 
+### Completed launch sessions
+
+A retained pane identified by a finished local run no longer occupies launch
+capacity or blocks another request for the same item. The dispatch tick sweeps
+the node's own auto-launch socket. It closes a single, detached provider pane
+only when the run and item are complete, ten minutes have passed since the
+latest of completion and pane activity, and Tracker finds no unanswered flag or
+other active owner. It checks the provider prompt and pane identity immediately
+before closing, including the attempt marker for a managed launch.
+
+Closure leaves provider transcripts and worktrees in place. Tracker adds a note
+with the computer, closed session and provider resume command. Long-lived
+control sessions fall outside the auto-launch name filter. Pending flagged
+launches report `waiting on Daniel (flagged)` in autolaunch status.
+
 ### Legacy CLI inventory and remaining checks
 
 Compared the `7acf3ca` CLI command switch and daemon routes with the native

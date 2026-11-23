@@ -25,9 +25,11 @@
 			"TrackerTmuxAdapter.scan",
 			"TrackerTmuxAdapter.inventory",
 			"TrackerTmuxAdapter.nudge",
+			"TrackerTmuxAdapter.closeIdle",
 			"TrackerTmuxAdapterConfig",
 			"TrackerTmuxPane",
 			"TrackerTmuxNudge",
+			"TrackerTmuxClose",
 			"trackerManagedHostLauncher",
 			"TrackerManagedPresence",
 			"TrackerManagedReceipt",
@@ -92,6 +94,16 @@
 				"type": "AbortSignal",
 				"required": true,
 				"description": "Lifetime for the identity checks and guarded write."
+			},
+			{
+				"name": "TrackerTmuxAdapter.closeIdle.input",
+				"type": "TrackerTmuxClose",
+				"required": true
+			},
+			{
+				"name": "TrackerTmuxAdapter.closeIdle.signal",
+				"type": "AbortSignal",
+				"required": true
 			},
 			{
 				"name": "trackerManagedHostLauncher.config",
@@ -413,6 +425,29 @@
 						"name": "TrackerTmuxAdapter.nudge",
 						"type": "Promise<boolean>",
 						"description": "Send literal keys and Enter only if the same pane still has the intended idle composer."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerTmuxAdapter.closeIdle",
+				"inputs": [
+					{
+						"name": "TrackerTmuxAdapter.closeIdle.input",
+						"type": "TrackerTmuxClose",
+						"required": true
+					},
+					{
+						"name": "TrackerTmuxAdapter.closeIdle.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerTmuxAdapter.closeIdle",
+						"type": "Promise<boolean>"
 					}
 				],
 				"errors": [],

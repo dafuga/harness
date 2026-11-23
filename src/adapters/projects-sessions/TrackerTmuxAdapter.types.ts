@@ -21,3 +21,10 @@ export interface TrackerTmuxNudge {
 	cli: WatchdogCli;
 	message: string;
 }
+
+export interface TrackerTmuxClose {
+	pane: TrackerTmuxNudge['pane'];
+	cli: WatchdogCli;
+	attempt?: string;
+	stillComplete(): boolean;
+}
