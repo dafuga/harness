@@ -28,7 +28,11 @@
 </script>
 
 {#snippet thumbnail(minimal = false)}
-	<hx-div class="thumbnail" class:runtime={recorded !== null}>
+	<hx-div
+		class="thumbnail"
+		class:runtime={recorded !== null}
+		class:no-screenshot={recorded === null && !image}
+	>
 		{#if recorded}
 			<RecordedPreview
 				{workspace}
@@ -120,5 +124,14 @@
 	}
 	.thumbnail.runtime {
 		aspect-ratio: 16 / 11;
+	}
+	/* A card is as tall as its own content, not its grid row, so a bare card stays short. */
+	.entity-card {
+		align-self: start;
+	}
+	/* No screenshot is a short muted line, not an empty frame as tall as the card is wide. */
+	.thumbnail.no-screenshot {
+		aspect-ratio: auto;
+		height: 120px;
 	}
 </style>
