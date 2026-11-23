@@ -16,6 +16,7 @@
 	import RevisionPicker from '../../shared-primitives/RevisionPicker.svelte';
 	import WorkspaceLink from '../WorkspaceLink.svelte';
 	import { workspaceSearch } from './workspaceSearch';
+	import { keepActiveInRow } from './keepActiveInRow';
 	import { workspaceGameViews } from '../../../utils/projects-sessions/workspaceRoute';
 	/** `account` is the place of a host app for who is signed in; the desktop app has none. */
 	let { workspace, account }: { workspace: Workspace; account?: Snippet } = $props();
@@ -62,7 +63,7 @@
 				>{/if}
 		</hx-div>
 	</hx-div>
-	<hx-nav aria-label="Catalog categories">
+	<hx-nav aria-label="Catalog categories" use:keepActiveInRow>
 		{#each categories as category (category)}<WorkspaceLink
 				{workspace}
 				to={workspace.path(category)}
