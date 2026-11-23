@@ -39,7 +39,7 @@
 		<hx-div class="filter-fields">{@render children()}</hx-div>
 		{#snippet footer()}
 			<hx-button class="filter-reset" type="button" onclick={onreset}>Reset filters</hx-button>
-			<hx-button class="filter-done" type="button" onclick={close}>Done</hx-button>
+			<hx-button class="primary filter-done" type="button" onclick={close}>Done</hx-button>
 		{/snippet}
 	</Modal>
 </hx-div>
@@ -155,8 +155,11 @@
 		font: inherit;
 		cursor: pointer;
 	}
+	/* Done is the one filled button of the dialog; Reset filters stays an outlined secondary. */
 	.filter-done {
 		border-color: var(--hx-color-primary);
-		color: var(--hx-color-primary);
+		background: var(--hx-color-primary);
+		color: var(--hx-color-primary-contrast);
+		font-weight: var(--hx-style-weight-semibold);
 	}
 </style>

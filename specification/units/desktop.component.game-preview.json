@@ -23,12 +23,18 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/desktop/src/components/game-authoring/game-preview/GamePreview.svelte"],
-		"symbols": ["GamePreview"]
+		"source": [
+			"packages/desktop/src/components/game-authoring/game-preview/GamePreview.svelte"
+		],
+		"symbols": [
+			"GamePreview"
+		]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.select"],
+		"primitives": [
+			"reports.component.select"
+		],
 		"inputs": [
 			{
 				"name": "GamePreview.view",
@@ -67,7 +73,10 @@
 				"type": "string | null",
 				"required": true,
 				"description": "Project identifier forwarded to bridge.gameRender when AI video starts. A null or empty string prevents AI video availability and start.",
-				"examples": ["project-42", null]
+				"examples": [
+					"project-42",
+					null
+				]
 			},
 			{
 				"name": "GamePreview.readonly",
@@ -75,7 +84,10 @@
 				"required": false,
 				"default": false,
 				"description": "When true, disables AI video availability while local gameplay and reset remain interactive. Defaults to false.",
-				"examples": [false, true]
+				"examples": [
+					false,
+					true
+				]
 			},
 			{
 				"name": "GamePreview.onRun",
@@ -95,7 +107,7 @@
 			{
 				"name": "GamePreview",
 				"type": "markup",
-				"description": "Provides a dimension-selected 2D or 3D canvas, GameControls, and AI video model and start-stop status controls. AI video availability requires a ready Decart transport, a truthy projectId, a gameRender bridge method, and readonly=false; sessions pass a 60-second limit and failures appear as an alert."
+				"description": "Provides a dimension-selected 2D or 3D canvas, GameControls, and one Live AI video button; its dialog (desktop.component.game-live-ai) holds the AI video model, the price, the start or stop control and the status line. AI video availability requires a ready Decart transport, a truthy projectId, a gameRender bridge method, and readonly=false; sessions pass a 60-second limit and failures appear as an alert."
 			}
 		],
 		"errors": [
@@ -112,6 +124,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.component.game-controls",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.game-live-ai",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -142,11 +159,6 @@
 		},
 		{
 			"unit": "game.function.connect-decart",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.select",
 			"via": "import",
 			"origin": "derived"
 		},

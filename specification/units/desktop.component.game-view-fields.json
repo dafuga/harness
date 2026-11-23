@@ -88,27 +88,27 @@
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "When true, the title, dimension, and art direction editors are disabled, a read-only note is shown, and New level is hidden. Defaults to false.",
+				"description": "When true, the title, dimension, and art direction editors are disabled, a read-only note is shown, and New view is hidden. Defaults to false.",
 				"examples": [false, true]
 			},
 			{
 				"name": "GameViewFields.section",
 				"type": "GameSection",
 				"required": true,
-				"description": "The currently selected workspace section; it must be Level, Preview, Checkpoints, or Mechanics, and New level sets it to Level. It is bindable and has no runtime fallback, so an omitted value is undefined even though the declared prop type requires it.",
+				"description": "The currently selected workspace section; it must be Level, Preview, Checkpoints, or Mechanics, and New view sets it to Level. It is bindable and has no runtime fallback, so an omitted value is undefined even though the declared prop type requires it.",
 				"examples": ["Level", "Preview", "Mechanics"]
 			},
 			{
 				"name": "GameViewFields.select",
 				"type": "(id: string) => void",
 				"required": true,
-				"description": "Called with the selected view id when a picker option is chosen, and with the newly created id after New level. It receives only the id string."
+				"description": "Called with the selected view id when a picker option is chosen, and with the newly created id after New view. It receives only the id string."
 			},
 			{
 				"name": "GameViewFields.create",
 				"type": "(level: GameView) => void",
 				"required": true,
-				"description": "Called when New level is activated in an editable view, with a new view using the current dimension and art direction, title New level, empty checkpoints, and blank planning text. Selection and the section change to Level follow only if this callback returns normally."
+				"description": "Called when New view is activated in an editable view, with a new view using the current dimension and art direction, title New level, empty checkpoints, and blank planning text. Selection and the section change to Level follow only if this callback returns normally."
 			},
 			{
 				"name": "GameViewFields.change",
@@ -121,7 +121,7 @@
 			{
 				"name": "GameViewFields",
 				"type": "markup",
-				"description": "Renders a View picker that expands when more than one view is supplied, plus section buttons; Level appears only when view.planning is truthy, and Preview and Checkpoints are disabled unless LevelValidator.isReady(view) succeeds. View settings start closed and reveal title, 2D/3D dimension, and art direction; when readonly is true their editors are disabled, a read-only note is shown, and New level is hidden."
+				"description": "Renders a View picker that expands when more than one view is supplied, plus section buttons; Level appears only when view.planning is truthy, and Preview and Checkpoints are disabled unless LevelValidator.isReady(view) succeeds. The toolbar ends with New view and a View settings icon button; View settings opens a shared Modal, closed at first, with the title, 2D/3D dimension and art direction fields, so no form sits inline; when readonly is true their editors are disabled, a read-only note is shown, and New view is hidden."
 			}
 		],
 		"errors": [

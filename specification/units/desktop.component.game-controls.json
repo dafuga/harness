@@ -336,7 +336,7 @@
 			{
 				"name": "GameControls",
 				"type": "markup",
-				"description": "The component's markup: an x and y chip (two decimals), Key and Door chips outside a built level, a Reached chip when the outcome is set, then the movement buttons (four in a built level, left and right otherwise), the Garden and Vault buttons outside a built level, and Reset. The arrow-key hint is static text, since the component attaches no keyboard listeners."
+				"description": "The component's markup: an x and y chip (two decimals), Key and Door chips outside a built level, a Reached chip when the outcome is set, then one row of arrow-glyph movement buttons (four in a built level, left and right otherwise) and Reset. Outside a built level a second row holds the Garden and Vault buttons and, while the door is closed, the muted line 'Garden and Vault open once the door is open.' The arrow-key hint is static text, since the component attaches no keyboard listeners."
 			}
 		],
 		"errors": [],

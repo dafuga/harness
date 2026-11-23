@@ -28,12 +28,16 @@ test('only the attached Vault grant can open the native request inbox', async ({
 }, testInfo) => {
 	await remotePhoneFixture(page, 'offline', true);
 	await page.goto('/');
-	const button = computer(page).getByRole('button', { name: 'Vault requests' });
+	const button = page.getByRole('button', { name: 'Vault requests' });
 	await expect(button).toHaveCount(0);
 	await announce(page, 'online');
-	await expect(button).toBeVisible();
+	await computer(page)
+		.getByRole('button', { name: `Connected to ${hostName}` })
+		.click();
+	const dialog = page.getByRole('dialog', { name: 'Connection' });
 	await remoteEvidence(page, testInfo, 'phone-vault-entry');
-	await button.click();
+	await expect(dialog.getByRole('button', { name: 'Vault requests' })).toBeVisible();
+	await dialog.getByRole('button', { name: 'Vault requests' }).click();
 	expect(await made(page, 'native.openVault')).toEqual([{ op: 'native.openVault' }]);
 	expect(await made(page, 'native.request')).not.toContainEqual({
 		op: 'native.request',
@@ -89,10 +93,9 @@ test('approval on the desktop connects the phone and lists only what it was gran
 	const panel = computer(page);
 	await expect(panel.getByText(/Waiting for approval/)).toBeVisible();
 	await announce(page, 'online');
-	await expect(panel.getByText(`Connected to ${hostName}`)).toBeVisible();
-	await expect(panel.getByText(/Computer awake · works while its screen is locked/)).toBeVisible();
-	await expect(panel.getByText('2 projects · Plan and Change allowed')).toBeVisible();
-	await expect(panel.getByText(`This phone: ${deviceName}`)).toBeVisible();
+	await expect(
+		panel.getByRole('button', { name: `Connected to ${hostName}`, exact: true })
+	).toBeVisible();
 	await expect(page.getByRole('button', { name: 'Open Alpha', exact: true })).toBeVisible();
 	await expect(page.getByRole('button', { name: 'Open Beta', exact: true })).toBeVisible();
 	await expect(page.getByRole('button', { name: 'Open Gamma', exact: true })).toHaveCount(0);
@@ -107,6 +110,45 @@ test('approval on the desktop connects the phone and lists only what it was gran
 	expect((await made(page, 'native.disconnect')).length).toBe(1);
 	await expect(panel.getByRole('heading', { name: 'Connect to computer' })).toBeVisible();
 });
+
+for (const width of [320, 390]) {
+	test.describe(`connected at ${width}px`, () => {
+		test.use({ viewport: { width, height: 844 } });
+
+		test('the projects come first; the details sit in one Connection dialog', async ({
+			page
+		}, testInfo) => {
+			await remotePhoneFixture(page, 'pending-approval');
+			await page.goto('/');
+			await announce(page, 'online');
+			const panel = computer(page);
+			const chip = panel.getByRole('button', { name: `Connected to ${hostName}`, exact: true });
+			await expect(chip).toBeVisible();
+			await expect(projects(page).first()).toBeVisible();
+			await expect(panel.getByRole('button', { name: 'Disconnect', exact: true })).toHaveCount(0);
+			await expect(page.getByText(/^Key /)).toHaveCount(0);
+			await expect(page.getByText(`This phone: ${deviceName}`)).toHaveCount(0);
+			expect(await fits(page)).toBe(true);
+			await remoteEvidence(page, testInfo, 'phone-connected');
+			await chip.click();
+			const dialog = page.getByRole('dialog', { name: 'Connection', exact: true });
+			await expect(
+				dialog.getByText(/Computer awake · works while its screen is locked/)
+			).toBeVisible();
+			await expect(dialog.getByText('2 projects · Plan and Change allowed')).toBeVisible();
+			await expect(dialog.getByText(`This phone: ${deviceName}`)).toBeVisible();
+			await expect(dialog.getByText(/^Key /)).toBeVisible();
+			await expect(dialog.getByRole('button', { name: 'Disconnect', exact: true })).toBeVisible();
+			await expect(dialog.getByRole('button', { name: 'Sign out', exact: true })).toBeVisible();
+			expect(await fits(page)).toBe(true);
+			await remoteEvidence(page, testInfo, 'phone-connection-dialog');
+			await dialog.getByRole('button', { name: 'Disconnect', exact: true }).click();
+			await expect(
+				computer(page).getByRole('heading', { name: 'Connect to computer' })
+			).toBeVisible();
+		});
+	});
+}
 
 test('a paired phone shows the same workspace through the native adapter', async ({
 	page

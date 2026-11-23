@@ -47,7 +47,7 @@
 			{
 				"name": "CatalogView",
 				"type": "markup",
-				"description": "The rendered catalog for the current category: a search input and a FilterDialog above the card grid, with the dialog holding the Changed only checkbox and the Verification, Planning and Order selects. When no entities match, the grid shows an EmptyState with a 'Show all {category}' button that clears the search and the changed, verification and planning filters but not the order."
+				"description": "The rendered catalog for the current category: a search input and a FilterDialog above the card grid, with the dialog holding the Changed only switch row (its name left, a switch right, at least 44px tall, toggled by clicking the name) and the Verification, Planning and Order selects. When no entities match, the grid shows an EmptyState with a 'Show all {category}' button that clears the search and the changed, verification and planning filters but not the order."
 			}
 		],
 		"errors": [

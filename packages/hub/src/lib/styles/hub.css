@@ -94,9 +94,37 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
+.account-menu-button {
+	display: none;
+	margin-left: auto;
+}
+.account.account-rows {
+	display: grid;
+	gap: var(--hx-space-4);
+	justify-content: stretch;
+	margin-left: 0;
+	padding-left: 0;
+	border: 0;
+}
+.account-rows > * {
+	display: flex;
+	align-items: center;
+	min-height: 44px;
+}
 @media (max-width: 560px) {
+	.hub-page .topbar {
+		min-height: 64px;
+		gap: var(--hx-space-8);
+	}
 	.hub-title {
+		padding: var(--hx-space-8) var(--hx-space-12);
+	}
+	.account-inline {
 		display: none;
+	}
+	.account-menu-button {
+		display: inline-flex;
+		min-height: 44px;
 	}
 	.hub-main {
 		padding: var(--hx-space-20) var(--hx-space-14) var(--hx-space-48);

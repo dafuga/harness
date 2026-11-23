@@ -2,7 +2,6 @@ import { captureLevelPlayback, prefetchLevelPlaybackSource } from './game-level-
 import type { Page } from '@playwright/test';
 import { expect, test } from '../../../../test/support/browserTest';
 import { installLevelProject, levelProject, buildLevel } from './game-level-fixture';
-import { viewSettings } from './game-unsaved-fixture';
 // Each worker reads the source once here, under a hook budget; a 30s case then only pays its browser work.
 test.beforeAll(async () => {
 	test.setTimeout(120_000);
@@ -12,8 +11,7 @@ test.beforeAll(async () => {
 async function newLevel(page: Page) {
 	await installLevelProject(page);
 	await page.goto(levelProject);
-	await viewSettings(page);
-	await page.getByRole('button', { name: 'New level', exact: true }).click();
+	await page.getByRole('button', { name: 'New view', exact: true }).click();
 }
 async function describe(page: Page) {
 	await page.getByLabel('Concept', { exact: true }).fill('A lantern island');

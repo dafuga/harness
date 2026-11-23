@@ -3,6 +3,7 @@ import {
 	leaveCleanGame,
 	guardState,
 	viewSettings,
+	closeViewSettings,
 	doneCheckpoint,
 	advancedCheckpoint
 } from './game-unsaved-fixture';
@@ -33,9 +34,11 @@ test.setTimeout(120_000);
 async function author(page: Page, dimension: string) {
 	await viewSettings(page);
 	await page.getByLabel('View title', { exact: true }).fill('Authored courtyard');
-	await page.getByRole('button', { name: 'New level', exact: true }).click();
+	await closeViewSettings(page);
+	await page.getByRole('button', { name: 'New view', exact: true }).click();
 	await viewSettings(page);
 	await page.getByLabel('View title', { exact: true }).fill('Second view');
+	await closeViewSettings(page);
 	await page.getByLabel('View', { exact: true }).selectOption('courtyard');
 	await page.getByRole('button', { name: 'Mechanics', exact: true }).click();
 	await page.getByRole('textbox', { name: 'Title', exact: true }).first().fill('Authored movement');
@@ -94,7 +97,9 @@ async function persisted(page: Page, root: string, dimension: string) {
 	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 	await expect(page.locator('canvas[data-ready="true"]').first()).toBeVisible();
 	await recordRuntime(page, started, dimension);
+	await viewSettings(page);
 	await expect(page.getByLabel('View title', { exact: true })).toHaveValue('Authored courtyard');
+	await closeViewSettings(page);
 	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
 	await page.getByText('Collect the key', { exact: true }).first().click();
 	await expect(
@@ -106,7 +111,12 @@ async function play(page: Page, dimension: string) {
 	await doneCheckpoint(page);
 	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 	await expect(page.locator('canvas[data-ready="true"]').first()).toBeVisible();
+	await page.getByRole('button', { name: 'Live AI video…', exact: true }).click();
 	await expect(page.getByRole('button', { name: /Start AI/ })).toBeDisabled();
+	await page
+		.getByRole('dialog', { name: 'Live AI video' })
+		.getByRole('button', { name: 'Close viewer', exact: true })
+		.click();
 	await page.getByRole('button', { name: 'Move right', exact: true }).click({ clickCount: 4 });
 	await page.getByRole('button', { name: 'Garden', exact: true }).click();
 	await expect(page.getByText('Reached the garden', { exact: true })).toBeVisible();
@@ -155,7 +165,9 @@ async function history(page: Page, root: string, dimension: string) {
 	url.searchParams.set('commit', commit);
 	url.searchParams.set('readonly', '1');
 	await page.goto(url.href);
+	await viewSettings(page);
 	await expect(page.getByLabel('View title', { exact: true })).toHaveAttribute('readonly', '');
+	await closeViewSettings(page);
 	await expect(page.getByRole('button', { name: 'Save', exact: true })).toHaveCount(0);
 	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
 	await page.getByText('Collected key', { exact: true }).first().click();
