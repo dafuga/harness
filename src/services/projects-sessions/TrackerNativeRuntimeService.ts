@@ -69,7 +69,7 @@ export class TrackerNativeRuntimeService {
 		this.recurring = recurring?.worker;
 		this.links = composeTrackerLinks(store, options);
 		this.adapter = configuredHostAdapter(store, runs, options, this.now);
-		const dispatch = options.dispatch ?? configuredHostDispatch(store, hostEffects);
+		const dispatch = options.dispatch ?? configuredHostDispatch(store, hostEffects, this.now);
 		const workerOptions = { ...options, dispatch };
 		({
 			dispatch: this.dispatch,

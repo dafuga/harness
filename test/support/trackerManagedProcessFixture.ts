@@ -1,5 +1,8 @@
+import type { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
+import type { DatabaseSync } from 'node:sqlite';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { expect } from 'vitest';
 
 export const fixtureDockerImage = 'sha256:' + 'a'.repeat(64);
 
@@ -69,3 +72,52 @@ appendFileSync(join(process.env.HOME, 'invoked.ndjson'), JSON.stringify({
 	guestAuthFile: process.env.HARNESS_TRACKER_GUEST_AUTH_FILE ?? null
 }) + '\\n');
 `;
+
+export const retainedTrackerTmuxFixture = `
+const fs = require('node:fs');
+const path = require('node:path');
+const [,,, socket, command, ...args] = process.argv;
+const closed = path.join(__dirname, 'closed');
+const busy = path.join(__dirname, 'busy');
+const attached = Number(fs.existsSync(path.join(__dirname, 'attached')));
+const raw = 'auto-old008-r8|1800000000|71|%9|200|1800000000|2|2|0|0|0|' + attached + '|1|1|codex';
+if (socket !== 'default') process.exit(2);
+if (command === 'list-panes' || command === 'display-message') {
+	if (!fs.existsSync(closed)) process.stdout.write(raw + '\\n');
+} else if (command === 'capture-pane') {
+	const idle = !fs.existsSync(busy) || fs.readFileSync(busy, 'utf8') === 'idle';
+	process.stdout.write(idle ? 'fixture\\n\\n› \\n\\n100% context left\\n' : 'Working');
+} else if (command === 'if-shell') {
+	fs.writeFileSync(closed, args.join(' '));
+	process.stdout.write('tracker-session-closed\\n');
+} else process.exit(2);
+`;
+
+export function seedRetainedRuns(db: DatabaseSync, now: number) {
+	for (let id = 1; id <= 8; id++) {
+		db.prepare(
+			`INSERT INTO runs(id,item_id,auto_token,rung,cli,model,state,queued_at,started_at,ended_at,tmux)
+			VALUES (?,?,'legacy','sol','codex','gpt-6.2-sol',?,?,?,?,?)`
+		).run(
+			id,
+			'old00' + id + 'abcd',
+			id === 8 ? 'finished' : 'running',
+			now,
+			now,
+			id === 8 ? now : null,
+			'auto-old00' + id + '-r' + id
+		);
+	}
+}
+
+export async function startLinkedItem(runtime: TrackerNativeRuntimeService) {
+	runtime.store.appendLocal({
+		itemId: 'linked0001',
+		fields: { title: 'Work started from the retained pane', kind: 'task', status: 'open' }
+	});
+	const request = new Request('http://tracker-fixture.invalid/items/linked0001/start', {
+		method: 'POST',
+		body: JSON.stringify({ session_run: '8' })
+	});
+	expect((await runtime.items.handle(request)).ok).toBe(true);
+}

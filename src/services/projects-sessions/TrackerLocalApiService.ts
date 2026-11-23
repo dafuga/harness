@@ -6,7 +6,11 @@ import type { TrackerItemInput } from '../../utils/projects-sessions/normalizeTr
 import { planTrackerItemMutation } from '../../utils/projects-sessions/planTrackerItemMutation';
 import type { TrackerItemMutationContext } from '../../utils/projects-sessions/planTrackerItemMutation.types';
 import { trackerItemError } from '../../utils/projects-sessions/trackerItemError';
-import { itemAction, itemMutation } from './tracker-local-api-service/trackerLocalItemMutation';
+import {
+	itemAction,
+	itemMutation,
+	recordTrackerSessionItem
+} from './tracker-local-api-service/trackerLocalItemMutation';
 import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
 import {
 	readTrackerItemDetail,
@@ -106,12 +110,15 @@ export class TrackerLocalApiService {
 		const plan = action
 			? planTrackerItemMutation(itemMutation(action, id, body, this.items), context)
 			: planTrackerManualLaunch(verb, this.items.resolve(id), body, context);
+		const persist =
+			action === 'start'
+				? () => recordTrackerSessionItem(this.store.database, plan.itemId, body.session_run)
+				: undefined;
 		if (plan.fields)
-			this.store.appendLocal({
-				itemId: plan.itemId,
-				fields: plan.fields,
-				actor: readActor(request.headers)
-			});
+			this.store.appendLocal(
+				{ itemId: plan.itemId, fields: plan.fields, actor: readActor(request.headers) },
+				persist
+			);
 		return trackerResponse(action === 'add' ? 201 : 200, this.items.getStored(plan.itemId));
 	}
 

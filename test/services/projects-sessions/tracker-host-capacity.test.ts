@@ -1,4 +1,4 @@
-import { writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test } from 'vitest';
@@ -7,59 +7,112 @@ import { trackerNodeRuntime } from '../../../src/services/projects-sessions/trac
 import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { withTempDir } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
+import {
+	retainedTrackerTmuxFixture,
+	seedRetainedRuns,
+	startLinkedItem
+} from '../../support/trackerManagedProcessFixture';
 
 const node = 'daniel-primary-mbp';
 const now = 1_800_000_000_000;
 
-test('honors the configured host cap during a migrated eight-session startup', () =>
+test('honors the host cap while retaining finished panes and reporting a flagged request', () =>
 	measureWorkload(
 		'service.projects-sessions-tracker-native-runtime',
 		'host-capacity-at-cutover',
-		() =>
-			withTempDir('hnt-cap-', async (root) => {
-				const db = new DatabaseSync(':memory:');
-				const runtime = new TrackerNativeRuntimeService(db, {
-					...trackerNodeRuntime(writeConfig(root)),
-					now: () => now
-				});
-				try {
-					for (let id = 1; id <= 8; id++) {
-						db.prepare(
-							`INSERT INTO runs(id,item_id,auto_token,rung,cli,model,state,queued_at,started_at,tmux)
-						VALUES (?,?,'legacy','sol','codex','gpt-6.2-sol','running',?,?,?)`
-						).run(id, 'old00' + id + 'abcd', now, now, 'auto-old00' + id + '-r' + id);
-					}
-					for (const itemId of ['next100001', 'next100002'])
-						runtime.store.appendLocal({
-							itemId,
-							fields: {
-								title: itemId,
-								kind: 'task',
-								status: 'open',
-								project: 'Harness',
-								auto: itemId,
-								computer: node,
-								launch_target: node
-							}
-						});
-					const signal = new AbortController().signal;
-					await runtime.scheduler!.tick(signal);
-					await runtime.scheduler!.tick(signal);
-					expect(
-						db.prepare("SELECT count(*) AS n FROM meta WHERE k LIKE 'harness_dispatch_run:%'").get()
-					).toEqual({ n: 9 });
-					expect(
-						db.prepare('SELECT item_id, state FROM runs WHERE id > 8 ORDER BY id').all()
-					).toEqual([{ item_id: 'next100001', state: 'running' }]);
-				} finally {
-					db.close();
-				}
-			})
+		() => withTempDir('hnt-cap-', proveHostCapacity)
 	));
 
-function writeConfig(root: string, dueDisk?: { freePct: number; freeGB: number }) {
+async function proveHostCapacity(root: string) {
+	const db = new DatabaseSync(':memory:');
+	let clock = now;
+	const runtime = new TrackerNativeRuntimeService(db, {
+		...trackerNodeRuntime(writeConfig(root, undefined, true)),
+		now: () => clock
+	});
+	const signal = new AbortController().signal;
+	const closed = join(root, 'closed');
+	try {
+		seedRetainedRuns(db, now);
+		runtime.store.appendLocal({
+			itemId: 'old008abcd',
+			fields: { title: 'Finished fixture', kind: 'task', status: 'done' }
+		});
+		for (const id of ['next100001', 'next100002', 'next100003'])
+			queueCapacityItem(runtime, id, id === 'next100003');
+		clock += 300_000;
+		expect
+			.soft(runtime.scheduler!.status().stuck.find(({ id }) => id === 'next100003'))
+			.toMatchObject({ reason: 'waiting on Daniel (flagged)' });
+		await runtime.scheduler!.tick(signal);
+		expect
+			.soft(db.prepare('SELECT item_id, state FROM runs WHERE id > 8').all())
+			.toEqual([{ item_id: 'next100001', state: 'running' }]);
+		expect(existsSync(closed)).toBe(false);
+		clock += 300_000;
+		writeFileSync(join(root, 'busy'), '');
+		await expectPaneRetained(runtime, signal, closed);
+		writeFileSync(join(root, 'busy'), 'idle');
+		db.prepare("UPDATE runs SET tmux = 'auto-old008-r8' WHERE id = 7").run();
+		await expectPaneRetained(runtime, signal, closed);
+		db.prepare("UPDATE runs SET tmux = 'auto-old007-r7' WHERE id = 7").run();
+		writeFileSync(join(root, 'attached'), '');
+		await expectPaneRetained(runtime, signal, closed);
+		rmSync(join(root, 'attached'));
+		await startLinkedItem(runtime);
+		await expectPaneRetained(runtime, signal, closed);
+		runtime.store.appendLocal({ itemId: 'linked0001', fields: { status: 'done' } });
+		await expectPaneRetained(runtime, signal, closed);
+		clock += 600_000;
+		await runtime.scheduler!.tick(signal);
+		expect(readFileSync(closed, 'utf8')).toContain('kill-session -t %9');
+		await runtime.scheduler!.tick(signal);
+		expect(db.prepare('SELECT item_id, state FROM runs WHERE id > 8').all()).toEqual([
+			{ item_id: 'next100001', state: 'running' }
+		]);
+		expect(db.prepare("SELECT text FROM item_notes WHERE item_id = 'old008abcd'").get()).toEqual({
+			text: expect.stringContaining('codex resume --all')
+		});
+	} finally {
+		db.close();
+	}
+}
+
+async function expectPaneRetained(
+	runtime: TrackerNativeRuntimeService,
+	signal: AbortSignal,
+	closed: string
+) {
+	await runtime.scheduler!.tick(signal);
+	expect(existsSync(closed)).toBe(false);
+}
+
+function queueCapacityItem(runtime: TrackerNativeRuntimeService, id: string, flagged: boolean) {
+	runtime.store.appendLocal({
+		itemId: id,
+		fields: {
+			title: id,
+			kind: 'task',
+			status: 'open',
+			project: 'Harness',
+			auto: id,
+			computer: node,
+			launch_target: node,
+			...(flagged && { needs_daniel: 1, question: 'Fixture question' })
+		}
+	});
+}
+
+function writeConfig(
+	root: string,
+	dueDisk?: { freePct: number; freeGB: number },
+	withTmux = false
+) {
 	const driver = join(root, 'driver');
 	const syncSecretFile = join(root, 'secret');
+	const tmux = join(root, 'tmux-fixture');
+	if (withTmux)
+		writeFileSync(tmux, `#!${process.execPath}\n${retainedTrackerTmuxFixture}`, { mode: 0o700 });
 	const config = join(root, 'node.json');
 	writeFileSync(driver, `#!${process.execPath}\n${driverProgram}`, { mode: 0o700 });
 	writeFileSync(syncSecretFile, 'synthetic-capacity-wire-key', { mode: 0o600 });
@@ -77,6 +130,7 @@ function writeConfig(root: string, dueDisk?: { freePct: number; freeGB: number }
 			hostEffects: {
 				mode: 'active',
 				checkpoint: 'fixture',
+				...(withTmux && { watchdog: { tmux } }),
 				...(dueDisk && { adapter: { driver, scheduleDue: true, dueDisk } }),
 				launch: {
 					driver,
@@ -99,7 +153,16 @@ const legacy = Array.from({ length: 8 }, (_, index) => {
 	return { legacyRunId: id, itemId, id: 'retained-' + id, key: 'legacy:' + id,
 		tmux: 'auto-' + itemId + '-r' + id, startedAt: ${now}, state: 'live' };
 });
-process.stdout.write(JSON.stringify(process.argv[2] === 'inspect' ? legacy : {
+const standalone = { itemId: 'standalone', id: 'unlinked', key: 'unlinked', state: 'live', startedAt: ${now} };
+const inventory = require('node:fs').existsSync(require('node:path').join(__dirname, 'tmux-fixture'))
+	? [...legacy, standalone] : legacy;
+const started = { itemId, key, id: 'synthetic-' + itemId, state: 'live', startedAt: queuedAt };
+const fs = require('node:fs');
+const receipt = require('node:path').join(__dirname, 'started');
+if (process.argv[2] === 'start') fs.writeFileSync(receipt, JSON.stringify(started));
+if (process.argv[2] === 'inspect' && fs.existsSync(receipt))
+	inventory.push(JSON.parse(fs.readFileSync(receipt, 'utf8')));
+process.stdout.write(JSON.stringify(process.argv[2] === 'inspect' ? inventory : {
 	status: 'started', session: { itemId, key, id: 'synthetic-' + itemId, state: 'live', startedAt: queuedAt }
 }));
 `;

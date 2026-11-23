@@ -24,6 +24,8 @@
 			"readTrackerRunEndpoint",
 			"itemMutation",
 			"itemAction",
+			"trackerSessionItemPrefix",
+			"recordTrackerSessionItem",
 			"isTrackerManualLaunch",
 			"planTrackerManualLaunch"
 		]
@@ -113,6 +115,21 @@
 				"required": true
 			},
 			{
+				"name": "recordTrackerSessionItem.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "recordTrackerSessionItem.itemId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordTrackerSessionItem.sessionRun",
+				"type": "TrackerItemValue",
+				"required": true
+			},
+			{
 				"name": "isTrackerManualLaunch.verb",
 				"type": "string | undefined",
 				"required": true
@@ -158,6 +175,14 @@
 			{
 				"name": "itemAction",
 				"type": "TrackerItemAction | 'add' | undefined"
+			},
+			{
+				"name": "trackerSessionItemPrefix",
+				"type": "unknown"
+			},
+			{
+				"name": "recordTrackerSessionItem",
+				"type": "void"
 			},
 			{
 				"name": "isTrackerManualLaunch",
@@ -302,6 +327,34 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "recordTrackerSessionItem",
+				"inputs": [
+					{
+						"name": "recordTrackerSessionItem.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "recordTrackerSessionItem.itemId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordTrackerSessionItem.sessionRun",
+						"type": "TrackerItemValue",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordTrackerSessionItem",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "isTrackerManualLaunch",
 				"inputs": [
 					{
@@ -418,6 +471,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-plan-tracker-item-mutation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-types",
 			"via": "import",
 			"origin": "derived"
 		},

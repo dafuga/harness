@@ -4,6 +4,7 @@ import { TrackerHostProcessError } from './tracker-host-process-adapter/TrackerH
 import { WatchdogPaneService } from '../../services/projects-sessions/WatchdogPaneService';
 import type {
 	TrackerTmuxAdapterConfig,
+	TrackerTmuxClose,
 	TrackerTmuxNudge,
 	TrackerTmuxPane
 } from './TrackerTmuxAdapter.types';
@@ -70,6 +71,34 @@ export class TrackerTmuxAdapter {
 			signal
 		);
 		return result.code === 0 && result.stdout.trim() === 'tracker-watchdog-sent';
+	}
+
+	/** Close an unattended owned run only while the same single pane is idle. */
+	async closeIdle(input: TrackerTmuxClose, signal: AbortSignal): Promise<boolean> {
+		const { pane, cli, attempt, stillComplete } = input;
+		const names = /^auto-[a-z0-9]{6,10}-r[1-9][0-9]*$/;
+		if (!names.test(pane.name) || (attempt && !/^[a-f0-9]{64}$/.test(attempt))) return false;
+		const candidate = (await this.layouts(signal, names)).find(
+			({ pane: observed }) =>
+				observed.runnerSocket &&
+				!observed.attached &&
+				observed.name === pane.name &&
+				matchesTrackerTmuxPane(observed, pane)
+		);
+		if (!candidate) return false;
+		const observed = await this.capture(candidate, signal);
+		if (this.decisions.idlePrompt(observed.pane) !== cli || !stillComplete()) return false;
+		const { socket, id, raw } = observed;
+		const identity = `#{==:${trackerPaneFormat},${raw}}`;
+		const owner = `#{==:#{HARNESS_TRACKER_ATTEMPT},${attempt ?? ''}}`;
+		const guard = `#{&&:${identity},${owner}}`;
+		const closed = 'tracker-session-closed';
+		const result = await this.command(
+			socket,
+			['if-shell', '-F', '-t', id, guard, `display-message -p ${closed} ; kill-session -t ${id}`],
+			signal
+		);
+		return result.code === 0 && result.stdout.trim() === closed;
 	}
 
 	private async layouts(signal: AbortSignal, names: RegExp): Promise<TrackerTmuxPane[]> {

@@ -1,8 +1,7 @@
 // @harness-uid u_bl6xl2h4a3
-import type { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
 import type { WatchdogPane } from '../WatchdogPaneService.types';
 import { trackerLegacyExitReceipt } from './trackerLegacyExitReceipt';
-import { trackerHostInventory } from './trackerHostInventory';
+import { finishedTrackerSession, trackerHostInventory } from './trackerHostInventory';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import {
@@ -19,6 +18,7 @@ import type { TrackerHostRepository } from './nativeTrackerHostEffects.types';
 import type {
 	TrackerHostLaunchPort,
 	TrackerHostRoute,
+	TrackerHostRunnerOptions,
 	TrackerHostSession
 } from './trackerHostLaunch.types';
 import { formatTrackerHostBrief } from './trackerHostBrief';
@@ -27,7 +27,7 @@ export function trackerHostRunner(
 	store: TrackerPersistenceService,
 	driver: TrackerHostLaunchPort,
 	routeFor: TrackerHostRoute,
-	{ tmux, legacyRunDirectory }: { tmux?: TrackerTmuxAdapter; legacyRunDirectory?: string } = {}
+	{ tmux, legacyRunDirectory, now = Date.now }: TrackerHostRunnerOptions = {}
 ) {
 	const items = new TrackerItemReadRepository(store.database);
 	const node = canonicalNode(store.node, {});
@@ -41,7 +41,7 @@ export function trackerHostRunner(
 		runner: {
 			async refresh(signal: AbortSignal, runs: readonly TrackerRunReceipt[]) {
 				({ sessions, manual } = await trackerHostInventory(
-					{ driver, tmux, node, keys: runs.map(attemptKey) },
+					{ store, driver, tmux, node, keys: runs.map(attemptKey), now: now() },
 					signal
 				));
 			},
@@ -63,15 +63,26 @@ export function trackerHostRunner(
 		sessions(itemId: string) {
 			return {
 				openSession: manual.some((pane) => itemId.startsWith(pane.name.slice(5))),
-				activeSessionKeys: sessions
-					.filter(
-						(session) =>
-							!session.legacyRunId && session.itemId === itemId && session.state === 'live'
-					)
-					.map(({ key }) => key)
+				activeSessionKeys: activeTrackerSessionKeys(store, sessions, itemId)
 			};
 		}
 	};
+}
+
+function activeTrackerSessionKeys(
+	store: TrackerPersistenceService,
+	sessions: readonly TrackerHostSession[],
+	itemId: string
+): string[] {
+	return sessions
+		.filter(
+			(session) =>
+				!session.legacyRunId &&
+				session.itemId === itemId &&
+				session.state === 'live' &&
+				!finishedTrackerSession(store, session)
+		)
+		.map(({ key }) => key);
 }
 
 async function startTrackerHost(

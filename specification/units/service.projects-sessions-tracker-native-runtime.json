@@ -90,6 +90,7 @@
 			"sendWatchdogAlerts",
 			"trackerHostEffectsSchema",
 			"trackerHostInventory",
+			"finishedTrackerSession",
 			"trackerHostLaunch",
 			"configuredHostDispatch",
 			"TrackerHostSession",
@@ -98,6 +99,8 @@
 			"TrackerHostStartReply",
 			"TrackerHostStartRequest",
 			"TrackerHostLaunchPort",
+			"TrackerHostRunnerOptions",
+			"CompletedTrackerPaneRun",
 			"trackerHostLaunchPort",
 			"hostSession",
 			"hostInventory",
@@ -324,6 +327,11 @@
 				"required": true
 			},
 			{
+				"name": "trackerHostInventory.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
 				"name": "trackerHostInventory.driver",
 				"type": "TrackerHostLaunchPort",
 				"required": true
@@ -344,8 +352,23 @@
 				"required": true
 			},
 			{
+				"name": "trackerHostInventory.now",
+				"type": "number",
+				"required": true
+			},
+			{
 				"name": "trackerHostInventory.signal",
 				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "finishedTrackerSession.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "finishedTrackerSession.session",
+				"type": "TrackerHostSession",
 				"required": true
 			},
 			{
@@ -360,7 +383,7 @@
 			},
 			{
 				"name": "trackerHostLaunch.effects",
-				"type": "{ tmuxExecutable?: string; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; }",
+				"type": "{ tmuxExecutable?: string; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; now?: () => number; }",
 				"required": false,
 				"default": {}
 			},
@@ -372,6 +395,11 @@
 			{
 				"name": "configuredHostDispatch.effects",
 				"type": "TrackerNativeRuntimeOptions['hostEffects']",
+				"required": true
+			},
+			{
+				"name": "configuredHostDispatch.now",
+				"type": "() => number",
 				"required": true
 			},
 			{
@@ -401,12 +429,17 @@
 			},
 			{
 				"name": "trackerHostRunner.tmux",
-				"type": "TrackerTmuxAdapter",
+				"type": "unknown",
 				"required": false
 			},
 			{
 				"name": "trackerHostRunner.legacyRunDirectory",
-				"type": "string",
+				"type": "unknown",
+				"required": false
+			},
+			{
+				"name": "trackerHostRunner.now",
+				"type": "unknown",
 				"required": false
 			},
 			{
@@ -660,6 +693,10 @@
 			{
 				"name": "trackerHostInventory",
 				"type": "unknown"
+			},
+			{
+				"name": "finishedTrackerSession",
+				"type": "boolean"
 			},
 			{
 				"name": "trackerHostLaunch",
@@ -1187,6 +1224,11 @@
 				"name": "trackerHostInventory",
 				"inputs": [
 					{
+						"name": "trackerHostInventory.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
 						"name": "trackerHostInventory.driver",
 						"type": "TrackerHostLaunchPort",
 						"required": true
@@ -1207,6 +1249,11 @@
 						"required": true
 					},
 					{
+						"name": "trackerHostInventory.now",
+						"type": "number",
+						"required": true
+					},
+					{
 						"name": "trackerHostInventory.signal",
 						"type": "AbortSignal",
 						"required": true
@@ -1216,6 +1263,29 @@
 					{
 						"name": "trackerHostInventory",
 						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "finishedTrackerSession",
+				"inputs": [
+					{
+						"name": "finishedTrackerSession.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "finishedTrackerSession.session",
+						"type": "TrackerHostSession",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "finishedTrackerSession",
+						"type": "boolean"
 					}
 				],
 				"errors": [],
@@ -1236,7 +1306,7 @@
 					},
 					{
 						"name": "trackerHostLaunch.effects",
-						"type": "{ tmuxExecutable?: string; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; }",
+						"type": "{ tmuxExecutable?: string; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; now?: () => number; }",
 						"required": false,
 						"default": {}
 					}
@@ -1261,6 +1331,11 @@
 					{
 						"name": "configuredHostDispatch.effects",
 						"type": "TrackerNativeRuntimeOptions['hostEffects']",
+						"required": true
+					},
+					{
+						"name": "configuredHostDispatch.now",
+						"type": "() => number",
 						"required": true
 					}
 				],
@@ -1321,12 +1396,17 @@
 					},
 					{
 						"name": "trackerHostRunner.tmux",
-						"type": "TrackerTmuxAdapter",
+						"type": "unknown",
 						"required": false
 					},
 					{
 						"name": "trackerHostRunner.legacyRunDirectory",
-						"type": "string",
+						"type": "unknown",
+						"required": false
+					},
+					{
+						"name": "trackerHostRunner.now",
+						"type": "unknown",
 						"required": false
 					}
 				],
@@ -1710,6 +1790,11 @@
 		},
 		{
 			"unit": "function.agents-providers-pick-tracker-model",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-next-tracker-clock",
 			"via": "import",
 			"origin": "derived"
 		},
