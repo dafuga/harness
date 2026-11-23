@@ -2522,7 +2522,7 @@
 			"reason": "Format commit identities consistently while retaining record and content digests."
 		},
 		{
-			"from": "src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
+			"from": "src/services/verification-evidence/history-status-service/attached-record-service/recordDescriptor.ts",
 			"specifier": "$reports/helpers/strings/shortCommit",
 			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
 			"reason": "Format commit identities consistently while retaining record and content digests."

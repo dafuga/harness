@@ -30,6 +30,7 @@ function project(config?: string): string {
 		'vitest.config.ts',
 		'src/utils/execution-runtimes/resourceWorkers.ts',
 		'src/utils/execution-runtimes/resourceWorkers.types.ts',
+		'src/core/execution-runtimes/InvalidTestWorkerCeilingError.ts',
 		'test/svelteKitConfigs.ts',
 		'test/setup.ts'
 	]) {
