@@ -1,0 +1,13 @@
+/* @harness-uid u_q7m2dk4xwt */
+/* The floating project-agent button never covers a design conversation's controls, a page's last
+   card or the footer: it is hidden while the conversation is open, and the content leaves room. */
+.workspace:has(.entity-layout.with-thread) .floating-chat-bubble {
+	display: none;
+}
+.workspace .entity-main,
+.workspace .catalog {
+	padding-bottom: calc(var(--hx-layout-chat-bubble) + var(--hx-space-16));
+}
+.workspace .status-bar {
+	padding-inline-end: calc(var(--hx-layout-chat-bubble) + var(--hx-space-24));
+}
