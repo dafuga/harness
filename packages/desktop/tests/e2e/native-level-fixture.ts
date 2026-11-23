@@ -1,7 +1,6 @@
 import type { Page } from '@playwright/test';
 import { expect } from '../../../../test/support/browserTest';
 import { exampleDocument } from '../../../game/src/index';
-import { viewSettings } from './game-unsaved-fixture';
 /** Assert new-project planning, then import a legacy game for the existing native compatibility matrix. */
 export async function prepareNativeLegacyGame(page: Page, dimension: string) {
 	await expect(page.getByLabel('Concept', { exact: true })).toBeVisible();
@@ -16,5 +15,4 @@ export async function prepareNativeLegacyGame(page: Page, dimension: string) {
 		exampleDocument(dimension as '2d' | '3d')
 	);
 	await page.reload();
-	await viewSettings(page);
 }
