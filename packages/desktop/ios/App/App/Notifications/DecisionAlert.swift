@@ -28,7 +28,7 @@ struct DecisionAlert: Equatable {
             let category = DecisionCategory(rawValue: name),
             let reference = object["reference"] as? String,
             let source = object["source"] as? String,
-            Self.isHex(reference, length: 32), Self.isHex(source, length: 64)
+            AlertFormat.isHex(reference, length: 32), AlertFormat.isHex(source, length: 64)
         else { return nil }
         self.category = category
         self.reference = reference
@@ -39,10 +39,5 @@ struct DecisionAlert: Equatable {
         self.category = category
         self.reference = reference
         self.source = source
-    }
-
-    private static func isHex(_ value: String, length: Int) -> Bool {
-        value.utf8.count == length
-            && value.utf8.allSatisfy { (48...57).contains($0) || (97...102).contains($0) }
     }
 }

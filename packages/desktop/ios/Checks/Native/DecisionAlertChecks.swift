@@ -103,8 +103,37 @@ func decisionFreshnessChecks() {
           "revocation is checked before category, so a mismatched alert from a revoked source reveals nothing")
 }
 
+private func vaultPayload(_ object: [String: Any]) -> [AnyHashable: Any] {
+    ["aps": ["alert": ["title": "Vault request"]], VaultRequestAlert.key: object]
+}
+
+func pushAlertChecks() {
+    let vault = String(repeating: "e", count: 64)
+    let requestId = String(repeating: "f", count: 32)
+    let decision = PushAlert(userInfo: payload(fields("tracker", trackerRef, sourceA)))
+    check(decision == .decision(DecisionAlert(category: .tracker, reference: trackerRef, source: sourceA)),
+          "one dispatch sends a harnessDecision alert to the decision parse")
+    let request = PushAlert(userInfo: vaultPayload(["requestId": requestId, "broker": vault]))
+    check(request == .vaultRequest(VaultRequestAlert(userInfo: vaultPayload(["requestId": requestId, "broker": vault]))!),
+          "one dispatch sends a vaultRequest alert to the Vault parse, in the same app")
+    check(PushAlert(userInfo: ["aps": ["alert": "text"]]) == nil, "an alert with neither object is refused")
+    let both = payload(fields("tracker", trackerRef, sourceA)).merging(vaultPayload(["requestId": requestId, "broker": vault])) { $1 }
+    check(PushAlert(userInfo: both) == nil, "an alert carrying both objects is refused, never routed to either")
+    let vaultRefused: [[String: Any]] = [
+        ["requestId": String(repeating: "f", count: 31), "broker": vault],
+        ["requestId": requestId, "broker": String(repeating: "e", count: 63)],
+        ["requestId": requestId.uppercased(), "broker": vault],
+        ["requestId": requestId, "broker": vault, "reason": "Deploy prod"],
+        ["requestId": requestId],
+        ["requestId": requestId, "broker": 7]
+    ]
+    check(vaultRefused.allSatisfy { PushAlert(userInfo: vaultPayload($0)) == nil },
+          "a Vault alert with a bad ID, origin hash or any extra field is refused")
+}
+
 func decisionAlertChecks() {
     decisionAlertParseChecks()
     decisionRoutingChecks()
     decisionFreshnessChecks()
+    pushAlertChecks()
 }
