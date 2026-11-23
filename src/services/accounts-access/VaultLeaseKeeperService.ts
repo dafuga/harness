@@ -90,11 +90,13 @@ export class VaultLeaseKeeperService {
 		return admitVaultRelay(this.leases.get(lease), peerUid, token, this.now());
 	}
 
-	/** The executor gets the name of the allocated socket without issuing a session token. */
+	/** The relay gets its socket and requester without issuing a session token. */
 	relaySocketPath(lease: string): string {
 		return this.leases.get(lease)?.socketPath ?? this.refuse('Lease not found.');
 	}
-
+	relaySessionUid(lease: string): number {
+		return this.leases.get(lease)?.sessionUid ?? this.refuse('Lease not found.');
+	}
 	relayEvent(lease: string, type: VaultRelayEvent): boolean {
 		return updateVaultRelay(this.leases.get(lease), type, this.now());
 	}
@@ -142,7 +144,6 @@ export class VaultLeaseKeeperService {
 		}
 		return held;
 	}
-
 	private refuse(reason: string): never {
 		throw new VaultBrokerError(409, reason);
 	}

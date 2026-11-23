@@ -1,19 +1,17 @@
-import { join } from 'node:path';
+import { execFileSync } from 'node:child_process';
+import { chmodSync, existsSync, mkdirSync, statSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { PassThrough } from 'node:stream';
 import { once } from 'node:events';
 import { expect, test } from 'vitest';
 import WebSocket from 'ws';
 import { VaultCdpRelayAdapter } from '../../../src/adapters/accounts-access/VaultCdpRelayAdapter';
 import { VaultCdpPipe } from '../../../src/adapters/accounts-access/vault-cdp-relay-adapter/VaultCdpPipe';
-import {
-	approval,
-	sessionRequest,
-	sessionUid,
-	sign,
-	vaultBroker
-} from '../../support/credential-vault/broker';
+import { approval, sessionRequest, sign, vaultBroker } from '../../support/credential-vault/broker';
 
-function relayFixture() {
+const ownerUid = process.getuid!();
+
+function relayFixture(sessionUid = ownerUid) {
 	const fixture = vaultBroker();
 	const input = sessionRequest(fixture.seal.runnerKey());
 	const created = fixture.broker.create(input, sessionUid);
@@ -59,9 +57,9 @@ test('listen exposes the lease Unix socket and admits one peer with the scoped t
 		expect(endpoint).toContain(join(run.state, 'run', run.lease, 'cdp.sock'));
 		expect(endpoint).not.toContain(headers.Authorization);
 		expect(await refusal(endpoint, { Authorization: 'Bearer copied' })).toBe(403);
-		run.peer.uid = sessionUid + 1;
+		run.peer.uid = ownerUid + 1;
 		expect(await refusal(endpoint, headers)).toBe(403);
-		run.peer.uid = sessionUid;
+		run.peer.uid = ownerUid;
 		const client = await connect(run.attachment);
 		expect(await refusal(endpoint, headers)).toBe(403);
 		const written = once(run.toBrowser, 'data');
@@ -81,6 +79,45 @@ test('listen exposes the lease Unix socket and admits one peer with the scoped t
 		await run.adapter.close();
 	}
 });
+
+test('a different requester needs a prepared searchable runtime directory', async () => {
+	const run = relayFixture(ownerUid + 1);
+	const path = run.keeper.relaySocketPath(run.lease);
+	try {
+		await expect(run.adapter.listen()).rejects.toThrow('searchable runtime directory');
+		expect(existsSync(path)).toBe(false);
+	} finally {
+		await run.adapter.close();
+	}
+});
+
+test.skipIf(process.platform !== 'darwin')(
+	'a cross-user relay grants ACLs only on its lease',
+	async () => {
+		const requesterUid = Number(
+			execFileSync('/usr/bin/id', ['-u', 'nobody'], { encoding: 'utf8' })
+		);
+		const run = relayFixture(requesterUid);
+		const path = run.keeper.relaySocketPath(run.lease);
+		const leaseDirectory = dirname(path);
+		const runtime = dirname(leaseDirectory);
+		mkdirSync(runtime);
+		chmodSync(runtime, 0o711);
+		try {
+			await run.adapter.listen();
+			expect(statSync(leaseDirectory).mode & 0o777).toBe(0o700);
+			expect(statSync(path).mode & 0o777).toBe(0o600);
+			const directoryAcl = execFileSync('/bin/ls', ['-lde', leaseDirectory], { encoding: 'utf8' });
+			const socketAcl = execFileSync('/bin/ls', ['-le', path], { encoding: 'utf8' });
+			expect(directoryAcl).toContain('user:nobody allow search');
+			expect(socketAcl).toContain('user:nobody allow write');
+		} finally {
+			await run.adapter.close();
+		}
+		expect(existsSync(path)).toBe(false);
+		expect(existsSync(leaseDirectory)).toBe(false);
+	}
+);
 
 test('a reconnect receives only its replies and remains bounded by the lease window', async () => {
 	const run = relayFixture();

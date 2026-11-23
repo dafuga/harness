@@ -45,6 +45,7 @@ export interface VaultQueueEntry {
 	method: VaultSessionRequest['method'];
 	recipe: VaultSessionRequest['recipe'] & { display: string };
 	host: string;
+	runnerPublicKey: string;
 	runnerFingerprint: string;
 	origins: string[];
 	leaseMs: number;

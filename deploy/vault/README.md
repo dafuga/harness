@@ -25,8 +25,11 @@ and recovery of a browser left by an interrupted supervisor.
 The Node-API peer lookup uses `getpeereid` on macOS and `SO_PEERCRED` on Linux. It requires a
 supported Node runtime with headers and compiler to build `peer.node`. Bun 1.2.18 does not expose
 the accepted socket descriptor. Missing peer credentials fail closed. The fixture runs as one host
-user and checks a private lease socket. Cross-user ACLs and an isolated host account still need
-qualification before use outside this fixture.
+user and checks a private lease socket. The macOS relay can grant a separate requester search on its
+mode-0700 lease directory and write access on its mode-0600 socket using ACLs. This needs a trusted,
+executor-owned mode-0711 runtime directory whose ancestors the requester can traverse. The requester
+also needs the lease token and must pass `getpeereid`. A live two-user fixture still needs to prove
+the handoff on MB2 before use outside this fixture.
 
 ## MB2 account provisioning
 
@@ -40,6 +43,20 @@ starts a Docker engine nor points at another account's engine.
 bash deploy/vault/mb2-executor-account.sh plan
 sudo bash deploy/vault/mb2-executor-account.sh provision
 ```
+
+For the journaled MB2 Colima setup that reached `synthetic-checked`, check the dedicated
+executor after reboot with `bash deploy/vault/mb2-executor-engine.sh status`. If it is down,
+Daniel can run `sudo bash deploy/vault/mb2-executor-engine.sh start`. This starts the existing
+no-host-mount Colima profile and checks the dedicated Docker socket and context. Use the same
+command with `stop` to restore the stopped state. Do not rerun account provisioning after reboot.
+Engine health and the earlier synthetic fixture pass are separate from cross-user acceptance.
+
+## Native approval and legacy wire checks
+
+On macOS, `bunx --no-install vitest run test/credential-vault-ios.e2e.test.ts` compiles the native
+Vault sources and checks them against the Harness broker and the standalone broker's synthetic
+`vault-add` vector from revision `cd792c0`. The test uses a disposable software signing key and no
+Keychain entries. Physical Face ID, pairing and save/reopen are acceptance checks on the iPhone.
 
 To undo, stop the dedicated engine and executor first. The script verifies the account and journal
 match, removes their Directory Services records and moves the assigned home out of `/Users`. The

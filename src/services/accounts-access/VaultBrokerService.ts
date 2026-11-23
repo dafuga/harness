@@ -202,8 +202,7 @@ function checkApprovalScope(entry: VaultRequestEntry, decision: VaultApproval, n
 }
 
 function queueEntry(entry: VaultRequestEntry): VaultQueueEntry {
-	const { runnerPublicKey, recipe, ...input } = entry.input;
-	void runnerPublicKey;
+	const { recipe, ...input } = entry.input;
 	const shown = { ...recipe, display: digestDisplay(recipe.digest) };
 	return {
 		...input,

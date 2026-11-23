@@ -1,0 +1,55 @@
+{
+	"name": "jw0799-vault-ios",
+	"goal": "Prove Harness iOS can sign scoped approvals and seal synthetic entries to the exact runner, then verify physical Face ID and legacy-entry migration.",
+	"createdAt": "2026-11-23T15:03:58.435Z",
+	"updatedAt": "2026-11-23T15:08:53.861Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-23T15:05:26.162Z",
+			"evidence": "The brief requires synthetic-only native interoperability, followed by physical Face ID, cross-UID proof and migration acceptance. Existing fake-phone tests missed that the device queue withheld the public runner key; the strengthened broker test failed on that exact assertion."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-23T15:08:53.163Z",
+			"evidence": "Native CryptoKit signs V1 queue reads and V2 decisions. It checks the displayed runner fingerprint before sealing and binds the exact request scope. The authenticated broker queue returns only the public runner key and metadata."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-23T15:08:53.861Z",
+			"evidence": "10 tests passed across the broker and macOS-compiled native wire fixture. Browser and API credential delivery, OAuth device grant, denial, wrong key/method, expiry and replay were exercised. Swift iPhone SDK typecheck and project limits passed."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		},
+		{
+			"id": "physical",
+			"title": "Verify device-bound Face ID approval and denial on a physical enrolled iPhone.",
+			"status": "pending"
+		},
+		{
+			"id": "migration",
+			"title": "Prove sealed import, save and reopen of a synthetic legacy entry before cutover.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
