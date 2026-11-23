@@ -154,13 +154,14 @@ export function completeRun(
 	};
 	const redone = snapshot.runs
 		.filter((prior) => canCredit(prior, run))
-		.map((prior) => ({ ...prior, redone_by: run.rung }));
+		.map((prior) => reviseRun(prior, { redone_by: run.rung }));
 	return { result: { status: 'recorded', run: finished }, writes: { runs: [finished, ...redone] } };
 }
 
 function canCredit(prior: TrackerRunReceipt, run: TrackerRunReceipt) {
 	return (
 		prior.node === run.node &&
+		prior.revision >= 0 &&
 		prior.id < run.id &&
 		!prior.redone_by &&
 		(prior.outcome === 'failed' || prior.outcome === 'rejected' || prior.outcome === 'timed_out')
