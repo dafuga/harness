@@ -21,29 +21,19 @@
 		"outputs": [],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "MacPackageError",
 				"type": "thrown",
-				"description": "Thrown at module load when process.platform is not 'darwin', with the message 'This package target requires macOS.'; no command or file operation in this file runs before it."
+				"description": "The command requires macOS, a supported invocation, and, for packaging, a matching Developer ID fingerprint and build keychain. Release verification requires the hardened stable Harness identity on the app and migration helper plus the Harness product name."
 			},
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Packaging requires HARNESS_MAC_SIGN_IDENTITY to be an exact 40-character Developer ID Application certificate fingerprint. Verification does not use a signing identity."
+				"description": "The release origin is missing or invalid, or Bun could not build the main or preload bundle."
 			},
 			{
-				"name": "Error",
+				"name": "Node.js filesystem or subprocess error",
 				"type": "thrown",
-				"description": "Packaging is refused before staging when the selected build keychain is missing or does not contain a Developer ID Application identity matching the selected fingerprint and team PAC8VHDW3G."
-			},
-			{
-				"name": "Error",
-				"type": "thrown",
-				"description": "Verification requires hardened runtime and the exact stable Developer ID designated requirement for dev.harness.desktop and team PAC8VHDW3G on the app and the Safe Storage migration helper. The bundle including nested code must also pass strict verification and declare the Harness product name. An unsupported command line is refused."
-			},
-			{
-				"name": "Error",
-				"type": "thrown",
-				"description": "System command and filesystem errors propagate. A staging, signing or verification failure leaves the existing dist/mac/Harness.app in place."
+				"description": "System commands and filesystem errors propagate. A staging, bundling, signing or verification failure leaves the existing dist/mac/Harness.app in place."
 			}
 		],
 		"errorStatus": "declared",
@@ -51,6 +41,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.script.build-main",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.script.mac-icon",
 			"via": "import",

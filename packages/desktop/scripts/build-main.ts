@@ -1,6 +1,7 @@
 // @harness-uid u_l6w3l34t4a
 import { execFileSync } from 'node:child_process';
 import { mkdir } from 'node:fs/promises';
+import { join } from 'node:path';
 import { ExpectedCliError } from '../../../src/core/development-tooling/errors';
 const jsoncParser: Bun.BunPlugin = {
 	name: 'bundle-jsonc-parser-module',
@@ -23,11 +24,16 @@ const releaseOriginVariable = 'HARNESS_RELEASE_HUB_ORIGIN';
 const releaseOriginDefine = 'process.env.HARNESS_HUB_ORIGIN';
 
 /**
- * The main bundle's Hub origin definition. An absent release variable defines nothing, so the
- * explicit runtime override keeps working; a present one must be the exact approved origin.
+ * Compile the configured Hub into the main bundle. Development builds may defer to their
+ * runtime environment. Packaging requires the release setting before staging a bundle.
  */
-export function releaseDefine(env: Record<string, string | undefined>): Record<string, string> {
+export function releaseDefine(
+	env: Record<string, string | undefined>,
+	required = false
+): Record<string, string> {
 	const origin = env[releaseOriginVariable];
+	if (origin === undefined && required)
+		throw new ExpectedCliError(`${releaseOriginVariable} is required for Mac release packaging.`);
 	if (origin === undefined) return {};
 	return { [releaseOriginDefine]: JSON.stringify(canonicalHubOrigin(origin)) };
 }
@@ -36,7 +42,7 @@ export function releaseDefine(env: Record<string, string | undefined>): Record<s
 function canonicalHubOrigin(value: string): string {
 	const url = parseUrl(value);
 	if (!url || url.protocol !== 'https:' || url.origin !== value || isLocalOrPrivate(url.hostname)) {
-		throw new Error(
+		throw new ExpectedCliError(
 			`${releaseOriginVariable} must be the exact https origin of the Hub: no path, userinfo, query, fragment, default port or uppercase host, and no loopback, private or single-label host`
 		);
 	}
@@ -78,9 +84,11 @@ function isPrivateIPv4(address: string): boolean {
 	return range !== undefined && second >= range[0] && second <= range[1];
 }
 
-async function buildDesktopMain(env: Record<string, string | undefined> = process.env) {
-	const define = releaseDefine(env);
-	await mkdir('dist', { recursive: true });
+export async function buildDesktopMain(
+	define: Record<string, string>,
+	outdir: string = desktopNodeOptions.outdir
+) {
+	await mkdir(outdir, { recursive: true });
 	const targets = [
 		{ entry: 'src/initializers/initializeDesktop.ts', out: 'main.cjs', define },
 		{ entry: 'src/initializers/initializePreload.ts', out: 'preload.cjs', define: {} }
@@ -90,10 +98,11 @@ async function buildDesktopMain(env: Record<string, string | undefined> = proces
 			...desktopNodeOptions,
 			entrypoints: [entry],
 			naming: out,
+			outdir,
 			define: targetDefine
 		});
 		if (!result.success) throw new ExpectedCliError(result.logs.map(String).join('\n'));
-		execFileSync('node', ['--check', 'dist/' + out], { stdio: 'inherit' });
+		execFileSync('node', ['--check', join(outdir, out)], { stdio: 'inherit' });
 	}
 }
-if (import.meta.main) await buildDesktopMain();
+if (import.meta.main) await buildDesktopMain(releaseDefine(process.env));
