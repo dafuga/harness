@@ -68,7 +68,6 @@ async function proveHostLaunch(root: string) {
 		db = new DatabaseSync(path);
 		const resumed = runtime();
 		await verifyResumedHost(resumed, db, fixture.trace);
-		writeFileSync(fixture.trace + '.released', '');
 		await verifyNewLaunch(resumed, db);
 	} finally {
 		db.close();
@@ -198,8 +197,7 @@ const input = JSON.parse(readFileSync(0, 'utf8'));
 const trace = join(dirname(process.argv[1]), 'starts.ndjson');
 const starts = () => readFileSync(trace, 'utf8').trim().split('\\n').filter(Boolean).map(JSON.parse);
 if (operation === 'inspect') {
-	const released = require('node:fs').existsSync(trace + '.released');
-	process.stdout.write(JSON.stringify(starts().slice(released ? 2 : 0).map(({ session }) => session)));
+	process.stdout.write(JSON.stringify(starts().map(({ session }) => session)));
 } else if (operation === 'start') {
 	const { itemId, key, platform, backend, brief, queuedAt } = input;
 	const retry = starts().some((entry) => entry.itemId === itemId);
