@@ -7,6 +7,7 @@ import { trackerNodeRuntime } from '../../../src/services/projects-sessions/trac
 import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { withTempDir } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
+import { retainedTrackerTmuxFixture } from '../../support/trackerManagedProcessFixture';
 
 const node = 'daniel-primary-mbp';
 const now = 1_800_000_000_000;
@@ -112,7 +113,8 @@ function writeConfig(
 	const driver = join(root, 'driver');
 	const syncSecretFile = join(root, 'secret');
 	const tmux = join(root, 'tmux-fixture');
-	if (withTmux) writeFileSync(tmux, `#!${process.execPath}\n${tmuxProgram}`, { mode: 0o700 });
+	if (withTmux)
+		writeFileSync(tmux, `#!${process.execPath}\n${retainedTrackerTmuxFixture}`, { mode: 0o700 });
 	const config = join(root, 'node.json');
 	writeFileSync(driver, `#!${process.execPath}\n${driverProgram}`, { mode: 0o700 });
 	writeFileSync(syncSecretFile, 'synthetic-capacity-wire-key', { mode: 0o600 });
@@ -165,26 +167,6 @@ if (process.argv[2] === 'inspect' && fs.existsSync(receipt))
 process.stdout.write(JSON.stringify(process.argv[2] === 'inspect' ? inventory : {
 	status: 'started', session: { itemId, key, id: 'synthetic-' + itemId, state: 'live', startedAt: queuedAt }
 }));
-`;
-
-const tmuxProgram = `
-const fs = require('node:fs');
-const path = require('node:path');
-const [,,, socket, command, ...args] = process.argv;
-const closed = path.join(__dirname, 'closed');
-const busy = path.join(__dirname, 'busy');
-const attached = Number(fs.existsSync(path.join(__dirname, 'attached')));
-const raw = 'auto-old008-r8|1800000000|71|%9|200|1800000000|2|2|0|0|0|' + attached + '|1|1|codex';
-if (socket !== 'default') process.exit(2);
-if (command === 'list-panes' || command === 'display-message') {
-	if (!fs.existsSync(closed)) process.stdout.write(raw + '\\n');
-} else if (command === 'capture-pane') {
-	const idle = !fs.existsSync(busy) || fs.readFileSync(busy, 'utf8') === 'idle';
-	process.stdout.write(idle ? 'fixture\\n\\n› \\n\\n100% context left\\n' : 'Working');
-} else if (command === 'if-shell') {
-	fs.writeFileSync(closed, args.join(' '));
-	process.stdout.write('tracker-session-closed\\n');
-} else process.exit(2);
 `;
 
 test('applies the designated adapter disk hold only to due work', () =>

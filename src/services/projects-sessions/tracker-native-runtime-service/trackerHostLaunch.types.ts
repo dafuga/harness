@@ -1,5 +1,6 @@
 // @harness-uid u_bl6xl2h4a3
 import type { z } from 'zod';
+import type { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
 import type { TrackerHostRepository } from './nativeTrackerHostEffects.types';
 import type { TaskSelection } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import type { hostSession, hostStart } from './trackerHostLaunchSchema';
@@ -33,4 +34,10 @@ export interface TrackerHostLaunchPort {
 		signal: AbortSignal
 	): Promise<TrackerHostSession[]>;
 	start(input: TrackerHostStartRequest, signal: AbortSignal): Promise<TrackerHostStartReply>;
+}
+
+export interface TrackerHostRunnerOptions {
+	tmux?: TrackerTmuxAdapter;
+	legacyRunDirectory?: string;
+	now?: () => number;
 }

@@ -99,6 +99,7 @@
 			"TrackerHostStartReply",
 			"TrackerHostStartRequest",
 			"TrackerHostLaunchPort",
+			"TrackerHostRunnerOptions",
 			"trackerHostLaunchPort",
 			"hostSession",
 			"hostInventory",
@@ -427,17 +428,17 @@
 			},
 			{
 				"name": "trackerHostRunner.tmux",
-				"type": "TrackerTmuxAdapter",
+				"type": "unknown",
 				"required": false
 			},
 			{
 				"name": "trackerHostRunner.legacyRunDirectory",
-				"type": "string",
+				"type": "unknown",
 				"required": false
 			},
 			{
 				"name": "trackerHostRunner.now",
-				"type": "() => number",
+				"type": "unknown",
 				"required": false
 			},
 			{
@@ -1394,17 +1395,17 @@
 					},
 					{
 						"name": "trackerHostRunner.tmux",
-						"type": "TrackerTmuxAdapter",
+						"type": "unknown",
 						"required": false
 					},
 					{
 						"name": "trackerHostRunner.legacyRunDirectory",
-						"type": "string",
+						"type": "unknown",
 						"required": false
 					},
 					{
 						"name": "trackerHostRunner.now",
-						"type": "() => number",
+						"type": "unknown",
 						"required": false
 					}
 				],

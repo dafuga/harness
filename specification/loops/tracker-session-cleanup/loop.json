@@ -2,7 +2,7 @@
 	"name": "tracker-session-cleanup",
 	"goal": "Release capacity for finished runs, sweep proven idle owned panes after the grace period, and surface flagged requests in autolaunch status.",
 	"createdAt": "2026-11-23T12:33:12.831Z",
-	"updatedAt": "2026-11-23T12:43:06.388Z",
+	"updatedAt": "2026-11-23T12:45:21.047Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T12:45:21.047Z",
+			"evidence": "The same two committed tests passed in the clean fix snapshot at 14b2db2566."
 		},
 		{
 			"id": "siblings",

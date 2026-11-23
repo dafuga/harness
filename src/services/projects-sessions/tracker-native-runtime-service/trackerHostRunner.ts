@@ -1,5 +1,4 @@
 // @harness-uid u_bl6xl2h4a3
-import type { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
 import type { WatchdogPane } from '../WatchdogPaneService.types';
 import { trackerLegacyExitReceipt } from './trackerLegacyExitReceipt';
 import { finishedTrackerSession, trackerHostInventory } from './trackerHostInventory';
@@ -19,6 +18,7 @@ import type { TrackerHostRepository } from './nativeTrackerHostEffects.types';
 import type {
 	TrackerHostLaunchPort,
 	TrackerHostRoute,
+	TrackerHostRunnerOptions,
 	TrackerHostSession
 } from './trackerHostLaunch.types';
 import { formatTrackerHostBrief } from './trackerHostBrief';
@@ -27,15 +27,7 @@ export function trackerHostRunner(
 	store: TrackerPersistenceService,
 	driver: TrackerHostLaunchPort,
 	routeFor: TrackerHostRoute,
-	{
-		tmux,
-		legacyRunDirectory,
-		now = Date.now
-	}: {
-		tmux?: TrackerTmuxAdapter;
-		legacyRunDirectory?: string;
-		now?: () => number;
-	} = {}
+	{ tmux, legacyRunDirectory, now = Date.now }: TrackerHostRunnerOptions = {}
 ) {
 	const items = new TrackerItemReadRepository(store.database);
 	const node = canonicalNode(store.node, {});
