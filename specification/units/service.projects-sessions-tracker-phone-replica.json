@@ -43,7 +43,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "TrackerPhoneReplicaService.constructor.store",
@@ -170,8 +170,24 @@
 				"type": "PhoneTrackerRow[]"
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "invalidRequest",
+				"type": "HTTP 400",
+				"description": "The scope or position fields do not match the read request contract."
+			},
+			{
+				"name": "projectionStorage",
+				"type": "Error",
+				"description": "The Tracker database could not read or commit a projection. The caller returns a generic hub failure."
+			},
+			{
+				"name": "invalidProjection",
+				"type": "SyntaxError",
+				"description": "The stored projection row cannot be decoded as JSON."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "TrackerPhoneReplicaService.pull",
@@ -189,8 +205,24 @@
 						"type": "Response"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "invalidRequest",
+						"type": "HTTP 400",
+						"description": "The scope or position fields do not match the read request contract."
+					},
+					{
+						"name": "projectionStorage",
+						"type": "Error",
+						"description": "The Tracker database could not read or commit a projection. The caller returns a generic hub failure."
+					},
+					{
+						"name": "invalidProjection",
+						"type": "SyntaxError",
+						"description": "The stored projection row cannot be decoded as JSON."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PhoneReplicaFeed.current",
@@ -201,8 +233,14 @@
 						"type": "ProjectionRow[]"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "projectionStorage",
+						"type": "Error",
+						"description": "The Tracker database could not read or commit a projection. The caller returns a generic hub failure."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PhoneReplicaFeed.refresh",
@@ -220,8 +258,14 @@
 						"type": "void"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "projectionStorage",
+						"type": "Error",
+						"description": "The Tracker database could not read or commit a projection. The caller returns a generic hub failure."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PhoneReplicaFeed.head",
@@ -232,8 +276,14 @@
 						"type": "string"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "projectionStorage",
+						"type": "Error",
+						"description": "The Tracker database could not read or commit a projection. The caller returns a generic hub failure."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PhoneReplicaFeed.floor",
@@ -244,8 +294,14 @@
 						"type": "bigint"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "projectionStorage",
+						"type": "Error",
+						"description": "The Tracker database could not read or commit a projection. The caller returns a generic hub failure."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PhoneReplicaFeed.after",
@@ -263,8 +319,14 @@
 						"type": "FeedRow[]"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "projectionStorage",
+						"type": "Error",
+						"description": "The Tracker database could not read or commit a projection. The caller returns a generic hub failure."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "snapshotPage",
@@ -288,8 +350,14 @@
 						"type": "unknown"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "invalidProjection",
+						"type": "SyntaxError",
+						"description": "The stored projection row cannot be decoded as JSON."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "deltaPage",
@@ -313,8 +381,14 @@
 						"type": "unknown"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "invalidProjection",
+						"type": "SyntaxError",
+						"description": "The stored projection row cannot be decoded as JSON."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "phoneReplicaRows",
@@ -344,8 +418,14 @@
 						"type": "PhoneTrackerRow[]"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "projectionStorage",
+						"type": "Error",
+						"description": "The Tracker database could not read or commit a projection. The caller returns a generic hub failure."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -366,7 +446,7 @@
 				"outputs": [
 					{
 						"name": "TrackerPhoneReplicaService.constructor",
-						"type": "unknown"
+						"type": "TrackerPhoneReplicaService"
 					}
 				],
 				"errors": [],
@@ -384,11 +464,17 @@
 				"outputs": [
 					{
 						"name": "PhoneReplicaFeed.constructor",
-						"type": "unknown"
+						"type": "PhoneReplicaFeed"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "projectionStorage",
+						"type": "Error",
+						"description": "The Tracker database could not read or commit a projection. The caller returns a generic hub failure."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		]
 	},
