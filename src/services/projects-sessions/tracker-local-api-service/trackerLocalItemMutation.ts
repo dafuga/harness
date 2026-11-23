@@ -68,7 +68,7 @@ export function recordTrackerSessionItem(
 
 export async function readItemBody(
 	request: Request,
-	maximum = maxBodyBytes
+	maximum: number = maxBodyBytes
 ): Promise<TrackerItemInput> {
 	if (!request.body) return {};
 	const reader = request.body.getReader();

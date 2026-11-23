@@ -57,7 +57,7 @@
 			},
 			{
 				"name": "PhoneReplicaWriteService.push.fields",
-				"type": "Record<string, unknown>",
+				"type": "TrackerItemInput",
 				"required": true,
 				"description": "Version 1 intent with UUID, exact item ID, operation, bounded text and the attention revision for flag and answer."
 			}
@@ -119,7 +119,7 @@
 					},
 					{
 						"name": "PhoneReplicaWriteService.push.fields",
-						"type": "Record<string, unknown>",
+						"type": "TrackerItemInput",
 						"required": true,
 						"description": "Version 1 intent with UUID, exact item ID, operation, bounded text and the attention revision for flag and answer."
 					}
@@ -184,6 +184,11 @@
 	"dependencies": [
 		{
 			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-normalize-tracker-item-fields",
 			"via": "import",
 			"origin": "derived"
 		},

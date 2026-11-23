@@ -1,6 +1,7 @@
 // @harness-uid u_xhueog5n2u
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
+import type { TrackerItemInput } from '../../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import { planTrackerItemMutation } from '../../../utils/projects-sessions/planTrackerItemMutation';
 import { sanitizeTrackerText } from '../../../utils/projects-sessions/sanitizeTrackerText';
 import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
@@ -42,7 +43,7 @@ export class PhoneReplicaWriteService {
 			: null;
 	}
 
-	push(scope: string, fields: Record<string, unknown>): PhoneReplicaReceipt {
+	push(scope: string, fields: TrackerItemInput): PhoneReplicaReceipt {
 		const intent = parseIntent(fields);
 		const now = this.now();
 		const requestHash = digest(JSON.stringify(intent)).toString('hex');

@@ -133,14 +133,12 @@
 			{
 				"name": "readItemBody.request",
 				"type": "Request",
-				"required": true,
-				"description": "The local Tracker HTTP request and its streamed JSON body."
+				"required": true
 			},
 			{
 				"name": "readItemBody.maximum",
-				"type": "unknown",
-				"required": false,
-				"description": "Maximum request body size in bytes. The ordinary items API defaults to 1 MiB and phone writes use 4 KiB."
+				"type": "number",
+				"required": false
 			},
 			{
 				"name": "isTrackerManualLaunch.verb",
@@ -199,8 +197,7 @@
 			},
 			{
 				"name": "readItemBody",
-				"type": "Promise<TrackerItemInput>",
-				"description": "Reads a JSON object, returning an empty object when the request has no body."
+				"type": "Promise<TrackerItemInput>"
 			},
 			{
 				"name": "isTrackerManualLaunch",
@@ -378,21 +375,18 @@
 					{
 						"name": "readItemBody.request",
 						"type": "Request",
-						"required": true,
-						"description": "The local Tracker HTTP request and its streamed JSON body."
+						"required": true
 					},
 					{
 						"name": "readItemBody.maximum",
-						"type": "unknown",
-						"required": false,
-						"description": "Maximum request body size in bytes. The ordinary items API defaults to 1 MiB and phone writes use 4 KiB."
+						"type": "number",
+						"required": false
 					}
 				],
 				"outputs": [
 					{
 						"name": "readItemBody",
-						"type": "Promise<TrackerItemInput>",
-						"description": "Reads a JSON object, returning an empty object when the request has no body."
+						"type": "Promise<TrackerItemInput>"
 					}
 				],
 				"errors": [],
