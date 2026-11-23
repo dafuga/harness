@@ -1,6 +1,7 @@
 import type { Listener } from './desktop-startup.test.types';
 import { beforeEach, expect, test, vi } from 'vitest';
 import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 /** Electron as the main process sees it: app events, one window, its page and native dialogs. */
 const state = vi.hoisted(() => {
 	const listeners = () => {
@@ -14,6 +15,8 @@ const state = vi.hoisted(() => {
 		windows,
 		listeners,
 		lock: vi.fn(() => true),
+		setPath: vi.fn(),
+		packaged: false,
 		quit: vi.fn(),
 		on: vi.fn(app.on),
 		ready: vi.fn(() => new Promise<void>(() => undefined)),
@@ -34,11 +37,16 @@ function browserWindow() {
 }
 vi.mock('electron', () => ({
 	app: {
+		get isPackaged() {
+			return state.packaged;
+		},
+		commandLine: { hasSwitch: vi.fn(() => false) },
 		requestSingleInstanceLock: state.lock,
 		quit: state.quit,
 		on: state.on,
 		whenReady: state.ready,
 		getPath: () => tmpdir(),
+		setPath: state.setPath,
 		getAppPath: () => tmpdir()
 	},
 	BrowserWindow: browserWindow,
@@ -78,6 +86,7 @@ beforeEach(() => {
 	vi.clearAllMocks();
 	state.app.map.clear();
 	state.windows.length = 0;
+	state.packaged = false;
 	state.lock.mockReturnValue(true);
 	state.ready.mockImplementation(() => new Promise<void>(() => undefined));
 });
@@ -92,9 +101,19 @@ const event = () => ({ preventDefault: vi.fn() });
 const settled = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 test('only the first app instance reaches readiness and backend startup', async () => {
+	state.packaged = true;
 	await import('../src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop');
 	expect(state.lock).toHaveBeenCalledOnce();
 	expect(state.ready).toHaveBeenCalledOnce();
+	if (process.platform === 'darwin') {
+		expect(
+			state.setPath,
+			'signed Mac startup keeps the existing desktop profile'
+		).toHaveBeenCalledWith('userData', join(tmpdir(), 'harness-desktop'));
+		expect(state.setPath.mock.invocationCallOrder[0]).toBeLessThan(
+			state.lock.mock.invocationCallOrder[0]
+		);
+	}
 	expect(state.lock.mock.invocationCallOrder[0]).toBeLessThan(
 		state.ready.mock.invocationCallOrder[0]
 	);
