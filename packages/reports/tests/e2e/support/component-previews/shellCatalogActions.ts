@@ -121,16 +121,16 @@ async function runStatusState(component: Locator, variant: string) {
 	);
 }
 async function verificationIconState(component: Locator, variant: string) {
-	const failed = [
-		'icon-failed',
-		'icon-unverified',
-		'icon-unknown',
-		'icon-no-reason',
-		'icon-long'
-	].includes(variant);
-	await expect(component.getByRole('button')).toHaveText(failed ? '×' : '✓');
-	await expect(component.getByRole('button')).toHaveCSS('width', '24px');
-	await expect(component.getByRole('button')).toHaveCSS('height', '24px');
+	// Only a failed verification is a cross; an unrecorded one is a muted 'Not verified' chip.
+	const absent = ['icon-unverified', 'icon-unknown', 'icon-no-reason', 'icon-long'].includes(
+		variant
+	);
+	const mark = variant === 'icon-failed' ? '×' : '✓';
+	await expect(component.getByRole('button')).toHaveText(absent ? 'Not verified' : mark);
+	if (!absent) {
+		await expect(component.getByRole('button')).toHaveCSS('width', '24px');
+		await expect(component.getByRole('button')).toHaveCSS('height', '24px');
+	}
 	if (variant !== 'icon') {
 		await component.getByRole('button').focus();
 		await expect(component.getByRole('status')).toBeVisible();

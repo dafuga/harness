@@ -41,6 +41,9 @@ test('a verdict draws its icon and no words: the green check for a pass', () => 
 	const failedIcon = markup({ variant: 'icon', status: 'failed', reason: '' });
 	expect(failedIcon).toContain('No verification recorded for this revision.');
 	expect(failedIcon).toContain('×');
+	const absentIcon = markup({ variant: 'icon', status: 'unverified', reason: '' });
+	expect(absentIcon).toContain('Not verified');
+	expect(absentIcon).not.toContain('×');
 	const badge = markup({ variant: 'badge', status: 'failed' });
 	expect(badge).toContain('badge failed');
 	expect(badge).not.toContain('<button');

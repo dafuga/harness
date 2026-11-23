@@ -1,0 +1,65 @@
+{
+	"name": "a6fdvd-u1-verification-chip",
+	"goal": "U1 verification chip: a missing verification is a muted outlined 'Not verified' chip with no icon; red with a cross only for a failed verification; green check for passed. Applies to the catalog card and entity header. Source: packages/reports/src/components/shared-primitives/status/Status.svelte. Test: a card with no verification shows the text 'Not verified' and no element painted in the danger colour.",
+	"createdAt": "2026-11-23T17:06:15.225Z",
+	"updatedAt": "2026-11-23T17:55:39.326Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-23T17:55:31.630Z",
+			"evidence": "The verification chip needs to show a muted Not verified label when no verification exists. The error color is reserved for failures."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-23T17:55:33.167Z",
+			"evidence": "The old shell fixture did not check the unrecorded chip at phone, tablet and laptop sizes. The committed verification-chip spec checks its label, icon, border, and colors at those sizes."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-23T17:55:34.712Z",
+			"evidence": "The Chromium replay of the committed verification-chip spec at af093edbb9 failed at all three sizes on the Not verified text assertion."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-23T17:55:36.229Z",
+			"evidence": "The existing U1 fix cc79d4cd0c renders the unrecorded status as a muted chip."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-23T17:55:39.326Z",
+			"evidence": "The unchanged Chromium test at cc79d4cd0c passed at all three sizes."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

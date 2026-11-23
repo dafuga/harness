@@ -89,3 +89,43 @@
 	inset: -9px 0;
 	z-index: var(--hx-layer-behind);
 }
+
+/* A verification nobody recorded is a muted outlined chip that says so, with no mark in front;
+   it is never drawn in the danger colour, because an absence is not a failure. */
+.verification.not-verified {
+	width: auto;
+	height: auto;
+	min-height: 28px;
+	padding: 0 var(--hx-space-8);
+	border: var(--hx-border-thin) solid var(--hx-color-text-muted);
+	border-radius: var(--hx-radius-pill);
+	background: none;
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-sm);
+	font-weight: var(--hx-style-weight-semibold);
+	white-space: nowrap;
+	cursor: help;
+}
+
+/* The icon mark of a verification that was run: a green check when it passed, a red cross when it
+   failed. The shell and the desktop draw it alike, so the rules live with the component. */
+.verification-wrap {
+	position: relative;
+	display: inline-flex;
+}
+.verification {
+	width: 24px;
+	height: 24px;
+	border: 0;
+	border-radius: var(--hx-radius-round);
+	background: var(--hx-color-error);
+	color: var(--hx-color-background);
+	font-size: var(--hx-type-size-2xl);
+	line-height: var(--hx-space-24);
+	padding: 0;
+	font-weight: var(--hx-style-weight-bold);
+}
+.verification.passed {
+	background: var(--hx-color-success);
+	font-size: var(--hx-type-size-lg);
+}

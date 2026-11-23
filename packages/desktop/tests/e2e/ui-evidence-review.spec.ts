@@ -143,7 +143,8 @@ test('a backend that cannot read evidence leaves the status unknown and says so'
 	await expect(status(page)).toHaveAccessibleName(
 		'Recorded runtime evidence is not available on this connection.'
 	);
-	await expect(status(page)).toHaveText('×');
+	// Nothing was read, so nothing failed: the absence is a muted chip, not a red cross.
+	await expect(status(page)).toHaveText('Not verified');
 });
 
 test('a capture is said to be recorded for the tip, and made where it was made', async ({
