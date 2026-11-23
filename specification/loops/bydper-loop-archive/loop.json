@@ -2,11 +2,9 @@
 	"name": "bydper-loop-archive",
 	"goal": "Record genuine red and green checkpoints when the committed snapshot exceeds 8 MiB",
 	"createdAt": "2026-11-23T17:33:48.235Z",
-	"updatedAt": "2026-11-23T17:38:10.064Z",
+	"updatedAt": "2026-11-23T18:00:19.562Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -34,22 +32,30 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T17:38:46.734Z",
+			"evidence": "Git writes the archive to a private temporary file. Bounded tar extracts into a sibling source directory, then the archive is removed. Setup errors remove the temporary workspace."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T18:00:16.505Z",
+			"evidence": "Matched checkpoints replay the committed loop CLI test unchanged. 163e0c174d fails with the 129 MiB archive output limit; 6127781a76 records both phases and passes."
 		},
 		{
 			"id": "siblings",
 			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T18:00:17.248Z",
+			"evidence": "siblings-431f7a81-f964-471e-b3c1-14e774a0d6fc.json"
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T18:00:19.562Z",
+			"evidence": "Scoped proof passed: matched CLI regression, standalone 129 MiB replay, 11 snapshot unit tests, root audit, targeted lint and CLI build. Root aggregate reported existing registry failures verified on clean main and host timeouts."
 		}
 	],
 	"evaluators": [
