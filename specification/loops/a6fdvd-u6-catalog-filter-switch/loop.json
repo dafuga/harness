@@ -1,0 +1,65 @@
+{
+	"name": "a6fdvd-u6-catalog-filter-switch",
+	"goal": "a6fdvd U6: in the catalog Filters dialog, Changed only becomes a 44px switch row (label left, switch right) that toggles by clicking its label; Done stays the one primary button and Reset filters secondary (packages/desktop/src/components/explorer-ui/CatalogView.svelte)",
+	"createdAt": "2026-11-23T18:10:25.566Z",
+	"updatedAt": "2026-11-23T18:24:45.630Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-23T18:24:22.659Z",
+			"evidence": "Design record specification/designs/full-pass/README.md section U6: in the catalog Filters dialog (packages/desktop/src/components/explorer-ui/CatalogView.svelte) Changed only must be a 44px switch row (label left, switch right) that toggles by clicking its label. Current main renders a checkbox; before--dialog-filters--laptop.png shows it. Reproduction: open Components, Filters, look for role switch named Changed only."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-23T18:24:24.061Z",
+			"evidence": "Existing ui-workspace.spec.ts drove Changed only through role checkbox and never asserted its control role, row height or label-click behaviour; no rendered test covered the Filters dialog row geometry. Gap: no rendered-behaviour test for the dialog's control rows. Reusable change: ui-catalog-filters.spec.ts asserts the switch role, the 44px row and label toggling at 390px; ui-workspace.spec.ts selects the switch by role."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-23T18:24:39.579Z",
+			"evidence": "Committed red 04495db35d; loop record --phase red: failed on the named assertion getByRole('switch', { name: 'Changed only', exact: true })."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-23T18:24:42.286Z",
+			"evidence": "Fix commit f6fe923cc1: CatalogView.svelte Changed only is hx-label.switch-row with a 44px min-height, the name left and a role=switch input right; no test edits in the fix commit."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-23T18:24:45.630Z",
+			"evidence": "loop record --phase green at f6fe923cc1: the unchanged red test passed."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

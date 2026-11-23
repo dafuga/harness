@@ -46,7 +46,7 @@
 			{
 				"name": "FilterDialog",
 				"type": "markup",
-				"description": "Clicking the icon button labeled Filters opens a Modal titled Filters with the children as its main content and Reset filters and Done buttons in its footer. Done and the Modal's onClose both call close, which closes the modal and then, after tick(), focuses the icon; Reset calls onreset."
+				"description": "Clicking the icon button labeled Filters opens a Modal titled Filters with the children as its main content and Reset filters and Done buttons in its footer; Done is the one filled primary button (class primary) and Reset filters a transparent secondary. Done and the Modal's onClose both call close, which closes the modal and then, after tick(), focuses the icon; Reset calls onreset."
 			}
 		],
 		"errors": [],
