@@ -38,6 +38,7 @@
 			"trackerSyncPort",
 			"verifyTrackerLegacyFence",
 			"verifyTrackerDatabasePath",
+			"verifyTrackerJournalWritable",
 			"readPrivateText",
 			"readPrivateJson",
 			"TrackerUpstream",
@@ -103,6 +104,11 @@
 			},
 			{
 				"name": "verifyTrackerDatabasePath.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "verifyTrackerJournalWritable.path",
 				"type": "string",
 				"required": true
 			},
@@ -243,6 +249,10 @@
 			},
 			{
 				"name": "verifyTrackerDatabasePath",
+				"type": "void"
+			},
+			{
+				"name": "verifyTrackerJournalWritable",
 				"type": "void"
 			},
 			{
@@ -475,6 +485,29 @@
 				"errors": [
 					{
 						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "verifyTrackerJournalWritable",
+				"inputs": [
+					{
+						"name": "verifyTrackerJournalWritable.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyTrackerJournalWritable",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerNodeStartupError",
 						"type": "thrown"
 					}
 				],

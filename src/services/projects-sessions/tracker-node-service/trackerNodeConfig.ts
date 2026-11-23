@@ -1,5 +1,6 @@
 // @harness-uid u_gvqtr5mdwv
 import {
+	accessSync,
 	closeSync,
 	constants,
 	fstatSync,
@@ -8,10 +9,11 @@ import {
 	realpathSync,
 	statSync
 } from 'node:fs';
-import { isAbsolute } from 'node:path';
+import { dirname, isAbsolute } from 'node:path';
 import { z } from 'zod';
 import { trackerHostEffectsSchema } from '../tracker-native-runtime-service/trackerHostEffectsSchema';
 import type { TrackerNodeConfig } from './trackerNodeConfig.types';
+import { TrackerNodeStartupError } from './TrackerNodeStartupError';
 
 const absolutePath = z.string().refine(isAbsolute);
 const nodeName = z.string().regex(/^[a-z0-9][a-z0-9.-]{0,79}$/);
@@ -128,6 +130,18 @@ export function verifyTrackerDatabasePath(path: string): void {
 		(stat.mode & 0o077) !== 0
 	)
 		throw new TypeError('Tracker database needs a canonical private file');
+}
+
+/** SQLite opens a read-only journal without error, then fails every write; refuse it at startup. */
+export function verifyTrackerJournalWritable(path: string): void {
+	try {
+		accessSync(path, constants.R_OK | constants.W_OK);
+		accessSync(dirname(path), constants.W_OK | constants.X_OK);
+	} catch {
+		throw new TrackerNodeStartupError(
+			'Tracker database and its directory must be writable by the service user'
+		);
+	}
 }
 
 export function readPrivateText(path: string): string {
