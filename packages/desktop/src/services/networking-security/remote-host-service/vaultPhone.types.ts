@@ -1,3 +1,4 @@
+// @harness-uid u_5uyy7czfil
 import type { vaultMethods } from '../../../../../remote/src/index';
 
 export type VaultPhoneMethod = (typeof vaultMethods)[number];

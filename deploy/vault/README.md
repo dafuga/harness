@@ -77,6 +77,10 @@ Create an owner-only local directory with a short path such as `/tmp/vaultphone.
 `remote.json` file with the parameters below. Set `HARNESS_VAULT_PHONE_CONFIG` to the absolute path
 of that file when launching the test desktop. The `socketPath` must be inside the private directory.
 
+```sh
+fixture_dir=$(mktemp -d /tmp/vaultphone.XXXXXX)
+```
+
 ```json
 {
 	"phone": "<40 hexadecimal characters from the approved pairing>",

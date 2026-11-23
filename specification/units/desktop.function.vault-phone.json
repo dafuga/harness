@@ -1,0 +1,170 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.vault-phone",
+	"uid": "u_5uyy7czfil",
+	"kind": "function",
+	"title": "Vault phone bridge",
+	"responsibility": "Proxies synthetic Vault challenges, queue reads and signed decisions for one approved Harness Remote device and generation.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/services/networking-security/remote-host-service/vaultPhone.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/vaultPhone.types.ts"
+		],
+		"symbols": [
+			"loadVaultPhone",
+			"isVaultPhoneMethod",
+			"vaultPhone",
+			"VaultPhoneMethod",
+			"VaultPhoneCall",
+			"VaultPhoneConfig"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "loadVaultPhone.path",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "isVaultPhoneMethod.method",
+				"type": "RemoteMethod",
+				"required": true
+			},
+			{
+				"name": "vaultPhone.config",
+				"type": "VaultPhoneConfig | undefined",
+				"required": true
+			},
+			{
+				"name": "vaultPhone.record",
+				"type": "{ deviceId: string; generation: number }",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "loadVaultPhone",
+				"type": "VaultPhoneConfig | undefined"
+			},
+			{
+				"name": "isVaultPhoneMethod",
+				"type": "method is VaultPhoneMethod"
+			},
+			{
+				"name": "vaultPhone",
+				"type": "VaultPhoneCall | undefined"
+			}
+		],
+		"errors": [
+			{
+				"name": "RemoteFailure",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "loadVaultPhone",
+				"inputs": [
+					{
+						"name": "loadVaultPhone.path",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "loadVaultPhone",
+						"type": "VaultPhoneConfig | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isVaultPhoneMethod",
+				"inputs": [
+					{
+						"name": "isVaultPhoneMethod.method",
+						"type": "RemoteMethod",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isVaultPhoneMethod",
+						"type": "method is VaultPhoneMethod"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "vaultPhone",
+				"inputs": [
+					{
+						"name": "vaultPhone.config",
+						"type": "VaultPhoneConfig | undefined",
+						"required": true
+					},
+					{
+						"name": "vaultPhone.record",
+						"type": "{ deviceId: string; generation: number }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "vaultPhone",
+						"type": "VaultPhoneCall | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.accounts-access-vault-broker-client",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.accounts-access-vault-broker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.accounts-access-vault-wire",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/services/networking-security/remote-host-service/vaultPhone.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/services/networking-security/remote-host-service/vaultPhone.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

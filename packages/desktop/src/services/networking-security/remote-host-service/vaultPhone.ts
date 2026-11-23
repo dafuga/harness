@@ -1,3 +1,4 @@
+// @harness-uid u_5uyy7czfil
 import { readFileSync } from 'node:fs';
 import { isAbsolute } from 'node:path';
 import { z } from 'zod';

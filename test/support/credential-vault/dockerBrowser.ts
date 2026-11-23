@@ -44,13 +44,7 @@ export async function browserFixture(
 	});
 	const server = await serveFixture(fixture, requester?.uid);
 	let guest: VaultBrowserDockerSession | undefined;
-	const close = async () => {
-		try {
-			await guest?.close();
-		} finally {
-			await server.close();
-		}
-	};
+	const close = () => closeBrowserFixture(guest, server.close);
 	try {
 		guest = await docker.launch({
 			origins: recipe.recipe.origins,
@@ -82,6 +76,17 @@ export async function browserFixture(
 	} catch (error) {
 		await close();
 		throw error;
+	}
+}
+
+async function closeBrowserFixture(
+	guest: VaultBrowserDockerSession | undefined,
+	close: () => Promise<void>
+) {
+	try {
+		await guest?.close();
+	} finally {
+		await close();
 	}
 }
 
