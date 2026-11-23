@@ -4,9 +4,12 @@ import { isAbsolute } from 'node:path';
 import { z } from 'zod';
 import { VaultBrokerClientAdapter } from '../../../../../../src/adapters/accounts-access/VaultBrokerClientAdapter';
 import type { VaultQueueEntry } from '../../../../../../src/services/accounts-access/VaultBrokerService.types';
-import { vaultProof } from '../../../../../../src/validators/accounts-access/VaultWireValidator';
+import {
+	vaultOperatorRequests,
+	vaultProof
+} from '../../../../../../src/validators/accounts-access/VaultWireValidator';
 import { RemoteFailure, remotePatterns, vaultMethods } from '../../../../../remote/src/index';
-import type { RemoteMethod } from '../../../../../remote/src/index';
+import type { RemoteHostStatus, RemoteMethod } from '../../../../../remote/src/index';
 import type { VaultPhoneCall, VaultPhoneConfig, VaultPhoneMethod } from './vaultPhone.types';
 
 const configSchema = z.strictObject({
@@ -28,6 +31,25 @@ export function loadVaultPhone(path?: string): VaultPhoneConfig | undefined {
 		return configSchema.parse(JSON.parse(readFileSync(path, 'utf8')));
 	} catch {
 		return undefined;
+	}
+}
+
+/** Fetches a status-only projection over the local socket, outside the phone operations. */
+export async function vaultMacStatus(
+	config: VaultPhoneConfig,
+	devices: RemoteHostStatus['devices']
+) {
+	const record = devices.find(
+		(device) => device.deviceId === config.phone && device.generation === config.generation
+	);
+	if (!record) return { phone: null, requests: null };
+	const phone = { name: record.name, online: record.online };
+	try {
+		const client = new VaultBrokerClientAdapter({ socketPath: config.socketPath, timeoutMs: 750 });
+		const requests = vaultOperatorRequests.parse(await client.call('/v1/operator/requests', {}));
+		return { phone, requests };
+	} catch {
+		return { phone, requests: null };
 	}
 }
 

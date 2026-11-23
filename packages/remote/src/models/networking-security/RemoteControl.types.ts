@@ -69,6 +69,20 @@ export type RemoteHostState =
 	| 'online'
 	| 'offline';
 
+export interface RemoteVaultStatus {
+	phone: { name: string; online: boolean } | null;
+	/** Null means no broker response. An empty array means a successful read with no requests. */
+	requests:
+		| {
+				requestId: string;
+				site: string;
+				action: string;
+				expiresAt: number;
+				status: 'pending' | 'approved' | 'denied' | 'delivered' | 'expired' | 'canceled';
+		  }[]
+		| null;
+}
+
 /** Public metadata only: nothing here is a key or a credential. */
 export interface RemoteHostStatus {
 	supported: boolean;
@@ -80,6 +94,7 @@ export interface RemoteHostStatus {
 	pairing: RemotePairingOffer | null;
 	requests: RemotePairingRequest[];
 	devices: RemoteDeviceInfo[];
+	vault?: RemoteVaultStatus;
 	projects: { id: string; name: string }[];
 }
 

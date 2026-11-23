@@ -7,11 +7,11 @@ import type { VaultDeviceRepository } from '../../repositories/accounts-access/V
 import { digestDisplay } from '../../utils/accounts-access/vaultRecipe';
 import { VaultBrokerError } from '../../validators/accounts-access/VaultBrokerError';
 import {
+	checkVaultApprovalScope,
 	VaultWireValidator,
 	vaultDecision
 } from '../../validators/accounts-access/VaultWireValidator';
 import type {
-	VaultApproval,
 	VaultProof,
 	VaultSessionRequest,
 	VaultTicket
@@ -73,6 +73,24 @@ export class VaultBrokerService {
 			.map(queueEntry);
 	}
 
+	/** Recent synthetic requests, projected without tickets, request payloads or credentials. */
+	operatorRequests() {
+		return [...this.requests.values()]
+			.reverse()
+			.filter((entry) => entry.input.environment === 'synthetic')
+			.slice(0, vaultRequestLimits.queue)
+			.map((entry) => {
+				this.live(entry);
+				const {
+					id: requestId,
+					status,
+					expiresAt,
+					input: { site, action }
+				} = entry;
+				return { requestId, status, expiresAt, site, action };
+			});
+	}
+
 	decide(proof: VaultProof): VaultRequestStatus {
 		const payload = Buffer.from(proof.payload, 'base64url');
 		const decision = wire.json(vaultDecision, payload, 'decision');
@@ -93,7 +111,13 @@ export class VaultBrokerService {
 			throw new VaultBrokerError(409, 'The decision is for another runner or recipe.');
 		}
 		if (decision.decision === 'deny') return this.end(entry, 'denied', 'denial');
-		checkApprovalScope(entry, decision, this.now());
+		const now = this.now();
+		checkVaultApprovalScope(
+			entry.input,
+			decision,
+			now,
+			Math.min(now + vaultRequestLimits.deliveryMs, entry.expiresAt)
+		);
 		this.audit.append(vaultAuditFields(entry), 'approval');
 		entry.status = 'approved';
 		entry.approval = { proof, expiresAt: decision.expiresAt };
@@ -183,21 +207,6 @@ function receiptMatches(entry: VaultRequestEntry, receipt: string): boolean {
 export function vaultAuditFields(entry: VaultRequestEntry) {
 	const { item, site, action, method, recipe, host } = entry.input;
 	return { request: entry.id, item, site, action, method, recipeDigest: recipe.digest, host };
-}
-
-function checkApprovalScope(entry: VaultRequestEntry, decision: VaultApproval, now: number): void {
-	const { input } = entry;
-	const keys = ['method', 'mode', 'account', 'session', 'action', 'host', 'leaseMs'] as const;
-	if (keys.some((key) => decision[key] !== input[key])) {
-		throw new VaultBrokerError(409, 'The approval scope differs from the request; approve again.');
-	}
-	if ((decision.sealed === null) !== (input.method === 'oauth-device')) {
-		throw new VaultBrokerError(409, 'Only a device grant approval carries no sealed credential.');
-	}
-	const latest = Math.min(now + vaultRequestLimits.deliveryMs, entry.expiresAt);
-	if (decision.expiresAt <= now || decision.expiresAt > latest) {
-		throw new VaultBrokerError(409, 'Approval expiry is outside the delivery window.');
-	}
 }
 
 function queueEntry(entry: VaultRequestEntry): VaultQueueEntry {

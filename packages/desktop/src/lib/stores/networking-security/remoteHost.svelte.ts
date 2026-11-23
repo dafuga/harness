@@ -34,6 +34,9 @@ class RemoteHostState {
 		this.release?.();
 		this.release = undefined;
 	}
+	refresh() {
+		return this.ask((port) => port.status());
+	}
 	enable() {
 		return this.ask((port) => port.enable());
 	}

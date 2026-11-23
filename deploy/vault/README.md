@@ -110,6 +110,20 @@ sealed test token. The run uses a disposable local broker and contacts no provid
 build, use **Legacy test** to review and save a fresh synthetic legacy entry with Face ID. The app
 shows a receipt after it reopens the same login from the device-only Keychain.
 
+To qualify expiry and interruption, run the same command with `expired` or `interrupted` as
+its final argument. In each case, open the synthetic request on the signed iPhone and keep its
+review open. For expiry, wait for the broker's 30-second offer to lapse. For interruption, send
+`SIGINT` to the requester while review is open. After the broker prints its terminal result, try
+to approve the stale request on the phone within 20 seconds. Record the iPhone's unavailable
+message and refresh to confirm the request disappears. The runner checks that neither request can
+be claimed. A broker result alone does not record the iPhone observation.
+
+On the Mac, open **Phone access** and refresh **Vault requests** while the fixture broker is
+running. Compare the request and its decision with the phone. The panel reads the same local
+broker socket as the configured pairing, using the broker owner's verified Unix identity. It
+shows the paired phone's name, the request reference, site, action and lifecycle state. Open
+**Vault requests** on that iPhone to review and decide with Face ID.
+
 ## Executor admission
 
 Build the CLI and run `credential serve` with `--peer-addon` pointing to `peer.node`. Bun delegates
