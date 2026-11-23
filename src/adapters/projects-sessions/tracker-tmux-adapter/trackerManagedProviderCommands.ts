@@ -79,8 +79,7 @@ function nativeTrackerProviderCommand(
 	if (provider === 'claude')
 		return [
 			profile.claude,
-			'--permission-mode',
-			'acceptEdits',
+			'--dangerously-skip-permissions',
 			'--model',
 			model,
 			...(intelligence ? ['--effort', intelligence] : []),
@@ -88,8 +87,7 @@ function nativeTrackerProviderCommand(
 		];
 	return [
 		profile.codex,
-		'--sandbox',
-		'workspace-write',
+		'--dangerously-bypass-approvals-and-sandbox',
 		'-m',
 		model,
 		...(intelligence ? ['-c', `model_reasoning_effort=${JSON.stringify(intelligence)}`] : []),

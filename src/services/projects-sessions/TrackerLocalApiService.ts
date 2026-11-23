@@ -4,6 +4,7 @@ import type { TrackerItemReadRepository } from '../../repositories/projects-sess
 import { checkTrackerItem } from '../../utils/projects-sessions/checkTrackerItem';
 import type { TrackerItemInput } from '../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import { planTrackerItemMutation } from '../../utils/projects-sessions/planTrackerItemMutation';
+import type { TrackerItemMutationContext } from '../../utils/projects-sessions/planTrackerItemMutation.types';
 import { trackerItemError } from '../../utils/projects-sessions/trackerItemError';
 import { itemAction, itemMutation } from './tracker-local-api-service/trackerLocalItemMutation';
 import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
@@ -114,7 +115,8 @@ export class TrackerLocalApiService {
 		return trackerResponse(action === 'add' ? 201 : 200, this.items.getStored(plan.itemId));
 	}
 
-	private mutationContext() {
+	private mutationContext(): TrackerItemMutationContext {
+		const { planLaunch, runs } = this.options;
 		return {
 			node: this.store.node,
 			now: this.options.now?.() ?? Date.now(),
@@ -122,7 +124,15 @@ export class TrackerLocalApiService {
 			launchNonce: randomUUID(),
 			candidates: this.items.candidates(),
 			validateModel: this.options.validateModel,
-			planLaunch: this.options.planLaunch
+			planLaunch:
+				planLaunch &&
+				((fields, current) =>
+					planLaunch(
+						fields,
+						current?.auto && runs?.launchConsumed(current.id, current.auto)
+							? { ...current, auto: null }
+							: current
+					))
 		};
 	}
 }
