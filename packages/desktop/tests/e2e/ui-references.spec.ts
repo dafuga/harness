@@ -80,6 +80,11 @@ test('streamed text shows a reference split across events as text until it is wh
 	);
 });
 
+async function closeConversation(page: Page) {
+	const close = page.getByRole('button', { name: 'Close conversation', exact: true });
+	if (await close.count()) await close.click();
+}
+
 test('the project agent shows the unit its run is working on as a link', async ({ page }, info) => {
 	await referenceFixture(page);
 	await page.goto(alphaAt('pages'));
@@ -104,6 +109,9 @@ test('the project agent shows the unit its run is working on as a link', async (
 	await expect(agent.getByRole('link', { name: 'Order frame', exact: true })).toBeVisible();
 	await agent.getByRole('status').getByRole('link', { name: 'Format time', exact: true }).click();
 	await expect(page).toHaveURL(alphaAt('functions/app.function.format-time/history'));
+	// The open panel hides the launcher; its own close brings it back.
+	await page.getByRole('button', { name: 'Close chat', exact: true }).click();
+	await closeConversation(page);
 	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toBeVisible();
 });
 
@@ -130,6 +138,7 @@ for (const shown of [
 		await page.goto(alphaAt(shown));
 		const launcher = page.getByRole('button', { name: 'Work with agent', exact: true });
 		await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+		await closeConversation(page);
 		await remember(page, info, 'persistent-chat-' + shown.replaceAll('/', '-'));
 		await expect(launcher).toBeVisible();
 		const box = (await launcher.boundingBox())!;
