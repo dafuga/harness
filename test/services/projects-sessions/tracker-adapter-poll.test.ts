@@ -1,5 +1,11 @@
 import { expect, test, vi } from 'vitest';
-import { adapterFixture, adapterIssue, adapterSourceId } from '../../support/trackerAdapterFixture';
+import {
+	adapterFixture,
+	adapterFollowUpFixture,
+	adapterIssue,
+	adapterSourceId,
+	readFollowUpFixtureItems
+} from '../../support/trackerAdapterFixture';
 
 test('poll dry-run deduplicates explicit backfill without moving the source cursor', async () => {
 	const { database, feed, readIssues, readTimeline, service, store } = adapterFixture({
@@ -149,6 +155,59 @@ test('poll accepts source-specific presentation and manual matching through an i
 		expect(store.opsSince(2, 10)).toMatchObject([
 			{ fields: { adapter_instructions: 'Read the fixture guide.' } }
 		]);
+	} finally {
+		database.close();
+	}
+});
+
+test('poll previews and backfills actionable comments on open issues by exact ID', async () => {
+	const fixture = adapterFollowUpFixture();
+	const { database, feed, readIssue, readIssues, service, store, comment } = fixture;
+	try {
+		const before = store.maxSeq();
+		const actions = [
+			{ external_id: 'comment:101', action: 'create', auto_launch: true },
+			{ external_id: 'comment:104', action: 'link', auto_launch: false, item_id: 'known-item' }
+		];
+		await expect(
+			service.poll(adapterSourceId, { dryRun: true, backfillComments: true })
+		).resolves.toMatchObject({ actions });
+		expect(readIssues).not.toHaveBeenCalled();
+		expect(readIssue.mock.calls.filter(([, id]) => id === '17')).toHaveLength(1);
+		expect(store.maxSeq()).toBe(before);
+		expect(database.prepare('SELECT * FROM adapter_links').all()).toEqual([]);
+		await expect(service.poll(adapterSourceId, { backfillComments: true })).resolves.toMatchObject({
+			actions
+		});
+		expect(database.prepare('SELECT cursor FROM adapter_sources').get()).toEqual({
+			cursor: 10_000
+		});
+		const beforeHandoff = readFollowUpFixtureItems(database);
+		expect(beforeHandoff).toEqual({
+			original: {
+				status: 'done',
+				adapter_instructions: 'Tester-owned. Use Refs #17. Retest after verified live staging.'
+			},
+			covered: { status: 'in_progress' },
+			correction: {
+				notes: expect.stringContaining('/17#issuecomment-101'),
+				due: new Date(feed.now).toISOString(),
+				adapter_instructions:
+					'Use the normal dev gate.\n\nTester-owned. Use Refs #17. Retest after verified live staging.'
+			}
+		});
+		await expect(service.poll(adapterSourceId, { backfillComments: true })).resolves.toMatchObject({
+			actions: []
+		});
+		feed.issues.splice(1);
+		feed.comments = [
+			{ ...comment, id: 110 },
+			{ ...comment, id: 111, created_at: new Date(feed.now).toISOString() }
+		];
+		await expect(service.poll(adapterSourceId)).resolves.toMatchObject({
+			actions: [{ external_id: 'comment:111', action: 'create' }]
+		});
+		await expect(service.poll(adapterSourceId)).resolves.toMatchObject({ actions: [] });
 	} finally {
 		database.close();
 	}

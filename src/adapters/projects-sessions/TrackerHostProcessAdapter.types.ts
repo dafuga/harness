@@ -6,6 +6,7 @@ export type TrackerHostProcessOperation =
 	| 'watchdog-nudge'
 	| 'watchdog-cos'
 	| 'adapter-issues'
+	| 'adapter-issue'
 	| 'adapter-timeline'
 	| 'adapter-comments'
 	| 'adapter-mark-tracked';

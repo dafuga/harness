@@ -183,6 +183,23 @@ against the repository and managed worktree disks. `maxConcurrent` counts
 retained running work, committed reservations, and independent live
 sessions. Carry forward the verified host value.
 
+To route tester corrections, configure `adapter.followUp` for one retained
+GitHub task source. Set `target` to its `owner/repo`, `author` to the tester's
+GitHub login, and `titlePrefix` to the project's Tracker title prefix.
+`issueInstructions` describes the project's regular intake rules.
+`instructions` supplies the tester's acceptance instructions and can use
+`{issue}` for the GitHub issue number. Set `coveredComments` to a map of
+GitHub comment IDs to existing full Tracker item IDs when earlier work already
+covers those requests.
+
+Set `adapter.manual: true` during activation to hold periodic polls while
+leaving the designated runner available for explicit commands. First run
+`tracker adapter run github:<owner/repo> --backfill-comments --dry-run`.
+The preview covers comments created in the last seven days on currently open
+issues. Apply confirmed actions with the same command without `--dry-run`,
+then remove `manual` to resume periodic intake. Comment backfill preserves
+the regular issue cursor. Item and comment receipts deduplicate subsequent polls.
+
 Launch requests use a configured repository, and an item repository
 override must match it exactly. Configure the lanes qualified on each host.
 Linux uses plain Docker through the pinned Harness
@@ -287,8 +304,8 @@ the CLI. The inventory used local installation files and did not probe MB2.
       autolaunch status parity. Persisted quota holds are visible in status.
 - [ ] Reconcile `machines`, `place`, `watchdog dry-run/alerts`, and `health
 [--alert]` with the native host-process integration.
-- [ ] Wire `adapter add/run/pause/resume/remove`, including preview and backfill,
-      through runner ownership and the injected GitHub transport.
+- [x] Wire `adapter run` and comment preview and backfill through runner ownership.
+- [ ] Wire `adapter add/pause/resume/remove` and issue backfill.
 - [ ] Bind external backup receipts for last result and next run. Qualify
       `backup now` and `restore --yes` with the backup owner and an isolated
       restore rehearsal.

@@ -32,6 +32,13 @@ async function proveDesignatedPoll(root: string) {
 		hostEffects: {
 			adapter: {
 				github: { executable, configDirectory },
+				followUp: {
+					target: 'example/widgets',
+					author: 'fixture-tester',
+					titlePrefix: 'Fixture Widgets',
+					issueInstructions: 'Use the normal release gate.',
+					instructions: 'Tester owns acceptance for #{issue}.'
+				},
 				leaseFile: join(root, 'adapter-runner.lock')
 			}
 		}
@@ -45,6 +52,7 @@ async function proveDesignatedPoll(root: string) {
 		await runtime.adapter!.tick(signal);
 		await runtime.adapter!.tick(signal);
 		await verifyPolledSource(runtime, { events, configDirectory });
+		await verifyCommentPreview(runtime);
 	} finally {
 		vi.unstubAllEnvs();
 		database.close();
@@ -78,7 +86,7 @@ async function verifyPolledSource(
 		runtime.store.database.prepare('SELECT cursor,last_run,last_error FROM adapter_sources').get()
 	).toEqual({ cursor: now(), last_run: now(), last_error: null });
 	const listed = await runtime.items.handle(new Request('http://tracker-fixture.invalid/items'));
-	expect(await listed.json()).toMatchObject([{ title: 'example/widgets #17: Fixture issue' }]);
+	expect(await listed.json()).toMatchObject([{ title: 'Fixture Widgets #17: Fixture issue' }]);
 	const requests = readFileSync(events, 'utf8')
 		.trim()
 		.split('\n')
@@ -96,6 +104,22 @@ async function verifyPolledSource(
 	}
 }
 
+async function verifyCommentPreview(runtime: TrackerNativeRuntimeService) {
+	const seq = runtime.store.maxSeq();
+	const result = await runtime.adapter?.poll(adapterId, { backfillComments: true, dryRun: true });
+	expect(result).toMatchObject({
+		actions: [
+			{
+				action: 'create',
+				external_id: 'comment:199',
+				url: 'https://github.com/example/widgets/issues/17#issuecomment-199',
+				auto_launch: false
+			}
+		]
+	});
+	expect(runtime.store.maxSeq()).toBe(seq);
+}
+
 const githubFixture = `
 const { appendFileSync } = require('node:fs');
 const { dirname, join } = require('node:path');
@@ -103,12 +127,23 @@ const argv = process.argv.slice(2);
 const query = argv.at(-1);
 appendFileSync(join(dirname(process.argv[1]), 'github.ndjson'),
   JSON.stringify({ argv, profile: process.env.GH_CONFIG_DIR, token: Boolean(process.env.GH_TOKEN) }) + '\\n');
-if (query.includes('/comments') || query.includes('/timeline')) {
-  process.stdout.write('[[]]');
+const issue = {
+	id: 100, number: 17, title: 'Fixture issue', state: 'open', labels: [],
+	created_at: new Date(1799999980000).toISOString(),
+	updated_at: new Date(1799999980000).toISOString(),
+	user: { login: 'fixture-user' }
+};
+if (query.includes('/comments')) {
+	process.stdout.write(JSON.stringify([[{
+		id: 199, issue_url: 'https://api.github.com/repos/example/widgets/issues/17',
+		created_at: new Date(1799999900000).toISOString(),
+		body: 'Correction: retry is unavailable', user: { type: 'User', login: 'fixture-tester' }
+	}]]));
+} else if (query.includes('/timeline')) {
+	process.stdout.write('[[]]');
+} else if (query.endsWith('/issues/17')) {
+	process.stdout.write(JSON.stringify(issue));
 } else {
-  process.stdout.write(JSON.stringify([[{
-    id: 100, number: 17, title: 'Fixture issue', state: 'open', labels: [],
-    created_at: new Date(${now() - 10_000}).toISOString(), updated_at: new Date(${now() - 5_000}).toISOString()
-  }]]));
+	process.stdout.write(JSON.stringify([[issue]]));
 }
 `;

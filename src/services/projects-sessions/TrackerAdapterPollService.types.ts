@@ -22,6 +22,8 @@ export interface TrackerGithubTimelineEvent extends GithubIssueIntakeEvent {
 
 export interface TrackerGithubComment {
 	id: number;
+	body?: string;
+	author_association?: string;
 	issue_url: string;
 	created_at: string;
 	user?: { type?: string; login?: string };
@@ -41,6 +43,11 @@ export interface TrackerGithubAdapterProvider {
 		source: Readonly<TrackerAdapterSource>,
 		query: TrackerAdapterReadQuery
 	): AsyncIterable<TrackerGithubIssue>;
+	readIssue?(
+		source: Readonly<TrackerAdapterSource>,
+		issue: string,
+		signal: AbortSignal
+	): Promise<TrackerGithubIssue | undefined>;
 	readTimeline(
 		source: Readonly<TrackerAdapterSource>,
 		issue: number,
@@ -69,6 +76,13 @@ export interface TrackerAdapterIntakePolicy {
 	titlePrefix?: string;
 	matchesItem?: (item: Readonly<TrackerAdapterCandidate>) => boolean;
 	instructions?: string;
+	followUp?: TrackerGithubFollowUpPolicy;
+}
+
+export interface TrackerGithubFollowUpPolicy {
+	author: string;
+	instructions: string;
+	coveredComments?: Record<string, string>;
 }
 
 export interface TrackerAdapterPollDependencies {
@@ -79,17 +93,19 @@ export interface TrackerAdapterPollDependencies {
 	now?: () => number;
 	itemId?: () => string;
 	hasStarted?: (itemId: string) => boolean;
+	manual?: boolean;
 	dueOwner?: (source: Readonly<TrackerAdapterSource>) => string | null;
 }
 
 export interface TrackerAdapterPollOptions {
 	dryRun?: boolean;
 	backfill?: boolean;
+	backfillComments?: boolean;
 	signal?: AbortSignal;
 }
 
 export interface TrackerAdapterAction {
-	action: 'create' | 'link';
+	action: 'create' | 'link' | 'covered';
 	external_id: string;
 	item_id?: string;
 	title: string;
@@ -134,6 +150,8 @@ export interface TrackerAdapterIntakeRecord {
 	syncBack: boolean;
 	events: TrackerAdapterEvent[];
 	snapshotAt: number;
+	followUp?: { instructions: string; coveredItem?: string };
+	acceptanceInstructions?: string;
 }
 
 export interface TrackerAdapterCommentEvent extends TrackerAdapterEvent {

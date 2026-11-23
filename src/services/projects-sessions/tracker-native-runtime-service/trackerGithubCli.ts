@@ -6,7 +6,12 @@ import {
 	runTrackerHostCommand
 } from '../../../adapters/projects-sessions/tracker-host-process-adapter/trackerHostCommand';
 import type { TrackerGithubAdapterProvider } from '../TrackerAdapterPollService.types';
-import { adapterComments, adapterIssues, adapterTimeline } from './trackerHostAdapterSchema';
+import {
+	adapterComments,
+	adapterIssue,
+	adapterIssues,
+	adapterTimeline
+} from './trackerHostAdapterSchema';
 
 const tracked = 'tracked';
 const githubHost = 'github.com';
@@ -45,6 +50,7 @@ export function trackerGithubCli(binding: {
 				: [];
 			yield* new Map([...older, ...recent].map((issue) => [issue.id, issue])).values();
 		},
+		readIssue: ({ target }, issue, signal) => readTrackerIssue(request, { target, issue }, signal),
 		async readTimeline({ target }, issue, signal) {
 			return adapterTimeline.parse(
 				await read(`repos/${target}/issues/${issue}/timeline?per_page=100`, signal)
@@ -61,6 +67,21 @@ export function trackerGithubCli(binding: {
 		markTracked: (source, issue, signal) =>
 			markTrackedIssue(request, { target: source.target, issue }, signal)
 	};
+}
+
+async function readTrackerIssue(
+	request: (
+		args: string[],
+		signal: AbortSignal
+	) => Promise<{ code: number; stdout: string; stderr: string }>,
+	{ target, issue }: { target: string; issue: string },
+	signal: AbortSignal
+) {
+	if (!/^[1-9][0-9]{0,9}$/.test(issue)) throw new TypeError('Invalid Tracker issue number');
+	const reply = await request(['--method', 'GET', `repos/${target}/issues/${issue}`], signal);
+	if (reply.code === 0) return adapterIssue.parse(JSON.parse(reply.stdout));
+	if (/\bHTTP (?:404|410)\b/.test(reply.stderr)) return undefined;
+	throw new TrackerHostProcessError('Tracker GitHub issue lookup failed');
 }
 
 function privateGithubDirectory(path: string): string {

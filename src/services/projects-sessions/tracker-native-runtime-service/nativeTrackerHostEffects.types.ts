@@ -1,4 +1,6 @@
 // @harness-uid u_bl6xl2h4a3
+import type { TrackerGithubFollowUpPolicy } from '../TrackerAdapterPollService.types';
+
 export type TrackerHostEffectsMode =
 	| { mode: 'held' }
 	| ({ mode: 'active'; checkpoint: string } & Omit<
@@ -40,6 +42,12 @@ export type TrackerHostAdapterBinding =
 	| { github: { executable: string; configDirectory: string } };
 
 export type TrackerHostAdapterConfig = TrackerHostAdapterBinding & {
+	manual?: true;
+	followUp?: TrackerGithubFollowUpPolicy & {
+		target: string;
+		titlePrefix: string;
+		issueInstructions: string;
+	};
 	scheduleDue?: true;
 	dueDisk?: { freePct: number; freeGB: number };
 };

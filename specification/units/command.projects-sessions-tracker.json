@@ -22,6 +22,7 @@
 			"TrackerCommand.register",
 			"TrackerCommand.run",
 			"formatNativeTrackerInspection",
+			"formatNativeTrackerAdapterRun",
 			"formatNativeTrackerItem",
 			"nativeItemPrefix",
 			"formatNativeTrackerRunRead",
@@ -71,6 +72,11 @@
 				"required": true
 			},
 			{
+				"name": "formatNativeTrackerAdapterRun.result",
+				"type": "Extract<TrackerAdapterPollResult, { status: 'polled' }>",
+				"required": true
+			},
+			{
 				"name": "formatNativeTrackerItem.item",
 				"type": "NativeTrackerItem",
 				"required": true
@@ -116,6 +122,11 @@
 				"required": true
 			},
 			{
+				"name": "nativeTrackerInspectionRequest.values",
+				"type": "Record<string, string | boolean | undefined>",
+				"required": true
+			},
+			{
 				"name": "nativeTrackerIgnoreRequest.command",
 				"type": "string",
 				"required": true
@@ -158,6 +169,10 @@
 			{
 				"name": "formatNativeTrackerInspection",
 				"type": "unknown"
+			},
+			{
+				"name": "formatNativeTrackerAdapterRun",
+				"type": "string"
 			},
 			{
 				"name": "formatNativeTrackerItem",
@@ -280,6 +295,24 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "formatNativeTrackerAdapterRun",
+				"inputs": [
+					{
+						"name": "formatNativeTrackerAdapterRun.result",
+						"type": "Extract<TrackerAdapterPollResult, { status: 'polled' }>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "formatNativeTrackerAdapterRun",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "formatNativeTrackerItem",
 				"inputs": [
 					{
@@ -378,6 +411,11 @@
 						"name": "nativeTrackerInspectionRequest.words",
 						"type": "string[]",
 						"required": true
+					},
+					{
+						"name": "nativeTrackerInspectionRequest.values",
+						"type": "Record<string, string | boolean | undefined>",
+						"required": true
 					}
 				],
 				"outputs": [
@@ -386,12 +424,7 @@
 						"type": "NativeTrackerRequest | undefined"
 					}
 				],
-				"errors": [
-					{
-						"name": "TypeError",
-						"type": "thrown"
-					}
-				],
+				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{
@@ -511,6 +544,11 @@
 		},
 		{
 			"unit": "repository.projects-sessions-tracker-run-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-adapter-poll",
 			"via": "import",
 			"origin": "derived"
 		},

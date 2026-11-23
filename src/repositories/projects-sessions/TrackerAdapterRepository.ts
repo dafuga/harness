@@ -19,8 +19,22 @@ export class TrackerAdapterRepository {
 
 	linkByKey(sourceId: string, key: string): TrackerAdapterLink | undefined {
 		return this.database
-			.prepare('SELECT * FROM adapter_links WHERE source_id = ? AND external_key = ?')
+			.prepare(
+				`SELECT * FROM adapter_links WHERE source_id = ? AND external_key = ?
+				AND external_id NOT LIKE 'comment:%'`
+			)
 			.get(sourceId, key) as TrackerAdapterLink | undefined;
+	}
+
+	hasFollowUp(sourceId: string, key: string): boolean {
+		return Boolean(
+			this.database
+				.prepare(
+					`SELECT 1 FROM adapter_links
+			WHERE source_id = ? AND external_key = ? AND external_id LIKE 'comment:%' LIMIT 1`
+				)
+				.get(sourceId, key)
+		);
 	}
 
 	saveLink(link: TrackerAdapterLink): void {
@@ -88,7 +102,7 @@ export class TrackerAdapterRepository {
 	candidates(): TrackerAdapterCandidate[] {
 		return this.database
 			.prepare(
-				'SELECT id, title, agent, project FROM items WHERE deleted = 0 AND title IS NOT NULL ORDER BY created_at, id'
+				'SELECT id, title, agent, project, kind, notes, adapter_instructions FROM items WHERE deleted = 0 AND title IS NOT NULL ORDER BY created_at, id'
 			)
 			.all() as TrackerAdapterCandidate[];
 	}

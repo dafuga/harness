@@ -11,6 +11,7 @@ import type {
 } from '../TrackerAdapterPollService.types';
 import {
 	adapterComments,
+	adapterIssue,
 	adapterIssues,
 	adapterTimeline,
 	adapterWrite
@@ -26,7 +27,21 @@ export function trackerHostAdapter(
 	runs: TrackerRunReadRepository,
 	now: () => number
 ): TrackerAdapterPollDependencies {
+	const { followUp } = config;
 	return {
+		manual: config.manual,
+		intakePolicy: (source) =>
+			source.target === followUp?.target
+				? {
+						titlePrefix: followUp.titlePrefix,
+						instructions: followUp.issueInstructions,
+						matchesItem: (item) =>
+							[item.agent, item.project].some(
+								(name) => name?.toLowerCase() === source.project.toLowerCase()
+							) || item.title.toLowerCase().includes(followUp.titlePrefix.toLowerCase()),
+						followUp
+					}
+				: undefined,
 		now,
 		lease: new TrackerAdapterLeaseAdapter(designatedRunner, config.leaseFile),
 		redactText: redactGithubText,
@@ -44,6 +59,10 @@ function githubProcessProvider(executable: string): TrackerGithubAdapterProvider
 			yield* adapterIssues.parse(
 				await driver.request('adapter-issues', pollInput(target, query), query.signal)
 			);
+		},
+		async readIssue({ target }, issue, signal) {
+			const response = await driver.request('adapter-issue', { target, issue }, signal);
+			return adapterIssue.nullable().parse(response) ?? undefined;
 		},
 		async readTimeline({ target }, issue, signal) {
 			return adapterTimeline.parse(

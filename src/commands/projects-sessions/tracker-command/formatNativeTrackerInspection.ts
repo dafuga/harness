@@ -1,4 +1,5 @@
 // @harness-uid u_r7qgepnoax
+import type { TrackerAdapterPollResult } from '../../../services/projects-sessions/TrackerAdapterPollService.types';
 import { formatListedRun, formatNativeTrackerItem } from './formatNativeTrackerItem';
 import type {
 	NativeTrackerAdapter,
@@ -94,4 +95,19 @@ function formatBackupList({ status, files }: NativeTrackerBackupList): string {
 			`  ${kind.padEnd(13)} ${name.padEnd(36)} ${String(size).padStart(9)}  ${mtime}`
 	);
 	return [status.note, ...(rows.length ? rows : ['  (no backups yet)'])].join('\n');
+}
+
+export function formatNativeTrackerAdapterRun(
+	result: Extract<TrackerAdapterPollResult, { status: 'polled' }>
+): string {
+	const lines = result.actions.map(({ action, title, url, item_id, auto_launch }) => {
+		const verb =
+			action === 'covered'
+				? 'already covered'
+				: [result.dry_run ? 'would' : '', action].filter(Boolean).join(' ');
+		const link = item_id && action !== 'create' ? ` → ${item_id.slice(0, 6)}` : '';
+		const due = auto_launch ? ' [due for auto-launch]' : '';
+		return `${verb} ${title} (${url})${link}${due}`;
+	});
+	return lines.join('\n') || 'No items to create or link.';
 }

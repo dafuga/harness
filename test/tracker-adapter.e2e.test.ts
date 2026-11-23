@@ -6,11 +6,9 @@ import {
 	adapterFixture,
 	adapterIssue,
 	adapterSourceId,
-	refuseInsert,
 	sourceRun,
 	sqliteFixtureLease
 } from './support/trackerAdapterFixture';
-
 test('poll holds the shared lease across a delayed read and releases it on cancellation', async () => {
 	await withTempDir('harness-adapter-lease-', async (directory) => {
 		const lease = sqliteFixtureLease(join(directory, 'owner.lock'));
@@ -213,4 +211,9 @@ async function verifyReopen(fixture: ReturnType<typeof adapterFixture>): Promise
 		{ text: 'GitHub issue reopened: https://github.com/example/widgets/issues/17' }
 	]);
 	expect(store.maxSeq()).toBe(3);
+}
+
+function refuseInsert(database: DatabaseSync, table: 'adapter_links' | 'adapter_events'): void {
+	database.exec(`CREATE TRIGGER refuse_receipt BEFORE INSERT ON ${table}
+		BEGIN SELECT RAISE(ABORT, 'fixture receipt refused'); END`);
 }

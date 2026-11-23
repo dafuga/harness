@@ -75,6 +75,7 @@
 			"trackerGithubCli",
 			"trackerHostAdapter",
 			"configuredHostAdapter",
+			"adapterIssue",
 			"adapterIssues",
 			"adapterTimeline",
 			"adapterComments",
@@ -568,6 +569,10 @@
 			},
 			{
 				"name": "configuredHostAdapter",
+				"type": "unknown"
+			},
+			{
+				"name": "adapterIssue",
 				"type": "unknown"
 			},
 			{
