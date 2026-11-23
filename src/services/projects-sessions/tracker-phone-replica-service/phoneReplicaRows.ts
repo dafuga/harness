@@ -27,6 +27,20 @@ export function phoneReplicaRows(db: SqliteDatabase, node: string, now: number):
 	);
 }
 
+/** The write path uses exactly the same retention and visibility rules as the feed. */
+export function readPhoneReplicaItem(db: SqliteDatabase, id: string, now: number) {
+	return db
+		.prepare(`SELECT * FROM (${itemSql}) WHERE id = ?`)
+		.get(new Date(now - 30 * day).toISOString(), id) as PhoneItemSource | undefined;
+}
+
+/** An opaque revision changes on a replacement question, flag or answer. */
+export function attentionRevision(item: PhoneItemSource): string {
+	return createHash('sha256')
+		.update(JSON.stringify([item.attention_clock, item.question, item.needs_daniel, item.resolved]))
+		.digest('hex');
+}
+
 function projectItem(
 	item: PhoneItemSource,
 	notes: PhoneNoteSource[],
@@ -39,6 +53,7 @@ function projectItem(
 		status: item.status,
 		updatedAt: phoneDate(item.updated_at),
 		dueAt: phoneDate(item.due),
+		attentionRevision: attentionRevision(item),
 		notes: notes.map(({ hlc, author, text }) => ({
 			id: createHash('sha256').update(hlc).digest('hex'),
 			author: excerpt(author, 80),
@@ -91,7 +106,10 @@ const itemSql = `
 			THEN coalesce(nullif(project, ''), agent) END AS project,
 		updated_at, due, needs_daniel, resolved,
 		CASE WHEN length(question) <= 16384 THEN question END AS question,
-		coalesce(json_extract(clocks, '$.question'), json_extract(clocks, '$.needs_daniel')) AS flag_clock
+		coalesce(json_extract(clocks, '$.question'), json_extract(clocks, '$.needs_daniel')) AS flag_clock,
+		json_array(json_extract(clocks, '$.question'), json_extract(clocks, '$.needs_daniel'),
+			json_extract(clocks, '$.resolved'), json_extract(clocks, '$.answered_at'),
+			json_extract(clocks, '$.answer')) AS attention_clock
 	FROM items
 	WHERE deleted = 0 AND coalesce(sensitive, 0) = 0 AND title IS NOT NULL
 		AND length(id) BETWEEN 1 AND 80 AND id NOT GLOB '*[^a-z0-9_-]*'

@@ -36,6 +36,12 @@ export class TrackerLocalApiService {
 		try {
 			const url = new URL(request.url);
 			const parts = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
+			if (
+				request.method === 'POST' &&
+				url.pathname === '/phone-replica/v1/write' &&
+				this.options.phoneReplica
+			)
+				return await this.phoneWrite(request);
 			if (request.method === 'GET') {
 				if (url.pathname === '/phone-replica/v1' && this.options.phoneReplica)
 					return this.options.phoneReplica.pull(url.searchParams);
@@ -51,6 +57,15 @@ export class TrackerLocalApiService {
 			if (error instanceof URIError) return trackerResponse(400, { error: 'invalid item path' });
 			return failureResponse(error);
 		}
+	}
+
+	private async phoneWrite(request: Request): Promise<Response> {
+		const writer = this.options.phoneReplica?.writer;
+		const scope = writer?.scope(request.headers);
+		if (!writer || !scope) return trackerResponse(403, { status: 'denied' });
+		const body = await readItemBody(request, 4096);
+		request.signal.throwIfAborted();
+		return trackerResponse(200, writer.push(scope, body));
 	}
 
 	private read(parts: string[], query: Record<string, string>): Response | undefined {
@@ -156,7 +171,7 @@ function readActor(headers: Headers): string | null {
 	return actor;
 }
 
-async function readItemBody(request: Request): Promise<TrackerItemInput> {
+async function readItemBody(request: Request, maximum = maxBodyBytes): Promise<TrackerItemInput> {
 	if (!request.body) return {};
 	const reader = request.body.getReader();
 	const chunks: Uint8Array[] = [];
@@ -164,7 +179,7 @@ async function readItemBody(request: Request): Promise<TrackerItemInput> {
 	try {
 		for (let part = await reader.read(); !part.done; part = await reader.read()) {
 			size += part.value.byteLength;
-			if (size > maxBodyBytes) {
+			if (size > maximum) {
 				void reader.cancel().catch(() => {});
 				throw trackerItemError('body too large', 413);
 			}

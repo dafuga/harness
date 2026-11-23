@@ -2,6 +2,8 @@
 import { randomUUID } from 'node:crypto';
 import type { TrackerPersistenceService } from './TrackerPersistenceService';
 import { PhoneReplicaFeed } from './tracker-phone-replica-service/PhoneReplicaFeed';
+import { PhoneReplicaWriteService } from './tracker-phone-replica-service/PhoneReplicaWriteService';
+import type { PhoneReplicaWriteGrant } from './tracker-phone-replica-service/PhoneReplicaWriteService.types';
 import type { PhoneReplicaSnapshot } from './tracker-phone-replica-service/phoneReplicaPages.types';
 import {
 	deltaPage,
@@ -24,11 +26,15 @@ function positionString(value: unknown): value is string {
 export class TrackerPhoneReplicaService {
 	private readonly snapshots = new Map<string, PhoneReplicaSnapshot>();
 	private feed?: PhoneReplicaFeed;
+	readonly writer?: PhoneReplicaWriteService;
 
 	constructor(
 		private readonly store: TrackerPersistenceService,
-		private readonly now: () => number
-	) {}
+		private readonly now: () => number,
+		grant?: PhoneReplicaWriteGrant
+	) {
+		this.writer = grant && new PhoneReplicaWriteService(store, now, grant);
+	}
 
 	pull(query: URLSearchParams): Response {
 		const scope = query.get('scope') ?? '';

@@ -28,9 +28,12 @@ export function trackerNodeRuntime(
 	const hostEffectsHeld = config.hostEffects?.mode === 'held';
 	const notification = hostEffectsHeld ? undefined : trackerNodeNotifications(config);
 	const ladder = ladderFrom();
+	const phoneDevice = process.env.HARNESS_TRACKER_PHONE_WRITE_DEVICE?.trim();
+	const phoneToken = process.env.HARNESS_TRACKER_PHONE_WRITE_TOKEN;
 	return {
 		node: config.node,
 		role: config.role,
+		phoneWrite: phoneDevice && phoneToken ? { device: phoneDevice, token: phoneToken } : undefined,
 		backupDirectory: config.backupDirectory,
 		notification,
 		hostEffects: configuredHostEffects(config, writeGuestAuth),
