@@ -3,7 +3,7 @@
 <!-- @harness-uid u_2vrw624qcu -->
 <script lang="ts">
 	import { asset } from '$app/paths';
-	import BrandMark from '$shared/BrandMark.svelte';
+	import BrandMark from '$shared/shared-primitives/BrandMark.svelte';
 	import type { NativeHostedStatus } from '../../models/projects-sessions/ProjectContext.types';
 	import { hostedAddress } from '../../utils/networking-security/hostedAddress';
 

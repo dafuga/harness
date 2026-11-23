@@ -4,7 +4,7 @@
 <script lang="ts">
 	import HubHome from '../components/projects-sessions/HubHome.svelte';
 	import { browserContext } from '../utils/development-tooling/browserContext';
-	import BrandMark from '$shared/BrandMark.svelte';
+	import BrandMark from '$shared/shared-primitives/BrandMark.svelte';
 	import LoginPanel from '../components/accounts-access/login-panel/LoginPanel.svelte';
 	const { session } = browserContext();
 </script>
