@@ -2,7 +2,7 @@
 	"name": "jw0799-vault-ios",
 	"goal": "Prove Harness iOS can sign scoped approvals and seal synthetic entries to the exact runner, then verify physical Face ID and legacy-entry migration.",
 	"createdAt": "2026-11-23T15:03:58.435Z",
-	"updatedAt": "2026-11-23T15:08:53.861Z",
+	"updatedAt": "2026-11-23T16:15:05.060Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -42,6 +42,13 @@
 			"id": "migration",
 			"title": "Prove sealed import, save and reopen of a synthetic legacy entry before cutover.",
 			"status": "pending"
+		},
+		{
+			"id": "native-storage",
+			"title": "Verify the native reviewed legacy storage contract and receipt.",
+			"status": "complete",
+			"completedAt": "2026-11-23T16:15:05.060Z",
+			"evidence": "Swift verified the sealed legacy vector against its reviewed account and login digest. The synthetic fixture reopened the stored entry and refused expiry, changed envelopes and a failed store without returning a receipt. Device-only Keychain and Face ID code passed iPhoneOS SDK typecheck."
 		}
 	],
 	"evaluators": [

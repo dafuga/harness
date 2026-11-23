@@ -24,6 +24,7 @@ test.skipIf(process.platform !== 'darwin')(
 		const fixture = vaultBroker();
 		fixture.clock.now = Date.now();
 		const binary = compileNativePhone(join(fixture.state, 'phone'));
+		execFileSync(binary, ['--device-guards']);
 		const phone = nativePhone(binary);
 		try {
 			const { signingKey } = await phone.read<{ signingKey: string }>();
@@ -46,7 +47,7 @@ test.skipIf(process.platform !== 'darwin')(
 );
 
 test.skipIf(process.platform !== 'darwin')(
-	'Harness iOS opens the standalone broker’s legacy add fixture and refuses changed envelopes',
+	'Harness iOS accepts a reviewed legacy import and returns a receipt after storage',
 	() => {
 		const binary = compileNativePhone(join(vaultBroker().state, 'legacy-add'));
 		execFileSync(binary, ['test/support/credential-vault/legacy-vault-add-vector.json']);
@@ -61,6 +62,10 @@ function compileNativePhone(binary: string): string {
 		`${ios}/Vault/VaultApprovalRequest.swift`,
 		`${ios}/Vault/VaultApprovalCrypto.swift`,
 		`${ios}/Vault/VaultLegacyAdd.swift`,
+		`${ios}/Vault/VaultLegacyImportReview.swift`,
+		`${ios}/Vault/VaultLegacyImportKeychain.swift`,
+		`${ios}/Vault/VaultFaceID.swift`,
+		`${ios}/Vault/VaultDeviceApproval.swift`,
 		'test/support/credential-vault/iosPhone.swift',
 		'test/support/credential-vault/iosLegacyAdd.swift',
 		'-o',

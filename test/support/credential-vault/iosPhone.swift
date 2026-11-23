@@ -31,7 +31,10 @@ private struct Command: Decodable {
 
 @main
 enum TestPhone {
-    static func main() {
+    static func main() async {
+        if CommandLine.arguments.dropFirst().first == "--device-guards" {
+            exit(await deviceGuards() ? 0 : 2)
+        }
         if CommandLine.arguments.count == 2 {
             exit((try? verifyLegacyAdd(CommandLine.arguments[1])) == true ? 0 : 2)
         }
@@ -45,6 +48,30 @@ enum TestPhone {
             } catch {
                 send(["error": "Native Vault refused the request."])
             }
+        }
+    }
+
+    private static func deviceGuards() async -> Bool {
+        let site = "https://vault.example.test"
+        let id = "synthetic-iphone"
+        let device = VaultDeviceApproval(scope: .init(origin: site, deviceId: id))
+        let wrong = VaultDeviceChallenge(origin: "https://wrong.example.test", deviceId: id, nonce: "test", expiresAt: .max)
+        let expired = VaultDeviceChallenge(origin: site, deviceId: id, nonce: "test", expiresAt: 0)
+        do {
+            _ = try await device.queue(wrong)
+            return false
+        } catch VaultApprovalFailure.binding {
+            // An untrusted broker is refused before any Face ID or Keychain call.
+        } catch {
+            return false
+        }
+        do {
+            _ = try await device.queue(expired)
+            return false
+        } catch VaultApprovalFailure.expired {
+            return true
+        } catch {
+            return false
         }
     }
 
