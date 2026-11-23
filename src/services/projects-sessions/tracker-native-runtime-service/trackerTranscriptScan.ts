@@ -10,6 +10,7 @@ import { recordTrackerTranscriptExposure } from './trackerTranscriptExposure';
 
 const windowBytes = 128 * 1024;
 const overlapBytes = 1024;
+const launchHeaderBytes = 512 * 1024;
 const windowsPerTick = 16;
 const marker = 'tracker_secret_scan_started';
 const transcriptName = /(?:^|[-/])([a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12})\.jsonl$/iu;
@@ -92,7 +93,7 @@ async function scanWindow(
 ): Promise<boolean> {
 	const buffer = Buffer.alloc(windowBytes);
 	const { bytesRead } = await file.read(buffer, 0, buffer.length, offset);
-	const head = Buffer.alloc(32 * 1024);
+	const head = Buffer.alloc(launchHeaderBytes);
 	try {
 		await file.read(head, 0, head.length, 0);
 		const itemId = launcherItem(head);
