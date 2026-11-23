@@ -161,6 +161,10 @@ export const commandHelp = [
 		term: 'api [options]',
 		aliases: []
 	},
+	plainHelp(
+		'credential',
+		'Request, attach and finish Credential Vault logins; check site recipes.'
+	),
 	{
 		name: 'permissions',
 		signature: 'permissions',

@@ -18,7 +18,10 @@ export async function runCredentialBroker(options: CredentialBrokerOptions): Pro
 		.map((path) => fileURLToPath(new URL(path, import.meta.url)))
 		.find(existsSync);
 	if (!script) throw new ExpectedCliError('Build the Vault broker worker with bun run build:cli.');
-	const worker = spawn('node', [script, JSON.stringify(options)], { stdio: 'inherit' });
+	const worker = spawn('node', [script, JSON.stringify(options)], {
+		stdio: 'inherit',
+		env: { PATH: process.env.PATH }
+	});
 	const stop = () => worker.kill('SIGTERM');
 	process.once('SIGTERM', stop);
 	process.once('SIGINT', stop);
