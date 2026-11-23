@@ -3,6 +3,7 @@ import { catalogCategories } from './ui-workspace-fixture';
 import { test, expect, type Page } from '../../../../test/support/browserTest';
 import { fixture } from './ui-design-fixture';
 import type { DesktopBridge, RunEvent } from '../../src/models/DesktopBridge.types';
+import { openRows } from './picker-rows';
 
 async function checkpoint(page: Page, name: string) {
 	await desktopEvidence(page, name, false);
@@ -197,9 +198,10 @@ for (const outcome of ['failed', 'cancelled'] as const) {
 		await expect(
 			page.getByRole('main').getByText(`Persisted ${outcome} outcome`, { exact: true })
 		).toBeVisible();
-		expect(await page.getByLabel('Branch', { exact: true }).getAttribute('title')).toContain(
-			`Tip · ddddddd`
+		await expect(await openRows(page, 'Choose branch')).toContainText(
+			'Branch tip ddddddd committed'
 		);
+		await page.keyboard.press('Escape');
 	});
 }
 

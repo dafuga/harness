@@ -1,5 +1,6 @@
 import { assertWorkspaceHeaderFits, catalogCategories, fakeProject } from './ui-workspace-fixture';
 import { expect, test } from '../../../../test/support/browserTest';
+import { chooseRow, currentRow } from './picker-rows';
 test('browser preview exposes no writable backend', async ({ page }) => {
 	await page.goto('/');
 	if (process.env.TAKE_SCREENSHOT === 'true') {
@@ -47,9 +48,7 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 			page.evaluate(() => JSON.stringify((window as unknown as { __calls: unknown[] }).__calls))
 		)
 		.toContain('Create the first Activity design');
-	await page.getByRole('button', { name: 'Choose commit', exact: true }).click();
-	await page.getByLabel('Commit', { exact: true }).selectOption('b'.repeat(40));
-	await page.keyboard.press('Escape');
+	await chooseRow(page, 'Choose commit', 'bbbbbbb');
 	await expect(page).toHaveURL(/branch\/feat%2Factivity\/commit\/b{40}\/pages/);
 	await page.getByRole('button', { name: 'Open project chat', exact: true }).click();
 	await expect(page.getByRole('button', { name: 'Change', exact: true })).toHaveCount(0);
@@ -95,9 +94,7 @@ test('Revision navigation exits historical and explicitly pinned tip revisions',
 	await page.goto('/');
 	await page.getByRole('button', { name: 'Open project', exact: true }).click();
 	for (const commit of ['b'.repeat(40), 'a'.repeat(40)]) {
-		await page.getByRole('button', { name: 'Choose commit', exact: true }).click();
-		await page.getByLabel('Commit', { exact: true }).selectOption(commit);
-		await page.keyboard.press('Escape');
+		await chooseRow(page, 'Choose commit', commit.slice(0, 7));
 		await expect(page).toHaveURL(new RegExp(`/commit/${commit}/pages$`));
 		await page.getByRole('button', { name: 'Open project chat', exact: true }).click();
 		await expect(page.getByRole('button', { name: 'Change', exact: true })).toHaveCount(0);
@@ -125,7 +122,9 @@ test('Revision navigation exits historical and explicitly pinned tip revisions',
 		await expect(page).toHaveURL(/\/harness\/branch\/feat%2Factivity\/pages$/);
 		await expect(page.locator('.revision-summary strong')).toHaveText('feat/activity');
 		await expect(page.locator('.revision-summary time')).toHaveAttribute('datetime', '2026-10-11');
-		await expect(page.getByLabel('Commit', { exact: true })).toHaveValue('a'.repeat(40));
+		const tip = await currentRow(page, 'Choose commit');
+		await expect(tip).toContainText('aaaaaaa');
+		await page.keyboard.press('Escape');
 		await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toBeEnabled();
 		if (process.env.TAKE_SCREENSHOT === 'true') {
 			await page.evaluate(() => document.fonts.ready);
@@ -147,9 +146,8 @@ test('workspace selectors start collapsed and environment stays directly selecta
 		await page.screenshot({
 			path: `/tmp/harness-env-evidence/environment-controls-${process.env.SCREENSHOT_LABEL ?? 'local'}.png`
 		});
-	await expect(page.getByLabel('Commit', { exact: true })).not.toBeVisible();
-	await expect(page.getByLabel('Branch', { exact: true })).not.toBeVisible();
-	await expect(page.getByLabel('Project', { exact: true })).not.toBeVisible();
+	for (const name of ['Choose commit', 'Choose branch', 'Choose workbench'])
+		await expect(page.getByRole('dialog', { name, exact: true })).not.toBeVisible();
 	await expect(page.getByLabel('Environment', { exact: true })).toBeVisible();
 	const environment = await page.getByLabel('Environment', { exact: true }).boundingBox();
 	for (const name of ['Choose branch', 'Choose commit', 'Deploy']) {
@@ -157,13 +155,9 @@ test('workspace selectors start collapsed and environment stays directly selecta
 		expect(environment!.x + environment!.width).toBeLessThan(icon!.x);
 	}
 	await page.getByLabel('Environment', { exact: true }).selectOption('prod');
-	for (const [button, selector] of [
-		['Choose commit', 'Commit'],
-		['Choose branch', 'Branch'],
-		['Choose workbench', 'Project']
-	]) {
+	for (const button of ['Choose commit', 'Choose branch', 'Choose workbench']) {
 		await page.getByRole('button', { name: button, exact: true }).click();
-		await expect(page.getByLabel(selector, { exact: true })).toBeVisible();
+		await expect(page.getByRole('dialog', { name: button, exact: true })).toBeVisible();
 		await page.keyboard.press('Escape');
 		await expect(page.getByRole('button', { name: button, exact: true })).toBeFocused();
 	}
@@ -207,7 +201,7 @@ test('workspace selectors start collapsed and environment stays directly selecta
 		])
 			await expect(page.getByRole('button', { name, exact: true })).toBeVisible();
 		await page.getByRole('button', { name: 'Choose commit', exact: true }).click();
-		await expect(page.getByLabel('Commit', { exact: true })).toBeVisible();
+		await expect(page.getByRole('dialog', { name: 'Choose commit', exact: true })).toBeVisible();
 		await page.keyboard.press('Escape');
 	}
 });

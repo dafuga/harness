@@ -1,5 +1,6 @@
 import type { NativeExpected } from './native-readiness.types';
 import { expect, type Locator, type Page } from '@playwright/test';
+import { currentRow } from './picker-rows';
 
 const title = 'Native activity';
 
@@ -18,7 +19,8 @@ async function designsAt(page: Page, expected: NativeExpected): Promise<void> {
 		'aria-current',
 		'page'
 	);
-	await expect(page.getByLabel('Commit', { exact: true })).toHaveValue(expected.commit);
+	expect(await currentRow(page, 'Choose commit')).toContainText(expected.commit.slice(0, 7));
+	await page.keyboard.press('Escape');
 	const name =
 		expected.state === 'history'
 			? `Historical commit · ${expected.commit.slice(0, 7)}`

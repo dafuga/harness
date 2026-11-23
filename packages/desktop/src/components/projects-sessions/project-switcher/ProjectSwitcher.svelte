@@ -2,10 +2,11 @@
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_hdzxlphy4k -->
 <script lang="ts">
-	import Select from '$shared/Select.svelte';
 	import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';
 	import { projectList } from './projectList';
 	import ChoiceDialog from '../../shared-primitives/ChoiceDialog.svelte';
+	import ChoiceRow from '../../shared-primitives/ChoiceRow.svelte';
+	import ChoiceRows from '../../shared-primitives/ChoiceRows.svelte';
 	import Icon from '../../shared-primitives/Icon.svelte';
 	let { workspace }: { workspace: Workspace } = $props();
 	/** Follows the shown project; a choice is held only until the switch has ended. */
@@ -16,9 +17,10 @@
 	/** The shown workbench stays named in the bar; the list of the others waits behind its icon. */
 	const name = $derived(workspace.snapshot?.project.name ?? '');
 	/** A switch that fails leaves the shown project selected. */
-	async function choose(close: () => void) {
+	async function choose(close: () => void, id: string) {
 		close();
-		await workspace.switchProject(value);
+		value = id;
+		await workspace.switchProject(id);
 		value = workspace.projectId ?? '';
 	}
 </script>
@@ -34,18 +36,22 @@
 		{#snippet icon()}<Icon name="workbench" size={18} />{/snippet}
 		{#snippet children(close: () => void)}{#if projects.length === 0}<hx-span
 					>No projects yet</hx-span
-				>{:else}<hx-label class="picker-field" onchange={() => void choose(close)}
-					>Project<Select expanded label="Project" bind:value
-						>{#if local.length}<hx-optgroup
-								label={workspace.local ? 'On this device' : 'On your computer'}
-								>{#each local as item (item.id)}<hx-option value={item.id}>{item.name}</hx-option
-									>{/each}</hx-optgroup
-							>{/if}{#if shared.length}<hx-optgroup label="Shared"
-								>{#each shared as item (item.id)}<hx-option value={item.id}>{item.name}</hx-option
-									>{/each}</hx-optgroup
-							>{/if}</Select
-					></hx-label
-				>{/if}{/snippet}
+				>{:else}{#if local.length}<ChoiceRows
+						title={workspace.local ? 'On this device' : 'On your computer'}
+						label={workspace.local ? 'On this device' : 'On your computer'}
+					>
+						{#each local as item (item.id)}<ChoiceRow
+								name={item.name}
+								current={item.id === value}
+								onchoose={() => void choose(close, item.id)}
+							/>{/each}
+					</ChoiceRows>{/if}{#if shared.length}<ChoiceRows title="Shared" label="Shared">
+						{#each shared as item (item.id)}<ChoiceRow
+								name={item.name}
+								current={item.id === value}
+								onchoose={() => void choose(close, item.id)}
+							/>{/each}
+					</ChoiceRows>{/if}{/if}{/snippet}
 	</ChoiceDialog>{#if name}<hx-span class="project-name" title={name}>{name}</hx-span
 		>{/if}{#if workspace.bridge && workspace.local}<hx-button
 			type="button"
@@ -95,23 +101,5 @@
 		.add-project:focus-visible {
 			outline-offset: calc(-1 * var(--hx-space-2));
 		}
-	}
-	/* In its dialog the switcher is a field of the dialog's width, drawn as a field. */
-	.picker-field {
-		display: grid;
-		gap: var(--hx-space-6);
-		font-size: var(--hx-type-size-xs);
-		min-width: 0;
-	}
-	.picker-field :global(.report-select) {
-		display: block;
-	}
-	.picker-field :global(.report-select.expanded select) {
-		width: 100%;
-		max-width: none;
-		padding-inline: var(--hx-space-8);
-		font-size: var(--hx-type-size-sm);
-		border-color: var(--hx-color-border);
-		background: var(--hx-color-surface-raised);
 	}
 </style>
