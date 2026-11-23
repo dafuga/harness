@@ -29,7 +29,7 @@
 
 <hx-main class="sign-in" data-harness-component="account-sign-in">
 	<hx-section class="sign-in-inner" aria-labelledby="account-title">
-		<BrandMark size={40} />
+		<hx-span class="sign-in-mark"><BrandMark size={40} /></hx-span>
 		<hx-h1 id="account-title">Harness</hx-h1>
 		<hx-p class="tagline">Understand your project. Design what comes next.</hx-p>
 		{#if waiting}
@@ -69,6 +69,9 @@
 </hx-main>
 
 <style>
+	.sign-in-mark {
+		color: var(--hx-color-primary);
+	}
 	.sign-in {
 		min-height: 100dvh;
 	}

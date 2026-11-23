@@ -15,7 +15,7 @@
 {:else if session.status || session.error}
 	<hx-main class="sign-in">
 		<hx-div class="sign-in-inner">
-			<BrandMark size={40} />
+			<hx-span class="sign-in-mark"><BrandMark size={40} /></hx-span>
 			<hx-h1>Harness</hx-h1>
 			<hx-p class="muted">Understand your project. Design what comes next.</hx-p>
 			<LoginPanel compact />
@@ -27,6 +27,9 @@
 {/if}
 
 <style>
+	.sign-in-mark {
+		color: var(--hx-color-primary);
+	}
 	.sign-in {
 		min-height: 100dvh;
 	}

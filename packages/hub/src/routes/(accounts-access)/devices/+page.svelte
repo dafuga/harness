@@ -50,7 +50,7 @@
 </script>
 
 <svelte:head><title>Harness · Devices</title></svelte:head>
-<HubFrame>
+<HubFrame section="Account">
 	{#if !session.actor}
 		<LoginPanel reason="Sign in with Google to manage the devices on your account." />
 	{:else}
