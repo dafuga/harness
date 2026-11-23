@@ -16,8 +16,7 @@ export function recordTrackerTranscriptExposure(
 		.update(identity + ':' + type)
 		.digest('hex');
 	const marker = 'tracker_secret_report:' + event;
-	const reported = Number(store.getMeta(marker) ?? -1);
-	if (reported >= byte) return;
+	if (Number(store.getMeta(marker) ?? -1) >= byte) return;
 	const items = new TrackerItemReadRepository(store.database);
 	const source = storedItem(items, itemId);
 	const rotationId = event.slice(0, 10);
@@ -27,8 +26,7 @@ export function recordTrackerTranscriptExposure(
 		persist();
 		return;
 	}
-	const location = `session ${session}, byte ${byte}`;
-	const question = `${type} detected in ${location}. Rotate all affected credentials via the secret-safe path.`;
+	const question = `${type} detected in session ${session}, byte ${byte}. Rotate affected credentials through the secret-safe path.`;
 	const note = source ? `Tracker item ${source.id}. ${question}` : question;
 	const fields = previousRotation
 		? { status: 'open', resolved: 0, 'note+': note }
