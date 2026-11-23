@@ -10,6 +10,7 @@
 	"composition": {
 		"level": "molecule",
 		"uses": [
+			"reports.component.brand-mark",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-h1",
 			"reports.component.shared-primitives-atoms-html-img",
@@ -77,6 +78,11 @@
 		},
 		{
 			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.brand-mark",
 			"via": "import",
 			"origin": "derived"
 		},

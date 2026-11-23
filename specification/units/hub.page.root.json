@@ -12,6 +12,7 @@
 		"uses": [
 			"hub.component.login-panel",
 			"hub.component.projects-sessions-hub-home",
+			"reports.component.brand-mark",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h1",
 			"reports.component.shared-primitives-atoms-html-main",
@@ -57,6 +58,11 @@
 		},
 		{
 			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.brand-mark",
 			"via": "import",
 			"origin": "derived"
 		},
