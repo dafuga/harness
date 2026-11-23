@@ -9,7 +9,6 @@ import {
 	sourceRun,
 	sqliteFixtureLease
 } from './support/trackerAdapterFixture';
-
 test('poll holds the shared lease across a delayed read and releases it on cancellation', async () => {
 	await withTempDir('harness-adapter-lease-', async (directory) => {
 		const lease = sqliteFixtureLease(join(directory, 'owner.lock'));
