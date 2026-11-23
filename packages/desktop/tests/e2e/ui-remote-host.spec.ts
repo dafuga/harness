@@ -16,6 +16,12 @@ const made = async (page: Page, op: string) =>
 		(call) => call.op === op
 	);
 const access = (page: Page) => page.getByRole('region', { name: 'Phone access' });
+/** The home keeps phone access behind its quiet hint: the settings open in a dialog. */
+const home = async (page: Page) => {
+	await page.goto('/');
+	await page.getByRole('button', { name: 'Phone access', exact: true }).click();
+	return access(page);
+};
 const computer = (page: Page) => page.getByRole('region', { name: 'Computer connection' });
 const code = (page: Page) => access(page).getByRole('img', { name: 'Pairing QR code' });
 /** The text of the offer the SYNTHETIC control port holds open, or null when it holds none. */
@@ -32,9 +38,13 @@ test('the Electron environment turns phone access on and shows a one-time pairin
 	await remoteHostFixture(page);
 	await page.goto('/');
 	await expect(page.locator('html')).toHaveAttribute('data-environment', 'electron');
-	await expect(page.getByRole('button', { name: 'Open Project', exact: true })).toBeEnabled();
+	await expect(page.getByRole('button', { name: 'Open project', exact: true })).toBeEnabled();
 	await expect(computer(page)).toHaveCount(0);
+	await expect(page.getByText(/sign in with the same Google account/)).toBeVisible();
+	await expect(access(page)).toHaveCount(0);
+	await page.getByRole('button', { name: 'Phone access', exact: true }).click();
 	const panel = access(page);
+	await expect(page.getByRole('dialog', { name: 'Phone access' })).toBeVisible();
 	await expect(panel.getByText('Phone access is off.')).toBeVisible();
 	await expect(page.getByRole('textbox', { disabled: false })).toHaveCount(0);
 	await remoteEvidence(page, testInfo, 'desktop-start');
@@ -83,8 +93,7 @@ test('a phone is approved on the desktop for chosen local projects, and can be r
 	page
 }, testInfo) => {
 	await remoteHostFixture(page, true);
-	await page.goto('/');
-	const panel = access(page);
+	const panel = await home(page);
 	await panel.getByRole('button', { name: 'Pair a phone', exact: true }).click();
 	await page.evaluate(() =>
 		(window as unknown as { __remoteHost: { request: () => void } }).__remoteHost.request()
@@ -132,8 +141,7 @@ test('a phone that is denied is not approved, and a code that ran out is no long
 	page
 }, testInfo) => {
 	await remoteHostFixture(page, true, 2500);
-	await page.goto('/');
-	const panel = access(page);
+	const panel = await home(page);
 	const pair = panel.getByRole('button', { name: 'Pair a phone', exact: true });
 	await pair.click();
 	await expect(code(page)).toBeVisible();
@@ -194,7 +202,7 @@ test('an ordinary page selects the web environment and has neither connection', 
 	await page.goto('/');
 	await expect(page.locator('html')).toHaveAttribute('data-environment', 'web');
 	await expect(page.getByText(/Browser preview · read-only\./)).toBeVisible();
-	await expect(page.getByRole('button', { name: 'Open Project', exact: true })).toBeDisabled();
+	await expect(page.getByRole('button', { name: 'Open project', exact: true })).toBeDisabled();
 	await expect(access(page)).toHaveCount(0);
 	await expect(computer(page)).toHaveCount(0);
 	await expect(page.getByRole('region', { name: 'Shared projects' })).toHaveCount(0);

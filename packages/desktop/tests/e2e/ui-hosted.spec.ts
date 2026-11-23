@@ -88,7 +88,7 @@ test('a refused source read clears the whole shared view, and nothing late bring
 	await page.evaluate(() => Object.assign(window, { __deny: true }));
 	await page.getByRole('button', { name: 'src/activity.svelte', exact: true }).click();
 	await expect(page.getByRole('alert')).toContainText('Access to this shared project ended');
-	await expect(page.getByRole('button', { name: 'Open Project', exact: true })).toBeVisible();
+	await expect(page.getByRole('button', { name: 'Open project', exact: true })).toBeVisible();
 	await expect(page.getByText(/Gamma activity/)).toHaveCount(0);
 	await expect(page.locator('.image-canvas')).toHaveCount(0);
 	await expect(page.getByRole('complementary', { name: 'Design conversation' })).toHaveCount(0);

@@ -7,13 +7,13 @@ test('browser preview exposes no writable backend', async ({ page }) => {
 		await page.evaluate(() => document.fonts.ready);
 		await page.screenshot({ path: 'test-results/ui-preview.png', fullPage: true });
 	}
-	await expect(page.getByRole('button', { name: 'Open Project', exact: true })).toBeDisabled();
+	await expect(page.getByRole('button', { name: 'Open project', exact: true })).toBeDisabled();
 	await expect(page.getByText(/Browser preview · read-only/)).toBeVisible();
 });
 test('designless Plan preserves truthful status and branch/commit paths', async ({ page }) => {
 	await fakeProject(page);
 	await page.goto('/');
-	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	await page.getByRole('button', { name: 'Open project', exact: true }).click();
 	for (const name of ['Choose branch', 'Choose commit']) {
 		const icon = page.getByRole('button', { name, exact: true });
 		expect((await icon.boundingBox())!.height).toBeLessThanOrEqual(36);
@@ -67,7 +67,7 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 test('catalog search, changed filter and conversational plan request', async ({ page }) => {
 	await fakeProject(page, true);
 	await page.goto('/');
-	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	await page.getByRole('button', { name: 'Open project', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'Overview', exact: true })).toBeVisible();
 	await page.getByRole('button', { name: 'Filters', exact: true }).click();
 	await page.getByRole('checkbox', { name: 'Changed only', exact: true }).check();
@@ -93,7 +93,7 @@ test('Revision navigation exits historical and explicitly pinned tip revisions',
 	await fakeProject(page, true);
 	await page.setViewportSize({ width: 320, height: 568 });
 	await page.goto('/');
-	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	await page.getByRole('button', { name: 'Open project', exact: true }).click();
 	for (const commit of ['b'.repeat(40), 'a'.repeat(40)]) {
 		await page.getByRole('button', { name: 'Choose commit', exact: true }).click();
 		await page.getByLabel('Commit', { exact: true }).selectOption(commit);
@@ -141,7 +141,7 @@ test('workspace selectors start collapsed and environment stays directly selecta
 }) => {
 	await fakeProject(page, true);
 	await page.goto('/');
-	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	await page.getByRole('button', { name: 'Open project', exact: true }).click();
 	await page.evaluate(() => document.fonts.ready);
 	if (process.env.TAKE_SCREENSHOT === 'true')
 		await page.screenshot({

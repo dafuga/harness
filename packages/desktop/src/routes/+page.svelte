@@ -29,6 +29,8 @@
 	setContext(remoteContext, remote);
 	let available = $state(false);
 	let kind = $state<EnvironmentKind>('web');
+	/** A phone opens the projects of a computer; every other runtime opens them on this device. */
+	const local = $derived(kind !== 'capacitor');
 	/** On a paired phone: offered only once the owner's overview read confirms this account may see it. */
 	let overview = $state(false);
 	onMount(() => {
@@ -109,13 +111,15 @@
 >
 {#if workspace.snapshot}<WorkspaceShell {workspace} />{:else}<ProjectGate
 		{available}
-		local={kind !== 'capacitor'}
+		{local}
 		{overview}
 		busy={workspace.busy}
 		open={() => void workspace.openProject()}
 		projects={workspace.projects}
 		choose={(projectId) => void workspace.switchProject(projectId)}
-		>{#if available}<HostedConnection {workspace} /><RemoteConnection
-				{workspace}
-			/>{/if}</ProjectGate
+		phone={local && available && workspace.remote.host ? phoneAccess : undefined}
+		>{#if available}<HostedConnection {workspace} compact={local} />{#if !local}<RemoteConnection
+					{workspace}
+				/>{/if}{/if}</ProjectGate
 	>{#if workspace.error}<hx-p class="error" role="alert">{workspace.error}</hx-p>{/if}{/if}
+{#snippet phoneAccess()}<RemoteConnection {workspace} />{/snippet}

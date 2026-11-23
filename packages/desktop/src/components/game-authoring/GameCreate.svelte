@@ -70,14 +70,11 @@
 	aria-busy={busy}
 	onsubmit={submit}
 >
-	<hx-div class="intro wide">
-		<hx-h2>New project</hx-h2>
-		<hx-small
-			>{ready
-				? 'An app or a game, created and opened on this device.'
-				: 'This desktop app cannot create projects yet.'}</hx-small
-		>
-	</hx-div>
+	<hx-p class="intro wide"
+		>{ready
+			? 'An app or a game, created and opened on this device.'
+			: 'This desktop app cannot create projects yet.'}</hx-p
+	>
 	<hx-label class="field wide">
 		<hx-span class="caption">Name</hx-span>
 		<hx-input bind:value={name} name="name" required autocomplete="off" disabled={locked} />
@@ -103,45 +100,21 @@
 </hx-form>
 
 <style>
+	/* The New project dialog frames the form: it carries no card of its own. */
 	.game-create {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: var(--hx-space-14) var(--hx-space-12);
-		width: min(100%, 440px);
-		margin: var(--hx-space-8) auto var(--hx-space-28);
-		padding: var(--hx-space-20);
+		width: 100%;
 		text-align: start;
-		background: radial-gradient(
-			ellipse at top,
-			var(--hx-color-surface-raised),
-			var(--hx-color-surface) 70%
-		);
-		border: var(--hx-border-thin) solid var(--hx-color-border);
-		border-radius: var(--hx-radius-large);
-		box-shadow: var(--hx-shadow-overlay);
-		transition: border-color var(--hx-motion-fast);
-	}
-	.game-create:focus-within {
-		border-color: color-mix(in srgb, var(--hx-color-primary) 40%, var(--hx-color-border));
 	}
 	.wide {
 		grid-column: 1 / -1;
 	}
-	.intro h2 {
-		display: flex;
-		align-items: center;
-		gap: var(--hx-space-8);
-		font-size: var(--hx-type-size-base);
-	}
-	.intro h2::before {
-		content: '';
-		width: 6px;
-		height: 6px;
-		border-radius: var(--hx-radius-round);
-		background: var(--hx-color-primary);
-	}
-	.intro small {
-		margin-top: var(--hx-space-4);
+	.intro {
+		margin: 0;
+		color: var(--hx-color-text-muted);
+		font-size: var(--hx-type-size-compact);
 	}
 	.field {
 		display: grid;
@@ -168,7 +141,6 @@
 		outline: var(--hx-border-thick) solid var(--hx-color-primary);
 		outline-offset: var(--hx-border-thick);
 	}
-	/* Above the gate's own spacing of its primary button. */
 	.game-create .primary {
 		margin: var(--hx-space-4) 0 0;
 		min-height: 44px;

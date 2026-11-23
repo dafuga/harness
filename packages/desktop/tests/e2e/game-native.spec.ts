@@ -194,7 +194,7 @@ for (const { dimension, viewport } of ['2d', '3d'].flatMap((dimension) =>
 			browserErrors.watch(app.context());
 			const page = await app.firstWindow();
 			await page.setViewportSize(viewport);
-			await expect(page.getByRole('button', { name: 'Open Project', exact: true })).toBeVisible();
+			await expect(page.getByRole('button', { name: 'Open project', exact: true })).toBeVisible();
 			await recordStartup(app, page, started, dimension);
 			beginGameFlow(page);
 			await test.step('Create a game', () => createNativeGame(page, name, dimension));

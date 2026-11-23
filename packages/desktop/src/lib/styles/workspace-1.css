@@ -122,15 +122,6 @@
 	color: var(--hx-color-text-muted);
 	font-size: var(--hx-type-size-xs);
 }
-.project-gate {
-	max-width: 650px;
-	margin: 18vh auto;
-	text-align: center;
-	padding: var(--hx-space-30);
-}
-.project-gate .primary {
-	margin: var(--hx-space-20);
-}
 .empty {
 	padding: var(--hx-space-70) var(--hx-space-24);
 	text-align: center;

@@ -63,7 +63,7 @@ async function openDraftThroughUi(page: Page, root: string) {
 		title: 'Native activity',
 		goal: 'Review committed images through the native bridge.'
 	});
-	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	await page.getByRole('button', { name: 'Open project', exact: true }).click();
 	await expect(page.getByLabel('Branch', { exact: true })).toHaveValue('feat/native');
 	await expect(page.getByRole('button', { name: 'New page' })).toHaveCount(0);
 	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toBeVisible();

@@ -32,7 +32,7 @@ test('the Capacitor environment pairs by scanning: no link, code or address is e
 	const panel = computer(page);
 	await expect(panel.getByRole('heading', { name: 'Connect to computer' })).toBeVisible();
 	await remoteEvidence(page, testInfo, 'phone-start');
-	await expect(page.getByRole('button', { name: 'Open Project', exact: true })).toHaveCount(0);
+	await expect(page.getByRole('button', { name: 'Open project', exact: true })).toHaveCount(0);
 	await expect(page.getByRole('region', { name: 'Phone access' })).toHaveCount(0);
 	await expect(page.getByRole('region', { name: 'Shared projects' })).toHaveCount(0);
 	await expect(projects(page)).toHaveCount(0);
@@ -76,7 +76,7 @@ test('approval on the desktop connects the phone and lists only what it was gran
 	await expect(page.getByRole('button', { name: 'Open Alpha', exact: true })).toBeVisible();
 	await expect(page.getByRole('button', { name: 'Open Beta', exact: true })).toBeVisible();
 	await expect(page.getByRole('button', { name: 'Open Gamma', exact: true })).toHaveCount(0);
-	await expect(page.getByRole('button', { name: 'Open Project', exact: true })).toHaveCount(0);
+	await expect(page.getByRole('button', { name: 'Open project', exact: true })).toHaveCount(0);
 	expect(await fits(page)).toBe(true);
 	await remoteEvidence(page, testInfo, 'phone-connected');
 	await announce(page, 'revoked');

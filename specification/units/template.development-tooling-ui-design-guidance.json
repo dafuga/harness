@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "template.development-tooling-ui-design-guidance",
+	"uid": "u_waj3b3a3ii",
+	"kind": "template",
+	"title": "uiDesignGuidance",
+	"responsibility": "Owns the uiDesignGuidance scaffold template.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/templates/development-tooling/uiDesignGuidance.ts"],
+		"symbols": ["uiDesignPatternRules", "uiDesignAntiPatterns", "uiDesignRules"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "uiDesignPatternRules",
+				"type": "unknown"
+			},
+			{
+				"name": "uiDesignAntiPatterns",
+				"type": "unknown"
+			},
+			{
+				"name": "uiDesignRules",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "uiDesignRules",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "uiDesignRules",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/templates/development-tooling/uiDesignGuidance.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/templates/development-tooling/uiDesignGuidance.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
