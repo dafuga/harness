@@ -27,8 +27,8 @@
 			const listed = await projects.repositories();
 			repositories = listed.repositories;
 			truncated = listed.truncated;
-		} catch (cause) {
-			error = String(cause);
+		} catch {
+			error = 'Couldn’t load the GitHub connection or repositories. Try again shortly.';
 		}
 	}
 	/** Only a repository the server listed can be chosen, and the server checks it again. */
@@ -43,7 +43,10 @@
 			});
 			created(project.id);
 		} catch (cause) {
-			error = String(cause);
+			error =
+				cause instanceof Error && 'code' in cause && cause.code === 'repository-denied'
+					? 'Choose a GitHub repository you administer.'
+					: 'Couldn’t create the project. Try again shortly.';
 		} finally {
 			saving = false;
 		}
@@ -53,8 +56,8 @@
 <hx-section class="hub-card">
 	<hx-h2>New shared project</hx-h2>
 	{#if !github}<hx-p class="muted">{error || 'Checking the GitHub connection…'}</hx-p>
-	{:else if !github.configured}<hx-p>
-			The GitHub App is not configured for this deployment, so no project can be created here.
+	{:else if !github.configured}<hx-p class="muted" role="status">
+			Project creation isn’t set up yet.
 		</hx-p>{:else if !github.connected}<hx-p>
 			A project shares one GitHub repository. Connect GitHub first. The server checks that you
 			administer the repository; nothing typed on this page proves access.
