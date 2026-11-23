@@ -120,7 +120,10 @@ test('a signed-in non-owner sees the project list and no overview link on /proje
 	baseURL
 }) => {
 	refusal(browserErrors, baseURL!, forbidden);
-	await overviewFixture(page, 'ready', { actor: grace });
+	await overviewFixture(page, 'ready', {
+		actor: grace,
+		github: { configured: false, connected: false, login: null }
+	});
 	const refused = page.waitForResponse(
 		(response) =>
 			new URL(response.url()).pathname === '/api/tracker-overview' && response.status() === 403
@@ -128,6 +131,8 @@ test('a signed-in non-owner sees the project list and no overview link on /proje
 	await page.goto('/projects');
 	await (await refused).finished();
 	await expect(page.getByRole('heading', { name: 'Shared projects' })).toBeVisible();
+	await expect(page.getByText('Project creation isn’t set up yet.')).toBeVisible();
+	await expect(page.getByRole('link', { name: 'Connect GitHub' })).toHaveCount(0);
 	await expect(page.getByRole('link', { name: 'Project overview', exact: true })).toHaveCount(0);
 	await expect(page.locator(overviewRoot)).toHaveCount(0);
 	await expect(page.getByText('synthetic-sync', { exact: true })).toHaveCount(0);
@@ -197,7 +202,20 @@ for (const viewport of viewports) {
 		baseURL
 	}, testInfo) => {
 		refusal(browserErrors, baseURL!, forbidden);
-		await overviewFixture(page, 'ready', { actor: grace });
+		browserErrors.expectError({
+			type: 'console',
+			message:
+				'Failed to load resource: the server responded with a status of 503 (Service Unavailable)',
+			source: new URL('/api/projects', baseURL!).href,
+			reason: 'Shared collaboration is intentionally disabled in this setup state.'
+		});
+		await overviewFixture(page, 'ready', {
+			actor: grace,
+			github: { configured: false, connected: false, login: null }
+		});
+		await page.route('**/api/projects', (route) =>
+			route.fulfill({ status: 503, json: { error: 'collaboration-disabled' } })
+		);
 		const denied = page.waitForResponse(
 			(response) =>
 				new URL(response.url()).pathname === '/api/tracker-overview' && response.status() === 403
@@ -207,6 +225,11 @@ for (const viewport of viewports) {
 		await expect(page.getByRole('heading', { name: 'Shared projects' })).toBeVisible();
 		await expect(page.getByRole('link', { name: 'Project overview', exact: true })).toHaveCount(0);
 		await expect(page.locator(overviewRoot)).toHaveCount(0);
+		await expect(page.getByText('Shared projects aren’t set up yet.')).toBeVisible();
+		await expect(page.getByRole('heading', { name: 'New shared project' })).toHaveCount(0);
+		await expect(
+			page.getByText(/BrowserApiRequestError|configured for this deployment/)
+		).toHaveCount(0);
 		await attachShot(page, testInfo, 'non-owner', viewport);
 	});
 
