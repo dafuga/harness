@@ -2,11 +2,9 @@
 	"name": "overview-native-tracker",
 	"goal": "Read Project Overview from the native Tracker after cutover while preserving fixed loopback reads and fail-closed validation.",
 	"createdAt": "2026-11-23T09:52:43.288Z",
-	"updatedAt": "2026-11-23T09:55:40.647Z",
+	"updatedAt": "2026-11-23T09:59:40.884Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T09:59:40.884Z",
+			"evidence": "Frozen red failed on ff4b15e536; the same committed test and runtime passed all 13 cases on ebded0133e. Reports focused suites passed all 57."
 		},
 		{
 			"id": "siblings",
