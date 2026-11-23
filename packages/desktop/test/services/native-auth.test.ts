@@ -5,7 +5,6 @@ import { HostedHttpAdapter } from '../../src/adapters/networking-security/hosted
 import type { NativeSessionAdapter } from '../../src/adapters/networking-security/NativeSessionAdapter';
 const origin = 'https://harness.example.invalid';
 const browserCode = 'c'.repeat(43);
-
 function nativeReceipt(nonce: string) {
 	return {
 		authorization: 'private-fixture-token',

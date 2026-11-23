@@ -1,3 +1,4 @@
+import type { Start, Exchange, Status } from './nativeGoogleFixture.types';
 import { createHash } from 'node:crypto';
 import type { ElectronApplication, Page } from '../../../../../test/support/browserTest';
 import { expect } from '../../../../../test/support/browserTest';
@@ -5,16 +6,6 @@ import { isAbsolute, resolve } from 'node:path';
 
 const handoffId = 'h'.repeat(43);
 const code = 'c'.repeat(43);
-
-type Start = { challenge: string; nonce: string; resource: string; callback: number };
-type Exchange = {
-	handoffId: string;
-	verifier: string;
-	nonce: string;
-	resource: string;
-	callbackCode: string;
-};
-type Status = { configured: boolean; state: string };
 
 export function nativeGoogleFixture() {
 	let pending: Start | undefined;
