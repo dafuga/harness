@@ -18,13 +18,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/routes/+page.svelte"
-		],
-		"symbols": [
-			"+page",
-			"+page.phoneAccess"
-		]
+		"source": ["packages/desktop/src/routes/+page.svelte"],
+		"symbols": ["+page", "+page.phoneAccess"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -132,10 +127,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-renderer"
-	],
+	"scenarios": ["desktop-native", "desktop-renderer"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

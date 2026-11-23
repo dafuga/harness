@@ -27,12 +27,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/projects-sessions/ProjectGate.svelte"
-		],
-		"symbols": [
-			"ProjectGate"
-		]
+		"source": ["packages/desktop/src/components/projects-sessions/ProjectGate.svelte"],
+		"symbols": ["ProjectGate"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,10 +38,7 @@
 				"type": "boolean",
 				"required": true,
 				"description": "Whether this runtime has a bridge. With busy it enables the Open project button (rendered only while local is true); while local is true, false shows the read-only browser-preview hint, and true offers the New project button and the Project Overview link. It never disables recent-project choices, which depend only on busy.",
-				"examples": [
-					true,
-					false
-				]
+				"examples": [true, false]
 			},
 			{
 				"name": "ProjectGate.local",
@@ -53,10 +46,7 @@
 				"required": false,
 				"default": true,
 				"description": "Whether projects are opened on this device; defaults to true. False is for a phone, whose projects are those of a computer: it hides the action row, uses the computer wording for the empty Recent projects line, labels non-shared projects without a root On your computer, and renders the children inline.",
-				"examples": [
-					true,
-					false
-				]
+				"examples": [true, false]
 			},
 			{
 				"name": "ProjectGate.overview",
@@ -70,10 +60,7 @@
 				"type": "boolean",
 				"required": true,
 				"description": "Whether a project operation is in progress. While it is true, the local Open project button (rendered only when local is true) is disabled, has aria-busy set and reads Opening project…, and every recent-project button is disabled.",
-				"examples": [
-					false,
-					true
-				]
+				"examples": [false, true]
 			},
 			{
 				"name": "ProjectGate.open",
@@ -124,12 +111,6 @@
 				"required": false,
 				"default": "undefined (omitted)",
 				"description": "Optional callback receiving a selected recent-project identifier. Defaults to JavaScript undefined (omitted); activating a listed project does nothing when no callback is supplied."
-			},
-			{
-				"name": "ProjectGate.phone",
-				"type": "Snippet",
-				"required": false,
-				"default": "undefined (omitted)"
 			},
 			{
 				"name": "ProjectGate.phone",
@@ -251,11 +232,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-renderer",
-		"remote-mobile-ui"
-	],
+	"scenarios": ["desktop-native", "desktop-renderer", "remote-mobile-ui"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
