@@ -70,14 +70,17 @@ Keychain entries.
 The native Vault inbox belongs to the standard Harness iOS app (`com.dafuga.harness`). The
 paired broker route belongs to the standard Harness Mac app (`dev.harness.desktop`).
 
-Use the signed **main Harness** app for the single assisted iPhone session. Before involving the
-phone owner, verify the exact app build and the approved Harness Remote pairing. Preserve the
-phone's existing app and pairing. The test operator can use the Mac app's public device ID and
-pairing generation from `window.harnessRemote.status()` to configure the broker bridge.
+Use the signed **main Harness** app for the single assisted iPhone session. Before scheduling,
+verify both app builds and the trusted HTTPS Harness Remote route. Preserve any existing pairing.
+If the main app has no test pairing, use the prepared QR offer at the start of the session. After
+approval, the operator can read the public device ID and generation from
+`window.harnessRemote.status()` on the Mac and configure the broker bridge.
 
 Create an owner-only local directory with a short path such as `/tmp/vaultphone.<suffix>`. Save a
 `remote.json` file with the parameters below. Set `HARNESS_VAULT_PHONE_CONFIG` to the absolute path
-of that file when launching the test desktop. The `socketPath` must be inside the private directory.
+of that file when launching the main Mac candidate. If pairing created the grant during this
+session, relaunch the candidate with that setting in the same Mac profile. The `socketPath`
+must be inside the private directory.
 
 ```sh
 fixture_dir=$(mktemp -d /tmp/vaultphone.XXXXXX)
