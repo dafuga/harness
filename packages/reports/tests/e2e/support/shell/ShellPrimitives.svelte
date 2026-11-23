@@ -79,6 +79,18 @@
 			<Status passed={false} label="Failed" bare />
 			<Status passed={false} label="Many reasons" reasons={many} />
 		</p>
+		<p
+			aria-label="Verifications"
+			style="display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;"
+		>
+			<Status variant="icon" status="verified" reason="Every test passed at this revision." />
+			<Status variant="icon" status="failed" reason="Test login is failing." />
+			<Status
+				variant="icon"
+				status="unknown"
+				reason="Nothing was recorded for this revision."
+			/>
+		</p>
 		<div class="hx-scroll-x" role="group" aria-label="Narrow table">
 			<table style="width:100%;border-collapse:collapse;">
 				<tbody>
