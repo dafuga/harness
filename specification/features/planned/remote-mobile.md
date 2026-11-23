@@ -16,6 +16,12 @@ Require explicit project/revision context, isolated connection state, shared rep
 
 Prove real socket transport, cross-device isolation, unauthorized/revoked access, historical write denial, hosted execution denial, reconnect, and locked-screen lifecycle. Exercise shared desktop and phone layouts, build/install a Capacitor simulator artifact, and attempt physical-device deployment after verification and commit. Live relay deployment and TestFlight publication remain separate release steps.
 
+## Decision notifications
+
+Harness Studio uses one APNs topic for Tracker and deploy decision alerts and Vault request alerts. The app accepts one known custom object alongside the Apple notification dictionary. Decision objects contain only the category, opaque reference, and source fingerprint.
+
+The app fetches the authoritative inbox after opening an alert. A reference must match exactly one record from its source, and its category must match that record. Ambiguous, revoked, stale, and missing records cannot open review. Repeat delivery does not open another review. Decisions always require separate in-app confirmation.
+
 Agent host-file changes, tracked as metadata only:
 
 - Claude project memory `~/.claude/projects/-Users-danielfugere-projects-harness/memory/codex-control-directory-review-files.md`: Opus recorded control-file guidance; before hash unavailable; after SHA256 `07e90817adf5eddfdeda37032796177df004fecb799e742e6a38a338b16c7b32`, 2041 bytes.

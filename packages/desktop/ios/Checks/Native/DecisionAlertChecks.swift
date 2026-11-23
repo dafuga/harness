@@ -78,6 +78,13 @@ func decisionRoutingChecks() {
           "a reference missing from the fresh inbox is unknown and needs a refresh")
     check(router.route(trackerAlert(trackerRef, sourceB)) == .unknown,
           "the same reference from another source never opens this source's item")
+    router.refresh(
+        entries: [tracker(trackerRef, sourceA), deploy(trackerRef, sourceA), deploy(deployRef, sourceA), deploy(deployRef, sourceA, .expired)],
+        revokedSources: []
+    )
+    check(router.route(trackerAlert(trackerRef, sourceA)) == .mismatch
+          && router.route(deployAlert(deployRef, sourceA)) == .mismatch,
+          "ambiguous source references refuse both Tracker and deploy review")
 }
 
 func decisionFreshnessChecks() {
@@ -119,6 +126,12 @@ func pushAlertChecks() {
     check(PushAlert(userInfo: ["aps": ["alert": "text"]]) == nil, "an alert with neither object is refused")
     let both = payload(fields("tracker", trackerRef, sourceA)).merging(vaultPayload(["requestId": requestId, "broker": vault])) { $1 }
     check(PushAlert(userInfo: both) == nil, "an alert carrying both objects is refused, never routed to either")
+    var extraDecision = payload(fields("tracker", trackerRef, sourceA))
+    var extraVault = vaultPayload(["requestId": requestId, "broker": vault])
+    extraDecision["reason"] = "synthetic decision reason"
+    extraVault["reason"] = "synthetic request reason"
+    check(PushAlert(userInfo: extraDecision) == nil && PushAlert(userInfo: extraVault) == nil,
+          "an unexpected top-level field refuses either alert category")
     let vaultRefused: [[String: Any]] = [
         ["requestId": String(repeating: "f", count: 31), "broker": vault],
         ["requestId": requestId, "broker": String(repeating: "e", count: 63)],
