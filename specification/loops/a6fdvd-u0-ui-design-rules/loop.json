@@ -1,0 +1,65 @@
+{
+	"name": "a6fdvd-u0-ui-design-rules",
+	"goal": "U0 rule additions: add floating-button, absence-not-failure, picker list-row, one-composer and gate-heading guidance to uiDesignGuidance; audit flags native select[size] or multiple outside a form dialog in Svelte components",
+	"createdAt": "2026-11-23T18:11:30.007Z",
+	"updatedAt": "2026-11-23T18:18:35.151Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-23T18:18:14.986Z",
+			"evidence": "Design record specification/designs/full-pass/README.md section 'Rule additions (U0)': five guidance rules in src/templates/development-tooling/uiDesignGuidance.ts; audit must report native select[size] or multiple outside a form dialog in Svelte components. Missing today: no rule text and no list-box audit (svelteAdapter reports none)."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-23T18:18:16.407Z",
+			"evidence": "Gap: no standardized test covers picker list boxes (audit examples cover only overview-layout and the adapter test does not exercise select rules) or the uiDesignRules() text. Reusable change: test/examples/audit.development-tooling-list-box.test.ts runs the real svelteAdapter; test/ui-design-guidance.test.ts asserts the U0 rules are emitted."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-23T18:18:30.728Z",
+			"evidence": "a194c902eb: vitest run test/examples/audit.development-tooling-list-box.test.ts test/ui-design-guidance.test.ts failed: 'expected [] to deeply equal' (list-box) and 'expected false to be true' (guidance)."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-23T18:18:32.689Z",
+			"evidence": "6068ebc3ee: listBox.ts (auditListBox, rule native-list-box) wired in adapters/svelte.ts; five rules in uiDesignGuidance.ts; units spec audit.development-tooling-list-box.json; adapter spec dependency."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-23T18:18:35.151Z",
+			"evidence": "6068ebc3ee: loop record --phase green passed with the unchanged red test and command."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
