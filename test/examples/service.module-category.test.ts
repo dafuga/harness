@@ -29,7 +29,13 @@ test('Loads the nearest project taxonomy', async () => {
 				evidence: 'examples-cases',
 				file: 'loads-the-nearest-project-taxonomy.json'
 			},
-			[{ name: 'loads reports taxonomy from its project root', input: { directory: nested }, output: result }]
+			[
+				{
+					name: 'loads reports taxonomy from its project root',
+					input: { directory: nested },
+					output: result
+				}
+			]
 		);
 	});
 });
@@ -51,7 +57,13 @@ test('Reads taxonomy from a selected source tree', async () => {
 			evidence: 'examples-cases',
 			file: 'reads-taxonomy-from-a-selected-source-tree.json'
 		},
-		[{ name: 'reads and validates the selected revision taxonomy', input: { path: 'harness.groups.json' }, output: result }]
+		[
+			{
+				name: 'reads and validates the selected revision taxonomy',
+				input: { path: 'harness.groups.json' },
+				output: result
+			}
+		]
 	);
 });
 

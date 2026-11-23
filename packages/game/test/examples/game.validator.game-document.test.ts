@@ -77,7 +77,11 @@ test('Validates documents against the game document rules', () => {
 			file: 'validates-documents-against-the-game-document-rules.json'
 		},
 		[
-			{ name: 'valid document with a transition and a mechanic', input: inputs[0], output: outputs[0] },
+			{
+				name: 'valid document with a transition and a mechanic',
+				input: inputs[0],
+				output: outputs[0]
+			},
 			{ name: 'transition to an unknown view', input: inputs[1], output: outputs[1] },
 			{ name: 'unsupported version', input: inputs[2], output: outputs[2] }
 		]

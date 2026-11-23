@@ -22,7 +22,12 @@ const SAMPLE: ResourceSnapshot = {
 };
 
 const JOB_ID = '550e8400-e29b-41d4-a716-446655440001';
-const REQUEST: ResourceRequest = { priority: 'coding', cpus: 1.5, memoryMiB: 1536, label: 'Build verification' };
+const REQUEST: ResourceRequest = {
+	priority: 'coding',
+	cpus: 1.5,
+	memoryMiB: 1536,
+	label: 'Build verification'
+};
 
 function fakeQueue(state: { previous?: ResourceSnapshot; jobs?: unknown[] }) {
 	const patches: Array<{ id: string; fields: Record<string, unknown> }> = [];

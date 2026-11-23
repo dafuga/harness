@@ -1,7 +1,11 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import type { Query, BrowserApi, ApiFailure } from '../../src/models/development-tooling/BrowserApi.types';
+import type {
+	Query,
+	BrowserApi,
+	ApiFailure
+} from '../../src/models/development-tooling/BrowserApi.types';
 
 function createBrowserApi(): BrowserApi {
 	return {
@@ -53,9 +57,21 @@ test('accepts typed project API requests and responses', async () => {
 				input: { path: '/projects/project-7', query },
 				output: project
 			},
-			{ name: 'post project with caller-chosen response type', input: { method: 'POST', path: '/projects', body: { name: 'Atlas' } }, output: created },
-			{ name: 'read media payload', input: { path: '/projects/project-7/icon', query: { size: 'small' } }, output: { byteLength: media.bytes.length, mediaType: media.mediaType } },
-			{ name: 'read raw bytes', input: { path: '/projects/export' }, output: { byteLength: bytes.length } }
+			{
+				name: 'post project with caller-chosen response type',
+				input: { method: 'POST', path: '/projects', body: { name: 'Atlas' } },
+				output: created
+			},
+			{
+				name: 'read media payload',
+				input: { path: '/projects/project-7/icon', query: { size: 'small' } },
+				output: { byteLength: media.bytes.length, mediaType: media.mediaType }
+			},
+			{
+				name: 'read raw bytes',
+				input: { path: '/projects/export' },
+				output: { byteLength: bytes.length }
+			}
 		]
 	);
 });
@@ -63,7 +79,11 @@ test('accepts typed project API requests and responses', async () => {
 test('accepts an error with request status and code', () => {
 	const failure = createApiFailure();
 	expect(failure).toBeInstanceOf(Error);
-	expect(failure).toMatchObject({ message: 'Project not found', status: 404, code: 'project_not_found' });
+	expect(failure).toMatchObject({
+		message: 'Project not found',
+		status: 404,
+		code: 'project_not_found'
+	});
 	recordExampleCases(
 		{
 			unitId: 'desktop.model.browser-api-types',
@@ -76,7 +96,12 @@ test('accepts an error with request status and code', () => {
 			{
 				name: 'project not found failure',
 				input: { message: failure.message, status: failure.status, code: failure.code },
-				output: { name: failure.name, message: failure.message, status: failure.status, code: failure.code }
+				output: {
+					name: failure.name,
+					message: failure.message,
+					status: failure.status,
+					code: failure.code
+				}
 			}
 		]
 	);

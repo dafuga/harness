@@ -7,7 +7,11 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { reportAssets } from '../../src/repositories/reports-media/report-repository/reportAssets';
 import { InvalidEvidenceSourceError } from '../../src/repositories/reports-media/report-repository/reportAssets.types';
-import { imageAsset, registeredAsset, writeImageAsset } from '../../src/utils/reports-media/reportAssets';
+import {
+	imageAsset,
+	registeredAsset,
+	writeImageAsset
+} from '../../src/utils/reports-media/reportAssets';
 import { InvalidAssetError } from '../../src/utils/reports-media/reportAssets.types';
 
 const png = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
@@ -30,7 +34,13 @@ test('Image signatures produce content-addressed metadata', () => {
 			evidence: 'examples-cases',
 			file: 'image-signatures-produce-content-addressed-metadata.json'
 		},
-		[{ name: 'PNG signature and matching filename', input: { filename: 'evidence.png', bytes: [...png] }, output }]
+		[
+			{
+				name: 'PNG signature and matching filename',
+				input: { filename: 'evidence.png', bytes: [...png] },
+				output
+			}
+		]
 	);
 });
 
@@ -49,7 +59,13 @@ test('Image writes create the assets folder with supplied bytes', async () => {
 				evidence: 'examples-cases',
 				file: 'image-writes-create-the-assets-folder-with-supplied-bytes.json'
 			},
-			[{ name: 'PNG bytes stored beneath assets', input: { directory: root, name, bytes: [...png] }, output: { path: 'assets/content-addressed.png', bytes: [...output] } }]
+			[
+				{
+					name: 'PNG bytes stored beneath assets',
+					input: { directory: root, name, bytes: [...png] },
+					output: { path: 'assets/content-addressed.png', bytes: [...output] }
+				}
+			]
 		);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
@@ -63,7 +79,11 @@ test('Report image evidence is stored and returned as metadata', async () => {
 		const destination = join(root, 'report');
 		writeFileSync(source, png);
 		const output = await reportAssets(destination, source);
-		expect(output).toEqual({ name: imageAsset(png, source).name, mediaType: 'image', mimeType: 'image/png' });
+		expect(output).toEqual({
+			name: imageAsset(png, source).name,
+			mediaType: 'image',
+			mimeType: 'image/png'
+		});
 		expect(readFileSync(join(destination, 'assets', output.name))).toEqual(png);
 		recordExampleCases(
 			{
@@ -73,7 +93,13 @@ test('Report image evidence is stored and returned as metadata', async () => {
 				evidence: 'examples-cases',
 				file: 'report-image-evidence-is-stored-and-returned-as-metadata.json'
 			},
-			[{ name: 'valid PNG evidence file', input: { directory: destination, source }, output: { ...output } }]
+			[
+				{
+					name: 'valid PNG evidence file',
+					input: { directory: destination, source },
+					output: { ...output }
+				}
+			]
 		);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
@@ -83,7 +109,9 @@ test('Report image evidence is stored and returned as metadata', async () => {
 test('Report evidence rejects a directory source', async () => {
 	const root = temporaryDirectory('invalid-report-evidence');
 	try {
-		await expect(reportAssets(join(root, 'report'), root)).rejects.toBeInstanceOf(InvalidEvidenceSourceError);
+		await expect(reportAssets(join(root, 'report'), root)).rejects.toBeInstanceOf(
+			InvalidEvidenceSourceError
+		);
 		recordExampleCases(
 			{
 				unitId: 'reports.function.report-assets',
@@ -92,7 +120,13 @@ test('Report evidence rejects a directory source', async () => {
 				evidence: 'examples-cases',
 				file: 'report-evidence-rejects-a-directory-source.json'
 			},
-			[{ name: 'directory is not an evidence file', input: { directory: join(root, 'report'), source: root }, error: { name: 'InvalidEvidenceSourceError', message: 'Invalid evidence file or size' } }]
+			[
+				{
+					name: 'directory is not an evidence file',
+					input: { directory: join(root, 'report'), source: root },
+					error: { name: 'InvalidEvidenceSourceError', message: 'Invalid evidence file or size' }
+				}
+			]
 		);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
@@ -106,7 +140,9 @@ test('Registered assets resolve only listed local files', async () => {
 		writeFileSync(join(root, name), png);
 		const output = await registeredAsset(root, name, [name]);
 		expect(output).toBe(join(realpathSync(root), name));
-		await expect(registeredAsset(root, 'missing.png', [name])).rejects.toBeInstanceOf(InvalidAssetError);
+		await expect(registeredAsset(root, 'missing.png', [name])).rejects.toBeInstanceOf(
+			InvalidAssetError
+		);
 		recordExampleCases(
 			{
 				unitId: 'reports.function.report-assets',
@@ -117,7 +153,11 @@ test('Registered assets resolve only listed local files', async () => {
 			},
 			[
 				{ name: 'listed local file', input: { directory: root, name, registered: [name] }, output },
-				{ name: 'unlisted file rejected', input: { directory: root, name: 'missing.png', registered: [name] }, error: { name: 'InvalidAssetError', message: 'Unregistered asset' } }
+				{
+					name: 'unlisted file rejected',
+					input: { directory: root, name: 'missing.png', registered: [name] },
+					error: { name: 'InvalidAssetError', message: 'Unregistered asset' }
+				}
 			]
 		);
 	} finally {

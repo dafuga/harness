@@ -46,7 +46,13 @@ test('Skips recording lookup-only arguments', async () => {
 			evidence: 'examples-cases',
 			file: 'skips-recording-lookup-only-arguments.json'
 		},
-		[{ name: 'help does not invoke the recorder', input: { args: ['help'], exitCode: 0 }, output: { called } }]
+		[
+			{
+				name: 'help does not invoke the recorder',
+				input: { args: ['help'], exitCode: 0 },
+				output: { called }
+			}
+		]
 	);
 });
 

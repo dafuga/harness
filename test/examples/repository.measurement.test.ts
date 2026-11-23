@@ -163,7 +163,13 @@ test('Rejects reading a measurement file that does not exist', async () => {
 				evidence: 'examples-cases',
 				file: 'rejects-reading-a-measurement-file-that-does-not-exist.json'
 			},
-			[{ name: 'missing measurement file rejects with its name in the message', input: { file }, error }]
+			[
+				{
+					name: 'missing measurement file rejects with its name in the message',
+					input: { file },
+					error
+				}
+			]
 		);
 	});
 });

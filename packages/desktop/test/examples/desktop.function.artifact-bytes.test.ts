@@ -74,7 +74,11 @@ test('Returns the checked bytes when the hash matches the query', async () => {
 		[
 			{
 				name: 'matching bytes with a claimed hash that is ignored',
-				input: { scenarioId: captureQuery.scenarioId, evidenceId: captureQuery.evidenceId, sha256: ABC_SHA256 },
+				input: {
+					scenarioId: captureQuery.scenarioId,
+					evidenceId: captureQuery.evidenceId,
+					sha256: ABC_SHA256
+				},
 				output: {
 					text: new TextDecoder().decode(result.bytes),
 					mediaType: result.mediaType,
@@ -111,7 +115,9 @@ test('Refuses a connection that has no artifact reader', async () => {
 
 test('Refuses bytes that do not hash to the recorded SHA-256', async () => {
 	const { bridge } = readerReturning(ABC, ABC_SHA256);
-	const thrown = await rejectionOf(artifactBytes(bridge, { ...captureQuery, sha256: OTHER_SHA256 }));
+	const thrown = await rejectionOf(
+		artifactBytes(bridge, { ...captureQuery, sha256: OTHER_SHA256 })
+	);
 
 	expect(thrown).toBeInstanceOf(ArtifactReadError);
 	expect(thrown).toMatchObject({ name: 'ArtifactReadError', message: damagedArtifact });

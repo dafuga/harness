@@ -54,14 +54,12 @@ for (const viewport of catalogViewports) {
 				list.map((node) => getComputedStyle(node).display)
 			);
 			expect(shown).toEqual(['none', 'none']);
-			await expect(component.getByRole('combobox', { name: 'Branch', exact: true })).toHaveAttribute(
-				'title',
-				/Latest branch tip/
-			);
-			await expect(component.getByRole('combobox', { name: 'Commit', exact: true })).toHaveAttribute(
-				'title',
-				/Selected historical revision/
-			);
+			await expect(
+				component.getByRole('combobox', { name: 'Branch', exact: true })
+			).toHaveAttribute('title', /Latest branch tip/);
+			await expect(
+				component.getByRole('combobox', { name: 'Commit', exact: true })
+			).toHaveAttribute('title', /Selected historical revision/);
 
 			// The tip action is a square outlined action of the bar.
 			const tip = bar.locator('.hx-action');
@@ -81,9 +79,9 @@ for (const viewport of catalogViewports) {
 				await expect(link).toHaveCSS('border-top-style', 'solid');
 			}
 
-			expect(
-				await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)
-			).toBe(true);
+			expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+				true
+			);
 			await captureShell(page, home, { state: state.id, viewport: viewport.id });
 		});
 	}

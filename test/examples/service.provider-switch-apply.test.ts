@@ -15,7 +15,10 @@ const before: Selection = { provider: 'openai', model: 'gpt-5', effort: 'low' };
 const target: Selection = { provider: 'harness-claude', model: 'claude-x', effort: 'high' };
 const wrong: Selection = { ...target, model: 'claude-y' };
 
-function observe(selection: Selection, overrides: Partial<SessionObservation> = {}): SessionObservation {
+function observe(
+	selection: Selection,
+	overrides: Partial<SessionObservation> = {}
+): SessionObservation {
 	return { selection, idle: true, clients: 0, observedAt: new Date().toISOString(), ...overrides };
 }
 

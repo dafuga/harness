@@ -60,7 +60,9 @@ test('patch rebuilds an archive with replaced and added entries', async () => {
 		};
 		const adapter = new DesktopArchiveAdapter();
 		const headerDigest = await adapter.patch(source, target, changes);
-		const entries = Object.fromEntries(adapter.read(target, ['package.json', 'resources/bridge.js']));
+		const entries = Object.fromEntries(
+			adapter.read(target, ['package.json', 'resources/bridge.js'])
+		);
 		const output = { headerDigest, entries };
 		expect(headerDigest).toMatch(/^[a-f0-9]{64}$/u);
 		expect(entries).toEqual({

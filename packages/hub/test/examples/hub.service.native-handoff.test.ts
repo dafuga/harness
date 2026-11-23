@@ -32,7 +32,12 @@ const ORIGIN = 'https://hub.example.com';
 const START = Date.parse('2026-11-15T09:00:00.000Z');
 const USER_CODE = /^[A-HJ-NP-Z2-9]{4}-[A-HJ-NP-Z2-9]{4}$/;
 const UNKNOWN_HANDOFF = 'Zr8wN2hQ5cLx0VdTb7KgE3mUoA9pYs1JfWiCnH4aRtD';
-const REFUSED = { name: 'AuthFailure', code: 'handoff-invalid', status: 400, message: 'Hub auth handoff-invalid' };
+const REFUSED = {
+	name: 'AuthFailure',
+	code: 'handoff-invalid',
+	status: 400,
+	message: 'Hub auth handoff-invalid'
+};
 const projects: Desktop = {
 	verifier: '3rFw9KzQ1mVbX7tHc0LyE5nSaJ8uPdGo2iWq4ZkRxT6',
 	nonce: 'Xb3Qp9rT1wZk7LmV0cNa4Hs8JdYe2UgF',
@@ -52,7 +57,12 @@ const approver: SessionRecord = {
 	idHash: '5f0c9a2e7d41b8c36e1a0f9d24b7c8e53a6d91f0b2c4e7a8d3f6b1c9e0a2d4f7',
 	kind: 'browser',
 	parentHash: null,
-	actor: { id: 'google-110248697315628390471', email: 'ada@example.com', name: 'Ada Park', emailVerified: true },
+	actor: {
+		id: 'google-110248697315628390471',
+		email: 'ada@example.com',
+		name: 'Ada Park',
+		emailVerified: true
+	},
 	resource: 'projects',
 	createdAt: 1794731400000,
 	expiresAt: 1795336200000,
@@ -66,14 +76,25 @@ function fixture() {
 	const store = memoryAuthStore();
 	const secrets = authSecrets('synthetic-session-secret-0123456789abcdef');
 	const sessions = new SessionRepository({ store: store.sessions, secrets, now });
-	const options: NativeHandoffOptions = { store: store.exchanges, sessions, secrets, origin: ORIGIN, environment: 'staging', now };
+	const options: NativeHandoffOptions = {
+		store: store.exchanges,
+		sessions,
+		secrets,
+		origin: ORIGIN,
+		environment: 'staging',
+		now
+	};
 	return { service: new NativeHandoffService(options), store, sessions, clock };
 }
 
 /** The desktop derives its challenge from its verifier, then starts a handoff. */
 async function begin(service: NativeHandoffService, desktop: Desktop) {
 	const challenge = await sha256Url(desktop.verifier);
-	const started = await service.start({ challenge, nonce: desktop.nonce, resource: desktop.resource });
+	const started = await service.start({
+		challenge,
+		nonce: desktop.nonce,
+		resource: desktop.resource
+	});
 	return { ...started, desktop };
 }
 
@@ -89,24 +110,45 @@ function exchangeFor(started: Begun) {
 }
 
 /** Keeps what a call returned, or the AuthFailure it was refused with. */
-async function outcome(run: () => Promise<unknown>): Promise<{ output: unknown } | { error: unknown }> {
+async function outcome(
+	run: () => Promise<unknown>
+): Promise<{ output: unknown } | { error: unknown }> {
 	try {
 		return { output: await run() };
 	} catch (caught) {
 		if (!(caught instanceof AuthFailure)) throw caught;
-		return { error: { name: caught.name, code: caught.code, status: caught.status, message: caught.message } };
+		return {
+			error: {
+				name: caught.name,
+				code: caught.code,
+				status: caught.status,
+				message: caught.message
+			}
+		};
 	}
 }
 
 /** Replaces one-time secrets inside a value, so neither an assertion nor a recorded case holds them. */
 function redact<T>(value: T, secrets: string[]): T {
-	const text = secrets.reduce((json, secret) => json.split(secret).join('<redacted>'), JSON.stringify(value));
+	const text = secrets.reduce(
+		(json, secret) => json.split(secret).join('<redacted>'),
+		JSON.stringify(value)
+	);
 	return JSON.parse(text) as T;
 }
 
 /** Records one state's cases; the file is named after the state id, as the examples gate expects. */
 function record(symbol: string, state: string, cases: Case[]) {
-	recordExampleCases({ unitId: 'hub.service.native-handoff', symbol, state, evidence: 'examples-cases', file: `${state}.json` }, cases);
+	recordExampleCases(
+		{
+			unitId: 'hub.service.native-handoff',
+			symbol,
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
+		cases
+	);
 }
 
 test('start issues a dashed user code and a five minute handoff', async () => {
@@ -130,7 +172,11 @@ test('start issues a dashed user code and a five minute handoff', async () => {
 		secrets.push(started.userCode);
 		cases.push({ name: `start for ${desktop.resource}`, input, output: started });
 	}
-	record('start', 'start-issues-a-dashed-user-code-and-a-five-minute-handoff', redact(cases, secrets));
+	record(
+		'start',
+		'start-issues-a-dashed-user-code-and-a-five-minute-handoff',
+		redact(cases, secrets)
+	);
 });
 
 test('approve binds the handoff to the approving browser session', async () => {
@@ -152,13 +198,28 @@ test('approve binds the handoff to the approving browser session', async () => {
 	expect(stored?.subject).toBe(approver.actor.id);
 	expect(stored?.parentHash).toBe(approver.idHash);
 	const cases: Case[] = [
-		{ name: 'the normalized code approves the projects handoff', input: approval(first), ...normalized },
+		{
+			name: 'the normalized code approves the projects handoff',
+			input: approval(first),
+			...normalized
+		},
 		{ name: 'a dashed code never matches the stored hash', input: dashed, ...refusedDashed },
-		{ name: 'the normalized code approves the project handoff', input: approval(second), ...approvedSecond },
+		{
+			name: 'the normalized code approves the project handoff',
+			input: approval(second),
+			...approvedSecond
+		},
 		{ name: 'an approved handoff cannot be approved again', input: approval(first), ...repeated }
 	];
-	const codes = [first, second].flatMap((started) => [started.userCode, normalizeCode(started.userCode)]);
-	record('approve', 'approve-binds-the-handoff-to-the-approving-browser-session', redact(cases, codes));
+	const codes = [first, second].flatMap((started) => [
+		started.userCode,
+		normalizeCode(started.userCode)
+	]);
+	record(
+		'approve',
+		'approve-binds-the-handoff-to-the-approving-browser-session',
+		redact(cases, codes)
+	);
 });
 
 test('poll reports pending, approved and expired handoffs', async () => {
@@ -176,9 +237,21 @@ test('poll reports pending, approved and expired handoffs', async () => {
 	expect(missing).toEqual({ status: 'expired', resource: null });
 	expect(late).toEqual({ status: 'expired', resource: null });
 	const cases: Case[] = [
-		{ name: 'a live handoff is pending until it is approved', input: pending.handoffId, output: waiting },
-		{ name: 'an approved handoff reports the project it grants', input: approved.handoffId, output: done },
-		{ name: 'an unknown handoff id is reported as expired', input: UNKNOWN_HANDOFF, output: missing },
+		{
+			name: 'a live handoff is pending until it is approved',
+			input: pending.handoffId,
+			output: waiting
+		},
+		{
+			name: 'an approved handoff reports the project it grants',
+			input: approved.handoffId,
+			output: done
+		},
+		{
+			name: 'an unknown handoff id is reported as expired',
+			input: UNKNOWN_HANDOFF,
+			output: missing
+		},
 		{ name: 'a handoff is expired from its expiry time on', input: pending.handoffId, output: late }
 	];
 	record('poll', 'poll-reports-pending-approved-and-expired-handoffs', cases);
@@ -205,16 +278,41 @@ test('exchange issues one native session for an approved handoff', async () => {
 		expiresAt: '2026-12-15T09:01:00.000Z'
 	});
 	expect(grantedSecond.resource).toBe(project.resource);
-	expect(session).toMatchObject({ kind: 'native', parentHash: approver.idHash, resource: 'projects' });
+	expect(session).toMatchObject({
+		kind: 'native',
+		parentHash: approver.idHash,
+		resource: 'projects'
+	});
 	expect(store.dump().includes(granted.authorization)).toBe(false);
 	expect(repeated).toEqual({ error: REFUSED });
 	const cases: Case[] = [
-		{ name: 'the projects handoff exchanges once for its approver', input: exchangeFor(first), output: granted },
-		{ name: 'the project handoff exchanges for its own resource', input: exchangeFor(second), output: grantedSecond },
-		{ name: 'a repeated exchange of the projects handoff is refused', input: exchangeFor(first), ...repeated }
+		{
+			name: 'the projects handoff exchanges once for its approver',
+			input: exchangeFor(first),
+			output: granted
+		},
+		{
+			name: 'the project handoff exchanges for its own resource',
+			input: exchangeFor(second),
+			output: grantedSecond
+		},
+		{
+			name: 'a repeated exchange of the projects handoff is refused',
+			input: exchangeFor(first),
+			...repeated
+		}
 	];
-	const secrets = [projects.verifier, project.verifier, granted.authorization, grantedSecond.authorization];
-	record('exchange', 'exchange-issues-one-native-session-for-an-approved-handoff', redact(cases, secrets));
+	const secrets = [
+		projects.verifier,
+		project.verifier,
+		granted.authorization,
+		grantedSecond.authorization
+	];
+	record(
+		'exchange',
+		'exchange-issues-one-native-session-for-an-approved-handoff',
+		redact(cases, secrets)
+	);
 });
 
 test('exchange refuses wrong verifiers and signed-out approvers', async () => {
@@ -229,12 +327,28 @@ test('exchange refuses wrong verifiers and signed-out approvers', async () => {
 	const right = await outcome(() => service.exchange(exchangeFor(first)));
 	await sessions.revoke(approver);
 	const signedOut = await outcome(() => service.exchange(exchangeFor(second)));
-	expect([wrong, right, signedOut]).toEqual([{ error: REFUSED }, { error: REFUSED }, { error: REFUSED }]);
+	expect([wrong, right, signedOut]).toEqual([
+		{ error: REFUSED },
+		{ error: REFUSED },
+		{ error: REFUSED }
+	]);
 	expect((await store.exchanges.find(first.handoffId))?.status).toBe('consumed');
 	const cases: Case[] = [
 		{ name: 'a wrong verifier is refused and uses the handoff up', input: guess, ...wrong },
-		{ name: 'the right verifier is refused once the handoff is spent', input: exchangeFor(first), ...right },
-		{ name: 'an approved handoff is refused after its approver signs out', input: exchangeFor(second), ...signedOut }
+		{
+			name: 'the right verifier is refused once the handoff is spent',
+			input: exchangeFor(first),
+			...right
+		},
+		{
+			name: 'an approved handoff is refused after its approver signs out',
+			input: exchangeFor(second),
+			...signedOut
+		}
 	];
-	record('exchange', 'exchange-refuses-wrong-verifiers-and-signed-out-approvers', redact(cases, [projects.verifier, project.verifier]));
+	record(
+		'exchange',
+		'exchange-refuses-wrong-verifiers-and-signed-out-approvers',
+		redact(cases, [projects.verifier, project.verifier])
+	);
 });

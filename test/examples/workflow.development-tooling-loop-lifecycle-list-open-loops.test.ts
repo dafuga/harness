@@ -1,6 +1,4 @@
 import type { Step } from './workflow.development-tooling-loop-lifecycle-list-open-loops.test.types';
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -13,27 +11,25 @@ import type {
 	OpenLoop,
 	OpenLoopList
 } from '../../src/workflows/development-tooling/loop-lifecycle/listOpenLoops.types';
+import {
+	seed,
+	loopFile
+} from './workflow.development-tooling-loop-lifecycle-list-open-loops.fixtures';
 
 const NOW = '2026-11-16T00:00:00.000Z';
+
 const DAY_MS = 86_400_000;
+
 const PENDING: Step[] = [{ id: 'a', title: 'Write parser', status: 'pending' }];
+
 const DONE: Step[] = [{ id: 'a', title: 'Write parser', status: 'complete' }];
+
 const MIXED: Step[] = [...PENDING, { id: 'b', title: 'Test parser', status: 'complete' }];
+
 const CLOSED = { status: 'abandoned', reason: 'Dropped', closedAt: '2026-11-01T00:00:00.000Z' };
 
 function daysAgo(days: number): string {
 	return new Date(Date.parse(NOW) - days * DAY_MS).toISOString();
-}
-
-function loopFile(name: string, updatedAt: string, steps: Step[], extra = {}): string {
-	const state = { name, goal: `Goal for ${name}`, createdAt: updatedAt, updatedAt, steps, ...extra };
-	return `${JSON.stringify(state, null, '\t')}\n`;
-}
-
-function seed(root: string, dir: string, body: string): void {
-	const loopDir = join(root, 'specification', 'loops', dir);
-	mkdirSync(loopDir, { recursive: true });
-	writeFileSync(join(loopDir, 'loop.json'), body);
 }
 
 async function rejectionMessage(run: () => Promise<unknown>): Promise<string> {

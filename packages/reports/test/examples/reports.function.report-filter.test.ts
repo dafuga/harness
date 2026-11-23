@@ -2,7 +2,11 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { reportFilter } from '../../src/components/verification-evidence/evidence-grid/reportFilter';
-import { screenSize, galleryEvidence, projectFilter } from '../../src/utils/verification-evidence/reportFilter';
+import {
+	screenSize,
+	galleryEvidence,
+	projectFilter
+} from '../../src/utils/verification-evidence/reportFilter';
 import type { Filters } from '../../src/utils/verification-evidence/reportFilter.types';
 
 type Evidence = Parameters<typeof reportFilter>[0][number];
@@ -155,18 +159,21 @@ test('Matches a report item when its paired before item passes', () => {
 	const withoutPairs = ids(reportFilter(items, query));
 	expect(withPairs).toEqual(['login-before', 'login-after']);
 	expect(withoutPairs).toEqual(['login-before']);
-	recordExampleCases(recordMeta('reportFilter', 'matches-a-report-item-when-its-paired-before-item-passes'), [
-		{
-			name: 'after item fails status but its before pair passes',
-			input: { items: ids(items), filter: query, pairs: { 'login-after': 'login-before' } },
-			output: withPairs
-		},
-		{
-			name: 'same items without a pair map',
-			input: { items: ids(items), filter: query },
-			output: withoutPairs
-		}
-	]);
+	recordExampleCases(
+		recordMeta('reportFilter', 'matches-a-report-item-when-its-paired-before-item-passes'),
+		[
+			{
+				name: 'after item fails status but its before pair passes',
+				input: { items: ids(items), filter: query, pairs: { 'login-after': 'login-before' } },
+				output: withPairs
+			},
+			{
+				name: 'same items without a pair map',
+				input: { items: ids(items), filter: query },
+				output: withoutPairs
+			}
+		]
+	);
 });
 
 test('Searches all text fields and sorts by order', () => {
@@ -200,7 +207,12 @@ test('Selects projects by id and case-insensitive query', () => {
 	const rows: Array<{ name: string; run: Report; query: string; project: string }> = [
 		{ name: 'uppercase query matches title', run: alpha, query: 'LOGIN', project: '' },
 		{ name: 'other project id rejects match', run: alpha, query: 'login', project: 'beta' },
-		{ name: 'query matches summary of selected project', run: beta, query: 'login', project: 'beta' },
+		{
+			name: 'query matches summary of selected project',
+			run: beta,
+			query: 'login',
+			project: 'beta'
+		},
 		{ name: 'query with trailing space is not trimmed', run: beta, query: 'cart ', project: '' },
 		{ name: 'project name text is searchable', run: alpha, query: 'alpha app', project: '' }
 	];

@@ -63,6 +63,12 @@ test('Propagates a resolve rejection', async () => {
 			evidence: 'examples-cases',
 			file: 'propagates-a-resolve-rejection.json'
 		},
-		[{ name: 'preserves the resolve rejection', input: { message: rejection.message }, error: { name: rejection.name, message: rejection.message } }]
+		[
+			{
+				name: 'preserves the resolve rejection',
+				input: { message: rejection.message },
+				error: { name: rejection.name, message: rejection.message }
+			}
+		]
 	);
 });

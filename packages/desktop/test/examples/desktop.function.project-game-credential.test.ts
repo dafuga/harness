@@ -27,7 +27,8 @@ function ignoredGit(directory: string): void {
 
 afterEach(() => {
 	vi.unstubAllEnvs();
-	for (const directory of directories.splice(0)) rmSync(directory, { recursive: true, force: true });
+	for (const directory of directories.splice(0))
+		rmSync(directory, { recursive: true, force: true });
 });
 
 test('Reads requested keys from an ignored project credential file', async () => {
@@ -39,7 +40,9 @@ test('Reads requested keys from an ignored project credential file', async () =>
 	};
 	writeFileSync(
 		join(root, '.env.local'),
-		`${Object.entries(values).map(([name, value]) => `${name}="${value}"`).join('\n')}\n`
+		`${Object.entries(values)
+			.map(([name, value]) => `${name}="${value}"`)
+			.join('\n')}\n`
 	);
 	const adapter = new ProjectGameCredentialAdapter(root);
 	const output = await adapter.read('HARNESS_GAME_OPENAI_API_KEY');

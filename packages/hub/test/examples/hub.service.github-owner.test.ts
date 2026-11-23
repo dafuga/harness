@@ -198,13 +198,38 @@ test('lists repositories administered by the actor', async () => {
 test('throws AuthFailure when authorization is denied', async () => {
 	const cases = [
 		{ name: 'invalid repository id', repositoryId: 0, fixture: { installations } },
-		{ name: 'no installation resolves the id', repositoryId: identity.id, fixture: { installations } },
-		{ name: 'actor lacks admin access', repositoryId: readOnly.id, fixture: { installations, identity: readOnly } }
+		{
+			name: 'no installation resolves the id',
+			repositoryId: identity.id,
+			fixture: { installations }
+		},
+		{
+			name: 'actor lacks admin access',
+			repositoryId: readOnly.id,
+			fixture: { installations, identity: readOnly }
+		}
 	];
-	const observed = await Promise.all(cases.map(async (example) => {
-		const result = await capture(() => ownerFixture(example.fixture).service.authorizeRepository(actor, example.repositoryId));
-		expect(result).toEqual({ error: 'Hub auth repository-denied' });
-		return { name: example.name, input: { actor, repositoryId: example.repositoryId }, error: 'Hub auth repository-denied' };
-	}));
-	recordExampleCases({ unitId: 'hub.service.github-owner', symbol: 'authorizeRepository', state: 'throws-authfailure-when-authorization-is-denied', evidence: 'examples-cases', file: 'throws-authfailure-when-authorization-is-denied.json' }, observed);
+	const observed = await Promise.all(
+		cases.map(async (example) => {
+			const result = await capture(() =>
+				ownerFixture(example.fixture).service.authorizeRepository(actor, example.repositoryId)
+			);
+			expect(result).toEqual({ error: 'Hub auth repository-denied' });
+			return {
+				name: example.name,
+				input: { actor, repositoryId: example.repositoryId },
+				error: 'Hub auth repository-denied'
+			};
+		})
+	);
+	recordExampleCases(
+		{
+			unitId: 'hub.service.github-owner',
+			symbol: 'authorizeRepository',
+			state: 'throws-authfailure-when-authorization-is-denied',
+			evidence: 'examples-cases',
+			file: 'throws-authfailure-when-authorization-is-denied.json'
+		},
+		observed
+	);
 });

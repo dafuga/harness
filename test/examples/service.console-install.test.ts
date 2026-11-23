@@ -87,8 +87,14 @@ test('Installs the console routes into a SvelteKit host', async () => {
 test('Refuses held content without an update or keep decision', async () => {
 	await withTempDir('console-install-held-', async (host) => {
 		const held = 'export const GET = () => new Response("mine");\n';
-		await writeFiles(host, { ...svelteProject, 'package.json': sveltePackage, [consoleRoute]: held });
-		const error = await captureError(() => new ConsoleInstallService().install(installOptions(host)));
+		await writeFiles(host, {
+			...svelteProject,
+			'package.json': sveltePackage,
+			[consoleRoute]: held
+		});
+		const error = await captureError(() =>
+			new ConsoleInstallService().install(installOptions(host))
+		);
 		expect(error).toBeInstanceOf(Error);
 		expect(error?.name).toBe('ExpectedCliError');
 		expect(await readFile(join(host, consoleRoute), 'utf8')).toBe(held);

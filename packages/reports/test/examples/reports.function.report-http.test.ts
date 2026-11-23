@@ -128,13 +128,16 @@ test('Fails remote evidence when R2 storage is not configured', async () => {
 		status: null,
 		message: 'Cloudflare R2 evidence storage is not configured'
 	});
-	recordExampleCases(meta('reportFile', 'fails-remote-evidence-when-r2-storage-is-not-configured'), [
-		{
-			name: 'r2-evidence file with no evidence store configured',
-			input: { id: REPORT_ID, type: 'assets', file: 'homepage.png', storage: 'r2-evidence' },
-			error: failure
-		}
-	]);
+	recordExampleCases(
+		meta('reportFile', 'fails-remote-evidence-when-r2-storage-is-not-configured'),
+		[
+			{
+				name: 'r2-evidence file with no evidence store configured',
+				input: { id: REPORT_ID, type: 'assets', file: 'homepage.png', storage: 'r2-evidence' },
+				error: failure
+			}
+		]
+	);
 });
 
 test('Serves remote screenshots from R2 with their media type', async () => {
@@ -145,13 +148,16 @@ test('Serves remote screenshots from R2 with their media type', async () => {
 
 	expect(response.status).toBe(200);
 	expect(body).toBe('remote-png');
-	recordExampleCases(meta('reportFile', 'serves-remote-screenshots-from-r2-with-their-media-type'), [
-		{
-			name: 'remote screenshot fetched from the screenshot store',
-			input: { id: REPORT_ID, type: 'assets', file: 'checkout-error.png', storage: 'r2' },
-			output: { status: response.status, body }
-		}
-	]);
+	recordExampleCases(
+		meta('reportFile', 'serves-remote-screenshots-from-r2-with-their-media-type'),
+		[
+			{
+				name: 'remote screenshot fetched from the screenshot store',
+				input: { id: REPORT_ID, type: 'assets', file: 'checkout-error.png', storage: 'r2' },
+				output: { status: response.status, body }
+			}
+		]
+	);
 });
 
 test('Describes the server by a digest of its repository root', async () => {
@@ -162,16 +168,19 @@ test('Describes the server by a digest of its repository root', async () => {
 	expect(body.app).toBe('project-reports');
 	expect(body.version).toBe(1);
 	expect(body.root).toBe(createHash('sha256').update(repository.root).digest('hex'));
-	recordExampleCases(meta('reportHttp', 'describes-the-server-by-a-digest-of-its-repository-root'), [
-		{
-			name: 'health endpoint reports app, version and a root digest',
-			input: {},
-			output: {
-				status: response.status,
-				app: body.app,
-				version: body.version,
-				rootIsSha256Hex: /^[0-9a-f]{64}$/.test(String(body.root))
+	recordExampleCases(
+		meta('reportHttp', 'describes-the-server-by-a-digest-of-its-repository-root'),
+		[
+			{
+				name: 'health endpoint reports app, version and a root digest',
+				input: {},
+				output: {
+					status: response.status,
+					app: body.app,
+					version: body.version,
+					rootIsSha256Hex: /^[0-9a-f]{64}$/.test(String(body.root))
+				}
 			}
-		}
-	]);
+		]
+	);
 });

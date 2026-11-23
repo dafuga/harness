@@ -4,8 +4,14 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir, withTempRepo } from '../support/temporary';
 import { GitAdapter } from '../../src/adapters/git-source-history/GitAdapter';
 import { GitCommandError } from '../../src/adapters/git-source-history/GitAdapter.types';
-import type { GitRunOptions, GitResult } from '../../src/adapters/git-source-history/GitAdapter.types';
-import { gitVerb, gitDeadline } from '../../src/adapters/git-source-history/git-adapter/gitDeadline';
+import type {
+	GitRunOptions,
+	GitResult
+} from '../../src/adapters/git-source-history/GitAdapter.types';
+import {
+	gitVerb,
+	gitDeadline
+} from '../../src/adapters/git-source-history/git-adapter/gitDeadline';
 
 const MISSING_REF = ['rev-parse', '--verify', 'refs/heads/missing'];
 const STDIN_TEXT = 'feat: add bounded Git support\n';
@@ -17,7 +23,13 @@ const AUTHOR_ENV: Record<string, string> = {
 };
 
 function meta(symbol: string, state: string) {
-	return { unitId: 'adapter.git', symbol, state, evidence: 'examples-cases', file: `${state}.json` };
+	return {
+		unitId: 'adapter.git',
+		symbol,
+		state,
+		evidence: 'examples-cases',
+		file: `${state}.json`
+	};
 }
 
 test('Runs git and returns trimmed stdout', async () => {
@@ -44,7 +56,11 @@ test('Probes the repository without failing', async () => {
 		expect(inside).toBe(true);
 		expect(outside).toBe(false);
 		recordExampleCases(meta('GitAdapter.attempt', 'probes-the-repository-without-failing'), [
-			{ name: 'missing ref probe returns undefined (null in JSON)', input: MISSING_REF, output: missing ?? null },
+			{
+				name: 'missing ref probe returns undefined (null in JSON)',
+				input: MISSING_REF,
+				output: missing ?? null
+			},
 			{ name: 'repository root reports a work tree', input: 'isRepository', output: inside },
 			{ name: 'plain directory reports no work tree', input: 'isRepository', output: outside }
 		]);
@@ -59,7 +75,11 @@ test('Rejects a failing command with the Git error', async () => {
 		const message = (error as Error).message;
 		expect(message).toContain('git rev-parse --verify refs/heads/missing failed:');
 		recordExampleCases(meta('GitAdapter.run', 'rejects-a-failing-command-with-the-git-error'), [
-			{ name: 'missing ref rejects with the command and stderr', input: MISSING_REF, error: message }
+			{
+				name: 'missing ref rejects with the command and stderr',
+				input: MISSING_REF,
+				error: message
+			}
 		]);
 	});
 }, 20_000);
@@ -110,8 +130,16 @@ test('Chooses the verb and deadline for Git arguments', async () => {
 	expect(local).toBeLessThan(long);
 	expect(unknown).toBe(long);
 	recordExampleCases(meta('gitDeadline', 'chooses-the-verb-and-deadline-for-git-arguments'), [
-		{ name: 'status after -C uses the local deadline', input: ['-C', '/workspace/repos/adapter', 'status', '--short'], output: verb },
-		{ name: 'log after a valued global option is found', input: ['--config-env', 'core.editor=GIT_EDITOR', 'log', '-1'], output: afterValue ?? null },
+		{
+			name: 'status after -C uses the local deadline',
+			input: ['-C', '/workspace/repos/adapter', 'status', '--short'],
+			output: verb
+		},
+		{
+			name: 'log after a valued global option is found',
+			input: ['--config-env', 'core.editor=GIT_EDITOR', 'log', '-1'],
+			output: afterValue ?? null
+		},
 		{ name: 'push uses the long deadline', input: ['push', 'origin', 'main'], output: long },
 		{ name: 'no verb uses the long deadline', input: ['--version'], output: unknown }
 	]);

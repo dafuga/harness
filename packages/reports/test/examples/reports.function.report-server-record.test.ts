@@ -99,8 +99,20 @@ test('Throws SyntaxError when a server record contains malformed JSON', async ()
 		writeFileSync(record.file, '{malformed');
 		await expect(record.read()).rejects.toThrow(SyntaxError);
 		recordExampleCases(
-			{ unitId: 'reports.function.report-server-record', symbol: 'reportServerRecord.read', state, evidence: 'examples-cases', file: `${state}.json` },
-			[{ name: 'malformed record JSON rejects reading', input: { root: '<temporary-root>', port: 4173, contents: '{malformed' }, error: { name: 'SyntaxError' } }]
+			{
+				unitId: 'reports.function.report-server-record',
+				symbol: 'reportServerRecord.read',
+				state,
+				evidence: 'examples-cases',
+				file: `${state}.json`
+			},
+			[
+				{
+					name: 'malformed record JSON rejects reading',
+					input: { root: '<temporary-root>', port: 4173, contents: '{malformed' },
+					error: { name: 'SyntaxError' }
+				}
+			]
 		);
 	} finally {
 		removeRoot(root);
@@ -114,11 +126,28 @@ test('Throws Error when writing a record cannot create its directory', async () 
 		const blockedRoot = join(root, 'blocked');
 		writeFileSync(blockedRoot, 'file prevents directory creation');
 		const record = reportServerRecord(join(blockedRoot, 'child'), 4173);
-		const server: ServerRecord = { pid: 28411, port: 4173, started: 'Mon Jun 15 09:23:48 2026', buildId: 'reports-build-example' };
+		const server: ServerRecord = {
+			pid: 28411,
+			port: 4173,
+			started: 'Mon Jun 15 09:23:48 2026',
+			buildId: 'reports-build-example'
+		};
 		await expect(record.write(server)).rejects.toThrow(Error);
 		recordExampleCases(
-			{ unitId: 'reports.function.report-server-record', symbol: 'reportServerRecord.write', state, evidence: 'examples-cases', file: `${state}.json` },
-			[{ name: 'filesystem rejects parent directory creation', input: { root: '<temporary-root>/blocked/child', port: 4173, record: server }, error: { name: 'Error' } }]
+			{
+				unitId: 'reports.function.report-server-record',
+				symbol: 'reportServerRecord.write',
+				state,
+				evidence: 'examples-cases',
+				file: `${state}.json`
+			},
+			[
+				{
+					name: 'filesystem rejects parent directory creation',
+					input: { root: '<temporary-root>/blocked/child', port: 4173, record: server },
+					error: { name: 'Error' }
+				}
+			]
 		);
 	} finally {
 		removeRoot(root);

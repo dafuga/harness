@@ -14,7 +14,13 @@ const FUNCTION_WITH_CONTRACT = {
 	title: 'Plan payload validation',
 	goal: 'Validate a plan draft before it reaches local or hosted execution.',
 	contract: {
-		inputs: [{ name: 'input', type: 'Record<string, unknown>', description: 'Untrusted createPlan fields.' }],
+		inputs: [
+			{
+				name: 'input',
+				type: 'Record<string, unknown>',
+				description: 'Untrusted createPlan fields.'
+			}
+		],
 		outputs: [{ name: 'planPayload', type: 'PlanDraft' }],
 		errors: ['InvalidCategory']
 	}
@@ -91,7 +97,13 @@ test('Rejects an unknown category with Invalid option', () => {
 			evidence: 'examples-cases',
 			file: 'rejects-an-unknown-category-with-invalid-option.json'
 		},
-		[{ name: 'reject a category outside the catalog', input, error: { name: thrown.name, message: thrown.message } }]
+		[
+			{
+				name: 'reject a category outside the catalog',
+				input,
+				error: { name: thrown.name, message: thrown.message }
+			}
+		]
 	);
 });
 

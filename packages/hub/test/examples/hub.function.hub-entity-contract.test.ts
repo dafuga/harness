@@ -25,7 +25,8 @@ const fileNameUnit: UnitArg = {
 			{
 				name: 'Error',
 				type: 'thrown',
-				description: 'Thrown with code invalid-path when the name fails the pattern or contains "..".'
+				description:
+					'Thrown with code invalid-path when the name fails the pattern or contains "..".'
 			}
 		],
 		errorStatus: 'declared'

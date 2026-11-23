@@ -16,7 +16,8 @@ export type Bindings = Map<string, ts.Expression>;
 interface Hidden { value: number; }
 `;
 const configSource = 'src/configs/development-tooling/reports.ts';
-const configText = 'export const reportLimits = { pageSize: 50, retries: 3 };\nconst hiddenLimit = 1;';
+const configText =
+	'export const reportLimits = { pageSize: 50, retries: 3 };\nconst hiddenLimit = 1;';
 const jsonSource = 'src/configs/development-tooling/moduleGroups.json';
 const jsonText = '{ "name": "reports", "enabled": true }';
 
@@ -28,7 +29,10 @@ const roleInputs = [
 ];
 
 function configSummary(text: string, source: string) {
-	return configValues(text, source).map((variable) => ({ name: variable.name, source: variable.source }));
+	return configValues(text, source).map((variable) => ({
+		name: variable.name,
+		source: variable.source
+	}));
 }
 
 test('Declaration roles follow kind and stored flag', () => {
@@ -66,7 +70,13 @@ test('Model definitions come from exported declarations', () => {
 			evidence: 'examples-cases',
 			file: 'model-definitions-come-from-exported-declarations.json'
 		},
-		[{ name: 'exported interface and type alias are modelled', input: { source: modelSource }, output: names }]
+		[
+			{
+				name: 'exported interface and type alias are modelled',
+				input: { source: modelSource },
+				output: names
+			}
+		]
 	);
 });
 
@@ -90,8 +100,16 @@ test('Config values name exported constants and JSON defaults', () => {
 			file: 'config-values-name-exported-constants-and-json-defaults.json'
 		},
 		[
-			{ name: 'exported constant keeps its name and source', input: { source: configSource }, output: constants },
-			{ name: 'JSON document is named after its file', input: { source: jsonSource }, output: jsonDefault }
+			{
+				name: 'exported constant keeps its name and source',
+				input: { source: configSource },
+				output: constants
+			},
+			{
+				name: 'JSON document is named after its file',
+				input: { source: jsonSource },
+				output: jsonDefault
+			}
 		]
 	);
 });

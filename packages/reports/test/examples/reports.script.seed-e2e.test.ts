@@ -23,11 +23,23 @@ test('Seeds a report with check and coverage records', async () => {
 		});
 		await repository.record(report.id, {
 			kind: 'check',
-			data: { id: 'save', title: 'Save settings', status: 'passed', command: 'bun run check', output: 'passed: 1' }
+			data: {
+				id: 'save',
+				title: 'Save settings',
+				status: 'passed',
+				command: 'bun run check',
+				output: 'passed: 1'
+			}
 		});
 		await repository.record(report.id, {
 			kind: 'coverage',
-			data: { id: 'mobile', title: 'Settings', viewport: 'mobile', status: 'blocked', detail: 'Device verification pending' }
+			data: {
+				id: 'mobile',
+				title: 'Settings',
+				viewport: 'mobile',
+				status: 'blocked',
+				detail: 'Device verification pending'
+			}
 		});
 		const seeded = await repository.get(report.id);
 		expect(seeded.checks.map(({ id }) => id)).toContain('save');
@@ -44,7 +56,10 @@ test('Seeds a report with check and coverage records', async () => {
 				{
 					name: 'seeds check and coverage records',
 					input: { title: 'Account settings review', records: ['check:save', 'coverage:mobile'] },
-					output: { checkIds: seeded.checks.map(({ id }) => id), coverageIds: seeded.coverage.map(({ id }) => id) }
+					output: {
+						checkIds: seeded.checks.map(({ id }) => id),
+						coverageIds: seeded.coverage.map(({ id }) => id)
+					}
 				}
 			]
 		);
@@ -63,7 +78,10 @@ test('Throws Error when a report record is invalid', async () => {
 			mode: 'feature',
 			environment: 'local fixture'
 		});
-		const invalidRecord = { kind: 'check', data: { id: '', title: '', status: 'unknown' } } as never;
+		const invalidRecord = {
+			kind: 'check',
+			data: { id: '', title: '', status: 'unknown' }
+		} as never;
 		await expect(repository.record(report.id, invalidRecord)).rejects.toThrow();
 		recordExampleCases(
 			{

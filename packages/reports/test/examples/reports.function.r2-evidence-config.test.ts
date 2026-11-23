@@ -51,8 +51,7 @@ function r2Env(settings: Partial<Record<keyof R2Settings, string | undefined>>):
 
 function withEnv<T>(env: Env, run: () => T): T {
 	for (const key of SOURCE_VARS) delete process.env[key];
-	for (const [key, value] of Object.entries(env))
-		if (value !== undefined) process.env[key] = value;
+	for (const [key, value] of Object.entries(env)) if (value !== undefined) process.env[key] = value;
 	try {
 		return run();
 	} finally {
@@ -119,7 +118,10 @@ test('Returns no R2 settings for local storage in a temp store', () => {
 });
 
 test('Rejects local storage outside a temporary store', () => {
-	const env = { PROJECT_REPORTS_ASSET_STORAGE: 'local', PROJECT_REPORTS_HOME: '/srv/report-evidence-example' };
+	const env = {
+		PROJECT_REPORTS_ASSET_STORAGE: 'local',
+		PROJECT_REPORTS_HOME: '/srv/report-evidence-example'
+	};
 	const error = thrownBy(env);
 	expect(error).toEqual({
 		name: 'EvidenceStorageConfigError',
@@ -129,7 +131,10 @@ test('Rejects local storage outside a temporary store', () => {
 	record('rejects-local-storage-outside-a-temporary-store', [
 		{
 			name: 'local storage pointed at a non-temporary home',
-			input: { PROJECT_REPORTS_ASSET_STORAGE: 'local', PROJECT_REPORTS_HOME: '/srv/report-evidence-example' },
+			input: {
+				PROJECT_REPORTS_ASSET_STORAGE: 'local',
+				PROJECT_REPORTS_HOME: '/srv/report-evidence-example'
+			},
 			error
 		}
 	]);

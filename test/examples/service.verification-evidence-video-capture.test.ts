@@ -7,7 +7,10 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { VideoCaptureService } from '../../src/services/verification-evidence/VideoCaptureService';
-import type { VideoCapturePlan, VideoCaptureScript, VideoCaptureScriptInput } from '../../src/services/verification-evidence/VideoCaptureService.types';
+import type {
+	VideoCaptureScript,
+	VideoCaptureScriptInput
+} from '../../src/services/verification-evidence/VideoCaptureService.types';
 import {
 	captureDigest,
 	captureFile,
@@ -19,8 +22,10 @@ import {
 	recordingAllowed
 } from '../../src/services/verification-evidence/video-capture-service/captureScript';
 import { captureReceiptStore } from '../../src/services/verification-evidence/video-capture-service/captureReceiptStore';
+import { scriptFixture } from './service.verification-evidence-video-capture.fixtures';
 
 const unitId = 'service.verification-evidence-video-capture';
+
 const signature = 'd'.repeat(64);
 
 async function failureOf(run: () => unknown): Promise<Summary> {
@@ -36,44 +41,20 @@ function meta(state: string, symbol: string) {
 	return { unitId, symbol, state, evidence: 'examples-cases', file: `${state}.json` };
 }
 
-function scriptFixture(): { input: VideoCaptureScriptInput; plan: VideoCapturePlan } {
-	const slot = { unit: 'unit.a', clipId: 'clip-a', viewport: 'desktop', inputHash: 'c'.repeat(64) };
-	const clip = {
-		id: 'clip-a',
-		unit: 'unit.a',
-		entry: 'start',
-		exit: 'done',
-		state: 'editing',
-		states: ['start', 'editing', 'done'],
-		edges: []
-	};
-	const input = {
-		clip,
-		slot,
-		viewport: { id: 'desktop', width: 1280, height: 720 },
-		pendingFlags: [{ id: 'flag-1', note: 'Check the focus ring' }]
-	} as unknown as VideoCaptureScriptInput;
-	const plan = {
-		known: [
-			{
-				id: 'flag-1',
-				unit: 'unit.a',
-				clipId: 'clip-a',
-				viewport: 'desktop',
-				createdAt: '2026-11-16T00:00:00.000Z'
-			}
-		]
-	} as unknown as VideoCapturePlan;
-	return { input, plan };
-}
-
 test('Reports the video capture service identity', async () => {
 	await withTempDir('video-capture-service-', (directory) => {
 		const service = new VideoCaptureService(directory);
 		expect(service.run()).toBe('video-capture');
-		recordExampleCases(meta('reports-the-video-capture-service-identity', 'VideoCaptureService.run'), [
-			{ name: 'service rooted in a temporary checkout', input: { root: 'temporary' }, output: service.run() }
-		]);
+		recordExampleCases(
+			meta('reports-the-video-capture-service-identity', 'VideoCaptureService.run'),
+			[
+				{
+					name: 'service rooted in a temporary checkout',
+					input: { root: 'temporary' },
+					output: service.run()
+				}
+			]
+		);
 	});
 });
 
@@ -138,18 +119,21 @@ test('Requires every pending reviewer flag to be addressed', async () => {
 	const accepted = { addressedFlags: ['flag-1'] } as unknown as VideoCaptureScript;
 	expect(unaddressed.message).toContain('explicitly address every pending reviewer flag');
 	expect(() => admittedScript(accepted, input, plan)).not.toThrow();
-	recordExampleCases(meta('requires-every-pending-reviewer-flag-to-be-addressed', 'admittedScript'), [
-		{
-			name: 'script omits the pending flag',
-			input: { pendingFlags: ['flag-1'], addressedFlags: [] },
-			error: unaddressed
-		},
-		{
-			name: 'script addresses the known pending flag',
-			input: { pendingFlags: ['flag-1'], addressedFlags: ['flag-1'] },
-			output: null
-		}
-	]);
+	recordExampleCases(
+		meta('requires-every-pending-reviewer-flag-to-be-addressed', 'admittedScript'),
+		[
+			{
+				name: 'script omits the pending flag',
+				input: { pendingFlags: ['flag-1'], addressedFlags: [] },
+				error: unaddressed
+			},
+			{
+				name: 'script addresses the known pending flag',
+				input: { pendingFlags: ['flag-1'], addressedFlags: ['flag-1'] },
+				output: null
+			}
+		]
+	);
 });
 
 test('Accepts observed checkpoints and rejects a drifted boundary', async () => {
@@ -170,7 +154,11 @@ test('Accepts observed checkpoints and rejects a drifted boundary', async () => 
 	recordExampleCases(
 		meta('accepts-observed-checkpoints-and-rejects-a-drifted-boundary', 'captureCheckpoint'),
 		[
-			{ name: 'entry signature matches the declared entry', input: { boundary: 'entry' }, output: entry },
+			{
+				name: 'entry signature matches the declared entry',
+				input: { boundary: 'entry' },
+				output: entry
+			},
 			{ name: 'observed signature drifts from the exit', input: { boundary: 'exit' }, error: drift }
 		]
 	);

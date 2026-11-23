@@ -32,8 +32,10 @@ test('declares the iOS acceptance entry point', () => {
 test('Throws Error when report writing fails', () => {
 	const source = readFileSync(resolve(__dirname, '../../scripts/ios-acceptance.ts'), 'utf8');
 	const writesReport = source.includes("writeFileSync(resolve(output, 'report.json')");
-	const rejectsToErrorHandler = source.includes('main().then(') &&
-		source.includes('(error: unknown) => {') && source.includes('process.exit(1)');
+	const rejectsToErrorHandler =
+		source.includes('main().then(') &&
+		source.includes('(error: unknown) => {') &&
+		source.includes('process.exit(1)');
 
 	expect(writesReport).toBe(true);
 	expect(rejectsToErrorHandler).toBe(true);

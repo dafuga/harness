@@ -24,8 +24,7 @@ test('Importing the PlanThread model returns no runtime value', () => {
 			{
 				name: 'import the model from its source file',
 				input: {
-					module:
-						'packages/planning/src/models/planning-collaboration/PlanThread.types.ts'
+					module: 'packages/planning/src/models/planning-collaboration/PlanThread.types.ts'
 				},
 				output: { runtimeExports }
 			},

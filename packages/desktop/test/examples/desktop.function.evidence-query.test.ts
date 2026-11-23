@@ -22,7 +22,9 @@ function viewOf(
 			project: { name: 'harness-app', root: '/work/harness-app' },
 			revision: { ...revision, atTip },
 			branches: [{ name: revision.branch, tip: revision.tip, current: true }],
-			commits: [{ hash: revision.commit, subject: 'Show evidence', authoredAt: AT, committedAt: AT }],
+			commits: [
+				{ hash: revision.commit, subject: 'Show evidence', authoredAt: AT, committedAt: AT }
+			],
 			entities: [],
 			writable: atTip
 		},
@@ -32,7 +34,9 @@ function viewOf(
 }
 
 test('Pins the request to the selected commit beside its branch', () => {
-	const view = viewOf({ branch: 'main', commit: PARENT, tip: TIP }, true, { projectId: PROJECT_ID });
+	const view = viewOf({ branch: 'main', commit: PARENT, tip: TIP }, true, {
+		projectId: PROJECT_ID
+	});
 	const query = evidenceQuery(view, 'reports.component.evidence-grid');
 
 	expect(query).toEqual({
@@ -62,7 +66,11 @@ test('Pins the request to the selected commit beside its branch', () => {
 });
 
 test('Asks only for the branch tip when the view is not pinned', () => {
-	const view = viewOf({ branch: 'feature/evidence-grid', commit: FEATURE, tip: FEATURE }, false, {});
+	const view = viewOf(
+		{ branch: 'feature/evidence-grid', commit: FEATURE, tip: FEATURE },
+		false,
+		{}
+	);
 	const query = evidenceQuery(view, 'desktop.function.evidence-query');
 
 	expect(query).toEqual({

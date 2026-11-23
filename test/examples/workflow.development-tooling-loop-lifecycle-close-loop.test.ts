@@ -58,7 +58,11 @@ test('Abandons an open loop and records the closure in its trace', async () => {
 		const input: CloseLoopInput = { loop: ` ${LOOP} `, reason: REASON, root, now: () => CLOSED_AT };
 		const result = await closeLoopAbandoned(input);
 
-		expect(result.state.closed).toEqual({ status: 'abandoned', reason: REASON, closedAt: CLOSED_AT });
+		expect(result.state.closed).toEqual({
+			status: 'abandoned',
+			reason: REASON,
+			closedAt: CLOSED_AT
+		});
 		expect(result.state.updatedAt).toBe(CLOSED_AT);
 		expect(result.state.steps).toEqual(OPEN_STEPS);
 		expect(result.tracePath).toBe(TRACE_PATH);

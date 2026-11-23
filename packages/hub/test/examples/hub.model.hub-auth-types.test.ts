@@ -5,7 +5,11 @@ import type { Actor } from 'collaboration';
 import type { GithubOwnerOptions } from '../../src/lib/verification-evidence/server/auth/GithubOwnerService.types';
 import { GithubOwnerService } from '../../src/lib/verification-evidence/server/auth/GithubOwnerService';
 import { AuthFailure } from '../../src/utils/accounts-access/authFail';
-import { EMAIL_CODE_LENGTH, NATIVE_AUDIENCE, NATIVE_ACTION } from '../../src/models/accounts-access/HubAuthValues';
+import {
+	EMAIL_CODE_LENGTH,
+	NATIVE_AUDIENCE,
+	NATIVE_ACTION
+} from '../../src/models/accounts-access/HubAuthValues';
 
 test('Exports the HubAuth protocol constants', () => {
 	const values = { EMAIL_CODE_LENGTH, NATIVE_AUDIENCE, NATIVE_ACTION };

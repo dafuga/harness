@@ -11,7 +11,9 @@ test('Provides the three generated atomic runtime sources', () => {
 		'htmlElements.js': atomicRuntimeSources['htmlElements.js'].split('\n').slice(0, 2)
 	};
 	expect(names).toEqual(['atomicComponents.js', 'atomicSyntax.js', 'htmlElements.js']);
-	expect(Object.values(atomicRuntimeSources).every((source) => typeof source === 'string')).toBe(true);
+	expect(Object.values(atomicRuntimeSources).every((source) => typeof source === 'string')).toBe(
+		true
+	);
 	recordExampleCases(
 		{
 			unitId: 'template.development-tooling-atomic-runtime-sources',

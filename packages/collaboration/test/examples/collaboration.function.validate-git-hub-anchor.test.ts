@@ -91,7 +91,11 @@ test('Throws CollaborationInputError when anchor input is invalid', async () => 
 		viewport: null,
 		region: null
 	};
-	const error = { name: 'CollaborationInputError', code: 'invalid-input', message: 'Collaboration invalid-input' };
+	const error = {
+		name: 'CollaborationInputError',
+		code: 'invalid-input',
+		message: 'Collaboration invalid-input'
+	};
 
 	await expect(validateGitHubAnchor(deps, repository, input)).rejects.toMatchObject(error);
 	expect(calls).toEqual([]);

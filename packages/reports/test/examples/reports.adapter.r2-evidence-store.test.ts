@@ -4,7 +4,11 @@ import { dirname, join } from 'node:path';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { evidenceObjectKey, replayObjectKey, R2EvidenceStoreAdapter } from '../../src/adapters/reports-media/R2EvidenceStoreAdapter';
+import {
+	evidenceObjectKey,
+	replayObjectKey,
+	R2EvidenceStoreAdapter
+} from '../../src/adapters/reports-media/R2EvidenceStoreAdapter';
 import { R2EvidenceStoreError } from '../../src/adapters/reports-media/R2EvidenceStoreAdapter.types';
 
 type Client = NonNullable<ConstructorParameters<typeof R2EvidenceStoreAdapter>[1]>;
@@ -32,7 +36,9 @@ function fakeS3(root: string, sent: Sent[]): Client {
 			writeFileSync(path, input.Body);
 			return Promise.resolve({});
 		}
-		const body = { transformToByteArray: () => Promise.resolve(new Uint8Array(readFileSync(path))) };
+		const body = {
+			transformToByteArray: () => Promise.resolve(new Uint8Array(readFileSync(path)))
+		};
 		return Promise.resolve({ Body: body });
 	};
 	return { send } as unknown as Client;
@@ -203,7 +209,9 @@ test('Fails reads with no body and skips S3 for bad names', async () => {
 			send: () => Promise.resolve({})
 		} as unknown as Client);
 		const readError = await asyncFailure(emptyS3.get(REPORT, PNG));
-		const putError = await asyncFailure(adapter.put(REPORT, 'bad.png', Buffer.from('x'), 'image/png'));
+		const putError = await asyncFailure(
+			adapter.put(REPORT, 'bad.png', Buffer.from('x'), 'image/png')
+		);
 		expect(readError).toBe('R2EvidenceStoreError: R2 evidence has no body');
 		expect(putError).toBe('R2EvidenceStoreError: Invalid R2 evidence name');
 		expect(sent).toEqual([]);

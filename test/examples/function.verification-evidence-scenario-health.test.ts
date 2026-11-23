@@ -1,5 +1,8 @@
 import { test } from 'vitest';
-import { scenarioHealth, renderScenarioHealth } from '../../src/utils/verification-evidence/scenarioHealth';
+import {
+	scenarioHealth,
+	renderScenarioHealth
+} from '../../src/utils/verification-evidence/scenarioHealth';
 import type { ScenarioHealthInput } from '../../src/utils/verification-evidence/scenarioHealth.types';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
@@ -10,10 +13,7 @@ function scenarioInput(): ScenarioHealthInput {
 			{
 				id: 'overview-desktop',
 				units: ['reports.component.covered'],
-				states: [
-					{ coverage: 'required' },
-					{ coverage: 'missing' }
-				],
+				states: [{ coverage: 'required' }, { coverage: 'missing' }],
 				viewports: [
 					{ id: 'desktop', width: 1440, height: 900 },
 					{ id: 'nav-phone', width: 390, height: 844 }
@@ -94,7 +94,9 @@ test('Reports viewport drift, state coverage, and uncovered units', () => {
 	expect(summary).toEqual(expectedSummary());
 	const render = renderScenarioHealth(health);
 	expect(render).toContain('Viewport ids outside desktop|tablet|mobile: 1');
-	expect(render).toContain('State coverage: 1 required, 1 missing, 1 inapplicable (field `coverage` of each state).');
+	expect(render).toContain(
+		'State coverage: 1 required, 1 missing, 1 inapplicable (field `coverage` of each state).'
+	);
 	expect(render).toContain('  reports.component: 1');
 	expect(render.join('\n')).not.toContain('reports.component.evidence-grid');
 

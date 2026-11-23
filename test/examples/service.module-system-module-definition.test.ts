@@ -88,7 +88,10 @@ test('Rejects a resource that declares both files and a generator', () => {
 });
 
 test('Rejects a module definition with duplicate resource ids', () => {
-	const duplicate = { ...definition, resources: [templateResource, { ...generatorResource, id: 'example-api' }] };
+	const duplicate = {
+		...definition,
+		resources: [templateResource, { ...generatorResource, id: 'example-api' }]
+	};
 	const result = moduleDefinitionSchema.safeParse(duplicate);
 
 	expect(result.success).toBe(false);
@@ -117,7 +120,9 @@ test('Parses persisted module state and names its state file', () => {
 	const state = {
 		schemaVersion: 1,
 		modules: [{ definition, source: 'builtin' }],
-		resources: [{ module: 'example-module', type: 'example-api', name: 'users', files: ['src/api.ts'] }]
+		resources: [
+			{ module: 'example-module', type: 'example-api', name: 'users', files: ['src/api.ts'] }
+		]
 	};
 	const parsed = moduleStateSchema.parse(state);
 
@@ -135,7 +140,11 @@ test('Parses persisted module state and names its state file', () => {
 			{
 				name: 'one builtin module and one resource instance parse unchanged',
 				input: { module: 'example-module', type: 'example-api', name: 'users' },
-				output: { file: moduleStateFile, modules: parsed.modules.length, resources: parsed.resources.length }
+				output: {
+					file: moduleStateFile,
+					modules: parsed.modules.length,
+					resources: parsed.resources.length
+				}
 			}
 		]
 	);

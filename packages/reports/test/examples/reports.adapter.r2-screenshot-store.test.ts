@@ -61,7 +61,13 @@ test('resolves process settings ahead of local R2 values', () => {
 				evidence: 'examples-cases',
 				file: 'resolves-process-settings-ahead-of-local-r2-values.json'
 			},
-			[{ name: 'process settings supply the resolved R2 configuration', input: { source, localFile }, output }]
+			[
+				{
+					name: 'process settings supply the resolved R2 configuration',
+					input: { source, localFile },
+					output
+				}
+			]
 		);
 	} finally {
 		clean(directory);
@@ -88,7 +94,11 @@ test('builds a validated screenshot object key', () => {
 		},
 		[
 			{ name: 'valid report screenshot', input: { reportId: 'report-123', file }, output },
-			{ name: 'uppercase filename is rejected', input: { reportId: 'report-123', file: 'Screenshot.png' }, error: 'Invalid R2 image name' }
+			{
+				name: 'uppercase filename is rejected',
+				input: { reportId: 'report-123', file: 'Screenshot.png' },
+				error: 'Invalid R2 image name'
+			}
 		]
 	);
 });
@@ -127,16 +137,25 @@ test('stores and retrieves screenshot bytes through the client', async () => {
 		const client = {
 			async send(command: { input: Record<string, unknown> }) {
 				if ('Body' in command.input) {
-					writeFileSync(objectPath, JSON.stringify({
-						bucket: command.input.Bucket,
-						key: command.input.Key,
-						body: Buffer.from(command.input.Body as Buffer).toString('base64'),
-						contentType: command.input.ContentType
-					}));
+					writeFileSync(
+						objectPath,
+						JSON.stringify({
+							bucket: command.input.Bucket,
+							key: command.input.Key,
+							body: Buffer.from(command.input.Body as Buffer).toString('base64'),
+							contentType: command.input.ContentType
+						})
+					);
 					return {};
 				}
 				const stored = JSON.parse(readFileSync(objectPath, 'utf8')) as { body: string };
-				return { Body: { async transformToByteArray() { return Buffer.from(stored.body, 'base64'); } } };
+				return {
+					Body: {
+						async transformToByteArray() {
+							return Buffer.from(stored.body, 'base64');
+						}
+					}
+				};
 			}
 		};
 		const adapter = new R2ScreenshotStoreAdapter(config, client as never);
@@ -155,8 +174,21 @@ test('stores and retrieves screenshot bytes through the client', async () => {
 				file: 'stores-and-retrieves-screenshot-bytes-through-the-client.json'
 			},
 			[
-				{ name: 'put sends screenshot fields to the bucket', input: { reportId: 'report-123', file, bytes: bytes.toString('base64'), mime: 'image/png' }, output: { ...stored, putResult: null } },
-				{ name: 'get returns the stored screenshot bytes', input: { reportId: 'report-123', file }, output: { bytes: getOutput.toString('base64') } }
+				{
+					name: 'put sends screenshot fields to the bucket',
+					input: {
+						reportId: 'report-123',
+						file,
+						bytes: bytes.toString('base64'),
+						mime: 'image/png'
+					},
+					output: { ...stored, putResult: null }
+				},
+				{
+					name: 'get returns the stored screenshot bytes',
+					input: { reportId: 'report-123', file },
+					output: { bytes: getOutput.toString('base64') }
+				}
 			]
 		);
 	} finally {

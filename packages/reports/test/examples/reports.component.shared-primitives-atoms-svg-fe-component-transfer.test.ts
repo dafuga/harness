@@ -34,13 +34,16 @@ test('Renders a bare feComponentTransfer element with its attributes and no wrap
 		}
 	]);
 	// No wrapper: the only element is feComponentTransfer itself, with the spread attributes and no content.
-	expect(body).toBe('<feComponentTransfer id="tone-curve" in="SourceGraphic" result="toned"></feComponentTransfer>');
+	expect(body).toBe(
+		'<feComponentTransfer id="tone-curve" in="SourceGraphic" result="toned"></feComponentTransfer>'
+	);
 	expect(body).not.toContain('children=');
 });
 
 test('Renders a supplied children snippet inside the feComponentTransfer element', () => {
 	const children = createRawSnippet(() => ({
-		render: () => '<feFuncR type="table" tableValues="0 1"></feFuncR><feFuncG type="identity"></feFuncG>'
+		render: () =>
+			'<feFuncR type="table" tableValues="0 1"></feFuncR><feFuncG type="identity"></feFuncG>'
 	}));
 	const props = { id: 'tone-curve', children };
 	const body = markup(render(SvgFeComponentTransfer, { props }).body);

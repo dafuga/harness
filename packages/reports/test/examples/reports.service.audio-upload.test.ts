@@ -70,16 +70,13 @@ test('Rejects an upload whose title is empty after trimming', async () => {
 
 		expect(error).toBeInstanceOf(InvalidAudioTitleError);
 		expect((error as Error).message).toBe('Audio title must be 1–120 characters');
-		recordExampleCases(
-			meta('upload', 'rejects-an-upload-whose-title-is-empty-after-trimming'),
-			[
-				{
-					name: 'whitespace-only title is rejected before the audio is read',
-					input: { reportId: REPORT_ID, ...DETAILS, title: '   ', audio: summary(input.audio) },
-					error: errorOf(error)
-				}
-			]
-		);
+		recordExampleCases(meta('upload', 'rejects-an-upload-whose-title-is-empty-after-trimming'), [
+			{
+				name: 'whitespace-only title is rejected before the audio is read',
+				input: { reportId: REPORT_ID, ...DETAILS, title: '   ', audio: summary(input.audio) },
+				error: errorOf(error)
+			}
+		]);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
@@ -94,16 +91,13 @@ test('Rejects an upload whose audio file is empty', async () => {
 
 		expect(error).toBeInstanceOf(InvalidAudioFileSizeError);
 		expect((error as Error).message).toBe('Audio file must be 1 byte to 50 MB');
-		recordExampleCases(
-			meta('upload', 'rejects-an-upload-whose-audio-file-is-empty'),
-			[
-				{
-					name: 'zero-byte mp3 is rejected by the 1 byte minimum',
-					input: { reportId: REPORT_ID, ...DETAILS, audio: summary(input.audio) },
-					error: errorOf(error)
-				}
-			]
-		);
+		recordExampleCases(meta('upload', 'rejects-an-upload-whose-audio-file-is-empty'), [
+			{
+				name: 'zero-byte mp3 is rejected by the 1 byte minimum',
+				input: { reportId: REPORT_ID, ...DETAILS, audio: summary(input.audio) },
+				error: errorOf(error)
+			}
+		]);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

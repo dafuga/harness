@@ -1,8 +1,15 @@
 import { test, vi } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { decartTransportReady, DecartStreamAdapter, connectDecart } from '../../src/adapters/agents-providers/DecartStreamAdapter';
-import type { VideoConnection, VideoConnector } from '../../src/adapters/agents-providers/DecartStreamAdapter.types';
+import {
+	decartTransportReady,
+	DecartStreamAdapter,
+	connectDecart
+} from '../../src/adapters/agents-providers/DecartStreamAdapter';
+import type {
+	VideoConnection,
+	VideoConnector
+} from '../../src/adapters/agents-providers/DecartStreamAdapter.types';
 
 const session = {
 	apiKey: 'ephemeral-key-example-0001',
@@ -18,7 +25,9 @@ function makeStream(track: { stop(): void }): MediaStream {
 }
 
 function makeCanvas(source: MediaStream): HTMLCanvasElement {
-	return { captureStream: (rate: number) => (rate === 25 ? source : source) } as unknown as HTMLCanvasElement;
+	return {
+		captureStream: (rate: number) => (rate === 25 ? source : source)
+	} as unknown as HTMLCanvasElement;
 }
 
 test('reports safe transport unavailable', () => {
@@ -57,8 +66,17 @@ test('connect forwards canvas session prompt and remote stream', async () => {
 	try {
 		const controls = await adapter.connect(
 			session,
-			{ prompt: 'a quiet harbor at dawn in soft watercolor', connector: async (_source, supplied) => { options = supplied; supplied.onRemoteStream(remote); return connection; } },
-			(stream) => { received = stream; }
+			{
+				prompt: 'a quiet harbor at dawn in soft watercolor',
+				connector: async (_source, supplied) => {
+					options = supplied;
+					supplied.onRemoteStream(remote);
+					return connection;
+				}
+			},
+			(stream) => {
+				received = stream;
+			}
 		);
 		expect(options?.session).toEqual(session);
 		expect(options?.retries).toBe(0);
@@ -74,7 +92,18 @@ test('connect forwards canvas session prompt and remote stream', async () => {
 				evidence: 'examples-cases',
 				file: 'connect-forwards-canvas-session-prompt-and-remote-stream.json'
 			},
-			[{ name: 'connector receives bounded session and remote stream is delivered', input: { session, prompt: 'a quiet harbor at dawn in soft watercolor' }, output: { retries: options?.retries, capacityRetryBudgetMs: options?.capacityRetryBudgetMs, remoteDelivered: received === remote, stopped } }]
+			[
+				{
+					name: 'connector receives bounded session and remote stream is delivered',
+					input: { session, prompt: 'a quiet harbor at dawn in soft watercolor' },
+					output: {
+						retries: options?.retries,
+						capacityRetryBudgetMs: options?.capacityRetryBudgetMs,
+						remoteDelivered: received === remote,
+						stopped
+					}
+				}
+			]
 		);
 	} finally {
 		vi.unstubAllGlobals();
@@ -85,11 +114,18 @@ test('connectDecart rejects prompts without a connector', async () => {
 	const local = makeStream({ stop: () => undefined });
 	let message = '';
 	try {
-		await connectDecart(makeCanvas(local), session, 'slow pan across a foggy pine forest', () => undefined);
+		await connectDecart(
+			makeCanvas(local),
+			session,
+			'slow pan across a foggy pine forest',
+			() => undefined
+		);
 	} catch (error) {
 		message = error instanceof Error ? error.message : String(error);
 	}
-	expect(message).toBe('Live AI is unavailable until a credential-safe provider transport is configured.');
+	expect(message).toBe(
+		'Live AI is unavailable until a credential-safe provider transport is configured.'
+	);
 	recordExampleCases(
 		{
 			unitId: 'game.function.connect-decart',
@@ -98,6 +134,12 @@ test('connectDecart rejects prompts without a connector', async () => {
 			evidence: 'examples-cases',
 			file: 'connectdecart-rejects-prompts-without-a-connector.json'
 		},
-		[{ name: 'string prompt cannot connect without injected transport', input: 'slow pan across a foggy pine forest', error: message }]
+		[
+			{
+				name: 'string prompt cannot connect without injected transport',
+				input: 'slow pan across a foggy pine forest',
+				error: message
+			}
+		]
 	);
 });

@@ -17,10 +17,26 @@ function checkSender(input: { senderMatches: boolean; frameMatches: boolean; url
 }
 
 test('trusts only the expected window main frame at an allowed URL', () => {
-	const accepted = checkSender({ senderMatches: true, frameMatches: true, url: 'harness://app/projects' });
-	const otherSender = checkSender({ senderMatches: false, frameMatches: true, url: 'harness://app/projects' });
-	const childFrame = checkSender({ senderMatches: true, frameMatches: false, url: 'harness://app/projects' });
-	const rejectedUrl = checkSender({ senderMatches: true, frameMatches: true, url: 'https://example.test/' });
+	const accepted = checkSender({
+		senderMatches: true,
+		frameMatches: true,
+		url: 'harness://app/projects'
+	});
+	const otherSender = checkSender({
+		senderMatches: false,
+		frameMatches: true,
+		url: 'harness://app/projects'
+	});
+	const childFrame = checkSender({
+		senderMatches: true,
+		frameMatches: false,
+		url: 'harness://app/projects'
+	});
+	const rejectedUrl = checkSender({
+		senderMatches: true,
+		frameMatches: true,
+		url: 'https://example.test/'
+	});
 
 	expect(accepted).toBe(true);
 	expect(otherSender).toBe(false);

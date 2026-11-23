@@ -32,9 +32,21 @@ test('Validates composition metadata and rejects invalid values', () => {
 		},
 		[
 			{ name: 'trims native element and direct runtime dependencies', input: validInput, output },
-			{ name: 'rejects an unsupported composition level', input: { level: 'widget' }, output: { success: false } },
-			{ name: 'rejects an empty dependency name', input: { level: 'atom', uses: ['  '] }, output: { success: false } },
-			{ name: 'rejects undeclared metadata fields', input: { level: 'page', category: 'forms' }, output: { success: false } }
+			{
+				name: 'rejects an unsupported composition level',
+				input: { level: 'widget' },
+				output: { success: false }
+			},
+			{
+				name: 'rejects an empty dependency name',
+				input: { level: 'atom', uses: ['  '] },
+				output: { success: false }
+			},
+			{
+				name: 'rejects undeclared metadata fields',
+				input: { level: 'page', category: 'forms' },
+				output: { success: false }
+			}
 		]
 	);
 });

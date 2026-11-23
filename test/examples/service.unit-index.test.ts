@@ -71,7 +71,11 @@ test('Throws TypeError when a record has no dependencies array', () => {
 		[
 			{
 				name: 'record missing dependencies',
-				input: { revision: 'example-revision', files: [], existing: [{ kind: 'model', status: 'active' }] },
+				input: {
+					revision: 'example-revision',
+					files: [],
+					existing: [{ kind: 'model', status: 'active' }]
+				},
 				error: 'TypeError'
 			}
 		]

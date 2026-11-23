@@ -7,7 +7,8 @@ import { recordExampleCases } from '../../../../test/support/recordExampleCases'
 import type { RecordInput, Report } from '../../src/models/reports-media/Report.types';
 import { reportIngest } from '../../src/repositories/reports-media/report-repository/reportIngest';
 
-const RUN_DIRECTORY = '/workspace/project/.harness/project-reports/runs/7f9c2b1e-4a3d-4e8b-9c1a-2d5e6f7a8b90';
+const RUN_DIRECTORY =
+	'/workspace/project/.harness/project-reports/runs/7f9c2b1e-4a3d-4e8b-9c1a-2d5e6f7a8b90';
 const SUMMARY = 'Desktop checkout passes; the mobile layout is still under review.';
 const SUMMARY_RECORD: RecordInput = { kind: 'summary', data: { text: SUMMARY } };
 const PNG_BYTES = Buffer.from('89504e470d0a1a0a0000000d49484452', 'hex');
@@ -95,7 +96,11 @@ test('Summary and check records update the report in place', async () => {
 			file: 'summary-and-check-records-update-the-report-in-place.json'
 		},
 		[
-			{ name: 'summary record sets the report summary', input: SUMMARY_RECORD, output: afterSummary },
+			{
+				name: 'summary record sets the report summary',
+				input: SUMMARY_RECORD,
+				output: afterSummary
+			},
 			{ name: 'passed check record is appended', input: check, output: afterCheck }
 		]
 	);
@@ -193,7 +198,13 @@ test('Evidence with an unsupported extension is rejected', async () => {
 				evidence: 'examples-cases',
 				file: 'evidence-with-an-unsupported-extension-is-rejected.json'
 			},
-			[{ name: 'GIF source is refused before any file is written', input: { file: 'report.gif' }, error: failure }]
+			[
+				{
+					name: 'GIF source is refused before any file is written',
+					input: { file: 'report.gif' },
+					error: failure
+				}
+			]
 		);
 	});
 });

@@ -37,7 +37,11 @@ const definition = {
 function installExampleModule(root: string): void {
 	writeFileSync(
 		join(root, 'harness.modules.json'),
-		JSON.stringify({ schemaVersion: 1, modules: [{ definition, source: 'project' }], resources: [] })
+		JSON.stringify({
+			schemaVersion: 1,
+			modules: [{ definition, source: 'project' }],
+			resources: []
+		})
 	);
 }
 

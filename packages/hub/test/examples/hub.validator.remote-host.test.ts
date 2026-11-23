@@ -53,12 +53,7 @@ test('Registers each host when its id matches its key', async () => {
 		credentialHash: studio.credentialHash,
 		name: 'Studio Mac mini'
 	});
-	expect(Object.keys(studioOutput).sort()).toEqual([
-		'credentialHash',
-		'hostId',
-		'hostKey',
-		'name'
-	]);
+	expect(Object.keys(studioOutput).sort()).toEqual(['credentialHash', 'hostId', 'hostKey', 'name']);
 	expect(officeOutput.name).toBe('Office Mac Studio');
 
 	recordExampleCases(
@@ -139,7 +134,11 @@ test('Returns well-formed host and device ids unchanged', async () => {
 		},
 		[
 			{ name: 'returns a lowercase hex host id unchanged', input: OFFICE_ID, output: hostId },
-			{ name: 'returns a lowercase hex device id unchanged (deviceId)', input: deviceInput, output: deviceId },
+			{
+				name: 'returns a lowercase hex device id unchanged (deviceId)',
+				input: deviceInput,
+				output: deviceId
+			},
 			{ name: 'rejects an uppercase host id', input: OFFICE_ID.toUpperCase(), error: upper }
 		]
 	);

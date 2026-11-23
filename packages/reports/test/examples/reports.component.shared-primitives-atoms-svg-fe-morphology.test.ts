@@ -6,7 +6,8 @@ import { test } from 'vitest';
 import SvgFeMorphology from '../../src/components/shared-primitives/atoms/SvgFeMorphology.svelte';
 
 const elementBody = (rendered: string) =>
-	rendered.match(/<feMorphology\b[\s\S]*?<\/feMorphology>/)?.[0]
+	rendered
+		.match(/<feMorphology\b[\s\S]*?<\/feMorphology>/)?.[0]
 		.replace(/<!--[\s\S]*?-->/g, '')
 		.trim() ?? '';
 
@@ -51,9 +52,11 @@ test('renders an optional child snippet inside feMorphology', () => {
 		children: { markup: childMarkup }
 	};
 	const children = createRawSnippet(() => ({ render: () => childMarkup }));
-	const body = elementBody(render(SvgFeMorphology, {
-		props: { ...props, children }
-	}).body);
+	const body = elementBody(
+		render(SvgFeMorphology, {
+			props: { ...props, children }
+		}).body
+	);
 
 	expect(body).toMatch(/^<feMorphology\b/);
 	expect(body).toContain('id="softened-edge"');

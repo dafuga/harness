@@ -50,9 +50,9 @@ test('Lists top-level exported names from source', () => {
 test('Reports sorted thrown and fail errors per symbol and file', () => {
 	const scan = scanExports(throwingModule);
 	expect(scan.errors).toEqual(throwingErrors);
-	expect(scan.symbols.map(({ name, errorStatus, errors }) => ({ name, errorStatus, errors }))).toEqual(
-		throwingSymbols
-	);
+	expect(
+		scan.symbols.map(({ name, errorStatus, errors }) => ({ name, errorStatus, errors }))
+	).toEqual(throwingSymbols);
 	recordExampleCases(
 		{
 			unitId: 'function.scan-exports',

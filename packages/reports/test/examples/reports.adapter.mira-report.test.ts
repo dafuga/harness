@@ -5,7 +5,10 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { MiraReportAdapter } from '../../src/services/reports-media/report-command-service/MiraReportAdapter';
-import type { MiraAsset, MiraFinding } from '../../src/services/reports-media/report-command-service/MiraReportAdapter.types';
+import type {
+	MiraAsset,
+	MiraFinding
+} from '../../src/services/reports-media/report-command-service/MiraReportAdapter.types';
 
 type Store = Parameters<MiraReportAdapter['ingest']>[0];
 type Written = {

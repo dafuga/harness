@@ -12,7 +12,13 @@ const SOURCE = 'export const value = 42;\n';
 const UID_LINE = /^\/\/ @harness-uid u_\w+\n/;
 
 function recordFor(state: string) {
-	return { unitId: UNIT_ID, symbol: 'annotateUnitFiles', state, evidence: 'examples-cases', file: `${state}.json` };
+	return {
+		unitId: UNIT_ID,
+		symbol: 'annotateUnitFiles',
+		state,
+		evidence: 'examples-cases',
+		file: `${state}.json`
+	};
 }
 
 function thrownBy(run: () => unknown): Error & { code?: string } {
@@ -45,7 +51,10 @@ test('Mints a uid for a new source file', async () => {
 test('Reuses the uid already on disk', async () => {
 	await withTempDir('annotate-unit-files-existing-', (root) => {
 		mkdirSync(join(root, 'src/workflows/example'), { recursive: true });
-		writeFileSync(join(root, SOURCE_PATH), '// @harness-uid u_abcdefgh23\nexport const value = 1;\n');
+		writeFileSync(
+			join(root, SOURCE_PATH),
+			'// @harness-uid u_abcdefgh23\nexport const value = 1;\n'
+		);
 		const input = [{ path: SOURCE_PATH, contents: SOURCE }];
 		const output = annotateUnitFiles(input, root);
 		expect(output[0].contents).toContain('// @harness-uid u_abcdefgh23');

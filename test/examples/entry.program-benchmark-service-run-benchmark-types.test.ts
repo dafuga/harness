@@ -32,6 +32,12 @@ test('Defines benchmark invocation inputs', () => {
 			evidence: 'examples-cases',
 			file: 'defines-benchmark-invocation-inputs.json'
 		},
-		[{ name: 'optional invocation controls are accepted', input: { path: input.path, seed: input.seed }, output: summary }]
+		[
+			{
+				name: 'optional invocation controls are accepted',
+				input: { path: input.path, seed: input.seed },
+				output: summary
+			}
+		]
 	);
 });

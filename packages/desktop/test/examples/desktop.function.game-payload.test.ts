@@ -13,7 +13,13 @@ type ExampleCase = { name: string; input: unknown } & ({ output: unknown } | { e
 
 function recordFor(state: string, cases: ExampleCase[]): void {
 	recordExampleCases(
-		{ unitId: UNIT_ID, symbol: 'gamePayload', state, evidence: 'examples-cases', file: `${state}.json` },
+		{
+			unitId: UNIT_ID,
+			symbol: 'gamePayload',
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
 		cases
 	);
 }
@@ -47,7 +53,11 @@ test('Keeps the checkpoint path and commit for an image read', () => {
 	expect(output).toEqual(input);
 
 	recordFor('keeps-the-checkpoint-path-and-commit-for-an-image-read', [
-		{ name: 'read a checkpoint image at a commit', input: { channel: 'game:image-read', input }, output }
+		{
+			name: 'read a checkpoint image at a commit',
+			input: { channel: 'game:image-read', input },
+			output
+		}
 	]);
 });
 

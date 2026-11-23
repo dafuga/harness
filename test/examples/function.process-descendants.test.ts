@@ -14,7 +14,9 @@ import { expect } from '../verificationExpect';
 async function installFakePs(directory: string, rows: FixtureRow[]): Promise<string> {
 	const bin = join(directory, 'bin');
 	await mkdir(bin);
-	const output = rows.map(({ pid, parent, group, started }) => `${pid} ${parent} ${group} ${started}`);
+	const output = rows.map(
+		({ pid, parent, group, started }) => `${pid} ${parent} ${group} ${started}`
+	);
 	const executable = join(bin, 'ps');
 	await writeFile(executable, `#!/bin/sh\nprintf '%s\\n' '${output.join("' '")}'\n`);
 	await chmod(executable, 0o700);
@@ -83,8 +85,7 @@ function recordTableExample(output: unknown): void {
 }
 
 test('Parses bounded ps rows', () =>
-	withTempDir('process-descendants-table-', processTableExample)
-);
+	withTempDir('process-descendants-table-', processTableExample));
 
 test('Tracks survivors and marks group strangers', async () => {
 	const root = { pid: 4242, started: 'Fri Nov 13 09:32:10 2026' };
@@ -172,5 +173,4 @@ async function signalExample(directory: string): Promise<void> {
 }
 
 test('Checks process identities before signaling', () =>
-	withTempDir('process-descendants-signals-', signalExample)
-);
+	withTempDir('process-descendants-signals-', signalExample));

@@ -18,8 +18,7 @@ const where = (state: string) => ({
 	file: `${state}.json`
 });
 const markup = (props: Record<string, unknown>, children?: ReturnType<typeof createRawSnippet>) =>
-	render(SvgStop, { props: { ...props, children } as never })
-		.body.replace(/<!--.*?-->/g, '');
+	render(SvgStop, { props: { ...props, children } as never }).body.replace(/<!--.*?-->/g, '');
 
 test('Renders a stop with its attributes and no wrapper', () => {
 	const inputs = [
@@ -32,7 +31,9 @@ test('Renders a stop with its attributes and no wrapper', () => {
 		output: { body: markup(input) }
 	}));
 	recordExampleCases(where('renders-a-stop-with-its-attributes-and-no-wrapper'), cases);
-	expect(cases[0].output.body).toBe('<stop offset="0%" stop-color="#1d4ed8" stop-opacity="0.5"></stop>');
+	expect(cases[0].output.body).toBe(
+		'<stop offset="0%" stop-color="#1d4ed8" stop-opacity="0.5"></stop>'
+	);
 	expect(cases[1].output.body).toBe('<stop offset="0.25" stop-color="currentColor"></stop>');
 	expect(cases[0].output.body).not.toMatch(/<(g|svg|div|span)\b/);
 });

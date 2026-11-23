@@ -16,12 +16,7 @@ test('Lists the six built-in loop templates', () => {
 	expect(builtInTemplates[0]).toMatchObject({
 		id: 'feature',
 		title: 'Feature Delivery',
-		steps: [
-			{ id: 'spec' },
-			{ id: 'implement' },
-			{ id: 'test' },
-			{ id: 'verify' }
-		],
+		steps: [{ id: 'spec' }, { id: 'implement' }, { id: 'test' }, { id: 'verify' }],
 		evaluators: [{ id: 'check', command: 'bun run check', step: 'verify' }]
 	});
 	recordExampleCases(

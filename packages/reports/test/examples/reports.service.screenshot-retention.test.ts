@@ -31,13 +31,39 @@ function report(id: string, evidence: Array<Record<string, unknown>>) {
 	};
 }
 
-function withTemporaryRepository<T>(run: (service: ScreenshotRetentionService, data: ReturnType<typeof report>[]) => Promise<T>) {
+function withTemporaryRepository<T>(
+	run: (service: ScreenshotRetentionService, data: ReturnType<typeof report>[]) => Promise<T>
+) {
 	const root = mkdtempSync(join(tmpdir(), 'screenshot-retention-'));
 	const data = [
 		report('run-one', [
-			{ id: 'old', title: 'Old capture', category: 'screenshot', file: `${'a'.repeat(64)}.png`, status: 'proven', storage: 'r2', capturedAt: '2025-01-01T00:00:00.000Z' },
-			{ id: 'new', title: 'Recent capture', category: 'screenshot', file: `${'b'.repeat(64)}.png`, status: 'proven', storage: 'r2', capturedAt: '2025-02-15T00:00:00.000Z' },
-			{ id: 'local', title: 'Local capture', category: 'screenshot', file: 'local.png', status: 'proven', storage: 'local', capturedAt: '2025-01-01T00:00:00.000Z' }
+			{
+				id: 'old',
+				title: 'Old capture',
+				category: 'screenshot',
+				file: `${'a'.repeat(64)}.png`,
+				status: 'proven',
+				storage: 'r2',
+				capturedAt: '2025-01-01T00:00:00.000Z'
+			},
+			{
+				id: 'new',
+				title: 'Recent capture',
+				category: 'screenshot',
+				file: `${'b'.repeat(64)}.png`,
+				status: 'proven',
+				storage: 'r2',
+				capturedAt: '2025-02-15T00:00:00.000Z'
+			},
+			{
+				id: 'local',
+				title: 'Local capture',
+				category: 'screenshot',
+				file: 'local.png',
+				status: 'proven',
+				storage: 'local',
+				capturedAt: '2025-01-01T00:00:00.000Z'
+			}
 		])
 	];
 	const repository = {
@@ -49,7 +75,9 @@ function withTemporaryRepository<T>(run: (service: ScreenshotRetentionService, d
 			return directory;
 		}
 	} as unknown as ConstructorParameters<typeof ScreenshotRetentionService>[0];
-	return run(new ScreenshotRetentionService(repository), data).finally(() => rmSync(root, { recursive: true, force: true }));
+	return run(new ScreenshotRetentionService(repository), data).finally(() =>
+		rmSync(root, { recursive: true, force: true })
+	);
 }
 
 test('Expires old R2 evidence and keeps other evidence', async () => {
@@ -59,8 +87,25 @@ test('Expires old R2 evidence and keeps other evidence', async () => {
 		expect(result).toEqual({ expired: 1, reports: 1 });
 		expect(data[0].evidence[0]).toMatchObject({ missing: true, status: 'not-proven' });
 		recordExampleCases(
-			{ unitId: 'reports.service.screenshot-retention', symbol: 'ScreenshotRetentionService.run', state, evidence: 'examples-cases', file: `${state}.json` },
-			[{ name: 'expires one old R2 capture while retaining recent and local captures', input, output: { expired: result.expired, reports: result.reports, oldMissing: data[0].evidence[0].missing, recentMissing: data[0].evidence[1].missing ?? false } }]
+			{
+				unitId: 'reports.service.screenshot-retention',
+				symbol: 'ScreenshotRetentionService.run',
+				state,
+				evidence: 'examples-cases',
+				file: `${state}.json`
+			},
+			[
+				{
+					name: 'expires one old R2 capture while retaining recent and local captures',
+					input,
+					output: {
+						expired: result.expired,
+						reports: result.reports,
+						oldMissing: data[0].evidence[0].missing,
+						recentMissing: data[0].evidence[1].missing ?? false
+					}
+				}
+			]
 		);
 	});
 });
@@ -76,8 +121,20 @@ test('Rejects an invalid cleanup time', async () => {
 		}
 		expect(error).toBeInstanceOf(InvalidCleanupTimeError);
 		recordExampleCases(
-			{ unitId: 'reports.service.screenshot-retention', symbol: 'ScreenshotRetentionService.run', state, evidence: 'examples-cases', file: `${state}.json` },
-			[{ name: 'non-finite cleanup date is rejected', input: { now: 'invalid date' }, error: { name: (error as Error).name, message: (error as Error).message } }]
+			{
+				unitId: 'reports.service.screenshot-retention',
+				symbol: 'ScreenshotRetentionService.run',
+				state,
+				evidence: 'examples-cases',
+				file: `${state}.json`
+			},
+			[
+				{
+					name: 'non-finite cleanup date is rejected',
+					input: { now: 'invalid date' },
+					error: { name: (error as Error).name, message: (error as Error).message }
+				}
+			]
 		);
 	});
 });

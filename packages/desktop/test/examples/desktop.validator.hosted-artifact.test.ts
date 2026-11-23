@@ -24,7 +24,10 @@ function rejection(media: { bytes: Uint8Array; mediaType: string }, sha256: stri
 
 test('serves attested screenshot and text artifacts', () => {
 	const image = validator.artifact({ bytes: pngBytes, mediaType: 'image/png' }, digest(pngBytes));
-	const text = validator.artifact({ bytes: textBytes, mediaType: 'application/json' }, digest(textBytes));
+	const text = validator.artifact(
+		{ bytes: textBytes, mediaType: 'application/json' },
+		digest(textBytes)
+	);
 	expect(image).toMatchObject({ mediaType: 'image/png', sha256: digest(pngBytes) });
 	expect(text).toMatchObject({ mediaType: 'application/json', sha256: digest(textBytes) });
 	recordExampleCases(
@@ -36,8 +39,16 @@ test('serves attested screenshot and text artifacts', () => {
 			file: 'serves-attested-screenshot-and-text-artifacts.json'
 		},
 		[
-			{ name: 'serve PNG screenshot', input: { mediaType: 'image/png', sha256: digest(pngBytes) }, output: { mediaType: image.mediaType, sha256: image.sha256, byteLength: image.bytes.length } },
-			{ name: 'serve JSON result', input: { mediaType: 'application/json', sha256: digest(textBytes) }, output: { mediaType: text.mediaType, sha256: text.sha256, byteLength: text.bytes.length } }
+			{
+				name: 'serve PNG screenshot',
+				input: { mediaType: 'image/png', sha256: digest(pngBytes) },
+				output: { mediaType: image.mediaType, sha256: image.sha256, byteLength: image.bytes.length }
+			},
+			{
+				name: 'serve JSON result',
+				input: { mediaType: 'application/json', sha256: digest(textBytes) },
+				output: { mediaType: text.mediaType, sha256: text.sha256, byteLength: text.bytes.length }
+			}
 		]
 	);
 });
@@ -46,8 +57,11 @@ test('rejects artifacts with invalid digests or unsupported kinds', () => {
 	const badDigest = rejection({ bytes: pngBytes, mediaType: 'image/png' }, 'bad');
 	const badKind = rejection({ bytes: textBytes, mediaType: 'text/html' }, digest(textBytes));
 	expect(badDigest).toBeInstanceOf(HostedArtifactRejectedError);
-	expect(badKind).toMatchObject({ message: 'The hosted service sent a kind this app does not show.' });
-	if (!(badDigest instanceof Error) || !(badKind instanceof Error)) throw new Error('Expected errors.');
+	expect(badKind).toMatchObject({
+		message: 'The hosted service sent a kind this app does not show.'
+	});
+	if (!(badDigest instanceof Error) || !(badKind instanceof Error))
+		throw new Error('Expected errors.');
 	recordExampleCases(
 		{
 			unitId: 'desktop.validator.hosted-artifact',
@@ -57,8 +71,16 @@ test('rejects artifacts with invalid digests or unsupported kinds', () => {
 			file: 'rejects-artifacts-with-invalid-digests-or-unsupported-kinds.json'
 		},
 		[
-			{ name: 'reject malformed digest', input: { mediaType: 'image/png', sha256: 'bad' }, error: { name: badDigest.name, message: badDigest.message } },
-			{ name: 'reject unsupported HTML declaration', input: { mediaType: 'text/html', sha256: digest(textBytes) }, error: { name: badKind.name, message: badKind.message } }
+			{
+				name: 'reject malformed digest',
+				input: { mediaType: 'image/png', sha256: 'bad' },
+				error: { name: badDigest.name, message: badDigest.message }
+			},
+			{
+				name: 'reject unsupported HTML declaration',
+				input: { mediaType: 'text/html', sha256: digest(textBytes) },
+				error: { name: badKind.name, message: badKind.message }
+			}
 		]
 	);
 });

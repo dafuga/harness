@@ -88,7 +88,9 @@ test('Recalculates the agents group from the agents that remain', () => {
 
 		expect(kept.map((agent) => agent.pid)).not.toContain(9810);
 		expect(agentsGroup?.processes).toBe(kept.reduce((total, agent) => total + agent.processes, 0));
-		expect(agentsGroup?.corePercent).toBe(kept.reduce((total, agent) => total + agent.corePercent, 0));
+		expect(agentsGroup?.corePercent).toBe(
+			kept.reduce((total, agent) => total + agent.corePercent, 0)
+		);
 		expect(cpu.groups.slice(0, 2)).toEqual(sample.groups.slice(0, 2));
 		expect(cpu.trackedPercent).toBeCloseTo(
 			cpu.groups.reduce((total, group) => total + group.machinePercent, 0)

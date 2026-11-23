@@ -103,7 +103,11 @@ test('Project reads call the project and GitHub routes', async () => {
 	recordExampleCases(meta('browserProjects', 'project-reads-call-the-project-and-github-routes'), [
 		{ name: 'list projects for the signed-in person', input: { call: 'list' }, output: calls[0] },
 		{ name: 'get one project by id', input: { call: 'get', projectId: PROJECT }, output: calls[1] },
-		{ name: 'list members of a project', input: { call: 'members', projectId: PROJECT }, output: calls[2] },
+		{
+			name: 'list members of a project',
+			input: { call: 'members', projectId: PROJECT },
+			output: calls[2]
+		},
 		{ name: 'read GitHub connection status', input: { call: 'github' }, output: calls[3] },
 		{ name: 'list GitHub repositories', input: { call: 'repositories' }, output: calls[4] }
 	]);
@@ -129,23 +133,26 @@ test('Project writes send bodies to create, invite and accept', async () => {
 			body: { code: CODE }
 		}
 	]);
-	recordExampleCases(meta('browserProjects', 'project-writes-send-bodies-to-create-invite-and-accept'), [
-		{
-			name: 'create a project from a listed repository',
-			input: { name: 'Field notes', repositoryId: 4217 },
-			output: calls[0]
-		},
-		{
-			name: 'invite a viewer by email',
-			input: { projectId: PROJECT, email: 'reviewer@example.com', role: 'viewer' },
-			output: calls[1]
-		},
-		{
-			name: 'accept an invitation with its code',
-			input: { projectId: PROJECT, invitationId: INVITE_ID, code: CODE },
-			output: calls[2]
-		}
-	]);
+	recordExampleCases(
+		meta('browserProjects', 'project-writes-send-bodies-to-create-invite-and-accept'),
+		[
+			{
+				name: 'create a project from a listed repository',
+				input: { name: 'Field notes', repositoryId: 4217 },
+				output: calls[0]
+			},
+			{
+				name: 'invite a viewer by email',
+				input: { projectId: PROJECT, email: 'reviewer@example.com', role: 'viewer' },
+				output: calls[1]
+			},
+			{
+				name: 'accept an invitation with its code',
+				input: { projectId: PROJECT, invitationId: INVITE_ID, code: CODE },
+				output: calls[2]
+			}
+		]
+	);
 });
 
 test('Browser project calls reject a surrogate id before sending', () => {

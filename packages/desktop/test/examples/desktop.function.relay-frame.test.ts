@@ -90,7 +90,11 @@ test('Rejects text longer than the frame size limit', () => {
 });
 
 test('Rejects a device-open frame with a malformed device id', () => {
-	const text = JSON.stringify({ type: 'device-open', deviceId: 'not a device id!', connectionId: 'c-1' });
+	const text = JSON.stringify({
+		type: 'device-open',
+		deviceId: 'not a device id!',
+		connectionId: 'c-1'
+	});
 	const frame = relayFrame(text);
 
 	expect(frame).toBeNull();

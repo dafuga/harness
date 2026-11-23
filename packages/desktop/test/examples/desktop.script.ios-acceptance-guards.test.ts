@@ -13,10 +13,14 @@ import {
 
 test('allows only loopback http origins with a port', () => {
 	const accepted = localOrigin('http://127.0.0.1:8787');
-	const rejected = ['http://localhost:8787', 'https://127.0.0.1:8787', 'http://127.0.0.1:8787/'].map(localOrigin);
+	const rejected = [
+		'http://localhost:8787',
+		'https://127.0.0.1:8787',
+		'http://127.0.0.1:8787/'
+	].map(localOrigin);
 	expect(accepted).toBe(true);
 	expect(rejected).toEqual([false, false, false]);
-	 expect(loopbackArgument).toBe('-HarnessRemoteLoopback');
+	expect(loopbackArgument).toBe('-HarnessRemoteLoopback');
 	recordExampleCases(
 		{
 			unitId: 'desktop.script.ios-acceptance-guards',
@@ -63,7 +67,9 @@ test('ages and versions synthetic pairing offers', () => {
 	expect(aged).toBe('harness-pair:v1;exp=1794700740;');
 	expect(versioned).toBe('harness-pair:v2;exp=1794787200;');
 	expect([loopbackArgument, scanMarker, scanArgument]).toEqual([
-		'-HarnessRemoteLoopback', 'HarnessSyntheticScans', '-HarnessSyntheticScans'
+		'-HarnessRemoteLoopback',
+		'HarnessSyntheticScans',
+		'-HarnessSyntheticScans'
 	]);
 	recordExampleCases(
 		{
@@ -76,7 +82,11 @@ test('ages and versions synthetic pairing offers', () => {
 		[
 			{ name: 'age offer by sixty seconds', input: { scan, now: 1794700800000 }, output: aged },
 			{ name: 'mark offer as unsupported version', input: scan, output: versioned },
-			{ name: 'fixed acceptance launch arguments', input: null, output: [loopbackArgument, scanMarker, scanArgument] }
+			{
+				name: 'fixed acceptance launch arguments',
+				input: null,
+				output: [loopbackArgument, scanMarker, scanArgument]
+			}
 		]
 	);
 });

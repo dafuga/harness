@@ -4,7 +4,10 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { helperConsumers } from '../../src/services/explorer-ui/revision-detail-service/helperConsumers';
 import type { Unit } from '../../src/services/explorer-ui/revision-detail-service/helperConsumers.types';
 import { serviceClasses } from '../../src/services/explorer-ui/revision-detail-service/serviceClasses';
-import type { Facts, Lookup } from '../../src/services/explorer-ui/revision-detail-service/serviceClasses.types';
+import type {
+	Facts,
+	Lookup
+} from '../../src/services/explorer-ui/revision-detail-service/serviceClasses.types';
 import type { HelperTree } from '../../src/utils/explorer-ui/helperConsumers';
 
 const helperMeta = {
@@ -46,10 +49,11 @@ function treeOf(list: () => Promise<unknown>): HelperTree {
 
 function summary(units: Unit[]) {
 	return units.map((unit) => {
-		const { id, serviceConsumers, serviceClasses: classes } = unit as unknown as Record<
-			string,
-			unknown
-		>;
+		const {
+			id,
+			serviceConsumers,
+			serviceClasses: classes
+		} = unit as unknown as Record<string, unknown>;
 		return { id, serviceConsumers, serviceClasses: classes };
 	});
 }
@@ -64,11 +68,13 @@ test('Rejects when the tree list call rejects', async () => {
 	const tree = treeOf(async () => {
 		throw new Error('listing failed');
 	});
-	await expect(helperConsumers(tree, [unitOf('function.alpha')])).rejects.toThrow(
-		'listing failed'
-	);
+	await expect(helperConsumers(tree, [unitOf('function.alpha')])).rejects.toThrow('listing failed');
 	recordExampleCases(
-		{ ...helperMeta, state: 'rejects-when-the-tree-list-call-rejects', file: 'rejects-when-the-tree-list-call-rejects.json' },
+		{
+			...helperMeta,
+			state: 'rejects-when-the-tree-list-call-rejects',
+			file: 'rejects-when-the-tree-list-call-rejects.json'
+		},
 		[
 			{
 				name: 'tree list rejects with a listing error',
@@ -81,9 +87,7 @@ test('Rejects when the tree list call rejects', async () => {
 
 test('Rejects with a TypeError when the tree list yields null', async () => {
 	const tree = treeOf(async () => null);
-	await expect(helperConsumers(tree, [unitOf('function.alpha')])).rejects.toBeInstanceOf(
-		TypeError
-	);
+	await expect(helperConsumers(tree, [unitOf('function.alpha')])).rejects.toBeInstanceOf(TypeError);
 	recordExampleCases(
 		{
 			...helperMeta,
@@ -102,7 +106,12 @@ test('Rejects with a TypeError when the tree list yields null', async () => {
 
 test('Leaves an active unit without service exports empty', async () => {
 	const unit = unitOf('function.alpha');
-	await expect(helperConsumers(treeOf(async () => []), [unit])).resolves.toBeUndefined();
+	await expect(
+		helperConsumers(
+			treeOf(async () => []),
+			[unit]
+		)
+	).resolves.toBeUndefined();
 	expect(summary([unit])).toEqual([
 		{ id: 'function.alpha', serviceConsumers: [], serviceClasses: [] }
 	]);

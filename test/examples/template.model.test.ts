@@ -31,9 +31,13 @@ test('Generates a Postgres model scaffold', () => {
 				input,
 				output: files.map(({ path, contents }) => ({
 					path,
-					keyLines: contents.split('\n').filter((line) =>
-						/^(export interface UserAttributes|export class User|const tableName|CREATE TABLE|-- reversible|export function createPostgresAdapter|test\()/.test(line)
-					)
+					keyLines: contents
+						.split('\n')
+						.filter((line) =>
+							/^(export interface UserAttributes|export class User|const tableName|CREATE TABLE|-- reversible|export function createPostgresAdapter|test\()/.test(
+								line
+							)
+						)
 				}))
 			}
 		]

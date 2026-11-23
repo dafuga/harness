@@ -53,47 +53,70 @@ test('Rejects creation while a project operation is active', async () => {
 	const result = await captureFailure(() =>
 		service.create({ name: 'moon-runner', kind: 'game', dimension: '2d' } as never)
 	);
-	expect(result).toEqual({ name: 'GameProjectBusyError', message: 'Wait for the current project operation.' });
+	expect(result).toEqual({
+		name: 'GameProjectBusyError',
+		message: 'Wait for the current project operation.'
+	});
 	expect(new GameProjectBusyError('example')).toBeInstanceOf(Error);
-	recordExampleCases({
-		unitId: 'desktop.service.game-project', symbol: 'create',
-		state: 'rejects-creation-while-a-project-operation-is-active', evidence: 'examples-cases',
-		file: 'rejects-creation-while-a-project-operation-is-active.json'
-	}, [{
-		name: 'Busy session blocks creation before making its target folder',
-		input: { busy: true, project: { name: 'moon-runner', kind: 'game', dimension: '2d' } },
-		output: result
-	}]);
+	recordExampleCases(
+		{
+			unitId: 'desktop.service.game-project',
+			symbol: 'create',
+			state: 'rejects-creation-while-a-project-operation-is-active',
+			evidence: 'examples-cases',
+			file: 'rejects-creation-while-a-project-operation-is-active.json'
+		},
+		[
+			{
+				name: 'Busy session blocks creation before making its target folder',
+				input: { busy: true, project: { name: 'moon-runner', kind: 'game', dimension: '2d' } },
+				output: result
+			}
+		]
+	);
 });
 
 test('Rejects reads for an unknown project', async () => {
 	const service = new GameProjectService(makeSession() as never, temporaryRoot());
 	const result = await captureFailure(() => service.read({ projectId: 'local-missing' } as never));
 	expect(result).toEqual({ name: 'Error', message: 'Unknown project.' });
-	recordExampleCases({
-		unitId: 'desktop.service.game-project', symbol: 'read',
-		state: 'rejects-reads-for-an-unknown-project', evidence: 'examples-cases',
-		file: 'rejects-reads-for-an-unknown-project.json'
-	}, [{
-		name: 'Unknown project id is rejected before document access',
-		input: { projectId: 'local-missing', commit: '3b7e9d1f0c4a6e2b8d5f7a9c1e3b5d7f9a1c3e5b' },
-		output: result
-	}]);
+	recordExampleCases(
+		{
+			unitId: 'desktop.service.game-project',
+			symbol: 'read',
+			state: 'rejects-reads-for-an-unknown-project',
+			evidence: 'examples-cases',
+			file: 'rejects-reads-for-an-unknown-project.json'
+		},
+		[
+			{
+				name: 'Unknown project id is rejected before document access',
+				input: { projectId: 'local-missing', commit: '3b7e9d1f0c4a6e2b8d5f7a9c1e3b5d7f9a1c3e5b' },
+				output: result
+			}
+		]
+	);
 });
 
 test('Rejects saves for an unknown project', async () => {
 	const service = new GameProjectService(makeSession() as never, temporaryRoot());
 	const input = {
-		projectId: 'local-missing', document: { version: 1, views: [], mechanics: [] },
+		projectId: 'local-missing',
+		document: { version: 1, views: [], mechanics: [] },
 		expectedRevision: 'a7f3c91e5b2d08f46c1e9a3b7d5f2c8e0b4a6d9f1c3e7b5a2d8f0c6e4b9a1d37'
 	};
 	const result = await captureFailure(() => service.save(input as never));
 	expect(result).toEqual({ name: 'Error', message: 'Unknown project.' });
-	recordExampleCases({
-		unitId: 'desktop.service.game-project', symbol: 'save',
-		state: 'rejects-saves-for-an-unknown-project', evidence: 'examples-cases',
-		file: 'rejects-saves-for-an-unknown-project.json'
-	}, [{ name: 'Unknown project id is rejected before document mutation', input, output: result }]);
+	recordExampleCases(
+		{
+			unitId: 'desktop.service.game-project',
+			symbol: 'save',
+			state: 'rejects-saves-for-an-unknown-project',
+			evidence: 'examples-cases',
+			file: 'rejects-saves-for-an-unknown-project.json'
+		},
+		[{ name: 'Unknown project id is rejected before document mutation', input, output: result }]
+	);
 });
 
 test('Rejects creation when the project folder already exists', async () => {
@@ -102,11 +125,19 @@ test('Rejects creation when the project folder already exists', async () => {
 	await import('node:fs/promises').then(({ mkdir }) => mkdir(join(root, 'Harbor Lights')));
 	const input = { name: 'Harbor Lights', kind: 'game', dimension: '3d' };
 	const result = await captureFailure(() => service.create(input as never));
-	expect(result).toEqual({ name: 'GameProjectAlreadyExistsError', message: 'A project with that name already exists.' });
+	expect(result).toEqual({
+		name: 'GameProjectAlreadyExistsError',
+		message: 'A project with that name already exists.'
+	});
 	expect(new GameProjectAlreadyExistsError('example')).toBeInstanceOf(Error);
-	recordExampleCases({
-		unitId: 'desktop.service.game-project', symbol: 'create',
-		state: 'rejects-creation-when-the-project-folder-already-exists', evidence: 'examples-cases',
-		file: 'rejects-creation-when-the-project-folder-already-exists.json'
-	}, [{ name: 'Existing project folder is preserved and reported', input, output: result }]);
+	recordExampleCases(
+		{
+			unitId: 'desktop.service.game-project',
+			symbol: 'create',
+			state: 'rejects-creation-when-the-project-folder-already-exists',
+			evidence: 'examples-cases',
+			file: 'rejects-creation-when-the-project-folder-already-exists.json'
+		},
+		[{ name: 'Existing project folder is preserved and reported', input, output: result }]
+	);
 });

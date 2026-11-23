@@ -31,8 +31,12 @@ test('Seeds the explorer fixture and indexes its config', async () => {
 	expect(indexes).toHaveLength(2);
 	expect(explorerBranch).toBe('explorer/tip');
 	expect(explorerUnits).toMatchObject({
-		page: 'page.titles', list: 'component.title-list', row: 'component.title-row',
-		slugify: 'function.slugify', config: 'config.titles', service: 'service.title'
+		page: 'page.titles',
+		list: 'component.title-list',
+		row: 'component.title-row',
+		slugify: 'function.slugify',
+		config: 'config.titles',
+		service: 'service.title'
 	});
 	recordExampleCases(
 		{
@@ -42,16 +46,18 @@ test('Seeds the explorer fixture and indexes its config', async () => {
 			evidence: 'examples-cases',
 			file: 'seeds-the-explorer-fixture-and-indexes-its-config.json'
 		},
-		[{
-			name: 'writes fixture sources and scenarios, then indexes twice',
-			input: { configUnit: explorerUnits.config },
-			output: {
-				resolved: output === undefined,
-				writeCount: writes.length,
-				includesExplorerScript: writes.includes('scripts/explorer.mjs'),
-				indexCalls: indexes.map((call) => call.args)
+		[
+			{
+				name: 'writes fixture sources and scenarios, then indexes twice',
+				input: { configUnit: explorerUnits.config },
+				output: {
+					resolved: output === undefined,
+					writeCount: writes.length,
+					includesExplorerScript: writes.includes('scripts/explorer.mjs'),
+					indexCalls: indexes.map((call) => call.args)
+				}
 			}
-		}]
+		]
 	);
 });
 
@@ -82,10 +88,12 @@ test('Throws VerifyRepo rejection when a repository write fails', async () => {
 			evidence: 'examples-cases',
 			file: 'throws-verifyrepo-rejection-when-a-repository-write-fails.json'
 		},
-		[{
-			name: 'the first repository write rejection is propagated',
-			input: { failingCall: 'write:src/config/titlesConfig.ts' },
-			error: { message: reason.message }
-		}]
+		[
+			{
+				name: 'the first repository write rejection is propagated',
+				input: { failingCall: 'write:src/config/titlesConfig.ts' },
+				error: { message: reason.message }
+			}
+		]
 	);
 });

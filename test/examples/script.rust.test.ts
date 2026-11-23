@@ -8,7 +8,11 @@ import { join } from 'node:path';
 
 function caught(run: () => unknown): { name: string; message: string } {
 	let value: unknown;
-	try { run(); } catch (error) { value = error; }
+	try {
+		run();
+	} catch (error) {
+		value = error;
+	}
 	expect(value).toBeInstanceOf(Error);
 	const error = value as Error;
 	return { name: error.name, message: error.message };
@@ -19,8 +23,20 @@ function pin(project: string, content = '[toolchain]\nchannel = "stable"\n'): vo
 	writeFileSync(join(project, 'rust-toolchain.toml'), content);
 }
 
-function record(state: string, cases: Array<{ name: string; input: unknown; error: unknown }>): void {
-	recordExampleCases({ unitId: 'script.rust', symbol: 'pinnedToolchain', state, evidence: 'examples-cases', file: `${state}.json` }, cases);
+function record(
+	state: string,
+	cases: Array<{ name: string; input: unknown; error: unknown }>
+): void {
+	recordExampleCases(
+		{
+			unitId: 'script.rust',
+			symbol: 'pinnedToolchain',
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
+		cases
+	);
 }
 
 function mockToml(channel: string): void {
@@ -35,7 +51,8 @@ test('Selects the pinned Rust compiler toolchain', async () => {
 		const project = join(root, 'project');
 		pin(project);
 		const output = pinnedToolchain('cargo', {
-			cwd: project, env: { PATH: '/fake/bin' },
+			cwd: project,
+			env: { PATH: '/fake/bin' },
 			run: (_command, args, cwd, env) => {
 				expect(args).toEqual(['which', '--toolchain', 'stable', 'cargo']);
 				expect(cwd).toBe(project);
@@ -45,7 +62,22 @@ test('Selects the pinned Rust compiler toolchain', async () => {
 		});
 		expect(output.command).toBe('/toolchains/stable/bin/cargo');
 		expect(output.env.RUSTC).toBe('/toolchains/stable/bin/rustc');
-		recordExampleCases({ unitId: 'script.rust', symbol: 'pinnedToolchain', state: 'selects-the-pinned-rust-compiler-toolchain', evidence: 'examples-cases', file: 'selects-the-pinned-rust-compiler-toolchain.json' }, [{ name: 'selects cargo from stable', input: { tool: 'cargo', channel: 'stable' }, output: { command: output.command, rustc: output.env.RUSTC } }]);
+		recordExampleCases(
+			{
+				unitId: 'script.rust',
+				symbol: 'pinnedToolchain',
+				state: 'selects-the-pinned-rust-compiler-toolchain',
+				evidence: 'examples-cases',
+				file: 'selects-the-pinned-rust-compiler-toolchain.json'
+			},
+			[
+				{
+					name: 'selects cargo from stable',
+					input: { tool: 'cargo', channel: 'stable' },
+					output: { command: output.command, rustc: output.env.RUSTC }
+				}
+			]
+		);
 	});
 });
 
@@ -82,7 +114,11 @@ test('Throws pin errors for missing, unreadable, or invalid toolchain files', as
 		record('throws-pin-errors-for-missing-unreadable-or-invalid-toolchai', [
 			{ name: 'reports missing pin', input: { cwd: missing }, error: missingError },
 			{ name: 'passes through read failure', input: { cwd: unreadable }, error: readError },
-			{ name: 'rejects padded channel', input: { cwd: invalid, channel: ' stable ' }, error: invalidError }
+			{
+				name: 'rejects padded channel',
+				input: { cwd: invalid, channel: ' stable ' },
+				error: invalidError
+			}
 		]);
 	});
 });
@@ -92,13 +128,21 @@ test('Throws Bun.spawnSync error when tool execution throws', async () => {
 		const project = join(root, 'project');
 		pin(project);
 		mockToml('stable');
-		const thrown = caught(() => pinnedToolchain('cargo', {
-			cwd: project,
-			run: () => { throw new Error('spawn failed'); }
-		}));
+		const thrown = caught(() =>
+			pinnedToolchain('cargo', {
+				cwd: project,
+				run: () => {
+					throw new Error('spawn failed');
+				}
+			})
+		);
 		expect(thrown.message).toBe('spawn failed');
 		record('throws-bun-spawnsync-error-when-tool-execution-throws', [
-			{ name: 'passes through thrown tool execution error', input: { tool: 'cargo', thrown: 'spawn failed' }, error: thrown }
+			{
+				name: 'passes through thrown tool execution error',
+				input: { tool: 'cargo', thrown: 'spawn failed' },
+				error: thrown
+			}
 		]);
 	});
 });
@@ -108,11 +152,26 @@ test('Throws Error when rustup selection fails', async () => {
 		const project = join(root, 'project');
 		pin(project);
 		mockToml('stable');
-		const missing = caught(() => pinnedToolchain('cargo', { cwd: project, run: () => ({ status: null, stdout: '', stderr: '', failed: true }) }));
+		const missing = caught(() =>
+			pinnedToolchain('cargo', {
+				cwd: project,
+				run: () => ({ status: null, stdout: '', stderr: '', failed: true })
+			})
+		);
 		expect(missing.message).toContain('rustup was not found');
-		const rejected = caught(() => pinnedToolchain('cargo', { cwd: project, run: () => ({ status: 1, stdout: '', stderr: 'not installed', failed: false }) }));
+		const rejected = caught(() =>
+			pinnedToolchain('cargo', {
+				cwd: project,
+				run: () => ({ status: 1, stdout: '', stderr: 'not installed', failed: false })
+			})
+		);
 		expect(rejected.message).toContain('rustup could not select cargo');
-		const empty = caught(() => pinnedToolchain('cargo', { cwd: project, run: () => ({ status: 0, stdout: '  ', stderr: '', failed: false }) }));
+		const empty = caught(() =>
+			pinnedToolchain('cargo', {
+				cwd: project,
+				run: () => ({ status: 0, stdout: '  ', stderr: '', failed: false })
+			})
+		);
 		expect(empty.message).toContain('rustup named no cargo');
 		record('throws-error-when-rustup-selection-fails', [
 			{ name: 'reports missing rustup', input: { tool: 'cargo', failed: true }, error: missing },

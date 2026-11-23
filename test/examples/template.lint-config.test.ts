@@ -5,14 +5,11 @@ import { lintConfigFiles } from '../../src/templates/development-tooling/lintCon
 
 test('Plans the lint configuration files', () => {
 	const files = lintConfigFiles();
-	expect(files.map(({ path }) => path)).toEqual([
-		'eslint.harness-rules.js',
-		'eslint.config.js'
-	]);
+	expect(files.map(({ path }) => path)).toEqual(['eslint.harness-rules.js', 'eslint.config.js']);
 	expect(files[0].contents).toContain('maxFileLines: 220');
 	expect(files[0].contents).toContain("'no-manager-name'");
 	expect(files[1].contents).toContain("'@typescript-eslint/no-explicit-any': 'error'");
-	expect(files[1].contents).toContain("max-classes-per-file");
+	expect(files[1].contents).toContain('max-classes-per-file');
 	recordExampleCases(
 		{
 			unitId: 'template.lint-config',
@@ -30,7 +27,9 @@ test('Plans the lint configuration files', () => {
 					lines: contents.split('\n').length - 1,
 					keyLines: contents
 						.split('\n')
-						.filter((line) => /maxFileLines: 220|no-manager-name|no-explicit-any|max-classes-per-file/.test(line))
+						.filter((line) =>
+							/maxFileLines: 220|no-manager-name|no-explicit-any|max-classes-per-file/.test(line)
+						)
 				}))
 			}
 		]

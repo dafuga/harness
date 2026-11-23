@@ -1,7 +1,10 @@
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { atomicSyntax, walkAtomicMarkup } from '../../src/templates/development-tooling/atomicSyntax';
+import {
+	atomicSyntax,
+	walkAtomicMarkup
+} from '../../src/templates/development-tooling/atomicSyntax';
 
 test('Reads atomic scaffold metadata', () => {
 	const result = atomicSyntax(
@@ -18,7 +21,21 @@ test('Reads atomic scaffold metadata', () => {
 			evidence: 'examples-cases',
 			file: 'reads-atomic-scaffold-metadata.json'
 		},
-		[{ name: 'reads directory, tier and element from top-level comments', input: { content: '<!-- @harness-atoms src/atoms/button --><!-- @harness-tier atom --><!-- @harness-element button --><hx-button>Save</hx-button>' }, output: { directory: result.directory, tier: result.tier, element: result.element, atomNames: result.atoms.map(({ node }) => node.name) } }]
+		[
+			{
+				name: 'reads directory, tier and element from top-level comments',
+				input: {
+					content:
+						'<!-- @harness-atoms src/atoms/button --><!-- @harness-tier atom --><!-- @harness-element button --><hx-button>Save</hx-button>'
+				},
+				output: {
+					directory: result.directory,
+					tier: result.tier,
+					element: result.element,
+					atomNames: result.atoms.map(({ node }) => node.name)
+				}
+			}
+		]
 	);
 });
 
@@ -34,13 +51,31 @@ test('Collects matching atomic elements', () => {
 			evidence: 'examples-cases',
 			file: 'collects-matching-atomic-elements.json'
 		},
-		[{ name: 'collects hx elements and resolves the checkbox definition', input: { content: '<hx-input-checkbox></hx-input-checkbox><div>Text</div>' }, output: { atomNames: result.atoms.map(({ node }) => node.name), definitions: result.atoms.map(({ definition }) => definition) } }]
+		[
+			{
+				name: 'collects hx elements and resolves the checkbox definition',
+				input: { content: '<hx-input-checkbox></hx-input-checkbox><div>Text</div>' },
+				output: {
+					atomNames: result.atoms.map(({ node }) => node.name),
+					definitions: result.atoms.map(({ definition }) => definition)
+				}
+			}
+		]
 	);
 });
 
 test('Walks markup nodes in order', () => {
 	const visited: string[] = [];
-	walkAtomicMarkup({ type: 'Fragment', nodes: [{ type: 'Text', data: 'Save' }, { type: 'Comment', data: ' @harness-element button ' }] } as never, (node) => visited.push(node.type));
+	walkAtomicMarkup(
+		{
+			type: 'Fragment',
+			nodes: [
+				{ type: 'Text', data: 'Save' },
+				{ type: 'Comment', data: ' @harness-element button ' }
+			]
+		} as never,
+		(node) => visited.push(node.type)
+	);
 	expect(visited).toEqual(['Fragment', 'Text', 'Comment']);
 	recordExampleCases(
 		{
@@ -50,13 +85,29 @@ test('Walks markup nodes in order', () => {
 			evidence: 'examples-cases',
 			file: 'walks-markup-nodes-in-order.json'
 		},
-		[{ name: 'visits fragment and child nodes depth first', input: { type: 'Fragment', nodes: [{ type: 'Text', data: 'Save' }, { type: 'Comment', data: ' @harness-element button ' }] }, output: visited }]
+		[
+			{
+				name: 'visits fragment and child nodes depth first',
+				input: {
+					type: 'Fragment',
+					nodes: [
+						{ type: 'Text', data: 'Save' },
+						{ type: 'Comment', data: ' @harness-element button ' }
+					]
+				},
+				output: visited
+			}
+		]
 	);
 });
 
 test('Ignores excluded markup properties', () => {
 	const visited: string[] = [];
-	const node = { type: 'Fragment', expression: { type: 'Hidden' }, nodes: [{ type: 'Text', data: 'Visible' }] };
+	const node = {
+		type: 'Fragment',
+		expression: { type: 'Hidden' },
+		nodes: [{ type: 'Text', data: 'Visible' }]
+	};
 	walkAtomicMarkup(node as never, (entry) => visited.push(entry.type));
 	expect(visited).not.toContain('Hidden');
 	recordExampleCases(
@@ -88,6 +139,12 @@ test('Throws a parse error for invalid Svelte source', () => {
 			evidence: 'examples-cases',
 			file: 'throws-a-parse-error-for-invalid-svelte-source.json'
 		},
-		[{ name: 'propagates the Svelte parser error unchanged', input: { content: '<div>' }, error: { name: (error as Error).name, message: (error as Error).message } }]
+		[
+			{
+				name: 'propagates the Svelte parser error unchanged',
+				input: { content: '<div>' },
+				error: { name: (error as Error).name, message: (error as Error).message }
+			}
+		]
 	);
 });

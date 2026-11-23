@@ -2,7 +2,11 @@ import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { statementEnd } from '../../src/utils/development-tooling/block-spans/statementEnd';
-import { sourceNesting, matchingBrace, bodyEnd } from '../../src/utils/development-tooling/sourceNesting';
+import {
+	sourceNesting,
+	matchingBrace,
+	bodyEnd
+} from '../../src/utils/development-tooling/sourceNesting';
 
 const unitId = 'function.source-nesting';
 const evidence = 'examples-cases';

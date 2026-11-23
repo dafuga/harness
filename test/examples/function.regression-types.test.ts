@@ -1,5 +1,9 @@
 import { test } from 'vitest';
-import { regressionPhaseSchema, regressionRecordSchema, regressionViewSchema } from '../../src/core/regressionTypes';
+import {
+	regressionPhaseSchema,
+	regressionRecordSchema,
+	regressionViewSchema
+} from '../../src/core/regressionTypes';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
 
@@ -39,11 +43,17 @@ test('Regression phases and views validate proof history', () => {
 			{
 				name: 'a loop view may show a missing red point and gap',
 				input: view,
-				output: { accepted: viewResult.success, loop: viewResult.success ? viewResult.data.loop : null }
+				output: {
+					accepted: viewResult.success,
+					loop: viewResult.success ? viewResult.data.loop : null
+				}
 			},
 			{
 				name: 'strict history and incomplete records reject undeclared or missing fields',
-				input: { viewWithExtraKey: { ...view, extra: true }, incompleteRecord: { schemaVersion: 1, extra: true } },
+				input: {
+					viewWithExtraKey: { ...view, extra: true },
+					incompleteRecord: { schemaVersion: 1, extra: true }
+				},
 				output: { viewAccepted: strictResult.success, recordAccepted: recordResult.success }
 			}
 		]

@@ -20,7 +20,11 @@ test('queues work and reports resource waiting', async () => {
 	const queue = {
 		run: async (
 			request: unknown,
-			action: (context: { id: string; env: Record<string, string | undefined>; track: (_pid: number) => void }) => Promise<string>,
+			action: (context: {
+				id: string;
+				env: Record<string, string | undefined>;
+				track: (_pid: number) => void;
+			}) => Promise<string>,
 			options: { onWaiting: (reason: string) => void }
 		) => {
 			calls.push({ request, options });

@@ -1,50 +1,18 @@
-import { chmodSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { test, vi } from 'vitest';
+import { test } from 'vitest';
 import {
 	driverJobType,
 	driverJson,
-	driverProcesses,
 	livePid
 } from '../../src/adapters/execution-runtimes/driver-queue/driverFiles';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-function installFakePs(directory: string): string {
-	const bin = join(directory, 'bin');
-	const lines = [
-		[
-			'/usr/bin/python /fixture/driver/code_task.py',
-			'--model model-a --tasks-file /fixture/driver/tasks.json',
-			'--wave wave-4 --slot 7'
-		].join(' '),
-		[
-			'/usr/bin/python /fixture/other/code_task.py',
-			'--model model-b --tasks-file /fixture/other/tasks.json',
-			'--wave wave-5 --slot 2'
-		].join(' '),
-		[
-			'/usr/bin/python /fixture/driver/code_task.py',
-			'--model incomplete --tasks-file /fixture/driver/incomplete.json',
-			'--wave wave-6'
-		].join(' ')
-	];
-	mkdirSync(bin);
-	const executable = join(bin, 'ps');
-	writeFileSync(executable, `#!/bin/sh\nprintf '%s\\n' '${lines.join("' '")}'\n`);
-	chmodSync(executable, 0o700);
-	return bin;
-}
-
-function readDriverProcesses(bin: string) {
-	vi.stubEnv('PATH', bin);
-	try {
-		return { scoped: driverProcesses('/fixture/driver'), unscoped: driverProcesses() };
-	} finally {
-		vi.unstubAllEnvs();
-	}
-}
+import {
+	readDriverProcesses,
+	installFakePs
+} from './adapter.execution-runtimes-driver-queue-driver-files.fixtures';
 
 test('Reads existing and missing driver JSON snapshots', async () => {
 	await withTempDir('driver-files-json-', (directory) => {
@@ -176,9 +144,21 @@ test('Checks driver process liveness', () => {
 
 test('Classifies primary driver job phases', () => {
 	const cases = [
-		{ name: 'reverify plan', input: 'reverify-driver-queue', output: driverJobType('reverify-driver-queue') },
-		{ name: 'contract task', input: 'p1-contract-check', output: driverJobType('p1-contract-check') },
-		{ name: 'stub task', input: 'p2a-stub-generation', output: driverJobType('p2a-stub-generation') },
+		{
+			name: 'reverify plan',
+			input: 'reverify-driver-queue',
+			output: driverJobType('reverify-driver-queue')
+		},
+		{
+			name: 'contract task',
+			input: 'p1-contract-check',
+			output: driverJobType('p1-contract-check')
+		},
+		{
+			name: 'stub task',
+			input: 'p2a-stub-generation',
+			output: driverJobType('p2a-stub-generation')
+		},
 		{ name: 'smell task', input: 'p2b-smell-review', output: driverJobType('p2b-smell-review') }
 	];
 	expect(cases.map(({ output }) => output)).toEqual(['reverify', 'contract', 'stub', 'smell']);
@@ -196,9 +176,21 @@ test('Classifies primary driver job phases', () => {
 
 test('Classifies remaining driver job phases', () => {
 	const cases = [
-		{ name: 'video capture task', input: 'video-capture-report', output: driverJobType('video-capture-report') },
-		{ name: 'component task', input: 'w3-component-catalog', output: driverJobType('w3-component-catalog') },
-		{ name: 'unmatched task uses code phase', input: 'general-queue-task', output: driverJobType('general-queue-task') }
+		{
+			name: 'video capture task',
+			input: 'video-capture-report',
+			output: driverJobType('video-capture-report')
+		},
+		{
+			name: 'component task',
+			input: 'w3-component-catalog',
+			output: driverJobType('w3-component-catalog')
+		},
+		{
+			name: 'unmatched task uses code phase',
+			input: 'general-queue-task',
+			output: driverJobType('general-queue-task')
+		}
 	];
 	expect(cases.map(({ output }) => output)).toEqual(['video', 'component', 'code']);
 	recordExampleCases(

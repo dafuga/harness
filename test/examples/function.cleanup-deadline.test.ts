@@ -10,7 +10,10 @@ test('Deadline returns work or fallback and stops pending waits', async () => {
 	answered.cancel();
 
 	const rejected = cleanupDeadline(5000);
-	const rejectionFallback = await rejected.within(Promise.reject(new Error('cleanup failed')), 'fallback');
+	const rejectionFallback = await rejected.within(
+		Promise.reject(new Error('cleanup failed')),
+		'fallback'
+	);
 	rejected.cancel();
 
 	const cancelled = cleanupDeadline(5000);
@@ -21,7 +24,12 @@ test('Deadline returns work or fallback and stops pending waits', async () => {
 	pendingPause.cancel();
 	await pause;
 
-	expect({ answer, rejectionFallback, expired: cancelled.expired(), cancelledFallback }).toEqual({ answer: 'finished', rejectionFallback: 'fallback', expired: true, cancelledFallback: 'fallback' });
+	expect({ answer, rejectionFallback, expired: cancelled.expired(), cancelledFallback }).toEqual({
+		answer: 'finished',
+		rejectionFallback: 'fallback',
+		expired: true,
+		cancelledFallback: 'fallback'
+	});
 	recordExampleCases(
 		{
 			unitId: 'function.cleanup-deadline',

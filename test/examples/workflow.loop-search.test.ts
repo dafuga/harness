@@ -62,7 +62,11 @@ test('Lists built-in templates for an empty project', async () => {
 			{
 				name: 'empty project returns built-in templates and no loop rows',
 				input: { root: '<temporary empty project>' },
-				output: results.map((result) => ({ kind: result.kind, id: result.id, source: result.source }))
+				output: results.map((result) => ({
+					kind: result.kind,
+					id: result.id,
+					source: result.source
+				}))
 			}
 		]);
 	});

@@ -8,7 +8,10 @@ const png = 'iVBORw0KGgo=';
 
 test('Normalizes history and extracts inline images', () => {
 	const input = [
-		{ role: 'user', content: [{ type: 'input_image', source: { media_type: 'image/png', data: png } }] }
+		{
+			role: 'user',
+			content: [{ type: 'input_image', source: { media_type: 'image/png', data: png } }]
+		}
 	];
 	const output = serializer().history(input);
 	expect(output.images).toEqual([{ data: png, mimeType: 'image/png' }]);
@@ -40,7 +43,11 @@ test('Formats tool results and preserves error status', () => {
 			evidence: 'examples-cases',
 			file: 'formats-tool-results-and-preserves-error-status.json'
 		},
-		outputs.map((input, index) => ({ name: `tool output ${index + 1}`, input, output: results[index] }))
+		outputs.map((input, index) => ({
+			name: `tool output ${index + 1}`,
+			input,
+			output: results[index]
+		}))
 	);
 });
 
@@ -62,6 +69,12 @@ test('Rejects unsupported attachment types', () => {
 			evidence: 'examples-cases',
 			file: 'rejects-unsupported-attachment-types.json'
 		},
-		[{ name: 'audio attachment is rejected', input, error: { name: (error as Error).name, message: (error as Error).message } }]
+		[
+			{
+				name: 'audio attachment is rejected',
+				input,
+				error: { name: (error as Error).name, message: (error as Error).message }
+			}
+		]
 	);
 });

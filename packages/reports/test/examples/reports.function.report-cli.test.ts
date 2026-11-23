@@ -4,7 +4,11 @@ import { join } from 'node:path';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { reportCli, inputData, required } from '../../src/services/reports-media/report-command-service/reportCli';
+import {
+	reportCli,
+	inputData,
+	required
+} from '../../src/services/reports-media/report-command-service/reportCli';
 
 test('Parses report operations flags and positionals', () => {
 	const create = reportCli(['create', '--project', 'reports', '--dry-run']);
@@ -28,7 +32,11 @@ test('Parses report operations flags and positionals', () => {
 			file: 'parses-report-operations-flags-and-positionals.json'
 		},
 		[
-			{ name: 'create dry run', input: ['create', '--project', 'reports', '--dry-run'], output: create },
+			{
+				name: 'create dry run',
+				input: ['create', '--project', 'reports', '--dry-run'],
+				output: create
+			},
 			{ name: 'show report file', input: ['show', '--format', 'json', 'report.json'], output: show }
 		]
 	);
@@ -55,8 +63,16 @@ test('Reads inline and file JSON input', async () => {
 				file: 'reads-inline-and-file-json-input.json'
 			},
 			[
-				{ name: 'inline JSON', input: { data: '{"findings":[],"summary":"No findings"}' }, output: inline },
-				{ name: 'file takes precedence over inline data', input: { file: 'input.json', data: '{"title":"ignored"}' }, output: fromFile }
+				{
+					name: 'inline JSON',
+					input: { data: '{"findings":[],"summary":"No findings"}' },
+					output: inline
+				},
+				{
+					name: 'file takes precedence over inline data',
+					input: { file: 'input.json', data: '{"title":"ignored"}' },
+					output: fromFile
+				}
 			]
 		);
 	} finally {
@@ -78,8 +94,16 @@ test('Requires a nonblank value and preserves whitespace', () => {
 			file: 'requires-a-nonblank-value-and-preserves-whitespace.json'
 		},
 		[
-			{ name: 'project value', input: { flags: { project: 'reports' }, name: 'project' }, output: plain },
-			{ name: 'surrounding whitespace is retained', input: { flags: { title: '  release  ' }, name: 'title' }, output: spaced }
+			{
+				name: 'project value',
+				input: { flags: { project: 'reports' }, name: 'project' },
+				output: plain
+			},
+			{
+				name: 'surrounding whitespace is retained',
+				input: { flags: { title: '  release  ' }, name: 'title' },
+				output: spaced
+			}
 		]
 	);
 });

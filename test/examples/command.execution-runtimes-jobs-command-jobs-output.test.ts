@@ -1,8 +1,16 @@
-import type { Queue, Groups, Case } from './command.execution-runtimes-jobs-command-jobs-output.test.types';
+import type {
+	Queue,
+	Groups,
+	Case
+} from './command.execution-runtimes-jobs-command-jobs-output.test.types';
 import { test, vi } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { jobDuration, printJobEta, printJobStats } from '../../src/commands/execution-runtimes/jobs-command/jobsOutput';
+import {
+	jobDuration,
+	printJobEta,
+	printJobStats
+} from '../../src/commands/execution-runtimes/jobs-command/jobsOutput';
 
 const UNIT_ID = 'command.execution-runtimes-jobs-command-jobs-output';
 
@@ -22,11 +30,22 @@ const queue = {
 } as unknown as Queue;
 
 const groups = [
-	{ type: 'build', model: 'node', count: 12, meanMs: 95000, medianMs: 90000, p80Ms: 150000, p90Ms: 180000 }
+	{
+		type: 'build',
+		model: 'node',
+		count: 12,
+		meanMs: 95000,
+		medianMs: 90000,
+		p80Ms: 150000,
+		p90Ms: 180000
+	}
 ] as Groups;
 
 function record(symbol: string, state: string, cases: Case[]): void {
-	recordExampleCases({ unitId: UNIT_ID, symbol, state, evidence: 'examples-cases', file: `${state}.json` }, cases);
+	recordExampleCases(
+		{ unitId: UNIT_ID, symbol, state, evidence: 'examples-cases', file: `${state}.json` },
+		cases
+	);
 }
 
 function captureLog(run: () => void): string[] {

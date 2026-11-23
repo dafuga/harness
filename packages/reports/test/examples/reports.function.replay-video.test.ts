@@ -55,7 +55,9 @@ const REPORT = reportWith([
 	item('c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44-before', BEFORE_FILE, 'before'),
 	item('c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44-after', AFTER_FILE, 'after')
 ]);
-const NO_FRAMES = reportWith([item('c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44-before', BEFORE_FILE, 'before')]);
+const NO_FRAMES = reportWith([
+	item('c6a8e2d0-4f1b-4c7e-9a35-0d2b7e1f8a44-before', BEFORE_FILE, 'before')
+]);
 const REPORT_META = {
 	unitId: 'reports.function.replay-video',
 	evidence: 'examples-cases',
@@ -77,7 +79,11 @@ test('Replay key is a 64-character digest of the frame list', () => {
 		},
 		[
 			{ name: 'report with one after screenshot', input: { frames: ['after'] }, output: { key } },
-			{ name: 'report with no replay frames still yields a key', input: { frames: [] }, output: { key: emptyKey } }
+			{
+				name: 'report with no replay frames still yields a key',
+				input: { frames: [] },
+				output: { key: emptyKey }
+			}
 		]
 	);
 });

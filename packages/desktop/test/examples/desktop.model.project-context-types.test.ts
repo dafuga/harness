@@ -19,7 +19,11 @@ test('accepts an omitted or selected project context', () => {
 			file: 'accepts-an-omitted-or-selected-project-context.json'
 		},
 		[
-			{ name: 'selected project context', input: { projectId: 'project-example' }, output: selected },
+			{
+				name: 'selected project context',
+				input: { projectId: 'project-example' },
+				output: selected
+			},
 			{ name: 'omitted project context preserves selection behavior', input: {}, output: omitted }
 		]
 	);

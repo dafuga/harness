@@ -1,7 +1,13 @@
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { benchSamples, median, timeCall, benchRounds, roundMeasurements } from '../../src/utils/development-tooling/benchSamples';
+import {
+	benchSamples,
+	median,
+	timeCall,
+	benchRounds,
+	roundMeasurements
+} from '../../src/utils/development-tooling/benchSamples';
 import type { UnitRuntime } from '../../src/core/execution-runtimes/runtimeTypes';
 
 test('Summarizes warmed runtime measurements', async () => {

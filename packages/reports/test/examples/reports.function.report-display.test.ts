@@ -52,8 +52,16 @@ test('Formats elapsed ages with the first matching unit', () => {
 
 test('Returns just now for future and sub-minute timestamps', () => {
 	const cases = [
-		{ name: 'thirty seconds old', input: { value: '2026-11-15T11:59:30.000Z' }, output: 'just now' },
-		{ name: 'five minutes in the future', input: { value: '2026-11-15T12:05:00.000Z' }, output: 'just now' }
+		{
+			name: 'thirty seconds old',
+			input: { value: '2026-11-15T11:59:30.000Z' },
+			output: 'just now'
+		},
+		{
+			name: 'five minutes in the future',
+			input: { value: '2026-11-15T12:05:00.000Z' },
+			output: 'just now'
+		}
 	];
 	for (const item of cases) {
 		expect(timeAgo(item.input.value, NOW)).toEqual(item.output);

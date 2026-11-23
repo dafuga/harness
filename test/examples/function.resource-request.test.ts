@@ -34,15 +34,11 @@ test('Resolves automatic, explicit, and inherited resource requests', async () =
 			service,
 			{}
 		);
-		const inherited = await resourceRequest(
-			{ cpus: 'auto', memoryMib: 'auto' },
-			service,
-			{
-				HARNESS_RESOURCE_LEASE: '7a8e1a1b-91e6-427a-b4f0-41f321908271',
-				HARNESS_RESOURCE_CPUS: '2',
-				HARNESS_RESOURCE_MEMORY_MIB: '1280'
-			}
-		);
+		const inherited = await resourceRequest({ cpus: 'auto', memoryMib: 'auto' }, service, {
+			HARNESS_RESOURCE_LEASE: '7a8e1a1b-91e6-427a-b4f0-41f321908271',
+			HARNESS_RESOURCE_CPUS: '2',
+			HARNESS_RESOURCE_MEMORY_MIB: '1280'
+		});
 		expect([automatic, explicit, inherited]).toEqual([
 			{ priority: 'coding', cpus: 7, memoryMiB: 3840, label: 'Managed work' },
 			{ priority: 'agent-test', cpus: 2, memoryMiB: 1280, label: 'Scoped verification' },
@@ -57,9 +53,21 @@ test('Resolves automatic, explicit, and inherited resource requests', async () =
 				file: 'resolves-automatic-explicit-and-inherited-resource-requests.json'
 			},
 			[
-				{ name: 'sizes a top-level request from available resources', input: { cpus: 'auto', memoryMib: 'auto' }, output: automatic },
-				{ name: 'converts explicit CLI strings', input: { cpus: '2', memoryMib: '1280' }, output: explicit },
-				{ name: 'uses inherited lease reservations', input: { cpus: 'auto', memoryMib: 'auto' }, output: inherited }
+				{
+					name: 'sizes a top-level request from available resources',
+					input: { cpus: 'auto', memoryMib: 'auto' },
+					output: automatic
+				},
+				{
+					name: 'converts explicit CLI strings',
+					input: { cpus: '2', memoryMib: '1280' },
+					output: explicit
+				},
+				{
+					name: 'uses inherited lease reservations',
+					input: { cpus: 'auto', memoryMib: 'auto' },
+					output: inherited
+				}
 			]
 		);
 	});

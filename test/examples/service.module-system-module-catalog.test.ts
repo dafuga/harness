@@ -106,7 +106,10 @@ test('Throws ModuleCatalogValidationError when installation state is invalid', a
 			{
 				name: 'invalid installation state rejects when gaps are omitted',
 				input: { contents: '{"schemaVersion":2}', gaps: 'omitted' },
-				error: { name: 'ModuleCatalogValidationError', message: 'Invalid module installation state.' }
+				error: {
+					name: 'ModuleCatalogValidationError',
+					message: 'Invalid module installation state.'
+				}
 			}
 		]
 	);

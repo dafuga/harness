@@ -28,15 +28,26 @@ test('Seeds the shell history', async () => {
 		const callbacks: ShellsSeed = {
 			verified: async () => {
 				calls.push('verified');
-				return { record: { id: 'verification-record' } } as Awaited<ReturnType<ShellsSeed['verified']>>;
+				return { record: { id: 'verification-record' } } as Awaited<
+					ReturnType<ShellsSeed['verified']>
+				>;
 			},
 			explain: async (_repo, behavior) => {
 				calls.push(behavior);
 				return { exitCode: 0, stdout: '', stderr: '' };
 			}
 		};
-		const commits = await seedShells(repository(directory), callbacks, 'abcdef0123456789abcdef0123456789abcdef01');
-		expect(commits).toEqual({ framed: 'a'.repeat(40), framedBaseline: 'b'.repeat(40), shelled: 'c'.repeat(40), shellRetained: 'd'.repeat(40) });
+		const commits = await seedShells(
+			repository(directory),
+			callbacks,
+			'abcdef0123456789abcdef0123456789abcdef01'
+		);
+		expect(commits).toEqual({
+			framed: 'a'.repeat(40),
+			framedBaseline: 'b'.repeat(40),
+			shelled: 'c'.repeat(40),
+			shellRetained: 'd'.repeat(40)
+		});
 		expect(calls).toHaveLength(6);
 		expect(shellsBranch).toBe('feature/shells');
 		expect(shellUnit).toBe('component.title-frame');
@@ -51,7 +62,11 @@ test('Seeds the shell history', async () => {
 			[
 				{
 					name: 'seeds shell history and leaves main checked out',
-					input: { from: 'abcdef0123456789abcdef0123456789abcdef01', branch: shellsBranch, unit: shellUnit },
+					input: {
+						from: 'abcdef0123456789abcdef0123456789abcdef01',
+						branch: shellsBranch,
+						unit: shellUnit
+					},
 					output: commits
 				}
 			]

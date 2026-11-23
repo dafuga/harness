@@ -25,12 +25,21 @@ test('validate rejects idle tool continuations', () => {
 	const messageRequest = {
 		model: 'claude-opus-5-5',
 		stream: true as const,
-		input: [{ type: 'message', role: 'user', content: [{ type: 'input_text', text: 'List adapter files.' }] }],
+		input: [
+			{
+				type: 'message',
+				role: 'user',
+				content: [{ type: 'input_text', text: 'List adapter files.' }]
+			}
+		],
 		tools: []
 	};
 	const continuationRequest = {
 		...messageRequest,
-		input: [...messageRequest.input, { type: 'function_call_output', call_id: 'call_example', output: 'ClaudeGatewayAdapter.ts' }]
+		input: [
+			...messageRequest.input,
+			{ type: 'function_call_output', call_id: 'call_example', output: 'ClaudeGatewayAdapter.ts' }
+		]
 	};
 	adapter.validate(messageRequest, session);
 	let error: unknown;
@@ -51,21 +60,40 @@ test('validate rejects idle tool continuations', () => {
 		},
 		[
 			{ name: 'idle user message passes validation', input: messageRequest, output: null },
-			{ name: 'idle tool result is rejected', input: continuationRequest, error: 'No active query owns this continuation' }
+			{
+				name: 'idle tool result is rejected',
+				input: continuationRequest,
+				error: 'No active query owns this continuation'
+			}
 		]
 	);
 });
 
 test('start delivers matching tool output to a running session', () => {
 	let delivered: unknown[] = [];
-	const adapter = new ClaudeGatewayAdapter(makeRepository((_session, outputs) => { delivered = outputs; }));
-	const session = makeSession(true, new Map([['call_6f1c2d3e-4a5b-4c6d-8e9f-0a1b2c3d4e5f', { name: 'exec_command' } as never]]));
+	const adapter = new ClaudeGatewayAdapter(
+		makeRepository((_session, outputs) => {
+			delivered = outputs;
+		})
+	);
+	const session = makeSession(
+		true,
+		new Map([['call_6f1c2d3e-4a5b-4c6d-8e9f-0a1b2c3d4e5f', { name: 'exec_command' } as never]])
+	);
 	const request = {
 		model: 'claude-opus-5-5',
 		stream: true as const,
 		input: [
-			{ type: 'message', role: 'user', content: [{ type: 'input_text', text: 'List adapter files.' }] },
-			{ type: 'function_call_output', call_id: 'call_6f1c2d3e-4a5b-4c6d-8e9f-0a1b2c3d4e5f', output: 'ClaudeGatewayAdapter.ts' }
+			{
+				type: 'message',
+				role: 'user',
+				content: [{ type: 'input_text', text: 'List adapter files.' }]
+			},
+			{
+				type: 'function_call_output',
+				call_id: 'call_6f1c2d3e-4a5b-4c6d-8e9f-0a1b2c3d4e5f',
+				output: 'ClaudeGatewayAdapter.ts'
+			}
 		],
 		tools: []
 	};
@@ -79,6 +107,12 @@ test('start delivers matching tool output to a running session', () => {
 			evidence: 'examples-cases',
 			file: 'start-delivers-matching-tool-output-to-a-running-session.json'
 		},
-		[{ name: 'running call receives its matching tool result', input: request, output: { deliveredCallIds: ['call_6f1c2d3e-4a5b-4c6d-8e9f-0a1b2c3d4e5f'] } }]
+		[
+			{
+				name: 'running call receives its matching tool result',
+				input: request,
+				output: { deliveredCallIds: ['call_6f1c2d3e-4a5b-4c6d-8e9f-0a1b2c3d4e5f'] }
+			}
+		]
 	);
 });

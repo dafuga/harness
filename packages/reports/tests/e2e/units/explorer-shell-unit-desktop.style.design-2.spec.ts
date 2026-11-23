@@ -22,9 +22,7 @@ for (const viewport of catalogViewports) {
 			const options = content.locator('.design-options');
 			await expect(options).toBeVisible();
 			await expect
-				.poll(() =>
-					options.evaluate((node) => getComputedStyle(node).display)
-				)
+				.poll(() => options.evaluate((node) => getComputedStyle(node).display))
 				.toBe('flex');
 			await captureShell(page, home, { state: state.id, viewport: viewport.id });
 		});

@@ -4,10 +4,7 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { atomicComponents } from '../../src/templates/development-tooling/atomicPreprocess.js';
 
 test('Returns a preprocessor group for supplied options', () => {
-	const inputs = [
-		{ aliases: { components: 'src/components' } },
-	{}
-	];
+	const inputs = [{ aliases: { components: 'src/components' } }, {}];
 	const cases = inputs.map((input, index) => {
 		const result = atomicComponents(input);
 		expect(result).toBeDefined();

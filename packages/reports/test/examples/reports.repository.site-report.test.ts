@@ -51,7 +51,13 @@ test('Returns a report owned by this site', async () => {
 				evidence: 'examples-cases',
 				file: 'returns-a-report-owned-by-this-site.json'
 			},
-			[{ name: 'checkout report belongs to the current repository', input: { id: localId }, output: { id: result.id, title: result.title, projectPath: result.project.path } }]
+			[
+				{
+					name: 'checkout report belongs to the current repository',
+					input: { id: localId },
+					output: { id: result.id, title: result.title, projectPath: result.project.path }
+				}
+			]
 		);
 	} finally {
 		rmSync(directory, { recursive: true, force: true });
@@ -78,7 +84,13 @@ test('Rejects a report owned by another site', async () => {
 				evidence: 'examples-cases',
 				file: 'rejects-a-report-owned-by-another-site.json'
 			},
-			[{ name: 'report from an unrelated directory reads as absent', input: { id: foreignId }, error: { name: (error as Error).name, message: (error as Error).message } }]
+			[
+				{
+					name: 'report from an unrelated directory reads as absent',
+					input: { id: foreignId },
+					error: { name: (error as Error).name, message: (error as Error).message }
+				}
+			]
 		);
 	} finally {
 		rmSync(directory, { recursive: true, force: true });

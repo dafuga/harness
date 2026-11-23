@@ -99,7 +99,10 @@ test('Lists the recorded work of a project history', async () => {
 		const commit = commitFile(repository);
 		const service = new ProjectActivityService(repository.root);
 		const activity = await service.recorded(historyOf(commit), detailsOf(commit));
-		const empty = await service.recorded({ branches: [], revisions: [], truncated: false }, new Map() as Details);
+		const empty = await service.recorded(
+			{ branches: [], revisions: [], truncated: false },
+			new Map() as Details
+		);
 
 		expect(activity.kind).toBe('recorded');
 		expect(activity.repository.branch).toBe('main');

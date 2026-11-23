@@ -70,12 +70,19 @@ test('Settlement lists stopped and still running processes', () => {
 		resisted: 1,
 		unknown: false,
 		report:
-			'\n[harness] process 48377 (started Sat Nov 14 21:47:12 2026) /bin/sleep: signalled but still running; the check fails: the command\'s own\n' +
+			"\n[harness] process 48377 (started Sat Nov 14 21:47:12 2026) /bin/sleep: signalled but still running; the check fails: the command's own\n" +
 			'[harness] process 48213 (started Sat Nov 14 21:47:09 2026) /usr/local/bin/node: stopped: left behind by the command\n'
 	});
-	recordExampleCases(meta('settlement-lists-stopped-and-still-running-processes', 'settlementReport'), [
-		{ name: 'one asked process stopped, one signalled process still running', input: { asked, last }, output: result }
-	]);
+	recordExampleCases(
+		meta('settlement-lists-stopped-and-still-running-processes', 'settlementReport'),
+		[
+			{
+				name: 'one asked process stopped, one signalled process still running',
+				input: { asked, last },
+				output: result
+			}
+		]
+	);
 });
 
 test('Settlement hands delegated processes over unchanged', () => {
@@ -90,9 +97,16 @@ test('Settlement hands delegated processes over unchanged', () => {
 		report:
 			'\n[harness] process 48902 (started Sat Nov 14 21:47:31 2026) /Applications/Xcode.app/Contents/Developer/usr/bin/ibtoold: handed over to the system: vetted service, vouched for, left the command, adopted by the system\n'
 	});
-	recordExampleCases(meta('settlement-hands-delegated-processes-over-unchanged', 'settlementReport'), [
-		{ name: 'delegated process left by the command is handed over and not counted', input: { asked: [], last }, output: result }
-	]);
+	recordExampleCases(
+		meta('settlement-hands-delegated-processes-over-unchanged', 'settlementReport'),
+		[
+			{
+				name: 'delegated process left by the command is handed over and not counted',
+				input: { asked: [], last },
+				output: result
+			}
+		]
+	);
 });
 
 test('Settlement with a custom signal check', () => {
@@ -105,10 +119,14 @@ test('Settlement with a custom signal check', () => {
 		resisted: 0,
 		unknown: false,
 		report:
-			'\n[harness] process 48377 (started Sat Nov 14 21:47:12 2026) /bin/sleep: left running, not signalled; the check fails: the command\'s own\n'
+			"\n[harness] process 48377 (started Sat Nov 14 21:47:12 2026) /bin/sleep: left running, not signalled; the check fails: the command's own\n"
 	});
 	recordExampleCases(meta('settlement-with-a-custom-signal-check', 'settlementReport'), [
-		{ name: 'running process the signal check does not report as signalled', input: { asked: [], last }, output: result }
+		{
+			name: 'running process the signal check does not report as signalled',
+			input: { asked: [], last },
+			output: result
+		}
 	]);
 });
 

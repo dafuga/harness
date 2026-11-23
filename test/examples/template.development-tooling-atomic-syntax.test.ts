@@ -2,7 +2,10 @@ import type { WalkNode, Cases } from './template.development-tooling-atomic-synt
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { atomicSyntax, walkAtomicMarkup } from '../../src/templates/development-tooling/atomicSyntax';
+import {
+	atomicSyntax,
+	walkAtomicMarkup
+} from '../../src/templates/development-tooling/atomicSyntax';
 
 const unitId = 'template.development-tooling-atomic-syntax';
 

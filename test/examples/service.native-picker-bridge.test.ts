@@ -135,10 +135,14 @@ test('Rejects resuming a loaded chat with another provider', async () => {
 			'thread/read': { thread: { modelProvider: 'openai', status: { type: 'idle' } } }
 		});
 		const params = { threadId: 'thread-1', modelProvider: 'harness-claude' };
-		const error = await capture(() => new NativePickerBridgeService(rpc).send('thread/resume', params));
+		const error = await capture(() =>
+			new NativePickerBridgeService(rpc).send('thread/resume', params)
+		);
 
 		expect(error).toBeInstanceOf(NativePickerError);
-		expect((error as Error).message).toBe('Close this chat before resuming with a different provider');
+		expect((error as Error).message).toBe(
+			'Close this chat before resuming with a different provider'
+		);
 		expect(calls.map((call) => call.method)).toEqual(['thread/read']);
 		recordExampleCases(
 			{
@@ -165,7 +169,9 @@ test('Rejects a provider switch without saved thread context', async () => {
 			'thread/read': { thread: { modelProvider: 'legacy-provider' } }
 		});
 		const params = { threadId: 'thread-1', model: 'gpt-example' };
-		const error = await capture(() => new NativePickerBridgeService(rpc).send('turn/start', params));
+		const error = await capture(() =>
+			new NativePickerBridgeService(rpc).send('turn/start', params)
+		);
 
 		expect(error).toBeInstanceOf(NativePickerError);
 		expect((error as Error).message).toBe(

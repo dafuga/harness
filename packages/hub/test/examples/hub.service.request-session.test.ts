@@ -128,9 +128,7 @@ test('resolves a live session on its own channel and scope', async () => {
 			expected: { output: null }
 		}
 	];
-	const observed = await observe(examples, (request) =>
-		service.resolve(request).then(summaryOf)
-	);
+	const observed = await observe(examples, (request) => service.resolve(request).then(summaryOf));
 	record('resolve', 'resolves-a-live-session-on-its-own-channel-and-scope', observed);
 });
 

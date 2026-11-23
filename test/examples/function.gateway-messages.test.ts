@@ -56,7 +56,7 @@ const unsupportedAttachmentRequest = {
 	...request,
 	input: [
 		{
-		type: 'message',
+			type: 'message',
 			role: 'user',
 			content: [{ type: 'input_video', url: 'https://example.test/clip.mp4' }]
 		}
@@ -64,7 +64,9 @@ const unsupportedAttachmentRequest = {
 };
 
 test('Throws GatewayContentError when history contains a video attachment', () => {
-	expect(() => gatewayMessages(unsupportedAttachmentRequest)).toThrow('Audio, video and file attachments are unsupported');
+	expect(() => gatewayMessages(unsupportedAttachmentRequest)).toThrow(
+		'Audio, video and file attachments are unsupported'
+	);
 	const state = 'throws-gatewaycontenterror-when-history-contains-a-video-att';
 	recordExampleCases(
 		{

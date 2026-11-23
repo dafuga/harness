@@ -36,10 +36,7 @@ test('Accepts response records and rejects null and arrays', () => {
 			evidence: 'examples-cases',
 			file: 'accepts-response-records-and-rejects-null-and-arrays.json'
 		},
-		[
-			{ name: 'accepts findings record', input: response, output },
-			...rejected
-		]
+		[{ name: 'accepts findings record', input: response, output }, ...rejected]
 	);
 });
 
@@ -61,10 +58,7 @@ test('Accepts probabilities from zero through one', () => {
 			evidence: 'examples-cases',
 			file: 'accepts-probabilities-from-zero-through-one.json'
 		},
-		[
-			...accepted,
-			{ name: 'rejects negative probability', input: invalid, error: rejected }
-		]
+		[...accepted, { name: 'rejects negative probability', input: invalid, error: rejected }]
 	);
 });
 
@@ -86,9 +80,6 @@ test('Accepts nonnegative safe integer token counts', () => {
 			evidence: 'examples-cases',
 			file: 'accepts-nonnegative-safe-integer-token-counts.json'
 		},
-		[
-			...accepted,
-			{ name: 'rejects negative count', input: invalid, error: rejected }
-		]
+		[...accepted, { name: 'rejects negative count', input: invalid, error: rejected }]
 	);
 });

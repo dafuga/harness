@@ -57,14 +57,29 @@ test('Merges duplicate commits across path requests', async () => {
 			[pathA]: {
 				hasNext: false,
 				data: [
-					commitRecord(hashNewest, 'Merge duplicate commits\n\nDetails', '2026-11-10T09:14:02Z', '2026-11-10T09:20:00Z'),
-					commitRecord(hashMiddle, 'Validate history page size', '2026-11-07T16:48:51Z', '2026-11-07T16:50:00Z')
+					commitRecord(
+						hashNewest,
+						'Merge duplicate commits\n\nDetails',
+						'2026-11-10T09:14:02Z',
+						'2026-11-10T09:20:00Z'
+					),
+					commitRecord(
+						hashMiddle,
+						'Validate history page size',
+						'2026-11-07T16:48:51Z',
+						'2026-11-07T16:50:00Z'
+					)
 				]
 			},
 			[pathB]: {
 				hasNext: false,
 				data: [
-					commitRecord(hashMiddle, 'Validate history page size', '2026-11-07T16:48:51Z', '2026-11-07T16:50:00Z'),
+					commitRecord(
+						hashMiddle,
+						'Validate history page size',
+						'2026-11-07T16:48:51Z',
+						'2026-11-07T16:50:00Z'
+					),
 					commitRecord(hashOldest, 'Add evidence grid fixtures', null, '2026-10-29T11:02:37Z')
 				]
 			}
@@ -76,8 +91,16 @@ test('Merges duplicate commits across path requests', async () => {
 	const expected = {
 		commits: [
 			{ hash: hashNewest, subject: 'Merge duplicate commits', authoredAt: '2026-11-10T09:14:02Z' },
-			{ hash: hashMiddle, subject: 'Validate history page size', authoredAt: '2026-11-07T16:48:51Z' },
-			{ hash: hashOldest, subject: 'Add evidence grid fixtures', authoredAt: '2026-10-29T11:02:37Z' }
+			{
+				hash: hashMiddle,
+				subject: 'Validate history page size',
+				authoredAt: '2026-11-07T16:48:51Z'
+			},
+			{
+				hash: hashOldest,
+				subject: 'Add evidence grid fixtures',
+				authoredAt: '2026-10-29T11:02:37Z'
+			}
 		],
 		complete: true,
 		nextPage: null
@@ -108,7 +131,14 @@ test('Reports the next page when a path response has more', async () => {
 		{
 			[pathA]: {
 				hasNext: true,
-				data: [commitRecord(hashOldest, 'Add evidence grid fixtures', '2026-10-29T11:02:37Z', '2026-10-29T11:02:37Z')]
+				data: [
+					commitRecord(
+						hashOldest,
+						'Add evidence grid fixtures',
+						'2026-10-29T11:02:37Z',
+						'2026-10-29T11:02:37Z'
+					)
+				]
 			}
 		},
 		calls
@@ -116,11 +146,19 @@ test('Reports the next page when a path response has more', async () => {
 	const input = { commit, paths: [pathA], page: 2, perPage: 50 };
 	const page = await githubHistoryPage(context, repository, input);
 	expect(page).toEqual({
-		commits: [{ hash: hashOldest, subject: 'Add evidence grid fixtures', authoredAt: '2026-10-29T11:02:37Z' }],
+		commits: [
+			{
+				hash: hashOldest,
+				subject: 'Add evidence grid fixtures',
+				authoredAt: '2026-10-29T11:02:37Z'
+			}
+		],
 		complete: false,
 		nextPage: 3
 	});
-	expect(calls).toEqual([`/commits?sha=${commit}&path=${encodeURIComponent(pathA)}&per_page=50&page=2`]);
+	expect(calls).toEqual([
+		`/commits?sha=${commit}&path=${encodeURIComponent(pathA)}&per_page=50&page=2`
+	]);
 	recordExampleCases(
 		{
 			unitId: 'collaboration.function.github-history-page',

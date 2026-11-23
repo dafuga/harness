@@ -35,9 +35,10 @@ async function caught(run: Promise<unknown>): Promise<unknown> {
 test('Returns the settled value once the probe confirms', async () => {
 	const observation = buildObservation(() => Promise.resolve(true));
 	const probe = await observation.look();
-	const result = await finishObservation(() => Promise.resolve('signalled 2 builds'), [
-		observation
-	]);
+	const result = await finishObservation(
+		() => Promise.resolve('signalled 2 builds'),
+		[observation]
+	);
 	const lookAfter = await observation.look();
 
 	expect(probe).toBe(true);
@@ -104,10 +105,10 @@ test('Stops probing after a rejected read and resolves false', async () => {
 test('Rejects with a TypeError for a null observation entry', async () => {
 	const observation = buildObservation(() => Promise.resolve(true));
 	const error = await caught(
-		finishObservation(() => Promise.resolve('done'), [
-			observation,
-			null as unknown as BuildObservation
-		])
+		finishObservation(
+			() => Promise.resolve('done'),
+			[observation, null as unknown as BuildObservation]
+		)
 	);
 
 	expect(error).toBeInstanceOf(TypeError);

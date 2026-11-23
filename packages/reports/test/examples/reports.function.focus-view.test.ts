@@ -20,12 +20,7 @@ function node(id: string, x: number, y: number): Layout['nodes'][number] {
 	return { unit: { id } as Unit, x, y };
 }
 
-function layout(
-	nodes: Layout['nodes'],
-	edges: Edges = [],
-	width = 360,
-	height = 200
-): Layout {
+function layout(nodes: Layout['nodes'], edges: Edges = [], width = 360, height = 200): Layout {
 	return { width, height, nodes, edges };
 }
 
@@ -161,18 +156,26 @@ test("Large maps draw only the selected unit's edges", () => {
 		{
 			unitId: 'reports.function.focus-view',
 			symbol: 'drawnEdges',
-			state: "large-maps-draw-only-the-selected-unit-s-edges",
+			state: 'large-maps-draw-only-the-selected-unit-s-edges',
 			evidence: 'examples-cases',
 			file: 'large-maps-draw-only-the-selected-unit-s-edges.json'
 		},
 		[
-			{ name: 'three-node map draws every edge', input: { nodes: 3, selected: 'u2' }, output: smallAll },
+			{
+				name: 'three-node map draws every edge',
+				input: { nodes: 3, selected: 'u2' },
+				output: smallAll
+			},
 			{
 				name: 'sixty-one-node map draws the selected unit edge',
 				input: { nodes: 61, selected: 'u0' },
 				output: largeSelected
 			},
-			{ name: 'sixty-one-node map with no selection draws none', input: { nodes: 61, selected: null }, output: largeNone }
+			{
+				name: 'sixty-one-node map with no selection draws none',
+				input: { nodes: 61, selected: null },
+				output: largeNone
+			}
 		]
 	);
 });
@@ -199,15 +202,31 @@ test('Arrow keys move to the nearest shown unit ahead', () => {
 			file: 'arrow-keys-move-to-the-nearest-shown-unit-ahead.json'
 		},
 		[
-			{ name: 'ArrowRight from a picks the same-row unit b', input: { from: 'a', key: 'ArrowRight' }, output: right },
-			{ name: 'ArrowDown from a picks the same-column unit d', input: { from: 'a', key: 'ArrowDown' }, output: down },
-			{ name: 'ArrowLeft at the edge stays on a', input: { from: 'a', key: 'ArrowLeft' }, output: left },
+			{
+				name: 'ArrowRight from a picks the same-row unit b',
+				input: { from: 'a', key: 'ArrowRight' },
+				output: right
+			},
+			{
+				name: 'ArrowDown from a picks the same-column unit d',
+				input: { from: 'a', key: 'ArrowDown' },
+				output: down
+			},
+			{
+				name: 'ArrowLeft at the edge stays on a',
+				input: { from: 'a', key: 'ArrowLeft' },
+				output: left
+			},
 			{
 				name: 'hidden unit b is skipped so c is chosen',
 				input: { from: 'a', key: 'ArrowRight', shown: ['a', 'c', 'd'] },
 				output: withoutB
 			},
-			{ name: 'unrecognized key returns undefined', input: { from: 'a', key: 'Enter' }, output: 'undefined' }
+			{
+				name: 'unrecognized key returns undefined',
+				input: { from: 'a', key: 'Enter' },
+				output: 'undefined'
+			}
 		]
 	);
 });

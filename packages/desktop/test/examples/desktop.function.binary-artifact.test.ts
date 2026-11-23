@@ -58,8 +58,16 @@ test('Decodes an empty transported artifact', async () => {
 			file: 'decodes-an-empty-transported-artifact.json'
 		},
 		[
-			{ name: 'empty artifact with octet-stream media type', input: empty, output: summarise(emptyResult) },
-			{ name: 'hello text artifact decoded to five bytes', input: hello, output: summarise(helloResult) }
+			{
+				name: 'empty artifact with octet-stream media type',
+				input: empty,
+				output: summarise(emptyResult)
+			},
+			{
+				name: 'hello text artifact decoded to five bytes',
+				input: hello,
+				output: summarise(helloResult)
+			}
 		]
 	);
 });

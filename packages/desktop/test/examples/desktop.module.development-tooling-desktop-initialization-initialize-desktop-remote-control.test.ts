@@ -3,7 +3,8 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { remoteControl } from '../../src/lib/development-tooling/desktop-initialization/initialize-desktop/remoteControl';
 
-const unitId = 'desktop.module.development-tooling-desktop-initialization-initialize-desktop-remote-control';
+const unitId =
+	'desktop.module.development-tooling-desktop-initialization-initialize-desktop-remote-control';
 const state = 'forwards-remote-host-and-device-controls';
 
 function createFixture() {
@@ -12,7 +13,10 @@ function createFixture() {
 	const devices = {
 		createPairing: () => (calls.push({ method: 'createPairing' }), 'pairing-offer'),
 		closePairing: () => (calls.push({ method: 'closePairing' }), 'closed'),
-		approvePairing: (input: unknown) => (calls.push({ method: 'approvePairing', input }), 'approved'),
+		approvePairing: (input: unknown) => (
+			calls.push({ method: 'approvePairing', input }),
+			'approved'
+		),
 		denyPairing: (input: unknown) => (calls.push({ method: 'denyPairing', input }), 'denied'),
 		revokeDevice: (input: unknown) => (calls.push({ method: 'revokeDevice', input }), 'revoked')
 	};
@@ -25,11 +29,14 @@ function createFixture() {
 	return { calls, status, control: remoteControl(remote as never) };
 }
 
-function callControls(control: ReturnType<typeof remoteControl>, inputs: {
-	approval: { pairingId: string; deviceId: string; projectIds: string[]; agents: boolean };
-	pairing: { pairingId: string };
-	device: { deviceId: string };
-}) {
+function callControls(
+	control: ReturnType<typeof remoteControl>,
+	inputs: {
+		approval: { pairingId: string; deviceId: string; projectIds: string[]; agents: boolean };
+		pairing: { pairingId: string };
+		device: { deviceId: string };
+	}
+) {
 	return {
 		status: control.status(),
 		enable: control.enable(),
@@ -44,7 +51,12 @@ function callControls(control: ReturnType<typeof remoteControl>, inputs: {
 
 test('Forwards remote host and device controls', () => {
 	const { calls, status, control } = createFixture();
-	const approval = { pairingId: 'pair-42', deviceId: 'phone-7', projectIds: ['project-3'], agents: true };
+	const approval = {
+		pairingId: 'pair-42',
+		deviceId: 'phone-7',
+		projectIds: ['project-3'],
+		agents: true
+	};
 	const pairing = { pairingId: 'pair-42' };
 	const device = { deviceId: 'phone-7' };
 	const output = { ...callControls(control, { approval, pairing, device }), calls };
@@ -58,14 +70,24 @@ test('Forwards remote host and device controls', () => {
 		denyPairing: 'denied',
 		revokeDevice: 'revoked',
 		calls: [
-			{ method: 'status' }, { method: 'enable' }, { method: 'disable' },
-			{ method: 'createPairing' }, { method: 'closePairing' },
+			{ method: 'status' },
+			{ method: 'enable' },
+			{ method: 'disable' },
+			{ method: 'createPairing' },
+			{ method: 'closePairing' },
 			{ method: 'approvePairing', input: approval },
-			{ method: 'denyPairing', input: pairing }, { method: 'revokeDevice', input: device }
+			{ method: 'denyPairing', input: pairing },
+			{ method: 'revokeDevice', input: device }
 		]
 	});
 	recordExampleCases(
 		{ unitId, symbol: 'remoteControl', state, evidence: 'examples-cases', file: `${state}.json` },
-		[{ name: 'Host and device callbacks delegate inputs and return values unchanged', input: { approval, pairing, device }, output }]
+		[
+			{
+				name: 'Host and device callbacks delegate inputs and return values unchanged',
+				input: { approval, pairing, device },
+				output
+			}
+		]
 	);
 });

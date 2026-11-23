@@ -1,4 +1,12 @@
-import { existsSync, mkdtempSync, mkdirSync, rmSync, symlinkSync, utimesSync, writeFileSync } from 'node:fs';
+import {
+	existsSync,
+	mkdtempSync,
+	mkdirSync,
+	rmSync,
+	symlinkSync,
+	utimesSync,
+	writeFileSync
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -17,8 +25,20 @@ function writeOld(path: string) {
 
 function recordError(state: string, input: unknown) {
 	recordExampleCases(
-		{ unitId: 'reports.function.report-local-cleanup', symbol: 'reportLocalCleanup', state, evidence: 'examples-cases', file: `${state}.json` },
-		[{ name: state, input, error: { name: 'InvalidReportCleanupRootError', message: 'Invalid report cleanup root' } }]
+		{
+			unitId: 'reports.function.report-local-cleanup',
+			symbol: 'reportLocalCleanup',
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
+		[
+			{
+				name: state,
+				input,
+				error: { name: 'InvalidReportCleanupRootError', message: 'Invalid report cleanup root' }
+			}
+		]
 	);
 }
 
@@ -42,10 +62,33 @@ test('Removes old files and preserves reserved and known runs', async () => {
 			reservedExists: existsSync(join(root, 'retention-history.jsonl')),
 			hiddenExists: existsSync(join(root, '.hidden'))
 		};
-		expect(output).toEqual({ removed: 2, staleExists: false, knownExists: true, reservedExists: true, hiddenExists: true });
+		expect(output).toEqual({
+			removed: 2,
+			staleExists: false,
+			knownExists: true,
+			reservedExists: true,
+			hiddenExists: true
+		});
 		recordExampleCases(
-			{ unitId: 'reports.function.report-local-cleanup', symbol: 'reportLocalCleanup', state: 'removes-old-files-and-preserves-reserved-and-known-runs', evidence: 'examples-cases', file: 'removes-old-files-and-preserves-reserved-and-known-runs.json' },
-			[{ name: 'old root and orphan files are removed while reserved, hidden and known data stays', input: { cutoff, dryRun: false, knownRuns: ['known'], entries: ['stale.txt', 'runs/orphan/remove.txt'] }, output }]
+			{
+				unitId: 'reports.function.report-local-cleanup',
+				symbol: 'reportLocalCleanup',
+				state: 'removes-old-files-and-preserves-reserved-and-known-runs',
+				evidence: 'examples-cases',
+				file: 'removes-old-files-and-preserves-reserved-and-known-runs.json'
+			},
+			[
+				{
+					name: 'old root and orphan files are removed while reserved, hidden and known data stays',
+					input: {
+						cutoff,
+						dryRun: false,
+						knownRuns: ['known'],
+						entries: ['stale.txt', 'runs/orphan/remove.txt']
+					},
+					output
+				}
+			]
 		);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
@@ -55,8 +98,13 @@ test('Removes old files and preserves reserved and known runs', async () => {
 test('Throws InvalidReportCleanupRootError when cutoff is not finite', async () => {
 	const root = mkdtempSync(join(tmpdir(), 'report-cleanup-cutoff-'));
 	try {
-		await expect(reportLocalCleanup(root, Number.NaN)).rejects.toBeInstanceOf(InvalidReportCleanupRootError);
-		recordError('throws-invalidreportcleanuprooterror-when-cutoff-is-not-fini', { root: '<temporary-root>', cutoff: 'NaN' });
+		await expect(reportLocalCleanup(root, Number.NaN)).rejects.toBeInstanceOf(
+			InvalidReportCleanupRootError
+		);
+		recordError('throws-invalidreportcleanuprooterror-when-cutoff-is-not-fini', {
+			root: '<temporary-root>',
+			cutoff: 'NaN'
+		});
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
@@ -69,8 +117,13 @@ test('Throws InvalidReportCleanupRootError when root is a symlink', async () => 
 		const root = join(parent, 'root-link');
 		mkdirSync(target);
 		symlinkSync(target, root);
-		await expect(reportLocalCleanup(root, cutoff)).rejects.toBeInstanceOf(InvalidReportCleanupRootError);
-		recordError('throws-invalidreportcleanuprooterror-when-root-is-a-symlink', { root: 'root-link', cutoff });
+		await expect(reportLocalCleanup(root, cutoff)).rejects.toBeInstanceOf(
+			InvalidReportCleanupRootError
+		);
+		recordError('throws-invalidreportcleanuprooterror-when-root-is-a-symlink', {
+			root: 'root-link',
+			cutoff
+		});
 	} finally {
 		rmSync(parent, { recursive: true, force: true });
 	}
@@ -82,8 +135,14 @@ test('Throws InvalidReportCleanupRootError when runs directory is a symlink', as
 		const target = join(root, 'target');
 		mkdirSync(target);
 		symlinkSync(target, join(root, 'runs'));
-		await expect(reportLocalCleanup(root, cutoff)).rejects.toBeInstanceOf(InvalidReportCleanupRootError);
-		recordError('throws-invalidreportcleanuprooterror-when-runs-directory-is', { root: '<temporary-root>', cutoff, runs: 'symlink' });
+		await expect(reportLocalCleanup(root, cutoff)).rejects.toBeInstanceOf(
+			InvalidReportCleanupRootError
+		);
+		recordError('throws-invalidreportcleanuprooterror-when-runs-directory-is', {
+			root: '<temporary-root>',
+			cutoff,
+			runs: 'symlink'
+		});
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

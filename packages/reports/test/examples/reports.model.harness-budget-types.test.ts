@@ -2,10 +2,18 @@ import { test } from 'vitest';
 import * as harnessBudgetTypes from '../../src/models/explorer-ui/HarnessBudget.types';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import type { HarnessReview, HarnessUnitLimits } from '../../src/models/explorer-ui/HarnessBudget.types';
+import type {
+	HarnessReview,
+	HarnessUnitLimits
+} from '../../src/models/explorer-ui/HarnessBudget.types';
 
 /** The budget model declares types only, so its source module has no runtime values. */
-const ownedTypeNames = ['HarnessReview', 'HarnessFrozenLimits', 'HarnessEmittedLimits', 'HarnessUnitLimits'];
+const ownedTypeNames = [
+	'HarnessReview',
+	'HarnessFrozenLimits',
+	'HarnessEmittedLimits',
+	'HarnessUnitLimits'
+];
 
 /** A made-up approval line of the ledger, typed by the model. */
 const sampleReview: HarnessReview = {

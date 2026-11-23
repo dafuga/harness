@@ -32,10 +32,14 @@ test('Plans the dedicated headless Playwright config', () => {
 	expect(config).toContain("outputDir: '../../../test-results/browser'");
 	expect(config).toContain("browserName: 'chromium'");
 	expect(config).toContain("screenshot: 'only-on-failure'");
-	expect(config).toContain("workers: Number(env.HARNESS_RESOURCE_CPUS ?? 1)");
+	expect(config).toContain('workers: Number(env.HARNESS_RESOURCE_CPUS ?? 1)');
 	expect(config).toContain("reporter: 'list'");
 	recordExampleCases(
-		{ ...meta, state: 'plans-the-dedicated-headless-playwright-config', file: 'plans-the-dedicated-headless-playwright-config.json' },
+		{
+			...meta,
+			state: 'plans-the-dedicated-headless-playwright-config',
+			file: 'plans-the-dedicated-headless-playwright-config.json'
+		},
 		[
 			{
 				name: 'two browser support files then the dedicated config',
@@ -54,7 +58,11 @@ test('Rewrites support files into the plugin-support folder', () => {
 	expect(paths).toContain(configPath);
 	expect(configPath).not.toBe('playwright.config.ts');
 	recordExampleCases(
-		{ ...meta, state: 'rewrites-support-files-into-the-plugin-support-folder', file: 'rewrites-support-files-into-the-plugin-support-folder.json' },
+		{
+			...meta,
+			state: 'rewrites-support-files-into-the-plugin-support-folder',
+			file: 'rewrites-support-files-into-the-plugin-support-folder.json'
+		},
 		[
 			{
 				name: 'support paths are rewritten, not copied; config stays separate',

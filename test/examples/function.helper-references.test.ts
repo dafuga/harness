@@ -9,10 +9,7 @@ function callees(references: Array<{ specifier?: string; imported: string }>) {
 	return references.map(({ specifier, imported }) => ({ specifier, imported }));
 }
 
-function record(
-	state: string,
-	cases: Array<{ name: string; input: unknown; output: unknown }>
-) {
+function record(state: string, cases: Array<{ name: string; input: unknown; output: unknown }>) {
 	recordExampleCases(
 		{
 			unitId,

@@ -26,14 +26,23 @@ test('LFS pointer text round trips and rejects non-pointer content', () => {
 			file: 'lfs-pointer-text-round-trips-and-rejects-non-pointer-content.json'
 		},
 		[
-			...pointers.map((pointer, index) => ({ name: `valid pointer ${index + 1}`, input: pointer, output: parsed[index] })),
+			...pointers.map((pointer, index) => ({
+				name: `valid pointer ${index + 1}`,
+				input: pointer,
+				output: parsed[index]
+			})),
 			{ name: 'pointer with an extra line', input: `${pointers[0]}extra`, output: invalid }
 		]
 	);
 });
 
 test('LFS storage selection uses the final extension without regard to case', () => {
-	const paths = ['evidence/checkout-flow/step-2.PNG', 'evidence/checkout-flow/step-3.webm', 'evidence/checkout-flow/archive.png.json', 'evidence/checkout-flow/record'];
+	const paths = [
+		'evidence/checkout-flow/step-2.PNG',
+		'evidence/checkout-flow/step-3.webm',
+		'evidence/checkout-flow/archive.png.json',
+		'evidence/checkout-flow/record'
+	];
 	const selected = paths.map((path) => lfsStored(path));
 	expect(selected).toEqual([true, true, false, false]);
 	recordExampleCases(
@@ -66,6 +75,12 @@ test('LFS attributes lists lowercase and uppercase media extensions', () => {
 			evidence: 'examples-cases',
 			file: 'lfs-attributes-lists-lowercase-and-uppercase-media-extension.json'
 		},
-		[{ name: 'media extension attribute rules', input: null, output: { lines: lines.length, first: lines[0], last: lines.at(-1) } }]
+		[
+			{
+				name: 'media extension attribute rules',
+				input: null,
+				output: { lines: lines.length, first: lines[0], last: lines.at(-1) }
+			}
+		]
 	);
 });

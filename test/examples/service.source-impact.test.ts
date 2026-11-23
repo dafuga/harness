@@ -8,7 +8,13 @@ import { expect } from '../verificationExpect';
 
 function record(symbol: string, state: string, input: unknown, output: unknown) {
 	recordExampleCases(
-		{ unitId: 'service.source-impact', symbol, state, evidence: 'examples-cases', file: `${state}.json` },
+		{
+			unitId: 'service.source-impact',
+			symbol,
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
 		[{ name: `${symbol} for a readable root commit`, input, output }]
 	);
 }

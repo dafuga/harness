@@ -63,7 +63,10 @@ test('Parses contract JSON and labels an unreadable document', async () => {
 		await writeFixture(root, 'units/ok.json', '{"id":"command.example","items":[1,null]}');
 		await writeFixture(root, 'units/bad.json', '{"id":');
 		const label = 'specification/units/bad.json';
-		const parsed = await readContractJson(join(root, 'units/ok.json'), 'specification/units/ok.json');
+		const parsed = await readContractJson(
+			join(root, 'units/ok.json'),
+			'specification/units/ok.json'
+		);
 		const error = await readContractJson(join(root, 'units/bad.json'), label).catch(
 			(caught: unknown) => (caught as Error).message
 		);

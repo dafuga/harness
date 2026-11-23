@@ -1,6 +1,8 @@
 import { render } from 'svelte/server';
 import { test, vi } from 'vitest';
-vi.mock('$app/state', () => ({ page: { url: new URL('http://localhost/harness/branch/main/shells/entity/history') } }));
+vi.mock('$app/state', () => ({
+	page: { url: new URL('http://localhost/harness/branch/main/shells/entity/history') }
+}));
 import Page from '../../src/routes/harness/branch/[branch]/[...at]/shells/[entity]/history/+page.svelte';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';

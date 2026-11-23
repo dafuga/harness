@@ -44,7 +44,15 @@ function pngBytes(): Uint8Array {
 	]);
 }
 
-function summarize(state: State): { header: Header; dataLengths: number[]; palette: number; transparency: boolean; started: boolean; closed: boolean; end: boolean } {
+function summarize(state: State): {
+	header: Header;
+	dataLengths: number[];
+	palette: number;
+	transparency: boolean;
+	started: boolean;
+	closed: boolean;
+	end: boolean;
+} {
 	return {
 		header: state.header,
 		dataLengths: state.data.map((part) => part.length),
@@ -77,7 +85,11 @@ test('Parses PNG chunks and collects image data', () => {
 		closed: true,
 		end: true
 	});
-	expect(invalid).toEqual({ name: 'HarnessArtifactUnavailableError', code: 'artifact-corrupt', message: 'Harness artifact unavailable' });
+	expect(invalid).toEqual({
+		name: 'HarnessArtifactUnavailableError',
+		code: 'artifact-corrupt',
+		message: 'Harness artifact unavailable'
+	});
 	recordExampleCases(
 		{
 			unitId: 'hub.function.hub-png-chunks',
@@ -87,7 +99,11 @@ test('Parses PNG chunks and collects image data', () => {
 			file: 'parses-png-chunks-and-collects-image-data.json'
 		},
 		[
-			{ name: 'valid one-pixel RGBA image with one IDAT chunk', input: Array.from(bytes), output: valid },
+			{
+				name: 'valid one-pixel RGBA image with one IDAT chunk',
+				input: Array.from(bytes),
+				output: valid
+			},
 			{ name: 'IEND CRC mismatch is rejected', input: Array.from(invalidBytes), error: invalid }
 		]
 	);
@@ -103,7 +119,11 @@ test('Throws Error when a PNG chunk checksum is invalid', () => {
 		const caught = error as Error & { code: string };
 		rejected = { name: caught.name, code: caught.code, message: caught.message };
 	}
-	expect(rejected).toEqual({ name: 'HarnessArtifactUnavailableError', code: 'artifact-corrupt', message: 'Harness artifact unavailable' });
+	expect(rejected).toEqual({
+		name: 'HarnessArtifactUnavailableError',
+		code: 'artifact-corrupt',
+		message: 'Harness artifact unavailable'
+	});
 	recordExampleCases(
 		{
 			unitId: 'hub.function.hub-png-chunks',

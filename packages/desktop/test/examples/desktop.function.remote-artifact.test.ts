@@ -44,10 +44,22 @@ test('accepts supported bytes matching the requested hash', async () => {
 
 test('refuses unsupported or oversized artifacts', async () => {
 	const cases = [
-		{ name: 'refuse markup media', value: { ...abc, mediaType: 'text/html' }, message: unshownArtifact },
-		{ name: 'refuse a file above the size limit', value: { ...abc, byteLength: artifactLimit + 1 }, message: largeArtifact }
+		{
+			name: 'refuse markup media',
+			value: { ...abc, mediaType: 'text/html' },
+			message: unshownArtifact
+		},
+		{
+			name: 'refuse a file above the size limit',
+			value: { ...abc, byteLength: artifactLimit + 1 },
+			message: largeArtifact
+		}
 	];
-	const recorded: Array<{ name: string; input: unknown; error: { name: string; message: string } }> = [];
+	const recorded: Array<{
+		name: string;
+		input: unknown;
+		error: { name: string; message: string };
+	}> = [];
 	for (const item of cases) {
 		let thrown: unknown;
 		try {
@@ -58,7 +70,11 @@ test('refuses unsupported or oversized artifacts', async () => {
 		expect(thrown).toBeInstanceOf(ArtifactRefusedError);
 		expect(thrown).toMatchObject({ message: item.message });
 		if (!(thrown instanceof Error)) throw new Error('Expected artifact refusal.');
-		recorded.push({ name: item.name, input: { value: item.value, asked: abcHash }, error: { name: thrown.name, message: thrown.message } });
+		recorded.push({
+			name: item.name,
+			input: { value: item.value, asked: abcHash },
+			error: { name: thrown.name, message: thrown.message }
+		});
 	}
 	recordExampleCases(
 		{

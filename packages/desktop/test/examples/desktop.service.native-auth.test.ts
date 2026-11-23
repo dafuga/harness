@@ -17,7 +17,8 @@ function tempDirectory() {
 }
 
 afterEach(() => {
-	for (const directory of directories.splice(0)) rmSync(directory, { recursive: true, force: true });
+	for (const directory of directories.splice(0))
+		rmSync(directory, { recursive: true, force: true });
 });
 
 function options(overrides: Partial<AuthOptions> = {}) {
@@ -50,27 +51,60 @@ function options(overrides: Partial<AuthOptions> = {}) {
 		store: {
 			available: () => true,
 			read: async () => credential,
-			save: async (value) => { saved = value; },
-			clear: async () => { saved = null; }
+			save: async (value) => {
+				saved = value;
+			},
+			clear: async () => {
+				saved = null;
+			}
 		} as AuthOptions['store'],
 		open: async () => undefined,
 		now: () => Date.parse('2026-11-15T12:00:00.000Z')
 	};
-	return { config: { ...base, ...overrides }, calls, credential, get saved() { return saved; }, set configured(value: boolean) { configured = value; } };
+	return {
+		config: { ...base, ...overrides },
+		calls,
+		credential,
+		get saved() {
+			return saved;
+		},
+		set configured(value: boolean) {
+			configured = value;
+		}
+	};
 }
 
 test('Starts a native handoff', async () => {
 	tempDirectory();
 	const fixture = options();
 	const opened: string[] = [];
-	fixture.config.open = async (url) => { opened.push(url); };
+	fixture.config.open = async (url) => {
+		opened.push(url);
+	};
 	const service = new NativeAuthService(fixture.config);
 	const result = await service.connect();
 	const output = { status: result, opened, request: fixture.calls[0] };
-	expect(result).toMatchObject({ configured: true, state: 'pending', handoff: { userCode: 'WDJB-MJHT' } });
-	recordExampleCases({ unitId: 'desktop.service.native-auth', symbol: 'connect', state: 'starts-a-native-handoff', evidence: 'examples-cases', file: 'starts-a-native-handoff.json' }, [
-		{ name: 'Starts a hosted native handoff', input: { origin: fixture.config.origin, resource: 'projects' }, output }
-	]);
+	expect(result).toMatchObject({
+		configured: true,
+		state: 'pending',
+		handoff: { userCode: 'WDJB-MJHT' }
+	});
+	recordExampleCases(
+		{
+			unitId: 'desktop.service.native-auth',
+			symbol: 'connect',
+			state: 'starts-a-native-handoff',
+			evidence: 'examples-cases',
+			file: 'starts-a-native-handoff.json'
+		},
+		[
+			{
+				name: 'Starts a hosted native handoff',
+				input: { origin: fixture.config.origin, resource: 'projects' },
+				output
+			}
+		]
+	);
 });
 
 test('Reads signed-out status', async () => {
@@ -81,25 +115,55 @@ test('Reads signed-out status', async () => {
 	const service = new NativeAuthService(fixture.config);
 	const result = await service.status();
 	expect(result).toEqual({ configured: false, state: 'signed-out' });
-	recordExampleCases({ unitId: 'desktop.service.native-auth', symbol: 'status', state: 'reads-signed-out-status', evidence: 'examples-cases', file: 'reads-signed-out-status.json' }, [
-		{ name: 'Uses public status for an empty session store', input: { storedCredential: null, publicStatus: { configured: false } }, output: result }
-	]);
+	recordExampleCases(
+		{
+			unitId: 'desktop.service.native-auth',
+			symbol: 'status',
+			state: 'reads-signed-out-status',
+			evidence: 'examples-cases',
+			file: 'reads-signed-out-status.json'
+		},
+		[
+			{
+				name: 'Uses public status for an empty session store',
+				input: { storedCredential: null, publicStatus: { configured: false } },
+				output: result
+			}
+		]
+	);
 });
 
 test('Disconnects and clears the native session', async () => {
 	tempDirectory();
 	const fixture = options();
 	const events: string[] = [];
-	fixture.config.onDisconnect = () => { events.push('disconnect'); };
-	fixture.config.clearCache = async () => { events.push('cache-cleared'); };
+	fixture.config.onDisconnect = () => {
+		events.push('disconnect');
+	};
+	fixture.config.clearCache = async () => {
+		events.push('cache-cleared');
+	};
 	const service = new NativeAuthService(fixture.config);
 	const result = await service.disconnect();
 	const output = { status: result, events, requests: fixture.calls };
 	expect(result).toEqual({ configured: true, state: 'signed-out' });
 	expect(events).toEqual(['disconnect', 'cache-cleared']);
-	recordExampleCases({ unitId: 'desktop.service.native-auth', symbol: 'disconnect', state: 'disconnects-and-clears-the-native-session', evidence: 'examples-cases', file: 'disconnects-and-clears-the-native-session.json' }, [
-		{ name: 'Posts logout and clears local session state', input: { credentialStored: true }, output }
-	]);
+	recordExampleCases(
+		{
+			unitId: 'desktop.service.native-auth',
+			symbol: 'disconnect',
+			state: 'disconnects-and-clears-the-native-session',
+			evidence: 'examples-cases',
+			file: 'disconnects-and-clears-the-native-session.json'
+		},
+		[
+			{
+				name: 'Posts logout and clears local session state',
+				input: { credentialStored: true },
+				output
+			}
+		]
+	);
 });
 
 test('Throws NativeSignInError when OS encryption is unavailable', async () => {
@@ -110,9 +174,25 @@ test('Throws NativeSignInError when OS encryption is unavailable', async () => {
 	const error = await service.connect().catch((caught: unknown) => caught);
 	expect(error).toBeInstanceOf(NativeSignInError);
 	expect((error as Error).message).toBe('OS encryption is required for hosted sessions.');
-	recordExampleCases({ unitId: 'desktop.service.native-auth', symbol: 'connect', state: 'throws-nativesigninerror-when-os-encryption-is-unavailable', evidence: 'examples-cases', file: 'throws-nativesigninerror-when-os-encryption-is-unavailable.json' }, [
-		{ name: 'Rejects when the session store cannot encrypt credentials', input: { storeAvailable: false }, error: { name: 'NativeSignInError', message: 'OS encryption is required for hosted sessions.' } }
-	]);
+	recordExampleCases(
+		{
+			unitId: 'desktop.service.native-auth',
+			symbol: 'connect',
+			state: 'throws-nativesigninerror-when-os-encryption-is-unavailable',
+			evidence: 'examples-cases',
+			file: 'throws-nativesigninerror-when-os-encryption-is-unavailable.json'
+		},
+		[
+			{
+				name: 'Rejects when the session store cannot encrypt credentials',
+				input: { storeAvailable: false },
+				error: {
+					name: 'NativeSignInError',
+					message: 'OS encryption is required for hosted sessions.'
+				}
+			}
+		]
+	);
 });
 
 test('Throws NativeSignInError when a native handoff is refused', async () => {
@@ -127,7 +207,20 @@ test('Throws NativeSignInError when a native handoff is refused', async () => {
 	const error = await service.status().catch((caught: unknown) => caught);
 	expect(error).toBeInstanceOf(NativeSignInError);
 	expect((error as Error).message).toBe('Native handoff expired or was refused.');
-	recordExampleCases({ unitId: 'desktop.service.native-auth', symbol: 'status', state: 'throws-nativesigninerror-when-a-native-handoff-is-refused', evidence: 'examples-cases', file: 'throws-nativesigninerror-when-a-native-handoff-is-refused.json' }, [
-		{ name: 'Rejects when polling reports a refused handoff', input: { pollStatus: 'refused' }, error: { name: 'NativeSignInError', message: 'Native handoff expired or was refused.' } }
-	]);
+	recordExampleCases(
+		{
+			unitId: 'desktop.service.native-auth',
+			symbol: 'status',
+			state: 'throws-nativesigninerror-when-a-native-handoff-is-refused',
+			evidence: 'examples-cases',
+			file: 'throws-nativesigninerror-when-a-native-handoff-is-refused.json'
+		},
+		[
+			{
+				name: 'Rejects when polling reports a refused handoff',
+				input: { pollStatus: 'refused' },
+				error: { name: 'NativeSignInError', message: 'Native handoff expired or was refused.' }
+			}
+		]
+	);
 });

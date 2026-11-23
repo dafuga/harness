@@ -15,7 +15,8 @@ const collaboration = {
 
 const githubApp = {
 	appId: '512345',
-	privateKey: '-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA7kq2bV0xR9sT3mLd\n-----END RSA PRIVATE KEY-----',
+	privateKey:
+		'-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA7kq2bV0xR9sT3mLd\n-----END RSA PRIVATE KEY-----',
 	clientId: 'Iv1.8a61f9b3a7aba766',
 	clientSecret: '9f3a7c1e5b2d8a6f0c4e9b1d7a3f5c8e2b6d0a4f',
 	collaboration
@@ -23,7 +24,8 @@ const githubApp = {
 
 const stagingGithub = {
 	appId: '698104',
-	privateKey: '-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAu3Lq8ZfK2hVx0nRc\n-----END RSA PRIVATE KEY-----',
+	privateKey:
+		'-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAu3Lq8ZfK2hVx0nRc\n-----END RSA PRIVATE KEY-----',
 	clientId: 'Iv1.3c9e0d7b2f4a6815',
 	clientSecret: 'e51d7a0c3b9f48266d2e8a1c5f7b0d3e9a4c6f21',
 	collaboration: null
@@ -85,15 +87,30 @@ const localConfig = {
 } satisfies AuthConfig;
 
 const invalidCore = [
-	{ name: 'session secret shorter than 32 characters', change: { HARNESS_SESSION_SECRET: 'a'.repeat(31) } },
-	{ name: 'environment outside local, staging and production', change: { HARNESS_ENVIRONMENT: 'preview' } },
-	{ name: 'plain HTTP origin on a non-local environment', change: { HARNESS_PUBLIC_ORIGIN: 'http://hub.example.com' } },
-	{ name: 'origin with a path beyond the slash', change: { HARNESS_PUBLIC_ORIGIN: 'https://hub.example.com/admin' } }
+	{
+		name: 'session secret shorter than 32 characters',
+		change: { HARNESS_SESSION_SECRET: 'a'.repeat(31) }
+	},
+	{
+		name: 'environment outside local, staging and production',
+		change: { HARNESS_ENVIRONMENT: 'preview' }
+	},
+	{
+		name: 'plain HTTP origin on a non-local environment',
+		change: { HARNESS_PUBLIC_ORIGIN: 'http://hub.example.com' }
+	},
+	{
+		name: 'origin with a path beyond the slash',
+		change: { HARNESS_PUBLIC_ORIGIN: 'https://hub.example.com/admin' }
+	}
 ];
 
 const invalidGithub = [
 	{ name: 'GitHub App ID with a leading zero', change: { HARNESS_GITHUB_APP_ID: '0512345' } },
-	{ name: 'collaboration repository ID of zero', change: { HARNESS_COLLABORATION_REPOSITORY_ID: '0' } },
+	{
+		name: 'collaboration repository ID of zero',
+		change: { HARNESS_COLLABORATION_REPOSITORY_ID: '0' }
+	},
 	{ name: 'GitHub client ID containing a space', change: { HARNESS_GITHUB_CLIENT_ID: 'Iv1 8a61' } }
 ];
 
@@ -111,7 +128,11 @@ test('Builds sign-in settings with GitHub and collaboration', () => {
 			file: 'builds-sign-in-settings-with-github-and-collaboration.json'
 		},
 		[
-			{ name: 'production with GitHub and collaboration', input: productionEnv, output: production },
+			{
+				name: 'production with GitHub and collaboration',
+				input: productionEnv,
+				output: production
+			},
 			{ name: 'staging with GitHub but no collaboration', input: stagingEnv, output: staging },
 			{ name: 'local HTTP localhost without GitHub', input: localEnv, output: local }
 		]
@@ -129,7 +150,11 @@ test('Disables sign-in for invalid core settings', () => {
 			evidence: 'examples-cases',
 			file: 'disables-sign-in-for-invalid-core-settings.json'
 		},
-		invalidCore.map((item, index) => ({ name: item.name, input: item.change, output: results[index] }))
+		invalidCore.map((item, index) => ({
+			name: item.name,
+			input: item.change,
+			output: results[index]
+		}))
 	);
 });
 
@@ -148,6 +173,10 @@ test('Keeps sign-in but drops invalid GitHub settings', () => {
 			evidence: 'examples-cases',
 			file: 'keeps-sign-in-but-drops-invalid-github-settings.json'
 		},
-		invalidGithub.map((item, index) => ({ name: item.name, input: item.change, output: results[index] }))
+		invalidGithub.map((item, index) => ({
+			name: item.name,
+			input: item.change,
+			output: results[index]
+		}))
 	);
 });

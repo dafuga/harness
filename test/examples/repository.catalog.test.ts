@@ -12,8 +12,12 @@ import type { CatalogQuery } from '../../src/repositories/git-source-history/Cat
 const OUT_OF_RANGE: CatalogQuery[] = [{ limit: 0 }, { limit: 10001 }, { offset: -1 }];
 
 const DEPENDENCIES = [
-	'adapter.sqlite', 'function.catalog-models', 'function.history-index-types',
-	'function.revision-registry', 'function.sqlite-types', 'service.catalog-write'
+	'adapter.sqlite',
+	'function.catalog-models',
+	'function.history-index-types',
+	'function.revision-registry',
+	'function.sqlite-types',
+	'service.catalog-write'
 ].map((unit) => ({ unit, via: 'import' }));
 
 const CATALOG_UNIT = {
@@ -25,7 +29,10 @@ const CATALOG_UNIT = {
 	version: 'c0a7e3f19d2b6845',
 	dependencies: DEPENDENCIES,
 	scenarios: [],
-	owns: { source: ['src/repositories/git-source-history/CatalogRepository.ts'], symbols: ['CatalogRepository'] }
+	owns: {
+		source: ['src/repositories/git-source-history/CatalogRepository.ts'],
+		symbols: ['CatalogRepository']
+	}
 } as unknown as Unit;
 
 const SNAPSHOTS = [
@@ -148,7 +155,9 @@ test('Rejects entity pagination outside the allowed range', async () => {
 		return OUT_OF_RANGE.map((query) => errorOf(() => repository.entities(query)));
 	});
 
-	expect(rejected.map((error) => error.name)).toEqual(OUT_OF_RANGE.map(() => InvalidCatalogError.name));
+	expect(rejected.map((error) => error.name)).toEqual(
+		OUT_OF_RANGE.map(() => InvalidCatalogError.name)
+	);
 	expect(rejected[0]?.message).toBe('Invalid catalog pagination');
 	recordExampleCases(
 		{

@@ -1,7 +1,11 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { test } from 'vitest';
-import { metadata, regressionFiles, testPath } from '../../src/utils/verification-evidence/regressionFiles';
+import {
+	metadata,
+	regressionFiles,
+	testPath
+} from '../../src/utils/verification-evidence/regressionFiles';
 import { regressionTestCommit } from '../../src/workflows/verification-evidence/record-regression/regressionFiles';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempRepo } from '../support/temporary';
@@ -11,12 +15,22 @@ test('Recognizes regression test paths', () => {
 	const cases = [
 		{ name: 'tests directory', input: 'tests/utils/regressionFiles.test.ts', output: true },
 		{ name: 'scenario file', input: 'specification/scenarios/regression-files.json', output: true },
-		{ name: 'product source', input: 'src/utils/verification-evidence/regressionFiles.ts', output: false }
+		{
+			name: 'product source',
+			input: 'src/utils/verification-evidence/regressionFiles.ts',
+			output: false
+		}
 	];
 	const outputs = cases.map(({ input }) => testPath(input));
 	expect(outputs).toEqual(cases.map(({ output }) => output));
 	recordExampleCases(
-		{ unitId: 'function.regression-files', symbol: 'testPath', state: 'recognizes-regression-test-paths', evidence: 'examples-cases', file: 'recognizes-regression-test-paths.json' },
+		{
+			unitId: 'function.regression-files',
+			symbol: 'testPath',
+			state: 'recognizes-regression-test-paths',
+			evidence: 'examples-cases',
+			file: 'recognizes-regression-test-paths.json'
+		},
 		cases.map(({ name, input }, index) => ({ name, input, output: outputs[index] }))
 	);
 });
@@ -25,12 +39,22 @@ test('Recognizes regression metadata paths', () => {
 	const cases = [
 		{ name: 'loop definition', input: 'specification/loops/regression-files.yaml', output: true },
 		{ name: 'markdown documentation', input: 'docs/regression-files.md', output: true },
-		{ name: 'product source', input: 'src/utils/verification-evidence/regressionFiles.ts', output: false }
+		{
+			name: 'product source',
+			input: 'src/utils/verification-evidence/regressionFiles.ts',
+			output: false
+		}
 	];
 	const outputs = cases.map(({ input }) => metadata(input));
 	expect(outputs).toEqual(cases.map(({ output }) => output));
 	recordExampleCases(
-		{ unitId: 'function.regression-files', symbol: 'metadata', state: 'recognizes-regression-metadata-paths', evidence: 'examples-cases', file: 'recognizes-regression-metadata-paths.json' },
+		{
+			unitId: 'function.regression-files',
+			symbol: 'metadata',
+			state: 'recognizes-regression-metadata-paths',
+			evidence: 'examples-cases',
+			file: 'recognizes-regression-metadata-paths.json'
+		},
 		cases.map(({ name, input }, index) => ({ name, input, output: outputs[index] }))
 	);
 });
@@ -47,8 +71,20 @@ test('Freezes tracked tests and runner configuration', async () => {
 		const output = await regressionFiles(root, commit, ['tests/regression.test.ts']);
 		expect(output.map(({ path }) => path)).toEqual(['package.json', 'tests/regression.test.ts']);
 		recordExampleCases(
-			{ unitId: 'function.regression-files', symbol: 'regressionFiles', state: 'freezes-tracked-tests-and-runner-configuration', evidence: 'examples-cases', file: 'freezes-tracked-tests-and-runner-configuration.json' },
-			[{ name: 'selected commit includes test and runner config', input: { commit, tests: ['tests/regression.test.ts'] }, output: output.map(({ path, hash }) => ({ path, hash })) }]
+			{
+				unitId: 'function.regression-files',
+				symbol: 'regressionFiles',
+				state: 'freezes-tracked-tests-and-runner-configuration',
+				evidence: 'examples-cases',
+				file: 'freezes-tracked-tests-and-runner-configuration.json'
+			},
+			[
+				{
+					name: 'selected commit includes test and runner config',
+					input: { commit, tests: ['tests/regression.test.ts'] },
+					output: output.map(({ path, hash }) => ({ path, hash }))
+				}
+			]
 		);
 	});
 });
@@ -63,10 +99,24 @@ test('Accepts a test-only failing checkpoint', async () => {
 		git('add', '.');
 		git('commit', '-m', 'add strengthened test');
 		const commit = git('rev-parse', 'HEAD');
-		await expect(regressionTestCommit(root, commit, ['tests/regression.test.ts'])).resolves.toBeUndefined();
+		await expect(
+			regressionTestCommit(root, commit, ['tests/regression.test.ts'])
+		).resolves.toBeUndefined();
 		recordExampleCases(
-			{ unitId: 'function.regression-files', symbol: 'regressionTestCommit', state: 'accepts-a-test-only-failing-checkpoint', evidence: 'examples-cases', file: 'accepts-a-test-only-failing-checkpoint.json' },
-			[{ name: 'checkpoint changes a named regression test', input: { commit, tests: ['tests/regression.test.ts'] }, output: null }]
+			{
+				unitId: 'function.regression-files',
+				symbol: 'regressionTestCommit',
+				state: 'accepts-a-test-only-failing-checkpoint',
+				evidence: 'examples-cases',
+				file: 'accepts-a-test-only-failing-checkpoint.json'
+			},
+			[
+				{
+					name: 'checkpoint changes a named regression test',
+					input: { commit, tests: ['tests/regression.test.ts'] },
+					output: null
+				}
+			]
 		);
 	});
 });

@@ -70,7 +70,11 @@ test('Returns the reported preview url for the same identity', async () => {
 	const result = await outcome(runningOwner, identity);
 	expect(result).toEqual({ value: 'http://127.0.0.1:5688' });
 	record('returns-the-reported-preview-url-for-the-same-identity', [
-		caseOf('same checkout and history reuse the running preview', { requested: identity, reply: runningOwner }, result)
+		caseOf(
+			'same checkout and history reuse the running preview',
+			{ requested: identity, reply: runningOwner },
+			result
+		)
 	]);
 });
 
@@ -90,9 +94,7 @@ test('Refuses a port answered by another application', async () => {
 	const reply = { ...runningOwner, protocol: 'other-app' };
 	const result = await outcome(reply, identity);
 	expect(result.error).toBeInstanceOf(PreviewOwnerPortOccupiedError);
-	expect(result.error?.message).toBe(
-		'Preview ownership port is occupied by another application.'
-	);
+	expect(result.error?.message).toBe('Preview ownership port is occupied by another application.');
 	record('refuses-a-port-answered-by-another-application', [
 		caseOf('reply has an unknown protocol', { requested: identity, reply }, result)
 	]);
@@ -104,6 +106,10 @@ test('Refuses a reported address that is not loopback', async () => {
 	expect(result.error).toBeInstanceOf(InvalidPreviewOwnerAddressError);
 	expect(result.error?.message).toBe('Invalid preview owner address.');
 	record('refuses-a-reported-address-that-is-not-loopback', [
-		caseOf('reported url uses a host name instead of 127.0.0.1', { requested: identity, reply }, result)
+		caseOf(
+			'reported url uses a host name instead of 127.0.0.1',
+			{ requested: identity, reply },
+			result
+		)
 	]);
 });

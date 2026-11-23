@@ -1,7 +1,13 @@
 import { test } from 'vitest';
 import type { GitHubOptions } from '../../src/models/planning-collaboration/Collaboration.types';
 import { exactRef } from '../../src/utils/git-source-history/create-git-hub-source/exactRef';
-import { base64, decode64, githubTransport, readRef, refPath } from '../../src/utils/git-source-history/githubTransport';
+import {
+	base64,
+	decode64,
+	githubTransport,
+	readRef,
+	refPath
+} from '../../src/utils/git-source-history/githubTransport';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
 
@@ -47,7 +53,10 @@ function response(data: unknown, status = 200) {
 
 function requestSummary(calls: RequestCall[]) {
 	return calls.map(({ url, method, redirect, body }) => ({
-		path: new URL(url).pathname, method, redirect, ...(body === undefined ? {} : { body })
+		path: new URL(url).pathname,
+		method,
+		redirect,
+		...(body === undefined ? {} : { body })
 	}));
 }
 
@@ -67,24 +76,36 @@ async function captureError(operation: () => unknown | Promise<unknown>) {
 }
 
 test('Creates a scoped GitHub contents transport', async () => {
-	const reader = clientWithResponses('read', [response({ sha: commit, name: 'records.json' }), response({ id: repository.id, private: true })]);
+	const reader = clientWithResponses('read', [
+		response({ sha: commit, name: 'records.json' }),
+		response({ id: repository.id, private: true })
+	]);
 	const contents = await reader.client.request('/contents/records.json');
 	const checked = await reader.client.check(true);
 	const invalidPath = await captureError(() => reader.client.request('contents/records.json'));
 	const writer = clientWithResponses('write', [response({ content: { sha: commit } })]);
 	const update = { message: 'Update collaboration records' };
-	const written = await writer.client.request('/contents/records.json', { method: 'PUT', body: update });
+	const written = await writer.client.request('/contents/records.json', {
+		method: 'PUT',
+		body: update
+	});
 	expect(contents).toMatchObject({ status: 200, data: { sha: commit }, hasNext: false });
 	expect(checked).toBeUndefined();
 	expect(invalidPath).toEqual({ message: 'Collaboration invalid-path', code: 'invalid-path' });
 	expect(written).toMatchObject({ status: 200, data: { content: { sha: commit } } });
-	expect(reader.tokenRequests.map(({ repositoryIds, permissions }) => ({ repositoryIds, permissions }))).toEqual([
+	expect(
+		reader.tokenRequests.map(({ repositoryIds, permissions }) => ({ repositoryIds, permissions }))
+	).toEqual([
 		{ repositoryIds: [repository.id], permissions: { contents: 'read' } },
 		{ repositoryIds: [repository.id], permissions: { contents: 'read' } }
 	]);
 	expect(writer.tokenRequests[0]?.permissions).toEqual({ contents: 'write' });
 	expect(requestSummary(reader.calls)).toEqual([
-		{ path: '/repos/northstar-labs/project-data/contents/records.json', method: 'GET', redirect: 'manual' },
+		{
+			path: '/repos/northstar-labs/project-data/contents/records.json',
+			method: 'GET',
+			redirect: 'manual'
+		},
 		{ path: '/repos/northstar-labs/project-data', method: 'GET', redirect: 'manual' }
 	]);
 	expect(requestSummary(writer.calls)[0]).toMatchObject({
@@ -96,19 +117,37 @@ test('Creates a scoped GitHub contents transport', async () => {
 	recordExampleCases(evidence('githubTransport', 'creates-a-scoped-github-contents-transport'), [
 		{
 			name: 'read and check the configured private repository',
-			input: { repository: 'northstar-labs/project-data', permission: 'read', path: '/contents/records.json', privateOnly: true },
-			output: { request: contents, privateCheck: 'passed', calls: requestSummary(reader.calls.slice(0, 2)) }
+			input: {
+				repository: 'northstar-labs/project-data',
+				permission: 'read',
+				path: '/contents/records.json',
+				privateOnly: true
+			},
+			output: {
+				request: contents,
+				privateCheck: 'passed',
+				calls: requestSummary(reader.calls.slice(0, 2))
+			}
 		},
 		{
 			name: 'request a write token for a contents update',
-			input: { repository: 'northstar-labs/project-data', permission: 'write', path: '/contents/records.json', method: 'PUT', body: update },
-			output: { status: written.status, contentSha: (written.data as { content: { sha: string } }).content.sha }
+			input: {
+				repository: 'northstar-labs/project-data',
+				permission: 'write',
+				path: '/contents/records.json',
+				method: 'PUT',
+				body: update
+			},
+			output: {
+				status: written.status,
+				contentSha: (written.data as { content: { sha: string } }).content.sha
+			}
 		},
 		{
 			name: 'reject a relative request path',
 			input: { path: 'contents/records.json' },
 			error: invalidPath
-		},
+		}
 	]);
 });
 
@@ -121,8 +160,10 @@ test('Maps supported Git refs to API paths', () => {
 	];
 	const results = cases.map(({ ref }) => refPath(ref));
 	expect(results).toEqual(cases.map(({ path }) => path));
-	recordExampleCases(evidence('refPath', 'maps-supported-git-refs-to-api-paths'),
-		cases.map(({ ref, path }) => ({ name: `map ${ref}`, input: { ref }, output: { path } })));
+	recordExampleCases(
+		evidence('refPath', 'maps-supported-git-refs-to-api-paths'),
+		cases.map(({ ref, path }) => ({ name: `map ${ref}`, input: { ref }, output: { path } }))
+	);
 });
 
 test('Reads exact branch and notes refs', async () => {
@@ -155,7 +196,10 @@ test('Reads exact branch and notes refs', async () => {
 		},
 		{
 			name: 'match the exact notes ref among a prefix result',
-			input: { ref: 'refs/notes/releases', matchingRefs: ['refs/notes/releases/old', 'refs/notes/releases'] },
+			input: {
+				ref: 'refs/notes/releases',
+				matchingRefs: ['refs/notes/releases/old', 'refs/notes/releases']
+			},
 			output: { sha: notesResult, requestPath: requestSummary(reads.calls)[1]?.path }
 		},
 		{
@@ -191,12 +235,19 @@ test('Resolves exact refs and rejects missing refs', async () => {
 });
 
 test('Encodes byte arrays as standard base64', () => {
-	const inputs = [[72, 101, 108, 108, 111], [0, 1, 2]];
+	const inputs = [
+		[72, 101, 108, 108, 111],
+		[0, 1, 2]
+	];
 	const results = inputs.map((bytes) => base64(Uint8Array.from(bytes)));
 	expect(results).toEqual(['SGVsbG8=', 'AAEC']);
 	recordExampleCases(evidence('base64', 'encodes-byte-arrays-as-standard-base64'), [
 		{ name: 'encode Hello bytes', input: { bytes: inputs[0] }, output: { value: results[0] } },
-		{ name: 'encode leading zero bytes', input: { bytes: inputs[1] }, output: { value: results[1] } }
+		{
+			name: 'encode leading zero bytes',
+			input: { bytes: inputs[1] },
+			output: { value: results[1] }
+		}
 	]);
 });
 
@@ -205,9 +256,16 @@ test('Decodes whitespace and rejects invalid base64', async () => {
 	const bytes = decode64(value);
 	const invalidError = await captureError(() => decode64('***'));
 	expect([...bytes]).toEqual([72, 101, 108, 108, 111]);
-	expect(invalidError).toEqual({ message: 'Collaboration invalid-content', code: 'invalid-content' });
+	expect(invalidError).toEqual({
+		message: 'Collaboration invalid-content',
+		code: 'invalid-content'
+	});
 	recordExampleCases(evidence('decode64', 'decodes-whitespace-and-rejects-invalid-base64'), [
-		{ name: 'ignore whitespace around encoded text', input: { value }, output: { bytes: [...bytes] } },
+		{
+			name: 'ignore whitespace around encoded text',
+			input: { value },
+			output: { bytes: [...bytes] }
+		},
 		{ name: 'reject invalid encoded content', input: { value: '***' }, error: invalidError }
 	]);
 });

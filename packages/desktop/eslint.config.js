@@ -78,5 +78,13 @@ export default [
 		languageOptions: { parser: svelteParser, parserOptions: { parser: tsParser } },
 		plugins: { harness },
 		rules: { 'harness/shared-reuse': 'error' }
+	},
+	{
+		// Prettier can expand example fixtures and assertions across many physical lines.
+		files: ['test/examples/**/*.test.ts'],
+		rules: {
+			'max-lines': 'off',
+			'max-lines-per-function': 'off'
+		}
 	}
 ];

@@ -15,9 +15,21 @@ test('Fingerprints owned files and manifest parts', () => {
 		responsibilityOrigin: 'declared',
 		status: 'active',
 		owns: { source: ['src/b.ts', 'src/a.ts'], symbols: ['componentVersion'] },
-		contract: { origin: 'declared', inputs: [], outputs: [], errors: [], errorStatus: 'none-found', operations: [], initialization: [] },
+		contract: {
+			origin: 'declared',
+			inputs: [],
+			outputs: [],
+			errors: [],
+			errorStatus: 'none-found',
+			operations: [],
+			initialization: []
+		},
 		dependencies: [],
-		runtime: { kind: 'module', entry: 'src/componentVersion.ts', targets: [{ kind: 'module', entry: 'src/componentVersion.ts' }] },
+		runtime: {
+			kind: 'module',
+			entry: 'src/componentVersion.ts',
+			targets: [{ kind: 'module', entry: 'src/componentVersion.ts' }]
+		},
 		scenarios: [],
 		budgets: { size: 'frozen', complexity: 'frozen', performance: [] }
 	} satisfies Parameters<typeof componentVersion>[0];
@@ -28,18 +40,20 @@ test('Fingerprints owned files and manifest parts', () => {
 	]);
 	const result: ComponentVersion = componentVersion(manifest, files);
 	const input = { manifest, fileHashes: Object.fromEntries(files) };
-	const cases = [{
-		name: 'owned files are sorted and unrelated files are ignored',
-		input,
-		output: {
-			unit: result.unit,
-			manifest: result.manifest,
-			source: result.source,
-			contract: result.contract,
-			runtime: result.runtime,
-			files: result.files
+	const cases = [
+		{
+			name: 'owned files are sorted and unrelated files are ignored',
+			input,
+			output: {
+				unit: result.unit,
+				manifest: result.manifest,
+				source: result.source,
+				contract: result.contract,
+				runtime: result.runtime,
+				files: result.files
+			}
 		}
-	}];
+	];
 	expect(result.unit).toBe(manifest.id);
 	expect(result.files).toEqual([
 		{ path: 'src/a.ts', hash: 'hash-a' },

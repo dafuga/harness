@@ -50,7 +50,10 @@ test('Throws SimulatorPageError when wanted text misses its deadline', async () 
 			{
 				name: 'wanted text is absent when the zero second deadline is checked',
 				input,
-				error: { name: 'SimulatorPageError', message: '"Checkout" did not appear within 0 s; last seen: ' }
+				error: {
+					name: 'SimulatorPageError',
+					message: '"Checkout" did not appear within 0 s; last seen: '
+				}
 			}
 		]
 	);

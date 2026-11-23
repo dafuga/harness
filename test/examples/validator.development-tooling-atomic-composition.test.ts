@@ -27,9 +27,19 @@ function manifest(
 		status: 'active',
 		composition: { level, ...(options.uses ? { uses: options.uses } : {}) },
 		owns: { source: options.source ?? [`src/components/${id}.svelte`], symbols: [id] },
-		contract: { origin: 'declared', ...(options.primitives ? { primitives: options.primitives } : {}), inputs: [], outputs: [], errors: [] },
+		contract: {
+			origin: 'declared',
+			...(options.primitives ? { primitives: options.primitives } : {}),
+			inputs: [],
+			outputs: [],
+			errors: []
+		},
 		dependencies: options.dependencies ?? [],
-		runtime: { kind: 'module', entry: `src/components/${id}.svelte`, targets: [{ kind: 'module', entry: `src/components/${id}.svelte` }] },
+		runtime: {
+			kind: 'module',
+			entry: `src/components/${id}.svelte`,
+			targets: [{ kind: 'module', entry: `src/components/${id}.svelte` }]
+		},
 		scenarios: [],
 		budgets: { size: 'frozen', complexity: 'frozen', performance: [] }
 	};
@@ -48,7 +58,13 @@ test('Finds illegal composition edges', () => {
 		'ui.component.icon-button: atom cannot compose molecule forms.component.field-row'
 	]);
 	recordExampleCases(
-		{ unitId: 'validator.development-tooling-atomic-composition', symbol: 'compositionFindings', state: 'finds-illegal-composition-edges', evidence: 'examples-cases', file: 'finds-illegal-composition-edges.json' },
+		{
+			unitId: 'validator.development-tooling-atomic-composition',
+			symbol: 'compositionFindings',
+			state: 'finds-illegal-composition-edges',
+			evidence: 'examples-cases',
+			file: 'finds-illegal-composition-edges.json'
+		},
 		[{ name: 'atom declares a molecule dependency', input: units, output }]
 	);
 });
@@ -68,7 +84,13 @@ test('Reports missing shared primitive declarations', () => {
 		'reports.component.evidence-grid: contract omits shared primitive shared-primitives.component.card'
 	]);
 	recordExampleCases(
-		{ unitId: 'validator.development-tooling-atomic-composition', symbol: 'sharedPrimitiveFindings', state: 'reports-missing-shared-primitive-declarations', evidence: 'examples-cases', file: 'reports-missing-shared-primitive-declarations.json' },
+		{
+			unitId: 'validator.development-tooling-atomic-composition',
+			symbol: 'sharedPrimitiveFindings',
+			state: 'reports-missing-shared-primitive-declarations',
+			evidence: 'examples-cases',
+			file: 'reports-missing-shared-primitive-declarations.json'
+		},
 		[{ name: 'component uses a shared card without declaring it', input: units, output }]
 	);
 });

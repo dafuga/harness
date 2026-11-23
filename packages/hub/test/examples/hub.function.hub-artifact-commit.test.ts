@@ -48,13 +48,22 @@ test('Returns the introduction hash for one complete commit', async () => {
 			evidence: 'examples-cases',
 			file: 'returns-the-introduction-hash-for-one-complete-commit.json'
 		},
-		[{ name: 'history has one complete commit', input: { path: artifactPath, history }, output: introHash }]
+		[
+			{
+				name: 'history has one complete commit',
+				input: { path: artifactPath, history },
+				output: introHash
+			}
+		]
 	);
 });
 
 test('Returns null for incomplete or rewritten history', async () => {
 	const gaps: Array<{ name: string; history: History }> = [
-		{ name: 'incomplete history with one commit', history: { complete: false, commits: [{ hash: introHash }] } },
+		{
+			name: 'incomplete history with one commit',
+			history: { complete: false, commits: [{ hash: introHash }] }
+		},
 		{
 			name: 'complete history with two commits',
 			history: { complete: true, commits: [{ hash: introHash }, { hash: otherHash }] }

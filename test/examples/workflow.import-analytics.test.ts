@@ -21,15 +21,27 @@ vi.mock('../../src/repositories/reports-media/AnalyticsRepository', () => ({
 function writeLoop(root: string): void {
 	const loop = join(root, 'specification', 'loops', 'release-check');
 	mkdirSync(loop, { recursive: true });
-	writeFileSync(join(loop, 'loop.json'), JSON.stringify({
-		name: 'Release check', goal: 'Verify the release',
-		createdAt: '2026-01-02T03:04:05.000Z', updatedAt: '2026-01-02T03:05:05.000Z',
-		template: 'release', agentModel: 'example-model',
-		steps: [{ id: 'verify', status: 'complete', completedAt: '2026-01-02T03:05:00.000Z' }]
-	}));
-	writeFileSync(join(loop, 'trace.ndjson'), JSON.stringify({
-		event: 'loop.evaluated', timestamp: '2026-01-02T03:05:02.000Z', passed: true, durationMs: 1200
-	}));
+	writeFileSync(
+		join(loop, 'loop.json'),
+		JSON.stringify({
+			name: 'Release check',
+			goal: 'Verify the release',
+			createdAt: '2026-01-02T03:04:05.000Z',
+			updatedAt: '2026-01-02T03:05:05.000Z',
+			template: 'release',
+			agentModel: 'example-model',
+			steps: [{ id: 'verify', status: 'complete', completedAt: '2026-01-02T03:05:00.000Z' }]
+		})
+	);
+	writeFileSync(
+		join(loop, 'trace.ndjson'),
+		JSON.stringify({
+			event: 'loop.evaluated',
+			timestamp: '2026-01-02T03:05:02.000Z',
+			passed: true,
+			durationMs: 1200
+		})
+	);
 }
 
 test('Imports loop events and marks them non-historical', async () => {
@@ -47,18 +59,22 @@ test('Imports loop events and marks them non-historical', async () => {
 		expect(repository.close).toHaveBeenCalledOnce();
 		recordExampleCases(
 			{
-				unitId: 'workflow.import-analytics', symbol: 'importAnalytics',
+				unitId: 'workflow.import-analytics',
+				symbol: 'importAnalytics',
 				state: 'imports-loop-events-and-marks-them-non-historical',
-				evidence: 'examples-cases', file: 'imports-loop-events-and-marks-them-non-historical.json'
+				evidence: 'examples-cases',
+				file: 'imports-loop-events-and-marks-them-non-historical.json'
 			},
-			[{
-				name: 'imports creation, completed step and loop, plus one evaluation',
-				input: { root: '<temporary>/project', historical: false },
-				output: {
-					count: output,
-					events: imported.map(({ kind, action, historical }) => ({ kind, action, historical }))
+			[
+				{
+					name: 'imports creation, completed step and loop, plus one evaluation',
+					input: { root: '<temporary>/project', historical: false },
+					output: {
+						count: output,
+						events: imported.map(({ kind, action, historical }) => ({ kind, action, historical }))
+					}
 				}
-			}]
+			]
 		);
 	});
 });
@@ -73,15 +89,19 @@ test('Throws Error when history reconciliation fails', async () => {
 		expect(repository.close).toHaveBeenCalledOnce();
 		recordExampleCases(
 			{
-				unitId: 'workflow.import-analytics', symbol: 'importAnalytics',
+				unitId: 'workflow.import-analytics',
+				symbol: 'importAnalytics',
 				state: 'throws-error-when-history-reconciliation-fails',
-				evidence: 'examples-cases', file: 'throws-error-when-history-reconciliation-fails.json'
+				evidence: 'examples-cases',
+				file: 'throws-error-when-history-reconciliation-fails.json'
 			},
-			[{
-				name: 'rejects when historical analytics cannot be reconciled',
-				input: { root: '<temporary>/project', historical: false },
-				error: { name: 'Error', message: 'history unavailable' }
-			}]
+			[
+				{
+					name: 'rejects when historical analytics cannot be reconciled',
+					input: { root: '<temporary>/project', historical: false },
+					error: { name: 'Error', message: 'history unavailable' }
+				}
+			]
 		);
 	});
 });

@@ -21,7 +21,11 @@ function source(path: string, execution: 'runtime' | 'declarative' = 'runtime') 
 }
 
 test('Selects active units that need profiling', () => {
-	const units = [manifest('runtime-unit'), manifest('declarative-unit'), manifest('inactive-unit', 'retired')];
+	const units = [
+		manifest('runtime-unit'),
+		manifest('declarative-unit'),
+		manifest('inactive-unit', 'retired')
+	];
 	const files = new Map([
 		['src/runtime-unit.ts', source('src/runtime-unit.ts')],
 		['src/declarative-unit.ts', source('src/declarative-unit.ts', 'declarative')],
@@ -73,7 +77,9 @@ test('Requires matching latency and memory for each runtime target', () => {
 	};
 	const base = {
 		units: [unit],
-		files: new Map([['src/reports.component.evidence-grid.ts', source('src/reports.component.evidence-grid.ts')]]),
+		files: new Map([
+			['src/reports.component.evidence-grid.ts', source('src/reports.component.evidence-grid.ts')]
+		]),
 		commit: 'commit-1',
 		profile: 'desktop'
 	};
@@ -98,7 +104,11 @@ test('Requires matching latency and memory for each runtime target', () => {
 		},
 		[
 			{ name: 'Reports uncovered callable', input: { measurementCount: 0 }, output: missing },
-			{ name: 'Accepts paired observations for one workload', input: { metrics: ['latency-render-ms', 'memory-bytes'] }, output: covered }
+			{
+				name: 'Accepts paired observations for one workload',
+				input: { metrics: ['latency-render-ms', 'memory-bytes'] },
+				output: covered
+			}
 		]
 	);
 });

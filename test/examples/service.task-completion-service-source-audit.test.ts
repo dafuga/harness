@@ -10,9 +10,15 @@ import { sourceAudit } from '../../src/services/verification-evidence/task-compl
 import { TaskCompletionSourceAuditError } from '../../src/services/verification-evidence/task-completion-service/sourceAudit.types';
 
 const invalidTasks: Array<{ name: string; input: TaskAuditInput }> = [
-	{ name: 'unsupported kind', input: { kind: 'review' as 'coding', goal: 'Review the evidence grid' } },
+	{
+		name: 'unsupported kind',
+		input: { kind: 'review' as 'coding', goal: 'Review the evidence grid' }
+	},
 	{ name: 'blank goal', input: { kind: 'coding', goal: '   ' } },
-	{ name: 'invalid loop name', input: { kind: 'coding', goal: 'Finish the evidence grid', loop: 'Evidence_Grid' } }
+	{
+		name: 'invalid loop name',
+		input: { kind: 'coding', goal: 'Finish the evidence grid', loop: 'Evidence_Grid' }
+	}
 ];
 
 function commitFile(repo: Repo, name: string, content: string): void {

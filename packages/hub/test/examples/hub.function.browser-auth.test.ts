@@ -2,7 +2,11 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { browserAuth } from '../../src/utils/accounts-access/browserAuth';
-import type { LoginChallenge, NativeRequest, BrowserAuth } from '../../src/utils/accounts-access/browserAuth.types';
+import type {
+	LoginChallenge,
+	NativeRequest,
+	BrowserAuth
+} from '../../src/utils/accounts-access/browserAuth.types';
 
 type Api = Parameters<typeof browserAuth>[0];
 interface Call {
@@ -54,13 +58,18 @@ test('Status and challenge calls read the auth endpoints', async () => {
 		{ method: 'GET', path: '/api/auth/status' },
 		{ method: 'POST', path: '/api/auth/challenge' }
 	]);
-	recordExampleCases(
-		meta('browserAuth', 'status-and-challenge-calls-read-the-auth-endpoints'),
-		[
-			{ name: 'page reads the configured signed-out status', input: { path: '/api/auth/status' }, output: statusResult },
-			{ name: 'page requests a fresh login challenge', input: { path: '/api/auth/challenge' }, output: challengeResult }
-		]
-	);
+	recordExampleCases(meta('browserAuth', 'status-and-challenge-calls-read-the-auth-endpoints'), [
+		{
+			name: 'page reads the configured signed-out status',
+			input: { path: '/api/auth/status' },
+			output: statusResult
+		},
+		{
+			name: 'page requests a fresh login challenge',
+			input: { path: '/api/auth/challenge' },
+			output: challengeResult
+		}
+	]);
 });
 
 test('Google and email sign-in send only the supplied fields', async () => {
@@ -93,7 +102,11 @@ test('Google and email sign-in send only the supplied fields', async () => {
 	recordExampleCases(
 		meta('browserAuth', 'google-and-email-sign-in-send-only-the-supplied-fields'),
 		[
-			{ name: 'Google credential with its csrf is posted', input: { credential: 'fixture-credential.jwt' }, output: google },
+			{
+				name: 'Google credential with its csrf is posted',
+				input: { credential: 'fixture-credential.jwt' },
+				output: google
+			},
 			{ name: 'email code is requested for the pending address', input: {}, output: started },
 			{ name: 'typed email code is verified', input: { code: '123456' }, output: verified },
 			{ name: 'session is signed out', input: {}, output: loggedOut }
@@ -121,7 +134,11 @@ test('Native handoff poll and approve send the handoff fields', async () => {
 	recordExampleCases(
 		meta('browserAuth', 'native-handoff-poll-and-approve-send-the-handoff-fields'),
 		[
-			{ name: 'desktop app polls its pending handoff', input: { handoffId: 'handoff-fixture-1' }, output: polled },
+			{
+				name: 'desktop app polls its pending handoff',
+				input: { handoffId: 'handoff-fixture-1' },
+				output: polled
+			},
 			{
 				name: 'signed-in browser approves the handoff with the typed code',
 				input: { handoffId: 'handoff-fixture-1', userCode: 'ABCD-1234' },
@@ -135,14 +152,11 @@ test('Client failures reach the caller without translation', async () => {
 	const failure = new Error('fixture client unavailable');
 	const { auth } = fakeApi({ '/api/auth/status': failure });
 	await expect(auth.status()).rejects.toBe(failure);
-	recordExampleCases(
-		meta('browserAuth', 'client-failures-reach-the-caller-without-translation'),
-		[
-			{
-				name: 'client rejects the status read and the error is passed through',
-				input: { path: '/api/auth/status' },
-				error: 'fixture client unavailable'
-			}
-		]
-	);
+	recordExampleCases(meta('browserAuth', 'client-failures-reach-the-caller-without-translation'), [
+		{
+			name: 'client rejects the status read and the error is passed through',
+			input: { path: '/api/auth/status' },
+			error: 'fixture client unavailable'
+		}
+	]);
 });

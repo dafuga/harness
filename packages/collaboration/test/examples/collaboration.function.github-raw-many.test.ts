@@ -144,8 +144,16 @@ test('Drops rejected cache entries when a batch request fails', async () => {
 	expect(context.cache.has(key)).toBe(false);
 	expect(requests).toHaveLength(1);
 	recordExampleCases(meta('drops-rejected-cache-entries-when-a-batch-request-fails'), [
-		{ name: 'request one uncached path while GitHub is offline', input: { commit, paths }, error: describeError(failure) },
-		{ name: 'cache entry after the rejected batch', input: { key }, output: { cached: context.cache.has(key) } }
+		{
+			name: 'request one uncached path while GitHub is offline',
+			input: { commit, paths },
+			error: describeError(failure)
+		},
+		{
+			name: 'cache entry after the rejected batch',
+			input: { key },
+			output: { cached: context.cache.has(key) }
+		}
 	]);
 });
 

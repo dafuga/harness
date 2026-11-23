@@ -2,7 +2,10 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { D1AuthStoreAdapter } from '../../src/routes/api/[...path]/d1-auth-store-adapter/D1AuthStoreAdapter';
-import type { D1Statement, D1Like } from '../../src/routes/api/[...path]/d1-auth-store-adapter/D1AuthStoreAdapter.types';
+import type {
+	D1Statement,
+	D1Like
+} from '../../src/routes/api/[...path]/d1-auth-store-adapter/D1AuthStoreAdapter.types';
 
 function cleanupDatabase(calls: Array<{ query: string; values: unknown[] }>): D1Like {
 	return {

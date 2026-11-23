@@ -29,10 +29,14 @@ test('Runs steps in order and reports elapsed time', async () => {
 	expect(visited).toEqual(['typecheck', 'lint']);
 	expect(lines[1]).toMatch(/\[check\] typecheck: passed in \d+\.\d ms/);
 	const emptyVisited: string[] = [];
-	const emptyStatus = await runSteps([], async (name) => {
-		emptyVisited.push(name);
-		return 0;
-	}, () => undefined);
+	const emptyStatus = await runSteps(
+		[],
+		async (name) => {
+			emptyVisited.push(name);
+			return 0;
+		},
+		() => undefined
+	);
 	expect(emptyStatus).toBe(0);
 	expect(emptyVisited).toEqual([]);
 	expect(checkSteps).toHaveLength(24);
@@ -78,11 +82,15 @@ test('Stops at first failure and converts runner errors', async () => {
 	expect(status).toBe(2);
 	expect(visited).toEqual(['typecheck', 'lint']);
 	const rejectedVisited: string[] = [];
-	const rejectedStatus = await runSteps(['format:check', 'build'], async (name) => {
-		rejectedVisited.push(name);
-		if (name === 'format:check') throw new Error('launcher failed');
-		return 0;
-	}, () => undefined);
+	const rejectedStatus = await runSteps(
+		['format:check', 'build'],
+		async (name) => {
+			rejectedVisited.push(name);
+			if (name === 'format:check') throw new Error('launcher failed');
+			return 0;
+		},
+		() => undefined
+	);
 	expect(rejectedStatus).toBe(1);
 	expect(rejectedVisited).toEqual(['format:check']);
 	recordExampleCases(
@@ -111,9 +119,13 @@ test('Stops at first failure and converts runner errors', async () => {
 test('Rejects when the reporter throws', async () => {
 	let errorMessage = '';
 	try {
-		await runSteps(['typecheck'], async () => 0, () => {
-			throw new Error('report unavailable');
-		});
+		await runSteps(
+			['typecheck'],
+			async () => 0,
+			() => {
+				throw new Error('report unavailable');
+			}
+		);
 	} catch (error) {
 		errorMessage = error instanceof Error ? error.message : String(error);
 	}

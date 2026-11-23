@@ -5,9 +5,7 @@
 	"updatedAt": "2026-11-20T22:42:57.217Z",
 	"agentModel": "claude-haiku-5-5",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [

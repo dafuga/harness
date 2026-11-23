@@ -64,7 +64,13 @@ function evidenceAnswer(): Result {
 }
 
 function scopeQuery(): Scope {
-	return { projectId: evidenceAnswer().identity.projectId, entityId, commit, branch: 'main', mode: 'current' };
+	return {
+		projectId: evidenceAnswer().identity.projectId,
+		entityId,
+		commit,
+		branch: 'main',
+		mode: 'current'
+	};
 }
 
 type Side = NonNullable<Result['evidence']['after']>;

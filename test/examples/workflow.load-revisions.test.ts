@@ -2,7 +2,11 @@ import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir, withTempRepo } from '../support/temporary';
-import { commitLoader, emptySide, openRange } from '../../src/workflows/development-tooling/loadRevisions';
+import {
+	commitLoader,
+	emptySide,
+	openRange
+} from '../../src/workflows/development-tooling/loadRevisions';
 
 test('Creates the empty pre-commit revision side', () => {
 	const side = emptySide();

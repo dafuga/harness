@@ -2,7 +2,10 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { behaviorFacts } from '../../src/helpers/verification-evidence/behaviorFacts';
-import type { BehaviorFactOptions, BehaviorScenario } from '../../src/helpers/verification-evidence/behaviorFacts.types';
+import type {
+	BehaviorFactOptions,
+	BehaviorScenario
+} from '../../src/helpers/verification-evidence/behaviorFacts.types';
 
 test('Formats paired scenario outcomes and highlighted duration', () => {
 	const scenarios: BehaviorScenario[] = [
@@ -44,7 +47,9 @@ test('Throws Input access error when reading a scenario title', () => {
 		after: 'failed'
 	} as BehaviorScenario;
 	const input = { duration: '1s', scenarios: [scenario], paired: false };
-	expect(() => behaviorFacts(input.duration, input.scenarios, input.paired)).toThrow('title access failed');
+	expect(() => behaviorFacts(input.duration, input.scenarios, input.paired)).toThrow(
+		'title access failed'
+	);
 	recordExampleCases(
 		{
 			unitId: 'reports.helper.verification-evidence-behavior-facts',
@@ -56,7 +61,11 @@ test('Throws Input access error when reading a scenario title', () => {
 		[
 			{
 				name: 'propagates an exception from the scenario title getter',
-				input: { duration: '1s', scenarios: [{ id: 'checkout', title: '[throws]', before: null, after: 'failed' }], paired: false },
+				input: {
+					duration: '1s',
+					scenarios: [{ id: 'checkout', title: '[throws]', before: null, after: 'failed' }],
+					paired: false
+				},
 				error: 'title access failed'
 			}
 		]

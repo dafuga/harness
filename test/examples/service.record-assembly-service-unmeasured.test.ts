@@ -20,7 +20,13 @@ test('Records unavailable latency and memory when unmeasured', () => {
 			evidence: 'examples-cases',
 			file: 'records-unavailable-latency-and-memory-when-unmeasured.json'
 		},
-		[{ name: 'unit with no benchmark records two unavailable entries', input: { unit, testedRevision }, output: entries }]
+		[
+			{
+				name: 'unit with no benchmark records two unavailable entries',
+				input: { unit, testedRevision },
+				output: entries
+			}
+		]
 	);
 });
 
@@ -39,6 +45,12 @@ test('Copies unit and tested revision into each entry', () => {
 			evidence: 'examples-cases',
 			file: 'copies-unit-and-tested-revision-into-each-entry.json'
 		},
-		[{ name: 'unit and revision are copied unchanged with no artifacts', input: { unit, testedRevision }, output: entries }]
+		[
+			{
+				name: 'unit and revision are copied unchanged with no artifacts',
+				input: { unit, testedRevision },
+				output: entries
+			}
+		]
 	);
 });

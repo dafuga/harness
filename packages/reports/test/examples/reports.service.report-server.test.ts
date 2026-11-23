@@ -39,7 +39,11 @@ test('Builds a loopback environment from inherited values', () => {
 		[
 			{
 				name: 'sets loopback address and server settings while retaining inherited values',
-				input: { port: 5588, base: { PATH: '/usr/local/bin', CI: 'true' }, cwd: '/workspace/project' },
+				input: {
+					port: 5588,
+					base: { PATH: '/usr/local/bin', CI: 'true' },
+					cwd: '/workspace/project'
+				},
 				output: result
 			}
 		]
@@ -66,11 +70,11 @@ test('Leaves an unrecorded report server stopped', async () => {
 			},
 			[
 				{
-				name: 'returns the empty-record result for a temporary report store',
-				input: { port: 5588 },
-				output: result
-			}
-		]
+					name: 'returns the empty-record result for a temporary report store',
+					input: { port: 5588 },
+					output: result
+				}
+			]
 		);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
@@ -79,13 +83,18 @@ test('Leaves an unrecorded report server stopped', async () => {
 
 test('Throws Error when no free port is found', async () => {
 	const root = mkdtempSync(join(tmpdir(), 'report-server-error-'));
-	const servers = Array.from({ length: 30 }, () => createServer((_request, response) => response.end()));
+	const servers = Array.from({ length: 30 }, () =>
+		createServer((_request, response) => response.end())
+	);
 	try {
 		await Promise.all(
-			servers.map((server, index) => new Promise<void>((resolve, reject) => {
-				server.once('error', reject);
-				server.listen(5588 + index, '127.0.0.1', resolve);
-			}))
+			servers.map(
+				(server, index) =>
+					new Promise<void>((resolve, reject) => {
+						server.once('error', reject);
+						server.listen(5588 + index, '127.0.0.1', resolve);
+					})
+			)
 		);
 		const service = new ReportServerService(new ReportRepository(root));
 		let caught: unknown;
@@ -103,10 +112,21 @@ test('Throws Error when no free port is found', async () => {
 				evidence: 'examples-cases',
 				file: 'throws-error-when-no-free-port-is-found.json'
 			},
-			[{ name: 'rejects after all thirty preferred ports are occupied', input: { preferred: 5588 }, error: { name: 'ReportServerUnavailableError', message: 'No available loopback port from preferred range' } }]
+			[
+				{
+					name: 'rejects after all thirty preferred ports are occupied',
+					input: { preferred: 5588 },
+					error: {
+						name: 'ReportServerUnavailableError',
+						message: 'No available loopback port from preferred range'
+					}
+				}
+			]
 		);
 	} finally {
-		await Promise.all(servers.map((server) => new Promise<void>((resolve) => server.close(() => resolve()))));
+		await Promise.all(
+			servers.map((server) => new Promise<void>((resolve) => server.close(() => resolve())))
+		);
 		rmSync(root, { recursive: true, force: true });
 	}
 });

@@ -39,14 +39,16 @@ function summarizeEnvironment(environment: typeof process.env) {
 test('Settings file supplies unset report environment values', async () => {
 	await withTempDir('reports-environment-settings-', (directory) => {
 		const settingsFile = join(directory, 'report-settings.json');
-		writeFileSync(settingsFile, JSON.stringify({
-			configFile: '/workspace/project/reports/report.config.json',
-			cloudflareConfigHome: '/workspace/ci-user/.config/cloudflare'
-		}));
+		writeFileSync(
+			settingsFile,
+			JSON.stringify({
+				configFile: '/workspace/project/reports/report.config.json',
+				cloudflareConfigHome: '/workspace/ci-user/.config/cloudflare'
+			})
+		);
 		const input = { settingsFile };
-		const output = withReportEnvironment(
-			{ HARNESS_REPORTS_SETTINGS_FILE: settingsFile },
-			() => summarizeEnvironment(reportsEnvironment())
+		const output = withReportEnvironment({ HARNESS_REPORTS_SETTINGS_FILE: settingsFile }, () =>
+			summarizeEnvironment(reportsEnvironment())
 		);
 		expect(output).toEqual({
 			configFile: '/workspace/project/reports/report.config.json',
@@ -68,10 +70,13 @@ test('Settings file supplies unset report environment values', async () => {
 test('Explicit values override settings including empty strings', async () => {
 	await withTempDir('reports-environment-overrides-', (directory) => {
 		const settingsFile = join(directory, 'report-settings.json');
-		writeFileSync(settingsFile, JSON.stringify({
-			configFile: '/settings/report.json',
-			cloudflareConfigHome: '/settings/cloudflare'
-		}));
+		writeFileSync(
+			settingsFile,
+			JSON.stringify({
+				configFile: '/settings/report.json',
+				cloudflareConfigHome: '/settings/cloudflare'
+			})
+		);
 		const input = {
 			settingsFile,
 			configOverride: '',
@@ -101,9 +106,8 @@ test('Explicit values override settings including empty strings', async () => {
 
 test('Missing settings file preserves undefined report keys', () => {
 	const input = { settingsFile: '/missing/report-settings.json' };
-	const output = withReportEnvironment(
-		{ HARNESS_REPORTS_SETTINGS_FILE: input.settingsFile },
-		() => summarizeEnvironment(reportsEnvironment())
+	const output = withReportEnvironment({ HARNESS_REPORTS_SETTINGS_FILE: input.settingsFile }, () =>
+		summarizeEnvironment(reportsEnvironment())
 	);
 	expect(output).toEqual({ configFile: undefined, cloudflareConfigHome: undefined });
 	recordExampleCases(

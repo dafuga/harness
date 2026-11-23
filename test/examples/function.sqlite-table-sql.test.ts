@@ -53,7 +53,10 @@ test('Quotes valid SQLite identifiers and rejects unsafe names', () => {
 		'"_sync_token"'
 	]);
 	expect(unsafe).toEqual({
-		error: { name: 'InvalidSqliteDefinitionError', message: 'Invalid SQLite identifier: unit records' }
+		error: {
+			name: 'InvalidSqliteDefinitionError',
+			message: 'Invalid SQLite identifier: unit records'
+		}
 	});
 	recordExampleCases(
 		{

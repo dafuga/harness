@@ -27,7 +27,13 @@ test('Context key is a symbol described as hosted browser', () => {
 			evidence: 'examples-cases',
 			file: 'context-key-is-a-symbol-described-as-hosted-browser.json'
 		},
-		[{ name: 'shared context key used by both functions', input: {}, output: { type: 'symbol', description: key.description } }]
+		[
+			{
+				name: 'shared context key used by both functions',
+				input: {},
+				output: { type: 'symbol', description: key.description }
+			}
+		]
 	);
 });
 

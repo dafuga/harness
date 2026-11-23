@@ -5,7 +5,10 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempRepo } from '../support/temporary';
 import { renameUnit } from '../../src/workflows/development-tooling/rename-unit/renameUnit';
-import type { RenameOptions, RenameReport } from '../../src/workflows/development-tooling/rename-unit/renameUnit.types';
+import type {
+	RenameOptions,
+	RenameReport
+} from '../../src/workflows/development-tooling/rename-unit/renameUnit.types';
 
 const UNIT_ID = 'workflow.development-tooling-rename-unit-rename-unit';
 const UNITS = join('specification', 'units');
@@ -16,7 +19,10 @@ function pinned(root: string): RenameOptions {
 }
 
 function unitSpec(id: string, status: 'active' | 'retired', extra: Record<string, unknown> = {}) {
-	const letters = id.replace(/[^a-z]/g, '').padEnd(10, 'a').slice(0, 10);
+	const letters = id
+		.replace(/[^a-z]/g, '')
+		.padEnd(10, 'a')
+		.slice(0, 10);
 	return {
 		schemaVersion: 1,
 		id,

@@ -71,13 +71,19 @@ test('Resolves owned categories', () => {
 			evidence: 'examples-cases',
 			file: 'resolves-owned-categories.json'
 		},
-		inputs.map((input, index) => ({ name: `owned paths ${index + 1}`, input, output: outputs[index] }))
+		inputs.map((input, index) => ({
+			name: `owned paths ${index + 1}`,
+			input,
+			output: outputs[index]
+		}))
 	);
 });
 
 test('Scores category matches', () => {
 	const inputs = ['InvoiceTable', 'usePaymentRetry', 'InvoicePlanCard', 'billingCycle'];
-	const outputs = inputs.map((text) => matchingGroups(text, groups).map(({ id, title }) => ({ id, title })));
+	const outputs = inputs.map((text) =>
+		matchingGroups(text, groups).map(({ id, title }) => ({ id, title }))
+	);
 	expect(outputs).toEqual([
 		[{ id: 'billing', title: 'Billing' }],
 		[{ id: 'billing', title: 'Billing' }],

@@ -21,7 +21,10 @@ const okPairing = async () => new Response('{}', { status: 200 });
 
 // Lets the script's chained promises (startup, then pairing) settle without timers.
 const settle = () =>
-	Array.from({ length: 10 }).reduce<Promise<void>>((chain) => chain.then(() => undefined), Promise.resolve());
+	Array.from({ length: 10 }).reduce<Promise<void>>(
+		(chain) => chain.then(() => undefined),
+		Promise.resolve()
+	);
 
 function spyProcess() {
 	return {
@@ -67,7 +70,11 @@ test('Starts the fixture and requests the first pairing offer', async () => {
 			{
 				name: 'start with the public fixture folder and one pairing offer',
 				input: 'no arguments',
-				output: { publicFolderIsWorkMobile: true, pairingRequest: 'POST /pairing', exitStatus: null }
+				output: {
+					publicFolderIsWorkMobile: true,
+					pairingRequest: 'POST /pairing',
+					exitStatus: null
+				}
 			}
 		]);
 	} finally {
@@ -120,9 +127,12 @@ test('Logs a fixed fallback when startup rejects with a non-error', async () => 
 test('Reports a pairing request that cannot reach the fixture', async () => {
 	const spies = spyProcess();
 	try {
-		await runScript(async () => fixture, async () => {
-			throw new TypeError('fetch failed');
-		});
+		await runScript(
+			async () => fixture,
+			async () => {
+				throw new TypeError('fetch failed');
+			}
+		);
 		expect(spies.error).toHaveBeenCalledWith('fetch failed');
 		expect(spies.exit).toHaveBeenCalledWith(1);
 		recordExampleCases(meta('reports-a-pairing-request-that-cannot-reach-the-fixture'), [

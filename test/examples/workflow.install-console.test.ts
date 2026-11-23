@@ -23,12 +23,28 @@ test('Throws ExpectedCliError for invalid install and object inputs', async () =
 			base: '/harness'
 		};
 		await expect(installConsole(flags)).rejects.toThrow('is not a SvelteKit project');
-		await expect(consoleObjects(host, '../private')).rejects.toThrow('--prefix must be a plain path');
-			recordExampleCases(
-				{ unitId: 'workflow.install-console', symbol: 'installConsole and consoleObjects', state: 'throws-expectedclierror-for-invalid-install-and-object-input', evidence: 'examples-cases', file: 'throws-expectedclierror-for-invalid-install-and-object-input.json' },
+		await expect(consoleObjects(host, '../private')).rejects.toThrow(
+			'--prefix must be a plain path'
+		);
+		recordExampleCases(
+			{
+				unitId: 'workflow.install-console',
+				symbol: 'installConsole and consoleObjects',
+				state: 'throws-expectedclierror-for-invalid-install-and-object-input',
+				evidence: 'examples-cases',
+				file: 'throws-expectedclierror-for-invalid-install-and-object-input.json'
+			},
 			[
-				{ name: 'rejects an unconfigured host', input: flags, error: `${host} is not a SvelteKit project: it needs svelte.config.js and src/routes.` },
-				{ name: 'rejects traversal in bucket prefix', input: { directory: host, prefix: '../private' }, error: '--prefix must be a plain path inside the bucket, such as history.' }
+				{
+					name: 'rejects an unconfigured host',
+					input: flags,
+					error: `${host} is not a SvelteKit project: it needs svelte.config.js and src/routes.`
+				},
+				{
+					name: 'rejects traversal in bucket prefix',
+					input: { directory: host, prefix: '../private' },
+					error: '--prefix must be a plain path inside the bucket, such as history.'
+				}
 			]
 		);
 	});
@@ -38,12 +54,28 @@ test('Throws ExpectedCliError for invalid uninstall and restore inputs', async (
 	const flags = { host: '/tmp/example-site', update: true, keep: true };
 	expect(() => uninstallConsole(flags)).toThrow('Choose --update or --keep, not both.');
 	await withTempDir('install-console-empty-restore-', async (directory) => {
-		await expect(restoreConsoleFile(directory, 'src/routes/harness/+server.ts')).rejects.toThrow('No replaced contents are recorded');
+		await expect(restoreConsoleFile(directory, 'src/routes/harness/+server.ts')).rejects.toThrow(
+			'No replaced contents are recorded'
+		);
 		recordExampleCases(
-			{ unitId: 'workflow.install-console', symbol: 'uninstallConsole and restoreConsoleFile', state: 'throws-expectedclierror-for-invalid-uninstall-and-restore-in', evidence: 'examples-cases', file: 'throws-expectedclierror-for-invalid-uninstall-and-restore-in.json' },
+			{
+				unitId: 'workflow.install-console',
+				symbol: 'uninstallConsole and restoreConsoleFile',
+				state: 'throws-expectedclierror-for-invalid-uninstall-and-restore-in',
+				evidence: 'examples-cases',
+				file: 'throws-expectedclierror-for-invalid-uninstall-and-restore-in.json'
+			},
 			[
-				{ name: 'rejects simultaneous update and keep', input: flags, error: 'Choose --update or --keep, not both.' },
-				{ name: 'rejects a path without a recorded saved copy', input: { host: directory, path: 'src/routes/harness/+server.ts' }, error: 'No replaced contents are recorded for src/routes/harness/+server.ts.' }
+				{
+					name: 'rejects simultaneous update and keep',
+					input: flags,
+					error: 'Choose --update or --keep, not both.'
+				},
+				{
+					name: 'rejects a path without a recorded saved copy',
+					input: { host: directory, path: 'src/routes/harness/+server.ts' },
+					error: 'No replaced contents are recorded for src/routes/harness/+server.ts.'
+				}
 			]
 		);
 	});
@@ -72,7 +104,10 @@ test('Lists indexed files under a bucket prefix', async () => {
 			[
 				{
 					name: 'lists index and revision while omitting unrelated files',
-					input: { prefix: 'history/', files: ['index.json', 'revisions/<40 hex>.json', 'notes/draft.txt'] },
+					input: {
+						prefix: 'history/',
+						files: ['index.json', 'revisions/<40 hex>.json', 'notes/draft.txt']
+					},
 					output: result.map(({ key }) => key)
 				}
 			]

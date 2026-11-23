@@ -20,7 +20,11 @@ function adapterFor(result: unknown) {
 				calls.push(['create', table, input]);
 				return result as T;
 			},
-			async update<T>(table: string, id: number | string, input: Record<string, unknown>): Promise<T | null> {
+			async update<T>(
+				table: string,
+				id: number | string,
+				input: Record<string, unknown>
+			): Promise<T | null> {
 				calls.push(['update', table, id, input]);
 				return result as T | null;
 			},
@@ -38,9 +42,16 @@ test('Finds a branch by id', async () => {
 	const output = await CatalogBranch.find(adapter, 'main');
 	expect(output).toEqual(row);
 	expect(calls).toEqual([['find', 'catalog_branches', 'main']]);
-	recordExampleCases({ unitId: 'model.catalog-branch', symbol: 'CatalogBranch.find', state: 'finds-a-branch-by-id', evidence: 'examples-cases', file: 'finds-a-branch-by-id.json' }, [
-		{ name: 'find main returns its stored head', input: { id: 'main' }, output }
-	]);
+	recordExampleCases(
+		{
+			unitId: 'model.catalog-branch',
+			symbol: 'CatalogBranch.find',
+			state: 'finds-a-branch-by-id',
+			evidence: 'examples-cases',
+			file: 'finds-a-branch-by-id.json'
+		},
+		[{ name: 'find main returns its stored head', input: { id: 'main' }, output }]
+	);
 });
 
 test('Finds branches by attributes', async () => {
@@ -49,9 +60,16 @@ test('Finds branches by attributes', async () => {
 	const output = await CatalogBranch.findBy(adapter, { head: 'a1b2c3' });
 	expect(output).toEqual(rows);
 	expect(calls).toEqual([['findBy', 'catalog_branches', { head: 'a1b2c3' }]]);
-	recordExampleCases({ unitId: 'model.catalog-branch', symbol: 'CatalogBranch.findBy', state: 'finds-branches-by-attributes', evidence: 'examples-cases', file: 'finds-branches-by-attributes.json' }, [
-		{ name: 'head filter returns matching branches', input: { head: 'a1b2c3' }, output }
-	]);
+	recordExampleCases(
+		{
+			unitId: 'model.catalog-branch',
+			symbol: 'CatalogBranch.findBy',
+			state: 'finds-branches-by-attributes',
+			evidence: 'examples-cases',
+			file: 'finds-branches-by-attributes.json'
+		},
+		[{ name: 'head filter returns matching branches', input: { head: 'a1b2c3' }, output }]
+	);
 });
 
 test('Creates a branch row', async () => {
@@ -60,9 +78,16 @@ test('Creates a branch row', async () => {
 	const output = await CatalogBranch.create(adapter, row);
 	expect(output).toEqual(row);
 	expect(calls).toEqual([['create', 'catalog_branches', row]]);
-	recordExampleCases({ unitId: 'model.catalog-branch', symbol: 'CatalogBranch.create', state: 'creates-a-branch-row', evidence: 'examples-cases', file: 'creates-a-branch-row.json' }, [
-		{ name: 'creation passes the supplied branch identity and head', input: row, output }
-	]);
+	recordExampleCases(
+		{
+			unitId: 'model.catalog-branch',
+			symbol: 'CatalogBranch.create',
+			state: 'creates-a-branch-row',
+			evidence: 'examples-cases',
+			file: 'creates-a-branch-row.json'
+		},
+		[{ name: 'creation passes the supplied branch identity and head', input: row, output }]
+	);
 });
 
 test('Updates a branch head', async () => {
@@ -72,9 +97,16 @@ test('Updates a branch head', async () => {
 	const output = await CatalogBranch.update(adapter, 'main', update);
 	expect(output).toEqual(row);
 	expect(calls).toEqual([['update', 'catalog_branches', 'main', update]]);
-	recordExampleCases({ unitId: 'model.catalog-branch', symbol: 'CatalogBranch.update', state: 'updates-a-branch-head', evidence: 'examples-cases', file: 'updates-a-branch-head.json' }, [
-		{ name: 'update passes a partial head change', input: { id: 'main', ...update }, output }
-	]);
+	recordExampleCases(
+		{
+			unitId: 'model.catalog-branch',
+			symbol: 'CatalogBranch.update',
+			state: 'updates-a-branch-head',
+			evidence: 'examples-cases',
+			file: 'updates-a-branch-head.json'
+		},
+		[{ name: 'update passes a partial head change', input: { id: 'main', ...update }, output }]
+	);
 });
 
 test('Deletes a branch row', async () => {
@@ -82,7 +114,14 @@ test('Deletes a branch row', async () => {
 	const output = await CatalogBranch.delete(adapter, 'release/1');
 	expect(output).toBe(true);
 	expect(calls).toEqual([['delete', 'catalog_branches', 'release/1']]);
-	recordExampleCases({ unitId: 'model.catalog-branch', symbol: 'CatalogBranch.delete', state: 'deletes-a-branch-row', evidence: 'examples-cases', file: 'deletes-a-branch-row.json' }, [
-		{ name: 'delete returns the adapter confirmation', input: { id: 'release/1' }, output }
-	]);
+	recordExampleCases(
+		{
+			unitId: 'model.catalog-branch',
+			symbol: 'CatalogBranch.delete',
+			state: 'deletes-a-branch-row',
+			evidence: 'examples-cases',
+			file: 'deletes-a-branch-row.json'
+		},
+		[{ name: 'delete returns the adapter confirmation', input: { id: 'release/1' }, output }]
+	);
 });

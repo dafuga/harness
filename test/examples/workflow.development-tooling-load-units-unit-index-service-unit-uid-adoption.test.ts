@@ -8,7 +8,10 @@ import {
 } from '../../src/workflows/development-tooling/load-units/unit-index-service/unitUidAdoption';
 import type { SourceFile } from '../../src/core/development-tooling/sourceTypes';
 import type { ComponentManifest } from '../../src/core/development-tooling/unitTypes';
-import type { Group, Registry } from '../../src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.types';
+import type {
+	Group,
+	Registry
+} from '../../src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.types';
 import type { SourceIndex } from '../../src/services/development-tooling/source-index-service/SourceIndexService';
 
 const UNIT_ID = 'workflow.development-tooling-load-units-unit-index-service-unit-uid-adoption';
@@ -39,7 +42,12 @@ function sourceFile(path: string, uid?: string): SourceFile {
 }
 
 function manifest(id: string, uid: string | undefined, source: string[] = []): ComponentManifest {
-	return { id, uid, status: 'active', owns: { source, symbols: [] } } as unknown as ComponentManifest;
+	return {
+		id,
+		uid,
+		status: 'active',
+		owns: { source, symbols: [] }
+	} as unknown as ComponentManifest;
 }
 
 function groupOf(id: string, files: SourceFile[], uid?: string): Group {
@@ -48,7 +56,12 @@ function groupOf(id: string, files: SourceFile[], uid?: string): Group {
 
 function registryOf(units: ComponentManifest[], owners: Array<[string, string]>): Registry {
 	const byId = new Map(units.map((unit) => [unit.id, unit] as const));
-	return { byId, owners: new Map(owners), groups: new Map(), result: { moved: [] } } as unknown as Registry;
+	return {
+		byId,
+		owners: new Map(owners),
+		groups: new Map(),
+		result: { moved: [] }
+	} as unknown as Registry;
 }
 
 function indexOf(files: SourceFile[]): SourceIndex {
@@ -87,17 +100,20 @@ test('Merges groups that announce the same uid into the first id', () => {
 	expect(merged[0].uid).toBe(UID);
 	expect(merged[0].files.map((file) => file.path)).toEqual([FORWARD_PATH, IMPL_PATH]);
 	expect(merged[1].uid).toBeUndefined();
-	recordExampleCases(meta('merges-groups-that-announce-the-same-uid-into-the-first-id', 'mergedByUid'), [
-		{
-			name: 'groups sharing a file uid merge; a group without a uid is kept',
-			input: { ids: ['z.impl', 'a.forward', 'm.plain'] },
-			output: merged.map((group) => ({
-				id: group.id,
-				uid: group.uid ?? null,
-				files: group.files.map((file) => file.path)
-			}))
-		}
-	]);
+	recordExampleCases(
+		meta('merges-groups-that-announce-the-same-uid-into-the-first-id', 'mergedByUid'),
+		[
+			{
+				name: 'groups sharing a file uid merge; a group without a uid is kept',
+				input: { ids: ['z.impl', 'a.forward', 'm.plain'] },
+				output: merged.map((group) => ({
+					id: group.id,
+					uid: group.uid ?? null,
+					files: group.files.map((file) => file.path)
+				}))
+			}
+		]
+	);
 });
 
 test('Returns the stored unit uid before any group or file uid', () => {
@@ -129,21 +145,30 @@ test('Returns the stored unit uid before any group or file uid', () => {
 });
 
 test('Returns undefined when the files announce conflicting uids', () => {
-	const agreeing = unitUid(undefined, undefined, [sourceFile(OLD_PATH, UID), sourceFile(NEW_PATH, UID)]);
-	const conflicting = unitUid(undefined, undefined, [sourceFile(OLD_PATH, 'u_a'), sourceFile(NEW_PATH, 'u_b')]);
+	const agreeing = unitUid(undefined, undefined, [
+		sourceFile(OLD_PATH, UID),
+		sourceFile(NEW_PATH, UID)
+	]);
+	const conflicting = unitUid(undefined, undefined, [
+		sourceFile(OLD_PATH, 'u_a'),
+		sourceFile(NEW_PATH, 'u_b')
+	]);
 
 	expect(agreeing).toBe(UID);
 	expect(conflicting).toBeUndefined();
-	recordExampleCases(meta('returns-undefined-when-the-files-announce-conflicting-uids', 'unitUid'), [
-		{
-			name: 'files that agree on one uid give that uid',
-			input: { files: [UID, UID] },
-			output: agreeing ?? null
-		},
-		{
-			name: 'files announcing different uids give no uid',
-			input: { files: ['u_a', 'u_b'] },
-			output: conflicting ?? null
-		}
-	]);
+	recordExampleCases(
+		meta('returns-undefined-when-the-files-announce-conflicting-uids', 'unitUid'),
+		[
+			{
+				name: 'files that agree on one uid give that uid',
+				input: { files: [UID, UID] },
+				output: agreeing ?? null
+			},
+			{
+				name: 'files announcing different uids give no uid',
+				input: { files: ['u_a', 'u_b'] },
+				output: conflicting ?? null
+			}
+		]
+	);
 });

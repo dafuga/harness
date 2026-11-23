@@ -10,7 +10,13 @@ import { expect } from '../verificationExpect';
 const paginationMessage = 'Invalid catalog pagination';
 
 function meta(state: string, symbol: string) {
-	return { unitId: 'module.catalog', symbol, state, evidence: 'examples-cases', file: `${state}.json` };
+	return {
+		unitId: 'module.catalog',
+		symbol,
+		state,
+		evidence: 'examples-cases',
+		file: `${state}.json`
+	};
 }
 
 function errorOf(action: () => unknown): ErrorValue {
@@ -41,13 +47,13 @@ function valueFor(column: string, version: number): string | number {
 }
 
 function insertSchemaVersion(db: DatabaseSync, version: number): void {
-	const columns = (db.prepare('PRAGMA table_info(catalog_metadata)').all() as Array<{ name: string }>).map(
-		(column) => column.name
-	);
+	const columns = (
+		db.prepare('PRAGMA table_info(catalog_metadata)').all() as Array<{ name: string }>
+	).map((column) => column.name);
 	const placeholders = columns.map(() => '?').join(', ');
-	db.prepare(`INSERT OR REPLACE INTO catalog_metadata (${columns.join(', ')}) VALUES (${placeholders})`).run(
-		...columns.map((column) => valueFor(column, version))
-	);
+	db.prepare(
+		`INSERT OR REPLACE INTO catalog_metadata (${columns.join(', ')}) VALUES (${placeholders})`
+	).run(...columns.map((column) => valueFor(column, version)));
 }
 
 test('Lists no entities in an empty catalog', async () => {
@@ -57,7 +63,11 @@ test('Lists no entities in an empty catalog', async () => {
 
 		expect(entities).toEqual([]);
 		recordExampleCases(meta('lists-no-entities-in-an-empty-catalog', 'entities'), [
-			{ name: 'fresh catalog with no branches returns an empty page', input: { limit: 10 }, output: entities }
+			{
+				name: 'fresh catalog with no branches returns an empty page',
+				input: { limit: 10 },
+				output: entities
+			}
 		]);
 	});
 });
@@ -85,7 +95,11 @@ test('Rejects an unsupported catalog schema version', async () => {
 
 		expect(error.message).toBe('Unsupported SQLite catalog schema version');
 		recordExampleCases(meta('rejects-an-unsupported-catalog-schema-version', 'CatalogRepository'), [
-			{ name: 'reopening a catalog whose metadata row has schema version 2 is rejected', input: { schemaVersion: 2 }, error }
+			{
+				name: 'reopening a catalog whose metadata row has schema version 2 is rejected',
+				input: { schemaVersion: 2 },
+				error
+			}
 		]);
 	});
 });

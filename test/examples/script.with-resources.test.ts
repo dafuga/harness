@@ -3,8 +3,7 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { resourceArguments } from '../../scripts/with-resources';
 
-const USAGE =
-	'Usage: with-resources <coding|agent-test|environment> -- <command...>';
+const USAGE = 'Usage: with-resources <coding|agent-test|environment> -- <command...>';
 
 function usageError(
 	args: string[],
@@ -26,8 +25,17 @@ test('Builds the resource command with defaults and env overrides', () => {
 	const defaultArgs = ['coding', '--', 'bun', 'test'];
 	const defaultOutput = resourceArguments(defaultArgs, {});
 	expect(defaultOutput).toEqual([
-		'resources', 'run', '--priority', 'coding', '--cpus', '1',
-		'--memory-mib', '2048', '--', 'bun', 'test'
+		'resources',
+		'run',
+		'--priority',
+		'coding',
+		'--cpus',
+		'1',
+		'--memory-mib',
+		'2048',
+		'--',
+		'bun',
+		'test'
 	]);
 
 	const overrideArgs = ['environment', '--', 'node', '--version'];
@@ -38,16 +46,35 @@ test('Builds the resource command with defaults and env overrides', () => {
 	};
 	const overrideOutput = resourceArguments(overrideArgs, overrideEnv);
 	expect(overrideOutput).toEqual([
-		'resources', 'run', '--priority', 'agent-test', '--cpus', '4',
-		'--memory-mib', '8192', '--', 'node', '--version'
+		'resources',
+		'run',
+		'--priority',
+		'agent-test',
+		'--cpus',
+		'4',
+		'--memory-mib',
+		'8192',
+		'--',
+		'node',
+		'--version'
 	]);
 
 	const partialArgs = ['agent-test', '--', 'bun', 'run', 'build'];
 	const partialEnv = { HARNESS_RESOURCE_CPUS: '2', HARNESS_RESOURCE_MEMORY_MIB: '' };
 	const partialOutput = resourceArguments(partialArgs, partialEnv);
 	expect(partialOutput).toEqual([
-		'resources', 'run', '--priority', 'agent-test', '--cpus', '2',
-		'--memory-mib', '2048', '--', 'bun', 'run', 'build'
+		'resources',
+		'run',
+		'--priority',
+		'agent-test',
+		'--cpus',
+		'2',
+		'--memory-mib',
+		'2048',
+		'--',
+		'bun',
+		'run',
+		'build'
 	]);
 
 	recordExampleCases(
@@ -59,9 +86,21 @@ test('Builds the resource command with defaults and env overrides', () => {
 			file: 'builds-the-resource-command-with-defaults-and-env-overrides.json'
 		},
 		[
-			{ name: 'coding with empty env uses defaults', input: { args: defaultArgs, env: {} }, output: defaultOutput },
-			{ name: 'environment with priority, cpus and memory overrides', input: { args: overrideArgs, env: overrideEnv }, output: overrideOutput },
-			{ name: 'empty memory env falls back to 2048 and cpus override applies', input: { args: partialArgs, env: partialEnv }, output: partialOutput }
+			{
+				name: 'coding with empty env uses defaults',
+				input: { args: defaultArgs, env: {} },
+				output: defaultOutput
+			},
+			{
+				name: 'environment with priority, cpus and memory overrides',
+				input: { args: overrideArgs, env: overrideEnv },
+				output: overrideOutput
+			},
+			{
+				name: 'empty memory env falls back to 2048 and cpus override applies',
+				input: { args: partialArgs, env: partialEnv },
+				output: partialOutput
+			}
 		]
 	);
 });

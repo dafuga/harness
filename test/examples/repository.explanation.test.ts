@@ -119,13 +119,17 @@ test('Throws TypeError when the constructor file is not a string', () => {
 	const build = () => new ExplanationRepository('/workspace/project', 42 as unknown as string);
 
 	expect(build).toThrow(TypeError);
-	record('throws-typeerror-when-the-constructor-file-is-not-a-string', 'ExplanationRepository.constructor', [
-		{
-			name: 'a numeric file name makes the constructor throw TypeError',
-			input: { root: '/workspace/project', file: 42 },
-			error: 'TypeError'
-		}
-	]);
+	record(
+		'throws-typeerror-when-the-constructor-file-is-not-a-string',
+		'ExplanationRepository.constructor',
+		[
+			{
+				name: 'a numeric file name makes the constructor throw TypeError',
+				input: { root: '/workspace/project', file: 42 },
+				error: 'TypeError'
+			}
+		]
+	);
 });
 
 test('Throws Error when the scratch file cannot be read', async () => {
@@ -150,12 +154,16 @@ test('Throws Error when the scratch folder cannot be created', async () => {
 		const repository = new ExplanationRepository(join(directory, 'blocker'));
 
 		await expect(repository.append([appended])).rejects.toThrow(Error);
-		record('throws-error-when-the-scratch-folder-cannot-be-created', 'ExplanationRepository.append', [
-			{
-				name: 'a root that is a file makes append reject with Error',
-				input: { root: 'a file', entries: [appended.symbol] },
-				error: 'Error'
-			}
-		]);
+		record(
+			'throws-error-when-the-scratch-folder-cannot-be-created',
+			'ExplanationRepository.append',
+			[
+				{
+					name: 'a root that is a file makes append reject with Error',
+					input: { root: 'a file', entries: [appended.symbol] },
+					error: 'Error'
+				}
+			]
+		);
 	});
 });

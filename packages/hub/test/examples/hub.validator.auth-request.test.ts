@@ -103,7 +103,11 @@ test('Types native exchange and poll bodies', () => {
 	const missing = failureOf(() => validator.nativePoll(missingInput));
 	expect(missing.message).toBe('Hub auth invalid-request');
 	record('nativeExchange', 'types-native-exchange-and-poll-bodies', [
-		{ name: 'nativeExchange: keeps the four fields as sent', input: EXCHANGE, output: exchangeOutput },
+		{
+			name: 'nativeExchange: keeps the four fields as sent',
+			input: EXCHANGE,
+			output: exchangeOutput
+		},
 		{ name: 'nativePoll: keeps only handoffId', input: pollInput, output: pollOutput },
 		{ name: 'nativePoll: rejects a missing handoffId', input: missingInput, error: missing }
 	]);
@@ -118,7 +122,11 @@ test('Returns GitHub callback code and state or null', () => {
 	expect(refusal).toBeNull();
 	record('githubCallback', 'returns-github-callback-code-and-state-or-null', [
 		{ name: 'returns code and state from the query', input: okUrl.search, output },
-		{ name: 'returns null when GitHub reports a refusal', input: refusalUrl.search, output: refusal }
+		{
+			name: 'returns null when GitHub reports a refusal',
+			input: refusalUrl.search,
+			output: refusal
+		}
 	]);
 });
 

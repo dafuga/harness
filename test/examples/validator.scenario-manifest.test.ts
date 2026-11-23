@@ -49,9 +49,7 @@ test('Accepts a complete scenario whose id matches its file name', () => {
 test('Reports an id that does not match its file name', () => {
 	const file = 'specification/scenarios/renamed.json';
 	const result = validator.validate(registryScenario, file);
-	expect(result.errors).toEqual([
-		'renamed: id "unit-registry-ownership" must match its file name'
-	]);
+	expect(result.errors).toEqual(['renamed: id "unit-registry-ownership" must match its file name']);
 	const output = summarize(result);
 
 	recordExampleCases(
@@ -82,7 +80,13 @@ test('Rejects a scenario with an empty title', () => {
 			evidence: 'examples-cases',
 			file: 'rejects-a-scenario-with-an-empty-title.json'
 		},
-		[{ name: 'rejects a function-examples scenario with an empty title', input: { file, title: '' }, output }]
+		[
+			{
+				name: 'rejects a function-examples scenario with an empty title',
+				input: { file, title: '' },
+				output
+			}
+		]
 	);
 });
 
@@ -135,7 +139,13 @@ test('Rejects a scenario with an unknown key', () => {
 			evidence: 'examples-cases',
 			file: 'rejects-a-scenario-with-an-unknown-key.json'
 		},
-		[{ name: 'rejects a registry scenario with an extra top-level key', input: { file, extraKey: 'extra' }, output }]
+		[
+			{
+				name: 'rejects a registry scenario with an extra top-level key',
+				input: { file, extraKey: 'extra' },
+				output
+			}
+		]
 	);
 });
 

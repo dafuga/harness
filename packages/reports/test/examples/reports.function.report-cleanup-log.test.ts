@@ -19,7 +19,10 @@ function result(deletedReports: string[], dryRun: boolean) {
 }
 
 function parseLines(contents: string) {
-	return contents.trim().split('\n').map((line) => JSON.parse(line));
+	return contents
+		.trim()
+		.split('\n')
+		.map((line) => JSON.parse(line));
 }
 
 test('Appends cleanup results to retention history', async () => {
@@ -78,7 +81,13 @@ test('Throws NodeJS.ErrnoException when reading history fails with a non-ENOENT 
 				evidence: 'examples-cases',
 				file: 'throws-nodejs-errnoexception-when-reading-history-fails-with.json'
 			},
-			[{ name: 'history path is a directory', input: { root, result: result([], false) }, error: { code: 'EISDIR' } }]
+			[
+				{
+					name: 'history path is a directory',
+					input: { root, result: result([], false) },
+					error: { code: 'EISDIR' }
+				}
+			]
 		);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
@@ -98,7 +107,13 @@ test('Throws Error when writing history fails because the root is missing', asyn
 				evidence: 'examples-cases',
 				file: 'throws-error-when-writing-history-fails-because-the-root-is.json'
 			},
-			[{ name: 'root directory does not exist', input: { root, result: result([], false) }, error: { code: 'ENOENT' } }]
+			[
+				{
+					name: 'root directory does not exist',
+					input: { root, result: result([], false) },
+					error: { code: 'ENOENT' }
+				}
+			]
 		);
 	} finally {
 		rmSync(parent, { recursive: true, force: true });
@@ -118,7 +133,13 @@ test('Throws TypeError when cleanup result cannot be serialized', async () => {
 				evidence: 'examples-cases',
 				file: 'throws-typeerror-when-cleanup-result-cannot-be-serialized.json'
 			},
-			[{ name: 'result contains BigInt', input: { root: 'temporary-report-store', result: 'BigInt value' }, error: { name: 'TypeError' } }]
+			[
+				{
+					name: 'result contains BigInt',
+					input: { root: 'temporary-report-store', result: 'BigInt value' },
+					error: { name: 'TypeError' }
+				}
+			]
 		);
 	} finally {
 		rmSync(root, { recursive: true, force: true });

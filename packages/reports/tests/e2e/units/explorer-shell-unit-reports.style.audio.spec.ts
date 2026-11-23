@@ -27,8 +27,8 @@ for (const viewport of catalogViewports) {
 			await audioTab.click();
 			const activeAudioTab = component.locator('.media-tabs button.active');
 			await expect(activeAudioTab).toContainText('Audio');
-			const activeIndicator = await activeAudioTab.evaluate((button) =>
-				getComputedStyle(button, '::after').backgroundColor
+			const activeIndicator = await activeAudioTab.evaluate(
+				(button) => getComputedStyle(button, '::after').backgroundColor
 			);
 			expect(activeIndicator).not.toBe('rgba(0, 0, 0, 0)');
 			await captureShell(page, home, { state: state.id, viewport: viewport.id });

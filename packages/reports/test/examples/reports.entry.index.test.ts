@@ -11,7 +11,10 @@ interface EntryRun {
 
 // Runs the entry script once with a stubbed ReportCommandService. The stub answers
 // with `behaviour`, so no repository, file or process is touched.
-async function runEntry(argv: string[], behaviour: (received: string[]) => unknown): Promise<EntryRun> {
+async function runEntry(
+	argv: string[],
+	behaviour: (received: string[]) => unknown
+): Promise<EntryRun> {
 	const seen: string[][] = [];
 	const stdout: string[] = [];
 	const stderr: string[] = [];
@@ -48,7 +51,8 @@ async function runEntry(argv: string[], behaviour: (received: string[]) => unkno
 
 const beginArgv = ['begin', '--project', 'demo'];
 const finalizeArgv = ['finalize', '--run', 'run-3'];
-const usageMessage = 'Usage: report <begin|record|finalize|import|serve|stop|cleanup|sync-storage> [options]';
+const usageMessage =
+	'Usage: report <begin|record|finalize|import|serve|stop|cleanup|sync-storage> [options]';
 
 test('Prints the run id and state of a started report', async () => {
 	const run = await runEntry(beginArgv, () => ({ id: 'run-1', state: 'open' }));
@@ -114,8 +118,16 @@ test('Prints a thrown command error to stderr and sets exit code 1', async () =>
 			file: 'prints-a-thrown-command-error-to-stderr-and-sets-exit-code-1.json'
 		},
 		[
-			{ name: 'unknown operation prints usage', input: unknown.argv, error: { message: usageMessage, exitCode: 1 } },
-			{ name: 'non-Error throw prints generic message', input: opaque.argv, error: { message: 'Report command failed', exitCode: 1 } }
+			{
+				name: 'unknown operation prints usage',
+				input: unknown.argv,
+				error: { message: usageMessage, exitCode: 1 }
+			},
+			{
+				name: 'non-Error throw prints generic message',
+				input: opaque.argv,
+				error: { message: 'Report command failed', exitCode: 1 }
+			}
 		]
 	);
 });

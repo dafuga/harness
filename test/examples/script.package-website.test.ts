@@ -16,7 +16,9 @@ const meta = {
 };
 const consoleScript = 'globalThis.consoleReady = true;\n';
 const consoleStyle = 'body { margin: 0; }\n';
-const reportsBuild = { 'packages/reports/build/index.html': '<!doctype html>\n<title>Reports</title>\n' };
+const reportsBuild = {
+	'packages/reports/build/index.html': '<!doctype html>\n<title>Reports</title>\n'
+};
 const cliEntry = { 'packages/reports/src/cli/index.ts': "console.log('report cli');\n" };
 const consoleFiles = (js: string) => ({
 	'packages/reports/dist/console/console.iife.js': js,
@@ -62,7 +64,8 @@ console.log(JSON.stringify(run));`;
 function runPackaging(root: string, prelude = ''): Run {
 	writeFileSync(join(root, 'run.mjs'), `${prelude}\n${driverBody}`);
 	const child = spawnSync('bun', ['run.mjs'], { cwd: root, encoding: 'utf8', timeout: 10_000 });
-	if (child.status !== 0) throw new Error(`The packaging child exited with status ${child.status}.`);
+	if (child.status !== 0)
+		throw new Error(`The packaging child exited with status ${child.status}.`);
 	return JSON.parse(child.stdout.trim().split('\n').at(-1) ?? '') as Run;
 }
 
@@ -122,7 +125,11 @@ test('Packaging cleared dist/reports, copied the reports build and dist folders,
 			file: 'packaging-cleared-dist-reports-copied-the-reports-build-and.json'
 		},
 		[
-			{ name: 'a fresh build, with an old file in dist/reports', input: { files: project }, output: fresh.left },
+			{
+				name: 'a fresh build, with an old file in dist/reports',
+				input: { files: project },
+				output: fresh.left
+			},
 			{
 				name: 'a rerun after the console script changed, in the same folder',
 				input: { files: changed },

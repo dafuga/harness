@@ -70,7 +70,11 @@ test('remembers latest deployments and counts active items', () => {
 			},
 			{ name: 'remember an active deployment', input: first, output: afterFirst },
 			{ name: 'prepend a finished deployment', input: second, output: afterSecond },
-			{ name: 'replace the existing deployment by id', input: replacement, output: afterReplacement }
+			{
+				name: 'replace the existing deployment by id',
+				input: replacement,
+				output: afterReplacement
+			}
 		]
 	);
 });

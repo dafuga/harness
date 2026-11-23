@@ -8,7 +8,8 @@ const app = () => [
 	{ path: '.prettierrc', contents: '{}' },
 	{
 		path: 'vite.config.ts',
-		contents: "import { sveltekit } from '@sveltejs/kit/vite';\nexport default { plugins: [sveltekit()], };\n"
+		contents:
+			"import { sveltekit } from '@sveltejs/kit/vite';\nexport default { plugins: [sveltekit()], };\n"
 	}
 ];
 
@@ -98,7 +99,10 @@ test('Throws TypeError when a required app file is missing', () => {
 		[
 			{
 				name: 'Missing formatting config is rejected',
-				input: { project: { name: 'maze-game', kind: 'game' }, files: ['package.json', 'vite.config.ts'] },
+				input: {
+					project: { name: 'maze-game', kind: 'game' },
+					files: ['package.json', 'vite.config.ts']
+				},
 				error: { name: 'TypeError' }
 			}
 		]

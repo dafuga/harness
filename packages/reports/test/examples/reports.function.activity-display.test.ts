@@ -71,7 +71,11 @@ test('Activity time shows UTC minute and keeps invalid input', () => {
 			file: 'activity-time-shows-utc-minute-and-keeps-invalid-input.json'
 		},
 		[
-			{ name: 'UTC timestamp drops seconds and zone', input: '2026-03-18T14:27:43.000Z', output: valid },
+			{
+				name: 'UTC timestamp drops seconds and zone',
+				input: '2026-03-18T14:27:43.000Z',
+				output: valid
+			},
 			{ name: 'invalid date returns input unchanged', input: 'not-a-date', output: invalid }
 		]
 	);

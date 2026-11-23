@@ -47,7 +47,12 @@ const capture = {
 test('Capture provenance separates source from verification target', () => {
 	const result = captureProvenance(record, scenario, capture);
 	expect(result).toMatchObject({ standing: 'fresh', label: 'Fresh capture' });
-	const input = { record: record.id, target: revision, scenario: scenario.id, capture: capture.evidence };
+	const input = {
+		record: record.id,
+		target: revision,
+		scenario: scenario.id,
+		capture: capture.evidence
+	};
 	recordExampleCases(
 		{
 			unitId: 'reports.function.capture-provenance',
@@ -68,7 +73,11 @@ test('Scenario origin summarizes tested and captured revisions', () => {
 	} satisfies Scenario;
 	const result = scenarioOrigin(failed);
 	expect(result).toContain('Failed attempt at 0123456');
-	const input = { testedRevision: failed.testedRevision, captureRevision: revision, status: failed.status };
+	const input = {
+		testedRevision: failed.testedRevision,
+		captureRevision: revision,
+		status: failed.status
+	};
 	recordExampleCases(
 		{
 			unitId: 'reports.function.capture-provenance',

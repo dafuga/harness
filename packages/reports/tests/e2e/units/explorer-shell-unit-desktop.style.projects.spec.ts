@@ -20,7 +20,9 @@ for (const viewport of catalogViewports) {
 			await openPreview(page, home, 'desktop.page.root', state.variant);
 			await readyPreview(page, 'desktop.page.root', state.variant);
 			const recentProjects = page.locator('.recent-projects');
-			await expect(page.getByRole('heading', { name: 'Recent projects', exact: true })).toBeVisible();
+			await expect(
+				page.getByRole('heading', { name: 'Recent projects', exact: true })
+			).toBeVisible();
 			await expect(recentProjects).toBeVisible();
 			expect(await recentProjects.evaluate((element) => getComputedStyle(element).display)).toBe(
 				'grid'

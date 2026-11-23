@@ -36,7 +36,11 @@ function unit(id: string): Unit {
 		owns: { source: [`src/${id}.ts`], symbols: [id] },
 		scenarios: [],
 		helpers: [
-			{ name: 'slugify', source: 'src/slugify.ts', inputs: [{ name: 'slugify.text', type: 'string' }] }
+			{
+				name: 'slugify',
+				source: 'src/slugify.ts',
+				inputs: [{ name: 'slugify.text', type: 'string' }]
+			}
 		]
 	};
 }

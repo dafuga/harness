@@ -10,7 +10,13 @@ import { InvalidResourceCommandInputError } from '../../src/utils/execution-runt
 const unitId = 'function.resource-command';
 
 function stateMeta(state: string) {
-	return { unitId, symbol: 'resourceCommand', state, evidence: 'examples-cases', file: `${state}.json` };
+	return {
+		unitId,
+		symbol: 'resourceCommand',
+		state,
+		evidence: 'examples-cases',
+		file: `${state}.json`
+	};
 }
 
 function writeScript(directory: string, name: string, body: string): string {
@@ -37,8 +43,16 @@ test('Runs a managed command and resolves its exit status', async () => {
 		expect(passed).toBe(0);
 		expect(failed).toBe(2);
 		recordExampleCases(stateMeta('runs-a-managed-command-and-resolves-its-exit-status'), [
-			{ name: 'fake command exits 0 with a 30000 ms timeout', input: { args: ['pass.sh'], timeoutMs: 30000 }, output: passed },
-			{ name: 'fake command exits 2 with the default timeout', input: { args: ['fail.sh'] }, output: failed }
+			{
+				name: 'fake command exits 0 with a 30000 ms timeout',
+				input: { args: ['pass.sh'], timeoutMs: 30000 },
+				output: passed
+			},
+			{
+				name: 'fake command exits 2 with the default timeout',
+				input: { args: ['fail.sh'] },
+				output: failed
+			}
 		]);
 	});
 });
@@ -49,15 +63,29 @@ test('Rejects empty commands and invalid timeouts before starting', async () => 
 		const emptyError = 'A managed command is required after --';
 		const timeoutError = 'Invalid managed command timeout';
 		await expect(resourceCommand([], context)).rejects.toThrow(emptyError);
-		await expect(resourceCommand(['npm', 'test'], context, undefined, 0)).rejects.toThrow(timeoutError);
+		await expect(resourceCommand(['npm', 'test'], context, undefined, 0)).rejects.toThrow(
+			timeoutError
+		);
 		await expect(
 			resourceCommand(['npm', 'test'], context, undefined, 2147483648)
 		).rejects.toBeInstanceOf(InvalidResourceCommandInputError);
 		const rejection = (message: string) => ({ name: 'InvalidResourceCommandInputError', message });
 		recordExampleCases(stateMeta('rejects-empty-commands-and-invalid-timeouts-before-starting'), [
-			{ name: 'args array is empty', input: { args: [], timeoutMs: 21600000 }, error: rejection(emptyError) },
-			{ name: 'timeout is 0', input: { args: ['npm', 'test'], timeoutMs: 0 }, error: rejection(timeoutError) },
-			{ name: 'timeout is above the native timer limit', input: { args: ['npm', 'test'], timeoutMs: 2147483648 }, error: rejection(timeoutError) }
+			{
+				name: 'args array is empty',
+				input: { args: [], timeoutMs: 21600000 },
+				error: rejection(emptyError)
+			},
+			{
+				name: 'timeout is 0',
+				input: { args: ['npm', 'test'], timeoutMs: 0 },
+				error: rejection(timeoutError)
+			},
+			{
+				name: 'timeout is above the native timer limit',
+				input: { args: ['npm', 'test'], timeoutMs: 2147483648 },
+				error: rejection(timeoutError)
+			}
 		]);
 	});
 });
