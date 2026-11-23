@@ -13,7 +13,7 @@ extension RemoteSession: RemoteLinkDelegate {
     }
 
     func connect() {
-        guard let record = record else { return }
+        guard trackerForeground || trackerBackground != nil, let record = record else { return }
         dropLink()
         move("connecting")
         let link = makeLink(record, queue)
@@ -110,7 +110,8 @@ extension RemoteSession: RemoteLinkDelegate {
         keep(record)
         locked = host?["locked"] as? Bool
         attempts = 0
+        let waiting = requests.unanswered
         move("online")
-        requests.unanswered.forEach { _ = self.link?.send($0) }
+        waiting.forEach { _ = self.link?.send($0) }
     }
 }

@@ -16,6 +16,7 @@ import type {
 	WireChannel
 } from '../../../../../remote/src/index';
 import type { RemoteHostDevice } from '../../../adapters/networking-security/RemoteHostStoreAdapter';
+import { phoneTrackerPull } from './pullPhoneTracker';
 import { DeviceSessionService } from './device-session-service/DeviceSessionService';
 
 /**
@@ -101,6 +102,7 @@ export class RemoteDeviceSessionsService {
 			{ deviceId, generation } = record;
 		const session = new DeviceSessionService({
 			...this.options.shared,
+			trackerPull: this.trackerPull(id, record),
 			host: { id, name },
 			device: { id: deviceId, name: record.name },
 			grant: () => this.grant(deviceId),
@@ -109,6 +111,11 @@ export class RemoteDeviceSessionsService {
 		const entry = { session, generation, connectionId: null, channel: null, link: null };
 		this.entries.set(deviceId, entry);
 		return entry;
+	}
+	private trackerPull(hostId: string, { deviceId, generation }: RemoteHostDevice) {
+		const { trackerPhone, trackerFetcher = fetch } = this.options.shared;
+		if (trackerPhone !== deviceId) return undefined;
+		return phoneTrackerPull([hostId, deviceId, String(generation)], trackerFetcher);
 	}
 	private grant(deviceId: string): RemoteGrant {
 		const record = this.options.device(deviceId);

@@ -41,7 +41,8 @@ export class DeviceOperationsService {
 			agents =
 				this.options.grant().agents && this.options.grant().comments !== false ? agentMethods : [];
 		const comments = this.options.grant().comments === false ? [] : commentMethods;
-		return [attachMethod, ...reads, ...comments, ...agents];
+		const tracker = this.options.trackerPull ? ['trackerReplicaPull' as const] : [];
+		return [attachMethod, ...reads, ...comments, ...agents, ...tracker];
 	}
 	async handle(request: WireRequest): Promise<unknown> {
 		if (!this.methods().includes(request.method)) throw new RemoteFailure('method-denied');
@@ -49,6 +50,7 @@ export class DeviceOperationsService {
 			{ agents, projects } = this.options.grant();
 		if (method === 'listProjects')
 			return projects.map(({ id, name }) => ({ id, name, kind: 'local' }));
+		if (method === 'trackerReplicaPull') return await this.pullTracker(input);
 		if (method === 'providers') return agents ? this.options.providers.list() : [];
 		const project = await this.project(input),
 			payload = this.payload(method, input),
@@ -56,6 +58,14 @@ export class DeviceOperationsService {
 		if (revisionMethods.includes(method)) await this.revise(project, input);
 		this.live();
 		return this.shaped(method, await operation(payload));
+	}
+	private async pullTracker(input: Fields): Promise<unknown> {
+		const pull = this.options.trackerPull;
+		if (!pull) throw new RemoteFailure('method-denied');
+		this.live();
+		const value = await pull(input);
+		this.live();
+		return value;
 	}
 	/** A device revoked while its request was on the way gets nothing done for it. */
 	private live(): void {

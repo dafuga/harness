@@ -114,7 +114,7 @@ function desktopBackend() {
 		}),
 		register: (input) => registration.register(input),
 		open: (url, headers) => sockets.open(url, headers),
-		shared: stores,
+		shared: { ...stores, trackerPhone: process.env.HARNESS_TRACKER_PHONE_DEVICE?.trim() },
 		locked: () => screen.locked
 	});
 	remote.onStatus((status) =>

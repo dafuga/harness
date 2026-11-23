@@ -8,7 +8,8 @@ import Foundation
 extension RemoteSession {
     func request(method: String, input: [String: Any], done: @escaping Reply) {
         queue.async {
-            guard RemoteMethods.allowed(method), self.record?.methods?.contains(method) == true else {
+            guard method != Self.trackerMethod, RemoteMethods.allowed(method),
+                self.record?.methods?.contains(method) == true else {
                 return done(.failure(.denied))
             }
             guard self.state == "online", let link = self.link else { return done(self.kept(method, input)) }

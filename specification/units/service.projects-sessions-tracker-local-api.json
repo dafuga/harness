@@ -493,6 +493,11 @@
 			"unit": "service.projects-sessions-tracker-persistence",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-phone-replica",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

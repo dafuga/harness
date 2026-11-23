@@ -30,12 +30,12 @@ final class Bench {
 
     init(
         record: RemoteRecord? = Bench.record(), root: URL = temporary("cache"),
-        budget: RemoteCacheBudget = .standard
+        budget: RemoteCacheBudget = .standard, trackerRoot: URL = temporary("tracker-unused")
     ) {
         self.root = root
         vault = MemoryVault(record)
         cache = RemoteCache(root: root, budget: budget)
-        session = RemoteSession(vault: vault, cache: cache) { [weak self] _, _ in
+        session = RemoteSession(vault: vault, cache: cache, trackerStore: TrackerReplicaStore(root: trackerRoot)) { [weak self] _, _ in
             let link = FakeLink()
             self?.links.append(link)
             return link

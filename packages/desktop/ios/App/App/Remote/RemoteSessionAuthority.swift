@@ -12,6 +12,7 @@ extension RemoteSession {
     /// What was kept under any other authority leaves now; without a record nothing is kept.
     func authorize() {
         if let scope = scope { cache.enter(scope) } else { cache.purge() }
+        authorizeTracker()
     }
 
     /// Keeps a changed record. A new grant or a new generation of the approval ends every

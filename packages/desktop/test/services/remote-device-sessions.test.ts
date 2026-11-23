@@ -47,7 +47,7 @@ function phoneOf(side: Side, keys: RemoteKeyPair, deviceId: string) {
 	};
 	return { address, client, received, handshake, attach };
 }
-async function setup() {
+async function setup(trackerEnabled = false) {
 	const f = await remoteFixture(),
 		hostKeys = await remoteKeys(),
 		deviceKeys = await remoteKeys(),
@@ -69,8 +69,20 @@ async function setup() {
 		drops: { address: DeviceAddress; code: number }[] = [],
 		inbox = new Map<string, (packet: SecurePacket) => void>();
 	const { registry, arbiter, providers, renderMockups } = f;
+	const trackerRequests: URL[] = [];
+	const trackerFetcher = async (input: URL | string | Request) => {
+		trackerRequests.push(new URL(String(input)));
+		return Response.json({ kind: 'snapshot', rows: [], continuation: null, cursor: 'fixture' });
+	};
 	const sessions = new RemoteDeviceSessionsService({
-		shared: { registry, arbiter, providers, renderMockups, outbox: new CommentOutboxService() },
+		shared: {
+			registry,
+			arbiter,
+			providers,
+			renderMockups,
+			outbox: new CommentOutboxService(),
+			...(trackerEnabled ? { trackerPhone: deviceId, trackerFetcher } : {})
+		},
 		host: () => ({ id: hostId, name: 'Fixture Mac', keys: hostKeys }),
 		device: (id) => records.get(id) ?? null,
 		send: (address, packet) => {
@@ -81,7 +93,7 @@ async function setup() {
 	});
 	const phone = (keys: RemoteKeyPair = deviceKeys, id = deviceId) =>
 		phoneOf({ sessions, inbox, hostId, hostKey: hostKeys.publicKey }, keys, id);
-	return { f, sessions, records, sent, drops, phone, deviceId, deviceKeys };
+	return { f, sessions, records, sent, drops, phone, deviceId, deviceKeys, trackerRequests };
 }
 
 test('an approved device completes the handshake and is served by its own session', async () => {
@@ -142,4 +154,29 @@ test('revocation ends the session: nothing more is answered and a new hello is r
 	const again = s.phone();
 	expect(await again.handshake()).toBeUndefined();
 	expect(again.received).toEqual([{ type: 'reject', reason: 'unknown-device' }]);
+}, 30000);
+
+test('only the authorized paired phone can pull the local Tracker projection', async () => {
+	const enabled = await setup(true);
+	const allowed = enabled.phone();
+	const attachment = await allowed.attach();
+	expect(attachment.methods).toContain('trackerReplicaPull');
+	const reply = await allowed.client.request('trackerReplicaPull', { version: 1 });
+	expect(reply).toEqual({ kind: 'snapshot', rows: [], continuation: null, cursor: 'fixture' });
+	expect(enabled.trackerRequests.map((url) => url.origin + url.pathname)).toEqual([
+		'http://127.0.0.1:7701/phone-replica/v1'
+	]);
+	expect(enabled.trackerRequests[0].searchParams.get('scope')).toMatch(/^[a-f0-9]{64}$/);
+	await expect(
+		allowed.client.request('trackerReplicaPull', { version: 1, scope: 'caller' })
+	).rejects.toMatchObject({ code: 'invalid-message' });
+	expect(enabled.trackerRequests).toHaveLength(1);
+
+	const disabled = await setup();
+	const denied = disabled.phone();
+	expect((await denied.attach()).methods).not.toContain('trackerReplicaPull');
+	await expect(denied.client.request('trackerReplicaPull', { version: 1 })).rejects.toMatchObject({
+		code: 'method-denied'
+	});
+	expect(disabled.trackerRequests).toEqual([]);
 }, 30000);

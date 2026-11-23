@@ -1,0 +1,45 @@
+{
+	"name": "phone-tracker-replica",
+	"goal": "Prove a paired phone can sync bounded Tracker deltas and query items, notes, flags and runs from SQLite after losing network and restarting.",
+	"createdAt": "2026-11-23T12:33:58.509Z",
+	"updatedAt": "2026-11-23T13:00:22.951Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-23T12:35:38.942Z",
+			"evidence": "Planned phone Tracker replica specification defines scoped pairing, projected delta and snapshot protocol, SQLite, background budgets, local tools, staged writes, and synthetic acceptance criteria."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-23T13:00:21.504Z",
+			"evidence": "Implemented versioned hub projection, paired-device read scope, protected SQLite storage, native model read tools, and foreground, BGTask and silent wake entry points."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-23T13:00:22.951Z",
+			"evidence": "Tracker pull red reproduced endpoint 404 first. Hub projection, encrypted device boundary, and native Debug (316) and Release (294) headless assertions passed locally. Simulator acceptance remains in verify."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

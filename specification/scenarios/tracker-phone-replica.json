@@ -1,0 +1,45 @@
+{
+	"schemaVersion": 1,
+	"id": "tracker-phone-replica",
+	"title": "Paired phone Tracker projection",
+	"kind": "headless",
+	"units": ["service.projects-sessions-tracker-phone-replica"],
+	"builds": [],
+	"states": [
+		{
+			"id": "snapshot-and-delta",
+			"title": "Project approved fields, detect run-only changes, replay a cursor and apply a tombstone.",
+			"coverage": "required"
+		},
+		{
+			"id": "scope-and-role",
+			"title": "Reject an invalid scope and a crossed cursor, and keep the spoke endpoint unavailable.",
+			"coverage": "required"
+		},
+		{
+			"id": "snapshot-continuation",
+			"title": "Freeze membership and values across pages and withdraw a snapshot when an item becomes sensitive.",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "hub-projection",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/projects-sessions/tracker-phone-replica.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "projection-assertions",
+			"kind": "assertions",
+			"states": ["snapshot-and-delta", "scope-and-role", "snapshot-continuation"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}

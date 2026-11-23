@@ -18,13 +18,19 @@ export class DeviceSessionService {
 	readonly wire: WireSessionService;
 	private readonly projects: ClientProjectsService;
 	constructor(options: DeviceSessionOptions) {
-		const { host, device, grant, epoch, locked, ...shared } = options,
+		const { host, device, grant, epoch, locked, trackerPull, ...shared } = options,
 			{ providers, arbiter } = shared;
 		const projects = new ClientProjectsService({
 			...shared,
 			emit: (event) => this.wire.emit('run', event)
 		});
-		const operations = new DeviceOperationsService({ projects, providers, arbiter, grant });
+		const operations = new DeviceOperationsService({
+			projects,
+			providers,
+			arbiter,
+			grant,
+			trackerPull
+		});
 		this.projects = projects;
 		this.wire = new WireSessionService({
 			role: 'device',

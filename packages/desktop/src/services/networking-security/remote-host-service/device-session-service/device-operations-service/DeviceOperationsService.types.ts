@@ -10,6 +10,7 @@ export interface DeviceOperationsOptions {
 	arbiter: RepositoryArbiterService;
 	/** The current grant of the device. Read again for every request. */
 	grant: () => RemoteGrant;
+	trackerPull?: (input: Fields) => Promise<unknown>;
 }
 
 export type Fields = Record<string, unknown>;
