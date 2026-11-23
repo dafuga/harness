@@ -125,7 +125,8 @@ operator verifies the stopped database and chooses a rollback.
   `tracker watchdog dry-run` previews idle, startup, and recovery
   decisions without taking action. Set `watchdog.chiefOfStaff` on the
   primary Mac to deliver alerts to its idle CoS tmux pane and include MB2
-  alerts over the existing host-key-verified SSH link. The separate
+  alerts over the existing host-key-verified SSH link. Delivery observes
+  Lisbon quiet hours and the thirty-minute cadence. The separate
   thirty-minute tick continues to read `tracker list --flagged --json` for
   ordinary decisions that need Daniel.
 - **Adapter polling.** Only the designated primary Mac can poll retained

@@ -41,6 +41,12 @@ export function trackerWatchdogPort(
 }
 
 function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatchdogPort {
+	const lisbon = new Intl.DateTimeFormat('en-GB', {
+		timeZone: 'Europe/Lisbon',
+		hour: 'numeric',
+		hourCycle: 'h23'
+	});
+	let nextCosTick = 0;
 	return {
 		...(chiefOfStaff && { peers: readTrackerWatchdogPeer }),
 		close: (input, signal) => tmux.closeIdle(input, signal),
@@ -48,6 +54,9 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 		inventory: (signal) => tmux.inventory(signal),
 		nudge: (input, signal) => tmux.nudge(input, signal),
 		async send(alerts, signal) {
+			const now = Date.now();
+			const hour = Number(lisbon.format(now));
+			if (hour < 8 || hour >= 22 || now < nextCosTick) return false;
 			const panes = await tmux.scan(signal, /^cos$/);
 			if (panes.length !== 1) return false;
 			const summary = alerts.map(
@@ -56,7 +65,9 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 			);
 			const message =
 				'Tracker watchdog alerts for Chief of Staff. Review these items. ' + summary.join(' | ');
-			return tmux.nudge({ pane: panes[0], cli: 'claude', message }, signal);
+			const sent = await tmux.nudge({ pane: panes[0], cli: 'claude', message }, signal);
+			if (sent) nextCosTick = now + 30 * 60_000;
+			return sent;
 		}
 	};
 }

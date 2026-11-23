@@ -1,5 +1,6 @@
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test, vi } from 'vitest';
+import type { TrackerItem } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository.types';
 import { TrackerItemReadRepository } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
 import {
@@ -61,22 +62,7 @@ async function proveRecovery() {
 				expect.objectContaining({ item_id: 'noitem', kind: 'orphan', session: 'auto-noitem' })
 			])
 		);
-		const launch = vi.fn(async () => ({ status: 'ignored' as const, reason: 'fixture' }));
-		const driver = {
-			scan: vi.fn(async () => [observedPane('auto-abc123-r87')]),
-			nudge: vi.fn(async () => false),
-			send: vi.fn(async () => false)
-		};
-		const request = { store, driver, signal };
-		expect(await recheckTrackerRecovery(request, item, launch, now)).toMatchObject({
-			status: 'held'
-		});
-		expect(launch).not.toHaveBeenCalled();
-		driver.scan.mockResolvedValue([]);
-		expect(await recheckTrackerRecovery(request, item, launch, now)).toMatchObject({
-			status: 'ignored'
-		});
-		expect(launch).toHaveBeenCalledOnce();
+		await verifyRecoveryRecheck(store, item);
 	} finally {
 		database.close();
 	}
@@ -97,4 +83,23 @@ function observedPane(name: string): WatchdogPane {
 		y: 0,
 		screen: null
 	};
+}
+
+async function verifyRecoveryRecheck(store: TrackerPersistenceService, item: TrackerItem) {
+	const launch = vi.fn(async () => ({ status: 'ignored' as const, reason: 'fixture' }));
+	const driver = {
+		scan: vi.fn(async () => [observedPane('auto-abc123-r87')]),
+		nudge: vi.fn(async () => false),
+		send: vi.fn(async () => false)
+	};
+	const request = { store, driver, signal };
+	expect(await recheckTrackerRecovery(request, item, launch, now)).toMatchObject({
+		status: 'held'
+	});
+	expect(launch).not.toHaveBeenCalled();
+	driver.scan.mockResolvedValue([]);
+	expect(await recheckTrackerRecovery(request, item, launch, now)).toMatchObject({
+		status: 'ignored'
+	});
+	expect(launch).toHaveBeenCalledOnce();
 }
