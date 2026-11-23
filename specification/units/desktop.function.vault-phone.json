@@ -22,50 +22,58 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "loadVaultPhone.path",
 				"type": "string",
-				"required": false
+				"required": false,
+				"description": "Optional absolute path to the desktop fixture configuration. An omitted, unreadable, or invalid path leaves the inbox disabled."
 			},
 			{
 				"name": "isVaultPhoneMethod.method",
 				"type": "RemoteMethod",
-				"required": true
+				"required": true,
+				"description": "The method of a validated Harness Remote request."
 			},
 			{
 				"name": "vaultPhone.config",
 				"type": "VaultPhoneConfig | undefined",
-				"required": true
+				"required": true,
+				"description": "The local synthetic signing origin, Unix broker socket, Vault device ID, and explicitly approved Remote device and generation."
 			},
 			{
 				"name": "vaultPhone.record",
 				"type": "{ deviceId: string; generation: number }",
-				"required": true
+				"required": true,
+				"description": "The current authenticated Remote device ID and its pairing generation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "loadVaultPhone",
-				"type": "VaultPhoneConfig | undefined"
+				"type": "VaultPhoneConfig | undefined",
+				"description": "The validated synthetic fixture configuration, or undefined when disabled."
 			},
 			{
 				"name": "isVaultPhoneMethod",
-				"type": "method is VaultPhoneMethod"
+				"type": "method is VaultPhoneMethod",
+				"description": "True for Vault identity, challenge, queue, and decision operations."
 			},
 			{
 				"name": "vaultPhone",
-				"type": "VaultPhoneCall | undefined"
+				"type": "VaultPhoneCall | undefined",
+				"description": "A scoped broker caller when the approved device and generation match. Requests with valid proofs produce public identity, a challenge, the synthetic queue, or decision status."
 			}
 		],
 		"errors": [
 			{
 				"name": "RemoteFailure",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "A method-denied rejection if the proof is malformed, names another device, or is refused by the local broker."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "loadVaultPhone",
@@ -73,17 +81,19 @@
 					{
 						"name": "loadVaultPhone.path",
 						"type": "string",
-						"required": false
+						"required": false,
+						"description": "Optional absolute path to the desktop fixture configuration. An omitted, unreadable, or invalid path leaves the inbox disabled."
 					}
 				],
 				"outputs": [
 					{
 						"name": "loadVaultPhone",
-						"type": "VaultPhoneConfig | undefined"
+						"type": "VaultPhoneConfig | undefined",
+						"description": "The validated synthetic fixture configuration, or undefined when disabled."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "isVaultPhoneMethod",
@@ -91,17 +101,19 @@
 					{
 						"name": "isVaultPhoneMethod.method",
 						"type": "RemoteMethod",
-						"required": true
+						"required": true,
+						"description": "The method of a validated Harness Remote request."
 					}
 				],
 				"outputs": [
 					{
 						"name": "isVaultPhoneMethod",
-						"type": "method is VaultPhoneMethod"
+						"type": "method is VaultPhoneMethod",
+						"description": "True for Vault identity, challenge, queue, and decision operations."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "vaultPhone",
@@ -109,22 +121,31 @@
 					{
 						"name": "vaultPhone.config",
 						"type": "VaultPhoneConfig | undefined",
-						"required": true
+						"required": true,
+						"description": "The local synthetic signing origin, Unix broker socket, Vault device ID, and explicitly approved Remote device and generation."
 					},
 					{
 						"name": "vaultPhone.record",
 						"type": "{ deviceId: string; generation: number }",
-						"required": true
+						"required": true,
+						"description": "The current authenticated Remote device ID and its pairing generation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "vaultPhone",
-						"type": "VaultPhoneCall | undefined"
+						"type": "VaultPhoneCall | undefined",
+						"description": "A scoped broker caller when the approved device and generation match. Requests with valid proofs produce public identity, a challenge, the synthetic queue, or decision status."
 					}
 				],
-				"errors": [],
-				"errorStatus": "none-found"
+				"errors": [
+					{
+						"name": "RemoteFailure",
+						"type": "thrown",
+						"description": "A method-denied rejection if the proof is malformed, names another device, or is refused by the local broker."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
