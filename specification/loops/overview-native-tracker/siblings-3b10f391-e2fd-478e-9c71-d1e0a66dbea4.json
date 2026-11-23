@@ -1,0 +1,199 @@
+{
+	"schemaVersion": 1,
+	"revision": "7d1de35bfa6ccc5c2d6145f1bd34c9643757df1d",
+	"bugClass": {
+		"id": "stale-tracker-endpoint-snapshot-drop",
+		"title": "Stale tracker endpoint drops the full snapshot",
+		"cause": "A client or transport is hard-coded to an older tracker read endpoint and expects its response to be the collection itself. After the tracker migrates that data to a fixed status endpoint with a nested array, the request fails or response parsing yields no items, and the client discards the entire snapshot instead of reading the new shape.",
+		"criteria": "Classify another site when a runtime client or transport reads tracker state through a legacy endpoint or parses its response as the collection, and an endpoint or response-shape change can therefore make a whole snapshot disappear. The cause qualifies whether the stale endpoint causes request failure or the client fails to extract a collection nested in a status response. Do not classify merely because code references a tracker endpoint if it tolerates migration or falls back to the fixed status response and its machines array.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "/machines",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "/items?status=all",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "/runs?limit=500",
+				"weight": 3
+			}
+		],
+		"contextTerms": ["tracker", "machines", "snapshot"],
+		"pathHints": [
+			{
+				"contains": "src/services/",
+				"weight": 5
+			},
+			{
+				"contains": "src/adapters/",
+				"weight": 4
+			},
+			{
+				"contains": "src/core/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": 2
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "worker",
+				"weight": -1
+			},
+			{
+				"contains": "server",
+				"weight": -1
+			}
+		]
+	},
+	"model": "gpt-6-luna",
+	"scannedFiles": 8059,
+	"skipped": [],
+	"candidates": [
+		{
+			"id": "6e914aaed920ab5a9768",
+			"path": "packages/desktop/tests/e2e/support/projectOverviewElectronFixture.ts",
+			"line": 14,
+			"lastLine": 16,
+			"score": 27,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "/items?status=all",
+					"weight": 3
+				},
+				{
+					"kind": "text",
+					"value": "/runs?limit=500",
+					"weight": 3
+				},
+				{
+					"kind": "text",
+					"value": "/machines",
+					"weight": 5
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 14–20 configure test fixture URLs for legacy `/items`, `/runs`, and `/machines` endpoints, but the excerpt describes a test double and does not show the runtime reader or snapshot discard behavior. Trigger and any fallback are not established here."
+		},
+		{
+			"id": "b9961d4cacca040885a9",
+			"path": "packages/reports/test/lib/project-overview-fixtures.ts",
+			"line": 11,
+			"lastLine": 13,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "/items?status=all",
+					"weight": 3
+				},
+				{
+					"kind": "text",
+					"value": "/runs?limit=500",
+					"weight": 3
+				},
+				{
+					"kind": "text",
+					"value": "/machines",
+					"weight": 5
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 11–26 define synthetic test routes for legacy endpoints and `/status`; the excerpt does not show how the runtime client chooses or parses these responses, or whether it discards the snapshot after a migration."
+		},
+		{
+			"id": "3a9f0a0a15b94e3bef6a",
+			"path": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewTracker.types.ts",
+			"line": 51,
+			"lastLine": 51,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "/machines",
+					"weight": 5
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 51–56 document machine records as coming from `/machines` or `/status.machines`, which indicates shape awareness, but the excerpt does not establish the client's request path, extraction behavior, or fallback."
+		},
+		{
+			"id": "9bdcc0e79f157ce42c0f",
+			"path": "test/repositories/projects-sessions/tracker-item-read.test.ts",
+			"line": 178,
+			"lastLine": 178,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "/items?status=all",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 178–191 test acceptance of the `/items` list response and assert 11 items, but this is repository test code, not the runtime tracker reader; it does not establish whole-snapshot loss on endpoint or shape change."
+		},
+		{
+			"id": "11e11e095f56f8d7fc24",
+			"path": "test/services/projects-sessions/tracker-local-api.test.ts",
+			"line": 58,
+			"lastLine": 58,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "/items?status=all",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 58–66 test the local API's `/items?status=all&limit=-1` response, not a runtime tracker-state client. No endpoint migration failure or full-snapshot discard mechanism is shown."
+		},
+		{
+			"id": "25ebe5246d41ec82b2b0",
+			"path": "test/tracker-adapter.e2e.test.ts",
+			"line": 119,
+			"lastLine": 119,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "/items?status=all",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 119–124 exercise the local `/items` API and verify an item list response after polling. The excerpt does not show a tracker client reading legacy state or dropping a snapshot after an endpoint or response-shape change."
+		}
+	],
+	"errors": [],
+	"classPath": "specification/bug-classes/stale-tracker-endpoint-snapshot-drop.json"
+}

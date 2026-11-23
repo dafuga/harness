@@ -2,7 +2,7 @@
 	"name": "overview-native-tracker",
 	"goal": "Read Project Overview from the native Tracker after cutover while preserving fixed loopback reads and fail-closed validation.",
 	"createdAt": "2026-11-23T09:52:43.288Z",
-	"updatedAt": "2026-11-23T09:59:40.884Z",
+	"updatedAt": "2026-11-23T10:05:06.251Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -46,7 +46,9 @@
 		{
 			"id": "siblings",
 			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T10:05:06.251Z",
+			"evidence": "siblings-3b10f391-e2fd-478e-9c71-d1e0a66dbea4.json"
 		},
 		{
 			"id": "verify",
