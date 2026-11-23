@@ -5667,13 +5667,13 @@
 			"unit": "hub.function.d1-credential-stores",
 			"from": "packages/hub/src/adapters/d1-auth-store-adapter/d1CredentialStores.ts",
 			"to": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1CredentialStores.ts",
-			"definition": "98a8155fd3794c63b622ad27880bb090df7e3d3bb0284235e4a2240dd93b5bf3",
+			"definition": "15d68c2e87ae51ec33fd0e0907d00fcf661096fc4a8012cdc7138901957dab5b",
 			"relocationDefinition": "16943c31f2589ea2d77a5a0d3e1b1e617dd2716ea25f0e109f1d43499d5a40f1",
 			"review": {
-				"commit": "5b8a6af48efd724711dc1a3b94895b7c3444d669",
+				"commit": "7782acbcfa730f6e67a889da43223d5579b03483",
 				"path": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1CredentialStores.ts",
-				"definition": "98a8155fd3794c63b622ad27880bb090df7e3d3bb0284235e4a2240dd93b5bf3",
-				"reason": "Type the selected device rows while preserving server-side field validation."
+				"definition": "15d68c2e87ae51ec33fd0e0907d00fcf661096fc4a8012cdc7138901957dab5b",
+				"reason": "Keep device listing and revocation scoped to the account, with a native-only view and current-browser priority."
 			},
 			"previousReviews": [
 				{
@@ -5681,6 +5681,12 @@
 					"path": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1CredentialStores.ts",
 					"definition": "f3d0353a9ec1af6ce0714d47fc3f576ae457a786eb99ccaa30b5e07cf8382082",
 					"reason": "Track enrolled devices and revoke them only within their signed-in account."
+				},
+				{
+					"commit": "5b8a6af48efd724711dc1a3b94895b7c3444d669",
+					"path": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1CredentialStores.ts",
+					"definition": "98a8155fd3794c63b622ad27880bb090df7e3d3bb0284235e4a2240dd93b5bf3",
+					"reason": "Type the selected device rows while preserving server-side field validation."
 				}
 			]
 		},
@@ -6559,13 +6565,13 @@
 			"unit": "hub.controller.native-handoff",
 			"from": "packages/hub/src/controllers/NativeHandoffController.ts",
 			"to": "packages/hub/src/lib/verification-evidence/server/auth/NativeHandoffController.ts",
-			"definition": "c06a3f6e0641b635f1c5bb94c25a983e86032a6dfcec20d0bd8959ff64d0a64d",
+			"definition": "cb0ba4bed349f357c9e0ebe9fa82fd194e779faa50dee758ec22efc2ba6287ba",
 			"relocationDefinition": "b880ee1b45081519ef68e430763b436645845191782190d93682b383357ea2b0",
 			"review": {
-				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+				"commit": "7782acbcfa730f6e67a889da43223d5579b03483",
 				"path": "packages/hub/src/lib/verification-evidence/server/auth/NativeHandoffController.ts",
-				"definition": "c06a3f6e0641b635f1c5bb94c25a983e86032a6dfcec20d0bd8959ff64d0a64d",
-				"reason": "Expose the Google handoff and redirect only after the existing account is verified."
+				"definition": "cb0ba4bed349f357c9e0ebe9fa82fd194e779faa50dee758ec22efc2ba6287ba",
+				"reason": "Expose the current browser and native devices through the browser-authorized account endpoint."
 			},
 			"previousReviews": [
 				{
@@ -6573,6 +6579,12 @@
 					"path": "packages/hub/src/lib/verification-evidence/server/auth/NativeHandoffController.ts",
 					"definition": "23598992896132ab8125aa14c9e07f056b7047f259bc90112f133367e4f569d1",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+					"path": "packages/hub/src/lib/verification-evidence/server/auth/NativeHandoffController.ts",
+					"definition": "c06a3f6e0641b635f1c5bb94c25a983e86032a6dfcec20d0bd8959ff64d0a64d",
+					"reason": "Expose the Google handoff and redirect only after the existing account is verified."
 				}
 			]
 		},
