@@ -13,7 +13,7 @@ export function recordTrackerTranscriptExposure(
 ): void {
 	const { type, byte, session, identity, itemId } = exposure;
 	const event = createHash('sha256')
-		.update(JSON.stringify([identity, type]))
+		.update(identity + ':' + type)
 		.digest('hex');
 	const marker = 'tracker_secret_report:' + event;
 	const reported = Number(store.getMeta(marker) ?? -1);
