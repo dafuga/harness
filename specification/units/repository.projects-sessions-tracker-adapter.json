@@ -17,6 +17,7 @@
 			"TrackerAdapterRepository.constructor",
 			"TrackerAdapterRepository.link",
 			"TrackerAdapterRepository.linkByKey",
+			"TrackerAdapterRepository.hasFollowUp",
 			"TrackerAdapterRepository.saveLink",
 			"TrackerAdapterRepository.hasEvent",
 			"TrackerAdapterRepository.saveEvent",
@@ -59,6 +60,16 @@
 			},
 			{
 				"name": "TrackerAdapterRepository.linkByKey.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterRepository.hasFollowUp.sourceId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterRepository.hasFollowUp.key",
 				"type": "string",
 				"required": true
 			},
@@ -121,6 +132,10 @@
 			{
 				"name": "TrackerAdapterRepository.linkByKey",
 				"type": "TrackerAdapterLink | undefined"
+			},
+			{
+				"name": "TrackerAdapterRepository.hasFollowUp",
+				"type": "boolean"
 			},
 			{
 				"name": "TrackerAdapterRepository.saveLink",
@@ -199,6 +214,29 @@
 					{
 						"name": "TrackerAdapterRepository.linkByKey",
 						"type": "TrackerAdapterLink | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterRepository.hasFollowUp",
+				"inputs": [
+					{
+						"name": "TrackerAdapterRepository.hasFollowUp.sourceId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerAdapterRepository.hasFollowUp.key",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterRepository.hasFollowUp",
+						"type": "boolean"
 					}
 				],
 				"errors": [],

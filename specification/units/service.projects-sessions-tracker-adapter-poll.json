@@ -40,6 +40,7 @@
 			"TrackerGithubAdapterProvider",
 			"TrackerAdapterLease",
 			"TrackerAdapterIntakePolicy",
+			"TrackerGithubFollowUpPolicy",
 			"TrackerAdapterPollDependencies",
 			"TrackerAdapterPollOptions",
 			"TrackerAdapterAction",
@@ -54,9 +55,13 @@
 			"planTrackerIntake",
 			"commitTrackerIntake",
 			"trackerEventFields",
+			"recordIssueAcceptance",
 			"readGithubIntakeRecord",
 			"githubCommentEvent",
 			"matchesGithubIssue",
+			"followUpInstructions",
+			"planGithubFollowUp",
+			"hasFollowUpRequest",
 			"readTrackerIssues",
 			"readTrackerComments",
 			"TrackerAdapterPollError",
@@ -184,6 +189,21 @@
 				"required": true
 			},
 			{
+				"name": "recordIssueAcceptance.context",
+				"type": "TrackerAdapterIntakeContext",
+				"required": true
+			},
+			{
+				"name": "recordIssueAcceptance.source",
+				"type": "TrackerAdapterSource",
+				"required": true
+			},
+			{
+				"name": "recordIssueAcceptance.record",
+				"type": "TrackerAdapterIntakeRecord",
+				"required": true
+			},
+			{
 				"name": "readGithubIntakeRecord.source",
 				"type": "TrackerAdapterSource",
 				"required": true
@@ -225,7 +245,7 @@
 			},
 			{
 				"name": "matchesGithubIssue.record",
-				"type": "TrackerAdapterIntakeRecord",
+				"type": "Pick<TrackerAdapterIntakeRecord, 'key'>",
 				"required": true
 			},
 			{
@@ -237,6 +257,36 @@
 				"name": "matchesGithubIssue.matchesItem",
 				"type": "TrackerAdapterIntakePolicy['matchesItem']",
 				"required": false
+			},
+			{
+				"name": "followUpInstructions.policy",
+				"type": "TrackerGithubFollowUpPolicy",
+				"required": true
+			},
+			{
+				"name": "followUpInstructions.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "planGithubFollowUp.source",
+				"type": "TrackerAdapterSource",
+				"required": true
+			},
+			{
+				"name": "planGithubFollowUp.event",
+				"type": "TrackerAdapterCommentEvent",
+				"required": true
+			},
+			{
+				"name": "planGithubFollowUp.policy",
+				"type": "TrackerAdapterIntakePolicy & { followUp: TrackerGithubFollowUpPolicy }",
+				"required": true
+			},
+			{
+				"name": "hasFollowUpRequest.body",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "readTrackerIssues.context",
@@ -271,6 +321,11 @@
 			{
 				"name": "readTrackerComments.query",
 				"type": "TrackerAdapterReadQuery",
+				"required": true
+			},
+			{
+				"name": "readTrackerComments.options",
+				"type": "{ dryRun: boolean; commentsOnly: boolean }",
 				"required": true
 			},
 			{
@@ -318,6 +373,10 @@
 				"type": "Record<string, unknown>"
 			},
 			{
+				"name": "recordIssueAcceptance",
+				"type": "void"
+			},
+			{
 				"name": "readGithubIntakeRecord",
 				"type": "Promise<TrackerAdapterIntakeRecord | null>"
 			},
@@ -330,12 +389,24 @@
 				"type": "boolean"
 			},
 			{
+				"name": "followUpInstructions",
+				"type": "string"
+			},
+			{
+				"name": "planGithubFollowUp",
+				"type": "TrackerAdapterIntakeRecord"
+			},
+			{
+				"name": "hasFollowUpRequest",
+				"type": "boolean"
+			},
+			{
 				"name": "readTrackerIssues",
 				"type": "unknown"
 			},
 			{
 				"name": "readTrackerComments",
-				"type": "Promise<number>"
+				"type": "unknown"
 			},
 			{
 				"name": "assertTrackerPollActive",
@@ -349,6 +420,10 @@
 			},
 			{
 				"name": "TrackerAdapterPollError",
+				"type": "thrown"
+			},
+			{
+				"name": "TypeError",
 				"type": "thrown"
 			}
 		],
@@ -569,6 +644,34 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "recordIssueAcceptance",
+				"inputs": [
+					{
+						"name": "recordIssueAcceptance.context",
+						"type": "TrackerAdapterIntakeContext",
+						"required": true
+					},
+					{
+						"name": "recordIssueAcceptance.source",
+						"type": "TrackerAdapterSource",
+						"required": true
+					},
+					{
+						"name": "recordIssueAcceptance.record",
+						"type": "TrackerAdapterIntakeRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordIssueAcceptance",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "readGithubIntakeRecord",
 				"inputs": [
 					{
@@ -639,7 +742,7 @@
 					},
 					{
 						"name": "matchesGithubIssue.record",
-						"type": "TrackerAdapterIntakeRecord",
+						"type": "Pick<TrackerAdapterIntakeRecord, 'key'>",
 						"required": true
 					},
 					{
@@ -656,6 +759,75 @@
 				"outputs": [
 					{
 						"name": "matchesGithubIssue",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "followUpInstructions",
+				"inputs": [
+					{
+						"name": "followUpInstructions.policy",
+						"type": "TrackerGithubFollowUpPolicy",
+						"required": true
+					},
+					{
+						"name": "followUpInstructions.key",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "followUpInstructions",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "planGithubFollowUp",
+				"inputs": [
+					{
+						"name": "planGithubFollowUp.source",
+						"type": "TrackerAdapterSource",
+						"required": true
+					},
+					{
+						"name": "planGithubFollowUp.event",
+						"type": "TrackerAdapterCommentEvent",
+						"required": true
+					},
+					{
+						"name": "planGithubFollowUp.policy",
+						"type": "TrackerAdapterIntakePolicy & { followUp: TrackerGithubFollowUpPolicy }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "planGithubFollowUp",
+						"type": "TrackerAdapterIntakeRecord"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hasFollowUpRequest",
+				"inputs": [
+					{
+						"name": "hasFollowUpRequest.body",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hasFollowUpRequest",
 						"type": "boolean"
 					}
 				],
@@ -712,12 +884,17 @@
 						"name": "readTrackerComments.query",
 						"type": "TrackerAdapterReadQuery",
 						"required": true
+					},
+					{
+						"name": "readTrackerComments.options",
+						"type": "{ dryRun: boolean; commentsOnly: boolean }",
+						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "readTrackerComments",
-						"type": "Promise<number>"
+						"type": "unknown"
 					}
 				],
 				"errors": [],
