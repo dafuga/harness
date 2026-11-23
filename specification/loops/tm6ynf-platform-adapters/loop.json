@@ -2,7 +2,7 @@
 	"name": "tm6ynf-platform-adapters",
 	"goal": "Prove a Harness host can bind a Slack bot to an approved workspace and channels, send, receive and reply without exposing credentials, and record mocked and live verification separately.",
 	"createdAt": "2026-11-23T17:07:11.132Z",
-	"updatedAt": "2026-11-23T17:09:20.250Z",
+	"updatedAt": "2026-11-23T17:24:23.041Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -17,12 +17,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T17:24:20.799Z",
+			"evidence": "Implemented the Slack transport, trusted host/Vault interface, adapter registry, installation-bound MCP surface and owner-only audit journal. Live Vault binding and host activation remain pending under verification."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T17:24:23.041Z",
+			"evidence": "13 focused cases passed across mocked Slack Web API and Socket Mode, real loopback WebSocket transport, registry, MCP protocol and audit journal tests."
 		},
 		{
 			"id": "verify",

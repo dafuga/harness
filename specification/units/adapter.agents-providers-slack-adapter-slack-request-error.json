@@ -1,0 +1,81 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-slack-adapter-slack-request-error",
+	"uid": "u_rbaiidh57v",
+	"kind": "adapter",
+	"title": "SlackRequestError",
+	"responsibility": "Owns the SlackRequestError integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/agents-providers/slack-adapter/SlackRequestError.ts"],
+		"symbols": ["SlackRequestError", "SlackRequestError.constructor"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "SlackRequestError.constructor.code",
+				"type": "PlatformFailureCode",
+				"required": true
+			},
+			{
+				"name": "SlackRequestError.constructor.retryAfterMs",
+				"type": "number",
+				"required": false
+			}
+		],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [],
+		"initialization": [
+			{
+				"name": "SlackRequestError.constructor",
+				"inputs": [
+					{
+						"name": "SlackRequestError.constructor.code",
+						"type": "PlatformFailureCode",
+						"required": true
+					},
+					{
+						"name": "SlackRequestError.constructor.retryAfterMs",
+						"type": "number",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "SlackRequestError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-platform-adapter-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/slack-adapter/SlackRequestError.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/slack-adapter/SlackRequestError.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

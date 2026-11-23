@@ -1,0 +1,119 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.agents-providers-platform-audit-log",
+	"uid": "u_oo3hbucsxh",
+	"kind": "repository",
+	"title": "PlatformAuditLogRepository",
+	"responsibility": "Owns the PlatformAuditLogRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/repositories/agents-providers/PlatformAuditLogRepository.ts"],
+		"symbols": [
+			"PlatformAuditLogRepository",
+			"PlatformAuditLogRepository.constructor",
+			"PlatformAuditLogRepository.append"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "PlatformAuditLogRepository.constructor.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "PlatformAuditLogRepository.append.event",
+				"type": "PlatformAuditEvent",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "PlatformAuditLogRepository.append",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "PlatformAuditLogRepository.append",
+				"inputs": [
+					{
+						"name": "PlatformAuditLogRepository.append.event",
+						"type": "PlatformAuditEvent",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PlatformAuditLogRepository.append",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "PlatformAuditLogRepository.constructor",
+				"inputs": [
+					{
+						"name": "PlatformAuditLogRepository.constructor.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PlatformAuditLogRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-platform-adapter-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/agents-providers/PlatformAuditLogRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/agents-providers/PlatformAuditLogRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -97,3 +97,87 @@ Rotation, reinstall and approval use Vault's private handoff.
 - Coordinate the test destination with Tracker `h164w0` and credential
   provisioning with `jw0799`. Keep the live check pending until the scoped
   installation and private Vault handoff are available.
+
+## Host integration and verification
+
+The Harness SDK exports `SlackAdapter`, `PlatformAdapterRegistryService`,
+`PlatformMessagingService` and `PlatformAuditLogRepository` from
+`@dafuga01/harness`. The host registers an installation explicitly. It can
+attach `platform_identity` and `platform_send_message` to an authenticated,
+agent-specific MCP session. Both tools are fixed to that installation for the
+life of the session. To reply, pass the event's `threadId`, or its `messageId`
+when starting a thread. Keep message timestamps as strings.
+
+```ts
+import {
+	PlatformAdapterRegistryService,
+	PlatformAuditLogRepository,
+	PlatformMessagingService,
+	SlackAdapter
+} from '@dafuga01/harness';
+
+const audit = new PlatformAuditLogRepository(auditPath);
+const adapter = new SlackAdapter({
+	installation,
+	channels: approvedChannelIds,
+	receive: 'mentions',
+	vault: scopedVaultAccess,
+	audit: (event) => audit.append(event)
+});
+
+const registry = new PlatformAdapterRegistryService();
+registry.register('slack', installation.installationId, adapter);
+const messaging = new PlatformMessagingService(registry, 'slack', installation.installationId);
+messaging.registerMcpTools(agentMcpServer);
+await messaging.subscribe(acceptIntoAgentInbox, shutdownSignal);
+```
+
+The host supplies the installed workspace ID, Slack app ID, bot ID, bot user ID,
+Harness project and environment. It also supplies the approved Vault capability,
+an owner-only audit destination outside the checkout and an inbox handler.
+The inbox handler should durably deduplicate the installation/event ID pair
+before returning and finish within Slack’s acknowledgment window. The adapter keeps a bounded in-memory window for redeliveries
+during a host run. Use a private, host-owned audit directory. A successful send
+with `auditRecorded: false` still has a Slack receipt. Reconcile it before
+another send. A result with status `unknown` requires checking the destination
+before retrying.
+
+### Slack app manifest
+
+For receive mode `mentions`, start with the following manifest and add
+`channels:read` or `groups:read` only if the operator needs channel discovery.
+For `messages`, subscribe to `message.channels` with `channels:history`
+and/or `message.groups` with `groups:history`, using the scopes for the
+approved channel types. Configure the host to match the chosen subscription.
+For the send-only smoke test, `chat:write`, the workspace installation and
+a channel invite are sufficient.
+
+```yaml
+display_information:
+  name: Harness Slack Adapter
+features:
+  bot_user:
+    display_name: Harness Slack Adapter
+oauth_config:
+  scopes:
+    bot:
+      - chat:write
+      - app_mentions:read
+settings:
+  event_subscriptions:
+    bot_events:
+      - app_mention
+  socket_mode_enabled: true
+```
+
+Generate and bind the app-level `connections:write` credential through the
+approved Vault path when enabling Socket Mode. Slack issues a transient WSS
+address. It stays inside the transport and requires no inbound network listener.
+
+For live acceptance, call `identity()` and verify the approved workspace and
+bot. Send exactly one message with text `[TEST] Harness Slack adapter smoke test`
+to the coordinated channel. Record the returned channel and message IDs and
+verify the labeled message is visible. If the result is unknown, reconcile it
+in Slack before considering any retry. Desktop startup, cloud activation and
+the live Slack test remain pending until their host wiring and approved Vault
+installation are available.

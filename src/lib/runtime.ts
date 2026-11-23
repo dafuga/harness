@@ -48,3 +48,25 @@ export { runtimeFetch } from '../utils/execution-runtimes/runtimeFetch';
 export { runtimeReply } from '../utils/execution-runtimes/runtimeReply';
 export type { RuntimeReply } from '../utils/execution-runtimes/runtimeReply';
 export { runtimeResponse, runtimeResponseText } from '../utils/execution-runtimes/runtimeResponse';
+
+export { SlackAdapter } from '../adapters/agents-providers/SlackAdapter';
+export type {
+	SlackAdapterConfig,
+	SlackCredentialScope,
+	SlackInstallation,
+	SlackVaultAccess
+} from '../adapters/agents-providers/SlackAdapter';
+export { PlatformAdapterRegistryService } from '../services/agents-providers/PlatformAdapterRegistryService';
+export type {
+	PlatformAdapter,
+	PlatformAuditEvent,
+	PlatformEvent,
+	PlatformEventHandler,
+	PlatformFailureCode,
+	PlatformIdentity,
+	PlatformMessage,
+	PlatformReceipt,
+	PlatformSendResult
+} from '../core/agents-providers/platformAdapter.types';
+export { PlatformAuditLogRepository } from '../repositories/agents-providers/PlatformAuditLogRepository';
+export { PlatformMessagingService } from '../services/agents-providers/PlatformMessagingService';
