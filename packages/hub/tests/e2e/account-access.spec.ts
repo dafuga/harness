@@ -1,4 +1,5 @@
 import { expect, test } from '../../../../test/support/browserTest';
+import { GoogleBrowserCallbackService } from '../../../desktop/src/services/accounts-access/GoogleBrowserCallbackService';
 import { hostedFixture } from './hosted-fixture';
 import { macRelease } from './hosted-home';
 
@@ -60,4 +61,31 @@ test('the account menu lists devices and removes only the selected device', asyn
 	await page.getByRole('button', { name: 'Remove Office Mac' }).click();
 	await page.getByRole('button', { name: 'Confirm removal' }).click();
 	await expect(page.getByText('No desktop or iOS devices are signed in.')).toBeVisible();
+});
+
+test('Google sign-in returns to the desktop loopback without typing a code', async ({ page }) => {
+	await hostedFixture(page, { signedIn: false });
+	const handoffId = 'h'.repeat(43);
+	const callbackCode = 'c'.repeat(43);
+	const callback = new GoogleBrowserCallbackService();
+	const port = await callback.listen();
+	callback.expect(handoffId);
+	const origin = `http://127.0.0.1:${port}`;
+	await page.route('**/api/auth/native/return', (route) => {
+		expect(route.request().postDataJSON()).toEqual({ handoffId });
+		return route.fulfill({
+			json: { callbackUrl: `${origin}/harness-account?state=${handoffId}&code=${callbackCode}` }
+		});
+	});
+	try {
+		await page.goto(`/native/${handoffId}?return=1`);
+		await page.getByRole('button', signIn).click();
+		await page.getByRole('button', { name: 'Continue to Harness' }).click();
+		await expect(page).toHaveURL(origin + '/return-to-harness');
+		await expect(page.getByText('Return to Harness to finish signing in.')).toBeVisible();
+		expect(callback.take()).toBe(callbackCode);
+		expect(page.url()).not.toContain(callbackCode);
+	} finally {
+		callback.close();
+	}
 });
