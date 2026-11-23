@@ -103,7 +103,7 @@ export class RemoteDeviceSessionsService {
 			{ deviceId, generation } = record;
 		const session = new DeviceSessionService({
 			...this.options.shared,
-			...this.trackerPermissions(id, record),
+			...trackerPermissions(this.options.shared, id, record),
 			vaultCall: vaultPhone(this.options.shared.vaultPhone, record),
 			host: { id, name },
 			device: { id: deviceId, name: record.name },
@@ -113,17 +113,6 @@ export class RemoteDeviceSessionsService {
 		const entry = { session, generation, connectionId: null, channel: null, link: null };
 		this.entries.set(deviceId, entry);
 		return entry;
-	}
-	private trackerPermissions(hostId: string, { deviceId, generation }: RemoteHostDevice) {
-		const { trackerPhone, trackerWrite, trackerFetcher = fetch } = this.options.shared;
-		if (trackerPhone !== deviceId) return {};
-		const parts = [hostId, deviceId, String(generation)];
-		const granted = trackerWrite?.device === deviceId && trackerWrite.token.length >= 32;
-		return {
-			trackerPull: phoneTrackerPull(parts, trackerFetcher),
-			trackerPush:
-				granted && trackerWrite ? phoneTrackerPush(parts, trackerWrite, trackerFetcher) : undefined
-		};
 	}
 	private grant(deviceId: string): RemoteGrant {
 		const record = this.options.device(deviceId);
@@ -145,6 +134,22 @@ export class RemoteDeviceSessionsService {
 		this.close(address);
 		this.options.drop(address, relayCloseCodes.protocol);
 	}
+}
+
+function trackerPermissions(
+	shared: RemoteDeviceSessionsOptions['shared'],
+	hostId: string,
+	{ deviceId, generation }: RemoteHostDevice
+) {
+	const { trackerPhone, trackerWrite, trackerFetcher = fetch } = shared;
+	if (trackerPhone !== deviceId) return {};
+	const parts = [hostId, deviceId, String(generation)];
+	const granted = trackerWrite?.device === deviceId && trackerWrite.token.length >= 32;
+	return {
+		trackerPull: phoneTrackerPull(parts, trackerFetcher),
+		trackerPush:
+			granted && trackerWrite ? phoneTrackerPush(parts, trackerWrite, trackerFetcher) : undefined
+	};
 }
 
 export type {

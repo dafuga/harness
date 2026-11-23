@@ -22,7 +22,7 @@ import { LocalClientService } from '../LocalClientService';
 import { LocalTransportService } from '../../../../services/LocalTransportService';
 import { ProviderDiscoveryService } from '../../../../services/agents-providers/provider-discovery-service/ProviderDiscoveryService';
 import { RemoteHostService } from '../../../../services/networking-security/remote-host-service/RemoteHostService';
-import { loadVaultPhone } from '../../../../services/networking-security/remote-host-service/vaultPhone';
+import { desktopPhoneSettings } from './desktopPhoneSettings';
 import { RemoteLifecycleService } from '../RemoteLifecycleService';
 import { RepositoryArbiterService } from '../../../../services/projects-sessions/RepositoryArbiterService';
 import { CodexAppServerAdapter } from '../../../../adapters/agents-providers/codex-app-server-adapter/CodexAppServerAdapter';
@@ -110,8 +110,6 @@ function desktopBackend() {
 		registration = new RemoteRegistrationAdapter({ origin, credentials: () => hosted.read() }),
 		sockets = new RelaySocketAdapter(),
 		screen: { locked?: boolean } = {};
-	const phoneWriteDevice = process.env.HARNESS_TRACKER_PHONE_WRITE_DEVICE?.trim();
-	const phoneWriteToken = process.env.HARNESS_TRACKER_PHONE_WRITE_TOKEN;
 	const remote = new RemoteHostService({
 		store: new RemoteHostStoreAdapter({
 			file: resolve(directory, 'remote.enc'),
@@ -119,15 +117,7 @@ function desktopBackend() {
 		}),
 		register: (input) => registration.register(input),
 		open: (url, headers) => sockets.open(url, headers),
-		shared: {
-			...stores,
-			vaultPhone: loadVaultPhone(process.env.HARNESS_VAULT_PHONE_CONFIG),
-			trackerPhone: process.env.HARNESS_TRACKER_PHONE_DEVICE?.trim(),
-			trackerWrite:
-				phoneWriteDevice && phoneWriteToken
-					? { device: phoneWriteDevice, token: phoneWriteToken }
-					: undefined
-		},
+		shared: { ...stores, ...desktopPhoneSettings() },
 		locked: () => screen.locked
 	});
 	remote.onStatus((status) =>

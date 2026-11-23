@@ -71,20 +71,7 @@ export async function setup(trackerEnabled = false, writeEnabled = false, vaultE
 		inbox = new Map<string, (packet: SecurePacket) => void>();
 	const { registry, arbiter, providers, renderMockups } = f;
 	const trackerRequests: URL[] = [];
-	const trackerFetcher = async (input: URL | string | Request, init?: RequestInit) => {
-		const url = new URL(String(input));
-		trackerRequests.push(url);
-		if (url.pathname.endsWith('/write')) {
-			const headers = new Headers(init?.headers);
-			expect(headers.get('authorization')).toBe('Bearer ' + writeToken);
-			expect(headers.get('x-tracker-phone-device')).toBe(deviceId);
-			expect(headers.get('x-tracker-phone-scope')).toMatch(/^[a-f0-9]{64}$/);
-			expect(url.search).toBe('');
-			const { intentId } = JSON.parse(String(init?.body));
-			return Response.json({ intentId, status: 'accepted' });
-		}
-		return Response.json({ kind: 'snapshot', rows: [], continuation: null, cursor: 'fixture' });
-	};
+	const trackerFetcher = trackerReplicaReply(deviceId, trackerRequests);
 	const sessions = new RemoteDeviceSessionsService({
 		shared: {
 			registry,
@@ -112,8 +99,24 @@ export async function setup(trackerEnabled = false, writeEnabled = false, vaultE
 		},
 		drop: (address, code) => drops.push({ address, code })
 	});
-
 	const phone = (keys: RemoteKeyPair = deviceKeys, id = deviceId) =>
 		phoneOf({ sessions, inbox, hostId, hostKey: hostKeys.publicKey }, keys, id);
 	return { f, sessions, records, sent, drops, phone, deviceId, deviceKeys, trackerRequests };
+}
+
+function trackerReplicaReply(deviceId: string, trackerRequests: URL[]) {
+	return async (input: URL | string | Request, init?: RequestInit) => {
+		const url = new URL(String(input));
+		trackerRequests.push(url);
+		if (url.pathname.endsWith('/write')) {
+			const headers = new Headers(init?.headers);
+			expect(headers.get('authorization')).toBe('Bearer ' + writeToken);
+			expect(headers.get('x-tracker-phone-device')).toBe(deviceId);
+			expect(headers.get('x-tracker-phone-scope')).toMatch(/^[a-f0-9]{64}$/);
+			expect(url.search).toBe('');
+			const { intentId } = JSON.parse(String(init?.body));
+			return Response.json({ intentId, status: 'accepted' });
+		}
+		return Response.json({ kind: 'snapshot', rows: [], continuation: null, cursor: 'fixture' });
+	};
 }

@@ -20,6 +20,7 @@ test('requires the pinned executor, kernel UID, unchanged scope, and live broker
 	expect(service.verify(request, sessionUid, proof)).toBe(scope.expiresAt);
 	const changed = [
 		{ ...request, runnerPublicKey: seal.runnerKey().publicKey },
+		{ ...request, host: 'unregistered' },
 		{ ...request, recipe: { ...request.recipe, digest: 'a'.repeat(64) } },
 		{ ...request, item: 'another1' },
 		{ ...request, project: 'other' },
