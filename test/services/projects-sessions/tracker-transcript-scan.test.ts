@@ -62,9 +62,12 @@ async function proveWatchdog(root: string) {
 
 		writeFileSync(
 			log,
-			JSON.stringify({
-				prompt: `Read your brief at /fixture/brief.md and do that work. Your tracker item is ${itemId}.`
-			}) + '\n'
+			JSON.stringify({ type: 'session_meta', instructions: 'x'.repeat(180_000) }) +
+				'\n' +
+				JSON.stringify({
+					prompt: `Read your brief at /fixture/brief.md and do that work. Your tracker item is ${itemId}.`
+				}) +
+				'\n'
 		);
 		await runtime.watchdog!.tick(signal);
 		appendFileSync(log, JSON.stringify({ type: 'tool_output', text: dummy }) + '\n');
