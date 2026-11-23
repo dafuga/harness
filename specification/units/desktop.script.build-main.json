@@ -25,6 +25,26 @@
 				"type": "Record<string, string | undefined>",
 				"required": true,
 				"description": "Environment mapping with the optional public HARNESS_RELEASE_HUB_ORIGIN value."
+			},
+			{
+				"name": "releaseDefine.required",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Require a release origin for signed packaging. Defaults to false for development builds."
+			},
+			{
+				"name": "buildDesktopMain.define",
+				"type": "Record<string, string>",
+				"required": true,
+				"description": "Definitions for main.cjs, resolved from the build environment by the caller."
+			},
+			{
+				"name": "buildDesktopMain.outdir",
+				"type": "string",
+				"required": false,
+				"default": "dist",
+				"description": "Destination for main.cjs, preload.cjs, and their maps. Defaults to dist."
 			}
 		],
 		"outputs": [
@@ -61,8 +81,8 @@
 						"name": "releaseDefine.required",
 						"type": "boolean",
 						"required": false,
-						"description": "Require a release origin for signed packaging. Defaults to false for development builds.",
-						"default": false
+						"default": false,
+						"description": "Require a release origin for signed packaging. Defaults to false for development builds."
 					}
 				],
 				"outputs": [
@@ -99,8 +119,8 @@
 						"name": "buildDesktopMain.outdir",
 						"type": "string",
 						"required": false,
-						"description": "Destination for main.cjs, preload.cjs, and their maps. Defaults to dist.",
-						"default": "dist"
+						"default": "dist",
+						"description": "Destination for main.cjs, preload.cjs, and their maps. Defaults to dist."
 					}
 				],
 				"outputs": [
