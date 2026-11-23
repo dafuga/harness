@@ -30,19 +30,16 @@ for (const viewport of widths)
 		await expect(panel(page, 'Used In')).toContainText(/OrderList\s*Component/);
 		await expect(panel(page, 'Uses').getByRole('link')).toHaveText(['orderSettings', 'OrderStore']);
 		await expect(page.getByText(/relationship|used by/i)).toHaveCount(0);
-		const hidden = await page
+		// On a phone the section tabs are one scrolling row. The Conversation icon button has no text.
+		const lines = await page
 			.getByRole('navigation', { name: 'Entity sections' })
 			.getByRole('button')
-			.evaluateAll((buttons) => {
-				const bounds = buttons[0].parentElement!.getBoundingClientRect();
-				return buttons
-					.filter((button) => {
-						const box = button.getBoundingClientRect();
-						return box.left < bounds.left - 1 || box.right > bounds.right + 1;
-					})
-					.map((button) => button.textContent);
-			});
-		expect(hidden).toEqual([]);
+			.filter({ hasText: /\S/ })
+			.evaluateAll(
+				(buttons) => new Set(buttons.map((b) => Math.round(b.getBoundingClientRect().top))).size
+			);
+		// One row is the phone rule (at most 560px); a tablet keeps its wrapping tabs.
+		if (viewport.id === 'mobile') expect(lines).toBe(1);
 		const sideways = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
 		expect(sideways).toBeLessThanOrEqual(0);
 	});

@@ -170,7 +170,7 @@ test('a phone shows the same overview, and says that its connection does not rea
 	await page.setViewportSize({ width: 390, height: 844 });
 	await remotePhoneFixture(page, 'online');
 	await page.goto(`/projects/${beta}/harness/branch/main/components/component%3Abutton`);
-	await expect(tabs(page).getByRole('button')).toHaveText([
+	await expect(tabs(page).getByRole('button').filter({ hasText: /\S/ })).toHaveText([
 		'Overview',
 		'Designs',
 		'Used In',

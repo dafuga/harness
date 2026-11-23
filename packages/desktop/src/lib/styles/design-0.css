@@ -34,12 +34,37 @@
 	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 	margin: var(--hx-space-16) 0;
 }
+/* The quiet back link to the category: a 44px touch target, muted like the catalog count line. */
+.entity-back {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	font-size: var(--hx-type-size-compact);
+	color: var(--hx-color-text-supporting);
+	text-transform: capitalize;
+}
+/* Conversation opens its panel from the end of the section row, as an icon with its label. */
+.entity-tabs .conversation-open {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin-left: auto;
+	min-width: 44px;
+	min-height: 44px;
+	border: 0;
+	background: transparent;
+	color: var(--hx-color-text-supporting);
+}
 .entity-tabs button {
 	border: 0;
 	border-bottom: var(--hx-border-heavy) solid transparent;
 	border-radius: 0;
 	background: transparent;
 	padding: var(--hx-space-13) var(--hx-space-18);
+}
+/* Size & performance has the same title-to-content gap as the other cards. */
+.measures-panel > h2 {
+	margin-bottom: var(--hx-space-14);
 }
 .panel {
 	border: var(--hx-border-thin) solid var(--hx-color-border);
