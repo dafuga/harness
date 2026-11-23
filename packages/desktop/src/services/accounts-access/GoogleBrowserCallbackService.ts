@@ -1,6 +1,7 @@
 // @harness-uid u_w7u5py3ol5
 import { createServer } from 'node:http';
 import type { IncomingMessage, Server, ServerResponse } from 'node:http';
+import { NativeSignInError } from './NativeSignInError';
 
 const host = '127.0.0.1';
 const path = '/harness-account';
@@ -44,7 +45,8 @@ export class GoogleBrowserCallbackService {
 			});
 		});
 		const address = this.server.address();
-		if (!address || typeof address === 'string') throw new Error('Sign-in callback unavailable.');
+		if (!address || typeof address === 'string')
+			throw new NativeSignInError('Sign-in callback unavailable.');
 		this.port = address.port;
 		this.timer = setTimeout(() => this.close(), 5 * 60 * 1000);
 		this.timer.unref();
