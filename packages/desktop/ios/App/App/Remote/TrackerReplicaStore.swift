@@ -103,6 +103,9 @@ final class TrackerReplicaStore {
         return db
     }
 
+}
+
+extension TrackerReplicaStore {
     private func createSchema(_ db: TrackerReplicaSQLite) throws {
         let version = try db.rows("PRAGMA user_version").first?.first.flatMap { $0 }
         if version == "1" { return }

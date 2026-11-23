@@ -87,6 +87,9 @@ final class RemoteSession {
         }
     }
 
+}
+
+extension RemoteSession {
     /// `RemoteMobileStatus` with what the last attach allowed beside it: public identifiers and
     /// words. No key, credential or code is in it. A lock state is stated only when known.
     var snapshot: [String: Any] {

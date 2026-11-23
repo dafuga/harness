@@ -100,6 +100,9 @@ extension TrackerReplicaStore {
         }
     }
 
+}
+
+extension TrackerReplicaStore {
     func writeStatus() throws -> [[String: String]] {
         _ = try writableState()
         return try outbox().rows("SELECT intent, item, conflict FROM outbox ORDER BY sequence").map { row in

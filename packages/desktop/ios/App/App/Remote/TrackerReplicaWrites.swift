@@ -72,6 +72,9 @@ extension RemoteSession {
         return reply
     }
 
+}
+
+extension RemoteSession {
     func drainTrackerWrites() {
         guard trackerForeground, state == "online", trackerWriteRequest == nil, let link = link,
             let authority = trackerWriteScope, let epoch = record?.epoch,

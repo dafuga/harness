@@ -73,6 +73,9 @@ extension RemoteSession {
         cancelTrackerWrites()
     }
 
+}
+
+extension RemoteSession {
     func pullTracker() {
         trackerTimer?.cancel()
         trackerTimer = nil
