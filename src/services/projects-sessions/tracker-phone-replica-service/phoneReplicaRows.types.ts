@@ -10,6 +10,7 @@ export interface PhoneItemSource {
 	resolved: number;
 	question: string | null;
 	flag_clock: string | null;
+	attention_clock: string;
 }
 
 export interface PhoneNoteSource {
@@ -36,6 +37,7 @@ export interface PhoneTrackerRow {
 	status: string;
 	updatedAt: string | null;
 	dueAt: string | null;
+	attentionRevision: string;
 	notes: { id: string; author: string; at: string; text: string }[];
 	flag: { state: 'open' | 'resolved'; at: string | null; question: string } | null;
 	runs: {

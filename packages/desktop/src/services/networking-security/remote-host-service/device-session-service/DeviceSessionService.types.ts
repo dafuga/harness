@@ -7,6 +7,7 @@ export interface DeviceSessionOptions extends Omit<ClientProjectsOptions, 'emit'
 	device: { id: string; name: string };
 	grant: () => RemoteGrant;
 	trackerPull?: (input: Record<string, unknown>) => Promise<unknown>;
+	trackerPush?: (input: Record<string, unknown>, signal: AbortSignal) => Promise<unknown>;
 	epoch?: string;
 	/** Whether the screen is locked, once the computer knows; undefined until then. */
 	locked?: () => boolean | undefined;

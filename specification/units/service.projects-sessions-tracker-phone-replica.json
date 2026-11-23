@@ -37,6 +37,8 @@
 			"deltaPage",
 			"PhoneReplicaSnapshot",
 			"phoneReplicaRows",
+			"readPhoneReplicaItem",
+			"attentionRevision",
 			"PhoneItemSource",
 			"PhoneNoteSource",
 			"PhoneRunSource",
@@ -57,6 +59,13 @@
 				"type": "() => number",
 				"required": true,
 				"description": "Returns wall-clock milliseconds for retention and response timestamps."
+			},
+			{
+				"name": "TrackerPhoneReplicaService.constructor.grant",
+				"type": "PhoneReplicaWriteGrant",
+				"required": false,
+				"default": null,
+				"description": "Optional write grant for the exact device. Omitting it leaves the hub projection readable without a writer."
 			},
 			{
 				"name": "TrackerPhoneReplicaService.pull.query",
@@ -123,6 +132,30 @@
 				"type": "number",
 				"required": true,
 				"description": "Wall-clock milliseconds used to select closed items in retention."
+			},
+			{
+				"name": "readPhoneReplicaItem.db",
+				"type": "SqliteDatabase",
+				"required": true,
+				"description": "The authoritative hub SQLite journal."
+			},
+			{
+				"name": "readPhoneReplicaItem.id",
+				"type": "string",
+				"required": true,
+				"description": "The exact item ID to find within the current phone retention set."
+			},
+			{
+				"name": "readPhoneReplicaItem.now",
+				"type": "number",
+				"required": true,
+				"description": "Wall clock in milliseconds used to apply the same closed-item retention period as the feed."
+			},
+			{
+				"name": "attentionRevision.item",
+				"type": "PhoneItemSource",
+				"required": true,
+				"description": "The selected item row with its attention clocks, flag state and question."
 			}
 		],
 		"outputs": [
@@ -427,6 +460,64 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "readPhoneReplicaItem",
+				"inputs": [
+					{
+						"name": "readPhoneReplicaItem.db",
+						"type": "SqliteDatabase",
+						"required": true,
+						"description": "The authoritative hub SQLite journal."
+					},
+					{
+						"name": "readPhoneReplicaItem.id",
+						"type": "string",
+						"required": true,
+						"description": "The exact item ID to find within the current phone retention set."
+					},
+					{
+						"name": "readPhoneReplicaItem.now",
+						"type": "number",
+						"required": true,
+						"description": "Wall clock in milliseconds used to apply the same closed-item retention period as the feed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readPhoneReplicaItem",
+						"type": "unknown",
+						"description": "Returns the matching retained source row or undefined if the item is absent or excluded."
+					}
+				],
+				"errors": [
+					{
+						"name": "projectionRead",
+						"type": "SQLiteError",
+						"description": "An unreadable or invalid journal cannot supply a current item."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "attentionRevision",
+				"inputs": [
+					{
+						"name": "attentionRevision.item",
+						"type": "PhoneItemSource",
+						"required": true,
+						"description": "The selected item row with its attention clocks, flag state and question."
+					}
+				],
+				"outputs": [
+					{
+						"name": "attentionRevision",
+						"type": "string",
+						"description": "Returns the hex SHA-256 revision for the current flag and answer state."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -444,6 +535,13 @@
 						"type": "() => number",
 						"required": true,
 						"description": "Returns wall-clock milliseconds for retention and response timestamps."
+					},
+					{
+						"name": "TrackerPhoneReplicaService.constructor.grant",
+						"type": "PhoneReplicaWriteGrant",
+						"required": false,
+						"default": null,
+						"description": "Optional write grant for the exact device. Omitting it leaves the hub projection readable without a writer."
 					}
 				],
 				"outputs": [
@@ -500,6 +598,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-phone-replica-service-phone-replica-write",
 			"via": "import",
 			"origin": "derived"
 		}

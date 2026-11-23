@@ -204,10 +204,21 @@ on a device before claiming battery savings.
 
 ## Queued writes after read-only acceptance
 
-Introduce a separately approved write grant for note, flag, and answer.
-Queue an explicit user-confirmed intent in a protected outbox with its
-device-scoped UUID, item ID, operation, payload, and base item or flag
-revision. Keep pending intents out of canonical reads. Drain in creation
+The desktop and the colocated native hub require a separate write grant.
+Configure `HARNESS_TRACKER_PHONE_WRITE_DEVICE` with the exact paired device ID
+on both processes, and provide the same dedicated
+`HARNESS_TRACKER_PHONE_WRITE_TOKEN` through each process's private environment.
+The desktop still requires its read grant for that device. The token travels
+in the loopback authorization header and stays off the phone and relay.
+
+The `tracker_note`, `tracker_flag` and `tracker_answer` tools take an item ID
+and up to 512 UTF-8 bytes of text. A native confirmation shows the item, the
+proposed text and the current question when answering. The protected outbox
+keeps up to 100 confirmed intents with a device-scoped UUID, full item ID,
+operation, payload and the attention revision for flags and answers.
+`tracker_write_status` reports the pending intents and any blocked items. A
+user can review and discard a conflict through `tracker_discard_write`.
+Keep pending intents out of canonical reads. Drain in creation
 order per item after authenticated reconnect. A note appends to an existing
 visible item. A flag compares its expected attention revision. An answer
 must match the exact still-unanswered flag. The hub validates current grant,

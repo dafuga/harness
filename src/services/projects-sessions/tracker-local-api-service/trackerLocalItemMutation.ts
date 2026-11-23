@@ -12,6 +12,9 @@ import type {
 } from '../../../utils/projects-sessions/planTrackerItemMutation.types';
 import { trackerItemTransitions } from '../../../utils/projects-sessions/trackerItemTransitions';
 
+import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
+
+const maxBodyBytes = 1024 * 1024;
 const itemAlphabet = '0123456789abcdefghjkmnpqrstvwxyz';
 
 export function itemMutation(
@@ -61,4 +64,40 @@ export function recordTrackerSessionItem(
 		SELECT ?, ? FROM runs WHERE id = ? AND item_id <> ? AND tmux GLOB 'auto-*-r*'`
 		)
 		.run(`${trackerSessionItemPrefix}${id}:${itemId}`, itemId, id, itemId);
+}
+
+export async function readItemBody(
+	request: Request,
+	maximum: number = maxBodyBytes
+): Promise<TrackerItemInput> {
+	if (!request.body) return {};
+	const reader = request.body.getReader();
+	const chunks: Uint8Array[] = [];
+	let size = 0;
+	try {
+		for (let part = await reader.read(); !part.done; part = await reader.read()) {
+			size += part.value.byteLength;
+			if (size > maximum) {
+				void reader.cancel().catch(() => {});
+				throw trackerItemError('body too large', 413);
+			}
+			chunks.push(part.value);
+		}
+	} finally {
+		reader.releaseLock();
+	}
+	return size ? parseItemBody(Buffer.concat(chunks, size).toString('utf8')) : {};
+}
+
+function parseItemBody(text: string): TrackerItemInput {
+	let value: unknown;
+	try {
+		value = JSON.parse(text);
+	} catch {
+		throw trackerItemError('invalid JSON body');
+	}
+	if (!value || typeof value !== 'object' || Array.isArray(value)) {
+		throw trackerItemError('JSON body must be an object');
+	}
+	return value as TrackerItemInput;
 }

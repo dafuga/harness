@@ -118,14 +118,16 @@ function composeItemApi(
 		validateModel,
 		planLaunch,
 		role,
-		manualLaunch
+		manualLaunch,
+		phoneWrite
 	}: TrackerNativeRuntimeOptions,
 	recurring?: TrackerRecurringRepository
 ) {
 	const { store } = runtime;
 	return new TrackerLocalApiService(store, new TrackerItemReadRepository(store.database), {
 		now,
-		phoneReplica: role === 'hub' ? new TrackerPhoneReplicaService(store, runtime.now) : undefined,
+		phoneReplica:
+			role === 'hub' ? new TrackerPhoneReplicaService(store, runtime.now, phoneWrite) : undefined,
 		timeZone,
 		ladderConfig,
 		validateModel,

@@ -1,5 +1,13 @@
 // @harness-uid u_uhyljnc37o
-export type PhoneTrackerTool = 'tracker_status' | 'tracker_show' | 'tracker_search';
+export type PhoneTrackerTool =
+	| 'tracker_status'
+	| 'tracker_show'
+	| 'tracker_search'
+	| 'tracker_note'
+	| 'tracker_flag'
+	| 'tracker_answer'
+	| 'tracker_write_status'
+	| 'tracker_discard_write';
 
 export interface PhoneTrackerToolSchema {
 	name: PhoneTrackerTool;

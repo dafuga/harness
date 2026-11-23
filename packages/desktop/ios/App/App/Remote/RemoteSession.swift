@@ -34,6 +34,7 @@ final class RemoteSession {
     let trackerStore: TrackerReplicaStore
     var trackerAuthority: String?
     var trackerRequest: UUID?
+    var trackerWriteRequest: String?
     var trackerTimer: DispatchWorkItem?
     var trackerDelay: Double = 60
     var trackerForeground = true
@@ -86,6 +87,9 @@ final class RemoteSession {
         }
     }
 
+}
+
+extension RemoteSession {
     /// `RemoteMobileStatus` with what the last attach allowed beside it: public identifiers and
     /// words. No key, credential or code is in it. A lock state is stated only when known.
     var snapshot: [String: Any] {

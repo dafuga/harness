@@ -15,9 +15,13 @@ export interface DeviceAddress {
 }
 
 export interface RemoteDeviceSessionsOptions {
-	shared: Omit<DeviceSessionOptions, 'host' | 'device' | 'grant' | 'epoch' | 'trackerPull'> & {
+	shared: Omit<
+		DeviceSessionOptions,
+		'host' | 'device' | 'grant' | 'epoch' | 'trackerPull' | 'trackerPush'
+	> & {
 		trackerPhone?: string;
 		trackerFetcher?: TrackerPhoneFetcher;
+		trackerWrite?: { device: string; token: string };
 	};
 	host: () => { id: string; name: string; keys: RemoteKeyPair; locked?: boolean };
 	/** The approved device as stored now, or null once it is revoked. */

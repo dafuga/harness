@@ -16,7 +16,7 @@ import type {
 	WireChannel
 } from '../../../../../remote/src/index';
 import type { RemoteHostDevice } from '../../../adapters/networking-security/RemoteHostStoreAdapter';
-import { phoneTrackerPull } from './pullPhoneTracker';
+import { phoneTrackerPull, phoneTrackerPush } from './pullPhoneTracker';
 import { DeviceSessionService } from './device-session-service/DeviceSessionService';
 
 /**
@@ -102,7 +102,7 @@ export class RemoteDeviceSessionsService {
 			{ deviceId, generation } = record;
 		const session = new DeviceSessionService({
 			...this.options.shared,
-			trackerPull: this.trackerPull(id, record),
+			...this.trackerPermissions(id, record),
 			host: { id, name },
 			device: { id: deviceId, name: record.name },
 			grant: () => this.grant(deviceId),
@@ -112,10 +112,16 @@ export class RemoteDeviceSessionsService {
 		this.entries.set(deviceId, entry);
 		return entry;
 	}
-	private trackerPull(hostId: string, { deviceId, generation }: RemoteHostDevice) {
-		const { trackerPhone, trackerFetcher = fetch } = this.options.shared;
-		if (trackerPhone !== deviceId) return undefined;
-		return phoneTrackerPull([hostId, deviceId, String(generation)], trackerFetcher);
+	private trackerPermissions(hostId: string, { deviceId, generation }: RemoteHostDevice) {
+		const { trackerPhone, trackerWrite, trackerFetcher = fetch } = this.options.shared;
+		if (trackerPhone !== deviceId) return {};
+		const parts = [hostId, deviceId, String(generation)];
+		const granted = trackerWrite?.device === deviceId && trackerWrite.token.length >= 32;
+		return {
+			trackerPull: phoneTrackerPull(parts, trackerFetcher),
+			trackerPush:
+				granted && trackerWrite ? phoneTrackerPush(parts, trackerWrite, trackerFetcher) : undefined
+		};
 	}
 	private grant(deviceId: string): RemoteGrant {
 		const record = this.options.device(deviceId);

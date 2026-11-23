@@ -26,6 +26,7 @@
 			"itemAction",
 			"trackerSessionItemPrefix",
 			"recordTrackerSessionItem",
+			"readItemBody",
 			"isTrackerManualLaunch",
 			"planTrackerManualLaunch"
 		]
@@ -130,6 +131,16 @@
 				"required": true
 			},
 			{
+				"name": "readItemBody.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "readItemBody.maximum",
+				"type": "number",
+				"required": false
+			},
+			{
 				"name": "isTrackerManualLaunch.verb",
 				"type": "string | undefined",
 				"required": true
@@ -183,6 +194,10 @@
 			{
 				"name": "recordTrackerSessionItem",
 				"type": "void"
+			},
+			{
+				"name": "readItemBody",
+				"type": "Promise<TrackerItemInput>"
 			},
 			{
 				"name": "isTrackerManualLaunch",
@@ -355,6 +370,29 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "readItemBody",
+				"inputs": [
+					{
+						"name": "readItemBody.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "readItemBody.maximum",
+						"type": "number",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "readItemBody",
+						"type": "Promise<TrackerItemInput>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "isTrackerManualLaunch",
 				"inputs": [
 					{
@@ -496,6 +534,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-phone-replica",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-phone-replica-service-phone-replica-write",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -11,6 +11,7 @@ export interface DeviceOperationsOptions {
 	/** The current grant of the device. Read again for every request. */
 	grant: () => RemoteGrant;
 	trackerPull?: (input: Fields) => Promise<unknown>;
+	trackerPush?: (input: Fields) => Promise<unknown>;
 }
 
 export type Fields = Record<string, unknown>;

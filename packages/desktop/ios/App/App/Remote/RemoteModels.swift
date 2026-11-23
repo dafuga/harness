@@ -57,7 +57,7 @@ enum RemoteMethods {
         "artifact", "messages", "pendingComments", "providers", "trackerReplicaPull"
     ]
     static let changes: Set<String> = [
-        "addComment", "createPlan", "openThread", "approve", "startRun", "cancelRun"
+        "addComment", "createPlan", "openThread", "approve", "startRun", "cancelRun", "trackerReplicaPush"
     ]
     static func allowed(_ method: String) -> Bool {
         reads.contains(method) || changes.contains(method)

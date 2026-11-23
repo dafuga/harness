@@ -1,5 +1,5 @@
 // @harness-uid u_nqap4syes6
-import { control } from './ios-acceptance-run';
+import { control, shot } from './ios-acceptance-run';
 import type { Acceptance } from './ios-acceptance-run';
 
 const show = {
@@ -58,4 +58,33 @@ export async function trackerOffline(run: Acceptance): Promise<void> {
 		saved.includes('"status":"done"') && saved.includes('"source":"local_tracker"'),
 		'the same Tracker tool reads SQLite after restarting the app while the hub is unreachable'
 	);
+}
+
+export async function trackerWritePrompt(run: Acceptance): Promise<void> {
+	run.record.begin('Tracker write confirmation on iOS');
+	await trackerOutboxEmpty(run, 'the separately granted fixture outbox starts empty');
+	await run.page.evaluate(`
+const plugin = window.Capacitor.Plugins.HarnessRemote;
+window.harnessTrackerWrite = 'waiting';
+plugin.trackerTool({ name: 'tracker_note', input: { id: 'testphone1', text: 'A simulator note awaiting confirmation' } })
+	.then(() => { window.harnessTrackerWrite = 'resolved'; });
+return 'requested';`);
+	await shot(run, 'tracker-write-confirmation');
+	const pending = await run.page.evaluate('return window.harnessTrackerWrite;');
+	run.record.check(pending === 'waiting', 'the Tracker write waits for a native confirmation');
+}
+
+export async function trackerOutboxEmpty(run: Acceptance, message: string): Promise<void> {
+	await run.page.evaluate(`
+const plugin = window.Capacitor.Plugins.HarnessRemote;
+delete window.harnessTrackerOutbox;
+plugin.trackerTool({ name: 'tracker_write_status', input: {} })
+	.then((reply) => { window.harnessTrackerOutbox = reply; });
+return 'requested';`);
+	const result = await run.page.until(
+		'return JSON.stringify(window.harnessTrackerOutbox ?? {});',
+		'"source"',
+		10
+	);
+	run.record.check(result.includes('"writes":[]'), message);
 }

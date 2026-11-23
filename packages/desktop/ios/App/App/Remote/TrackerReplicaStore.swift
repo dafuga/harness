@@ -93,9 +93,19 @@ final class TrackerReplicaStore {
         let db = try TrackerReplicaSQLite(path: path)
         try files.setAttributes(protection, ofItemAtPath: path)
         try createSchema(db)
+        try db.run("""
+            CREATE TABLE IF NOT EXISTS attention (
+                slot INTEGER NOT NULL, item TEXT NOT NULL, position INTEGER NOT NULL, value TEXT NOT NULL,
+                PRIMARY KEY (slot, item, position),
+                FOREIGN KEY (slot, item) REFERENCES items (slot, id) ON DELETE CASCADE
+            )
+            """)
         return db
     }
 
+}
+
+extension TrackerReplicaStore {
     private func createSchema(_ db: TrackerReplicaSQLite) throws {
         let version = try db.rows("PRAGMA user_version").first?.first.flatMap { $0 }
         if version == "1" { return }

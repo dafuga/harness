@@ -31,6 +31,7 @@ export function trackerNodeRuntime(
 	return {
 		node: config.node,
 		role: config.role,
+		phoneWrite: configuredPhoneWrite(),
 		backupDirectory: config.backupDirectory,
 		notification,
 		hostEffects: configuredHostEffects(config, writeGuestAuth),
@@ -46,6 +47,12 @@ export function trackerNodeRuntime(
 		},
 		planLaunch: (fields, current) => planNativeLaunch(fields, current, config.node)
 	};
+}
+
+function configuredPhoneWrite(): TrackerNativeRuntimeOptions['phoneWrite'] {
+	const device = process.env.HARNESS_TRACKER_PHONE_WRITE_DEVICE?.trim();
+	const token = process.env.HARNESS_TRACKER_PHONE_WRITE_TOKEN;
+	return device && token ? { device, token } : undefined;
 }
 
 function configuredHostEffects(

@@ -2,13 +2,12 @@
 import { randomUUID } from 'node:crypto';
 import type { TrackerItemReadRepository } from '../../repositories/projects-sessions/TrackerItemReadRepository';
 import { checkTrackerItem } from '../../utils/projects-sessions/checkTrackerItem';
-import type { TrackerItemInput } from '../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import { planTrackerItemMutation } from '../../utils/projects-sessions/planTrackerItemMutation';
 import type { TrackerItemMutationContext } from '../../utils/projects-sessions/planTrackerItemMutation.types';
-import { trackerItemError } from '../../utils/projects-sessions/trackerItemError';
 import {
 	itemAction,
 	itemMutation,
+	readItemBody,
 	recordTrackerSessionItem
 } from './tracker-local-api-service/trackerLocalItemMutation';
 import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
@@ -17,12 +16,11 @@ import {
 	readTrackerRunEndpoint
 } from './tracker-local-api-service/readTrackerRunEndpoint';
 import type { TrackerPersistenceService } from './TrackerPersistenceService';
+import type { TrackerPhoneReplicaService } from './TrackerPhoneReplicaService';
 import {
 	isTrackerManualLaunch,
 	planTrackerManualLaunch
 } from './tracker-local-api-service/trackerManualLaunch';
-
-const maxBodyBytes = 1024 * 1024;
 
 /** Handles core item requests for the loopback listener over its shared Tracker journal. */
 export class TrackerLocalApiService {
@@ -36,9 +34,9 @@ export class TrackerLocalApiService {
 		try {
 			const url = new URL(request.url);
 			const parts = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
+			const phone = phoneReplicaResponse(request, url, this.options.phoneReplica);
+			if (phone) return await phone;
 			if (request.method === 'GET') {
-				if (url.pathname === '/phone-replica/v1' && this.options.phoneReplica)
-					return this.options.phoneReplica.pull(url.searchParams);
 				const read = this.read(parts, Object.fromEntries(url.searchParams));
 				if (read) return read;
 			}
@@ -146,6 +144,27 @@ export class TrackerLocalApiService {
 	}
 }
 
+function phoneReplicaResponse(request: Request, url: URL, replica?: TrackerPhoneReplicaService) {
+	if (!replica) return undefined;
+	if (request.method === 'GET' && url.pathname === '/phone-replica/v1')
+		return replica.pull(url.searchParams);
+	if (request.method === 'POST' && url.pathname === '/phone-replica/v1/write')
+		return phoneWrite(request, replica);
+	return undefined;
+}
+
+async function phoneWrite(
+	request: Request,
+	replica: TrackerPhoneReplicaService
+): Promise<Response> {
+	const { writer } = replica;
+	const scope = writer?.scope(request.headers);
+	if (!writer || !scope) return trackerResponse(403, { status: 'denied' });
+	const body = await readItemBody(request, 4096);
+	request.signal.throwIfAborted();
+	return trackerResponse(200, writer.push(scope, body));
+}
+
 function readActor(headers: Headers): string | null {
 	const actor = headers
 		.get('x-tracker-as')
@@ -154,39 +173,6 @@ function readActor(headers: Headers): string | null {
 		.slice(0, 80);
 	if (!actor) return null;
 	return actor;
-}
-
-async function readItemBody(request: Request): Promise<TrackerItemInput> {
-	if (!request.body) return {};
-	const reader = request.body.getReader();
-	const chunks: Uint8Array[] = [];
-	let size = 0;
-	try {
-		for (let part = await reader.read(); !part.done; part = await reader.read()) {
-			size += part.value.byteLength;
-			if (size > maxBodyBytes) {
-				void reader.cancel().catch(() => {});
-				throw trackerItemError('body too large', 413);
-			}
-			chunks.push(part.value);
-		}
-	} finally {
-		reader.releaseLock();
-	}
-	return size ? parseItemBody(Buffer.concat(chunks, size).toString('utf8')) : {};
-}
-
-function parseItemBody(text: string): TrackerItemInput {
-	let value: unknown;
-	try {
-		value = JSON.parse(text);
-	} catch {
-		throw trackerItemError('invalid JSON body');
-	}
-	if (!value || typeof value !== 'object' || Array.isArray(value)) {
-		throw trackerItemError('JSON body must be an object');
-	}
-	return value as TrackerItemInput;
 }
 
 function failureResponse(error: unknown): Response {

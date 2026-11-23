@@ -17,8 +17,9 @@ function hostOf(host: { id: string; name: string }, locked: boolean | undefined)
 export class DeviceSessionService {
 	readonly wire: WireSessionService;
 	private readonly projects: ClientProjectsService;
+	private readonly trackerLifetime = new AbortController();
 	constructor(options: DeviceSessionOptions) {
-		const { host, device, grant, epoch, locked, trackerPull, ...shared } = options,
+		const { host, device, grant, epoch, locked, trackerPull, trackerPush, ...shared } = options,
 			{ providers, arbiter } = shared;
 		const projects = new ClientProjectsService({
 			...shared,
@@ -29,7 +30,8 @@ export class DeviceSessionService {
 			providers,
 			arbiter,
 			grant,
-			trackerPull
+			trackerPull,
+			trackerPush: trackerPush && ((input) => trackerPush(input, this.trackerLifetime.signal))
 		});
 		this.projects = projects;
 		this.wire = new WireSessionService({
@@ -44,6 +46,7 @@ export class DeviceSessionService {
 	}
 	/** The phone's runs are cancelled, and no answer or event reaches it any more. */
 	end(): void {
+		this.trackerLifetime.abort();
 		this.wire.end();
 		this.projects.end();
 	}
