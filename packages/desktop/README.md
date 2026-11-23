@@ -15,9 +15,10 @@ local Mac projects beside hosted projects; removing that pairing leaves the inde
 account intact. Local folders are not uploaded automatically by signing in.
 
 Configure the dedicated Hub using [the Hub setup guide](../hub/README.md). Electron reads
-its exact `HARNESS_HUB_ORIGIN`; an iOS build uses the public Xcode build setting of that
-name through `HarnessHubOrigin` in Info.plist. Leave it unset until the real HTTPS Hub
-is configured. The bundled renderer stays local, and Google approval opens in the system
+its exact `HARNESS_HUB_ORIGIN` in development. An iOS build uses the public Xcode build
+setting of that name through `HarnessHubOrigin` in Info.plist. iOS Release uses the
+production Hub and fails if its origin is missing or overridden. The bundled renderer
+stays local, and Google approval opens in the system
 browser. Native credentials remain in OS-protected storage, outside renderer messages;
 the iOS account uses a separate device-only Keychain entry from Mac pairing.
 
@@ -39,12 +40,13 @@ The release uses hardened runtime, bundle `dev.harness.desktop`, and Developer I
 Build and package from this directory:
 
 ```sh
-HARNESS_RELEASE_HUB_ORIGIN=https://dafuga-harness.pages.dev bun run build
-HARNESS_MAC_SIGN_IDENTITY='<exact-certificate-SHA1>' bun run package:mac
+bun run build
+HARNESS_RELEASE_HUB_ORIGIN=https://dafuga-harness.pages.dev \
+  HARNESS_MAC_SIGN_IDENTITY='<exact-certificate-SHA1>' bun run package:mac
 bun run package:mac --verify dist/mac/Harness.app
 ```
 
-The fingerprint selects the certificate in the dedicated build keychain. For an existing approved build keychain, set `HARNESS_MAC_SIGN_KEYCHAIN` to its path after verifying that its specific private key permits unattended `codesign`. Bun can load both settings from the ignored `.env.local` file in this package. Packaging publishes the bundle to `dist/mac/Harness.app` after verification. For local development, use `bun run desktop`.
+The packager requires the public release Hub origin and compiles it directly into the signed main bundle. The fingerprint selects the certificate in the dedicated build keychain. For an existing approved build keychain, set `HARNESS_MAC_SIGN_KEYCHAIN` to its path after verifying that its specific private key permits unattended `codesign`. Bun can load those settings from the ignored `.env.local` file in this package. Packaging publishes the bundle to `dist/mac/Harness.app` after verification. For local development, use `bun run desktop`.
 
 Before replacing `/Applications/Harness.app`, run `bun run package:mac --verify <candidate.app>` and keep the previous bundle for rollback. Quit Harness normally so it can finish active work before the replacement. Run the same verification against `/Applications/Harness.app` after installation. Public distribution additionally requires notarization.
 

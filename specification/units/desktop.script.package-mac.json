@@ -13,7 +13,9 @@
 			"packages/desktop/scripts/package-mac.ts",
 			"packages/desktop/scripts/package-mac.types.ts"
 		],
-		"symbols": ["MacPackageError"]
+		"symbols": [
+			"MacPackageError"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -24,6 +26,11 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "Thrown at module load when process.platform is not 'darwin', with the message 'This package target requires macOS.'; no command or file operation in this file runs before it."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Packaging requires a public canonical HTTPS HARNESS_RELEASE_HUB_ORIGIN before signing or staging. The origin is compiled into the staged Electron main bundle."
 			},
 			{
 				"name": "Error",
@@ -43,7 +50,7 @@
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "System command and filesystem errors propagate. A staging, signing or verification failure leaves the existing dist/mac/Harness.app in place."
+				"description": "Bundling, system command and filesystem errors propagate. A staging, bundling, signing or verification failure leaves the existing dist/mac/Harness.app in place."
 			}
 		],
 		"errorStatus": "declared",
@@ -51,6 +58,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.script.build-main",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.script.mac-icon",
 			"via": "import",
@@ -67,7 +79,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

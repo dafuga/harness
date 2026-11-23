@@ -5,6 +5,7 @@ import { homedir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { createRequire } from 'node:module';
 import { execFileSync, spawnSync } from 'node:child_process';
+import { buildDesktopMain, releaseDefine } from './build-main';
 import { macIcon } from './mac-icon/mac-icon';
 import { MacPackageError } from './package-mac.types';
 const bundleId = 'dev.harness.desktop';
@@ -78,15 +79,13 @@ function verifyRelease(app: string): void {
 		throw new MacPackageError('Artifact must use the signed Harness Safe Storage namespace.');
 }
 
-async function populateApp(output: string): Promise<void> {
+async function populateApp(output: string, define: Record<string, string>): Promise<void> {
 	const { default: electron } = await import('electron');
 	const original = resolve(dirname(electron as unknown as string), '../..');
 	execFileSync('/usr/bin/ditto', [original, output]);
 	const project = resolve(output, 'Contents/Resources/app');
-	await mkdir(resolve(project, 'dist'), { recursive: true });
 	await cp('build', resolve(project, 'build'), { recursive: true });
-	await cp('dist/main.cjs', resolve(project, 'dist/main.cjs'));
-	await cp('dist/preload.cjs', resolve(project, 'dist/preload.cjs'));
+	await buildDesktopMain(define, resolve(project, 'dist'));
 	const playwright = dirname(
 		createRequire(import.meta.url).resolve('playwright-core/package.json')
 	);
@@ -124,6 +123,7 @@ async function populateApp(output: string): Promise<void> {
 }
 
 async function packageRelease(): Promise<void> {
+	const define = releaseDefine(process.env, true);
 	const { identity, keychain } = releaseSigner();
 	const directory = resolve('dist/mac');
 	const output = join(directory, 'Harness.app');
@@ -131,7 +131,7 @@ async function packageRelease(): Promise<void> {
 	const staging = await mkdtemp(join(directory, '.package-'));
 	const candidate = join(staging, 'Harness.app');
 	try {
-		await populateApp(candidate);
+		await populateApp(candidate, define);
 		const { sign } = await import('@electron/osx-sign');
 		await sign({
 			app: candidate,

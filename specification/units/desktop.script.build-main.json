@@ -8,8 +8,14 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/build-main.ts"],
-		"symbols": ["desktopNodeOptions", "releaseDefine"]
+		"source": [
+			"packages/desktop/scripts/build-main.ts"
+		],
+		"symbols": [
+			"desktopNodeOptions",
+			"releaseDefine",
+			"buildDesktopMain"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -17,21 +23,27 @@
 			{
 				"name": "releaseDefine.env",
 				"type": "Record<string, string | undefined>",
-				"required": true
+				"required": true,
+				"description": "Environment mapping with the optional public HARNESS_RELEASE_HUB_ORIGIN value."
 			}
 		],
 		"outputs": [
 			{
 				"name": "desktopNodeOptions",
 				"type": "{ target: \"node\"; format: \"cjs\"; external: string[]; plugins: BunPlugin[]; outdir: string; sourcemap: \"external\"; }",
-				"description": "Shared Bun.build options (target node, format cjs, electron external, the jsonc-parser resolve plugin, outdir dist, external sourcemaps) that buildDesktopMain spreads into the main.cjs and preload.cjs builds, adding only entrypoints and naming. The plugin includes an executable setup callback, so the complete options value cannot be represented as JSON."
+				"description": "Default Bun options for the Node CommonJS bundles, including the JSONC parser plugin, external Electron and Playwright, dist output, and external sourcemaps."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Thrown by buildDesktopMain when this file runs as the main module (importing it throws nothing), either because Bun.build reports success false, with the build logs joined by newlines as the message, or because execFileSync throws when node --check exits non-zero or cannot be spawned on a built file. Other rejections, such as from mkdir('dist'), are not caught and propagate out unchanged."
+				"description": "The command refuses an invalid release Hub origin, a failed bundle build, or an output that fails node --check. System and filesystem errors propagate."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The requested release origin is missing or Bun rejects the bundle build."
 			}
 		],
 		"errorStatus": "declared",
@@ -42,17 +54,75 @@
 					{
 						"name": "releaseDefine.env",
 						"type": "Record<string, string | undefined>",
-						"required": true
+						"required": true,
+						"description": "Environment mapping with the optional public HARNESS_RELEASE_HUB_ORIGIN value."
+					},
+					{
+						"name": "releaseDefine.required",
+						"type": "boolean",
+						"required": false,
+						"description": "Require a release origin for signed packaging. Defaults to false for development builds.",
+						"default": false
 					}
 				],
 				"outputs": [
 					{
 						"name": "releaseDefine",
-						"type": "Record<string, string>"
+						"type": "Record<string, string>",
+						"description": "A definition that compiles the canonical HTTPS Hub origin into the main bundle, or an empty mapping for development."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The supplied release origin is not a canonical remote HTTPS origin."
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Packaging requires a release origin and HARNESS_RELEASE_HUB_ORIGIN is absent."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "buildDesktopMain",
+				"inputs": [
+					{
+						"name": "buildDesktopMain.define",
+						"type": "Record<string, string>",
+						"required": true,
+						"description": "Definitions for main.cjs, resolved from the build environment by the caller."
+					},
+					{
+						"name": "buildDesktopMain.outdir",
+						"type": "string",
+						"required": false,
+						"description": "Destination for main.cjs, preload.cjs, and their maps. Defaults to dist.",
+						"default": "dist"
+					}
+				],
+				"outputs": [
+					{
+						"name": "buildDesktopMain",
+						"type": "Promise<void>",
+						"description": "Writes both Node bundles and checks their JavaScript syntax."
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Bundling or node --check failed, or an input or output could not be accessed."
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Bun could not build main.cjs or preload.cjs."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
@@ -74,7 +144,10 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-project-runs"],
+	"scenarios": [
+		"desktop-native",
+		"desktop-project-runs"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
