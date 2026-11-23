@@ -74,15 +74,19 @@ async function attachShot(
 	await pageWorkload(page, scenario as ScenarioManifest, workload);
 }
 
-test('the owner sees the Project overview link on /projects and it opens the overview', async ({
+test('the owner reaches the tracker board through the Project overview link, not on /projects', async ({
 	page
 }) => {
 	const { overview } = await overviewFixture(page, 'ready');
 	await page.goto('/projects');
 	await expect(page.getByRole('heading', { name: 'Shared projects' })).toBeVisible();
-	await expect(page.getByText('synthetic-sync', { exact: true })).toBeVisible();
-	await page.getByRole('link', { name: 'Project overview', exact: true }).click();
+	const link = page.getByRole('link', { name: 'Project overview', exact: true });
+	await expect(link).toBeVisible();
+	await expect(page.locator(overviewRoot)).toHaveCount(0);
+	await expect(page.getByText('synthetic-sync', { exact: true })).toHaveCount(0);
+	await link.click();
 	await expect(page).toHaveURL(/\/tracker-overview$/);
+	await expect(page.getByText('synthetic-sync', { exact: true })).toBeVisible();
 	expect(overview.calls.length).toBeGreaterThan(0);
 	expect(overview.calls.every((call) => call.method === 'GET')).toBe(true);
 	expect(overview.calls.every((call) => call.path === '/api/tracker-overview')).toBe(true);
@@ -110,7 +114,7 @@ test('an unavailable owner read still offers the link on /projects', async ({
 	await overviewFixture(page, 'unavailable');
 	await page.goto('/projects');
 	await expect(page.getByRole('link', { name: 'Project overview', exact: true })).toBeVisible();
-	await expect(page.getByText(unavailableNotice)).toBeVisible();
+	await expect(page.getByText(unavailableNotice)).toHaveCount(0);
 	await expect(page.getByText('synthetic-sync', { exact: true })).toHaveCount(0);
 });
 
@@ -152,7 +156,6 @@ test('switching accounts clears the owner link on /projects', async ({
 	const { state } = await overviewFixture(page, 'ready');
 	await open(page, viewports[0], '/projects');
 	await expect(page.getByRole('link', { name: 'Project overview', exact: true })).toBeVisible();
-	await expect(page.getByText('synthetic-sync', { exact: true })).toBeVisible();
 	state.actor = grace;
 	await page.evaluate(() => window.dispatchEvent(new Event('focus')));
 	await expect(page.getByRole('link', { name: 'Project overview', exact: true })).toHaveCount(0);
@@ -177,16 +180,12 @@ for (const viewport of viewports) {
 		await overviewFixture(page, 'ready');
 		await open(page, viewport, '/projects');
 		await expect(page.getByRole('link', { name: 'Project overview', exact: true })).toBeVisible();
-		await expect(page.locator(overviewRoot)).toBeVisible();
-		await expect(page.getByText('synthetic-sync', { exact: true })).toBeVisible();
-		const fit = await page.evaluate(() => ({
-			documentOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
-			offscreenCards: [...document.querySelectorAll('.po-card')].filter((card) => {
-				const { left, right } = card.getBoundingClientRect();
-				return left < 0 || right > innerWidth;
-			}).length
-		}));
-		expect(fit).toEqual({ documentOverflow: 0, offscreenCards: 0 });
+		await expect(page.getByRole('link', { name: 'Open Atlas' })).toBeVisible();
+		await expect(page.locator(overviewRoot)).toHaveCount(0);
+		const overflow = await page.evaluate(
+			() => document.documentElement.scrollWidth - document.documentElement.clientWidth
+		);
+		expect(overflow).toBe(0);
 		await attachShot(page, testInfo, 'owner', viewport);
 	});
 
