@@ -8,14 +8,15 @@ import {
 	benchmarkSchedule,
 	runBenchmark
 } from '../../src/cli/program/benchmark-service/runBenchmark';
-
 import type { BenchmarkRun } from '../../src/core/agents-providers/subagentBenchmarkTypes';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempRepo } from '../support/temporary';
 import type { TemporaryRepo } from '../support/temporary.types';
 import { expect } from '../verificationExpect';
+import { writeBenchmarkDefinition } from './workflow.run-benchmark.fixtures';
 
 const recordedAnalytics = vi.hoisted(() => ({ events: [] as unknown[] }));
+
 vi.mock('../../src/repositories/reports-media/AnalyticsRepository', () => ({
 	AnalyticsRepository: {
 		open: async () => ({
@@ -40,42 +41,6 @@ function commitBenchmarkFixture(repo: TemporaryRepo): void {
 	chmodSync(checkPath, 0o700);
 	repo.git('add', '--all');
 	repo.git('commit', '-m', 'Create benchmark fixture');
-}
-
-function writeBenchmarkDefinition(repo: TemporaryRepo): string {
-	const definition = {
-		version: 1,
-		name: 'component-value',
-		project: '.',
-		revision: 'HEAD',
-		task: 'Set the component value to one.',
-		contract: 'component.ts exports value equal to one.',
-		allowedFiles: ['component.ts'],
-		checks: [{ id: 'value', command: './check-value.sh' }],
-		setup: [],
-		candidates: [
-			{
-				id: 'codex-pass',
-				runner: 'codex',
-				model: 'fixture-codex',
-				effort: 'high',
-				instructions: '',
-				tools: 'default'
-			},
-			{
-				id: 'claude-error',
-				runner: 'claude',
-				model: 'fixture-claude',
-				effort: 'medium',
-				instructions: '',
-				tools: 'default'
-			}
-		],
-		budget: { repetitions: 1, timeoutMs: 10000, repairs: 0 }
-	};
-	const path = join(repo.root, 'benchmark.json');
-	writeFileSync(path, JSON.stringify(definition));
-	return path;
 }
 
 async function runBenchmarkExample(repo: TemporaryRepo) {

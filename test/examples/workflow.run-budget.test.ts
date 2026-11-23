@@ -1,6 +1,4 @@
-import { unitId, runtimePath, manifest } from './workflow.run-budget.fixture';
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { unitId } from './workflow.run-budget.fixture';
 import { test } from 'vitest';
 import {
 	budgetBench,
@@ -12,50 +10,13 @@ import {
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
-const evidence = 'examples-cases';
-
-function baselineEvent(unit: string, id: string) {
-	return {
-		type: 'baseline',
-		unit,
-		record: { id, commit: 'a'.repeat(40), tree: 'b'.repeat(40) },
-		reviewer: 'Fixture Reviewer',
-		reason: 'Example reviewed baseline',
-		at: '2026-11-15T12:00:00.000Z',
-		metrics: { 'source-bytes': 120, complexity: 1, dependencies: 0 },
-		performance: []
-	};
-}
-
-function writeJson(root: string, path: string, value: unknown): void {
-	const file = join(root, path);
-	mkdirSync(dirname(file), { recursive: true });
-	writeFileSync(file, JSON.stringify(value));
-}
-
-function seedProject(root: string, events = [baselineEvent(unitId, 'verify-budget-001')]): void {
-	const runtimeFile = join(root, runtimePath);
-	mkdirSync(dirname(runtimeFile), { recursive: true });
-	writeFileSync(
-		runtimeFile,
-		'export function invoke(request: { operation: string; input?: unknown }) { return { ok: true, output: { operation: request.operation, input: request.input ?? null } }; }\n'
-	);
-	writeJson(root, 'specification/units/workflow.run-budget.json', manifest);
-	if (events.length > 0) {
-		const ledger = join(root, 'specification/budgets/ledger.ndjson');
-		mkdirSync(dirname(ledger), { recursive: true });
-		writeFileSync(ledger, `${events.map((event) => JSON.stringify(event)).join('\n')}\n`);
-	}
-}
-
-async function thrownMessage(action: () => Promise<unknown>): Promise<string> {
-	try {
-		await action();
-	} catch (error) {
-		return error instanceof Error ? error.message : String(error);
-	}
-	return 'No error was thrown';
-}
+import {
+	baselineEvent,
+	seedProject,
+	evidence,
+	writeJson,
+	invalidBudgetCommandExample
+} from './workflow.run-budget.fixtures';
 
 test('loads manifests, ledger events, and baselines', async () => {
 	await withTempDir('workflow-run-budget-', async (root) => {
@@ -229,32 +190,4 @@ test('benchmarks a module workload and records a capture', async () => {
 	});
 });
 
-test('throws ExpectedCliError for invalid requests and ledger data', async () => {
-	await withTempDir('workflow-run-budget-', async (root) => {
-		seedProject(root);
-		writeFileSync(join(root, 'specification/budgets/ledger.ndjson'), '{bad json}\n');
-		const ledgerError = await thrownMessage(() => loadBudgets(root));
-		writeJson(root, 'specification/workloads/invalid.json', {});
-		const requestError = await thrownMessage(() =>
-			budgetBench({ unit: unitId, workload: 'specification/workloads/invalid.json' }, root)
-		);
-		expect(ledgerError).toContain('budget ledger line 1 is malformed');
-		expect(requestError).toContain('is not a workload');
-		recordExampleCases(
-			{
-				unitId,
-				symbol: 'loadBudgets/budgetBench',
-				state: 'throws-expectedclierror-for-invalid-requests-and-ledger-data',
-				evidence,
-				file: 'throws-expectedclierror-for-invalid-requests-and-ledger-data.json'
-			},
-			[
-				{
-					name: 'malformed ledger and invalid workload inputs',
-					input: { root },
-					output: { ledgerError, requestError }
-				}
-			]
-		);
-	});
-});
+test('throws ExpectedCliError for invalid requests and ledger data', invalidBudgetCommandExample);

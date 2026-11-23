@@ -9,21 +9,21 @@ import type {
 	ResourceContext
 } from '../../src/core/execution-runtimes/resourceTypes.types';
 
+const config = {
+	schemaVersion: 1,
+	cpuReservePercent: 20,
+	memoryReservePercent: 25,
+	minMemoryReserveMiB: 2048,
+	pollMs: 1000,
+	staleSampleMs: 5000
+} satisfies ResourceConfig;
+const request = {
+	priority: 'agent-test',
+	cpus: 2,
+	memoryMiB: 4096,
+	label: 'Focused verification'
+} satisfies ResourceRequest;
 function resourceTypeExample() {
-	const config = {
-		schemaVersion: 1,
-		cpuReservePercent: 20,
-		memoryReservePercent: 25,
-		minMemoryReserveMiB: 2048,
-		pollMs: 1000,
-		staleSampleMs: 5000
-	} satisfies ResourceConfig;
-	const request = {
-		priority: 'agent-test',
-		cpus: 2,
-		memoryMiB: 4096,
-		label: 'Focused verification'
-	} satisfies ResourceRequest;
 	const snapshot = {
 		status: 'available',
 		sampledAt: 1730000000000,

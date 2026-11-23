@@ -1,84 +1,21 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'vitest';
 import { filterIgnoredFindings, readAuditConfig } from '../../src/audit/development-tooling/config';
-import type { AuditFinding } from '../../src/audit/development-tooling/types';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
-
-const defaultLimits = {
-	maxFileLines: 220,
-	maxFunctionLines: 55,
-	maxClassLines: 120,
-	maxMethodLines: 35,
-	maxNestingDepth: 4,
-	maxParameters: 4,
-	maxComplexity: 10,
-	maxClassesPerFile: 1
-};
-const suppliedConfig = {
-	cleanCode: { mode: 'advisory', minConfidence: 0.9, exclude: ['src/generated/'] },
-	ignore: [
-		{ path: 'src/legacy/', rule: 'small-file', reason: 'Scheduled for the billing rewrite.' },
-		{ path: '   ', reason: 'Blank paths are discarded.' }
-	],
-	limits: { maxFileLines: 300 }
-};
-const ignoreRules = [
-	{ path: 'src/legacy/', rule: 'small-file', reason: 'Scheduled for the billing rewrite.' },
-	{ path: 'src/reports/summary.ts', reason: 'Tracked in the reports cleanup.' }
-];
-const findings: AuditFinding[] = [
-	{
-		path: 'src/legacy/parser.ts',
-		rule: 'small-file',
-		message: 'File has 340 lines. Limit is 300.'
-	},
-	{ path: 'src/legacy/parser.ts', rule: 'max-complexity', message: 'Complexity 14; limit 10.' },
-	{ path: 'src/reports/summary.ts', rule: 'max-classes-per-file', message: '2 classes; limit 1.' },
-	{ path: 'src/billing/invoices.ts', rule: 'small-file', message: '412 lines; limit 300.' }
-];
-
-function createProjectRoot(parent: string, name: string): string {
-	const root = join(parent, name);
-	mkdirSync(root, { recursive: true });
-	return root;
-}
-
-function writeConfig(parent: string, name: string, config: object | string): string {
-	const root = createProjectRoot(parent, name);
-	const contents =
-		typeof config === 'string' ? config : (JSON.stringify(config, null, 2) ?? 'null');
-	writeFileSync(join(root, 'harness.audit.json'), contents);
-	return root;
-}
-
-function errorSummary(call: () => unknown) {
-	try {
-		call();
-		return { name: 'NoError', message: 'Call returned normally.' };
-	} catch (error) {
-		if (!(error instanceof Error)) return { name: typeof error, message: String(error) };
-		const code = 'code' in error ? error.code : undefined;
-		return {
-			name: error.name,
-			message: error.message,
-			...(typeof code === 'string' ? { code } : {})
-		};
-	}
-}
-
-function findingSummary(items: AuditFinding[]) {
-	return items.map(({ path, rule }) => ({ path, rule }));
-}
-
-function partitionSummary(result: ReturnType<typeof filterIgnoredFindings>) {
-	return {
-		activeFindings: findingSummary(result.activeFindings),
-		ignoredFindings: findingSummary(result.ignoredFindings)
-	};
-}
+import {
+	createProjectRoot,
+	writeConfig,
+	suppliedConfig,
+	defaultLimits,
+	ignoreRules,
+	errorSummary,
+	findings,
+	partitionSummary,
+	findingSummary
+} from './audit.config.fixtures';
 
 test('reads defaults and normalizes configured audit settings', () =>
 	withTempDir('audit-config-examples-', (directory) => {

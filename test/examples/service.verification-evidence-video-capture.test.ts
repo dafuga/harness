@@ -8,7 +8,6 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { VideoCaptureService } from '../../src/services/verification-evidence/VideoCaptureService';
 import type {
-	VideoCapturePlan,
 	VideoCaptureScript,
 	VideoCaptureScriptInput
 } from '../../src/services/verification-evidence/VideoCaptureService.types';
@@ -23,8 +22,10 @@ import {
 	recordingAllowed
 } from '../../src/services/verification-evidence/video-capture-service/captureScript';
 import { captureReceiptStore } from '../../src/services/verification-evidence/video-capture-service/captureReceiptStore';
+import { scriptFixture } from './service.verification-evidence-video-capture.fixtures';
 
 const unitId = 'service.verification-evidence-video-capture';
+
 const signature = 'd'.repeat(64);
 
 async function failureOf(run: () => unknown): Promise<Summary> {
@@ -38,37 +39,6 @@ async function failureOf(run: () => unknown): Promise<Summary> {
 
 function meta(state: string, symbol: string) {
 	return { unitId, symbol, state, evidence: 'examples-cases', file: `${state}.json` };
-}
-
-function scriptFixture(): { input: VideoCaptureScriptInput; plan: VideoCapturePlan } {
-	const slot = { unit: 'unit.a', clipId: 'clip-a', viewport: 'desktop', inputHash: 'c'.repeat(64) };
-	const clip = {
-		id: 'clip-a',
-		unit: 'unit.a',
-		entry: 'start',
-		exit: 'done',
-		state: 'editing',
-		states: ['start', 'editing', 'done'],
-		edges: []
-	};
-	const input = {
-		clip,
-		slot,
-		viewport: { id: 'desktop', width: 1280, height: 720 },
-		pendingFlags: [{ id: 'flag-1', note: 'Check the focus ring' }]
-	} as unknown as VideoCaptureScriptInput;
-	const plan = {
-		known: [
-			{
-				id: 'flag-1',
-				unit: 'unit.a',
-				clipId: 'clip-a',
-				viewport: 'desktop',
-				createdAt: '2026-11-16T00:00:00.000Z'
-			}
-		]
-	} as unknown as VideoCapturePlan;
-	return { input, plan };
 }
 
 test('Reports the video capture service identity', async () => {

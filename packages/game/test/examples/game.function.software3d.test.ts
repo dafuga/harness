@@ -1,64 +1,26 @@
-import type { Run, View, Context, Drawn } from './game.function.software3d.test.types';
+import type { Run } from './game.function.software3d.test.types';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { Canvas2dContextUnavailableError } from '../../src/adapters/game-authoring/Canvas2dContextUnavailableError';
 import { Software3dAdapter } from '../../src/adapters/game-authoring/Software3dAdapter';
+import {
+	asCanvas,
+	makeCanvas,
+	meta,
+	drawWith,
+	COURTYARD,
+	summary,
+	GALLERY,
+	makeContext
+} from './game.function.software3d.fixtures';
 
 const KEY_HELD = { x: 2, y: 0, hasKey: true, doorOpen: false };
+
 const KEY_LOOSE = { x: 1.5, y: 4.5, hasKey: false, doorOpen: false };
-const COURTYARD = asView({
-	id: 'courtyard',
-	title: 'The courtyard',
-	dimension: '2d',
-	style: 'Lush illustrated garden, warm stone, soft sunlight.',
-	checkpoints: []
-});
-const GALLERY = asView({
-	id: 'gallery',
-	title: 'Stone gallery',
-	dimension: '3d',
-	style: 'Quiet stone gallery with cool daylight from high windows.',
-	checkpoints: [],
-	world: {
-		width: 12,
-		depth: 9,
-		spawn: { x: 1.5, z: 4.5 },
-		objects: [
-			{
-				id: 'north-wall',
-				kind: 'wall',
-				label: 'North wall',
-				x: 6,
-				z: 0.5,
-				width: 12,
-				depth: 1,
-				height: 3
-			},
-			{
-				id: 'exit-gate',
-				kind: 'goal',
-				label: 'Exit gate',
-				x: 10.5,
-				z: 4.5,
-				width: 1,
-				depth: 2,
-				height: 1.2
-			}
-		]
-	}
-});
 
 function asRun(value: unknown): Run {
 	return value as Run;
-}
-
-function asView(value: unknown): View {
-	return value as View;
-}
-
-function asCanvas(value: unknown): HTMLCanvasElement {
-	return value as HTMLCanvasElement;
 }
 
 function runWith(state: Record<string, unknown>): Run {
@@ -71,65 +33,6 @@ function runWith(state: Record<string, unknown>): Run {
 		events: [],
 		trace: []
 	});
-}
-
-/** A fake 2D context that records fills, background rectangles and clears. */
-export function makeContext() {
-	return {
-		fillStyle: '',
-		strokeStyle: '',
-		fills: [] as string[],
-		rects: [] as number[][],
-		clears: [] as number[][],
-		beginPath: () => undefined,
-		moveTo: () => undefined,
-		lineTo: () => undefined,
-		closePath: () => undefined,
-		stroke: () => undefined,
-		fill(this: { fills: string[]; fillStyle: string }) {
-			this.fills.push(this.fillStyle);
-		},
-		fillRect(this: { rects: number[][] }, ...args: number[]) {
-			this.rects.push(args);
-		},
-		clearRect(this: { clears: number[][] }, ...args: number[]) {
-			this.clears.push(args);
-		}
-	};
-}
-
-function makeCanvas(context: Context | null) {
-	return {
-		width: 320,
-		height: 200,
-		dataset: {} as Record<string, string>,
-		getContext: () => context
-	};
-}
-
-export function drawWith(run: Run, view: View) {
-	const context = makeContext();
-	const canvas = makeCanvas(context);
-	new Software3dAdapter(asCanvas(canvas)).render(run, view);
-	return { canvas, context };
-}
-
-function summary(drawn: Drawn) {
-	return {
-		fills: drawn.context.fills,
-		rects: drawn.context.rects,
-		dataset: { ...drawn.canvas.dataset }
-	};
-}
-
-function meta(symbol: string, state: string) {
-	return {
-		unitId: 'game.function.software3d',
-		symbol,
-		state,
-		evidence: 'examples-cases',
-		file: `${state}.json`
-	};
 }
 
 test('Throws when the canvas has no 2D context', () => {
