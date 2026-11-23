@@ -1,6 +1,7 @@
 // @harness-uid u_fyf7e7kyi5
+import { execFileSync } from 'node:child_process';
 import { realpathSync, statSync } from 'node:fs';
-import { homedir, userInfo } from 'node:os';
+import { homedir } from 'node:os';
 import { controlledTrackerExecutable } from '../tracker-host-process-adapter/trackerHostCommand';
 import type { TrackerHostStartRequest } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
 import type {
@@ -77,7 +78,12 @@ function nativeTrackerProviderCommand(
 	if (provider === 'claude')
 		return {
 			home: homedir(),
-			username: userInfo().username,
+			username: execFileSync('/usr/bin/id', ['-un'], {
+				encoding: 'utf8',
+				env: {},
+				stdio: ['ignore', 'pipe', 'ignore'],
+				timeout: 5000
+			}).trim(),
 			argv: [
 				profile.claude,
 				'--dangerously-skip-permissions',
