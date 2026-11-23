@@ -20,6 +20,11 @@
 			"id": "snapshot-continuation",
 			"title": "Freeze membership and values across pages and withdraw a snapshot when an item becomes sensitive.",
 			"coverage": "required"
+		},
+		{
+			"id": "queued-writes",
+			"title": "Require a separate write grant, commit one note per intent, and resolve only the reviewed flag revision.",
+			"coverage": "required"
 		}
 	],
 	"viewports": [],
@@ -37,7 +42,7 @@
 		{
 			"id": "projection-assertions",
 			"kind": "assertions",
-			"states": ["snapshot-and-delta", "scope-and-role", "snapshot-continuation"],
+			"states": ["snapshot-and-delta", "scope-and-role", "snapshot-continuation", "queued-writes"],
 			"viewports": [],
 			"required": true
 		}

@@ -1,31 +1,7 @@
-import { DatabaseSync } from 'node:sqlite';
 import { expect, test } from 'vitest';
-import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
+import { measureWorkload } from '../../support/measureWorkload';
 
-const now = Date.parse('2026-11-23T12:00:00.000Z');
-const scope = 'a'.repeat(64);
-const updatedAt = new Date(now).toISOString();
-
-function hub(role: 'hub' | 'spoke' = 'hub') {
-	const db = new DatabaseSync(':memory:');
-	const runtime = () =>
-		new TrackerNativeRuntimeService(db, {
-			node: 'fixture',
-			role,
-			now: () => now,
-			storage: { databaseId: () => 'fixture-db' }
-		});
-	let instance = runtime();
-	const pull = (query = '') =>
-		instance.items.handle(new Request('http://localhost/phone-replica/v1?scope=' + scope + query));
-	return {
-		db,
-		pull,
-		restart: () => (instance = runtime()),
-		item: (itemId: string, fields: Parameters<typeof instance.store.appendLocal>[0]['fields']) =>
-			instance.store.appendLocal({ itemId, fields, actor: 'fixture' })
-	};
-}
+import { hub, phoneWrite, scope, updatedAt } from './trackerPhoneFixture';
 
 function checkSnapshot(first: unknown) {
 	expect(first).toMatchObject({
@@ -154,3 +130,56 @@ test('pages a fixed snapshot and discards it if an item is withdrawn', async () 
 		fixture.db.close();
 	}
 });
+
+const intentId = (position: number) => '00000000-0000-4000-8000-00000000000' + position;
+
+test('commits scoped phone notes and answers with durable receipts and flag comparisons', () =>
+	measureWorkload('service.projects-sessions-tracker-phone-replica', 'queued-writes', async () => {
+		const fixture = hub();
+		try {
+			fixture.item('fixture001', { title: 'Review task', status: 'open' });
+			const note = { intentId: intentId(1), action: 'note', text: 'From the phone' };
+			expect((await fixture.write(note, '')).status).toBe(403);
+			expect((await fixture.write(note, phoneWrite.token, 'other-phone')).status).toBe(403);
+			const saved = { intentId: note.intentId, status: 'accepted' };
+			expect(await (await fixture.write(note)).json()).toEqual(saved);
+			fixture.restart();
+			expect(await (await fixture.write(note)).json()).toEqual(saved);
+			const before = await (await fixture.pull()).json();
+			expect(before.rows[0].notes).toMatchObject([{ text: note.text }]);
+			const flag = {
+				intentId: intentId(2),
+				action: 'flag',
+				text: 'First question',
+				revision: before.rows[0].attentionRevision
+			};
+			expect(await (await fixture.write(flag)).json()).toMatchObject({ status: 'accepted' });
+			const flagged = await (await fixture.pull('&cursor=' + before.cursor)).json();
+			const answer = {
+				intentId: intentId(3),
+				action: 'answer',
+				text: 'An answer',
+				revision: flagged.operations[0].row.attentionRevision
+			};
+			fixture.item('fixture001', { needs_daniel: 1, resolved: 0, question: 'New question' });
+			expect(await (await fixture.write(answer)).json()).toMatchObject({
+				status: 'conflict',
+				reason: 'attention'
+			});
+			const current = await (await fixture.pull()).json();
+			expect(current.rows[0].flag).toMatchObject({ state: 'open', question: 'New question' });
+			expect(
+				await (
+					await fixture.write({
+						...answer,
+						intentId: intentId(4),
+						revision: current.rows[0].attentionRevision
+					})
+				).json()
+			).toMatchObject({ status: 'accepted' });
+			const resolved = await (await fixture.pull()).json();
+			expect(resolved.rows[0].flag).toMatchObject({ state: 'resolved', question: 'New question' });
+		} finally {
+			fixture.db.close();
+		}
+	}));
