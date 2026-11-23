@@ -123,6 +123,8 @@ test.each(['bug-fix', 'fix', 'regression-prevention'])(
 	async (template) => {
 		const root = await mkdtemp(join(tmpdir(), 'harness-regression-cli-'));
 		try {
+			if (template === 'bug-fix')
+				await writeFile(join(root, 'fixture-archive.bin'), Buffer.alloc(129 * 1024 * 1024));
 			await prepareRepair(root, template);
 			const skipped = await runHarness(
 				['loop', 'complete', 'repair', 'implement', '--evidence', 'Skip the diagnosis'],

@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"revision": "6127781a768e6955f90cf0fac8fc3b2ce8d7a1ea",
+	"bugClass": {
+		"id": "buffered-git-archive",
+		"title": "Git archive exceeds a command's output limit",
+		"cause": "A caller captures an entire Git archive on standard output through a bounded command runner, so a repository with a larger tracked tree fails before the archive can be consumed.",
+		"criteria": "The call exports a tree as an archive and collects the archive bytes in a bounded command result. Calls using Git's --output option or piping to a file or extractor avoid the failure.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "bytes(['archive'",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "['archive', '--format=tar', commit]",
+				"weight": 4
+			}
+		],
+		"contextTerms": ["archive", "git", "snapshot"],
+		"pathHints": [
+			{
+				"contains": "src/adapters/",
+				"weight": 4
+			}
+		]
+	},
+	"model": "gpt-6-luna",
+	"scannedFiles": 8158,
+	"skipped": [],
+	"candidates": [],
+	"errors": [],
+	"classPath": "specification/bug-classes/buffered-git-archive.json"
+}

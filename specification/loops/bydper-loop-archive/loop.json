@@ -1,0 +1,69 @@
+{
+	"name": "bydper-loop-archive",
+	"goal": "Record genuine red and green checkpoints when the committed snapshot exceeds 8 MiB",
+	"createdAt": "2026-11-23T17:33:48.235Z",
+	"updatedAt": "2026-11-23T18:00:19.562Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-23T17:34:34.402Z",
+			"evidence": "Checkpoint startup captures git archive stdout through GitAdapter. GitAdapter raises the generic 8 MiB cap to 128 MiB in this revision, but the reported repository archive is roughly 170 MB. The checkpoint command must run on that exact commit."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-23T17:34:35.136Z",
+			"evidence": "The registered SnapshotAdapter export example and loop CLI bug-fix matrix only commit small source files. Add a large committed asset to the existing fixtures, verify its export, and require the normal CLI matrix to retain red and green evidence."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-23T17:38:10.064Z",
+			"evidence": "The committed loop CLI test fixture contains a 129 MiB tracked file. The unchanged Vitest command fails because the nested loop record red command aborts with BoundedCommandFailure: Command output limit exceeded."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-23T17:38:46.734Z",
+			"evidence": "Git writes the archive to a private temporary file. Bounded tar extracts into a sibling source directory, then the archive is removed. Setup errors remove the temporary workspace."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-23T18:00:16.505Z",
+			"evidence": "Matched checkpoints replay the committed loop CLI test unchanged. 163e0c174d fails with the 129 MiB archive output limit; 6127781a76 records both phases and passes."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "complete",
+			"completedAt": "2026-11-23T18:00:17.248Z",
+			"evidence": "siblings-431f7a81-f964-471e-b3c1-14e774a0d6fc.json"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "complete",
+			"completedAt": "2026-11-23T18:00:19.562Z",
+			"evidence": "Scoped proof passed: matched CLI regression, standalone 129 MiB replay, 11 snapshot unit tests, root audit, targeted lint and CLI build. Root aggregate reported existing registry failures verified on clean main and host timeouts."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
