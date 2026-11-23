@@ -2,6 +2,7 @@ import {
 	keepEdits,
 	keepTypedFields,
 	viewSettings,
+	closeViewSettings,
 	doneCheckpoint,
 	advancedCheckpoint,
 	captureCheckpointViewports,
@@ -28,6 +29,7 @@ for (const dimension of ['2d', '3d'])
 		await viewSettings(page);
 		await expect(page.getByRole('heading', { name: 'Game Views', exact: true })).toBeVisible();
 		await page.getByLabel('Dimension', { exact: true }).selectOption(dimension);
+		await closeViewSettings(page);
 		await doneCheckpoint(page);
 		await page.getByRole('button', { name: 'Preview', exact: true }).click();
 		await expect(page.locator('canvas[data-ready="true"]').first()).toBeVisible();
@@ -45,7 +47,12 @@ for (const dimension of ['2d', '3d'])
 		await capture(page, 'game-progress-preserved-' + dimension);
 		await doneCheckpoint(page);
 		await page.getByRole('button', { name: 'Preview', exact: true }).click();
+		await page.getByRole('button', { name: 'Live AI video…', exact: true }).click();
 		await expect(page.getByRole('button', { name: /Start AI/ })).toBeDisabled();
+		await page
+			.getByRole('dialog', { name: 'Live AI video' })
+			.getByRole('button', { name: 'Close viewer', exact: true })
+			.click();
 	});
 test('saved graph edits persist, invalid references block saves and history is read-only', async ({
 	page
@@ -84,6 +91,7 @@ test('saved graph edits persist, invalid references block saves and history is r
 	await page.reload();
 	await viewSettings(page);
 	await expect(page.getByLabel('View title', { exact: true })).toHaveValue('Saved courtyard');
+	await closeViewSettings(page);
 	await keepTypedFields(page, () =>
 		page.evaluate(() => JSON.parse(localStorage.getItem('game-test-document') ?? 'null'))
 	);
@@ -97,7 +105,9 @@ test('saved graph edits persist, invalid references block saves and history is r
 	await expect(page.getByRole('button', { name: 'Save', exact: true })).toBeDisabled();
 	page.once('dialog', (dialog) => dialog.accept());
 	await page.goto(url + '&readonly=1&commit=' + 'c'.repeat(40));
+	await viewSettings(page);
 	await expect(page.getByLabel('View title', { exact: true })).toHaveAttribute('readonly', '');
+	await closeViewSettings(page);
 	await expect(page.getByRole('button', { name: 'Save', exact: true })).toHaveCount(0);
 	await doneCheckpoint(page);
 	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
@@ -108,13 +118,14 @@ test('view creation and checkpoint creation/deletion preserve independent mechan
 }) => {
 	await level.installLevelProject(page);
 	await page.goto(level.levelProject);
-	await viewSettings(page);
 	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 	const trace = page.getByText(/^Execution trace/);
 	for (let step = 0; step < 2; step++)
 		await page.getByRole('button', { name: 'Move right' }).click();
-	await page.getByRole('button', { name: 'New level', exact: true }).click();
+	await page.getByRole('button', { name: 'New view', exact: true }).click();
+	await viewSettings(page);
 	await expect(page.getByLabel('View title', { exact: true })).toHaveValue('New level');
+	await closeViewSettings(page);
 	await level.buildLevel(page);
 	await doneCheckpoint(page);
 	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
@@ -159,6 +170,7 @@ test('3D remains playable when the browser cannot provide WebGL', async ({ page 
 	await page.goto('/game');
 	await viewSettings(page);
 	await page.getByLabel('Dimension', { exact: true }).selectOption('3d');
+	await closeViewSettings(page);
 	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 	await expect(page.locator('canvas[data-renderer="software3d"][data-ready="true"]')).toBeVisible();
 	await page.getByRole('button', { name: 'Move right', exact: true }).click({ clickCount: 4 });
@@ -202,12 +214,15 @@ test('project creation sends the chosen game type and dimension', async ({ page 
 	expect(
 		await page.evaluate(() => JSON.parse(localStorage.getItem('game-create-request')!))
 	).toEqual({ name: 'created-game', kind: 'game', dimension: '3d' });
+	await viewSettings(page);
 	await expect(page.getByLabel('Dimension', { exact: true })).toHaveValue('3d');
+	await closeViewSettings(page);
 });
 test('held arrow keys animate the 3D game through the vault branch', async ({ page }) => {
 	await page.goto('/game');
 	await viewSettings(page);
 	await page.getByLabel('Dimension', { exact: true }).selectOption('3d');
+	await closeViewSettings(page);
 	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 	await expect(page.locator('canvas[data-ready="true"]')).toBeVisible();
 	await page.locator('canvas').click();

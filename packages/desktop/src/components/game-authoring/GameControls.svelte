@@ -12,10 +12,10 @@
 	const world = $derived(Boolean(view.world));
 	/** Up and down cross the level's depth: up lowers y and down raises it. */
 	const moves = [
-		{ name: 'Move up', text: '↑ Move up', x: 0, y: -1 },
-		{ name: 'Move down', text: '↓ Move down', x: 0, y: 1 },
-		{ name: 'Move left', text: '← Move left', x: -1, y: 0 },
-		{ name: 'Move right', text: 'Move right →', x: 1, y: 0 }
+		{ name: 'Move up', text: '↑', x: 0, y: -1 },
+		{ name: 'Move down', text: '↓', x: 0, y: 1 },
+		{ name: 'Move left', text: '←', x: -1, y: 0 },
+		{ name: 'Move right', text: '→', x: 1, y: 0 }
 	];
 	const buttons = $derived(world ? moves : moves.slice(2));
 	const fixed = (value: unknown) => Number(value).toFixed(2);
@@ -41,24 +41,34 @@
 	</hx-div>
 	<hx-div class="row">
 		{#each buttons as move (move.name)}
-			<hx-button aria-label={move.name} onclick={() => step({ x: move.x, y: move.y })}>
+			<hx-button class="move" aria-label={move.name} onclick={() => step({ x: move.x, y: move.y })}>
 				{move.text}
 			</hx-button>
 		{/each}
-		{#if !world}
+		<hx-button onclick={reset}>Reset</hx-button>
+		<hx-small>Or hold the arrow keys.</hx-small>
+	</hx-div>
+	{#if !world}
+		<hx-div class="row">
 			{#each ['Garden', 'Vault'] as branch (branch)}
 				<hx-button disabled={!run.state.doorOpen} onclick={() => choose(branch)}>{branch}</hx-button
 				>
 			{/each}
-		{/if}
-		<hx-button onclick={reset}>Reset</hx-button>
-		<hx-small>Or hold the arrow keys.</hx-small>
-	</hx-div>
+			{#if !run.state.doorOpen}
+				<hx-small class="why">Garden and Vault open once the door is open.</hx-small>
+			{/if}
+		</hx-div>
+	{/if}
 </hx-div>
 
 <style>
 	.row {
 		flex-wrap: wrap;
+		align-items: center;
 		margin-top: var(--hx-space-14);
+	}
+	.move {
+		min-width: 44px;
+		min-height: 44px;
 	}
 </style>

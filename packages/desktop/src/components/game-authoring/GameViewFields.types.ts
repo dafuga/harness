@@ -8,7 +8,7 @@ export interface GameViewFieldsProps {
 	view: GameView;
 	views: GameView[];
 	readonly?: boolean;
-	/** The section on show, bindable; pressing another section or New level changes it. */
+	/** The section on show, bindable; pressing another section or New view changes it. */
 	section: GameSection;
 	select: (id: string) => void;
 	/** Adds the new level this toolbar prepared from the current view, before selecting it. */

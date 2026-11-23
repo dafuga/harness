@@ -1,0 +1,155 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.game-live-ai",
+	"uid": "u_hq2m7zd4bx",
+	"kind": "component",
+	"title": "GameLiveAi",
+	"responsibility": "Open the live AI video dialog from one button, holding the model choice, the price, the start or stop control and one quiet status line.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.modal",
+			"reports.component.select",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-small"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/desktop/src/components/game-authoring/GameLiveAi.svelte",
+			"packages/desktop/src/components/game-authoring/GameLiveAi.types.ts"
+		],
+		"symbols": [
+			"GameLiveAi",
+			"GameLiveAiProps"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "GameLiveAi.models",
+				"type": "Record<string, { label: string; rate: number }>",
+				"required": true,
+				"description": "The AI video models by key, each with its label and its price in dollars per minute; the dialog lists them in the model select."
+			},
+			{
+				"name": "GameLiveAi.choice",
+				"type": "string",
+				"required": false,
+				"description": "The chosen model key, bindable. The select changes it only while the control is available and not busy."
+			},
+			{
+				"name": "GameLiveAi.limit",
+				"type": "number",
+				"required": true,
+				"description": "The most seconds one AI video run may last; the dialog states it in the price line."
+			},
+			{
+				"name": "GameLiveAi.rate",
+				"type": "number",
+				"required": true,
+				"description": "The chosen model's price in dollars per minute; the price line shows it to two decimals as the most one run costs."
+			},
+			{
+				"name": "GameLiveAi.available",
+				"type": "boolean",
+				"required": true,
+				"description": "False when Live AI is not configured, the view is read-only or no project is open: the model select and Start AI video are disabled."
+			},
+			{
+				"name": "GameLiveAi.busy",
+				"type": "boolean",
+				"required": true,
+				"description": "True while a run is starting or live: Stop AI video replaces Start AI video."
+			},
+			{
+				"name": "GameLiveAi.status",
+				"type": "string",
+				"required": true,
+				"description": "One quiet line in the dialog, shown only when not empty; the parent leaves it empty when the control is ready and idle."
+			},
+			{
+				"name": "GameLiveAi.error",
+				"type": "string",
+				"required": true,
+				"description": "A failure to start, shown as an alert in the dialog; empty when there is none."
+			},
+			{
+				"name": "GameLiveAi.start",
+				"type": "() => void",
+				"required": true,
+				"description": "Called by Start AI video."
+			},
+			{
+				"name": "GameLiveAi.stop",
+				"type": "() => void",
+				"required": true,
+				"description": "Called by Stop AI video."
+			}
+		],
+		"outputs": [
+			{
+				"name": "GameLiveAi",
+				"type": "markup",
+				"description": "A Live AI video… button that opens a shared Modal titled Live AI video, closed at first. The dialog holds the price sentence, the model select, Start AI video or Stop AI video, the status line when present and the error alert when present."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-small",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/game-authoring/GameLiveAi.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/game-authoring/GameLiveAi.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,6 +1,6 @@
 import { watchGameHost } from './support/nativeGameHostFixture';
 import { prepareNativeLegacyGame } from './native-level-fixture';
-import { viewSettings, doneCheckpoint } from './game-unsaved-fixture';
+import { viewSettings, closeViewSettings, doneCheckpoint } from './game-unsaved-fixture';
 import scenario from '../../../../specification/scenarios/game-authoring.json' with { type: 'json' };
 import { buildStamp } from '../../../../src/utils/development-tooling/buildStamp';
 import { recordCapture } from '../../../../src/utils/reports-media/record-capture/recordCapture';
@@ -45,7 +45,9 @@ export async function catalogNavigation(page: Page) {
 	await expect(search).not.toBeVisible();
 	await game.click();
 	await expect(page.getByRole('heading', { name: 'Game Views', exact: true })).toBeVisible();
+	await viewSettings(page);
 	await expect(page.getByLabel('View title', { exact: true })).toHaveValue('Authored courtyard');
+	await closeViewSettings(page);
 	await expect(page.getByRole('button', { name: 'Save', exact: true })).toBeVisible();
 }
 /**
@@ -187,6 +189,7 @@ export async function createNativeGame(page: Page, name: string, dimension: stri
 	await expect(page.getByRole('heading', { name: 'Game Views', exact: true })).toBeVisible();
 	await viewSettings(page);
 	await expect(page.getByLabel('Dimension', { exact: true })).toHaveValue(dimension);
+	await closeViewSettings(page);
 	await expect(page.getByText('Demo', { exact: true })).toHaveCount(0);
 	await prepareNativeLegacyGame(page, dimension);
 }

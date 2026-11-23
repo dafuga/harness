@@ -6,8 +6,10 @@ import type { GameDocument } from '../../../game/src/models/game-authoring/Game.
 /** A canceled app navigation or reload retains the authoring document. */
 export async function keepEdits(page: Page) {
 	const address = page.url();
+	await viewSettings(page);
 	const title = page.getByLabel('View title', { exact: true });
 	const value = await title.inputValue();
+	await closeViewSettings(page);
 	const confirmed = page.waitForEvent('dialog', { timeout: 2000 });
 	const leaving = page.getByRole('link', { name: 'Back to project', exact: true }).click();
 	const confirmation = await confirmed;
@@ -15,7 +17,9 @@ export async function keepEdits(page: Page) {
 	await confirmation.dismiss();
 	await leaving;
 	await expect(page).toHaveURL(address);
+	await viewSettings(page);
 	await expect(title).toHaveValue(value);
+	await closeViewSettings(page);
 	const unloading = page.waitForEvent('dialog', { timeout: 2000 });
 	const reload = page.reload({ timeout: 2000 }).catch(() => undefined);
 	const prompt = await unloading;
@@ -23,7 +27,9 @@ export async function keepEdits(page: Page) {
 	await prompt.dismiss();
 	await reload;
 	await expect(page).toHaveURL(address);
+	await viewSettings(page);
 	await expect(title).toHaveValue(value);
+	await closeViewSettings(page);
 	await expect(page.getByText('Unsaved changes', { exact: true })).toBeVisible();
 }
 
@@ -57,8 +63,10 @@ export async function leaveCleanGame(page: Page) {
 /** Native app navigation uses a controlled confirm; host unload is checked by startup tests and native UI. */
 export async function keepNativeNavigation(page: Page) {
 	const address = page.url();
+	await viewSettings(page);
 	const title = page.getByLabel('View title', { exact: true });
 	const saved = await title.inputValue();
+	await closeViewSettings(page);
 	await page.evaluate(() => {
 		window.confirm = (message) => {
 			document.documentElement.dataset.gameConfirmation = message;
@@ -150,10 +158,21 @@ export async function keepTypedFields(page: Page, stored: () => Promise<GameDocu
 		await expect(page.getByLabel(label, { exact: true })).toHaveValue(text);
 }
 
-/** Scene controls are deliberately hidden until requested. */
+const settingsDialog = (page: Page) =>
+	page.getByRole('dialog', { name: 'View settings', exact: true });
+
+/** The title, dimension and art direction wait in the View settings dialog until it is opened. */
 export async function viewSettings(page: Page) {
-	if (!(await page.getByLabel('View title', { exact: true }).isVisible()))
-		await page.getByRole('button', { name: /View settings/ }).click();
+	if (!(await settingsDialog(page).isVisible()))
+		await page.getByRole('button', { name: 'View settings', exact: true }).click();
+	await expect(settingsDialog(page)).toBeVisible();
+}
+
+/** The dialog is modal: close it before using the page behind it (tabs, Save, Preview). */
+export async function closeViewSettings(page: Page) {
+	if (await settingsDialog(page).isVisible())
+		await settingsDialog(page).getByRole('button', { name: 'Close viewer', exact: true }).click();
+	await expect(settingsDialog(page)).toBeHidden();
 }
 
 export async function doneCheckpoint(page: Page) {

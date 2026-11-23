@@ -1,7 +1,6 @@
 import type { Page } from '@playwright/test';
 import { expect } from '../../../../test/support/browserTest';
 import { exampleDocument } from '../../../game/src/index';
-import { viewSettings } from './game-unsaved-fixture';
 
 export const levelProject = '/game?projectId=local-' + 'd'.repeat(64) + '&level-fixture=1';
 const layout = {
@@ -140,10 +139,9 @@ export async function exerciseLevelPlanning(
 		]) {
 			await page.setViewportSize({ width, height });
 			await page.goto(levelProject);
-			await viewSettings(page);
 			await capture(page, 'level-entry-' + dimension);
-			await expect(page.getByRole('button', { name: 'New level', exact: true })).toBeVisible();
-			await page.getByRole('button', { name: 'New level', exact: true }).click();
+			await expect(page.getByRole('button', { name: 'New view', exact: true })).toBeVisible();
+			await page.getByRole('button', { name: 'New view', exact: true }).click();
 			await expect(page.getByRole('button', { name: 'Checkpoints', exact: true })).toBeDisabled();
 			await capture(page, 'level-concept-' + dimension);
 			await buildLevel(page, dimension, capture);
