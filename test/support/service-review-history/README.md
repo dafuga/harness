@@ -88,3 +88,6 @@ The sibling bug sweep retains implementation commit `6a64ad413` for the loop sib
 Verified artifact retention retains implementation commit `4c5ed1baf` for retention and cancellation beside Lite verification, plus the earlier artifact, cancellation and reconciliation reviews.
 Google sign-in retains implementation commit `58700be943` for the native account bridge, the
 Hub handoff and device storage changes, and the iOS account adapter.
+
+The paired iPhone Vault inbox retains implementation commit `f9416eba21` for desktop startup,
+the native inbox entry point, and the authenticated phone session and operations.

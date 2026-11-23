@@ -1572,13 +1572,13 @@
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-			"definition": "c23a9f77b3ec7aae8079517932436745a3d1952c9cef9da4011fbb9ea786f9cb",
+			"definition": "7fc554865811afaeb4d2f1131459519bdde7dd0b664049b7e41d34a82c3e4029",
 			"relocationDefinition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b",
 			"review": {
-				"commit": "0ca8d9573fd317da3589a4d4e81cdebda5e3d958",
+				"commit": "f9416eba214acf1537d5361a3fac9b9f9a470882",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-				"definition": "c23a9f77b3ec7aae8079517932436745a3d1952c9cef9da4011fbb9ea786f9cb",
-				"reason": "Prepare app-owned macOS Safe Storage after Electron is ready and before opening the desktop backend."
+				"definition": "7fc554865811afaeb4d2f1131459519bdde7dd0b664049b7e41d34a82c3e4029",
+				"reason": "Pass the optional local Vault configuration to the approved phone session."
 			},
 			"previousReviews": [
 				{
@@ -1622,6 +1622,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 					"definition": "e25b8420c7df981d1cbeda1dde62442dec3e558bae0cf23581afa908186998a5",
 					"reason": "Passes the approved phone device settings and the dedicated write grant to the private device service."
+				},
+				{
+					"commit": "0ca8d9573fd317da3589a4d4e81cdebda5e3d958",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "c23a9f77b3ec7aae8079517932436745a3d1952c9cef9da4011fbb9ea786f9cb",
+					"reason": "Prepare app-owned macOS Safe Storage after Electron is ready and before opening the desktop backend."
 				}
 			]
 		},
@@ -2312,13 +2318,13 @@
 			"unit": "desktop.service.remote-device-sessions",
 			"from": "packages/desktop/src/services/RemoteDeviceSessionsService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
-			"definition": "0115e60704f6ebd56f93dcde0c389cb93b2670de24fccb1bf69554e21898afef",
+			"definition": "270cd316ebdd0ffcacff0f604dc11acf05ae81353d2c0564f4fccbb8c84654e9",
 			"relocationDefinition": "53acfdf80eaf7aadf2fd5badff05ee77c037c0d9cea8eb0fe415bb39a0f79653",
 			"review": {
-				"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+				"commit": "f9416eba214acf1537d5361a3fac9b9f9a470882",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
-				"definition": "0115e60704f6ebd56f93dcde0c389cb93b2670de24fccb1bf69554e21898afef",
-				"reason": "Derives the Tracker scope from the host, device and pairing generation and offers writes only to the separately approved phone."
+				"definition": "270cd316ebdd0ffcacff0f604dc11acf05ae81353d2c0564f4fccbb8c84654e9",
+				"reason": "Grant Vault operations to exactly the configured phone and pairing generation."
 			},
 			"previousReviews": [
 				{
@@ -2332,6 +2338,12 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
 					"definition": "304ec40005d70807352f970b2f87fdc7357629b98cf212b75d3ae33cbac9dee3",
 					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.remote-device-sessions, written by haiku); behavior unchanged."
+				},
+				{
+					"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
+					"definition": "0115e60704f6ebd56f93dcde0c389cb93b2670de24fccb1bf69554e21898afef",
+					"reason": "Derives the Tracker scope from the host, device and pairing generation and offers writes only to the separately approved phone."
 				}
 			]
 		},
@@ -4084,13 +4096,13 @@
 			"unit": "desktop.adapter.capacitor-environment",
 			"from": "packages/desktop/src/adapters/CapacitorEnvironmentAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-			"definition": "9e641f72cb9223152e16c2edaa1f9e93dcf97f813bb1ca55943a0216e8b748d8",
+			"definition": "4b6e5eaf75c7f3e0f20418cc2c05447cc82cda9cd3424b35f229eef7119b45e5",
 			"relocationDefinition": "a8686e0c6a99b21cf67d3b48283b7791fe3c0230f56e99b01fb0a072a81d2c94",
 			"review": {
-				"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+				"commit": "f9416eba214acf1537d5361a3fac9b9f9a470882",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-				"definition": "9e641f72cb9223152e16c2edaa1f9e93dcf97f813bb1ca55943a0216e8b748d8",
-				"reason": "Supplies the local Tracker tool port alongside the Capacitor account and paired-host bridge."
+				"definition": "4b6e5eaf75c7f3e0f20418cc2c05447cc82cda9cd3424b35f229eef7119b45e5",
+				"reason": "Open the native Vault inbox from the renderer with no approval or credential payload."
 			},
 			"previousReviews": [
 				{
@@ -4110,6 +4122,12 @@
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
 					"definition": "05e7b0ad0818cc4c6310d6a56abf0b26d62435fdd0fc85b3f6dcea083893b9dd",
 					"reason": "Expose the phone account only through its native plugin and keep the paired computer separate."
+				},
+				{
+					"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
+					"definition": "9e641f72cb9223152e16c2edaa1f9e93dcf97f813bb1ca55943a0216e8b748d8",
+					"reason": "Supplies the local Tracker tool port alongside the Capacitor account and paired-host bridge."
 				}
 			]
 		},
@@ -4250,13 +4268,13 @@
 			"unit": "desktop.service.device-session",
 			"from": "packages/desktop/src/services/device-session-service/DeviceSessionService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
-			"definition": "3ecdbe1cd559752425a2c066dad60cf9dccafc44419f9fb0391ab5feffbcb423",
+			"definition": "ef389f4545b9c35e6a14d586a95d911e883c8c72d30c1514ab32f856cd934816",
 			"relocationDefinition": "b7d6fcb27f7bddb260c21675238683b8dd638ab0e3360df590dd1a39a8c7a51f",
 			"review": {
-				"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+				"commit": "f9416eba214acf1537d5361a3fac9b9f9a470882",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
-				"definition": "3ecdbe1cd559752425a2c066dad60cf9dccafc44419f9fb0391ab5feffbcb423",
-				"reason": "Advertises granted Tracker operations and cancels in-flight writes when the device session ends."
+				"definition": "ef389f4545b9c35e6a14d586a95d911e883c8c72d30c1514ab32f856cd934816",
+				"reason": "Carry the scoped Vault capability only in the authenticated device session."
 			},
 			"previousReviews": [
 				{
@@ -4264,6 +4282,12 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
 					"definition": "35a8cc71a4e882dbc3f2c662a0d0228eaed1f28d785dfbf3a069e06861145745",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
+					"definition": "3ecdbe1cd559752425a2c066dad60cf9dccafc44419f9fb0391ab5feffbcb423",
+					"reason": "Advertises granted Tracker operations and cancels in-flight writes when the device session ends."
 				}
 			]
 		},
@@ -5095,13 +5119,13 @@
 			"unit": "desktop.service.device-operations",
 			"from": "packages/desktop/src/services/device-operations-service/DeviceOperationsService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
-			"definition": "a1bdbfed3868e6803dfaa7f7b8c4d96db4b7472d73f1d563cdd504623ca51942",
+			"definition": "8196e91289898ed3529e8fa9a3886286b351d350747dc2ffc2a5a86116ef928d",
 			"relocationDefinition": "6af0c5d46f2451c29e1730ba56ac45579308fe38681e82c0a939181c136a54db",
 			"review": {
-				"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+				"commit": "f9416eba214acf1537d5361a3fac9b9f9a470882",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
-				"definition": "a1bdbfed3868e6803dfaa7f7b8c4d96db4b7472d73f1d563cdd504623ca51942",
-				"reason": "Requires a granted callback and a live encrypted session when dispatching Tracker pulls and pushes."
+				"definition": "8196e91289898ed3529e8fa9a3886286b351d350747dc2ffc2a5a86116ef928d",
+				"reason": "Check the attached capability and current authority before forwarding any paired Vault operation."
 			},
 			"previousReviews": [
 				{
@@ -5109,6 +5133,12 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
 					"definition": "784d078f78fda8536a0c75c96171242770e87a91e28a752b0216454dd34e7811",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
+					"definition": "a1bdbfed3868e6803dfaa7f7b8c4d96db4b7472d73f1d563cdd504623ca51942",
+					"reason": "Requires a granted callback and a live encrypted session when dispatching Tracker pulls and pushes."
 				}
 			]
 		},

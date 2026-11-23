@@ -20,21 +20,21 @@
 			"packages/desktop/src/initializers/initializeDesktop.ts",
 			"packages/desktop/src/lib/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 			"packages/desktop/src/lib/desktop-initialization/initializeDesktop.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/desktopPhoneSettings.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.types.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/macSafeStorage.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/desktopPhoneSettings.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/macSafeStorage.ts"
 		],
 		"symbols": [
 			"initializeDesktop",
 			"initializeDesktop",
 			"initializeDesktop",
+			"desktopPhoneSettings",
 			"initializeDesktop",
 			"desktopBackend",
 			"Backend",
 			"preserveMacProfile",
-			"prepareDesktopStorage",
-			"desktopPhoneSettings"
+			"prepareDesktopStorage"
 		]
 	},
 	"contract": {
@@ -58,9 +58,7 @@
 				"name": "initializeDesktop",
 				"type": "Promise<BrowserWindow | null>",
 				"description": "The desktop window after its renderer loads, or null when another instance owns the profile lock or when the signed Mac app cannot migrate existing encrypted data. Either null path quits before starting the backend.",
-				"examples": [
-					null
-				]
+				"examples": [null]
 			}
 		],
 		"errors": [
@@ -73,6 +71,18 @@
 		"errorStatus": "declared",
 		"operations": [
 			{
+				"name": "desktopPhoneSettings",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "desktopPhoneSettings",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "initializeDesktop",
 				"inputs": [],
 				"outputs": [
@@ -80,9 +90,7 @@
 						"name": "initializeDesktop",
 						"type": "Promise<BrowserWindow | null>",
 						"description": "The desktop window after its renderer loads, or null when another instance owns the profile lock or when the signed Mac app cannot migrate existing encrypted data. Either null path quits before starting the backend.",
-						"examples": [
-							null
-						]
+						"examples": [null]
 					}
 				],
 				"errors": [
@@ -291,10 +299,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-project-runs"
-	],
+	"scenarios": ["desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
