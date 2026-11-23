@@ -17,7 +17,7 @@ function installPhoneCache(options: CacheOptions) {
 	const host = window as unknown as CacheHost;
 	const native = host.Capacitor.nativePromise;
 	host.Capacitor.nativePromise = async (plugin, method, call) => {
-		if (method !== 'request' || !options.kept.includes(call.method))
+		if (plugin !== 'HarnessRemote' || method !== 'request' || !options.kept.includes(call.method))
 			return native(plugin, method, call);
 		const key = JSON.stringify([call.method, call.input]);
 		if (host.__remotePhone.phone.state === 'online') {

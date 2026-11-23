@@ -27,6 +27,10 @@ export interface PhoneState {
 
 export interface PhoneHost {
 	harness?: Record<string, Operation>;
+	Capacitor: {
+		PluginHeaders: { name: string; methods: { name: string; rtype?: string }[] }[];
+		nativePromise: (plugin: string, method: string, input: unknown) => Promise<unknown>;
+	};
 	__calls: Record<string, unknown>[];
 	__projects: { selected: string | null };
 	__remotePhone: PhoneState;

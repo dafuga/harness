@@ -80,7 +80,7 @@ function installPhoneRequests() {
 	};
 }
 
-/** SYNTHETIC native bridge of Capacitor iOS with the one plugin the renderer uses. */
+/** SYNTHETIC Capacitor iOS connection to the desktop. */
 function installPhonePlugin() {
 	const host = window as unknown as PhoneHost;
 	const { phone, scans, listeners, status, set, request } = host.__remotePhone;
@@ -127,6 +127,39 @@ function installPhonePlugin() {
 	});
 }
 
+/** A signed-in phone account with no shared projects and no Tracker overview access. */
+function installPhoneAccount() {
+	const { Capacitor } = window as unknown as PhoneHost;
+	const account = {
+		status: async () => ({
+			configured: true,
+			state: 'signed-in',
+			actor: {
+				id: 'google:fixture-phone',
+				name: 'Fixture Phone',
+				email: 'phone@example.invalid'
+			}
+		}),
+		request: async ({ path }: { path: string }) => {
+			const overview = path === '/api/tracker-overview';
+			return {
+				status: overview ? 403 : 200,
+				contentType: 'application/json',
+				data: btoa(overview ? '{"error":"permission-denied"}' : '[]')
+			};
+		}
+	};
+	Capacitor.PluginHeaders.push({
+		name: 'HarnessAccount',
+		methods: Object.keys(account).map((name) => ({ name, rtype: 'promise' }))
+	});
+	const remote = Capacitor.nativePromise;
+	Capacitor.nativePromise = (plugin, method, input) =>
+		plugin === 'HarnessAccount'
+			? account[method as keyof typeof account](input as { path: string })
+			: remote(plugin, method, input);
+}
+
 /** A phone in the given state; its computer granted it the two local projects, with agents. */
 export async function remotePhoneFixture(page: Page, state = 'unpaired') {
 	const outbox = await projectFixture(page);
@@ -144,5 +177,6 @@ export async function remotePhoneFixture(page: Page, state = 'unpaired') {
 	await page.addInitScript(installPhoneState, options);
 	await page.addInitScript(installPhoneRequests);
 	await page.addInitScript(installPhonePlugin);
+	await page.addInitScript(installPhoneAccount);
 	return outbox;
 }
