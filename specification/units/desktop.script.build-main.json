@@ -8,14 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/scripts/build-main.ts"
-		],
-		"symbols": [
-			"desktopNodeOptions",
-			"releaseDefine",
-			"buildDesktopMain"
-		]
+		"source": ["packages/desktop/scripts/build-main.ts"],
+		"symbols": ["desktopNodeOptions", "releaseDefine", "buildDesktopMain"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -56,14 +50,14 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Node.js filesystem or subprocess error",
 				"type": "thrown",
-				"description": "The command refuses an invalid release Hub origin, a failed bundle build, or an output that fails node --check. System and filesystem errors propagate."
+				"description": "File-access errors and failures running node --check propagate to the command caller."
 			},
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "The requested release origin is missing or Bun rejects the bundle build."
+				"description": "The requested release origin is missing or invalid, or Bun rejects the bundle build."
 			}
 		],
 		"errorStatus": "declared",
@@ -94,14 +88,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown",
-						"description": "The supplied release origin is not a canonical remote HTTPS origin."
-					},
-					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Packaging requires a release origin and HARNESS_RELEASE_HUB_ORIGIN is absent."
+						"description": "Packaging requires an origin and it is absent, or the supplied value is not a canonical remote HTTPS origin."
 					}
 				],
 				"errorStatus": "declared"
@@ -132,9 +121,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Node.js filesystem or subprocess error",
 						"type": "thrown",
-						"description": "Bundling or node --check failed, or an input or output could not be accessed."
+						"description": "Node.js could not access an input or output, or node --check failed."
 					},
 					{
 						"name": "ExpectedCliError",
@@ -164,10 +153,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-project-runs"
-	],
+	"scenarios": ["desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -42,7 +42,7 @@ export function releaseDefine(
 function canonicalHubOrigin(value: string): string {
 	const url = parseUrl(value);
 	if (!url || url.protocol !== 'https:' || url.origin !== value || isLocalOrPrivate(url.hostname)) {
-		throw new Error(
+		throw new ExpectedCliError(
 			`${releaseOriginVariable} must be the exact https origin of the Hub: no path, userinfo, query, fragment, default port or uppercase host, and no loopback, private or single-label host`
 		);
 	}
@@ -86,7 +86,7 @@ function isPrivateIPv4(address: string): boolean {
 
 export async function buildDesktopMain(
 	define: Record<string, string>,
-	outdir = desktopNodeOptions.outdir
+	outdir: string = desktopNodeOptions.outdir
 ) {
 	await mkdir(outdir, { recursive: true });
 	const targets = [

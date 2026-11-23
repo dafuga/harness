@@ -13,9 +13,7 @@
 			"packages/desktop/scripts/package-mac.ts",
 			"packages/desktop/scripts/package-mac.types.ts"
 		],
-		"symbols": [
-			"MacPackageError"
-		]
+		"symbols": ["MacPackageError"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -30,12 +28,12 @@
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "The release origin is absent or Bun could not build the main or preload bundle."
+				"description": "The release origin is missing or invalid, or Bun could not build the main or preload bundle."
 			},
 			{
-				"name": "Error",
+				"name": "Node.js filesystem or subprocess error",
 				"type": "thrown",
-				"description": "An invalid origin, system command, or filesystem error is propagated. A staging, bundling, signing or verification failure leaves the existing dist/mac/Harness.app in place."
+				"description": "System commands and filesystem errors propagate. A staging, bundling, signing or verification failure leaves the existing dist/mac/Harness.app in place."
 			}
 		],
 		"errorStatus": "declared",
@@ -64,10 +62,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"desktop-native",
-		"desktop-project-runs"
-	],
+	"scenarios": ["desktop-native", "desktop-project-runs"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
