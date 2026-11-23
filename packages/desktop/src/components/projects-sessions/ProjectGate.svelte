@@ -70,7 +70,11 @@
 	{#if local && !available}<hx-p class="muted gate-hint"
 			>Browser preview · read-only. Open the desktop app to choose a local project.</hx-p
 		>{/if}
-	{#if !gated}<hx-section class="recent-projects" aria-label="Recent projects">
+	{#if gated}{#if overviewLink}<hx-p class="gate-overview"
+				><hx-a class="project-overview-link" href={resolve('/projects' as '/')}
+					>Project Overview</hx-a
+				></hx-p
+			>{/if}{:else}<hx-section class="recent-projects" aria-label="Recent projects">
 			<hx-div class="recent-head">
 				<hx-h2>Recent projects</hx-h2>
 				{#if overviewLink}<hx-a class="project-overview-link" href={resolve('/projects' as '/')}
@@ -138,6 +142,10 @@
 	.gate-actions button {
 		min-height: 44px;
 		margin: 0;
+	}
+	.gate-overview {
+		margin: 0;
+		text-align: center;
 	}
 	.gate-hint {
 		margin: 0;
