@@ -15,6 +15,8 @@
 		"symbols": [
 			"trackerForeground",
 			"trackerOffline",
+			"trackerWritePrompt",
+			"trackerOutboxEmpty",
 			"pairedOverview",
 			"workspace",
 			"savedCopies",
@@ -27,12 +29,32 @@
 			{
 				"name": "trackerForeground.run",
 				"type": "Acceptance",
-				"required": true
+				"required": true,
+				"description": "The active simulator and its isolated Tracker fixture."
 			},
 			{
 				"name": "trackerOffline.run",
 				"type": "Acceptance",
-				"required": true
+				"required": true,
+				"description": "The restarted simulator after the isolated hub has been suspended."
+			},
+			{
+				"name": "trackerWritePrompt.run",
+				"type": "Acceptance",
+				"required": true,
+				"description": "The paired iOS simulator and its synthetic write grant."
+			},
+			{
+				"name": "trackerOutboxEmpty.run",
+				"type": "Acceptance",
+				"required": true,
+				"description": "The running iOS simulator whose native outbox status will be queried."
+			},
+			{
+				"name": "trackerOutboxEmpty.message",
+				"type": "string",
+				"required": true,
+				"description": "The assertion text identifying the expected empty-outbox checkpoint."
 			},
 			{
 				"name": "pairedOverview.run",
@@ -101,13 +123,15 @@
 					{
 						"name": "trackerForeground.run",
 						"type": "Acceptance",
-						"required": true
+						"required": true,
+						"description": "The active simulator and its isolated Tracker fixture."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerForeground",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Checks the paired app’s initial snapshot and subsequent Tracker delta."
 					}
 				],
 				"errors": [],
@@ -119,13 +143,61 @@
 					{
 						"name": "trackerOffline.run",
 						"type": "Acceptance",
-						"required": true
+						"required": true,
+						"description": "The restarted simulator after the isolated hub has been suspended."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerOffline",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Checks that the same native tool reads the persisted SQLite copy after an offline restart."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerWritePrompt",
+				"inputs": [
+					{
+						"name": "trackerWritePrompt.run",
+						"type": "Acceptance",
+						"required": true,
+						"description": "The paired iOS simulator and its synthetic write grant."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerWritePrompt",
+						"type": "Promise<void>",
+						"description": "Opens the native confirmation and records the screenshot while the call awaits a decision."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerOutboxEmpty",
+				"inputs": [
+					{
+						"name": "trackerOutboxEmpty.run",
+						"type": "Acceptance",
+						"required": true,
+						"description": "The running iOS simulator whose native outbox status will be queried."
+					},
+					{
+						"name": "trackerOutboxEmpty.message",
+						"type": "string",
+						"required": true,
+						"description": "The assertion text identifying the expected empty-outbox checkpoint."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerOutboxEmpty",
+						"type": "Promise<void>",
+						"description": "Records whether the native outbox status contains an empty list of intents."
 					}
 				],
 				"errors": [],

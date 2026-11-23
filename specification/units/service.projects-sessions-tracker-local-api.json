@@ -26,6 +26,7 @@
 			"itemAction",
 			"trackerSessionItemPrefix",
 			"recordTrackerSessionItem",
+			"readItemBody",
 			"isTrackerManualLaunch",
 			"planTrackerManualLaunch"
 		]
@@ -130,6 +131,18 @@
 				"required": true
 			},
 			{
+				"name": "readItemBody.request",
+				"type": "Request",
+				"required": true,
+				"description": "The local Tracker HTTP request and its streamed JSON body."
+			},
+			{
+				"name": "readItemBody.maximum",
+				"type": "unknown",
+				"required": false,
+				"description": "Maximum request body size in bytes. The ordinary items API defaults to 1 MiB and phone writes use 4 KiB."
+			},
+			{
 				"name": "isTrackerManualLaunch.verb",
 				"type": "string | undefined",
 				"required": true
@@ -183,6 +196,11 @@
 			{
 				"name": "recordTrackerSessionItem",
 				"type": "void"
+			},
+			{
+				"name": "readItemBody",
+				"type": "Promise<TrackerItemInput>",
+				"description": "Reads a JSON object, returning an empty object when the request has no body."
 			},
 			{
 				"name": "isTrackerManualLaunch",
@@ -355,6 +373,32 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "readItemBody",
+				"inputs": [
+					{
+						"name": "readItemBody.request",
+						"type": "Request",
+						"required": true,
+						"description": "The local Tracker HTTP request and its streamed JSON body."
+					},
+					{
+						"name": "readItemBody.maximum",
+						"type": "unknown",
+						"required": false,
+						"description": "Maximum request body size in bytes. The ordinary items API defaults to 1 MiB and phone writes use 4 KiB."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readItemBody",
+						"type": "Promise<TrackerItemInput>",
+						"description": "Reads a JSON object, returning an empty object when the request has no body."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "isTrackerManualLaunch",
 				"inputs": [
 					{
@@ -496,6 +540,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-phone-replica",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-phone-replica-service-phone-replica-write",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -1,0 +1,232 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-phone-replica-service-phone-replica-write",
+	"uid": "u_xhueog5n2u",
+	"kind": "service",
+	"title": "PhoneReplicaWriteService",
+	"responsibility": "Validate an approved phone write and commit the Tracker transition and idempotency receipt together.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-phone-replica-service/PhoneReplicaWriteService.ts",
+			"src/services/projects-sessions/tracker-phone-replica-service/PhoneReplicaWriteService.types.ts"
+		],
+		"symbols": [
+			"PhoneReplicaWriteService",
+			"PhoneReplicaWriteService.constructor",
+			"PhoneReplicaWriteService.scope",
+			"PhoneReplicaWriteService.push",
+			"PhoneReplicaWriteGrant",
+			"PhoneReplicaIntent",
+			"PhoneReplicaReceipt"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "PhoneReplicaWriteService.constructor.store",
+				"type": "TrackerPersistenceService",
+				"required": true,
+				"description": "The authoritative hub SQLite journal used to commit the intent and receipt together."
+			},
+			{
+				"name": "PhoneReplicaWriteService.constructor.now",
+				"type": "() => number",
+				"required": true,
+				"description": "Provides the current time in milliseconds for retention and the canonical Tracker transition."
+			},
+			{
+				"name": "PhoneReplicaWriteService.constructor.grant",
+				"type": "PhoneReplicaWriteGrant",
+				"required": true,
+				"description": "The one approved device ID and its private loopback bearer, configured by the hub operator."
+			},
+			{
+				"name": "PhoneReplicaWriteService.scope.headers",
+				"type": "Headers",
+				"required": true,
+				"description": "Loopback request headers naming the approved phone and its scope and carrying the private bearer."
+			},
+			{
+				"name": "PhoneReplicaWriteService.push.scope",
+				"type": "string",
+				"required": true,
+				"description": "The authenticated 64-character scope derived from the host, device and pairing generation."
+			},
+			{
+				"name": "PhoneReplicaWriteService.push.fields",
+				"type": "Record<string, unknown>",
+				"required": true,
+				"description": "Version 1 intent with UUID, exact item ID, operation, bounded text and the attention revision for flag and answer."
+			}
+		],
+		"outputs": [
+			{
+				"name": "PhoneReplicaWriteService.scope",
+				"type": "string | null",
+				"description": "Returns the device scope after comparing the configured device and bearer, or null when access is denied."
+			},
+			{
+				"name": "PhoneReplicaWriteService.push",
+				"type": "PhoneReplicaReceipt",
+				"description": "Returns an accepted receipt or a conflict. A retry of the same committed intent returns the same receipt."
+			}
+		],
+		"errors": [
+			{
+				"name": "invalidPhoneIntent",
+				"type": "TrackerItemMutationError",
+				"description": "The local API returns HTTP 400 for invalid or unsafe intent fields."
+			},
+			{
+				"name": "writeStorage",
+				"type": "SQLiteError",
+				"description": "The underlying journal or receipt write fails and rolls back the transaction."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "PhoneReplicaWriteService.scope",
+				"inputs": [
+					{
+						"name": "PhoneReplicaWriteService.scope.headers",
+						"type": "Headers",
+						"required": true,
+						"description": "Loopback request headers naming the approved phone and its scope and carrying the private bearer."
+					}
+				],
+				"outputs": [
+					{
+						"name": "PhoneReplicaWriteService.scope",
+						"type": "string | null",
+						"description": "Returns the device scope after comparing the configured device and bearer, or null when access is denied."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "PhoneReplicaWriteService.push",
+				"inputs": [
+					{
+						"name": "PhoneReplicaWriteService.push.scope",
+						"type": "string",
+						"required": true,
+						"description": "The authenticated 64-character scope derived from the host, device and pairing generation."
+					},
+					{
+						"name": "PhoneReplicaWriteService.push.fields",
+						"type": "Record<string, unknown>",
+						"required": true,
+						"description": "Version 1 intent with UUID, exact item ID, operation, bounded text and the attention revision for flag and answer."
+					}
+				],
+				"outputs": [
+					{
+						"name": "PhoneReplicaWriteService.push",
+						"type": "PhoneReplicaReceipt",
+						"description": "Returns an accepted receipt or a conflict. A retry of the same committed intent returns the same receipt."
+					}
+				],
+				"errors": [
+					{
+						"name": "invalidPhoneIntent",
+						"type": "TrackerItemMutationError",
+						"description": "The local API returns HTTP 400 for invalid or unsafe intent fields."
+					},
+					{
+						"name": "writeStorage",
+						"type": "SQLiteError",
+						"description": "The underlying journal or receipt write fails and rolls back the transaction."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "PhoneReplicaWriteService.constructor",
+				"inputs": [
+					{
+						"name": "PhoneReplicaWriteService.constructor.store",
+						"type": "TrackerPersistenceService",
+						"required": true,
+						"description": "The authoritative hub SQLite journal used to commit the intent and receipt together."
+					},
+					{
+						"name": "PhoneReplicaWriteService.constructor.now",
+						"type": "() => number",
+						"required": true,
+						"description": "Provides the current time in milliseconds for retention and the canonical Tracker transition."
+					},
+					{
+						"name": "PhoneReplicaWriteService.constructor.grant",
+						"type": "PhoneReplicaWriteGrant",
+						"required": true,
+						"description": "The one approved device ID and its private loopback bearer, configured by the hub operator."
+					}
+				],
+				"outputs": [
+					{
+						"name": "PhoneReplicaWriteService.constructor",
+						"type": "unknown",
+						"description": "Constructs a writer for the given journal, clock and grant."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-plan-tracker-item-mutation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-sanitize-tracker-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-phone-replica",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-phone-replica-service/PhoneReplicaWriteService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-phone-replica-service/PhoneReplicaWriteService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
