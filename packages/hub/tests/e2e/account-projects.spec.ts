@@ -8,7 +8,7 @@ import {
 } from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import { pageWorkload } from '../../../desktop/tests/e2e/page-workload';
 import scenario from '../../../../specification/scenarios/project-overview-hub-projects.json' with { type: 'json' };
-import { ada, hostedFixture } from './hosted-fixture';
+import * as hosted from './hosted-fixture';
 import { grace, overviewFixture, refusal, viewports, open } from './tracker-overview-fixture';
 import type { Viewport } from './tracker-overview-fixture';
 
@@ -120,14 +120,8 @@ test('a signed-in non-owner sees the project list and no overview link on /proje
 	baseURL
 }) => {
 	refusal(browserErrors, baseURL!, forbidden);
-	await overviewFixture(page, 'ready', {
-		actor: grace,
-		github: { configured: false, connected: false, login: null }
-	});
-	const refused = page.waitForResponse(
-		(response) =>
-			new URL(response.url()).pathname === '/api/tracker-overview' && response.status() === 403
-	);
+	await overviewFixture(page, 'ready', { actor: grace, github: hosted.githubUnavailable });
+	const refused = hosted.waitForHubStatus(page, '/api/tracker-overview', 403);
 	await page.goto('/projects');
 	await (await refused).finished();
 	await expect(page.getByRole('heading', { name: 'Shared projects' })).toBeVisible();
@@ -164,7 +158,7 @@ test('switching accounts clears the owner link on /projects', async ({
 	await expect(page.getByRole('link', { name: 'Project overview', exact: true })).toHaveCount(0);
 	await expect(page.locator(overviewRoot)).toHaveCount(0);
 	await expect(page.getByText('synthetic-sync', { exact: true })).toHaveCount(0);
-	await expect(page.getByText(ada.name)).toHaveCount(0);
+	await expect(page.getByText(hosted.ada.name)).toHaveCount(0);
 });
 
 test('the verified GitHub callback status appears on the projects page', async ({
@@ -202,24 +196,9 @@ for (const viewport of viewports) {
 		baseURL
 	}, testInfo) => {
 		refusal(browserErrors, baseURL!, forbidden);
-		browserErrors.expectError({
-			type: 'console',
-			message:
-				'Failed to load resource: the server responded with a status of 503 (Service Unavailable)',
-			source: new URL('/api/projects', baseURL!).href,
-			reason: 'Shared collaboration is intentionally disabled in this setup state.'
-		});
-		await overviewFixture(page, 'ready', {
-			actor: grace,
-			github: { configured: false, connected: false, login: null }
-		});
-		await page.route('**/api/projects', (route) =>
-			route.fulfill({ status: 503, json: { error: 'collaboration-disabled' } })
-		);
-		const denied = page.waitForResponse(
-			(response) =>
-				new URL(response.url()).pathname === '/api/tracker-overview' && response.status() === 403
-		);
+		await overviewFixture(page, 'ready', { actor: grace, github: hosted.githubUnavailable });
+		await hosted.disableCollaboration(page, browserErrors, baseURL!);
+		const denied = hosted.waitForHubStatus(page, '/api/tracker-overview', 403);
 		await open(page, viewport, '/projects');
 		await (await denied).finished();
 		await expect(page.getByRole('heading', { name: 'Shared projects' })).toBeVisible();
@@ -227,14 +206,12 @@ for (const viewport of viewports) {
 		await expect(page.locator(overviewRoot)).toHaveCount(0);
 		await expect(page.getByText('Shared projects aren’t set up yet.')).toBeVisible();
 		await expect(page.getByRole('heading', { name: 'New shared project' })).toHaveCount(0);
-		await expect(
-			page.getByText(/BrowserApiRequestError|configured for this deployment/)
-		).toHaveCount(0);
+		await expect(page.getByRole('alert')).toHaveCount(0);
 		await attachShot(page, testInfo, 'non-owner', viewport);
 	});
 
 	test(`signed-out /projects settles at ${viewport.id}`, async ({ page }, testInfo) => {
-		await hostedFixture(page, { signedIn: false });
+		await hosted.hostedFixture(page, { signedIn: false });
 		await open(page, viewport, '/projects');
 		await expect(page.getByRole('button', { name: 'Sign in with Google' })).toBeVisible();
 		await attachShot(page, testInfo, 'signed-out', viewport);
