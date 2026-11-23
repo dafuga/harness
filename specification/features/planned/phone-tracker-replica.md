@@ -1,3 +1,11 @@
+---
+status: planned
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
+
 # Phone Tracker replica
 
 Harness Studio keeps a private, read-only copy of Tracker on the iPhone. After
@@ -41,7 +49,8 @@ owner records the export declaration.
 | Flag   | Parent item ID, current attention state, flag timestamp and question excerpt when available |
 | Run    | Parent item ID, stable origin and run ID, state, outcome category and lifecycle timestamps  |
 
-Use an explicit projection for every record. Exclude credentials, auth and
+Use an explicit projection for every record. Exclude sensitive items and
+their children. Exclude credentials, auth and
 callback fields, launch instructions, command lines, paths, transcript
 fragments, arbitrary metadata, and raw journal operations. Apply the existing
 Tracker overview text redaction to human text before serialization. Keep
@@ -66,7 +75,10 @@ retention changes can change independently of those sequences, so the exported
 cursor belongs to the projection feed. Updates to the materialized projection
 and append to its feed commit together. An unchanged projection emits no
 operation. Changes coalesced before projection produce the latest visible
-state. Key runs by origin and ID to avoid collisions.
+state. Key runs by origin and ID to avoid collisions. The feed stores changed
+IDs and sequences. It delivers the current projection for each changed ID, or
+a tombstone for an item no longer visible, so catch-up cannot export old text
+from an item that became sensitive.
 
 Use a versioned request with an optional opaque `cursor` and an optional
 server-issued snapshot continuation. The cursor binds source database
