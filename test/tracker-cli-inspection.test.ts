@@ -7,6 +7,7 @@ import {
 	fixtureItem,
 	fixtureTitle
 } from './support/trackerCliCompatibilityFixture';
+import { adapterIssue } from './support/trackerAdapterFixture';
 import { primary } from './support/trackerDispatcherFixture';
 
 function seedOptedOutItem({
@@ -106,6 +107,75 @@ test('native adapter list reads legacy rows only for the persisted runner', asyn
 			last_error: 'fixture backoff'
 		}
 	]);
+});
+
+function commentCompatibilityFixture() {
+	return compatibilityFixture(false, {
+		manual: true,
+		lease: { owner: primary, tryAcquire: () => () => {} },
+		redactText: (text) => text,
+		intakePolicy: () => ({
+			followUp: { author: 'fixture-tester', instructions: 'Retest #{issue}.' }
+		}),
+		provider: {
+			async *readIssues() {},
+			async readIssue() {
+				return adapterIssue();
+			},
+			async readTimeline() {
+				return [];
+			},
+			async *readComments() {
+				yield {
+					id: 151,
+					body: 'Please restore retry',
+					issue_url: 'https://api.github.com/repos/fixture/repo/issues/17',
+					created_at: '2026-11-19T00:00:00Z',
+					user: { type: 'User', login: 'fixture-tester' }
+				};
+			}
+		}
+	});
+}
+
+test('native adapter run previews seven-day corrections through the compatibility API', async () => {
+	const { database, run, runtime } = await commentCompatibilityFixture();
+	const sources = new TrackerAdapterSourceRepository(database);
+	sources.initialize();
+	const id = 'github:fixture/repo';
+	const config = {
+		id,
+		type: 'github',
+		target: 'fixture/repo',
+		kind: 'task',
+		agent: 'harness',
+		auto_launch: 'unlabeled'
+	};
+	database
+		.prepare('INSERT INTO adapter_sources VALUES (?, ?, 100, 200, 0, 0, NULL, NULL)')
+		.run(id, JSON.stringify(config));
+	const seq = runtime.store.maxSeq();
+	await runtime.adapter?.tick(new AbortController().signal);
+	expect(sources.source(id)?.cursor).toBe(200);
+	const preview = await run('adapter', 'run', id, '--backfill-comments', '--dry-run');
+	expect(preview).toMatchObject({
+		code: 0,
+		err: '',
+		out: expect.stringContaining('would create fixture/repo #17')
+	});
+	expect(preview.out).toContain('/17#issuecomment-151');
+	expect(runtime.store.maxSeq()).toBe(seq);
+	const result = await run('adapter', 'run', id, '--backfill-comments', '--json');
+	expect(result.code).toBe(0);
+	expect(JSON.parse(result.out)).toMatchObject({
+		dry_run: false,
+		actions: [{ external_id: 'comment:151', auto_launch: true }]
+	});
+	expect(sources.source(id)?.cursor).toBe(200);
+	expect(await run('adapter', 'run', id, '--backfill-comments')).toMatchObject({
+		code: 0,
+		out: 'No items to create or link.'
+	});
 });
 
 test('native backup list shows local backup files and rejects writes before fetching', async () => {

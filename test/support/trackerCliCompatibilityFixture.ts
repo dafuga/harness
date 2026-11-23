@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, onTestFinished, vi } from 'vitest';
 import { trackerNodeApi } from '../../src/services/projects-sessions/tracker-node-service/trackerNodeListeners';
+import type { TrackerAdapterPollDependencies } from '../../src/services/projects-sessions/TrackerAdapterPollService.types';
 import { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { TrackerSupervisorService } from '../../src/services/projects-sessions/TrackerSupervisorService';
 import { fixturePolicy, primary } from './trackerDispatcherFixture';
@@ -13,7 +14,10 @@ export const fixtureTime = '2026-11-21T12:00:00.000Z';
 export const fixtureItem = 'taskfixture';
 export const fixtureTitle = 'Verify fixture CLI release';
 
-export async function compatibilityFixture(configureDispatch = true) {
+export async function compatibilityFixture(
+	configureDispatch = true,
+	adapter?: TrackerAdapterPollDependencies
+) {
 	const directory = await createTempDirectory('tracker-cli-compat-');
 	const database = new DatabaseSync(':memory:');
 	onTestFinished(() => {
@@ -28,6 +32,7 @@ export async function compatibilityFixture(configureDispatch = true) {
 		...node,
 		now,
 		backupDirectory: directory,
+		adapter,
 		...(configureDispatch && {
 			dispatch: {
 				policy: fixturePolicy(now),
