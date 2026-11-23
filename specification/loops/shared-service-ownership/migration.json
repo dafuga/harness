@@ -5667,12 +5667,12 @@
 			"unit": "hub.function.d1-credential-stores",
 			"from": "packages/hub/src/adapters/d1-auth-store-adapter/d1CredentialStores.ts",
 			"to": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1CredentialStores.ts",
-			"definition": "15d68c2e87ae51ec33fd0e0907d00fcf661096fc4a8012cdc7138901957dab5b",
+			"definition": "efc5044442a713982227bd9d9336fc600f7fdf39e1bcf5601648b6ea2d6a3e2d",
 			"relocationDefinition": "16943c31f2589ea2d77a5a0d3e1b1e617dd2716ea25f0e109f1d43499d5a40f1",
 			"review": {
-				"commit": "7782acbcfa730f6e67a889da43223d5579b03483",
+				"commit": "295421bb5a1e46ff5d61efd9ede6b68905bbdcbf",
 				"path": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1CredentialStores.ts",
-				"definition": "15d68c2e87ae51ec33fd0e0907d00fcf661096fc4a8012cdc7138901957dab5b",
+				"definition": "efc5044442a713982227bd9d9336fc600f7fdf39e1bcf5601648b6ea2d6a3e2d",
 				"reason": "Keep device listing and revocation scoped to the account, with a native-only view and current-browser priority."
 			},
 			"previousReviews": [
