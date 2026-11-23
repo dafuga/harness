@@ -189,7 +189,7 @@ test('an entity is named in words, and a page states its address as a fact', asy
 	await expect(
 		page.getByRole('heading', { level: 1, name: 'Orders page', exact: true })
 	).toBeVisible();
-	await expect(page.getByRole('link', { name: 'pages › Orders page' })).toBeVisible();
+	await expect(page.getByRole('link', { name: '‹ pages', exact: true })).toBeVisible();
 	const route = page.locator('.entity-heading').getByText('App route', { exact: true });
 	await expect(route).toBeVisible();
 	await expect(page.locator('.entity-heading code')).toHaveText('/orders');

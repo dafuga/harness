@@ -29,6 +29,7 @@
 	import Icon from '../../shared-primitives/Icon.svelte';
 	import WorkspaceLink from '../../projects-sessions/WorkspaceLink.svelte';
 	import EntityExamples from '$shared/explorer-ui/EntityExamples.svelte';
+	import EntitySectionTabs from '../EntitySectionTabs.svelte';
 	import { workspaceSections as sections } from '../../../utils/projects-sessions/workspaceRoute';
 	let { workspace }: { workspace: Workspace } = $props();
 	/** A function has a plan and no designs; every other entity has designs and no plan section. */
@@ -123,8 +124,8 @@
 
 <hx-div class="entity-layout" class:with-thread={conversation}>
 	<hx-main class="entity-main">
-		<WorkspaceLink {workspace} to={workspace.path()} class="breadcrumb"
-			>{workspace.category} › {name}</WorkspaceLink
+		<WorkspaceLink {workspace} to={workspace.path()} class="entity-back"
+			>‹ {workspace.category}</WorkspaceLink
 		>
 		<hx-div class="entity-heading">
 			<hx-span class="entity-symbol"><Icon name={entity.category} size={30} /></hx-span>
@@ -143,20 +144,18 @@
 						><hx-span>App route</hx-span><hx-code>{route}</hx-code></hx-p
 					>{/if}
 			</hx-div>
-			{#if !conversation}<hx-button onclick={() => (conversation = true)}>Conversation</hx-button
-				>{/if}
 		</hx-div>
 		{#if pictured}<RuntimeEvidence {entity} {workspace} {evidence} />{/if}
-		<hx-nav class="entity-tabs" aria-label="Entity sections">
-			{#each names as value (value)}<hx-button
-					class:active={tab === value}
-					aria-current={tab === value ? 'page' : undefined}
-					onclick={() => {
-						tab = value;
-						section(sections[value]);
-					}}>{value}</hx-button
-				>{/each}
-		</hx-nav>
+		<EntitySectionTabs
+			{names}
+			{tab}
+			threadShown={conversation}
+			onpick={(value) => {
+				tab = value;
+				section(sections[value]);
+			}}
+			onconversation={() => (conversation = true)}
+		/>
 		{#if tab === 'Source'}
 			{#key `${entity.id}:${workspace.snapshot?.revision.commit}`}<DetailsPanel
 					{entity}
