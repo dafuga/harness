@@ -1,16 +1,17 @@
 // @harness-uid u_m3rqfrppy7
-import { lstatSync } from 'node:fs';
+import { lstatSync, readFileSync } from 'node:fs';
 import { cp, mkdir, mkdtemp, rename, rm, writeFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { createRequire } from 'node:module';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { macIcon } from './mac-icon/mac-icon';
 import { MacPackageError } from './package-mac.types';
 const bundleId = 'dev.harness.desktop';
 const teamId = 'PAC8VHDW3G';
 const codesign = '/usr/bin/codesign';
 const requirement = `identifier "${bundleId}" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] and certificate leaf[field.1.2.840.113635.100.6.1.13] and certificate leaf[subject.OU] = ${teamId}`;
+const migrationBinary = 'Contents/Helpers/HarnessKeychainMigration';
 
 function releaseSigner() {
 	const identity = process.env.HARNESS_MAC_SIGN_IDENTITY;
@@ -18,9 +19,12 @@ function releaseSigner() {
 		throw new MacPackageError(
 			'HARNESS_MAC_SIGN_IDENTITY must be the exact Developer ID Application certificate SHA-1 fingerprint.'
 		);
-	const keychain = join(homedir(), 'Library/Keychains/harness-signing.keychain-db');
+	const dedicated = join(homedir(), 'Library/Keychains/harness-signing.keychain-db');
+	const keychain = resolve(process.env.HARNESS_MAC_SIGN_KEYCHAIN ?? dedicated);
 	if (!lstatSync(keychain, { throwIfNoEntry: false })?.isFile())
-		throw new MacPackageError('Set up the dedicated harness-signing.keychain-db before packaging.');
+		throw new MacPackageError(
+			'Set up harness-signing.keychain-db or select an approved build keychain.'
+		);
 	const available = execFileSync(
 		'/usr/bin/security',
 		['find-identity', '-v', '-p', 'codesigning', keychain],
@@ -40,8 +44,8 @@ function releaseSigner() {
 	return { identity, keychain };
 }
 
-function verifyRelease(app: string): void {
-	const designated = execFileSync(codesign, ['-d', '-r-', app], {
+function verifyIdentity(binary: string): void {
+	const designated = execFileSync(codesign, ['-d', '-r-', binary], {
 		encoding: 'utf8',
 		stdio: ['ignore', 'pipe', 'ignore']
 	})
@@ -51,9 +55,27 @@ function verifyRelease(app: string): void {
 		throw new MacPackageError(
 			`Artifact does not have the Harness Developer ID release requirement (${teamId}).`
 		);
+	const signature = spawnSync(codesign, ['-d', '-vvvv', binary], {
+		encoding: 'utf8'
+	});
+	if (
+		signature.status !== 0 ||
+		!/^CodeDirectory .*flags=0x[0-9a-f]+\([^\n]*\bruntime\b/m.test(signature.stderr)
+	)
+		throw new MacPackageError('Artifact must use hardened runtime.');
+}
+
+function verifyRelease(app: string): void {
+	verifyIdentity(app);
+	verifyIdentity(join(app, migrationBinary));
 	execFileSync(codesign, ['--verify', '--deep', '--strict', '-R', `=${requirement}`, app], {
 		stdio: 'inherit'
 	});
+	const manifest = JSON.parse(
+		readFileSync(join(app, 'Contents/Resources/app/package.json'), 'utf8')
+	);
+	if (manifest.productName !== 'Harness')
+		throw new MacPackageError('Artifact must use the signed Harness Safe Storage namespace.');
 }
 
 async function populateApp(output: string): Promise<void> {
@@ -71,13 +93,34 @@ async function populateApp(output: string): Promise<void> {
 	await cp(playwright, resolve(project, 'node_modules/playwright-core'), { recursive: true });
 	await writeFile(
 		resolve(project, 'package.json'),
-		JSON.stringify({ name: 'harness-desktop', version: '0.1.0', main: 'dist/main.cjs' })
+		JSON.stringify({
+			name: 'harness-desktop',
+			productName: 'Harness',
+			version: '0.1.0',
+			main: 'dist/main.cjs'
+		})
 	);
 	const plist = resolve(output, 'Contents/Info.plist');
 	execFileSync('/usr/libexec/PlistBuddy', ['-c', 'Set :CFBundleDisplayName Harness', plist]);
 	execFileSync('/usr/libexec/PlistBuddy', ['-c', 'Set :CFBundleName Harness', plist]);
 	execFileSync('/usr/libexec/PlistBuddy', ['-c', `Set :CFBundleIdentifier ${bundleId}`, plist]);
 	await macIcon(output);
+	const helper = join(output, migrationBinary);
+	await mkdir(dirname(helper), { recursive: true });
+	execFileSync('/usr/bin/xcrun', [
+		'clang',
+		'-mmacosx-version-min=13.0',
+		'-Wall',
+		'-Wextra',
+		'-Wno-deprecated-declarations',
+		'-framework',
+		'Security',
+		'-framework',
+		'CoreFoundation',
+		join(import.meta.dir, 'mac-safe-storage-migration.c'),
+		'-o',
+		helper
+	]);
 }
 
 async function packageRelease(): Promise<void> {
@@ -89,13 +132,19 @@ async function packageRelease(): Promise<void> {
 	const candidate = join(staging, 'Harness.app');
 	try {
 		await populateApp(candidate);
-		execFileSync(
-			codesign,
-			['--force', '--deep', '--sign', identity, '--keychain', keychain, candidate],
-			{
-				stdio: 'inherit'
-			}
-		);
+		const { sign } = await import('@electron/osx-sign');
+		await sign({
+			app: candidate,
+			identity,
+			keychain,
+			platform: 'darwin',
+			preAutoEntitlements: false,
+			preEmbedProvisioningProfile: false,
+			optionsForFile: (file) =>
+				file === join(candidate, migrationBinary)
+					? { additionalArguments: ['--identifier', bundleId] }
+					: {}
+		});
 		verifyRelease(candidate);
 		await rm(output, { recursive: true, force: true });
 		await rename(candidate, output);

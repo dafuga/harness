@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"packages/desktop/scripts/package-mac.ts",
-			"packages/desktop/scripts/package-mac.types.ts"
+			"packages/desktop/scripts/package-mac.types.ts",
+			"packages/desktop/scripts/mac-safe-storage-migration.c"
 		],
 		"symbols": ["MacPackageError"]
 	},
@@ -32,12 +33,12 @@
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Packaging is refused before staging when the dedicated harness-signing.keychain-db is missing or does not contain a Developer ID Application identity matching the selected fingerprint and team PAC8VHDW3G."
+				"description": "Packaging is refused before staging when the selected build keychain is missing or does not contain a Developer ID Application identity matching the selected fingerprint and team PAC8VHDW3G."
 			},
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Verification requires an exact stable Developer ID designated requirement for dev.harness.desktop and team PAC8VHDW3G and a valid strict signature, including nested code. An unsupported command line is refused."
+				"description": "Verification requires hardened runtime and the exact stable Developer ID designated requirement for dev.harness.desktop and team PAC8VHDW3G on the app and the Safe Storage migration helper. The bundle including nested code must also pass strict verification and declare the Harness product name. An unsupported command line is refused."
 			},
 			{
 				"name": "Error",

@@ -34,7 +34,7 @@ bun run desktop
 
 ### Package a Mac release
 
-The release uses bundle `dev.harness.desktop` and Developer ID Application team `PAC8VHDW3G`. The release owner provisions `~/Library/Keychains/harness-signing.keychain-db` with the Harness signing identity through the approved private credential path, grants `/usr/bin/codesign` access to that private key, and configures the key's `apple-tool:,apple:,codesign:` partitions. Unlock the dedicated build keychain for the signing job. Enter any one-time setup password only through the approved credential path or the macOS prompt.
+The release uses hardened runtime, bundle `dev.harness.desktop`, and Developer ID Application team `PAC8VHDW3G`. The release owner provisions `~/Library/Keychains/harness-signing.keychain-db` with the Harness signing identity through the approved private credential path, grants `/usr/bin/codesign` access to that private key, and configures the key's `apple-tool:,apple:,codesign:` partitions. Unlock the dedicated build keychain for the signing job.
 
 Build and package from this directory:
 
@@ -44,18 +44,22 @@ HARNESS_MAC_SIGN_IDENTITY='<exact-certificate-SHA1>' bun run package:mac
 bun run package:mac --verify dist/mac/Harness.app
 ```
 
-The fingerprint selects the certificate in the dedicated build keychain. Bun can load it from the ignored `.env.local` file in this package. Packaging publishes the bundle to `dist/mac/Harness.app` after verification. For local development, use `bun run desktop`.
+The fingerprint selects the certificate in the dedicated build keychain. For an existing approved build keychain, set `HARNESS_MAC_SIGN_KEYCHAIN` to its path after verifying that its specific private key permits unattended `codesign`. Bun can load both settings from the ignored `.env.local` file in this package. Packaging publishes the bundle to `dist/mac/Harness.app` after verification. For local development, use `bun run desktop`.
 
 Before replacing `/Applications/Harness.app`, run `bun run package:mac --verify <candidate.app>` and keep the previous bundle for rollback. Quit Harness normally so it can finish active work before the replacement. Run the same verification against `/Applications/Harness.app` after installation. Public distribution additionally requires notarization.
 
-Electron keeps the `harness-desktop Safe Storage` item in the login Keychain. It protects existing hosted sessions, remote host credentials, and private keys. If the first verified signed launch prompts for that item after upgrading from an ad hoc build, select **Always Allow** once. Keep the item and app data so existing ciphertext remains decryptable. Run a second signed build and upgrade after that approval and check the macOS log from just before the build:
+The signed app uses its own `Harness Safe Storage` item and retains its `harness-desktop` profile. A profile without saved hosted session or remote host data starts directly with the new item. If the profile contains those encrypted files, the signed migration helper attempts to transfer the key between the two entries through Keychain Services with password prompts disabled. If access is denied, startup pauses and leaves both the old item and encrypted files intact.
+
+For a profile that needs access to its legacy data and reports the migration error, quit Harness and explicitly launch the verified bundle with `open /Applications/Harness.app --args --harness-migrate-safe-storage`. If the old item requires authorization, macOS presents the prompt for `harness-desktop Safe Storage` before the main window opens, while the helper reads the old item. Successful transfer creates the new item under the current Developer ID requirement, so later launches use that item. Both items stay in Keychain for rollback.
+
+Build, install and launch two distinct signed builds in sequence. For each cycle, check the macOS log from just before the build:
 
 ```sh
 /usr/bin/log show --start '<YYYY-MM-DD HH:MM:SS>' --info --predicate \
   'process == "securityd" AND eventMessage CONTAINS[c] "displaying keychain prompt"'
 ```
 
-Expect zero events for `/usr/bin/codesign` and `/Applications/Harness.app` across that build, installation, and launch.
+Expect zero events for `/usr/bin/codesign`, `/Applications/Harness.app`, and `HarnessKeychainMigration` across each ordinary build, installation, and launch.
 
 ## Projects and shared collaboration
 
