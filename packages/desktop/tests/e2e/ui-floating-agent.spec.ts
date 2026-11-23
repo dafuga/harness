@@ -1,6 +1,7 @@
 import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
 import { designOptionsFixture } from './ui-design-options-fixture';
 import { activity, at, option } from './ui-design-options-helpers';
+import type { Box } from './ui-floating-agent.types';
 import { alpha, remotePhoneFixture } from './ui-remote-phone-fixture';
 
 /**
@@ -11,8 +12,6 @@ import { alpha, remotePhoneFixture } from './ui-remote-phone-fixture';
 const laptop = { width: 1440, height: 900 };
 const phone = { width: 390, height: 844 };
 const pageRoute = 'pages/page%3Aactivity';
-
-type Box = { x: number; y: number; width: number; height: number };
 
 const bubble = (page: Page) =>
 	page.getByRole('button', { name: /^(Work with agent|Open project chat)$/ });
