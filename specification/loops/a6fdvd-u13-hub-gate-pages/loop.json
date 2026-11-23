@@ -2,7 +2,7 @@
 	"name": "a6fdvd-u13-hub-gate-pages",
 	"goal": "U13 hub gate pages (invitation, device approval) have one h1 and no h2 in the card, a narrow centred card of at most 480px at 1440, a monospace code field, and fields and buttons of at least 44px; a rendered-browser test fails on main and passes after the change",
 	"createdAt": "2026-11-23T17:11:46.639Z",
-	"updatedAt": "2026-11-23T17:11:46.639Z",
+	"updatedAt": "2026-11-23T17:57:06.985Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -11,27 +11,37 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T17:56:58.735Z",
+			"evidence": "The invitation and device approval pages should each have one heading, a centered narrow card and touch-size code entry controls."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T17:57:00.088Z",
+			"evidence": "The committed gate browser case covers both routes at phone, tablet and laptop sizes. The replay freezes all final tests before applying the product repair because the original fix also updated hosted-native.spec.ts."
 		},
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T17:57:01.689Z",
+			"evidence": "The unchanged gate case on test-only commit d78578b320 failed with two headings where one was expected."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T17:57:03.327Z",
+			"evidence": "Commit 85d89ffd19 applies the original fix and matches PR #246 commit bb1932ef06 byte for byte."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-23T17:57:06.985Z",
+			"evidence": "The same Chromium gate test passes all six cases at 85d89ffd19."
 		},
 		{
 			"id": "siblings",
