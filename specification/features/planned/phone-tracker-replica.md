@@ -30,7 +30,13 @@ Tracker service over loopback. The existing signed machine
 protocol. Neither the Hub website overview nor a general remote shell is a
 source for the phone replica.
 
-The owner explicitly enables Tracker read access for a paired phone. Bind
+The owner explicitly enables Tracker read access for a paired phone. For the
+first implementation, set `HARNESS_TRACKER_PHONE_DEVICE` on the paired
+desktop process to the exact approved device ID from its `remote.status`.
+Only that phone is offered the Tracker method. This authorizes the full
+eligible projection for that hub and is separate from project and agent
+permissions. The local Tracker API is the native hub on `127.0.0.1:7701`.
+Changing the setting requires restarting the paired desktop process. Bind
 authorization to the host, phone, pairing generation, and Tracker grant.
 Check the grant on every pull, before reading Tracker or returning data.
 Reuse the established CryptoKit phone pairing, key agreement, and authenticated
@@ -186,7 +192,8 @@ background sockets. With the current paired host transport, wakeups can only
 sync when that host is reachable.
 [Apple background task guidance](https://developer.apple.com/documentation/backgroundtasks/choosing-background-strategies-for-your-app)
 
-When the mobile release has authorized APNs infrastructure, silent pushes
+The app handles a silent wakeup through its refresh callback. When the mobile
+release has authorized APNs infrastructure, silent pushes
 may coalesce dirty notifications, at most once every 30 minutes per device.
 Send only the wake signal with `content-available: 1`, background push type,
 and priority 5. Use the same single-flight and expiration limits. Delivery

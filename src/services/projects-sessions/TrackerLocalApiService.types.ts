@@ -1,4 +1,5 @@
 // @harness-uid u_g7kdpz7bel
+import type { TrackerPhoneReplicaService } from './TrackerPhoneReplicaService';
 import type { TrackerRunReadRepository } from '../../repositories/projects-sessions/TrackerRunReadRepository';
 import type { TrackerItem } from '../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerLadderConfig } from '../../utils/agents-providers/parseTrackerModelSpec.types';
@@ -6,6 +7,7 @@ import type { TrackerItemMutationContext } from '../../utils/projects-sessions/p
 
 export interface TrackerLocalApiOptions {
 	now?: () => number;
+	phoneReplica?: TrackerPhoneReplicaService;
 	manualLaunch?: boolean;
 	timeZone?: string;
 	runs?: TrackerRunReadRepository;

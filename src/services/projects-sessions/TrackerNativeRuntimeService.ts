@@ -11,6 +11,7 @@ import { TrackerRecurringRepository } from '../../repositories/projects-sessions
 import type { TrackerAdapterPollService } from './TrackerAdapterPollService';
 import { TrackerHubSyncService } from './TrackerHubSyncService';
 import { TrackerLocalApiService } from './TrackerLocalApiService';
+import { TrackerPhoneReplicaService } from './TrackerPhoneReplicaService';
 import type {
 	TrackerDuePreviewPolicy,
 	TrackerNativeRuntimeOptions
@@ -124,6 +125,7 @@ function composeItemApi(
 	const { store } = runtime;
 	return new TrackerLocalApiService(store, new TrackerItemReadRepository(store.database), {
 		now,
+		phoneReplica: role === 'hub' ? new TrackerPhoneReplicaService(store, runtime.now) : undefined,
 		timeZone,
 		ladderConfig,
 		validateModel,

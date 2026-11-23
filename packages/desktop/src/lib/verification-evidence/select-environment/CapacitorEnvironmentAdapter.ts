@@ -4,6 +4,7 @@ import { Capacitor, registerPlugin } from '@capacitor/core';
 import { CapacitorAccountAdapter } from './capacitor-account-adapter/CapacitorAccountAdapter';
 import { CapacitorBridgeAdapter } from './capacitor-bridge-adapter/CapacitorBridgeAdapter';
 import { CapacitorProjectsService } from './CapacitorProjectsService';
+import { phoneTrackerTools } from './phoneTrackerTools';
 import type {
 	AccountNativePlugin,
 	Environment,
@@ -50,14 +51,21 @@ export class CapacitorEnvironmentAdapter {
 			onStatus: (listener) => this.listen('status', (status) => listener(note(status)))
 		};
 		const mac = computer.connect();
-		if (!this.account) return { kind: 'capacitor', bridge: mac, local: false, phone };
+		const tracker = phoneTrackerTools(plugin);
+		const local = {
+			kind: 'capacitor',
+			local: false,
+			phone,
+			...(tracker ? { tracker } : {})
+		} as const;
+		if (!this.account) return { ...local, bridge: mac };
 		/** The account is read at once, paired or not; the computer's projects join it once reached. */
 		const cloud = new CapacitorAccountAdapter({ plugin: this.account }).connect();
 		const bridge = new CapacitorProjectsService({
 			cloud,
 			mac
 		}).connect();
-		return { kind: 'capacitor', bridge, local: false, phone, account: true };
+		return { ...local, bridge, account: true };
 	}
 
 	private listen<K extends keyof RemoteNativeEvents>(

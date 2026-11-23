@@ -1,4 +1,7 @@
 // @harness-uid u_rp545ji5cr
+import type { RemoteHostOptions } from '../src/services/networking-security/remote-host-service/RemoteHostService.types';
+import { fixturePhoneTracker } from './fixturePhoneTracker';
+import type { FixtureTrackerPorts } from './fixturePhoneTracker.types';
 import type { Relay, Running, RemoteFixtureOptions } from './remote-fixture-host.types';
 import {
 	FixtureHostRelayConnectionError,
@@ -68,6 +71,15 @@ async function fixtureHost(relay: Relay, state: string, root: string) {
 			throw new FixtureRelayRegistrationError('The fixture relay refused the registration.');
 		return { ...((await answer.json()) as RelayRegistered), origin: relay.origin };
 	};
+	const tracker = fixturePhoneTracker();
+	const shared: RemoteHostOptions['shared'] = {
+		registry,
+		outbox: new CommentOutboxService(join(state, 'outbox.json')),
+		arbiter: new RepositoryArbiterService(),
+		providers: new ProviderDiscoveryService(runners),
+		renderMockups,
+		trackerFetcher: tracker.fetcher
+	};
 	const host = new RemoteHostService({
 		store: new RemoteHostStoreAdapter({
 			file: join(state, 'remote.enc'),
@@ -76,17 +88,19 @@ async function fixtureHost(relay: Relay, state: string, root: string) {
 		}),
 		register,
 		open: (url, headers) => sockets.open(url, headers),
-		shared: {
-			registry,
-			outbox: new CommentOutboxService(join(state, 'outbox.json')),
-			arbiter: new RepositoryArbiterService(),
-			providers: new ProviderDiscoveryService(runners),
-			renderMockups
-		},
+		shared,
 		name: () => 'Harness fixture computer',
 		locked: () => screen.locked
 	});
-	return { host, screen, project: { id, name } };
+	return {
+		host,
+		screen,
+		tracker,
+		project: { id, name },
+		allowTracker: (deviceId: string) => {
+			shared.trackerPhone = deviceId;
+		}
+	};
 }
 /** Enabled and connected to the relay, or an error: a pairing needs the relay. */
 async function online(host: RemoteHostService): Promise<string> {
@@ -98,14 +112,19 @@ async function online(host: RemoteHostService): Promise<string> {
 	throw new FixtureHostRelayConnectionError('The fixture host did not reach the fixture relay.');
 }
 /** The person at the computer, stood in for by who runs the fixture: answers whoever waits. */
-function decisions(running: Running, view: () => Promise<object>): Record<string, FixtureAction> {
+function decisions(
+	running: Running & FixtureTrackerPorts,
+	view: () => Promise<object>
+): Record<string, FixtureAction> {
 	const { host, facts } = running,
 		waiting = async () => (await host.status()).requests;
 	return {
 		'POST /approve': async (body) => {
 			const grant = { projectIds: [facts.project.id], agents: body.agents !== false };
-			for (const { pairingId, deviceId } of await waiting())
+			for (const { pairingId, deviceId } of await waiting()) {
+				running.allowTracker(deviceId);
 				await host.devices.approvePairing({ pairingId, deviceId, ...grant });
+			}
 			return view();
 		},
 		'POST /deny': async () => {
@@ -115,7 +134,7 @@ function decisions(running: Running, view: () => Promise<object>): Record<string
 	};
 }
 /** What the control answers: public facts and state. An offer is given once, to who asked for it. */
-function fixtureActions(running: Running, options: RemoteFixtureOptions) {
+function fixtureActions(running: Running & FixtureTrackerPorts, options: RemoteFixtureOptions) {
 	const { host, screen, facts } = running,
 		save = (file: string, value: object) =>
 			writeFile(
@@ -142,6 +161,7 @@ function fixtureActions(running: Running, options: RemoteFixtureOptions) {
 			return offer;
 		},
 		'POST /suspend': () => (host.suspend(), view()),
+		'POST /tracker-finish': () => (running.tracker.finish(), view()),
 		'POST /resume': () => (host.resume(), view()),
 		'POST /lock': () => screened(true),
 		'POST /unlock': () => screened(false),
@@ -174,6 +194,7 @@ export async function startRemoteFixture(options: RemoteFixtureOptions) {
 	await save('fixture.json', { ...facts, controlOrigin: control.origin, pid: process.pid });
 	const stop = async () => {
 		await built.host.stop();
+		built.tracker.close();
 		await control.close();
 		await relay.stop();
 		for (const path of [state, project.root]) await rm(path, { recursive: true, force: true });

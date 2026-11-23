@@ -13,22 +13,29 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "status", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "scan", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "disconnect", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "request", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "request", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "trackerTool", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "refreshTracker", returnType: CAPPluginReturnPromise)
     ]
 
-    private let session = RemoteSession()
+    private let session = TrackerRefresh.session
 
     override public func load() {
         session.onStatus = { [weak self] status in self?.notifyListeners("status", data: status) }
         session.onEvent = { [weak self] event in self?.notifyListeners("event", data: event) }
-        let center = NotificationCenter.default
-        center.addObserver(
-            self, selector: #selector(active), name: UIApplication.didBecomeActiveNotification, object: nil)
         session.start()
     }
 
-    @objc private func active() {
-        session.resume()
+    @objc func trackerTool(_ call: CAPPluginCall) {
+        guard let name = call.getString("name"), let input = call.options["input"] as? [String: Any] else {
+            return call.reject(RemoteFailure.invalid.message, RemoteFailure.invalid.code)
+        }
+        session.trackerTool(name, input: input) { call.resolve($0) }
+    }
+
+    @objc func refreshTracker(_ call: CAPPluginCall) {
+        session.refreshTracker()
+        call.resolve()
     }
 
     @objc func status(_ call: CAPPluginCall) {

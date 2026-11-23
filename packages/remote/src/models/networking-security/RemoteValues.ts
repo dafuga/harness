@@ -81,6 +81,7 @@ export const controlMethods = [
 export const remoteMethods = [
 	attachMethod,
 	...readMethods,
+	'trackerReplicaPull',
 	...commentMethods,
 	...agentMethods,
 	...localMethods,
@@ -98,6 +99,7 @@ export const projectlessMethods: readonly RemoteMethod[] = [
 	attachMethod,
 	'listProjects',
 	'deploymentActivities',
+	'trackerReplicaPull',
 	'providers'
 ];
 /** Answers remembered by request id: re-sending one of these never runs it twice. */

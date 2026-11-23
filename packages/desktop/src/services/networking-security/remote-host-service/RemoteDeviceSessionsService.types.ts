@@ -7,13 +7,18 @@ import type { SecureChannelService } from '../../../../../remote/src/index';
 import type { WireLink } from '../../../../../remote/src/index';
 import type { RemoteHostDevice } from '../../../adapters/networking-security/RemoteHostStoreAdapter';
 
+export type TrackerPhoneFetcher = (url: URL, init: RequestInit) => Promise<Response>;
+
 export interface DeviceAddress {
 	deviceId: string;
 	connectionId: string;
 }
 
 export interface RemoteDeviceSessionsOptions {
-	shared: Omit<DeviceSessionOptions, 'host' | 'device' | 'grant' | 'epoch'>;
+	shared: Omit<DeviceSessionOptions, 'host' | 'device' | 'grant' | 'epoch' | 'trackerPull'> & {
+		trackerPhone?: string;
+		trackerFetcher?: TrackerPhoneFetcher;
+	};
 	host: () => { id: string; name: string; keys: RemoteKeyPair; locked?: boolean };
 	/** The approved device as stored now, or null once it is revoked. */
 	device: (deviceId: string) => RemoteHostDevice | null;

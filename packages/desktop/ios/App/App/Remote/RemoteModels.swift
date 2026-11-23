@@ -54,7 +54,7 @@ enum RemoteLimits {
 enum RemoteMethods {
     static let reads: Set<String> = [
         "listProjects", "capabilities", "snapshot", "entity", "history", "source", "image", "evidence",
-        "artifact", "messages", "pendingComments", "providers"
+        "artifact", "messages", "pendingComments", "providers", "trackerReplicaPull"
     ]
     static let changes: Set<String> = [
         "addComment", "createPlan", "openThread", "approve", "startRun", "cancelRun"

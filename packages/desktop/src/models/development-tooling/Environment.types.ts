@@ -7,6 +7,8 @@ import type { RemoteMethod } from '../../../../remote/src/models/Remote.types';
 import type { WireChannel } from '../../../../remote/src/models/Remote.types';
 import type { NativeHostedStatus } from '../projects-sessions/ProjectContext.types';
 
+import type { PhoneTrackerResult, PhoneTrackerTool, PhoneTrackerTools } from './PhoneTracker.types';
+
 export { nativeAccountContext } from './EnvironmentValues';
 
 export interface NativeAccountContext {
@@ -34,6 +36,8 @@ export interface Environment extends RemotePorts {
 	local: boolean;
 	/** Capacitor only: this phone has a Hub account of its own, read without any computer. */
 	account?: boolean;
+	/** Capacitor only: local Tracker reads and an independent app refresh control. */
+	tracker?: PhoneTrackerTools;
 }
 
 /** What a page can see of its host besides the document. */
@@ -86,6 +90,11 @@ export interface RemoteNativePlugin {
 	scan(input: ScanInput): Promise<RemoteNativeStatus>;
 	disconnect(): Promise<RemoteNativeStatus>;
 	request(call: { method: string; input: Record<string, unknown> }): Promise<RemoteNativeAnswer>;
+	trackerTool?(call: {
+		name: PhoneTrackerTool;
+		input: Record<string, unknown>;
+	}): Promise<PhoneTrackerResult>;
+	refreshTracker?(): Promise<void>;
 	addListener<K extends keyof RemoteNativeEvents>(
 		eventName: K,
 		listener: (value: RemoteNativeEvents[K]) => void

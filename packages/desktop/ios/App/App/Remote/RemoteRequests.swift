@@ -10,6 +10,7 @@ final class RemoteRequests {
     private struct Entry {
         let id: String
         let change: Bool
+        let method: String
         let message: Data
         let done: Done
         let deadline: DispatchWorkItem
@@ -33,7 +34,7 @@ final class RemoteRequests {
         let deadline = DispatchWorkItem { [weak self] in self?.finish(id, .failure(.deadline)) }
         let seconds = change ? RemoteLimits.mutationSeconds : RemoteLimits.requestSeconds
         queue.asyncAfter(deadline: .now() + seconds + 5, execute: deadline)
-        entries.append(Entry(id: id, change: change, message: message, done: done, deadline: deadline))
+        entries.append(Entry(id: id, change: change, method: method, message: message, done: done, deadline: deadline))
         return .success(message)
     }
 
@@ -64,6 +65,10 @@ final class RemoteRequests {
     /// Reads that still wait when the computer refused this phone something: none is answered.
     func failReads(_ failure: RemoteFailure) {
         entries.filter { !$0.change }.map { $0.id }.forEach { finish($0, .failure(failure)) }
+    }
+
+    func failMethod(_ method: String, _ failure: RemoteFailure) {
+        entries.filter { $0.method == method }.map { $0.id }.forEach { finish($0, .failure(failure)) }
     }
 
     func failAll(_ failure: RemoteFailure) {

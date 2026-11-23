@@ -37,6 +37,8 @@ export class TrackerLocalApiService {
 			const url = new URL(request.url);
 			const parts = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
 			if (request.method === 'GET') {
+				if (url.pathname === '/phone-replica/v1' && this.options.phoneReplica)
+					return this.options.phoneReplica.pull(url.searchParams);
 				const read = this.read(parts, Object.fromEntries(url.searchParams));
 				if (read) return read;
 			}

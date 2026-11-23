@@ -30,21 +30,35 @@ final class RemoteSession {
     var attachId: String?
     var attempts = 0
     var handshake: DispatchWorkItem?
+    var started = false
+    let trackerStore: TrackerReplicaStore
+    var trackerAuthority: String?
+    var trackerRequest: UUID?
+    var trackerTimer: DispatchWorkItem?
+    var trackerDelay: Double = 60
+    var trackerForeground = true
+    var trackerBackground: TrackerBackgroundAttempt?
 
     init(
         vault: RemoteVault = RemoteKeychain(), cache: RemoteCache = RemoteCache(),
+        trackerStore: TrackerReplicaStore = TrackerReplicaStore(),
         makeLink: @escaping LinkFactory = { RemoteChannel(record: $0, queue: $1) }
     ) {
         self.vault = vault
         self.cache = cache
         self.makeLink = makeLink
+        self.trackerStore = trackerStore
     }
 
     func start() {
         queue.async {
+            guard !self.started else { return }
+            self.started = true
             self.record = self.vault.load()
             self.authorize()
-            if self.record != nil { self.connect() }
+            if self.record != nil {
+                if self.trackerForeground { self.connect() } else { self.move("offline") }
+            }
         }
     }
 
@@ -100,6 +114,7 @@ final class RemoteSession {
         self.reason = reason
         if next != "online" { locked = nil }
         onStatus?(snapshot)
+        trackerConnectionChanged(next)
     }
 
     func forget() {
@@ -109,6 +124,8 @@ final class RemoteSession {
         pairing = nil
         pending = nil
         record = nil
+        authorizeTracker()
+        trackerStore.purge()
         dropLink()
         requests.failAll(.offline)
     }
