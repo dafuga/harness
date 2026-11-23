@@ -60,6 +60,12 @@ export function trackerManagedEvidence(
 	};
 }
 
+export function hasManagedStartupEvidence(directory: string): boolean {
+	return ['started', 'started.tmp', 'exit', 'exit.tmp'].some(
+		(name) => privateRecord(join(directory, name)) !== undefined
+	);
+}
+
 function managedExitCode(path: string): number | undefined {
 	const exit = privateRecord(path)?.trim();
 	if (exit === undefined) return undefined;

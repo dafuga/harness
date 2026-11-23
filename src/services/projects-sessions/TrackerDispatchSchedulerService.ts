@@ -9,6 +9,7 @@ import type {
 } from '../agents-providers/TrackerDispatcherService';
 import {
 	attemptKey,
+	minute,
 	ownsLaunch
 } from '../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type {
@@ -16,13 +17,15 @@ import type {
 	TrackerDispatchSchedulerOptions
 } from './TrackerDispatchSchedulerService.types';
 
+// Allow an interrupted tmux startup to settle before treating absence as final.
+const startupGrace = 5 * minute;
+
 /** Reconcile committed attempts before reserving new work for the node. */
 export class TrackerDispatchSchedulerService {
 	private ticking = false;
 	private readonly waits = new Map<string, string>();
 	private lastTickAt: string | null = null;
 	private lastError: string | null = null;
-
 	constructor(
 		private readonly repository: TrackerDispatchRepository,
 		private readonly dispatcher: TrackerDispatcherService,
@@ -78,7 +81,9 @@ export class TrackerDispatchSchedulerService {
 				if (await this.prepare(run, signal)) return true;
 				continue;
 			}
-			const event = await this.options.runner.observe(run, attemptKey(run), signal);
+			const event =
+				(await this.options.runner.observe(run, attemptKey(run), signal)) ??
+				(await cancelledStartEvent(run, this.options, this.repository, signal));
 			if (event) await this.dispatcher.record(run.item_id, run, event);
 		}
 		return false;
@@ -135,6 +140,21 @@ export class TrackerDispatchSchedulerService {
 		if (event) await this.dispatcher.record(result.run.item_id, result.run, event);
 		return true;
 	}
+}
+
+async function cancelledStartEvent(
+	run: TrackerRunReceipt,
+	{ runner, policy }: TrackerDispatchSchedulerOptions,
+	repository: TrackerDispatchRepository,
+	signal: AbortSignal
+) {
+	if (run.state !== 'queued' || run.dispatch_at === undefined) return undefined;
+	const now = policy ? policy.now() : Date.now();
+	if (now - run.dispatch_at < startupGrace) return undefined;
+	if (repository.readSnapshot(run.item_id).item?.launch?.token === run.auto_token) return undefined;
+	const confirmed = await runner.confirmNeverStarted?.(run, signal);
+	signal.throwIfAborted();
+	return confirmed ? ({ type: 'never-started' } as const) : undefined;
 }
 
 function launchCompletionInstructions(itemId: string): string {

@@ -88,6 +88,7 @@
 			"previewDueLaunch",
 			"claimLaunch",
 			"prepareRetry",
+			"cancelUnstartedRun",
 			"monitorRun",
 			"completeRun",
 			"etaFor",
@@ -182,7 +183,7 @@
 				"name": "TrackerDispatcherService.record.event",
 				"type": "TrackerDispatchEvent",
 				"required": true,
-				"description": "Trusted session, monitor, verification, startup failure, answer or rejection evidence supplied by the caller."
+				"description": "Trusted session, monitor, verification, startup failure, confirmed startup absence, answer or rejection evidence supplied by the caller."
 			},
 			{
 				"name": "trackerNodeNames.node",
@@ -446,6 +447,21 @@
 			},
 			{
 				"name": "prepareRetry.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "cancelUnstartedRun.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "cancelUnstartedRun.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "cancelUnstartedRun.now",
 				"type": "number",
 				"required": true
 			},
@@ -765,7 +781,7 @@
 						"name": "TrackerDispatcherService.record.event",
 						"type": "TrackerDispatchEvent",
 						"required": true,
-						"description": "Trusted session, monitor, verification, startup failure, answer or rejection evidence supplied by the caller."
+						"description": "Trusted session, monitor, verification, startup failure, confirmed startup absence, answer or rejection evidence supplied by the caller."
 					}
 				],
 				"outputs": [
@@ -1297,6 +1313,34 @@
 				"outputs": [
 					{
 						"name": "prepareRetry",
+						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "cancelUnstartedRun",
+				"inputs": [
+					{
+						"name": "cancelUnstartedRun.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "cancelUnstartedRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "cancelUnstartedRun.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "cancelUnstartedRun",
 						"type": "TrackerDispatchDecision"
 					}
 				],
