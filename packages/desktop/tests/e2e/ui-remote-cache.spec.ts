@@ -41,7 +41,7 @@ test('a phone opened while its computer is away shows saved copies, dated and re
 	);
 	await expect.poll(() => loaded(page)).not.toBe(0);
 	await expect(page.getByRole('button', { name: 'Comment on image', exact: true })).toBeDisabled();
-	await expect(page.getByLabel('Project', { exact: true })).toHaveValue(alpha);
+	await expect(page.locator('.project-name')).toHaveText('Alpha');
 	expect(await made(page, 'native.request')).toEqual([]);
 	expect(await fits(page)).toBe(true);
 	await shot(page, testInfo, 'cache-saved');

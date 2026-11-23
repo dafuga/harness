@@ -20,6 +20,7 @@ import { createRequire } from 'node:module';
 import { createPlanning } from '../../../planning/src/lib/planning/index';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
 import { PlanningFacadeAdapter } from '../../src/adapters/planning-facade-adapter/PlanningFacadeAdapter';
+import { chooseRow, currentRow, openRows } from './picker-rows';
 
 const desktopRoot = resolve(import.meta.dirname, '../..');
 const electronBinary = createRequire(import.meta.url)('electron') as string;
@@ -57,7 +58,7 @@ async function openDraftThroughUi(page: Page, root: string) {
 		goal: 'Review committed images through the native bridge.'
 	});
 	await page.getByRole('button', { name: 'Open project', exact: true }).click();
-	await expect(page.getByLabel('Branch', { exact: true })).toHaveValue('feat/native');
+	await expect(page.locator('.revision-summary strong')).toHaveText('feat/native');
 	await expect(page.getByRole('button', { name: 'New page' })).toHaveCount(0);
 	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toBeVisible();
 	await page.getByRole('link', { name: 'Open Native activity', exact: true }).click();
@@ -65,10 +66,12 @@ async function openDraftThroughUi(page: Page, root: string) {
 	await sections.getByRole('button', { name: 'Designs', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'No design image yet' })).toBeVisible();
 	const tip = git(root, 'rev-parse', 'HEAD');
-	await expect(page.getByLabel('Commit', { exact: true })).toHaveValue(tip);
-	expect(await page.getByLabel('Branch', { exact: true }).getAttribute('title')).toContain(
-		`Tip · ${tip.slice(0, 7)}`
+	expect(await currentRow(page, 'Choose commit')).toContainText(tip.slice(0, 7));
+	await page.keyboard.press('Escape');
+	await expect(await openRows(page, 'Choose branch')).toContainText(
+		`Branch tip ${tip.slice(0, 7)} committed`
 	);
+	await page.keyboard.press('Escape');
 	const api = await createPlanning(root),
 		plans = await api.listPlans();
 	expect(plans).toHaveLength(1);
@@ -120,9 +123,7 @@ async function committedImage(page: Page, root: string, unitId: string) {
 	return imageCommit;
 }
 async function historical(page: Page, commit: string, unitId: string) {
-	await page.getByRole('button', { name: 'Choose commit', exact: true }).click();
-	await page.getByLabel('Commit', { exact: true }).selectOption(commit);
-	await page.keyboard.press('Escape');
+	await chooseRow(page, 'Choose commit', commit.slice(0, 7));
 	await expect(page).toHaveURL(new RegExp(`/branch/feat%2Fnative/commit/${commit}/pages$`));
 	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
 	await page.getByRole('button', { name: 'Open project chat', exact: true }).click();

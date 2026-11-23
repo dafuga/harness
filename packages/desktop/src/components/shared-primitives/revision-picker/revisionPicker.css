@@ -38,20 +38,6 @@
 	flex: none;
 	line-height: var(--hx-style-leading-snug);
 }
-.picker-field {
-	display: grid;
-	gap: var(--hx-space-6);
-	min-width: 0;
-	max-width: none;
-}
-.picker-field :global(.report-select) {
-	display: block;
-}
-.picker-field :global(.report-select.expanded select) {
-	width: 100%;
-	padding-inline: var(--hx-space-8);
-	font-size: var(--hx-type-size-sm);
-}
 @media (max-width: 560px) {
 	.revision-choices :global(button.agent-icon) {
 		align-items: center;

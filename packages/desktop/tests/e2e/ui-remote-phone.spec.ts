@@ -96,7 +96,7 @@ test('a paired phone shows the same workspace through the native adapter', async
 	await page.getByRole('button', { name: 'Open Alpha', exact: true }).click();
 	const pages = `/projects/${alpha}/harness/branch/feat%2Falpha`;
 	await expect(page).toHaveURL(new RegExp(`${pages}/pages$`));
-	await expect(page.getByLabel('Project', { exact: true })).toHaveValue(alpha);
+	await expect(page.locator('.project-name')).toHaveText('Alpha');
 	await expect(page.getByRole('button', { name: 'Add local project' })).toHaveCount(0);
 	const categories = page.getByRole('navigation', { name: 'Catalog categories' });
 	await expect(categories.getByRole('link', { name: 'Components', exact: true })).toHaveAttribute(

@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { analytics, charted, former, idsOf, ordinary } from '../../test/catalog-listing-manifests';
 import { listedIds, listedProject, pictured } from './ui-catalog-listing-fixture';
+import { chooseRow } from './picker-rows';
 
 /**
  * The catalog of a project in which former addresses only redirect. The cards are what the real
@@ -20,9 +21,7 @@ async function opened(page: Page) {
 }
 
 async function at(page: Page, commit: string) {
-	await page.getByRole('button', { name: 'Choose commit', exact: true }).click();
-	await page.getByLabel('Commit', { exact: true }).selectOption(commit);
-	await page.keyboard.press('Escape');
+	await chooseRow(page, 'Choose commit', commit.slice(0, 7));
 	await expect(page).toHaveURL(new RegExp(`/commit/${commit}/pages$`));
 	await expect(cards(page).first()).toBeVisible();
 }
