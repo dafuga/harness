@@ -189,6 +189,9 @@ test('project creation sends the chosen game type and dimension', async ({ page 
 		{ document: exampleDocument('3d'), id: 'local-' + 'a'.repeat(64) }
 	);
 	await page.goto('/');
+	await expect(page.getByRole('form', { name: 'New project' })).toHaveCount(0);
+	await page.getByRole('button', { name: 'New project', exact: true }).click();
+	await expect(page.getByRole('dialog', { name: 'New project' })).toBeVisible();
 	await expect(page.getByLabel('Project type', { exact: true })).toHaveValue('app');
 	await page.getByLabel('Project type', { exact: true }).selectOption('game');
 	await page.getByLabel('Dimension', { exact: true }).selectOption('3d');

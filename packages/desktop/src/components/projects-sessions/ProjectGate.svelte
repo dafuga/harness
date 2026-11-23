@@ -1,8 +1,10 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_akqlhtaphm -->
+<!-- @harness-view overview -->
 <script lang="ts">
 	import BrandMark from '$shared/BrandMark.svelte';
+	import Modal from '$shared/Modal.svelte';
 	import { resolve } from '$app/paths';
 	import type { Snippet } from 'svelte';
 	import type { DesktopProject } from '../../models/projects-sessions/ProjectContext.types';
@@ -15,6 +17,7 @@
 		open,
 		projects = [],
 		choose,
+		phone,
 		children
 	}: {
 		available: boolean;
@@ -26,46 +29,139 @@
 		open: () => void;
 		projects?: DesktopProject[];
 		choose?: (projectId: string) => void;
+		/** Phone access settings of this computer; given, the phone hint offers them in a dialog. */
+		phone?: Snippet;
 		children?: Snippet;
 	} = $props();
-	const remote = 'The projects of your computer appear here once this phone is connected.';
+	/** The one dialog open over the home: the New project form or the phone access settings. */
+	let dialog = $state<'create' | 'phone' | null>(null);
 	const place = $derived(local ? 'On this device' : 'On your computer');
-	const hint = $derived.by(() => {
-		if (!local) return projects.length ? 'Choose a project of your computer.' : remote;
-		return available
-			? 'Choose a local Git project to begin.'
-			: 'Browser preview · read-only. Open the desktop app to choose a local project.';
-	});
+	const empty = $derived(
+		local
+			? 'Projects you open or create appear here.'
+			: 'The projects of your computer appear here once this phone is connected.'
+	);
+	/** Only the desktop app owns a local tracker: a phone, a cloud page or a preview offers no link. */
+	const overviewLink = $derived((available && local) || overview);
+	/** A new project is made on this device, so a phone or a browser preview offers none. */
+	const creates = $derived(available && local);
 </script>
 
 <hx-main class="project-gate">
-	<hx-div class="brand-mark"><BrandMark /></hx-div>
-	<hx-h1>Harness</hx-h1>
-	<hx-p>Understand your project. Design what comes next.</hx-p>
-	{#if local}<hx-button
-			class="primary"
-			disabled={!available || busy}
-			aria-busy={busy}
-			onclick={open}>{busy ? 'Opening project…' : 'Open Project'}</hx-button
-		>{/if}
-	<hx-p class="muted">{hint}</hx-p>
-	<!-- Only the desktop app owns a local tracker: a phone, a cloud page or a preview offers no link. -->
-	{#if (available && local) || overview}<hx-a
-			class="project-overview-link"
-			href={resolve('/projects' as '/')}>Project Overview</hx-a
-		>{/if}
-	<!-- A new project is made on this device, so a phone or a browser preview offers none. -->
-	{#if available && local}<GameCreate />{/if}
-	{#if projects.length}<hx-section class="recent-projects" aria-label="Recent projects">
-			<hx-h2>Recent projects</hx-h2>
-			{#each projects as item (item.id)}<hx-button
+	<hx-header class="gate-head">
+		<hx-div class="brand-mark"><BrandMark /></hx-div>
+		<hx-h1>Harness</hx-h1>
+		<hx-p class="tagline">Understand your project. Design what comes next.</hx-p>
+	</hx-header>
+	{#if local}<hx-div class="gate-actions">
+			<hx-button class="primary" disabled={!available || busy} aria-busy={busy} onclick={open}
+				>{busy ? 'Opening project…' : 'Open project'}</hx-button
+			>{#if creates}<hx-button
 					type="button"
-					disabled={busy}
-					aria-label={`Open ${item.name}`}
-					onclick={() => choose?.(item.id)}
-					><hx-strong>{item.name}</hx-strong><hx-small
-						>{item.kind === 'shared' ? 'Shared project' : item.root || place}</hx-small
-					></hx-button
-				>{/each}
-		</hx-section>{/if}{@render children?.()}
+					aria-haspopup="dialog"
+					onclick={() => (dialog = 'create')}>New project</hx-button
+				>{/if}
+		</hx-div>{/if}
+	{#if local && !available}<hx-p class="muted gate-hint"
+			>Browser preview · read-only. Open the desktop app to choose a local project.</hx-p
+		>{/if}
+	<hx-section class="recent-projects" aria-label="Recent projects">
+		<hx-div class="recent-head">
+			<hx-h2>Recent projects</hx-h2>
+			{#if overviewLink}<hx-a class="project-overview-link" href={resolve('/projects' as '/')}
+					>Project Overview</hx-a
+				>{/if}
+		</hx-div>
+		{#each projects as item (item.id)}<hx-button
+				type="button"
+				class="recent-project"
+				disabled={busy}
+				aria-label={`Open ${item.name}`}
+				onclick={() => choose?.(item.id)}
+				><hx-strong>{item.name}</hx-strong><hx-small
+					>{item.kind === 'shared' ? 'Shared project' : item.root || place}</hx-small
+				></hx-button
+			>{:else}<hx-p class="muted recent-empty">{empty}</hx-p>{/each}
+	</hx-section>
+	{#if phone}<hx-p class="phone-hint"
+			><hx-span
+				>Connect your phone: open Harness on it and sign in with the same Google account.</hx-span
+			><hx-button
+				type="button"
+				class="quiet"
+				aria-haspopup="dialog"
+				onclick={() => (dialog = 'phone')}>Phone access</hx-button
+			></hx-p
+		>{/if}
+	{#if children}<hx-div class="gate-more" class:inline={!local}>{@render children()}</hx-div>{/if}
 </hx-main>
+<Modal open={dialog === 'create'} title="New project" variant="text" onClose={() => (dialog = null)}
+	><GameCreate /></Modal
+>
+<Modal open={dialog === 'phone'} title="Phone access" variant="text" onClose={() => (dialog = null)}
+	><hx-div class="gate-dialog-body">{@render phone?.()}</hx-div></Modal
+>
+
+<style>
+	.project-gate {
+		display: grid;
+		gap: var(--hx-space-28);
+		width: min(100%, 640px);
+		box-sizing: border-box;
+		margin: 0 auto;
+		padding: 14vh var(--hx-space-24) var(--hx-space-40);
+	}
+	.gate-head {
+		display: grid;
+		justify-items: center;
+		gap: var(--hx-space-8);
+		text-align: center;
+	}
+	.gate-head h1,
+	.tagline {
+		margin: 0;
+	}
+	.tagline {
+		color: var(--hx-color-text-supporting);
+	}
+	.gate-actions {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: var(--hx-space-12);
+	}
+	.gate-actions button {
+		min-height: 44px;
+		margin: 0;
+	}
+	.gate-hint {
+		margin: 0;
+		text-align: center;
+	}
+	.phone-hint {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: center;
+		gap: var(--hx-space-6) var(--hx-space-12);
+		margin: 0;
+		color: var(--hx-color-text-muted);
+		font-size: var(--hx-type-size-xs);
+		text-align: center;
+	}
+	.quiet {
+		min-height: 32px;
+		padding: var(--hx-space-4) var(--hx-space-10);
+		font-size: var(--hx-type-size-2xs);
+	}
+	.gate-more:not(.inline) {
+		display: flex;
+		justify-content: center;
+		color: var(--hx-color-text-muted);
+	}
+	.gate-dialog-body :global(.remote-connection) {
+		margin: 0;
+		padding: 0;
+		border: 0;
+	}
+</style>

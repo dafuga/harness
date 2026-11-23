@@ -8,7 +8,7 @@ test('production promotion previews preprod distance, requires one action and re
 }) => {
 	await fakeProject(page, true);
 	await page.goto('/');
-	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	await page.getByRole('button', { name: 'Open project', exact: true }).click();
 	await page.getByLabel('Environment', { exact: true }).selectOption('preprod');
 	await page.getByRole('button', { name: 'Deploy', exact: true }).click();
 	await page.evaluate(() => document.fonts.ready);
@@ -71,7 +71,7 @@ test('deployment activity shows concurrent destinations and opens their current 
 	await fakeProject(page, true);
 	await fakeDeploymentActivity(page);
 	await page.goto('/');
-	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	await page.getByRole('button', { name: 'Open project', exact: true }).click();
 	await page.evaluate(() => document.fonts.ready);
 	await capture(page, 'activity-light');
 	const light = page.getByRole('button', { name: 'Deployments', exact: true });
@@ -117,7 +117,7 @@ test('mobile deployment details retain queued and failed steps when status reads
 	await fakeProject(page, true);
 	await fakeDeploymentActivity(page, true);
 	await page.goto('/');
-	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	await page.getByRole('button', { name: 'Open project', exact: true }).click();
 	const light = page.getByRole('button', { name: 'Deployments', exact: true });
 	await expect(light).toHaveAttribute('data-active', '1');
 	expect(await light.locator('.pulse').evaluate((el) => getComputedStyle(el).animationName)).toBe(

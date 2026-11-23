@@ -13,7 +13,7 @@ const cards = (page: Page) => page.locator('main.catalog article');
 async function opened(page: Page) {
 	const project = await listedProject(page);
 	await page.goto('/');
-	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	await page.getByRole('button', { name: 'Open project', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'Pages', exact: true, level: 1 })).toBeVisible();
 	await expect(cards(page).first()).toBeVisible();
 	return project;

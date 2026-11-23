@@ -19,7 +19,7 @@ test('exact image region, approval, Change, public stream and source disclosure'
 }) => {
 	await fixture(page);
 	await page.goto('/');
-	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	await page.getByRole('button', { name: 'Open project', exact: true }).click();
 	await checkpoint(page, 'catalog');
 	await page.getByRole('link', { name: 'Open Activity', exact: true }).click();
 	await expect(page.getByRole('img', { name: 'Activity v002 desktop default' })).toBeVisible();
@@ -77,7 +77,7 @@ for (const viewport of [
 		await page.setViewportSize({ width: viewport.width, height: viewport.height });
 		await fixture(page);
 		await page.goto('/');
-		await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+		await page.getByRole('button', { name: 'Open project', exact: true }).click();
 		await page.getByRole('link', { name: 'Open Activity', exact: true }).click();
 		await expect(page.getByRole('img', { name: 'Activity v002 desktop default' })).toBeVisible();
 		await expect(
@@ -97,7 +97,7 @@ for (const viewport of [
 test('headless committed notes approve without a fabricated image', async ({ page }) => {
 	await fixture(page, true);
 	await page.goto('/');
-	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	await page.getByRole('button', { name: 'Open project', exact: true }).click();
 	await page
 		.getByRole('navigation', { name: 'Catalog categories' })
 		.getByRole('link', { name: 'Services', exact: true })
@@ -183,7 +183,7 @@ for (const outcome of ['failed', 'cancelled'] as const) {
 		await fixture(page);
 		await page.goto('/');
 		await persistTerminalOutcome(page, outcome);
-		await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+		await page.getByRole('button', { name: 'Open project', exact: true }).click();
 		await page.getByRole('link', { name: 'Open Activity', exact: true }).click();
 		await page.getByRole('textbox', { name: 'Message', exact: true }).fill('Revise the design');
 		await page.getByRole('button', { name: 'Send plan', exact: true }).click();

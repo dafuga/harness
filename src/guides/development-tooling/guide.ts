@@ -14,6 +14,7 @@ import { availableGuideTopics as uniqueGuideTopics, findGuideByTopic } from './t
 import { activityGuide } from '../projects-sessions/activity';
 import { analyticsGuide, reportGuide } from '../reports-media/analytics';
 import { cleanCodeGuide } from './cleanCode';
+import { uiDesignGuide } from './uiDesign';
 import { responseCheckGuide } from '../verification-evidence/responseCheck';
 import { namingGuide, scaffoldGuides, scaffoldsGuide } from './scaffolds';
 import { consoleGuides } from './console';
@@ -31,6 +32,7 @@ export const guides: Guide[] = [
 	activityGuide,
 	reportGuide,
 	cleanCodeGuide,
+	uiDesignGuide,
 	responseCheckGuide,
 	{
 		topic: 'model',

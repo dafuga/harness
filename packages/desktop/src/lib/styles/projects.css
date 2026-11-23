@@ -53,28 +53,59 @@
 .message-note {
 	color: var(--hx-color-primary);
 }
+/* The home's Recent projects card: n79x63 rows under one header. */
 .recent-projects {
 	display: grid;
-	gap: var(--hx-space-8);
-	margin-top: var(--hx-space-28);
-	text-align: left;
+	gap: 0;
+	margin: 0;
+	padding: var(--hx-space-6) var(--hx-space-20) var(--hx-space-10);
+	text-align: start;
+	background: var(--hx-color-surface);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-large);
 }
-.recent-projects h2 {
-	font-size: var(--hx-type-size-compact);
-	font-weight: var(--hx-style-weight-medium);
-	color: var(--hx-color-text-muted);
+.recent-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--hx-space-12);
+	min-height: 44px;
 }
-.recent-projects button {
+.recent-head h2 {
+	margin: 0;
+	font-size: var(--hx-type-size-sm);
+}
+.project-overview-link {
+	color: var(--hx-color-primary);
+	font-size: var(--hx-type-size-xs);
+}
+.recent-project {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	gap: var(--hx-space-16);
-	text-align: left;
+	min-height: 52px;
+	padding: var(--hx-space-10) 0;
+	text-align: start;
+	background: transparent;
+	border: 0;
+	border-top: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: 0;
 }
-.recent-projects small {
+.recent-project:hover:not(:disabled) strong {
+	color: var(--hx-color-primary);
+}
+.recent-project small {
+	min-width: 0;
 	overflow: hidden;
+	color: var(--hx-color-text-muted);
 	text-overflow: ellipsis;
 	white-space: nowrap;
+}
+.recent-empty {
+	margin: 0;
+	padding: var(--hx-space-14) 0;
+	border-top: var(--hx-border-thin) solid var(--hx-color-border);
 }
 
 /* Entity base views. */

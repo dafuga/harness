@@ -138,7 +138,7 @@ export async function viewPlanMockup(
 ) {
 	await fixture(page, false, await planFixtureCaptures());
 	await page.goto('/');
-	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	await page.getByRole('button', { name: 'Open project', exact: true }).click();
 	await page.getByRole('link', { name: 'Open Activity', exact: true }).click();
 	const tabs = page.getByRole('navigation', { name: 'Entity sections' });
 	await tabs.getByRole('button', { name: 'Overview', exact: true }).click();

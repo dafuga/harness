@@ -1,0 +1,27 @@
+// @harness-uid u_waj3b3a3ii
+/** UI design patterns every Harness worker and designer follows; the Harness home is the example. */
+export const uiDesignPatternRules = [
+	'One main piece per screen. A screen has one main UI piece (a list, a board, a form or a canvas). Everything else is a primary action above it or quiet status below it. Two main pieces need two screens, tabs or a dialog.',
+	'Forms never sit inline on an overview. Create, edit, connect and settings forms open from a button in a dialog (the shared Modal) or on their own page. Mark overview screens with <!-- @harness-view overview -->; harness audit reports overview-inline-form for a form control or form component outside a dialog there.',
+	'Primary actions are buttons in one short row above the main piece. A screen has at most one filled primary button (harness audit reports overview-single-primary); the rest are secondary buttons. Labels are short verbs in sentence case, such as New project.',
+	'Status is quiet. Connection, sync and account state is one short muted line or a small chip beside or below the main piece. Its details and settings open in a dialog; never stack full status panels on a landing screen.',
+	'Group by job, in this order: primary actions, the main piece, quiet status. Keep to about three groups and let spacing, not borders or headings, separate them.',
+	'Lists follow the approved project overview cards (n79x63): one card with a title and at most one quiet link in its header, rows with the name on the left and muted metadata on the right, hairline separators, and an empty-state line instead of a hidden card.',
+	'A gate screen, such as Sign in with Google, has only its one primary action and one muted line. Nothing else is usable until it is passed.',
+	'Use the shared design tokens and components: --hx-* tokens, Modal, Select and BrandMark. No literal colours, touch targets of at least 44px, and no horizontal overflow at 390px wide.',
+	'Prove it in a browser: capture every changed screen and every dialog open at desktop, tablet and phone widths, and look at the images before handing work back.'
+];
+
+export const uiDesignAntiPatterns = [
+	'Do not put a create or settings form on a home, list or overview screen.',
+	'Do not show several full panels (connections, phone access, sign-in) one after another.',
+	'Do not give a screen two filled primary buttons or a heading for every group.',
+	'Do not hide a function the old screen offered; move it behind a button, dialog or quiet link.'
+];
+
+/** Shared policy emitted into tenant agent rules and the Harness skill. */
+export function uiDesignRules(): string {
+	return `## UI Design Patterns\n\nRead \`harness info ui-design\` before designing or changing a screen.\n\n${uiDesignPatternRules
+		.map((rule) => `- ${rule}`)
+		.join('\n')}\n`;
+}

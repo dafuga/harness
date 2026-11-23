@@ -41,6 +41,7 @@ test('at a tablet width the approval shows the whole identity without overflowin
 }, testInfo) => {
 	await remoteHostFixture(page, true);
 	await page.goto('/');
+	await page.getByRole('button', { name: 'Phone access', exact: true }).click();
 	const panel = page.getByRole('region', { name: 'Phone access' });
 	await panel.getByRole('button', { name: 'Pair a phone', exact: true }).click();
 	await page.evaluate(() =>

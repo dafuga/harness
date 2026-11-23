@@ -4,7 +4,7 @@
 	"uid": "u_akqlhtaphm",
 	"kind": "component",
 	"title": "Project gate",
-	"responsibility": "Offers the initial choice of a local project or a project on a connected computer.",
+	"responsibility": "The home: Open project and New project buttons above the Recent projects card, with quiet status below; the New project form and phone access settings open in dialogs.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -17,10 +17,12 @@
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h1",
 			"reports.component.shared-primitives-atoms-html-h2",
+			"reports.component.shared-primitives-atoms-html-header",
 			"reports.component.shared-primitives-atoms-html-main",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-small",
+			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-strong"
 		]
 	},
@@ -35,7 +37,7 @@
 				"name": "ProjectGate.available",
 				"type": "boolean",
 				"required": true,
-				"description": "Whether local folder opening is available; together with busy it controls the local Open Project button, and while local is true it selects the local-project or read-only browser-preview hint and, when true, renders the GameCreate component. It never disables recent-project choices, which depend only on busy.",
+				"description": "Whether this runtime has a bridge. With busy it enables the Open project button (rendered only while local is true); while local is true, false shows the read-only browser-preview hint, and true offers the New project button and the Project Overview link. It never disables recent-project choices, which depend only on busy.",
 				"examples": [true, false]
 			},
 			{
@@ -43,7 +45,7 @@
 				"type": "boolean",
 				"required": false,
 				"default": true,
-				"description": "Whether projects can be opened from this device; it defaults to true. False is for a phone, whose projects are those of a computer: it hides the Open Project button and the GameCreate component, makes the hint describe projects of a connected computer, and labels non-shared recent projects without a root On your computer.",
+				"description": "Whether projects are opened on this device; defaults to true. False is for a phone, whose projects are those of a computer: it hides the action row, uses the computer wording for the empty Recent projects line, labels non-shared projects without a root On your computer, and renders the children inline.",
 				"examples": [true, false]
 			},
 			{
@@ -51,20 +53,20 @@
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Shows the Project Overview link only when the current desktop or paired account can offer it."
+				"description": "Shows the Project Overview link in the Recent projects header when a paired phone can offer it; the desktop app (available and local) always shows it."
 			},
 			{
 				"name": "ProjectGate.busy",
 				"type": "boolean",
 				"required": true,
-				"description": "Whether a project operation is in progress. While it is true, the local Open Project button (rendered only when local is true) is disabled, has aria-busy set and reads Opening project…, and every recent-project button is disabled.",
+				"description": "Whether a project operation is in progress. While it is true, the local Open project button (rendered only when local is true) is disabled, has aria-busy set and reads Opening project…, and every recent-project button is disabled.",
 				"examples": [false, true]
 			},
 			{
 				"name": "ProjectGate.open",
 				"type": "() => void",
 				"required": true,
-				"description": "Required callback run when the local Open Project button is clicked; that button is rendered only while local is true and is enabled only while available is true and busy is false. The component does not choose a folder itself or catch callback failures."
+				"description": "Required callback run when the local Open project button is clicked; that button is rendered only while local is true and is enabled only while available is true and busy is false. The component does not choose a folder itself or catch callback failures."
 			},
 			{
 				"name": "ProjectGate.projects",
@@ -111,18 +113,25 @@
 				"description": "Optional callback receiving a selected recent-project identifier. Defaults to JavaScript undefined (omitted); activating a listed project does nothing when no callback is supplied."
 			},
 			{
+				"name": "ProjectGate.phone",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional phone access settings. When given, a quiet hint says to connect a phone by signing in with the same Google account, and its Phone access button opens this snippet in a dialog titled Phone access. Defaults to JavaScript undefined (omitted): no hint and no dialog."
+			},
+			{
 				"name": "ProjectGate.children",
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional additional content (a Svelte snippet) rendered last, after the recent-projects section. Defaults to JavaScript undefined (omitted), in which case nothing is rendered."
+				"description": "Optional quiet status (a Svelte snippet) rendered after the phone hint: centered and muted on this device, inline when local is false. Defaults to JavaScript undefined (omitted), in which case nothing is rendered."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectGate",
 				"type": "markup",
-				"description": "Welcome markup: the brand mark, the Harness heading and tagline, the Open Project button when local is true (disabled while available is false or busy is true), a hint line, the GameCreate component when available and local are true, a Recent projects list when projects is non-empty (its buttons disabled while busy is true), then the children snippet. The hint is 'Choose a local Git project to begin.' when local and available are true, 'Browser preview · read-only. Open the desktop app to choose a local project.' when local is true and available is false, 'Choose a project of your computer.' when local is false and projects is non-empty, and 'The projects of your computer appear here once this phone is connected.' when local is false and projects is empty."
+				"description": "Home markup: a header with the brand mark, the Harness heading and the tagline; while local is true, an action row with the primary Open project button (disabled while available is false or busy is true, reading Opening project… while busy) and, while available is true, a New project button that opens a dialog holding the GameCreate form; the read-only browser-preview hint when local is true and available is false; a Recent projects card whose header holds the Project Overview link when offered and whose rows open each project (disabled while busy), or an empty-state line ('Projects you open or create appear here.' on this device, 'The projects of your computer appear here once this phone is connected.' on a phone); the phone hint with its Phone access dialog when phone is given; then the children snippet."
 			}
 		],
 		"errors": [
@@ -178,6 +187,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-atoms-html-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-main",
 			"via": "import",
 			"origin": "derived"
@@ -194,6 +208,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-small",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -60,3 +60,48 @@ pre {
 	color: var(--hx-color-text-muted);
 	overflow-wrap: anywhere;
 }
+
+/* The shared Modal frame. Reports load it with the gallery; the app's dialogs need it too. */
+.viewer-dialog {
+	box-sizing: border-box;
+	width: min(640px, calc(100vw - 32px));
+	max-height: calc(100dvh - 32px);
+	padding: 0;
+	overflow-y: auto;
+	color: var(--hx-color-text);
+	background: var(--hx-color-surface);
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-xlarge);
+	box-shadow: var(--hx-shadow-dialog);
+}
+.viewer-dialog::backdrop {
+	background: var(--hx-color-scrim-strong);
+	backdrop-filter: var(--hx-effect-blur-strong);
+}
+.viewer-header {
+	position: sticky;
+	top: 0;
+	z-index: var(--hx-layer-raised);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--hx-space-18);
+	padding: var(--hx-space-12) var(--hx-space-12) var(--hx-space-12) var(--hx-space-24);
+	background: var(--hx-color-surface);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.viewer-header h2 {
+	margin: 0;
+	font-size: var(--hx-type-size-base);
+}
+.viewer-header button {
+	display: grid;
+	flex: none;
+	place-items: center;
+	width: 44px;
+	height: 44px;
+	padding: 0;
+}
+.viewer-content {
+	padding: var(--hx-space-20) var(--hx-space-24) var(--hx-space-24);
+}

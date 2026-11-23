@@ -3,6 +3,7 @@ import { auditBlocks } from '../blockRules';
 import { auditTypePlacement } from '../architectureRules';
 import { auditFileLength } from '../commonRules';
 import { auditAtomicComposition } from '../atomicComposition';
+import { auditOverviewLayout } from '../overviewLayout';
 import type { AuditAdapter, AuditFile } from './types';
 
 const routeFiles = new Set(['+page', '+layout', '+error']);
@@ -21,6 +22,7 @@ export const svelteAdapter: AuditAdapter = {
 			...auditSveltePath(file),
 			...auditTypePlacement(file),
 			...auditAtomicComposition(file),
+			...auditOverviewLayout(file),
 			...(script ? auditBlocks(file.relativePath, script.split('\n'), file.limits) : [])
 		];
 	}

@@ -57,7 +57,7 @@ Provider registration and hosted publication remain separate setup steps. See [H
 
 ## Prepare the selected repository
 
-Open Project uses the native directory picker. Select a Git repository root with an existing commit and a checked-out local branch. Configure the intended author identity in that repository if needed:
+Open project uses the native directory picker. Select a Git repository root with an existing commit and a checked-out local branch. Configure the intended author identity in that repository if needed:
 
 ```sh
 git config --local user.name "Your Name"
