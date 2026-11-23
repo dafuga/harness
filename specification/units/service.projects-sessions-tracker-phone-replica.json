@@ -7,6 +7,7 @@
 	"responsibility": "Serve a cursor-based read-only projection of eligible Tracker items, notes, flags and runs for a paired phone.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"documentation": "specification/features/planned/phone-tracker-replica.md",
 	"owns": {
 		"source": [
 			"src/services/projects-sessions/TrackerPhoneReplicaService.ts",
@@ -178,7 +179,7 @@
 			},
 			{
 				"name": "projectionStorage",
-				"type": "Error",
+				"type": "SQLiteError",
 				"description": "The Tracker database could not read or commit a projection. The caller returns a generic hub failure."
 			},
 			{
@@ -213,7 +214,7 @@
 					},
 					{
 						"name": "projectionStorage",
-						"type": "Error",
+						"type": "SQLiteError",
 						"description": "The Tracker database could not read or commit a projection. The caller returns a generic hub failure."
 					},
 					{
@@ -236,7 +237,7 @@
 				"errors": [
 					{
 						"name": "projectionStorage",
-						"type": "Error",
+						"type": "SQLiteError",
 						"description": "The Tracker database could not read or commit a projection. The caller returns a generic hub failure."
 					}
 				],
@@ -261,7 +262,7 @@
 				"errors": [
 					{
 						"name": "projectionStorage",
-						"type": "Error",
+						"type": "SQLiteError",
 						"description": "The Tracker database could not read or commit a projection. The caller returns a generic hub failure."
 					}
 				],
@@ -279,7 +280,7 @@
 				"errors": [
 					{
 						"name": "projectionStorage",
-						"type": "Error",
+						"type": "SQLiteError",
 						"description": "The Tracker database could not read or commit a projection. The caller returns a generic hub failure."
 					}
 				],
@@ -297,7 +298,7 @@
 				"errors": [
 					{
 						"name": "projectionStorage",
-						"type": "Error",
+						"type": "SQLiteError",
 						"description": "The Tracker database could not read or commit a projection. The caller returns a generic hub failure."
 					}
 				],
@@ -322,7 +323,7 @@
 				"errors": [
 					{
 						"name": "projectionStorage",
-						"type": "Error",
+						"type": "SQLiteError",
 						"description": "The Tracker database could not read or commit a projection. The caller returns a generic hub failure."
 					}
 				],
@@ -421,7 +422,7 @@
 				"errors": [
 					{
 						"name": "projectionStorage",
-						"type": "Error",
+						"type": "SQLiteError",
 						"description": "The Tracker database could not read or commit a projection. The caller returns a generic hub failure."
 					}
 				],
@@ -435,12 +436,14 @@
 					{
 						"name": "TrackerPhoneReplicaService.constructor.store",
 						"type": "TrackerPersistenceService",
-						"required": true
+						"required": true,
+						"description": "The native hub’s authoritative SQLite journal."
 					},
 					{
 						"name": "TrackerPhoneReplicaService.constructor.now",
 						"type": "() => number",
-						"required": true
+						"required": true,
+						"description": "Returns wall-clock milliseconds for retention and response timestamps."
 					}
 				],
 				"outputs": [
@@ -458,7 +461,8 @@
 					{
 						"name": "PhoneReplicaFeed.constructor.store",
 						"type": "TrackerPersistenceService",
-						"required": true
+						"required": true,
+						"description": "The hub journal that owns the source and derived feed tables."
 					}
 				],
 				"outputs": [
@@ -470,7 +474,7 @@
 				"errors": [
 					{
 						"name": "projectionStorage",
-						"type": "Error",
+						"type": "SQLiteError",
 						"description": "The Tracker database could not read or commit a projection. The caller returns a generic hub failure."
 					}
 				],
@@ -510,13 +514,10 @@
 			}
 		]
 	},
-	"scenarios": [
-		"tracker-phone-replica"
-	],
+	"scenarios": ["tracker-phone-replica"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"documentation": "specification/features/planned/phone-tracker-replica.md"
+	}
 }

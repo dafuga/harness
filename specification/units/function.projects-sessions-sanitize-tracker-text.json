@@ -8,15 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/utils/projects-sessions/sanitizeTrackerText.ts"
-		],
-		"symbols": [
-			"sanitizeTrackerText"
-		]
+		"source": ["src/utils/projects-sessions/sanitizeTrackerText.ts"],
+		"symbols": ["sanitizeTrackerText"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "sanitizeTrackerText.text",
@@ -53,7 +49,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
