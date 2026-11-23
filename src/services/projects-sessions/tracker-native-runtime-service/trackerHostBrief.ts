@@ -1,10 +1,14 @@
 // @harness-uid u_bl6xl2h4a3
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 
+import { trackerSecretSafetyRule } from './trackerSecretSafetyRule';
+
 export function formatTrackerHostBrief(item: TrackerItem, completion: string): string {
 	const id = item.id.slice(0, 6);
 	const notes = item.notes_log.slice(-10).map(({ at, text }) => `- ${at} ${text.slice(0, 1200)}`);
 	return [
+		trackerSecretSafetyRule,
+		'',
 		`# ${item.title}`,
 		'',
 		`Tracker item ${id} (full ID ${item.id}).`,

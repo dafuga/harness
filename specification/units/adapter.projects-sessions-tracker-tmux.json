@@ -29,6 +29,7 @@
 			"TrackerTmuxPane",
 			"TrackerTmuxNudge",
 			"trackerManagedHostLauncher",
+			"TrackerManagedPresence",
 			"TrackerManagedReceipt",
 			"TrackerManagedCommand",
 			"TrackerManagedProfiles",
@@ -143,8 +144,8 @@
 				"required": true
 			},
 			{
-				"name": "trackerManagedEvidence.live",
-				"type": "boolean",
+				"name": "trackerManagedEvidence.presence",
+				"type": "TrackerManagedPresence",
 				"required": true
 			},
 			{
@@ -515,8 +516,8 @@
 						"required": true
 					},
 					{
-						"name": "trackerManagedEvidence.live",
-						"type": "boolean",
+						"name": "trackerManagedEvidence.presence",
+						"type": "TrackerManagedPresence",
 						"required": true
 					}
 				],

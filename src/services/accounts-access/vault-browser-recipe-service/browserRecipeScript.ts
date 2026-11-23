@@ -21,7 +21,14 @@ export const vaultBrowserScript = z.strictObject({
 	steps: z.array(step).min(1).max(2),
 	identity: selector,
 	capability: selector,
-	otpPrompt: selector.optional()
+	otpPrompt: selector.optional(),
+	capture: z
+		.strictObject({
+			trigger: selector,
+			result: route,
+			value: selector
+		})
+		.optional()
 });
 export const vaultBrowserSecret = z.strictObject({
 	password: z.string().min(1).max(1024)

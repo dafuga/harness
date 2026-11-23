@@ -4,7 +4,10 @@ import { closeSync, constants, fstatSync, openSync, readFileSync } from 'node:fs
 import { join } from 'node:path';
 import { z } from 'zod';
 import type { TrackerHostSession } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
-import type { TrackerManagedReceipt } from './trackerManagedHostLauncher.types';
+import type {
+	TrackerManagedPresence,
+	TrackerManagedReceipt
+} from './trackerManagedHostLauncher.types';
 
 const receiptSchema = z.strictObject({
 	node: z.string(),
@@ -38,7 +41,7 @@ export function checkTrackerManagedReceipt(
 export function trackerManagedEvidence(
 	directory: string,
 	receipt: TrackerManagedReceipt,
-	presence: 'live' | 'absent' | 'unknown'
+	presence: TrackerManagedPresence
 ): TrackerHostSession | undefined {
 	const phase = privateRecord(join(directory, 'started'))?.trim();
 	if (phase !== receipt.token) return undefined;

@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { loadTrackerNodeConfig } from '../../../src/services/projects-sessions/tracker-node-service/trackerNodeConfig';
@@ -92,7 +93,7 @@ function launchInput(
 	runId: number,
 	backend: 'native' | 'docker'
 ): TrackerHostStartRequest {
-	const itemId = runId === 1 ? 'abc123def4' : 'def123abc4';
+	const itemId = ['abc123def4', 'def123abc4'][runId - 1];
 	const brief =
 		'# Fixture\n' +
 		(backend === 'docker' ? 'note '.repeat(5000) : '') +
@@ -121,6 +122,7 @@ function verifyWorkerInvocations(profiles: { native: string; docker: string }) {
 	const native = read(profiles.native);
 	expect(docker).toHaveLength(1);
 	expect(native).toHaveLength(2);
+	verifySecretSafety(profiles, [docker[0].brief, ...native.map(({ brief }) => brief)]);
 	expect(docker[0]).toMatchObject({
 		argv: [
 			'task',
@@ -173,4 +175,20 @@ function verifyNativeInvocations(
 		expect.stringContaining('def123abc4')
 	]);
 	expect(native[0].cwd).not.toBe(dockerWorktree);
+}
+
+function verifySecretSafety(profiles: { native: string; docker: string }, briefs: string[]) {
+	const skill = 'skills/secret-safe-computer-use/SKILL.md';
+	const home = profiles.native;
+	const install = spawnSync('/bin/bash', ['deploy/vault/install-secret-safe-skill.sh'], {
+		env: { PATH: process.env.PATH, HOME: home }
+	});
+	expect(install.status).toBe(0);
+	const codex = readFileSync(join(home, '.codex', skill), 'utf8');
+	expect(readFileSync(join(home, '.claude', skill), 'utf8')).toBe(codex);
+	const rule = codex.split('---\n')[2].trim();
+	for (const brief of briefs) {
+		expect(brief.startsWith(rule + '\n\n')).toBe(true);
+		expect(brief.split(rule)).toHaveLength(2);
+	}
 }

@@ -1,6 +1,7 @@
 // @harness-uid u_rw64iex44n
 import type { TaskRunInput } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { estimateApiCost } from '../../../services/agents-providers/module-task-analytics-service/modelRunPricing';
+import { trackerSecretSafetyRule } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerSecretSafetyRule';
 import { ModuleTaskRunError } from '../ModuleTaskRunnerAdapter.types';
 import type { TaskProcessResult, TaskPublicEvent } from '../ModuleTaskRunnerAdapter.types';
 import type {
@@ -19,9 +20,12 @@ export async function runGeneration(
 	const startedAt = new Date().toISOString();
 	let process: TaskProcessResult;
 	try {
-		if (Buffer.byteLength(input.prompt) > 96 * 1024)
+		const prompt = input.prompt.startsWith(trackerSecretSafetyRule)
+			? input.prompt
+			: trackerSecretSafetyRule + '\n\n' + input.prompt;
+		if (Buffer.byteLength(prompt) > 96 * 1024)
 			throw new ModuleTaskRunError('Task prompt exceeds the 96 KiB context admission limit.');
-		process = await launch(input);
+		process = await launch({ ...input, prompt });
 	} catch (error) {
 		return generationLaunchFailure(input, startedAt, error);
 	}

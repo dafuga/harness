@@ -5,11 +5,18 @@ import type { TrackerHostEffects } from './nativeTrackerHostEffects.types';
 import { watchdogEffectReceipt, watchdogScan } from './trackerHostWatchdogSchema';
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
 
+const transcriptOnlyPort: TrackerWatchdogPort = {
+	scan: async () => null,
+	nudge: async () => false,
+	send: async () => false
+};
+
 export function trackerWatchdogPort(
 	config: NonNullable<TrackerHostEffects['watchdog']>,
 	node: string
 ): TrackerWatchdogPort {
 	if ('tmux' in config) return tmuxPort(new TrackerTmuxAdapter({ executable: config.tmux, node }));
+	if (!('driver' in config)) return transcriptOnlyPort;
 	const driver = new TrackerHostProcessAdapter(config.driver);
 	return {
 		async scan(signal) {

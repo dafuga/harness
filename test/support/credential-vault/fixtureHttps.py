@@ -21,6 +21,9 @@ OTP_FORM = (f'<p id="otp-channel">{CHANNEL}</p><form method="post" action="/veri
             '<button id="verify">Verify</button></form>')
 ROSTER = ('<h1>Approved synthetic origin</h1><p id="identity">owner@example.test</p>'
           '<p id="capability">read-roster</p>')
+CAPTURE = ('<p id="identity">owner@example.test</p><p id="capability">capture-secret</p>'
+           '<form method="post" action="/generate"><button name="confirm" value="yes" '
+           'id="generate">Generate</button></form>')
 CHALLENGES = set()
 SESSIONS = set()
 EVENTS = []
@@ -38,6 +41,10 @@ class Fixture(BaseHTTPRequestHandler):
             self.html(OTP_FORM)
         elif self.path == '/roster' and self.cookie('session') in SESSIONS:
             self.html(ROSTER)
+        elif self.path == '/capture' and self.cookie('session') in SESSIONS:
+            self.html(CAPTURE)
+        elif self.path == '/created' and self.cookie('session') in SESSIONS:
+            self.html('<p id="generated">synthetic-capture-canary</p>')
         elif self.path == '/logout':
             self.logout()
         elif self.path == '/security-log':
@@ -53,13 +60,19 @@ class Fixture(BaseHTTPRequestHandler):
             self.reply(400, 'Bad form')
             return
         values = parse_qs(self.rfile.read(length).decode('utf-8'))
-        if self.path == '/login' and values.get('password') == [PASSWORD]:
+        if self.path == '/generate' and self.cookie('session') in SESSIONS and values.get('confirm') == ['yes']:
+            event('write')
+            self.send_response(303)
+            self.send_header('Location', '/created')
+            self.end_headers()
+        elif self.path == '/login' and values.get('password') == [PASSWORD]:
             self.issue('/verify', 'challenge', CHALLENGES)
         elif self.path == '/verify' and self.cookie('challenge') in CHALLENGES:
             CHALLENGES.remove(self.cookie('challenge'))
             if values.get('otp') == [OTP]:
                 event('login')
-                self.issue('/roster', 'session', SESSIONS)
+                destination = '/capture' if os.environ.get('VAULT_CAPTURE') == 'yes' else '/roster'
+                self.issue(destination, 'session', SESSIONS)
             else:
                 self.reply(403, 'Denied')
         else:

@@ -19,9 +19,12 @@ export interface VaultBrowserRecipeLocator {
 	textContent(): Promise<string | null>;
 }
 
+export type VaultSecretSink = (bytes: Uint8Array) => Promise<void>;
+
 export interface VaultBrowserRecipeConfig {
 	newPage(): Promise<VaultBrowserRecipePage>;
 	openSecret(): Buffer;
+	secretDestination?(approval: VaultScriptApproval): VaultSecretSink | undefined;
 	openOtp?(plan: Extract<VaultOtpPlan, { route: 'phone-entry' }>): Promise<Buffer>;
 }
 

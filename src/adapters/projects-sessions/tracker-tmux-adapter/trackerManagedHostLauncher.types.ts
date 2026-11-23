@@ -1,6 +1,8 @@
 // @harness-uid u_fyf7e7kyi5
 import type { TrackerManagedLaunchConfig } from '../../../services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types';
 
+export type TrackerManagedPresence = 'live' | 'absent' | 'unknown';
+
 export interface TrackerManagedReceipt {
 	node: string;
 	itemId: string;

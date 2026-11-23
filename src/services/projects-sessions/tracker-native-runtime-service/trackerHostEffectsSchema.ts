@@ -23,6 +23,11 @@ const adapterPolicy = {
 		.strictObject({ freePct: z.number().positive().max(100), freeGB: z.number().positive() })
 		.optional()
 };
+const transcriptRoots = z.array(absolutePath).min(1).max(12);
+const watchdogPolicy = {
+	chiefOfStaff: z.literal(true).optional(),
+	transcriptRoots: transcriptRoots.optional()
+};
 const checkpoint = z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$/);
 
 const launchPolicy = {
@@ -65,8 +70,9 @@ export const trackerHostEffectsSchema = z.discriminatedUnion('mode', [
 			.optional(),
 		watchdog: z
 			.union([
-				z.strictObject({ driver, chiefOfStaff: z.literal(true).optional() }),
-				z.strictObject({ tmux: absolutePath, chiefOfStaff: z.literal(true).optional() })
+				z.strictObject({ driver, ...watchdogPolicy }),
+				z.strictObject({ tmux: absolutePath, ...watchdogPolicy }),
+				z.strictObject({ transcriptRoots, chiefOfStaff: z.never().optional() })
 			])
 			.optional(),
 		adapter: z

@@ -51,3 +51,29 @@ host preflight.
 ```sh
 sudo bash deploy/vault/mb2-executor-account.sh undo
 ```
+
+## Secret-safe session setup
+
+Run `bash deploy/vault/install-secret-safe-skill.sh` as the session owner to install the
+same skill for Codex and Claude. For a managed profile, set its `HOME` or provide its
+`CODEX_HOME` and `CLAUDE_CONFIG_DIR` explicitly. The Harness Tracker launcher also
+puts the rule at the head of the brief for native and Docker workers. See
+[provider recipes](secret-safe-computer-use/recipes.md) for the capture and transfer paths.
+
+Enable transcript detection on a Tracker node by adding `transcriptRoots` to its
+existing watchdog configuration. List the actual Codex `sessions` and Claude
+`projects` directories, including managed profiles when present. Use absolute paths.
+On nodes without a pane watchdog, set `hostEffects.watchdog` to an object containing
+only `transcriptRoots` to enable scanning without pane inspection, nudging or recovery.
+The scanner reads newly written text in JSONL files named with provider session UUIDs.
+It also sees tool output embedded in those records. It never opens screenshot images,
+audio, or other binary attachments. Restrict access to transcripts and configure
+retention independently.
+
+After enabling, the watchdog records a local starting timestamp and scans files
+modified since that point. It maintains byte cursors across restarts and emits one
+open rotation task per credential type per transcript. A later occurrence after
+closure reopens that task. The Tracker alert carries the
+credential type, session UUID and byte position. A managed launch marker can link it
+to the source item. Unlinked hits still open a flagged rotation item. Review provider
+metadata to identify and rotate affected credentials without reopening the output.
