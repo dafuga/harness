@@ -1,7 +1,10 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { EXPIRE_GRANTS, d1GrantStore } from '../../src/routes/api/[...path]/d1-auth-store-adapter/d1GrantStore';
+import {
+	EXPIRE_GRANTS,
+	d1GrantStore
+} from '../../src/routes/api/[...path]/d1-auth-store-adapter/d1GrantStore';
 
 const grant = {
 	actorId: 'actor-example-17',
@@ -37,7 +40,9 @@ function matchedDatabase() {
 
 test('Grant operations update versioned rows', async () => {
 	const { db, queries } = matchedDatabase();
-	const records = { grantState: (row: unknown) => ({ generation: 2, grant: row, refreshingUntil: null }) };
+	const records = {
+		grantState: (row: unknown) => ({ generation: 2, grant: row, refreshingUntil: null })
+	};
 	const store = d1GrantStore(db as never, records as never);
 	const lease = { actorId: grant.actorId, generation: 2, now: 1_710_000_000, until: 1_710_000_300 };
 	const read = await store.read(grant.actorId);
@@ -97,32 +102,76 @@ test('Throws TypeError when record or lease arguments are null', async () => {
 	const output = { thrown: calls.length };
 	expect(output.thrown).toBe(4);
 	recordExampleCases(
-		{ unitId: 'hub.function.d1-grant-store', symbol: 'd1GrantStore', state: 'throws-typeerror-when-record-or-lease-arguments-are-null', evidence: 'examples-cases', file: 'throws-typeerror-when-record-or-lease-arguments-are-null.json' },
-		[{ name: 'null record and lease arguments throw synchronously', input: { methods: ['connect', 'lease', 'rotate', 'revokeLeased'] }, output }]
+		{
+			unitId: 'hub.function.d1-grant-store',
+			symbol: 'd1GrantStore',
+			state: 'throws-typeerror-when-record-or-lease-arguments-are-null',
+			evidence: 'examples-cases',
+			file: 'throws-typeerror-when-record-or-lease-arguments-are-null.json'
+		},
+		[
+			{
+				name: 'null record and lease arguments throw synchronously',
+				input: { methods: ['connect', 'lease', 'rotate', 'revokeLeased'] },
+				output
+			}
+		]
 	);
 });
 
 test('Throws db error when a query operation fails', async () => {
 	const failure = new Error('database unavailable');
-	const db = { prepare() { throw failure; } };
+	const db = {
+		prepare() {
+			throw failure;
+		}
+	};
 	const store = d1GrantStore(db as never, { grantState: (row: unknown) => row } as never);
 	await expect(store.connect(0, grant)).rejects.toBe(failure);
 	const output = { error: failure.message };
 	recordExampleCases(
-		{ unitId: 'hub.function.d1-grant-store', symbol: 'd1GrantStore.connect', state: 'throws-db-error-when-a-query-operation-fails', evidence: 'examples-cases', file: 'throws-db-error-when-a-query-operation-fails.json' },
-		[{ name: 'prepare failure rejects the store operation', input: { actorId: grant.actorId }, output }]
+		{
+			unitId: 'hub.function.d1-grant-store',
+			symbol: 'd1GrantStore.connect',
+			state: 'throws-db-error-when-a-query-operation-fails',
+			evidence: 'examples-cases',
+			file: 'throws-db-error-when-a-query-operation-fails.json'
+		},
+		[
+			{
+				name: 'prepare failure rejects the store operation',
+				input: { actorId: grant.actorId },
+				output
+			}
+		]
 	);
 });
 
 test('Throws records grantState error when an existing row is read', async () => {
 	const failure = new Error('invalid grant row');
 	const { db } = matchedDatabase();
-	const records = { grantState() { throw failure; } };
+	const records = {
+		grantState() {
+			throw failure;
+		}
+	};
 	const store = d1GrantStore(db as never, records as never);
 	await expect(store.read(grant.actorId)).rejects.toBe(failure);
 	const output = { error: failure.message };
 	recordExampleCases(
-		{ unitId: 'hub.function.d1-grant-store', symbol: 'd1GrantStore.read', state: 'throws-records-grantstate-error-when-an-existing-row-is-read', evidence: 'examples-cases', file: 'throws-records-grantstate-error-when-an-existing-row-is-read.json' },
-		[{ name: 'validator failure rejects read for an existing row', input: { actorId: grant.actorId }, output }]
+		{
+			unitId: 'hub.function.d1-grant-store',
+			symbol: 'd1GrantStore.read',
+			state: 'throws-records-grantstate-error-when-an-existing-row-is-read',
+			evidence: 'examples-cases',
+			file: 'throws-records-grantstate-error-when-an-existing-row-is-read.json'
+		},
+		[
+			{
+				name: 'validator failure rejects read for an existing row',
+				input: { actorId: grant.actorId },
+				output
+			}
+		]
 	);
 });

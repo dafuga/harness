@@ -27,6 +27,12 @@ test('renders feFuncR with forwarded attributes and children', () => {
 			evidence: 'examples-cases',
 			file: 'renders-fefuncr-with-forwarded-attributes-and-children.json'
 		},
-		[{ name: 'forwards SVG attributes and renders snippet content', input: props, output: { body: markup } }]
+		[
+			{
+				name: 'forwards SVG attributes and renders snippet content',
+				input: props,
+				output: { body: markup }
+			}
+		]
 	);
 });

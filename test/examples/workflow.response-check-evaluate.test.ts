@@ -8,7 +8,9 @@ const input = {
 	request: 'What is 6 multiplied by 7?',
 	response: '6 × 7 = 42.',
 	context: 'No additional context.',
-	criteria: [{ id: 'include-result', description: 'State the numeric result of the multiplication.' }]
+	criteria: [
+		{ id: 'include-result', description: 'State the numeric result of the multiplication.' }
+	]
 };
 const settings = { model: 'jev-response-check', minConfidence: 0.85, apiKeyEnv: 'JEV_API_KEY' };
 const answer = {
@@ -64,7 +66,11 @@ test('Assesses a response with the supplied evaluator', async () => {
 test('Aggregates response check statuses by severity', () => {
 	const cases = [
 		{ name: 'all satisfied', input: [assessment('meets')], output: 'satisfied' },
-		{ name: 'review without violation', input: [assessment('needs-review')], output: 'needs-review' },
+		{
+			name: 'review without violation',
+			input: [assessment('needs-review')],
+			output: 'needs-review'
+		},
 		{
 			name: 'violation takes precedence over review',
 			input: [assessment('needs-review'), assessment('violates')],

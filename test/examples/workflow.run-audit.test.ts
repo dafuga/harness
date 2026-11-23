@@ -8,7 +8,8 @@ import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
 
 const recordMeta = { unitId: 'workflow.run-audit', symbol: 'runAudit', evidence: 'examples-cases' };
-const cleanIndex = 'export function shout(text: string): string {\n\treturn text.toUpperCase();\n}\n';
+const cleanIndex =
+	'export function shout(text: string): string {\n\treturn text.toUpperCase();\n}\n';
 // 240 constants push src/index.ts past the 220-line limit: the audit reports one small-file finding.
 const oversizedIndex = Array.from(
 	{ length: 240 },

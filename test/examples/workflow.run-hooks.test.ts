@@ -61,7 +61,13 @@ test('Ignores pushed tag refs without starting source verification', async () =>
 				evidence: 'examples-cases',
 				file: 'ignores-pushed-tag-refs-without-starting-source-verification.json'
 			},
-			[{ name: 'tag update is outside the source branch gate', input: { stage: 'pre-push', input, root }, output }]
+			[
+				{
+					name: 'tag update is outside the source branch gate',
+					input: { stage: 'pre-push', input, root },
+					output
+				}
+			]
 		);
 	});
 });
@@ -81,7 +87,13 @@ test('Checks a commit message from a temporary repository file', async () => {
 				evidence: 'examples-cases',
 				file: 'checks-a-commit-message-from-a-temporary-repository-file.json'
 			},
-			[{ name: 'message passes when the repository has no writing declaration', input: { file, root }, output }]
+			[
+				{
+					name: 'message passes when the repository has no writing declaration',
+					input: { file, root },
+					output
+				}
+			]
 		);
 	});
 });
@@ -111,7 +123,13 @@ test('Formats installed hook status and local limitations', () => {
 			evidence: 'examples-cases',
 			file: 'formats-installed-hook-status-and-local-limitations.json'
 		},
-		[{ name: 'installed status includes both stage guidance and limitation', input: status, output }]
+		[
+			{
+				name: 'installed status includes both stage guidance and limitation',
+				input: status,
+				output
+			}
+		]
 	);
 });
 

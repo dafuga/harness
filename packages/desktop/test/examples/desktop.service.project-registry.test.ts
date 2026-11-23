@@ -16,7 +16,8 @@ function temporaryDirectory(prefix: string) {
 }
 
 function cleanup() {
-	for (const directory of directories.splice(0)) rmSync(directory, { recursive: true, force: true });
+	for (const directory of directories.splice(0))
+		rmSync(directory, { recursive: true, force: true });
 	vi.unstubAllEnvs();
 }
 
@@ -43,7 +44,9 @@ test('Registers a canonical local project and reuses it', async () => {
 	writeFileSync(git, '#!/bin/sh\nprintf "%s\\n" "$2"\n');
 	chmodSync(git, 0o755);
 	vi.stubEnv('PATH', bin);
-	const registry = new ProjectRegistryService(join(temporaryDirectory('project-registry-data'), 'projects.json'));
+	const registry = new ProjectRegistryService(
+		join(temporaryDirectory('project-registry-data'), 'projects.json')
+	);
 	const first = await registry.register(root);
 	const second = await registry.register(root);
 	const expected = registeredProject(root);
@@ -81,7 +84,10 @@ test('Lists valid projects and rejects an invalid registry', async () => {
 	} catch (error) {
 		failure = error instanceof Error ? { name: error.name, message: error.message } : String(error);
 	}
-	expect(failure).toEqual({ name: 'InvalidProjectRegistryError', message: 'Invalid project registry.' });
+	expect(failure).toEqual({
+		name: 'InvalidProjectRegistryError',
+		message: 'Invalid project registry.'
+	});
 	recordExampleCases(
 		{
 			unitId: 'desktop.service.project-registry',
@@ -91,7 +97,11 @@ test('Lists valid projects and rejects an invalid registry', async () => {
 			file: 'lists-valid-projects-and-rejects-an-invalid-registry.json'
 		},
 		[
-			{ name: 'A valid persisted project array is returned', input: { file, contents: [valid] }, output: listed },
+			{
+				name: 'A valid persisted project array is returned',
+				input: { file, contents: [valid] },
+				output: listed
+			},
 			{
 				name: 'An invalid project id rejects the persisted array',
 				input: { file, contents: [{ ...valid, id: 'bad-id' }] },
@@ -125,7 +135,11 @@ test('Gets a project by id and rejects an unknown id', async () => {
 			file: 'gets-a-project-by-id-and-rejects-an-unknown-id.json'
 		},
 		[
-			{ name: 'A matching id returns its persisted project', input: { id: known.id }, output: found },
+			{
+				name: 'A matching id returns its persisted project',
+				input: { id: known.id },
+				output: found
+			},
 			{
 				name: 'An unknown id rejects with the declared error',
 				input: { id: `local-${'b'.repeat(64)}` },

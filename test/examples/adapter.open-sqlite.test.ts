@@ -12,10 +12,9 @@ test('Opens a supplied path with writable access by default', async () => {
 		const database = openSqlite(path);
 		try {
 			database.exec('CREATE TABLE records (id INTEGER PRIMARY KEY, status TEXT NOT NULL)');
-			const inserted = database.prepare('INSERT INTO records (id, status) VALUES (?, ?)').run(
-				1,
-				'ready'
-			);
+			const inserted = database
+				.prepare('INSERT INTO records (id, status) VALUES (?, ?)')
+				.run(1, 'ready');
 			const row = database.prepare('SELECT id, status FROM records').get() as
 				| { id: number; status: string }
 				| undefined;

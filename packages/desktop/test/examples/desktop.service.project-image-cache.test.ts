@@ -43,13 +43,17 @@ function fakeSession(root: string, sha256: string, byteLength: number) {
 
 afterEach(() => {
 	vi.unstubAllEnvs();
-	for (const directory of directories.splice(0)) rmSync(directory, { recursive: true, force: true });
+	for (const directory of directories.splice(0))
+		rmSync(directory, { recursive: true, force: true });
 });
 
 test('Reads and caches verified image bytes', async () => {
 	const directory = temporaryDirectory();
 	const git = join(directory, 'git');
-	writeFileSync(git, '#!/bin/sh\ncase "$*" in *rev-parse*) echo example-tree ;; *) exit 0 ;; esac\n');
+	writeFileSync(
+		git,
+		'#!/bin/sh\ncase "$*" in *rev-parse*) echo example-tree ;; *) exit 0 ;; esac\n'
+	);
 	chmodSync(git, 0o755);
 	vi.stubEnv('PATH', directory);
 	const bytes = new Uint8Array([137, 80, 78, 71]);
@@ -126,9 +130,17 @@ test('Throws Error when no project is open', async () => {
 		sha256: 'a71d0e6c25f9b3481e7d0c59a6f2b8e43d10c7a95e2f6b8d0c31a4e97f5b2d68'
 	};
 	const error = new Error('Open a project first.');
-	await expect(new ProjectImageCacheService(session as never).read(input)).rejects.toThrow(error.message);
+	await expect(new ProjectImageCacheService(session as never).read(input)).rejects.toThrow(
+		error.message
+	);
 	recordExampleCases(
-		{ unitId: 'desktop.service.project-image-cache', symbol: 'read', state: 'throws-error-when-no-project-is-open', evidence: 'examples-cases', file: 'throws-error-when-no-project-is-open.json' },
+		{
+			unitId: 'desktop.service.project-image-cache',
+			symbol: 'read',
+			state: 'throws-error-when-no-project-is-open',
+			evidence: 'examples-cases',
+			file: 'throws-error-when-no-project-is-open.json'
+		},
 		[{ name: 'Rejects when there is no selected project', input, error: error.message }]
 	);
 });
@@ -136,11 +148,24 @@ test('Throws Error when no project is open', async () => {
 test('Throws UnknownProjectImageError when image is not recorded', async () => {
 	const directory = temporaryDirectory();
 	const session = fakeSession(directory, 'unrelated-hash', 4);
-	const input = { entityId: 'desktop.component.workspace-shell', commit: '9c4e1a7b52d08f63e1a94c27b0d5f8e3a61c2b7d', version: 'v002', sha256: 'missing-image-hash' };
+	const input = {
+		entityId: 'desktop.component.workspace-shell',
+		commit: '9c4e1a7b52d08f63e1a94c27b0d5f8e3a61c2b7d',
+		version: 'v002',
+		sha256: 'missing-image-hash'
+	};
 	const error = new UnknownProjectImageError('Unknown project image.');
-	await expect(new ProjectImageCacheService(session as never).read(input)).rejects.toThrow(error.message);
+	await expect(new ProjectImageCacheService(session as never).read(input)).rejects.toThrow(
+		error.message
+	);
 	recordExampleCases(
-		{ unitId: 'desktop.service.project-image-cache', symbol: 'read', state: 'throws-unknownprojectimageerror-when-image-is-not-recorded', evidence: 'examples-cases', file: 'throws-unknownprojectimageerror-when-image-is-not-recorded.json' },
+		{
+			unitId: 'desktop.service.project-image-cache',
+			symbol: 'read',
+			state: 'throws-unknownprojectimageerror-when-image-is-not-recorded',
+			evidence: 'examples-cases',
+			file: 'throws-unknownprojectimageerror-when-image-is-not-recorded.json'
+		},
 		[{ name: 'Rejects an image absent from the requested version', input, error: error.message }]
 	);
 });
@@ -148,16 +173,32 @@ test('Throws UnknownProjectImageError when image is not recorded', async () => {
 test('Throws ImageHashMismatchError when fetched bytes do not match', async () => {
 	const directory = temporaryDirectory();
 	const git = join(directory, 'git');
-	writeFileSync(git, '#!/bin/sh\ncase "$*" in *rev-parse*) echo example-tree ;; *) exit 0 ;; esac\n');
+	writeFileSync(
+		git,
+		'#!/bin/sh\ncase "$*" in *rev-parse*) echo example-tree ;; *) exit 0 ;; esac\n'
+	);
 	chmodSync(git, 0o755);
 	vi.stubEnv('PATH', directory);
 	const expected = new Uint8Array([1, 2, 3, 4]);
-	const input = { entityId: 'desktop.component.workspace-shell', commit: '9c4e1a7b52d08f63e1a94c27b0d5f8e3a61c2b7d', version: 'v002', sha256: createHash('sha256').update(expected).digest('hex') };
+	const input = {
+		entityId: 'desktop.component.workspace-shell',
+		commit: '9c4e1a7b52d08f63e1a94c27b0d5f8e3a61c2b7d',
+		version: 'v002',
+		sha256: createHash('sha256').update(expected).digest('hex')
+	};
 	const session = fakeSession(directory, input.sha256, expected.length);
 	const error = new ImageHashMismatchError('Image hash mismatch.');
-	await expect(new ProjectImageCacheService(session as never).read(input)).rejects.toThrow(error.message);
+	await expect(new ProjectImageCacheService(session as never).read(input)).rejects.toThrow(
+		error.message
+	);
 	recordExampleCases(
-		{ unitId: 'desktop.service.project-image-cache', symbol: 'read', state: 'throws-imagehashmismatcherror-when-fetched-bytes-do-not-matc', evidence: 'examples-cases', file: 'throws-imagehashmismatcherror-when-fetched-bytes-do-not-matc.json' },
+		{
+			unitId: 'desktop.service.project-image-cache',
+			symbol: 'read',
+			state: 'throws-imagehashmismatcherror-when-fetched-bytes-do-not-matc',
+			evidence: 'examples-cases',
+			file: 'throws-imagehashmismatcherror-when-fetched-bytes-do-not-matc.json'
+		},
 		[{ name: 'Rejects fetched bytes with a different digest', input, error: error.message }]
 	);
 });

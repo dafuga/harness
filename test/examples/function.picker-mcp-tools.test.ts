@@ -180,7 +180,10 @@ test('Rejects unknown operations and invalid switch arguments', async () => {
 			},
 			{
 				name: 'provider outside openai or harness-claude is rejected',
-				input: { name: 'request_model_switch', input: { ...switchInput, provider: 'other-provider' } },
+				input: {
+					name: 'request_model_switch',
+					input: { ...switchInput, provider: 'other-provider' }
+				},
 				error: 'ZodError'
 			}
 		]

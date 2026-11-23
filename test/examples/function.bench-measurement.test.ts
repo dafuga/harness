@@ -3,8 +3,14 @@ import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { sizeMeasurements } from '../../src/cli/program/run-kernel-bench/benchMeasurement';
-import { kernelUnits, benchMeasurement } from '../../src/utils/verification-evidence/benchMeasurement';
-import type { MeasureContext, Entry } from '../../src/utils/verification-evidence/benchMeasurement.types';
+import {
+	kernelUnits,
+	benchMeasurement
+} from '../../src/utils/verification-evidence/benchMeasurement';
+import type {
+	MeasureContext,
+	Entry
+} from '../../src/utils/verification-evidence/benchMeasurement.types';
 
 const commit = '0123456789abcdef0123456789abcdef01234567';
 const linuxContext: MeasureContext = { profile: 'linux-x64', commit };
@@ -25,13 +31,21 @@ const build: Build = {
 		reference: {
 			bytes: 2048,
 			files: [
-				{ path: 'src/utils/verification-evidence/benchMeasurement.ts', bytes: 2048, sha256: sha('c') }
+				{
+					path: 'src/utils/verification-evidence/benchMeasurement.ts',
+					bytes: 2048,
+					sha256: sha('c')
+				}
 			]
 		},
 		crate: {
 			bytes: 4096,
 			files: [
-				{ path: 'src/cli/program/run-kernel-bench/benchMeasurement.ts', bytes: 4096, sha256: sha('d') }
+				{
+					path: 'src/cli/program/run-kernel-bench/benchMeasurement.ts',
+					bytes: 4096,
+					sha256: sha('d')
+				}
 			]
 		}
 	}

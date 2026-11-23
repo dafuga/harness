@@ -23,10 +23,26 @@ test('accepts secure approval URLs and normalizes their href', () => {
 			file: 'accepts-secure-approval-urls-and-normalizes-their-href.json'
 		},
 		[
-			{ name: 'secure external approval address', input: 'https://devices.example.com/native/approval_7', output: external },
-			{ name: 'localhost approval address', input: 'http://localhost/native/device-42', output: local },
-			{ name: 'IPv4 loopback approval address', input: 'http://127.0.0.1/native/device-42', output: ipv4 },
-			{ name: 'IPv6 loopback approval address', input: 'http://[::1]/native/device-42', output: ipv6 }
+			{
+				name: 'secure external approval address',
+				input: 'https://devices.example.com/native/approval_7',
+				output: external
+			},
+			{
+				name: 'localhost approval address',
+				input: 'http://localhost/native/device-42',
+				output: local
+			},
+			{
+				name: 'IPv4 loopback approval address',
+				input: 'http://127.0.0.1/native/device-42',
+				output: ipv4
+			},
+			{
+				name: 'IPv6 loopback approval address',
+				input: 'http://[::1]/native/device-42',
+				output: ipv6
+			}
 		]
 	);
 });
@@ -51,10 +67,26 @@ test('rejects addresses outside the plain approval URL rules', () => {
 			file: 'rejects-addresses-outside-the-plain-approval-url-rules.json'
 		},
 		[
-			{ name: 'query string is not allowed', input: 'https://devices.example.com/native/approval?source=app', output: query },
-			{ name: 'credentials are not allowed', input: 'https://user:pass@devices.example.com/native/approval', output: credentials },
-			{ name: 'remote HTTP is not secure', input: 'http://devices.example.com/native/approval', output: remoteHttp },
-			{ name: 'non-approval path', input: 'https://devices.example.com/other/path', output: wrongPath }
+			{
+				name: 'query string is not allowed',
+				input: 'https://devices.example.com/native/approval?source=app',
+				output: query
+			},
+			{
+				name: 'credentials are not allowed',
+				input: 'https://user:pass@devices.example.com/native/approval',
+				output: credentials
+			},
+			{
+				name: 'remote HTTP is not secure',
+				input: 'http://devices.example.com/native/approval',
+				output: remoteHttp
+			},
+			{
+				name: 'non-approval path',
+				input: 'https://devices.example.com/other/path',
+				output: wrongPath
+			}
 		]
 	);
 });

@@ -84,21 +84,18 @@ test('Capture schema accepts a clipped screenshot', () => {
 	const invalid = captureSchema.safeParse(badDigest);
 	expect(valid.success).toBe(true);
 	expect(rejection(invalid)).toEqual(['sha256']);
-	recordExampleCases(
-		meta('captureSchema', 'capture-schema-accepts-a-clipped-screenshot'),
-		[
-			{
-				name: 'clipped screenshot with a sha256 digest',
-				input: screenshot,
-				output: { valid: valid.success }
-			},
-			{
-				name: 'screenshot whose sha256 is not a hex digest',
-				input: { path: screenshot.path, sha256: 'not-a-digest' },
-				error: rejection(invalid)
-			}
-		]
-	);
+	recordExampleCases(meta('captureSchema', 'capture-schema-accepts-a-clipped-screenshot'), [
+		{
+			name: 'clipped screenshot with a sha256 digest',
+			input: screenshot,
+			output: { valid: valid.success }
+		},
+		{
+			name: 'screenshot whose sha256 is not a hex digest',
+			input: { path: screenshot.path, sha256: 'not-a-digest' },
+			error: rejection(invalid)
+		}
+	]);
 });
 
 test('Profile and component schemas accept complete identities', () => {

@@ -2,8 +2,18 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { authRedirect } from '../../src/lib/verification-evidence/server/auth/github-connection-controller/authHttp';
-import { sameOrigin, bearerToken } from '../../src/lib/verification-evidence/server/auth/request-session-service/authHttp';
-import { authHttp, authFailure, hasAuthorization, boundedText, readJson, authPath } from '../../src/utils/verification-evidence/authHttp';
+import {
+	sameOrigin,
+	bearerToken
+} from '../../src/lib/verification-evidence/server/auth/request-session-service/authHttp';
+import {
+	authHttp,
+	authFailure,
+	hasAuthorization,
+	boundedText,
+	readJson,
+	authPath
+} from '../../src/utils/verification-evidence/authHttp';
 import type { AuthHttpOptions } from '../../src/utils/verification-evidence/authHttp.types';
 
 const UNIT = 'hub.function.auth-http';
@@ -130,8 +140,16 @@ test('JSON responses default to 200 and append cookies', async () => {
 	expect(cookied.setCookie).toEqual([SESSION_COOKIE]);
 	recordExampleCases(meta('authHttp', 'json-responses-default-to-200-and-append-cookies'), [
 		{ name: 'body with default status', input: { body: { ok: true } }, output: plain },
-		{ name: 'body with explicit 201 status', input: { body: { id: 'sample-1' }, status: 201 }, output: created },
-		{ name: 'body with a session cookie', input: { body: { ok: true }, ...withCookie }, output: cookied }
+		{
+			name: 'body with explicit 201 status',
+			input: { body: { id: 'sample-1' }, status: 201 },
+			output: created
+		},
+		{
+			name: 'body with a session cookie',
+			input: { body: { ok: true }, ...withCookie },
+			output: cookied
+		}
 	]);
 });
 
@@ -144,18 +162,21 @@ test('Failures become a coded JSON response or an opaque 500', async () => {
 	expect(coded.status).toBeLessThan(500);
 	expect(opaque.status).toBe(500);
 	expect(opaque.body).toEqual({ error: 'auth-unavailable' });
-	recordExampleCases(meta('authFailure', 'failures-become-a-coded-json-response-or-an-opaque-500'), [
-		{
-			name: 'invalid-request AuthFailure keeps its code',
-			input: { contentType: 'text/plain' },
-			output: coded
-		},
-		{
-			name: 'plain Error becomes auth-unavailable',
-			input: { message: 'GitHub request timed out' },
-			output: opaque
-		}
-	]);
+	recordExampleCases(
+		meta('authFailure', 'failures-become-a-coded-json-response-or-an-opaque-500'),
+		[
+			{
+				name: 'invalid-request AuthFailure keeps its code',
+				input: { contentType: 'text/plain' },
+				output: coded
+			},
+			{
+				name: 'plain Error becomes auth-unavailable',
+				input: { message: 'GitHub request timed out' },
+				output: opaque
+			}
+		]
+	);
 });
 
 test('readJson accepts JSON objects and rejects other bodies', async () => {
@@ -174,7 +195,11 @@ test('readJson accepts JSON objects and rejects other bodies', async () => {
 			output: accepted
 		},
 		{ name: 'JSON array body is rejected', input: { body: '[1,2]' }, error: { code: arrayCode } },
-		{ name: 'wrong content type is rejected', input: { contentType: 'text/plain' }, error: { code: typeCode } },
+		{
+			name: 'wrong content type is rejected',
+			input: { contentType: 'text/plain' },
+			error: { code: typeCode }
+		},
 		{ name: 'malformed JSON is rejected', input: { body: '{oops' }, error: { code: malformedCode } }
 	]);
 });
@@ -193,11 +218,27 @@ test('Bounded text and auth paths reject out-of-range input', async () => {
 	expect(inNamespace).toBe('/api/github/installations');
 	expect(outside).toBeNull();
 	recordExampleCases(meta('boundedText', 'bounded-text-and-auth-paths-reject-out-of-range-input'), [
-		{ name: 'body within the byte limit', input: { body: '{"ok":true}', limit: 1024 }, output: small },
-		{ name: 'body beyond the byte limit', input: { body: 'abcdefgh', limit: 4 }, output: oversized },
+		{
+			name: 'body within the byte limit',
+			input: { body: '{"ok":true}', limit: 1024 },
+			output: small
+		},
+		{
+			name: 'body beyond the byte limit',
+			input: { body: 'abcdefgh', limit: 4 },
+			output: oversized
+		},
 		{ name: 'null body reads as empty text', input: { body: null, limit: 1024 }, output: empty },
-		{ name: 'non-UTF-8 bytes are rejected', input: { body: '0xff', limit: 1024 }, output: invalidUtf8 },
-		{ name: 'auth namespace path drops the query', input: { path: '/api/github/installations?page=2' }, output: inNamespace },
+		{
+			name: 'non-UTF-8 bytes are rejected',
+			input: { body: '0xff', limit: 1024 },
+			output: invalidUtf8
+		},
+		{
+			name: 'auth namespace path drops the query',
+			input: { path: '/api/github/installations?page=2' },
+			output: inNamespace
+		},
 		{ name: 'other path is rejected', input: { path: '/dashboard' }, output: outside }
 	]);
 });

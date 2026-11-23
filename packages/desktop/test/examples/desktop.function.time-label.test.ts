@@ -28,8 +28,16 @@ test('formats timestamp prefixes and preserves other labels', () => {
 			file: 'formats-timestamp-prefixes-and-preserves-other-labels.json'
 		},
 		[
-			{ name: 'format an ISO timestamp for the reader locale', input: timestamp, output: formatted },
-			{ name: 'preserve a date without the timestamp prefix', input: dateOnly, output: unchangedDate },
+			{
+				name: 'format an ISO timestamp for the reader locale',
+				input: timestamp,
+				output: formatted
+			},
+			{
+				name: 'preserve a date without the timestamp prefix',
+				input: dateOnly,
+				output: unchangedDate
+			},
 			{ name: 'preserve a human readable label', input: prose, output: unchangedProse }
 		]
 	);

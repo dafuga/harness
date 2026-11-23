@@ -127,9 +127,7 @@ test('Throws ExpectedCliError when the Git ignore probe times out', async () => 
 		expect(error).toBeInstanceOf(Error);
 		const actual = error as Error & { name: string };
 		expect(actual.name).toBe('ExpectedCliError');
-		expect(actual.message).toBe(
-			'Cannot safely determine ignored files for clean code review.'
-		);
+		expect(actual.message).toBe('Cannot safely determine ignored files for clean code review.');
 		recordExampleCases(
 			{
 				unitId: 'audit.clean-code-discovery',

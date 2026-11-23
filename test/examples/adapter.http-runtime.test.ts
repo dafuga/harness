@@ -11,8 +11,7 @@ async function withFetchResponse<T>(
 	const original = Object.getOwnPropertyDescriptor(globalThis, 'fetch');
 	Object.defineProperty(globalThis, 'fetch', {
 		configurable: true,
-		value: async (_input: RequestInfo | URL, _init?: RequestInit) =>
-			new Response(body, { status })
+		value: async (_input: RequestInfo | URL, _init?: RequestInit) => new Response(body, { status })
 	});
 	try {
 		return await use();

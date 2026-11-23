@@ -14,7 +14,10 @@ test('Reports unit and budget storage totals', async () => {
 		writeFileSync(join(units, 'first.json'), '{}');
 		writeFileSync(join(units, 'nested', 'second.json'), '{"name":"two"}');
 		writeFileSync(join(units, 'notes.txt'), 'ignored');
-		writeFileSync(join(root, 'specification', 'budgets', 'ledger.ndjson'), '{"event":1}\n{"event":2}\n');
+		writeFileSync(
+			join(root, 'specification', 'budgets', 'ledger.ndjson'),
+			'{"event":1}\n{"event":2}\n'
+		);
 
 		const report = await specificationStorageReport(root);
 		const output = {

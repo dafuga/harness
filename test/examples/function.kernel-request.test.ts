@@ -51,8 +51,12 @@ test('Reports malformed shapes before graph integrity errors', () => {
 		uncertain: [],
 		sinks: []
 	});
-	expect(malformed).toEqual({ error: { code: 'invalid-request', message: 'impact input field "changed" is malformed' } });
-	expect(repeated).toEqual({ error: { code: 'invalid-graph', message: 'base graph repeats node "same"' } });
+	expect(malformed).toEqual({
+		error: { code: 'invalid-request', message: 'impact input field "changed" is malformed' }
+	});
+	expect(repeated).toEqual({
+		error: { code: 'invalid-graph', message: 'base graph repeats node "same"' }
+	});
 	recordExampleCases(
 		{
 			unitId: 'function.kernel-request',
@@ -62,8 +66,16 @@ test('Reports malformed shapes before graph integrity errors', () => {
 			file: 'reports-malformed-shapes-before-graph-integrity-errors.json'
 		},
 		[
-			{ name: 'changed must be a string array', input: { ...validInput, changed: [1] }, output: malformed },
-			{ name: 'repeated node takes precedence over invalid edge', input: { ...validInput, base: { nodes: ['same', 'same'], edges: [[9, 9]] } }, output: repeated }
+			{
+				name: 'changed must be a string array',
+				input: { ...validInput, changed: [1] },
+				output: malformed
+			},
+			{
+				name: 'repeated node takes precedence over invalid edge',
+				input: { ...validInput, base: { nodes: ['same', 'same'], edges: [[9, 9]] } },
+				output: repeated
+			}
 		]
 	);
 });
@@ -80,6 +92,10 @@ test('Recognizes non-array objects regardless of prototype', () => {
 			evidence: 'examples-cases',
 			file: 'recognizes-non-array-objects-regardless-of-prototype.json'
 		},
-		values.map((input, index) => ({ name: `object guard example ${index + 1}`, input, output: results[index] }))
+		values.map((input, index) => ({
+			name: `object guard example ${index + 1}`,
+			input,
+			output: results[index]
+		}))
 	);
 });

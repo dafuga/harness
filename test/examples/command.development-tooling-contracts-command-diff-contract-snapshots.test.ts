@@ -87,7 +87,8 @@ test('Throws ExpectedCliError when field category is unsupported', () => {
 			{
 				name: 'unsupported field category',
 				input: { field },
-				error: 'Unknown contract field filter; choose type, description, examples, errors or dependencies (comma-separated).'
+				error:
+					'Unknown contract field filter; choose type, description, examples, errors or dependencies (comma-separated).'
 			}
 		]
 	);

@@ -34,7 +34,9 @@ test('Renders a bare feFuncA carrying its attributes', () => {
 			output: { markup: html }
 		}
 	]);
-	expect(html).toMatch(/^<feFuncA type="gamma" amplitude="1.2" exponent="2.2" offset="0.05"><\/feFuncA>$/);
+	expect(html).toMatch(
+		/^<feFuncA type="gamma" amplitude="1.2" exponent="2.2" offset="0.05"><\/feFuncA>$/
+	);
 	expect(html).not.toMatch(/<svg|<g\b|<div|<span/);
 });
 
@@ -52,7 +54,9 @@ test('Renders the supplied snippet as the feFuncA content', () => {
 			output: { markup: html }
 		}
 	]);
-	expect(html).toBe('<feFuncA type="table" tableValues="0 0.5 1"><title>Lift shadows</title></feFuncA>');
+	expect(html).toBe(
+		'<feFuncA type="table" tableValues="0 0.5 1"><title>Lift shadows</title></feFuncA>'
+	);
 });
 
 test('Omitted children leave the feFuncA empty', () => {

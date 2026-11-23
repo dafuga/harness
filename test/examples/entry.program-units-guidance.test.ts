@@ -32,7 +32,13 @@ test('Registers guide and contract review commands', () => {
 			evidence: 'examples-cases',
 			file: 'registers-guide-and-contract-review-commands.json'
 		},
-		[{ name: 'registers both commands and their CLI options', input: { parent: 'units' }, output: commands }]
+		[
+			{
+				name: 'registers both commands and their CLI options',
+				input: { parent: 'units' },
+				output: commands
+			}
+		]
 	);
 });
 
@@ -60,7 +66,7 @@ test('Throws Error when the guide dependency fails', async () => {
 			{
 				name: 'propagates the guide dependency failure',
 				input: { command: 'units guide entry.program-units-guidance' },
-				 error: { name: 'Error', message: 'guide dependency failed' }
+				error: { name: 'Error', message: 'guide dependency failed' }
 			}
 		]
 	);

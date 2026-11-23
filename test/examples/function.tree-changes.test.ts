@@ -170,12 +170,8 @@ test('treeChanges keeps only the last hash of a repeated path', () => {
 		{ path: 'src/utils/treeChanges.ts', hash: treeChangesBaseHash },
 		{ path: 'src/utils/treeChanges.ts', hash: treeChangesHeadHash }
 	];
-	const onceInHead: TreeEntry[] = [
-		{ path: 'src/utils/treeChanges.ts', hash: treeChangesHeadHash }
-	];
-	const onceInBase: TreeEntry[] = [
-		{ path: 'src/utils/treeChanges.ts', hash: treeChangesBaseHash }
-	];
+	const onceInHead: TreeEntry[] = [{ path: 'src/utils/treeChanges.ts', hash: treeChangesHeadHash }];
+	const onceInBase: TreeEntry[] = [{ path: 'src/utils/treeChanges.ts', hash: treeChangesBaseHash }];
 	const twiceInHead: TreeEntry[] = [
 		{ path: 'src/utils/treeChanges.ts', hash: treeChangesBaseHash },
 		{ path: 'src/utils/treeChanges.ts', hash: treeChangesHeadHash }

@@ -8,7 +8,13 @@ const url = 'http://localhost/hub-body';
 const encoder = new TextEncoder();
 
 function metaFor(state: string) {
-	return { unitId, symbol: 'hubBodyBytes', state, evidence: 'examples-cases', file: `${state}.json` };
+	return {
+		unitId,
+		symbol: 'hubBodyBytes',
+		state,
+		evidence: 'examples-cases',
+		file: `${state}.json`
+	};
 }
 
 function streamOf(parts: Uint8Array[], onCancel?: () => void): ReadableStream<Uint8Array> {
@@ -32,13 +38,23 @@ function postWithStream(parts: Uint8Array[], onCancel?: () => void): Request {
 }
 
 test('Reads chunked request bodies in order', async () => {
-	const bytes = await hubBodyBytes(postWithStream([encoder.encode('hub '), encoder.encode('body')]));
+	const bytes = await hubBodyBytes(
+		postWithStream([encoder.encode('hub '), encoder.encode('body')])
+	);
 	const empty = await hubBodyBytes(postWithStream([]));
 	expect(new TextDecoder().decode(bytes)).toBe('hub body');
 	expect(empty).toEqual(new Uint8Array(0));
 	recordExampleCases(metaFor('reads-chunked-request-bodies-in-order'), [
-		{ name: 'two chunks concatenate in order', input: { chunks: ['hub ', 'body'] }, output: { text: 'hub body', byteLength: 8 } },
-		{ name: 'empty stream resolves to empty bytes', input: { chunks: [] }, output: { byteLength: 0 } }
+		{
+			name: 'two chunks concatenate in order',
+			input: { chunks: ['hub ', 'body'] },
+			output: { text: 'hub body', byteLength: 8 }
+		},
+		{
+			name: 'empty stream resolves to empty bytes',
+			input: { chunks: [] },
+			output: { byteLength: 0 }
+		}
 	]);
 });
 
@@ -52,8 +68,16 @@ test('Rejects a body over 20000 bytes and cancels the reader', async () => {
 	const exact = await hubBodyBytes(postWithStream([new Uint8Array(20000)]));
 	expect(exact.byteLength).toBe(20000);
 	recordExampleCases(metaFor('rejects-a-body-over-20000-bytes-and-cancels-the-reader'), [
-		{ name: 'chunks totalling 21000 bytes are rejected', input: { chunks: [15000, 6000] }, error: 'invalid-input' },
-		{ name: 'a body of exactly 20000 bytes is accepted', input: { chunks: [20000] }, output: { byteLength: 20000 } }
+		{
+			name: 'chunks totalling 21000 bytes are rejected',
+			input: { chunks: [15000, 6000] },
+			error: 'invalid-input'
+		},
+		{
+			name: 'a body of exactly 20000 bytes is accepted',
+			input: { chunks: [20000] },
+			output: { byteLength: 20000 }
+		}
 	]);
 });
 
@@ -61,6 +85,10 @@ test('Rejects a request without a body', async () => {
 	const request = new Request(url, { method: 'GET' });
 	await expect(hubBodyBytes(request)).rejects.toThrow();
 	recordExampleCases(metaFor('rejects-a-request-without-a-body'), [
-		{ name: 'GET request has no body stream', input: { method: 'GET', body: null }, error: 'invalid-input' }
+		{
+			name: 'GET request has no body stream',
+			input: { method: 'GET', body: null },
+			error: 'invalid-input'
+		}
 	]);
 });

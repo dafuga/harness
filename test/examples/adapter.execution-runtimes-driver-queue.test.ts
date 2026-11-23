@@ -24,9 +24,30 @@ function readAdapter(root: string): DriverQueueAdapter {
 	const driverDir = join(root, 'driver');
 	writeJson(join(statusDir, 'active-jobs.json'), {
 		active: [
-			{ model: 'luna', task: 'code-phase-current', kind: 'job', slot: 1, pid: process.pid, started_ts: 100 },
-			{ model: 'haiku', task: 'p2a-stub-current', kind: 'job', slot: 2, pid: process.pid, started_ts: 200 },
-			{ model: 'haiku', task: 'review-active', kind: 'reverify', slot: 'r1', pid: process.pid, started_ts: 300 }
+			{
+				model: 'luna',
+				task: 'code-phase-current',
+				kind: 'job',
+				slot: 1,
+				pid: process.pid,
+				started_ts: 100
+			},
+			{
+				model: 'haiku',
+				task: 'p2a-stub-current',
+				kind: 'job',
+				slot: 2,
+				pid: process.pid,
+				started_ts: 200
+			},
+			{
+				model: 'haiku',
+				task: 'review-active',
+				kind: 'reverify',
+				slot: 'r1',
+				pid: process.pid,
+				started_ts: 300
+			}
 		],
 		totals: { planned: 4, done: 1, pass: 1, fail: 0, remaining: 3 },
 		reverify_totals: { planned: 2, done: 0, pass: 0, fail: 0, remaining: 2 },
@@ -56,7 +77,9 @@ function readAdapter(root: string): DriverQueueAdapter {
 	writeResult(root, join('results-wave-a', 'luna', 'passed-luna'), 'pass');
 	writeResult(root, join('results-wave-a', 'luna', 'code-phase-retry'), 'fail');
 	writeResult(root, join('results-wave-a', 'haiku', 'passed-haiku'), 'pass');
-	writeJson(join(root, 'results-code-phase-reverify', 'review-done', 'result.json'), { status: 'pass' });
+	writeJson(join(root, 'results-code-phase-reverify', 'review-done', 'result.json'), {
+		status: 'pass'
+	});
 	return new DriverQueueAdapter({
 		root,
 		statusDir,
@@ -179,8 +202,24 @@ test('render formats a supplied active snapshot without writing', async () => {
 		mkdirSync(statusDir);
 		const state: DriverActive = {
 			active: [
-				{ model: 'luna', kind: 'job', unit: 'adapter.alpha', task: 'code-task', slot: 1, pid: 31, started: '10:00' },
-				{ model: 'haiku', kind: 'reverify', unit: 'adapter.beta', task: 'review-task', slot: 'r1', pid: 32, started: '10:01' }
+				{
+					model: 'luna',
+					kind: 'job',
+					unit: 'adapter.alpha',
+					task: 'code-task',
+					slot: 1,
+					pid: 31,
+					started: '10:00'
+				},
+				{
+					model: 'haiku',
+					kind: 'reverify',
+					unit: 'adapter.beta',
+					task: 'review-task',
+					slot: 'r1',
+					pid: 32,
+					started: '10:01'
+				}
 			],
 			totals: { planned: 3, done: 2, pass: 2, fail: 0, remaining: 1 },
 			reverify_totals: { planned: 2, done: 1, pass: 1, fail: 0, remaining: 1 },

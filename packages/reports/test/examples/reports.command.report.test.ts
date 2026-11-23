@@ -4,7 +4,8 @@ import { recordExampleCases } from '../../../../test/support/recordExampleCases'
 import { ReportCommand } from '../../src/commands/reports-media/ReportCommand';
 
 const unitId = 'reports.command.report';
-const usage = 'Usage: report <begin|record|finalize|import|serve|stop|cleanup|sync-storage> [options]';
+const usage =
+	'Usage: report <begin|record|finalize|import|serve|stop|cleanup|sync-storage> [options]';
 const recordData = '{"id":"unit-tests","title":"Unit tests","status":"passed"}';
 
 async function rejectionOf(argv: string[]): Promise<string> {

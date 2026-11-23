@@ -52,7 +52,9 @@ test('Binds partial model input in key order', () => {
 				name: 'binds renamed run column and nullable value',
 				input: { reportTitle: 'Quarterly sales report', durationMs: 1250, archivedAt: null },
 				output: sqliteInput(runModel, {
-					reportTitle: 'Quarterly sales report', durationMs: 1250, archivedAt: null
+					reportTitle: 'Quarterly sales report',
+					durationMs: 1250,
+					archivedAt: null
 				})
 			}
 		]

@@ -53,7 +53,8 @@ function wordsIn(body: string): string {
 
 const services = {
 	checkout: '/harness/branch/main/commit/3f9c2a1/services/app.service.checkout/details',
-	checkoutSource: '/harness/branch/main/commit/3f9c2a1/services/app.service.checkout/details?tab=source'
+	checkoutSource:
+		'/harness/branch/main/commit/3f9c2a1/services/app.service.checkout/details?tab=source'
 };
 
 test('Renders the service details route in the Harness console', () => {

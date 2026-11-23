@@ -126,20 +126,42 @@ test('Refuses an operation the chosen bridge lacks', async () => {
 	});
 	expect(allowed).toEqual({ output: ['acct-provider'] });
 	record('refuses-an-operation-the-chosen-bridge-lacks', 'connect', [
-		{ name: 'Mac project without providers is refused', input: { projectId: 'local-mac-1' }, ...refused },
-		{ name: 'Account project reaches the account bridge', input: { projectId: 'acct-1' }, ...allowed }
+		{
+			name: 'Mac project without providers is refused',
+			input: { projectId: 'local-mac-1' },
+			...refused
+		},
+		{
+			name: 'Account project reaches the account bridge',
+			input: { projectId: 'acct-1' },
+			...allowed
+		}
 	]);
 });
 
 test('Rejects listing only when every listing bridge rejects', async () => {
-	const oneDown = service({ listProjects: refuse('cloud offline') }, { listProjects: answer(['local-mac-1']) });
+	const oneDown = service(
+		{ listProjects: refuse('cloud offline') },
+		{ listProjects: answer(['local-mac-1']) }
+	);
 	const partial = idsOf(await call(oneDown.listProjects));
-	const allDown = service({ listProjects: refuse('cloud offline') }, { listProjects: refuse('mac offline') });
+	const allDown = service(
+		{ listProjects: refuse('cloud offline') },
+		{ listProjects: refuse('mac offline') }
+	);
 	const rejected = await outcome(() => call(allDown.listProjects));
 	expect(partial).toEqual(['local-mac-1']);
 	expect(rejected).toEqual({ error: { name: 'Error', message: 'cloud offline', code: undefined } });
 	record('rejects-listing-only-when-every-listing-bridge-rejects', 'connect', [
-		{ name: 'One listing bridge rejects and the other still lists', input: { cloud: 'offline', mac: ['local-mac-1'] }, output: partial },
-		{ name: 'Every listing bridge rejects with the first reason', input: { cloud: 'offline', mac: 'offline' }, ...rejected }
+		{
+			name: 'One listing bridge rejects and the other still lists',
+			input: { cloud: 'offline', mac: ['local-mac-1'] },
+			output: partial
+		},
+		{
+			name: 'Every listing bridge rejects with the first reason',
+			input: { cloud: 'offline', mac: 'offline' },
+			...rejected
+		}
 	]);
 });

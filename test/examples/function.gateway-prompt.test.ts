@@ -35,7 +35,13 @@ function requestWith(input: unknown[]): GatewayRequestInput {
 
 function record(state: string, cases: Parameters<typeof recordExampleCases>[1]): boolean {
 	return recordExampleCases(
-		{ unitId: UNIT_ID, symbol: 'gatewayPrompt', state, evidence: 'examples-cases', file: `${state}.json` },
+		{
+			unitId: UNIT_ID,
+			symbol: 'gatewayPrompt',
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
 		cases
 	);
 }

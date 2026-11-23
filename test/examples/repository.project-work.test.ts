@@ -145,7 +145,11 @@ test('Lists uncommitted paths in order and cuts to the limit', async () => {
 				file: 'lists-uncommitted-paths-in-order-and-cuts-to-the-limit.json'
 			},
 			[
-				{ name: 'limit 50 returns every change, cache excluded', input: { limit: 50 }, output: all },
+				{
+					name: 'limit 50 returns every change, cache excluded',
+					input: { limit: 50 },
+					output: all
+				},
 				{ name: 'limit 1 cuts to the first path', input: { limit: 1 }, output: cut }
 			]
 		);

@@ -18,7 +18,13 @@ test('Rejects requests from non-loopback hosts', async () => {
 			evidence: 'examples-cases',
 			file: 'rejects-requests-from-non-loopback-hosts.json'
 		},
-		[{ name: 'external host receives unavailable response', input: { url: url.href }, output: { status: response.status, body } }]
+		[
+			{
+				name: 'external host receives unavailable response',
+				input: { url: url.href },
+				output: { status: response.status, body }
+			}
+		]
 	);
 });
 

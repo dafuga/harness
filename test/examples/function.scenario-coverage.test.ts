@@ -13,23 +13,27 @@ const missingRequiredCapture = {
 		units: ['desktop.component.runtime-pane'],
 		states: [{ id: 'current', title: 'current', coverage: 'required' }],
 		viewports: [{ id: 'desktop', width: 1440, height: 900 }],
-		tests: [{
-			id: 'screens',
-			kind: 'e2e',
-			runner: 'command',
-			target: 'bun test/screens.spec.ts',
-			cwd: 'packages/desktop',
-			timeoutMs: 240000
-		}],
-		evidence: [{
-			id: 'runtime-screens-desktop',
-			kind: 'screenshot',
-			states: ['current'],
-			viewports: ['desktop'],
-			provenance: 'actual-capture',
-			capture: 'full-page',
-			required: true
-		}]
+		tests: [
+			{
+				id: 'screens',
+				kind: 'e2e',
+				runner: 'command',
+				target: 'bun test/screens.spec.ts',
+				cwd: 'packages/desktop',
+				timeoutMs: 240000
+			}
+		],
+		evidence: [
+			{
+				id: 'runtime-screens-desktop',
+				kind: 'screenshot',
+				states: ['current'],
+				viewports: ['desktop'],
+				provenance: 'actual-capture',
+				capture: 'full-page',
+				required: true
+			}
+		]
 	},
 	commit: '4f8c2a71e0b93d56a1c7e2f9b04d8e35c6a71b20',
 	gathered: [],
@@ -52,10 +56,12 @@ test('Reports required states and captures that are missing', () => {
 			evidence: 'examples-cases',
 			file: 'reports-required-states-and-captures-that-are-missing.json'
 		},
-		[{
-			name: 'required screenshot slot was not gathered',
-			input: { scenario: missingRequiredCapture.scenario, gathered: [] },
-			output: { states: result.states, failures: result.failures }
-		}]
+		[
+			{
+				name: 'required screenshot slot was not gathered',
+				input: { scenario: missingRequiredCapture.scenario, gathered: [] },
+				output: { states: result.states, failures: result.failures }
+			}
+		]
 	);
 });

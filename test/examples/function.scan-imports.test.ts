@@ -94,7 +94,7 @@ test('Svelte scan returns references from each script block', () => {
 
 test('Svelte script bodies are captured in source order', () => {
 	const bodies = svelteScripts(
-		"<script>import './setup';</script>\n<p>hi</p>\n<script context=\"module\">export const ready = true;</script>"
+		'<script>import \'./setup\';</script>\n<p>hi</p>\n<script context="module">export const ready = true;</script>'
 	);
 	expect(bodies).toEqual(["import './setup';", 'export const ready = true;']);
 	recordExampleCases(
@@ -109,7 +109,7 @@ test('Svelte script bodies are captured in source order', () => {
 			{
 				name: 'two script tags with markup between them',
 				input: {
-					code: "<script>import './setup';</script>\n<p>hi</p>\n<script context=\"module\">export const ready = true;</script>"
+					code: '<script>import \'./setup\';</script>\n<p>hi</p>\n<script context="module">export const ready = true;</script>'
 				},
 				output: bodies
 			}
@@ -118,7 +118,7 @@ test('Svelte script bodies are captured in source order', () => {
 });
 
 test('Stylesheet imports are listed and other files return none', () => {
-	const styleCode = "@import url('./theme.css');\n@import \"./base.css\";";
+	const styleCode = '@import url(\'./theme.css\');\n@import "./base.css";';
 	const styles = summarise(scanImports(styleCode, 'css'));
 	const other = scanImports('<div></div>', 'other');
 	expect(styles).toEqual([

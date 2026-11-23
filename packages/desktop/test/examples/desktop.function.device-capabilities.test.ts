@@ -30,8 +30,16 @@ test('Grants agents, planning and approval when comments are on', () => {
 			file: 'grants-agents-planning-and-approval-when-comments-are-on.json'
 		},
 		[
-			{ name: 'agents on, comments defaulted to true', input: { agents: true }, output: withDefault },
-			{ name: 'agents on, comments explicitly true', input: { agents: true, comments: true }, output: explicit }
+			{
+				name: 'agents on, comments defaulted to true',
+				input: { agents: true },
+				output: withDefault
+			},
+			{
+				name: 'agents on, comments explicitly true',
+				input: { agents: true, comments: true },
+				output: explicit
+			}
 		]
 	);
 });
@@ -59,8 +67,16 @@ test('Limits a device to read and comment when agents are off', () => {
 			file: 'limits-a-device-to-read-and-comment-when-agents-are-off.json'
 		},
 		[
-			{ name: 'agents off, comments defaulted to true', input: { agents: false }, output: defaulted },
-			{ name: 'agents off, comments explicitly true', input: { agents: false, comments: true }, output: explicit }
+			{
+				name: 'agents off, comments defaulted to true',
+				input: { agents: false },
+				output: defaulted
+			},
+			{
+				name: 'agents off, comments explicitly true',
+				input: { agents: false, comments: true },
+				output: explicit
+			}
 		]
 	);
 });
@@ -93,7 +109,11 @@ test('Removes every write permission when comments are off', () => {
 				input: { agents: true, comments: false },
 				output: agentsRequested
 			},
-			{ name: 'agents off and comments off', input: { agents: false, comments: false }, output: readOnly }
+			{
+				name: 'agents off and comments off',
+				input: { agents: false, comments: false },
+				output: readOnly
+			}
 		]
 	);
 });

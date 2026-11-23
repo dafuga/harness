@@ -19,7 +19,10 @@ function audio(id: string, phase: 'before' | 'after', comparison: string, viewpo
 }
 
 test('Pairs only unambiguous matching audio evidence', () => {
-	const paired = [audio('before-1', 'before', 'voice-check'), audio('after-1', 'after', 'voice-check')];
+	const paired = [
+		audio('before-1', 'before', 'voice-check'),
+		audio('after-1', 'after', 'voice-check')
+	];
 	const incomplete = [audio('before-2', 'before', 'incomplete')];
 	const duplicate = [
 		audio('before-3a', 'before', 'duplicate'),

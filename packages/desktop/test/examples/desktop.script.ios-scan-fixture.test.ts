@@ -33,8 +33,16 @@ test('finds literal scanner markers in product files', () => {
 				file: 'finds-literal-scanner-markers-in-product-files.json'
 			},
 			[
-				{ name: 'synthetic marker is present', input: { product: matched, words: 'SyntheticScanner' }, output: synthetic },
-				{ name: 'different scanner marker is absent', input: { product: missed, words: 'SyntheticScanner' }, output: remote }
+				{
+					name: 'synthetic marker is present',
+					input: { product: matched, words: 'SyntheticScanner' },
+					output: synthetic
+				},
+				{
+					name: 'different scanner marker is absent',
+					input: { product: missed, words: 'SyntheticScanner' },
+					output: remote
+				}
 			]
 		);
 	} finally {

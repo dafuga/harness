@@ -57,7 +57,10 @@ test('Throws ReportLockBusyError when all lock attempts are occupied', async () 
 			[
 				{
 					name: 'existing live lock exhausts acquisition attempts',
-					input: { directory: 'temporary report directory with a live lock', operation: 'resolve unreachable' },
+					input: {
+						directory: 'temporary report directory with a live lock',
+						operation: 'resolve unreachable'
+					},
 					error: { name: (error as Error).name, message: (error as Error).message }
 				}
 			]

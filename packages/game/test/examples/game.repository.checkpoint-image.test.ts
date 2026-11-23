@@ -28,9 +28,7 @@ async function withRoot(run: (root: string) => Promise<void>): Promise<void> {
 	}
 }
 
-async function rejection(
-	work: () => Promise<unknown>
-): Promise<{ name: string; message: string }> {
+async function rejection(work: () => Promise<unknown>): Promise<{ name: string; message: string }> {
 	try {
 		await work();
 	} catch (error) {
@@ -56,8 +54,16 @@ test('Saves PNG bytes under their SHA-256 name', async () => {
 		expect(first).toMatch(SAVED_PATTERN);
 		expect(second).toBe(first);
 		record('saves-png-bytes-under-their-sha-256-name', 'save', [
-			{ name: 'first save writes the PNG and returns its hash path', input: { bytes: PNG_BASE64 }, output: first },
-			{ name: 'second save of the same bytes returns the same path', input: { bytes: PNG_BASE64 }, output: second }
+			{
+				name: 'first save writes the PNG and returns its hash path',
+				input: { bytes: PNG_BASE64 },
+				output: first
+			},
+			{
+				name: 'second save of the same bytes returns the same path',
+				input: { bytes: PNG_BASE64 },
+				output: second
+			}
 		]);
 	});
 });
@@ -84,7 +90,11 @@ test('Rejects checkpoint paths outside the image pattern', async () => {
 		expect(outside.message).toBe('Invalid checkpoint image path.');
 		expect(upper.message).toBe('Invalid checkpoint image path.');
 		record('rejects-checkpoint-paths-outside-the-image-pattern', 'read', [
-			{ name: 'a path outside static/game/checkpoints is refused', input: { path: OUTSIDE_PATH }, error: outside },
+			{
+				name: 'a path outside static/game/checkpoints is refused',
+				input: { path: OUTSIDE_PATH },
+				error: outside
+			},
 			{ name: 'an uppercase hex file name is refused', input: { path: UPPER_PATH }, error: upper }
 		]);
 	});
@@ -99,8 +109,16 @@ test('Rejects a commit that is not a full lowercase SHA', async () => {
 		expect(short.message).toBe('A full commit is required.');
 		expect(upper.message).toBe('A full commit is required.');
 		record('rejects-a-commit-that-is-not-a-full-lowercase-sha', 'read', [
-			{ name: 'a short commit is refused before git runs', input: { path: ZERO_PATH, commit: 'abc1234' }, error: short },
-			{ name: 'an uppercase 40-character commit is refused', input: { path: ZERO_PATH, commit: 'A'.repeat(40) }, error: upper }
+			{
+				name: 'a short commit is refused before git runs',
+				input: { path: ZERO_PATH, commit: 'abc1234' },
+				error: short
+			},
+			{
+				name: 'an uppercase 40-character commit is refused',
+				input: { path: ZERO_PATH, commit: 'A'.repeat(40) },
+				error: upper
+			}
 		]);
 	});
 });
@@ -114,7 +132,11 @@ test('Rejects an image whose bytes do not match its file name', async () => {
 
 		expect(failure.message).toBe('Checkpoint image integrity failed.');
 		record('rejects-an-image-whose-bytes-do-not-match-its-file-name', 'read', [
-			{ name: 'a PNG stored under the wrong hash name is refused', input: { path: ZERO_PATH }, error: failure }
+			{
+				name: 'a PNG stored under the wrong hash name is refused',
+				input: { path: ZERO_PATH },
+				error: failure
+			}
 		]);
 	});
 });

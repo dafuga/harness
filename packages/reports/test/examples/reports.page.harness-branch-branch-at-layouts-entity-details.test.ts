@@ -53,7 +53,8 @@ function wordsIn(body: string): string {
 
 const layouts = {
 	appLayout: '/harness/branch/main/commit/3f9c2a1/layouts/app.layout.default/details',
-	appLayoutSource: '/harness/branch/main/commit/3f9c2a1/layouts/app.layout.default/details?tab=source'
+	appLayoutSource:
+		'/harness/branch/main/commit/3f9c2a1/layouts/app.layout.default/details?tab=source'
 };
 
 test('Renders the layout details route in the Harness console', () => {

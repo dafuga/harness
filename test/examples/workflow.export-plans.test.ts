@@ -15,7 +15,13 @@ const pieceCases = [
 ] as const;
 
 function meta(symbol: string, state: string) {
-	return { unitId: 'workflow.export-plans', symbol, state, evidence: 'examples-cases', file: `${state}.json` };
+	return {
+		unitId: 'workflow.export-plans',
+		symbol,
+		state,
+		evidence: 'examples-cases',
+		file: `${state}.json`
+	};
 }
 
 test('Builds the two model export plans for a name', () => {
@@ -29,7 +35,11 @@ test('Builds the two model export plans for a name', () => {
 	]);
 	recordExampleCases(meta('modelExportPlans', 'builds-the-two-model-export-plans-for-a-name'), [
 		{ name: 'invoice model plans', input: { name: 'invoice' }, output: plans },
-		{ name: 'customer model plans', input: { name: 'customer' }, output: modelExportPlans('customer') }
+		{
+			name: 'customer model plans',
+			input: { name: 'customer' },
+			output: modelExportPlans('customer')
+		}
 	]);
 });
 
@@ -37,11 +47,17 @@ test('Builds the adapter export plan with the D1 special case', () => {
 	const d1 = adapterExportPlan('d1');
 	const postgres = adapterExportPlan('postgres');
 	expect(d1).toEqual({ source: './models/adapters/d1', named: ['createD1Adapter'] });
-	expect(postgres).toEqual({ source: './models/adapters/postgres', named: ['createPostgresAdapter'] });
-	recordExampleCases(meta('adapterExportPlan', 'builds-the-adapter-export-plan-with-the-d1-special-case'), [
-		{ name: 'd1 adapter plan', input: { adapter: 'd1' }, output: d1 },
-		{ name: 'postgres adapter plan', input: { adapter: 'postgres' }, output: postgres }
-	]);
+	expect(postgres).toEqual({
+		source: './models/adapters/postgres',
+		named: ['createPostgresAdapter']
+	});
+	recordExampleCases(
+		meta('adapterExportPlan', 'builds-the-adapter-export-plan-with-the-d1-special-case'),
+		[
+			{ name: 'd1 adapter plan', input: { adapter: 'd1' }, output: d1 },
+			{ name: 'postgres adapter plan', input: { adapter: 'postgres' }, output: postgres }
+		]
+	);
 });
 
 test('Builds piece export plans for class and util kinds', () => {
@@ -51,19 +67,29 @@ test('Builds piece export plans for class and util kinds', () => {
 		[{ source: './utils/slugify', named: ['slugify'] }],
 		[{ source: '../db/seed-data/users', named: ['seedUsers'] }]
 	]);
-	recordExampleCases(meta('pieceExportPlans', 'builds-piece-export-plans-for-class-and-util-kinds'), [
-		...pieceCases.map(([kind, name], index) => ({
-			name: `${kind} piece plan`,
-			input: { kind, name },
-			output: plans[index]
-		}))
-	]);
+	recordExampleCases(
+		meta('pieceExportPlans', 'builds-piece-export-plans-for-class-and-util-kinds'),
+		[
+			...pieceCases.map(([kind, name], index) => ({
+				name: `${kind} piece plan`,
+				input: { kind, name },
+				output: plans[index]
+			}))
+		]
+	);
 });
 
 test('Returns no export plans for a kind without a pattern', () => {
 	const plans = pieceExportPlans(unknownKind, 'invoice');
 	expect(plans).toEqual([]);
-	recordExampleCases(meta('pieceExportPlans', 'returns-no-export-plans-for-a-kind-without-a-pattern'), [
-		{ name: 'kind without an export pattern', input: { kind: 'nothing', name: 'invoice' }, output: plans }
-	]);
+	recordExampleCases(
+		meta('pieceExportPlans', 'returns-no-export-plans-for-a-kind-without-a-pattern'),
+		[
+			{
+				name: 'kind without an export pattern',
+				input: { kind: 'nothing', name: 'invoice' },
+				output: plans
+			}
+		]
+	);
 });

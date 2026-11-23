@@ -2,7 +2,10 @@ import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { ResourceQueueError } from '../../src/services/execution-runtimes/ResourceQueueService.types';
-import type { RunOptions, Dependencies } from '../../src/services/execution-runtimes/ResourceQueueService.types';
+import type {
+	RunOptions,
+	Dependencies
+} from '../../src/services/execution-runtimes/ResourceQueueService.types';
 
 const runOptions: RunOptions = { waitTimeoutMs: 0, env: { EXAMPLE_OWNER: 'example-owner' } };
 const dependencies: Dependencies = { home: '/example/home', env: { EXAMPLE_FLAG: '1' } };
@@ -32,7 +35,11 @@ test('Builds a ResourceQueueError named for the refusal', () => {
 			{
 				name: 'dependencies carry home and env keys without a monitor',
 				input: { home: dependencies.home, envKeys: Object.keys(dependencies.env ?? {}) },
-				output: { home: dependencies.home, envKeys: ['EXAMPLE_FLAG'], hasMonitor: dependencies.monitor !== undefined }
+				output: {
+					home: dependencies.home,
+					envKeys: ['EXAMPLE_FLAG'],
+					hasMonitor: dependencies.monitor !== undefined
+				}
 			}
 		]
 	);

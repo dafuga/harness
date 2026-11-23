@@ -29,7 +29,12 @@ function words(count: number): string {
 	return Array.from({ length: count }, () => 'word').join(' ');
 }
 
-function reason(symbol: string, behavior: string, simplification: string, performance: string): WrittenReason {
+function reason(
+	symbol: string,
+	behavior: string,
+	simplification: string,
+	performance: string
+): WrittenReason {
 	return {
 		unit,
 		symbol,
@@ -53,8 +58,16 @@ test('Holds a revision to the newest version its config declares', () => {
 
 test('Declares the limits only with a version of 1 or more', () => {
 	const cases = [
-		{ name: 'a config declaring writing 2', input: '{"writing": 2}', output: writingDeclared('{"writing": 2}') },
-		{ name: 'a config declaring writing 0', input: '{"writing": 0}', output: writingDeclared('{"writing": 0}') },
+		{
+			name: 'a config declaring writing 2',
+			input: '{"writing": 2}',
+			output: writingDeclared('{"writing": 2}')
+		},
+		{
+			name: 'a config declaring writing 0',
+			input: '{"writing": 0}',
+			output: writingDeclared('{"writing": 0}')
+		},
 		{ name: 'no config at all', input: null, output: writingDeclared(undefined) },
 		{ name: 'a config that is not JSON', input: 'not json', output: writingDeclared('not json') }
 	];
@@ -70,7 +83,11 @@ test('Counts words and code points after normalising newlines', () => {
 		'',
 		'🙂 ok'
 	];
-	const cases = texts.map((text) => ({ name: `text of ${text.length} UTF-16 units`, input: text, output: writingCount(text) }));
+	const cases = texts.map((text) => ({
+		name: `text of ${text.length} UTF-16 units`,
+		input: text,
+		output: writingCount(text)
+	}));
 
 	expect(cases.map((item) => item.output)).toEqual([
 		{ words: 6, characters: 42 },
@@ -84,9 +101,24 @@ test('Counts words and code points after normalising newlines', () => {
 test('Reports empty and over-limit text', () => {
 	const checks: Array<{ name: string; field: string; text: string; limit: WritingLimit }> = [
 		{ name: 'empty behavior note', field: 'behavior', text: '', limit: writingLimits.behavior },
-		{ name: 'behavior note of 31 words', field: 'behavior', text: words(31), limit: writingLimits.behavior },
-		{ name: 'body of one 401-character token', field: 'body', text: 'a'.repeat(401), limit: writingLimits.body },
-		{ name: 'subject of 73 characters', field: 'subject', text: 'a'.repeat(73), limit: writingLimits.subject }
+		{
+			name: 'behavior note of 31 words',
+			field: 'behavior',
+			text: words(31),
+			limit: writingLimits.behavior
+		},
+		{
+			name: 'body of one 401-character token',
+			field: 'body',
+			text: 'a'.repeat(401),
+			limit: writingLimits.body
+		},
+		{
+			name: 'subject of 73 characters',
+			field: 'subject',
+			text: 'a'.repeat(73),
+			limit: writingLimits.subject
+		}
 	];
 	const cases = checks.map(({ name, field, text, limit }) => ({
 		name,
@@ -138,7 +170,12 @@ test('Prefixes each explanation problem with unit and symbol', () => {
 	const checks = [
 		{
 			name: 'behavior of 31 words on one symbol',
-			item: reason('writingHeld', words(31), 'Search the version list from newest to oldest.', 'Parse the verification config once per call.')
+			item: reason(
+				'writingHeld',
+				words(31),
+				'Search the version list from newest to oldest.',
+				'Parse the verification config once per call.'
+			)
 		},
 		{
 			name: 'empty performance attempt on the whole unit',
@@ -146,7 +183,12 @@ test('Prefixes each explanation problem with unit and symbol', () => {
 		},
 		{
 			name: 'a reason within every limit',
-			item: reason('writingCount', 'Counts words and code points after normalising line endings.', 'Share one counting path.', 'Count each text once per check.')
+			item: reason(
+				'writingCount',
+				'Counts words and code points after normalising line endings.',
+				'Share one counting path.',
+				'Count each text once per check.'
+			)
 		}
 	];
 	const cases = checks.map(({ name, item }) => ({

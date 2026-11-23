@@ -31,7 +31,8 @@ test('Returns the selected project or null when no folder is selected', async ()
 	expect(calls.every((call) => call.window === window)).toBe(true);
 	recordExampleCases(
 		{
-			unitId: 'desktop.module.development-tooling-desktop-initialization-initialize-desktop-choose-project',
+			unitId:
+				'desktop.module.development-tooling-desktop-initialization-initialize-desktop-choose-project',
 			symbol: 'chooseProject',
 			state: 'returns-the-selected-project-or-null-when-no-folder-is-selec',
 			evidence: 'examples-cases',
@@ -43,8 +44,16 @@ test('Returns the selected project or null when no folder is selected', async ()
 				input: { canceled: false, filePaths: ['/workspace/projects/harness-app'] },
 				output: selected
 			},
-			{ name: 'Returns null when the picker is canceled', input: { canceled: true, filePaths: [] }, output: canceled },
-			{ name: 'Returns null when no path is provided', input: { canceled: false, filePaths: [] }, output: empty }
+			{
+				name: 'Returns null when the picker is canceled',
+				input: { canceled: true, filePaths: [] },
+				output: canceled
+			},
+			{
+				name: 'Returns null when no path is provided',
+				input: { canceled: false, filePaths: [] },
+				output: empty
+			}
 		]
 	);
 });

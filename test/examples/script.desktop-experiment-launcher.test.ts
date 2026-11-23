@@ -48,7 +48,12 @@ test('Forwards the child exit code', async () => {
 	expect(output.error).toBeUndefined();
 
 	recordExampleCases(
-		{ ...meta, state: 'forwards-the-child-exit-code', evidence: 'examples-cases', file: 'forwards-the-child-exit-code.json' },
+		{
+			...meta,
+			state: 'forwards-the-child-exit-code',
+			evidence: 'examples-cases',
+			file: 'forwards-the-child-exit-code.json'
+		},
 		[
 			{
 				name: 'runs the executable with the data dir and forwards exit code 3',
@@ -69,7 +74,12 @@ test('Propagates a spawn failure', async () => {
 	expect(output.error).toBe('spawn CodexHarnessElectron ENOENT');
 
 	recordExampleCases(
-		{ ...meta, state: 'propagates-a-spawn-failure', evidence: 'examples-cases', file: 'propagates-a-spawn-failure.json' },
+		{
+			...meta,
+			state: 'propagates-a-spawn-failure',
+			evidence: 'examples-cases',
+			file: 'propagates-a-spawn-failure.json'
+		},
 		[
 			{
 				name: 'missing executable makes the import reject with the spawn error',

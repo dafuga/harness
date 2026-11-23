@@ -162,7 +162,13 @@ test('Renders validity and problems for attached records', () => {
 			evidence: 'examples-cases',
 			file: 'renders-validity-and-problems-for-attached-records.json'
 		},
-		[{ name: 'Shows an unusable record and its integrity problems', input: { status }, output: summary }]
+		[
+			{
+				name: 'Shows an unusable record and its integrity problems',
+				input: { status },
+				output: summary
+			}
+		]
 	);
 });
 

@@ -23,7 +23,10 @@ test('Reports site binds checkout and ownership', () => {
 			{
 				name: 'the site checkout belongs to its repository',
 				input: { site, project },
-				output: { site: { root: site.root, name: site.name, identity: site.identity }, owned: ownership }
+				output: {
+					site: { root: site.root, name: site.name, identity: site.identity },
+					owned: ownership
+				}
 			}
 		]
 	);

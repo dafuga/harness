@@ -20,7 +20,9 @@ test('Throws ExpectedCliError when a field has multiple colons', () => {
 
 test('Throws ExpectedCliError when a field name is invalid', () => {
 	const input = ['../secret:string'];
-	expect(() => parseFields(input)).toThrow('Field name cannot include path traversal or path separators.');
+	expect(() => parseFields(input)).toThrow(
+		'Field name cannot include path traversal or path separators.'
+	);
 	recordExampleCases(
 		{
 			unitId: 'function.fields',
@@ -97,7 +99,13 @@ test('Parses supported field specifications', () => {
 		{ name: 'title', column: 'title', type: 'string', tsType: 'string', sqlType: 'TEXT' },
 		{ name: 'body', column: 'body', type: 'text', tsType: 'string', sqlType: 'TEXT' },
 		{ name: 'views', column: 'views', type: 'number', tsType: 'number', sqlType: 'INTEGER' },
-		{ name: 'published', column: 'published', type: 'boolean', tsType: 'boolean', sqlType: 'INTEGER' },
+		{
+			name: 'published',
+			column: 'published',
+			type: 'boolean',
+			tsType: 'boolean',
+			sqlType: 'INTEGER'
+		},
 		{
 			name: 'settings',
 			column: 'settings',

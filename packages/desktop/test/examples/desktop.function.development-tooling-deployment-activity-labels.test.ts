@@ -28,7 +28,12 @@ function deployment(
 		itemSteps?: DeploymentActivity['steps'];
 	} = {}
 ): DeploymentActivity {
-	const { projectId = 'storefront-local', environment = 'prod', step = null, itemSteps = steps } = options;
+	const {
+		projectId = 'storefront-local',
+		environment = 'prod',
+		step = null,
+		itemSteps = steps
+	} = options;
 	return {
 		phase,
 		detail: `Deployment ${phase}`,
@@ -66,7 +71,11 @@ test('Counts failures that still stand per destination', () => {
 		deployment('queued', { projectId: 'storefront-local', environment: 'dev' }),
 		deployment('failed', { projectId: 'storefront-local', environment: 'dev', step: 'uploading' }),
 		deployment('failed', { projectId: 'storefront-local', environment: 'prod', step: 'uploading' }),
-		deployment('complete', { projectId: 'storefront-local', environment: 'prod', step: 'verifying' })
+		deployment('complete', {
+			projectId: 'storefront-local',
+			environment: 'prod',
+			step: 'verifying'
+		})
 	];
 	const nullProjectId = [
 		deployment('queued', { projectId: null, environment: 'stage' }),
@@ -145,18 +154,17 @@ test('Chooses the overall activity light', () => {
 test('Labels queued, complete and matched deployment steps', () => {
 	const items = [
 		deployment('queued', { projectId: 'storefront-local', environment: 'dev', step: 'preparing' }),
-		deployment('complete', { projectId: 'storefront-local', environment: 'prod', step: 'verifying' }),
+		deployment('complete', {
+			projectId: 'storefront-local',
+			environment: 'prod',
+			step: 'verifying'
+		}),
 		deployment('failed', { projectId: 'storefront-local', environment: 'prod', step: 'uploading' }),
 		deployment('building', { projectId: 'storefront-local', environment: 'prod', step: 'building' })
 	];
 	const results = items.map(phaseLabel);
 
-	expect(results).toEqual([
-		'Queued',
-		'Deployed',
-		'Failed at Deploy to Cloudflare',
-		'Build source'
-	]);
+	expect(results).toEqual(['Queued', 'Deployed', 'Failed at Deploy to Cloudflare', 'Build source']);
 	record(
 		'phaseLabel',
 		'labels-queued-complete-and-matched-deployment-steps',

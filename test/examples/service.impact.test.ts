@@ -79,7 +79,10 @@ test('Computes an impact report for a modified source file', async () => {
 		[
 			{
 				name: 'one modified source file produces one changed path',
-				input: { base: { revision: BASE, hash: BASE_HASH }, head: { revision: 'working-tree', hash: HEAD_HASH } },
+				input: {
+					base: { revision: BASE, hash: BASE_HASH },
+					head: { revision: 'working-tree', hash: HEAD_HASH }
+				},
 				output: {
 					base: report.base,
 					head: report.head,
@@ -99,7 +102,10 @@ test('Rejects with the kernel failure code and message', async () => {
 	});
 	let error: unknown;
 	try {
-		await new ImpactService(runtime).compute(side(BASE, BASE_HASH), side('working-tree', HEAD_HASH));
+		await new ImpactService(runtime).compute(
+			side(BASE, BASE_HASH),
+			side('working-tree', HEAD_HASH)
+		);
 	} catch (caught) {
 		error = caught;
 	}

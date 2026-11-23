@@ -16,7 +16,10 @@ const limits = {
 	maxClassesPerFile: 1
 };
 
-function sourceFile(relativePath: string, contents: string): Parameters<typeof auditAtomicComposition>[0] {
+function sourceFile(
+	relativePath: string,
+	contents: string
+): Parameters<typeof auditAtomicComposition>[0] {
 	return {
 		absolutePath: `/workspace/project/${relativePath}`,
 		relativePath,
@@ -35,7 +38,13 @@ function run(relativePath: string, contents: string) {
 }
 
 function meta(state: string) {
-	return { unitId: 'audit.development-tooling-atomic-composition', symbol, state, evidence: 'examples-cases', file: `${state}.json` };
+	return {
+		unitId: 'audit.development-tooling-atomic-composition',
+		symbol,
+		state,
+		evidence: 'examples-cases',
+		file: `${state}.json`
+	};
 }
 
 test('Ignores files outside the component and route folders', () => {

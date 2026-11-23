@@ -22,8 +22,15 @@ const reviewed = {
 		commit: receipt.commit,
 		branch: receipt.branch,
 		adapter: 'cloudflare' as const,
-		target: 'workers · project-dev · dev · account 0123456789abcdef0123456789abcdef · https://project-dev.example.test',
-		steps: ['Prepare source', 'Run checks', 'Build source', 'Deploy to Cloudflare', 'Verify health'],
+		target:
+			'workers · project-dev · dev · account 0123456789abcdef0123456789abcdef · https://project-dev.example.test',
+		steps: [
+			'Prepare source',
+			'Run checks',
+			'Build source',
+			'Deploy to Cloudflare',
+			'Verify health'
+		],
 		blockers: [],
 		expiresAt: '2026-11-14T12:05:00.000Z'
 	},
@@ -57,7 +64,8 @@ test('Schedules deployment activity and records its completion', async () => {
 	const missing = service.progress(initial.id, '/workspace/other');
 	const unknown = await service.wait('missing').then(
 		() => null,
-		(error: unknown) => error instanceof Error ? { name: error.name, message: error.message } : null
+		(error: unknown) =>
+			error instanceof Error ? { name: error.name, message: error.message } : null
 	);
 	const output = {
 		initial: { id: initial.id, phase: initial.phase, detail: initial.detail },
@@ -66,7 +74,11 @@ test('Schedules deployment activity and records its completion', async () => {
 		missing,
 		unknown
 	};
-	expect(output.initial).toEqual({ id: receipt.deploymentId, phase: 'queued', detail: 'Queued for dev' });
+	expect(output.initial).toEqual({
+		id: receipt.deploymentId,
+		phase: 'queued',
+		detail: 'Queued for dev'
+	});
 	expect(output.listed?.phase).toBe('complete');
 	expect(output.unknown?.message).toBe('Unknown deployment.');
 	recordExampleCases(

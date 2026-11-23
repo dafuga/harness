@@ -1,7 +1,6 @@
 import { checkProject } from './script.check-verification-forwards.fixture';
 import type { ExampleCase, Tree } from './script.check-verification-forwards.test.types';
 
-
 import { test } from 'vitest';
 import { checkVerificationForwards } from '../../scripts/check-verification-forwards';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -14,7 +13,8 @@ const forward = 'src/utils/verification-evidence/verifyPlan.ts';
 const nested = 'src/workflows/run-verify/verification-service/verifyPlan.ts';
 const target = 'src/workflows/verification-evidence/run-verify/verification-service/verifyPlan.ts';
 const legacy = 'src/utils/verification-evidence/legacyPlan.ts';
-const fromUtils = '../../workflows/verification-evidence/run-verify/verification-service/verifyPlan';
+const fromUtils =
+	'../../workflows/verification-evidence/run-verify/verification-service/verifyPlan';
 const fromNested = '../../verification-evidence/run-verify/verification-service/verifyPlan';
 const implementation = 'export function verifyPlan(): string[] { return []; }';
 
@@ -179,10 +179,7 @@ test('checkVerificationForwards threw for a registered source or target that exi
 			[target]: null
 		})
 	];
-	expect(cases.map((item) => item.error)).toMatchObject([
-		{ code: 'EISDIR' },
-		{ code: 'EISDIR' }
-	]);
+	expect(cases.map((item) => item.error)).toMatchObject([{ code: 'EISDIR' }, { code: 'EISDIR' }]);
 	recordState('checkverificationforwards-threw-for-a-registered-source-or-t', cases);
 });
 

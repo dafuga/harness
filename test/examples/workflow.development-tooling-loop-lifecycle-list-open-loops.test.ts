@@ -26,7 +26,14 @@ function daysAgo(days: number): string {
 }
 
 function loopFile(name: string, updatedAt: string, steps: Step[], extra = {}): string {
-	const state = { name, goal: `Goal for ${name}`, createdAt: updatedAt, updatedAt, steps, ...extra };
+	const state = {
+		name,
+		goal: `Goal for ${name}`,
+		createdAt: updatedAt,
+		updatedAt,
+		steps,
+		...extra
+	};
 	return `${JSON.stringify(state, null, '\t')}\n`;
 }
 

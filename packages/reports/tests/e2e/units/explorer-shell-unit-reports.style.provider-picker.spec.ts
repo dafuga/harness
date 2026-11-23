@@ -18,7 +18,11 @@ for (const viewport of catalogViewports) {
 		test(`reports.style.provider-picker:${state.id} at ${viewport.id}`, async ({ page }) => {
 			await page.setViewportSize({ width: viewport.width, height: viewport.height });
 			await openPreview(page, home, 'reports.component.provider-picker', state.variant);
-			const component = await readyPreview(page, 'reports.component.provider-picker', state.variant);
+			const component = await readyPreview(
+				page,
+				'reports.component.provider-picker',
+				state.variant
+			);
 			const picker = component.locator('.provider-picker').first();
 			await expect(picker).toBeVisible();
 			await expect(picker).toHaveCSS('display', 'grid');

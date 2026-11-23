@@ -17,10 +17,9 @@ import {
 const unitId = 'workflow.benchmark-workspace';
 
 function record(symbol: string, state: string, input: unknown, output: unknown): void {
-	recordExampleCases(
-		{ unitId, symbol, state, evidence: 'examples-cases', file: `${state}.json` },
-		[{ name: state, input, output }]
-	);
+	recordExampleCases({ unitId, symbol, state, evidence: 'examples-cases', file: `${state}.json` }, [
+		{ name: state, input, output }
+	]);
 }
 
 test('Lists and snapshots a committed benchmark tree', async () => {
@@ -35,8 +34,12 @@ test('Lists and snapshots a committed benchmark tree', async () => {
 		const snapshot = await snapshotBenchmark(root, revision, destination);
 		expect(files).toContain('src/sample.ts');
 		expect(await readFile(join(destination, 'src', 'sample.ts'), 'utf8')).toContain('value = 1');
-		record('snapshotBenchmark', 'lists-and-snapshots-a-committed-benchmark-tree',
-			{ revision }, { files, snapshot });
+		record(
+			'snapshotBenchmark',
+			'lists-and-snapshots-a-committed-benchmark-tree',
+			{ revision },
+			{ files, snapshot }
+		);
 	});
 });
 
@@ -44,8 +47,12 @@ test('Runs Git commands in the selected workspace', async () => {
 	await withTempRepo(async ({ root }) => {
 		const stdout = await benchmarkGit(root, ['status', '--short']);
 		expect(stdout).toBe('');
-		record('benchmarkGit', 'runs-git-commands-in-the-selected-workspace',
-			{ args: ['status', '--short'] }, { stdout });
+		record(
+			'benchmarkGit',
+			'runs-git-commands-in-the-selected-workspace',
+			{ args: ['status', '--short'] },
+			{ stdout }
+		);
 	});
 });
 
@@ -60,8 +67,12 @@ test('Creates a committed workspace and fingerprints regular files', async () =>
 		const value = await benchmarkFileValue(workspace, 'sample.txt');
 		expect(regular).toBe(true);
 		expect(value).toMatch(/^0:[a-f0-9]{64}$/);
-		record('createBenchmarkWorkspace', 'creates-a-committed-workspace-and-fingerprints-regular-files',
-			{ baseline: ['sample.txt'] }, { regular, value });
+		record(
+			'createBenchmarkWorkspace',
+			'creates-a-committed-workspace-and-fingerprints-regular-files',
+			{ baseline: ['sample.txt'] },
+			{ regular, value }
+		);
 	});
 });
 
@@ -80,7 +91,11 @@ test('Overlays regular files and removes missing source files', async () => {
 		const removed = await regularBenchmarkFile(target, 'removed.txt');
 		expect(changed).toBe('new');
 		expect(removed).toBe(false);
-		record('overlayBenchmarkFiles', 'overlays-regular-files-and-removes-missing-source-files',
-			{ files: ['changed.txt', 'removed.txt', 'linked.txt'] }, { changed, removed });
+		record(
+			'overlayBenchmarkFiles',
+			'overlays-regular-files-and-removes-missing-source-files',
+			{ files: ['changed.txt', 'removed.txt', 'linked.txt'] },
+			{ changed, removed }
+		);
 	});
 });

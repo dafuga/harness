@@ -35,7 +35,8 @@ const activityList = {
 			id: 'states',
 			kind: 'e2e',
 			runner: 'command',
-			target: 'bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell-activity-list.spec.ts',
+			target:
+				'bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell-activity-list.spec.ts',
 			cwd: 'packages/reports'
 		}
 	],
@@ -105,9 +106,7 @@ test('Expands required evidence per state and viewport', () => {
 			{ evidence: 'screens', kind: 'screenshot', state: 'expanded', viewport: 'desktop' },
 			{ evidence: 'screens', kind: 'screenshot', state: 'expanded', viewport: 'mobile' }
 		],
-		unproven: [
-			{ state: 'error', reason: 'No fixture renders the caller-supplied error row yet.' }
-		],
+		unproven: [{ state: 'error', reason: 'No fixture renders the caller-supplied error row yet.' }],
 		excluded: [{ state: 'right-to-left', reason: 'The shell is left-to-right only.' }]
 	});
 	recordExampleCases(
@@ -166,7 +165,9 @@ test('Drops evidence that is not marked required', () => {
 	expect(result.unproven).toEqual([
 		{ state: 'error', reason: 'No fixture renders the caller-supplied error row yet.' }
 	]);
-	expect(result.excluded).toEqual([{ state: 'right-to-left', reason: 'The shell is left-to-right only.' }]);
+	expect(result.excluded).toEqual([
+		{ state: 'right-to-left', reason: 'The shell is left-to-right only.' }
+	]);
 	recordExampleCases(
 		{
 			unitId: 'function.scenario-requirements',

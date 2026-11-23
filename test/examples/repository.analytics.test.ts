@@ -99,7 +99,11 @@ test('Records events once per id and lists them by timestamp', () =>
 			meta('AnalyticsRepository.record', 'records-events-once-per-id-and-lists-them-by-timestamp'),
 			[
 				{ name: 'stores events ordered by timestamp', input: [STEP, LOOP], output: [LOOP, STEP] },
-				{ name: 'ignores a second event with an existing id', input: duplicate, output: [LOOP, STEP] }
+				{
+					name: 'ignores a second event with an existing id',
+					input: duplicate,
+					output: [LOOP, STEP]
+				}
 			]
 		);
 	}));
@@ -118,10 +122,24 @@ test('Upserts imported events and keeps live rows live', () =>
 		]);
 
 		expect(results[5]).toEqual([reEvaluated, { ...STEP, historical: false }]);
-		recordExampleCases(meta('AnalyticsRepository.recordImported', 'upserts-imported-events-and-keeps-live-rows-live'), [
-			{ name: 'live row imported as historical is stored as not historical', input: importedStep, output: { ...STEP, historical: false } },
-			{ name: 'historical row replaced by a re-evaluated import', input: reEvaluated, output: reEvaluated }
-		]);
+		recordExampleCases(
+			meta(
+				'AnalyticsRepository.recordImported',
+				'upserts-imported-events-and-keeps-live-rows-live'
+			),
+			[
+				{
+					name: 'live row imported as historical is stored as not historical',
+					input: importedStep,
+					output: { ...STEP, historical: false }
+				},
+				{
+					name: 'historical row replaced by a re-evaluated import',
+					input: reEvaluated,
+					output: reEvaluated
+				}
+			]
+		);
 	}));
 
 test('Deletes only historical rows when the project root moved', () =>
@@ -129,9 +147,15 @@ test('Deletes only historical rows when the project root moved', () =>
 		const root = join(directory, 'harness-app-feature');
 		mkdirSync(root);
 		const canonical = realpathSync(root);
-		const historical = dated('a1', '2026-11-10T08:00:00.000Z', { project: canonical, historical: true });
+		const historical = dated('a1', '2026-11-10T08:00:00.000Z', {
+			project: canonical,
+			historical: true
+		});
 		const live = dated('a2', '2026-11-11T08:00:00.000Z', { project: canonical });
-		const other = dated('a3', '2026-11-12T08:00:00.000Z', { project: '/workspace/projects/other', historical: true });
+		const other = dated('a3', '2026-11-12T08:00:00.000Z', {
+			project: '/workspace/projects/other',
+			historical: true
+		});
 		const results = runSteps(directory, [
 			{ op: 'open', home: join(directory, 'store') },
 			{ op: 'record', event: historical },
@@ -145,10 +169,24 @@ test('Deletes only historical rows when the project root moved', () =>
 
 		expect(results[5]).toEqual([historical, live, other]);
 		expect(results[7]).toEqual([live, other]);
-		recordExampleCases(meta('AnalyticsRepository.reconcileHistorical', 'deletes-only-historical-rows-when-the-project-root-moved'), [
-			{ name: 'same canonical path leaves rows untouched', input: { root: 'harness-app-feature', project: 'canonical root' }, output: [historical, live, other] },
-			{ name: 'moved root deletes historical canonical rows', input: { root: 'harness-app-feature', project: PROJECT }, output: [live, other] }
-		]);
+		recordExampleCases(
+			meta(
+				'AnalyticsRepository.reconcileHistorical',
+				'deletes-only-historical-rows-when-the-project-root-moved'
+			),
+			[
+				{
+					name: 'same canonical path leaves rows untouched',
+					input: { root: 'harness-app-feature', project: 'canonical root' },
+					output: [historical, live, other]
+				},
+				{
+					name: 'moved root deletes historical canonical rows',
+					input: { root: 'harness-app-feature', project: PROJECT },
+					output: [live, other]
+				}
+			]
+		);
 	}));
 
 test('Previews retention by default and deletes when applied', () =>
@@ -166,15 +204,31 @@ test('Previews retention by default and deletes when applied', () =>
 		expect(results[4]).toEqual({ before: CUTOFF, matching: 2, deleted: 0, dryRun: true });
 		expect(results[5]).toEqual({ before: CUTOFF, matching: 2, deleted: 2, dryRun: false });
 		expect(results[6]).toEqual([LOOP]);
-		recordExampleCases(meta('AnalyticsRepository.prune', 'previews-retention-by-default-and-deletes-when-applied'), [
-			{ name: 'default call counts matching rows without deleting', input: { before: CUTOFF }, output: results[4] },
-			{ name: 'apply true deletes the matching rows', input: { before: CUTOFF, apply: true }, output: results[5] }
-		]);
+		recordExampleCases(
+			meta('AnalyticsRepository.prune', 'previews-retention-by-default-and-deletes-when-applied'),
+			[
+				{
+					name: 'default call counts matching rows without deleting',
+					input: { before: CUTOFF },
+					output: results[4]
+				},
+				{
+					name: 'apply true deletes the matching rows',
+					input: { before: CUTOFF, apply: true },
+					output: results[5]
+				}
+			]
+		);
 	}));
 
 test('Rejects retention cutoffs that are not past UTC instants', () =>
 	withTempDir('analytics-cutoff-', (directory) => {
-		const cutoffs = ['2099-01-01T00:00:00.000Z', '2024-06-15T00:00:00', '2024-06-15T10:00:00.000+02:00', 'not-a-date'];
+		const cutoffs = [
+			'2099-01-01T00:00:00.000Z',
+			'2024-06-15T00:00:00',
+			'2024-06-15T10:00:00.000+02:00',
+			'not-a-date'
+		];
 		const results = runSteps(directory, [
 			{ op: 'open', home: join(directory, 'store') },
 			...cutoffs.map((before) => ({ op: 'prune', before }))
@@ -184,7 +238,11 @@ test('Rejects retention cutoffs that are not past UTC instants', () =>
 		expect(results.slice(1)).toEqual(cutoffs.map(() => rejected));
 		recordExampleCases(
 			meta('AnalyticsRepository.prune', 'rejects-retention-cutoffs-that-are-not-past-utc-instants'),
-			cutoffs.map((before) => ({ name: `rejects cutoff ${before}`, input: { before }, error: rejected.error }))
+			cutoffs.map((before) => ({
+				name: `rejects cutoff ${before}`,
+				input: { before },
+				error: rejected.error
+			}))
 		);
 	}));
 
@@ -201,8 +259,15 @@ test('Rejects a database with a newer schema version', () =>
 
 		const unsupported = errorOf(new UnsupportedAnalyticsSchemaVersionError());
 		expect(results.slice(3)).toEqual([unsupported, unsupported]);
-		recordExampleCases(meta('AnalyticsRepository', 'rejects-a-database-with-a-newer-schema-version'), [
-			{ name: 'constructor rejects user_version 2', input: { userVersion: 2 }, error: unsupported.error },
-			{ name: 'open rejects user_version 2', input: { userVersion: 2 }, error: unsupported.error }
-		]);
+		recordExampleCases(
+			meta('AnalyticsRepository', 'rejects-a-database-with-a-newer-schema-version'),
+			[
+				{
+					name: 'constructor rejects user_version 2',
+					input: { userVersion: 2 },
+					error: unsupported.error
+				},
+				{ name: 'open rejects user_version 2', input: { userVersion: 2 }, error: unsupported.error }
+			]
+		);
 	}));

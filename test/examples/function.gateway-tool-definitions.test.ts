@@ -35,13 +35,9 @@ test('Flattens namespaces and rejects unsupported tools', () => {
 	const unsupportedError = captureError(unsupported);
 
 	expect(directOutput).toEqual(direct);
-	expect(nestedOutput).toEqual([
-		{ type: 'custom', name: 'get_forecast', namespace: 'outer' }
-	]);
+	expect(nestedOutput).toEqual([{ type: 'custom', name: 'get_forecast', namespace: 'outer' }]);
 	expect(invalidError).toBe('Invalid namespace tools');
-	expect(unsupportedError).toBe(
-		'Unsupported hosted tool; disable it explicitly for this provider'
-	);
+	expect(unsupportedError).toBe('Unsupported hosted tool; disable it explicitly for this provider');
 	recordExampleCases(
 		{
 			unitId: 'function.gateway-tool-definitions',

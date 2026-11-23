@@ -4,8 +4,7 @@ import { recordExampleCases } from '../../../../test/support/recordExampleCases'
 import type { GameDesktopBridge } from '../../src/models/game-authoring/GameDesktopBridge.types';
 
 const bridgeFixture: GameDesktopBridge = {
-	gameImageRead: async ({ projectId, path, commit }) =>
-		`${projectId}:${path}:${commit ?? 'head'}`
+	gameImageRead: async ({ projectId, path, commit }) => `${projectId}:${path}:${commit ?? 'head'}`
 };
 
 test('accepts a bridge implementation with an image reader', async () => {

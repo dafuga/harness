@@ -77,7 +77,13 @@ test('Throws Error when the directory cannot be enumerated', () => {
 				evidence: 'examples-cases',
 				file: 'throws-error-when-the-directory-cannot-be-enumerated.json'
 			},
-			[{ name: 'a regular file cannot be enumerated as a directory', input: { directory: 'not-a-directory' }, error: message }]
+			[
+				{
+					name: 'a regular file cannot be enumerated as a directory',
+					input: { directory: 'not-a-directory' },
+					error: message
+				}
+			]
 		);
 	} finally {
 		rmSync(root, { recursive: true, force: true });

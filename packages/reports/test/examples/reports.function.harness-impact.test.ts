@@ -39,7 +39,12 @@ function registry(
 	units: Unit[],
 	scenarios: Array<{ id: string; units: string[] }> = []
 ): Revision['registry'] {
-	return { available: true, units, scenarios, graph: { edges: [] } } as unknown as Revision['registry'];
+	return {
+		available: true,
+		units,
+		scenarios,
+		graph: { edges: [] }
+	} as unknown as Revision['registry'];
 }
 
 function revision(commit: string, fields: Partial<Revision> = {}): Revision {
@@ -105,10 +110,17 @@ test('Recorded comparison applies only to the base it names', () => {
 		scenarios: ['s1', 's2']
 	});
 	expect(other.source).toBe('computed');
-	recordExampleCases(meta('harnessImpact', 'Recorded comparison applies only to the base it names'), [
-		{ name: 'base is the one the record compared', input: { base: 'base-a', head: 'head-b' }, output: matched },
-		{ name: 'base is another revision', input: { base: 'base-x', head: 'head-b' }, output: other }
-	]);
+	recordExampleCases(
+		meta('harnessImpact', 'Recorded comparison applies only to the base it names'),
+		[
+			{
+				name: 'base is the one the record compared',
+				input: { base: 'base-a', head: 'head-b' },
+				output: matched
+			},
+			{ name: 'base is another revision', input: { base: 'base-x', head: 'head-b' }, output: other }
+		]
+	);
 });
 
 test('Source impact sorts added units out of direct', () => {
@@ -133,22 +145,39 @@ test('Source impact sorts added units out of direct', () => {
 	expect(matched.marks).toEqual({ u1: 'direct', u2: 'added', u3: 'direct', u4: 'indirect' });
 	expect(other.source).toBe('computed');
 	recordExampleCases(meta('harnessImpact', 'Source impact sorts added units out of direct'), [
-		{ name: 'source impact names this base', input: { base: 'base-a', head: 'head-b' }, output: matched },
-		{ name: 'source impact names another base', input: { base: 'base-q', head: 'head-b' }, output: other }
+		{
+			name: 'source impact names this base',
+			input: { base: 'base-a', head: 'head-b' },
+			output: matched
+		},
+		{
+			name: 'source impact names another base',
+			input: { base: 'base-q', head: 'head-b' },
+			output: other
+		}
 	]);
 });
 
 test('Computed impact compares active registries', () => {
 	const base = revision('base-a', {
 		registry: registry(
-			[unit('a', '1'), unit('b', '1'), unit('c', '1', ['a']), unit('old', '1'), unit('gone', '1', [], 'retired')],
+			[
+				unit('a', '1'),
+				unit('b', '1'),
+				unit('c', '1', ['a']),
+				unit('old', '1'),
+				unit('gone', '1', [], 'retired')
+			],
 			[{ id: 's-old', units: ['old'] }]
 		)
 	});
 	const head = revision('head-b', {
 		registry: registry(
 			[unit('a', '2'), unit('b', '1'), unit('c', '1', ['a']), unit('d', '1', ['c'])],
-			[{ id: 's-c', units: ['c'] }, { id: 's-b', units: ['b'] }]
+			[
+				{ id: 's-c', units: ['c'] },
+				{ id: 's-b', units: ['b'] }
+			]
 		)
 	});
 	const changed = summary(harnessImpact(base, head));
@@ -165,13 +194,23 @@ test('Computed impact compares active registries', () => {
 	expect(changed.marks).toEqual({ a: 'direct', c: 'indirect', d: 'added', old: 'removed' });
 	expect(fromNothing.added).toEqual(['a', 'b', 'c', 'd']);
 	recordExampleCases(meta('harnessImpact', 'Computed impact compares active registries'), [
-		{ name: 'base and head registries differ', input: { base: 'base-a', head: 'head-b' }, output: changed },
-		{ name: 'no base selected lists every active unit as added', input: { base: null, head: 'head-b' }, output: fromNothing }
+		{
+			name: 'base and head registries differ',
+			input: { base: 'base-a', head: 'head-b' },
+			output: changed
+		},
+		{
+			name: 'no base selected lists every active unit as added',
+			input: { base: null, head: 'head-b' },
+			output: fromNothing
+		}
 	]);
 });
 
 test('Compared sides replace source impact only for the same commits', () => {
-	const head = revision('head-b', { sourceImpact: sourceOf('base-a', { direct: ['from-source'] }) });
+	const head = revision('head-b', {
+		sourceImpact: sourceOf('base-a', { direct: ['from-source'] })
+	});
 	const compared: ComparedSides = {
 		base: 'base-a',
 		head: 'head-b',
@@ -182,10 +221,21 @@ test('Compared sides replace source impact only for the same commits', () => {
 	const kept = summary(harnessImpact(revision('base-a'), head, other));
 	expect(replaced.direct).toEqual(['from-compared']);
 	expect(kept.direct).toEqual(['from-source']);
-	recordExampleCases(meta('harnessImpact', 'Compared sides replace source impact only for the same commits'), [
-		{ name: 'precomputed sides name the same commits', input: { compared: 'base-a..head-b' }, output: replaced },
-		{ name: 'precomputed sides name another head', input: { compared: 'base-a..head-z' }, output: kept }
-	]);
+	recordExampleCases(
+		meta('harnessImpact', 'Compared sides replace source impact only for the same commits'),
+		[
+			{
+				name: 'precomputed sides name the same commits',
+				input: { compared: 'base-a..head-b' },
+				output: replaced
+			},
+			{
+				name: 'precomputed sides name another head',
+				input: { compared: 'base-a..head-z' },
+				output: kept
+			}
+		]
+	);
 });
 
 test('comparedSides returns undefined when a side is absent', async () => {
@@ -207,10 +257,21 @@ test('comparedSides returns undefined when a side is absent', async () => {
 	expect(absentBase).toBeUndefined();
 	expect(absentHead).toBeUndefined();
 	expect(loads).toEqual([]);
-	recordExampleCases(meta('comparedSides', 'comparedSides returns undefined when a side is absent'), [
-		{ name: 'base has no stored side', input: { base: 'base-a', head: 'head-b' }, output: { returned: absentBase ?? null, loads: loads.length } },
-		{ name: 'head has no stored side', input: { base: 'base-a', head: 'head-b' }, output: { returned: absentHead ?? null, loads: loads.length } }
-	]);
+	recordExampleCases(
+		meta('comparedSides', 'comparedSides returns undefined when a side is absent'),
+		[
+			{
+				name: 'base has no stored side',
+				input: { base: 'base-a', head: 'head-b' },
+				output: { returned: absentBase ?? null, loads: loads.length }
+			},
+			{
+				name: 'head has no stored side',
+				input: { base: 'base-a', head: 'head-b' },
+				output: { returned: absentHead ?? null, loads: loads.length }
+			}
+		]
+	);
 });
 
 test('comparedSides rejects when a stored side fails to load', async () => {
@@ -223,7 +284,14 @@ test('comparedSides rejects when a stored side fails to load', async () => {
 	const head = revision('head-b', { side: 'side-head' });
 	const message = 'side-base could not be loaded (404)';
 	await expect(comparedSides(failing, base, head)).rejects.toThrow(message);
-	recordExampleCases(meta('comparedSides', 'comparedSides rejects when a stored side fails to load'), [
-		{ name: 'base side response is not ok', input: { base: 'side-base', head: 'side-head' }, error: message }
-	]);
+	recordExampleCases(
+		meta('comparedSides', 'comparedSides rejects when a stored side fails to load'),
+		[
+			{
+				name: 'base side response is not ok',
+				input: { base: 'side-base', head: 'side-head' },
+				error: message
+			}
+		]
+	);
 });

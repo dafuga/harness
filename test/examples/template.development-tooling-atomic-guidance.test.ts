@@ -22,7 +22,9 @@ test('Returns atomic UI composition guidance', () => {
 				output: {
 					heading: output.split('\n')[0],
 					composition: output.split('\n').find((line) => line.startsWith('- Build Svelte UI')),
-					nativeAtoms: output.split('\n').find((line) => line.startsWith('- Native elements belong')),
+					nativeAtoms: output
+						.split('\n')
+						.find((line) => line.startsWith('- Native elements belong')),
 					verification: output.split('\n').find((line) => line.startsWith('- Run `harness audit`'))
 				}
 			}

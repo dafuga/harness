@@ -32,7 +32,9 @@ test('builds ordered hosted evidence and artifact URLs', () => {
 		'/api/projects/reports-web/evidence?entityId=reports.component.evidence-grid&commit=0123456789abcdef0123456789abcdef01234567&branch=main&mode=current'
 	);
 	expect(artifact).toContain('&side=after&recordId=');
-	expect(artifact).toContain('&notesRevision=abcdef0123456789abcdef0123456789abcdef01&evidenceRevision=fedcba9876543210fedcba9876543210fedcba98');
+	expect(artifact).toContain(
+		'&notesRevision=abcdef0123456789abcdef0123456789abcdef01&evidenceRevision=fedcba9876543210fedcba9876543210fedcba98'
+	);
 	recordExampleCases(
 		{
 			unitId: 'desktop.function.hosted-evidence-path',
@@ -42,8 +44,16 @@ test('builds ordered hosted evidence and artifact URLs', () => {
 			file: 'builds-ordered-hosted-evidence-and-artifact-urls.json'
 		},
 		[
-			{ name: 'evidence metadata URL', input: { ...entityInput, operation: 'evidence' }, output: evidence },
-			{ name: 'artifact URL with capture bindings', input: { ...artifactInput, operation: 'artifact' }, output: artifact }
+			{
+				name: 'evidence metadata URL',
+				input: { ...entityInput, operation: 'evidence' },
+				output: evidence
+			},
+			{
+				name: 'artifact URL with capture bindings',
+				input: { ...artifactInput, operation: 'artifact' },
+				output: artifact
+			}
 		]
 	);
 });

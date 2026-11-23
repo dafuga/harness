@@ -77,7 +77,13 @@ test('loads manifests, ledger events, and baselines', async () => {
 			baselineUnits: [unitId, 'function.rank']
 		});
 		recordExampleCases(
-			{ unitId, symbol: 'loadBudgets', state: 'loads-manifests-ledger-events-and-baselines', evidence, file: 'loads-manifests-ledger-events-and-baselines.json' },
+			{
+				unitId,
+				symbol: 'loadBudgets',
+				state: 'loads-manifests-ledger-events-and-baselines',
+				evidence,
+				file: 'loads-manifests-ledger-events-and-baselines.json'
+			},
 			[{ name: 'one active manifest and two reviewed ledger events', input: { root }, output }]
 		);
 	});
@@ -99,8 +105,20 @@ test('measures one active unit from source files', async () => {
 		expect(rows.every((row) => row.unit === unitId)).toBe(true);
 		expect(rows.find((row) => row.metric === 'source-bytes')?.value).toBeGreaterThan(0);
 		recordExampleCases(
-			{ unitId, symbol: 'budgetMeasure', state: 'measures-one-active-unit-from-source-files', evidence, file: 'measures-one-active-unit-from-source-files.json' },
-			[{ name: 'filter to the active workflow in a temporary source tree', input: { unit: unitId, root }, output }]
+			{
+				unitId,
+				symbol: 'budgetMeasure',
+				state: 'measures-one-active-unit-from-source-files',
+				evidence,
+				file: 'measures-one-active-unit-from-source-files.json'
+			},
+			[
+				{
+					name: 'filter to the active workflow in a temporary source tree',
+					input: { unit: unitId, root },
+					output
+				}
+			]
 		);
 	});
 });
@@ -116,10 +134,24 @@ test('filters ledger history by exact unit id', async () => {
 		expect(filtered.map(({ unit }) => unit)).toEqual([unitId]);
 		expect(all.map(({ unit }) => unit)).toEqual([unitId, 'function.rank']);
 		recordExampleCases(
-			{ unitId, symbol: 'budgetHistory', state: 'filters-ledger-history-by-exact-unit-id', evidence, file: 'filters-ledger-history-by-exact-unit-id.json' },
+			{
+				unitId,
+				symbol: 'budgetHistory',
+				state: 'filters-ledger-history-by-exact-unit-id',
+				evidence,
+				file: 'filters-ledger-history-by-exact-unit-id.json'
+			},
 			[
-				{ name: 'history restricted to the workflow unit', input: { unit: unitId, root }, output: filtered.map(({ type, unit }) => ({ type, unit })) },
-				{ name: 'history without a unit filter', input: { root }, output: all.map(({ type, unit }) => ({ type, unit })) }
+				{
+					name: 'history restricted to the workflow unit',
+					input: { unit: unitId, root },
+					output: filtered.map(({ type, unit }) => ({ type, unit }))
+				},
+				{
+					name: 'history without a unit filter',
+					input: { root },
+					output: all.map(({ type, unit }) => ({ type, unit }))
+				}
 			]
 		);
 	});
@@ -131,7 +163,13 @@ test('reports baseline and measurement status', async () => {
 		const status = await budgetStatus(root);
 		expect(status).toEqual({ baselined: 1, inherited: [], unbaselined: [], unmeasured: [] });
 		recordExampleCases(
-			{ unitId, symbol: 'budgetStatus', state: 'reports-baseline-and-measurement-status', evidence, file: 'reports-baseline-and-measurement-status.json' },
+			{
+				unitId,
+				symbol: 'budgetStatus',
+				state: 'reports-baseline-and-measurement-status',
+				evidence,
+				file: 'reports-baseline-and-measurement-status.json'
+			},
 			[{ name: 'one active unit with a reviewed baseline', input: { root }, output: status }]
 		);
 	});
@@ -161,19 +199,31 @@ test('benchmarks a module workload and records a capture', async () => {
 			workload: result.workload,
 			target: result.target,
 			responseDigest: result.responseDigest,
-			measurements: result.measurements.map(({ metric, value, unitOfMeasure, target, samples }) => ({
-				metric,
-				value,
-				unitOfMeasure,
-				target,
-				samples
-			}))
+			measurements: result.measurements.map(
+				({ metric, value, unitOfMeasure, target, samples }) => ({
+					metric,
+					value,
+					unitOfMeasure,
+					target,
+					samples
+				})
+			)
 		};
-		expect(result).toMatchObject({ unit: unitId, workload: 'workflow.run-budget.smoke', target: 'module' });
+		expect(result).toMatchObject({
+			unit: unitId,
+			workload: 'workflow.run-budget.smoke',
+			target: 'module'
+		});
 		expect(result.responseDigest).toMatch(/^[a-f0-9]{64}$/);
 		expect(result.measurements.length).toBeGreaterThan(0);
 		recordExampleCases(
-			{ unitId, symbol: 'budgetBench', state: 'benchmarks-a-module-workload-and-records-a-capture', evidence, file: 'benchmarks-a-module-workload-and-records-a-capture.json' },
+			{
+				unitId,
+				symbol: 'budgetBench',
+				state: 'benchmarks-a-module-workload-and-records-a-capture',
+				evidence,
+				file: 'benchmarks-a-module-workload-and-records-a-capture.json'
+			},
 			[{ name: 'one round through the declared module handler', input: { ...input, root }, output }]
 		);
 	});
@@ -185,12 +235,26 @@ test('throws ExpectedCliError for invalid requests and ledger data', async () =>
 		writeFileSync(join(root, 'specification/budgets/ledger.ndjson'), '{bad json}\n');
 		const ledgerError = await thrownMessage(() => loadBudgets(root));
 		writeJson(root, 'specification/workloads/invalid.json', {});
-		const requestError = await thrownMessage(() => budgetBench({ unit: unitId, workload: 'specification/workloads/invalid.json' }, root));
+		const requestError = await thrownMessage(() =>
+			budgetBench({ unit: unitId, workload: 'specification/workloads/invalid.json' }, root)
+		);
 		expect(ledgerError).toContain('budget ledger line 1 is malformed');
 		expect(requestError).toContain('is not a workload');
 		recordExampleCases(
-			{ unitId, symbol: 'loadBudgets/budgetBench', state: 'throws-expectedclierror-for-invalid-requests-and-ledger-data', evidence, file: 'throws-expectedclierror-for-invalid-requests-and-ledger-data.json' },
-			[{ name: 'malformed ledger and invalid workload inputs', input: { root }, output: { ledgerError, requestError } }]
+			{
+				unitId,
+				symbol: 'loadBudgets/budgetBench',
+				state: 'throws-expectedclierror-for-invalid-requests-and-ledger-data',
+				evidence,
+				file: 'throws-expectedclierror-for-invalid-requests-and-ledger-data.json'
+			},
+			[
+				{
+					name: 'malformed ledger and invalid workload inputs',
+					input: { root },
+					output: { ledgerError, requestError }
+				}
+			]
 		);
 	});
 });

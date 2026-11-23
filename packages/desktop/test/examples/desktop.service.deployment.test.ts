@@ -77,7 +77,10 @@ test('Refuses automatic production deployment', async () => {
 					environment: 'prod',
 					commit: '9fceb02e63b57330f44d8a4bdc16c55b255d6bce'
 				},
-				error: { name: 'DeploymentPreconditionError', message: 'Production requires the Deploy UI.' }
+				error: {
+					name: 'DeploymentPreconditionError',
+					message: 'Production requires the Deploy UI.'
+				}
 			}
 		]
 	);

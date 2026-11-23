@@ -1,11 +1,15 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { serviceContract, modelContract } from '../../src/components/explorer-ui/entity-contract/serviceMethods';
+import {
+	serviceContract,
+	modelContract
+} from '../../src/components/explorer-ui/entity-contract/serviceMethods';
 
 type Unit = Parameters<typeof serviceContract>[0];
 type Result = ReturnType<typeof serviceContract>;
-type Fields = Pick<Unit, 'owns' | 'contract'> & Partial<Pick<Unit, 'serviceClasses' | 'modelDefinitions'>>;
+type Fields = Pick<Unit, 'owns' | 'contract'> &
+	Partial<Pick<Unit, 'serviceClasses' | 'modelDefinitions'>>;
 type Call = { symbol: string; input: unknown; run: () => unknown };
 
 const ID = 'reports.component.explorer-ui-entity-contract-service-methods';
@@ -92,9 +96,21 @@ const modelUnit = unitOf('reports.model.report-record', 'ReportRecord', MODEL_SO
 				{ name: 'title', type: 'string', optional: false }
 			],
 			methods: [
-				{ name: 'constructor', inputs: [{ name: 'input', type: 'ReportRecordInput' }], output: 'ReportRecord' },
-				{ name: 'create', inputs: [{ name: 'input', type: 'ReportRecordInput' }], output: 'Promise<ReportRecord>' },
-				{ name: 'find', inputs: [{ name: 'id', type: 'string' }], output: 'Promise<ReportRecord | null>' },
+				{
+					name: 'constructor',
+					inputs: [{ name: 'input', type: 'ReportRecordInput' }],
+					output: 'ReportRecord'
+				},
+				{
+					name: 'create',
+					inputs: [{ name: 'input', type: 'ReportRecordInput' }],
+					output: 'Promise<ReportRecord>'
+				},
+				{
+					name: 'find',
+					inputs: [{ name: 'id', type: 'string' }],
+					output: 'Promise<ReportRecord | null>'
+				},
 				{ name: 'delete', inputs: [{ name: 'id', type: 'string' }], output: 'Promise<boolean>' }
 			]
 		}
@@ -124,8 +140,15 @@ function thrownBy(run: () => unknown): unknown {
 	}
 }
 
-function record(state: string, symbol: string, cases: Parameters<typeof recordExampleCases>[1]): void {
-	recordExampleCases({ unitId: ID, symbol, state, evidence: 'examples-cases', file: `${state}.json` }, cases);
+function record(
+	state: string,
+	symbol: string,
+	cases: Parameters<typeof recordExampleCases>[1]
+): void {
+	recordExampleCases(
+		{ unitId: ID, symbol, state, evidence: 'examples-cases', file: `${state}.json` },
+		cases
+	);
 }
 
 /** Runs each call expected to throw and records every thrown error as cases of one state. */
@@ -165,10 +188,18 @@ test('Projects a recorded service class into CRUD-first methods', () => {
 	const result = serviceContract(storeUnit);
 
 	expect(result.methods.map((method) => method.name)).toEqual(['create', 'read']);
-	expect(result.methods[0]?.signature).toBe('create(record: ReportRecordInput): Promise<ReportRecord>');
-	expect(result.facts).toEqual([{ label: 'Errors not tied to a method', value: 'ReportStore.close' }]);
+	expect(result.methods[0]?.signature).toBe(
+		'create(record: ReportRecordInput): Promise<ReportRecord>'
+	);
+	expect(result.facts).toEqual([
+		{ label: 'Errors not tied to a method', value: 'ReportStore.close' }
+	]);
 	record('projects-a-recorded-service-class-into-crud-first-methods', 'serviceContract', [
-		{ name: 'recorded ReportStore class with create and read methods', input: storeUnit, output: summary(result) }
+		{
+			name: 'recorded ReportStore class with create and read methods',
+			input: storeUnit,
+			output: summary(result)
+		}
 	]);
 });
 
@@ -185,7 +216,11 @@ test('Projects model declarations with authored parameter metadata', () => {
 	]);
 	expect(outputs?.none).toBe('Creates the model.');
 	record('projects-model-declarations-with-authored-parameter-metadata', 'modelContract', [
-		{ name: 'ReportRecord model with create, find, delete and constructor', input: modelUnit, output: summary(result) }
+		{
+			name: 'ReportRecord model with create, find, delete and constructor',
+			input: modelUnit,
+			output: summary(result)
+		}
 	]);
 });
 
@@ -200,8 +235,16 @@ test('Reports an empty contract when no method is discovered', () => {
 
 test('Throws TypeError when an example is a BigInt or cyclic', () => {
 	const errors = recordThrows('throws-typeerror-when-an-example-is-a-bigint-or-cyclic', [
-		{ symbol: 'serviceContract', input: { parameter: STORE_PARAM, example: 'BigInt 10' }, run: () => serviceContract(withExample(storeUnit, STORE_PARAM, BigInt(10))) },
-		{ symbol: 'modelContract', input: { parameter: MODEL_PARAM, example: 'self-referencing object' }, run: () => modelContract(withExample(modelUnit, MODEL_PARAM, cyclic)) }
+		{
+			symbol: 'serviceContract',
+			input: { parameter: STORE_PARAM, example: 'BigInt 10' },
+			run: () => serviceContract(withExample(storeUnit, STORE_PARAM, BigInt(10)))
+		},
+		{
+			symbol: 'modelContract',
+			input: { parameter: MODEL_PARAM, example: 'self-referencing object' },
+			run: () => modelContract(withExample(modelUnit, MODEL_PARAM, cyclic))
+		}
 	]);
 
 	expect(errors[0]).toBeInstanceOf(TypeError);
@@ -211,8 +254,16 @@ test('Throws TypeError when an example is a BigInt or cyclic', () => {
 test('Throws RangeError when an example is nested too deeply', () => {
 	const example = 'object nested 100000 levels deep';
 	const errors = recordThrows('throws-rangeerror-when-an-example-is-nested-too-deeply', [
-		{ symbol: 'serviceContract', input: { parameter: STORE_PARAM, example }, run: () => serviceContract(withExample(storeUnit, STORE_PARAM, deep(100000))) },
-		{ symbol: 'modelContract', input: { parameter: MODEL_PARAM, example }, run: () => modelContract(withExample(modelUnit, MODEL_PARAM, deep(100000))) }
+		{
+			symbol: 'serviceContract',
+			input: { parameter: STORE_PARAM, example },
+			run: () => serviceContract(withExample(storeUnit, STORE_PARAM, deep(100000)))
+		},
+		{
+			symbol: 'modelContract',
+			input: { parameter: MODEL_PARAM, example },
+			run: () => modelContract(withExample(modelUnit, MODEL_PARAM, deep(100000)))
+		}
 	]);
 
 	expect(errors[0]).toBeInstanceOf(RangeError);
@@ -222,8 +273,16 @@ test('Throws RangeError when an example is nested too deeply', () => {
 test('Throws the example callback error when a getter throws', () => {
 	const example = 'object whose getter throws';
 	const errors = recordThrows('throws-the-example-callback-error-when-a-getter-throws', [
-		{ symbol: 'serviceContract', input: { parameter: STORE_PARAM, example }, run: () => serviceContract(withExample(storeUnit, STORE_PARAM, throwingGetter)) },
-		{ symbol: 'modelContract', input: { parameter: MODEL_PARAM, example }, run: () => modelContract(withExample(modelUnit, MODEL_PARAM, throwingGetter)) }
+		{
+			symbol: 'serviceContract',
+			input: { parameter: STORE_PARAM, example },
+			run: () => serviceContract(withExample(storeUnit, STORE_PARAM, throwingGetter))
+		},
+		{
+			symbol: 'modelContract',
+			input: { parameter: MODEL_PARAM, example },
+			run: () => modelContract(withExample(modelUnit, MODEL_PARAM, throwingGetter))
+		}
 	]);
 
 	expect(String(errors[0])).toBe('Error: getter failed');

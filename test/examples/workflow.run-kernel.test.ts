@@ -45,7 +45,14 @@ function calibrationFixture(profile: string, commit: string) {
 		source: { commit, dirty: false },
 		provenance: { kind: 'calibration', verified: false, note: 'Example calibration run' },
 		workloads: [
-			{ id: 'graph-1k', nodes: 1000, edges: 1600, changed: 24, requestBytes: 1024, responseBytes: 256 }
+			{
+				id: 'graph-1k',
+				nodes: 1000,
+				edges: 1600,
+				changed: 24,
+				requestBytes: 1024,
+				responseBytes: 256
+			}
 		],
 		measurements: [
 			{ ...measurement, value: 3.2, target: 'module' },
@@ -114,7 +121,9 @@ test('Selects and renders a measured kernel default', async () => {
 		const rendered = renderDefault(report);
 		expect(report.runtime).toBe('module');
 		expect(report.basis).toBe('measured');
-		expect(rendered).toContain('Default runtime: module (measured; calibration from a clean tree, not verified).');
+		expect(rendered).toContain(
+			'Default runtime: module (measured; calibration from a clean tree, not verified).'
+		);
 		recordExampleCases(
 			{
 				unitId: 'workflow.run-kernel',
@@ -136,7 +145,11 @@ test('Selects and renders a measured kernel default', async () => {
 
 test('Accepts all declared kernel runtime kinds', () => {
 	const inputs = ['module', 'wasm', 'process', 'http'];
-	const cases = inputs.map((input) => ({ name: `accepts ${input}`, input, output: runtimeKind(input) }));
+	const cases = inputs.map((input) => ({
+		name: `accepts ${input}`,
+		input,
+		output: runtimeKind(input)
+	}));
 	const outputs = cases.map(({ output }) => output);
 	expect(outputs).toEqual(inputs);
 	recordExampleCases(

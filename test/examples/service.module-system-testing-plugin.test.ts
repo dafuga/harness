@@ -20,7 +20,9 @@ async function captureRunError(root: string, id: string): Promise<unknown> {
 
 test('Rejects a testing plugin id that is not installed', async () => {
 	await withTempDir('testing-plugin-not-installed-', async (directory) => {
-		const cases: Array<{ name: string; input: unknown } & ({ output: unknown } | { error: unknown })> = [];
+		const cases: Array<
+			{ name: string; input: unknown } & ({ output: unknown } | { error: unknown })
+		> = [];
 		for (const id of IDS) {
 			const error = await captureRunError(directory, id);
 			expect(error).toBeInstanceOf(TestingPluginServiceError);

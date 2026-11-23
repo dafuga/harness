@@ -49,7 +49,9 @@ function writeProjectTemplate(root: string, name: string, content: string): void
 	writeFileSync(join(dir, `${name}.json`), content);
 }
 
-async function captureError(run: () => Promise<unknown>): Promise<{ name: string; message: string }> {
+async function captureError(
+	run: () => Promise<unknown>
+): Promise<{ name: string; message: string }> {
 	try {
 		await run();
 	} catch (error) {
@@ -118,8 +120,16 @@ test('Resolves a child template by merging parent steps', async () => {
 
 test('Rejects an inheritance cycle between templates', async () => {
 	await withTempDir('loop-templates-cycle-', async (root) => {
-		writeProjectTemplate(root, 'cycle-a', JSON.stringify({ id: 'cycle-a', title: 'A', summary: 'A.', extends: 'cycle-b', steps: [] }));
-		writeProjectTemplate(root, 'cycle-b', JSON.stringify({ id: 'cycle-b', title: 'B', summary: 'B.', extends: 'cycle-a', steps: [] }));
+		writeProjectTemplate(
+			root,
+			'cycle-a',
+			JSON.stringify({ id: 'cycle-a', title: 'A', summary: 'A.', extends: 'cycle-b', steps: [] })
+		);
+		writeProjectTemplate(
+			root,
+			'cycle-b',
+			JSON.stringify({ id: 'cycle-b', title: 'B', summary: 'B.', extends: 'cycle-a', steps: [] })
+		);
 		const error = await captureError(() => resolveLoopTemplate(root, 'cycle-a'));
 		expect(error.message).toContain('inheritance cycle');
 		recordExampleCases(

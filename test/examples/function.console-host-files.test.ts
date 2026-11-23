@@ -2,7 +2,10 @@ import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { consoleHostFiles } from '../../src/cli/program/console-install-service/consoleHostFiles';
-import type { ConsoleHostOptions, HostFile } from '../../src/utils/development-tooling/consoleHostFiles.types';
+import type {
+	ConsoleHostOptions,
+	HostFile
+} from '../../src/utils/development-tooling/consoleHostFiles.types';
 
 const bundledOptions = {
 	base: '/harness',
@@ -58,12 +61,16 @@ test('Generates bundled and private bucket console host routes', () => {
 test('Throws Error when the configured bucket binding is absent', () => {
 	const files = consoleHostFiles(bucketOptions);
 	const server = files[0]?.contents ?? '';
-	const dataSource = server.match(
-		/function data\(event: ConsoleRequest\) \{([\s\S]*?)\n\}\n\n\/\/ What this deployment/
-	)?.[1] ?? '';
+	const dataSource =
+		server.match(
+			/function data\(event: ConsoleRequest\) \{([\s\S]*?)\n\}\n\n\/\/ What this deployment/
+		)?.[1] ?? '';
 	const executable = dataSource
-		.replace("(event.platform as { env?: Record<string, unknown> } | undefined)?.env", 'event.platform?.env')
-		.replace(" as ConsoleBucket | undefined", '');
+		.replace(
+			'(event.platform as { env?: Record<string, unknown> } | undefined)?.env',
+			'event.platform?.env'
+		)
+		.replace(' as ConsoleBucket | undefined', '');
 	const runData = new Function(
 		'event',
 		'consoleStore',
@@ -76,7 +83,9 @@ test('Throws Error when the configured bucket binding is absent', () => {
 		caught = error;
 	}
 	expect(caught).toBeInstanceOf(Error);
-	expect((caught as Error).message).toBe('The CONSOLE_BUCKET binding is missing from this deployment.');
+	expect((caught as Error).message).toBe(
+		'The CONSOLE_BUCKET binding is missing from this deployment.'
+	);
 	recordExampleCases(
 		{
 			unitId: 'function.console-host-files',

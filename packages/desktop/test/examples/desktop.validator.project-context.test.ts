@@ -40,10 +40,26 @@ test('validates project context across operation channels', () => {
 			file: 'validates-project-context-across-operation-channels.json'
 		},
 		[
-			{ name: 'explicit project selection', input: { channel: 'project:select', payload: { projectId } }, output: selected },
-			{ name: 'capability lookup', input: { channel: 'project:capabilities', payload: { projectId } }, output: capabilities },
-			{ name: 'unknown channel ignores payload', input: { channel: 'unlisted:channel', payload: { projectId } }, output: null },
-			{ name: 'project list has no context result', input: { channel: 'project:list', payload: { projectId } }, output: list }
+			{
+				name: 'explicit project selection',
+				input: { channel: 'project:select', payload: { projectId } },
+				output: selected
+			},
+			{
+				name: 'capability lookup',
+				input: { channel: 'project:capabilities', payload: { projectId } },
+				output: capabilities
+			},
+			{
+				name: 'unknown channel ignores payload',
+				input: { channel: 'unlisted:channel', payload: { projectId } },
+				output: null
+			},
+			{
+				name: 'project list has no context result',
+				input: { channel: 'project:list', payload: { projectId } },
+				output: list
+			}
 		]
 	);
 });
@@ -83,7 +99,13 @@ test('requires an explicit project for project selection', () => {
 			evidence: 'examples-cases',
 			file: 'requires-an-explicit-project-for-project-selection.json'
 		},
-		[{ name: 'selection without project id', input: { channel: 'project:select', payload: {} }, error: { name: 'ExplicitProjectRequiredError', message: 'Select an explicit project.' } }]
+		[
+			{
+				name: 'selection without project id',
+				input: { channel: 'project:select', payload: {} },
+				error: { name: 'ExplicitProjectRequiredError', message: 'Select an explicit project.' }
+			}
+		]
 	);
 });
 
@@ -104,6 +126,12 @@ test('Throws Error when project context is not an object', () => {
 			evidence: 'examples-cases',
 			file: 'throws-error-when-project-context-is-not-an-object.json'
 		},
-		[{ name: 'null project context', input: null, error: { name: 'IpcFieldError', message: 'Expected an object.' } }]
+		[
+			{
+				name: 'null project context',
+				input: null,
+				error: { name: 'IpcFieldError', message: 'Expected an object.' }
+			}
+		]
 	);
 });

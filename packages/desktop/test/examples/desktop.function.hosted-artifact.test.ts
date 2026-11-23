@@ -25,7 +25,11 @@ test('returns verified JSON bytes with the normalized declared media type', asyn
 			{
 				name: 'valid empty JSON object with a parameterized media type',
 				input: { bytes: [123, 125], mediaType: input.mediaType, sha256: jsonSha256 },
-				output: { bytes: Array.from(result.bytes), mediaType: result.mediaType, sha256: result.sha256 }
+				output: {
+					bytes: Array.from(result.bytes),
+					mediaType: result.mediaType,
+					sha256: result.sha256
+				}
 			}
 		]
 	);

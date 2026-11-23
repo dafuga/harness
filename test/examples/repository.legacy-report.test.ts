@@ -9,7 +9,10 @@ import { expect } from '../verificationExpect';
 test('Reads valid manifests in sorted run order', async () => {
 	await withTempDir('legacy-report-runs-', async (directory) => {
 		const runs = join(directory, 'runs');
-		for (const [id, manifest] of [['run-002', '{"name":"second"}'], ['run-001', 'null']]) {
+		for (const [id, manifest] of [
+			['run-002', '{"name":"second"}'],
+			['run-001', 'null']
+		]) {
 			const run = join(runs, id);
 			mkdirSync(run, { recursive: true });
 			writeFileSync(join(run, 'manifest.json'), manifest);

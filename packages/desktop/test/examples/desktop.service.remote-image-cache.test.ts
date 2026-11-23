@@ -117,7 +117,8 @@ test('Rejects mismatched and incomplete hosted cache identities', async () => {
 	const directory = mkdtempSync(join(tmpdir(), 'remote-image-cache-invalid-'));
 	try {
 		const service = new RemoteImageCacheService(new ProjectionCacheService(directory));
-		const { validContext, incompleteIdentity, mismatch, incomplete } = await identityFailures(service);
+		const { validContext, incompleteIdentity, mismatch, incomplete } =
+			await identityFailures(service);
 		const output = { mismatch, incomplete };
 		expect(output).toEqual({
 			mismatch: {

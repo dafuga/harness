@@ -6,12 +6,15 @@ import { pagePrelude } from '../../scripts/ios-acceptance-prelude';
 test('provides page helpers for native acceptance expressions', () => {
 	const helpers = ['text', 'panel', 'footer', 'field', 'fill', 'named', 'press', 'pressLink'];
 	const output = {
-		includes: helpers.map((helper) => ({ helper, present: pagePrelude.includes(`const ${helper} =`) })),
+		includes: helpers.map((helper) => ({
+			helper,
+			present: pagePrelude.includes(`const ${helper} =`)
+		})),
 		length: pagePrelude.length
 	};
 
 	expect(output.includes.every(({ present }) => present)).toBe(true);
-	expect(pagePrelude).toContain("text('[aria-label=\"Computer connection\"]')");
+	expect(pagePrelude).toContain('text(\'[aria-label="Computer connection"]\')');
 
 	recordExampleCases(
 		{

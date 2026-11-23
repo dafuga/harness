@@ -30,12 +30,17 @@ function enablePreview(): void {
 test('Preview initializes with a snapshot and calls tools', async () => {
 	enablePreview();
 	const requests: unknown[] = [];
-	Object.defineProperty(globalThis, 'fetch', { configurable: true, value: async (_input: URL | RequestInfo, init?: RequestInit) => {
-		requests.push(JSON.parse(String(init?.body)));
-		return { ok: true, json: async () => snapshot } as Response;
-	} });
+	Object.defineProperty(globalThis, 'fetch', {
+		configurable: true,
+		value: async (_input: URL | RequestInfo, init?: RequestInit) => {
+			requests.push(JSON.parse(String(init?.body)));
+			return { ok: true, json: async () => snapshot } as Response;
+		}
+	});
 	let received: unknown;
-	const client: PickerClient = await providerPickerClient((data) => { received = data; });
+	const client: PickerClient = await providerPickerClient((data) => {
+		received = data;
+	});
 	const result = await client.call('list_models', { provider: 'openai' });
 	await client.close();
 	const output = { preview: client.preview, received, result, requests };
@@ -56,7 +61,13 @@ test('Preview initializes with a snapshot and calls tools', async () => {
 			evidence: 'examples-cases',
 			file: 'preview-initializes-with-a-snapshot-and-calls-tools.json'
 		},
-		[{ name: 'preview loads then calls a provider tool', input: { name: 'list_models', arguments: { provider: 'openai' } }, output: { preview: true, received: snapshot, result: snapshot } }]
+		[
+			{
+				name: 'preview loads then calls a provider tool',
+				input: { name: 'list_models', arguments: { provider: 'openai' } },
+				output: { preview: true, received: snapshot, result: snapshot }
+			}
+		]
 	);
 });
 
@@ -81,6 +92,12 @@ test('Preview rejects non-OK tool responses', async () => {
 			evidence: 'examples-cases',
 			file: 'preview-rejects-non-ok-tool-responses.json'
 		},
-		[{ name: 'preview endpoint rejects initialization', input: { name: 'open_model_picker' }, error: 'Preview request rejected.' }]
+		[
+			{
+				name: 'preview endpoint rejects initialization',
+				input: { name: 'open_model_picker' },
+				error: 'Preview request rejected.'
+			}
+		]
 	);
 });

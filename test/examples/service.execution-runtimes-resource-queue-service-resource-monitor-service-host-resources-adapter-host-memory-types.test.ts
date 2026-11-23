@@ -10,7 +10,8 @@ test('Identifies invalid host memory reads', () => {
 	expect(error.message).toBe('Host memory counters are invalid');
 	recordExampleCases(
 		{
-			unitId: 'service.execution-runtimes-resource-queue-service-resource-monitor-service-host-resources-adapter-host-memory-types',
+			unitId:
+				'service.execution-runtimes-resource-queue-service-resource-monitor-service-host-resources-adapter-host-memory-types',
 			symbol: 'HostMemoryReadError',
 			state: 'identifies-invalid-host-memory-reads',
 			evidence: 'examples-cases',

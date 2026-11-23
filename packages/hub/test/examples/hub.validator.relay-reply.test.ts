@@ -117,9 +117,7 @@ test('Rebuilds a host summary and drops unnamed fields', () => {
 	expect(output).toEqual(summaryExpected);
 	const emptyOutput = validator.summary(emptySummaryReply, hostB);
 	expect(emptyOutput.devices).toEqual([]);
-	const rejected = failureOf(() =>
-		validator.summary({ ...summaryReply, devices: 'none' }, hostA)
-	);
+	const rejected = failureOf(() => validator.summary({ ...summaryReply, devices: 'none' }, hostA));
 	expect(rejected.code).toBe('unavailable');
 
 	recordExampleCases(

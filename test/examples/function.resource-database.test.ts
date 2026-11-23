@@ -40,7 +40,13 @@ test('Creates the queue schema in a new home folder', () =>
 				evidence: 'examples-cases',
 				file: 'creates-the-queue-schema-in-a-new-home-folder.json'
 			},
-			[{ name: 'new home folder gets schema version one', input: { home: 'queue-home' }, output: summary }]
+			[
+				{
+					name: 'new home folder gets schema version one',
+					input: { home: 'queue-home' },
+					output: summary
+				}
+			]
 		);
 	}));
 
@@ -62,7 +68,13 @@ test('Reopens an existing queue without losing jobs', () =>
 				evidence: 'examples-cases',
 				file: 'reopens-an-existing-queue-without-losing-jobs.json'
 			},
-			[{ name: 'job written before close is read after reopen', input: { id: 'job-a' }, output: jobs }]
+			[
+				{
+					name: 'job written before close is read after reopen',
+					input: { id: 'job-a' },
+					output: jobs
+				}
+			]
 		);
 	}));
 
@@ -82,6 +94,12 @@ test('Rejects a queue schema version it does not support', () =>
 				evidence: 'examples-cases',
 				file: 'rejects-a-queue-schema-version-it-does-not-support.json'
 			},
-			[{ name: 'database with user_version 2 is refused', input: { home: 'queue-home', userVersion: 2 }, error: message }]
+			[
+				{
+					name: 'database with user_version 2 is refused',
+					input: { home: 'queue-home', userVersion: 2 },
+					error: message
+				}
+			]
 		);
 	}));

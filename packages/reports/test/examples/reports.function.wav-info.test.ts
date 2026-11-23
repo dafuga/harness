@@ -100,19 +100,30 @@ test('Rejects malformed or unsupported WAV bytes', () => {
 	badSize.writeUInt32LE(valid.length - 7, 4);
 	const truncated = Buffer.from(valid);
 	truncated.writeUInt32LE(20000, 40);
-	const floatSixteenBit = buildWav({ encoding: 3, channels: 1, sampleRate: 8000, bits: 16 }, Buffer.alloc(16000));
+	const floatSixteenBit = buildWav(
+		{ encoding: 3, channels: 1, sampleRate: 8000, bits: 16 },
+		Buffer.alloc(16000)
+	);
 	const oddData = buildWav(pcm16Mono, Buffer.alloc(3));
 
 	const inputs = [
 		{ name: 'fewer than 44 bytes', bytes: tooShort, summary: { fileBytes: tooShort.length } },
 		{ name: 'RIFF size field off by one', bytes: badSize, summary: { fileBytes: badSize.length } },
-		{ name: 'data chunk longer than container', bytes: truncated, summary: { fileBytes: truncated.length } },
+		{
+			name: 'data chunk longer than container',
+			bytes: truncated,
+			summary: { fileBytes: truncated.length }
+		},
 		{
 			name: 'IEEE float with 16-bit samples',
 			bytes: floatSixteenBit,
 			summary: { fileBytes: floatSixteenBit.length }
 		},
-		{ name: 'data length not a multiple of block align', bytes: oddData, summary: { fileBytes: oddData.length } }
+		{
+			name: 'data length not a multiple of block align',
+			bytes: oddData,
+			summary: { fileBytes: oddData.length }
+		}
 	];
 	const cases = inputs.map(({ name, bytes, summary }) => ({
 		name,

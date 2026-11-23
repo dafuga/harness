@@ -11,7 +11,11 @@ function describeFiles(files: Array<{ path: string; contents: string }>) {
 		path,
 		lines: contents
 			.split('\n')
-			.filter((line) => /@harness-tier|@harness-element|interface SvelteHTMLElements|interface HTMLElementTagNameMap|'hx-a'/.test(line))
+			.filter((line) =>
+				/@harness-tier|@harness-element|interface SvelteHTMLElements|interface HTMLElementTagNameMap|'hx-a'/.test(
+					line
+				)
+			)
 	}));
 }
 

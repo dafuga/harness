@@ -6,10 +6,7 @@ import {
 	userCode,
 	normalizeCode
 } from '../../src/lib/verification-evidence/server/auth/native-handoff-service/authSecrets';
-import {
-	randomToken,
-	sha256Url,
-} from '../../src/utils/verification-evidence/authSecrets';
+import { randomToken, sha256Url } from '../../src/utils/verification-evidence/authSecrets';
 
 type RecordMeta = Parameters<typeof recordExampleCases>[0];
 
@@ -138,7 +135,11 @@ test('Throws QuotaExceededError when bytes exceed 65536', () => {
 	}
 	expect(errorName).toBe('QuotaExceededError');
 	recordExampleCases(meta('throws-quotaexceedederror-when-bytes-exceed-65536', 'randomToken'), [
-		{ name: 'byte count exceeds crypto quota', input: { bytes: 65537 }, error: 'QuotaExceededError' }
+		{
+			name: 'byte count exceeds crypto quota',
+			input: { bytes: 65537 },
+			error: 'QuotaExceededError'
+		}
 	]);
 });
 
@@ -171,4 +172,3 @@ test('Builds and normalizes user entered codes', () => {
 		}
 	]);
 });
-

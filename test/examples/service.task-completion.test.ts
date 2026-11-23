@@ -1,7 +1,10 @@
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { TaskCompletionService, taskCompletionInstructions } from '../../src/services/verification-evidence/TaskCompletionService';
+import {
+	TaskCompletionService,
+	taskCompletionInstructions
+} from '../../src/services/verification-evidence/TaskCompletionService';
 
 const proposal = `# Evidence grid latency and memory plan
 
@@ -48,7 +51,10 @@ test('Accepts a substantive performance plan', () => {
 test('Rejects a plan with no substantive sections', () => {
 	let error: unknown;
 	try {
-		new TaskCompletionService('/unused-project-root').requirePlan('# TODO', 'Plan the evidence grid');
+		new TaskCompletionService('/unused-project-root').requirePlan(
+			'# TODO',
+			'Plan the evidence grid'
+		);
 	} catch (caught) {
 		error = caught;
 	}

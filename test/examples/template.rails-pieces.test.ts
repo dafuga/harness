@@ -68,9 +68,7 @@ test('Combines resource scaffold files with the fixed title field', () => {
 			{
 				name: 'invoice resource model declares the fixed title field',
 				input: { name: 'invoice' },
-				output: model
-					? { path: model.path, contents: model.contents }
-					: null
+				output: model ? { path: model.path, contents: model.contents } : null
 			}
 		]
 	);

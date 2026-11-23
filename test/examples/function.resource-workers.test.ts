@@ -1,6 +1,9 @@
 import { test } from 'vitest';
 import { InvalidTestWorkerCeilingError } from '../../src/utils/execution-runtimes/resourceWorkers.types';
-import { resourceThreads, resourceWorkers } from '../../src/utils/execution-runtimes/resourceWorkers';
+import {
+	resourceThreads,
+	resourceWorkers
+} from '../../src/utils/execution-runtimes/resourceWorkers';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
 
@@ -90,7 +93,10 @@ test('Rejects a worker ceiling below one when CPUs are reserved', () => {
 	const zeroCeiling = failureOf(() => resourceWorkers(reservedHost, 0));
 	const nanCeiling = failureOf(() => resourceWorkers(reservedHost, Number.NaN));
 	const invalidReservation = resourceWorkers({ HARNESS_RESOURCE_CPUS: 'x' }, 0);
-	const expected = { name: 'InvalidTestWorkerCeilingError', message: 'Invalid test worker ceiling' };
+	const expected = {
+		name: 'InvalidTestWorkerCeilingError',
+		message: 'Invalid test worker ceiling'
+	};
 	expect(zeroCeiling).toEqual(expected);
 	expect(nanCeiling).toEqual(expected);
 	expect(invalidReservation).toEqual({});

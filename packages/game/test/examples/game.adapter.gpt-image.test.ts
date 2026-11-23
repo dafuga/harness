@@ -7,7 +7,8 @@ import type { ImageFetch } from '../../src/adapters/agents-providers/GptImageAda
 import { ImageGenerationError } from '../../src/adapters/agents-providers/ImageGenerationError';
 
 const key = 'sk-proj-EXAMPLE00000000000000000000000000000001';
-const prompt = 'A stone pyramid bathed in moonlight on a dark desert plateau, painterly game-art style';
+const prompt =
+	'A stone pyramid bathed in moonlight on a dark desert plateau, painterly game-art style';
 const png = Buffer.from('89504e470d0a1a0a', 'hex');
 
 function responseForPng(): Response {
@@ -34,7 +35,12 @@ test('generate sends request and decodes PNG', async () => {
 		'Content-Type': 'application/json'
 	});
 	expect(requestBody).toEqual({
-		model: 'gpt-image-2', prompt, n: 1, size: '1536x1024', quality: 'medium', output_format: 'png'
+		model: 'gpt-image-2',
+		prompt,
+		n: 1,
+		size: '1536x1024',
+		quality: 'medium',
+		output_format: 'png'
 	});
 	recordExampleCases(
 		{

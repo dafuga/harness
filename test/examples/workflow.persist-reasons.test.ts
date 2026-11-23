@@ -49,10 +49,9 @@ test('Renders the header for a range measured from a base', () => {
 	const text = renderReasons(RANGE_RESULT);
 
 	expect(text).toBe('2 reasons for a91c04d..3b7e1f0 are kept in notes.');
-	recordExampleCases(
-		meta('renders-the-header-for-a-range-measured-from-a-base', 'renderReasons'),
-		[{ name: 'two reasons measured from a base', input: RANGE_RESULT, output: text }]
-	);
+	recordExampleCases(meta('renders-the-header-for-a-range-measured-from-a-base', 'renderReasons'), [
+		{ name: 'two reasons measured from a base', input: RANGE_RESULT, output: text }
+	]);
 });
 
 test('Renders an empty tree base with each missing change', () => {

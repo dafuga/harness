@@ -27,8 +27,18 @@ function summarise(baselines: Map<string, UnitBaseline>) {
 }
 
 const ledger = [
-	{ type: 'baseline', unit: 'budget.alpha', metrics: { 'memory-bytes': 1000 }, performance: [checkout(100)] },
-	{ type: 'approval', unit: 'budget.alpha', after: { 'memory-bytes': 1200 }, performance: [checkout(120)] }
+	{
+		type: 'baseline',
+		unit: 'budget.alpha',
+		metrics: { 'memory-bytes': 1000 },
+		performance: [checkout(100)]
+	},
+	{
+		type: 'approval',
+		unit: 'budget.alpha',
+		after: { 'memory-bytes': 1200 },
+		performance: [checkout(120)]
+	}
 ] as unknown as Ledger;
 
 const manifests = [

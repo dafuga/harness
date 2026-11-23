@@ -19,8 +19,10 @@ const where = (state: string) => ({
 	file: `${state}.json`
 });
 const markup = (props: Record<string, unknown>, children?: ReturnType<typeof createRawSnippet>) =>
-	render(SvgLinearGradient, { props: { ...props, children } as never })
-		.body.replace(/<!--.*?-->/g, '');
+	render(SvgLinearGradient, { props: { ...props, children } as never }).body.replace(
+		/<!--.*?-->/g,
+		''
+	);
 
 test('Renders a linearGradient with its attributes and no wrapper', () => {
 	const inputs = [

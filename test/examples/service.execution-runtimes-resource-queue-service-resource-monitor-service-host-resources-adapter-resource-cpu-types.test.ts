@@ -10,7 +10,8 @@ test('Creates a named CPU interval error', () => {
 	expect(error.name).toBe('CpuIntervalError');
 	recordExampleCases(
 		{
-			unitId: 'service.execution-runtimes-resource-queue-service-resource-monitor-service-host-resources-adapter-resource-cpu-types',
+			unitId:
+				'service.execution-runtimes-resource-queue-service-resource-monitor-service-host-resources-adapter-resource-cpu-types',
 			symbol: 'CpuIntervalError',
 			state: 'creates-a-named-cpu-interval-error',
 			evidence: 'examples-cases',

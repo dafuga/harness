@@ -10,7 +10,10 @@ import { moduleTree } from '../../src/services/module-system/moduleTree';
 const unitId = 'service.module-system-module-tree';
 
 function record(symbol: string, state: string, cases: Cases) {
-	return recordExampleCases({ unitId, symbol, state, evidence: 'examples-cases', file: `${state}.json` }, cases);
+	return recordExampleCases(
+		{ unitId, symbol, state, evidence: 'examples-cases', file: `${state}.json` },
+		cases
+	);
 }
 
 async function writeModule(root: string, name: string, content: string) {

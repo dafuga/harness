@@ -8,7 +8,13 @@ import { recordExampleCases } from '../../../../test/support/recordExampleCases'
 const UNIT_ID = 'reports.script.seed-sites';
 
 function meta(state: string) {
-	return { unitId: UNIT_ID, symbol: 'siteRoot', state, evidence: 'examples-cases', file: `${state}.json` };
+	return {
+		unitId: UNIT_ID,
+		symbol: 'siteRoot',
+		state,
+		evidence: 'examples-cases',
+		file: `${state}.json`
+	};
 }
 
 /** A script started outside a browser run must be given an e2e root; the temporary one is removed in finally. */
@@ -39,7 +45,10 @@ test('Exposes the alpha and foreign fixture roots', async () => {
 			{
 				name: 'foreign root is the beta fixture and not the alpha root',
 				input: 'beta-project',
-				output: { endsWithInput: foreignRoot.endsWith('beta-project'), sameAsAlpha: foreignRoot === siteRoot }
+				output: {
+					endsWithInput: foreignRoot.endsWith('beta-project'),
+					sameAsAlpha: foreignRoot === siteRoot
+				}
 			}
 		]);
 	} finally {

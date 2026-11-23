@@ -19,7 +19,7 @@ test('Derives conventional identities from source and crate paths', () => {
 			name: 'crate manifest belongs to its kernel unit',
 			input: { path: 'crates/harness-kernel/Cargo.toml' },
 			output: unitIdentity('crates/harness-kernel/Cargo.toml')
-		},
+		}
 	];
 	expect(cases.map(({ output }) => output)).toEqual([
 		{ id: 'reports.component.evidence-grid', kind: 'component', name: 'evidence-grid' },
@@ -45,11 +45,13 @@ test('Derives conventional identities from source and crate paths', () => {
 test('Throws TypeError when a root folder path omits its folder', () => {
 	const input = { path: 'scripts' };
 	expect(() => unitIdentity(input.path)).toThrow(TypeError);
-	const cases = [{
-		name: 'root folder without a child path throws TypeError',
-		input,
-		error: 'TypeError'
-	}];
+	const cases = [
+		{
+			name: 'root folder without a child path throws TypeError',
+			input,
+			error: 'TypeError'
+		}
+	];
 	recordExampleCases(
 		{
 			unitId: 'function.unit-identity',

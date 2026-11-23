@@ -70,9 +70,7 @@ const configGraph = {
 
 test('Source file facts describe a classified TypeScript file', () => {
 	expect(configFile.classification).toBe('source');
-	expect(configFile.exports).toEqual([
-		{ name: 'parseConfig', kind: 'function', inputs: [] }
-	]);
+	expect(configFile.exports).toEqual([{ name: 'parseConfig', kind: 'function', inputs: [] }]);
 	expect(configFile.references[0]).toEqual({
 		via: 'import',
 		typeOnly: true,

@@ -6,22 +6,29 @@ import { openProject } from '../../src/utils/projects-sessions/openProject';
 function makeWorkspace(response: unknown, failure?: Error) {
 	const calls = { navigated: '', loaded: 0 };
 	const workspace = {
-		bridge: { openProject: async () => {
-			if (failure) throw failure;
-			return response;
-		} },
+		bridge: {
+			openProject: async () => {
+				if (failure) throw failure;
+				return response;
+			}
+		},
 		selection: { id: 'previous' },
 		busy: false,
 		error: 'old error',
-		navigate: async (path: string) => { calls.navigated = path; },
-		loadProjects: async () => { calls.loaded += 1; }
+		navigate: async (path: string) => {
+			calls.navigated = path;
+		},
+		loadProjects: async () => {
+			calls.loaded += 1;
+		}
 	} as unknown as Parameters<typeof openProject>[0];
 	return { workspace, calls };
 }
 
 test('opens a project on its branch pages and refreshes the list', async () => {
 	const { workspace, calls } = makeWorkspace({
-		project: { id: 'project-42' }, revision: { branch: 'feature/demo' }
+		project: { id: 'project-42' },
+		revision: { branch: 'feature/demo' }
 	});
 	await openProject(workspace);
 
@@ -39,17 +46,19 @@ test('opens a project on its branch pages and refreshes the list', async () => {
 			evidence: 'examples-cases',
 			file: 'opens-a-project-on-its-branch-pages-and-refreshes-the-list.json'
 		},
-		[{
-			name: 'select project-42 on feature/demo',
-			input: { projectId: 'project-42', branch: 'feature/demo' },
-			output: {
-				selectionId: workspace.selection.id,
-				navigation: calls.navigated,
-				loaded: calls.loaded,
-				busy: workspace.busy,
-				error: workspace.error
+		[
+			{
+				name: 'select project-42 on feature/demo',
+				input: { projectId: 'project-42', branch: 'feature/demo' },
+				output: {
+					selectionId: workspace.selection.id,
+					navigation: calls.navigated,
+					loaded: calls.loaded,
+					busy: workspace.busy,
+					error: workspace.error
+				}
 			}
-		}]
+		]
 	);
 });
 
@@ -68,10 +77,12 @@ test('stores a bridge failure and clears busy state', async () => {
 			evidence: 'examples-cases',
 			file: 'stores-a-bridge-failure-and-clears-busy-state.json'
 		},
-		[{
-			name: 'connection fails while opening a project',
-			input: { failure: 'Connection unavailable' },
-			output: { error: workspace.error, busy: workspace.busy, loaded: calls.loaded }
-		}]
+		[
+			{
+				name: 'connection fails while opening a project',
+				input: { failure: 'Connection unavailable' },
+				output: { error: workspace.error, busy: workspace.busy, loaded: calls.loaded }
+			}
+		]
 	);
 });

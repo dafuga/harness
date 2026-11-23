@@ -4,7 +4,11 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { gatewayOptions } from '../../src/cli/program/codex-gateway-service/claude-query-service/gatewayOptions';
 
-const HOME_ENV = { HOME: '/workspace/user', PATH: '/usr/local/bin:/usr/bin:/bin', SHELL: '/bin/zsh' };
+const HOME_ENV = {
+	HOME: '/workspace/user',
+	PATH: '/usr/local/bin:/usr/bin:/bin',
+	SHELL: '/bin/zsh'
+};
 const DEFAULT_ENV = {
 	...HOME_ENV,
 	ANTHROPIC_API_KEY: 'fixture-api-key',

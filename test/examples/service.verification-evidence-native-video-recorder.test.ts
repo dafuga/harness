@@ -1,4 +1,7 @@
-import type { Outcome, Cases } from './service.verification-evidence-native-video-recorder.test.types';
+import type {
+	Outcome,
+	Cases
+} from './service.verification-evidence-native-video-recorder.test.types';
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -92,8 +95,16 @@ test('Hashes exact example bytes with SHA-256', () => {
 	expect(abc).toBe('ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad');
 	expect(empty).toBe('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855');
 	save('hashes-exact-example-bytes-with-sha-256', 'recordingHash', [
-		{ name: 'three ASCII bytes hash to the published vector', input: { bytes: 'abc' }, output: { sha256: abc } },
-		{ name: 'empty text hashes to the empty-input digest', input: { bytes: '' }, output: { sha256: empty } }
+		{
+			name: 'three ASCII bytes hash to the published vector',
+			input: { bytes: 'abc' },
+			output: { sha256: abc }
+		},
+		{
+			name: 'empty text hashes to the empty-input digest',
+			input: { bytes: '' },
+			output: { sha256: empty }
+		}
 	]);
 });
 
@@ -106,7 +117,11 @@ test('Admits only fixed even viewports inside native bounds', () => {
 	expect(odd.ok).toBe(false);
 	save('admits-only-fixed-even-viewports-inside-native-bounds', 'recordingViewport', [
 		{ name: 'HD viewport is admitted', input: { width: 1280, height: 720 }, output: accepted },
-		{ name: 'full HD viewport at the total pixel bound is admitted', input: { width: 1920, height: 1080 }, output: maximum },
+		{
+			name: 'full HD viewport at the total pixel bound is admitted',
+			input: { width: 1920, height: 1080 },
+			output: maximum
+		},
 		{ name: 'odd width is refused', input: { width: 1281, height: 720 }, output: odd }
 	]);
 });
@@ -124,9 +139,21 @@ test('Refuses an empty recording file before reading it', async () => {
 		expect(oversized.ok).toBe(false);
 		expect(admitted).toEqual({ ok: true, value: 'frame' });
 		save('refuses-an-empty-recording-file-before-reading-it', 'recordingFile', [
-			{ name: 'empty file is refused before reading', input: { file: 'empty.bin', maximum: 16 }, output: refused },
-			{ name: 'file larger than the maximum is refused', input: { file: 'small.bin', maximum: 4 }, output: oversized },
-			{ name: 'file within the maximum is admitted', input: { file: 'small.bin', maximum: 16 }, output: admitted }
+			{
+				name: 'empty file is refused before reading',
+				input: { file: 'empty.bin', maximum: 16 },
+				output: refused
+			},
+			{
+				name: 'file larger than the maximum is refused',
+				input: { file: 'small.bin', maximum: 4 },
+				output: oversized
+			},
+			{
+				name: 'file within the maximum is admitted',
+				input: { file: 'small.bin', maximum: 16 },
+				output: admitted
+			}
 		]);
 	});
 });
@@ -152,8 +179,16 @@ test('Holds a recording slot lease against a second owner', async () => {
 					partial: lease.directory.includes('.partial-')
 				}
 			},
-			{ name: 'second owner of a held slot is refused', input: { slotKey: SLOT, inputHash: HASH }, output: second },
-			{ name: 'slot is leasable again after release', input: { slotKey: SLOT, inputHash: HASH }, output: reacquired }
+			{
+				name: 'second owner of a held slot is refused',
+				input: { slotKey: SLOT, inputHash: HASH },
+				output: second
+			},
+			{
+				name: 'slot is leasable again after release',
+				input: { slotKey: SLOT, inputHash: HASH },
+				output: reacquired
+			}
 		]);
 	});
 });

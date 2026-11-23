@@ -18,7 +18,9 @@ const relevantMarkup = (body: string) => body.replace(/<!--[\s\S]*?-->/g, '').tr
 test('omitted children render only the native element', () => {
 	const props = { values: '0 1 0 0 0', result: 'colored' };
 	const body = relevantMarkup(render(SvgFeColorMatrix, { props }).body);
-	expect(body).toMatch(/^<feColorMatrix[^>]*values="0 1 0 0 0"[^>]*result="colored"[^>]*><\/feColorMatrix>$/);
+	expect(body).toMatch(
+		/^<feColorMatrix[^>]*values="0 1 0 0 0"[^>]*result="colored"[^>]*><\/feColorMatrix>$/
+	);
 	expect(body).not.toContain('div');
 	recordExampleCases(location('omitted-children-render-only-the-native-element'), [
 		{

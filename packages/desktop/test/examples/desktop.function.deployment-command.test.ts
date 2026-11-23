@@ -8,7 +8,7 @@ import { deploymentCommand } from '../../src/utils/projects-sessions/deploymentC
 import { DeploymentCommandError } from '../../src/utils/projects-sessions/deploymentCommand.types';
 
 const FAKE_CLI = [
-	"const mode = process.argv[2];",
+	'const mode = process.argv[2];',
 	"if (mode === 'fail') { process.stderr.write('token=example-value'); process.exit(3); }",
 	"process.stdout.write('Checked ' + process.env.NODE_ENV + ' CI=' + process.env.CI + '\\n');"
 ].join('\n');

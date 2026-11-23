@@ -136,7 +136,11 @@ test('Refuses a commit whose returned sha differs', async () => {
 
 	expect(code).toBe('commit-mismatch');
 	record('refuses-a-commit-whose-returned-sha-differs', [
-		{ name: 'GitHub returns another commit than asked', input: { commit: parentA }, error: { code } }
+		{
+			name: 'GitHub returns another commit than asked',
+			input: { commit: parentA },
+			error: { code }
+		}
 	]);
 });
 

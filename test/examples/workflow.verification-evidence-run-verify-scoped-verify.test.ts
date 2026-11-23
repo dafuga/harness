@@ -81,22 +81,44 @@ test('Refuses scoped verification without a covering scenario', async () => {
 
 test('Renders screenshot and evidence attachment outcomes', () => {
 	const screenshot: NonNullable<VerifyResult['attachment']> = {
-		status: 'attached', entity, record: recordId, states: ['reports.state.initial'], viewports: ['desktop']
+		status: 'attached',
+		entity,
+		record: recordId,
+		states: ['reports.state.initial'],
+		viewports: ['desktop']
 	};
 	const skipped: NonNullable<VerifyResult['attachment']> = {
-		status: 'skipped', entity, record: recordId, states: [], viewports: []
+		status: 'skipped',
+		entity,
+		record: recordId,
+		states: [],
+		viewports: []
 	};
 	const unchanged = { ...screenshot, status: 'unchanged' as const, viewports: [] };
 	const cases: Parameters<typeof recordExampleCases>[1] = [
 		{ name: 'No attachment is available', input: null, output: renderAttachment(undefined) },
-		{ name: 'Skipped evidence has no screenshot slots', input: skipped, output: renderAttachment(skipped) },
-		{ name: 'Attached screenshot lists its state and viewport', input: screenshot, output: renderAttachment(screenshot) },
-		{ name: 'Reused evidence reports its unchanged record', input: unchanged, output: renderAttachment(unchanged) }
+		{
+			name: 'Skipped evidence has no screenshot slots',
+			input: skipped,
+			output: renderAttachment(skipped)
+		},
+		{
+			name: 'Attached screenshot lists its state and viewport',
+			input: screenshot,
+			output: renderAttachment(screenshot)
+		},
+		{
+			name: 'Reused evidence reports its unchanged record',
+			input: unchanged,
+			output: renderAttachment(unchanged)
+		}
 	];
 	expect(cases.map((item) => item.output)).toEqual([
 		[],
 		[`No evidence attached for ${entity}: failed or incomplete run.`],
-		[`Screenshots attached for ${entity}: states reports.state.initial; viewports desktop; record ${recordId}.`],
+		[
+			`Screenshots attached for ${entity}: states reports.state.initial; viewports desktop; record ${recordId}.`
+		],
 		[`Evidence unchanged for ${entity}: states reports.state.initial; record ${recordId}.`]
 	]);
 	recordExampleCases(
@@ -117,7 +139,12 @@ test('Uses the head revision as the scoped base', () => {
 	expect(result).not.toBe(source);
 	expect(result.base).toBe(source.head);
 	expect(result.head).toBe(source.head);
-	const input = { root: '<repository>', commit, baseRevision: source.base.revision, headRevision: source.head.revision };
+	const input = {
+		root: '<repository>',
+		commit,
+		baseRevision: source.base.revision,
+		headRevision: source.head.revision
+	};
 	recordExampleCases(
 		{
 			unitId,
@@ -139,10 +166,15 @@ test('Uses the head revision as the scoped base', () => {
 test('Builds an empty impact report for the scoped revision', () => {
 	const result = scopedImpact(commit, 'module');
 	expect(result).toEqual({
-		base: 'none', head: commit, runtime: 'module', expanded: false, changed: [],
+		base: 'none',
+		head: commit,
+		runtime: 'module',
+		expanded: false,
+		changed: [],
 		units: { direct: [], indirect: [], added: [], removed: [] },
 		tests: { selected: [], excluded: [], removed: [] },
-		scenarios: { affected: [], unaffected: [] }, uncertain: []
+		scenarios: { affected: [], unaffected: [] },
+		uncertain: []
 	});
 	recordExampleCases(
 		{
@@ -152,7 +184,13 @@ test('Builds an empty impact report for the scoped revision', () => {
 			evidence: 'examples-cases',
 			file: 'builds-an-empty-impact-report-for-the-scoped-revision.json'
 		},
-		[{ name: 'A module scoped run starts with no computed impact', input: { head: commit, runtime: 'module' }, output: result }]
+		[
+			{
+				name: 'A module scoped run starts with no computed impact',
+				input: { head: commit, runtime: 'module' },
+				output: result
+			}
+		]
 	);
 });
 
@@ -161,7 +199,9 @@ test('Writes scoped timings and suppresses unscoped output', () => {
 	timer(entity)('snapshot started');
 	const emitted = write.mock.calls.map(([chunk]) => String(chunk));
 	expect(emitted).toHaveLength(1);
-	expect(emitted[0]).toMatch(/^\[verify reports\.component\.evidence-grid\] snapshot started \+\d+ms\n$/);
+	expect(emitted[0]).toMatch(
+		/^\[verify reports\.component\.evidence-grid\] snapshot started \+\d+ms\n$/
+	);
 	write.mockClear();
 	timer(undefined)('unscoped step');
 	timer('')('empty entity step');
@@ -176,9 +216,21 @@ test('Writes scoped timings and suppresses unscoped output', () => {
 			file: 'writes-scoped-timings-and-suppresses-unscoped-output.json'
 		},
 		[
-			{ name: 'A truthy entity prefixes its timing message', input: { entity, step: 'snapshot started' }, output: emitted[0] },
-			{ name: 'An omitted entity emits no timing message', input: { entity: null, step: 'unscoped step' }, output: { writes: suppressed } },
-			{ name: 'An empty entity emits no timing message', input: { entity: '', step: 'empty entity step' }, output: { writes: suppressed } }
+			{
+				name: 'A truthy entity prefixes its timing message',
+				input: { entity, step: 'snapshot started' },
+				output: emitted[0]
+			},
+			{
+				name: 'An omitted entity emits no timing message',
+				input: { entity: null, step: 'unscoped step' },
+				output: { writes: suppressed }
+			},
+			{
+				name: 'An empty entity emits no timing message',
+				input: { entity: '', step: 'empty entity step' },
+				output: { writes: suppressed }
+			}
 		]
 	);
 });
@@ -198,7 +250,10 @@ test('Sets verification priority and entity options', () => {
 		if (!(error instanceof ZodError)) throw error;
 		invalid = { name: error.name, paths: error.issues.map((issue) => issue.path.join('.')) };
 	}
-	expect(selected).toEqual({ HARNESS_RESOURCE_PRIORITY: 'agent-test', HARNESS_VERIFY_ENTITY: entity });
+	expect(selected).toEqual({
+		HARNESS_RESOURCE_PRIORITY: 'agent-test',
+		HARNESS_VERIFY_ENTITY: entity
+	});
 	expect(invalid).toEqual({ name: 'ZodError', paths: [''] });
 	recordExampleCases(
 		{
@@ -209,8 +264,16 @@ test('Sets verification priority and entity options', () => {
 			file: 'sets-verification-priority-and-entity-options.json'
 		},
 		[
-			{ name: 'Explicit options select the test priority and entity', input: options, output: selected },
-			{ name: 'An unsupported priority is rejected', input: { priority: 'emergency' }, error: invalid }
+			{
+				name: 'Explicit options select the test priority and entity',
+				input: options,
+				output: selected
+			},
+			{
+				name: 'An unsupported priority is rejected',
+				input: { priority: 'emergency' },
+				error: invalid
+			}
 		]
 	);
 });

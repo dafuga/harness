@@ -1,7 +1,11 @@
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { guides, findGuide, availableGuideTopics } from '../../src/guides/development-tooling/guide';
+import {
+	guides,
+	findGuide,
+	availableGuideTopics
+} from '../../src/guides/development-tooling/guide';
 import type { Guide } from '../../src/guides/development-tooling/guide.types';
 
 function summary(guide: Guide | undefined) {
@@ -18,7 +22,10 @@ function summary(guide: Guide | undefined) {
 
 test('Exposes assembled guide guidance', () => {
 	const guide = guides.find((item) => item.topic === 'model');
-	expect(guide).toMatchObject({ topic: 'model', summary: 'Add data behavior through a small ActiveRecord-like model and an adapter.' });
+	expect(guide).toMatchObject({
+		topic: 'model',
+		summary: 'Add data behavior through a small ActiveRecord-like model and an adapter.'
+	});
 	recordExampleCases(
 		{
 			unitId: 'guide.guide',

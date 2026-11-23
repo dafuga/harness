@@ -1,18 +1,21 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'vitest';
-import {
-	filterIgnoredFindings,
-	readAuditConfig
-} from '../../src/audit/development-tooling/config';
+import { filterIgnoredFindings, readAuditConfig } from '../../src/audit/development-tooling/config';
 import type { AuditFinding } from '../../src/audit/development-tooling/types';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
 
 const defaultLimits = {
-	maxFileLines: 220, maxFunctionLines: 55, maxClassLines: 120, maxMethodLines: 35,
-	maxNestingDepth: 4, maxParameters: 4, maxComplexity: 10, maxClassesPerFile: 1
+	maxFileLines: 220,
+	maxFunctionLines: 55,
+	maxClassLines: 120,
+	maxMethodLines: 35,
+	maxNestingDepth: 4,
+	maxParameters: 4,
+	maxComplexity: 10,
+	maxClassesPerFile: 1
 };
 const suppliedConfig = {
 	cleanCode: { mode: 'advisory', minConfidence: 0.9, exclude: ['src/generated/'] },
@@ -27,7 +30,11 @@ const ignoreRules = [
 	{ path: 'src/reports/summary.ts', reason: 'Tracked in the reports cleanup.' }
 ];
 const findings: AuditFinding[] = [
-	{ path: 'src/legacy/parser.ts', rule: 'small-file', message: 'File has 340 lines. Limit is 300.' },
+	{
+		path: 'src/legacy/parser.ts',
+		rule: 'small-file',
+		message: 'File has 340 lines. Limit is 300.'
+	},
 	{ path: 'src/legacy/parser.ts', rule: 'max-complexity', message: 'Complexity 14; limit 10.' },
 	{ path: 'src/reports/summary.ts', rule: 'max-classes-per-file', message: '2 classes; limit 1.' },
 	{ path: 'src/billing/invoices.ts', rule: 'small-file', message: '412 lines; limit 300.' }
@@ -41,7 +48,8 @@ function createProjectRoot(parent: string, name: string): string {
 
 function writeConfig(parent: string, name: string, config: object | string): string {
 	const root = createProjectRoot(parent, name);
-	const contents = typeof config === 'string' ? config : (JSON.stringify(config, null, 2) ?? 'null');
+	const contents =
+		typeof config === 'string' ? config : (JSON.stringify(config, null, 2) ?? 'null');
 	writeFileSync(join(root, 'harness.audit.json'), contents);
 	return root;
 }
@@ -79,22 +87,29 @@ test('reads defaults and normalizes configured audit settings', () =>
 		const configuredRoot = writeConfig(directory, 'configured', suppliedConfig);
 		const configured = readAuditConfig(configuredRoot);
 		expect(defaults.cleanCode).toEqual({
-			mode: 'off', model: 'jev-1.13.0', minConfidence: 0.85,
-			apiKeyEnv: 'HARNESS_JEV_API_KEY', exclude: []
+			mode: 'off',
+			model: 'jev-1.13.0',
+			minConfidence: 0.85,
+			apiKeyEnv: 'HARNESS_JEV_API_KEY',
+			exclude: []
 		});
 		expect(defaults.ignore).toEqual([]);
 		expect(defaults.limits).toEqual(defaultLimits);
 		expect(configured).toMatchObject({
 			cleanCode: {
-				mode: 'advisory', model: 'jev-1.13.0', minConfidence: 0.9,
-				apiKeyEnv: 'HARNESS_JEV_API_KEY', exclude: ['src/generated/']
+				mode: 'advisory',
+				model: 'jev-1.13.0',
+				minConfidence: 0.9,
+				apiKeyEnv: 'HARNESS_JEV_API_KEY',
+				exclude: ['src/generated/']
 			},
 			ignore: [ignoreRules[0]],
 			limits: { ...defaultLimits, maxFileLines: 300 }
 		});
 		recordExampleCases(
 			{
-				unitId: 'audit.config', symbol: 'readAuditConfig',
+				unitId: 'audit.config',
+				symbol: 'readAuditConfig',
 				state: 'reads-defaults-and-normalizes-configured-audit-settings',
 				evidence: 'examples-cases',
 				file: 'reads-defaults-and-normalizes-configured-audit-settings.json'
@@ -112,8 +127,7 @@ test('reads defaults and normalizes configured audit settings', () =>
 				}
 			]
 		);
-	})
-);
+	}));
 
 test('rejects invalid audit configuration', () =>
 	withTempDir('audit-config-errors-', (directory) => {
@@ -138,9 +152,11 @@ test('rejects invalid audit configuration', () =>
 		expect(fileError).toMatchObject({ name: 'Error', code: 'EISDIR' });
 		recordExampleCases(
 			{
-				unitId: 'audit.config', symbol: 'readAuditConfig',
+				unitId: 'audit.config',
+				symbol: 'readAuditConfig',
 				state: 'rejects-invalid-audit-configuration',
-				evidence: 'examples-cases', file: 'rejects-invalid-audit-configuration.json'
+				evidence: 'examples-cases',
+				file: 'rejects-invalid-audit-configuration.json'
 			},
 			[
 				{
@@ -165,8 +181,7 @@ test('rejects invalid audit configuration', () =>
 				}
 			]
 		);
-	})
-);
+	}));
 
 test('partitions findings by configured ignore path and rule', () =>
 	withTempDir('audit-config-filter-', (directory) => {
@@ -191,7 +206,8 @@ test('partitions findings by configured ignore path and rule', () =>
 		});
 		recordExampleCases(
 			{
-				unitId: 'audit.config', symbol: 'filterIgnoredFindings',
+				unitId: 'audit.config',
+				symbol: 'filterIgnoredFindings',
 				state: 'partitions-findings-by-configured-ignore-path-and-rule',
 				evidence: 'examples-cases',
 				file: 'partitions-findings-by-configured-ignore-path-and-rule.json'
@@ -209,5 +225,4 @@ test('partitions findings by configured ignore path and rule', () =>
 				}
 			]
 		);
-	})
-);
+	}));

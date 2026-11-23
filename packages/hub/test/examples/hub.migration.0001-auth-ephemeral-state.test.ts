@@ -13,7 +13,10 @@ const tables = [
 ];
 const environments = ['local', 'staging', 'production'];
 
-function tableCase(sql: string, table: string): { name: string; input: string; output: { present: boolean } } {
+function tableCase(
+	sql: string,
+	table: string
+): { name: string; input: string; output: { present: boolean } } {
 	const present = new RegExp(`CREATE TABLE IF NOT EXISTS ${table} \\(`).test(sql);
 	expect(present).toBe(true);
 	return { name: `creates ${table}`, input: table, output: { present } };

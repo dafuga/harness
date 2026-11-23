@@ -4,7 +4,10 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { RemoteArtifactCacheService } from '../../src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService';
 import { InvalidKeptArtifactError } from '../../src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService.types';
-import type { Query, Media } from '../../src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService.types';
+import type {
+	Query,
+	Media
+} from '../../src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService.types';
 
 const bytes = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]);
 const query: Query = {
@@ -81,8 +84,18 @@ test('Reads and validates a pinned hosted artifact', async () => {
 		[
 			{
 				name: 'Reads PNG bytes for the requested project and capture',
-				input: { key: '/api/projects/project-alpha/artifact?screenshot-main', query, identity, media },
-				output: { mediaType: output.mediaType, sha256: output.sha256, bytes: [...output.bytes], calls }
+				input: {
+					key: '/api/projects/project-alpha/artifact?screenshot-main',
+					query,
+					identity,
+					media
+				},
+				output: {
+					mediaType: output.mediaType,
+					sha256: output.sha256,
+					bytes: [...output.bytes],
+					calls
+				}
 			}
 		]
 	);
@@ -101,7 +114,11 @@ test('Throws InvalidKeptArtifactError when cached data is invalid', async () => 
 	const service = new RemoteArtifactCacheService(reads as never);
 	let caught: unknown;
 	try {
-		await service.read({ key: '/artifact', query }, async () => ({ bytes, mediaType: 'image/png', principalId: '12345678901234567890' }));
+		await service.read({ key: '/artifact', query }, async () => ({
+			bytes,
+			mediaType: 'image/png',
+			principalId: '12345678901234567890'
+		}));
 	} catch (error) {
 		caught = error;
 	}
@@ -119,7 +136,10 @@ test('Throws InvalidKeptArtifactError when cached data is invalid', async () => 
 			{
 				name: 'Rejects cached data whose payload is not a string',
 				input: { key: '/artifact', query, cached: { mediaType: 'image/png', data: 12345 } },
-				error: { name: 'InvalidKeptArtifactError', message: 'Invalid kept artifact or capture exceeds 11 MiB.' }
+				error: {
+					name: 'InvalidKeptArtifactError',
+					message: 'Invalid kept artifact or capture exceeds 11 MiB.'
+				}
 			}
 		]
 	);

@@ -1,4 +1,10 @@
-import { managedJob, now, addJobs, recordState, batchJob } from './repository.resource-queue.fixture';
+import {
+	managedJob,
+	now,
+	addJobs,
+	recordState,
+	batchJob
+} from './repository.resource-queue.fixture';
 import type { Job } from './repository.resource-queue.test.types';
 import { test } from 'vitest';
 import type {
@@ -61,8 +67,7 @@ function thrownBy(action: () => unknown): unknown {
 	return undefined;
 }
 
-test('Adds jobs and lists them in sequence order', () =>
-	withQueue('resource-queue-add-', addJobs));
+test('Adds jobs and lists them in sequence order', () => withQueue('resource-queue-add-', addJobs));
 
 function patchJob(queue: ResourceQueueRepository): void {
 	queue.add(managedJob);

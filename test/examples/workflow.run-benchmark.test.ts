@@ -4,7 +4,10 @@ import { join } from 'node:path';
 import { withTempDir } from '../support/temporary';
 import { test, vi } from 'vitest';
 import { BenchmarkRepository } from '../../src/repositories/agents-providers/BenchmarkRepository';
-import { benchmarkSchedule, runBenchmark } from '../../src/cli/program/benchmark-service/runBenchmark';
+import {
+	benchmarkSchedule,
+	runBenchmark
+} from '../../src/cli/program/benchmark-service/runBenchmark';
 
 import type { BenchmarkRun } from '../../src/core/agents-providers/subagentBenchmarkTypes';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -51,8 +54,22 @@ function writeBenchmarkDefinition(repo: TemporaryRepo): string {
 		checks: [{ id: 'value', command: './check-value.sh' }],
 		setup: [],
 		candidates: [
-			{ id: 'codex-pass', runner: 'codex', model: 'fixture-codex', effort: 'high', instructions: '', tools: 'default' },
-			{ id: 'claude-error', runner: 'claude', model: 'fixture-claude', effort: 'medium', instructions: '', tools: 'default' }
+			{
+				id: 'codex-pass',
+				runner: 'codex',
+				model: 'fixture-codex',
+				effort: 'high',
+				instructions: '',
+				tools: 'default'
+			},
+			{
+				id: 'claude-error',
+				runner: 'claude',
+				model: 'fixture-claude',
+				effort: 'medium',
+				instructions: '',
+				tools: 'default'
+			}
 		],
 		budget: { repetitions: 1, timeoutMs: 10000, repairs: 0 }
 	};
@@ -144,7 +161,12 @@ test('Persists benchmark outcomes before returning', async () => {
 	expect(output).toEqual({
 		completed: true,
 		trials: [
-			{ candidate: 'claude-error', status: 'error', error: 'claude-error fixture failure', checkExitCode: null },
+			{
+				candidate: 'claude-error',
+				status: 'error',
+				error: 'claude-error fixture failure',
+				checkExitCode: null
+			},
 			{ candidate: 'codex-pass', status: 'passed', error: null, checkExitCode: 0 }
 		],
 		savedTrials: [
@@ -204,6 +226,12 @@ test('Throws SyntaxError for invalid benchmark JSON', async () => {
 			evidence: 'examples-cases',
 			file: 'throws-syntaxerror-for-invalid-benchmark-json.json'
 		},
-		[{ name: 'Rejects malformed definition JSON before validation', input: { path: '<temporary invalid benchmark.json>' }, output }]
+		[
+			{
+				name: 'Rejects malformed definition JSON before validation',
+				input: { path: '<temporary invalid benchmark.json>' },
+				output
+			}
+		]
 	);
 });

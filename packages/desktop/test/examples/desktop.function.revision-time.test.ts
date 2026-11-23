@@ -51,9 +51,21 @@ test('finds timestamps for the selected commit and branch tip', () => {
 			file: 'finds-timestamps-for-the-selected-commit-and-branch-tip.json'
 		},
 		[
-			{ name: 'selected commit timestamp', input: { kind: 'commit', snapshot }, output: commitTime },
-			{ name: 'current branch tip timestamp', input: { kind: 'branch', snapshot }, output: branchTime },
-			{ name: 'null snapshot has no timestamp', input: { kind: 'commit', snapshot: null }, output: missingTime }
+			{
+				name: 'selected commit timestamp',
+				input: { kind: 'commit', snapshot },
+				output: commitTime
+			},
+			{
+				name: 'current branch tip timestamp',
+				input: { kind: 'branch', snapshot },
+				output: branchTime
+			},
+			{
+				name: 'null snapshot has no timestamp',
+				input: { kind: 'commit', snapshot: null },
+				output: missingTime
+			}
 		]
 	);
 });

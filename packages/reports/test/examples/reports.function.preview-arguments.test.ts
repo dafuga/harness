@@ -5,7 +5,10 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { previewArguments } from '../../src/utils/development-tooling/previewArguments';
-import type { PreviewArguments, PreviewOptions } from '../../src/utils/development-tooling/previewArguments.types';
+import type {
+	PreviewArguments,
+	PreviewOptions
+} from '../../src/utils/development-tooling/previewArguments.types';
 
 test('Preview options resolve checkout and hash settings', () => {
 	const root = mkdtempSync(join(tmpdir(), 'preview-arguments-'));
@@ -15,7 +18,14 @@ test('Preview options resolve checkout and hash settings', () => {
 			BODY_SIZE_LIMIT: '10485760',
 			PATH: '/usr/local/bin:/usr/bin:/bin'
 		};
-		const launchTokens = [root, '--strictPort', '--port', '5688', '--config', '/tmp/vite.config.ts'];
+		const launchTokens = [
+			root,
+			'--strictPort',
+			'--port',
+			'5688',
+			'--config',
+			'/tmp/vite.config.ts'
+		];
 		const actual: PreviewArguments = previewArguments(launchTokens, env);
 		const otherPort: PreviewArguments = previewArguments(
 			[root, '--port', '5689', '--config', '/tmp/vite.config.ts'],
@@ -32,7 +42,11 @@ test('Preview options resolve checkout and hash settings', () => {
 			port: actual.port,
 			identity: actual.identity
 		};
-		expect(options).toEqual({ root: realpathSync(root), configFile: '/tmp/vite.config.ts', port: 5688 });
+		expect(options).toEqual({
+			root: realpathSync(root),
+			configFile: '/tmp/vite.config.ts',
+			port: 5688
+		});
 		expect(actual.identity).toMatch(/^[a-f0-9]{64}$/);
 		expect(actual.identity).toBe(otherPort.identity);
 		recordExampleCases(

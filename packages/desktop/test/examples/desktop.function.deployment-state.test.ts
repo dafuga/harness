@@ -149,7 +149,13 @@ test('Rejects a root outside any Git repository', async () => {
 			evidence: 'examples-cases',
 			file: 'rejects-a-root-outside-any-git-repository.json'
 		},
-		[{ name: 'folder outside any repository', input: 'example-folder', error: { name: thrown.name } }]
+		[
+			{
+				name: 'folder outside any repository',
+				input: 'example-folder',
+				error: { name: thrown.name }
+			}
+		]
 	);
 });
 
@@ -198,7 +204,11 @@ test('Reports each environment with its receipt and target availability', async 
 			file: 'reports-each-environment-with-its-receipt-and-target-availab.json'
 		},
 		[
-			{ name: 'dev and stage targets configured', input: ['dev', 'stage'], output: summary(statuses) },
+			{
+				name: 'dev and stage targets configured',
+				input: ['dev', 'stage'],
+				output: summary(statuses)
+			},
 			{
 				name: 'discover rejects the configuration',
 				input: 'invalid',

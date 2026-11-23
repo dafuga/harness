@@ -8,7 +8,8 @@ test('Accepts a resource budget shape', () => {
 	expect(budget).toEqual({ cpu: 2, memory: 4096 });
 	recordExampleCases(
 		{
-			unitId: 'service.execution-runtimes-resource-queue-service-resource-policy-resource-policy-types',
+			unitId:
+				'service.execution-runtimes-resource-queue-service-resource-policy-resource-policy-types',
 			symbol: 'Budget',
 			state: 'accepts-a-resource-budget-shape',
 			evidence: 'examples-cases',

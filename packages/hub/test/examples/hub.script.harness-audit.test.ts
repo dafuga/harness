@@ -21,13 +21,7 @@ test('Runs the app audit through the configured CLI path', async () => {
 	const exitCode = exit.mock.calls[0]?.[0] ?? 1;
 	expect(calls).toHaveLength(1);
 	expect(calls[0]?.[0]).toBe('bun');
-	expect(calls[0]?.[1]).toEqual([
-		'/tmp/example-harness-cli.ts',
-		'audit',
-		'.',
-		'--profile',
-		'app'
-	]);
+	expect(calls[0]?.[1]).toEqual(['/tmp/example-harness-cli.ts', 'audit', '.', '--profile', 'app']);
 	expect(exitCode).toBe(0);
 	recordExampleCases(
 		{

@@ -10,7 +10,12 @@ const META = {
 	evidence: 'examples-cases'
 };
 
-function entry(id: string, title: string, responsibility: string, contract: Record<string, string> = {}): Entry {
+function entry(
+	id: string,
+	title: string,
+	responsibility: string,
+	contract: Record<string, string> = {}
+): Entry {
 	return {
 		id,
 		kind: 'command',
@@ -43,11 +48,19 @@ test('Ranks identity matches before descriptive matches', () => {
 	expect(matches.map((match) => match.field)).toEqual(['id', 'title']);
 	expect(matches.map((match) => match.score)).toEqual([600, 500]);
 	recordExampleCases(
-		{ ...META, state: 'ranks-identity-matches-before-descriptive-matches', file: 'ranks-identity-matches-before-descriptive-matches.json' },
+		{
+			...META,
+			state: 'ranks-identity-matches-before-descriptive-matches',
+			file: 'ranks-identity-matches-before-descriptive-matches.json'
+		},
 		[
 			{
 				name: 'case-insensitive literal query matching an id and a title',
-				input: { entries: entries.map((item) => item.id), query: 'search', options: { ignoreCase: true } },
+				input: {
+					entries: entries.map((item) => item.id),
+					query: 'search',
+					options: { ignoreCase: true }
+				},
 				output: summarise(matches)
 			}
 		]
@@ -64,7 +77,11 @@ test('Returns a bounded snippet with ellipses around the match', () => {
 	expect(matches[0]?.snippet).toBe(expected);
 	expect(matches[0]?.snippet.length).toBe(162);
 	recordExampleCases(
-		{ ...META, state: 'returns-a-bounded-snippet-with-ellipses-around-the-match', file: 'returns-a-bounded-snippet-with-ellipses-around-the-match.json' },
+		{
+			...META,
+			state: 'returns-a-bounded-snippet-with-ellipses-around-the-match',
+			file: 'returns-a-bounded-snippet-with-ellipses-around-the-match.json'
+		},
 		[
 			{
 				name: 'literal match deep inside a 306-character responsibility',
@@ -85,7 +102,11 @@ test('Matches regular expressions ignoring case', () => {
 	expect(matches[0]?.snippet).toBe('Invoice INV-123 is paid');
 	expect(matches[0]?.score).toBe(400);
 	recordExampleCases(
-		{ ...META, state: 'matches-regular-expressions-ignoring-case', file: 'matches-regular-expressions-ignoring-case.json' },
+		{
+			...META,
+			state: 'matches-regular-expressions-ignoring-case',
+			file: 'matches-regular-expressions-ignoring-case.json'
+		},
 		[
 			{
 				name: 'case-insensitive pattern inv-\\d{3} over two billing contracts',
@@ -99,7 +120,9 @@ test('Matches regular expressions ignoring case', () => {
 test('Rejects an empty search query', () => {
 	const message = 'Contract search query must not be empty.';
 
-	expect(() => searchContracts([entry('contracts.search', 'Search', 'Finds')], '', {})).toThrow(message);
+	expect(() => searchContracts([entry('contracts.search', 'Search', 'Finds')], '', {})).toThrow(
+		message
+	);
 	recordExampleCases(
 		{ ...META, state: 'rejects-an-empty-search-query', file: 'rejects-an-empty-search-query.json' },
 		[
@@ -118,7 +141,11 @@ test('Rejects an uncompilable regular expression', () => {
 
 	expect(() => searchContracts(entries, '(', { regex: true })).toThrow(message);
 	recordExampleCases(
-		{ ...META, state: 'rejects-an-uncompilable-regular-expression', file: 'rejects-an-uncompilable-regular-expression.json' },
+		{
+			...META,
+			state: 'rejects-an-uncompilable-regular-expression',
+			file: 'rejects-an-uncompilable-regular-expression.json'
+		},
 		[
 			{
 				name: 'unclosed group in regex mode',
@@ -140,7 +167,11 @@ test('Caps results at the requested limit', () => {
 	expect(matches.map((match) => match.id)).toEqual(['contracts.a', 'contracts.b']);
 	expect(matches.every((match) => match.score === 560)).toBe(true);
 	recordExampleCases(
-		{ ...META, state: 'caps-results-at-the-requested-limit', file: 'caps-results-at-the-requested-limit.json' },
+		{
+			...META,
+			state: 'caps-results-at-the-requested-limit',
+			file: 'caps-results-at-the-requested-limit.json'
+		},
 		[
 			{
 				name: 'three equal-score matches with limit 2 keep the first two ids',

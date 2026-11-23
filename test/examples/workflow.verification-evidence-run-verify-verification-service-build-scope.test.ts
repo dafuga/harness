@@ -58,7 +58,11 @@ test('Collects the declared builds of each scenario', () => {
 	expect(declared).toEqual(['desktop-renderer', 'reports']);
 	expect(explicitEmpty).toEqual([]);
 	recordExampleCases(meta('neededBuilds', 'collects-the-declared-builds-of-each-scenario'), [
-		{ name: 'declared builds of two scenarios are collected', input: { scenarios }, output: declared },
+		{
+			name: 'declared builds of two scenarios are collected',
+			input: { scenarios },
+			output: declared
+		},
 		{
 			name: 'an explicit empty builds list needs no build',
 			input: { scenarios: [scenario({ builds: [] })] },
@@ -79,9 +83,21 @@ test('Requires all builds when evidence names no build', () => {
 	expect(buildless).toBe('all');
 	expect(fromEvidence).toEqual(['reports']);
 	recordExampleCases(meta('neededBuilds', 'requires-all-builds-when-evidence-names-no-build'), [
-		{ name: 'a scenario without declared builds or evidence needs all builds', input: { scenarios: withoutEvidence }, output: 'all' },
-		{ name: 'an evidence item without a build needs all builds', input: { scenarios: withBuildlessEvidence }, output: 'all' },
-		{ name: 'evidence build ids supply the needed builds', input: { scenarios: withBuildEvidence }, output: fromEvidence }
+		{
+			name: 'a scenario without declared builds or evidence needs all builds',
+			input: { scenarios: withoutEvidence },
+			output: 'all'
+		},
+		{
+			name: 'an evidence item without a build needs all builds',
+			input: { scenarios: withBuildlessEvidence },
+			output: 'all'
+		},
+		{
+			name: 'evidence build ids supply the needed builds',
+			input: { scenarios: withBuildEvidence },
+			output: fromEvidence
+		}
 	]);
 });
 
@@ -96,10 +112,21 @@ test('Keeps setup steps that name a needed build or no build', () => {
 	expect(none.map((step) => step.command)).toEqual([
 		'bun install --frozen-lockfile --backend=copyfile'
 	]);
-	recordExampleCases(meta('scopedSetup', 'keeps-setup-steps-that-name-a-needed-build-or-no-build'), [
-		{ name: 'the reports build keeps the unscoped and reports steps', input: { setup: SETUP, needed: ['reports'] }, output: reports },
-		{ name: 'no needed build keeps only the unscoped step', input: { setup: SETUP, needed: [] }, output: none }
-	]);
+	recordExampleCases(
+		meta('scopedSetup', 'keeps-setup-steps-that-name-a-needed-build-or-no-build'),
+		[
+			{
+				name: 'the reports build keeps the unscoped and reports steps',
+				input: { setup: SETUP, needed: ['reports'] },
+				output: reports
+			},
+			{
+				name: 'no needed build keeps only the unscoped step',
+				input: { setup: SETUP, needed: [] },
+				output: none
+			}
+		]
+	);
 });
 
 test('Keeps every setup step when the needed builds are all', () => {
@@ -108,6 +135,10 @@ test('Keeps every setup step when the needed builds are all', () => {
 	expect(all).toEqual(SETUP);
 	expect(all).not.toBe(SETUP);
 	recordExampleCases(meta('scopedSetup', 'keeps-every-setup-step-when-the-needed-builds-are-all'), [
-		{ name: 'all builds needed keeps every setup step in order', input: { setup: SETUP, needed: 'all' }, output: all }
+		{
+			name: 'all builds needed keeps every setup step in order',
+			input: { setup: SETUP, needed: 'all' },
+			output: all
+		}
 	]);
 });

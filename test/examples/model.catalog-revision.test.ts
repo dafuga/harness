@@ -64,8 +64,20 @@ test('Finds a revision by its commit id', async () => {
 	const result = await CatalogRevision.find(makeAdapter(row, calls), row.id);
 	expect(result).toEqual(row);
 	recordExampleCases(
-		{ unitId: 'model.catalog-revision', symbol: 'CatalogRevision.find', state: 'finds-a-revision-by-its-commit-id', evidence: 'examples-cases', file: 'finds-a-revision-by-its-commit-id.json' },
-		[{ name: 'returns the adapter row and forwards table and id', input: { id: row.id }, output: { row: result, call: calls[0] } }]
+		{
+			unitId: 'model.catalog-revision',
+			symbol: 'CatalogRevision.find',
+			state: 'finds-a-revision-by-its-commit-id',
+			evidence: 'examples-cases',
+			file: 'finds-a-revision-by-its-commit-id.json'
+		},
+		[
+			{
+				name: 'returns the adapter row and forwards table and id',
+				input: { id: row.id },
+				output: { row: result, call: calls[0] }
+			}
+		]
 	);
 });
 
@@ -76,7 +88,13 @@ test('Finds revisions by copied filter fields', async () => {
 	expect(result).toEqual([row]);
 	expect(calls[0]).toEqual(['catalog_revisions', filter]);
 	recordExampleCases(
-		{ unitId: 'model.catalog-revision', symbol: 'CatalogRevision.findBy', state: 'finds-revisions-by-copied-filter-fields', evidence: 'examples-cases', file: 'finds-revisions-by-copied-filter-fields.json' },
+		{
+			unitId: 'model.catalog-revision',
+			symbol: 'CatalogRevision.findBy',
+			state: 'finds-revisions-by-copied-filter-fields',
+			evidence: 'examples-cases',
+			file: 'finds-revisions-by-copied-filter-fields.json'
+		},
 		[{ name: 'returns adapter rows for the supplied filter', input: filter, output: result }]
 	);
 });
@@ -88,7 +106,13 @@ test('Creates a revision with its complete indexed data', async () => {
 	expect(result).toEqual(row);
 	expect((calls[0] as unknown[])[1]).toEqual(input);
 	recordExampleCases(
-		{ unitId: 'model.catalog-revision', symbol: 'CatalogRevision.create', state: 'creates-a-revision-with-its-complete-indexed-data', evidence: 'examples-cases', file: 'creates-a-revision-with-its-complete-indexed-data.json' },
+		{
+			unitId: 'model.catalog-revision',
+			symbol: 'CatalogRevision.create',
+			state: 'creates-a-revision-with-its-complete-indexed-data',
+			evidence: 'examples-cases',
+			file: 'creates-a-revision-with-its-complete-indexed-data.json'
+		},
 		[{ name: 'passes the complete revision to create and returns its row', input, output: result }]
 	);
 });
@@ -105,8 +129,20 @@ test('Throws Caller input getter exception when create reads input', () => {
 	expect(() => CatalogRevision.create(adapter, input)).toThrow('caller getter failed');
 	expect(calls).toEqual([]);
 	recordExampleCases(
-		{ unitId: 'model.catalog-revision', symbol: 'CatalogRevision.create', state: 'throws-caller-input-getter-exception-when-create-reads-input', evidence: 'examples-cases', file: 'throws-caller-input-getter-exception-when-create-reads-input.json' },
-		[{ name: 'a throwing subject getter prevents adapter invocation', input: { property: 'subject' }, error: 'caller getter failed' }]
+		{
+			unitId: 'model.catalog-revision',
+			symbol: 'CatalogRevision.create',
+			state: 'throws-caller-input-getter-exception-when-create-reads-input',
+			evidence: 'examples-cases',
+			file: 'throws-caller-input-getter-exception-when-create-reads-input.json'
+		},
+		[
+			{
+				name: 'a throwing subject getter prevents adapter invocation',
+				input: { property: 'subject' },
+				error: 'caller getter failed'
+			}
+		]
 	);
 });
 
@@ -118,8 +154,20 @@ test('Updates a revision with an optional patch', async () => {
 	expect(result).toEqual(updated);
 	expect(calls[0]).toEqual(['catalog_revisions', row.id, patch]);
 	recordExampleCases(
-		{ unitId: 'model.catalog-revision', symbol: 'CatalogRevision.update', state: 'updates-a-revision-with-an-optional-patch', evidence: 'examples-cases', file: 'updates-a-revision-with-an-optional-patch.json' },
-		[{ name: 'forwards id and patch and returns the adapter row', input: { id: row.id, patch }, output: result }]
+		{
+			unitId: 'model.catalog-revision',
+			symbol: 'CatalogRevision.update',
+			state: 'updates-a-revision-with-an-optional-patch',
+			evidence: 'examples-cases',
+			file: 'updates-a-revision-with-an-optional-patch.json'
+		},
+		[
+			{
+				name: 'forwards id and patch and returns the adapter row',
+				input: { id: row.id, patch },
+				output: result
+			}
+		]
 	);
 });
 
@@ -129,7 +177,13 @@ test('Deletes a revision by its commit id', async () => {
 	expect(result).toBe(true);
 	expect(calls[0]).toEqual(['catalog_revisions', row.id]);
 	recordExampleCases(
-		{ unitId: 'model.catalog-revision', symbol: 'CatalogRevision.delete', state: 'deletes-a-revision-by-its-commit-id', evidence: 'examples-cases', file: 'deletes-a-revision-by-its-commit-id.json' },
+		{
+			unitId: 'model.catalog-revision',
+			symbol: 'CatalogRevision.delete',
+			state: 'deletes-a-revision-by-its-commit-id',
+			evidence: 'examples-cases',
+			file: 'deletes-a-revision-by-its-commit-id.json'
+		},
 		[{ name: 'returns the adapter deletion result', input: { id: row.id }, output: result }]
 	);
 });

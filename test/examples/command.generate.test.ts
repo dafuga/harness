@@ -9,18 +9,16 @@ import { expect } from '../verificationExpect';
 
 /** A program named as buildProgram names it. Output is captured and exits are thrown, not made. */
 function harnessProgram(written: Written): Command {
-	return new Command('harness')
-		.exitOverride()
-		.configureOutput({
-			writeOut: (text) => {
-				written.stdout.push(text);
-			},
-			writeErr: (text) => {
-				written.stderr.push(text);
-			},
-			getOutHelpWidth: () => 80,
-			getErrHelpWidth: () => 80
-		});
+	return new Command('harness').exitOverride().configureOutput({
+		writeOut: (text) => {
+			written.stdout.push(text);
+		},
+		writeErr: (text) => {
+			written.stderr.push(text);
+		},
+		getOutHelpWidth: () => 80,
+		getErrHelpWidth: () => 80
+	});
 }
 
 /** Parses argv against a fresh program and returns what it printed and the error that stopped it. */

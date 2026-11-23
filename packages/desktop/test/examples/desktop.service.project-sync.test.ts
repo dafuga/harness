@@ -30,13 +30,13 @@ test('Syncs active account projects and ignores inactive requests', async () => 
 			},
 			[
 				{
-				name: 'Inactive sync is immediate and active sync refreshes the account projects',
-				input: {
-					inactiveCall: 'sync before start',
-					options: { interval: 60_000, exampleAccount: 'example-account' }
-				},
-				output
-			}
+					name: 'Inactive sync is immediate and active sync refreshes the account projects',
+					input: {
+						inactiveCall: 'sync before start',
+						options: { interval: 60_000, exampleAccount: 'example-account' }
+					},
+					output
+				}
 			]
 		);
 	} finally {

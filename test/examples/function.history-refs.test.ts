@@ -22,10 +22,7 @@ const classifiedRefs: Array<[string, RefKind]> = [
 test('Archive ref keeps each tested commit', () => {
 	const archives = [commitA, commitB].map((commit) => sourceArchiveRef(commit));
 
-	expect(archives).toEqual([
-		`refs/harness/source/${commitA}`,
-		`refs/harness/source/${commitB}`
-	]);
+	expect(archives).toEqual([`refs/harness/source/${commitA}`, `refs/harness/source/${commitB}`]);
 	recordExampleCases(
 		{
 			unitId: 'function.history-refs',

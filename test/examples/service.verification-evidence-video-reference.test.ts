@@ -3,7 +3,11 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { VideoReferenceService } from '../../src/services/verification-evidence/VideoReferenceService';
 import { safeReferencePath } from '../../src/services/verification-evidence/video-reference-service/binding';
-import { metadataLimit, createReferenceCache, memoCatalog } from '../../src/services/verification-evidence/video-reference-service/referenceCache';
+import {
+	metadataLimit,
+	createReferenceCache,
+	memoCatalog
+} from '../../src/services/verification-evidence/video-reference-service/referenceCache';
 
 const pathInputs = ['videos/clip.mp4', '../outside/clip.mp4', '/absolute/clip.mp4'];
 

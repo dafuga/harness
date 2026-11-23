@@ -3,14 +3,26 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir, withTempRepo } from '../support/temporary';
 import { ReasonPathService } from '../../src/services/development-tooling/ReasonPathService';
-import type { ReasonRange, SideLoader } from '../../src/services/development-tooling/ReasonPathService.types';
+import type {
+	ReasonRange,
+	SideLoader
+} from '../../src/services/development-tooling/ReasonPathService.types';
 import type { ReasonSide } from '../../src/utils/development-tooling/required-reasons/requiredReasons.types';
 
 const emptySide: ReasonSide = { index: { files: new Map() }, manifests: [] };
 const changedSide: ReasonSide = {
-	index: { files: new Map([['unit.ts', { hash: 'content-v1', blocks: [{ name: 'unit', hash: 'block-v1' }] }]]) },
+	index: {
+		files: new Map([
+			['unit.ts', { hash: 'content-v1', blocks: [{ name: 'unit', hash: 'block-v1' }] }]
+		])
+	},
 	manifests: [
-		{ id: 'unit.example', status: 'active', owns: { source: ['unit.ts'] }, declarationHash: 'decl-v1' }
+		{
+			id: 'unit.example',
+			status: 'active',
+			owns: { source: ['unit.ts'] },
+			declarationHash: 'decl-v1'
+		}
 	]
 };
 

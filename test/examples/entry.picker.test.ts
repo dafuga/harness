@@ -89,6 +89,12 @@ test('Wires the picker service and connects the MCP panel', async () => {
 			evidence: 'examples-cases',
 			file: 'wires-the-picker-service-and-connects-the-mcp-panel.json'
 		},
-		[{ name: 'import wires the service and connects the panel', input: 'module import', output: actual }]
+		[
+			{
+				name: 'import wires the service and connects the panel',
+				input: 'module import',
+				output: actual
+			}
+		]
 	);
 });

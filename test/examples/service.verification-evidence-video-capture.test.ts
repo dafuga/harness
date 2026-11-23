@@ -7,7 +7,11 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { VideoCaptureService } from '../../src/services/verification-evidence/VideoCaptureService';
-import type { VideoCapturePlan, VideoCaptureScript, VideoCaptureScriptInput } from '../../src/services/verification-evidence/VideoCaptureService.types';
+import type {
+	VideoCapturePlan,
+	VideoCaptureScript,
+	VideoCaptureScriptInput
+} from '../../src/services/verification-evidence/VideoCaptureService.types';
 import {
 	captureDigest,
 	captureFile,
@@ -71,9 +75,16 @@ test('Reports the video capture service identity', async () => {
 	await withTempDir('video-capture-service-', (directory) => {
 		const service = new VideoCaptureService(directory);
 		expect(service.run()).toBe('video-capture');
-		recordExampleCases(meta('reports-the-video-capture-service-identity', 'VideoCaptureService.run'), [
-			{ name: 'service rooted in a temporary checkout', input: { root: 'temporary' }, output: service.run() }
-		]);
+		recordExampleCases(
+			meta('reports-the-video-capture-service-identity', 'VideoCaptureService.run'),
+			[
+				{
+					name: 'service rooted in a temporary checkout',
+					input: { root: 'temporary' },
+					output: service.run()
+				}
+			]
+		);
 	});
 });
 
@@ -138,18 +149,21 @@ test('Requires every pending reviewer flag to be addressed', async () => {
 	const accepted = { addressedFlags: ['flag-1'] } as unknown as VideoCaptureScript;
 	expect(unaddressed.message).toContain('explicitly address every pending reviewer flag');
 	expect(() => admittedScript(accepted, input, plan)).not.toThrow();
-	recordExampleCases(meta('requires-every-pending-reviewer-flag-to-be-addressed', 'admittedScript'), [
-		{
-			name: 'script omits the pending flag',
-			input: { pendingFlags: ['flag-1'], addressedFlags: [] },
-			error: unaddressed
-		},
-		{
-			name: 'script addresses the known pending flag',
-			input: { pendingFlags: ['flag-1'], addressedFlags: ['flag-1'] },
-			output: null
-		}
-	]);
+	recordExampleCases(
+		meta('requires-every-pending-reviewer-flag-to-be-addressed', 'admittedScript'),
+		[
+			{
+				name: 'script omits the pending flag',
+				input: { pendingFlags: ['flag-1'], addressedFlags: [] },
+				error: unaddressed
+			},
+			{
+				name: 'script addresses the known pending flag',
+				input: { pendingFlags: ['flag-1'], addressedFlags: ['flag-1'] },
+				output: null
+			}
+		]
+	);
 });
 
 test('Accepts observed checkpoints and rejects a drifted boundary', async () => {
@@ -170,7 +184,11 @@ test('Accepts observed checkpoints and rejects a drifted boundary', async () => 
 	recordExampleCases(
 		meta('accepts-observed-checkpoints-and-rejects-a-drifted-boundary', 'captureCheckpoint'),
 		[
-			{ name: 'entry signature matches the declared entry', input: { boundary: 'entry' }, output: entry },
+			{
+				name: 'entry signature matches the declared entry',
+				input: { boundary: 'entry' },
+				output: entry
+			},
 			{ name: 'observed signature drifts from the exit', input: { boundary: 'exit' }, error: drift }
 		]
 	);

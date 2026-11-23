@@ -6,11 +6,18 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { expect } from '../verificationExpect';
 
-const UNIT_ID = 'workflow.verification-evidence-run-verify-verification-service-check-run-service-evidence-directory-failure';
+const UNIT_ID =
+	'workflow.verification-evidence-run-verify-verification-service-check-run-service-evidence-directory-failure';
 const FAILURE = 'capture directory ancestry must contain regular directories beneath the run root';
 
 function meta(state: string, file: string) {
-	return { unitId: UNIT_ID, symbol: 'evidenceDirectoryFailure', state, evidence: 'examples-cases', file };
+	return {
+		unitId: UNIT_ID,
+		symbol: 'evidenceDirectoryFailure',
+		state,
+		evidence: 'examples-cases',
+		file
+	};
 }
 
 test('Accepts a nested evidence directory that does not exist yet', async () => {
@@ -21,7 +28,10 @@ test('Accepts a nested evidence directory that does not exist yet', async () => 
 
 		expect(failure).toBeUndefined();
 		recordExampleCases(
-			meta('accepts-a-nested-evidence-directory-that-does-not-exist-yet', 'accepts-a-nested-evidence-directory-that-does-not-exist-yet.json'),
+			meta(
+				'accepts-a-nested-evidence-directory-that-does-not-exist-yet',
+				'accepts-a-nested-evidence-directory-that-does-not-exist-yet.json'
+			),
 			[
 				{
 					name: 'missing nested directory beneath the run root reports no failure',
@@ -42,7 +52,10 @@ test('Rejects a symlink component beneath the run root', async () => {
 
 		expect(failure).toBe(FAILURE);
 		recordExampleCases(
-			meta('rejects-a-symlink-component-beneath-the-run-root', 'rejects-a-symlink-component-beneath-the-run-root.json'),
+			meta(
+				'rejects-a-symlink-component-beneath-the-run-root',
+				'rejects-a-symlink-component-beneath-the-run-root.json'
+			),
 			[
 				{
 					name: 'symlinked component beneath the run root returns the ancestry failure',
@@ -63,7 +76,10 @@ test('Rejects a sibling directory outside the run root', async () => {
 
 		expect(failure).toBe(FAILURE);
 		recordExampleCases(
-			meta('rejects-a-sibling-directory-outside-the-run-root', 'rejects-a-sibling-directory-outside-the-run-root.json'),
+			meta(
+				'rejects-a-sibling-directory-outside-the-run-root',
+				'rejects-a-sibling-directory-outside-the-run-root.json'
+			),
 			[
 				{
 					name: 'sibling of the run root returns the ancestry failure',

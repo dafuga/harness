@@ -11,7 +11,8 @@ test('Mounts the provider picker into the app container', async () => {
 	const getElementById = vi.fn(() => null);
 	vi.stubGlobal('document', { getElementById });
 	try {
-		const { providerPickerEntry } = await import('../../src/utils/agents-providers/providerPickerEntry');
+		const { providerPickerEntry } =
+			await import('../../src/utils/agents-providers/providerPickerEntry');
 		const mounted = providerPickerEntry();
 		const output = { result: mounted, calls: mountMock.mock.calls.length };
 

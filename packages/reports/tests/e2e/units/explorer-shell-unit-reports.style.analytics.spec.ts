@@ -22,7 +22,8 @@ for (const viewport of catalogViewports) {
 			await preview.evaluate((root) => {
 				const card = document.createElement('article');
 				card.className = 'analytics-card analytics-accent';
-				card.innerHTML = '<p class="analytics-label">Analytics preview</p><strong class="analytics-value">42</strong>';
+				card.innerHTML =
+					'<p class="analytics-label">Analytics preview</p><strong class="analytics-value">42</strong>';
 				root.append(card);
 			});
 			const card = preview.locator('.analytics-card');

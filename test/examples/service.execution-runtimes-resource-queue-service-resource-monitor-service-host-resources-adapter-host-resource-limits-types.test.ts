@@ -29,7 +29,8 @@ test('Reports a host resource limits error with its name', () => {
 
 	recordExampleCases(
 		{
-			unitId: 'service.execution-runtimes-resource-queue-service-resource-monitor-service-host-resources-adapter-host-resource-limits-types',
+			unitId:
+				'service.execution-runtimes-resource-queue-service-resource-monitor-service-host-resources-adapter-host-resource-limits-types',
 			symbol: 'HostResourceLimitsError',
 			state: 'reports-a-host-resource-limits-error-with-its-name',
 			evidence: 'examples-cases',

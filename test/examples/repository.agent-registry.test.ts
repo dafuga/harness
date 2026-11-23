@@ -58,7 +58,11 @@ test('Registers an agent and reads it back', async () => {
 		expect(stored?.registration.label).toBe('Agent agent-frontend-a');
 		expect(stored?.end).toBeNull();
 		recordExampleCases(meta('register', 'registers-an-agent-and-reads-it-back'), [
-			{ name: 'checkout with no agent state is not used', input: { root: 'empty' }, output: before },
+			{
+				name: 'checkout with no agent state is not used',
+				input: { root: 'empty' },
+				output: before
+			},
 			{
 				name: 'registers agent-frontend-a then reads it back',
 				input: { id: 'agent-frontend-a', task: 'Update the agent registry contract' },
@@ -90,7 +94,11 @@ test('Keeps the first end an agent writes', async () => {
 				input: { id: 'agent-frontend-a', status: 'failed' },
 				output: second
 			},
-			{ name: 'read keeps the completed end', input: { id: 'agent-frontend-a' }, output: stored?.end }
+			{
+				name: 'read keeps the completed end',
+				input: { id: 'agent-frontend-a' },
+				output: stored?.end
+			}
 		]);
 	});
 });

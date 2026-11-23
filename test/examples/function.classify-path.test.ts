@@ -31,7 +31,12 @@ test('Classifies paths by workspace and repository rules', () => {
 	];
 	const outputs = inputs.map((path) => summarize(classifyPath(path, config)));
 	expect(outputs.map((result) => result.classification)).toEqual([
-		'source', 'source', 'test', 'global', 'ignored', 'registry'
+		'source',
+		'source',
+		'test',
+		'global',
+		'ignored',
+		'registry'
 	]);
 	const cases = inputs.map((path, index) => ({
 		name: path,

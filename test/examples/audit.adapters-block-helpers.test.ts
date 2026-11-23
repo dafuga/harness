@@ -95,24 +95,31 @@ test('Flags curly functions over the default 55-line limit', () => {
 	expect(empty).toEqual([]);
 	expect(unclosed).toEqual([]);
 
-	recordExampleCases(meta('auditCurlyFunctions', 'flags-curly-functions-over-the-default-55-line-limit'), [
-		{
-			name: 'short function stays under the limit',
-			input: { path: 'src/parse.ts', lineCount: shortFunction.length },
-			output: short
-		},
-		{
-			name: 'function of 58 lines breaks the limit',
-			input: { path: 'src/big.ts', lineCount: 58 },
-			output: long
-		},
-		{ name: 'empty file yields no findings', input: { path: 'src/empty.ts', lineCount: 0 }, output: empty },
-		{
-			name: 'unclosed block is dropped without a finding',
-			input: { path: 'src/open.ts', lineCount: unclosedFunction.length },
-			output: unclosed
-		}
-	]);
+	recordExampleCases(
+		meta('auditCurlyFunctions', 'flags-curly-functions-over-the-default-55-line-limit'),
+		[
+			{
+				name: 'short function stays under the limit',
+				input: { path: 'src/parse.ts', lineCount: shortFunction.length },
+				output: short
+			},
+			{
+				name: 'function of 58 lines breaks the limit',
+				input: { path: 'src/big.ts', lineCount: 58 },
+				output: long
+			},
+			{
+				name: 'empty file yields no findings',
+				input: { path: 'src/empty.ts', lineCount: 0 },
+				output: empty
+			},
+			{
+				name: 'unclosed block is dropped without a finding',
+				input: { path: 'src/open.ts', lineCount: unclosedFunction.length },
+				output: unclosed
+			}
+		]
+	);
 });
 
 test('Reports a deeply nested block that breaks several limits', () => {
@@ -145,23 +152,26 @@ test('Reports a deeply nested block that breaks several limits', () => {
 	]);
 	expect(tight[0].message).toBe('Block starting near line 1 has 6 parameters. Limit is 3.');
 
-	recordExampleCases(meta('auditCurlyFunctions', 'reports-a-deeply-nested-block-that-breaks-several-limits'), [
-		{
-			name: 'route block breaks parameters, complexity and nesting',
-			input: { path: 'src/route.ts', lineCount: routeFunction.length },
-			output: route
-		},
-		{
-			name: 'six parameters under default limits',
-			input: { path: 'src/build.ts', lineCount: wideFunction.length },
-			output: wide
-		},
-		{
-			name: 'six parameters under tight limits',
-			input: { path: 'src/build.ts', lineCount: wideFunction.length, maxParameters: 3 },
-			output: tight
-		}
-	]);
+	recordExampleCases(
+		meta('auditCurlyFunctions', 'reports-a-deeply-nested-block-that-breaks-several-limits'),
+		[
+			{
+				name: 'route block breaks parameters, complexity and nesting',
+				input: { path: 'src/route.ts', lineCount: routeFunction.length },
+				output: route
+			},
+			{
+				name: 'six parameters under default limits',
+				input: { path: 'src/build.ts', lineCount: wideFunction.length },
+				output: wide
+			},
+			{
+				name: 'six parameters under tight limits',
+				input: { path: 'src/build.ts', lineCount: wideFunction.length, maxParameters: 3 },
+				output: tight
+			}
+		]
+	);
 });
 
 test('Scans Python def blocks and skips async def', () => {
@@ -176,16 +186,19 @@ test('Scans Python def blocks and skips async def', () => {
 	]);
 	expect(fetch).toEqual([]);
 
-	recordExampleCases(meta('auditIndentedPythonBlocks', 'scans-python-def-blocks-and-skips-async-def'), [
-		{
-			name: 'def with five parameters breaks the limit',
-			input: { path: 'scripts/sync.py', lineCount: pythonSample.length },
-			output: sync
-		},
-		{
-			name: 'async def is never matched',
-			input: { path: 'scripts/fetch.py', lineCount: asyncSample.length },
-			output: fetch
-		}
-	]);
+	recordExampleCases(
+		meta('auditIndentedPythonBlocks', 'scans-python-def-blocks-and-skips-async-def'),
+		[
+			{
+				name: 'def with five parameters breaks the limit',
+				input: { path: 'scripts/sync.py', lineCount: pythonSample.length },
+				output: sync
+			},
+			{
+				name: 'async def is never matched',
+				input: { path: 'scripts/fetch.py', lineCount: asyncSample.length },
+				output: fetch
+			}
+		]
+	);
 });

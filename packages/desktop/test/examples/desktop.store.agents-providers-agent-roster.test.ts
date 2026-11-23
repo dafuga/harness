@@ -47,7 +47,10 @@ test('refreshes the selected project roster and derives active assignments', asy
 	const result = {
 		working: store.working,
 		sessions: store.sessions.map(({ agent, label }) => ({ id: agent.id, label })),
-		modules: store.modules.map(({ id, owners }) => ({ id, owners: owners.map(({ id: owner }) => owner) })),
+		modules: store.modules.map(({ id, owners }) => ({
+			id,
+			owners: owners.map(({ id: owner }) => owner)
+		})),
 		error: store.error
 	};
 	expect(store.sample).toEqual(reading);
@@ -69,7 +72,12 @@ test('refreshes the selected project roster and derives active assignments', asy
 			{
 				name: 'refresh project-alpha agent activity',
 				input: { projectId: 'project-alpha' },
-				output: { working: result.working, sessions: result.sessions, modules: result.modules, error: result.error }
+				output: {
+					working: result.working,
+					sessions: result.sessions,
+					modules: result.modules,
+					error: result.error
+				}
 			}
 		]
 	);

@@ -7,14 +7,16 @@ test('Lists runtime impact kernel and Rust guides', () => {
 	const topics = runtimeGuides.map((guide) => guide.topic);
 	expect(topics).toEqual(['runtime', 'impact', 'kernel', 'rust']);
 	expect(runtimeGuides[3]).toEqual({ ...runtimeGuides[2], topic: 'rust' });
-	const output = runtimeGuides.map(({ topic, summary, steps, rules, antiPatterns, exampleCommands }) => ({
-		topic,
-		summary,
-		stepCount: steps.length,
-		ruleCount: rules.length,
-		antiPatternCount: antiPatterns.length,
-		exampleCommandCount: exampleCommands.length
-	}));
+	const output = runtimeGuides.map(
+		({ topic, summary, steps, rules, antiPatterns, exampleCommands }) => ({
+			topic,
+			summary,
+			stepCount: steps.length,
+			ruleCount: rules.length,
+			antiPatternCount: antiPatterns.length,
+			exampleCommandCount: exampleCommands.length
+		})
+	);
 	recordExampleCases(
 		{
 			unitId: 'guide.runtimes',

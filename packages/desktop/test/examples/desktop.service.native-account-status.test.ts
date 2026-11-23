@@ -20,9 +20,17 @@ function serviceFor(result: unknown, events: string[], failure?: Error) {
 				return { json: async () => result };
 			}
 		},
-		store: { clear: async () => { events.push('store.clear'); } },
-		onDisconnect: () => { events.push('onDisconnect'); },
-		clearCache: async () => { events.push('clearCache'); }
+		store: {
+			clear: async () => {
+				events.push('store.clear');
+			}
+		},
+		onDisconnect: () => {
+			events.push('onDisconnect');
+		},
+		clearCache: async () => {
+			events.push('clearCache');
+		}
 	};
 	return new NativeAccountStatusService(options as unknown as StatusOptions);
 }
@@ -33,7 +41,12 @@ function errorSummary(error: unknown) {
 
 test('Rechecks identity and preserves sessions during outages', async () => {
 	const valid = {
-		actor: { id: credential.principalId, name: 'Ada Lovelace', email: 'ada@example.com', emailVerified: true }
+		actor: {
+			id: credential.principalId,
+			name: 'Ada Lovelace',
+			email: 'ada@example.com',
+			emailVerified: true
+		}
 	};
 	const signedInEvents: string[] = [];
 	const signedIn = await serviceFor(valid, signedInEvents).read(credential);
@@ -44,9 +57,19 @@ test('Rechecks identity and preserves sessions during outages', async () => {
 	});
 
 	const deniedEvents: string[] = [];
-	const signedOut = await serviceFor({ actor: { id: 'another-principal', name: 'Ada', email: 'ada@example.com', emailVerified: true } }, deniedEvents).read(credential);
+	const signedOut = await serviceFor(
+		{
+			actor: { id: 'another-principal', name: 'Ada', email: 'ada@example.com', emailVerified: true }
+		},
+		deniedEvents
+	).read(credential);
 	expect(signedOut).toEqual({ configured: true, state: 'signed-out' });
-	expect(deniedEvents).toEqual(['request:/api/auth/status:principal_7f3a9c21', 'onDisconnect', 'store.clear', 'clearCache']);
+	expect(deniedEvents).toEqual([
+		'request:/api/auth/status:principal_7f3a9c21',
+		'onDisconnect',
+		'store.clear',
+		'clearCache'
+	]);
 
 	const outage = new Error('Hosted service is offline');
 	const outageEvents: string[] = [];
@@ -75,7 +98,10 @@ test('Rechecks identity and preserves sessions during outages', async () => {
 			},
 			{
 				name: 'A different actor revokes the saved session and clears cache',
-				input: { credential, response: { actor: { id: 'another-principal', emailVerified: true } } },
+				input: {
+					credential,
+					response: { actor: { id: 'another-principal', emailVerified: true } }
+				},
 				output: { status: signedOut, events: deniedEvents }
 			},
 			{

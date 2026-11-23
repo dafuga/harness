@@ -1,7 +1,10 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { legacyLink, legacyEvidence } from '../../src/components/explorer-ui/harness-legacy/legacyEvidence';
+import {
+	legacyLink,
+	legacyEvidence
+} from '../../src/components/explorer-ui/harness-legacy/legacyEvidence';
 
 type Report = Parameters<typeof legacyEvidence>[0];
 

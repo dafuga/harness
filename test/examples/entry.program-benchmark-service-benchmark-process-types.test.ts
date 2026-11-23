@@ -30,7 +30,12 @@ test('Describes benchmark process input and result shapes', () => {
 		[
 			{
 				name: 'valid process input and successful result',
-				input: { command: input.command, cwd: input.cwd, input: input.input, timeoutMs: input.timeoutMs },
+				input: {
+					command: input.command,
+					cwd: input.cwd,
+					input: input.input,
+					timeoutMs: input.timeoutMs
+				},
 				output: result
 			}
 		]

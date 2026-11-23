@@ -4,7 +4,11 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { auditBlocks } from '../../src/audit/development-tooling/blockRules';
 
 const filePath = 'src/orders/pricing.ts';
-const shortFunction = ['export function add(a: number, b: number): number {', '\treturn a + b;', '}'];
+const shortFunction = [
+	'export function add(a: number, b: number): number {',
+	'\treturn a + b;',
+	'}'
+];
 const fiveParameters = [
 	'export function price(a: number, b: number, c: number, d: number, e: number): number {',
 	'\treturn a;',
@@ -45,7 +49,13 @@ test('Reports no findings for a short valid function', () => {
 			evidence: 'examples-cases',
 			file: 'reports-no-findings-for-a-short-valid-function.json'
 		},
-		[{ name: 'short function under default limits', input: { path: filePath, lines: shortFunction }, output }]
+		[
+			{
+				name: 'short function under default limits',
+				input: { path: filePath, lines: shortFunction },
+				output
+			}
+		]
 	);
 });
 
@@ -78,8 +88,16 @@ test('Reports a function with too many parameters', () => {
 			file: 'reports-a-function-with-too-many-parameters.json'
 		},
 		[
-			{ name: 'five parameters exceed the default limit of 4', input: { path: filePath, lines: fiveParameters }, output: flagged },
-			{ name: 'four parameters meet the default limit of 4', input: { path: filePath, lines: fourParameters }, output: passing },
+			{
+				name: 'five parameters exceed the default limit of 4',
+				input: { path: filePath, lines: fiveParameters },
+				output: flagged
+			},
+			{
+				name: 'four parameters meet the default limit of 4',
+				input: { path: filePath, lines: fourParameters },
+				output: passing
+			},
 			{
 				name: 'four parameters exceed a custom limit of 3',
 				input: { path: filePath, lines: fourParameters, limits: strictLimits },
@@ -107,6 +125,12 @@ test('Reports a catch-all Manager class name', () => {
 			evidence: 'examples-cases',
 			file: 'reports-a-catch-all-manager-class-name.json'
 		},
-		[{ name: 'class CartManager under default limits', input: { path: filePath, lines: managerClass }, output }]
+		[
+			{
+				name: 'class CartManager under default limits',
+				input: { path: filePath, lines: managerClass },
+				output
+			}
+		]
 	);
 });

@@ -104,7 +104,13 @@ test('Returns no captures when a run inspected no screenshots', async () => {
 		expect(result).toEqual({ captures: [], files: [] });
 		recordExampleCases(
 			meta('focusedScreens', 'returns-no-captures-when-a-run-inspected-no-screenshots'),
-			[{ name: 'empty gathered list retains nothing', input: { gathered: [], commit }, output: result }]
+			[
+				{
+					name: 'empty gathered list retains nothing',
+					input: { gathered: [], commit },
+					output: result
+				}
+			]
 		);
 	});
 });
@@ -169,21 +175,24 @@ test('Rejects a capture whose unit is not registered', async () => {
 		);
 		expect(error.name).toBe('ExpectedCliError');
 		expect(error.message).toContain('registered units at the tested commit');
-		recordExampleCases(
-			meta('focusedScreens', 'rejects-a-capture-whose-unit-is-not-registered'),
-			[
-				{
-					name: 'populated capture resolving to an unregistered unit is refused',
-					input: { unit, knownUnits: ['reports.component.other'] },
-					error: { name: error.name, message: error.message }
-				}
-			]
-		);
+		recordExampleCases(meta('focusedScreens', 'rejects-a-capture-whose-unit-is-not-registered'), [
+			{
+				name: 'populated capture resolving to an unregistered unit is refused',
+				input: { unit, knownUnits: ['reports.component.other'] },
+				error: { name: error.name, message: error.message }
+			}
+		]);
 	});
 });
 
 test('Fingerprints the environment without volatile variables', () => {
-	const reordered = { TZ: 'UTC', PWD: '/workspace/project', NODE_ENV: 'test', HARNESS_AGENT_ID: 'bot-1', CI: 'true' };
+	const reordered = {
+		TZ: 'UTC',
+		PWD: '/workspace/project',
+		NODE_ENV: 'test',
+		HARNESS_AGENT_ID: 'bot-1',
+		CI: 'true'
+	};
 	const changed = { ...baseEnv, TZ: 'Europe/Paris' };
 	const profile = environmentProfile(baseEnv);
 	expect(environmentProfile(reordered)).toBe(profile);

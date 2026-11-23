@@ -29,7 +29,11 @@ function thrownBy(run: () => unknown): Error {
 
 const roleInputs = [
 	{ name: 'owner with an executor', value: response(ownerId, 'owner', true), projectId: ownerId },
-	{ name: 'writer without an executor', value: response(writerId, 'writer', false), projectId: writerId },
+	{
+		name: 'writer without an executor',
+		value: response(writerId, 'writer', false),
+		projectId: writerId
+	},
 	{ name: 'commenter', value: response(writerId, 'commenter', false), projectId: writerId },
 	{ name: 'viewer', value: response(viewerId, 'viewer', false), projectId: viewerId }
 ];
@@ -57,7 +61,9 @@ test('Maps each hosted role to its capabilities', () => {
 	const [owner, writer, commenter, viewer] = outputs;
 
 	expect(owner).toEqual(access(true, true, 'Write access: comments and AI requests.'));
-	expect(writer).toEqual(access(true, false, 'Write access. Connect a project executor to run AI.'));
+	expect(writer).toEqual(
+		access(true, false, 'Write access. Connect a project executor to run AI.')
+	);
 	expect(commenter).toEqual(access(true, false, 'Comment access: read and leave comments.'));
 	expect(viewer).toEqual(access(false, false, 'Read access: browse only.'));
 

@@ -62,12 +62,7 @@ test('Registers diff, log and last under contracts', () => {
 				{ name: 'revision', required: false },
 				{ name: 'head', required: false }
 			],
-			options: [
-				...HISTORY_OPTIONS,
-				'--unit <id>',
-				'--since <revision>',
-				'--staged'
-			]
+			options: [...HISTORY_OPTIONS, '--unit <id>', '--since <revision>', '--staged']
 		},
 		{
 			name: 'log',
@@ -109,9 +104,7 @@ test('Limit parser accepts positive integers only', () => {
 	expect(parseLimit(contracts, '1')).toBe(1);
 	expect(() => parseLimit(contracts, '0')).toThrow('Expected a positive integer.');
 	expect(() => parseLimit(contracts, '007')).toThrow('Expected a positive integer.');
-	expect(() => parseLimit(contracts, '9007199254740993')).toThrow(
-		'Expected a positive integer.'
-	);
+	expect(() => parseLimit(contracts, '9007199254740993')).toThrow('Expected a positive integer.');
 	expect(() => parseLimit(contracts, '12a')).toThrow('Expected a positive integer.');
 	recordExampleCases(
 		{

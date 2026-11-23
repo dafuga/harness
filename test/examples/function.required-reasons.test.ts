@@ -12,7 +12,12 @@ import type {
 } from '../../src/utils/development-tooling/required-reasons/requiredReasons.types';
 
 const manifest = (id: string, status: 'active' | 'retired', source: string[]) =>
-	({ id, status, owns: { source }, declarationHash: 'a1b2c3d4e5f60718' }) satisfies CompactReasonManifest;
+	({
+		id,
+		status,
+		owns: { source },
+		declarationHash: 'a1b2c3d4e5f60718'
+	}) satisfies CompactReasonManifest;
 
 const side = (manifests: CompactReasonManifest[], files: Array<[string, string]>): ReasonSide => ({
 	manifests,
@@ -25,7 +30,13 @@ test('Tracks present units and whole-unit additions and removals', () => {
 	const oldManifest = manifest('function.old', 'active', ['src/old.ts']);
 	const retired = manifest('function.retired', 'retired', ['src/retired.ts']);
 	const newManifest = manifest('function.new', 'active', ['src/new.ts']);
-	const base = side([oldManifest, retired], [['src/old.ts', 'old-source-hash'], ['src/retired.ts', 'retired-hash']]);
+	const base = side(
+		[oldManifest, retired],
+		[
+			['src/old.ts', 'old-source-hash'],
+			['src/retired.ts', 'retired-hash']
+		]
+	);
 	const head = side([newManifest], [['src/new.ts', 'new-source-hash']]);
 	const present = [...presentUnits(base).keys()];
 	const reasons = requiredReasons(base, head);

@@ -6,16 +6,21 @@ import { control } from '../../scripts/ios-acceptance-run';
 import { FixtureControlOriginError } from '../../scripts/ios-acceptance-run.types';
 import type { Acceptance } from '../../scripts/ios-acceptance-run.types';
 
-function acceptance(page: object, project = { id: 'project-001', name: 'Fixture project' }): Acceptance {
+function acceptance(
+	page: object,
+	project = { id: 'project-001', name: 'Fixture project' }
+): Acceptance {
 	return { page, project } as unknown as Acceptance;
 }
 
 test('presses scan with an optional phone name', async () => {
 	const scripts: string[] = [];
-	const run = acceptance({ evaluate: async (script: string) => {
-		scripts.push(script);
-		return scripts.length === 1 ? 'true' : 'false';
-	} });
+	const run = acceptance({
+		evaluate: async (script: string) => {
+			scripts.push(script);
+			return scripts.length === 1 ? 'true' : 'false';
+		}
+	});
 	const named = await scanPressed(run, 'Harness fixture iPhone');
 	const unnamed = await scanPressed(run);
 
@@ -32,7 +37,11 @@ test('presses scan with an optional phone name', async () => {
 			file: 'presses-scan-with-an-optional-phone-name.json'
 		},
 		[
-			{ name: 'named device uses scan action', input: { name: 'Harness fixture iPhone' }, output: named },
+			{
+				name: 'named device uses scan action',
+				input: { name: 'Harness fixture iPhone' },
+				output: named
+			},
 			{ name: 'unnamed device falls back to scan again', input: {}, output: unnamed }
 		]
 	);
@@ -40,10 +49,12 @@ test('presses scan with an optional phone name', async () => {
 
 test('opens the fixture project and waits for its design image', async () => {
 	const calls: string[] = [];
-	const page = { until: async (script: string, expected: string) => {
-		calls.push(script);
-		return expected;
-	} };
+	const page = {
+		until: async (script: string, expected: string) => {
+			calls.push(script);
+			return expected;
+		}
+	};
 	const run = acceptance(page);
 	const output = await openDesign(run);
 
@@ -58,7 +69,13 @@ test('opens the fixture project and waits for its design image', async () => {
 			evidence: 'examples-cases',
 			file: 'opens-the-fixture-project-and-waits-for-its-design-image.json'
 		},
-		[{ name: 'design image reaches loaded state', input: { projectName: 'Fixture project' }, output }]
+		[
+			{
+				name: 'design image reaches loaded state',
+				input: { projectName: 'Fixture project' },
+				output
+			}
+		]
 	);
 });
 
@@ -81,6 +98,12 @@ test('refuses a fixture control origin outside this machine', async () => {
 			evidence: 'examples-cases',
 			file: 'refuses-a-fixture-control-origin-outside-this-machine.json'
 		},
-		[{ name: 'remote origin is rejected before requesting status', input: { origin: run.controlOrigin, path: '/status' }, error: { name: thrown.name, message: thrown.message } }]
+		[
+			{
+				name: 'remote origin is rejected before requesting status',
+				input: { origin: run.controlOrigin, path: '/status' },
+				error: { name: thrown.name, message: thrown.message }
+			}
+		]
 	);
 });

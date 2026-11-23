@@ -4,7 +4,10 @@ import { join, resolve } from 'node:path';
 import { test, vi } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { consoleDirectory, consoleData } from '../../src/utils/explorer-ui/console-server/consoleServer';
+import {
+	consoleDirectory,
+	consoleData
+} from '../../src/utils/explorer-ui/console-server/consoleServer';
 
 function temporaryDirectory(): string {
 	return mkdtempSync(join(tmpdir(), 'console-server-'));
@@ -94,7 +97,13 @@ test('Throws SyntaxError when matching revision JSON is malformed', async () => 
 				evidence: 'examples-cases',
 				file: 'throws-syntaxerror-when-matching-revision-json-is-malformed.json'
 			},
-			[{ name: 'malformed matching revision', input: { path, json: '{broken' }, error: 'SyntaxError' }]
+			[
+				{
+					name: 'malformed matching revision',
+					input: { path, json: '{broken' },
+					error: 'SyntaxError'
+				}
+			]
 		);
 	} finally {
 		vi.unstubAllEnvs();

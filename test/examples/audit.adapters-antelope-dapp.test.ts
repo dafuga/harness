@@ -1,9 +1,6 @@
 import { test } from 'vitest';
 import { antelopeDappAdapter } from '../../src/audit/development-tooling/adapters/antelopeDapp';
-import type {
-	AuditFile,
-	AuditStructure
-} from '../../src/audit/development-tooling/adapters/types';
+import type { AuditFile, AuditStructure } from '../../src/audit/development-tooling/adapters/types';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
 

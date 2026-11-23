@@ -79,6 +79,12 @@ test('Lists agreed remote-only branches and filters other refs', () => {
 			evidence: 'examples-cases',
 			file: 'lists-agreed-remote-only-branches-and-filters-other-refs.json'
 		},
-		[{ name: 'agreed release survives while evidence and metadata refs are omitted', input: { refs, remotes }, output }]
+		[
+			{
+				name: 'agreed release survives while evidence and metadata refs are omitted',
+				input: { refs, remotes },
+				output
+			}
+		]
 	);
 });

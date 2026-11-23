@@ -43,10 +43,34 @@ const units: UnitsConfig = {
 };
 
 const EXECUTION_CASES: ExecutionCase[] = [
-	['interface-only TypeScript is declarative', 'export interface EvidenceRow {\n\tid: string;\n}\n', 'ts', 'src/lib/reports/evidence.ts', 'declarative'],
-	['a top-level const makes TypeScript runtime', 'export const rowLimit = 50;\n', 'ts', 'src/lib/reports/limits.ts', 'runtime'],
-	['TypeScript with parse diagnostics is unknown', 'const = ;\n', 'ts', 'src/lib/reports/broken.ts', 'unknown'],
-	['CSS is declarative without reading the code', '.row { color: red; }\n', 'css', 'src/styles/evidence.css', 'declarative'],
+	[
+		'interface-only TypeScript is declarative',
+		'export interface EvidenceRow {\n\tid: string;\n}\n',
+		'ts',
+		'src/lib/reports/evidence.ts',
+		'declarative'
+	],
+	[
+		'a top-level const makes TypeScript runtime',
+		'export const rowLimit = 50;\n',
+		'ts',
+		'src/lib/reports/limits.ts',
+		'runtime'
+	],
+	[
+		'TypeScript with parse diagnostics is unknown',
+		'const = ;\n',
+		'ts',
+		'src/lib/reports/broken.ts',
+		'unknown'
+	],
+	[
+		'CSS is declarative without reading the code',
+		'.row { color: red; }\n',
+		'css',
+		'src/styles/evidence.css',
+		'declarative'
+	],
 	['Svelte is unknown', '<h1>Evidence</h1>\n', 'svelte', GRID_PATH, 'unknown']
 ];
 
@@ -54,7 +78,14 @@ function meta(state: string, symbol: string) {
 	return { unitId: UNIT, symbol, state, evidence: 'examples-cases', file: `${state}.json` };
 }
 
-function errorName(run: () => unknown): string { try { run(); return 'none'; } catch (error) { return error instanceof Error ? error.name : 'non-error'; } }
+function errorName(run: () => unknown): string {
+	try {
+		run();
+		return 'none';
+	} catch (error) {
+		return error instanceof Error ? error.name : 'non-error';
+	}
+}
 
 function fakeTree(files: Record<string, string>, revision = 'rev-1'): SourceTree {
 	return {
@@ -69,7 +100,10 @@ function fakeTree(files: Record<string, string>, revision = 'rev-1'): SourceTree
 
 function propsOf(source: string, path: string) {
 	const tree = fakeTree({ [path]: source });
-	return new ComponentPropsResolver(tree, new Map<string, SourceFile>()).inputs(path, 'EvidenceGrid');
+	return new ComponentPropsResolver(tree, new Map<string, SourceFile>()).inputs(
+		path,
+		'EvidenceGrid'
+	);
 }
 
 function bindingFile() {
@@ -128,10 +162,20 @@ test('Indexes readable files and omits ignored ones', async () => {
 	expect(index.revision).toBe('rev-7');
 	expect(paths).toEqual([GRID_PATH, 'src/lib/reports/evidence.ts']);
 	expect(index.files.has('docs/readme.md')).toBe(false);
-	const broken: SourceTree = { revision: 'rev-bad', list: async () => [{ path: 'src/lib/broken.ts', hash: 'h' }], read: async () => { throw new Error('read failed'); } };
+	const broken: SourceTree = {
+		revision: 'rev-bad',
+		list: async () => [{ path: 'src/lib/broken.ts', hash: 'h' }],
+		read: async () => {
+			throw new Error('read failed');
+		}
+	};
 	await expect(new SourceIndexService().index(broken, units)).rejects.toThrow('read failed');
 	recordExampleCases(meta('indexes-readable-files-and-omits-ignored-ones', 'index'), [
-		{ name: 'a rejected read rejects index with no partial index', input: { revision: 'rev-bad', path: 'src/lib/broken.ts' }, error: 'read failed' },
+		{
+			name: 'a rejected read rejects index with no partial index',
+			input: { revision: 'rev-bad', path: 'src/lib/broken.ts' },
+			error: 'read failed'
+		},
 		{
 			name: 'readable non-ignored files are indexed at the snapshot revision',
 			input: { revision: 'rev-7', entries: Object.keys(files) },
@@ -147,8 +191,14 @@ test('Indexes readable files and omits ignored ones', async () => {
 
 test('Resolves import bindings and selects props', () => {
 	const file = bindingFile();
-	expect(importedBinding(file, 'Grid')).toEqual({ name: 'default', specifier: './EvidenceGrid.svelte' });
-	expect(importedBinding(file, 'Row')).toEqual({ name: 'EvidenceRow', specifier: '../reports/types' });
+	expect(importedBinding(file, 'Grid')).toEqual({
+		name: 'default',
+		specifier: './EvidenceGrid.svelte'
+	});
+	expect(importedBinding(file, 'Row')).toEqual({
+		name: 'EvidenceRow',
+		specifier: '../reports/types'
+	});
 	expect(importedBinding(file, 'Props')).toEqual({ name: 'Props', specifier: './props' });
 	expect(importedBinding(file, 'Missing')).toBeUndefined();
 	const pick = selectedProps(PROPS, 'Pick', literalKey('rows'));
@@ -163,9 +213,21 @@ test('Resolves import bindings and selects props', () => {
 		bindingCase(file, 'Row'),
 		bindingCase(file, 'Props'),
 		bindingCase(file, 'Missing'),
-		{ name: 'Pick keeps the named prop', input: { operator: 'Pick', keys: ['rows'] }, output: pick },
-		{ name: 'Omit drops the named prop', input: { operator: 'Omit', keys: ['rows'] }, output: omit },
-		{ name: 'Required marks every prop required', input: { operator: 'Required' }, output: required }
+		{
+			name: 'Pick keeps the named prop',
+			input: { operator: 'Pick', keys: ['rows'] },
+			output: pick
+		},
+		{
+			name: 'Omit drops the named prop',
+			input: { operator: 'Omit', keys: ['rows'] },
+			output: omit
+		},
+		{
+			name: 'Required marks every prop required',
+			input: { operator: 'Required' },
+			output: required
+		}
 	]);
 });
 
@@ -203,12 +265,34 @@ test('Reads storage records and classifies execution', () => {
 });
 
 test('Throws Source read or parse failure when read rejects', async () => {
-	await expect(new ComponentPropsResolver(fakeTree({}), new Map<string, SourceFile>()).inputs(GRID_PATH, 'EvidenceGrid')).rejects.toThrow('unreadable');
-	recordExampleCases(meta('throws-source-read-or-parse-failure-when-read-rejects', 'inputs'), [{ name: 'a rejected snapshot read rejects the call', input: { path: GRID_PATH, owner: 'EvidenceGrid' }, error: `unreadable: ${GRID_PATH}` }]);
+	await expect(
+		new ComponentPropsResolver(fakeTree({}), new Map<string, SourceFile>()).inputs(
+			GRID_PATH,
+			'EvidenceGrid'
+		)
+	).rejects.toThrow('unreadable');
+	recordExampleCases(meta('throws-source-read-or-parse-failure-when-read-rejects', 'inputs'), [
+		{
+			name: 'a rejected snapshot read rejects the call',
+			input: { path: GRID_PATH, owner: 'EvidenceGrid' },
+			error: `unreadable: ${GRID_PATH}`
+		}
+	]);
 });
 
 test('Throws Source syntax access failure when text is undefined', () => {
-	const name = errorName(() => sourceExecution(undefined as unknown as string, 'ts', 'src/lib/x.ts'));
+	const name = errorName(() =>
+		sourceExecution(undefined as unknown as string, 'ts', 'src/lib/x.ts')
+	);
 	expect(name).not.toBe('none');
-	recordExampleCases(meta('throws-source-syntax-access-failure-when-text-is-undefined', 'sourceExecution'), [{ name: 'undefined source text throws from the parser', input: { code: 'undefined', language: 'ts', path: 'src/lib/x.ts' }, error: name }]);
+	recordExampleCases(
+		meta('throws-source-syntax-access-failure-when-text-is-undefined', 'sourceExecution'),
+		[
+			{
+				name: 'undefined source text throws from the parser',
+				input: { code: 'undefined', language: 'ts', path: 'src/lib/x.ts' },
+				error: name
+			}
+		]
+	);
 });

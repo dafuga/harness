@@ -8,11 +8,7 @@ import {
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
 
-function parseCase(
-	schema: { parse(input: unknown): unknown },
-	name: string,
-	input: unknown
-) {
+function parseCase(schema: { parse(input: unknown): unknown }, name: string, input: unknown) {
 	try {
 		return { name, input, output: schema.parse(input) };
 	} catch (error) {
@@ -189,15 +185,19 @@ test('Rejects invalid metadata, duplicate ids, and legacy paths', () => {
 		groups: [],
 		description: 'not part of the config schema'
 	});
-	const unsafeLegacy = parseCase(moduleGroupsConfig, 'legacy paths with traversal and a backslash', {
-		schemaVersion: 1,
-		groups: [],
-		legacy: ['../legacy.ts', 'apps/web/src/routes\\legacy.ts']
-	});
-
-	expect(issueMessages(duplicate).some((message) => message.includes('Category ids must be unique.'))).toBe(
-		true
+	const unsafeLegacy = parseCase(
+		moduleGroupsConfig,
+		'legacy paths with traversal and a backslash',
+		{
+			schemaVersion: 1,
+			groups: [],
+			legacy: ['../legacy.ts', 'apps/web/src/routes\\legacy.ts']
+		}
 	);
+
+	expect(
+		issueMessages(duplicate).some((message) => message.includes('Category ids must be unique.'))
+	).toBe(true);
 	expect(issuePaths(version)).toEqual(['schemaVersion']);
 	expect(issueMessages(extra).length).toBeGreaterThan(0);
 	expect(issueMessages(unsafeLegacy).length).toBe(2);

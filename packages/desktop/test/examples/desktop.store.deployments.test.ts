@@ -94,7 +94,11 @@ test('reviews the current commit for production', async () => {
 			{
 				name: 'review the workspace snapshot for prod',
 				input: { projectId: 'project-7', commit: 'abc123', environment: 'prod' },
-				output: { planId: store.plan?.id, commit: store.plan?.commit, blockers: store.plan?.blockers }
+				output: {
+					planId: store.plan?.id,
+					commit: store.plan?.commit,
+					blockers: store.plan?.blockers
+				}
 			}
 		]
 	);

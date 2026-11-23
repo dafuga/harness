@@ -2,7 +2,10 @@ import { test, vi } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir, withTempRepo } from '../support/temporary';
-import { recordResponse, recordCleanCode } from '../../src/workflows/agents-providers/recordJevAnalytics';
+import {
+	recordResponse,
+	recordCleanCode
+} from '../../src/workflows/agents-providers/recordJevAnalytics';
 import type { ResponseCheckReport } from '../../src/core/verification-evidence/responseCheckTypes';
 import type { CleanCodeReport } from '../../src/audit/development-tooling/cleanCodeTypes';
 
@@ -62,9 +65,7 @@ async function withAnalyticsDisabled<T>(use: () => Promise<T>): Promise<T> {
 
 test('Records a dry-run response check without persisting analytics', async () => {
 	await withTempDir('record-jev-response-', async () => {
-		const result = await withAnalyticsDisabled(() =>
-			recordResponse(responseReport, {}, 1842)
-		);
+		const result = await withAnalyticsDisabled(() => recordResponse(responseReport, {}, 1842));
 
 		expect(result).toBeUndefined();
 		recordExampleCases(

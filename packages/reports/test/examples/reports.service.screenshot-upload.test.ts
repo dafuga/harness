@@ -44,10 +44,10 @@ test('Uploads a desktop comparison', async () => {
 			before: screenshot('before.png'),
 			after: screenshot('after.png')
 		};
-		const result = await new ScreenshotUploadService(fixture.repository as never, fixture.storage).upload(
-			'report-123',
-			input
-		);
+		const result = await new ScreenshotUploadService(
+			fixture.repository as never,
+			fixture.storage
+		).upload('report-123', input);
 		expect(result).toBe(fixture.report);
 		expect(fixture.stored).toHaveLength(2);
 		expect(result.evidence).toHaveLength(2);
@@ -73,7 +73,11 @@ test('Uploads a desktop comparison', async () => {
 					},
 					output: {
 						stored: fixture.stored,
-						evidence: result.evidence.map(({ title, phase, viewport }) => ({ title, phase, viewport })),
+						evidence: result.evidence.map(({ title, phase, viewport }) => ({
+							title,
+							phase,
+							viewport
+						})),
 						assetBytes: assetPaths.map((path) => readFileSync(path).length)
 					}
 				}

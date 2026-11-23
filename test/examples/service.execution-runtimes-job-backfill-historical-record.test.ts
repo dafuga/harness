@@ -30,8 +30,16 @@ test('Prefers explicit task and unit identity over folder names', () => {
 	recordExampleCases(
 		meta('historicalIdentity', 'prefers-explicit-task-and-unit-identity-over-folder-names'),
 		[
-			{ name: 'explicit task and unit_id win over the folder', input: { data: explicitData, path: RESULT_PATH }, output: explicit },
-			{ name: 'folder name is the fallback when no identity is recorded', input: { data: {}, path: RESULT_PATH }, output: fallback }
+			{
+				name: 'explicit task and unit_id win over the folder',
+				input: { data: explicitData, path: RESULT_PATH },
+				output: explicit
+			},
+			{
+				name: 'folder name is the fallback when no identity is recorded',
+				input: { data: {}, path: RESULT_PATH },
+				output: fallback
+			}
 		]
 	);
 });
@@ -75,7 +83,13 @@ test('Splits reverify attempts with their own model and time', () => {
 			{
 				name: 'two serial reverify attempts keep their models, outcomes and elapsed time',
 				input: { record: { type: 'reverify', endedAt: 100000 }, data },
-				output: attempts.map((a) => ({ model: a.model, outcome: a.outcome, startedAt: a.startedAt, endedAt: a.endedAt, durationMs: a.durationMs }))
+				output: attempts.map((a) => ({
+					model: a.model,
+					outcome: a.outcome,
+					startedAt: a.startedAt,
+					endedAt: a.endedAt,
+					durationMs: a.durationMs
+				}))
 			},
 			{
 				name: 'non-reverify record stays a single job',
@@ -96,10 +110,26 @@ test('Prefers explicit model metadata over directory names', () => {
 	recordExampleCases(
 		meta('historicalModel', 'prefers-explicit-model-metadata-over-directory-names'),
 		[
-			{ name: 'explicit model field wins', input: { data: { model: 'opus' }, directory: 'unit-x' }, output: explicit },
-			{ name: 'worker field is used when no model is recorded', input: { data: { worker: 'sol' }, directory: 'unit-x' }, output: worker },
-			{ name: 'recognized model directory is accepted', input: { data: {}, directory: 'luna' }, output: inferred },
-			{ name: 'unrecognized folder stays unknown', input: { data: {}, directory: 'service-folder' }, output: unknown }
+			{
+				name: 'explicit model field wins',
+				input: { data: { model: 'opus' }, directory: 'unit-x' },
+				output: explicit
+			},
+			{
+				name: 'worker field is used when no model is recorded',
+				input: { data: { worker: 'sol' }, directory: 'unit-x' },
+				output: worker
+			},
+			{
+				name: 'recognized model directory is accepted',
+				input: { data: {}, directory: 'luna' },
+				output: inferred
+			},
+			{
+				name: 'unrecognized folder stays unknown',
+				input: { data: {}, directory: 'service-folder' },
+				output: unknown
+			}
 		]
 	);
 });

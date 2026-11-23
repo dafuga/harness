@@ -40,10 +40,19 @@ test('Rejects when the remote is unknown', async () => {
 });
 
 test('Renders fetch and transfer results', () => {
- const cases: Array<{ action: SyncAction; result: Synced }> = [
-		{ action: 'fetch', result: { evidence: 'created', notes: 'fast-forwarded', pushed: false, remote: 'origin' } },
-		{ action: 'push', result: { evidence: 'created', notes: 'fast-forwarded', pushed: true, remote: 'origin' } },
-		{ action: 'sync', result: { evidence: 'unchanged', notes: 'absent', pushed: false, remote: 'upstream' } }
+	const cases: Array<{ action: SyncAction; result: Synced }> = [
+		{
+			action: 'fetch',
+			result: { evidence: 'created', notes: 'fast-forwarded', pushed: false, remote: 'origin' }
+		},
+		{
+			action: 'push',
+			result: { evidence: 'created', notes: 'fast-forwarded', pushed: true, remote: 'origin' }
+		},
+		{
+			action: 'sync',
+			result: { evidence: 'unchanged', notes: 'absent', pushed: false, remote: 'upstream' }
+		}
 	];
 	const outputs = cases.map(({ action, result }) => renderSync(action, result));
 	expect(outputs).toEqual([

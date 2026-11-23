@@ -15,10 +15,22 @@ import { expect } from '../verificationExpect';
 
 test('Matches exact prefix and wildcard paths', () => {
 	const cases = [
-		{ name: 'exact source path', input: ['src/core/unitsConfig.ts', 'src/core/unitsConfig.ts'], output: true },
+		{
+			name: 'exact source path',
+			input: ['src/core/unitsConfig.ts', 'src/core/unitsConfig.ts'],
+			output: true
+		},
 		{ name: 'core folder prefix', input: ['src/core/unitsConfig.ts', 'src/core/'], output: true },
-		{ name: 'glob crosses folders', input: ['src/core/development-tooling/unitsConfig.ts', '**/*.ts'], output: true },
-		{ name: 'single star stays in segment', input: ['src/core/development-tooling/unitsConfig.ts', 'src/*/unitsConfig.ts'], output: false }
+		{
+			name: 'glob crosses folders',
+			input: ['src/core/development-tooling/unitsConfig.ts', '**/*.ts'],
+			output: true
+		},
+		{
+			name: 'single star stays in segment',
+			input: ['src/core/development-tooling/unitsConfig.ts', 'src/*/unitsConfig.ts'],
+			output: false
+		}
 	] as const;
 	const results = cases.map(({ input }) => pathMatches(input[0], input[1]));
 	expect(results).toEqual(cases.map(({ output }) => output));
@@ -38,7 +50,13 @@ test('Provides strict unit indexing defaults', () => {
 	const valid = unitsConfigSchema.safeParse(defaultUnitsConfig);
 	const invalid = unitsConfigSchema.safeParse({ ...defaultUnitsConfig, extra: true });
 	const summary = {
-		locations: [unitsConfigFile, unitsDirectory, scenariosDirectory, budgetsLedger, workloadsDirectory],
+		locations: [
+			unitsConfigFile,
+			unitsDirectory,
+			scenariosDirectory,
+			budgetsLedger,
+			workloadsDirectory
+		],
 		globalFileCount: defaultGlobalFiles.length,
 		includesConfigFile: defaultGlobalFiles.includes(unitsConfigFile),
 		defaults: defaultUnitsConfig,
@@ -46,7 +64,13 @@ test('Provides strict unit indexing defaults', () => {
 		rejectsUnknownField: !invalid.success
 	};
 	expect(summary).toEqual({
-		locations: ['harness.units.json', 'specification/units', 'specification/scenarios', 'specification/budgets/ledger.ndjson', 'specification/workloads'],
+		locations: [
+			'harness.units.json',
+			'specification/units',
+			'specification/scenarios',
+			'specification/budgets/ledger.ndjson',
+			'specification/workloads'
+		],
 		globalFileCount: 21,
 		includesConfigFile: true,
 		defaults: {

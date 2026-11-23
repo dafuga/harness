@@ -1,7 +1,11 @@
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
-import { ExpectedCliError, fail, isExpectedCliError } from '../../src/core/development-tooling/errors';
+import {
+	ExpectedCliError,
+	fail,
+	isExpectedCliError
+} from '../../src/core/development-tooling/errors';
 
 function captureFailure(message: string): { name: string; message: string } {
 	try {

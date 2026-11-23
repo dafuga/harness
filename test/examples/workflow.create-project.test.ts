@@ -2,11 +2,21 @@ import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
-import { createProject, renderCreateProject } from '../../src/cli/program/create-project/createProject';
-import type { CreateProjectInput, CreateProjectResult } from '../../src/cli/program/create-project/createProject.types';
+import {
+	createProject,
+	renderCreateProject
+} from '../../src/cli/program/create-project/createProject';
+import type {
+	CreateProjectInput,
+	CreateProjectResult
+} from '../../src/cli/program/create-project/createProject.types';
 
 function stateId(title: string): string {
-	return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
+	return title
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-|-$/g, '')
+		.slice(0, 60);
 }
 
 function summarize(result: CreateProjectResult): object {
@@ -34,8 +44,20 @@ test('Creates a project from a valid template input', async () => {
 		expect(result.name).toBe('ledger-console');
 		expect(result.writes.length).toBeGreaterThan(0);
 		recordExampleCases(
-			{ unitId: 'workflow.create-project', symbol: 'createProject', state, evidence: 'examples-cases', file: `${state}.json` },
-			[{ name: 'creates the named app under the supplied parent with ordered writes', input, output: summarize(result) }]
+			{
+				unitId: 'workflow.create-project',
+				symbol: 'createProject',
+				state,
+				evidence: 'examples-cases',
+				file: `${state}.json`
+			},
+			[
+				{
+					name: 'creates the named app under the supplied parent with ordered writes',
+					input,
+					output: summarize(result)
+				}
+			]
 		);
 	});
 });
@@ -53,8 +75,20 @@ test('Rejects an unsupported project dimension', async () => {
 	expect(error).toBeInstanceOf(Error);
 	expect((error as Error).message).toBe('Dimension must be 2d or 3d.');
 	recordExampleCases(
-		{ unitId: 'workflow.create-project', symbol: 'createProject', state, evidence: 'examples-cases', file: `${state}.json` },
-		[{ name: 'rejects before creating project files', input, error: { name: (error as Error).name, message: (error as Error).message } }]
+		{
+			unitId: 'workflow.create-project',
+			symbol: 'createProject',
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
+		[
+			{
+				name: 'rejects before creating project files',
+				input,
+				error: { name: (error as Error).name, message: (error as Error).message }
+			}
+		]
 	);
 });
 
@@ -65,7 +99,13 @@ test('Renders a project creation result', () => {
 	const output = renderCreateProject(input);
 	expect(output).toBe('Created app harness "ledger-console".\n');
 	recordExampleCases(
-		{ unitId: 'workflow.create-project', symbol: 'renderCreateProject', state, evidence: 'examples-cases', file: `${state}.json` },
+		{
+			unitId: 'workflow.create-project',
+			symbol: 'renderCreateProject',
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
 		[{ name: 'renders the heading and empty file list', input, output }]
 	);
 });

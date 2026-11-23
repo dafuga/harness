@@ -42,7 +42,7 @@ test('Writes binary response bytes without replacing an existing file', async ()
 		const output = join(directory, 'response.bin');
 		const bytes = new Uint8Array([0, 17, 255]);
 		await apiOutput({ data: null, bytes, mediaType: 'application/octet-stream' }, { output });
-		const written = [...await readFile(output)];
+		const written = [...(await readFile(output))];
 		expect(written).toEqual([0, 17, 255]);
 		let error: unknown;
 		try {
@@ -66,7 +66,10 @@ test('Writes binary response bytes without replacing an existing file', async ()
 						result: { bytes: [0, 17, 255], mediaType: 'application/octet-stream' },
 						options: { output: 'response.bin' }
 					},
-					output: { bytes: written, repeatedWriteError: { code: (error as { code?: string }).code } }
+					output: {
+						bytes: written,
+						repeatedWriteError: { code: (error as { code?: string }).code }
+					}
 				}
 			]
 		);

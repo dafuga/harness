@@ -15,7 +15,9 @@ function writeResults(root: string) {
 	writeFileSync(
 		join(reverify, 'result.json'),
 		JSON.stringify({
-			task: 'task-42', unit: 'service.example', status: 'pass',
+			task: 'task-42',
+			unit: 'service.example',
+			status: 'pass',
 			tried: [
 				{ model: 'haiku', seconds: 1.25, ok: false },
 				{ model: 'luna', seconds: 2.5, ok: true }
@@ -33,7 +35,12 @@ async function importExamples(directory: string) {
 		const service = new JobBackfillService(history);
 		const first = service.import(root);
 		const records = history.all().map(({ id, type, model, attempt, durationMs, outcome }) => ({
-			id, type, model, attempt, durationMs, outcome
+			id,
+			type,
+			model,
+			attempt,
+			durationMs,
+			outcome
 		}));
 		const repeated = service.import(root);
 		return { first, records, repeated };

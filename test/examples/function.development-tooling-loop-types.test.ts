@@ -17,7 +17,13 @@ test('Loop state preserves policy ordered pending steps evaluators', () => {
 			{ id: 'green', title: 'Repair parser behavior', status: 'pending' }
 		],
 		evaluators: [
-			{ id: 'focused-test', title: 'Parser regression', command: 'bun test parser.test.ts', step: 'red', timeoutMs: 5000 }
+			{
+				id: 'focused-test',
+				title: 'Parser regression',
+				command: 'bun test parser.test.ts',
+				step: 'red',
+				timeoutMs: 5000
+			}
 		],
 		closed: {
 			status: 'abandoned',

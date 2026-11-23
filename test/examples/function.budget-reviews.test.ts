@@ -3,11 +3,18 @@ import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { budgetReviews } from '../../src/cli/program/history-index-service/budgetReviews';
 import type { ComponentManifest } from '../../src/core/development-tooling/unitTypes';
-import type { BudgetReview, EmittedLimits, FrozenLimits } from '../../src/utils/verification-evidence/budgetReviews';
-import { frozenLimits, emittedLimits } from '../../src/utils/verification-evidence/revision-registry/frozenLimits';
+import type {
+	BudgetReview,
+	EmittedLimits,
+	FrozenLimits
+} from '../../src/utils/verification-evidence/budgetReviews';
+import {
+	frozenLimits,
+	emittedLimits
+} from '../../src/utils/verification-evidence/revision-registry/frozenLimits';
 
 const baseline = {
- type: 'baseline' as const,
+	type: 'baseline' as const,
 	unit: 'function.budget-reviews',
 	record: { id: 'record-1', commit: 'commit-1', tree: 'tree-1' },
 	reviewer: 'Priya Natarajan',
@@ -18,7 +25,12 @@ const baseline = {
 };
 
 const frozen = {
-	metrics: { 'source-bytes': 18432, complexity: 37, dependencies: 6, 'artifact-bytes:process': 2411520 },
+	metrics: {
+		'source-bytes': 18432,
+		complexity: 37,
+		dependencies: 6,
+		'artifact-bytes:process': 2411520
+	},
 	unmeasured: { 'source-bytes': 'Not measured: src/parser/grammar.ts was not read.' },
 	performance: []
 };
@@ -59,21 +71,50 @@ test('Combines ledger reviews and removes repeated events', () => {
 		after: { 'source-bytes': 19104, complexity: 39, dependencies: 6 },
 		performance: []
 	};
-	const actual = budgetReviews([[approval, baseline], [baseline, approval]]);
+	const actual = budgetReviews([
+		[approval, baseline],
+		[baseline, approval]
+	]);
 	const expected: BudgetReview[] = [
 		{
-			type: 'baseline' as const, commit: 'commit-1', record: 'record-1', reviewer: 'Priya Natarajan',
-			reason: 'Limits frozen when the unit was first established.', at: baseline.at, after: baseline.metrics
+			type: 'baseline' as const,
+			commit: 'commit-1',
+			record: 'record-1',
+			reviewer: 'Priya Natarajan',
+			reason: 'Limits frozen when the unit was first established.',
+			at: baseline.at,
+			after: baseline.metrics
 		},
 		{
-			type: 'approval' as const, commit: 'commit-2', record: 'record-2', reviewer: 'Tomas Berg',
-			reason: 'Reviewed source growth.', at: approval.at, before: approval.before, after: approval.after
+			type: 'approval' as const,
+			commit: 'commit-2',
+			record: 'record-2',
+			reviewer: 'Tomas Berg',
+			reason: 'Reviewed source growth.',
+			at: approval.at,
+			before: approval.before,
+			after: approval.after
 		}
 	];
 	expect(actual.get('function.budget-reviews')).toEqual(expected);
 	recordExampleCases(
-		{ unitId: 'function.budget-reviews', symbol: 'budgetReviews', state: 'combines-ledger-reviews-and-removes-repeated-events', evidence: 'examples-cases', file: 'combines-ledger-reviews-and-removes-repeated-events.json' },
-		[{ name: 'duplicate baseline and approval across revisions', input: [[approval, baseline], [baseline, approval]], output: expected }]
+		{
+			unitId: 'function.budget-reviews',
+			symbol: 'budgetReviews',
+			state: 'combines-ledger-reviews-and-removes-repeated-events',
+			evidence: 'examples-cases',
+			file: 'combines-ledger-reviews-and-removes-repeated-events.json'
+		},
+		[
+			{
+				name: 'duplicate baseline and approval across revisions',
+				input: [
+					[approval, baseline],
+					[baseline, approval]
+				],
+				output: expected
+			}
+		]
 	);
 });
 
@@ -85,8 +126,20 @@ test('Selects source limits and their unmeasured reasons', () => {
 	};
 	expect(actual).toEqual(expected);
 	recordExampleCases(
-		{ unitId: 'function.budget-reviews', symbol: 'frozenLimits', state: 'selects-source-limits-and-their-unmeasured-reasons', evidence: 'examples-cases', file: 'selects-source-limits-and-their-unmeasured-reasons.json' },
-		[{ name: 'source metrics are retained and emitted metrics omitted', input: frozen, output: expected }]
+		{
+			unitId: 'function.budget-reviews',
+			symbol: 'frozenLimits',
+			state: 'selects-source-limits-and-their-unmeasured-reasons',
+			evidence: 'examples-cases',
+			file: 'selects-source-limits-and-their-unmeasured-reasons.json'
+		},
+		[
+			{
+				name: 'source metrics are retained and emitted metrics omitted',
+				input: frozen,
+				output: expected
+			}
+		]
 	);
 });
 
@@ -99,7 +152,19 @@ test('Selects emitted limits for distinct executable targets', () => {
 	const expected: EmittedLimits = { limits: { process: 2411520 } };
 	expect(actual).toEqual(expected);
 	recordExampleCases(
-		{ unitId: 'function.budget-reviews', symbol: 'emittedLimits', state: 'selects-emitted-limits-for-distinct-executable-targets', evidence: 'examples-cases', file: 'selects-emitted-limits-for-distinct-executable-targets.json' },
-		[{ name: 'duplicate process targets produce one reviewed limit', input: { unit: processUnit, baseline: emittedBaseline }, output: expected }]
+		{
+			unitId: 'function.budget-reviews',
+			symbol: 'emittedLimits',
+			state: 'selects-emitted-limits-for-distinct-executable-targets',
+			evidence: 'examples-cases',
+			file: 'selects-emitted-limits-for-distinct-executable-targets.json'
+		},
+		[
+			{
+				name: 'duplicate process targets produce one reviewed limit',
+				input: { unit: processUnit, baseline: emittedBaseline },
+				output: expected
+			}
+		]
 	);
 });

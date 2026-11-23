@@ -33,20 +33,23 @@ test('Normalizes protocol values into picker objects', () => {
 	expect(nativePickerProtocol(null)).toEqual({});
 	expect(nativePickerProtocol(['claude-opus-5-5'])).toEqual({});
 	expect(nativePickerProtocol('claude-opus-5-5')).toEqual({});
-	recordExampleCases(meta('nativePickerProtocol', 'normalizes-protocol-values-into-picker-objects'), [
-		{ name: 'object is returned as the same reference', input: picker, output: picker },
-		{ name: 'null is replaced by an empty object', input: null, output: {} },
-		{
-			name: 'array is replaced by an empty object',
-			input: ['claude-opus-5-5'],
-			output: {}
-		},
-		{
-			name: 'string is replaced by an empty object',
-			input: 'claude-opus-5-5',
-			output: {}
-		}
-	]);
+	recordExampleCases(
+		meta('nativePickerProtocol', 'normalizes-protocol-values-into-picker-objects'),
+		[
+			{ name: 'object is returned as the same reference', input: picker, output: picker },
+			{ name: 'null is replaced by an empty object', input: null, output: {} },
+			{
+				name: 'array is replaced by an empty object',
+				input: ['claude-opus-5-5'],
+				output: {}
+			},
+			{
+				name: 'string is replaced by an empty object',
+				input: 'claude-opus-5-5',
+				output: {}
+			}
+		]
+	);
 });
 
 test('Maps model selections to providers and rejects others', () => {
@@ -54,12 +57,15 @@ test('Maps model selections to providers and rejects others', () => {
 	expect(pickerProvider('gpt-5')).toBe('openai');
 	expect(() => pickerProvider('claude-sonnet-5-5')).toThrow(UnsupportedModelSelectionError);
 	expect(() => pickerProvider(42)).toThrow(UnsupportedModelSelectionError);
-	recordExampleCases(meta('pickerProvider', 'maps-model-selections-to-providers-and-rejects-others'), [
-		providerCase('Opus 5.5 selection maps to harness-claude', 'claude-opus-5-5'),
-		providerCase('gpt-5 selection maps to openai', 'gpt-5'),
-		providerCase('other claude model is rejected', 'claude-sonnet-5-5'),
-		providerCase('nonstring selection is rejected', 42)
-	]);
+	recordExampleCases(
+		meta('pickerProvider', 'maps-model-selections-to-providers-and-rejects-others'),
+		[
+			providerCase('Opus 5.5 selection maps to harness-claude', 'claude-opus-5-5'),
+			providerCase('gpt-5 selection maps to openai', 'gpt-5'),
+			providerCase('other claude model is rejected', 'claude-sonnet-5-5'),
+			providerCase('nonstring selection is rejected', 42)
+		]
+	);
 });
 
 test('Exposes the Claude Opus 5.5 catalog entry', () => {

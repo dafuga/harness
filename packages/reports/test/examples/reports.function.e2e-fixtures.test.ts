@@ -12,7 +12,10 @@ import {
 	closeE2eRun
 } from '../../src/utils/development-tooling/e2e-fixtures/e2eFixtures';
 import { E2eRootNotSetError } from '../../src/utils/development-tooling/e2e-fixtures/e2eFixtures.types';
-import type { Environment, E2eFixtures } from '../../src/utils/development-tooling/e2e-fixtures/e2eFixtures.types';
+import type {
+	Environment,
+	E2eFixtures
+} from '../../src/utils/development-tooling/e2e-fixtures/e2eFixtures.types';
 
 const state = 'resolves-isolated-fixtures-and-manages-run-lifecycle';
 
@@ -45,13 +48,31 @@ test('Resolves isolated fixtures and manages run lifecycle', () => {
 		const overriddenFixtures = e2eFixtures(overridden);
 		const openedEnv: Environment = { HARNESS_E2E_ROOT: root, PROJECT_REPORTS_E2E_PORT: '4173' };
 		const opened = openE2eRun(openedEnv);
-		const ownedEnv: Environment = { HARNESS_E2E_ROOT: root, HARNESS_E2E_OWNER: String(process.pid) };
+		const ownedEnv: Environment = {
+			HARNESS_E2E_ROOT: root,
+			HARNESS_E2E_OWNER: String(process.pid)
+		};
 		const isNamed = namedE2eRun({ HARNESS_E2E_ROOT: root });
 		const isOwnedNamed = namedE2eRun(ownedEnv);
 		const ports = freePorts(0);
 		closeE2eRun({ HARNESS_E2E_ROOT: root, HARNESS_E2E_OWNER: 'other-process' });
-		expect([fixtures.root, fixtures.reports, overriddenFixtures.console, overriddenFixtures.analytics, ports, isNamed, isOwnedNamed])
-			.toEqual([root, join(root, 'reports'), overridden.HARNESS_CONSOLE_E2E_HOME, overridden.HARNESS_ANALYTICS_HOME, [], true, false]);
+		expect([
+			fixtures.root,
+			fixtures.reports,
+			overriddenFixtures.console,
+			overriddenFixtures.analytics,
+			ports,
+			isNamed,
+			isOwnedNamed
+		]).toEqual([
+			root,
+			join(root, 'reports'),
+			overridden.HARNESS_CONSOLE_E2E_HOME,
+			overridden.HARNESS_ANALYTICS_HOME,
+			[],
+			true,
+			false
+		]);
 		expect(openedEnv.PROJECT_REPORTS_E2E_PORT).toBe('4173');
 		expect(opened.root).toBe(root);
 		recordExampleCases(
@@ -64,8 +85,21 @@ test('Resolves isolated fixtures and manages run lifecycle', () => {
 			},
 			[
 				{ name: 'resolves default fixture locations', input: env, output: summary(fixtures) },
-				{ name: 'honors console and analytics overrides', input: overridden, output: summary(overriddenFixtures) },
-				{ name: 'preserves named port and classifies run ownership', input: openedEnv, output: { fixtures: summary(opened), port: openedEnv.PROJECT_REPORTS_E2E_PORT, isNamed, isOwnedNamed } },
+				{
+					name: 'honors console and analytics overrides',
+					input: overridden,
+					output: summary(overriddenFixtures)
+				},
+				{
+					name: 'preserves named port and classifies run ownership',
+					input: openedEnv,
+					output: {
+						fixtures: summary(opened),
+						port: openedEnv.PROJECT_REPORTS_E2E_PORT,
+						isNamed,
+						isOwnedNamed
+					}
+				},
 				{ name: 'zero requested ports', input: { count: 0 }, output: ports }
 			]
 		);

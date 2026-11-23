@@ -1,8 +1,6 @@
 import { test, vi } from 'vitest';
 import { basename } from 'node:path';
-import {
-	expect
-} from '../verificationExpect';
+import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import {
 	projectIdentity,
@@ -55,7 +53,13 @@ test('Resolves the primary project directory', async () => {
 				evidence: 'examples-cases',
 				file: 'resolves-the-primary-project-directory.json'
 			},
-			[{ name: 'directory without a worktree resolves to itself', input: { root: directory }, output }]
+			[
+				{
+					name: 'directory without a worktree resolves to itself',
+					input: { root: directory },
+					output
+				}
+			]
 		);
 	});
 });
@@ -65,8 +69,20 @@ test('Throws invalid analytics context when task conflicts with loop', async () 
 	const error = await captureError(() => resolvedContext(input, '/workspace/project'));
 	expect(error.message).toBe('Use either --task or --loop/--step.');
 	recordExampleCases(
-		{ unitId: 'workflow.analytics-record', symbol: 'resolvedContext', state: 'throws-invalid-analytics-context-when-task-conflicts-with-lo', evidence: 'examples-cases', file: 'throws-invalid-analytics-context-when-task-conflicts-with-lo.json' },
-		[{ name: 'task and loop cannot be selected together', input, error: { name: error.name, message: error.message } }]
+		{
+			unitId: 'workflow.analytics-record',
+			symbol: 'resolvedContext',
+			state: 'throws-invalid-analytics-context-when-task-conflicts-with-lo',
+			evidence: 'examples-cases',
+			file: 'throws-invalid-analytics-context-when-task-conflicts-with-lo.json'
+		},
+		[
+			{
+				name: 'task and loop cannot be selected together',
+				input,
+				error: { name: error.name, message: error.message }
+			}
+		]
 	);
 });
 
@@ -77,8 +93,20 @@ test('Throws loop state access failure when selected state is missing', async ()
 		const error = await captureError(() => resolvedContext(input, '/workspace/project'));
 		expect(error).toBeInstanceOf(Error);
 		recordExampleCases(
-			{ unitId: 'workflow.analytics-record', symbol: 'resolvedContext', state: 'throws-loop-state-access-failure-when-selected-state-is-miss', evidence: 'examples-cases', file: 'throws-loop-state-access-failure-when-selected-state-is-miss.json' },
-			[{ name: 'missing loop state read propagates', input, error: { name: error.name, message: error.message } }]
+			{
+				unitId: 'workflow.analytics-record',
+				symbol: 'resolvedContext',
+				state: 'throws-loop-state-access-failure-when-selected-state-is-miss',
+				evidence: 'examples-cases',
+				file: 'throws-loop-state-access-failure-when-selected-state-is-miss.json'
+			},
+			[
+				{
+					name: 'missing loop state read propagates',
+					input,
+					error: { name: error.name, message: error.message }
+				}
+			]
 		);
 	} finally {
 		vi.unstubAllEnvs();
@@ -92,8 +120,20 @@ test('Throws invalid report reference when ID contains punctuation', async () =>
 		const error = await captureError(() => validateReport(input));
 		expect(error.message).toBe('Invalid report ID.');
 		recordExampleCases(
-			{ unitId: 'workflow.analytics-record', symbol: 'validateReport', state: 'throws-invalid-report-reference-when-id-contains-punctuation', evidence: 'examples-cases', file: 'throws-invalid-report-reference-when-id-contains-punctuation.json' },
-			[{ name: 'punctuation is rejected before manifest access', input, error: { name: error.name, message: error.message } }]
+			{
+				unitId: 'workflow.analytics-record',
+				symbol: 'validateReport',
+				state: 'throws-invalid-report-reference-when-id-contains-punctuation',
+				evidence: 'examples-cases',
+				file: 'throws-invalid-report-reference-when-id-contains-punctuation.json'
+			},
+			[
+				{
+					name: 'punctuation is rejected before manifest access',
+					input,
+					error: { name: error.name, message: error.message }
+				}
+			]
 		);
 	} finally {
 		vi.unstubAllEnvs();
@@ -110,8 +150,19 @@ test('Throws JSON serialization failure for undefined', () => {
 	}
 	expect(error).toBeInstanceOf(Error);
 	recordExampleCases(
-		{ unitId: 'workflow.analytics-record', symbol: 'fingerprint', state: 'throws-json-serialization-failure-for-undefined', evidence: 'examples-cases', file: 'throws-json-serialization-failure-for-undefined.json' },
-		[{ name: 'undefined cannot be serialized to a fingerprint', input, error: { name: error?.name, message: error?.message } }]
+		{
+			unitId: 'workflow.analytics-record',
+			symbol: 'fingerprint',
+			state: 'throws-json-serialization-failure-for-undefined',
+			evidence: 'examples-cases',
+			file: 'throws-json-serialization-failure-for-undefined.json'
+		},
+		[
+			{
+				name: 'undefined cannot be serialized to a fingerprint',
+				input,
+				error: { name: error?.name, message: error?.message }
+			}
+		]
 	);
 });
-

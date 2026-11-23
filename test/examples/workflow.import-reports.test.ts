@@ -91,13 +91,16 @@ test('Rejects when the legacy report store does not exist', async () => {
 
 		expect(error).toBeInstanceOf(Error);
 		expect(error?.message).toBe(`${from} does not exist.`);
-		recordExampleCases(meta('importReports', 'rejects-when-the-legacy-report-store-does-not-exist'), [
-			{
-				name: 'store path missing inside the repository rejects before any report is read',
-				input: { root: '<root>', from: 'missing-store' },
-				error: errorRecord(error, root)
-			}
-		]);
+		recordExampleCases(
+			meta('importReports', 'rejects-when-the-legacy-report-store-does-not-exist'),
+			[
+				{
+					name: 'store path missing inside the repository rejects before any report is read',
+					input: { root: '<root>', from: 'missing-store' },
+					error: errorRecord(error, root)
+				}
+			]
+		);
 	});
 });
 
@@ -143,6 +146,10 @@ test('Renders imported and skipped runs of a repository', () => {
 	expect(second).toBe(SECOND_TEXT);
 	recordExampleCases(meta('renderImport', 'renders-imported-and-skipped-runs-of-a-repository'), [
 		{ name: 'linked report plus two skipped runs', input: FIRST_RESULT, output: first },
-		{ name: 'unlinked running and failed reports with no skipped runs', input: SECOND_RESULT, output: second }
+		{
+			name: 'unlinked running and failed reports with no skipped runs',
+			input: SECOND_RESULT,
+			output: second
+		}
 	]);
 });

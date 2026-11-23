@@ -19,7 +19,9 @@ for (const viewport of catalogViewports) {
 			await page.setViewportSize({ width: viewport.width, height: viewport.height });
 			await openPreview(page, home, unit, state.variant);
 			const content = await readyPreview(page, unit, state.variant);
-			await expect(page.getByRole('heading', { level: 1, name: 'Styles', exact: true })).toBeVisible();
+			await expect(
+				page.getByRole('heading', { level: 1, name: 'Styles', exact: true })
+			).toBeVisible();
 			const baseSwatch = content.locator('.hx-style-base .hx-style-swatch').first();
 			await expect(baseSwatch).toBeVisible();
 			await expect(baseSwatch).toHaveCSS('width', '56px');

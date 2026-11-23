@@ -48,7 +48,11 @@ const deviceType = (name: string, productFamily: string) => ({
 	productFamily
 });
 
-function runtimeOf(version: string, isAvailable: boolean, types: Runtime['supportedDeviceTypes']): Runtime {
+function runtimeOf(
+	version: string,
+	isAvailable: boolean,
+	types: Runtime['supportedDeviceTypes']
+): Runtime {
 	const identifier = `com.apple.CoreSimulator.SimRuntime.iOS-${version.replace('.', '-')}`;
 	return { identifier, version, isAvailable, supportedDeviceTypes: types };
 }
@@ -136,21 +140,30 @@ test('Creates the device on the newest runtime when none exists', () => {
 	expect(value).toEqual({ udid: UDID, runtime: '26.0' });
 	expect(calls[2]).toBe(`create ${deviceName} ${type} ${runtime}`);
 
-	recordExampleCases(meta('acceptanceDevice', 'creates-the-device-on-the-newest-runtime-when-none-exists'), [
-		{
-			name: 'newest iOS runtime with the iPhone 17 Pro type',
-			input: { runtimes: ['25.0', '26.0'] },
-			output: { udid: value.udid, runtime: value.runtime, create: calls[2] }
-		}
-	]);
+	recordExampleCases(
+		meta('acceptanceDevice', 'creates-the-device-on-the-newest-runtime-when-none-exists'),
+		[
+			{
+				name: 'newest iOS runtime with the iPhone 17 Pro type',
+				input: { runtimes: ['25.0', '26.0'] },
+				output: { udid: value.udid, runtime: value.runtime, create: calls[2] }
+			}
+		]
+	);
 });
 
 test('Rejects when no iOS runtime is installed', () => {
-	const files = { 'list-devices.out': listDevices([]), 'list-runtimes.out': listRuntimes([UNAVAILABLE]) };
+	const files = {
+		'list-devices.out': listDevices([]),
+		'list-runtimes.out': listRuntimes([UNAVAILABLE])
+	};
 	const { value, calls } = runIn(files, () => attempt(() => acceptanceDevice()));
 
 	expect(value).toMatchObject({
-		error: { name: 'IosAcceptanceSimulatorError', message: 'No iOS simulator runtime is installed.' }
+		error: {
+			name: 'IosAcceptanceSimulatorError',
+			message: 'No iOS simulator runtime is installed.'
+		}
 	});
 	expect(calls).toEqual(['list devices -j', 'list runtimes -j']);
 
@@ -173,8 +186,16 @@ test('Sets camera access, installs and launches the app', () => {
 	]);
 
 	recordExampleCases(meta('install', 'sets-camera-access-installs-and-launches-the-app'), [
-		{ name: 'grant camera access to the app', input: { udid: UDID, access: 'grant' }, output: calls[0] },
-		{ name: 'install the app product', input: { udid: UDID, product: '/tmp/Harness.app' }, output: calls[1] },
+		{
+			name: 'grant camera access to the app',
+			input: { udid: UDID, access: 'grant' },
+			output: calls[0]
+		},
+		{
+			name: 'install the app product',
+			input: { udid: UDID, product: '/tmp/Harness.app' },
+			output: calls[1]
+		},
 		{
 			name: 'launch with acceptance arguments',
 			input: { udid: UDID, args: ['--acceptance', 'camera-permission'] },
@@ -200,7 +221,11 @@ test('Captures the screen, checks the app and shuts down', () => {
 	expect(calls[calls.length - 1]).toBe(`shutdown ${UDID}`);
 
 	recordExampleCases(meta('screenshot', 'captures-the-screen-checks-the-app-and-shuts-down'), [
-		{ name: 'screenshot written to the requested file', input: { file: '/tmp/ios-acceptance.png' }, output: calls[0] },
+		{
+			name: 'screenshot written to the requested file',
+			input: { file: '/tmp/ios-acceptance.png' },
+			output: calls[0]
+		},
 		{ name: 'app entry listed in launchctl', input: { udid: UDID }, output: value.listed },
 		{ name: 'only other processes listed', input: { udid: UDID }, output: value.unlisted },
 		{ name: 'shutdown tolerates a failing simctl', input: { udid: UDID }, output: null }
@@ -220,9 +245,16 @@ test('Reads the inspector socket and Keychain access groups', () => {
 	expect(value.groups).toEqual([bundleId]);
 	expect(value.failure).toMatchObject({ error: { name: 'IosAcceptanceSimulatorError' } });
 
-	recordExampleCases(meta('keychainGroups', 'reads-the-inspector-socket-and-keychain-access-groups'), [
-		{ name: 'inspector socket from RWI_LISTEN_SOCKET', input: { udid: UDID }, output: value.socket },
-		{ name: 'Keychain access group of the app', input: { udid: UDID }, output: value.groups },
-		{ name: 'Keychain database read fails', input: { udid: UDID }, ...value.failure }
-	]);
+	recordExampleCases(
+		meta('keychainGroups', 'reads-the-inspector-socket-and-keychain-access-groups'),
+		[
+			{
+				name: 'inspector socket from RWI_LISTEN_SOCKET',
+				input: { udid: UDID },
+				output: value.socket
+			},
+			{ name: 'Keychain access group of the app', input: { udid: UDID }, output: value.groups },
+			{ name: 'Keychain database read fails', input: { udid: UDID }, ...value.failure }
+		]
+	);
 });

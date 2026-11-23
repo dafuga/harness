@@ -55,9 +55,7 @@ const cases: Array<{
 ];
 
 test('Resolve imports to tracked files, externals, or uncertainty', () => {
-	const results = cases.map(({ input }) =>
-		resolveImport(input.from, input.reference, context)
-	);
+	const results = cases.map(({ input }) => resolveImport(input.from, input.reference, context));
 	expect(results).toEqual(cases.map(({ output }) => output));
 	recordExampleCases(
 		{

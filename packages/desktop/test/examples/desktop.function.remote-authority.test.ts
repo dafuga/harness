@@ -1,7 +1,12 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { noAuthority, remoteAuthority, authorityChange, excludes } from '../../src/utils/networking-security/remoteAuthority';
+import {
+	noAuthority,
+	remoteAuthority,
+	authorityChange,
+	excludes
+} from '../../src/utils/networking-security/remoteAuthority';
 
 const projectId = 'local-3e8a1f6c0d92b47e5a18c3f0d6b9e2471a5c8d0f3b6e9a2c4d7f10b8e5a36c21';
 const online: Parameters<typeof remoteAuthority>[0] = {
@@ -42,7 +47,11 @@ test('identifies the remote holder and serialized grant', () => {
 		},
 		[
 			{ name: 'online host and phone with a project grant', input: online, output: authority },
-			{ name: 'unpaired status with no grant', input: { ...online, host: null, device: null, grant: null }, output: unpaired }
+			{
+				name: 'unpaired status with no grant',
+				input: { ...online, host: null, device: null, grant: null },
+				output: unpaired
+			}
 		]
 	);
 });
@@ -64,9 +73,21 @@ test('classifies authority changes for steady and changed access', () => {
 			file: 'classifies-authority-changes-for-steady-and-changed-access.json'
 		},
 		[
-			{ name: 'steady identical authority', input: { known, next: known, steady: true }, output: same },
-			{ name: 'different holder after connection loss', input: { known, next: remoteAuthority(offline), steady: false }, output: changedHolder },
-			{ name: 'new authority when none was remembered', input: { known: noAuthority, next: remoteAuthority(offline), steady: true }, output: changedGrant }
+			{
+				name: 'steady identical authority',
+				input: { known, next: known, steady: true },
+				output: same
+			},
+			{
+				name: 'different holder after connection loss',
+				input: { known, next: remoteAuthority(offline), steady: false },
+				output: changedHolder
+			},
+			{
+				name: 'new authority when none was remembered',
+				input: { known: noAuthority, next: remoteAuthority(offline), steady: true },
+				output: changedGrant
+			}
 		]
 	);
 });
@@ -90,9 +111,21 @@ test('checks whether a selected project is outside the grant', () => {
 		},
 		[
 			{ name: 'project included in grant', input: { status: online, projectId }, output: present },
-			{ name: 'project absent from grant', input: { status: online, projectId: 'local-9a0c4e7b' }, output: absent },
-			{ name: 'project checked with no grant', input: { status: offline, projectId }, output: noGrant },
-			{ name: 'no selected project', input: { status: offline, projectId: null }, output: noSelection }
+			{
+				name: 'project absent from grant',
+				input: { status: online, projectId: 'local-9a0c4e7b' },
+				output: absent
+			},
+			{
+				name: 'project checked with no grant',
+				input: { status: offline, projectId },
+				output: noGrant
+			},
+			{
+				name: 'no selected project',
+				input: { status: offline, projectId: null },
+				output: noSelection
+			}
 		]
 	);
 });
@@ -111,10 +144,26 @@ test('Throws TypeError when a required status or authority is null', () => {
 			file: 'throws-typeerror-when-a-required-status-or-authority-is-null.json'
 		},
 		[
-			{ name: 'null remote status', input: { function: 'remoteAuthority', status: null }, error: 'TypeError' },
-			{ name: 'null known authority', input: { function: 'authorityChange', known: null, next: noAuthority, steady: true }, error: 'TypeError' },
-			{ name: 'null next authority', input: { function: 'authorityChange', known: noAuthority, next: null, steady: false }, error: 'TypeError' },
-			{ name: 'null status for selected project', input: { function: 'excludes', status: null, projectId }, error: 'TypeError' }
+			{
+				name: 'null remote status',
+				input: { function: 'remoteAuthority', status: null },
+				error: 'TypeError'
+			},
+			{
+				name: 'null known authority',
+				input: { function: 'authorityChange', known: null, next: noAuthority, steady: true },
+				error: 'TypeError'
+			},
+			{
+				name: 'null next authority',
+				input: { function: 'authorityChange', known: noAuthority, next: null, steady: false },
+				error: 'TypeError'
+			},
+			{
+				name: 'null status for selected project',
+				input: { function: 'excludes', status: null, projectId },
+				error: 'TypeError'
+			}
 		]
 	);
 });

@@ -131,8 +131,16 @@ test('Keeps only the states that name the entity', () => {
 		}
 	]);
 	recordExampleCases(recordMeta('scopedScenarios', 'keeps-only-the-states-that-name-the-entity'), [
-		{ name: 'evidence grid keeps its explicit empty state', input: { entity: evidenceGrid }, output: grid },
-		{ name: 'run summary keeps the states that name no unit', input: { entity: runSummary }, output: runs }
+		{
+			name: 'evidence grid keeps its explicit empty state',
+			input: { entity: evidenceGrid },
+			output: grid
+		},
+		{
+			name: 'run summary keeps the states that name no unit',
+			input: { entity: runSummary },
+			output: runs
+		}
 	]);
 });
 
@@ -160,13 +168,16 @@ test('Adds an entity grep to a Playwright catalog check', () => {
 	expect(narrowed.command).toBe(
 		`${gridCheck.command} --grep '(^| )reports\\.component\\.evidence-grid(:[^ ]+)? at '`
 	);
-	recordExampleCases(recordMeta('scopedCheck', 'adds-an-entity-grep-to-a-playwright-catalog-check'), [
-		{
-			name: 'evidence grid check gains a grep for its titles',
-			input: { entity: evidenceGrid, command: gridCheck.command },
-			output: { command: narrowed.command }
-		}
-	]);
+	recordExampleCases(
+		recordMeta('scopedCheck', 'adds-an-entity-grep-to-a-playwright-catalog-check'),
+		[
+			{
+				name: 'evidence grid check gains a grep for its titles',
+				input: { entity: evidenceGrid, command: gridCheck.command },
+				output: { command: narrowed.command }
+			}
+		]
+	);
 });
 
 test('Leaves a check that already selects tests unchanged', () => {
@@ -179,16 +190,19 @@ test('Leaves a check that already selects tests unchanged', () => {
 	const untouched = scopedCheck(other, evidenceGrid);
 	expect(unchanged).toBe(selected);
 	expect(untouched).toBe(other);
-	recordExampleCases(recordMeta('scopedCheck', 'leaves-a-check-that-already-selects-tests-unchanged'), [
-		{
-			name: 'check already selecting with --grep is returned as is',
-			input: { entity: evidenceGrid, command: selected.command },
-			output: { command: unchanged.command }
-		},
-		{
-			name: 'check from another scenario is returned as is',
-			input: { entity: evidenceGrid, scenario: other.scenario },
-			output: { command: untouched.command }
-		}
-	]);
+	recordExampleCases(
+		recordMeta('scopedCheck', 'leaves-a-check-that-already-selects-tests-unchanged'),
+		[
+			{
+				name: 'check already selecting with --grep is returned as is',
+				input: { entity: evidenceGrid, command: selected.command },
+				output: { command: unchanged.command }
+			},
+			{
+				name: 'check from another scenario is returned as is',
+				input: { entity: evidenceGrid, scenario: other.scenario },
+				output: { command: untouched.command }
+			}
+		]
+	);
 });

@@ -28,7 +28,17 @@ const SELECTION_CASES = [
 		context: PAGES,
 		headless: true,
 		visual: true,
-		expected: ['Overview', 'APIs', 'Plan', 'Used In', 'Uses', 'Examples', 'States', 'History', 'Source']
+		expected: [
+			'Overview',
+			'APIs',
+			'Plan',
+			'Used In',
+			'Uses',
+			'Examples',
+			'States',
+			'History',
+			'Source'
+		]
 	}
 ];
 

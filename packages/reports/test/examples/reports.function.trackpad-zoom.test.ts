@@ -1,11 +1,18 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { imageAnchor, keepPointerInPlace } from '../../src/components/shared-primitives/image-zoom/trackpadZoom';
+import {
+	imageAnchor,
+	keepPointerInPlace
+} from '../../src/components/shared-primitives/image-zoom/trackpadZoom';
 import { trackpadZoom } from '../../src/utils/shared-primitives/trackpadZoom';
 import type { Point, ZoomControls } from '../../src/utils/shared-primitives/trackpadZoom.types';
 
-function checkZoom(): { prevented: boolean; applied: { next: number | null; point: Point }; listenersAfterDestroy: number } {
+function checkZoom(): {
+	prevented: boolean;
+	applied: { next: number | null; point: Point };
+	listenersAfterDestroy: number;
+} {
 	const listeners = new Map<string, EventListener>();
 	const node = {
 		clientHeight: 600,
@@ -31,12 +38,20 @@ function checkZoom(): { prevented: boolean; applied: { next: number | null; poin
 	listeners.get('wheel')?.(wheel);
 	expect(wheel.defaultPrevented).toBe(true);
 	expect(applied[0]).toEqual({ next: 3, point: { x: 120, y: 80 } });
-	const plainWheel = Object.assign(new Event('wheel', { cancelable: true }), { ctrlKey: false, deltaY: 20, deltaMode: 0 }) as WheelEvent;
+	const plainWheel = Object.assign(new Event('wheel', { cancelable: true }), {
+		ctrlKey: false,
+		deltaY: 20,
+		deltaMode: 0
+	}) as WheelEvent;
 	listeners.get('wheel')?.(plainWheel);
 	expect(plainWheel.defaultPrevented).toBe(false);
 	teardown.destroy();
 	expect(listeners.size).toBe(0);
-	return { prevented: wheel.defaultPrevented, applied: applied[0], listenersAfterDestroy: listeners.size };
+	return {
+		prevented: wheel.defaultPrevented,
+		applied: applied[0],
+		listenersAfterDestroy: listeners.size
+	};
 }
 
 test('Keeps pointer anchors and bounds trackpad zoom', () => {
@@ -60,10 +75,19 @@ test('Keeps pointer anchors and bounds trackpad zoom', () => {
 			file: `${state}.json`
 		},
 		[
-			{ name: 'normalizes a pointer within the image', input: { rect: imageRect, pointer: { x: 268, y: 172 } }, output: anchored },
+			{
+				name: 'normalizes a pointer within the image',
+				input: { rect: imageRect, pointer: { x: 268, y: 172 } },
+				output: anchored
+			},
 			{
 				name: 'adjusts viewport scroll to keep the selected point under the pointer',
-				input: { scroll: { left: 20, top: 30 }, rect: imageRect, anchor: { x: 0.25, y: 0.5 }, pointer: { x: 180, y: 100 } },
+				input: {
+					scroll: { left: 20, top: 30 },
+					rect: imageRect,
+					anchor: { x: 0.25, y: 0.5 },
+					pointer: { x: 180, y: 100 }
+				},
 				output: { left: viewport.scrollLeft, top: viewport.scrollTop }
 			},
 			{

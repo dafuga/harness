@@ -38,19 +38,41 @@ test('Throws Error when the starting revision is invalid', async () => {
 		const commit = git('rev-parse', 'HEAD');
 		const directory = join(root, '.cache/harness/verifications', commit, '20261117000000000');
 		await mkdir(directory, { recursive: true });
-		await writeFile(join(directory, 'record.json'), JSON.stringify({
-			schemaVersion: 1,
-			id: 'fixture-record',
-			repository: 'fixture',
-			source: { commit, tree: git('rev-parse', 'HEAD^{tree}'), base: null },
-			profile: { id: 'fixture', platform: 'linux', arch: 'x64', cpu: 'fixture', cores: 1, memoryBytes: 1024, runtime: 'bun' },
-			startedAt: '2026-11-17T00:00:00.000Z',
-			finishedAt: '2026-11-17T00:00:01.000Z',
-			status: 'passed', components: [], measurements: [],
-			impact: { runtime: 'fixture', expanded: false, changed: [], units: { direct: [], indirect: [], added: [], removed: [] }, uncertain: [] },
-			tests: [], scenarios: [], budgets: { status: 'passed', findings: [] },
-			reasons: { status: 'passed', missing: [] }, failures: []
-		}));
+		await writeFile(
+			join(directory, 'record.json'),
+			JSON.stringify({
+				schemaVersion: 1,
+				id: 'fixture-record',
+				repository: 'fixture',
+				source: { commit, tree: git('rev-parse', 'HEAD^{tree}'), base: null },
+				profile: {
+					id: 'fixture',
+					platform: 'linux',
+					arch: 'x64',
+					cpu: 'fixture',
+					cores: 1,
+					memoryBytes: 1024,
+					runtime: 'bun'
+				},
+				startedAt: '2026-11-17T00:00:00.000Z',
+				finishedAt: '2026-11-17T00:00:01.000Z',
+				status: 'passed',
+				components: [],
+				measurements: [],
+				impact: {
+					runtime: 'fixture',
+					expanded: false,
+					changed: [],
+					units: { direct: [], indirect: [], added: [], removed: [] },
+					uncertain: []
+				},
+				tests: [],
+				scenarios: [],
+				budgets: { status: 'passed', findings: [] },
+				reasons: { status: 'passed', missing: [] },
+				failures: []
+			})
+		);
 		const service = new TrustedBaseService(root);
 		const from = 'not-a-real-revision';
 		let failure: unknown;

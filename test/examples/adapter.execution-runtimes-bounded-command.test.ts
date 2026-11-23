@@ -11,10 +11,11 @@ test('run returns bounded stdout and stderr from a direct command', async () => 
 	await withTempDir('bounded-command-examples-', async (directory) => {
 		const adapter = new BoundedCommandAdapter();
 		const options = { cwd: directory, timeoutMs: 1000, maxBuffer: 1024 };
-		const result = await adapter.run(process.execPath, [
-			'-e',
-			"process.stdout.write('ready'); process.stderr.write('note')"
-		], options);
+		const result = await adapter.run(
+			process.execPath,
+			['-e', "process.stdout.write('ready'); process.stderr.write('note')"],
+			options
+		);
 		const output = {
 			code: result.code,
 			stdout: result.stdout.toString('utf8'),
@@ -46,10 +47,14 @@ test('checked rejects a nonzero command with captured output', async () => {
 		const options = { cwd: directory, timeoutMs: 1000, maxBuffer: 1024 };
 		let failure: unknown;
 		try {
-			await adapter.checked(process.execPath, [
-				'-e',
-				"process.stdout.write('partial'); process.stderr.write('invalid'); process.exitCode = 2"
-			], options);
+			await adapter.checked(
+				process.execPath,
+				[
+					'-e',
+					"process.stdout.write('partial'); process.stderr.write('invalid'); process.exitCode = 2"
+				],
+				options
+			);
 		} catch (error) {
 			failure = error;
 		}

@@ -8,9 +8,28 @@ import { groupTests, renderUnit } from '../../src/cli/program/renderUnit';
 import type { Field } from '../../src/cli/program/renderUnit.types';
 
 const projectFields: Field[] = [
-	{ name: 'project.id', type: 'string', required: true, description: 'Project identifier.', examples: ['project-42'] },
-	{ name: 'owner.id', type: 'string', required: true, description: 'Owner identifier.', examples: ['user-7'] },
-	{ name: 'status', type: 'string', required: false, default: 'active', description: 'Current project status.', examples: ['active'] }
+	{
+		name: 'project.id',
+		type: 'string',
+		required: true,
+		description: 'Project identifier.',
+		examples: ['project-42']
+	},
+	{
+		name: 'owner.id',
+		type: 'string',
+		required: true,
+		description: 'Owner identifier.',
+		examples: ['user-7']
+	},
+	{
+		name: 'status',
+		type: 'string',
+		required: false,
+		default: 'active',
+		description: 'Current project status.',
+		examples: ['active']
+	}
 ];
 
 const thrownError: Field[] = [
@@ -38,13 +57,32 @@ const manifest: Manifest = {
 	owns: { source: ['src/example.ts'], symbols: ['formatExample'] },
 	contract: {
 		origin: 'declared',
-		inputs: [{ name: 'id', type: 'string', required: true, description: 'Example identifier.', examples: ['example-42'] }],
-		outputs: [{ name: 'summary', type: 'string', description: 'Rendered summary.', examples: ['Example summary'] }],
+		inputs: [
+			{
+				name: 'id',
+				type: 'string',
+				required: true,
+				description: 'Example identifier.',
+				examples: ['example-42']
+			}
+		],
+		outputs: [
+			{
+				name: 'summary',
+				type: 'string',
+				description: 'Rendered summary.',
+				examples: ['Example summary']
+			}
+		],
 		errors: [],
 		errorStatus: 'declared'
 	},
 	dependencies: [],
-	runtime: { kind: 'module', entry: 'src/example.ts', targets: [{ kind: 'module', entry: 'src/example.ts' }] },
+	runtime: {
+		kind: 'module',
+		entry: 'src/example.ts',
+		targets: [{ kind: 'module', entry: 'src/example.ts' }]
+	},
 	scenarios: [],
 	budgets: { size: 'frozen', complexity: 'frozen', performance: [] }
 };
@@ -81,7 +119,11 @@ test('Indents lines and formats field rows', () => {
 			file: 'indents-lines-and-formats-field-rows.json'
 		},
 		[
-			{ name: 'indent adds two levels', input: { lines: ['Source', 'Contract'], depth: 2 }, output: indented },
+			{
+				name: 'indent adds two levels',
+				input: { lines: ['Source', 'Contract'], depth: 2 },
+				output: indented
+			},
 			{ name: 'fields render project fields', input: projectFields, output: rows },
 			{ name: 'fields render none for empty list', input: [], output: ['none'] }
 		]
@@ -106,10 +148,22 @@ test('Formats declared error outcomes', () => {
 			file: 'formats-declared-error-outcomes.json'
 		},
 		[
-			{ name: 'declared with no errors', input: { errors: [], status: 'declared' }, output: declared },
+			{
+				name: 'declared with no errors',
+				input: { errors: [], status: 'declared' },
+				output: declared
+			},
 			{ name: 'unknown with no errors', input: { errors: [], status: 'unknown' }, output: unknown },
-			{ name: 'none-found with no errors', input: { errors: [], status: 'none-found' }, output: notFound },
-			{ name: 'unknown with a thrown error', input: { errors: thrownError, status: 'unknown' }, output: withErrors }
+			{
+				name: 'none-found with no errors',
+				input: { errors: [], status: 'none-found' },
+				output: notFound
+			},
+			{
+				name: 'unknown with a thrown error',
+				input: { errors: thrownError, status: 'unknown' },
+				output: withErrors
+			}
 		]
 	);
 });
