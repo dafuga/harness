@@ -19,7 +19,10 @@ const access = (page: Page) => page.getByRole('region', { name: 'Phone access' }
 /** The home keeps phone access behind its quiet hint: the settings open in a dialog. */
 const home = async (page: Page) => {
 	await page.goto('/');
+	await expect(page.getByText(/sign in with the same Google account/)).toBeVisible();
+	await expect(access(page)).toHaveCount(0);
 	await page.getByRole('button', { name: 'Phone access', exact: true }).click();
+	await expect(page.getByRole('dialog', { name: 'Phone access' })).toBeVisible();
 	return access(page);
 };
 const computer = (page: Page) => page.getByRole('region', { name: 'Computer connection' });
@@ -36,15 +39,10 @@ test('the Electron environment turns phone access on and shows a one-time pairin
 	page
 }, testInfo) => {
 	await remoteHostFixture(page);
-	await page.goto('/');
+	const panel = await home(page);
 	await expect(page.locator('html')).toHaveAttribute('data-environment', 'electron');
 	await expect(page.getByRole('button', { name: 'Open project', exact: true })).toBeEnabled();
 	await expect(computer(page)).toHaveCount(0);
-	await expect(page.getByText(/sign in with the same Google account/)).toBeVisible();
-	await expect(access(page)).toHaveCount(0);
-	await page.getByRole('button', { name: 'Phone access', exact: true }).click();
-	const panel = access(page);
-	await expect(page.getByRole('dialog', { name: 'Phone access' })).toBeVisible();
 	await expect(panel.getByText('Phone access is off.')).toBeVisible();
 	await expect(page.getByRole('textbox', { disabled: false })).toHaveCount(0);
 	await remoteEvidence(page, testInfo, 'desktop-start');

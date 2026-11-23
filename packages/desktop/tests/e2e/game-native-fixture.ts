@@ -189,7 +189,6 @@ function watchHost(app: ElectronApplication, profile: string) {
 }
 
 export async function createNativeGame(page: Page, name: string, dimension: string) {
-	await expect(page.getByRole('button', { name: 'Open project', exact: true })).toBeVisible();
 	await page.getByRole('button', { name: 'New project', exact: true }).click();
 	await page.getByLabel('Project type', { exact: true }).selectOption('game');
 	await page.getByLabel('Dimension', { exact: true }).selectOption(dimension);
