@@ -24,6 +24,7 @@ test.skipIf(process.platform !== 'darwin')(
 		const fixture = vaultBroker();
 		fixture.clock.now = Date.now();
 		const binary = compileNativePhone(join(fixture.state, 'phone'));
+		execFileSync(binary, ['--device-guards']);
 		const phone = nativePhone(binary);
 		try {
 			const { signingKey } = await phone.read<{ signingKey: string }>();
@@ -63,6 +64,8 @@ function compileNativePhone(binary: string): string {
 		`${ios}/Vault/VaultLegacyAdd.swift`,
 		`${ios}/Vault/VaultLegacyImportReview.swift`,
 		`${ios}/Vault/VaultLegacyImportKeychain.swift`,
+		`${ios}/Vault/VaultFaceID.swift`,
+		`${ios}/Vault/VaultDeviceApproval.swift`,
 		'test/support/credential-vault/iosPhone.swift',
 		'test/support/credential-vault/iosLegacyAdd.swift',
 		'-o',

@@ -8,7 +8,7 @@ enum VaultLegacyImportKeychain {
         _ offer: VaultLegacyImportReview.Offer, to recipient: VaultLegacyAdd.Recipient
     ) async throws -> VaultLegacyImportReview {
         try requireCurrent(offer.binding.expiresAt)
-        let context = try await authenticate("Review the account for this Harness Vault import")
+        let context = try await VaultFaceID.authenticate("Review the account for this Harness Vault import")
         defer { context.invalidate() }
         return try VaultLegacyImportReview(offer, to: recipient, now: now)
     }
@@ -17,7 +17,7 @@ enum VaultLegacyImportKeychain {
         _ review: VaultLegacyImportReview, login: VaultLegacyAdd.Box, to recipient: VaultLegacyAdd.Recipient
     ) async throws -> String {
         try requireCurrent(review.expiresAt)
-        let context = try await authenticate("Save the reviewed login in Harness Vault")
+        let context = try await VaultFaceID.authenticate("Save the reviewed login in Harness Vault")
         defer { context.invalidate() }
         return try review.save(login, to: recipient, now: now) { entry in
             try saveAndReopen(entry, context: context)
@@ -28,20 +28,6 @@ enum VaultLegacyImportKeychain {
 
     private static func requireCurrent(_ expiresAt: Int64) throws {
         guard now < expiresAt else { throw VaultApprovalFailure.expired }
-    }
-
-    private static func authenticate(_ reason: String) async throws -> LAContext {
-        let context = LAContext()
-        context.localizedFallbackTitle = ""
-        guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil),
-            context.biometryType == .faceID,
-            (try? await context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
-                                               localizedReason: reason)) == true
-        else {
-            context.invalidate()
-            throw VaultImportFailure.faceID
-        }
-        return context
     }
 
     private static func saveAndReopen(_ entry: VaultImportedLogin, context: LAContext) throws {
