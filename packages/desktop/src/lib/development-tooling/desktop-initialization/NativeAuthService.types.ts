@@ -2,6 +2,7 @@
 import type { HostedHttpAdapter } from '../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 import type { NativeSessionAdapter } from '../../../adapters/networking-security/NativeSessionAdapter';
 import type { NativeHostedStatus } from '../../../models/projects-sessions/ProjectContext.types';
+import type { GoogleBrowserCallbackService } from '../../../services/accounts-access/GoogleBrowserCallbackService';
 
 export interface AuthOptions {
 	origin: string;
@@ -14,6 +15,7 @@ export interface AuthOptions {
 }
 
 export interface Pending {
+	callback?: GoogleBrowserCallbackService;
 	handoffId: string;
 	verifier: string;
 	nonce: string;
@@ -22,7 +24,4 @@ export interface Pending {
 	status: NativeHostedStatus;
 }
 
-/** A native sign-in that cannot start without OS encryption, or whose handoff was not approved. */
-export class NativeSignInError extends Error {
-	override name = 'NativeSignInError';
-}
+export { NativeSignInError } from '../../../services/accounts-access/NativeSignInError';

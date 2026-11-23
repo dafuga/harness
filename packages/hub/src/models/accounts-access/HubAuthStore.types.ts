@@ -1,7 +1,7 @@
 // @harness-uid u_d3q2svhmgn
 import type { EmailProofStore, EmailLedgerStore } from './HubEmailStore.types';
 import type { Actor } from 'collaboration';
-import type { HubEnvironment } from './HubAuth.types';
+import type { AccountDevice, HubEnvironment, NativeCallback } from './HubAuth.types';
 
 /** Times are epoch milliseconds. `idHash` is a keyed hash; the secret itself is never stored. */
 export interface ChallengeRecord {
@@ -14,6 +14,7 @@ export interface ChallengeRecord {
 export type SessionKind = 'browser' | 'native';
 
 export interface SessionRecord {
+	device?: AccountDevice;
 	idHash: string;
 	kind: SessionKind;
 	/** What the session came from: the approving browser session, or a pending email proof. */
@@ -53,6 +54,8 @@ export interface GithubGrantRecord {
 export type NativeExchangeStatus = 'pending' | 'approved' | 'consumed';
 
 export interface NativeExchangeRecord {
+	callback?: NativeCallback;
+	deviceName?: string;
 	id: string;
 	/** base64url SHA-256 of the desktop's PKCE verifier. */
 	challenge: string;
@@ -71,6 +74,8 @@ export interface NativeExchangeRecord {
 }
 
 export interface NativeApproval {
+	callbackCodeHash?: string;
+	callbackExpiresAt?: number;
 	id: string;
 	codeHash: string;
 	subject: string;
@@ -85,6 +90,9 @@ export interface OneTimeStore<T> {
 }
 
 export interface SessionStore {
+	devices(actorId: string, now: number): Promise<AccountDevice[]>;
+	removeDevice(actorId: string, deviceId: string, now: number): Promise<boolean>;
+	touchDevice(idHash: string, now: number): Promise<void>;
 	create(record: SessionRecord): Promise<void>;
 	find(idHash: string): Promise<SessionRecord | null>;
 	/** Revokes the session and every native session it approved. */

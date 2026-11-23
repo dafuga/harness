@@ -76,7 +76,7 @@ test('Completes GitHub callback at the fixed connected page', async () => {
 		`https://hub.example/api/github/callback?code=code-example&state=${state}`
 	);
 	const output = await capture(await routes['GET /api/github/callback'](request));
-	expect(output.location).toBe('https://hub.example/?github=connected');
+	expect(output.location).toBe('https://hub.example/projects?github=connected');
 	recordExampleCases(
 		{
 			unitId: 'hub.controller.github-connection',

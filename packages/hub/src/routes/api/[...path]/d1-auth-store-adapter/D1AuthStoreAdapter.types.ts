@@ -3,6 +3,7 @@
 export interface D1Statement {
 	bind(...values: unknown[]): D1Statement;
 	first<T = unknown>(): Promise<T | null>;
+	all<T = unknown>(): Promise<{ results: T[] }>;
 	run(): Promise<unknown>;
 }
 

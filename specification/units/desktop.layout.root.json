@@ -7,13 +7,29 @@
 	"responsibility": "Owns the / route layout.",
 	"responsibilityOrigin": "derived",
 	"status": "active",
+	"composition": {
+		"level": "layout",
+		"uses": [
+			"desktop.component.accounts-access-account-sign-in",
+			"reports.component.shared-primitives-atoms-html-main"
+		]
+	},
 	"owns": {
-		"source": ["packages/desktop/src/routes/+layout.ts"],
-		"symbols": ["ssr"]
+		"source": [
+			"packages/desktop/src/routes/+layout.svelte",
+			"packages/desktop/src/routes/+layout.ts"
+		],
+		"symbols": ["+layout", "ssr"]
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "+layout.children",
+				"type": "Snippet",
+				"required": true
+			}
+		],
 		"outputs": [
 			{
 				"name": "ssr",
@@ -27,7 +43,43 @@
 		"operations": [],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "desktop.component.accounts-access-account-sign-in",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.select-environment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.style.design",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.style.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-main",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/desktop/src/routes/+layout.ts",

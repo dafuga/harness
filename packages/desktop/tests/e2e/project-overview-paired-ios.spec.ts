@@ -1,6 +1,7 @@
 import { expect as baseExpect, test } from '../../../../test/support/browserTest';
 import type { Page } from '@playwright/test';
 import {
+	completeGoogle,
 	pairedAccountCalls,
 	pairedPhoneFixture,
 	setPairedState
@@ -72,15 +73,44 @@ test('an open item shows its read-only detail within the page and changes nothin
 	await expectReadsOnly(page);
 });
 
-test('an unpaired phone offers no overview link and reads nothing, even when signed in', async ({
+test('an unpaired owner can open Tracker overview with the Google account alone', async ({
 	page
 }) => {
 	await page.setViewportSize(phone);
 	await pairedPhoneFixture(page, 'unpaired');
-	await page.goto('/');
-	await expect(overviewLink(page)).toHaveCount(0);
-	const calls = await expectReadsOnly(page);
-	expect(calls.filter((call) => call.path === overviewPath)).toHaveLength(0);
+	await openFromLanding(page);
+	await expect(page.getByText('fixture-needs', { exact: true }).first()).toBeVisible();
+	await expectReadsOnly(page);
+});
+
+test('iOS opens at Google sign-in before it reads Tracker or projects', async ({ page }) => {
+	await page.setViewportSize(phone);
+	await pairedPhoneFixture(page, 'sign-in');
+	await page.goto('/projects');
+	const google = page.getByRole('button', { name: 'Sign in with Google' });
+	await expect(google).toBeVisible();
+	expect(await pairedAccountCalls(page)).toEqual([]);
+	if (process.env.TAKE_SCREENSHOT === 'true') {
+		await page.evaluate(async () => {
+			await document.fonts.ready;
+			await Promise.all(
+				[...document.querySelectorAll('main img')].map((image) =>
+					(image as HTMLImageElement).decode()
+				)
+			);
+		});
+		await page.screenshot({ path: `/tmp/harness-ios-account-${process.env.SCREENSHOT_LABEL}.png` });
+	}
+	await google.click();
+	await expect(page.getByRole('status')).toHaveText('Waiting for Google…');
+	await page.getByRole('button', { name: 'Cancel' }).click();
+	await expect(google).toBeVisible();
+	expect(await pairedAccountCalls(page)).toEqual([]);
+	await google.click();
+	await completeGoogle(page);
+	await expect(page).toHaveURL(/\/$/);
+	await overviewLink(page).click();
+	await expect(page.getByText('fixture-needs', { exact: true }).first()).toBeVisible();
 });
 
 test('a signed-in non-owner is denied on confirmation, so the landing page offers no overview', async ({
@@ -99,16 +129,14 @@ test('a signed-in non-owner is denied on confirmation, so the landing page offer
 	await expectReadsOnly(page);
 });
 
-test('a pairing that is revoked while shown clears the rows and reads nothing more', async ({
-	page
-}) => {
+test('a revoked computer pairing leaves the signed-in Hub overview available', async ({ page }) => {
 	await page.setViewportSize(phone);
 	await pairedPhoneFixture(page, 'owner');
 	await openFromLanding(page);
 	await expect(page.getByText('fixture-needs', { exact: true }).first()).toBeVisible();
 	const before = (await expectReadsOnly(page)).length;
 	await setPairedState(page, 'revoked');
-	await expect(page.getByText('fixture-needs', { exact: true })).toHaveCount(0);
+	await expect(page.getByText('fixture-needs', { exact: true }).first()).toBeVisible();
 	const calls = await expectReadsOnly(page);
 	expect(calls.length).toBe(before);
 });

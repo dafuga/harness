@@ -1,6 +1,5 @@
 // @harness-uid u_djg3cju4tr
 import type { CapacitorAccountAdapterConfig } from './CapacitorAccountAdapter.types';
-import type { PlainJson } from './capacitorAccountCodec';
 import { browserBridge } from '../../../../adapters/explorer-ui/browser-project-adapter/browserBridge';
 import type { BrowserApi, Query } from '../../../../models/development-tooling/BrowserApi.types';
 import type { DesktopBridge } from '../../../../models/development-tooling/DesktopBridge.types';
@@ -99,7 +98,7 @@ export class CapacitorAccountAdapter {
 			},
 			listProjects: () => this.listProjects(shared),
 			hostedStatus: () => this.account(() => this.config.plugin.status()),
-			connectHosted: () => this.account(() => this.config.plugin.connect()),
+			connectHosted: (input) => this.account(() => this.config.plugin.connect(input)),
 			disconnectHosted: () => this.disconnect()
 		};
 		/** Offered only while the account is signed in and not yet denied the overview; the Hub still decides who reads. */

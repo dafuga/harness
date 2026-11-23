@@ -19,6 +19,7 @@
 			"AuthRequestValidator.nativeApprove",
 			"AuthRequestValidator.nativePoll",
 			"AuthRequestValidator.nativeExchange",
+			"AuthRequestValidator.deviceId",
 			"AuthRequestValidator.githubCallback",
 			"AuthRequestValidator.emailCode",
 			"AuthRequestValidator.repositoryId",
@@ -112,6 +113,11 @@
 						"resource": "project:0b7e4c19-35a2-4d8f-9e61-a2c4f7d83b05"
 					}
 				]
+			},
+			{
+				"name": "AuthRequestValidator.deviceId.body",
+				"type": "Body",
+				"required": true
 			},
 			{
 				"name": "AuthRequestValidator.githubCallback.url",
@@ -495,6 +501,24 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "AuthRequestValidator.deviceId",
+				"inputs": [
+					{
+						"name": "AuthRequestValidator.deviceId.body",
+						"type": "Body",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AuthRequestValidator.deviceId",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "AuthRequestValidator.githubCallback",

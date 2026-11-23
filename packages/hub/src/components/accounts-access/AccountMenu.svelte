@@ -11,7 +11,9 @@
 <!-- Leaving the workspace is a document navigation: its history entries are its own. -->
 {#if session.actor}<hx-span class="account-name" title={session.actor.email}
 		>{session.actor.name}</hx-span
-	><hx-a href={resolve('/projects')} data-sveltekit-reload>Projects</hx-a>{#if projectId}<hx-a
+	><hx-a href={resolve('/projects')} data-sveltekit-reload>Projects</hx-a>
+	<hx-a href={resolve('/devices')}>Devices</hx-a>
+	<hx-a href={resolve('/about') + '#download'}>Download</hx-a>{#if projectId}<hx-a
 			href={resolve('/projects/[projectId]/members', { projectId })}
 			data-sveltekit-reload>Members</hx-a
 		>{/if}<hx-button type="button" disabled={session.busy} onclick={() => void session.signOut()}

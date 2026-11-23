@@ -72,6 +72,7 @@ export class HostedHttpAdapter {
 	): Promise<Response> {
 		if (!path.startsWith('/api/') || new URL(path, this.origin).origin !== this.origin)
 			throw new UntrustedHostedRequestPathError('Untrusted hosted request path.');
+		if (credential.origin !== this.origin) throw new HostedFailureValidator('denied', 401);
 		try {
 			const response = await (this.options.fetch ?? fetch)(this.origin + path, {
 				...init,

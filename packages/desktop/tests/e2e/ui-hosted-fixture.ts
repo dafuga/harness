@@ -10,7 +10,7 @@ export const verificationUrl = 'https://hub.example.invalid/native/handoff-1';
 function installConnection(input: { userCode: string; verificationUrl: string; state: string }) {
 	const host = window as unknown as HostedHost;
 	const { state: initial, ...shown } = input;
-	const hosted = { state: initial, polls: 0 };
+	const hosted = { state: initial, polls: 0, google: false };
 	const listed = host.harness.listProjects as () => Promise<{ kind: string }[]>;
 	const actor = { id: 'google:ada', name: 'Ada Example', email: 'ada@example.invalid' };
 	const status = () => ({
@@ -19,7 +19,12 @@ function installConnection(input: { userCode: string; verificationUrl: string; s
 		actor: hosted.state === 'signed-in' ? actor : undefined,
 		handoff:
 			hosted.state === 'pending'
-				? { ...shown, expiresAt: new Date(Date.now() + 300000).toISOString(), interval: 1 }
+				? {
+						...shown,
+						userCode: hosted.google ? '' : shown.userCode,
+						expiresAt: new Date(Date.now() + 300000).toISOString(),
+						interval: 1
+					}
 				: undefined
 	});
 	Object.assign(host, { __hosted: hosted, __cache: () => {}, __deny: false });
@@ -35,11 +40,13 @@ function installConnection(input: { userCode: string; verificationUrl: string; s
 			hosted.polls++;
 			return status();
 		},
-		connectHosted: async () => {
+		connectHosted: async (input?: { google?: boolean }) => {
+			hosted.google = input?.google === true;
 			hosted.state = 'pending';
 			return status();
 		},
-		disconnectHosted: async () => {
+		disconnectHosted: async (input?: { google?: boolean }) => {
+			hosted.google = input?.google === true;
 			hosted.state = 'signed-out';
 			host.__cache({ projectId: '$projects', status: 'denied' });
 			return status();

@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test';
+import { pairedAccount, pairedOverviewReply, pairedReply } from './projectOverviewAccountFixture';
 import { overviewSnapshot } from './projectOverviewNativeFixture';
 import type {
 	PairedAccountCall,
@@ -9,20 +10,7 @@ import type {
 	PairedShell
 } from './projectOverviewPairedFixture.types';
 
-/**
- * SYNTHETIC ADAPTER FIXTURE. A page that believes it runs in the Capacitor iOS shell, whose paired
- * computer and whose phone account are both imitated here. No socket, token, credential or real
- * person exists: the account is a fixture owner and the overview is the synthetic snapshot.
- *
- * The page runs the helpers below as one init script. Each helper is a top-level function
- * declaration that receives everything it needs as arguments and reads nothing of this module,
- * so the serialized script does not depend on the order in which the helpers are written.
- */
-
-function pairedReply(status: number, body: unknown) {
-	return { status, contentType: 'application/json', data: btoa(JSON.stringify(body)) };
-}
-
+/** Synthetic Capacitor plugins for an iOS renderer with a test account and computer. */
 function pairedRemoteStatus(state: string) {
 	const paired = state === 'online';
 	const unpaired = state === 'unpaired';
@@ -38,8 +26,19 @@ function pairedRemoteStatus(state: string) {
 }
 
 function pairedShell(mode: PairedMode): PairedShell {
-	const state = mode === 'unpaired' ? 'unpaired' : mode === 'revoked' ? 'revoked' : 'online';
-	return { state, reads: 0, serial: 0, listeners: new Map() };
+	const state =
+		mode === 'unpaired' || mode === 'sign-in'
+			? 'unpaired'
+			: mode === 'revoked'
+				? 'revoked'
+				: 'online';
+	return {
+		state,
+		account: mode === 'sign-in' ? 'signed-out' : 'signed-in',
+		reads: 0,
+		serial: 0,
+		listeners: new Map()
+	};
 }
 
 /** What the native plugin announces to every `status` listener of the page. */
@@ -47,17 +46,6 @@ function pairedEmit(shell: PairedShell) {
 	shell.listeners.forEach((item) => {
 		if (item.eventName === 'status') item.callback(pairedRemoteStatus(shell.state));
 	});
-}
-
-/**
- * The overview answer for the Nth read: a non-owner is denied, a denied owner keeps the card for the
- * landing confirmation and the page's own read, and loses it on the third (a focus refresh).
- */
-function pairedOverviewReply(mode: PairedMode, snapshot: unknown, read: number) {
-	if (mode === 'non-owner') return pairedReply(403, { error: 'permission-denied' });
-	if (mode === 'denied' && read > 2) return pairedReply(403, { error: 'permission-denied' });
-	if (mode === 'unavailable') return pairedReply(503, { status: 'unavailable' });
-	return pairedReply(200, snapshot);
 }
 
 /** The `HarnessRemote` double: the computer is only ever asked for its empty project list. */
@@ -74,28 +62,6 @@ function pairedRemote(shell: PairedShell) {
 		request: async (call: { method: string }) => {
 			if (call.method === 'listProjects') return { value: [] };
 			throw Object.assign(new Error('Operation not allowed.'), { code: 'method-denied' });
-		}
-	};
-}
-
-/** The `HarnessAccount` double: every request is recorded; the overview is its only read. */
-function pairedAccount(shell: PairedShell, input: PairedInstall, calls: PairedAccountCall[]) {
-	const owner = {
-		configured: true,
-		state: 'signed-in',
-		actor: { id: 'google:fixture-owner', name: 'Fixture Owner', email: 'owner@example.invalid' }
-	};
-	return {
-		status: async () => owner,
-		connect: async () => owner,
-		disconnect: async () => ({ configured: true, state: 'signed-out' }),
-		/** Records each request: the overview is read with one fixed GET and nothing else. */
-		request: async (call: { method: string; path: string }) => {
-			calls.push({ method: call.method, path: call.path });
-			if (call.method !== 'GET') return pairedReply(405, { error: 'method-not-allowed' });
-			if (call.path === '/api/tracker-overview')
-				return pairedOverviewReply(input.mode, input.snapshot, ++shell.reads);
-			return pairedReply(200, []);
 		}
 	};
 }
@@ -156,6 +122,9 @@ function installPairedShell(input: PairedInstall) {
 			) => pairedListen(shell, method, value, callback)
 		},
 		__pairedPhone: {
+			completeGoogle: () => {
+				shell.account = 'signed-in';
+			},
 			/** What the native plugin announces: revocation, loss of the pairing, or a return. */
 			setState: (state: string) => {
 				shell.state = state;
@@ -203,4 +172,8 @@ export async function setPairedState(page: Page, state: string) {
 /** Every account request the page made so far, in order. */
 export async function pairedAccountCalls(page: Page): Promise<PairedAccountCall[]> {
 	return page.evaluate(() => (window as unknown as PairedPhoneHost).__pairedAccountCalls);
+}
+
+export async function completeGoogle(page: Page) {
+	await page.evaluate(() => (window as unknown as PairedPhoneHost).__pairedPhone.completeGoogle());
 }

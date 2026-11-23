@@ -47,6 +47,9 @@ function database(options: { returnProofOnLookup?: boolean } = {}): {
 					}
 					return result as T | null;
 				},
+				async all<T>(): Promise<{ results: T[] }> {
+					return { results: [] };
+				},
 				async run() {
 					calls.push({ query, values });
 					return {};

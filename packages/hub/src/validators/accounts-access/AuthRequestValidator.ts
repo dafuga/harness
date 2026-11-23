@@ -4,6 +4,7 @@ import { EMAIL_CODE_LENGTH } from '../../models/accounts-access/HubAuth.types';
 import type {
 	GoogleSignInInput,
 	NativeApproveInput,
+	NativeCallback,
 	NativeExchangeInput,
 	NativeStartInput
 } from '../../models/accounts-access/HubAuth.types';
@@ -29,6 +30,25 @@ function field(body: Body, key: string, pattern: RegExp, max = 200): string {
 	return matches(value, pattern, max) ? value : authFail('invalid-request');
 }
 
+function nativeCallback(value: unknown): NativeCallback {
+	if (value === 'ios') return value;
+	if (typeof value === 'number' && Number.isInteger(value) && value >= 1024 && value <= 65535)
+		return value;
+	return authFail('invalid-request');
+}
+
+function deviceName(value: unknown): string | undefined {
+	if (value === undefined) return undefined;
+	if (
+		typeof value !== 'string' ||
+		!value.trim() ||
+		value.length > 80 ||
+		/[\p{Cc}\p{Cf}]/u.test(value)
+	)
+		return authFail('invalid-request');
+	return value.trim();
+}
+
 /** Parses request input into typed values or throws `invalid-request`. Unknown keys are dropped. */
 export class AuthRequestValidator {
 	google(body: Body): GoogleSignInInput {
@@ -40,6 +60,8 @@ export class AuthRequestValidator {
 
 	nativeStart(body: Body): NativeStartInput {
 		return {
+			...(body.callback === undefined ? {} : { callback: nativeCallback(body.callback) }),
+			...(body.deviceName === undefined ? {} : { deviceName: deviceName(body.deviceName) }),
 			challenge: field(body, 'challenge', S256_CHALLENGE),
 			nonce: field(body, 'nonce', NONCE),
 			resource: field(body, 'resource', RESOURCE)
@@ -62,6 +84,9 @@ export class AuthRequestValidator {
 	nativeExchange(body: Body): NativeExchangeInput {
 		return {
 			handoffId: field(body, 'handoffId', OPAQUE),
+			...(body.callbackCode === undefined
+				? {}
+				: { callbackCode: field(body, 'callbackCode', S256_CHALLENGE) }),
 			verifier: field(body, 'verifier', PKCE_VERIFIER),
 			nonce: field(body, 'nonce', NONCE),
 			resource: field(body, 'resource', RESOURCE)
@@ -69,6 +94,10 @@ export class AuthRequestValidator {
 	}
 
 	/** Null when GitHub reported a refusal or the callback is not one this server started. */
+	deviceId(body: Body): string {
+		return field(body, 'id', /^[A-Za-z0-9_-]{32,43}$/);
+	}
+
 	githubCallback(url: URL): { code: string; state: string } | null {
 		const code = url.searchParams.get('code');
 		const state = url.searchParams.get('state');

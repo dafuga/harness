@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.migration.0006-account-devices",
+	"uid": "u_r2jlw2whim",
+	"kind": "migration",
+	"title": "0006-account-devices",
+	"responsibility": "Owns the 0006-account-devices migration unit.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/db/migrations/0006-account-devices.sql"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/db/migrations/0006-account-devices.sql",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/db/migrations/0006-account-devices.sql"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -24,6 +24,7 @@
 			"NativeHandoffService.constructor",
 			"NativeHandoffService.start",
 			"NativeHandoffService.approve",
+			"NativeHandoffService.authorizeBrowser",
 			"NativeHandoffService.poll",
 			"NativeHandoffService.exchange",
 			"NativeHandoffOptions",
@@ -99,6 +100,16 @@
 						"userCode": "H4NX27BM"
 					}
 				]
+			},
+			{
+				"name": "NativeHandoffService.authorizeBrowser.session",
+				"type": "SessionRecord",
+				"required": true
+			},
+			{
+				"name": "NativeHandoffService.authorizeBrowser.handoffId",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "NativeHandoffService.poll.handoffId",
@@ -359,6 +370,29 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "NativeHandoffService.authorizeBrowser",
+				"inputs": [
+					{
+						"name": "NativeHandoffService.authorizeBrowser.session",
+						"type": "SessionRecord",
+						"required": true
+					},
+					{
+						"name": "NativeHandoffService.authorizeBrowser.handoffId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeHandoffService.authorizeBrowser",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "NativeHandoffService.poll",

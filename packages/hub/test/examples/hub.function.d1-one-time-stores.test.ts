@@ -19,6 +19,9 @@ function database(rows: unknown[]) {
 					calls.push({ query, values });
 					return statement;
 				},
+				async all<T>(): Promise<{ results: T[] }> {
+					return { results: [] };
+				},
 				async run() {
 					return {};
 				},

@@ -1,7 +1,10 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
-import type { ElectronApplication } from '../../../../../test/support/browserTest';
+import { expect } from '../../../../../test/support/browserTest';
+import type { ElectronApplication, Page } from '../../../../../test/support/browserTest';
+import { enableFixtureStorage, nativeGoogleFixture } from './nativeGoogleFixture';
+import type { OverviewSnapshot } from '../../../../reports/src/lib/projects-sessions/project-overview/projectOverview.types';
 import type { HubSpy, HubSpyRecord } from './trackerOverviewPublisherFixture.types';
 export type { HubSpy, HubSpyRecord } from './trackerOverviewPublisherFixture.types';
 
@@ -25,31 +28,68 @@ function bearerOf(request: IncomingMessage): string | null {
 	return header.startsWith('Bearer ') ? header.slice('Bearer '.length) : null;
 }
 
-/** Answers the two calls the publisher makes: the status check and the owner-only PUT. */
+const fixtureActor = (id: string) => ({
+	id,
+	name: 'Fixture Owner',
+	email: 'owner@example.invalid',
+	emailVerified: true
+});
+
+function nativeSignIn(
+	request: IncomingMessage,
+	data: string,
+	login: ReturnType<typeof nativeGoogleFixture>
+) {
+	const origin = `http://${request.headers.host}`;
+	if (request.url === '/api/auth/native/start') return login.start(data, origin);
+	if (request.url !== '/api/auth/native/exchange') return null;
+	const proof = login.exchange(data);
+	return (
+		proof && {
+			authorization: OWNER.token,
+			actor: fixtureActor(OWNER.id),
+			audience: 'harness-desktop',
+			resource: proof.resource,
+			nonce: proof.nonce,
+			expiresAt: new Date(Date.now() + 300_000).toISOString()
+		}
+	);
+}
+
+/** Synthetic browser handoff, account status and Tracker overview. */
 async function answer(
 	request: IncomingMessage,
 	response: ServerResponse,
 	records: HubSpyRecord[],
-	readsDenied: boolean
+	fixture: {
+		readsDenied: boolean;
+		overview?: OverviewSnapshot;
+		login: ReturnType<typeof nativeGoogleFixture>;
+	}
 ): Promise<void> {
 	const path = request.url ?? '';
 	const bearer = bearerOf(request);
 	const body = await readBody(request);
 	records.push({ method: request.method ?? '', path, bearer, body });
 	const actor = [OWNER, OTHER].find((known) => known.token === bearer);
-	if (request.method === 'GET' && path === '/api/auth/status') {
-		if (!actor) return send(response, 401, {});
-		return send(response, 200, {
-			configured: true,
-			actor: { id: actor.id, emailVerified: true }
-		});
+	if (path.startsWith('/api/auth/native/') && request.method === 'POST') {
+		const result = nativeSignIn(request, body, fixture.login);
+		return send(response, result ? 200 : 400, result ?? {});
+	}
+	if (path === '/api/auth/status' && request.method === 'GET') {
+		if (!actor && bearer) return send(response, 401, {});
+		return send(response, 200, { configured: true, actor: actor ? fixtureActor(actor.id) : null });
+	}
+	if (path === '/api/projects' && request.method === 'GET') {
+		return send(response, actor ? 200 : 401, actor ? [] : {});
 	}
 	if (request.method === 'PUT' && path === '/api/tracker-overview') {
 		if (actor?.id !== OWNER.id) return send(response, actor ? 403 : 401, {});
 		return send(response, 204);
 	}
 	if (request.method === 'GET' && path === '/api/tracker-overview') {
-		if (readsDenied || actor?.id !== OWNER.id) return send(response, actor ? 403 : 401, {});
+		if (fixture.readsDenied || actor?.id !== OWNER.id) return send(response, actor ? 403 : 401, {});
+		if (fixture.overview) return send(response, 200, fixture.overview);
 		const previous = records.findLast(
 			(entry) => entry.method === 'PUT' && entry.bearer === OWNER.token
 		);
@@ -68,11 +108,11 @@ function send(response: ServerResponse, status: number, body?: unknown): void {
  * A loopback Hub spy. It is the only Hub the publisher is pointed at, and it records each request
  * the real main-process publisher sends, so the spec can assert the wire: path, bearer and body.
  */
-export async function startHubSpy(): Promise<HubSpy> {
+export async function startHubSpy(overview?: OverviewSnapshot): Promise<HubSpy> {
 	const records: HubSpyRecord[] = [];
-	let readsDenied = false;
+	const fixture = { readsDenied: false, overview, login: nativeGoogleFixture() };
 	const server: Server = createServer((request, response) => {
-		void answer(request, response, records, readsDenied);
+		void answer(request, response, records, fixture);
 	});
 	await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
 	const address = server.address();
@@ -80,8 +120,9 @@ export async function startHubSpy(): Promise<HubSpy> {
 	return {
 		origin: `http://127.0.0.1:${address.port}`,
 		records,
+		login: fixture.login,
 		denyOverviewReads() {
-			readsDenied = true;
+			fixture.readsDenied = true;
 		},
 		close: () => new Promise<void>((resolve) => server.close(() => resolve()))
 	};
@@ -119,19 +160,50 @@ export async function seedHostedSession(
 	actor: { id: string; token: string },
 	origin: string
 ): Promise<void> {
-	const userData = await app.evaluate(({ app, safeStorage }) => {
-		Object.assign(safeStorage, {
-			isEncryptionAvailable: () => true,
-			decryptString: (bytes: Buffer) => bytes.toString('utf8')
-		});
-		return app.getPath('userData');
-	});
-	if (resolve(userData) !== resolve(profile))
-		throw new Error('Expected the temporary Electron profile.');
-	const file = join(userData, 'session.enc');
+	await enableFixtureStorage(app, profile);
+	const file = join(resolve(profile), 'session.enc');
 	await mkdir(dirname(file), { recursive: true });
 	await writeFile(file, JSON.stringify({ origin, principalId: actor.id, token: actor.token }), {
 		mode: 0o600,
 		flag: 'wx'
 	});
+}
+
+export function electronFixtureEnvironment(): Record<string, string> {
+	return Object.fromEntries(
+		Object.entries(process.env).filter(
+			([key, value]) => key !== 'ELECTRON_RUN_AS_NODE' && value !== undefined
+		)
+	) as Record<string, string>;
+}
+
+export async function seedHostedPage(
+	app: ElectronApplication,
+	profile: string,
+	hub: HubSpy
+): Promise<Page> {
+	const page = await app.firstWindow();
+	await expect(page.getByRole('button', { name: 'Sign in with Google' })).toBeVisible();
+	await seedHostedSession(app, profile, OWNER, hub.origin);
+	await page.evaluate(() => window.dispatchEvent(new Event('focus')));
+	await expect(page.getByRole('button', { name: 'Sign out', exact: true })).toBeVisible();
+	return page;
+}
+
+export async function withSeededHub(
+	launch: (hub: HubSpy) => Promise<ElectronApplication>,
+	profile: string
+): Promise<ElectronApplication> {
+	const hub = await startHubSpy();
+	let app: ElectronApplication | undefined;
+	try {
+		app = await launch(hub);
+		await seedHostedPage(app, profile, hub);
+		app.on('close', () => void hub.close());
+		return app;
+	} catch (error) {
+		await app?.close();
+		await hub.close();
+		throw error;
+	}
 }

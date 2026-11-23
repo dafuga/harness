@@ -18,7 +18,8 @@ const sqlite = await import('node:sqlite').catch(() => null);
 const files = [
 	'0001-auth-ephemeral-state.sql',
 	'0003-auth-grant-generations.sql',
-	'0004-auth-email-proofs.sql'
+	'0004-auth-email-proofs.sql',
+	'0006-account-devices.sql'
 ];
 const migrations = files.map((file) =>
 	readFileSync(new URL(`../../db/migrations/${file}`, import.meta.url), 'utf8')
@@ -28,6 +29,7 @@ function statement(engine: Engine, query: string, values: Value[] = []): D1State
 	return {
 		bind: (...next) => statement(engine, query, next as Value[]),
 		first: async <T>() => (engine.prepare(query).get(...values) ?? null) as T | null,
+		all: async <T>() => ({ results: engine.prepare(query).all(...values) as T[] }),
 		run: async () => engine.prepare(query).run(...values)
 	};
 }
@@ -110,3 +112,26 @@ for (const entry of ['utils/d1GrantStore.ts', 'adapters/d1-auth-store-adapter/d1
 }
 
 export type { sqlite };
+
+test.skipIf(!sqlite)(
+	'device management is scoped to the owner and revokes the exact SQLite session',
+	async () => {
+		const { db } = database();
+		const store = createD1AuthStore(db);
+		const row = sessionRecord();
+		const device = {
+			id: 'd'.repeat(43),
+			name: 'Local Mac',
+			lastSeenAt: new Date(1_000).toISOString()
+		};
+		await store.sessions.create({ ...row, kind: 'native', device, expiresAt: 2_000_000 });
+		await store.sessions.touchDevice(row.idHash, 600_000);
+		expect(await store.sessions.devices(row.actor.id, 600_001)).toEqual([
+			{ ...device, lastSeenAt: new Date(600_000).toISOString() }
+		]);
+		expect(await store.sessions.removeDevice('google:another', device.id, 600_001)).toBe(false);
+		expect(await store.sessions.removeDevice(row.actor.id, device.id, 600_001)).toBe(true);
+		expect(await store.sessions.find(row.idHash)).toMatchObject({ revokedAt: 600_001 });
+		expect(await store.sessions.devices(row.actor.id, 600_001)).toEqual([]);
+	}
+);

@@ -140,7 +140,7 @@ export interface DesktopBridge extends GameDesktopBridge, DeploymentBridge {
 		input: EntityQuery & { page: number; branch?: string }
 	): Promise<{ entries: HistoryEvent[]; complete: boolean; nextPage: number | null }>;
 	hostedStatus?(): Promise<NativeHostedStatus>;
-	connectHosted?(): Promise<NativeHostedStatus>;
+	connectHosted?(input?: { google?: boolean }): Promise<NativeHostedStatus>;
 	disconnectHosted?(): Promise<NativeHostedStatus>;
 	/** The local tracker's read-only overview; takes no input. Absent on hosts without a local tracker. */
 	projectOverview?(): Promise<OverviewSnapshot>;

@@ -36,6 +36,9 @@ function fixture(): {
 	const revocations: Array<[string, number]> = [];
 	const options: SessionRepositoryOptions = {
 		store: {
+			devices: async () => [],
+			removeDevice: async () => false,
+			touchDevice: async () => {},
 			async create(record) {
 				records.set(record.idHash, record);
 			},

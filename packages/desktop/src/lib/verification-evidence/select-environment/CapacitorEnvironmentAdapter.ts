@@ -4,7 +4,6 @@ import { Capacitor, registerPlugin } from '@capacitor/core';
 import { CapacitorAccountAdapter } from './capacitor-account-adapter/CapacitorAccountAdapter';
 import { CapacitorBridgeAdapter } from './capacitor-bridge-adapter/CapacitorBridgeAdapter';
 import { CapacitorProjectsService } from './CapacitorProjectsService';
-import type { PairingState } from './CapacitorProjectsService.types';
 import type {
 	AccountNativePlugin,
 	Environment,
@@ -17,25 +16,6 @@ import type {
 export const remotePluginName = 'HarnessRemote';
 
 export const accountPluginName = 'HarnessAccount';
-
-/**
- * Whether the computer is online, and each change of that: the overview is offered only while so.
- * A change of computer while online is a change of pairing too, so its rows never outlive it.
- */
-function pairingOf() {
-	let state: PairingState = { online: false, generation: 0 };
-	let host = '';
-	const track = (status: RemoteNativeStatus): RemoteNativeStatus => {
-		const online = status.state === 'online';
-		const next = online ? (status.host?.id ?? 'online') : '';
-		if (online !== state.online || next !== host) {
-			state = { online, generation: state.generation + 1 };
-			host = next;
-		}
-		return status;
-	};
-	return { track, current: (): PairingState => state };
-}
 
 function nativeAccount(): AccountNativePlugin | undefined {
 	if (!Capacitor.isPluginAvailable(accountPluginName)) return undefined;
@@ -63,13 +43,11 @@ export class CapacitorEnvironmentAdapter {
 			computer.allow(status);
 			return status;
 		};
-		const pairing = pairingOf();
-		const track = pairing.track;
 		const phone: RemoteMobileControl = {
-			status: async () => note(track(await plugin.status())),
-			scan: async (input) => note(track(await plugin.scan(input))),
-			disconnect: async () => note(track(await plugin.disconnect())),
-			onStatus: (listener) => this.listen('status', (status) => listener(note(track(status))))
+			status: async () => note(await plugin.status()),
+			scan: async (input) => note(await plugin.scan(input)),
+			disconnect: async () => note(await plugin.disconnect()),
+			onStatus: (listener) => this.listen('status', (status) => listener(note(status)))
 		};
 		const mac = computer.connect();
 		if (!this.account) return { kind: 'capacitor', bridge: mac, local: false, phone };
@@ -77,8 +55,7 @@ export class CapacitorEnvironmentAdapter {
 		const cloud = new CapacitorAccountAdapter({ plugin: this.account }).connect();
 		const bridge = new CapacitorProjectsService({
 			cloud,
-			mac,
-			pairing: pairing.current
+			mac
 		}).connect();
 		return { kind: 'capacitor', bridge, local: false, phone, account: true };
 	}

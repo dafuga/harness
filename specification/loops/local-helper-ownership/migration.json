@@ -6512,6 +6512,13 @@
 			"commit": "28a1d24cacec44c0b2dc88871be3a6e42fc6f8d3",
 			"reason": "Carry declared host resource requirements into the check admissions plan.",
 			"definition": "2dafa9cade7870e6cc38c98e9963bbc224f75429952b909af116d2d9351ed904"
+		},
+		{
+			"unit": "hub.function.compose-hub-auth",
+			"name": "composeHubAuth",
+			"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+			"reason": "Wire the native device route and Google handoff through the existing Hub auth owner.",
+			"definition": "36972ee8755d60d147dcf4542771b97401e3f6f5f632444fd976804fee62fc7f"
 		}
 	],
 	"retiredOwners": [

@@ -35,6 +35,33 @@ function sessions(rows: Rows<SessionRecord>): SessionStore {
 		async find(idHash) {
 			return structuredClone(rows.get(idHash) ?? null);
 		},
+		async devices(actorId, now) {
+			return [...rows.values()]
+				.filter(
+					(row) =>
+						row.actor.id === actorId && row.device && row.revokedAt === null && row.expiresAt > now
+				)
+				.map((row) => structuredClone(row.device!))
+				.sort((a, b) => b.lastSeenAt.localeCompare(a.lastSeenAt) || a.id.localeCompare(b.id))
+				.slice(0, 100);
+		},
+		async removeDevice(actorId, deviceId, now) {
+			const row = [...rows.values()].find(
+				(row) =>
+					row.actor.id === actorId &&
+					row.device?.id === deviceId &&
+					row.revokedAt === null &&
+					row.expiresAt > now
+			);
+			if (!row) return false;
+			row.revokedAt = now;
+			return true;
+		},
+		async touchDevice(idHash, now) {
+			const row = rows.get(idHash);
+			if (row?.device && row.revokedAt === null)
+				row.device.lastSeenAt = new Date(now).toISOString();
+		},
 		async revoke(idHash, now) {
 			for (const record of rows.values()) {
 				const family = record.idHash === idHash || record.parentHash === idHash;
@@ -110,7 +137,9 @@ function exchanges(rows: Rows<NativeExchangeRecord>): ExchangeStore {
 			Object.assign(record, {
 				status: 'approved',
 				subject: approval.subject,
-				parentHash: approval.parentHash
+				parentHash: approval.parentHash,
+				codeHash: approval.callbackCodeHash ?? record.codeHash,
+				expiresAt: Math.min(approval.callbackExpiresAt ?? record.expiresAt, record.expiresAt)
 			});
 			return true;
 		},

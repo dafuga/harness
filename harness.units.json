@@ -578,6 +578,18 @@
 			"reason": "The public Hub homepage renders the same brand component as the signed-in Hub frame."
 		},
 		{
+			"from": "packages/desktop/src/components/accounts-access/AccountSignIn.svelte",
+			"specifier": "$shared/shared-primitives/BrandMark.svelte",
+			"to": "packages/reports/src/components/shared-primitives/BrandMark.svelte",
+			"reason": "The native sign-in screen renders the shared Harness brand mark."
+		},
+		{
+			"from": "packages/hub/src/routes/+page.svelte",
+			"specifier": "$shared/shared-primitives/BrandMark.svelte",
+			"to": "packages/reports/src/components/shared-primitives/BrandMark.svelte",
+			"reason": "The Hub sign-in screen renders the shared Harness brand mark."
+		},
+		{
 			"from": "packages/desktop/src/components/agents-providers/AgentSettings.svelte",
 			"specifier": "$shared/Select.svelte",
 			"to": "packages/reports/src/components/Select.svelte",

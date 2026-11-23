@@ -18,6 +18,9 @@ function cleanupDatabase(calls: Array<{ query: string; values: unknown[] }>): D1
 				async first<T>(): Promise<T | null> {
 					return null;
 				},
+				async all<T>(): Promise<{ results: T[] }> {
+					return { results: [] };
+				},
 				async run(): Promise<unknown> {
 					return { success: true };
 				}

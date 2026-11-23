@@ -10,10 +10,6 @@ import type {
 	RunEvent
 } from '../../../models/development-tooling/DesktopBridge.types';
 import type { DesktopProject } from '../../../models/projects-sessions/ProjectContext.types';
-import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
-
-/** What the phone shows when the overview is not confirmed: no rows, no account data. */
-const overviewUnavailable: OverviewSnapshot = { status: 'unavailable' };
 
 /** Operations a bridge may lack: found while the authority of the selected project offers them. */
 const optional = [
@@ -42,19 +38,6 @@ function both(...releases: Array<(() => void) | undefined>): () => void {
 }
 
 /**
- * One zero-argument read of the overview through this phone's own account, never the computer's.
- * A pairing that is lost or changes while the read is in flight discards its answer.
- */
-async function overviewOf(config: CapacitorProjectsServiceConfig): Promise<OverviewSnapshot> {
-	const { cloud, pairing } = config;
-	const asked = pairing?.();
-	if (!asked?.online || !cloud.projectOverview) return overviewUnavailable;
-	const answer = await cloud.projectOverview().catch(() => overviewUnavailable);
-	const now = pairing?.();
-	return now?.online && now.generation === asked.generation ? answer : overviewUnavailable;
-}
-
-/**
  * The phone's product interface: its own Hub account beside the paired computer. Both lists are
  * shown together; each operation goes to the authority of its project only, and what one of them
  * refuses is never asked of the other. Without a computer the account works alone.
@@ -69,7 +52,7 @@ export class CapacitorProjectsService {
 		const { cloud, mac } = this.config;
 		const bridge: DesktopBridge = {
 			hostedStatus: () => cloud.hostedStatus!(),
-			connectHosted: () => cloud.connectHosted!(),
+			connectHosted: (input) => cloud.connectHosted!(input),
 			disconnectHosted: () => cloud.disconnectHosted!(),
 			listProjects: () => this.list(),
 			openProject: () => mac.openProject(),
@@ -124,19 +107,10 @@ export class CapacitorProjectsService {
 			enumerable: true,
 			get: () => (this.offers(key) ? this.routed(key) : undefined)
 		});
-		/** Offered only while the computer is online and this phone's own account offers the read. */
-		const overview = {
-			enumerable: true,
-			get: () => {
-				const { cloud, pairing } = this.config;
-				return pairing?.().online && cloud.projectOverview
-					? () => overviewOf(this.config)
-					: undefined;
-			}
-		};
+
 		return {
 			...Object.fromEntries(optional.map((key) => [key, descriptor(key)])),
-			projectOverview: overview
+			projectOverview: { enumerable: true, get: () => this.config.cloud.projectOverview }
 		};
 	}
 

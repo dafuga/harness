@@ -7,18 +7,23 @@ import { InvalidNativeHandoffUrlError } from './InvalidNativeHandoffUrlError';
 import { NativeHandoffBindingMismatchError } from './NativeHandoffBindingMismatchError';
 import type { NativeHostedCredential } from '../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 import type { NativeHostedStatus } from '../../models/projects-sessions/ProjectContext.types';
+function validUserCode(value: unknown, google: boolean): value is string {
+	if (typeof value !== 'string') return false;
+	return google ? value === '' : value.length >= 1 && value.length <= 40;
+}
+
 export class NativeHandoffValidator {
-	start(value: unknown, origin: string, now: number) {
+	start(value: unknown, origin: string, now: number, google = false) {
 		const item = responseRecord(value);
 		if (
 			typeof item.handoffId !== 'string' ||
 			!/^[\w-]{1,200}$/.test(item.handoffId) ||
-			item.verificationUrl !== `${origin}/native/${encodeURIComponent(item.handoffId)}`
+			item.verificationUrl !==
+				`${origin}/native/${encodeURIComponent(item.handoffId)}${google ? '?return=1' : ''}`
 		)
 			throw new InvalidNativeHandoffUrlError('Invalid native handoff URL.');
 		if (
-			typeof item.userCode !== 'string' ||
-			item.userCode.length > 40 ||
+			!validUserCode(item.userCode, google) ||
 			typeof item.interval !== 'number' ||
 			item.interval < 1 ||
 			item.interval > 30

@@ -5,14 +5,18 @@ import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import {
-	installTrackerDouble,
 	LEAK_SENTINELS,
 	syntheticTrackerPayloads,
-	trackerRequests,
-	TRACKER_ORIGIN,
 	TRACKER_URLS
 } from './support/projectOverviewElectronFixture';
-import type { TrackerDouble } from './support/projectOverviewNativeFixture.types';
+import {
+	makeTemporaryDesktopEntry,
+	OWNER,
+	seedHostedPage,
+	startHubSpy
+} from './support/trackerOverviewPublisherFixture';
+import type { HubSpy } from './support/trackerOverviewPublisherFixture';
+import { readProjectOverview } from '../../../reports/src/lib/projects-sessions/project-overview/readProjectOverview';
 
 /** The built desktop app: package.json main is dist/main.cjs, produced by `bun run build`. */
 const desktopRoot = resolve(import.meta.dirname, '../..');
@@ -41,7 +45,7 @@ const excludedTitles = [
 test.setTimeout(120_000);
 
 /** Launches the built app with an isolated, disposable profile; no developer profile is touched. */
-async function launchBuilt(temp: string): Promise<ElectronApplication> {
+async function launchBuilt(temp: string, hub: HubSpy): Promise<ElectronApplication> {
 	const env = Object.fromEntries(
 		Object.entries(process.env).filter(
 			([key, value]) => key !== 'ELECTRON_RUN_AS_NODE' && value !== undefined
@@ -49,8 +53,8 @@ async function launchBuilt(temp: string): Promise<ElectronApplication> {
 	) as Record<string, string>;
 	return _electron.launch({
 		executablePath: electronBinary,
-		args: [desktopRoot, `--user-data-dir=${join(temp, 'profile')}`],
-		env
+		args: [await makeTemporaryDesktopEntry(temp, desktopRoot)],
+		env: { ...env, HARNESS_HUB_ORIGIN: hub.origin }
 	});
 }
 
@@ -74,36 +78,38 @@ async function captureOverview(page: Page, name: string) {
 	await page.screenshot({ path: join(directory, `project-overview-electron-${name}.png`) });
 }
 
-/** Every recorded tracker request is one of the fixed GET reads, and none was refused. */
-async function expectOnlyFixedReads(app: ElectronApplication, outcome: 'answered' | 'unreachable') {
-	const requests = await trackerRequests(app);
-	expect(requests.length).toBeGreaterThanOrEqual(Object.keys(TRACKER_URLS).length);
-	expect(requests.filter((request) => request.outcome === 'refused')).toEqual([]);
-	for (const request of requests) {
-		expect(request.method).toBe('GET');
-		expect(Object.values(TRACKER_URLS)).toContain(request.url);
-		expect(request.outcome).toBe(outcome);
-	}
-	return requests;
+function expectOwnerReads(hub: HubSpy) {
+	const requests = hub.records.filter(({ path }) => path === '/api/tracker-overview');
+	expect(requests.length).toBeGreaterThan(0);
+	expect(requests.every(({ method, bearer }) => method === 'GET' && bearer === OWNER.token)).toBe(
+		true
+	);
+	expect(hub.records.every(({ method }) => method === 'GET')).toBe(true);
 }
 
-test('the built app opens the overview from its landing link and reads the fixed tracker', async ({
+async function overviewHub(ready: boolean) {
+	const now = Date.now();
+	const payloads = syntheticTrackerPayloads(now);
+	const fetcher = async (url: RequestInfo | URL) => {
+		const key = Object.entries(TRACKER_URLS).find(
+			([, path]) => path === String(url)
+		)?.[0] as keyof typeof payloads;
+		if (!key) return new Response(null, { status: 404 });
+		return Response.json(payloads[key]);
+	};
+	return startHubSpy(ready ? await readProjectOverview(fetcher as typeof fetch, now) : undefined);
+}
+
+test('the built app opens the owner overview through the signed-in Hub account', async ({
 	browserErrors
 }) => {
-	const temp = await mkdtemp(join(tmpdir(), 'harness-overview-')),
-		double: TrackerDouble = {
-			mode: 'ready',
-			origin: TRACKER_ORIGIN,
-			urls: TRACKER_URLS,
-			payloads: syntheticTrackerPayloads(Date.now())
-		};
+	const temp = await mkdtemp(join(tmpdir(), 'harness-overview-'));
+	const hub = await overviewHub(true);
 	let app: ElectronApplication | undefined;
 	try {
-		app = await launchBuilt(temp);
+		app = await launchBuilt(temp, hub);
 		browserErrors.watch(app.context());
-		await installTrackerDouble(app, double);
-		const page = await app.firstWindow();
-		await page.waitForLoadState('domcontentloaded');
+		const page = await seedHostedPage(app, join(temp, 'profile'), hub);
 		await page.getByRole('link', { name: 'Project Overview', exact: true }).click();
 		await expect(page).toHaveURL(/\/projects$/);
 		for (const agent of cardAgents) {
@@ -127,7 +133,7 @@ test('the built app opens the overview from its landing link and reads the fixed
 			Object.keys((window as unknown as { harness: object }).harness)
 		);
 		expect(bridgeKeys.filter((key) => /token|callback|secret/i.test(key))).toEqual([]);
-		await expectOnlyFixedReads(app, 'answered');
+		expectOwnerReads(hub);
 		await setViewport(app, page, viewports[0].width, viewports[0].height);
 		expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 			viewports[0].width
@@ -140,6 +146,7 @@ test('the built app opens the overview from its landing link and reads the fixed
 		await captureOverview(page, viewports[1].name);
 	} finally {
 		await app?.close();
+		await hub.close();
 		await rm(temp, { recursive: true, force: true });
 	}
 });
@@ -147,20 +154,13 @@ test('the built app opens the overview from its landing link and reads the fixed
 test('an open item shows read-only detail and writes nothing to the tracker', async ({
 	browserErrors
 }) => {
-	const temp = await mkdtemp(join(tmpdir(), 'harness-overview-')),
-		double: TrackerDouble = {
-			mode: 'ready',
-			origin: TRACKER_ORIGIN,
-			urls: TRACKER_URLS,
-			payloads: syntheticTrackerPayloads(Date.now())
-		};
+	const temp = await mkdtemp(join(tmpdir(), 'harness-overview-'));
+	const hub = await overviewHub(true);
 	let app: ElectronApplication | undefined;
 	try {
-		app = await launchBuilt(temp);
+		app = await launchBuilt(temp, hub);
 		browserErrors.watch(app.context());
-		await installTrackerDouble(app, double);
-		const page = await app.firstWindow();
-		await page.waitForLoadState('domcontentloaded');
+		const page = await seedHostedPage(app, join(temp, 'profile'), hub);
 		await page.getByRole('link', { name: 'Project Overview', exact: true }).click();
 		await expect(page).toHaveURL(/\/projects$/);
 		await page.getByRole('button', { name: 'Open item', exact: true }).first().click();
@@ -173,30 +173,22 @@ test('an open item shows read-only detail and writes nothing to the tracker', as
 		);
 		await page.keyboard.press('Escape');
 		await expect(detail).toHaveCount(0);
-		await expectOnlyFixedReads(app, 'answered');
+		expectOwnerReads(hub);
 	} finally {
 		await app?.close();
+		await hub.close();
 		await rm(temp, { recursive: true, force: true });
 	}
 });
 
-test('an unreachable tracker shows the unavailable notice and no project data', async ({
-	browserErrors
-}) => {
-	const temp = await mkdtemp(join(tmpdir(), 'harness-overview-')),
-		double: TrackerDouble = {
-			mode: 'down',
-			origin: TRACKER_ORIGIN,
-			urls: TRACKER_URLS,
-			payloads: syntheticTrackerPayloads(Date.now())
-		};
+test('an unavailable Hub overview shows no project data', async ({ browserErrors }) => {
+	const temp = await mkdtemp(join(tmpdir(), 'harness-overview-'));
+	const hub = await overviewHub(false);
 	let app: ElectronApplication | undefined;
 	try {
-		app = await launchBuilt(temp);
+		app = await launchBuilt(temp, hub);
 		browserErrors.watch(app.context());
-		await installTrackerDouble(app, double);
-		const page = await app.firstWindow();
-		await page.waitForLoadState('domcontentloaded');
+		const page = await seedHostedPage(app, join(temp, 'profile'), hub);
 		await page.getByRole('link', { name: 'Project Overview', exact: true }).click();
 		await expect(page).toHaveURL(/\/projects$/);
 		await expect(
@@ -207,9 +199,10 @@ test('an unreachable tracker shows the unavailable notice and no project data', 
 		for (const agent of cardAgents) {
 			await expect(page.getByText(agent, { exact: true })).toHaveCount(0);
 		}
-		await expectOnlyFixedReads(app, 'unreachable');
+		expectOwnerReads(hub);
 	} finally {
 		await app?.close();
+		await hub.close();
 		await rm(temp, { recursive: true, force: true });
 	}
 });

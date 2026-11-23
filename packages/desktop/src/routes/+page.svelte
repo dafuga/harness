@@ -2,25 +2,27 @@
 <!-- @harness-atoms ../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_gp2k2ksjwv -->
 <script lang="ts">
-	import { onMount, setContext } from 'svelte';
+	import { getContext, onMount, setContext } from 'svelte';
 	import { createRemoteHostStore } from '../lib/stores/networking-security/remoteHost.svelte';
 	import { createRemotePhoneStore } from '../lib/stores/networking-security/remotePhone.svelte';
 	import { createWorkspaceStore } from '../lib/stores/projects-sessions/workspace.svelte';
-	import { remoteContext } from '../models/development-tooling/Environment.types';
+	import {
+		nativeAccountContext,
+		remoteContext
+	} from '../models/development-tooling/Environment.types';
 	import type {
 		Environment,
-		EnvironmentHost,
 		EnvironmentKind,
-		RemoteMobileStatus
+		NativeAccountContext
 	} from '../models/development-tooling/Environment.types';
-	import { selectEnvironment } from '../lib/verification-evidence/select-environment/selectEnvironment';
+	import { ProjectSyncService } from '../services/projects-sessions/ProjectSyncService';
 	import { isWorkspacePath } from '../utils/projects-sessions/workspaceRoute';
-	import HostedConnection from '../components/networking-security/HostedConnection.svelte';
 	import ProjectGate from '../components/projects-sessions/ProjectGate.svelte';
 	import RemoteConnection from '../components/networking-security/RemoteConnection.svelte';
 	import WorkspaceShell from '../components/projects-sessions/WorkspaceShell.svelte';
 	import '../lib/styles/workspace.css';
 	import '../lib/styles/design.css';
+	const account = getContext<NativeAccountContext>(nativeAccountContext);
 	const workspace = createWorkspaceStore();
 	const remote = {
 		host: createRemoteHostStore(workspace),
@@ -29,13 +31,13 @@
 	setContext(remoteContext, remote);
 	let available = $state(false);
 	let kind = $state<EnvironmentKind>('web');
-	/** A phone opens the projects of a computer; every other runtime opens them on this device. */
 	const local = $derived(kind !== 'capacitor');
-	/** On a paired phone: offered only once the owner's overview read confirms this account may see it. */
+	/** The phone offers Project Overview after the Hub confirms this account may read it. */
 	let overview = $state(false);
 	onMount(() => {
 		/** One adapter per runtime: the desktop preload, the phone's native plugin, or neither. */
-		const environment = selectEnvironment(window as unknown as EnvironmentHost);
+		const environment = account.environment;
+		if (!environment) return;
 		kind = environment.kind;
 		document.documentElement.dataset.environment = kind;
 		workspace.connect(environment.bridge, environment);
@@ -51,13 +53,16 @@
 			void workspace.loadProjects();
 			show();
 		}
-		const releases = environment.phone ? offerOverview(environment) : [];
+		const sync = new ProjectSyncService({ refresh: () => workspace.loadProjects() });
+		if (account.signedIn) sync.start();
+		const releaseOverview = environment.account ? offerOverview(environment) : undefined;
 		void remote.host.start();
 		void remote.phone.start();
 		window.addEventListener('popstate', show);
 		return () => {
 			window.removeEventListener('popstate', show);
-			releases.forEach((release) => release());
+			releaseOverview?.();
+			sync.stop();
 			overview = false;
 			remote.host.dispose();
 			remote.phone.dispose();
@@ -65,43 +70,23 @@
 		};
 	});
 
-	/**
-	 * The Project Overview link on a paired phone. Each change of pairing or account is asked again:
-	 * the link is hidden at once and shown only when the fixed overview read answers 200 or 503. An
-	 * answer that arrives after a further change is discarded.
-	 */
-	function offerOverview(environment: Environment): Array<() => void> {
+	function offerOverview(environment: Environment): () => void {
 		const bridge = environment.bridge;
-		let ticket = 0;
-		let pairing: string | null = null;
-		const ask = async () => {
-			const asked = ++ticket;
-			overview = false;
-			await bridge?.hostedStatus?.().catch(() => undefined);
-			const read = bridge?.projectOverview;
-			if (!read || asked !== ticket) return;
-			await read().catch(() => undefined);
-			if (asked === ticket) overview = Boolean(bridge?.projectOverview);
-		};
-		const follow = (status: RemoteMobileStatus) => {
-			const key = status.state === 'online' ? (status.host?.id ?? 'online') : '';
-			if (key === pairing) return;
-			pairing = key;
-			void ask();
-		};
-		const phone = environment.phone!;
-		const release = phone.onStatus(follow);
-		const cache = bridge?.onCacheStatus?.((status) => {
-			if (status.status === 'denied') void ask();
-		});
-		void phone.status().then(follow, () => void ask());
-		return [
+		let active = true;
+		const read = bridge?.projectOverview;
+		void read?.().then(
 			() => {
-				ticket++;
-				release();
+				if (active) overview = Boolean(bridge?.projectOverview);
 			},
-			() => cache?.()
-		];
+			() => {}
+		);
+		const off = bridge?.onCacheStatus?.(({ status }) => {
+			if (status === 'denied') overview = Boolean(bridge?.projectOverview);
+		});
+		return () => {
+			active = false;
+			off?.();
+		};
 	}
 </script>
 
@@ -118,8 +103,26 @@
 		projects={workspace.projects}
 		choose={(projectId) => void workspace.switchProject(projectId)}
 		phone={local && available && workspace.remote.host ? phoneAccess : undefined}
-		>{#if available}<HostedConnection {workspace} compact={local} />{#if !local}<RemoteConnection
-					{workspace}
-				/>{/if}{/if}</ProjectGate
-	>{#if workspace.error}<hx-p class="error" role="alert">{workspace.error}</hx-p>{/if}{/if}
+	>
+		{#if available && !local}<RemoteConnection {workspace} />{/if}
+		{#if account.signedIn}
+			<hx-p class="account-status">
+				Signed in with Google
+				<hx-button type="button" onclick={account.signOut}>Sign out</hx-button>
+			</hx-p>
+		{/if}
+	</ProjectGate>{#if workspace.error}<hx-p class="error" role="alert">{workspace.error}</hx-p
+		>{/if}{/if}
 {#snippet phoneAccess()}<RemoteConnection {workspace} />{/snippet}
+
+<style>
+	.account-status {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--hx-space-8);
+		margin: 0;
+		color: var(--hx-color-text-muted);
+		font-size: var(--hx-type-size-xs);
+	}
+</style>

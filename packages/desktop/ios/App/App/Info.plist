@@ -22,6 +22,17 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.dafuga.harness.account</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>harness-account</string>
+			</array>
+		</dict>
+	</array>
 	<key>HarnessHubOrigin</key>
 	<string>$(HARNESS_HUB_ORIGIN)</string>
 	<key>LSRequiresIPhoneOS</key>

@@ -21,6 +21,7 @@ export interface LocalClientOptions {
 		remote?: RemoteProjectPort;
 		auth?: NativeAuthService;
 	};
+	accountRequired?: boolean;
 	choose: () => Promise<string | null>;
 	control: LocalControl;
 	defer?: (step: () => void) => void;

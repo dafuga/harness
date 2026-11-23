@@ -13,6 +13,8 @@
 			"packages/desktop/src/models/development-tooling/EnvironmentValues.ts"
 		],
 		"symbols": [
+			"nativeAccountContext",
+			"NativeAccountContext",
 			"EnvironmentKind",
 			"RemotePorts",
 			"Environment",
@@ -52,7 +54,8 @@
 			"RemoteMobileStatus",
 			"RemotePairingOffer",
 			"RemotePairingRequest",
-			"remoteContext"
+			"remoteContext",
+			"nativeAccountContext"
 		]
 	},
 	"contract": {

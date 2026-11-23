@@ -1572,15 +1572,21 @@
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-			"definition": "2614a2836542c1817abf93a513d2074f87bdb7dea539d3c994586e7d0ff93bbe",
+			"definition": "c1bbd7d1999edfb784fef50abd8adae7529c5d2ae74235179a307ce21cf914f4",
 			"relocationDefinition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b",
 			"review": {
-				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-				"reason": "Compose the local Desktop and remote clients with the responsive mockup renderer.",
-				"definition": "2614a2836542c1817abf93a513d2074f87bdb7dea539d3c994586e7d0ff93bbe"
+				"definition": "c1bbd7d1999edfb784fef50abd8adae7529c5d2ae74235179a307ce21cf914f4",
+				"reason": "Connect the native Google browser callback to the hosted account service."
 			},
 			"previousReviews": [
+				{
+					"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"reason": "Compose the local Desktop and remote clients with the responsive mockup renderer.",
+					"definition": "2614a2836542c1817abf93a513d2074f87bdb7dea539d3c994586e7d0ff93bbe"
+				},
 				{
 					"commit": "07511ea946a971e687682ff5c8abf43e93e0cac8",
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
@@ -1632,15 +1638,21 @@
 			"unit": "desktop.service.native-auth",
 			"from": "packages/desktop/src/services/NativeAuthService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
-			"definition": "2b8fb6b67435514d61c1666ed700b7e44eced3e8dbc4846e53f90d960e47fd81",
+			"definition": "dbb0bc320b5f033457136f31c50f5bdf20042f3800c8e70e737093484be823d7",
 			"relocationDefinition": "67a3c6213e0976f629348ba23061f5fa8274ef5c97eb067ee00cba2f8005485f",
 			"review": {
-				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
-				"definition": "2b8fb6b67435514d61c1666ed700b7e44eced3e8dbc4846e53f90d960e47fd81",
-				"reason": "Retains named native-auth errors while checking account freshness and reading Tracker overview."
+				"definition": "dbb0bc320b5f033457136f31c50f5bdf20042f3800c8e70e737093484be823d7",
+				"reason": "Enroll and refresh the native account through the Hub while preserving typed-code fallback."
 			},
 			"previousReviews": [
+				{
+					"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
+					"definition": "2b8fb6b67435514d61c1666ed700b7e44eced3e8dbc4846e53f90d960e47fd81",
+					"reason": "Retains named native-auth errors while checking account freshness and reading Tracker overview."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
@@ -2019,15 +2031,21 @@
 			"unit": "desktop.function.desktop-bridge",
 			"from": "packages/desktop/src/utils/desktopBridge.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
-			"definition": "7b6ebbf1c09100d120f58cde105de9d0e7c95ab3e34f47a447b1ffb05dc0e5f1",
+			"definition": "84e78ecc79be02be789388ac16a3cbbf9b89d2910638306b453970724dffe75d",
 			"relocationDefinition": "794c1bb220d50eaf6010b88d400f937c4e578f20d98a5bb9a6acbaf99358daab",
 			"review": {
-				"commit": "a493b522aab637956711cf2c26f022d3e3a6f6c4",
+				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
-				"definition": "7b6ebbf1c09100d120f58cde105de9d0e7c95ab3e34f47a447b1ffb05dc0e5f1",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.desktop-bridge, written by luna); messages and behavior unchanged."
+				"definition": "84e78ecc79be02be789388ac16a3cbbf9b89d2910638306b453970724dffe75d",
+				"reason": "Forward the requested Google or typed-code sign-in mode to the desktop main process."
 			},
 			"previousReviews": [
+				{
+					"commit": "a493b522aab637956711cf2c26f022d3e3a6f6c4",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
+					"definition": "7b6ebbf1c09100d120f58cde105de9d0e7c95ab3e34f47a447b1ffb05dc0e5f1",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.desktop-bridge, written by luna); messages and behavior unchanged."
+				},
 				{
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "packages/desktop/src/utils/desktopBridge.ts",
@@ -4048,15 +4066,21 @@
 			"unit": "desktop.adapter.capacitor-environment",
 			"from": "packages/desktop/src/adapters/CapacitorEnvironmentAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-			"definition": "f81e499329ad2ba79d16593299b0cae12ff92d3f7baf5b5a46c261a90de70950",
+			"definition": "05e7b0ad0818cc4c6310d6a56abf0b26d62435fdd0fc85b3f6dcea083893b9dd",
 			"relocationDefinition": "a8686e0c6a99b21cf67d3b48283b7791fe3c0230f56e99b01fb0a072a81d2c94",
 			"review": {
-				"commit": "caea83354142413dd97edae29bdd055924c9847b",
+				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-				"definition": "f81e499329ad2ba79d16593299b0cae12ff92d3f7baf5b5a46c261a90de70950",
-				"reason": "Maintains pairing generations when the phone changes computer or goes offline."
+				"definition": "05e7b0ad0818cc4c6310d6a56abf0b26d62435fdd0fc85b3f6dcea083893b9dd",
+				"reason": "Expose the phone account only through its native plugin and keep the paired computer separate."
 			},
 			"previousReviews": [
+				{
+					"commit": "caea83354142413dd97edae29bdd055924c9847b",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
+					"definition": "f81e499329ad2ba79d16593299b0cae12ff92d3f7baf5b5a46c261a90de70950",
+					"reason": "Maintains pairing generations when the phone changes computer or goes offline."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
@@ -4069,15 +4093,21 @@
 			"unit": "desktop.service.capacitor-projects",
 			"from": "packages/desktop/src/services/CapacitorProjectsService.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
-			"definition": "0c2876d496326aa0f2560fb39c4b8243508b42f5ee4bb5ae554041303e443e79",
+			"definition": "3a50b983cfb840d8f10425dd5014789e0ba50ca169c37c46978feec338bc8a04",
 			"relocationDefinition": "fe30761246bf612fad1c8e18fa34c681a39a90ba14d7460dd78b469ebc5651f8",
 			"review": {
-				"commit": "caea83354142413dd97edae29bdd055924c9847b",
+				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
-				"definition": "0c2876d496326aa0f2560fb39c4b8243508b42f5ee4bb5ae554041303e443e79",
-				"reason": "Gates the paired overview read on the phone account and current pairing."
+				"definition": "3a50b983cfb840d8f10425dd5014789e0ba50ca169c37c46978feec338bc8a04",
+				"reason": "Combine account and paired-computer projects after the phone owner signs in."
 			},
 			"previousReviews": [
+				{
+					"commit": "caea83354142413dd97edae29bdd055924c9847b",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
+					"definition": "0c2876d496326aa0f2560fb39c4b8243508b42f5ee4bb5ae554041303e443e79",
+					"reason": "Gates the paired overview read on the phone account and current pairing."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
@@ -5637,7 +5667,22 @@
 			"unit": "hub.function.d1-credential-stores",
 			"from": "packages/hub/src/adapters/d1-auth-store-adapter/d1CredentialStores.ts",
 			"to": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1CredentialStores.ts",
-			"definition": "16943c31f2589ea2d77a5a0d3e1b1e617dd2716ea25f0e109f1d43499d5a40f1"
+			"definition": "98a8155fd3794c63b622ad27880bb090df7e3d3bb0284235e4a2240dd93b5bf3",
+			"relocationDefinition": "16943c31f2589ea2d77a5a0d3e1b1e617dd2716ea25f0e109f1d43499d5a40f1",
+			"review": {
+				"commit": "5b8a6af48efd724711dc1a3b94895b7c3444d669",
+				"path": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1CredentialStores.ts",
+				"definition": "98a8155fd3794c63b622ad27880bb090df7e3d3bb0284235e4a2240dd93b5bf3",
+				"reason": "Type the selected device rows while preserving server-side field validation."
+			},
+			"previousReviews": [
+				{
+					"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+					"path": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1CredentialStores.ts",
+					"definition": "f3d0353a9ec1af6ce0714d47fc3f576ae457a786eb99ccaa30b5e07cf8382082",
+					"reason": "Track enrolled devices and revoke them only within their signed-in account."
+				}
+			]
 		},
 		{
 			"unit": "hub.function.d1-email-stores",
@@ -5655,7 +5700,14 @@
 			"unit": "hub.function.d1-one-time-stores",
 			"from": "packages/hub/src/adapters/d1-auth-store-adapter/d1OneTimeStores.ts",
 			"to": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1OneTimeStores.ts",
-			"definition": "aa3dea355811dea4b698aa64ddfdbeb5fd74d5ff211c3cd96f916bf275f9e46c"
+			"definition": "1742d7b1474897dd0311877e9371be8b71079b98d2b628d895d56aa63381b47b",
+			"relocationDefinition": "aa3dea355811dea4b698aa64ddfdbeb5fd74d5ff211c3cd96f916bf275f9e46c",
+			"review": {
+				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+				"path": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1OneTimeStores.ts",
+				"definition": "1742d7b1474897dd0311877e9371be8b71079b98d2b628d895d56aa63381b47b",
+				"reason": "Persist and consume a native Google browser-return proof bound to the handoff."
+			}
 		},
 		{
 			"unit": "service.history-index",
@@ -6507,28 +6559,42 @@
 			"unit": "hub.controller.native-handoff",
 			"from": "packages/hub/src/controllers/NativeHandoffController.ts",
 			"to": "packages/hub/src/lib/verification-evidence/server/auth/NativeHandoffController.ts",
-			"definition": "23598992896132ab8125aa14c9e07f056b7047f259bc90112f133367e4f569d1",
+			"definition": "c06a3f6e0641b635f1c5bb94c25a983e86032a6dfcec20d0bd8959ff64d0a64d",
 			"relocationDefinition": "b880ee1b45081519ef68e430763b436645845191782190d93682b383357ea2b0",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
 				"path": "packages/hub/src/lib/verification-evidence/server/auth/NativeHandoffController.ts",
-				"definition": "23598992896132ab8125aa14c9e07f056b7047f259bc90112f133367e4f569d1",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "c06a3f6e0641b635f1c5bb94c25a983e86032a6dfcec20d0bd8959ff64d0a64d",
+				"reason": "Expose the Google handoff and redirect only after the existing account is verified."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/hub/src/lib/verification-evidence/server/auth/NativeHandoffController.ts",
+					"definition": "23598992896132ab8125aa14c9e07f056b7047f259bc90112f133367e4f569d1",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.local-client",
 			"from": "packages/desktop/src/services/LocalClientService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-			"definition": "847078af0e445e4bb00c33609c5959a641ac8cc6769a8e9a80e4ea2e2b542447",
+			"definition": "9c46fd95a53ae5910c6017d453ca4764a90885f30398cb650df394509fab8563",
 			"relocationDefinition": "db0ec4b62e6922c297169687608d262d5d27c0fbea6e3b27da2a52def20bb765",
 			"review": {
-				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-				"definition": "847078af0e445e4bb00c33609c5959a641ac8cc6769a8e9a80e4ea2e2b542447",
-				"reason": "Retains typed client failures and uses main’s visual mockup runner when opening local projects."
+				"definition": "9c46fd95a53ae5910c6017d453ca4764a90885f30398cb650df394509fab8563",
+				"reason": "Carry native browser callback and device metadata through desktop initialization."
 			},
 			"previousReviews": [
+				{
+					"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+					"definition": "847078af0e445e4bb00c33609c5959a641ac8cc6769a8e9a80e4ea2e2b542447",
+					"reason": "Retains typed client failures and uses main’s visual mockup runner when opening local projects."
+				},
 				{
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/desktop/src/services/LocalClientService.ts",
@@ -6630,14 +6696,22 @@
 			"unit": "hub.service.native-handoff",
 			"from": "packages/hub/src/services/native-handoff-service/NativeHandoffService.ts",
 			"to": "packages/hub/src/lib/verification-evidence/server/auth/native-handoff-service/NativeHandoffService.ts",
-			"definition": "03a9cc5d29adc5f4e50eb9e8d0525bd10d0b33f44d6cda247af5a8aff5bfaf14",
+			"definition": "e3f000fc2270e5f14d9adb6cef26edc829497daed36f8fb9dda680eecd5d9ab0",
 			"relocationDefinition": "adc1bff1069ed8336168cc7c69a01b7f363508d47402950f6e3b624e4df87831",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
 				"path": "packages/hub/src/lib/verification-evidence/server/auth/native-handoff-service/NativeHandoffService.ts",
-				"definition": "03a9cc5d29adc5f4e50eb9e8d0525bd10d0b33f44d6cda247af5a8aff5bfaf14",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "e3f000fc2270e5f14d9adb6cef26edc829497daed36f8fb9dda680eecd5d9ab0",
+				"reason": "Verify PKCE-bound Google enrollment and retain one-time-code recovery."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/hub/src/lib/verification-evidence/server/auth/native-handoff-service/NativeHandoffService.ts",
+					"definition": "03a9cc5d29adc5f4e50eb9e8d0525bd10d0b33f44d6cda247af5a8aff5bfaf14",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "hub.function.auth-secrets",
@@ -6741,15 +6815,21 @@
 			"unit": "desktop.adapter.capacitor-account",
 			"from": "packages/desktop/src/adapters/capacitor-account-adapter/CapacitorAccountAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-			"definition": "e5347496d8defb1eda4eb3857a3321acb2869cd58ceb5c0df7f88132bd2cb1fd",
+			"definition": "0f1b7bce3e635b55f5ebd8e8002b7d3d8388007b6fcb4a97d781262d51d559e0",
 			"relocationDefinition": "f54f1586b418a653ad39961751f61e977322b2dfa5d0ab7c8f660f3bb3cdd01a",
 			"review": {
-				"commit": "caea83354142413dd97edae29bdd055924c9847b",
+				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-				"definition": "e5347496d8defb1eda4eb3857a3321acb2869cd58ceb5c0df7f88132bd2cb1fd",
-				"reason": "Exposes the owner overview through the phone account adapter and keeps its denial separate from project access."
+				"definition": "0f1b7bce3e635b55f5ebd8e8002b7d3d8388007b6fcb4a97d781262d51d559e0",
+				"reason": "Pass the sign-in mode and keep native account status and read authority isolated."
 			},
 			"previousReviews": [
+				{
+					"commit": "caea83354142413dd97edae29bdd055924c9847b",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
+					"definition": "e5347496d8defb1eda4eb3857a3321acb2869cd58ceb5c0df7f88132bd2cb1fd",
+					"reason": "Exposes the owner overview through the phone account adapter and keeps its denial separate from project access."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
@@ -6774,15 +6854,21 @@
 			"unit": "desktop.adapter.capacitor-account",
 			"from": "packages/desktop/src/adapters/capacitor-account-adapter/capacitorAccountCodec.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts",
-			"definition": "117865db4b85eac2434b1f4550df3aaa9b3a78b18dc20bd4ca00dad2ec3e2a54",
+			"definition": "a747f5a7340efb46152493b1466c9c2b86d2224686912ff0463dbe5aa0e11668",
 			"relocationDefinition": "66cb4f1b1f00e91a021140ec2916703f6f4b2e01dd1b4cc30197a9bb5dfc842b",
 			"review": {
-				"commit": "a9ac44a3810a40ffae7c91c2aa9888a2c52574fd",
+				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts",
-				"definition": "117865db4b85eac2434b1f4550df3aaa9b3a78b18dc20bd4ca00dad2ec3e2a54",
-				"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 80802304f8 (desktop.adapter.capacitor-account); behavior unchanged."
+				"definition": "a747f5a7340efb46152493b1466c9c2b86d2224686912ff0463dbe5aa0e11668",
+				"reason": "Pass the sign-in mode and keep native account status and read authority isolated."
 			},
 			"previousReviews": [
+				{
+					"commit": "a9ac44a3810a40ffae7c91c2aa9888a2c52574fd",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts",
+					"definition": "117865db4b85eac2434b1f4550df3aaa9b3a78b18dc20bd4ca00dad2ec3e2a54",
+					"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 80802304f8 (desktop.adapter.capacitor-account); behavior unchanged."
+				},
 				{
 					"commit": "80802304f8cf42761392581cf21cdf806f72d931",
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts",

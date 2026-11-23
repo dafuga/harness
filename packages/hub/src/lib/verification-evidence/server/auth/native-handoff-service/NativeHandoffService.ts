@@ -6,6 +6,7 @@ import {
 } from '../../../../../models/accounts-access/HubAuth.types';
 import type {
 	NativeApproveInput,
+	NativeCallback,
 	NativeAuthorization,
 	NativeExchangeInput,
 	NativePollResult,
@@ -28,23 +29,85 @@ export const HANDOFF_TTL = 5 * 60 * 1000;
 
 export const POLL_INTERVAL = 2;
 
-/**
- * Hands a browser sign-in to the desktop app by polling. The desktop keeps a PKCE verifier; the
- * browser only ever sees a handoff id, which is worthless without that verifier.
- */
+const CALLBACK_TTL = 60_000;
+
+function codeHash(options: NativeHandoffOptions, handoffId: string, code: string) {
+	return options.secrets.hash('native-code', `${handoffId}\n${code}`);
+}
+
+function callbackAddress(callback: NativeCallback, handoffId: string, code: string): string {
+	const target =
+		callback === 'ios'
+			? new URL('harness-account://callback/sign-in')
+			: new URL(`http://127.0.0.1:${callback}/harness-account`);
+	target.searchParams.set('state', handoffId);
+	target.searchParams.set('code', code);
+	return target.href;
+}
+
+async function authorizeBrowser(
+	options: NativeHandoffOptions,
+	session: SessionRecord,
+	handoffId: string
+): Promise<{ callbackUrl: string }> {
+	const { store, now } = options;
+	const record = await store.find(handoffId);
+	if (
+		record?.callback === undefined ||
+		record.origin !== options.origin ||
+		record.environment !== options.environment
+	)
+		return authFail('handoff-invalid');
+	const code = randomToken();
+	const time = now();
+	const approved = await store.approve({
+		id: handoffId,
+		codeHash: record.codeHash,
+		callbackCodeHash: await codeHash(options, handoffId, code),
+		callbackExpiresAt: time + CALLBACK_TTL,
+		subject: session.actor.id,
+		parentHash: session.idHash,
+		now: time
+	});
+	if (!approved) return authFail('handoff-invalid');
+	return { callbackUrl: callbackAddress(record.callback, handoffId, code) };
+}
+
+async function validReturn(
+	options: NativeHandoffOptions,
+	record: NativeExchangeRecord,
+	code: string | undefined
+): Promise<boolean> {
+	if (record.callback === undefined) return code === undefined;
+	return Boolean(code && safeEqual(record.codeHash, await codeHash(options, record.id, code)));
+}
+
+async function approvingSession(
+	sessions: NativeHandoffOptions['sessions'],
+	record: NativeExchangeRecord
+) {
+	const parent = record.parentHash ? await sessions.live(record.parentHash) : null;
+	if (parent?.kind !== 'browser' || parent.actor.id !== record.subject)
+		return authFail('handoff-invalid');
+	return parent;
+}
+
+/** Binds the system-browser return or typed-code recovery to the initiating device's PKCE proof. */
 export class NativeHandoffService {
 	constructor(private readonly options: NativeHandoffOptions) {}
 
 	async start(input: NativeStartInput): Promise<NativeStartResult> {
 		const { store, secrets, origin, environment, now } = this.options;
 		const handoffId = randomToken();
-		const code = userCode();
+		const code = input.callback === undefined ? userCode() : '';
 		const expiresAt = now() + HANDOFF_TTL;
 		await store.create({
 			id: handoffId,
 			challenge: input.challenge,
 			nonceHash: await secrets.hash('native-nonce', input.nonce),
-			codeHash: await this.codeHash(handoffId, normalizeCode(code)),
+			codeHash: code ? await codeHash(this.options, handoffId, normalizeCode(code)) : randomToken(),
+			callback: input.callback,
+			deviceName: input.deviceName,
 			resource: input.resource,
 			audience: NATIVE_AUDIENCE,
 			action: NATIVE_ACTION,
@@ -58,7 +121,7 @@ export class NativeHandoffService {
 		return {
 			handoffId,
 			userCode: code,
-			verificationUrl: `${origin}/native/${handoffId}`,
+			verificationUrl: `${origin}/native/${handoffId}${code ? '' : '?return=1'}`,
 			expiresAt: new Date(expiresAt).toISOString(),
 			interval: POLL_INTERVAL
 		};
@@ -71,7 +134,7 @@ export class NativeHandoffService {
 	): Promise<{ approved: true; resource: string }> {
 		const approved = await this.options.store.approve({
 			id: input.handoffId,
-			codeHash: await this.codeHash(input.handoffId, input.userCode),
+			codeHash: await codeHash(this.options, input.handoffId, input.userCode),
 			subject: session.actor.id,
 			parentHash: session.idHash,
 			now: this.options.now()
@@ -80,9 +143,17 @@ export class NativeHandoffService {
 		return record ? { approved: true, resource: record.resource } : authFail('handoff-invalid');
 	}
 
+	authorizeBrowser(session: SessionRecord, handoffId: string) {
+		return authorizeBrowser(this.options, session, handoffId);
+	}
+
 	async poll(handoffId: string): Promise<NativePollResult> {
 		const record = await this.options.store.find(handoffId);
-		const live = record && record.status !== 'consumed' && record.expiresAt > this.options.now();
+		const live =
+			record &&
+			record.callback === undefined &&
+			record.status !== 'consumed' &&
+			record.expiresAt > this.options.now();
 		if (!live) return { status: 'expired', resource: null };
 		return {
 			status: record.status === 'approved' ? 'approved' : 'pending',
@@ -90,19 +161,23 @@ export class NativeHandoffService {
 		};
 	}
 
-	/** One attempt. The handoff is consumed before any binding is compared. */
+	/** The browser return code admits one attempt. The device must also prove the PKCE bindings. */
 	async exchange(input: NativeExchangeInput): Promise<NativeAuthorization> {
 		const { store, sessions, now } = this.options;
+		const pending = await store.find(input.handoffId);
+		if (!pending || !(await validReturn(this.options, pending, input.callbackCode)))
+			return authFail('handoff-invalid');
 		const record = await store.claim(input.handoffId, now());
 		if (!record || !(await this.bound(record, input))) return authFail('handoff-invalid');
-		const parent = record.parentHash ? await sessions.live(record.parentHash) : null;
-		if (parent?.kind !== 'browser' || parent.actor.id !== record.subject) {
-			return authFail('handoff-invalid');
-		}
-		const grant = { actor: parent.actor, resource: record.resource, parentHash: parent.idHash };
+		const parent = await approvingSession(sessions, record);
+		const grant = {
+			actor: parent.actor,
+			resource: record.resource,
+			parentHash: record.callback === undefined ? parent.idHash : null,
+			deviceName: record.deviceName
+		};
 		const issued = await sessions.issue({ kind: 'native', ...grant });
-		// A sign-out may land between the check above and the insert. Looking again after the
-		// insert covers both orders: an earlier sign-out is seen here, a later one revokes the row.
+		// Refuse a browser sign-out that raced with device enrollment.
 		if (!(await sessions.live(parent.idHash))) {
 			await sessions.revoke(issued.record);
 			return authFail('handoff-invalid');
@@ -130,10 +205,6 @@ export class NativeHandoffService {
 			record.origin === origin
 		];
 		return checks.every(Boolean);
-	}
-
-	private codeHash(handoffId: string, code: string): Promise<string> {
-		return this.options.secrets.hash('native-code', `${handoffId}\n${code}`);
 	}
 }
 

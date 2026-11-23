@@ -6,8 +6,9 @@
 	import { googleButton } from './googleButton';
 	import EmailProofPanel from '../../verification-evidence/EmailProofPanel.svelte';
 	let {
-		reason = 'Sign in with Google to open the projects you own and the ones you were invited to.'
-	}: { reason?: string } = $props();
+		reason = 'Sign in with Google to open the projects you own and the ones you were invited to.',
+		compact = false
+	}: { reason?: string; compact?: boolean } = $props();
 	const { session } = browserContext();
 	let holder = $state<HTMLDivElement>();
 	let failure = $state('');
@@ -44,19 +45,21 @@
 	});
 </script>
 
-<hx-section class="hub-card login-panel">
+<hx-section class={compact ? 'login-panel' : 'hub-card login-panel'}>
 	{#if !status}<hx-p class="muted" role={session.error ? 'alert' : undefined}>
 			{session.error || 'Checking sign-in…'}
 		</hx-p>{:else if !status.configured}<hx-h2>Sign-in is not configured</hx-h2>
 		<hx-p>
 			Google sign-in is not configured for this deployment. An administrator sets a Google client ID
 			and a session secret; until then nobody can sign in and no project is shown.
-		</hx-p>{:else if proof}<EmailProofPanel {proof} />{:else}<hx-h2>Sign in to Harness</hx-h2>
-		<hx-p>{reason}</hx-p>
-		<hx-p class="muted">
-			One Google account keeps the same projects on every device where you sign in, and new ones
-			appear without reloading.
-		</hx-p>
+		</hx-p>{:else if proof}<EmailProofPanel {proof} />{:else}
+		{#if !compact}<hx-h2>Sign in to Harness</hx-h2>
+			<hx-p>{reason}</hx-p>
+			<hx-p class="muted">
+				One Google account keeps the same projects on every device where you sign in, and new ones
+				appear without reloading.
+			</hx-p>
+		{/if}
 		<hx-div class="google-button" bind:this={holder}></hx-div>
 		{#if failure || session.error}<hx-p class="error" role="alert">
 				{failure || session.error}

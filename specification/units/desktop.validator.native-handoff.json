@@ -67,6 +67,12 @@
 				"examples": [1794657600000, 1794657660000]
 			},
 			{
+				"name": "NativeHandoffValidator.start.google",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
 				"name": "NativeHandoffValidator.exchange.value",
 				"type": "unknown",
 				"required": true,
@@ -260,6 +266,12 @@
 						"required": true,
 						"description": "The caller's current time in epoch milliseconds, from NativeAuthService's now option or Date.now(). start() throws 'Expired native handoff.' when expiresAt is at or before this value.",
 						"examples": [1794657600000, 1794657660000]
+					},
+					{
+						"name": "NativeHandoffValidator.start.google",
+						"type": "boolean",
+						"required": false,
+						"default": false
 					}
 				],
 				"outputs": [
