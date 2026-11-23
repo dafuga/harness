@@ -1,22 +1,16 @@
-import { fileURLToPath } from 'node:url';
 import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
 import { designOptionsFixture } from './ui-design-options-fixture';
 import { activity, at, modes, option, optionGroup } from './ui-design-options-helpers';
+import { bubble, laptop, openProjectChat, pageRoute, panel, phone } from './ui-composer-fixture';
 
 /**
  * One composer: modes in one canonical order, one focus ring, and the Project chat as a phone
  * bottom sheet over a scrim that leaves the page behind inert. Design Options toggles show only the
  * chosen option gold. SYNTHETIC fixture: no agent runs.
  */
-const laptop = { width: 1440, height: 900 };
-const phone = { width: 390, height: 844 };
-const pageRoute = 'pages/page%3Aactivity';
 const canonical = ['Comment', 'Ask', 'Plan', 'Change'];
 const slogan = 'Ask a question, plan a design, or request a code change.';
 
-const bubble = (page: Page) =>
-	page.getByRole('button', { name: /^(Work with agent|Open project chat)$/ });
-const panel = (page: Page) => page.getByRole('complementary', { name: 'Project agent' });
 const field = (scope: Page | Locator) =>
 	scope.getByRole('textbox', { name: 'Message', exact: true });
 
@@ -48,16 +42,6 @@ async function probe(page: Page, value: string) {
 			return painted;
 		}, value)
 	);
-}
-
-async function openProjectChat(page: Page, size: typeof laptop, seeded = true) {
-	await page.setViewportSize(size);
-	if (seeded) await designOptionsFixture(page);
-	await page.goto(at(pageRoute));
-	// A laptop opens an entity with its design conversation; that panel closes first.
-	if (size.width > 850)
-		await page.getByRole('button', { name: 'Close conversation', exact: true }).click();
-	await bubble(page).click();
 }
 
 async function openDesignConversation(page: Page, size: typeof laptop) {
@@ -192,32 +176,3 @@ test('only the chosen design option is gold; the others read as secondary button
 	}
 	await expect(optionGroup(page)).toBeVisible();
 });
-
-// Fresh captures of the changed screens, written to the design record: TAKE_SCREENSHOT=true only.
-const screens = fileURLToPath(
-	new URL('../../../../specification/designs/full-pass/screens/', import.meta.url)
-);
-const tablet = { width: 834, height: 1112 };
-for (const [name, size, scale] of [
-	['phone', phone, 2],
-	['tablet', tablet, 1],
-	['laptop', laptop, 1]
-] as const) {
-	test.describe(`captures at ${name}`, () => {
-		test.skip(process.env.TAKE_SCREENSHOT !== 'true', 'Screenshots are opt-in.');
-		test.use({ viewport: size, deviceScaleFactor: scale });
-		test(`agent panel and designs at ${name}`, async ({ page }) => {
-			await openProjectChat(page, size);
-			await expect(
-				panel(page).getByRole('heading', { name: 'Project chat', exact: true })
-			).toBeVisible();
-			await page.mouse.move(0, 0);
-			await page.screenshot({ path: `${screens}after--agent-panel--${name}.png` });
-			await page.getByRole('button', { name: 'Close chat', exact: true }).click();
-			await page.goto(at(activity));
-			await option(page, 2).click();
-			await page.mouse.move(0, 0);
-			await page.screenshot({ path: `${screens}after--entity-designs--${name}.png` });
-		});
-	});
-}
