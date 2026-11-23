@@ -48,7 +48,7 @@
 		],
 		"errors": [
 			{
-				"name": "Tracker read failed",
+				"name": "Error",
 				"type": "thrown",
 				"description": "A fixed tracker request timed out, failed, redirected, or returned data outside the expected shape."
 			}
@@ -80,7 +80,7 @@
 				],
 				"errors": [
 					{
-						"name": "Tracker read failed",
+						"name": "Error",
 						"type": "thrown",
 						"description": "A fixed tracker request timed out, failed, redirected, or returned data outside the expected shape."
 					}

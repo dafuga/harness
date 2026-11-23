@@ -51,7 +51,7 @@ export type TrackerRunRecord = {
 /** A computer from /machines or /status.machines. Session and process counts are omitted. */
 export type TrackerMachineRecord = { node: string; status: MachineStatus };
 
-/** Validated responses of the three fixed tracker reads. */
+/** Validated item, run, and machine records from the tracker. */
 export type TrackerSources = {
 	items: TrackerItemRecord[];
 	runs: TrackerRunRecord[];
