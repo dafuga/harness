@@ -42,9 +42,10 @@ harness vault remove
 ```
 
 On macOS, install Colima, Lima and the Docker CLI first. Setup uses the dedicated
-harness-vault account and a Colima profile with host mounts disabled. Run Setup or
+harness-vault account and a Colima profile with host mounts disabled. Fresh installs keep
+executor data under `/private/var/db/hv`, separate from macOS login homes. Run Setup or
 Repair again after an interruption or if you need to start the engine after reboot.
-The private data directory is retained under the root-owned journal's archive on removal.
+Removal retains the private data under the root-owned journal's archive.
 
 In a dedicated Linux environment, install systemd, uidmap and matching versions
 of Docker Engine and its rootless extras.
@@ -54,7 +55,9 @@ agents have passwordless sudo still requires a separately controlled Vault VM.
 
 Setup reports local engine readiness. Browser sandbox, requester isolation and
 synthetic provider qualification are verified separately before provider use.
-The Mac installer can resume journals from the MB2 synthetic executor run.
+Repair preserves the home of a journaled legacy install under `/Users`. If macOS blocks
+archiving that home, the installer stops with the original data intact. An administrator
+can retry `harness vault remove` from a terminal already authorized for Full Disk Access.
 To qualify the installer in a macOS operator session, run
 `bash test/support/vault-setup/macos-smoke.sh`. It uses a fresh temporary account
 and private VM profile, checks repair and removal, and deletes its test data.

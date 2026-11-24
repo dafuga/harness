@@ -143,3 +143,18 @@ test('macOS repair leaves matching Directory Services attributes alone', () => {
 	expect(result.status, result.stderr).toBe(0);
 	expect(result.stdout.trim()).toBe('IsHidden=1');
 });
+
+test.skipIf(process.platform !== 'darwin')(
+	'macOS archives managed Vault data when moving a system home is denied',
+	async () => {
+		await withTempDir('vlt-', async (directory) => {
+			const result = spawnSync(
+				'/bin/bash',
+				['test/support/vault-setup/macos-archive.sh', common, macos, directory],
+				{ encoding: 'utf8' }
+			);
+			expect(result.status, result.stderr).toBe(0);
+			expect(result.stdout.trim()).toBe('PASS: legacy home retained; managed data archived.');
+		});
+	}
+);

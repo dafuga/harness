@@ -9,14 +9,34 @@ fixture="vault-test-$suffix"
 journal="/var/db/org.harness.vault-executor-$fixture"
 previous=${1:-}
 [[ $# -le 1 && ( -z "$previous" || "$previous" =~ ^vault-test-[0-9a-f]{8}$ ) ]]
-payload_for() {
+installer_for() {
   sed "s/^account=harness-vault$/account=$1/" "$source_dir/common.sh"
   sed "s#^state=/var/db/org.harness.vault-executor\$#state=/var/db/org.harness.vault-executor-$1#" "$source_dir/macos.sh"
-  printf '\nvault_main "$@"\n'
 }
-payload="$(payload_for "$fixture")"
+payload="$(installer_for "$fixture"; printf '\nvault_main "$@"\n')"
 previous_payload=
-if [[ -n "$previous" ]]; then previous_payload="$(payload_for "$previous")"; fi
+if [[ -n "$previous" ]]; then
+  previous_payload="$(
+    installer_for "$previous"
+    cat <<'LEGACY'
+[[ "$EUID" == 0 && "$account" =~ ^vault-test-[0-9a-f]{8}$ ]]
+[[ "$(read_progress)" == failed:remove:archive ]]
+read_identity
+[[ "$home" == "$legacy_home" && "$(id -u "$account")" == "$executor_id" ]]
+verify_home
+verify_quiet
+# The OS owns legacy login-home deletion. These old fixture bytes contain only synthetic data.
+/usr/sbin/sysadminctl -deleteUser "$account" </dev/null
+if record_exists user || exists "$home"; then
+  printf '%s\n' 'macOS did not remove the previous disposable account and home.' >&2
+  exit 1
+fi
+delete_record group
+rm -rf "$state"
+printf 'PASS: removed previous disposable fixture %s.\n' "$account"
+LEGACY
+  )"
+fi
 printf 'Fixture: %s\n' "$fixture"
 driver="$(cat <<'DRIVER'
 set -euo pipefail
@@ -25,19 +45,14 @@ export PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C
 payload=$1 account=$2 journal=$3
 previous=$4 previous_payload=$5
 [[ "$account" =~ ^vault-test-[0-9a-f]{8}$ && "$journal" == "/var/db/org.harness.vault-executor-$account" ]]
+home="/private/var/db/hv/$account"
+legacy_failed=0
 if [[ -n "$previous" ]]; then
   [[ "$previous" =~ ^vault-test-[0-9a-f]{8}$ && "$previous" != "$account" ]]
-  previous_journal="/var/db/org.harness.vault-executor-$previous"
-  /usr/bin/env -i /bin/bash -c "$previous_payload" vault remove
-  [[ ! -e "/Users/$previous" && ! -L "/Users/$previous" ]]
-  if id "$previous" >/dev/null 2>&1 || dscl . -read "/Groups/$previous" >/dev/null 2>&1; then
-    printf '%s\n' 'The previous disposable user or group is still present.' >&2
-    exit 1
-  fi
-  rm -rf "$previous_journal"
-  printf 'PASS: removed previous disposable fixture %s.\n' "$previous"
+  /usr/bin/env -i /bin/bash -c "$previous_payload" vault-cleanup || legacy_failed=1
 fi
 [[ ! -e "$journal" && ! -L "$journal" && ! -e "/Users/$account" && ! -L "/Users/$account" ]]
+[[ ! -e "$home" && ! -L "$home" ]]
 if id "$account" >/dev/null 2>&1 || dscl . -read "/Groups/$account" >/dev/null 2>&1; then
   printf '%s\n' 'The disposable identity already exists.' >&2
   exit 1
@@ -63,15 +78,21 @@ owner=$(id -u "$account")
 [[ "$(vault status)" == ready ]]
 vault setup
 [[ "$(id -u "$account")" == "$owner" ]]
-/usr/bin/sudo -n -u "$account" -- /bin/bash -c 'printf "synthetic\n" > "$1/fixture-proof"' fixture "/Users/$account"
+/usr/bin/dscl . -read "/Users/$account" NFSHomeDirectory | grep -Fxq 'NFSHomeDirectory: /var/empty'
+/usr/bin/sudo -n -u "$account" -- /bin/bash -c 'printf "synthetic\n" > "$1/fixture-proof"' fixture "$home"
 vault remove
 vault remove
-[[ "$(vault status)" == absent && ! -e "/Users/$account" ]]
+[[ "$(vault status)" == absent && ! -e "$home" && ! -e "/Users/$account" ]]
 if id "$account" >/dev/null 2>&1 || dscl . -read "/Groups/$account" >/dev/null 2>&1; then
   printf '%s\n' 'The disposable user or group is still present.' >&2
   exit 1
 fi
 grep -Fxq synthetic "$journal"/archive/*/fixture-proof
+if [[ "$legacy_failed" == 1 ]]; then
+  printf '%s\n' 'PASS: disposable macOS setup, repair, removal and archive.' >&2
+  printf '%s\n' 'Cleanup of the earlier legacy fixture still needs attention.' >&2
+  exit 1
+fi
 printf '%s\n' 'PASS: disposable macOS setup, repair, removal and archive.'
 DRIVER
 )"

@@ -45,7 +45,11 @@ step() {
   "$@"
 }
 
+select_home() { :; }
+prepare_home_parent() { :; }
+
 unowned_installation() {
+  select_home
   ! record_exists user && ! record_exists group && ! exists "$home" ||
     die 'A Vault account, group or home exists without a matching ownership journal.'
 }
@@ -62,6 +66,7 @@ read_identity() {
     die 'The Vault ownership journal has invalid identity fields.'
   verify_record user "$user_key"
   verify_record group "$group_key"
+  select_home
 }
 
 ensure_identity() {
@@ -83,6 +88,7 @@ verify_home() {
 
 ensure_home() {
   if ! exists "$home"; then
+    prepare_home_parent
     local stage="$state/.home"
     if exists "$stage"; then
       [[ -d "$stage" && ! -L "$stage" ]] || die 'The staged executor home is invalid.'
@@ -109,7 +115,8 @@ archive_home() {
   ! exists "$retained" || die 'The archive already contains this executor home.'
   [[ "$(device_id "$archive")" == "$(device_id "$home")" ]] ||
     die 'Vault data and its archive must be on the same filesystem.'
-  mv "$home" "$retained"
+  mv "$home" "$retained" ||
+    die 'The private data could not be moved to the archive. The original home was retained.'
 }
 
 sudo_denied() {

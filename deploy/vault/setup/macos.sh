@@ -2,14 +2,33 @@
 set -euo pipefail
 
 state=/var/db/org.harness.vault-executor
-home=/Users/$account
+home_parent=/private/var/db/hv
+legacy_home=/Users/$account
 colima=/opt/homebrew/bin/colima
 docker=/opt/homebrew/bin/docker
 if [[ "$(uname -m)" == x86_64 ]]; then
   colima=/usr/local/bin/colima
   docker=/usr/local/bin/docker
 fi
-socket=$home/.colima/$account/docker.sock
+
+select_home() {
+  home=$home_parent/$account
+  account_home=/var/empty
+  if exists "$home_parent"; then
+    root_dir "$home_parent" 711 || die 'The Vault data directory has unexpected permissions.'
+  fi
+  if exists "$legacy_home"; then
+    ! exists "$home" || die 'Both the managed and legacy Vault directories exist.'
+    home=$legacy_home
+    account_home=$legacy_home
+  fi
+  socket=$home/.colima/$account/docker.sock
+}
+
+prepare_home_parent() {
+  if ! exists "$home_parent"; then mkdir -m 711 "$home_parent" 2>/dev/null || :; fi
+  root_dir "$home_parent" 711 || die 'The Vault data directory has unexpected permissions.'
+}
 
 metadata() {
   local listing
@@ -95,7 +114,8 @@ ensure_user() {
   ensure_attribute "$record" PrimaryGroupID "$executor_id"
   ensure_attribute "$record" RealName 'Harness Vault Executor'
   ensure_attribute "$record" UserShell /usr/bin/false
-  ensure_attribute "$record" NFSHomeDirectory "$home"
+  # Vault commands use the private data directory as HOME. Keep it separate from the OS login home.
+  ensure_attribute "$record" NFSHomeDirectory "$account_home"
   ensure_attribute "$record" IsHidden 1
   # The account is only used with a root-initiated identity switch.
   ensure_attribute "$record" Password '*'
