@@ -1,6 +1,7 @@
 import { existsSync, realpathSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
+import { TrackerDispatchRepository } from '../src/repositories/projects-sessions/TrackerDispatchRepository';
 import { TrackerPersistenceService } from '../src/services/projects-sessions/TrackerPersistenceService';
 import { once } from 'node:events';
 import { connect, createServer } from 'node:net';
@@ -67,6 +68,7 @@ function seedSpokeRun({ config }: TrackerNodeFixture) {
 	const database = new DatabaseSync(config.database);
 	try {
 		const store = new TrackerPersistenceService(database, config.node);
+		new TrackerDispatchRepository(store);
 		store.appendLocal({
 			itemId: 'spokerun22',
 			fields: {
