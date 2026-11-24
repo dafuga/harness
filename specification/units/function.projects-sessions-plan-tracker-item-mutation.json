@@ -29,6 +29,9 @@
 			"TrackerItemTransition",
 			"TrackerDuplicateProbe",
 			"trackerItemInput",
+			"trackerNextStepFields",
+			"trackerMoveOn",
+			"trackerParkNextStep",
 			"guardTrackerDuplicate",
 			"trackerItemTransitions"
 		]
@@ -65,6 +68,36 @@
 				"type": "TrackerItemSnapshot",
 				"required": false,
 				"description": "Existing item when updating, omitted for creation."
+			},
+			{
+				"name": "trackerNextStepFields.value",
+				"type": "TrackerItemValue",
+				"required": true,
+				"description": "Decision text supplied when an item is waiting for Daniel’s next step."
+			},
+			{
+				"name": "trackerMoveOn.item",
+				"type": "TrackerItemSnapshot",
+				"required": true,
+				"description": "Tracked item with an open next step."
+			},
+			{
+				"name": "trackerParkNextStep.item",
+				"type": "TrackerItemSnapshot",
+				"required": true,
+				"description": "Tracked item with an open next step."
+			},
+			{
+				"name": "trackerParkNextStep.body",
+				"type": "TrackerItemInput",
+				"required": true,
+				"description": "The future ISO timestamp or Lisbon date from --until."
+			},
+			{
+				"name": "trackerParkNextStep.context",
+				"type": "TrackerItemMutationContext",
+				"required": true,
+				"description": "Current time for validating the requested hold."
 			},
 			{
 				"name": "guardTrackerDuplicate.context",
@@ -158,6 +191,96 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerNextStepFields",
+				"inputs": [
+					{
+						"name": "trackerNextStepFields.value",
+						"type": "TrackerItemValue",
+						"required": true,
+						"description": "Decision text supplied when an item is waiting for Daniel’s next step."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerNextStepFields",
+						"type": "TrackerItemInput",
+						"description": "Trimmed decision text, its prompt and an open needs-Daniel flag."
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerItemRequestError",
+						"type": "TrackerItemRequestError",
+						"description": "HTTP 400 when the decision text is missing or blank."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "trackerMoveOn",
+				"inputs": [
+					{
+						"name": "trackerMoveOn.item",
+						"type": "TrackerItemSnapshot",
+						"required": true,
+						"description": "Tracked item with an open next step."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMoveOn",
+						"type": "TrackerItemChange",
+						"description": "Completion fields that clear the next step and parking, plus a journal note."
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerItemRequestError",
+						"type": "TrackerItemRequestError",
+						"description": "HTTP 409 when the item has no open next step."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "trackerParkNextStep",
+				"inputs": [
+					{
+						"name": "trackerParkNextStep.item",
+						"type": "TrackerItemSnapshot",
+						"required": true,
+						"description": "Tracked item with an open next step."
+					},
+					{
+						"name": "trackerParkNextStep.body",
+						"type": "TrackerItemInput",
+						"required": true,
+						"description": "The future ISO timestamp or Lisbon date from --until."
+					},
+					{
+						"name": "trackerParkNextStep.context",
+						"type": "TrackerItemMutationContext",
+						"required": true,
+						"description": "Current time for validating the requested hold."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerParkNextStep",
+						"type": "TrackerItemChange",
+						"description": "Parking timestamp without clearing the open decision."
+					}
+				],
+				"errors": [
+					{
+						"name": "TrackerItemRequestError",
+						"type": "TrackerItemRequestError",
+						"description": "HTTP 400 for an invalid or past date and HTTP 409 when no next step is open."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
 				"name": "guardTrackerDuplicate",
 				"inputs": [
 					{
@@ -193,6 +316,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-normalize-tracker-item-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-wall-clock-to-epoch-ms",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -39,7 +39,10 @@ export class TrackerItemReadRepository {
 	/** Read rows needed by duplicate probing and mutation planning. */
 	candidates(): TrackerItemRow[] {
 		return this.database
-			.prepare(`SELECT * FROM items WHERE ${visibleItems} AND status <> 'done'`)
+			.prepare(
+				`SELECT * FROM items WHERE ${visibleItems} AND
+				 (status <> 'done' OR (next_step IS NOT NULL AND needs_daniel = 1 AND resolved = 0))`
+			)
 			.all() as TrackerItemRow[];
 	}
 
@@ -55,8 +58,13 @@ export class TrackerItemReadRepository {
 			values.push(String(value));
 		}
 		if (queryFlag(filters.flagged)) {
-			where.push('needs_daniel = 1 AND resolved = 0', visibleAttention);
-			values.push(new Date(nowMs).toISOString());
+			where.push(
+				'needs_daniel = 1 AND resolved = 0',
+				visibleAttention,
+				'(parked_until IS NULL OR parked_until <= ?)'
+			);
+			const now = new Date(nowMs).toISOString();
+			values.push(now, now);
 		}
 		if (queryFlag(filters.recurring)) where.push('every IS NOT NULL');
 		const rows = this.database

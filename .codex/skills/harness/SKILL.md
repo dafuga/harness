@@ -195,8 +195,17 @@ Check `tracker digest` for queued launches, wait times and unanswered asks.
 Record a missed update with `tracker chase ITEM --note "Daniel asked for an update"`.
 Use `tracker list --chased` to review the quality record, including completed items.
 Ordinary tasks added by Daniel or Chief of Staff queue automatically. Use `--later`
-when an item should wait. Record Daniel's answer with `tracker answer ITEM "…"`
-so the follow-up schedule closes.
+when an item should wait. Record answers to ordinary asks with `tracker answer ITEM "…"`.
+
+Chief of Staff creates a Tracker item when Daniel raises an idea, even if no work
+is ready to start. Check for an existing item first and record the project.
+Use `tracker add "Idea" --project PROJECT --next-step "Decision needed"` for a new
+idea that needs a decision. Update an existing item with `tracker update ITEM
+--next-step "Decision needed"`. When work finishes with a decision still open,
+use `tracker done ITEM --next-step "Decision needed"`. Include these items in
+status updates even when the project has no active run. Record Daniel's decision
+on the item. When he explicitly asks to defer or move on, relay it with
+`tracker park ITEM --until DATE --by Daniel` or `tracker move-on ITEM --by Daniel`.
 
 ## Module task handoff
 

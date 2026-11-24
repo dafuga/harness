@@ -6,6 +6,7 @@ export interface TrackerMatchRow {
 	readonly agent?: string | null;
 	readonly owner?: string | null;
 	readonly question?: string | null;
+	readonly next_step?: string | null;
 	readonly needs_daniel?: number | boolean;
 	readonly resolved?: number | boolean;
 	readonly deleted?: number | boolean;

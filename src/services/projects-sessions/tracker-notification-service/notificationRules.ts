@@ -82,12 +82,18 @@ export function localDay(at: number, tz: string): number {
 	return year * 10_000 + month * 100 + day;
 }
 
+export function parkedUntil(item: TrackerNotificationItem | undefined): number {
+	return Date.parse(item?.parked_until ?? '') || 0;
+}
+
 export function holdRegularReminder(
 	item: TrackerNotificationItem,
 	now: number,
 	interval: number | undefined
 ): boolean {
-	return Date.parse(item.remind_at ?? '') + intervalMs(interval, 60) > now;
+	return (
+		parkedUntil(item) > now || Date.parse(item.remind_at ?? '') + intervalMs(interval, 60) > now
+	);
 }
 
 export function readyRows<T extends { createdAt: number; nextAt: number }>(

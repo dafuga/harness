@@ -5,9 +5,11 @@ import type { TrackerItemInput, TrackerItemValue } from './normalizeTrackerItemF
 import type {
 	TrackerDuplicateProbe,
 	TrackerItemMutationContext,
+	TrackerItemChange,
 	TrackerItemSnapshot
 } from './planTrackerItemMutation.types';
-import { trackerTimeZone } from './normalizeTrackerDue';
+import { normalizeTrackerReminder, trackerIsoTime, trackerTimeZone } from './normalizeTrackerDue';
+import { wallClockToEpochMs } from '../../helpers/attention-timing/wallClockToEpochMs';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
 
@@ -44,6 +46,7 @@ export function trackerItemInput(
 	applyRecurrenceFields(fields, current);
 	validateNamedModel(fields, context, current);
 	applyAliases(fields, body, context.node);
+	if (body.next_step !== undefined) Object.assign(fields, trackerNextStepFields(body.next_step));
 	if (!current && body.later === true) {
 		if (requestsTrackerLaunch(fields.auto)) throw trackerItemError('--later conflicts with --auto');
 		fields.schedule_off = 1;
@@ -139,6 +142,45 @@ function applyAliases(
 	if (body.callback_cmd) fields.callback = { cmd: body.callback_cmd, node };
 	if (body.flag || body.question) fields.needs_daniel = 1;
 	if (fields.needs_daniel) fields.resolved = 0;
+}
+
+export function trackerNextStepFields(value: TrackerItemValue): TrackerItemInput {
+	if (typeof value !== 'string' || !value.trim()) throw trackerItemError('next step text required');
+	const text = value.trim();
+	return { next_step: text, question: text, needs_daniel: 1, resolved: 0 };
+}
+
+function requireNextStep(item: TrackerItemSnapshot): void {
+	if (!item.next_step) throw trackerItemError('item has no open next step', 409);
+}
+
+export function trackerMoveOn(item: TrackerItemSnapshot): TrackerItemChange {
+	requireNextStep(item);
+	return {
+		fields: { status: 'done', needs_daniel: 0, resolved: 1, next_step: null, parked_until: null },
+		appendNote: 'Daniel moved on from this topic'
+	};
+}
+
+export function trackerParkNextStep(
+	item: TrackerItemSnapshot,
+	body: TrackerItemInput,
+	context: TrackerItemMutationContext
+): TrackerItemChange {
+	requireNextStep(item);
+	const until = body.until;
+	const date = typeof until === 'string' && /^(\d{4})-(\d{2})-(\d{2})$/.exec(until);
+	const time = date
+		? lisbonMorning(date, context.now)
+		: normalizeTrackerReminder(until, context.now);
+	return { fields: { parked_until: time } };
+}
+
+function lisbonMorning(date: RegExpExecArray, now: number): string {
+	const [, year, month, day] = date.map(Number);
+	normalizeTrackerReminder(`${date[0]}T23:59:59Z`, 0);
+	const at = wallClockToEpochMs({ year, month, day, hour: 8, minute: 0 }, trackerTimeZone);
+	return normalizeTrackerReminder(trackerIsoTime(at), now);
 }
 
 export function guardTrackerDuplicate(

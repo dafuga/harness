@@ -15,7 +15,7 @@ import type {
 	TrackerNotificationState
 } from './notificationState.types';
 import { webhookRequest } from './deliveryRequest';
-import { askQuietHours, eventId, flagged, isoTime, minute } from './notificationRules';
+import { askQuietHours, eventId, flagged, isoTime, minute, parkedUntil } from './notificationRules';
 
 function waitingToLaunch(
 	entry: AttentionRow,
@@ -150,10 +150,11 @@ export function nextAttention(
 		delete state.forceAttention;
 		return undefined;
 	}
-	const sendable =
-		quietHourBoundary(now, askQuietHours) > now
-			? pending.filter(({ line }) => line.event !== 'needs_daniel' && !line.needs_daniel)
-			: pending;
+	const quiet = quietHourBoundary(now, askQuietHours) > now;
+	const sendable = pending.filter(({ line, itemId }) => {
+		if (line.event !== 'needs_daniel' && !line.needs_daniel) return true;
+		return !quiet && parkedUntil(source.item(itemId)) <= now;
+	});
 	const configured = { ...options, webhook };
 	if (!sendable.length || !canSendAttention(state, configured, sendable, now)) return undefined;
 	return prepareAttention(state, sendable, configured, now);

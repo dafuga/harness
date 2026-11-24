@@ -27,10 +27,18 @@ function trackerItemMetadata(item: NativeTrackerItem) {
 		item.owner && `owner ${item.owner}`,
 		item.agent && `agent ${item.agent}`,
 		item.auto && 'auto-launch',
+		...trackerFollowThroughMetadata(item)
+	].filter(Boolean);
+}
+
+function trackerFollowThroughMetadata(item: NativeTrackerItem) {
+	return [
+		item.next_step && `next step: ${item.next_step}`,
+		item.parked_until && `parked until ${item.parked_until}`,
 		item.chased_at && `chased ${item.chased_at}`,
 		item.chased_by && `by ${item.chased_by}`,
 		item.chased_reason
-	].filter(Boolean);
+	];
 }
 
 function itemStatus(item: NativeTrackerItem): string {

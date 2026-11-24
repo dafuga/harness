@@ -169,7 +169,12 @@ function actionBody(command: string, words: string[], values: Record<string, unk
 		case 'resolve':
 			return resolveBody(text, values);
 		case 'done':
-			return { note: values.note, failed: values.failed, occurrence: values.occurrence };
+			return {
+				note: values.note,
+				failed: values.failed,
+				occurrence: values.occurrence,
+				next_step: values['next-step']
+			};
 		case 'unblock':
 			return { note: values.note };
 		default:

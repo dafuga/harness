@@ -45,7 +45,7 @@ function isCandidate(row: TrackerMatchRow, excludeId?: string): row is TrackerCa
 		!row.deleted &&
 		row.title !== null &&
 		row.status !== null &&
-		row.status !== 'done'
+		(row.status !== 'done' || Boolean(row.next_step && row.needs_daniel && !row.resolved))
 	);
 }
 

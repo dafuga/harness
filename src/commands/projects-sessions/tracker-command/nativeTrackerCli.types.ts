@@ -26,6 +26,8 @@ export interface NativeTrackerItem {
 	every_tz?: string;
 	due?: string;
 	remind_at?: string | null;
+	next_step?: string;
+	parked_until?: string;
 	owner?: string;
 	agent?: string;
 	auto?: string;

@@ -81,7 +81,7 @@
 				"name": "TrackerItemReadRepository.list.nowMs",
 				"type": "number",
 				"required": false,
-				"description": "Clock in milliseconds for filtering future reminders from flagged lists. Defaults to the current time."
+				"description": "Clock in milliseconds for filtering future reminders and parked decisions from flagged lists. Defaults to the current time."
 			},
 			{
 				"name": "TrackerItemReadRepository.digest.nowMs",
@@ -304,7 +304,7 @@
 						"name": "TrackerItemReadRepository.list.nowMs",
 						"type": "number",
 						"required": false,
-						"description": "Clock in milliseconds for filtering future reminders from flagged lists. Defaults to the current time."
+						"description": "Clock in milliseconds for filtering future reminders and parked decisions from flagged lists. Defaults to the current time."
 					}
 				],
 				"outputs": [

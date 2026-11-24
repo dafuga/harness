@@ -14,6 +14,7 @@ const itemOptions = {
 	notes: text,
 	parent: text,
 	question: text,
+	'next-step': text,
 	title: text,
 	status: text,
 	'callback-url': text,
@@ -37,13 +38,15 @@ export const nativeTrackerCommandOptions = new Map<
 	['flag', { question: text, force: flag }],
 	['chase', { note: text }],
 	['remind', { at: text }],
+	['park', { until: text }],
+	['move-on', {}],
 	['block', { 'needs-daniel': flag, force: flag }],
 	['unblock', { note: text }],
 	['ignore', { reason: text, until: text }],
 	['unignore', { note: text }],
 	['answer', { done: flag }],
 	['resolve', { done: flag }],
-	['done', { note: text, failed: flag, occurrence: text }],
+	['done', { note: text, failed: flag, occurrence: text, 'next-step': text }],
 	['launch', launchOptions],
 	['unlaunch', {}],
 	['show', {}],
@@ -151,6 +154,8 @@ export function nativeTrackerTimedItemRequest(
 	values: Record<string, string | boolean | undefined>
 ): NativeTrackerRequest | undefined {
 	if (command === 'remind') return reminderRequest(id, words, values.at);
+	const decision = decisionRequest(command, id, words, values.until);
+	if (decision) return decision;
 	if (command !== 'ignore' && command !== 'unignore') return undefined;
 	const reason = [values.reason, words.join(' ')].find(Boolean);
 	if (command === 'ignore' && !reason)
@@ -161,6 +166,19 @@ export function nativeTrackerTimedItemRequest(
 		path: `/items/${encodeURIComponent(id)}/${command}`,
 		body: command === 'ignore' ? { reason, until: values.until } : { note: values.note }
 	};
+}
+
+function decisionRequest(
+	command: string,
+	id: string | undefined,
+	words: string[],
+	until: string | boolean | undefined
+): NativeTrackerRequest | undefined {
+	const needsDate = command === 'park';
+	if (!needsDate && command !== 'move-on') return undefined;
+	if (!id || words.length || (needsDate && !until))
+		throw new TypeError(`usage: tracker ${command} <id>${needsDate ? ' --until <date>' : ''}`);
+	return { method: 'POST', path: `/items/${encodeURIComponent(id)}/${command}`, body: { until } };
 }
 
 function reminderRequest(

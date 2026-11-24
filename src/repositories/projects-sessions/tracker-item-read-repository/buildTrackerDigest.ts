@@ -83,7 +83,10 @@ function groupActive(
 
 function digestActive(row: TrackerItemRow, now: number): boolean {
 	return (
-		row.status !== 'done' && row.status !== 'ignored' && !(Date.parse(row.remind_at ?? '') > now)
+		row.status !== 'done' &&
+		row.status !== 'ignored' &&
+		!(Date.parse(row.remind_at ?? '') > now) &&
+		!(Date.parse(row.parked_until ?? '') > now)
 	);
 }
 
@@ -97,6 +100,12 @@ function summarize(row: TrackerItemRow, now: number): TrackerDigestItem {
 		blocked_reason: row.status === 'blocked' ? row.blocked_reason : null,
 		needs_daniel: needsDaniel,
 		...(needsDaniel && askAge(row, now)),
+		...(row.next_step && {
+			next_step: row.next_step,
+			...(row.project && { project: row.project })
+		}),
+		...(row.parked_until &&
+			Date.parse(row.parked_until) > now && { parked_until: row.parked_until }),
 		...trackerChaseFields(row),
 		due: row.due,
 		...(row.remind_at && { remind_at: row.remind_at }),

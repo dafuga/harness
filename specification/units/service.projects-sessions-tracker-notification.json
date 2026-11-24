@@ -101,6 +101,7 @@
 			"flagged",
 			"dueTime",
 			"localDay",
+			"parkedUntil",
 			"holdRegularReminder",
 			"readyRows",
 			"dueForDirectReminder",
@@ -596,6 +597,12 @@
 				"type": "string",
 				"required": true,
 				"description": "IANA time zone used for the Lisbon-style calendar rules."
+			},
+			{
+				"name": "parkedUntil.item",
+				"type": "TrackerNotificationItem | undefined",
+				"required": true,
+				"description": "Current item projection, if the referenced item still exists."
 			},
 			{
 				"name": "holdRegularReminder.item",
@@ -2168,6 +2175,26 @@
 						"description": "The supplied instant or time zone is invalid."
 					}
 				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "parkedUntil",
+				"inputs": [
+					{
+						"name": "parkedUntil.item",
+						"type": "TrackerNotificationItem | undefined",
+						"required": true,
+						"description": "Current item projection, if the referenced item still exists."
+					}
+				],
+				"outputs": [
+					{
+						"name": "parkedUntil",
+						"type": "number",
+						"description": "Parking deadline in epoch milliseconds. Zero means there is no valid hold."
+					}
+				],
+				"errors": [],
 				"errorStatus": "declared"
 			},
 			{

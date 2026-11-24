@@ -164,8 +164,24 @@ operator verifies the stopped database and chooses a rollback.
   follow-up times have passed, the next repeat waits for the following morning.
   Each ping includes how long the ask has waited. The digest shows every
   open ask, including deferred and completed-item asks. Record Daniel's
-  answer with `tracker answer`, or use `unflag` or `ignore` to dismiss an ask.
-  iPhone push delivery depends on the separate `0wn8nf` rollout.
+  answer with `tracker answer`, or use `unflag` or `ignore` to dismiss an
+  ordinary ask. iPhone push delivery depends on the separate `0wn8nf` rollout.
+
+  Chief of Staff files ideas when Daniel raises them and sets the project.
+  Use `add --next-step` or `update --next-step` to record a decision. Use
+  `done --next-step` when work finishes with a decision outstanding. That
+  completion records the work result while the question stays on the Lisbon
+  follow-up schedule. The digest lists the project, decision and its age even
+  if the project has no active runs. `answer` records a reply and leaves the
+  next step available for an explicit decision to move on.
+
+  Daniel can use `tracker park ITEM --until DATE` to hold pings until 08:00
+  Lisbon on that date, or pass an ISO timestamp with a time zone. The digest
+  shows the hold while the flagged worklist and reminder destinations wait.
+  `tracker move-on ITEM` records his decision and closes the item. These
+  commands use the trusted local Tracker actor and reject managed CLI
+  runners. Chief of Staff may relay Daniel's explicit decision with
+  `--by Daniel`. The actor is a local audit label.
 
 - **Adapter polling.** Only the designated primary Mac can poll retained
   GitHub sources. It uses the existing source owner, cursor, and

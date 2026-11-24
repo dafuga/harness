@@ -35,6 +35,8 @@ export type TrackerItemAction =
 	| 'note'
 	| 'flag'
 	| 'chase'
+	| 'park'
+	| 'move-on'
 	| 'remind'
 	| 'answer'
 	| 'unflag'

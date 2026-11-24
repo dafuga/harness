@@ -57,7 +57,10 @@ type TrackerItemDetailFields =
 	| 'created_by'
 	| 'updated_at';
 
+type TrackerNextStep = { next_step?: string; parked_until?: string };
+
 export type TrackerItem = Pick<TrackerItemRow, TrackerItemDetailFields> &
+	TrackerNextStep &
 	TrackerChase & {
 		blocked_reason: string | null;
 		ignored_reason?: string | null;
@@ -104,7 +107,13 @@ export type TrackerDigestItem = Pick<
 	| 'created_by'
 	| 'updated_at'
 > &
-	TrackerChase & { remind_at?: string; asked_at?: string; waiting_minutes?: number };
+	TrackerChase &
+	TrackerNextStep & {
+		project?: string;
+		remind_at?: string;
+		asked_at?: string;
+		waiting_minutes?: number;
+	};
 
 export type TrackerRecurringProblem = TrackerDigestItem & {
 	every: string;

@@ -69,9 +69,7 @@ async function sendNativeTracker(
 	config: TrackerNodeConfig
 ) {
 	const { command, values, request, words } = input;
-	const actor = String(
-		[values.by, process.env.TRACKER_AS].find(Boolean) ?? defaultTrackerActor(command, config.node)
-	);
+	const actor = trackerActor(command, values.by, config.node);
 	const body = trackerRequestBody(command, request, actor);
 	const response = await fetch(`http://127.0.0.1:${config.apiPort}/native/v1${request.path}`, {
 		method: request.method,
@@ -96,11 +94,14 @@ async function sendNativeTracker(
 	return 0;
 }
 
-function defaultTrackerActor(command: string, node: string): string {
+function trackerActor(command: string, by: string | boolean | undefined, node: string): string {
+	const humanDecision = command === 'park' || command === 'move-on';
 	const run = process.env.TRACKER_RUN_ID;
-	if (command === 'add' && run && /^[1-9][0-9]{0,15}$/.test(run))
-		return `tracker-run-${run}@${node}`;
-	return `${userInfo().username}@${node}`;
+	const runActor = run && /^[1-9][0-9]{0,15}$/.test(run) ? `tracker-run-${run}@${node}` : undefined;
+	if (humanDecision && runActor) return runActor;
+	const claimed = [by, process.env.TRACKER_AS].find(Boolean);
+	const fallback = command === 'add' ? runActor : undefined;
+	return String(claimed ?? fallback ?? `${userInfo().username}@${node}`);
 }
 
 function trackerRequestTimeout(path: string) {
