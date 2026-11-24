@@ -11,7 +11,7 @@ import {
 
 test('manual requests normalize aliases, keep the token on replay and reject changed options', async () => {
 	const { item, service } = dispatcherFixture();
-	const intent = { token: sampleToken, target: secondary, source: 'manual' };
+	const intent = { token: sampleToken, target: secondary, source: 'manual', sensitive: false };
 	expect(
 		await service.request(sampleId, {
 			source: 'manual',

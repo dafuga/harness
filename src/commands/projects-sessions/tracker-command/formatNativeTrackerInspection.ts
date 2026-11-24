@@ -5,7 +5,8 @@ import type {
 	NativeTrackerAdapter,
 	NativeTrackerBackupList,
 	NativeTrackerInspection,
-	NativeTrackerItemDetail
+	NativeTrackerItemDetail,
+	NativeTrackerLaunchStatus
 } from './nativeTrackerCli.types';
 
 export function formatNativeTrackerInspection(command: string, data: NativeTrackerInspection) {
@@ -61,9 +62,13 @@ function launchDetails(item: NativeTrackerItemDetail): string[] {
 	const lines: string[] = [];
 	if (mode !== 'off' || fields.length) lines.push('  auto-launch: ' + [mode, ...fields].join('; '));
 	if (schedule) lines.push(`  due scheduler: ${schedule}`);
-	if (item.launch_status?.computer)
-		lines.push(`  launch on ${item.launch_status.computer}: ${item.launch_status.reason}`);
+	if (item.launch_status) lines.push(`  ${formatLaunchRequest(item.launch_status)}`);
 	return lines;
+}
+
+export function formatLaunchRequest({ status, computer, reason }: NativeTrackerLaunchStatus) {
+	const where = computer ? ` on ${computer}` : '';
+	return `launch request: ${status}${where}${reason ? `: ${reason}` : ''}`;
 }
 
 function launchMode(item: NativeTrackerItemDetail, schedule?: string | null): string {

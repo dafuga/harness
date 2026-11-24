@@ -10,12 +10,14 @@ import {
 	nativeItemPrefix
 } from './formatNativeTrackerItem';
 import {
+	formatLaunchRequest,
 	formatNativeTrackerAdapterRun,
 	formatNativeTrackerInspection
 } from './formatNativeTrackerInspection';
 import type {
 	NativeTrackerInspection,
 	NativeTrackerItem,
+	NativeTrackerItemDetail,
 	NativeTrackerRequest,
 	NativeTrackerRunRead
 } from './nativeTrackerCli.types';
@@ -174,6 +176,8 @@ function renderNativeTrackerItemOrReport(command: string, data: unknown, first?:
 	const rendered =
 		formatNativeTrackerInspection(command, data as NativeTrackerInspection) ??
 		formatNativeTrackerRunRead(command, data as NativeTrackerRunRead);
-	const item = data as NativeTrackerItem;
+	const item = data as NativeTrackerItemDetail;
 	console.log(rendered ?? nativeItemPrefix(command, first, item) + formatNativeTrackerItem(item));
+	if (command === 'launch' && item.launch_status)
+		console.log(`  ${formatLaunchRequest(item.launch_status)}`);
 }

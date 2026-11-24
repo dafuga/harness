@@ -53,6 +53,7 @@ export type TrackerItem = Pick<TrackerItemRow, TrackerItemDetailFields> & {
 	launch_target: string | null;
 	launch_source: string | null;
 	launch_pick: string | null;
+	launch_hold: string | null;
 	schedule_off: boolean;
 	schedule_status: string | null;
 	model: string | null;

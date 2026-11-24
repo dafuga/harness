@@ -14,12 +14,16 @@ import {
 	canonicalNode,
 	dueItemHold,
 	hasOpenSession,
+	holdQueuedLaunch,
 	mayScheduleHere,
 	ownsLaunch,
 	skip,
 	startable
 } from './launchEligibility';
 import { etaFor, finishRun, queueRun, recordRun, reviseRun } from './runReceipt';
+
+const staleSensitiveReason =
+	'sensitive setting changed after this launch was requested; cancel it and request again';
 
 export function claimLaunch(
 	snapshot: TrackerDispatchSnapshot,
@@ -32,10 +36,10 @@ export function claimLaunch(
 	if (snapshot.runs.some((run) => run.auto_token === token))
 		return skip('held', 'launch token was already claimed');
 	const hold = claimHold(snapshot, { item, grant }, policy, now);
-	if (hold) return skip('held', hold);
+	if (hold) return holdQueuedLaunch(item.launch, hold, now);
 	const pick = item.launch.scheduledPick ?? policy.pickModel(item);
 	const problem = policy.admit(item, item.launch, 'error' in pick ? null : pick.rung);
-	if (problem) return skip('held', problem);
+	if (problem) return holdQueuedLaunch(item.launch, problem, now);
 	const run = queueRun(snapshot, { token, item, pick }, policy, now);
 	if ('error' in pick) return invalidPick(run, pick.error, now);
 	return reserveStart(item, { run, rung: pick.rung }, policy, now);
@@ -87,6 +91,11 @@ export function cancelUnstartedRun(
 	);
 }
 
+/** A request made for a non-sensitive item must not start once the item is sensitive, and the reverse. */
+function sensitivityChanged(intent: TrackerLaunchIntent, item: TrackerDispatchItem) {
+	return intent.sensitive !== undefined && intent.sensitive !== Boolean(item.sensitive);
+}
+
 function claimHold(
 	snapshot: TrackerDispatchSnapshot,
 	{
@@ -98,6 +107,7 @@ function claimHold(
 	now: number
 ): string | null {
 	const intent = item.launch!;
+	if (sensitivityChanged(intent, item)) return staleSensitiveReason;
 	if (policy.enabled === false) return 'launcher disabled';
 	if (!startable(item)) return 'item is not startable';
 	if (!ownsLaunch(intent, policy)) return 'launch is assigned to a different computer';
@@ -176,6 +186,7 @@ function reserveStart(
 		},
 		writes: {
 			runs: [reserved],
+			...(intent.hold && { item: { launch: { ...intent, hold: undefined } } }),
 			...(policy.hub && intent.source === 'due' && { lastDueStartAt: now })
 		}
 	};

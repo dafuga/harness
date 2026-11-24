@@ -36,6 +36,7 @@ export const trackerItemFields = [
 	'launch_target',
 	'launch_source',
 	'launch_pick',
+	'launch_hold',
 	'schedule_off',
 	'schedule_status',
 	'every',

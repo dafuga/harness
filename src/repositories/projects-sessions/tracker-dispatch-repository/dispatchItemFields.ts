@@ -53,7 +53,8 @@ function launchIntent(row: TrackerDispatchRow): TrackerLaunchIntent | null {
 		source: row.launch_source === 'due' ? 'due' : 'manual',
 		target:
 			(row.launch_target ?? row.computer) === 'auto' ? null : (row.launch_target ?? row.computer),
-		...(row.launch_pick && { scheduledPick: JSON.parse(row.launch_pick) })
+		...(row.launch_pick && { scheduledPick: JSON.parse(row.launch_pick) }),
+		...(row.launch_hold && { hold: JSON.parse(row.launch_hold) })
 	};
 }
 
@@ -87,8 +88,13 @@ function launchJournalFields(intent: TrackerLaunchIntent | null) {
 		auto: intent?.token ?? null,
 		launch_target: intent?.target ?? null,
 		launch_source: intent?.source ?? null,
-		launch_pick: intent?.scheduledPick ? JSON.stringify(intent.scheduledPick) : null
+		launch_pick: jsonOrNull(intent?.scheduledPick),
+		launch_hold: jsonOrNull(intent?.hold)
 	};
+}
+
+function jsonOrNull(value: unknown): string | null {
+	return value ? JSON.stringify(value) : null;
 }
 
 export function dispatchJournalFields(item: NonNullable<TrackerDispatchWrites['item']>) {
