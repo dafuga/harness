@@ -1,0 +1,167 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-scripted-deploy-run-deploy-plan",
+	"uid": "u_3diuooz2wz",
+	"kind": "service",
+	"title": "runDeployPlan",
+	"responsibility": "Checks a fresh plan, collects its approval and admits at most one guarded provider change before verifying the route.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/execution-runtimes/scripted-deploy/runDeployPlan.ts",
+			"src/services/execution-runtimes/scripted-deploy/runDeployPlan.types.ts"
+		],
+		"symbols": [
+			"runDeployPlan",
+			"DeployRunContext"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "runDeployPlan.context",
+				"type": "DeployRunContext",
+				"required": true
+			},
+			{
+				"name": "runDeployPlan.input",
+				"type": "DeployRequest",
+				"required": true
+			},
+			{
+				"name": "runDeployPlan.controlled",
+				"type": "boolean",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "runDeployPlan",
+				"type": "Promise<Journal>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "runDeployPlan",
+				"inputs": [
+					{
+						"name": "runDeployPlan.context",
+						"type": "DeployRunContext",
+						"required": true
+					},
+					{
+						"name": "runDeployPlan.input",
+						"type": "DeployRequest",
+						"required": true
+					},
+					{
+						"name": "runDeployPlan.controlled",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runDeployPlan",
+						"type": "Promise<Journal>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-approval-inbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-broker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-parity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-proofs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-release-files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.execution-runtimes-deploy-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-scripted-deploy-deploy-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-scripted-deploy-deploy-verification",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-scripted-deploy-request-deploy-approval",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.execution-runtimes-deploy-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/scripted-deploy/runDeployPlan.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/scripted-deploy/runDeployPlan.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

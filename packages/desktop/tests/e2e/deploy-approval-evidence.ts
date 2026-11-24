@@ -42,7 +42,7 @@ export async function approvalEvidence(page: Page, info: TestInfo, state: string
 		},
 		await page.screenshot({ animations: 'disabled', caret: 'hide' })
 	);
-	if (state === 'pending') {
+	if (state === 'pending' || state === 'go') {
 		const currentNavigation = await page.evaluate(() =>
 			performance.getEntriesByType('navigation').some((entry) => entry.name === location.href)
 		);
@@ -50,7 +50,7 @@ export async function approvalEvidence(page: Page, info: TestInfo, state: string
 		await pageWorkload(page, scenario as ScenarioManifest, {
 			state,
 			viewport: viewport!,
-			name: 'approvals',
+			name: state === 'go' ? 'deploy-go-review' : 'approvals',
 			buildId: buildId!
 		});
 	}

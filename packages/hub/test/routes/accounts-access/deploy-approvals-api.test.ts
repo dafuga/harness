@@ -107,6 +107,7 @@ test('a controlled plan requires a separate exact Go and action-time admission b
 		const original = approvalCardFixture(fixture.now + 30_000);
 		const card = { ...original, control: { run: original.id } };
 		const collect = await register(fixture, card);
+		expect((await fixture.runner({ kind: 'register', card: original })).status).toBe(409);
 		const { id, plan } = card;
 		const go = { id, plan, decision: 'go' };
 		expect((await fixture.session(go)).status).toBe(409);
@@ -124,8 +125,51 @@ test('a controlled plan requires a separate exact Go and action-time admission b
 		expect((await fixture.runner(admit)).status).toBe(200);
 		expect((await fixture.runner(admit)).status).toBe(409);
 		expect((await fixture.runner(report)).status).toBe(200);
+		expect((await fixture.runner({ ...report, project: 'wrong-project' })).status).toBe(404);
+		expect((await fixture.runner({ ...report, progress: { phase: 'stopped' } })).status).toBe(409);
 		expect(await (await fixture.session()).json()).toEqual([
 			expect.objectContaining({ id, plan, progress: { phase: 'applying' } })
+		]);
+	} finally {
+		await fixture.close();
+	}
+}, 20_000);
+
+test('published staging previews remain read-only, including a plan with parity blockers', async () => {
+	const fixture = await deployApprovalFixture();
+	try {
+		const { id, plan, ...base } = approvalCardFixture(fixture.now + 30_000);
+		const card = {
+			...base,
+			id,
+			plan,
+			environment: 'staging',
+			control: {
+				run: id,
+				preview: { blocked: true, fields: ['staging:migrations.0317'] }
+			}
+		};
+		expect((await fixture.runner({ kind: 'register', card })).status).toBe(404);
+		expect((await fixture.runner({ kind: 'register', card }, fixture.stageKey)).status).toBe(201);
+		for (const decision of ['allow', 'deny', 'go'])
+			expect((await fixture.session({ id, plan, decision })).status).toBe(409);
+		const collect = {
+			id,
+			plan,
+			project: card.project,
+			environment: card.environment,
+			kind: 'collect'
+		};
+		expect(await response(await fixture.runner(collect, fixture.stageKey))).toEqual([
+			200,
+			{ status: 'refused' }
+		]);
+		expect((await fixture.runner({ ...collect, kind: 'admit' }, fixture.stageKey)).status).toBe(
+			409
+		);
+		expect(await response(await fixture.session())).toEqual([
+			200,
+			[{ ...card, receipt: null, used: false }]
 		]);
 	} finally {
 		await fixture.close();

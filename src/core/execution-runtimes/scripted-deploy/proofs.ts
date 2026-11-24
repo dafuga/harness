@@ -46,7 +46,7 @@ export function verifyApproval(
 	verifyProof(proof, { kind: 'approval', scope: hash(record), after: record.createdAt }, [issuer]);
 	if (
 		registry.approvalInbox &&
-		record.environment !== 'staging' &&
+		(record.environment !== 'staging' || decision) &&
 		(!decision ||
 			proof.payload.reference !== 'decision:' + decision.receipt ||
 			proof.payload.issuedAt < decision.decidedAt - approvalClockSkewMs ||

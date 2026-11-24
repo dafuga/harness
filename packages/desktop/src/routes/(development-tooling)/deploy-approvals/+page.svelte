@@ -7,7 +7,8 @@
 	import { getContext, onMount } from 'svelte';
 	import {
 		approvalCards,
-		approvalReceipt
+		approvalReceipt,
+		goReceipt
 	} from '../../../../../../src/core/execution-runtimes/scripted-deploy/approvalInbox';
 	import type {
 		ApprovalCards,
@@ -72,20 +73,34 @@
 
 	async function record(decision: ApprovalDecision['decision']) {
 		const card = selected;
-		if (!card || card.receipt || card.expiresAt <= Date.now() || loading || busy) return;
+		if (
+			!card ||
+			card.expiresAt <= Date.now() ||
+			loading ||
+			busy ||
+			card.progress ||
+			card.control?.preview
+		)
+			return;
+		if (decision === 'go' ? !canGo(card) : card.receipt) return;
 		busy = true;
 		error = '';
 		try {
-			const receipt = approvalReceipt
-				.refine(
-					(answer) =>
-						answer.id === card.id && answer.plan === card.plan && answer.decision === decision
-				)
-				.parse(await bridge?.deployApprovals?.({ id: card.id, plan: card.plan, decision }));
-			if (active) cards = cards.map((item) => (item.id === card.id ? { ...item, receipt } : item));
+			const reply = await bridge?.deployApprovals?.({ id: card.id, plan: card.plan, decision });
+			const match = (answer: { id: string; plan: string }) =>
+				answer.id === card.id && answer.plan === card.plan;
+			const patch =
+				decision === 'go'
+					? { goAt: goReceipt.refine(match).parse(reply).goAt }
+					: {
+							receipt: approvalReceipt
+								.refine((answer) => match(answer) && answer.decision === decision)
+								.parse(reply)
+						};
+			if (active) cards = cards.map((item) => (item.id === card.id ? { ...item, ...patch } : item));
 		} catch {
 			if (active)
-				error = 'Could not confirm the decision. Check the refreshed request before trying again.';
+				error = 'Could not confirm the action. Check the refreshed request before trying again.';
 		} finally {
 			if (active) {
 				await sync.sync();
@@ -93,10 +108,39 @@
 			}
 		}
 	}
+	function canGo(card: ApprovalCards[number]) {
+		return Boolean(
+			card.control &&
+			!card.control.preview &&
+			card.receipt?.decision === 'allow' &&
+			!card.goAt &&
+			!card.used &&
+			!card.progress &&
+			card.expiresAt > now
+		);
+	}
+	const phases = {
+		stopped: 'Stopped before execution',
+		applying: 'Waiting for provider receipt',
+		'not-applied': 'Provider confirmed no change',
+		deployed: 'Provider confirmed route',
+		verified: 'Route smoke passed',
+		complete: 'Complete',
+		'cleanup-failed': 'Cleanup needs reconciliation',
+		'signed-off': 'Sign-off recorded'
+	};
 
 	function status(card: ApprovalCards[number]) {
-		if (card.used) return 'Claimed by runner';
+		if (card.control?.preview)
+			return card.control.preview.blocked ? 'Plan blocked by parity' : 'Read-only plan';
 		if (card.receipt?.decision === 'deny') return 'Denied';
+		if (card.progress) return phases[card.progress.phase];
+		if (card.control && card.goAt) {
+			if (card.used && card.expiresAt <= now) return 'Outcome needs reconciliation';
+			if (card.used) return 'Runner checking prerequisites';
+			if (card.expiresAt > now) return 'Go recorded';
+		}
+		if (card.used) return 'Claimed by runner';
 		if (card.expiresAt <= now) return 'Expired';
 		return card.receipt ? 'Allowed' : 'Pending';
 	}
@@ -123,7 +167,11 @@
 				}}
 			>
 				<hx-strong>{card.project}</hx-strong>
-				<hx-small>{card.environment} · {card.action} · {status(card)}</hx-small>
+				<hx-small
+					>{card.environment} · {card.action === 'signoff' ? 'sign-off' : card.action} · {status(
+						card
+					)}</hx-small
+				>
 			</hx-button>
 		{:else}
 			<hx-p class="muted" role="status">
@@ -141,7 +189,8 @@
 	<DeployApprovalCard
 		card={selected}
 		status={status(selected)}
-		disabled={loading || busy || selected.expiresAt <= now || Boolean(selected.receipt)}
+		disabled={loading || busy || selected.expiresAt <= now}
+		canStart={canGo(selected)}
 		decide={record}
 		close={() => (selectedId = undefined)}
 		{error}

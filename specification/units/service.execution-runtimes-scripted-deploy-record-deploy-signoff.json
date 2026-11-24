@@ -1,0 +1,220 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-scripted-deploy-record-deploy-signoff",
+	"uid": "u_q4jcoafzvg",
+	"kind": "service",
+	"title": "recordDeploySignoff",
+	"responsibility": "Records a verified reviewer proof for a completed deploy and checks the current route before a controlled sign-off.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/execution-runtimes/scripted-deploy/recordDeploySignoff.ts",
+			"src/services/execution-runtimes/scripted-deploy/recordDeploySignoff.types.ts"
+		],
+		"symbols": [
+			"recordDeploySignoff",
+			"publishSignoff",
+			"DeploySignoffContext"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "recordDeploySignoff.context",
+				"type": "DeploySignoffContext",
+				"required": true
+			},
+			{
+				"name": "recordDeploySignoff.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordDeploySignoff.proof",
+				"type": "Proof",
+				"required": true
+			},
+			{
+				"name": "recordDeploySignoff.controlled",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "publishSignoff.registry",
+				"type": "DeployRegistry",
+				"required": true
+			},
+			{
+				"name": "publishSignoff.plan",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "publishSignoff.signoff",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "publishSignoff.signoffControl",
+				"type": "unknown",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "recordDeploySignoff",
+				"type": "Promise<Journal>"
+			},
+			{
+				"name": "publishSignoff",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "recordDeploySignoff",
+				"inputs": [
+					{
+						"name": "recordDeploySignoff.context",
+						"type": "DeploySignoffContext",
+						"required": true
+					},
+					{
+						"name": "recordDeploySignoff.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordDeploySignoff.proof",
+						"type": "Proof",
+						"required": true
+					},
+					{
+						"name": "recordDeploySignoff.controlled",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordDeploySignoff",
+						"type": "Promise<Journal>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "publishSignoff",
+				"inputs": [
+					{
+						"name": "publishSignoff.registry",
+						"type": "DeployRegistry",
+						"required": true
+					},
+					{
+						"name": "publishSignoff.plan",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "publishSignoff.signoff",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "publishSignoff.signoffControl",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "publishSignoff",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-approval-inbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-broker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-parity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-proofs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.execution-runtimes-deploy-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-scripted-deploy-request-deploy-approval",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.execution-runtimes-deploy-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/scripted-deploy/recordDeploySignoff.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/scripted-deploy/recordDeploySignoff.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -82,7 +82,7 @@ export const registry = z
 				origin: httpsRoute.refine((value) => new URL(value).origin === value),
 				owner: z.string().regex(/^google-[\w.-]{1,121}$/),
 				credentials: z.record(
-					z.string().regex(/^[a-z0-9][a-z0-9-]{0,63}:(preprod|prod)$/),
+					z.string().regex(/^[a-z0-9][a-z0-9-]{0,63}:(staging|preprod|prod)$/),
 					absolute
 				)
 			})

@@ -105,7 +105,7 @@ export class DeployPlanning {
 		return record;
 	}
 
-	private restoreTarget(id: string, current: Observation): Observation {
+	restoreTarget(id: string, current: Observation): Observation {
 		const record = this.store.get(id);
 		const { plan, result } = record;
 		if (
@@ -165,4 +165,10 @@ export async function verifyCurrentDeployPlan(
 		throw new ExpectedCliError('Provider state or deploy scripts changed after planning.');
 	if (plan.signoff !== digestSignoff(planning.predecessor(input, current)))
 		throw new ExpectedCliError('Predecessor sign-off changed after planning.');
+	if (
+		input.rollback &&
+		plan.restore &&
+		!sameVersion(plan.restore, planning.restoreTarget(input.rollback, current[plan.environment]!))
+	)
+		throw new ExpectedCliError('Rollback target changed after planning.');
 }

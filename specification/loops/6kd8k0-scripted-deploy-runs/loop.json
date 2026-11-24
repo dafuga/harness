@@ -1,0 +1,45 @@
+{
+	"name": "6kd8k0-scripted-deploy-runs",
+	"goal": "Inspect exact scripted deployment, separately allow and start it, reconcile provider progress and smoke, and run signed sign-off and rollback through a registered scoped runner",
+	"createdAt": "2026-11-24T04:51:11.186Z",
+	"updatedAt": "2026-11-24T05:05:02.425Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-24T04:59:59.960Z",
+			"evidence": "PR #277 supplies exact native decisions. Controlled runner must bind separate Go, revalidate proof, parity and artifact, then report typed receipts. Fluora staging first, higher targets gated. Hub red: controlled plan registration expected 201, received 400."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-24T05:05:02.425Z",
+			"evidence": "Native run review, separate Go and one-time action admission, signed sign-off, read-only parity previews, scoped progress and resume implemented. Live staging prerequisites remain gated."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

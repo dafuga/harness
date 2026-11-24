@@ -85,6 +85,7 @@ export const smoke = z.strictObject({
 });
 export const journal = z.strictObject({
 	plan,
+	controlled: z.literal(true).optional(),
 	phase: z.enum([
 		'pending',
 		'applying',
@@ -97,7 +98,8 @@ export const journal = z.strictObject({
 	approval: signedProof.optional(),
 	result: deployment.optional(),
 	smoke: smoke.optional(),
-	signoff: signedProof.optional()
+	signoff: signedProof.optional(),
+	signoffControl: z.strictObject({ id: runId, plan: digest }).optional()
 });
 
 export type {

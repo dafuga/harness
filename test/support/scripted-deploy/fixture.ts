@@ -48,6 +48,7 @@ export async function deployFixture() {
 		mode: (value: string) => write(join(root, 'mode.json'), value),
 		promote: (target: Environment, from?: string) => promote(root, file, target, release.id, from),
 		review: (record: Journal) => review(root, file, reviewer, record),
+		signoffProof: (record: Journal) => signoffProof(reviewer, record),
 		operations: () =>
 			readFileSync(join(root, 'operations.log'), 'utf8').trim().split('\n').filter(Boolean),
 		dispose: () => rmSync(root, { recursive: true, force: true })
@@ -146,21 +147,25 @@ function fixtureArtifact(store: DeployRunRepository, project: DeployProject): Re
 }
 
 function review(root: string, file: string, reviewer: KeyObject, record: Journal): Journal {
+	const receipt = join(root, 'signoff.json');
+	write(receipt, signoffProof(reviewer, record));
+	return cli(root, file, ['signoff', record.plan.id, '--receipt', receipt]) as Journal;
+}
+
+function signoffProof(reviewer: KeyObject, record: Journal) {
 	const now = Date.now();
 	const payload = {
 		issuer: 'review',
-		kind: 'signoff',
+		kind: 'signoff' as const,
 		scope: signoffScope(record),
 		issuedAt: now,
 		expiresAt: now + 200_000,
 		reference: 'review:' + record.plan.id
 	};
-	const receipt = join(root, 'signoff.json');
-	write(receipt, {
+	return {
 		payload,
 		signature: sign(null, Buffer.from(canonical(payload)), reviewer).toString('base64url')
-	});
-	return cli(root, file, ['signoff', record.plan.id, '--receipt', receipt]) as Journal;
+	};
 }
 
 function promote(

@@ -4,8 +4,8 @@
 	"uid": "u_lrganksse4",
 	"kind": "repository",
 	"title": "DeployApprovalRepository",
-	"responsibility": "Owns the DeployApprovalRepository persistence boundary.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Persists exact owner decisions, independent Go and admission claims, and filtered progress for enrolled runs.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -19,9 +19,13 @@
 			"DeployApprovalRepository.register",
 			"DeployApprovalRepository.decide",
 			"DeployApprovalRepository.collect",
+			"admitDeployRun",
+			"reportDeployRun",
 			"RunnerScope",
 			"DecisionSession",
 			"Collect",
+			"Admit",
+			"Report",
 			"ApprovalRow"
 		]
 	},
@@ -72,6 +76,36 @@
 				"name": "DeployApprovalRepository.collect.scope",
 				"type": "RunnerScope",
 				"required": true
+			},
+			{
+				"name": "admitDeployRun.db",
+				"type": "D1Database",
+				"required": true
+			},
+			{
+				"name": "admitDeployRun.input",
+				"type": "Admit",
+				"required": true
+			},
+			{
+				"name": "admitDeployRun.scope",
+				"type": "RunnerScope",
+				"required": true
+			},
+			{
+				"name": "reportDeployRun.db",
+				"type": "D1Database",
+				"required": true
+			},
+			{
+				"name": "reportDeployRun.input",
+				"type": "Report",
+				"required": true
+			},
+			{
+				"name": "reportDeployRun.scope",
+				"type": "RunnerScope",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -89,6 +123,14 @@
 			},
 			{
 				"name": "DeployApprovalRepository.collect",
+				"type": "unknown"
+			},
+			{
+				"name": "admitDeployRun",
+				"type": "unknown"
+			},
+			{
+				"name": "reportDeployRun",
 				"type": "unknown"
 			}
 		],
@@ -181,6 +223,62 @@
 				"outputs": [
 					{
 						"name": "DeployApprovalRepository.collect",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "admitDeployRun",
+				"inputs": [
+					{
+						"name": "admitDeployRun.db",
+						"type": "D1Database",
+						"required": true
+					},
+					{
+						"name": "admitDeployRun.input",
+						"type": "Admit",
+						"required": true
+					},
+					{
+						"name": "admitDeployRun.scope",
+						"type": "RunnerScope",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "admitDeployRun",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reportDeployRun",
+				"inputs": [
+					{
+						"name": "reportDeployRun.db",
+						"type": "D1Database",
+						"required": true
+					},
+					{
+						"name": "reportDeployRun.input",
+						"type": "Report",
+						"required": true
+					},
+					{
+						"name": "reportDeployRun.scope",
+						"type": "RunnerScope",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reportDeployRun",
 						"type": "unknown"
 					}
 				],

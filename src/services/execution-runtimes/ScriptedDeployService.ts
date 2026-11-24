@@ -1,22 +1,12 @@
 // @harness-uid u_hknoug3rur
 import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { DeployBroker } from '../../core/execution-runtimes/scripted-deploy/broker';
-import {
-	hash,
-	type Journal,
-	type Plan,
-	type Proof,
-	type Release
+import type {
+	Journal,
+	Proof,
+	Release
 } from '../../core/execution-runtimes/scripted-deploy/contracts';
-import { assertResult } from '../../core/execution-runtimes/scripted-deploy/parity';
-import {
-	verifyApproval,
-	verifySignoff
-} from '../../core/execution-runtimes/scripted-deploy/proofs';
-import {
-	buildRelease,
-	verifyArtifact
-} from '../../core/execution-runtimes/scripted-deploy/releaseFiles';
+import { buildRelease } from '../../core/execution-runtimes/scripted-deploy/releaseFiles';
 import { DeployRunRepository } from '../../repositories/execution-runtimes/DeployRunRepository';
 import {
 	manifestDigest,
@@ -24,16 +14,12 @@ import {
 	type DeployRegistry
 } from '../../validators/execution-runtimes/DeployManifestValidator';
 
-import {
-	DeployPlanning,
-	verifyCurrentDeployPlan,
-	type DeployRequest
-} from './scripted-deploy/DeployPlanning';
-
+import { DeployPlanning, type DeployRequest } from './scripted-deploy/DeployPlanning';
 import { DeployRecovery } from './scripted-deploy/DeployRecovery';
-import type { ApprovalReceipt } from '../../core/execution-runtimes/scripted-deploy/approvalInbox.types';
-import { requestDeployApproval } from './scripted-deploy/requestDeployApproval';
+import { publishRunProgress } from './scripted-deploy/requestDeployApproval';
 import { DeployVerification } from './scripted-deploy/DeployVerification';
+import { publishSignoff, recordDeploySignoff } from './scripted-deploy/recordDeploySignoff';
+import { runDeployPlan } from './scripted-deploy/runDeployPlan';
 
 export class ScriptedDeployService {
 	readonly store: DeployRunRepository;
@@ -49,7 +35,9 @@ export class ScriptedDeployService {
 	) {
 		this.store = new DeployRunRepository(registry.state);
 		this.broker = new DeployBroker(registry, config);
-		this.verification = new DeployVerification(config, this.store, this.broker);
+		this.verification = new DeployVerification(config, this.store, this.broker, (record) =>
+			publishRunProgress(this.registry, record)
+		);
 		this.recovery = new DeployRecovery(this.store, this.broker, this.verification);
 		this.planning = new DeployPlanning({ config, project, registry }, this.store, this.broker);
 	}
@@ -62,96 +50,51 @@ export class ScriptedDeployService {
 		});
 	}
 
-	async deploy(input: DeployRequest): Promise<Journal> {
-		const { plan, parity, predecessor } = await this.planning.plan(input);
-		if (parity.blocked)
-			throw new ExpectedCliError(
-				'Deployment parity has unexpected differences. Run with --plan to view them.'
-			);
-		if (!plan.release && !plan.restore)
-			throw new ExpectedCliError('Deployment requires a prepared release.');
-		const artifact = await verifyPreparedArtifact(this.store, plan, this.config.image);
-		const record: Journal = { plan, phase: 'pending' };
+	async deploy(input: DeployRequest, controlled = false): Promise<Journal> {
+		if (
+			!controlled &&
+			input.environment === 'staging' &&
+			this.registry.approvalInbox?.credentials[`${this.project}:staging`]
+		)
+			throw new ExpectedCliError('This staging target requires --wait-for-go.');
+		return runDeployPlan(
+			{
+				registry: this.registry,
+				config: this.config,
+				store: this.store,
+				broker: this.broker,
+				planning: this.planning,
+				verification: this.verification
+			},
+			input,
+			controlled
+		);
+	}
+
+	async resume(id: string): Promise<Journal> {
 		try {
-			if (this.registry.approvalInbox && plan.environment !== 'staging') this.store.save(record);
-			const decision = await requestDeployApproval(
-				{
-					plan,
-					chain: predecessor,
-					differences: parity.differences.length
-				},
-				this.registry,
-				this.config
-			);
-			this.store.lock(plan.project, plan.environment, plan.id);
-			return await this.apply(record, artifact, input, decision);
-		} catch (error) {
-			const reason = error instanceof Error ? error.message : 'Operation failed.';
-			throw new ExpectedCliError(`Deployment run ${plan.id} stopped. ${reason}`);
+			return await this.recovery.resume(id);
 		} finally {
-			if (
-				record.phase !== 'applying' &&
-				this.store.active(plan.project, plan.environment) === plan.id
-			)
-				this.store.unlock(record);
+			const record = this.store.get(id);
+			await Promise.all([
+				publishRunProgress(this.registry, record),
+				publishSignoff(this.registry, record)
+			]);
 		}
 	}
 
-	async signoff(id: string, proof: Proof): Promise<Journal> {
-		const record = this.store.get(id);
-		if (record.plan.project !== this.project)
-			throw new ExpectedCliError('Run belongs to another project.');
-		if (record.signoff) throw new ExpectedCliError('A sign-off is already recorded for this run.');
-		verifySignoff(record, proof, this.registry);
-		await this.broker.note(
-			record.plan.item,
-			'Deploy sign-off ' + proof.payload.reference + ' for run ' + id
-		);
-		const signed = { ...record, signoff: proof };
-		this.store.save(signed);
-		return signed;
-	}
-
-	private async apply(
-		record: Journal,
-		artifact: string | null,
-		input: DeployRequest,
-		decision?: ApprovalReceipt
-	): Promise<Journal> {
-		const { plan } = record;
-		this.store.save(record);
-		const approval = await this.broker.authorize(plan, decision);
-		verifyApproval(plan, approval, this.registry, decision);
-		await verifyCurrentDeployPlan(this.planning, this.config, plan, input);
-		await this.broker.note(
-			plan.item,
-			`Deploy approval ${approval.payload.reference} for ${plan.action} run ${plan.id}, target ${plan.target}, plan ${hash(plan)}`
-		);
-		if (artifact) await verifyPreparedArtifact(this.store, plan, this.config.image);
-		verifyApproval(plan, approval, this.registry, decision);
-		record.approval = approval;
-		record.phase = 'applying';
-		this.store.save(record);
-		const result = await this.broker.apply(plan, approval, artifact);
-		assertResult(plan, result.observed);
-		record.result = result;
-		record.phase = 'deployed';
-		this.store.save(record);
-		return await this.verification.verify(record);
-	}
-}
-
-async function verifyPreparedArtifact(
-	store: DeployRunRepository,
-	plan: Plan,
-	image: string
-): Promise<string | null> {
-	const value = plan.release;
-	if (!value) return null;
-	if (value.project !== plan.project || value.manifest !== plan.manifest || value.image !== image) {
-		throw new ExpectedCliError(
-			'Prepared artifact belongs to another project, manifest, or toolchain.'
+	signoff(id: string, proof: Proof, controlled = false): Promise<Journal> {
+		return recordDeploySignoff(
+			{
+				registry: this.registry,
+				store: this.store,
+				broker: this.broker,
+				project: this.project,
+				config: this.config
+			},
+			id,
+			proof,
+			controlled
 		);
 	}
-	return verifyArtifact(store, value);
 }

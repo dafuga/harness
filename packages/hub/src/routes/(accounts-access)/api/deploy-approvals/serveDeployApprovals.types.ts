@@ -13,5 +13,6 @@ export type DeployApprovalDependencies = {
 export type DeployApprovalContext = {
 	owner: string;
 	now: number;
+	db: D1Database;
 	repository: DeployApprovalRepository;
 };

@@ -15,7 +15,8 @@ const migrations = [
 	'0001-auth-ephemeral-state.sql',
 	'0006-account-devices.sql',
 	'0007-browser-session-devices.sql',
-	'0008-deploy-approvals.sql'
+	'0008-deploy-approvals.sql',
+	'0009-deploy-run-controls.sql'
 ];
 
 export async function deployApprovalFixture() {
@@ -76,8 +77,10 @@ async function approvalRequests(db: D1Database, close: () => Promise<void>) {
 	});
 	const sessions = new RequestSessionService({ sessions: repository, origin: ORIGIN });
 	const key = randomBytes(32).toString('base64url');
+	const stageKey = randomBytes(32).toString('base64url');
 	let runnerGrants = JSON.stringify({
-		'fixture:preprod': createHash('sha256').update(key).digest('hex')
+		'fixture:preprod': grantHash(key),
+		'fixture:staging': grantHash(stageKey)
 	});
 	const { owner, browser, native } = await fixtureIdentity(repository);
 	const serve = (request: Request) =>
@@ -92,6 +95,7 @@ async function approvalRequests(db: D1Database, close: () => Promise<void>) {
 		url,
 		now,
 		key,
+		stageKey,
 		serve,
 		close,
 		advance: (ms: number) => {
@@ -111,8 +115,13 @@ async function approvalRequests(db: D1Database, close: () => Promise<void>) {
 			request.headers.set('cookie', SESSION_COOKIE + '=' + browser.credential);
 			return serve(request);
 		},
-		runner: (input: unknown) => serve(approvalRequest(url, 'DeployRunner ' + key, input))
+		runner: (input: unknown, grant = key) =>
+			serve(approvalRequest(url, 'DeployRunner ' + grant, input))
 	};
+}
+
+function grantHash(grant: string) {
+	return createHash('sha256').update(grant).digest('hex');
 }
 
 async function fixtureIdentity(repository: SessionRepository) {

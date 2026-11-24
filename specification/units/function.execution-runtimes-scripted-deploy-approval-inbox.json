@@ -4,8 +4,8 @@
 	"uid": "u_qb5hhfkfec",
 	"kind": "function",
 	"title": "approvalInbox",
-	"responsibility": "Owns the approvalInbox shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Defines the shared native deployment decision, Go, runner admission and provider progress schemas.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -20,53 +20,77 @@
 			"approvalCard",
 			"approvalReceipt",
 			"approvalDecision",
+			"goReceipt",
+			"deployProgress",
 			"approvalCards",
 			"runnerInput",
 			"ApprovalCard",
 			"ApprovalCards",
 			"ApprovalDecision",
-			"ApprovalReceipt"
+			"ApprovalReceipt",
+			"GoReceipt",
+			"DeployProgress",
+			"RunnerInput"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "deployApprovalPath",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Fixed Hub path used by the native account and trusted runner."
 			},
 			{
 				"name": "approvalWindowMs",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Maximum lifetime in milliseconds for one registered approval or Go request."
 			},
 			{
 				"name": "approvalClockSkewMs",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Clock skew allowance in milliseconds between runner and Hub."
 			},
 			{
 				"name": "approvalScope",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Exact registered project and deployment environment."
 			},
 			{
 				"name": "approvalCard",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Bounded metadata for an exact immutable plan, preview, rollback or signed review."
 			},
 			{
 				"name": "approvalReceipt",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "One native allow or deny receipt bound to an actor and plan digest."
 			},
 			{
 				"name": "approvalDecision",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Native intent to allow, deny, or record Go for the specified attempt and plan."
+			},
+			{
+				"name": "goReceipt",
+				"type": "unknown",
+				"description": "Confirmed Go timestamp bound to the requested attempt and plan."
+			},
+			{
+				"name": "deployProgress",
+				"type": "unknown",
+				"description": "Filtered provider operation, route verification, cleanup or sign-off progress."
 			},
 			{
 				"name": "approvalCards",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Native card list with decision, Go and safe runner progress when available."
 			},
 			{
 				"name": "runnerInput",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Scoped commands for card registration, approval collection, execution admission and reporting."
 			}
 		],
 		"errors": [],
