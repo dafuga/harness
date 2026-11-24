@@ -69,6 +69,7 @@ async function proveRecovery(root: string) {
 				return database.prepare('SELECT state FROM runs WHERE id = 1').get();
 			})
 			.toMatchObject({ state: 'running' });
+		expect((await managedTrackerItemRequest(runtime, id, 'start')).ok).toBe(true);
 		runtime.store.appendLocal({
 			itemId: id,
 			fields: { schedule_off: true, model: 'gpt-6.2-sol:low' }
