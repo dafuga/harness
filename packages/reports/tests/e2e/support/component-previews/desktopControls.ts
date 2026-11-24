@@ -7,6 +7,10 @@ import { routeIds } from './routeUnits';
 import { live } from './activity';
 import { ids } from './explorerData';
 export const desktopControls: Record<string, DesktopCase> = {
+	'desktop.component.accounts-access-vault-setup': () => {
+		Object.assign(window, { vaultSetup: { status: async () => 'absent', run: async () => null } });
+		return {};
+	},
 	'desktop.component.agent-controls': () => ({
 		providers: providers.map((provider) => ({
 			...provider,

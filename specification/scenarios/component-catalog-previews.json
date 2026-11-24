@@ -4,6 +4,7 @@
 	"title": "Individual components with representative inputs",
 	"kind": "ui",
 	"units": [
+		"desktop.component.accounts-access-vault-setup",
 		"desktop.component.agent-controls",
 		"desktop.component.agent-effort-picker",
 		"desktop.component.agent-model-picker",
@@ -368,6 +369,12 @@
 	],
 	"builds": ["shell-fixture"],
 	"states": [
+		{
+			"id": "desktop-component-accounts-access-vault-setup",
+			"title": "Credential Vault setup",
+			"coverage": "required",
+			"units": ["desktop.component.accounts-access-vault-setup"]
+		},
 		{
 			"id": "desktop-component-agent-controls",
 			"title": "Agent controls",
@@ -8501,6 +8508,7 @@
 			"id": "screens",
 			"kind": "screenshot",
 			"states": [
+				"desktop-component-accounts-access-vault-setup",
 				"desktop-component-agent-controls",
 				"desktop-component-agent-controls-compact",
 				"desktop-component-agent-controls-empty",
