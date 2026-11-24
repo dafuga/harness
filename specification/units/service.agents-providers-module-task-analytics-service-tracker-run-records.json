@@ -4,12 +4,12 @@
 	"uid": "u_yqgzxyqdn5",
 	"kind": "service",
 	"title": "trackerRunRecords",
-	"responsibility": "Project completed Tracker attempts into the shared run record with original cost provenance.",
+	"responsibility": "Project completed Tracker attempts into shared run records with recorded or estimated cost provenance.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/services/agents-providers/module-task-analytics-service/trackerRunRecords.ts"],
-		"symbols": ["trackerRunRecords"]
+		"symbols": ["trackerRunRecords", "trackerRunCost"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -18,12 +18,26 @@
 				"name": "trackerRunRecords.rows",
 				"type": "readonly TrackerRunRow[]",
 				"required": true
+			},
+			{
+				"name": "trackerRunCost.row",
+				"type": "TrackerRunRow",
+				"required": true
+			},
+			{
+				"name": "trackerRunCost.usage",
+				"type": "TaskUsage",
+				"required": false
 			}
 		],
 		"outputs": [
 			{
 				"name": "trackerRunRecords",
 				"type": "RunRecord[]"
+			},
+			{
+				"name": "trackerRunCost",
+				"type": "TaskApiCost"
 			}
 		],
 		"errors": [],
@@ -46,6 +60,29 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerRunCost",
+				"inputs": [
+					{
+						"name": "trackerRunCost.row",
+						"type": "TrackerRunRow",
+						"required": true
+					},
+					{
+						"name": "trackerRunCost.usage",
+						"type": "TaskUsage",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRunCost",
+						"type": "TaskApiCost"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
@@ -58,6 +95,11 @@
 		},
 		{
 			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-analytics-service-model-run-pricing",
 			"via": "import",
 			"origin": "derived"
 		},

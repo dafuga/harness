@@ -3,13 +3,12 @@ import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { TrackerFixtureReceipts } from './trackerNodeProcess.types';
 import { once } from 'node:events';
 import { expect } from 'vitest';
-import { TrackerSyncAuthService } from '../../src/services/networking-security/TrackerSyncAuthService';
 import {
 	fixtureTrackerJson,
 	loopback,
 	startTrackerFixture,
-	trackerFixtureKey,
-	trackerProcess
+	trackerProcess,
+	verifyTrackerWire
 } from './trackerNodeProcess';
 import type { TrackerNodeFixture } from './trackerNodeProcess.types';
 import { verifyCosDryRun } from './verifyCosDryRun';
@@ -74,16 +73,23 @@ async function qualifyItemCommands(spoke: TrackerNodeFixture, id: string) {
 		id,
 		notes_log: [{ text: 'Retain this note' }]
 	});
-	const launch = ['launch', short, '--model', 'sol:high'];
+	const launch = ['launch', short, '--project', 'Tracker', '--model', 'Fable:high'];
 	const launched = await fixtureTrackerJson(spoke, launch);
 	expect(launched).toMatchObject({
 		id,
 		auto: expect.stringMatching(/^synthetic-spoke@/),
 		launch_source: 'manual',
 		launch_target: 'synthetic-spoke',
-		model: 'sol:high'
+		project: 'Tracker',
+		model: 'Fable:high'
 	});
 	expect(await fixtureTrackerJson(spoke, launch)).toEqual(launched);
+	expect(await fixtureTrackerJson(spoke, ['pick', short])).toMatchObject({
+		rung: 'fable',
+		model: 'claude-fable-5-2',
+		effort: 'high',
+		pinned: true
+	});
 	expect((await trackerProcess(spoke, ['launch', short, '--model', 'sol:low']).exited).code).toBe(
 		1
 	);
@@ -96,27 +102,6 @@ async function qualifyItemCommands(spoke: TrackerNodeFixture, id: string) {
 		id,
 		schedule_off: false
 	});
-}
-
-async function verifyTrackerWire(port: number, id: string) {
-	const pathAndQuery = '/sync/pull?since=0&wait=0';
-	const url = loopback(port) + pathAndQuery;
-	expect((await fetch(url)).status).toBe(401);
-	const authorization = new TrackerSyncAuthService(trackerFixtureKey).authorizationHeader({
-		method: 'GET',
-		pathAndQuery
-	});
-	const response = await fetch(url, {
-		headers: { authorization, 'x-tracker-node': 'synthetic-observer' }
-	});
-	expect(response.status).toBe(200);
-	expect(await response.json()).toMatchObject({
-		hub: 'synthetic-hub',
-		ops: expect.arrayContaining([
-			expect.objectContaining({ item_id: id, actor: 'synthetic-attestation' })
-		])
-	});
-	expect((await fetch(loopback(port) + '/items', { method: 'POST', body: '{}' })).status).toBe(404);
 }
 
 async function verifyTrackerNotificationFlow(

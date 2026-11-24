@@ -42,8 +42,8 @@ export function trackerNodeRuntime(
 			: {}),
 		...(config.role === 'spoke' && { links: spokeLinks(config, secret) }),
 		...(config.role === 'hub' && notification?.webhook && { recurring: {} }),
-		validateModel(model, project) {
-			parseTrackerModelSpec(String(model), ladder, project ? String(project) : null);
+		validateModel(model) {
+			parseTrackerModelSpec(String(model), ladder);
 		},
 		planLaunch: (fields, current) => planNativeLaunch(fields, current, config.node)
 	};

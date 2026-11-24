@@ -1,8 +1,9 @@
+import { trackerManagedToken } from '../../src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedLaunchReceipt';
 import type { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import type { DatabaseSync } from 'node:sqlite';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, unlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { expect } from 'vitest';
+import { expect, vi } from 'vitest';
 
 export const fixtureDockerImage = 'sha256:' + 'a'.repeat(64);
 
@@ -62,12 +63,30 @@ process.exit(1);
 `;
 
 const providerProgram = `
-const { appendFileSync, existsSync, readFileSync } = require('node:fs');
+const { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } = require('node:fs');
 const { basename, join } = require('node:path');
 const argv = process.argv.slice(2);
 if (basename(process.argv[1]) === 'claude') {
 	if (!existsSync(join(process.env.HOME, '.claude-session-fixture'))) process.exit(41);
 	if (process.env.USER !== require('node:os').userInfo().username) process.exit(42);
+}
+if (basename(process.argv[1]) === 'codex') {
+	const timestamp = new Date().toISOString();
+	const dir = join(process.env.HOME, '..', 'tracker-test-codex-transcripts',
+		timestamp.slice(0, 10).replaceAll('-', '/'));
+	mkdirSync(dir, { recursive: true, mode: 0o700 });
+	const cwd = process.cwd();
+	const usage = { input_tokens: 120, cached_input_tokens: 25, output_tokens: 10 };
+	const competing = existsSync(join(process.env.HOME, '..', 'competing-codex-transcript'));
+	const session = (id) => ({ type: 'session_meta', payload: { id, cwd, timestamp, base_instructions: 'x'.repeat(30 * 1024) } });
+	const counters = { type: 'event_msg', payload: { type: 'token_count', info: { total_token_usage: usage } } };
+	for (const suffix of competing ? ['1', '2'] : ['1']) {
+		const id = '9c0f0000-0000-4000-8000-00000000000' + suffix;
+		writeFileSync(join(dir, 'rollout-' + timestamp + '-' + id + '.jsonl'), [
+			session(id), { type: 'event_msg', payload: { type: 'user_message', message: 'synthetic transcript text' } },
+			counters
+		].map(JSON.stringify).join('\\n') + '\\n', { mode: 0o600, flag: 'wx' });
+	}
 }
 const briefPath = argv.includes('--brief') ? argv[argv.indexOf('--brief') + 1] : argv.at(-1)?.match(/^Read your brief at (.+) and do that work/)[1];
 appendFileSync(join(process.env.HOME, 'invoked.ndjson'), JSON.stringify({
@@ -127,4 +146,73 @@ export async function startLinkedItem(runtime: TrackerNativeRuntimeService) {
 		body: JSON.stringify({ session_run: '8' })
 	});
 	expect((await runtime.items.handle(request)).ok).toBe(true);
+}
+
+export function managedTrackerItemRequest(
+	runtime: TrackerNativeRuntimeService,
+	itemId: string,
+	action: string
+) {
+	return runtime.items.handle(
+		new Request(`http://tracker-fixture.invalid/items/${itemId}/${action}`, {
+			method: 'POST',
+			body: '{}'
+		})
+	);
+}
+
+export async function verifyCancelledClaim(
+	runtime: TrackerNativeRuntimeService,
+	database: DatabaseSync,
+	attempts: string,
+	itemId: string
+) {
+	const signal = new AbortController().signal;
+	const tick = () => runtime.scheduler!.tick(signal);
+	expect((await managedTrackerItemRequest(runtime, itemId, 'done')).ok).toBe(true);
+	await tick();
+	for (const action of ['reopen', 'unlaunch', 'launch'])
+		expect((await managedTrackerItemRequest(runtime, itemId, action)).ok).toBe(true);
+	const token = database.prepare('SELECT auto FROM items WHERE id = ?').get(itemId)!.auto;
+	const directory = join(
+		attempts,
+		trackerManagedToken(runtime.store.node, JSON.stringify([itemId, token, 1]))
+	);
+	mkdirSync(directory, { mode: 0o700 });
+	await tick();
+	const runs = () =>
+		database
+			.prepare('SELECT id,state,outcome,started_at FROM runs WHERE id >= 4 ORDER BY id')
+			.all();
+	const held = [{ id: 4, state: 'queued', outcome: null, started_at: null }];
+	expect(runs()).toEqual(held);
+	expect((await managedTrackerItemRequest(runtime, itemId, 'unlaunch')).ok).toBe(true);
+	expect((await managedTrackerItemRequest(runtime, itemId, 'launch')).ok).toBe(true);
+	await tick();
+	expect(runs()).toEqual(held);
+	const clock = vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 6 * 60_000);
+	const probe = join(attempts, '..', 'tmux-presence');
+	try {
+		for (const reply of ['tmux inventory permission denied', 'HARNESS_TRACKER_ATTEMPT=live']) {
+			writeFileSync(probe, reply);
+			await tick();
+			expect(runs()).toEqual(held);
+		}
+		unlinkSync(probe);
+		const marker = join(directory, 'started.tmp');
+		writeFileSync(marker, 'synthetic partial startup marker', { mode: 0o600 });
+		await tick();
+		expect(runs()).toEqual(held);
+		unlinkSync(marker);
+		await tick();
+		expect(runs()).toEqual([
+			{ id: 4, state: 'finished', outcome: 'abandoned', started_at: null },
+			{ id: 5, state: 'running', outcome: null, started_at: expect.any(Number) }
+		]);
+		expect((await managedTrackerItemRequest(runtime, itemId, 'done')).ok).toBe(true);
+		await tick();
+		expect(runs()).toHaveLength(2);
+	} finally {
+		clock.mockRestore();
+	}
 }

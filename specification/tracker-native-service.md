@@ -85,8 +85,13 @@ operator verifies the stopped database and chooses a rollback.
   `launch`, `status`, `digest`, and `sync`, plus the item and inspection
   commands listed in `tracker help`. Item commands accept unique ID
   prefixes and JSON output. Duplicate exit codes 4 and 5 are retained.
-  `runs`, `models report`, and `pick` read the same native journal and keep
-  the established human-readable and JSON formats.
+  `runs`, `models report`, and `pick` read the same native journal and support
+  human-readable and JSON output. Use `tracker launch ITEM --model fable:high`
+  to explicitly pin Fable for any project. Automatic selection excludes Fable.
+  `models report` shows API-equivalent cost estimates with run coverage and
+  ranges when retained Codex usage spans unknown context tiers. Managed native
+  Codex receipts persist token counters when one rollout matches the attempt’s
+  owned worktree. Older or ambiguous attempts may have no usage.
   `show` includes retained run history and the local schedule preview.
   `ignore` and `unignore` use journal transitions and retain the actor, notes,
   and prior status. Automatic expiry for `ignore --until` is still pending.

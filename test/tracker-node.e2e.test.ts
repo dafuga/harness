@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { once } from 'node:events';
 import { connect, createServer } from 'node:net';
 import { expect, test } from 'vitest';
+import { measureWorkload } from './support/measureWorkload';
 import { notificationSink, proveForegroundSync } from './support/trackerNodeAssertions';
 import {
 	fixtureConfig,
@@ -45,7 +46,11 @@ test('foreground hub and spoke converge over signed loopback and route compatibi
 			}
 		});
 		try {
-			await proveForegroundSync(hub, spoke, hubSync, sink);
+			await measureWorkload(
+				'service.projects-sessions-tracker-node',
+				'signed-spoke-model-pin',
+				() => proveForegroundSync(hub, spoke, hubSync, sink)
+			);
 		} finally {
 			await sink.close();
 		}

@@ -1,3 +1,4 @@
+import { TrackerSyncAuthService } from '../../src/services/networking-security/TrackerSyncAuthService';
 import { spawn } from 'node:child_process';
 import { once } from 'node:events';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -5,6 +6,7 @@ import { createServer } from 'node:net';
 import { join, resolve } from 'node:path';
 import { createInterface } from 'node:readline';
 import { DatabaseSync } from 'node:sqlite';
+import { expect } from 'vitest';
 import type { TrackerNodeConfig } from '../../src/services/projects-sessions/tracker-node-service/trackerNodeConfig.types';
 import type { TrackerFixtureResult, TrackerNodeFixture } from './trackerNodeProcess.types';
 
@@ -167,4 +169,25 @@ export async function fixtureTrackerJson(fixture: TrackerNodeFixture, args: stri
 
 export function loopback(port: number) {
 	return `http://127.0.0.1:${port}`;
+}
+
+export async function verifyTrackerWire(port: number, id: string) {
+	const pathAndQuery = '/sync/pull?since=0&wait=0';
+	const url = loopback(port) + pathAndQuery;
+	expect((await fetch(url)).status).toBe(401);
+	const authorization = new TrackerSyncAuthService(trackerFixtureKey).authorizationHeader({
+		method: 'GET',
+		pathAndQuery
+	});
+	const response = await fetch(url, {
+		headers: { authorization, 'x-tracker-node': 'synthetic-observer' }
+	});
+	expect(response.status).toBe(200);
+	expect(await response.json()).toMatchObject({
+		hub: 'synthetic-hub',
+		ops: expect.arrayContaining([
+			expect.objectContaining({ item_id: id, actor: 'synthetic-attestation' })
+		])
+	});
+	expect((await fetch(loopback(port) + '/items', { method: 'POST', body: '{}' })).status).toBe(404);
 }
