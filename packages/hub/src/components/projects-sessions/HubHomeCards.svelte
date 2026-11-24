@@ -169,7 +169,7 @@
 					: view.needsMac
 						? 'Quota readings appear when your Mac shares them.'
 						: 'Provider quota is unknown.',
-				'Connect a subscription',
+				view.needsMac ? undefined : 'Connect a subscription',
 				() => open('quota')
 			)}
 		{/if}

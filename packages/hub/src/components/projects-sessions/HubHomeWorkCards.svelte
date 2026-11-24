@@ -37,13 +37,17 @@
 	total={view.plans?.length}
 	summary={view.plans === null
 		? 'Loading plans…'
-		: !view.plans.length
-			? 'No plans yet'
-			: `${view.plans.filter((plan) => plan.state !== 'done').length} open · ${view.plans.filter((plan) => plan.state === 'done').length} done`}
+		: view.needsMac
+			? 'No plan data'
+			: !view.plans.length
+				? 'No plans yet'
+				: `${view.plans.filter((plan) => plan.state !== 'done').length} open · ${view.plans.filter((plan) => plan.state === 'done').length} done`}
 	open={() => open('plans')}
 >
 	{#if view.plans === null}
 		<HubHomeSkeleton />
+	{:else if view.needsMac}
+		{@render empty('Plans appear when your Mac shares them.')}
 	{:else if view.plans.length}
 		<hx-ul class="po-items">
 			{#each view.plans.slice(0, 4) as plan, index (plan.id)}
@@ -84,13 +88,17 @@
 	total={view.schedule?.length}
 	summary={view.schedule === null
 		? 'Loading schedule…'
-		: view.schedule[0]
-			? `Next: ${runDay(view.schedule[0].at, view.now).toLowerCase()} ${runTime(view.schedule[0].at)}`
-			: 'Nothing scheduled'}
+		: view.needsMac
+			? 'No schedule data'
+			: view.schedule[0]
+				? `Next: ${runDay(view.schedule[0].at, view.now).toLowerCase()} ${runTime(view.schedule[0].at)}`
+				: 'Nothing scheduled'}
 	open={() => open('scheduled')}
 >
 	{#if view.schedule === null}
 		<HubHomeSkeleton />
+	{:else if view.needsMac}
+		{@render empty('Scheduled runs appear when your Mac shares them.')}
 	{:else if view.schedule.length}
 		<hx-ul class="po-items hh-runs">
 			{#each view.schedule.slice(0, 4) as run, index (`${run.source}:${run.id}`)}
@@ -116,7 +124,7 @@
 			'Schedule a task'
 		)}
 	{/if}
-	{#if view.schedule !== null && !view.routinesConnected}
+	{#if view.schedule !== null && !view.routinesConnected && !view.needsMac}
 		<hx-p class="po-sessions">Claude routine dates are unknown.</hx-p>
 	{/if}
 </HubHomeCard>
