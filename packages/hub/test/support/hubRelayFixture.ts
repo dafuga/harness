@@ -1,7 +1,26 @@
 import type { Call } from './hubRelayFixture.types';
 import { build } from 'esbuild';
+import { expect } from 'vitest';
+import { command, type TestHost } from '../../../relay/test/support/relayActors';
+import type { RelaySocket } from '../../../relay/test/support/relaySocket';
+import { relayFrame } from '../../../desktop/src/services/relay-link-service/relayFrame';
 import { fileURLToPath } from 'node:url';
 import { relayBinding, startRelay } from '../../../relay/test/support/relayFixture';
+
+import {
+	HostPairingService,
+	pairingEnvelope,
+	pkceChallenge,
+	randomCredential,
+	randomId,
+	remoteIdentity,
+	remoteKeys,
+	sealPairing,
+	sharedSecret,
+	toBase64Url,
+	type RemoteGrant,
+	type RemoteKeyPair
+} from '../../../remote/src/index';
 
 const entry = fileURLToPath(new URL('./hubRemoteWorker.ts', import.meta.url));
 /** What the hub under test is configured to tell a registering host. */
@@ -71,6 +90,67 @@ export async function startHubRelay() {
 		broken: caller(await relay.worker('hub-broken')),
 		stop: () => relay.stop()
 	};
+}
+
+export async function accountPairing(hostId: string, keys: RemoteKeyPair) {
+	const pairingId = randomId(),
+		verifier = randomCredential();
+	const phone = await remoteKeys(),
+		ephemeral = await remoteKeys();
+	const hostKey = keys.publicKey,
+		ephemeralKey = ephemeral.publicKey;
+	const secret = await sharedSecret(ephemeral.privateKey, hostKey);
+	const envelope = await pairingEnvelope({ hostId, pairingId, ephemeralKey, hostKey, secret });
+	const challenge = await pkceChallenge(verifier);
+	const deviceKey = toBase64Url(phone.publicKey);
+	const sealed = await sealPairing(envelope.request, 'request', {
+		code: '',
+		deviceKey,
+		deviceName: 'Fixture iPhone',
+		platform: 'test',
+		challenge
+	});
+	const body = { ephemeralKey: toBase64Url(ephemeralKey), sealed, challenge };
+	return {
+		pairingId,
+		verifier,
+		approvalKey: envelope.approval,
+		body,
+		deviceId: await remoteIdentity(deviceKey)
+	};
+}
+
+export async function approveAccountPairing(
+	socket: RelaySocket,
+	{ host, keys }: { host: TestHost; keys: RemoteKeyPair },
+	{ pairingId, deviceId, grant }: { pairingId: string; deviceId: string; grant: RemoteGrant }
+) {
+	const frame = relayFrame(JSON.stringify(await socket.until('pairing-request')));
+	if (frame?.type !== 'pairing-request')
+		throw new Error('The Mac did not receive a pairing request.');
+	expect(frame).toMatchObject({ pairingId, account: true });
+	const mac = new HostPairingService({ keys, hostId: host.hostId });
+	expect(await mac.receive(frame)).toMatchObject({
+		pairingId,
+		deviceId,
+		deviceName: 'Fixture iPhone'
+	});
+	const approval = await mac.approve(pairingId, {
+		deviceId,
+		hostName: host.name,
+		generation: 1,
+		grant
+	});
+	expect(
+		await command(socket, {
+			type: 'pairing-approve',
+			pairingId,
+			deviceId,
+			sealed: approval.sealed,
+			challenge: approval.challenge
+		})
+	).toMatchObject({ ok: true });
+	return approval;
 }
 
 export type { HubRelayFixture } from './hubRelayFixture.types';

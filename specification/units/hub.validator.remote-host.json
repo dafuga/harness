@@ -15,6 +15,7 @@
 		"symbols": [
 			"RemoteHostValidator",
 			"RemoteHostValidator.registration",
+			"RemoteHostValidator.pairing",
 			"RemoteHostValidator.hostId",
 			"RemoteHostValidator.deviceId",
 			"Body"
@@ -42,6 +43,11 @@
 						"name": "Office Mac Studio"
 					}
 				]
+			},
+			{
+				"name": "RemoteHostValidator.pairing.body",
+				"type": "Body",
+				"required": true
 			},
 			{
 				"name": "RemoteHostValidator.hostId.value",
@@ -167,6 +173,24 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "RemoteHostValidator.pairing",
+				"inputs": [
+					{
+						"name": "RemoteHostValidator.pairing.body",
+						"type": "Body",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostValidator.pairing",
+						"type": "RelayManagePairingRequest"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "RemoteHostValidator.hostId",

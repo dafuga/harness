@@ -4,11 +4,25 @@ import {
 	connectDevice,
 	connectHost,
 	newHost,
+	pairingPath,
 	pairDevice,
 	type TestHost
 } from '../../../relay/test/support/relayActors';
-import { credentialHash } from '../../../remote/src/utils/remoteIdentity';
-import { RELAY_ORIGIN, startHubRelay, type HubRelayFixture } from '../support/hubRelayFixture';
+import {
+	credentialHash,
+	openPairing,
+	remoteIdentity,
+	remoteKeys,
+	toBase64Url
+} from '../../../remote/src/index';
+import type { RemoteKeyPair } from '../../../remote/src/index';
+import {
+	accountPairing,
+	approveAccountPairing,
+	RELAY_ORIGIN,
+	startHubRelay,
+	type HubRelayFixture
+} from '../support/hubRelayFixture';
 
 /** The hub's controller and the relay's host objects in workerd, joined by a namespace binding. */
 let f: HubRelayFixture;
@@ -33,10 +47,52 @@ const outcome = async (response: Response) => {
 const summaryOf = async (session: string, hostId: string) =>
 	(await (await f.hub(session, 'GET', `/hosts/${hostId}`)).json()) as Summary;
 
+async function accountRequest(
+	host: TestHost,
+	socket: Awaited<ReturnType<typeof connectHost>>,
+	keys: RemoteKeyPair
+) {
+	const path = `/hosts/${host.hostId}/pairing`;
+	const registration = await f.hub(owner, 'GET', path);
+	expect([registration.status, await registration.json()]).toEqual([
+		200,
+		{ hostId: host.hostId, hostKey: host.hostKey, origin: RELAY_ORIGIN }
+	]);
+	const { pairingId, body, verifier, deviceId, approvalKey } = await accountPairing(
+		host.hostId,
+		keys
+	);
+	const request = { pairingId, ...body };
+	expect(await outcome(await f.hub(null, 'POST', path, request))).toBe('401 session-required');
+	expect(await outcome(await f.hub(other, 'GET', path))).toBe('403 forbidden');
+	expect(await outcome(await f.hub(other, 'POST', path, request))).toBe('403 forbidden');
+	expect(await outcome(await f.hub(owner, 'POST', path, request))).toBe('202 ok');
+	const publicRequest = pairingPath(host, pairingId, 'request');
+	expect(await outcome(await f.relay.post(publicRequest, body))).toBe('409 pairing-unavailable');
+	expect((await summaryOf(owner, host.hostId)).devices).toEqual([]);
+	const grant = { projects: [], agents: false };
+	const approval = await approveAccountPairing(
+		socket,
+		{ host, keys },
+		{ pairingId, deviceId, grant }
+	);
+	const exchange = pairingPath(host, pairingId, 'exchange');
+	const answer = await f.relay.post(exchange, { verifier });
+	expect(answer.status).toBe(200);
+	expect(await answer.json()).toMatchObject({ deviceId, sealed: approval.sealed });
+	expect(await openPairing(approvalKey, 'approval', approval.sealed)).toMatchObject({
+		deviceId,
+		grant
+	});
+	expect(await outcome(await f.relay.post(exchange, { verifier }))).toBe('400 pairing-invalid');
+}
+
 test(
 	'a host is registered under the owner of the session, whatever the body claims',
 	async () => {
-		const host = await newHost(),
+		const keys = await remoteKeys(),
+			hostKey = toBase64Url(keys.publicKey);
+		const host = { ...(await newHost()), hostKey, hostId: await remoteIdentity(hostKey) },
 			path = `/hosts/${host.hostId}`,
 			forged = { id: 'google:fixture-other' },
 			claims = { owner: forged, ownerId: forged.id, actor: forged };
@@ -65,8 +121,25 @@ test(
 			registeredAt: answer.registeredAt,
 			devices: []
 		});
+		expect(await outcome(await f.hub(null, 'GET', '/hosts'))).toBe('401 session-required');
+		const hidden = await f.hub(other, 'GET', '/hosts');
+		expect([hidden.status, await hidden.json()]).toEqual([200, { computers: [] }]);
+		const listed = await f.hub(owner, 'GET', '/hosts');
+		expect(listed.headers.get('Cache-Control')).toBe('no-store');
+		expect([listed.status, await listed.json()]).toEqual([
+			200,
+			{ computers: [{ hostId: host.hostId, name: host.name, online: false }] }
+		]);
+		// A host registered before discovery has no directory entry until it reconnects.
+		await f.relay.removeDirectoryHost('google:fixture-owner', host.hostId);
+		expect(await (await f.hub(owner, 'GET', '/hosts')).json()).toEqual({ computers: [] });
 		const socket = await connectHost(f.relay, host);
+		const online = await f.hub(owner, 'GET', '/hosts');
+		expect(await online.json()).toEqual({
+			computers: [{ hostId: host.hostId, name: host.name, online: true }]
+		});
 		expect((await summaryOf(owner, host.hostId)) as unknown).toMatchObject({ online: true });
+		await accountRequest(host, socket, keys);
 		socket.close();
 	},
 	limit
@@ -100,6 +173,10 @@ test(
 		expect(await outcome(await f.hub(owner, 'GET', path))).toBe('404 not-found');
 		const direct = { owner: { id: 'google:fixture-owner' }, hostId: host.hostId };
 		expect((await f.relay.post('/manage/summary', direct)).status).toBe(404);
+		const discovery = await f.hub(owner, 'GET', '/hosts');
+		expect(discovery.status).toBe(200);
+		const { computers } = (await discovery.json()) as { computers: { hostId: string }[] };
+		expect(computers.map(({ hostId }) => hostId)).not.toContain(host.hostId);
 	},
 	limit
 );

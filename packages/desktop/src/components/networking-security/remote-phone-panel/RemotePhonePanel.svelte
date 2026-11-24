@@ -4,6 +4,8 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import Modal from '$shared/Modal.svelte';
+	import ChoiceRow from '../../shared-primitives/ChoiceRow.svelte';
+	import type { RemoteAccountComputer } from '../../../../../remote/src/models/networking-security/RemoteControl.types';
 	import type { RemotePhone } from '../../../lib/stores/networking-security/remotePhone.svelte';
 	import {
 		nativeAccountContext,
@@ -12,30 +14,51 @@
 	import { grantSummary, remoteLabels } from './remoteLabels';
 	import { identityLabel } from '../../../helpers/networking-security/identityLabel';
 	let { store, compact = false }: { store: RemotePhone; compact?: boolean } = $props();
-	/**
-	 * This phone's connection to a computer. A person names the phone and scans the code the
-	 * computer shows; no link, code or address is typed here, and none reaches the page. What the
-	 * phone may do is decided on the computer. Only an online computer is called connected.
-	 */
 	let deviceName = $state('iPhone');
-	/** The Connection dialog of a connected phone: its details, Disconnect and Sign out. */
 	let connection = $state(false);
 	const account = getContext<NativeAccountContext | undefined>(nativeAccountContext);
 	const status = $derived(store.status);
+	const discover = $derived(
+		!compact && account?.signedIn && status?.state === 'unpaired'
+			? store.port?.computers
+			: undefined
+	);
+	let computers = $state<RemoteAccountComputer[]>([]);
+	let discovery = $state<'loading' | 'ready' | 'failed'>('loading');
+	let refresh = $state(0);
+	$effect(() => {
+		const list = discover;
+		void refresh;
+		if (!list) return;
+		let active = true;
+		discovery = 'loading';
+		computers = [];
+		void list().then(
+			(found) => {
+				if (!active) return;
+				computers = found;
+				discovery = 'ready';
+			},
+			() => {
+				if (active) discovery = 'failed';
+			}
+		);
+		return () => {
+			active = false;
+		};
+	});
 	const labels = $derived(status ? remoteLabels(status) : null);
 	const actions = { 'pending-approval': 'Cancel', pairing: 'Cancel', revoked: 'Connect again' };
 	const action = $derived(
 		(status && actions[status.state as keyof typeof actions]) || 'Disconnect'
 	);
-	/** The footer's one line: a connected computer and this phone; the awake note lives in the dialog. */
 	const compactTitle = $derived.by(() => {
 		if (!labels) return '';
 		return status?.state === 'online' && status.device
 			? `${labels.title} · ${status.device.name}`
 			: labels.title;
 	});
-	const how =
-		'In Harness on your computer, turn on phone access and choose Pair a phone. Then scan the code it shows.';
+	const how = 'Turn on phone access, choose Pair a phone, then scan the QR code.';
 	const fixture = 'Debug build for a test fixture: a relay on this machine is accepted.';
 </script>
 
@@ -88,25 +111,56 @@
 		<hx-section class="remote-connection gate" aria-label="Computer connection">
 			<hx-h2>{labels.title}</hx-h2>
 			{#if status.state === 'unpaired'}
-				<hx-p class="muted">{how}</hx-p>
 				{#if status.reason}<hx-span class="error" role="alert">{status.reason}</hx-span>{/if}
-				<hx-form
-					onsubmit={(event) => {
-						event.preventDefault();
-						void store.scan(deviceName);
-					}}
-				>
-					<hx-label
-						>Name of this phone<hx-input
-							type="text"
-							bind:value={deviceName}
-							maxlength="80"
-						/></hx-label
+				{#if discover}
+					<hx-div class="computer-list">
+						{#each computers as computer (computer.hostId)}
+							<ChoiceRow
+								name={computer.name}
+								meta={computer.online ? 'Online' : 'Offline'}
+								label={`Connect to ${computer.name}`}
+								disabled={store.busy || !computer.online}
+								onchoose={() => void store.connectAccountComputer(computer.hostId, 'iPhone')}
+							/>
+						{:else}
+							{#if discovery === 'loading'}
+								<hx-small class="muted">Finding your computers…</hx-small>
+							{:else if discovery === 'failed'}
+								<hx-small class="muted">Could not find your computers.</hx-small>
+							{:else}
+								<hx-small class="muted"
+									>No computers found. Turn on phone access in Harness on your computer.</hx-small
+								>
+							{/if}
+						{/each}
+						{#if discovery !== 'loading'}
+							<hx-button type="button" class="quiet refresh" onclick={() => (refresh += 1)}
+								>Refresh</hx-button
+							>
+						{/if}
+					</hx-div>
+				{/if}
+				<hx-details class="connection-options">
+					<hx-summary>Other connection options</hx-summary>
+					<hx-p class="muted">{how}</hx-p>
+					<hx-form
+						onsubmit={(event) => {
+							event.preventDefault();
+							void store.scan(deviceName);
+						}}
 					>
-					<hx-button class="primary" disabled={store.busy}
-						>{store.scanFailure ? 'Scan again' : 'Scan QR code'}</hx-button
-					>
-				</hx-form>
+						<hx-label
+							>Name of this phone<hx-input
+								type="text"
+								bind:value={deviceName}
+								maxlength="80"
+							/></hx-label
+						>
+						<hx-button class="primary" disabled={store.busy}
+							>{store.scanFailure ? 'Scan again' : 'Scan QR code'}</hx-button
+						>
+					</hx-form>
+				</hx-details>
 			{:else}
 				{#if labels.detail}<hx-p class="muted">{labels.detail}</hx-p>{/if}
 				<hx-button type="button" disabled={store.busy} onclick={() => void store.disconnect()}
@@ -126,6 +180,22 @@
 		gap: var(--hx-space-12);
 		margin: 0;
 		text-align: center;
+	}
+	.computer-list {
+		display: grid;
+		width: 100%;
+		gap: var(--hx-space-6);
+	}
+	.refresh {
+		justify-self: center;
+		min-height: 44px;
+	}
+	.connection-options {
+		width: 100%;
+	}
+	.connection-options summary {
+		padding: var(--hx-space-12);
+		cursor: pointer;
 	}
 	.remote-chip {
 		min-height: 44px;

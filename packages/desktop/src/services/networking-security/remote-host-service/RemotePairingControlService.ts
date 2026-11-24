@@ -61,7 +61,7 @@ async function openedOffer(runtime: RemoteHostRuntimeService): Promise<string> {
 	try {
 		await runtime.link.command({ type: 'pairing-open', pairingId, expiresAt });
 	} catch (error) {
-		if (runtime.pairing.offer()?.pairingId === pairingId) runtime.pairing.close();
+		if (runtime.pairing.offer()?.pairingId === pairingId) runtime.pairing.closeOffer();
 		throw error;
 	}
 	return pairingId;
@@ -96,7 +96,7 @@ export class RemotePairingControlService {
 	async closePairing(): Promise<RemoteHostStatus> {
 		const { runtime } = this.host.current(),
 			open = runtime.pairing.offer();
-		runtime.pairing.close();
+		runtime.pairing.closeOffer();
 		if (open) await this.tell(runtime, { type: 'pairing-close', pairingId: open.pairingId });
 		return this.host.published();
 	}

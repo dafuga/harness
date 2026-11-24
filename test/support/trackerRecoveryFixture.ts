@@ -16,6 +16,7 @@ import { withTempRepo } from './temporary';
 
 export const tmuxExecutable = ['/opt/homebrew/bin/tmux', '/usr/local/bin/tmux'].find(existsSync);
 const id = 'recovr1234';
+const occupantId = 'occupy1234';
 const minute = 60_000;
 
 export function proveTrackerTmuxRecovery() {
@@ -60,16 +61,17 @@ async function proveRecovery(root: string) {
 	const items = new TrackerItemReadRepository(database);
 	try {
 		await startAndDrop(runtime, database, { dispatch, tmux });
+		await waitForRecoveryCapacity(runtime, database, { dispatch, tmux, watchdog });
 		await watchdog(11 * minute);
 		await expect
 			.poll(async () => {
 				await dispatch();
-				return database.prepare('SELECT state,cli,model,effort FROM runs WHERE id = 2').get();
+				return database.prepare('SELECT state,cli,model,effort FROM runs WHERE id = 3').get();
 			})
 			.toEqual({ state: 'running', cli: 'codex', model: 'gpt-6.1-terra', effort: 'high' });
-		verifyResumeBrief(config.stateDirectory);
+		verifyResumeBrief(config.stateDirectory, 3);
 		expect(items.getStored(id)).toMatchObject({ schedule_off: true, needs_daniel: false });
-		tmux('kill-session', '-t', '=auto-recovr-r2');
+		tmux('kill-session', '-t', '=auto-recovr-r3');
 		await dispatch();
 		writeFileSync(join(root, 'reject-boot'), '');
 		runtime = makeRuntime();
@@ -83,6 +85,35 @@ async function proveRecovery(root: string) {
 		database.close();
 		clock.mockRestore();
 	}
+}
+
+async function waitForRecoveryCapacity(
+	runtime: TrackerNativeRuntimeService,
+	database: DatabaseSync,
+	{
+		dispatch,
+		tmux,
+		watchdog
+	}: {
+		dispatch: () => Promise<void>;
+		tmux: (...args: string[]) => string;
+		watchdog: (delay: number) => Promise<void>;
+	}
+) {
+	seedTask(runtime, Date.now(), occupantId);
+	expect((await managedTrackerItemRequest(runtime, occupantId, 'launch')).ok).toBe(true);
+	await expect
+		.poll(async () => {
+			await dispatch();
+			return database.prepare('SELECT state FROM runs WHERE id = 2').get();
+		})
+		.toEqual({ state: 'running' });
+	for (let step = 0; step < 4; step++) await watchdog(11 * minute);
+	const waiting = new TrackerItemReadRepository(database).getStored(id);
+	expect(waiting.needs_daniel).toBe(false);
+	expect(waiting.notes_log.some(({ text }) => /Relaunch [0-9]+\/3 failed:/.test(text))).toBe(false);
+	expect(database.prepare('SELECT COUNT(*) AS total FROM runs').get()).toEqual({ total: 2 });
+	tmux('kill-session', '-t', '=auto-occupy-r2');
 }
 
 async function startAndDrop(
@@ -113,9 +144,9 @@ async function startAndDrop(
 	});
 }
 
-function seedTask(runtime: TrackerNativeRuntimeService, now: number) {
+function seedTask(runtime: TrackerNativeRuntimeService, now: number, itemId = id) {
 	runtime.store.appendLocal({
-		itemId: id,
+		itemId,
 		fields: {
 			title: 'Synthetic recovery task',
 			notes: 'Resume the synthetic task.',
@@ -155,8 +186,8 @@ async function verifyFailureBudget({
 	).toHaveLength(1);
 }
 
-function verifyResumeBrief(directory: string) {
-	const brief = readBrief(directory, 2);
+function verifyResumeBrief(directory: string, run: number) {
+	const brief = readBrief(directory, run);
 	expect(brief).toContain('Resume the synthetic task');
 	expect(brief).toContain('Progress note 11');
 	expect(brief).toContain('resume from: checkpoint commit');
