@@ -2,11 +2,9 @@
 	"name": "tracker-launch-queue-recovery",
 	"goal": "Blocked requests yield to runnable work; unused claims expire safely; withdrawing a launch permits a fresh run",
 	"createdAt": "2026-11-24T08:16:29.466Z",
-	"updatedAt": "2026-11-24T08:23:49.585Z",
+	"updatedAt": "2026-11-24T08:32:19.068Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T08:32:19.068Z",
+			"evidence": "Matched red dff22679dd and green 5a11adcf50 confirm that blocked items yield, withdrawals get fresh tokens, and an expired current claim retries."
 		},
 		{
 			"id": "verify",

@@ -56,10 +56,7 @@ export function prepareRetry(
 	if (run.state !== 'queued' || run.dispatch_at !== undefined || run.cli === 'none') {
 		return skip('ignored', 'attempt is no longer awaiting dispatch');
 	}
-	if (
-		item?.launch?.token !== run.auto_token ||
-		(!startable(item) && now - run.queued_at >= launchStartupGrace)
-	)
+	if (item?.launch?.token !== run.auto_token || expiredUnavailableRetry(item, run, now))
 		return retireUnstartedRun(snapshot, run, { policy, now });
 	const hold = claimHold(snapshot, { item, grant, run }, policy, now);
 	if (hold) return skip('held', hold);
@@ -75,22 +72,19 @@ export function prepareRetry(
 	return reserveStart(item, { run, rung }, policy, now);
 }
 
+function expiredUnavailableRetry(item: TrackerDispatchItem, run: TrackerRunReceipt, now: number) {
+	return !startable(item) && now - run.queued_at >= launchStartupGrace;
+}
+
 export function retireUnstartedRun(
 	snapshot: TrackerDispatchSnapshot,
 	run: TrackerRunReceipt,
 	clock: { policy: TrackerDispatchPolicy; now: number }
 ): TrackerDispatchDecision {
-	const { item, activeSessionKeys } = snapshot;
+	const { item } = snapshot;
 	const { now, policy } = clock;
-	const hasSession = [run.session_id, run.host_session_id, run.tmux].some(Boolean);
-	if (
-		run.state !== 'queued' ||
-		run.started_at !== null ||
-		hasSession ||
-		activeSessionKeys?.includes(attemptKey(run))
-	) {
+	if (!unstartedRun(snapshot, run))
 		return skip('ignored', 'attempt is no longer an unstarted launch');
-	}
 	if (item?.launch?.token !== run.auto_token)
 		return recordRun(
 			finishRun(run, { outcome: 'abandoned', reason: 'launch cancelled before startup', now })
@@ -104,6 +98,15 @@ export function retireUnstartedRun(
 	if (run.dispatch_at !== undefined && startable(item))
 		return failRun(snapshot, run, { ...failure, startup: true }, clock);
 	return recordRun(finishRun(run, failure), { launch: null });
+}
+
+function unstartedRun({ activeSessionKeys }: TrackerDispatchSnapshot, run: TrackerRunReceipt) {
+	return (
+		run.state === 'queued' &&
+		run.started_at === null &&
+		![run.session_id, run.host_session_id, run.tmux].some(Boolean) &&
+		!activeSessionKeys?.includes(attemptKey(run))
+	);
 }
 
 function claimHold(
