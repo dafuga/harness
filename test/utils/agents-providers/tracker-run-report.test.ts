@@ -61,7 +61,7 @@ test('falls back to kind, then project, only after the more specific scope lacks
 	expect(trackerModelHistory(rows, { kind: 'test', project: 'None' })).toEqual({});
 });
 
-test('preserves per-attempt outcomes, totals, and recorded-cost denominators', () => {
+test('preserves outcomes and reports cost coverage and measured durations', () => {
 	const rows = [
 		run(1, {
 			cost_usd: 0.25,
@@ -77,7 +77,29 @@ test('preserves per-attempt outcomes, totals, and recorded-cost denominators', (
 		run(3, { outcome: 'blocked' }),
 		run(4, { outcome: 'abandoned' }),
 		run(5, { state: 'verifying', cost_usd: 100 }),
-		run(6, { rung: 'sol', kind: null, cost_usd: null })
+		run(6, { cli: 'codex', model: 'gpt-6.2-sol', rung: 'sol', kind: null }),
+		run(7, {
+			cli: 'codex',
+			model: 'gpt-6.2-sol',
+			rung: 'sol',
+			kind: null,
+			input_tokens: 300_000,
+			cache_read_tokens: 100_000,
+			cache_write_tokens: 0,
+			output_tokens: 10_000,
+			started_at: null,
+			ended_at: 1_700_000_000_000
+		}),
+		run(8, {
+			cli: 'codex',
+			model: 'gpt-6.2-sol',
+			rung: 'sol',
+			kind: null,
+			input_tokens: 1_000,
+			cache_read_tokens: 1_000,
+			cache_write_tokens: 0,
+			output_tokens: 1_000
+		})
 	];
 	const report = trackerRunReport(rows);
 	const totals = {
@@ -92,25 +114,38 @@ test('preserves per-attempt outcomes, totals, and recorded-cost denominators', (
 		idle_nudges: 2,
 		cost: 0.25,
 		priced: 2,
+		ranged: 0,
+		timed: 1,
+		min_cost: 0.25,
+		max_cost: 0.25,
 		tokens: 100,
 		ms: 60_000,
 		success_rate: 0.5,
 		avg_cost_usd: 0.125,
 		cost_per_success_usd: 0.25,
-		avg_minutes: 0.25
+		avg_cost_range_usd: null,
+		cost_per_success_range_usd: null,
+		avg_minutes: 1
 	};
 	expect(report.slice(0, 2)).toEqual([totals, { ...totals, kind: 'triage' }]);
-	expect(
-		report
-			.slice(2)
-			.map(({ kind, priced, avg_cost_usd, cost_per_success_usd }) => [
-				kind,
-				priced,
-				avg_cost_usd,
-				cost_per_success_usd
-			])
-	).toEqual([
-		['*', 0, null, null],
-		['?', 0, null, null]
-	]);
+	for (const row of report.slice(2)) {
+		expect(row).toMatchObject({
+			rung: 'sol',
+			runs: 3,
+			done: 3,
+			priced: 1,
+			ranged: 1,
+			timed: 0,
+			avg_minutes: null,
+			avg_cost_usd: null
+		});
+		expect(row.avg_cost_range_usd).toEqual([
+			expect.closeTo((0.71 + 0.0121) / 2),
+			expect.closeTo((1.37 + 0.0121) / 2)
+		]);
+		expect(row.cost_per_success_range_usd).toEqual([
+			expect.closeTo((0.71 + 0.0121) / 3),
+			expect.closeTo((1.37 + 0.0121) / 3)
+		]);
+	}
 });

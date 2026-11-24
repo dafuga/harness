@@ -74,16 +74,23 @@ async function qualifyItemCommands(spoke: TrackerNodeFixture, id: string) {
 		id,
 		notes_log: [{ text: 'Retain this note' }]
 	});
-	const launch = ['launch', short, '--model', 'sol:high'];
+	const launch = ['launch', short, '--project', 'Tracker', '--model', 'Fable:high'];
 	const launched = await fixtureTrackerJson(spoke, launch);
 	expect(launched).toMatchObject({
 		id,
 		auto: expect.stringMatching(/^synthetic-spoke@/),
 		launch_source: 'manual',
 		launch_target: 'synthetic-spoke',
-		model: 'sol:high'
+		project: 'Tracker',
+		model: 'Fable:high'
 	});
 	expect(await fixtureTrackerJson(spoke, launch)).toEqual(launched);
+	expect(await fixtureTrackerJson(spoke, ['pick', short])).toMatchObject({
+		rung: 'fable',
+		model: 'claude-fable-5-2',
+		effort: 'high',
+		pinned: true
+	});
 	expect((await trackerProcess(spoke, ['launch', short, '--model', 'sol:low']).exited).code).toBe(
 		1
 	);

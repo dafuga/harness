@@ -35,6 +35,7 @@ test('preserves linked attempts, rework, and the meaning of historical Tracker p
 		rung: 'sol',
 		model: 'gpt-6.2-sol',
 		cli: 'codex',
+		cache_write_tokens: 0,
 		cost_usd: null
 	} satisfies TrackerRunRow;
 	const sameModel = { ...retry, id: 9, attempt: 3, escalated_from: 8, cost_usd: 0 };
@@ -69,8 +70,9 @@ test('preserves linked attempts, rework, and the meaning of historical Tracker p
 		rejectedBefore: true,
 		reworked: true,
 		danielCorrections: null,
-		apiEquivalentUsd: null,
-		apiEquivalentBasis: 'unavailable',
+		apiEquivalentUsd: 0.0004015,
+		apiEquivalentBasis: 'standard-api-estimate',
+		rateCard: 'standard-global-2026-11-19',
 		actualUsd: null,
 		codexCredits: null
 	});

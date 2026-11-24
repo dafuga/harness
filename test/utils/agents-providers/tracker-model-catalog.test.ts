@@ -22,19 +22,19 @@ test('preserves canonical model identities and allows only matching rung customi
 
 test('resolves rung names, the Sol alias, and explicit provider models', () => {
 	const ladder = ladderFrom();
-	expect(parseTrackerModelSpec('Opus:xhigh', ladder, null)).toMatchObject({
+	expect(parseTrackerModelSpec('Opus:xhigh', ladder)).toMatchObject({
 		id: 'opus',
 		model: 'claude-opus-5-5',
 		effort: 'xhigh',
 		pinned: true
 	});
-	expect(parseTrackerModelSpec('sol-xhigh', ladder, null)).toMatchObject({
+	expect(parseTrackerModelSpec('sol-xhigh', ladder)).toMatchObject({
 		id: 'sol',
 		model: 'gpt-6.2-sol',
 		effort: 'xhigh',
 		pinned: true
 	});
-	expect(parseTrackerModelSpec('gpt-example', ladder, null)).toEqual({
+	expect(parseTrackerModelSpec('gpt-example', ladder)).toEqual({
 		id: 'gpt-example',
 		model: 'gpt-example',
 		cli: 'codex',
@@ -46,28 +46,24 @@ test('resolves rung names, the Sol alias, and explicit provider models', () => {
 
 test('rejects invalid syntax, outdated Sol, invalid Sol effort, and unknown aliases', () => {
 	const ladder = ladderFrom();
-	expect(() => parseTrackerModelSpec('sol:high:extra', ladder, null)).toThrow(
-		'expected model[:effort]'
-	);
-	expect(() => parseTrackerModelSpec('gpt-6.1-sol', ladder, null)).toThrow('use gpt-6.2-sol');
-	expect(() => parseTrackerModelSpec('sol:max', ladder, null)).toThrow('Sol effort must be');
-	expect(() => parseTrackerModelSpec('example', ladder, null)).toThrow('unknown model "example"');
+	expect(() => parseTrackerModelSpec('sol:high:extra', ladder)).toThrow('expected model[:effort]');
+	expect(() => parseTrackerModelSpec('gpt-6.1-sol', ladder)).toThrow('use gpt-6.2-sol');
+	expect(() => parseTrackerModelSpec('sol:max', ladder)).toThrow('Sol effort must be');
+	expect(() => parseTrackerModelSpec('example', ladder)).toThrow('unknown model "example"');
 });
 
-test('uses the case-insensitive Fable project allowlist, including its default', () => {
+test('resolves explicit Fable aliases and canonical pins without a project', () => {
 	const ladder = ladderFrom();
-	expect(parseTrackerModelSpec('fable:high', ladder, 'buildflexity')).toMatchObject({
+	expect(parseTrackerModelSpec('Fable', ladder)).toMatchObject({
 		id: 'fable',
 		model: 'claude-fable-5-2',
 		effort: 'high',
 		pinned: true
 	});
-	expect(() => parseTrackerModelSpec('fable', ladder, 'Harness')).toThrow(
-		'Fable is only used for BuildFlexity items'
-	);
-	expect(
-		parseTrackerModelSpec('fable', ladder, 'Harness', {
-			autolaunch: { fableProjects: ['harness'] }
-		})
-	).toMatchObject({ id: 'fable' });
+	expect(parseTrackerModelSpec('claude-fable-5-2:medium', ladder)).toMatchObject({
+		id: 'fable',
+		effort: 'medium',
+		pinned: true
+	});
+	expect(ladder.map(({ id }) => id)).not.toContain('fable');
 });
