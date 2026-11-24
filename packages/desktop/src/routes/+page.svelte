@@ -116,12 +116,18 @@
 		choose={(projectId) => void workspace.switchProject(projectId)}
 		phone={local && available && workspace.remote.host ? phoneAccess : undefined}
 	>
-		{#if account.environment?.tracker}
-			<hx-a class="project-overview-link" href={resolve('/tracker' as '/')}>Needs you</hx-a>
+		{#if account.environment?.tracker || approvals}
+			<hx-nav class="decision-links" aria-label="Decisions">
+				{#if account.environment?.tracker}
+					<hx-a class="project-overview-link" href={resolve('/tracker' as '/')}>Needs you</hx-a>
+				{/if}
+				{#if approvals}
+					<hx-a class="project-overview-link" href={resolve('/deploy-approvals')}
+						>Deploy approvals</hx-a
+					>
+				{/if}
+			</hx-nav>
 		{/if}
-		{#if approvals}<hx-a class="project-overview-link" href={resolve('/deploy-approvals')}
-				>Deploy approvals</hx-a
-			>{/if}
 		{#if available && !local}<RemoteConnection {workspace} />{/if}
 		{#if account.signedIn && (local || remote.phone.status?.state !== 'online')}
 			<hx-div class="account-status" class:phone-account={!local}>
@@ -134,6 +140,18 @@
 {#snippet phoneAccess()}<RemoteConnection {workspace} />{/snippet}
 
 <style>
+	.decision-links {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: var(--hx-space-12);
+	}
+	.decision-links > :global(a) {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		padding-inline: var(--hx-space-8);
+	}
 	.account-status {
 		display: flex;
 		flex-wrap: wrap;
