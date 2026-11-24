@@ -27,7 +27,7 @@ function hostRuntime(
 		link,
 		locked,
 		changed: () => quietly(host.published()),
-		unlinked: state.ownerId ? () => host.relayUnlinked(state) : undefined,
+		unlinked: state.ownerId ? () => host.account.relayUnlinked(state) : undefined,
 		accountRequest: (runtime, request) => quietly(host.devices.approveAccount(runtime, request)),
 		ready: () => quietly(host.devices.flush().then(() => host.saved())),
 		revoked: (deviceId) => quietly(host.devices.dropped(deviceId)),
@@ -40,7 +40,7 @@ export class RemoteHostService {
 	readonly devices: RemotePairingControlService;
 	private readonly record: RemoteHostRecordService;
 	private readonly turns: RemoteHostSwitchService;
-	private readonly account: RemoteHostAccountService;
+	readonly account: RemoteHostAccountService;
 	private runtime: RemoteHostRuntimeService | null = null;
 	private readonly listeners = new Set<(status: RemoteHostStatus) => void>();
 	constructor(private readonly options: RemoteHostOptions) {
@@ -90,12 +90,6 @@ export class RemoteHostService {
 	}
 	linkAccount(ownerId: string): void {
 		this.account.link(ownerId, Boolean(this.runtime));
-	}
-	endAccount(): void {
-		this.account.end();
-	}
-	relayUnlinked(state: RemoteHostState): void {
-		this.account.relayUnlinked(state);
 	}
 	screen(locked: boolean): void {
 		const state = locked ? 'locked' : 'unlocked';

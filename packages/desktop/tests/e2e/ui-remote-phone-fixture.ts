@@ -30,17 +30,15 @@ function installPhoneState(options: PhoneOptions) {
 	const phone = { state: options.state, deviceName: named, host: options.host };
 	const listeners: PhoneState['listeners'] = new Map();
 	const paired = () => phone.state === 'online' || phone.state === 'offline';
-	const known = () => phone.state !== 'unpaired';
 	const status = () => ({
 		state: phone.state,
-		origin: known() ? options.origin : null,
-		host: known() ? phone.host : null,
+		origin: phone.state === 'unpaired' ? null : options.origin,
+		host: phone.state === 'unpaired' ? null : phone.host,
 		device: phone.deviceName ? { id: options.device.id, name: phone.deviceName } : null,
 		grant: paired() ? { projects: options.granted, agents: true } : null,
 		reason: phone.state === 'offline' ? 'The computer is asleep or has no network.' : null,
 		lastOnlineAt: paired() ? options.seenAt : null
 	});
-	/** What the native plugin would announce: approval on the desktop, loss of the host, revocation. */
 	const set = (state: string) => {
 		phone.state = state;
 		listeners.forEach((item) => {

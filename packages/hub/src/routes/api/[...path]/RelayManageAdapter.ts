@@ -58,7 +58,7 @@ async function fetchRelay(
 	}
 }
 
-function browser(
+async function browser(
 	hosts: DurableObjectNamespace,
 	input: RelayManageOwner,
 	route: string,
@@ -68,7 +68,8 @@ function browser(
 	headers.set('X-Harness-Account-Owner', input.owner.id);
 	headers.set('X-Harness-Account-Session', input.holder ?? '');
 	const path = `https://relay.internal/account/v1/hosts/${input.hostId}/${route}`;
-	return fetchRelay(hosts, input.hostId, path, { ...init, headers });
+	const reply = await fetchRelay(hosts, input.hostId, path, { ...init, headers });
+	return reply.status === 101 ? reply : hubHttp(await jsonOf(reply), reply.status);
 }
 
 /**
@@ -125,19 +126,12 @@ export class RelayManageAdapter {
 		const { pairingId, operation, proof } = call;
 		const headers = { 'Content-Type': 'application/json' };
 		const init = { method: 'POST', headers, body: JSON.stringify(proof) };
-		const reply = await browser(
-			this.config.hosts,
-			input,
-			`pairings/${pairingId}/${operation}`,
-			init
-		);
-		return hubHttp(await jsonOf(reply), reply.status);
+		return browser(this.config.hosts, input, `pairings/${pairingId}/${operation}`, init);
 	}
 
 	async browserSocket(input: RelayManageDevice): Promise<Response> {
 		const headers = { Upgrade: 'websocket', 'X-Harness-Account-Device': input.deviceId };
-		const reply = await browser(this.config.hosts, input, 'connect', { headers });
-		return reply.status === 101 ? reply : hubHttp(await jsonOf(reply), reply.status);
+		return browser(this.config.hosts, input, 'connect', { headers });
 	}
 
 	async computers(owner: RelayManageOwner['owner'], accountOnly = false) {

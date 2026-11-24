@@ -94,7 +94,7 @@ function desktopBackend() {
 		{
 			origin,
 			onSignIn: (ownerId) => remote.linkAccount(ownerId),
-			onDisconnect: () => remote.endAccount(),
+			onDisconnect: () => remote.account.end(),
 			onCacheStatus: (status) => windows.current?.client.emit('cache', status),
 			file: sessionFile,
 			cache,
