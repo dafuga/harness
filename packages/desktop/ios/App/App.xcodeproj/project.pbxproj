@@ -232,6 +232,7 @@
 				504EC3001FED79650016851F /* Sources */,
 				504EC3011FED79650016851F /* Frameworks */,
 				504EC3021FED79650016851F /* Resources */,
+				77ABBA060019FA00001BC22A /* Stamp Harness build revision */,
 			);
 			buildRules = (
 			);
@@ -308,6 +309,17 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ \"$CONFIGURATION\" = Release ] && [ \"${HARNESS_HUB_ORIGIN:-}\" != 'https://dafuga-harness.pages.dev' ]; then\n    echo 'error: HARNESS_HUB_ORIGIN must be the production Harness Hub HTTPS origin in Release.' >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		77ABBA060019FA00001BC22A /* Stamp Harness build revision */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = ();
+			name = "Stamp Harness build revision";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -eu\nif [ \"$CONFIGURATION\" = Release ]; then\n    if [ -n \"$(/usr/bin/git -C \"$SRCROOT\" status --porcelain --untracked-files=no)\" ]; then\n        echo 'error: Release builds need a clean tracked worktree so HarnessBuildRevision is exact.' >&2\n        exit 1\n    fi\n    revision=$(/usr/bin/git -C \"$SRCROOT\" rev-parse --verify HEAD)\n    if ! printf '%s' \"$revision\" | /usr/bin/grep -Eq '^[0-9a-f]{40}$'; then\n        echo 'error: HarnessBuildRevision must be a full git commit.' >&2\n        exit 1\n    fi\n    plist=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\n    /usr/libexec/PlistBuddy -c 'Delete :HarnessBuildRevision' \"$plist\" >/dev/null 2>&1 || true\n    /usr/libexec/PlistBuddy -c \"Add :HarnessBuildRevision string $revision\" \"$plist\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
