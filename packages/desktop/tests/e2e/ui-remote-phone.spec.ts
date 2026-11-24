@@ -66,10 +66,16 @@ test('the Capacitor environment pairs by scanning: no link, code or address is e
 test('approval on the desktop connects the phone and lists only what it was granted', async ({
 	page
 }, testInfo) => {
-	await remotePhoneFixture(page, 'pending-approval');
+	await remotePhoneFixture(page);
 	await page.goto('/');
 	const panel = computer(page);
+	await expect(panel.getByRole('heading', { name: 'Connect to computer' })).toBeVisible();
+	await remoteEvidence(page, testInfo, 'phone-account-discovery');
+	await panel.getByRole('button', { name: `Connect to ${hostName}`, exact: true }).click();
 	await expect(panel.getByText(/Waiting for approval/)).toBeVisible();
+	await expect(projects(page)).toHaveCount(0);
+	expect(await made(page, 'native.scan')).toEqual([]);
+	expect(await made(page, 'native.connectAccountComputer')).toHaveLength(1);
 	await announce(page, 'online');
 	await expect(
 		panel.getByRole('button', { name: `Connected to ${hostName}`, exact: true })
