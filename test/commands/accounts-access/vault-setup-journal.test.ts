@@ -129,7 +129,7 @@ test('macOS repair leaves matching Directory Services attributes alone', () => {
 		"    -read:Password) printf 'Password: *\\n';;",
 		"    -read:RealName) printf 'RealName:\\n Harness Vault Executor\\n';;",
 		'    -read:IsHidden) return 1;;',
-		"    -create:IsHidden) printf '%s\\n' \"$3=$4\";;",
+		'    -create:IsHidden) printf \'%s\\n\' "$3=$4";;',
 		'    *) return 1;;',
 		'  esac',
 		'}',
