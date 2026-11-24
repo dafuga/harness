@@ -43,7 +43,13 @@ export class RemoteHostValidator {
 		const credentialHash = matching(body.credentialHash, remotePatterns.hash);
 		const name = nameOf(body.name);
 		if ((await identityOf(hostKey)) !== hostId) return invalid();
-		return { hostId, hostKey, credentialHash, name };
+		return {
+			hostId,
+			hostKey,
+			credentialHash,
+			name,
+			...(body.accountLinked === true && { accountLinked: true })
+		};
 	}
 
 	pairing(body: Body): RelayManagePairingRequest {
@@ -53,6 +59,10 @@ export class RemoteHostValidator {
 			sealed: matching(body.sealed, remotePatterns.sealed),
 			challenge: matching(body.challenge, remotePatterns.challenge)
 		};
+	}
+
+	pairingId(value: unknown): string {
+		return matching(value, remotePatterns.pairingId);
 	}
 
 	hostId(value: unknown): string {

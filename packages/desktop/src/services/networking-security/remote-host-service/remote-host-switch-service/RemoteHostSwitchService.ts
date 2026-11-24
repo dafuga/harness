@@ -40,15 +40,19 @@ export class RemoteHostSwitchService {
 		if (asked === this.asked) run(state, keys);
 	}
 	/** Registers, keeps the registration and goes online. An unreadable stored record rejects. */
-	async enable(): Promise<void> {
+	async enable(ownerId?: string): Promise<void> {
 		const { record, changed } = this.options;
 		if (!record.available()) return;
 		const latest = this.request(),
-			state = (await record.load()) ?? (await remoteHostIdentity());
+			stored = await record.load(),
+			state =
+				stored && (!stored.ownerId || stored.ownerId === ownerId)
+					? stored
+					: await remoteHostIdentity();
 		if (!latest()) return;
 		this.phase = 'registering';
 		changed();
-		const shown = await this.register(state, latest).then(() => quiet, refused);
+		const shown = await this.register(state, latest, ownerId).then(() => quiet, refused);
 		if (latest()) [this.phase, this.reason] = shown;
 	}
 	/** Off takes its turn in the record whatever is asked next, so it is never lost. */
@@ -74,13 +78,31 @@ export class RemoteHostSwitchService {
 	 * Registers on a copy, then keeps and runs the registration: each only while this is still
 	 * the latest request. The record is not touched by a registration that answers too late.
 	 */
-	private async register(state: RemoteHostState, latest: () => boolean): Promise<void> {
+	private async register(
+		state: RemoteHostState,
+		latest: () => boolean,
+		ownerId?: string
+	): Promise<void> {
 		const { record, register, name, run } = this.options,
-			draft = { ...state },
-			keys = await registerRemoteHost(draft, name(), register),
-			{ enabled, origin, generation } = draft;
-		const kept = await record.enrol(state, { enabled, origin, generation }, latest);
-		if (kept && latest()) run(state, keys);
+			draft = { ...state, ownerId };
+		if (ownerId && !state.ownerId) {
+			draft.devices = [];
+			draft.revoked = [];
+		}
+		const keys = await registerRemoteHost(draft, name(), register).catch(async (error: unknown) => {
+			if (!ownerId || state.ownerId || (error as { status?: number }).status !== 403 || !latest())
+				throw error;
+			Object.assign(draft, await remoteHostIdentity(), { ownerId });
+			return registerRemoteHost(draft, name(), register);
+		});
+		const target = state.hostId === draft.hostId ? state : draft;
+		const { enabled, origin, generation, devices, revoked } = draft;
+		const kept = await record.enrol(
+			target,
+			{ enabled, origin, generation, ownerId, devices, revoked },
+			latest
+		);
+		if (kept && latest()) run(target, keys);
 	}
 }
 

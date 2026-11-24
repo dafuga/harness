@@ -4,15 +4,13 @@
 	"uid": "u_pqvytes3sn",
 	"kind": "component",
 	"title": "Remote host panel",
-	"responsibility": "Manages computer-side phone access, pairing offers, pending approvals and approved devices.",
+	"responsibility": "Shows the Mac’s account link and its connected devices, with unlink and per-device revocation.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
 		"uses": [
-			"desktop.component.remote-approval",
 			"desktop.component.remote-devices",
-			"desktop.component.remote-offer-code",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-section",
@@ -48,7 +46,7 @@
 			{
 				"name": "RemoteHostPanel",
 				"type": "markup",
-				"description": "Renders no markup until the store has a status; then shows phone-access summary or controls based on compact, support, enabled, pairing, request, and device state. In compact mode the body and store error are visible only while open, and an offer already represented by a request is not shown as scannable."
+				"description": "Renders the account link state and device controls. In compact mode the Manage button reveals the device list and unlink action."
 			}
 		],
 		"errors": [],
@@ -58,17 +56,7 @@
 	},
 	"dependencies": [
 		{
-			"unit": "desktop.component.remote-approval",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "desktop.component.remote-devices",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.component.remote-offer-code",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -32,6 +32,11 @@
 				"type": "RemoteHostSwitchOptions",
 				"required": true,
 				"description": "The collaborators the service calls: record (the RemoteHostRecordService that reads and writes the stored record), register (registers this computer under the signed-in hosted identity and rejects when there is none), name (returns the name passed to registration), run (takes the state and keys and brings the host online), close (ends the running host) and changed (is told when the shown status changes while a request is under way). All six are required, and the constructor keeps the object as given without checking it."
+			},
+			{
+				"name": "RemoteHostSwitchService.enable.ownerId",
+				"type": "string",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -141,7 +146,13 @@
 			},
 			{
 				"name": "RemoteHostSwitchService.enable",
-				"inputs": [],
+				"inputs": [
+					{
+						"name": "RemoteHostSwitchService.enable.ownerId",
+						"type": "string",
+						"required": false
+					}
+				],
 				"outputs": [
 					{
 						"name": "RemoteHostSwitchService.enable",

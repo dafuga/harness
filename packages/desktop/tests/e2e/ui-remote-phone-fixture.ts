@@ -27,14 +27,14 @@ function installPhoneState(options: PhoneOptions) {
 	const computer = host.harness!;
 	delete host.harness;
 	const named = options.state === 'unpaired' ? null : options.device.name;
-	const phone = { state: options.state, deviceName: named };
+	const phone = { state: options.state, deviceName: named, host: options.host };
 	const listeners: PhoneState['listeners'] = new Map();
 	const paired = () => phone.state === 'online' || phone.state === 'offline';
 	const known = () => phone.state !== 'unpaired';
 	const status = () => ({
 		state: phone.state,
 		origin: known() ? options.origin : null,
-		host: known() ? options.host : null,
+		host: known() ? phone.host : null,
 		device: phone.deviceName ? { id: options.device.id, name: phone.deviceName } : null,
 		grant: paired() ? { projects: options.granted, agents: true } : null,
 		reason: phone.state === 'offline' ? 'The computer is asleep or has no network.' : null,
@@ -48,7 +48,36 @@ function installPhoneState(options: PhoneOptions) {
 		});
 	};
 	const request = async () => undefined;
-	host.__remotePhone = { options, phone, scans: [], computer, listeners, status, set, request };
+	const computers = {
+		computers: async () => {
+			const { id: hostId, name } = options.host;
+			return {
+				computers: [
+					{ hostId, name, online: true },
+					{ hostId: 'b'.repeat(40), name: 'Studio Mac', online: true }
+				]
+			};
+		},
+		connectAccountComputer: async (input: { hostId: string }) => {
+			host.__calls.push({ op: 'native.connectAccountComputer', ...input });
+			phone.deviceName = options.device.name;
+			phone.host =
+				input.hostId === options.host.id ? options.host : { id: input.hostId, name: 'Studio Mac' };
+			set('connecting');
+			return status();
+		}
+	};
+	host.__remotePhone = {
+		options,
+		phone,
+		scans: [],
+		computer,
+		listeners,
+		status,
+		set,
+		request,
+		computers
+	};
 }
 
 /** SYNTHETIC host answers: explicit project per request, granted projects only, `RemoteBinary`. */
@@ -86,16 +115,7 @@ function installPhonePlugin() {
 	const { phone, scans, listeners, status, set, request } = host.__remotePhone;
 	const methods: Record<string, (input: never) => Promise<unknown>> = {
 		status: async () => status(),
-		computers: async () => {
-			const { id: hostId, name } = host.__remotePhone.options.host;
-			return { computers: [{ hostId, name, online: true }] };
-		},
-		connectAccountComputer: async (input: { hostId: string }) => {
-			host.__calls.push({ op: 'native.connectAccountComputer', ...input });
-			phone.deviceName = host.__remotePhone.options.device.name;
-			set('pending-approval');
-			return status();
-		},
+		...host.__remotePhone.computers,
 		/** SYNTHETIC scanner: no camera and no code; it ends the way the test says, or well. */
 		scan: async (input: { deviceName: string }) => {
 			const outcome = scans.shift() ?? 'ok';

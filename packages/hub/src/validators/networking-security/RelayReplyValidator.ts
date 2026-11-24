@@ -58,7 +58,8 @@ export class RelayReplyValidator {
 			online: flag(reply.online),
 			generation: count(reply.generation),
 			registeredAt: text(reply.registeredAt),
-			devices: reply.devices.map(device)
+			devices: reply.devices.map(device),
+			...(reply.accountLinked === true && { accountLinked: true })
 		};
 	}
 

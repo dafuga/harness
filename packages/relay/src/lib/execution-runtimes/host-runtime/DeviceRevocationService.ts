@@ -18,10 +18,21 @@ export class DeviceRevocationService {
 	 * the host is told, also when the relay knew no such device: the host may still know it.
 	 */
 	revoke(deviceId: string): void {
-		this.store.removeDevice(deviceId);
+		const holder =
+			this.store.device(deviceId)?.holder ??
+			this.store.pairings().find((pairing) => pairing.deviceId === deviceId)?.holder;
+		if (holder) this.store.blockHolder(holder);
+		const devices = holder ? this.store.devices().filter((device) => device.holder === holder) : [];
+		for (const id of new Set([deviceId, ...devices.map((device) => device.deviceId)]))
+			this.remove(id);
 		for (const pairing of this.store.pairings()) {
-			if (pairing.deviceId === deviceId) this.store.removePairing(pairing.pairingId);
+			if (pairing.deviceId === deviceId || (holder && pairing.holder === holder))
+				this.store.removePairing(pairing.pairingId);
 		}
+	}
+
+	private remove(deviceId: string): void {
+		this.store.removeDevice(deviceId);
 		for (const socket of this.sockets.device(deviceId)) {
 			this.link.drop(socket, relayCloseCodes.unauthorized);
 		}

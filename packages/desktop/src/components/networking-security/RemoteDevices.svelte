@@ -16,13 +16,13 @@
 		projects: { id: string; name: string }[];
 		store: RemoteHost;
 	} = $props();
-	/** Approved phones with exactly what each may reach. Revoking ends its sessions at once. */
+	/** Connected devices with exactly what each may reach. Revoking ends its sessions at once. */
 	const names = $derived(new Map(projects.map((item) => [item.id, item.name])));
 	const seen = (item: RemoteDeviceInfo) =>
 		item.lastSeenAt ? `Last seen ${timeLabel(item.lastSeenAt)}` : 'Not connected';
 </script>
 
-{#if devices.length}<hx-ul class="remote-devices" aria-label="Approved phones">
+{#if devices.length}<hx-ul class="remote-devices" aria-label="Connected devices">
 		{#each devices as item (item.deviceId)}<hx-li>
 				<hx-strong>{item.name}</hx-strong>{#each item.projectIds as id (id)}<Pill
 						as="span"
@@ -37,4 +37,4 @@
 					onclick={() => void store.revoke(item.deviceId)}>Revoke</hx-button
 				>
 			</hx-li>{/each}
-	</hx-ul>{:else}<hx-span class="muted">No phone is approved.</hx-span>{/if}
+	</hx-ul>{:else}<hx-span class="muted">No devices have connected.</hx-span>{/if}

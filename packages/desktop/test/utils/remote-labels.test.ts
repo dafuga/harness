@@ -52,7 +52,7 @@ test('only an online computer is called connected, and its lock state is not inv
 test('a lost computer says why in its own words, and a pending phone names where to approve', () => {
 	expect(remoteLabels(phone('offline', 'Suspending')).detail).toBe('Suspending');
 	expect(remoteLabels(phone('offline')).title).toBe('Computer offline');
-	expect(remoteLabels(phone('pending-approval')).title).toBe('Waiting for approval on Studio Mac…');
+	expect(remoteLabels(phone('pending-approval')).title).toBe('Connecting to Studio Mac…');
 	expect(remoteLabels({ ...phone('pending-approval'), host: null }).title).toContain(
 		'your computer'
 	);
@@ -72,12 +72,12 @@ test('codes, key identities and relays are shown in a form a person can compare'
 });
 
 test('the desktop states its relay, its progress and how many phones are approved', () => {
-	expect(hostLine(host({}))).toBe('Phone access is on · relay.example.invalid');
+	expect(hostLine(host({}))).toBe('This Mac is linked · relay.example.invalid');
 	expect(hostLine(host({ state: 'offline' }))).toContain('relay unreachable');
-	expect(hostSummary(host({ enabled: false }))).toBe('Phone access off');
-	expect(hostSummary(host({}))).toBe('Phone access on · no phone');
+	expect(hostSummary(host({ enabled: false }))).toBe('Mac unlinked');
+	expect(hostSummary(host({}))).toBe('Mac linked · no devices');
 	const devices = [{}, {}] as RemoteHostStatus['devices'];
-	expect(hostSummary(host({ devices }))).toBe('Phone access on · 2 phones');
+	expect(hostSummary(host({ devices }))).toBe('Mac linked · 2 devices');
 	expect(grantSummary({ projects: [{ id: 'project-a', name: 'Project A' }], agents: false })).toBe(
 		'1 project · Read and comment only'
 	);

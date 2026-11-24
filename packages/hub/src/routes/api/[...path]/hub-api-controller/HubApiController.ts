@@ -16,6 +16,8 @@ export class HubApiController {
 		try {
 			const auth = await this.runtime.auth.handle(request);
 			if (auth) return auth;
+			const parts = requestParts(request);
+			if (parts[0] === 'api' && parts[1] === 'remote') return await this.remote(request);
 			const actor = await this.runtime.auth.actor(request);
 			if (!actor) return hubHttp({ error: 'session-required' }, 401);
 			return await this.projects(request, actor);
@@ -23,10 +25,16 @@ export class HubApiController {
 			return hubHttpFailure(error);
 		}
 	}
+	private async remote(request: Request): Promise<Response> {
+		const { auth, remote } = this.runtime;
+		const session = auth.session ? await auth.session(request) : null;
+		const actor = auth.session ? session?.actor : await auth.actor(request);
+		if (!actor) return hubHttp({ error: 'session-required' }, 401);
+		return new HubRemoteController(remote).handle(request, actor, session);
+	}
+
 	private async projects(request: Request, actor: Actor) {
 		const parts = requestParts(request);
-		if (parts[1] === 'remote')
-			return new HubRemoteController(this.runtime.remote).handle(request, actor);
 		if (!isProjectsRoute(parts)) return hubHttp({ error: 'not-found' }, 404);
 		const { api, projection } = this.runtime.connect(),
 			projectId = parts[2] ?? '';

@@ -177,6 +177,16 @@
 			"unit": "relay.service.socket-accept",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "relay.validator.manage-body",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

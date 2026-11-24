@@ -57,10 +57,11 @@ export class RemoteHostRecordService {
 		return this.inTurn(async () => {
 			if (!wanted()) return false;
 			const earlier = this.value,
-				{ enabled, origin, generation } = state;
+				{ ...before } = state;
 			this.value = Object.assign(state, registered);
 			await this.store.save(state).catch((error: unknown) => {
-				Object.assign(state, { enabled: state.enabled && enabled, origin, generation });
+				Object.assign(state, before, { enabled: state.enabled && before.enabled });
+				if (!before.ownerId) delete state.ownerId;
 				this.value = earlier;
 				throw error;
 			});

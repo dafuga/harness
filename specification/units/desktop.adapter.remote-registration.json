@@ -16,6 +16,7 @@
 			"RemoteRegistrationAdapter",
 			"RemoteRegistrationAdapter.constructor",
 			"RemoteRegistrationAdapter.register",
+			"RemoteRegistrationAdapter.unregister",
 			"RemoteRegistrationAdapterConfig",
 			"RemoteRegistrationAdapterConfig",
 			"HubRegistrationError"
@@ -49,6 +50,21 @@
 						"name": "Work Laptop"
 					}
 				]
+			},
+			{
+				"name": "RemoteRegistrationAdapter.register.ownerId",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "RemoteRegistrationAdapter.unregister.hostId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "RemoteRegistrationAdapter.unregister.ownerId",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -118,6 +134,11 @@
 								"name": "Work Laptop"
 							}
 						]
+					},
+					{
+						"name": "RemoteRegistrationAdapter.register.ownerId",
+						"type": "string",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -164,6 +185,29 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "RemoteRegistrationAdapter.unregister",
+				"inputs": [
+					{
+						"name": "RemoteRegistrationAdapter.unregister.hostId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "RemoteRegistrationAdapter.unregister.ownerId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteRegistrationAdapter.unregister",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [

@@ -34,7 +34,8 @@ export class PairingOfferService {
 	/** An authenticated request is installed in one turn and cannot be replaced by a public request. */
 	async openAccount(
 		pairingId: string,
-		body: RelayPairingRequest
+		body: RelayPairingRequest,
+		holder?: string
 	): Promise<PairingRecord | undefined> {
 		const now = Date.now();
 		const held = this.store.pairings().filter((pairing) => pairing.expiresAt > now);
@@ -51,6 +52,7 @@ export class PairingOfferService {
 			expiresAt: now + remoteLimits.pairingTtlMs,
 			attempts: 1,
 			account: true,
+			...(holder && { holder }),
 			request,
 			challenge
 		};
@@ -64,7 +66,8 @@ export class PairingOfferService {
 		const pairing = this.live(approval.pairingId);
 		if (!pairing) return 'not-found';
 		if (pairing.state !== 'requested') return 'pairing-unavailable';
-		const { pairingId, expiresAt, attempts, challenge } = pairing;
+		const { pairingId, expiresAt, attempts, challenge, holder } = pairing;
+		if (holder && this.store.revokedHolder(holder)) return 'forbidden';
 		/* The approval is for one request. A later request that replaced it is not approved. */
 		const bound = challenge && approval.challenge && safeEqual(challenge, approval.challenge);
 		if (!bound) return 'pairing-unavailable';
@@ -76,6 +79,7 @@ export class PairingOfferService {
 			attempts,
 			challenge,
 			...(pairing.account && { account: pairing.account }),
+			...(holder && { holder }),
 			...approved
 		});
 		return undefined;

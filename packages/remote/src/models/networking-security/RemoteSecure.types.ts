@@ -58,7 +58,7 @@ export interface PairingSecret {
 	code: string;
 	deviceKey: string;
 	deviceName: string;
-	platform: 'ios' | 'test';
+	platform: 'ios' | 'web' | 'test';
 	challenge: string;
 }
 

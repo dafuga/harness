@@ -18,6 +18,7 @@ extension RemoteSession {
     /// Opens the camera for an unpaired phone that is neither scanning nor pairing already.
     func scan(_ scanner: RemoteScanner, deviceName: String, done: @escaping Paired) {
         queue.async {
+            guard self.account == nil else { return done(.failure(.failed("Choose a linked Mac in Harness."))) }
             guard self.record == nil, self.pairing == nil, self.look == nil else {
                 return done(.failure(.failed("Finish or leave what is under way first.")))
             }

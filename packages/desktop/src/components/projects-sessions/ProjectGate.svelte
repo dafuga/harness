@@ -94,12 +94,12 @@
 		</hx-section>{/if}
 	{#if phone}<hx-p class="phone-hint"
 			><hx-span
-				>Connect your phone: open Harness on it and sign in with the same Google account.</hx-span
+				>Open Harness on your iPhone or the web and sign in with the same Google account.</hx-span
 			><hx-button
 				type="button"
 				class="quiet"
 				aria-haspopup="dialog"
-				onclick={() => (dialog = 'phone')}>Phone access</hx-button
+				onclick={() => (dialog = 'phone')}>Linked devices</hx-button
 			></hx-p
 		>{/if}
 	{#if children}<hx-div class="gate-more" class:inline={!local}>{@render children()}</hx-div>{/if}
@@ -107,7 +107,11 @@
 <Modal open={dialog === 'create'} title="New project" variant="text" onClose={() => (dialog = null)}
 	><GameCreate /></Modal
 >
-<Modal open={dialog === 'phone'} title="Phone access" variant="text" onClose={() => (dialog = null)}
+<Modal
+	open={dialog === 'phone'}
+	title="Linked devices"
+	variant="text"
+	onClose={() => (dialog = null)}
 	><hx-div class="gate-dialog-body">{@render phone?.()}</hx-div></Modal
 >
 

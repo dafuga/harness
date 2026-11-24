@@ -24,21 +24,43 @@ function registration(value: unknown, hostId: string): RemoteHostRegistration {
 export class RemoteRegistrationAdapter {
 	constructor(private readonly config: RemoteRegistrationAdapterConfig) {}
 	/** The hub takes the owner from the session. Only the four public fields are sent. */
-	async register(input: RemoteHostRegisterInput): Promise<RemoteHostRegistration> {
+	async register(
+		input: RemoteHostRegisterInput,
+		ownerId?: string
+	): Promise<RemoteHostRegistration> {
 		const { origin, credentials, fetch } = this.config;
 		if (!origin) throw signedOut();
 		const http = new HostedHttpAdapter({ origin, credentials, fetch });
 		const credential = await http.authorize().catch(() => {
 			throw signedOut();
 		});
+		if (ownerId && credential.principalId !== ownerId) throw signedOut();
 		const { hostId, hostKey, credentialHash, name } = input,
-			body = JSON.stringify({ hostId, hostKey, credentialHash, name });
+			body = JSON.stringify({
+				hostId,
+				hostKey,
+				credentialHash,
+				name,
+				...(ownerId && { accountLinked: true })
+			});
 		const response = await http
 			.request('/api/remote/hosts', credential, { method: 'POST', body })
 			.catch((error: HostedFailureValidator) => {
 				throw error.status === 401 ? signedOut() : error;
 			});
 		return registration(await response.json(), hostId);
+	}
+	async unregister(hostId: string, ownerId: string): Promise<void> {
+		const { origin, credentials, fetch } = this.config;
+		if (!origin) throw signedOut();
+		const http = new HostedHttpAdapter({ origin, credentials, fetch });
+		const credential = await http.authorize();
+		if (credential.principalId !== ownerId) throw signedOut();
+		await http
+			.request('/api/remote/hosts/' + hostId, credential, { method: 'DELETE', body: '{}' })
+			.catch((error: HostedFailureValidator) => {
+				if (error.status !== 404) throw error;
+			});
 	}
 }
 

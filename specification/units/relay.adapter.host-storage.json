@@ -17,6 +17,8 @@
 			"HostStorageAdapter.forgetHost",
 			"HostStorageAdapter.host",
 			"HostStorageAdapter.saveHost",
+			"HostStorageAdapter.revokedHolder",
+			"HostStorageAdapter.blockHolder",
 			"HostStorageAdapter.device",
 			"HostStorageAdapter.devices",
 			"HostStorageAdapter.saveDevice",
@@ -66,6 +68,16 @@
 						"registeredAt": "2026-11-15T12:00:00.000Z"
 					}
 				]
+			},
+			{
+				"name": "HostStorageAdapter.revokedHolder.holder",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "HostStorageAdapter.blockHolder.holder",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HostStorageAdapter.device.deviceId",
@@ -404,6 +416,42 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "HostStorageAdapter.revokedHolder",
+				"inputs": [
+					{
+						"name": "HostStorageAdapter.revokedHolder.holder",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.revokedHolder",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostStorageAdapter.blockHolder",
+				"inputs": [
+					{
+						"name": "HostStorageAdapter.blockHolder.holder",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.blockHolder",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "HostStorageAdapter.device",

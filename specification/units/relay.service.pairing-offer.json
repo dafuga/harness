@@ -66,6 +66,11 @@
 				"required": true
 			},
 			{
+				"name": "PairingOfferService.openAccount.holder",
+				"type": "string",
+				"required": false
+			},
+			{
 				"name": "PairingOfferService.approve.approval",
 				"type": "Approval",
 				"required": true,
@@ -234,6 +239,11 @@
 						"name": "PairingOfferService.openAccount.body",
 						"type": "RelayPairingRequest",
 						"required": true
+					},
+					{
+						"name": "PairingOfferService.openAccount.holder",
+						"type": "string",
+						"required": false
 					}
 				],
 				"outputs": [

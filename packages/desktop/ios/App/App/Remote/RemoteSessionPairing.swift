@@ -13,14 +13,15 @@ extension RemoteSession {
         guard record == nil, pairing == nil, look == nil else {
             return .failure(.failed("Disconnect from the current computer first."))
         }
+        guard matchesAccount(input.account?.subject) else { return .failure(.failed("Sign in to continue.")) }
         let attempt = RemotePairing(input, queue: queue)
         pairing = attempt
         pending = input
-        move("pairing")
+        move(input.account == nil ? "pairing" : "connecting")
         attempt.start(
             pending: { [weak self, weak attempt] in
                 guard let self = self, self.pairing === attempt else { return }
-                self.move("pending-approval")
+                if input.account == nil { self.move("pending-approval") }
             },
             done: { [weak self, weak attempt] result in
                 guard let self = self, self.pairing === attempt else { return }
@@ -29,12 +30,10 @@ extension RemoteSession {
         return .success(snapshot)
     }
 
-    func cancelAccountPairing() {
+    func endAccount() {
         queue.async {
-            guard self.pending?.account != nil else { return }
-            self.pairing?.cancel()
-            self.pairing = nil
-            self.pending = nil
+            self.endLook()
+            self.forget()
             self.move("unpaired")
         }
     }
@@ -46,6 +45,7 @@ extension RemoteSession {
         switch result {
         case .failure(let failure): move("unpaired", reason: failure.message)
         case .success(let record):
+            guard matchesAccount(record.accountSubject) else { return move("unpaired") }
             do {
                 try vault.save(record)
             } catch {

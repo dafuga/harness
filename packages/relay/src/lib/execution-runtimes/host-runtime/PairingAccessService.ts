@@ -35,12 +35,17 @@ export class PairingAccessService {
 		return { state: pairing ? pairing.state : 'expired', expiresAt: iso(stored.expiresAt) };
 	}
 
+	heldBy(pairingId: string, holder: string): boolean {
+		return this.store.pairing(pairingId)?.holder === holder && !this.store.revokedHolder(holder);
+	}
+
 	async requestAccount(
 		pairingId: string,
-		request: RelayPairingRequest
+		request: RelayPairingRequest,
+		holder?: string
 	): Promise<RelayPairingPoll | undefined> {
 		const registration = this.store.host()?.credentialHash;
-		const offer = await this.offers.openAccount(pairingId, request);
+		const offer = await this.offers.openAccount(pairingId, request, holder);
 		if (!offer || !registration || this.store.host()?.credentialHash !== registration)
 			return undefined;
 		const expiresAt = iso(offer.expiresAt);
@@ -49,6 +54,7 @@ export class PairingAccessService {
 				type: 'pairing-request',
 				pairingId,
 				account: true,
+				...(holder && { holder }),
 				expiresAt,
 				...request
 			})
@@ -67,7 +73,12 @@ export class PairingAccessService {
 		const pairing = this.offers.live(pairingId);
 		if (!pairing) return 'not-found';
 		const asking = pairing.state === 'open' || pairing.state === 'requested';
-		if (pairing.account || !asking || pairing.attempts >= remoteLimits.pairingAttempts)
+		if (
+			this.store.host()?.accountLinked ||
+			pairing.account ||
+			!asking ||
+			pairing.attempts >= remoteLimits.pairingAttempts
+		)
 			return 'pairing-unavailable';
 		const { ephemeralKey, sealed, challenge } = request;
 		this.store.savePairing({

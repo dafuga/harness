@@ -62,6 +62,7 @@ export type RelayHostFrame =
 			type: 'pairing-request';
 			pairingId: string;
 			account?: true;
+			holder?: string;
 			expiresAt?: string;
 	  } & RelayPairingRequest)
 	| { type: 'device-revoked'; deviceId: string }
@@ -90,12 +91,15 @@ export interface RelayManageOwner {
 	/** The verified hosted identity of the caller. Never taken from a request body. */
 	owner: { id: string };
 	hostId: string;
+	/** A verified Hub session reference, never a client-supplied identity. */
+	holder?: string;
 }
 
 export interface RelayManageRegister extends RelayManageOwner {
 	hostKey: string;
 	credentialHash: string;
 	name: string;
+	accountLinked?: true;
 }
 
 export interface RelayManageDevice extends RelayManageOwner {
@@ -115,6 +119,7 @@ export interface RemoteHostRegistration extends RelayRegistered {
 
 /** Hub `POST /api/remote/hosts` body. */
 export interface RemoteHostRegisterInput {
+	accountLinked?: true;
 	hostId: string;
 	hostKey: string;
 	credentialHash: string;
@@ -122,6 +127,7 @@ export interface RemoteHostRegisterInput {
 }
 
 export interface RemoteHostSummary {
+	accountLinked?: true;
 	hostId: string;
 	name: string;
 	online: boolean;

@@ -47,7 +47,7 @@ export interface RemoteResume {
 
 export interface AttachInput {
 	protocol: typeof REMOTE_PROTOCOL;
-	client: { kind: 'electron' | 'ios' | 'test'; name: string };
+	client: { kind: 'electron' | 'ios' | 'web' | 'test'; name: string };
 	resume: RemoteResume | null;
 }
 

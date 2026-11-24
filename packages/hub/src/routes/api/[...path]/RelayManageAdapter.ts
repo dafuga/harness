@@ -1,5 +1,9 @@
 // @harness-uid u_kqcz5yforb
-import type { RelayManageAdapterConfig, Operation } from './RelayManageAdapter.types';
+import type {
+	RelayManageAdapterConfig,
+	Operation,
+	BrowserPairingCall
+} from './RelayManageAdapter.types';
 import type {
 	RelayManageDevice,
 	RelayManageOwner,
@@ -40,6 +44,32 @@ function refusal(status: number, value: unknown): never {
 	return hubFail(known && REFUSALS[error as string] === status ? (error as string) : 'unavailable');
 }
 
+async function fetchRelay(
+	hosts: DurableObjectNamespace,
+	name: string,
+	path: string,
+	init: RequestInit
+): Promise<Response> {
+	try {
+		return await hosts.get(hosts.idFromName(name)).fetch(path, init);
+	} catch {
+		return hubFail('unavailable');
+	}
+}
+
+function browser(
+	hosts: DurableObjectNamespace,
+	input: RelayManageOwner,
+	route: string,
+	init: RequestInit
+): Promise<Response> {
+	const headers = new Headers(init.headers);
+	headers.set('X-Harness-Account-Owner', input.owner.id);
+	headers.set('X-Harness-Account-Session', input.holder ?? '');
+	const path = `https://relay.internal/account/v1/hosts/${input.hostId}/${route}`;
+	return fetchRelay(hosts, input.hostId, path, { ...init, headers });
+}
+
 /**
  * Owner management of a host on the relay, through the namespace binding. Every operation is one
  * POST to the object named by the host id. Nothing of a request or an answer is logged.
@@ -50,8 +80,8 @@ export class RelayManageAdapter {
 	constructor(private readonly config: RelayManageAdapterConfig) {}
 
 	async register(input: RelayManageRegister): Promise<RelayRegistered> {
-		const { hostId, hostKey, credentialHash, name } = input;
-		const body = { ...ownerOf(input), hostKey, credentialHash, name };
+		const { hostId, hostKey, credentialHash, name, accountLinked, holder } = input;
+		const body = { ...ownerOf(input), hostKey, credentialHash, name, accountLinked, holder };
 		return this.replies.registered(await this.manage('register', body), hostId);
 	}
 
@@ -74,6 +104,7 @@ export class RelayManageAdapter {
 		const request = { ephemeralKey, sealed, challenge };
 		const result = (await this.manage('pairing-request', {
 			...ownerOf(input),
+			holder: input.holder,
 			pairingId,
 			request
 		})) as {
@@ -89,7 +120,19 @@ export class RelayManageAdapter {
 		return { state: result.state, expiresAt: result.expiresAt };
 	}
 
-	async computers(owner: RelayManageOwner['owner']) {
+	async browserPairing(input: RelayManageOwner, call: BrowserPairingCall): Promise<Response> {
+		const { pairingId, operation, proof } = call;
+		const headers = { 'Content-Type': 'application/json' };
+		const init = { method: 'POST', headers, body: JSON.stringify(proof) };
+		return browser(this.config.hosts, input, `pairings/${pairingId}/${operation}`, init);
+	}
+
+	async browserSocket(input: RelayManageDevice): Promise<Response> {
+		const headers = { Upgrade: 'websocket', 'X-Harness-Account-Device': input.deviceId };
+		return browser(this.config.hosts, input, 'connect', { headers });
+	}
+
+	async computers(owner: RelayManageOwner['owner'], accountOnly = false) {
 		const reply = await this.send('directory-list', { owner }, `owner:${owner.id}`);
 		const ids = await jsonOf(reply);
 		if (
@@ -100,16 +143,16 @@ export class RelayManageAdapter {
 			return hubFail('unavailable');
 		const computers = [];
 		for (const hostId of ids as string[]) {
-			const computer = await this.discover(owner, hostId);
+			const computer = await this.discover(owner, hostId, accountOnly);
 			if (computer) computers.push(computer);
 		}
 		return computers;
 	}
 
-	private async discover(owner: RelayManageOwner['owner'], hostId: string) {
+	private async discover(owner: RelayManageOwner['owner'], hostId: string, accountOnly: boolean) {
 		try {
-			const { name, online } = await this.summary({ owner, hostId });
-			return { hostId, name, online };
+			const { name, online, accountLinked } = await this.summary({ owner, hostId });
+			return accountOnly && !accountLinked ? null : { hostId, name, online };
 		} catch (error) {
 			const code = (error as { code?: string }).code;
 			if (code === 'not-found' || code === 'forbidden') return null;
@@ -148,11 +191,7 @@ export class RelayManageAdapter {
 		const { hosts } = this.config;
 		const headers = { 'Content-Type': 'application/json' };
 		const init = { method: 'POST', headers, body: JSON.stringify(body) };
-		try {
-			return await hosts.get(hosts.idFromName(name)).fetch(MANAGE + operation, init);
-		} catch {
-			return hubFail('unavailable');
-		}
+		return fetchRelay(hosts, name, MANAGE + operation, init);
 	}
 }
 

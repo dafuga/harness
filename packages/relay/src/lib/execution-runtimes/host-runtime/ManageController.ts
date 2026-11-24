@@ -55,16 +55,28 @@ export class ManageController {
 		if (host.ownerId !== call.owner.id) return relayError(403, 'forbidden');
 		if (operation === 'pairing-key')
 			return relayResponse(200, { hostId: host.hostId, hostKey: host.hostKey });
-		if (operation === 'pairing-request') return this.accountRequest(body);
+		if (operation === 'pairing-request') return this.accountRequest(body, host, call.holder);
 		return this.run(operation, call, host);
 	}
 
-	private async accountRequest(body: Record<string, unknown> | undefined): Promise<Response> {
+	ownsAccount(hostId: string, ownerId: string): boolean {
+		const host = this.store.host();
+		return host?.accountLinked === true && host.hostId === hostId && host.ownerId === ownerId;
+	}
+
+	private async accountRequest(
+		body: Record<string, unknown> | undefined,
+		host: HostRecord,
+		holder?: string
+	): Promise<Response> {
+		const linked = host.accountLinked ? holder : undefined;
+		if (host.accountLinked && (!linked || this.store.revokedHolder(linked)))
+			return relayError(403, 'forbidden');
 		const { pairingId, request } = body ?? {};
 		const input = new PairingBodyValidator().request(request);
 		if (typeof pairingId !== 'string' || !remotePatterns.pairingId.test(pairingId) || !input)
 			return relayError(400, 'invalid-input');
-		const pending = await this.services.pairing.requestAccount(pairingId, input);
+		const pending = await this.services.pairing.requestAccount(pairingId, input, linked);
 		return pending ? relayResponse(200, pending) : relayError(409, 'pairing-unavailable');
 	}
 

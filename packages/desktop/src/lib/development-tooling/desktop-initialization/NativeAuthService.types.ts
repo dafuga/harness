@@ -12,6 +12,7 @@ export interface AuthOptions {
 	now?: () => number;
 	clearCache?: () => Promise<void>;
 	onDisconnect?: () => void;
+	onSignIn?: (ownerId: string) => void;
 }
 
 export interface Pending {

@@ -6,6 +6,7 @@ import Foundation
 final class RemotePairing {
     struct Account {
         let hostKey: String
+        let subject: String
         let request: ([String: Any], @escaping (Result<Void, RemoteFailure>) -> Void) -> Void
     }
 
@@ -81,7 +82,7 @@ final class RemotePairing {
         queue.asyncAfter(deadline: .now() + RemoteLimits.pollSeconds) {
             guard !self.cancelled else { return }
             guard Date().timeIntervalSince(self.started) < RemoteLimits.pairingSeconds else {
-                return done(.failure(.failed("The pairing expired before it was approved.")))
+                return done(.failure(.failed("The connection request expired.")))
             }
             self.relay.post(origin, "\(self.path)/poll", body: [:]) { result in
                 self.queue.async { self.polled(origin, result, done: done) }
@@ -97,8 +98,8 @@ final class RemotePairing {
             relay.post(origin, "\(path)/exchange", body: ["verifier": material.verifier]) { result in
                 self.queue.async { self.exchanged(result, done: done) }
             }
-        case "denied": done(.failure(.failed("The pairing was declined on your computer.")))
-        case "expired": done(.failure(.failed("The pairing expired before it was approved.")))
+        case "denied": done(.failure(.failed("This computer refused the connection.")))
+        case "expired": done(.failure(.failed("The connection request expired.")))
         default: poll(origin, done: done)
         }
     }
@@ -117,7 +118,7 @@ final class RemotePairing {
                 deviceId: material.deviceId, deviceName: input.deviceName,
                 deviceSecret: RemoteCoding.base64url(material.deviceKey.rawRepresentation),
                 credential: approval.credential, generation: approval.generation, grant: approval.grant,
-                lastOnlineAt: nil, epoch: nil, sequence: 0, methods: nil)))
+                lastOnlineAt: nil, epoch: nil, sequence: 0, methods: nil, accountSubject: input.account?.subject)))
         }
     }
 }

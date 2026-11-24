@@ -36,23 +36,18 @@ test('a tablet-wide phone shell keeps the shared workspace and its connection in
 	await remoteEvidence(page, testInfo, 'tablet-phone-workspace');
 });
 
-test('at a tablet width the approval shows the whole identity without overflowing', async ({
-	page
-}, testInfo) => {
+test('at a tablet width the linked device and revoke control fit', async ({ page }, testInfo) => {
 	await remoteHostFixture(page, true);
 	await page.goto('/');
-	await page.getByRole('button', { name: 'Phone access', exact: true }).click();
-	const panel = page.getByRole('region', { name: 'Phone access' });
-	await panel.getByRole('button', { name: 'Pair a phone', exact: true }).click();
+	await page.getByRole('button', { name: 'Linked devices', exact: true }).click();
+	const panel = page.getByRole('region', { name: 'Linked devices' });
 	await page.evaluate(() =>
 		(window as unknown as { __remoteHost: { request: () => void } }).__remoteHost.request()
 	);
-	const request = panel.getByRole('group', { name: `${phone.name} asks to connect` });
-	const whole = phone.deviceId.match(/.{4}/g)!.join(' ');
-	await expect(request.getByText(whole)).toBeVisible();
-	expect(await inside(page, 'Phone access')).toBe(true);
+	await expect(panel.getByRole('button', { name: `Revoke ${phone.name}` })).toBeVisible();
+	expect(await inside(page, 'Linked devices')).toBe(true);
 	expect(await fits(page)).toBe(true);
-	await remoteEvidence(page, testInfo, 'tablet-desktop-approval');
+	await remoteEvidence(page, testInfo, 'tablet-linked-device');
 });
 
 test('a narrow status bar stacks its facts, and a wide one keeps them in one row', async ({

@@ -17,6 +17,7 @@
 			"DevicePairingService.constructor",
 			"DevicePairingService.scanned",
 			"DevicePairingService.request",
+			"DevicePairingService.requestAccount",
 			"DevicePairingService.poll",
 			"DevicePairingService.exchange",
 			"DevicePairingInput",
@@ -118,6 +119,21 @@
 				"required": false,
 				"default": "undefined (omitted)",
 				"description": "The phone's own P-256 key pair: its public key is sealed into the request and gives the deviceId (the first 40 hex of its SHA-256). When it is omitted (default undefined), request creates a new pair with remoteKeys() and returns it in the PendingPairing."
+			},
+			{
+				"name": "DevicePairingService.requestAccount.input",
+				"type": "DevicePairingInput",
+				"required": true
+			},
+			{
+				"name": "DevicePairingService.requestAccount.hostKey",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "DevicePairingService.requestAccount.submit",
+				"type": "(body: RelayPairingRequest) => Promise<unknown>",
+				"required": true
 			},
 			{
 				"name": "DevicePairingService.poll.pending",
@@ -304,6 +320,39 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "DevicePairingService.requestAccount",
+				"inputs": [
+					{
+						"name": "DevicePairingService.requestAccount.input",
+						"type": "DevicePairingInput",
+						"required": true
+					},
+					{
+						"name": "DevicePairingService.requestAccount.hostKey",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "DevicePairingService.requestAccount.submit",
+						"type": "(body: RelayPairingRequest) => Promise<unknown>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DevicePairingService.requestAccount",
+						"type": "Promise<PendingPairing>"
+					}
+				],
+				"errors": [
+					{
+						"name": "DevicePairingError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "DevicePairingService.poll",

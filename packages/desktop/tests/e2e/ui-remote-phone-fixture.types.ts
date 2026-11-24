@@ -15,9 +15,10 @@ export interface PhoneOptions {
 
 export interface PhoneState {
 	options: PhoneOptions;
-	phone: { state: string; deviceName: string | null };
+	phone: { state: string; deviceName: string | null; host: PhoneOptions['host'] };
 	/** How the next scans end: a failure code of the plugin each, then success. */
 	scans: string[];
+	computers: Record<string, (input: never) => Promise<unknown>>;
 	computer: Record<string, Operation>;
 	listeners: Map<string, { eventName: string; callback: Callback }>;
 	status: () => Record<string, unknown>;

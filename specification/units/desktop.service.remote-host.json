@@ -21,6 +21,8 @@
 			"RemoteHostService.start",
 			"RemoteHostService.enable",
 			"RemoteHostService.disable",
+			"RemoteHostService.linkAccount",
+			"RemoteHostService.endAccount",
 			"RemoteHostService.screen",
 			"RemoteHostService.suspend",
 			"RemoteHostService.resume",
@@ -48,6 +50,11 @@
 				"type": "(status: RemoteHostStatus) => void",
 				"required": true,
 				"description": "The function called with each published RemoteHostStatus. It is kept in a Set, so adding the same function twice still gives one listener."
+			},
+			{
+				"name": "RemoteHostService.linkAccount.ownerId",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "RemoteHostService.screen.locked",
@@ -624,6 +631,36 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "RemoteHostService.linkAccount",
+				"inputs": [
+					{
+						"name": "RemoteHostService.linkAccount.ownerId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostService.linkAccount",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostService.endAccount",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostService.endAccount",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "RemoteHostService.screen",
 				"inputs": [
 					{
@@ -1003,6 +1040,11 @@
 		},
 		{
 			"unit": "desktop.function.remote-host-status",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.networking-security-remote-host-service-remote-host-account",
 			"via": "import",
 			"origin": "derived"
 		},

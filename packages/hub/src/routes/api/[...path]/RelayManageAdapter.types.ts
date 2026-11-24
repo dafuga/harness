@@ -4,6 +4,12 @@ export interface RelayManageAdapterConfig {
 	hosts: DurableObjectNamespace;
 }
 
+export interface BrowserPairingCall {
+	pairingId: string;
+	operation: 'poll' | 'exchange';
+	proof: { verifier?: unknown };
+}
+
 export type Operation =
 	| 'register'
 	| 'summary'

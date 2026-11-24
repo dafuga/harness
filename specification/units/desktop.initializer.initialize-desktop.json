@@ -180,26 +180,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.adapter.native-session",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.adapter.relay-socket",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.adapter.remote-host-store",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.adapter.remote-registration",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "desktop.function.desktop-ipc",
 			"via": "import",
 			"origin": "derived"
@@ -216,6 +196,11 @@
 		},
 		{
 			"unit": "desktop.module.development-tooling-desktop-initialization-initialize-desktop-choose-project",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-initialize-desktop-desktop-remote",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -266,16 +251,6 @@
 		},
 		{
 			"unit": "desktop.service.provider-discovery",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.service.remote-host",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.service.remote-lifecycle",
 			"via": "import",
 			"origin": "derived"
 		},

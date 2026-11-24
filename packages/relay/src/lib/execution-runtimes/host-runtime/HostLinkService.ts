@@ -73,11 +73,15 @@ export class HostLinkService {
 	private requests(): RelayHostFrame[] {
 		const now = Date.now();
 		return this.store.pairings().flatMap((pairing): RelayHostFrame[] => {
-			const { pairingId, request, challenge } = pairing;
+			const { pairingId, request, challenge, holder } = pairing;
 			const waiting = pairing.state === 'requested' && pairing.expiresAt > now;
 			if (!waiting || !request || !challenge) return [];
 			const account = pairing.account
-				? { account: pairing.account, expiresAt: new Date(pairing.expiresAt).toISOString() }
+				? {
+						account: pairing.account,
+						...(holder && { holder }),
+						expiresAt: new Date(pairing.expiresAt).toISOString()
+					}
 				: {};
 			return [{ type: 'pairing-request', pairingId, ...request, challenge, ...account }];
 		});
