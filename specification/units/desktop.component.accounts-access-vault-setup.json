@@ -78,11 +78,17 @@
 		]
 	},
 	"scenarios": [
-		"vault-local-setup"
+		"vault-local-setup",
+		"component-catalog-previews"
 	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
+	},
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-accounts-access-vault-setup",
+		"viewport": "desktop"
 	}
 }
