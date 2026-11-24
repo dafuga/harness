@@ -56,7 +56,8 @@ export class LocalClientService {
 			operations = new LocalOperationsService({
 				bridge,
 				control: options.control,
-				hubOverview: auth && (() => auth.overview())
+				hubOverview: auth && (() => auth.overview()),
+				deployApprovals: auth && ((input) => auth.deployApprovals(input))
 			}),
 			host = { id: null, name: hostname(), platform: process.platform };
 		this.wire = new WireSessionService({

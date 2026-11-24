@@ -1,0 +1,101 @@
+{
+	"schemaVersion": 1,
+	"id": "exact-release-deploy-approvals",
+	"title": "Review and decide an exact deployment",
+	"kind": "ui",
+	"units": [
+		"desktop.page.development-tooling-deploy-approvals",
+		"desktop.component.development-tooling-deploy-approval-card"
+	],
+	"states": [
+		{
+			"id": "entry",
+			"title": "Native home",
+			"coverage": "required"
+		},
+		{
+			"id": "pending",
+			"title": "Pending release requests",
+			"coverage": "required"
+		},
+		{
+			"id": "review",
+			"title": "Exact artifact and plan review",
+			"coverage": "required"
+		},
+		{
+			"id": "rollback-details",
+			"title": "Rollback identity and expiry",
+			"coverage": "required"
+		},
+		{
+			"id": "allowed",
+			"title": "Allow receipt",
+			"coverage": "required"
+		},
+		{
+			"id": "denied",
+			"title": "Deny receipt",
+			"coverage": "required"
+		},
+		{
+			"id": "unavailable",
+			"title": "Authority unavailable",
+			"coverage": "required"
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 900
+		},
+		{
+			"id": "tablet",
+			"width": 820,
+			"height": 1180
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "native-adapter-review",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-deploy-approvals.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 240000
+		}
+	],
+	"evidence": [
+		{
+			"id": "approval-screens",
+			"kind": "screenshot",
+			"states": [
+				"entry",
+				"pending",
+				"review",
+				"rollback-details",
+				"allowed",
+				"denied",
+				"unavailable"
+			],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "viewport",
+			"required": true
+		},
+		{
+			"id": "approval-renderer-workload",
+			"kind": "benchmark",
+			"states": ["pending"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"required": true
+		}
+	]
+}

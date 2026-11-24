@@ -11,6 +11,7 @@ import { activityCases } from './activity';
 import { createDesktopData } from './desktopData.svelte';
 import { desktopControls } from './desktopControls';
 import { desktopRuntime, gameCases } from './desktopRuntime';
+import { approvalCard, approvalCardProps } from './deployApprovals';
 import { deploymentCases, deploymentVariantProps } from './deployments';
 import { coveragePanelVariantProps } from './coveragePanelVariants';
 import { measuresPanelVariantProps } from './measuresPanelVariants';
@@ -62,6 +63,7 @@ export function previewFixture(id: string, variant = '') {
 		...reportCases,
 		...activityCases,
 		...desktopCases(desktop),
+		[approvalCard]: approvalCardProps,
 		...gameCases,
 		...remote.cases,
 		...hub.cases,

@@ -1,0 +1,124 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-scripted-deploy-deploy-approval-client",
+	"uid": "u_pkn44eqxgd",
+	"kind": "service",
+	"title": "DeployApprovalClient",
+	"responsibility": "Owns the DeployApprovalClient service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/execution-runtimes/scripted-deploy/DeployApprovalClient.ts",
+			"src/services/execution-runtimes/scripted-deploy/DeployApprovalClient.types.ts"
+		],
+		"symbols": [
+			"DeployApprovalClient",
+			"DeployApprovalClient.constructor",
+			"DeployApprovalClient.wait",
+			"InboxConfig",
+			"RunnerScope"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "DeployApprovalClient.constructor.config",
+				"type": "InboxConfig",
+				"required": true
+			},
+			{
+				"name": "DeployApprovalClient.wait.card",
+				"type": "ApprovalCard",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "DeployApprovalClient.wait",
+				"type": "Promise<ApprovalReceipt>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "DeployApprovalClient.wait",
+				"inputs": [
+					{
+						"name": "DeployApprovalClient.wait.card",
+						"type": "ApprovalCard",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployApprovalClient.wait",
+						"type": "Promise<ApprovalReceipt>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "DeployApprovalClient.constructor",
+				"inputs": [
+					{
+						"name": "DeployApprovalClient.constructor.config",
+						"type": "InboxConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployApprovalClient.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-approval-inbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.execution-runtimes-deploy-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/scripted-deploy/DeployApprovalClient.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/scripted-deploy/DeployApprovalClient.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

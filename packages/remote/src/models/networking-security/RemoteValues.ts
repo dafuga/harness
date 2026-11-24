@@ -65,7 +65,8 @@ export const localMethods = [
 	'hostedStatus',
 	'connectHosted',
 	'disconnectHosted',
-	'projectOverview'
+	'projectOverview',
+	'deployApprovals'
 ] as const;
 /** The desktop control port. Local connection only. */
 export const controlMethods = [
@@ -121,6 +122,7 @@ export const mutationMethods: readonly RemoteMethod[] = [
 	'selectProject',
 	'connectHosted',
 	'disconnectHosted',
+	'deployApprovals',
 	'remote.enable',
 	'remote.disable',
 	'remote.createPairing',

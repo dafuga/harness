@@ -35,6 +35,7 @@
 	const local = $derived(kind !== 'capacitor');
 	/** The phone offers Project Overview after the Hub confirms this account may read it. */
 	let overview = $state(false);
+	let approvals = $state(false);
 	onMount(() => {
 		/** One adapter per runtime: the desktop preload, the phone's native plugin, or neither. */
 		const environment = account.environment;
@@ -57,12 +58,22 @@
 		const sync = new ProjectSyncService({ refresh: () => workspace.loadProjects() });
 		if (account.signedIn) sync.start();
 		const releaseOverview = environment.account ? offerOverview(environment) : undefined;
+		let active = true;
+		if (account.signedIn) {
+			void environment.bridge?.deployApprovals?.().then(
+				(value) => {
+					if (active && Array.isArray(value)) approvals = true;
+				},
+				() => {}
+			);
+		}
 		void remote.host.start();
 		void remote.phone.start();
 		window.addEventListener('popstate', show);
 		return () => {
 			window.removeEventListener('popstate', show);
 			releaseOverview?.();
+			active = false;
 			sync.stop();
 			overview = false;
 			remote.host.dispose();
@@ -105,8 +116,17 @@
 		choose={(projectId) => void workspace.switchProject(projectId)}
 		phone={local && available && workspace.remote.host ? phoneAccess : undefined}
 	>
-		{#if account.environment?.tracker}
-			<hx-a class="project-overview-link" href={resolve('/tracker' as '/')}>Needs you</hx-a>
+		{#if account.environment?.tracker || approvals}
+			<hx-nav class="decision-links" aria-label="Decisions">
+				{#if account.environment?.tracker}
+					<hx-a class="project-overview-link" href={resolve('/tracker' as '/')}>Needs you</hx-a>
+				{/if}
+				{#if approvals}
+					<hx-a class="project-overview-link" href={resolve('/deploy-approvals')}
+						>Deploy approvals</hx-a
+					>
+				{/if}
+			</hx-nav>
 		{/if}
 		{#if available && !local}<RemoteConnection {workspace} />{/if}
 		{#if account.signedIn && (local || remote.phone.status?.state !== 'online')}
@@ -120,6 +140,18 @@
 {#snippet phoneAccess()}<RemoteConnection {workspace} />{/snippet}
 
 <style>
+	.decision-links {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: var(--hx-space-12);
+	}
+	.decision-links > :global(a) {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		padding-inline: var(--hx-space-8);
+	}
 	.account-status {
 		display: flex;
 		flex-wrap: wrap;

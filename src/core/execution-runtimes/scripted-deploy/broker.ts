@@ -10,6 +10,7 @@ import {
 	type Plan,
 	type Proof
 } from './contracts';
+import type { ApprovalReceipt } from './approvalInbox.types';
 import { runProcess } from './runProcess';
 import type {
 	DeployProject,
@@ -41,8 +42,8 @@ export class DeployBroker {
 		);
 	}
 
-	authorize(plan: Plan): Promise<Proof> {
-		return this.request('authorize', { plan }, signedProof);
+	authorize(plan: Plan, decision?: ApprovalReceipt): Promise<Proof> {
+		return this.request('authorize', { plan, ...(decision ? { decision } : {}) }, signedProof);
 	}
 
 	apply(plan: Plan, proof: Proof, artifact: string | null) {

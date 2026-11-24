@@ -66,7 +66,7 @@ export class DeployPlanning {
 			item: this.context.config.item,
 			createdAt: Date.now()
 		};
-		return { plan, parity, source: chosenSource(input, restore) };
+		return { plan, parity, source: chosenSource(input, restore), predecessor: chain };
 	}
 
 	async inventory(manifest: string): Promise<Partial<Record<Environment, Observation>>> {
@@ -147,4 +147,22 @@ function digestSignoff(record: Journal | null): string | null {
 }
 function chosenSource(input: DeployRequest, restore: Observation | null): string | null {
 	return input.release?.source ?? input.source ?? restore?.source ?? null;
+}
+
+export async function verifyCurrentDeployPlan(
+	planning: DeployPlanning,
+	config: DeployProject,
+	plan: Plan,
+	input: DeployRequest
+): Promise<void> {
+	const current = await planning.inventory(plan.manifest);
+	const parity = parityReport(
+		config,
+		current,
+		plan.release ? { release: plan.release, target: plan.environment } : undefined
+	);
+	if (parity.blocked || parity.digest !== plan.parity || manifestDigest(config) !== plan.manifest)
+		throw new ExpectedCliError('Provider state or deploy scripts changed after planning.');
+	if (plan.signoff !== digestSignoff(planning.predecessor(input, current)))
+		throw new ExpectedCliError('Predecessor sign-off changed after planning.');
 }

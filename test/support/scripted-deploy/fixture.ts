@@ -40,6 +40,7 @@ export async function deployFixture() {
 	const release = fixtureArtifact(store, project);
 	return {
 		root,
+		registry,
 		project,
 		release,
 		store,

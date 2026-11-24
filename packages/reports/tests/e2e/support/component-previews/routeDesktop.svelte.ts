@@ -5,6 +5,7 @@ import type { ProjectSnapshot } from '../../../../../desktop/src/models/developm
 import type { EnvironmentHost } from '../../../../../desktop/src/models/development-tooling/Environment.types';
 import type { DesktopData } from './desktopData.svelte';
 import { desktopData } from './sealedData';
+import { approvalsPage, pendingApproval } from './deployApprovals';
 import { openRoute, page } from './router.svelte';
 import type { PreviewProps } from './shared';
 const project = encodeURIComponent(desktopData.project.id);
@@ -15,6 +16,7 @@ const workspace = `/projects/${project}${tip}`;
 export const desktopRoutes: Record<string, { route: string; path: string }> = {
 	// No project is chosen yet: the gate lists the one the bridge remembers.
 	'desktop.page.root': { route: '/', path: '/' },
+	[approvalsPage]: { route: '/deploy-approvals', path: '/deploy-approvals' },
 	'desktop.page.projects': { route: '/projects', path: '/projects' },
 	// An address that names no project; once read, the workspace names the project it shows.
 	'desktop.page.harness-path': { route: '/harness/[...path]', path: tip },
@@ -52,6 +54,7 @@ function routeBridge(desktop: DesktopData): DesktopBridge {
 	return {
 		...desktop.bridge,
 		projectOverview: async () => allStatesSnapshot(),
+		deployApprovals: async () => [pendingApproval],
 		listProjects: async () => [{ id, name, kind: 'local', root }],
 		selectProject: async (input) => own(input),
 		snapshot: async (input) => own(input),

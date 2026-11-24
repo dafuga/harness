@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.migration.0008-deploy-approvals",
+	"uid": "u_7ujupbwk3n",
+	"kind": "migration",
+	"title": "0008-deploy-approvals",
+	"responsibility": "Owns the 0008-deploy-approvals migration unit.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/db/migrations/0008-deploy-approvals.sql"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/db/migrations/0008-deploy-approvals.sql",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/db/migrations/0008-deploy-approvals.sql"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

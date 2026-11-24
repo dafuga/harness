@@ -20,6 +20,7 @@
 			"NativeAuthService.status",
 			"NativeAuthService.disconnect",
 			"NativeAuthService.overview",
+			"NativeAuthService.deployApprovals",
 			"AuthOptions",
 			"Pending",
 			"NativeSignInError"
@@ -39,6 +40,12 @@
 				"type": "boolean",
 				"required": false,
 				"default": false
+			},
+			{
+				"name": "NativeAuthService.deployApprovals.input",
+				"type": "unknown",
+				"required": true,
+				"unknownReason": "The local IPC router supplies untrusted wire fields. Empty fields list approvals, and nonempty fields must pass the exact approval decision schema before reaching the Hub."
 			}
 		],
 		"outputs": [
@@ -244,6 +251,30 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "NativeAuthService.deployApprovals",
+				"inputs": [
+					{
+						"name": "NativeAuthService.deployApprovals.input",
+						"type": "unknown",
+						"required": true,
+						"unknownReason": "The local IPC router supplies untrusted wire fields. Empty fields list approvals, and nonempty fields must pass the exact approval decision schema before reaching the Hub."
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeAuthService.deployApprovals",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [
+					{
+						"name": "NativeSignInError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -307,6 +338,11 @@
 		},
 		{
 			"unit": "desktop.validator.remote-project-response",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-approval-inbox",
 			"via": "import",
 			"origin": "derived"
 		},

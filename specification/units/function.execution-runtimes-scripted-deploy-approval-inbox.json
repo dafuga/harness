@@ -1,0 +1,94 @@
+{
+	"schemaVersion": 1,
+	"id": "function.execution-runtimes-scripted-deploy-approval-inbox",
+	"uid": "u_qb5hhfkfec",
+	"kind": "function",
+	"title": "approvalInbox",
+	"responsibility": "Owns the approvalInbox shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/core/execution-runtimes/scripted-deploy/approvalInbox.ts",
+			"src/core/execution-runtimes/scripted-deploy/approvalInbox.types.ts"
+		],
+		"symbols": [
+			"deployApprovalPath",
+			"approvalWindowMs",
+			"approvalClockSkewMs",
+			"approvalScope",
+			"approvalCard",
+			"approvalReceipt",
+			"approvalDecision",
+			"approvalCards",
+			"runnerInput",
+			"ApprovalCard",
+			"ApprovalCards",
+			"ApprovalDecision",
+			"ApprovalReceipt"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "deployApprovalPath",
+				"type": "unknown"
+			},
+			{
+				"name": "approvalWindowMs",
+				"type": "unknown"
+			},
+			{
+				"name": "approvalClockSkewMs",
+				"type": "unknown"
+			},
+			{
+				"name": "approvalScope",
+				"type": "unknown"
+			},
+			{
+				"name": "approvalCard",
+				"type": "unknown"
+			},
+			{
+				"name": "approvalReceipt",
+				"type": "unknown"
+			},
+			{
+				"name": "approvalDecision",
+				"type": "unknown"
+			},
+			{
+				"name": "approvalCards",
+				"type": "unknown"
+			},
+			{
+				"name": "runnerInput",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/execution-runtimes/scripted-deploy/approvalInbox.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/execution-runtimes/scripted-deploy/approvalInbox.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

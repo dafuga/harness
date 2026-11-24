@@ -1,0 +1,104 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.endpoint.accounts-access-api-deploy-approvals",
+	"uid": "u_32tlacz6al",
+	"kind": "endpoint",
+	"title": "/(accounts-access)/api/deploy-approvals",
+	"responsibility": "Serves authenticated native decisions and scoped runner registration and claims for exact deploy attempts.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/routes/(accounts-access)/api/deploy-approvals/+server.ts"],
+		"symbols": ["GET", "POST"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "GET.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "GET.platform",
+				"type": "App.Platform",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "response",
+				"type": "Response"
+			}
+		],
+		"errors": [
+			{
+				"name": "InvalidDecision",
+				"type": "HTTP 400"
+			},
+			{
+				"name": "UnknownApprovalAuthority",
+				"type": "HTTP 404"
+			},
+			{
+				"name": "DecisionUnavailable",
+				"type": "HTTP 409"
+			}
+		],
+		"errorStatus": "found",
+		"operations": [
+			{
+				"name": "GET",
+				"inputs": [
+					{
+						"name": "GET.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "GET.platform",
+						"type": "App.Platform",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "GET",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.config.hub-env",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.module.tracker-overview-api",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/routes/(accounts-access)/api/deploy-approvals/+server.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/routes/(accounts-access)/api/deploy-approvals/+server.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

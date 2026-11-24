@@ -210,6 +210,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.execution-runtimes-scripted-deploy-approval-inbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.execution-runtimes-scripted-deploy-broker",
 			"via": "import",
 			"origin": "derived"
@@ -251,6 +256,11 @@
 		},
 		{
 			"unit": "service.execution-runtimes-scripted-deploy-deploy-verification",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-scripted-deploy-request-deploy-approval",
 			"via": "import",
 			"origin": "derived"
 		},

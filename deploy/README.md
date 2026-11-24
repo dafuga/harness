@@ -32,6 +32,14 @@ The owner-controlled executable named by `broker` accepts one operation as argv 
 
 Canonical JSON sorts object keys by their UTF-8 bytes and preserves array order. A sign-off payload contains `kind: "signoff"`, the reviewer's registered `issuer`, the scope from status, UTC epoch millisecond `issuedAt` and `expiresAt`, and an opaque `reference`. Keep sign-off keys outside the runner and distinct from deployment approval keys. The tracker records verified receipt references before provider mutation.
 
+## Native exact-release approvals
+
+For synthetic qualification, the host registry may define `approvalInbox` with the exact HTTPS Hub `origin`, the pinned Google actor ID in `owner`, and a `credentials` map keyed by `project:preprod` or `project:prod`. Each entry points to an owner-only file for that dedicated runner grant. In Hub, migration `0008-deploy-approvals.sql` stores decisions and one-time claims. `HARNESS_DEPLOY_APPROVER_ID` identifies the same Google actor, and `HARNESS_DEPLOY_RUNNER_GRANTS` maps each scope to its grant's SHA-256. Use the approved credential broker to provision each grant for its exact scope.
+
+The runner opens a five-minute request before holding the provider target claim. An allow can be collected once while the native session remains live. For this lane, the broker's `authorize` request includes the Hub `decision`. The broker signs the canonical plan digest and sets the proof's reference to `decision:<receipt UUID>`. Advance the original plan only after the runner verifies Daniel's signature, decision reference, current parity, predecessor sign-off and artifact bytes. An expired request or lost one-time response requires a new plan. Higher-environment rollback requires a recorded artifact digest in this lane.
+
+The synthetic integration uses a disposable Hub database, fixture-only grants and a scripted provider. A live target requires separate broker enrollment and release qualification.
+
 ## Fluora Next pilot
 
 The stage target is Pages project `fluora-next-stage` on its canonical `main` route, with D1 `fluora-stage` and staging R2. Production is a distinct Pages project, `fluora-next`, with its own D1 and R2. Fluora Next's current release manual declares no preprod. The pilot scripts can inspect prod but only mutate the dedicated stage Pages project. The old Fluora deployment branches and projects are separate.

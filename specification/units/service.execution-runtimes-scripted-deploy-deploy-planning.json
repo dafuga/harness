@@ -19,6 +19,7 @@
 			"DeployPlanning.plan",
 			"DeployPlanning.inventory",
 			"DeployPlanning.predecessor",
+			"verifyCurrentDeployPlan",
 			"DeployRequest"
 		]
 	},
@@ -66,6 +67,26 @@
 				"type": "Partial<Record<Environment, Observation>>",
 				"required": true,
 				"description": "Constructs a plan for one target from fresh provider inventory, and verifies that promotion or rollback refers to the exact live release."
+			},
+			{
+				"name": "verifyCurrentDeployPlan.planning",
+				"type": "DeployPlanning",
+				"required": true
+			},
+			{
+				"name": "verifyCurrentDeployPlan.config",
+				"type": "DeployProject",
+				"required": true
+			},
+			{
+				"name": "verifyCurrentDeployPlan.plan",
+				"type": "Plan",
+				"required": true
+			},
+			{
+				"name": "verifyCurrentDeployPlan.input",
+				"type": "DeployRequest",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -171,6 +192,44 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "verifyCurrentDeployPlan",
+				"inputs": [
+					{
+						"name": "verifyCurrentDeployPlan.planning",
+						"type": "DeployPlanning",
+						"required": true
+					},
+					{
+						"name": "verifyCurrentDeployPlan.config",
+						"type": "DeployProject",
+						"required": true
+					},
+					{
+						"name": "verifyCurrentDeployPlan.plan",
+						"type": "Plan",
+						"required": true
+					},
+					{
+						"name": "verifyCurrentDeployPlan.input",
+						"type": "DeployRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyCurrentDeployPlan",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [

@@ -55,6 +55,7 @@ export class CapacitorProjectsService {
 			connectHosted: (input) => cloud.connectHosted!(input),
 			disconnectHosted: () => cloud.disconnectHosted!(),
 			listProjects: () => this.list(),
+			deployApprovals: cloud.deployApprovals,
 			openProject: () => mac.openProject(),
 			onRunEvent: (listener) => this.listen(listener),
 			onCacheStatus: (listener) =>

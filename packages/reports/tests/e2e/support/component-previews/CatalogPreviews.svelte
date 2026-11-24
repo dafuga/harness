@@ -6,11 +6,12 @@
 		nativeAccountContext,
 		remoteContext
 	} from '../../../../../desktop/src/models/development-tooling/Environment.types';
-	import type { NativeAccountContext } from '../../../../../desktop/src/models/development-tooling/Environment.types';
+	import type { EnvironmentHost, NativeAccountContext } from '../../../../../desktop/src/models/development-tooling/Environment.types';
 	import { exampleDocument } from '../../../../../game/src/index';
 	import ChoiceRow from '../../../../../desktop/src/components/shared-primitives/ChoiceRow.svelte';
 	import { previewUnits, previewComponent } from './units';
 	import { previewFixture } from './fixtures.svelte';
+	import { approvalsPage } from './deployApprovals';
 	import { previewTracker } from './remote.svelte';
 	import { routePreview } from './visualUnits';
 	import PresentationPreviews from './PresentationPreviews.svelte';
@@ -80,12 +81,20 @@
 	let flowEdges = $state.raw<Edge[]>([]);
 	setContext(key, fixture.hub);
 	setContext(remoteContext, fixture.remote);
-	if (id === 'desktop.page.tracker')
+	if (id === approvalsPage) {
+		const { harness } = window as unknown as EnvironmentHost;
+		setContext<NativeAccountContext>(nativeAccountContext, {
+			environment: { kind: 'electron', bridge: harness, local: true },
+			signedIn: true,
+			signOut: () => {}
+		});
+	} else if (id === 'desktop.page.tracker') {
 		setContext<NativeAccountContext>(nativeAccountContext, {
 			environment: { kind: 'capacitor', bridge: undefined, local: false, tracker: previewTracker },
 			signedIn: true,
 			signOut: () => {}
 		});
+	}
 	onDestroy(fixture.cleanup);
 </script>
 

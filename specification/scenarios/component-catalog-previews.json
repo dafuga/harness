@@ -24,6 +24,7 @@
 		"desktop.component.deployment-route",
 		"desktop.component.design-panel",
 		"desktop.component.details-panel",
+		"desktop.component.development-tooling-deploy-approval-card",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-record",
@@ -92,6 +93,7 @@
 		"desktop.component.workspace-link",
 		"desktop.component.workspace-shell",
 		"desktop.layout.root",
+		"desktop.page.development-tooling-deploy-approvals",
 		"desktop.page.game",
 		"desktop.page.harness-path",
 		"desktop.page.projects",
@@ -813,6 +815,12 @@
 			"title": "Source files",
 			"coverage": "required",
 			"units": ["desktop.component.details-panel"]
+		},
+		{
+			"id": "desktop-component-development-tooling-deploy-approval-card",
+			"title": "Deploy approval review",
+			"coverage": "required",
+			"units": ["desktop.component.development-tooling-deploy-approval-card"]
 		},
 		{
 			"id": "desktop-component-development-tooling-tracker-inbox-tracker-inbox",
@@ -2019,6 +2027,12 @@
 			"title": "Desktop layout with child content",
 			"coverage": "required",
 			"units": ["desktop.layout.root"]
+		},
+		{
+			"id": "desktop-page-development-tooling-deploy-approvals",
+			"title": "Deploy approvals",
+			"coverage": "required",
+			"units": ["desktop.page.development-tooling-deploy-approvals"]
 		},
 		{
 			"id": "desktop-page-game",
@@ -8671,6 +8685,7 @@
 				"desktop-component-design-panel-readonly",
 				"desktop-component-design-panel-long",
 				"desktop-component-details-panel",
+				"desktop-component-development-tooling-deploy-approval-card",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-detail",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-record",
@@ -8852,6 +8867,7 @@
 				"desktop-component-workspace-link",
 				"desktop-component-workspace-shell",
 				"desktop-layout-root",
+				"desktop-page-development-tooling-deploy-approvals",
 				"desktop-page-game",
 				"desktop-page-harness-path",
 				"desktop-page-projects",

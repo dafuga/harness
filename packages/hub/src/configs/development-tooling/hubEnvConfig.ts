@@ -17,7 +17,9 @@ const names = [
 	'HARNESS_EMAIL_API_KEY',
 	'HARNESS_EMAIL_FROM',
 	'HARNESS_RELAY_ORIGIN',
-	'HARNESS_TRACKER_OVERVIEW_OWNER_ACTOR_ID'
+	'HARNESS_TRACKER_OVERVIEW_OWNER_ACTOR_ID',
+	'HARNESS_DEPLOY_APPROVER_ID',
+	'HARNESS_DEPLOY_RUNNER_GRANTS'
 ] as const;
 /** Only product-dedicated settings are accepted; unrelated host credentials never enter runtime. */
 export function hubEnvConfig(input: Record<string, unknown>): HubEnv {
