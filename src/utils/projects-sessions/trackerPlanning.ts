@@ -44,7 +44,10 @@ export const trackerArtifactSchema = z
 		({ summary, pages, links }) =>
 			summary !== undefined || (pages?.length ?? 0) > 0 || (links?.length ?? 0) > 0
 	);
-const receipt = z.strictObject({ by: z.string().min(1).max(80), at: z.iso.datetime() });
+const receipt = z.strictObject({
+	by: z.string().min(1).max(80).transform(sanitizeTrackerText),
+	at: z.iso.datetime()
+});
 
 export const trackerPlanningSchema = z.object({
 	artifacts: z.partialRecord(trackerStageSchema, trackerArtifactSchema),

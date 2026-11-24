@@ -187,20 +187,22 @@ async function openWindow(backend: Backend): Promise<BrowserWindow> {
 			nodeIntegration: false
 		}
 	});
-	window.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
-	confirmUnload(window, dialog);
 	const gate = new NavigationValidator();
-	window.webContents.on('will-navigate', (event, url) => {
-		if (gate.validate(url)) return;
-		event.preventDefault();
+	window.webContents.setWindowOpenHandler(({ url, frameName }) => {
 		const source = window.webContents.getURL();
 		if (
+			frameName === 'tracker-artifact' &&
 			gate.validate(source) &&
 			/^\/tracker\/?$/.test(new URL(source).pathname) &&
 			trackerArtifactUrlSchema.safeParse(url).success
 		) {
 			void shell.openExternal(url).catch(() => {});
 		}
+		return { action: 'deny' };
+	});
+	confirmUnload(window, dialog);
+	window.webContents.on('will-navigate', (event, url) => {
+		if (!gate.validate(url)) event.preventDefault();
 	});
 	window.webContents.on('will-attach-webview', (event) => event.preventDefault());
 	const choose = () => chooseProject(window, dialog);

@@ -112,6 +112,9 @@
 </hx-section>
 
 <style>
+	:global(.detail .artifact-link) {
+		text-decoration: underline;
+	}
 	:global(.flag) {
 		border-left: var(--hx-border-thick) solid var(--hx-color-primary);
 		padding-left: var(--hx-space-8);
