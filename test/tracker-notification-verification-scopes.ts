@@ -22,6 +22,10 @@ export const trackerNotificationVerificationScopes: Record<string, VerificationS
 			'test/services/projects-sessions/tracker-reminder-delivery.test.ts': {
 				'tick holds direct reminders through quiet hours, groups once, and repeats only active flags after retry':
 					'reminders',
+				'tick delivers the current explicit reminder once at its timestamp across restarts and quiet hours':
+					'reminders',
+				'tick sends a scheduled reminder through a webhook when it is the only hub destination':
+					'reminders',
 				'tick coalesces legacy webhook escalations after a block and closes them on answer':
 					'reminders',
 				'tick drops a held flag after answer and schedules the surviving flag at the next configured slot':

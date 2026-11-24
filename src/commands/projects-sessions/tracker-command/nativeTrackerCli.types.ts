@@ -21,6 +21,7 @@ export interface NativeTrackerItem {
 	every?: string;
 	every_tz?: string;
 	due?: string;
+	remind_at?: string | null;
 	owner?: string;
 	agent?: string;
 	auto?: string;

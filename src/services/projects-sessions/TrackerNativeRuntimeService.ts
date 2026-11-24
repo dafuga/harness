@@ -33,6 +33,7 @@ import {
 	composeTrackerTelemetry,
 	trackerSpokeStatus
 } from './tracker-native-runtime-service/nativeTrackerLinks';
+import { configuredTrackerReminderHost } from './tracker-native-runtime-service/configuredTrackerReminderHost';
 import { configuredTrackerDestinations } from './tracker-native-runtime-service/configuredTrackerDestinations';
 
 /** Composes the Tracker node's API, delivery and link workers over one SQLite journal. */
@@ -185,7 +186,7 @@ function composeNotifications(
 	store: TrackerPersistenceService,
 	options: TrackerNativeRuntimeOptions
 ) {
-	const { notification } = options;
+	const notification = configuredTrackerReminderHost(options);
 	if (!notification) return undefined;
 	const { resolveDestination, legacyDestinations, queue, ...delivery } = notification;
 	const resolve = resolveDestination ?? configuredTrackerDestinations(legacyDestinations ?? {});

@@ -41,7 +41,7 @@
 			"nativeTrackerCommandOptions",
 			"nativeTrackerIdVerbs",
 			"nativeTrackerInspectionRequest",
-			"nativeTrackerIgnoreRequest",
+			"nativeTrackerTimedItemRequest",
 			"nativeTrackerCommands",
 			"nativeTrackerArgs",
 			"selectedTrackerConfig",
@@ -127,17 +127,17 @@
 				"required": true
 			},
 			{
-				"name": "nativeTrackerIgnoreRequest.command",
+				"name": "nativeTrackerTimedItemRequest.command",
 				"type": "string",
 				"required": true
 			},
 			{
-				"name": "nativeTrackerIgnoreRequest.[id, ...words]",
+				"name": "nativeTrackerTimedItemRequest.[id, ...words]",
 				"type": "string[]",
 				"required": true
 			},
 			{
-				"name": "nativeTrackerIgnoreRequest.values",
+				"name": "nativeTrackerTimedItemRequest.values",
 				"type": "Record<string, string | boolean | undefined>",
 				"required": true
 			},
@@ -207,7 +207,7 @@
 				"type": "NativeTrackerRequest | undefined"
 			},
 			{
-				"name": "nativeTrackerIgnoreRequest",
+				"name": "nativeTrackerTimedItemRequest",
 				"type": "NativeTrackerRequest | undefined"
 			},
 			{
@@ -428,27 +428,27 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "nativeTrackerIgnoreRequest",
+				"name": "nativeTrackerTimedItemRequest",
 				"inputs": [
 					{
-						"name": "nativeTrackerIgnoreRequest.command",
+						"name": "nativeTrackerTimedItemRequest.command",
 						"type": "string",
 						"required": true
 					},
 					{
-						"name": "nativeTrackerIgnoreRequest.[id, ...words]",
+						"name": "nativeTrackerTimedItemRequest.[id, ...words]",
 						"type": "string[]",
 						"required": true
 					},
 					{
-						"name": "nativeTrackerIgnoreRequest.values",
+						"name": "nativeTrackerTimedItemRequest.values",
 						"type": "Record<string, string | boolean | undefined>",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "nativeTrackerIgnoreRequest",
+						"name": "nativeTrackerTimedItemRequest",
 						"type": "NativeTrackerRequest | undefined"
 					}
 				],

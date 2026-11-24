@@ -28,6 +28,7 @@
 			"src/services/projects-sessions/tracker-notification-service/notificationTick.ts",
 			"src/services/projects-sessions/tracker-notification-service/outboxRouting.ts",
 			"src/services/projects-sessions/tracker-notification-service/outboxRouting.types.ts",
+			"src/services/projects-sessions/tracker-notification-service/scheduledReminders.ts",
 			"src/services/projects-sessions/tracker-notification-service/trackerNotificationStatus.ts",
 			"src/services/projects-sessions/tracker-notification-service/webhookBatch.ts",
 			"src/services/projects-sessions/tracker-notification-service/webhookEvents.ts",
@@ -95,6 +96,7 @@
 			"flagged",
 			"dueTime",
 			"localDay",
+			"holdRegularReminder",
 			"readyRows",
 			"CallbackEvent",
 			"AttentionKind",
@@ -116,6 +118,9 @@
 			"nextOutbox",
 			"OutboxRecipient",
 			"OutboxGroup",
+			"scanScheduledReminders",
+			"nextScheduledReminder",
+			"currentScheduledAttempt",
 			"trackerNotificationStatus",
 			"outboxBatch",
 			"outboxSingle",
@@ -526,6 +531,24 @@
 				"description": "IANA time zone used for the Lisbon-style calendar rules."
 			},
 			{
+				"name": "holdRegularReminder.item",
+				"type": "TrackerNotificationItem",
+				"required": true,
+				"description": "Item carrying the optional explicit reminder timestamp."
+			},
+			{
+				"name": "holdRegularReminder.now",
+				"type": "number",
+				"required": true,
+				"description": "Current notification tick time in epoch milliseconds."
+			},
+			{
+				"name": "holdRegularReminder.interval",
+				"type": "number | undefined",
+				"required": true,
+				"description": "Configured ordinary reminder interval in minutes. Defaults to 60 minutes."
+			},
+			{
 				"name": "readyRows.rows",
 				"type": "Iterable<T>",
 				"required": true,
@@ -585,6 +608,65 @@
 				"type": "number",
 				"required": true,
 				"description": "Epoch milliseconds from the injected clock for this scan or send."
+			},
+			{
+				"name": "scanScheduledReminders.state",
+				"type": "TrackerNotificationState",
+				"required": true,
+				"description": "Draft of the durable notification queue."
+			},
+			{
+				"name": "scanScheduledReminders.options",
+				"type": "TrackerNotificationOptions",
+				"required": true,
+				"description": "Hub notification source and destination bindings."
+			},
+			{
+				"name": "scanScheduledReminders.now",
+				"type": "number",
+				"required": true,
+				"description": "Current tick time in epoch milliseconds."
+			},
+			{
+				"name": "nextScheduledReminder.state",
+				"type": "TrackerNotificationState",
+				"required": true,
+				"description": "Draft containing pending explicit reminder rows."
+			},
+			{
+				"name": "nextScheduledReminder.options",
+				"type": "TrackerNotificationOptions",
+				"required": true,
+				"description": "Hub notification source and destination bindings."
+			},
+			{
+				"name": "nextScheduledReminder.now",
+				"type": "number",
+				"required": true,
+				"description": "Current tick time in epoch milliseconds."
+			},
+			{
+				"name": "currentScheduledAttempt.state",
+				"type": "TrackerNotificationState",
+				"required": true,
+				"description": "Queue draft holding the existing reminder row."
+			},
+			{
+				"name": "currentScheduledAttempt.attempt",
+				"type": "DeliveryAttempt",
+				"required": true,
+				"description": "Issued reminder request being recovered."
+			},
+			{
+				"name": "currentScheduledAttempt.options",
+				"type": "TrackerNotificationOptions",
+				"required": true,
+				"description": "Notification source used to verify the current reminder."
+			},
+			{
+				"name": "currentScheduledAttempt.TrackerNotificationSource",
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "trackerNotificationStatus.options",
@@ -1900,6 +1982,38 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "holdRegularReminder",
+				"inputs": [
+					{
+						"name": "holdRegularReminder.item",
+						"type": "TrackerNotificationItem",
+						"required": true,
+						"description": "Item carrying the optional explicit reminder timestamp."
+					},
+					{
+						"name": "holdRegularReminder.now",
+						"type": "number",
+						"required": true,
+						"description": "Current notification tick time in epoch milliseconds."
+					},
+					{
+						"name": "holdRegularReminder.interval",
+						"type": "number | undefined",
+						"required": true,
+						"description": "Configured ordinary reminder interval in minutes. Defaults to 60 minutes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "holdRegularReminder",
+						"type": "boolean",
+						"description": "Whether an explicit reminder defers ordinary alerts for the item."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "readyRows",
 				"inputs": [
 					{
@@ -2033,6 +2147,106 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "scanScheduledReminders",
+				"inputs": [
+					{
+						"name": "scanScheduledReminders.state",
+						"type": "TrackerNotificationState",
+						"required": true,
+						"description": "Draft of the durable notification queue."
+					},
+					{
+						"name": "scanScheduledReminders.options",
+						"type": "TrackerNotificationOptions",
+						"required": true,
+						"description": "Hub notification source and destination bindings."
+					},
+					{
+						"name": "scanScheduledReminders.now",
+						"type": "number",
+						"required": true,
+						"description": "Current tick time in epoch milliseconds."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scanScheduledReminders",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "nextScheduledReminder",
+				"inputs": [
+					{
+						"name": "nextScheduledReminder.state",
+						"type": "TrackerNotificationState",
+						"required": true,
+						"description": "Draft containing pending explicit reminder rows."
+					},
+					{
+						"name": "nextScheduledReminder.options",
+						"type": "TrackerNotificationOptions",
+						"required": true,
+						"description": "Hub notification source and destination bindings."
+					},
+					{
+						"name": "nextScheduledReminder.now",
+						"type": "number",
+						"required": true,
+						"description": "Current tick time in epoch milliseconds."
+					}
+				],
+				"outputs": [
+					{
+						"name": "nextScheduledReminder",
+						"type": "DeliveryAttempt | undefined",
+						"description": "Next eligible explicit reminder delivery, if available."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "currentScheduledAttempt",
+				"inputs": [
+					{
+						"name": "currentScheduledAttempt.state",
+						"type": "TrackerNotificationState",
+						"required": true,
+						"description": "Queue draft holding the existing reminder row."
+					},
+					{
+						"name": "currentScheduledAttempt.attempt",
+						"type": "DeliveryAttempt",
+						"required": true,
+						"description": "Issued reminder request being recovered."
+					},
+					{
+						"name": "currentScheduledAttempt.options",
+						"type": "TrackerNotificationOptions",
+						"required": true,
+						"description": "Notification source used to verify the current reminder."
+					},
+					{
+						"name": "currentScheduledAttempt.TrackerNotificationSource",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "currentScheduledAttempt",
+						"type": "boolean",
+						"description": "Whether the issued request still matches the active reminder."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "trackerNotificationStatus",
@@ -2471,7 +2685,9 @@
 			}
 		]
 	},
-	"scenarios": ["tracker-notification-delivery"],
+	"scenarios": [
+		"tracker-notification-delivery"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

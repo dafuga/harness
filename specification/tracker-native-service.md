@@ -319,6 +319,25 @@ with the computer, closed session and provider resume command. Long-lived
 control sessions fall outside the auto-launch name filter. Pending flagged
 launches report `waiting on Daniel (flagged)` in autolaunch status.
 
+### Scheduled reminders
+
+Use `tracker remind <id> --at <ISO timestamp with a time zone>` for an
+active item. Convert requests such as “remind me tomorrow at 14:30” to an
+absolute timestamp using the person's time zone. Use the command again to
+reschedule. Normal item lists and `tracker show` expose `remind_at` in UTC.
+While the reminder is in the future, `tracker list --flagged` and the text
+and JSON digests omit the item. This also hides it from the Chief of Staff's
+status tick. The reminder time is stored separately from the item's flag,
+question, due date and dispatch state.
+
+At the requested time the item becomes eligible for its normal digest sections.
+The hub's notification worker sends the explicit reminder on the first
+available poll, including during quiet hours. It uses the configured direct
+Chief of Staff destination, its webhook, or the primary Mac's existing CoS
+host binding. An unavailable destination is retried. Resolving, unflagging,
+unblocking, closing, ignoring or deleting the item cancels its reminder.
+The journal replicates the reminder time and the hub stores delivery receipts.
+
 ### Legacy CLI inventory and remaining checks
 
 Compared the `7acf3ca` CLI command switch and daemon routes with the native

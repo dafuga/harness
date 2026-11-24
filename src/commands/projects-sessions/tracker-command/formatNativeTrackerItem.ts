@@ -17,6 +17,7 @@ export function formatNativeTrackerItem(item: NativeTrackerItem): string {
 		item.kind,
 		item.every && `every '${item.every}' ${item.every_tz}`,
 		item.due && `${item.every ? 'next' : 'due'} ${item.due}`,
+		item.remind_at && `reminder ${item.remind_at}`,
 		item.owner && `owner ${item.owner}`,
 		item.agent && `agent ${item.agent}`,
 		item.auto && 'auto-launch'

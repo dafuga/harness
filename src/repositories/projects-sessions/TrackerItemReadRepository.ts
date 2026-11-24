@@ -13,6 +13,7 @@ import type {
 
 const activeStatus = "status NOT IN ('done', 'ignored')";
 const visibleItems = 'deleted = 0 AND title IS NOT NULL';
+const visibleAttention = '(remind_at IS NULL OR remind_at <= ?)';
 const filterColumns = ['kind', 'owner', 'agent', 'parent'] as const;
 const itemStatuses = new Set(['open', 'in_progress', 'blocked', 'done', 'ignored']);
 const defaultTimeZone = 'Europe/Lisbon';
@@ -41,7 +42,7 @@ export class TrackerItemReadRepository {
 	}
 
 	/** Return the item array used by the Tracker loopback list endpoint. */
-	list(filters: TrackerItemListFilters = {}): TrackerItem[] {
+	list(filters: TrackerItemListFilters = {}, nowMs: number = Date.now()): TrackerItem[] {
 		const where = [visibleItems];
 		const values: string[] = [];
 		if (!filters.status) where.push(activeStatus);
@@ -55,7 +56,10 @@ export class TrackerItemReadRepository {
 			where.push(`${column} = ?`);
 			values.push(String(value));
 		}
-		if (queryFlag(filters.flagged)) where.push('needs_daniel = 1 AND resolved = 0');
+		if (queryFlag(filters.flagged)) {
+			where.push('needs_daniel = 1 AND resolved = 0', visibleAttention);
+			values.push(new Date(nowMs).toISOString());
+		}
 		if (queryFlag(filters.recurring)) where.push('every IS NOT NULL');
 		const rows = this.database
 			.prepare(
@@ -70,8 +74,10 @@ export class TrackerItemReadRepository {
 	/** Build the digest with an explicit clock and the store's configured time zone. */
 	digest(nowMs: number, timeZone: string = defaultTimeZone): TrackerDigest {
 		const rows = this.database
-			.prepare(`SELECT * FROM items WHERE ${visibleItems} AND ${activeStatus}`)
-			.all() as TrackerItemRow[];
+			.prepare(
+				`SELECT * FROM items WHERE ${visibleItems} AND ${activeStatus} AND ${visibleAttention}`
+			)
+			.all(new Date(nowMs).toISOString()) as TrackerItemRow[];
 		return buildTrackerDigest(rows, nowMs, timeZone);
 	}
 

@@ -35,6 +35,7 @@ export const nativeTrackerCommandOptions = new Map<
 	['note', {}],
 	['progress', {}],
 	['flag', { question: text, force: flag }],
+	['remind', { at: text }],
 	['block', { 'needs-daniel': flag, force: flag }],
 	['unblock', { note: text }],
 	['ignore', { reason: text, until: text }],
@@ -141,11 +142,20 @@ function nativeTrackerReadInspection(
 	return { method: 'GET', path: routes[sub]! };
 }
 
-export function nativeTrackerIgnoreRequest(
+export function nativeTrackerTimedItemRequest(
 	command: string,
 	[id, ...words]: string[],
 	values: Record<string, string | boolean | undefined>
 ): NativeTrackerRequest | undefined {
+	if (command === 'remind') {
+		if (!id || !values.at || words.length)
+			throw new TypeError('usage: tracker remind <id> --at <time>');
+		return {
+			method: 'POST',
+			path: `/items/${encodeURIComponent(id)}/remind`,
+			body: { at: values.at }
+		};
+	}
 	if (command !== 'ignore' && command !== 'unignore') return undefined;
 	const reason = [values.reason, words.join(' ')].find(Boolean);
 	if (command === 'ignore' && !reason)

@@ -2,7 +2,7 @@
 	"name": "ck23yx-tracker-reminders",
 	"goal": "Prove a journaled Tracker reminder disappears from the decision digest and status tick, reappears at its timestamp and sends one durable notification across restart and signed sync.",
 	"createdAt": "2026-11-24T02:33:02.400Z",
-	"updatedAt": "2026-11-24T02:35:15.601Z",
+	"updatedAt": "2026-11-24T02:47:19.719Z",
 	"template": "feature",
 	"templateLineage": [
 		"feature"
@@ -19,12 +19,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T02:47:18.502Z",
+			"evidence": "UTC reminder on the replicated item, visibility cutoff in digest and flagged reads, cancel and replace transitions, and hub receipt delivery through HTTP or the established CoS host binding."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T02:47:19.719Z",
+			"evidence": "Red CLI and notification fixtures reproduced missing behavior. Green: 45 focused cases and all three Tracker node E2Es on harbor-mbp-2, including status script dry-runs before and after the wake."
 		},
 		{
 			"id": "verify",

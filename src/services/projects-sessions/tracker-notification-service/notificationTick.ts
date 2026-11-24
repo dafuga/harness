@@ -8,6 +8,11 @@ import { nextAttention } from './attentionBatch';
 import { nextCallback, scanCallbacks } from './callbackDelivery';
 import { completeDelivery } from './completeDelivery';
 import { nextDirectReminder, scanDirectReminders } from './directReminders';
+import {
+	currentScheduledAttempt,
+	nextScheduledReminder,
+	scanScheduledReminders
+} from './scheduledReminders';
 import { nextOutbox } from './outboxRouting';
 import { scanWebhookEvents } from './webhookEvents';
 import { scanWebhookDue, scanWebhookFlags } from './webhookReminders';
@@ -51,6 +56,8 @@ function scan(
 	itemIds?: readonly string[]
 ): void {
 	options.queue.update((state) => {
+		scanScheduledReminders(state, options, now);
+		if (options.scheduledOnly) return;
 		scanCallbacks(state, options.source, now, itemIds);
 		scanDirectReminders(state, options, now);
 		if (webhookReady && options.webhook) {
@@ -95,10 +102,12 @@ export async function runNotificationTick(
 	itemIds?: readonly string[]
 ): Promise<void> {
 	const { chiefOfStaff, queue, source } = options;
-	const { issued, paused } = queue.update((state) => ({
-		issued: state.inFlight,
-		paused: Boolean(state.paused)
-	}));
+	const { issued, paused } = queue.update((state) => {
+		const issued = state.inFlight;
+		if (issued?.kind === 'scheduled' && !currentScheduledAttempt(state, issued, options))
+			delete state.inFlight;
+		return { issued: state.inFlight, paused: Boolean(state.paused) };
+	});
 	if (issued) {
 		if (holdIssued(issued, options, paused)) return;
 		await deliver(options, issued);
@@ -106,6 +115,8 @@ export async function runNotificationTick(
 	const now = options.now();
 	const chief = availableWebhook(options);
 	scan(options, now, Boolean(chief), itemIds);
+	await drain(options, (state) => nextScheduledReminder(state, options, now));
+	if (options.scheduledOnly) return;
 	if (chiefOfStaff && issued?.kind !== 'reminders') {
 		await sendNext(options, (state) => nextDirectReminder(state, options, chiefOfStaff, now));
 	}

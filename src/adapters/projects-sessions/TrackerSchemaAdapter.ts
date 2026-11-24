@@ -12,6 +12,7 @@ export const trackerItemFields = [
 	'title',
 	'status',
 	'due',
+	'remind_at',
 	'owner',
 	'agent',
 	'notes',

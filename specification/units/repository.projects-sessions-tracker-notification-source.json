@@ -16,6 +16,7 @@
 			"TrackerNotificationSourceRepository",
 			"TrackerNotificationSourceRepository.constructor",
 			"TrackerNotificationSourceRepository.items",
+			"TrackerNotificationSourceRepository.scheduledItems",
 			"TrackerNotificationSourceRepository.item",
 			"TrackerNotificationSourceRepository.agent",
 			"TrackerNotificationSourceRepository.maxSeq",
@@ -41,6 +42,12 @@
 				"name": "TrackerNotificationSourceRepository.constructor.options",
 				"type": "TrackerNotificationSourceOptions",
 				"required": true
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.scheduledItems.through",
+				"type": "number",
+				"required": true,
+				"description": "Latest reminder time to select, in epoch milliseconds."
 			},
 			{
 				"name": "TrackerNotificationSourceRepository.item.id",
@@ -94,6 +101,11 @@
 				"type": "TrackerNotificationItem[]"
 			},
 			{
+				"name": "TrackerNotificationSourceRepository.scheduledItems",
+				"type": "TrackerNotificationItem[]",
+				"description": "Active items whose reminder time is at or before the supplied clock."
+			},
+			{
 				"name": "TrackerNotificationSourceRepository.item",
 				"type": "TrackerNotificationItem | undefined"
 			},
@@ -136,6 +148,26 @@
 					{
 						"name": "TrackerNotificationSourceRepository.items",
 						"type": "TrackerNotificationItem[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.scheduledItems",
+				"inputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.scheduledItems.through",
+						"type": "number",
+						"required": true,
+						"description": "Latest reminder time to select, in epoch milliseconds."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.scheduledItems",
+						"type": "TrackerNotificationItem[]",
+						"description": "Active items whose reminder time is at or before the supplied clock."
 					}
 				],
 				"errors": [],

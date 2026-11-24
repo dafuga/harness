@@ -73,6 +73,25 @@ function trackerDueDay(clock: TrackerItemClock, offset: number): string {
 	return calendarDate(day.getUTCFullYear(), day.getUTCMonth() + 1, day.getUTCDate());
 }
 
+export function normalizeTrackerReminder(value: TrackerItemValue, now: number): string {
+	const format =
+		/^(\d{4}-\d{2}-\d{2})T(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d{1,3})?)?(?:Z|[+-]\d{2}:[0-5]\d)$/;
+	const match = typeof value === 'string' ? format.exec(value) : null;
+	const at = match ? Date.parse(match[0]) : NaN;
+	if (
+		!match ||
+		!Number.isFinite(at) ||
+		trackerIsoTime(at).length !== 24 ||
+		!trackerIsoTime(Date.parse(match[1])).startsWith(match[1])
+	) {
+		throw trackerItemError(
+			'reminder time must be an ISO timestamp with a time zone, such as 2026-11-24T14:30:00+00:00'
+		);
+	}
+	if (at <= now) throw trackerItemError('reminder time must be in the future');
+	return trackerIsoTime(at);
+}
+
 export function trackerIsoTime(epoch: number): string {
 	return new Date(epoch).toISOString();
 }

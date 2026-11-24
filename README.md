@@ -74,6 +74,7 @@ The Explorer’s APIs catalog lists HTTP endpoints and method exports at the sel
 harness tracker list --status in_progress
 harness tracker show ITEM --json
 harness tracker note ITEM "Recorded a milestone"
+harness tracker remind ITEM --at 2026-11-24T14:30:00+00:00
 harness tracker --help
 ```
 

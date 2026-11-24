@@ -76,9 +76,9 @@ export class TrackerLocalApiService {
 		const run = readTrackerRunEndpoint(parts, query, { ...this.options, items: this.items });
 		return run === undefined ? undefined : trackerResponse(200, run);
 	}
-
 	private readItems(parts: string[], query: Record<string, string>): Response | undefined {
-		if (parts.length === 1) return trackerResponse(200, this.items.list(query));
+		if (parts.length === 1)
+			return trackerResponse(200, this.items.list(query, this.options.now?.()));
 		if (parts.length === 2)
 			return trackerResponse(200, readTrackerItemDetail(this.items.get(parts[1]), this.options));
 		if (parts.length === 3 && parts[2] === 'history' && this.options.recurring)

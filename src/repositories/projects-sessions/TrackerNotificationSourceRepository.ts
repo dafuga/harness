@@ -40,6 +40,15 @@ export class TrackerNotificationSourceRepository implements TrackerNotificationS
 		return rows.map((row) => this.notificationItem(row));
 	}
 
+	scheduledItems(through: number): TrackerNotificationItem[] {
+		const rows = this.store.database
+			.prepare(
+				"SELECT * FROM items WHERE remind_at <= ? AND title IS NOT NULL AND deleted = 0 AND status NOT IN ('done', 'ignored')"
+			)
+			.all(new Date(through).toISOString()) as TrackerStoredNotificationItem[];
+		return rows.map((row) => this.notificationItem(row));
+	}
+
 	item(id: string): TrackerNotificationItem | undefined {
 		const row = this.raw(id);
 		return row ? this.notificationItem(row) : undefined;

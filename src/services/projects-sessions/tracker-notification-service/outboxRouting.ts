@@ -11,7 +11,7 @@ import type {
 	TrackerNotificationState
 } from './notificationState.types';
 import type { OutboxGroup, OutboxRecipient } from './outboxRouting.types';
-import { flagged, readyRows } from './notificationRules';
+import { flagged, holdRegularReminder, readyRows } from './notificationRules';
 import { outboxBatch, outboxSingle } from './webhookBatch';
 import { normalizeActor } from './webhookEvents';
 
@@ -89,6 +89,15 @@ function sendReady(
 		if (!currentOccurrence(row, item)) drop(row, 'superseded');
 		return row.status !== 'dropped';
 	}
+	const remindAt = Date.parse(item?.remind_at ?? '');
+	if (row.kind === 'needs_daniel' || row.kind === 'blocked') {
+		if (remindAt > Date.parse(row.payload.occurred_at as string)) {
+			drop(row, 'item reminder supersedes attention');
+			return false;
+		}
+	}
+	if (row.kind === 'due' && item && holdRegularReminder(item, now, options.reminderIntervalMinutes))
+		return false;
 	if (!quietOutboxEvent(row)) return true;
 	if (!relevant(row, item)) {
 		drop(row, 'no longer relevant');
