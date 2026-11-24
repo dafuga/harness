@@ -23,6 +23,7 @@ export async function assertCatalogBeforeCapture({
 			'Review every recorded result for this selected revision'
 		);
 	await assertAudioIconState(component, unit.id);
+	await assertAccountAndLayoutPreviews(component, unit.id);
 	await assertRequiredShellState(component, unit.id, variant);
 	await assertCatalogNames(component, unit.id, variant);
 	await assertCatalogState(component, unit.id, variant, viewport.id);
@@ -73,9 +74,7 @@ async function assertCatalogNames(component: Locator, id: string, variant: strin
 	expect.soft(withinCard, 'The long component heading stays inside its card').toBe(true);
 }
 
-/** Each required prop state joins the normal desktop/tablet/mobile catalog test matrix. */
-async function assertRequiredShellState(component: Locator, id: string, variant: string) {
-	const state = `${id}:${variant}`;
+async function assertAccountAndLayoutPreviews(component: Locator, id: string) {
 	if (id === 'desktop.component.accounts-access-account-sign-in') {
 		const button = component.getByRole('button', { name: 'Sign in with Google' });
 		await expect(button).toBeVisible();
@@ -89,6 +88,11 @@ async function assertRequiredShellState(component: Locator, id: string, variant:
 		await expect(component.getByText('This browser', { exact: true })).toBeVisible();
 	if (id === 'hub.page.public-site-about')
 		await expect(component.getByRole('heading', { level: 1 })).toBeVisible();
+}
+
+/** Each required prop state joins the normal desktop/tablet/mobile catalog test matrix. */
+async function assertRequiredShellState(component: Locator, id: string, variant: string) {
+	const state = `${id}:${variant}`;
 	if (state === 'reports.page.harness-branch-branch-at-platforms:ready')
 		await test.step('Platforms route', () => assertPlatformsRouteReady(component));
 	if (state === 'reports.component.harness-entity-relations:both') {

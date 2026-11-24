@@ -28,6 +28,22 @@ import { desktopPreviewVariant } from './desktopPreviewVariants';
 import { desktopRuntimeReady } from './desktopRuntimeVariants';
 import { shellArtworkProps } from './shellArtwork';
 import ShellContentPreview from './ShellContentPreview.svelte';
+const desktopChooserCases: PreviewCases = {
+	'desktop.component.explorer-ui-entity-section-tabs': {
+		names: ['Overview', 'States', 'History', 'Source'],
+		tab: 'States',
+		threadShown: false,
+		onpick: noop,
+		onconversation: noop
+	},
+	'desktop.component.shared-primitives-choice-row': {
+		name: 'Main',
+		meta: 'Current branch',
+		current: true,
+		onchoose: noop
+	},
+	'desktop.component.shared-primitives-choice-rows': { label: 'Branches', title: 'Branches' }
+};
 export function previewFixture(id: string, variant = '') {
 	const desktop = createDesktopData(id);
 	// The shell opens at Pages, where its store starts and where the web workspace opens too.
@@ -49,20 +65,7 @@ export function previewFixture(id: string, variant = '') {
 		...gameCases,
 		...remote.cases,
 		...hub.cases,
-		'desktop.component.explorer-ui-entity-section-tabs': {
-			names: ['Overview', 'States', 'History', 'Source'],
-			tab: 'States',
-			threadShown: false,
-			onpick: noop,
-			onconversation: noop
-		},
-		'desktop.component.shared-primitives-choice-row': {
-			name: 'Main',
-			meta: 'Current branch',
-			current: true,
-			onchoose: noop
-		},
-		'desktop.component.shared-primitives-choice-rows': { label: 'Branches', title: 'Branches' },
+		...desktopChooserCases,
 		'desktop.component.remote-connection': { workspace: desktop.workspace }
 	};
 	// A route module is opened at its own address; it renders what the history holds there.

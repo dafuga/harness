@@ -6,8 +6,10 @@
 	import DataTable from '../DataTable.svelte';
 	import { humanize } from '../../../helpers/strings/humanize';
 	import { recordedValue } from './recordedValue';
-	import { type RecordedNode } from '../../../utils/shared-primitives/recordedValue';
-	type RecordedField = Extract<RecordedNode, { kind: 'fields' }>['fields'][number];
+	import type {
+		RecordedField,
+		RecordedNode
+	} from '../../../utils/shared-primitives/recordedValue.types';
 	let {
 		value,
 		fullValuesLabel = 'Full recorded values',
