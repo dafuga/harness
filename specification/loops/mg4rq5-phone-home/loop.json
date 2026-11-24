@@ -2,11 +2,9 @@
 	"name": "mg4rq5-phone-home",
 	"goal": "Signed-in iPhone home keeps Overview and computer pairing usable when hosted collaboration is disabled, and account actions on both the iPhone and Hub return page have visible spacing.",
 	"createdAt": "2026-11-24T12:01:36.261Z",
-	"updatedAt": "2026-11-24T12:08:38.459Z",
+	"updatedAt": "2026-11-24T12:12:22.958Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T12:12:22.958Z",
+			"evidence": "Unchanged Hub callback test passed at 5017e74f1f in the paired regression record. The unchanged native phase passes all three banner and spacing assertions in an iOS 26.5 test simulator. Browser and native before/after screenshots were inspected."
 		},
 		{
 			"id": "siblings",
