@@ -117,8 +117,8 @@ test('a controlled plan requires a separate exact Go and action-time admission b
 		expect((await fixture.session({ ...go, plan: '9'.repeat(64) })).status).toBe(409);
 		const starts = await Promise.all([fixture.session(go), fixture.session(go)]);
 		expect(starts.map((item) => item.status).sort()).toEqual([200, 409]);
-		expect((await (await fixture.runner(collect)).json()).status).toBe('allowed');
-		expect((await (await fixture.runner(collect)).json()).status).toBe('refused');
+		expect(await (await fixture.runner(collect)).json()).toMatchObject({ status: 'allowed' });
+		expect(await (await fixture.runner(collect)).json()).toEqual({ status: 'refused' });
 		const admit = { ...collect, kind: 'admit' };
 		const report = { ...collect, kind: 'report', progress: { phase: 'applying' } };
 		expect((await fixture.runner(report)).status).toBe(409);
