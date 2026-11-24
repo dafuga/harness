@@ -81,12 +81,20 @@
 	let flowEdges = $state.raw<Edge[]>([]);
 	setContext(key, fixture.hub);
 	setContext(remoteContext, fixture.remote);
-	if (id === 'desktop.page.tracker')
+	if (id === approvalsPage) {
+		const { harness } = window as unknown as EnvironmentHost;
+		setContext<NativeAccountContext>(nativeAccountContext, {
+			environment: { kind: 'electron', bridge: harness, local: true },
+			signedIn: true,
+			signOut: () => {}
+		});
+	} else if (id === 'desktop.page.tracker') {
 		setContext<NativeAccountContext>(nativeAccountContext, {
 			environment: { kind: 'capacitor', bridge: undefined, local: false, tracker: previewTracker },
 			signedIn: true,
 			signOut: () => {}
 		});
+	}
 	onDestroy(fixture.cleanup);
 </script>
 

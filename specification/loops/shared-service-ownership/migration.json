@@ -6799,13 +6799,13 @@
 			"unit": "desktop.service.local-operations",
 			"from": "packages/desktop/src/services/LocalOperationsService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-			"definition": "b76b28a3eb27eb9146a788217e397fdbfec9bdcfe6a8bf5b22ba9c2d0be4c70d",
+			"definition": "5d4aafd76560c9db23a85830fe46b3fa0a348edba4bc69c04d693d93c59c23b6",
 			"relocationDefinition": "6c93c210df9a0612e8b374298b009646d8cc776940b82b610c6aa2edf7a6f2b4",
 			"review": {
-				"commit": "46be4288fc3844395376ec289b249c1efd41cf46",
+				"commit": "7e982084b147af595432721f6a77937995a30a62",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-				"definition": "b76b28a3eb27eb9146a788217e397fdbfec9bdcfe6a8bf5b22ba9c2d0be4c70d",
-				"reason": "Names the rejection for unexpected project overview fields while preserving its message and Error compatibility."
+				"definition": "5d4aafd76560c9db23a85830fe46b3fa0a348edba4bc69c04d693d93c59c23b6",
+				"reason": "Preserves typed project overview input rejection and admits exact deploy approval operations on the authenticated Mac bridge."
 			},
 			"previousReviews": [
 				{
@@ -6837,6 +6837,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
 					"definition": "a83c3790bbbca6a269353499f32d08ff2c98d67ab0688d37f0170a7ba22589e0",
 					"reason": "Admit the exact approval operation through the authenticated local desktop operation router."
+				},
+				{
+					"commit": "46be4288fc3844395376ec289b249c1efd41cf46",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "b76b28a3eb27eb9146a788217e397fdbfec9bdcfe6a8bf5b22ba9c2d0be4c70d",
+					"reason": "Names the rejection for unexpected project overview fields while preserving its message and Error compatibility."
 				}
 			]
 		},
@@ -7009,13 +7015,13 @@
 			"unit": "desktop.adapter.capacitor-account",
 			"from": "packages/desktop/src/adapters/capacitor-account-adapter/CapacitorAccountAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-			"definition": "3ba0b1879d8f87da7db47e83ff0ea1f3843d902d10ef5f03cf2b93ac29254005",
+			"definition": "fd7d25b8a3566ec36d73cd605990d799559905b88047fec21c731a9da13c57bf",
 			"relocationDefinition": "f54f1586b418a653ad39961751f61e977322b2dfa5d0ab7c8f660f3bb3cdd01a",
 			"review": {
-				"commit": "5017e74f1fdebf5fa6cc8c22b5fdffbe6f2da6d8",
+				"commit": "7e982084b147af595432721f6a77937995a30a62",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-				"definition": "3ba0b1879d8f87da7db47e83ff0ea1f3843d902d10ef5f03cf2b93ac29254005",
-				"reason": "Treat disabled hosted collaboration as an empty shared-project list while preserving the native account."
+				"definition": "fd7d25b8a3566ec36d73cd605990d799559905b88047fec21c731a9da13c57bf",
+				"reason": "Preserves the native account when hosted projects are unavailable and routes exact release decisions through that account."
 			},
 			"previousReviews": [
 				{
@@ -7053,6 +7059,12 @@
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
 					"definition": "bec7d62c567c7bafe5eb5a6410eb77032b7d3e74d15ab0c5c741f888a275ae75",
 					"reason": "Read and decide exact deploy approvals through the phone native account without exposing its session."
+				},
+				{
+					"commit": "5017e74f1fdebf5fa6cc8c22b5fdffbe6f2da6d8",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
+					"definition": "3ba0b1879d8f87da7db47e83ff0ea1f3843d902d10ef5f03cf2b93ac29254005",
+					"reason": "Treat disabled hosted collaboration as an empty shared-project list while preserving the native account."
 				}
 			]
 		},
