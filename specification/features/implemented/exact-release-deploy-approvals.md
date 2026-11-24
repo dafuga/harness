@@ -1,3 +1,15 @@
+---
+status: implemented
+shippedIn: null
+unitIds:
+  - desktop.page.development-tooling-deploy-approvals
+  - desktop.component.development-tooling-deploy-approval-card
+  - hub.endpoint.accounts-access-api-deploy-approvals
+  - service.execution-runtimes-scripted-deploy-deploy-approval-client
+owner: null
+reviewedAt: null
+---
+
 # Exact-release deploy approvals
 
 Tracker `gg97k9nqf3` extends the scripted deploy authority in `56x4kx`. Harness on Mac and Harness Studio on iPhone share one deploy review surface. Each uses its own authenticated native Hub session.

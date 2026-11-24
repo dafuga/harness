@@ -4,7 +4,7 @@ import type {
 	ApprovalCards,
 	ApprovalDecision
 } from '../../../../src/core/execution-runtimes/scripted-deploy/approvalInbox.types';
-import { captured } from './remote-evidence';
+import { approvalEvidence } from './deploy-approval-evidence';
 import { remotePhoneFixture } from './ui-remote-phone-fixture';
 
 const expiry = Date.UTC(2026, 10, 24, 3, 5);
@@ -12,7 +12,7 @@ const clock = expiry - 180_000;
 const viewports = [
 	{ name: 'desktop', width: 1440, height: 900 },
 	{ name: 'tablet', width: 820, height: 1180 },
-	{ name: 'phone', width: 390, height: 844 }
+	{ name: 'mobile', width: 390, height: 844 }
 ];
 
 async function fixture(page: Page, phone: boolean) {
@@ -79,13 +79,18 @@ for (const { name, width, height } of viewports) {
 		test('review records an exact online allow and deny through the native adapter', async ({
 			page
 		}, info) => {
-			const { pending, deny, decisions, goOffline } = await fixture(page, name === 'phone');
+			const { pending, deny, decisions, goOffline } = await fixture(page, name === 'mobile');
 			await page.goto('/');
+			await expect(page.getByRole('heading', { name: 'Harness', exact: true })).toBeVisible();
 			const link = page.getByRole('link', { name: 'Deploy approvals' });
-			await captured(page, info, 'entry');
+			await approvalEvidence(page, info, 'entry');
 			await link.click({ timeout: 5000 });
+			await page.reload();
 			await expect(page.getByRole('heading', { name: 'Deploy approvals' })).toBeVisible();
-			await captured(page, info, 'pending');
+			await expect(
+				page.getByRole('button', { name: 'Review fixture preprod deploy' })
+			).toBeVisible();
+			await approvalEvidence(page, info, 'pending');
 			await page.getByRole('button', { name: 'Review fixture preprod deploy' }).click();
 			const dialog = page.getByRole('dialog', { name: 'Review deploy approval' });
 			await expect(dialog.getByText(pending.artifact!, { exact: true })).toBeVisible();
@@ -97,11 +102,15 @@ for (const { name, width, height } of viewports) {
 			expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
 				true
 			);
-			await captured(page, info, 'review');
+			await expect(dialog.getByRole('button', { name: 'Allow deploy' })).toBeInViewport();
+			await approvalEvidence(page, info, 'review');
+			await dialog.getByText(new Date(expiry).toISOString()).scrollIntoViewIfNeeded();
+			await approvalEvidence(page, info, 'rollback-details');
 			await dialog.getByRole('button', { name: 'Allow deploy' }).click();
 			await expect(dialog.getByRole('status')).toHaveText('Allowed');
 			await expect(dialog.getByText('google-synthetic')).toBeVisible();
-			await captured(page, info, 'allowed');
+			await dialog.getByText('google-synthetic').scrollIntoViewIfNeeded();
+			await approvalEvidence(page, info, 'allowed');
 			await dialog.getByRole('button', { name: 'Close' }).click();
 			await page.getByRole('button', { name: 'Review another-fixture prod deploy' }).click();
 			await dialog.getByRole('button', { name: 'Deny' }).click();
@@ -110,11 +119,13 @@ for (const { name, width, height } of viewports) {
 				{ id: pending.id, plan: pending.plan, decision: 'allow' },
 				{ id: deny.id, plan: deny.plan, decision: 'deny' }
 			]);
-			await captured(page, info, 'denied');
+			await dialog.getByText('google-synthetic').scrollIntoViewIfNeeded();
+			await approvalEvidence(page, info, 'denied');
 			goOffline();
 			await page.evaluate(() => window.dispatchEvent(new Event('focus')));
 			await expect(page.getByRole('status')).toHaveText('Deploy approvals are unavailable.');
 			await expect(dialog).toHaveCount(0);
+			await approvalEvidence(page, info, 'unavailable');
 		});
 	});
 }

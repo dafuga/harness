@@ -80,7 +80,7 @@ test('only the configured native owner can decide one current release, and only 
 	}
 }, 20_000);
 
-test('denial, expiration and revoking the approving device all prevent collection', async () => {
+test('denial, expiration, and revoked device or runner grants all prevent collection', async () => {
 	const fixture = await deployApprovalFixture();
 	try {
 		const card = approvalCardFixture(fixture.now + 1000);

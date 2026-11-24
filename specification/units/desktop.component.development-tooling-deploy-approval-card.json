@@ -1,0 +1,144 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.development-tooling-deploy-approval-card",
+	"uid": "u_xa7iq7huqp",
+	"kind": "component",
+	"title": "Deploy approval review",
+	"responsibility": "Shows the pinned artifact, deployment proof, rollback identity and decision receipt.",
+	"responsibilityOrigin": "explicit",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-dd",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-dl",
+			"reports.component.shared-primitives-atoms-html-dt",
+			"reports.component.shared-primitives-atoms-html-p"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/desktop/src/components/development-tooling/DeployApprovalCard.svelte"
+		],
+		"symbols": [
+			"DeployApprovalCard",
+			"DeployApprovalCard.footer"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "DeployApprovalCard.card",
+				"type": "ApprovalCards[number]",
+				"required": true
+			},
+			{
+				"name": "DeployApprovalCard.status",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "DeployApprovalCard.disabled",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "DeployApprovalCard.error",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "DeployApprovalCard.decide",
+				"type": "(decision: ApprovalDecision['decision']) => void",
+				"required": true
+			},
+			{
+				"name": "DeployApprovalCard.close",
+				"type": "() => void",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "DeployApprovalCard",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "DeployApprovalCard.footer",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "DeployApprovalCard.footer",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-approval-inbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-dd",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-dl",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-dt",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/development-tooling/DeployApprovalCard.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/development-tooling/DeployApprovalCard.svelte"
+			}
+		]
+	},
+	"scenarios": [
+		"exact-release-deploy-approvals"
+	],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

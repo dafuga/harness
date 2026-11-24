@@ -70,7 +70,10 @@ export class DeployApprovalRepository {
 			.prepare(
 				`UPDATE deploy_approval_requests SET decision = ?, receipt = ?, session_hash = ?, decided_at = ?
 			WHERE id = ? AND plan = ? AND owner = ? AND expires_at > ? AND decision IS NULL
-			AND ${liveSession.replace('SESSION_REF', '?')} RETURNING *`
+			AND ${liveSession.replace('SESSION_REF', '?')}
+				AND EXISTS (SELECT 1 FROM json_each(?) AS grants
+					WHERE grants.key = project || ':' || environment AND grants.value = runner_hash)
+				RETURNING *`
 			)
 			.bind(
 				input.decision,
@@ -82,7 +85,8 @@ export class DeployApprovalRepository {
 				scope.owner,
 				scope.now,
 				scope.sessionHash,
-				scope.now
+				scope.now,
+				scope.grants
 			)
 			.first<ApprovalRow>();
 		return readReceipt(row);

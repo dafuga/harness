@@ -1,0 +1,146 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-scripted-deploy-request-deploy-approval",
+	"uid": "u_2gix6yvno4",
+	"kind": "service",
+	"title": "requestDeployApproval",
+	"responsibility": "Owns the requestDeployApproval service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/execution-runtimes/scripted-deploy/requestDeployApproval.ts"],
+		"symbols": ["requestDeployApproval"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "requestDeployApproval.plan",
+				"type": "Plan",
+				"required": true
+			},
+			{
+				"name": "requestDeployApproval.chain",
+				"type": "Journal | null",
+				"required": true
+			},
+			{
+				"name": "requestDeployApproval.differences",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "requestDeployApproval.registry",
+				"type": "DeployRegistry",
+				"required": true
+			},
+			{
+				"name": "requestDeployApproval.config",
+				"type": "DeployProject",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "requestDeployApproval",
+				"type": "Promise<ApprovalReceipt | undefined>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "requestDeployApproval",
+				"inputs": [
+					{
+						"name": "requestDeployApproval.plan",
+						"type": "Plan",
+						"required": true
+					},
+					{
+						"name": "requestDeployApproval.chain",
+						"type": "Journal | null",
+						"required": true
+					},
+					{
+						"name": "requestDeployApproval.differences",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "requestDeployApproval.registry",
+						"type": "DeployRegistry",
+						"required": true
+					},
+					{
+						"name": "requestDeployApproval.config",
+						"type": "DeployProject",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "requestDeployApproval",
+						"type": "Promise<ApprovalReceipt | undefined>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-approval-inbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-scripted-deploy-deploy-approval-client",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.execution-runtimes-deploy-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/scripted-deploy/requestDeployApproval.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/scripted-deploy/requestDeployApproval.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

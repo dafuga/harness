@@ -60,6 +60,11 @@
 				"description": "Trusted deploy registry, including approved targets, executable paths and signer public keys."
 			},
 			{
+				"name": "verifyApproval.decision",
+				"type": "ApprovalReceipt",
+				"required": false
+			},
+			{
 				"name": "signoffScope.record",
 				"type": "Journal",
 				"required": true,
@@ -179,6 +184,11 @@
 						"type": "DeployRegistry",
 						"required": true,
 						"description": "Trusted deploy registry, including approved targets, executable paths and signer public keys."
+					},
+					{
+						"name": "verifyApproval.decision",
+						"type": "ApprovalReceipt",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -261,6 +271,11 @@
 	"dependencies": [
 		{
 			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-approval-inbox",
 			"via": "import",
 			"origin": "derived"
 		},

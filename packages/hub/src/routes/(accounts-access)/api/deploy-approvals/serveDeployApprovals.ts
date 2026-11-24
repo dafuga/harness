@@ -17,7 +17,7 @@ const json = (body: unknown, status = 200) => Response.json(body, { status, head
 const hidden = () => json({ error: 'not-found' }, 404);
 const conflict = () => json({ error: 'approval-unavailable' }, 409);
 const body = async (request: Request) =>
-	JSON.parse(await readOverviewText(request, 32768)) as unknown;
+	JSON.parse(await readOverviewText(request, 65536)) as unknown;
 
 export async function serveDeployApprovals(request: Request, deps: DeployApprovalDependencies) {
 	const url = new URL(request.url);
@@ -54,7 +54,8 @@ export async function serveDeployApprovals(request: Request, deps: DeployApprova
 		const receipt = await context.repository.decide(approvalDecision.parse(await body(request)), {
 			owner: context.owner,
 			now: context.now,
-			sessionHash: session.idHash
+			sessionHash: session.idHash,
+			grants: deps.runnerGrants ?? '{}'
 		});
 		return receipt ? json(receipt) : conflict();
 	} catch (cause) {

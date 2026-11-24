@@ -1,0 +1,235 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.repository.accounts-access-deploy-approval",
+	"uid": "u_lrganksse4",
+	"kind": "repository",
+	"title": "DeployApprovalRepository",
+	"responsibility": "Owns the DeployApprovalRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/hub/src/repositories/accounts-access/DeployApprovalRepository.ts",
+			"packages/hub/src/repositories/accounts-access/DeployApprovalRepository.types.ts"
+		],
+		"symbols": [
+			"DeployApprovalRepository",
+			"DeployApprovalRepository.constructor",
+			"DeployApprovalRepository.list",
+			"DeployApprovalRepository.register",
+			"DeployApprovalRepository.decide",
+			"DeployApprovalRepository.collect",
+			"RunnerScope",
+			"DecisionSession",
+			"Collect",
+			"ApprovalRow"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "DeployApprovalRepository.constructor.db",
+				"type": "D1Database",
+				"required": true
+			},
+			{
+				"name": "DeployApprovalRepository.list.owner",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "DeployApprovalRepository.list.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "DeployApprovalRepository.register.card",
+				"type": "ApprovalCard",
+				"required": true
+			},
+			{
+				"name": "DeployApprovalRepository.register.scope",
+				"type": "RunnerScope",
+				"required": true
+			},
+			{
+				"name": "DeployApprovalRepository.decide.input",
+				"type": "ApprovalDecision",
+				"required": true
+			},
+			{
+				"name": "DeployApprovalRepository.decide.scope",
+				"type": "DecisionSession",
+				"required": true
+			},
+			{
+				"name": "DeployApprovalRepository.collect.input",
+				"type": "Collect",
+				"required": true
+			},
+			{
+				"name": "DeployApprovalRepository.collect.scope",
+				"type": "RunnerScope",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "DeployApprovalRepository.list",
+				"type": "Promise<ApprovalCards>"
+			},
+			{
+				"name": "DeployApprovalRepository.register",
+				"type": "Promise<boolean>"
+			},
+			{
+				"name": "DeployApprovalRepository.decide",
+				"type": "unknown"
+			},
+			{
+				"name": "DeployApprovalRepository.collect",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "DeployApprovalRepository.list",
+				"inputs": [
+					{
+						"name": "DeployApprovalRepository.list.owner",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "DeployApprovalRepository.list.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployApprovalRepository.list",
+						"type": "Promise<ApprovalCards>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeployApprovalRepository.register",
+				"inputs": [
+					{
+						"name": "DeployApprovalRepository.register.card",
+						"type": "ApprovalCard",
+						"required": true
+					},
+					{
+						"name": "DeployApprovalRepository.register.scope",
+						"type": "RunnerScope",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployApprovalRepository.register",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeployApprovalRepository.decide",
+				"inputs": [
+					{
+						"name": "DeployApprovalRepository.decide.input",
+						"type": "ApprovalDecision",
+						"required": true
+					},
+					{
+						"name": "DeployApprovalRepository.decide.scope",
+						"type": "DecisionSession",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployApprovalRepository.decide",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeployApprovalRepository.collect",
+				"inputs": [
+					{
+						"name": "DeployApprovalRepository.collect.input",
+						"type": "Collect",
+						"required": true
+					},
+					{
+						"name": "DeployApprovalRepository.collect.scope",
+						"type": "RunnerScope",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployApprovalRepository.collect",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "DeployApprovalRepository.constructor",
+				"inputs": [
+					{
+						"name": "DeployApprovalRepository.constructor.db",
+						"type": "D1Database",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployApprovalRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.execution-runtimes-scripted-deploy-approval-inbox",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/repositories/accounts-access/DeployApprovalRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/repositories/accounts-access/DeployApprovalRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -102,6 +102,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.execution-runtimes-scripted-deploy-deploy-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "validator.execution-runtimes-deploy-manifest",
 			"via": "import",
 			"origin": "derived"

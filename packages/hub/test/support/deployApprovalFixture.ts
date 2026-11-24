@@ -76,7 +76,7 @@ async function approvalRequests(db: D1Database, close: () => Promise<void>) {
 	});
 	const sessions = new RequestSessionService({ sessions: repository, origin: ORIGIN });
 	const key = randomBytes(32).toString('base64url');
-	const runnerGrants = JSON.stringify({
+	let runnerGrants = JSON.stringify({
 		'fixture:preprod': createHash('sha256').update(key).digest('hex')
 	});
 	const owner = await repository.issue({
@@ -110,6 +110,9 @@ async function approvalRequests(db: D1Database, close: () => Promise<void>) {
 		close,
 		advance: (ms: number) => {
 			elapsed += ms;
+		},
+		withdrawRunner: () => {
+			runnerGrants = '{}';
 		},
 		revoke: () => store.revoke(owner.record.idHash, now + elapsed),
 		session: (input?: unknown) => serve(approvalRequest(url, 'Bearer ' + owner.credential, input)),

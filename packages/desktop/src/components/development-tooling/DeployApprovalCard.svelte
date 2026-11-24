@@ -51,7 +51,7 @@
 </script>
 
 <Modal open title="Review deploy approval" variant="text" onClose={close}>
-	<hx-dl>
+	<hx-dl data-deploy-approval-fields>
 		{#each fields as [label, value] (label)}
 			{#if value != null}<hx-dt>{label}</hx-dt><hx-dd>{value}</hx-dd>{/if}
 		{/each}
@@ -71,6 +71,17 @@
 </Modal>
 
 <style>
+	:global(.viewer-dialog[open]:has([data-deploy-approval-fields])) {
+		display: flex;
+		flex-direction: column;
+	}
+	:global(.viewer-dialog:has([data-deploy-approval-fields]) .viewer-content) {
+		min-height: 0;
+		overflow: auto;
+	}
+	:global(.viewer-dialog:has([data-deploy-approval-fields]) > footer) {
+		flex: none;
+	}
 	dl {
 		display: grid;
 		grid-template-columns: minmax(6rem, 1fr) minmax(0, 3fr);

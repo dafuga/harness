@@ -1,3 +1,4 @@
+// @harness-uid u_2gix6yvno4
 import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import {
 	hash,

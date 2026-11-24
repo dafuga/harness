@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.endpoint.accounts-access-api-deploy-approvals",
+	"uid": "u_32tlacz6al",
+	"kind": "endpoint",
+	"title": "/(accounts-access)/api/deploy-approvals",
+	"responsibility": "Owns the /(accounts-access)/api/deploy-approvals HTTP endpoint.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/routes/(accounts-access)/api/deploy-approvals/+server.ts"],
+		"symbols": ["GET", "POST"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "GET.request",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "GET.platform",
+				"type": "unknown",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "GET",
+				"type": "unknown"
+			},
+			{
+				"name": "POST",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GET",
+				"inputs": [
+					{
+						"name": "GET.request",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "GET.platform",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GET",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.config.hub-env",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.module.tracker-overview-api",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/routes/(accounts-access)/api/deploy-approvals/+server.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/routes/(accounts-access)/api/deploy-approvals/+server.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
