@@ -1,19 +1,28 @@
 import type { Summary } from './hub-remote-workerd.test.types';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import {
-	command,
 	connectDevice,
 	connectHost,
 	newHost,
-	newIdentity,
-	newRequest,
 	pairingPath,
-	sealedText,
 	pairDevice,
 	type TestHost
 } from '../../../relay/test/support/relayActors';
-import { credentialHash, randomId } from '../../../remote/src/utils/remoteIdentity';
-import { RELAY_ORIGIN, startHubRelay, type HubRelayFixture } from '../support/hubRelayFixture';
+import {
+	credentialHash,
+	openPairing,
+	remoteIdentity,
+	remoteKeys,
+	toBase64Url
+} from '../../../remote/src/index';
+import type { RemoteKeyPair } from '../../../remote/src/index';
+import {
+	accountPairing,
+	approveAccountPairing,
+	RELAY_ORIGIN,
+	startHubRelay,
+	type HubRelayFixture
+} from '../support/hubRelayFixture';
 
 /** The hub's controller and the relay's host objects in workerd, joined by a namespace binding. */
 let f: HubRelayFixture;
@@ -38,14 +47,21 @@ const outcome = async (response: Response) => {
 const summaryOf = async (session: string, hostId: string) =>
 	(await (await f.hub(session, 'GET', `/hosts/${hostId}`)).json()) as Summary;
 
-async function accountRequest(host: TestHost, socket: Awaited<ReturnType<typeof connectHost>>) {
+async function accountRequest(
+	host: TestHost,
+	socket: Awaited<ReturnType<typeof connectHost>>,
+	keys: RemoteKeyPair
+) {
 	const path = `/hosts/${host.hostId}/pairing`;
 	const registration = await f.hub(owner, 'GET', path);
 	expect([registration.status, await registration.json()]).toEqual([
 		200,
 		{ hostId: host.hostId, hostKey: host.hostKey, origin: RELAY_ORIGIN }
 	]);
-	const { pairingId, body, verifier } = await newRequest(randomId());
+	const { pairingId, body, verifier, deviceId, approvalKey } = await accountPairing(
+		host.hostId,
+		keys
+	);
 	const request = { pairingId, ...body };
 	expect(await outcome(await f.hub(null, 'POST', path, request))).toBe('401 session-required');
 	expect(await outcome(await f.hub(other, 'GET', path))).toBe('403 forbidden');
@@ -53,32 +69,30 @@ async function accountRequest(host: TestHost, socket: Awaited<ReturnType<typeof 
 	expect(await outcome(await f.hub(owner, 'POST', path, request))).toBe('202 ok');
 	const publicRequest = pairingPath(host, pairingId, 'request');
 	expect(await outcome(await f.relay.post(publicRequest, body))).toBe('409 pairing-unavailable');
-	expect(await socket.until('pairing-request')).toMatchObject({
-		pairingId,
-		...body,
-		account: true
-	});
 	expect((await summaryOf(owner, host.hostId)).devices).toEqual([]);
-	const { id: deviceId } = await newIdentity();
-	const approval = {
-		type: 'pairing-approve',
-		pairingId,
-		deviceId,
-		sealed: sealedText(),
-		challenge: body.challenge
-	};
-	expect(await command(socket, approval)).toMatchObject({ ok: true });
+	const grant = { projects: [], agents: false };
+	const approval = await approveAccountPairing(
+		socket,
+		{ host, keys },
+		{ pairingId, deviceId, grant }
+	);
 	const exchange = pairingPath(host, pairingId, 'exchange');
 	const answer = await f.relay.post(exchange, { verifier });
 	expect(answer.status).toBe(200);
 	expect(await answer.json()).toMatchObject({ deviceId, sealed: approval.sealed });
+	expect(await openPairing(approvalKey, 'approval', approval.sealed)).toMatchObject({
+		deviceId,
+		grant
+	});
 	expect(await outcome(await f.relay.post(exchange, { verifier }))).toBe('400 pairing-invalid');
 }
 
 test(
 	'a host is registered under the owner of the session, whatever the body claims',
 	async () => {
-		const host = await newHost(),
+		const keys = await remoteKeys(),
+			hostKey = toBase64Url(keys.publicKey);
+		const host = { ...(await newHost()), hostKey, hostId: await remoteIdentity(hostKey) },
 			path = `/hosts/${host.hostId}`,
 			forged = { id: 'google:fixture-other' },
 			claims = { owner: forged, ownerId: forged.id, actor: forged };
@@ -125,7 +139,7 @@ test(
 			computers: [{ hostId: host.hostId, name: host.name, online: true }]
 		});
 		expect((await summaryOf(owner, host.hostId)) as unknown).toMatchObject({ online: true });
-		await accountRequest(host, socket);
+		await accountRequest(host, socket, keys);
 		socket.close();
 	},
 	limit
