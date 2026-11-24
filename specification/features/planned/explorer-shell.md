@@ -98,6 +98,10 @@ to the formatted address, and a plain click or a choice in a field is handed to 
 - Scenario: `specification/scenarios/explorer-shell.json` declares seven states at three
   widths. Under verification the fixture is the declared build `shell-fixture`, compiled in
   setup and served unchanged, and each capture carries its build and revision.
+- The catalog page of `shell-fixture` compiles the real Reports, Desktop and Hub previews.
+  Its SvelteKit path mock must resolve routes and provide the static asset used by Desktop
+  sign-in within the isolated bundle. The existing `desktop.style.design` default case proves
+  the catalog builds and opens at desktop, tablet and mobile widths.
 - Red on a pristine export of b4afb74 and green on the change with the same test files, by
   hash: `work/explorer-shell/redgreen.sh`, logs and captures under `work/explorer-shell/`.
 - Root: `test/format-ignore.test.ts` holds that what the checks of the reports package generate
