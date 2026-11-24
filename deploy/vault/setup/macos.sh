@@ -44,8 +44,21 @@ record_exists() {
 }
 
 attribute_matches() {
-  local attribute=$1 value=$2
-  grep -Fx -e "$attribute: $value" -e "dsAttrTypeNative:$attribute: $value"
+  local attribute=$1 value=$2 listing
+  listing=$(cat)
+  [[ "$listing" == "$attribute: $value" ||
+     "$listing" == "dsAttrTypeNative:$attribute: $value" ||
+     "$listing" == "$attribute:"$'\n '"$value" ]]
+}
+
+directory_service() { /usr/bin/dscl . "$@"; }
+
+ensure_attribute() {
+  local record=$1 attribute=$2 value=$3
+  if directory_service -read "$record" "$attribute" 2>/dev/null |
+     attribute_matches "$attribute" "$value"; then return; fi
+  directory_service -create "$record" "$attribute" "$value" ||
+    die "Directory Services could not set $attribute on the dedicated Vault identity."
 }
 
 verify_record() {
@@ -70,22 +83,22 @@ available_id() {
 
 ensure_group() {
   local record="/Groups/$account"
-  /usr/bin/dscl . -create "$record" GeneratedUID "$group_key"
-  /usr/bin/dscl . -create "$record" PrimaryGroupID "$executor_id"
-  /usr/bin/dscl . -create "$record" RealName 'Harness Vault Executor'
+  ensure_attribute "$record" GeneratedUID "$group_key"
+  ensure_attribute "$record" PrimaryGroupID "$executor_id"
+  ensure_attribute "$record" RealName 'Harness Vault Executor'
 }
 
 ensure_user() {
   local record="/Users/$account"
-  /usr/bin/dscl . -create "$record" GeneratedUID "$user_key"
-  /usr/bin/dscl . -create "$record" UniqueID "$executor_id"
-  /usr/bin/dscl . -create "$record" PrimaryGroupID "$executor_id"
-  /usr/bin/dscl . -create "$record" RealName 'Harness Vault Executor'
-  /usr/bin/dscl . -create "$record" UserShell /usr/bin/false
-  /usr/bin/dscl . -create "$record" NFSHomeDirectory "$home"
-  /usr/bin/dscl . -create "$record" IsHidden 1
+  ensure_attribute "$record" GeneratedUID "$user_key"
+  ensure_attribute "$record" UniqueID "$executor_id"
+  ensure_attribute "$record" PrimaryGroupID "$executor_id"
+  ensure_attribute "$record" RealName 'Harness Vault Executor'
+  ensure_attribute "$record" UserShell /usr/bin/false
+  ensure_attribute "$record" NFSHomeDirectory "$home"
+  ensure_attribute "$record" IsHidden 1
   # The account is only used with a root-initiated identity switch.
-  /usr/bin/dscl . -create "$record" Password '*'
+  ensure_attribute "$record" Password '*'
 }
 
 verify_account() {
@@ -135,12 +148,30 @@ verify_engine() {
 }
 
 stop_engine() {
-  if ! record_exists user || ! exists "$home"; then return; fi
-  verify_home
-  if ! as_executor /bin/test -d "$home/.colima/$account"; then return; fi
-  [[ -x "$colima" ]] || die 'Colima is needed to stop the private engine before removal.'
-  as_executor "$colima" stop "$account" </dev/null >/dev/null 2>&1 ||
-    die 'Colima could not stop the private Vault VM.'
+  if ! record_exists user; then return; fi
+  if [[ "$(/usr/bin/id -u "$account" 2>/dev/null)" != "$executor_id" ]]; then
+    if exists "$home"; then die 'The executor UID does not match the journal.'; fi
+    return
+  fi
+  if exists "$home"; then
+    verify_home
+    if as_executor /bin/test -d "$home/.colima/$account"; then
+      [[ -x "$colima" ]] || die 'Colima is needed to stop the private engine before removal.'
+      as_executor "$colima" stop "$account" </dev/null >/dev/null 2>&1 ||
+        die 'Colima could not stop the private Vault VM.'
+    fi
+  fi
+  stop_user_services
+}
+
+stop_user_services() {
+  local domain="user/$executor_id" attempt
+  # Running Colima can start on-demand macOS agents in this dedicated user's launchd domain.
+  /bin/launchctl bootout "$domain" >/dev/null 2>&1 || :
+  for ((attempt=0; attempt<5; attempt++)); do
+    if ! /usr/bin/pgrep -u "$executor_id" >/dev/null 2>&1; then return; fi
+    /bin/sleep 1
+  done
 }
 
 delete_record() {

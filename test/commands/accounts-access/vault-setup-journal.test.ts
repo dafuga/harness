@@ -120,3 +120,26 @@ test('macOS checks a real private socket with the system test binary', async () 
 		}
 	});
 });
+
+test('macOS repair leaves matching Directory Services attributes alone', () => {
+	const check = [
+		'source "$1"; source "$2"',
+		'directory_service() {',
+		'  case "$1:$3" in',
+		"    -read:Password) printf 'Password: *\\n';;",
+		"    -read:RealName) printf 'RealName:\\n Harness Vault Executor\\n';;",
+		'    -read:IsHidden) return 1;;',
+		"    -create:IsHidden) printf '%s\\n' \"$3=$4\";;",
+		'    *) return 1;;',
+		'  esac',
+		'}',
+		'ensure_attribute /Users/harness-vault Password "*"',
+		'ensure_attribute /Users/harness-vault RealName "Harness Vault Executor"',
+		'ensure_attribute /Users/harness-vault IsHidden 1'
+	].join('\n');
+	const result = spawnSync('/bin/bash', ['-c', check, 'fixture', common, macos], {
+		encoding: 'utf8'
+	});
+	expect(result.status, result.stderr).toBe(0);
+	expect(result.stdout.trim()).toBe('IsHidden=1');
+});
