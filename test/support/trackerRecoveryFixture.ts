@@ -70,7 +70,11 @@ async function proveRecovery(root: string) {
 			})
 			.toEqual({ state: 'running' });
 		for (let step = 0; step < 4; step++) await watchdog(11 * minute);
-		expect(items.getStored(id).needs_daniel).toBe(false);
+		const waiting = items.getStored(id);
+		expect(waiting.needs_daniel).toBe(false);
+		expect(waiting.notes_log.some(({ text }) => /Relaunch [0-9]+\/3 failed:/.test(text))).toBe(
+			false
+		);
 		expect(database.prepare('SELECT COUNT(*) AS total FROM runs').get()).toEqual({ total: 2 });
 		tmux('kill-session', '-t', '=auto-occupy-r2');
 		await watchdog(11 * minute);
