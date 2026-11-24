@@ -47,12 +47,31 @@ test('dispatches an uncensored model’s tool proposals only within the owner gr
 });
 
 test('binds owner approval to exact arguments, revision and expiry and consumes it once', async () => {
-	const { safety, execute, policy, advance } = fixture();
+	const { safety, execute, policy, advance, options } = fixture();
+	const sender = options.tools.send;
+	let draft = fixtureDocument;
+	options.tools = {
+		...options.tools,
+		send: {
+			action: sender.action,
+			prepare(input) {
+				const prepared = sender.prepare(input);
+				return prepared && { ...prepared, content: draft };
+			}
+		}
+	};
 	const call = proposal('send');
 	const id = await reviewId(safety, call);
 	expect(
 		await safety.approve(agentId, id, proposal('send', resource, 'different content'))
 	).toEqual({ status: 'denied', reason: 'approval-invalid' });
+	draft = 'updated draft at the same resource';
+	expect(await safety.approve(agentId, id, call)).toEqual({
+		status: 'denied',
+		reason: 'approval-invalid'
+	});
+	expect(execute).not.toHaveBeenCalled();
+	draft = fixtureDocument;
 	policy.revision = '2';
 	expect(await safety.approve(agentId, id, call)).toEqual({
 		status: 'denied',
