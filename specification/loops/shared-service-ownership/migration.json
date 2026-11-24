@@ -6885,13 +6885,13 @@
 			"unit": "desktop.adapter.capacitor-account",
 			"from": "packages/desktop/src/adapters/capacitor-account-adapter/CapacitorAccountAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-			"definition": "0f1b7bce3e635b55f5ebd8e8002b7d3d8388007b6fcb4a97d781262d51d559e0",
+			"definition": "3ba0b1879d8f87da7db47e83ff0ea1f3843d902d10ef5f03cf2b93ac29254005",
 			"relocationDefinition": "f54f1586b418a653ad39961751f61e977322b2dfa5d0ab7c8f660f3bb3cdd01a",
 			"review": {
-				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+				"commit": "5017e74f1fdebf5fa6cc8c22b5fdffbe6f2da6d8",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-				"definition": "0f1b7bce3e635b55f5ebd8e8002b7d3d8388007b6fcb4a97d781262d51d559e0",
-				"reason": "Pass the sign-in mode and keep native account status and read authority isolated."
+				"definition": "3ba0b1879d8f87da7db47e83ff0ea1f3843d902d10ef5f03cf2b93ac29254005",
+				"reason": "Treat disabled hosted collaboration as an empty shared-project list while preserving the native account."
 			},
 			"previousReviews": [
 				{
@@ -6917,6 +6917,12 @@
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
 					"definition": "28418e2a350f2be7f85874f88cb640e98e4ca1f334c4ce53548e0588d470ee3c",
 					"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 80802304f8 (desktop.adapter.capacitor-account); behavior unchanged."
+				},
+				{
+					"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
+					"definition": "0f1b7bce3e635b55f5ebd8e8002b7d3d8388007b6fcb4a97d781262d51d559e0",
+					"reason": "Pass the sign-in mode and keep native account status and read authority isolated."
 				}
 			]
 		},

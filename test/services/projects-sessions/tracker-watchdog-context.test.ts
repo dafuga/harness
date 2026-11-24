@@ -56,6 +56,7 @@ async function proveSamples(root: string) {
 	const timestamp = new Date(createdAt).toISOString();
 	const rollout = [
 		{ type: 'session_meta', payload: { cwd: codex, timestamp } },
+		{ type: 'turn_context', payload: { model: 'gpt-6.1-terra', effort: 'high' } },
 		{
 			type: 'event_msg',
 			payload: {
@@ -73,6 +74,7 @@ async function proveSamples(root: string) {
 		{
 			type: 'assistant',
 			message: {
+				model: 'claude-opus-5-5',
 				usage: {
 					input_tokens: 20,
 					cache_read_input_tokens: 150_000,
@@ -85,9 +87,10 @@ async function proveSamples(root: string) {
 		{ ...pane, cwd: codex },
 		{ ...pane, cwd: claude }
 	];
-	expect(
-		(await sampleTrackerContexts(panes, [root], signal)).map(({ contextTokens }) => contextTokens)
-	).toEqual([150_001, 150_060]);
+	expect(await sampleTrackerContexts(panes, [root], signal)).toMatchObject([
+		{ contextTokens: 150_001, model: 'gpt-6.1-terra', effort: 'high' },
+		{ contextTokens: 150_060, model: 'claude-opus-5-5' }
+	]);
 	writeTranscript(codex, '00000002', rollout);
 	expect((await sampleTrackerContexts(panes, [root], signal))[0].contextTokens).toBeUndefined();
 }
@@ -110,10 +113,7 @@ async function proveHandoff() {
 	const db = new DatabaseSync(':memory:');
 	try {
 		const store = new TrackerPersistenceService(db, host, { now: () => now });
-		store.appendLocal({
-			itemId,
-			fields: { status: 'in_progress', title: 'Handoff item', kind: 'task' }
-		});
+		seedHandoffItem(store);
 		const attempt = seedHandoffRun(db);
 		const repo = new TrackerItemReadRepository(store.database);
 		const scan = (activity: number): WatchdogScan & { canRelaunch: boolean } => ({
@@ -157,6 +157,20 @@ async function proveHandoff() {
 	} finally {
 		db.close();
 	}
+}
+
+function seedHandoffItem(store: TrackerPersistenceService) {
+	store.appendLocal({
+		itemId,
+		fields: {
+			status: 'in_progress',
+			title: 'Handoff item',
+			kind: 'task',
+			schedule_off: true,
+			needs_daniel: 1,
+			question: 'Please review the proposed wording when convenient.'
+		}
+	});
 }
 
 function seedHandoffRun(db: DatabaseSync) {

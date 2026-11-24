@@ -35,7 +35,10 @@ async function proveRecovery() {
 				status: 'in_progress',
 				kind: 'task',
 				computer: host,
-				notes: 'A short brief'
+				notes: 'A short brief',
+				schedule_off: true,
+				needs_daniel: 1,
+				question: 'Please review the proposed wording when you have time.'
 			}
 		});
 		store.appendLocal({
@@ -64,6 +67,13 @@ async function proveRecovery() {
 			])
 		);
 		await verifyRecoveryRecheck(store, item);
+		store.appendLocal({
+			itemId,
+			fields: { question: 'Blocked: Cannot proceed without Daniel approving the release.' }
+		});
+		expect(readTrackerSessionHealth(store, items.list(), [], now)).toContainEqual(
+			expect.objectContaining({ item_id: itemId, kind: 'missing', recover: false })
+		);
 	} finally {
 		database.close();
 	}

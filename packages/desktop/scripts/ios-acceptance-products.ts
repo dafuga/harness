@@ -125,3 +125,52 @@ export async function normalProduct(run: Acceptance): Promise<void> {
 	run.record.check(running(run.udid), 'and is still running a moment later');
 	await shot(run, 'normal-start');
 }
+
+/** The real native renderer and scanner, with synthetic signed-in Hub replies only. */
+export async function signedInHome(run: Acceptance): Promise<void> {
+	const { page, record } = run;
+	record.begin('Signed-in iOS home without hosted collaboration');
+	await page.until(
+		"return String(Boolean(window.Capacitor?.isPluginAvailable('HarnessAccount')));",
+		'true'
+	);
+	await page.evaluate(`
+const cap = window.Capacitor;
+const native = cap.nativePromise;
+cap.nativePromise = (plugin, method, options) => {
+	if (plugin !== 'HarnessAccount') return native.call(cap, plugin, method, options);
+	if (method === 'status') return Promise.resolve({
+		configured: true, state: 'signed-in',
+		actor: { id: 'google-fixture-owner', name: 'Fixture Owner', email: 'owner@example.invalid' }
+	});
+	const projects = options.path === '/api/projects';
+	if (projects) window.harnessDisabledCollaborationRead = true;
+	const body = projects ? { error: 'collaboration-disabled' } : { status: 'ready', projects: [], machines: [] };
+	return Promise.resolve({ status: projects ? 503 : 200, contentType: 'application/json', data: btoa(JSON.stringify(body)) });
+};
+window.dispatchEvent(new Event('focus'));
+`);
+	await page.until(
+		`
+return window.harnessDisabledCollaborationRead && named('Project Overview') && named('Sign out') && named('Scan QR code') ? 'ready' : '';
+`,
+		'ready'
+	);
+	await page.until('return document.fonts.status;', 'loaded');
+	await shot(run, 'signed-in-home');
+	const result = await page.evaluate(`
+const scan = named('Scan QR code').getBoundingClientRect();
+const signOut = named('Sign out').getBoundingClientRect();
+const label = document.createRange();
+label.selectNodeContents([...document.querySelector('.account-status').childNodes].find(node => node.textContent.trim() === 'Signed in with Google'));
+const status = label.getBoundingClientRect();
+return {
+	banner: document.body.innerText.includes('Shared comments are not configured'),
+	scanGap: signOut.top - scan.bottom,
+	accountGap: Math.max(signOut.left - status.right, signOut.top - status.bottom)
+};`);
+	const { banner, scanGap, accountGap } = JSON.parse(result);
+	record.check(!banner, 'disabled collaboration does not raise a home banner');
+	record.check(scanGap >= 12, 'Sign out is separated from Scan QR code by at least 12 px');
+	record.check(accountGap >= 12, 'Sign out is separated from the account label by at least 12 px');
+}

@@ -154,6 +154,8 @@ export function failRun(
 ): TrackerDispatchDecision {
 	const { item } = snapshot;
 	const finished = finishRun(run, { ...failure, now });
+	// Recovery owns its budget and backoff across separate launch tokens.
+	if (run.launch_source === 'recovery') return recordRun(finished);
 	if (!item || !matchesRequest(item, run, policy) || (inactive(item) && !failure.reopen)) {
 		return recordRun(finished);
 	}

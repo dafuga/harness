@@ -1,3 +1,4 @@
+import { proveTrackerTmuxRecovery, tmuxExecutable } from './support/trackerRecoveryFixture';
 import { existsSync, realpathSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
@@ -195,3 +196,9 @@ async function readSupervisorSocket(path: string): Promise<string> {
 		socket.destroy();
 	}
 }
+
+test.skipIf(process.platform !== 'darwin' || !tmuxExecutable)(
+	'relaunches a killed managed tmux session and flags after three failed recoveries',
+	{ timeout: 40_000 },
+	proveTrackerTmuxRecovery
+);

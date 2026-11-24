@@ -40,12 +40,19 @@
 		{#if session.actor && browserReturn}
 			<hx-section class="hub-card gate-card">
 				<hx-p class="muted">Sign in to the Harness app as {session.actor.email}.</hx-p>
-				<hx-button type="button" disabled={submitting} onclick={() => void returnToApp()}>
-					Continue to Harness
-				</hx-button>
-				<hx-button type="button" disabled={submitting} onclick={() => void session.signOut()}>
-					Use another Google account
-				</hx-button>
+				<hx-div class="return-actions">
+					<hx-button
+						class="primary"
+						type="button"
+						disabled={submitting}
+						onclick={() => void returnToApp()}
+					>
+						Continue to Harness
+					</hx-button>
+					<hx-button type="button" disabled={submitting} onclick={() => void session.signOut()}>
+						Use another Google account
+					</hx-button>
+				</hx-div>
 				{#if error}<hx-p role="alert">{error}</hx-p>{/if}
 			</hx-section>
 		{:else if session.actor}
@@ -81,5 +88,13 @@
 	}
 	.gate :global(.gate-card button) {
 		min-height: 44px;
+	}
+	.return-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--hx-space-12);
+	}
+	.return-actions > :global(button) {
+		flex: 1 1 auto;
 	}
 </style>

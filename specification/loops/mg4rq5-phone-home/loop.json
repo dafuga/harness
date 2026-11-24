@@ -1,0 +1,67 @@
+{
+	"name": "mg4rq5-phone-home",
+	"goal": "Signed-in iPhone home keeps Overview and computer pairing usable when hosted collaboration is disabled, and account actions on both the iPhone and Hub return page have visible spacing.",
+	"createdAt": "2026-11-24T12:01:36.261Z",
+	"updatedAt": "2026-11-24T12:13:27.142Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-24T12:03:01.380Z",
+			"evidence": "The TestFlight home shows the shared-collaboration configuration error after GET /api/projects returns 503 collaboration-disabled. Project Overview and pairing should remain available. The account actions should have 12 CSS px of spacing on the iOS home and the phone-width Hub return page."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-24T12:03:03.066Z",
+			"evidence": "The native acceptance covered a paired Overview using a successful empty shared-project list, and the browser return case covered its callback only. Exercise the signed-in unpaired native home with the real Hub refusal and measure visible gaps in both flows before continuing."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-24T12:08:19.402Z",
+			"evidence": "Hub clean red snapshot d99a646c6b measures 0 px between the return actions. At 19eb8660d1 the separate native signedInHome fixture on iOS 26.5 fails for banner and both 12 px gaps. Red screenshots captured by both tests."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-24T12:08:38.459Z",
+			"evidence": "Map only shared-project discovery HTTP 503 collaboration-disabled to an empty hosted list. Separate the phone status actions and the Hub return actions with the shared 12 px spacing token, with no Google callback change."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-24T12:12:22.958Z",
+			"evidence": "Unchanged Hub callback test passed at 5017e74f1f in the paired regression record. The unchanged native phase passes all three banner and spacing assertions in an iOS 26.5 test simulator. Browser and native before/after screenshots were inspected."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "complete",
+			"completedAt": "2026-11-24T12:13:27.142Z",
+			"evidence": "siblings-e82bd515-8aba-4410-9475-cee00e6bfa9d.json"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

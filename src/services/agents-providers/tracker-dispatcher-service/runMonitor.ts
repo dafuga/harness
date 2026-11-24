@@ -84,16 +84,8 @@ function monitorRunning(
 			})
 		);
 	}
-	if (event.session === 'exited' || event.exitCode != null) {
-		const code = event.exitCode;
-		const reason = `session exited without tracker done${code == null ? '' : ` (exit ${code})`}`;
-		return failRun(
-			snapshot,
-			run,
-			{ outcome: 'failed', reason, exitCode: code, usage: event.usage },
-			clock
-		);
-	}
+	if (event.session === 'exited' || event.exitCode != null)
+		return finishExitedRun(snapshot, run, event, clock);
 	const timeout = timeoutReason(run, item, event, clock);
 	if (timeout)
 		return failRun(
@@ -103,6 +95,20 @@ function monitorRunning(
 			clock
 		);
 	return skip('held', 'run still active');
+}
+
+function finishExitedRun(
+	snapshot: TrackerDispatchSnapshot,
+	run: TrackerRunReceipt,
+	event: Extract<TrackerDispatchEvent, { type: 'monitor' }>,
+	clock: { policy: TrackerDispatchPolicy; now: number }
+) {
+	const code = event.exitCode;
+	const reason = `session exited without tracker done${code == null ? '' : ` (exit ${code})`}`;
+	const failure = { outcome: 'failed', reason, exitCode: code, usage: event.usage } as const;
+	if (snapshot.item?.status === 'in_progress' && clock.policy.recoverDroppedSessions)
+		return recordRun(finishRun(run, { ...failure, now: clock.now }));
+	return failRun(snapshot, run, failure, clock);
 }
 
 function timeoutReason(
