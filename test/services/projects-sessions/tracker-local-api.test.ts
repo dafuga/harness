@@ -109,10 +109,11 @@ test('blocks, unblocks and reopens an item with durable notes', async () => {
 	});
 	expect(await (await mark('unblock', { note: 'Available' })).json()).toMatchObject({
 		status: 'in_progress',
-		needs_daniel: false,
+		needs_daniel: true,
 		notes_log: [{ text: 'blocked: Waiting for fixture' }, { text: 'unblocked: Available' }]
 	});
-	expect(await (await mark('done')).json()).toMatchObject({ status: 'done' });
+	expect(await (await mark('done')).json()).toMatchObject({ status: 'done', needs_daniel: true });
+	expect(await (await mark('unflag')).json()).toMatchObject({ needs_daniel: false });
 	expect(await (await mark('reopen')).json()).toMatchObject({ status: 'open' });
 });
 

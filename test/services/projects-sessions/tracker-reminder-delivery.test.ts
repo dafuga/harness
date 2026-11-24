@@ -159,7 +159,7 @@ test('tick sends a scheduled reminder through a webhook when it is the only hub 
 	});
 });
 
-test('tick coalesces legacy webhook escalations after a block and closes them on answer', async () => {
+test('tick follows up webhook asks on their own cadence and closes them on answer', async () => {
 	const f = notificationFixture();
 	f.options.webhook = { destination: chief, batch: false, coalesceMinutes: 10 };
 	await f.service.tick();
@@ -193,15 +193,19 @@ test('tick coalesces legacy webhook escalations after a block and closes them on
 		{ event: 'needs_daniel', escalation: 0, item_id: 'flag' }
 	]);
 
-	f.at(start + 60 * minute);
+	f.at(start + 119 * minute);
+	await f.restart().tick();
+	expect(f.calls).toHaveLength(2);
+	const morning = Date.parse('2026-02-03T08:00:00Z');
+	f.at(morning);
 	await f.restart().tick();
 	expect(wire(f.calls[2]).items).toMatchObject([
-		{ event: 'needs_daniel', escalation: 1, item_id: 'block' },
-		{ event: 'needs_daniel', escalation: 1, item_id: 'flag' }
+		{ event: 'needs_daniel', escalation: 1, item_id: 'block', waiting_minutes: 720 },
+		{ event: 'needs_daniel', escalation: 1, item_id: 'flag', waiting_minutes: 712 }
 	]);
 	f.rows.set('block', { ...f.rows.get('block')!, resolved: 1 });
 	f.rows.set('flag', { ...f.rows.get('flag')!, resolved: 1 });
-	f.at(start + 120 * minute);
+	f.at(morning + 360 * minute);
 	await f.service.tick();
 	expect(f.calls).toHaveLength(3);
 	expect([...f.queue.read().flags.values()].map((row) => row.status)).toEqual(['closed', 'closed']);

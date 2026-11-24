@@ -15,7 +15,7 @@ import {
 } from '../../support/trackerManagedProcessFixture';
 
 const node = 'daniel-primary-mbp';
-const now = Date.parse('2027-01-15T12:00:00Z');
+const now = 1_800_000_000_000;
 
 test('honors the host cap while retaining finished panes and reporting a flagged request', () =>
 	measureWorkload(
@@ -51,7 +51,7 @@ async function proveHostCapacity(root: string) {
 			.toEqual([{ item_id: 'next100001', state: 'running' }]);
 		expect(existsSync(closed)).toBe(false);
 		await verifyHostLaunchOutcomes(runtime, db, signal);
-		await verifyIdleCapacityQueue(runtime, signal, (elapsed) => {
+		await verifyIdleCapacityQueue(runtime, db, signal, (elapsed) => {
 			clock += elapsed;
 		});
 		clock += 300_000;
@@ -85,6 +85,7 @@ async function proveHostCapacity(root: string) {
 
 async function verifyIdleCapacityQueue(
 	runtime: TrackerNativeRuntimeService,
+	database: DatabaseSync,
 	signal: AbortSignal,
 	advance: (elapsed: number) => void
 ) {
@@ -101,7 +102,12 @@ async function verifyIdleCapacityQueue(
 			}
 		});
 	}
-	advance(119 * 60_000);
+	// Older items share the current fixture with the original, recently active host sessions.
+	database
+		.prepare(
+			"UPDATE items SET updated_at = ? WHERE id IN ('idle-task1', 'later-task', 'blocked-id')"
+		)
+		.run(new Date(now - 114 * 60_000).toISOString());
 	await runtime.watchdog!.tick(signal);
 	const read = async (path: string) =>
 		await (await runtime.items.handle(new Request(`http://localhost${path}`)))!.json();

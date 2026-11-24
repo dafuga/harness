@@ -17,7 +17,9 @@ export async function verifyReminder(
 	});
 	await expect.poll(() => fixtureTrackerJson(hub, ['show', id])).toMatchObject({ remind_at: far });
 	expect(await fixtureTrackerJson(hub, ['list', '--flagged'])).toEqual([]);
-	expect(await fixtureTrackerJson(hub, ['digest'])).toMatchObject({ needs_daniel: [] });
+	expect(await fixtureTrackerJson(hub, ['digest'])).toMatchObject({
+		needs_daniel: [{ id, remind_at: far, waiting_minutes: expect.any(Number) }]
+	});
 	verifyCosDryRun(hub, id, false);
 	const at = new Date(Date.now() + 2_500).toISOString();
 	await fixtureTrackerJson(spoke, ['remind', id, '--at', at]);

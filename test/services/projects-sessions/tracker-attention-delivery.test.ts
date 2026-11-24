@@ -84,13 +84,13 @@ test('pause and resume release one relevant Chief of Staff batch, with recurring
 	f.rows.set('c', { ...f.rows.get('c')!, resolved: 1 });
 	await expect(f.restart().resume()).rejects.toThrow('synthetic acknowledgement lost');
 	expect(f.calls.map((call) => call.destination)).toEqual([worker, chief]);
-	const id = eventId(`done|a|${clock(night)}`, `blocked|b|${clock(night)}`);
+	const id = eventId(`done|a|${clock(night)}`);
 	expect(wire(f.calls[1])).toMatchObject({
 		event_id: id,
 		catch_up: true,
 		window_minutes: 30,
-		counts: { needs_daniel: 0, blocked: 1, done: 1 },
-		text: 'BLOCKED: Fixture b - Fixture blocker (needs Daniel)\nDONE: Fixture a - Fixture result'
+		counts: { needs_daniel: 0, blocked: 0, done: 1 },
+		text: 'DONE: Fixture a - Fixture result'
 	});
 	expect(f.queue.read().attention.get(`flag|c|${clock(night)}`)?.status).toBe('dropped');
 	await f.service.pause('fixture-operator');
@@ -100,6 +100,12 @@ test('pause and resume release one relevant Chief of Staff batch, with recurring
 	expect(f.calls[2]).toEqual(f.calls[1]);
 	await f.restart().tick();
 	expect(f.calls).toHaveLength(3);
+	const morning = Date.parse('2026-02-03T08:00:00Z');
+	f.at(morning);
+	await f.restart().tick();
+	expect(wire(f.calls[3])).toMatchObject({
+		items: [{ event: 'blocked', item_id: 'b', needs_daniel: true, waiting_minutes: 540 }]
+	});
 });
 
 test('tick keeps a delayed window out of quiet hours and retries the attention batch on the next window', async () => {

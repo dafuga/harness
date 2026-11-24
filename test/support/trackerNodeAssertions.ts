@@ -45,6 +45,7 @@ export async function proveForegroundSync(
 				.poll(() => fixtureTrackerJson(hub, ['list']), { timeout: 8_000 })
 				.toEqual(expect.arrayContaining([expect.objectContaining({ id })]));
 			await verifySpokePublication(hub);
+			await verifyDefaultPickup(hub);
 			await verifyTrackerWire(syncPort, id);
 			const reverse = await fixtureTrackerJson(hub, ['add', 'Reverse fixture item']);
 			await expect
@@ -63,6 +64,29 @@ export async function proveForegroundSync(
 		expect((await hubOwner.stop()).code).toBe(0);
 	}
 	expect((await trackerProcess(spoke, ['ensure']).exited).code).toBe(3);
+}
+
+async function verifyDefaultPickup(hub: TrackerNodeFixture) {
+	const ready = await fixtureTrackerJson(hub, [
+		'add',
+		'Synthetic delegated work',
+		'--by',
+		'Chief of Staff'
+	]);
+	const later = await fixtureTrackerJson(hub, [
+		'add',
+		'Synthetic deferred paperwork',
+		'--by',
+		'Daniel',
+		'--later'
+	]);
+	expect(ready).toMatchObject({ auto: expect.any(String), launch_target: 'synthetic-hub' });
+	expect(later).toMatchObject({ auto: null, schedule_off: true });
+	expect(await fixtureTrackerJson(hub, ['digest'])).toMatchObject({
+		queued: [{ id: ready.id, waiting_minutes: expect.any(Number) }]
+	});
+	await fixtureTrackerJson(hub, ['done', ready.id]);
+	await fixtureTrackerJson(hub, ['done', later.id]);
 }
 
 async function verifySpokePublication(hub: TrackerNodeFixture) {
@@ -120,14 +144,9 @@ async function verifyTrackerNotificationFlow(
 		.poll(async () => (await trackerProcess(hub, ['digest']).exited).stdout)
 		.toContain('Is the fixture ready?');
 	verifyCosDryRun(hub, id);
-	await expect
-		.poll(() => [...receipts.values()].find(({ path }) => path === '/cos')?.body, {
-			timeout: 9_000
-		})
-		.toMatchObject({
-			type: 'attention',
-			new: [{ id, question: 'Is the fixture ready?' }]
-		});
+	expect(await fixtureTrackerJson(hub, ['digest'])).toMatchObject({
+		needs_daniel: [{ id, question: 'Is the fixture ready?', waiting_minutes: expect.any(Number) }]
+	});
 	await verifyReminder(hub, spoke, id, receipts);
 	expect(
 		await fixtureTrackerJson(spoke, ['answer', id, 'Fixture confirmed', '--by', 'fixture-operator'])
