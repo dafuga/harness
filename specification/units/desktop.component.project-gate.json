@@ -12,6 +12,7 @@
 		"uses": [
 			"desktop.component.game-create",
 			"reports.component.brand-mark",
+			"reports.component.modal",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -152,12 +153,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.project-context-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.store.remote-phone",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.brand-mark",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
 			"via": "import",
 			"origin": "derived"
 		},

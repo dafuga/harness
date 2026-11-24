@@ -184,7 +184,8 @@
 				"description": "A JSON-serializable record appended as one compact JSON line to the trace file. The function does not validate event fields.",
 				"examples": [
 					{}
-				]
+				],
+				"unknownReason": "Trace event kinds carry different field sets; the trace writer serializes the supplied record."
 			},
 			{
 				"name": "validateLoopId.value",
@@ -230,7 +231,8 @@
 						"code": "ENOENT"
 					},
 					null
-				]
+				],
+				"unknownReason": "Filesystem failures are caught as arbitrary values and narrowed to an Error with the ENOENT code."
 			}
 		],
 		"outputs": [
@@ -325,7 +327,7 @@
 				"description": "An intentional CLI-facing failure raised by fail(...), including an existing loop, a missing or schema-invalid loop file, a closed loop, an invalid loop identifier, or empty required text."
 			},
 			{
-				"name": "Error",
+				"name": "Loop state filesystem or clock failure",
 				"type": "thrown",
 				"description": "A filesystem Error can propagate when a loop file cannot be read, created, written, or appended; a supplied clock callback Error also propagates unchanged."
 			},
@@ -459,7 +461,7 @@
 						"description": "Thrown when the loop state file already exists; the helper refuses to overwrite it."
 					},
 					{
-						"name": "Error",
+						"name": "Loop state filesystem or clock failure",
 						"type": "thrown",
 						"description": "A filesystem Error can propagate when a loop file cannot be read, created, written, or appended; a supplied clock callback Error also propagates unchanged."
 					},
@@ -511,7 +513,7 @@
 						"description": "Thrown when the file is missing or parsed data fails the loop-state schema."
 					},
 					{
-						"name": "Error",
+						"name": "Loop state filesystem or clock failure",
 						"type": "thrown",
 						"description": "A filesystem Error can propagate when a loop file cannot be read, created, written, or appended; a supplied clock callback Error also propagates unchanged."
 					},
@@ -605,7 +607,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Loop state filesystem or clock failure",
 						"type": "thrown",
 						"description": "A filesystem Error can propagate when a loop file cannot be read, created, written, or appended; a supplied clock callback Error also propagates unchanged."
 					},
@@ -634,7 +636,8 @@
 						"description": "A JSON-serializable record appended as one compact JSON line to the trace file. The function does not validate event fields.",
 						"examples": [
 							{}
-						]
+						],
+						"unknownReason": "Trace event kinds carry different field sets; the trace writer serializes the supplied record."
 					}
 				],
 				"outputs": [
@@ -646,7 +649,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Loop state filesystem or clock failure",
 						"type": "thrown",
 						"description": "A filesystem Error can propagate when a loop file cannot be read, created, written, or appended; a supplied clock callback Error also propagates unchanged."
 					},
@@ -748,7 +751,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Loop state filesystem or clock failure",
 						"type": "thrown",
 						"description": "A filesystem Error can propagate when a loop file cannot be read, created, written, or appended; a supplied clock callback Error also propagates unchanged."
 					}
@@ -768,7 +771,8 @@
 								"code": "ENOENT"
 							},
 							null
-						]
+						],
+						"unknownReason": "Filesystem failures are caught as arbitrary values and narrowed to an Error with the ENOENT code."
 					}
 				],
 				"outputs": [

@@ -120,22 +120,22 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Preflight throws \"Claude runner is unavailable.\" when the --version process returns a nonzero exit code."
 			},
 			{
-				"name": "Error",
+				"name": "ClaudeRunError",
 				"type": "thrown",
 				"description": "Run throws \"Claude runner failed; inspect authentication, model access, and local runner availability.\" when the benchmark process returns a nonzero exit code."
 			},
 			{
-				"name": "Error",
+				"name": "IncompleteBenchmarkSubmissionError",
 				"type": "thrown",
 				"description": "Run rejects with \"Claude did not complete a benchmark submission.\" when no result has a session_id, the result is marked is_error, or its subtype is not \"success\"."
 			},
 			{
-				"name": "Error",
+				"name": "ClaudeRunError",
 				"type": "thrown",
 				"description": "Run throws \"Claude reported a different model.\" when the parsed turn has a reportedModel that differs from input.candidate.model."
 			}
@@ -172,7 +172,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown when the --version process returns a nonzero exit code: \"Claude runner is unavailable.\""
 					}
@@ -210,17 +210,17 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ClaudeRunError",
 						"type": "thrown",
 						"description": "Thrown when the benchmark process returns a nonzero exit code: \"Claude runner failed; inspect authentication, model access, and local runner availability.\""
 					},
 					{
-						"name": "Error",
+						"name": "IncompleteBenchmarkSubmissionError",
 						"type": "thrown",
 						"description": "Thrown when Claude does not complete a successful result with a session_id: \"Claude did not complete a benchmark submission.\""
 					},
 					{
-						"name": "Error",
+						"name": "ClaudeRunError",
 						"type": "thrown",
 						"description": "Thrown when the parsed turn reports a model different from input.candidate.model: \"Claude reported a different model.\""
 					}

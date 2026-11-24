@@ -71,7 +71,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "History media directory or file write failure",
 				"type": "thrown",
 				"description": "The asynchronous operation rejects with the filesystem error if creating a destination directory or writing a media file fails; the service does not catch it."
 			}
@@ -125,7 +125,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "History media directory or file write failure",
 						"type": "thrown",
 						"description": "The asynchronous operation rejects with the filesystem error if creating a destination directory or writing a media file fails; the service does not catch it."
 					}

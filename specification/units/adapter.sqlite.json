@@ -366,7 +366,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "SQLite model, schema, or transaction failure",
 				"type": "thrown",
 				"description": "Model validation, table lookup, field conversion, schema checks and transaction guards can throw Error. Driver and callback failures propagate without translation; a failed rollback can replace the callback failure."
 			}
@@ -400,7 +400,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unregistered SQLite table",
 						"type": "thrown",
 						"description": "Thrown with the message No SQLite model for table: <table> when table has no registered model."
 					},
@@ -447,7 +447,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unregistered SQLite table",
 						"type": "thrown",
 						"description": "Thrown with the message No SQLite model for table: <table> when table has no registered model."
 					},
@@ -495,7 +495,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unregistered SQLite table",
 						"type": "thrown",
 						"description": "Thrown with the message No SQLite model for table: <table> when table has no registered model."
 					},
@@ -549,12 +549,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unregistered SQLite table",
 						"type": "thrown",
 						"description": "Thrown with the message No SQLite model for table: <table> when table has no registered model."
 					},
 					{
-						"name": "Error",
+						"name": "PrimaryKeyUpdateError",
 						"type": "thrown",
 						"description": "Thrown by SqliteTableAdapter.update with the message A SQLite primary key cannot be updated when input has its own property named after the primary key."
 					},
@@ -594,7 +594,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unregistered SQLite table",
 						"type": "thrown",
 						"description": "Thrown with the message No SQLite model for table: <table> when table has no registered model."
 					},
@@ -642,7 +642,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unregistered SQLite table",
 						"type": "thrown",
 						"description": "Thrown with the message No SQLite model for table: <table> when table has no registered model."
 					},
@@ -789,7 +789,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "SqliteAdapterError",
 						"type": "thrown",
 						"description": "Async functions and thenable results throw Error with the message SQLite transactions require a synchronous callback. Other callback failures are rethrown after rollback succeeds; database failures propagate."
 					}
@@ -808,7 +808,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "SQLite model and table schema mismatch",
 						"type": "thrown",
 						"description": "Thrown when a non-internal application table has no registered model or when a model’s declared columns differ from the table columns. The error identifies the missing table or mismatched model table."
 					}
@@ -866,7 +866,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid or duplicate SQLite model",
 						"type": "propagated",
 						"description": "The SqliteAdapter constructor's Error, raised when a model declaration fails SQLite table validation (a missing primary-key field, duplicate declared columns, an unsupported field type or an invalid table or column identifier) or two models declare the same table."
 					}
@@ -926,7 +926,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid or duplicate SQLite model",
 						"type": "thrown",
 						"description": "Thrown when a model declaration fails SQLite table validation, including a missing primary-key field, duplicate declared columns, unsupported field type, or invalid table/column identifier, and when two models declare the same table. These are standard Errors from model validation or the duplicate-table check."
 					}

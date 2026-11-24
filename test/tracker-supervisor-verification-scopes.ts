@@ -4,6 +4,22 @@ export const trackerSupervisorVerificationScopes: Record<string, VerificationSco
 	'tracker-supervised-workers': {
 		package: 'root',
 		vitest: {
+			'test/services/projects-sessions/tracker-host-watchdog.test.ts': {
+				'journals one idle nudge, escalates a stale pane and forwards its alert once to the primary CoS':
+					'session-health',
+				'retains the legacy MB2 observed row while its pane is live and closes it without a provider launch':
+					'session-health'
+			},
+			'test/services/projects-sessions/tracker-session-health.test.ts': {
+				'holds recovery for a late live pane and reports a stranded launch and an orphan':
+					'session-health'
+			},
+			'test/services/projects-sessions/tracker-watchdog-context.test.ts': {
+				'samples active provider context at the exact pane directory and rejects ambiguity':
+					'context-handoff',
+				'requests a handoff once and closes only the idle owned attempt after its note':
+					'context-handoff'
+			},
 			'test/services/projects-sessions/tracker-supervisor.test.ts': {
 				'reports node status and waits for in-flight work after cancellation': 'worker-lifecycle'
 			},

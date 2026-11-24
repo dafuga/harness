@@ -1,4 +1,5 @@
 import type { CatalogCheckContext } from './catalogChecks.types';
+import type { Locator } from '@playwright/test';
 import { expect } from '../../../../../../test/support/browserTest';
 import * as caseAssertions from './catalogCaseAssertions';
 import { assertVideoCatalogState } from './videoCatalogChecks';
@@ -24,6 +25,7 @@ export async function assertCatalogControls({
 	await caseAssertions.assertCatalogLayout(component, unit, viewport);
 	await caseAssertions.assertCatalogDetails(component, unit.id, variant);
 	await assertVideoCatalogState({ component, unit, variant });
+	await assertDesktopChoices(component, unit.id);
 	if (
 		['remote-connection', 'remote-host-panel', 'remote-offer-code'].some(
 			(name) => unit.id === `desktop.component.${name}`
@@ -54,5 +56,26 @@ export async function assertCatalogControls({
 		await expect(
 			component.getByRole('link', { name: 'Open OrderCard', exact: true })
 		).toHaveAttribute('title', /Synthetic preview input/);
+	}
+}
+
+async function assertDesktopChoices(component: Locator, id: string) {
+	if (id === 'desktop.component.explorer-ui-entity-section-tabs') {
+		await expect(component.getByRole('button', { name: 'States' })).toHaveAttribute(
+			'aria-current',
+			'page'
+		);
+		await expect(component.getByRole('button', { name: 'Conversation' })).toBeVisible();
+	}
+	if (id === 'desktop.component.shared-primitives-choice-row')
+		await expect(component.getByRole('button', { name: /^Main/ })).toHaveAttribute(
+			'aria-pressed',
+			'true'
+		);
+	if (id === 'desktop.component.shared-primitives-choice-rows') {
+		const group = component.getByRole('group', { name: 'Branches' });
+		await group.getByRole('button', { name: /^Main/ }).focus();
+		await group.getByRole('button', { name: /^Main/ }).press('ArrowDown');
+		await expect(group.getByRole('button', { name: /^Order history/ })).toBeFocused();
 	}
 }

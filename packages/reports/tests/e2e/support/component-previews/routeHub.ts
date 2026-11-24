@@ -10,6 +10,8 @@ export function hubRoute(
 	const project = encodeURIComponent(projectId);
 	const routes: Record<string, { route: string; path: string }> = {
 		'hub.layout.root': { route: '/', path: '/' },
+		'hub.page.accounts-access-devices': { route: '/(accounts-access)/devices', path: '/devices' },
+		'hub.page.public-site-about': { route: '/(public-site)/about', path: '/about' },
 		'hub.page.root': { route: '/', path: '/' },
 		'hub.page.projects': { route: '/projects', path: '/projects' },
 		'hub.page.tracker-overview': { route: '/tracker-overview', path: '/tracker-overview' },

@@ -71,7 +71,8 @@
 						]
 					},
 					null
-				]
+				],
+				"unknownReason": "The artifact reader must inspect the recorded value to determine whether run observations exist."
 			},
 			{
 				"name": "explorerArtifact.capture",
@@ -117,7 +118,8 @@
 						"status": "passed",
 						"rows": 12
 					}
-				]
+				],
+				"unknownReason": "Recorded output can be an arbitrary value and the formatter chooses text after inspecting it."
 			}
 		],
 		"outputs": [
@@ -281,7 +283,8 @@
 								]
 							},
 							null
-						]
+						],
+						"unknownReason": "The artifact reader must inspect the recorded value to determine whether run observations exist."
 					}
 				],
 				"outputs": [
@@ -444,7 +447,8 @@
 								"status": "passed",
 								"rows": 12
 							}
-						]
+						],
+						"unknownReason": "Recorded output can be an arbitrary value and the formatter chooses text after inspecting it."
 					}
 				],
 				"outputs": [

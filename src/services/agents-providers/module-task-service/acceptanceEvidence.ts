@@ -7,6 +7,7 @@ import {
 } from '../../../repositories/verification-evidence/VerificationStoreRepository';
 import { VerificationCheckService } from '../../verification-evidence/VerificationCheckService';
 import type { EvidenceScope, TaskAcceptanceEvidence } from './acceptanceEvidence.types';
+import { TaskAcceptanceEvidenceError } from './TaskAcceptanceEvidenceError';
 
 /**
  * An accepted review must cite a commit that carries the submitted files unchanged and that a
@@ -20,7 +21,8 @@ export async function acceptanceEvidence(
 ): Promise<TaskAcceptanceEvidence> {
 	const git = new GitAdapter(root);
 	const checkpoint = task.result?.checkpointCommit;
-	if (!checkpoint) throw new Error('The submission has no checkpoint commit to verify.');
+	if (!checkpoint)
+		throw new TaskAcceptanceEvidenceError('The submission has no checkpoint commit to verify.');
 	const commit = await resolveCommit(git, revision);
 	const submitted = await git.run(['diff', '--name-only', '-z', task.sourceCommit, checkpoint]);
 	await requireSubmission(git, checkpoint, commit, submitted.split('\0').filter(Boolean));
@@ -30,7 +32,7 @@ export async function acceptanceEvidence(
 		if (typeof found !== 'string') return found;
 		problems.push(`${stored.record.id.slice(0, 12)}: ${found}`);
 	}
-	throw new Error(
+	throw new TaskAcceptanceEvidenceError(
 		problems.length
 			? `No verification record of ${commit} proves ${task.module.id}: ${problems.join('; ')}`
 			: `No verification record exists for ${commit}; run harness verify run --commit ${commit} first.`
@@ -41,7 +43,9 @@ async function resolveCommit(git: GitAdapter, revision: string): Promise<string>
 	try {
 		return await git.run(['rev-parse', '--verify', '--end-of-options', `${revision}^{commit}`]);
 	} catch {
-		throw new Error(`Evidence revision ${revision} is not a commit in this repository.`);
+		throw new TaskAcceptanceEvidenceError(
+			`Evidence revision ${revision} is not a commit in this repository.`
+		);
 	}
 }
 
@@ -51,13 +55,16 @@ async function requireSubmission(
 	commit: string,
 	paths: string[]
 ): Promise<void> {
-	if (!paths.length) throw new Error('The submission changes no file; nothing can be accepted.');
+	if (!paths.length)
+		throw new TaskAcceptanceEvidenceError(
+			'The submission changes no file; nothing can be accepted.'
+		);
 	const [submitted, verified] = await Promise.all(
 		[checkpoint, commit].map((revision) => blobs(git, revision, paths))
 	);
 	const differ = paths.filter((path) => submitted.get(path) !== verified.get(path));
 	if (differ.length)
-		throw new Error(
+		throw new TaskAcceptanceEvidenceError(
 			`Evidence commit ${commit} does not carry the submitted ${differ.join(', ')} unchanged.`
 		);
 }

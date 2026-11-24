@@ -110,7 +110,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Unavailable, oversized, or invalid remote artifact",
 				"type": "thrown",
 				"description": "Thrown as an Error with the message of unshownArtifact when the value is absent or its mediaType is missing or not in artifactMediaTypes, of largeArtifact when Number(byteLength) is above artifactLimit, or of otherArtifact when sha256 is missing or differs from asked. Rejections from remoteBinary pass through: its unreadableMedia message when encoding is not 'base64', data is not a string or data cannot be decoded as base64, and its damagedMedia message when the decoded length or SHA-256 differs from byteLength or sha256."
 			}
@@ -155,7 +155,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unavailable, oversized, or invalid remote artifact",
 						"type": "thrown",
 						"description": "Thrown as an Error with the message of unshownArtifact when the value is absent or its mediaType is missing or not in artifactMediaTypes, of largeArtifact when Number(byteLength) is above artifactLimit, or of otherArtifact when sha256 is missing or differs from asked. Rejections from remoteBinary pass through: its unreadableMedia message when encoding is not 'base64', data is not a string or data cannot be decoded as base64, and its damagedMedia message when the decoded length or SHA-256 differs from byteLength or sha256."
 					}

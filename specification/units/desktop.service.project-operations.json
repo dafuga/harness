@@ -231,7 +231,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Project registry, selection, or comment operation failure",
 				"type": "thrown",
 				"description": "Methods throw or reject with Error for registry, selection, switching, comment-anchor, and outbox failures. Rejections from the delegated revision, catalog, registry, and storage calls also propagate."
 			}
@@ -261,7 +261,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid project registry",
 						"type": "thrown",
 						"description": "Rejects with Error('Invalid project registry.') when stored registry entries fail local-project validation."
 					}
@@ -319,7 +319,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid registry, unknown project, or busy session",
 						"type": "thrown",
 						"description": "Rejects with Error('Invalid project registry.') or Error('Unknown project.') when registry listing or lookup fails. Opening also throws Error('Cancel or finish the current run before switching projects.') while a run is busy, work is pending, or another switch is opening."
 					}
@@ -362,7 +362,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Selected project missing or mismatched",
 						"type": "thrown",
 						"description": "Throws Error('The requested project is not selected.') when an explicit projectId differs from the session. It throws Error('Open a project first.') unless the project is fully open."
 					}
@@ -429,9 +429,24 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidProjectDiscussionAnchorError",
 						"type": "thrown",
-						"description": "Throws Error('The requested project is not selected.') or Error('Open a project first.') when session checks fail, and throws Error('Invalid project discussion anchor.'), Error('Unknown comment image anchor.'), or Error('Unknown comment thread.') for invalid anchors. Revision, catalog, and outbox rejections propagate, including Error('A comment needs a project.') and Error('Conflicting comment request.') from the outbox."
+						"description": "The supplied project discussion anchor is invalid."
+					},
+					{
+						"name": "UnknownCommentImageAnchorError",
+						"type": "thrown",
+						"description": "The requested image is not an anchor on the selected version."
+					},
+					{
+						"name": "UnknownCommentThreadError",
+						"type": "thrown",
+						"description": "The supplied thread does not exist for the selected entity."
+					},
+					{
+						"name": "Project or comment outbox failure",
+						"type": "propagated",
+						"description": "An open project must match the requested selection. Revision, catalog and outbox failures propagate."
 					}
 				],
 				"errorStatus": "declared"
@@ -489,7 +504,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Selected project missing or mismatched",
 						"type": "thrown",
 						"description": "Throws Error('The requested project is not selected.') when an explicit projectId differs from the session. It throws Error('Open a project first.') unless the project is fully open."
 					}

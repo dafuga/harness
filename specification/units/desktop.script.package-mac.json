@@ -50,6 +50,11 @@
 			"unit": "desktop.script.mac-icon",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "desktop.script.release-revision",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

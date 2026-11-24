@@ -37,7 +37,8 @@
 				"name": "HostedFailureValidator.classify.error",
 				"type": "unknown",
 				"required": true,
-				"description": "The caught value that classify() inspects: a HostedFailureValidator is returned unchanged, an Error has its cause.code compared with the listed network codes, and any other value becomes a new 'failed' instance. classify() reads only that cause and its code, so the error's message and stack never affect the result."
+				"description": "The caught value that classify() inspects: a HostedFailureValidator is returned unchanged, an Error has its cause.code compared with the listed network codes, and any other value becomes a new 'failed' instance. classify() reads only that cause and its code, so the error's message and stack never affect the result.",
+				"unknownReason": "A thrown value can have any shape; known classes and error causes are inspected at runtime."
 			}
 		],
 		"outputs": [
@@ -57,7 +58,8 @@
 						"name": "HostedFailureValidator.classify.error",
 						"type": "unknown",
 						"required": true,
-						"description": "The caught value that classify() inspects: a HostedFailureValidator is returned unchanged, an Error has its cause.code compared with the listed network codes, and any other value becomes a new 'failed' instance. classify() reads only that cause and its code, so the error's message and stack never affect the result."
+						"description": "The caught value that classify() inspects: a HostedFailureValidator is returned unchanged, an Error has its cause.code compared with the listed network codes, and any other value becomes a new 'failed' instance. classify() reads only that cause and its code, so the error's message and stack never affect the result.",
+						"unknownReason": "A thrown value can have any shape; known classes and error causes are inspected at runtime."
 					}
 				],
 				"outputs": [

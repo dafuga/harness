@@ -210,7 +210,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Deployment proof read or freshness failure",
 				"type": "thrown",
 				"description": "deploymentBlockers can reject on uncaught Git or deployment receipt reads. deploymentCurrent throws when the fingerprint, production comparison, or blocker state changed and propagates plugin discovery or blocker-check failures."
 			}
@@ -328,7 +328,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Git or deployment receipt read failure",
 						"type": "thrown",
 						"description": "Rejects when an uncaught Git command or deployment receipt lookup fails; the symbolic branch lookup is caught and treated as an empty branch."
 					}
@@ -440,7 +440,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Deployment configuration, comparison, or blocker changed",
 						"type": "thrown",
 						"description": "Throws when the configuration fingerprint or production comparison differs, or when blockers remain. Rejections from plugin discovery and blocker checks propagate."
 					}

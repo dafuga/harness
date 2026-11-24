@@ -58,9 +58,14 @@
 				"description": "sample propagates a rejection from the awaited BoundedCommandAdapter.checked call, which runs ps with a 3-second timeout, a 4 MiB output cap, and LC_ALL=C."
 			},
 			{
-				"name": "Error",
+				"name": "CpuCountersUnavailableError",
 				"type": "thrown",
-				"description": "sample throws Error('Unsupported CPU process platform.') when platform() is neither darwin nor linux, before running ps. It throws Error('CPU counters unavailable.') when cpus() returns an empty list, after ps completes."
+				"description": "sample cannot take a CPU measurement when cpus() returns an empty list."
+			},
+			{
+				"name": "UnsupportedCpuProcessPlatformError",
+				"type": "thrown",
+				"description": "sample refuses platforms other than Darwin or Linux before running ps."
 			}
 		],
 		"errorStatus": "declared",
@@ -103,9 +108,14 @@
 						"description": "sample propagates a rejection from the awaited BoundedCommandAdapter.checked call, which runs ps with a 3-second timeout, a 4 MiB output cap, and LC_ALL=C."
 					},
 					{
-						"name": "Error",
+						"name": "CpuCountersUnavailableError",
 						"type": "thrown",
-						"description": "sample throws Error('Unsupported CPU process platform.') when platform() is neither darwin nor linux, before running ps. It throws Error('CPU counters unavailable.') when cpus() returns an empty list, after ps completes."
+						"description": "sample cannot take a CPU measurement when cpus() returns an empty list."
+					},
+					{
+						"name": "UnsupportedCpuProcessPlatformError",
+						"type": "thrown",
+						"description": "sample refuses platforms other than Darwin or Linux before running ps."
 					}
 				],
 				"errorStatus": "declared"

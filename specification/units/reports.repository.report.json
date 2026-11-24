@@ -353,7 +353,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid report input, ID, or lifecycle transition",
 				"type": "thrown",
 				"description": "Raised for invalid report IDs, invalid begin or record values, prohibited state transitions, and failures propagated from filesystem, locking, persistence, or storage operations."
 			},
@@ -391,7 +391,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid report input, ID, or lifecycle transition",
 						"type": "thrown",
 						"description": "Raised for invalid report IDs, invalid begin or record values, prohibited state transitions, and failures propagated from filesystem, locking, persistence, or storage operations."
 					}
@@ -455,7 +455,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid report project, title, or mode",
 						"type": "thrown",
 						"description": "Thrown when project or title is falsey or mode is not feature/suite; filesystem directory or manifest writes may also reject."
 					}
@@ -508,7 +508,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid or unreadable report directory",
 						"type": "thrown",
 						"description": "Thrown for an invalid safe ID or a symbolic-link report directory; filesystem lookup/read failures also reject."
 					},
@@ -627,7 +627,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid record or inactive report",
 						"type": "thrown",
 						"description": "Thrown for an invalid safe ID, invalid record data, or a report state other than active; persistence and evidence storage failures also reject."
 					},
@@ -691,7 +691,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Inactive report or failed active update",
 						"type": "thrown",
 						"description": "Thrown for an invalid safe ID or a report state other than active; callback, evidence storage, and persistence rejections propagate."
 					},
@@ -749,7 +749,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid ID or already-finalized report",
 						"type": "thrown",
 						"description": "Thrown for an invalid safe ID or an already-finalized report; filesystem and manifest-write failures reject. Asset verification failures are caught and mark evidence unavailable."
 					},
@@ -807,7 +807,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid ID or report no longer finalizing",
 						"type": "thrown",
 						"description": "Thrown for an invalid safe ID or when the report is not finalizing; filesystem and manifest-write failures reject."
 					},

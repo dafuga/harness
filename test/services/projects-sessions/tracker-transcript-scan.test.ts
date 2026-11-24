@@ -116,7 +116,8 @@ function transcriptOnlyConfig(root: string) {
 				checkpoint: 'fixture',
 				watchdog: { transcriptRoots: [root] }
 			}
-		})
+		}),
+		{ mode: 0o600 }
 	);
 	return loadTrackerNodeConfig(file);
 }

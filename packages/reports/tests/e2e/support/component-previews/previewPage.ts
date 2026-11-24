@@ -113,7 +113,7 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 async function readyRoute(page: Page, id: string) {
 	if (overviewPreviews.has(id))
 		await expect(page.getByText('Atlas', { exact: true })).toBeVisible();
-	if (id === 'hub.component.public-site-home-page')
+	if (publicDownloadPreview.has(id))
 		await expect(page.getByRole('link', { name: 'Download for Mac' }).first()).toBeVisible();
 	const headings: Record<string, string> = {
 		'desktop.page.root': 'Recent projects',
@@ -139,6 +139,10 @@ async function readyRoute(page: Page, id: string) {
 	else if (isHubHomePreview(id))
 		await expect(page.locator('[data-catalog-home-part]')).toBeAttached();
 }
+const publicDownloadPreview = new Set([
+	'hub.component.public-site-home-page',
+	'hub.page.public-site-about'
+]);
 const overviewPreviews = new Set([
 	'desktop.page.projects',
 	'hub.page.projects',
@@ -151,7 +155,7 @@ async function routeProjectOverview(page: Page, id: string) {
 		const path = id === 'reports.page.harness-projects' ? 'project-overview' : 'tracker-overview';
 		await page.route(`**/api/${path}`, (route) => route.fulfill({ json: allStatesSnapshot() }));
 	}
-	if (id === 'hub.component.public-site-home-page')
+	if (publicDownloadPreview.has(id))
 		await page.route('**/downloads/Harness-mac-arm64.zip', (route) =>
 			route.fulfill({ status: 200, contentType: 'application/zip' })
 		);

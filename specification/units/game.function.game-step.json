@@ -252,7 +252,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "GameStepRefusedError",
 				"type": "thrown",
 				"description": "stepGame throws Error when the view is not ready or either movement delta is non-finite; mechanic patches also throw Error for duplicate writes or the unsafe state keys __proto__, constructor, and prototype."
 			}
@@ -447,7 +447,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "GameStepRefusedError",
 						"type": "thrown",
 						"description": "stepGame throws Error when the view is not ready or either movement delta is non-finite; mechanic patches also throw Error for duplicate writes or the unsafe state keys __proto__, constructor, and prototype."
 					}

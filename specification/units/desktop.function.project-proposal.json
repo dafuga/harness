@@ -126,27 +126,27 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Proposal size or JSON parsing failure",
 				"type": "thrown",
 				"description": "Thrown with the message 'The agent's proposal was not used: it is too long.' when the trimmed answer is over 20,000 characters. It is also thrown with 'The agent's proposal was not used: it is not one JSON object.' when, after one optional code fence is removed, the answer does not parse to one JSON object (text that does not parse, a primitive, null or an array)."
 			},
 			{
-				"name": "Error",
+				"name": "Unexpected proposal field",
 				"type": "thrown",
 				"description": "Thrown with 'it has the unknown field <field>.' when the object has a field other than category, title, goal, proposal and contract; the field name is cut to 40 characters. It is also thrown with 'its category is unknown.' when category is not one of the eight catalog categories."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid proposal title, goal, or body",
 				"type": "thrown",
 				"description": "Thrown with 'its title is empty, too long or not text.' (or the same message for goal or proposal) when that field is missing, is not text, is empty after trimming, or is longer than its limit of 160 characters for the title, 600 for the goal or 6,000 for the proposal. It is also thrown with 'its title reads as a path.' when the title holds a slash, a backslash, a control character or '..', or starts with '.' or '~', and with 'its notes hold source code.' when the proposal contains three backticks in a row."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid proposal contract shape",
 				"type": "thrown",
 				"description": "Thrown with 'its contract is not one JSON object.' or 'its contract has the unknown field <field>.' when contract is missing or is not an object with only inputs, outputs and errors. It is also thrown with 'its contract inputs are not a list of at most 24.' (or the same message for outputs or errors) when that list is missing, is not an array or has more than 24 entries."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid proposal contract field",
 				"type": "thrown",
 				"description": "Thrown with 'a contract field is not one JSON object.' or 'a contract field has the unknown field <field>.' when an input or output is not an object with only name and type, and with 'a contract name is empty, too long or not text.' (type or error in place of name, for those values) when that value is missing, is not text, is empty after trimming or is longer than 160 characters. It is also thrown with 'its contract repeats an error.' when two errors are the same string."
 			}
@@ -215,27 +215,27 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Proposal size or JSON parsing failure",
 						"type": "thrown",
 						"description": "Thrown with the message 'The agent's proposal was not used: it is too long.' when the trimmed answer is over 20,000 characters. It is also thrown with 'The agent's proposal was not used: it is not one JSON object.' when, after one optional code fence is removed, the answer does not parse to one JSON object (text that does not parse, a primitive, null or an array)."
 					},
 					{
-						"name": "Error",
+						"name": "Unexpected proposal field",
 						"type": "thrown",
 						"description": "Thrown with 'it has the unknown field <field>.' when the object has a field other than category, title, goal, proposal and contract; the field name is cut to 40 characters. It is also thrown with 'its category is unknown.' when category is not one of the eight catalog categories."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid proposal title, goal, or body",
 						"type": "thrown",
 						"description": "Thrown with 'its title is empty, too long or not text.' (or the same message for goal or proposal) when that field is missing, is not text, is empty after trimming, or is longer than its limit of 160 characters for the title, 600 for the goal or 6,000 for the proposal. It is also thrown with 'its title reads as a path.' when the title holds a slash, a backslash, a control character or '..', or starts with '.' or '~', and with 'its notes hold source code.' when the proposal contains three backticks in a row."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid proposal contract shape",
 						"type": "thrown",
 						"description": "Thrown with 'its contract is not one JSON object.' or 'its contract has the unknown field <field>.' when contract is missing or is not an object with only inputs, outputs and errors. It is also thrown with 'its contract inputs are not a list of at most 24.' (or the same message for outputs or errors) when that list is missing, is not an array or has more than 24 entries."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid proposal contract field",
 						"type": "thrown",
 						"description": "Thrown with 'a contract field is not one JSON object.' or 'a contract field has the unknown field <field>.' when an input or output is not an object with only name and type, and with 'a contract name is empty, too long or not text.' (type or error in place of name, for those values) when that value is missing, is not text, is empty after trimming or is longer than 160 characters. It is also thrown with 'its contract repeats an error.' when two errors are the same string."
 					}

@@ -212,27 +212,27 @@
 				"description": "Rejects with a TypeError from path.join when directory is not a string, before any temporary directory is created; a value that matches the declared string type never triggers it."
 			},
 			{
-				"name": "Error",
+				"name": "Catalog temporary directory creation failure",
 				"type": "thrown",
 				"description": "Rejects when mkdtemp cannot create the temporary directory whose name starts with .catalog- inside directory, for example when directory does not exist or is not writable; no catalog.sqlite is written or replaced in that case."
 			},
 			{
-				"name": "Error",
+				"name": "Catalog SQLite open, replace, or close failure",
 				"type": "thrown",
 				"description": "Any error thrown by openSqlite(path), by new CatalogRepository(db), by its replace(index, snapshots) call, or by db.close() propagates out of write unchanged because write has no catch around them; rename is never reached, and the finally block still removes the temporary directory."
 			},
 			{
-				"name": "Error",
+				"name": "Catalog SQLite permission update failure",
 				"type": "thrown",
 				"description": "Rejects when chmod cannot set mode 0o600 on the temporary catalog.sqlite; rename is never reached, so any existing catalog.sqlite is left unchanged."
 			},
 			{
-				"name": "Error",
+				"name": "Catalog database replacement failure",
 				"type": "thrown",
 				"description": "Rejects when rename cannot move the temporary catalog.sqlite onto directory/catalog.sqlite; any existing catalog.sqlite is left unchanged, and the finally block still removes the temporary directory."
 			},
 			{
-				"name": "Error",
+				"name": "Catalog temporary directory cleanup failure",
 				"type": "thrown",
 				"description": "Rejects when the final rm(temporary, { recursive: true, force: true }) fails for a reason other than a missing path; because rm runs in a finally block, that rejection replaces the resolved path or any earlier error."
 			}
@@ -440,27 +440,27 @@
 						"description": "Rejects with a TypeError from path.join when directory is not a string, before any temporary directory is created; a value that matches the declared string type never triggers it."
 					},
 					{
-						"name": "Error",
+						"name": "Catalog temporary directory creation failure",
 						"type": "thrown",
 						"description": "Rejects when mkdtemp cannot create the temporary directory whose name starts with .catalog- inside directory, for example when directory does not exist or is not writable; no catalog.sqlite is written or replaced in that case."
 					},
 					{
-						"name": "Error",
+						"name": "Catalog SQLite open, replace, or close failure",
 						"type": "thrown",
 						"description": "Any error thrown by openSqlite(path), by new CatalogRepository(db), by its replace(index, snapshots) call, or by db.close() propagates out of write unchanged because write has no catch around them; rename is never reached, and the finally block still removes the temporary directory."
 					},
 					{
-						"name": "Error",
+						"name": "Catalog SQLite permission update failure",
 						"type": "thrown",
 						"description": "Rejects when chmod cannot set mode 0o600 on the temporary catalog.sqlite; rename is never reached, so any existing catalog.sqlite is left unchanged."
 					},
 					{
-						"name": "Error",
+						"name": "Catalog database replacement failure",
 						"type": "thrown",
 						"description": "Rejects when rename cannot move the temporary catalog.sqlite onto directory/catalog.sqlite; any existing catalog.sqlite is left unchanged, and the finally block still removes the temporary directory."
 					},
 					{
-						"name": "Error",
+						"name": "Catalog temporary directory cleanup failure",
 						"type": "thrown",
 						"description": "Rejects when the final rm(temporary, { recursive: true, force: true }) fails for a reason other than a missing path; because rm runs in a finally block, that rejection replaces the resolved path or any earlier error."
 					}

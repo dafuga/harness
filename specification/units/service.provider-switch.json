@@ -189,7 +189,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid or conflicting provider switch request",
 				"type": "thrown",
 				"description": "An Error is thrown for invalid session IDs, unavailable catalog selections or efforts, an applying prior request, cancellation of anything other than the current pending request, or a failed revision-checked store write. Errors from catalog, store, and session-control calls also propagate."
 			}
@@ -237,7 +237,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid Codex session ID or request lookup failure",
 						"type": "thrown",
 						"description": "Throws Error('A valid explicit Codex session ID is required.') when a truthy session ID fails validation; the promise also rejects if catalog listing or session inspection rejects."
 					}
@@ -308,7 +308,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid provider switch selection or active request",
 						"type": "thrown",
 						"description": "Throws Error for an invalid session ID, a target absent from the configured catalog or effort list, a prior request in applying, or a failed revision-checked store write. The promise also rejects when catalog, store, or session-inspection calls reject."
 					}
@@ -373,7 +373,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Stale provider switch request or conditional update failure",
 						"type": "thrown",
 						"description": "Throws Error for an invalid session ID, an ID or status that does not match the current pending request, or a failed revision-checked store write. The promise also rejects when store, catalog, or session-inspection calls reject."
 					}

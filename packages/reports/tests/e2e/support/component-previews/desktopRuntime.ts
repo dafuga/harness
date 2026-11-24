@@ -43,6 +43,18 @@ export const gameCases: PreviewCases = {
 		select: noop,
 		change: noop
 	},
+	'desktop.component.game-live-ai': {
+		models: { standard: { label: 'Standard video', rate: 0.6 } },
+		choice: 'standard',
+		limit: 60,
+		rate: 0.6,
+		available: true,
+		busy: false,
+		status: '',
+		error: '',
+		start: noop,
+		stop: noop
+	},
 	'desktop.component.game-live-video': {},
 	'desktop.component.game-mechanics': { mechanics: game.mechanics, change: noop },
 	'desktop.component.game-navigation-guard': { active: true },

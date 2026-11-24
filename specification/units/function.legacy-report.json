@@ -78,7 +78,8 @@
 						"status": "running",
 						"state": "active"
 					}
-				]
+				],
+				"unknownReason": "Legacy stored manifests are parsed data with no current schema guarantee."
 			}
 		],
 		"outputs": [
@@ -229,7 +230,8 @@
 								"status": "running",
 								"state": "active"
 							}
-						]
+						],
+						"unknownReason": "Legacy stored manifests are parsed data with no current schema guarantee."
 					}
 				],
 				"outputs": [

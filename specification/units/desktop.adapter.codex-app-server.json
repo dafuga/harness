@@ -79,7 +79,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CodexImageGenerationError",
 				"type": "thrown",
 				"description": "Thrown when codexTurn returns no image with completed status, no failure, and a result payload. Its message includes up to the last 600 characters of result text, or an image-generation availability hint when that text is empty."
 			}
@@ -138,7 +138,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CodexImageGenerationError",
 						"type": "thrown",
 						"description": "Thrown when codexTurn returns no image with completed status, no failure, and a result payload. Its message includes up to the last 600 characters of result text, or an image-generation availability hint when that text is empty."
 					}

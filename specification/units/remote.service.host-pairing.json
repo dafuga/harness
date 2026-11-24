@@ -214,9 +214,19 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "PairingPhoneMismatchError",
 				"type": "thrown",
-				"description": "Thrown inside approve, so the returned promise rejects, with 'There is no pairing request to approve.' when no live offer holds a request with pairingId, or with 'This is not the phone that was shown.' when approval.deviceId differs from the request's deviceId; a failure while sealing the approval also rejects approve."
+				"description": "The approved device ID differs from the phone in the offer."
+			},
+			{
+				"name": "PairingRequestNotFoundError",
+				"type": "thrown",
+				"description": "No live offer contains the requested pairing ID."
+			},
+			{
+				"name": "Pairing approval sealing failure",
+				"type": "propagated",
+				"description": "A failure in sealing the approval propagates to the caller."
 			}
 		],
 		"errorStatus": "declared",
@@ -398,9 +408,19 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "PairingPhoneMismatchError",
 						"type": "thrown",
-						"description": "Thrown inside approve, so the returned promise rejects, with 'There is no pairing request to approve.' when no live offer holds a request with pairingId, or with 'This is not the phone that was shown.' when approval.deviceId differs from the request's deviceId; a failure while sealing the approval also rejects approve."
+						"description": "The approved device ID differs from the phone in the offer."
+					},
+					{
+						"name": "PairingRequestNotFoundError",
+						"type": "thrown",
+						"description": "No live offer contains the requested pairing ID."
+					},
+					{
+						"name": "Pairing approval sealing failure",
+						"type": "propagated",
+						"description": "A failure in sealing the approval propagates to the caller."
 					}
 				],
 				"errorStatus": "declared"

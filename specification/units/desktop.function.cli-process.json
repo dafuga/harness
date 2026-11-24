@@ -84,7 +84,7 @@
 				"description": "Rejects with a RunCancelled instance when the supplied signal is already aborted or is aborted while the process runs. Active cancellation also sends SIGTERM to the owned process or process group."
 			},
 			{
-				"name": "Error",
+				"name": "CLI child process failure",
 				"type": "thrown",
 				"description": "Rejects with an Error for timeout, output overflow, nonzero exit, process errors, or stdin errors other than EPIPE. Timeout and output-limit errors have fixed messages; nonzero-exit errors include the exit code and up to the final 2000 stderr characters."
 			}
@@ -159,7 +159,7 @@
 						"description": "Rejects with a RunCancelled instance when the supplied signal is already aborted or is aborted while the process runs. Active cancellation also sends SIGTERM to the owned process or process group."
 					},
 					{
-						"name": "Error",
+						"name": "CLI child process failure",
 						"type": "thrown",
 						"description": "Rejects with an Error for timeout, output overflow, nonzero exit, process errors, or stdin errors other than EPIPE. Timeout and output-limit errors have fixed messages; nonzero-exit errors include the exit code and up to the final 2000 stderr characters."
 					}

@@ -92,7 +92,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Console bucket binding missing",
 				"type": "thrown",
 				"description": "The generated bucket-backed `data(event)` function throws `Error` when the configured binding is absent from `event.platform.env`. The `consoleHostFiles` call only creates this source and does not run that check."
 			}
@@ -158,7 +158,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Console bucket binding missing",
 						"type": "thrown",
 						"description": "The generated bucket-backed `data(event)` function throws `Error` when the configured binding is absent from `event.platform.env`. The `consoleHostFiles` call only creates this source and does not run that check."
 					}

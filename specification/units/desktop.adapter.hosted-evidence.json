@@ -142,7 +142,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidHostedEvidenceAnswerError",
 				"type": "thrown",
 				"description": "Thrown for syntactically valid but disallowed hosted origins, invalid project or query fields, oversized response bodies, or evidence that is not fatal UTF-8 JSON. Evidence decode and parse failures are replaced with the message This app does not accept the hosted evidence answer."
 			},
@@ -214,7 +214,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid hosted evidence query",
 						"type": "thrown",
 						"description": "Thrown when the project ID fails hosted path validation or a required query field fails its pattern, length, or enum check; invalid payload fields prevent a URL from being returned."
 					}
@@ -257,7 +257,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hosted evidence request, size, or decode failure",
 						"type": "thrown",
 						"description": "The read rejects when there is no verified hosted session, project or query fields are invalid, the body exceeds 16 MiB, or fatal UTF-8 JSON decoding fails. Decode and parse failures are replaced with the fixed app-facing message."
 					},
@@ -306,7 +306,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hosted artifact request or size failure",
 						"type": "thrown",
 						"description": "The read rejects when there is no verified hosted session, project or query fields are invalid, or response bytes exceed 11 MiB. Artifact bytes are returned without JSON parsing."
 					},
@@ -344,7 +344,7 @@
 						"description": "Native URL construction can throw this if the options origin cannot be parsed as a URL. This occurs before the adapter can validate the exact allowed hosted origin."
 					},
 					{
-						"name": "Error",
+						"name": "Untrusted hosted evidence origin",
 						"type": "thrown",
 						"description": "Thrown when the parsed options origin is not an exact HTTPS hosted origin or an allowed localhost HTTP origin. An existing HostedHttpAdapter is reused without this origin check."
 					}

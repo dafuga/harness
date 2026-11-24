@@ -69,7 +69,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "UID backfill source, index, or registry write failure",
 				"type": "thrown",
 				"description": "The promise rejects with a propagated error if loadUnits fails, or if a source read, source write, or registry write fails while write is enabled. The workflow does not catch or transform these failures."
 			}
@@ -131,7 +131,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "UID backfill source, index, or registry write failure",
 						"type": "thrown",
 						"description": "The promise rejects with a propagated error if loadUnits fails, or if a source read, source write, or registry write fails while write is enabled. The workflow does not catch or transform these failures."
 					}

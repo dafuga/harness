@@ -80,22 +80,22 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "SiteReportNotFoundError",
 				"type": "thrown",
 				"description": "Thrown with the message 'ENOENT: no such report on this site' when ownedBySite is false for the report's project, so the report reads as absent; it is the only error this method throws itself."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid report or asset ID",
 				"type": "thrown",
 				"description": "Thrown through ReportRepository.get with the message 'Invalid report or asset ID' when the id is not 1 to 100 ASCII letters, digits, hyphens or underscores, before any file is read."
 			},
 			{
-				"name": "Error",
+				"name": "ReportRepository.get failure",
 				"type": "thrown",
 				"description": "Thrown through ReportRepository.get with the message 'Invalid report directory' when the report's directory under runs is a symbolic link."
 			},
 			{
-				"name": "Error",
+				"name": "Published report directory or manifest read failure",
 				"type": "thrown",
 				"description": "A Node file-system error, for example with code ENOENT, thrown through ReportRepository.get by lstat when no directory exists under runs for the id, or by readFile when that directory has no manifest.json."
 			},
@@ -105,7 +105,7 @@
 				"description": "Thrown through ReportRepository.get by JSON.parse when the report's manifest.json is not valid JSON."
 			},
 			{
-				"name": "Error",
+				"name": "Site Git store real path resolution failure",
 				"type": "thrown",
 				"description": "A Node file-system error thrown by realpathSync while the identity of a checkout without a remote is resolved, when its Git store path cannot be resolved; ownedBySite does not catch it."
 			},
@@ -189,22 +189,22 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "SiteReportNotFoundError",
 						"type": "thrown",
 						"description": "Thrown with the message 'ENOENT: no such report on this site' when ownedBySite is false for the report's project, so the report reads as absent; it is the only error this method throws itself."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid report or asset ID",
 						"type": "thrown",
 						"description": "Thrown through ReportRepository.get with the message 'Invalid report or asset ID' when the id is not 1 to 100 ASCII letters, digits, hyphens or underscores, before any file is read."
 					},
 					{
-						"name": "Error",
+						"name": "ReportRepository.get failure",
 						"type": "thrown",
 						"description": "Thrown through ReportRepository.get with the message 'Invalid report directory' when the report's directory under runs is a symbolic link."
 					},
 					{
-						"name": "Error",
+						"name": "Published report directory or manifest read failure",
 						"type": "thrown",
 						"description": "A Node file-system error, for example with code ENOENT, thrown through ReportRepository.get by lstat when no directory exists under runs for the id, or by readFile when that directory has no manifest.json."
 					},
@@ -214,7 +214,7 @@
 						"description": "Thrown through ReportRepository.get by JSON.parse when the report's manifest.json is not valid JSON."
 					},
 					{
-						"name": "Error",
+						"name": "Site Git store real path resolution failure",
 						"type": "thrown",
 						"description": "A Node file-system error thrown by realpathSync while the identity of a checkout without a remote is resolved, when its Git store path cannot be resolved; ownedBySite does not catch it."
 					},

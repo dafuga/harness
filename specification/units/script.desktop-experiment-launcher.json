@@ -17,7 +17,7 @@
 		"outputs": [],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Desktop experiment process spawn failure",
 				"type": "thrown",
 				"description": "Thrown synchronously by the Bun.spawn call when the child process cannot be started, for example when no executable exists at the path built from dirname(process.execPath) and 'CodexHarnessElectron'. The script has no try/catch around that call, so the error propagates out of the top-level code of the script."
 			}

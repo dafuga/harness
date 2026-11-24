@@ -12,11 +12,11 @@
 		"uses": [
 			"desktop.component.choice-dialog",
 			"desktop.component.icon",
-			"reports.component.select",
+			"desktop.component.shared-primitives-choice-row",
+			"desktop.component.shared-primitives-choice-rows",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-label",
-			"reports.component.shared-primitives-atoms-html-option",
+			"reports.component.shared-primitives-atoms-html-input",
 			"reports.component.shared-primitives-atoms-html-small",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-strong",
@@ -33,15 +33,13 @@
 			"RevisionPicker.when",
 			"RevisionPicker.icon",
 			"RevisionPicker.children",
-			"RevisionPicker.footer",
 			"RevisionPicker.icon",
-			"RevisionPicker.children",
-			"RevisionPicker.footer"
+			"RevisionPicker.children"
 		]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.select"],
+		"primitives": [],
 		"inputs": [
 			{
 				"name": "RevisionPicker.workspace",
@@ -122,24 +120,6 @@
 				"errorStatus": "none-found"
 			},
 			{
-				"name": "RevisionPicker.footer",
-				"inputs": [
-					{
-						"name": "RevisionPicker.footer.close",
-						"type": "() => void",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "RevisionPicker.footer",
-						"type": "markup"
-					}
-				],
-				"errors": [],
-				"errorStatus": "none-found"
-			},
-			{
 				"name": "RevisionPicker.icon",
 				"inputs": [],
 				"outputs": [
@@ -168,24 +148,6 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
-			},
-			{
-				"name": "RevisionPicker.footer",
-				"inputs": [
-					{
-						"name": "RevisionPicker.footer.close",
-						"type": "() => void",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "RevisionPicker.footer",
-						"type": "markup"
-					}
-				],
-				"errors": [],
-				"errorStatus": "none-found"
 			}
 		]
 	},
@@ -201,17 +163,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.component.shared-primitives-choice-row",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.shared-primitives-choice-rows",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.revision-time",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.store.workspace",
+			"unit": "desktop.function.shared-primitives-revision-picker-relative-time",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.select",
+			"unit": "desktop.store.workspace",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -226,12 +198,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-label",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-option",
+			"unit": "reports.component.shared-primitives-atoms-html-input",
 			"via": "import",
 			"origin": "derived"
 		},

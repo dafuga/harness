@@ -48,9 +48,19 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HostedSignInNotConfiguredError",
 				"type": "thrown",
-				"description": "Planning writes throw Error when the session is busy, the repository lease is unavailable, or the client has ended. Thread and source operations also throw Error for an unknown entity or unregistered source, and connectHosted throws Error when hosted sign-in is not configured; failures from delegated operations propagate."
+				"description": "The hosted sign-in operation requires a configured hosted origin."
+			},
+			{
+				"name": "UnknownEntityError",
+				"type": "thrown",
+				"description": "The requested entity could not be found by the desktop bridge."
+			},
+			{
+				"name": "Desktop bridge session or dependency failure",
+				"type": "propagated",
+				"description": "Planning writes can fail when the session is busy, the repository lease is unavailable, or the client has ended. Unregistered source requests and delegated operations can also fail."
 			}
 		],
 		"errorStatus": "declared",

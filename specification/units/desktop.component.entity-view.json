@@ -14,6 +14,7 @@
 			"desktop.component.coverage-panel",
 			"desktop.component.design-panel",
 			"desktop.component.details-panel",
+			"desktop.component.explorer-ui-entity-section-tabs",
 			"desktop.component.history-panel",
 			"desktop.component.icon",
 			"desktop.component.measures-panel",
@@ -25,12 +26,10 @@
 			"reports.component.entity-examples",
 			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.harness-harness-verdict",
-			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-code",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h1",
 			"reports.component.shared-primitives-atoms-html-main",
-			"reports.component.shared-primitives-atoms-html-nav",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span"
 		]
@@ -97,6 +96,11 @@
 		},
 		{
 			"unit": "desktop.component.details-panel",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.explorer-ui-entity-section-tabs",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -201,11 +205,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-button",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-code",
 			"via": "import",
 			"origin": "derived"
@@ -222,11 +221,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-main",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-nav",
 			"via": "import",
 			"origin": "derived"
 		},

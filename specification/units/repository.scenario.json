@@ -226,12 +226,12 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Scenario source tree listing or read failure",
 				"type": "thrown",
 				"description": "Rejects with whatever tree.list() or tree.read() rejects with, passed through unchanged; read() catches nothing, so one unreadable scenario file rejects the whole read."
 			},
 			{
-				"name": "Error",
+				"name": "Scenario directory or file write failure",
 				"type": "thrown",
 				"description": "Rejects with the Node.js filesystem error (an Error with a system error code) from mkdir or writeFile when the scenario directory or file cannot be created or written under the root; directories already created are not removed."
 			}
@@ -347,7 +347,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Scenario source tree listing or read failure",
 						"type": "thrown",
 						"description": "Rejects with whatever tree.list() or tree.read() rejects with, passed through unchanged; read() catches nothing, so one unreadable scenario file rejects the whole read."
 					}
@@ -451,7 +451,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Scenario directory or file write failure",
 						"type": "thrown",
 						"description": "Rejects with the Node.js filesystem error (an Error with a system error code) from mkdir or writeFile when the scenario directory or file cannot be created or written under the root; directories already created are not removed."
 					}

@@ -42,7 +42,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Local evidence storage requires an isolated test store",
 				"type": "thrown",
 				"description": "Throws an Error when PROJECT_REPORTS_ASSET_STORAGE is 'local' outside an isolated temporary store (PROJECT_REPORTS_HOME under the OS temp directory, /tmp or /private/tmp), when some but not all of the four R2 settings are empty or all four are empty outside such a store, or when all four settings are non-empty and a non-empty PROJECT_REPORTS_R2_ENDPOINT does not match http://127.0.0.1:<port>. It also rethrows a file read error other than ENOENT from the file named by PROJECT_REPORTS_CONFIG_FILE, which is read only when PROJECT_REPORTS_ASSET_STORAGE is not 'local', NODE_ENV is not 'test', and PROJECT_REPORTS_CONFIG_FILE is non-empty."
 			}
@@ -77,7 +77,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Local evidence storage requires an isolated test store",
 						"type": "thrown",
 						"description": "Throws an Error when PROJECT_REPORTS_ASSET_STORAGE is 'local' outside an isolated temporary store (PROJECT_REPORTS_HOME under the OS temp directory, /tmp or /private/tmp), when some but not all of the four R2 settings are empty or all four are empty outside such a store, or when all four settings are non-empty and a non-empty PROJECT_REPORTS_R2_ENDPOINT does not match http://127.0.0.1:<port>. It also rethrows a file read error other than ENOENT from the file named by PROJECT_REPORTS_CONFIG_FILE, which is read only when PROJECT_REPORTS_ASSET_STORAGE is not 'local', NODE_ENV is not 'test', and PROJECT_REPORTS_CONFIG_FILE is non-empty."
 					}

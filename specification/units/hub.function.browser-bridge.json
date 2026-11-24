@@ -47,12 +47,12 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ProjectIdRequiredError",
 				"type": "thrown",
 				"description": "Thrown by base() for a falsy projectId with the message 'Name the project this is asked for.'; the guarded reads and addComment reject with it, the agent request callback throws it for an empty project ID, and no listener is notified."
 			},
 			{
-				"name": "Error",
+				"name": "HostedAgentUnavailableError",
 				"type": "thrown",
 				"description": "createPlan rejects with an Error whose message is 'The hosted workspace shows projects and comments. It runs no agent.' and sends no request."
 			},

@@ -44,7 +44,8 @@
 							"c": 3
 						}
 					]
-				]
+				],
+				"unknownReason": "The serializer applies JSON conversion and canonical ordering to inputs of arbitrary runtime type."
 			}
 		],
 		"outputs": [
@@ -105,7 +106,8 @@
 									"c": 3
 								}
 							]
-						]
+						],
+						"unknownReason": "The serializer applies JSON conversion and canonical ordering to inputs of arbitrary runtime type."
 					}
 				],
 				"outputs": [

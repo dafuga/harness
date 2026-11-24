@@ -33,7 +33,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Capture missing from the current evidence selection",
 				"type": "thrown",
 				"description": "url() rejects with this Error, thrown in its private made() step, when the capture cannot be queried: no result or scope is shown, no bridge is set, or artifactQuery returns no query for that side and file (message: 'This capture is not listed by the evidence that is shown.'). It is also thrown with the message 'This capture is no longer shown.' when reset() runs, directly or through show() with a changed target or bridge, while the bytes are loading; a rejection from artifactBytes is not caught here, so the caller of url() receives it unchanged."
 			}

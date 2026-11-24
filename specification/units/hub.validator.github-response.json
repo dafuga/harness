@@ -51,7 +51,8 @@
 						"refresh_token": "ghr_example1234567890",
 						"refresh_token_expires_in": 518400
 					}
-				]
+				],
+				"unknownReason": "The GitHub OAuth response is external JSON and its required token fields must be validated."
 			},
 			{
 				"name": "GithubResponseValidator.user.value",
@@ -63,7 +64,8 @@
 						"id": 583231,
 						"login": "octocat"
 					}
-				]
+				],
+				"unknownReason": "The GitHub user response is unchecked until identity fields are parsed."
 			},
 			{
 				"name": "GithubResponseValidator.repository.value",
@@ -82,7 +84,8 @@
 							"admin": true
 						}
 					}
-				]
+				],
+				"unknownReason": "The GitHub repository response must be parsed before its identity and access fields are trusted."
 			},
 			{
 				"name": "GithubResponseValidator.installations.value",
@@ -100,7 +103,8 @@
 							}
 						]
 					}
-				]
+				],
+				"unknownReason": "The GitHub installation listing is external JSON that is validated before active matches are selected."
 			},
 			{
 				"name": "GithubResponseValidator.installations.appId",
@@ -131,7 +135,8 @@
 							}
 						]
 					}
-				]
+				],
+				"unknownReason": "The GitHub repository page and each supported entry require validation on receipt."
 			},
 			{
 				"name": "GithubResponseValidator.installationGrant.value",
@@ -160,7 +165,8 @@
 							}
 						]
 					}
-				]
+				],
+				"unknownReason": "The GitHub App installation-grant reply must be parsed before it is used."
 			}
 		],
 		"outputs": [
@@ -289,7 +295,8 @@
 								"refresh_token": "ghr_example1234567890",
 								"refresh_token_expires_in": 518400
 							}
-						]
+						],
+						"unknownReason": "The GitHub OAuth response is external JSON and its required token fields must be validated."
 					}
 				],
 				"outputs": [
@@ -324,7 +331,8 @@
 								"id": 583231,
 								"login": "octocat"
 							}
-						]
+						],
+						"unknownReason": "The GitHub user response is unchecked until identity fields are parsed."
 					}
 				],
 				"outputs": [
@@ -364,7 +372,8 @@
 									"admin": true
 								}
 							}
-						]
+						],
+						"unknownReason": "The GitHub repository response must be parsed before its identity and access fields are trusted."
 					}
 				],
 				"outputs": [
@@ -413,7 +422,8 @@
 									}
 								]
 							}
-						]
+						],
+						"unknownReason": "The GitHub installation listing is external JSON that is validated before active matches are selected."
 					},
 					{
 						"name": "GithubResponseValidator.installations.appId",
@@ -465,7 +475,8 @@
 									}
 								]
 							}
-						]
+						],
+						"unknownReason": "The GitHub repository page and each supported entry require validation on receipt."
 					}
 				],
 				"outputs": [
@@ -523,7 +534,8 @@
 									}
 								]
 							}
-						]
+						],
+						"unknownReason": "The GitHub App installation-grant reply must be parsed before it is used."
 					}
 				],
 				"outputs": [

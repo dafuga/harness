@@ -103,7 +103,7 @@
 				"description": "Invalid JSON in a project template file rejects while the file is parsed."
 			},
 			{
-				"name": "Error",
+				"name": "Loop template directory or file read failure",
 				"type": "thrown",
 				"description": "File-system errors from listing the project template directory or reading a template file propagate, except a missing directory is treated as empty."
 			}
@@ -152,7 +152,7 @@
 						"description": "Invalid JSON in a project template file rejects while the file is parsed."
 					},
 					{
-						"name": "Error",
+						"name": "Loop template directory or file read failure",
 						"type": "thrown",
 						"description": "File-system errors from listing the project template directory or reading a template file propagate, except a missing directory is treated as empty."
 					}
@@ -206,7 +206,7 @@
 						"description": "Invalid JSON in a project template file rejects while the file is parsed."
 					},
 					{
-						"name": "Error",
+						"name": "Loop template directory or file read failure",
 						"type": "thrown",
 						"description": "File-system errors from listing the project template directory or reading a template file propagate, except a missing directory is treated as empty."
 					}

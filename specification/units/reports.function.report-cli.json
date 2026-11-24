@@ -118,7 +118,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Missing report input data or required option",
 				"type": "thrown",
 				"description": "`inputData` throws this when neither selected JSON source is truthy, and `required` throws it when the selected value is not a nonblank string. File-read errors propagate unchanged."
 			},
@@ -219,7 +219,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Missing or unreadable report input data",
 						"type": "thrown",
 						"description": "Thrown when neither the truthy `file` source nor inline `data` provides content; file-read errors also reject this promise."
 					},
@@ -266,7 +266,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown when the value at `flags[name]` is not a string or is empty after trimming whitespace."
 					}

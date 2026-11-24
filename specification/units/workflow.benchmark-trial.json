@@ -35,7 +35,7 @@
 				"description": "The rejection of input.persist() propagates unchanged from the finally block, so runBenchmarkTrial rejects and the trial workspace and the evaluation directory are not removed."
 			},
 			{
-				"name": "Error",
+				"name": "Trial workspace or evaluation directory cleanup failure",
 				"type": "thrown",
 				"description": "A filesystem error from node:fs/promises rm while removing the trial workspace or the evaluation directory. force: true ignores only missing paths, so any other failure makes runBenchmarkTrial reject, and a failed workspace removal also skips the evaluation removal."
 			}
@@ -66,7 +66,7 @@
 						"description": "The rejection of input.persist() propagates unchanged from the finally block, so runBenchmarkTrial rejects and the trial workspace and the evaluation directory are not removed."
 					},
 					{
-						"name": "Error",
+						"name": "Trial workspace or evaluation directory cleanup failure",
 						"type": "thrown",
 						"description": "A filesystem error from node:fs/promises rm while removing the trial workspace or the evaluation directory. force: true ignores only missing paths, so any other failure makes runBenchmarkTrial reject, and a failed workspace removal also skips the evaluation removal."
 					}

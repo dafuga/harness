@@ -76,7 +76,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Client session ended",
 				"type": "thrown",
 				"description": "Error is rejected by use() when the client has ended, either before opening starts or after a project session opens. Its message is \"This session has ended.\"."
 			}
@@ -120,7 +120,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Client session ended",
 						"type": "thrown",
 						"description": "Error is rejected by use() when the client has ended, either before opening starts or after a project session opens. Its message is \"This session has ended.\"."
 					}

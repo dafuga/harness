@@ -42,9 +42,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "The add and generate handlers throw Error(\"Unknown plugin: <id>\") when an id is absent from the module catalog; the info handler throws Error(\"Unknown module: <id>\") when absent from the catalog selected for its command group. For plugin test, SIGINT or SIGTERM gives the abort signal an Error(\"Testing plugin cancelled.\") reason, and delegated service failures propagate without translation."
+				"description": "The add and generate handlers throw ExpectedCliError(\"Unknown plugin: <id>\") when an id is absent from the module catalog; the info handler throws ExpectedCliError(\"Unknown module: <id>\") when absent from the catalog selected for its command group. For plugin test, SIGINT or SIGTERM gives the abort signal an ExpectedCliError(\"Testing plugin cancelled.\") reason, and delegated service failures propagate without translation."
 			}
 		],
 		"errorStatus": "declared",

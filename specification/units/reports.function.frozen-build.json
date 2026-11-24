@@ -65,7 +65,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Missing or mismatched frozen source build",
 				"type": "thrown",
 				"description": "Thrown as an Error that names the source when it holds no build, and leaves the target as it was; also thrown, after the target is removed, when the copy or the source, identified after the copy, does not report the buildId taken before the copy. Identity, filesystem and copy failures reject the promise with the error they raise and leave the target as the failed step left it."
 			}
@@ -123,7 +123,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Missing or mismatched frozen source build",
 						"type": "thrown",
 						"description": "Thrown as an Error that names the source when it holds no build, and leaves the target as it was; also thrown, after the target is removed, when the copy or the source, identified after the copy, does not report the buildId taken before the copy. Identity, filesystem and copy failures reject the promise with the error they raise and leave the target as the failed step left it."
 					}

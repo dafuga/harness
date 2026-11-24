@@ -36,7 +36,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Audio comparison requires two files",
 				"type": "thrown",
 				"description": "`POST` throws this when either `before` or `after` is not a `File`; its catch handler converts the message (which includes `audio`) into a 400 JSON response."
 			}
@@ -68,7 +68,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Audio comparison requires two files",
 						"type": "thrown",
 						"description": "`POST` throws this when either `before` or `after` is not a `File`; its catch handler converts the message (which includes `audio`) into a 400 JSON response."
 					}

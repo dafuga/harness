@@ -113,9 +113,19 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HostedSessionEncryptionRequiredError",
 				"type": "thrown",
-				"description": "Thrown or rejected by read, save and clear: read throws 'Stored hosted session is unavailable. Sign in again.' for any failure other than a missing file, save throws 'OS encryption is required for hosted sessions.' when available() is false, save passes filesystem errors through unchanged, and clear passes through every filesystem error except ENOENT."
+				"description": "saving a hosted session requires available OS encryption."
+			},
+			{
+				"name": "StoredHostedSessionUnavailableError",
+				"type": "thrown",
+				"description": "The stored session cannot be read or decoded. A missing file returns no session."
+			},
+			{
+				"name": "Hosted session filesystem failure",
+				"type": "propagated",
+				"description": "Save passes filesystem errors through unchanged. Clear propagates any removal failure except a missing file."
 			}
 		],
 		"errorStatus": "declared",
@@ -167,7 +177,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "StoredHostedSessionUnavailableError",
 						"type": "thrown",
 						"description": "Thrown for any failure to read, decrypt, parse or validate the session file other than a missing file, with the message 'Stored hosted session is unavailable. Sign in again.' Exceptions from the encryption port's isEncryptionAvailable are not caught and propagate unchanged."
 					}
@@ -205,7 +215,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HostedSessionEncryptionRequiredError",
 						"type": "thrown",
 						"description": "Thrown with 'OS encryption is required for hosted sessions.' when available() is false; filesystem errors from mkdir, writeFile and rename and exceptions from the encryption port's isEncryptionAvailable or encryptString propagate unchanged."
 					}
@@ -224,7 +234,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hosted session file removal failure",
 						"type": "thrown",
 						"description": "Rethrows the original unlink error unless its code is ENOENT, which is swallowed so that clear resolves."
 					}

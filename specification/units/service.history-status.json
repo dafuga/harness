@@ -255,7 +255,7 @@
 				"description": "Thrown with the message 'A notes revision must be a full commit hash.' when the pinned notes revision is neither null nor a full 40-character commit hash, so every read of the notes fails."
 			},
 			{
-				"name": "Error",
+				"name": "History Git command or note validation failure",
 				"type": "thrown",
 				"description": "Thrown when a Git command whose output is needed exits non-zero (message 'git <arguments> failed: <stderr>'), when git's batch output does not match the requested evidence blobs ('Invalid Git batch response'), or when an output bound is out of range for an evidence file of about 2 GiB or more ('Command bounds must be positive finite integers.')."
 			},
@@ -284,7 +284,7 @@
 						"description": "Thrown with the message 'A notes revision must be a full commit hash.' when the pinned notes revision is neither null nor a full 40-character commit hash."
 					},
 					{
-						"name": "Error",
+						"name": "History note tree or blob Git read failure",
 						"type": "thrown",
 						"description": "Thrown when git ls-tree of the pinned notes commit, or git cat-file of the note blobs, exits non-zero (message 'git <arguments> failed: <stderr>')."
 					},
@@ -373,7 +373,7 @@
 						"description": "Propagated from all(): thrown with the message 'A notes revision must be a full commit hash.' when the pinned notes revision is neither null nor a full 40-character commit hash."
 					},
 					{
-						"name": "Error",
+						"name": "History note tree or blob Git read failure",
 						"type": "thrown",
 						"description": "Propagated from all(): thrown when git ls-tree of the pinned notes commit, or git cat-file of the note blobs, exits non-zero (message 'git <arguments> failed: <stderr>')."
 					},
@@ -457,7 +457,7 @@
 						"description": "Propagated from all(): thrown with the message 'A notes revision must be a full commit hash.' when the pinned notes revision is neither null nor a full 40-character commit hash."
 					},
 					{
-						"name": "Error",
+						"name": "History Git command or batch validation failure",
 						"type": "thrown",
 						"description": "Thrown when a git command whose output is needed exits non-zero (message 'git <arguments> failed: <stderr>'), when git's batch output does not match the requested evidence blobs ('Invalid Git batch response'), or when an output bound is out of range for an evidence file of about 2 GiB or more ('Command bounds must be positive finite integers.')."
 					},
@@ -536,7 +536,7 @@
 						"description": "Propagated from all(): thrown with the message 'A notes revision must be a full commit hash.' when the pinned notes revision is neither null nor a full 40-character commit hash."
 					},
 					{
-						"name": "Error",
+						"name": "History Git command or batch validation failure",
 						"type": "thrown",
 						"description": "Thrown when a git command whose output is needed exits non-zero (message 'git <arguments> failed: <stderr>'), when git's batch output does not match the requested evidence blobs ('Invalid Git batch response'), or when an output bound is out of range for an evidence file of about 2 GiB or more ('Command bounds must be positive finite integers.')."
 					},

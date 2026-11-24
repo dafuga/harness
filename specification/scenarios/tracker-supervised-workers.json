@@ -75,7 +75,14 @@
 			"id": "session-health",
 			"kind": "integration",
 			"runner": "command",
-			"target": "bun test/verification-output.ts vitest test/services/projects-sessions/tracker-host-watchdog.test.ts test/services/projects-sessions/tracker-session-health.test.ts",
+			"target": "bun test/verification-output.ts vitest test/services/projects-sessions/tracker-host-watchdog.test.ts",
+			"timeoutMs": 60000
+		},
+		{
+			"id": "session-recovery",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/services/projects-sessions/tracker-session-health.test.ts",
 			"timeoutMs": 60000
 		},
 		{

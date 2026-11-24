@@ -120,7 +120,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "DeploymentExecutionError",
 				"type": "thrown",
 				"description": "Thrown with the plan.blockers messages joined by spaces before any source is prepared, or with 'Deployment health verification failed; environment state was not advanced.' when the health check result is falsy. Errors from the awaited helpers propagate unchanged, and because saveDeployment is the final step, these errors leave the stored receipt unadvanced."
 			}
@@ -233,7 +233,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DeploymentExecutionError",
 						"type": "thrown",
 						"description": "Thrown with the plan.blockers messages joined by spaces before any source is prepared, or with 'Deployment health verification failed; environment state was not advanced.' when the health check result is falsy. Errors from the awaited helpers propagate unchanged, and because saveDeployment is the final step, these errors leave the stored receipt unadvanced."
 					}

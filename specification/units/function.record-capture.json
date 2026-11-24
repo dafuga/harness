@@ -88,7 +88,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Capture serialization or file write failure",
 				"type": "thrown",
 				"description": "A synchronous failure from directory creation, capture writing, JSON serialization, or index appending propagates to the caller; recordCapture does not catch it."
 			}
@@ -178,7 +178,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Capture serialization or file write failure",
 						"type": "thrown",
 						"description": "A synchronous failure from directory creation, capture writing, JSON serialization, or index appending propagates to the caller; recordCapture does not catch it."
 					}

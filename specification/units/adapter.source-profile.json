@@ -534,7 +534,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Source profile configuration or input failure",
 				"type": "thrown",
 				"description": "Registry validation failures, unreadable registry or scenario files, failed Vite runner configuration loads and failed runner-module imports reject or throw; the adapter never substitutes observations for them. Bun preload load hooks also reject when a project source file cannot be read or transpiled."
 			},
@@ -547,6 +547,11 @@
 				"name": "TypeError",
 				"type": "thrown",
 				"description": "The adapter constructor throws when units is not an array or an active unit lacks runtime.targets or owns.source, and watchMethod throws when its owner is null or undefined or its method is non-writable and non-configurable."
+			},
+			{
+				"name": "ProfileRunnerConfigError",
+				"type": "thrown",
+				"description": "Vite returned no source-profile runner configuration. Import and configuration-loading failures propagate."
 			}
 		],
 		"errorStatus": "declared",
@@ -801,7 +806,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Profile collector setup failure",
 						"type": "thrown",
 						"description": "Errors from creating the collector or starting its scope propagate unchanged, because the unit adds no catch around them."
 					}
@@ -831,7 +836,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Profiled operation or collector failure",
 						"type": "thrown",
 						"description": "The wrapped operation's own error or rejection is rethrown unchanged, and collector errors propagate, after the pending sample count is decremented."
 					}
@@ -901,7 +906,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Profile collector flush failure",
 						"type": "thrown",
 						"description": "Errors from the collector flush propagate after the evidence environment variables are restored in a finally block."
 					}
@@ -980,9 +985,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ProfileRunnerConfigError",
 						"type": "thrown",
-						"description": "Rejects with 'Harness source-profile runner configuration did not load.' when Vite returns no configuration, and propagates vite import or configuration load failures."
+						"description": "Vite returned no source-profile runner configuration. Import and configuration-loading failures propagate."
 					}
 				],
 				"errorStatus": "declared"
@@ -1061,7 +1066,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unit registry read or validation failure",
 						"type": "thrown",
 						"description": "Throws when the registry cannot be read or when componentManifestSchema rejects a registry unit."
 					},

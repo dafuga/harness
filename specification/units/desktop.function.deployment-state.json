@@ -199,7 +199,7 @@
 				"description": "Thrown by receipts.parse when receipts.json is valid JSON but its contents are not an array of valid receipts; each operation rejects with it."
 			},
 			{
-				"name": "Error",
+				"name": "Deployment state Git or filesystem failure",
 				"type": "thrown",
 				"description": "Rejects with the git error when git rev-parse --git-common-dir fails, such as outside a repository, or with a file-system error from reading, creating, writing or renaming receipt files; a missing receipts.json reads as an empty list instead."
 			}
@@ -262,7 +262,7 @@
 						"description": "Thrown by receipts.parse when receipts.json is valid JSON but its contents are not an array of valid receipts; the promise rejects with it."
 					},
 					{
-						"name": "Error",
+						"name": "Deployment receipt Git or file read failure",
 						"type": "thrown",
 						"description": "Rejects with the git error when git rev-parse --git-common-dir fails, such as outside a repository, or with the file-system error when reading receipts.json fails for a reason other than a missing file."
 					}
@@ -328,7 +328,7 @@
 						"description": "Thrown by receipts.parse while the existing receipts.json is validated before replacement; the promise rejects and receipts.json is left unchanged."
 					},
 					{
-						"name": "Error",
+						"name": "Deployment receipt Git or filesystem write failure",
 						"type": "thrown",
 						"description": "Rejects with the git error when git rev-parse --git-common-dir fails, with the file-system error when reading receipts.json fails for a reason other than a missing file, or with the file-system error from creating the receipts directory, writing the temporary file or renaming it over receipts.json."
 					}
@@ -444,7 +444,7 @@
 						"description": "Thrown by receipts.parse when receipts.json is valid JSON but its contents are not an array of valid receipts; the promise rejects before plugin.discover is called."
 					},
 					{
-						"name": "Error",
+						"name": "Deployment receipt Git or file read failure",
 						"type": "thrown",
 						"description": "Rejects with the git error when git rev-parse --git-common-dir fails, such as outside a repository, or with the file-system error when reading receipts.json fails for a reason other than a missing file; the promise rejects before plugin.discover is called."
 					}

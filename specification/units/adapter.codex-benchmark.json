@@ -113,7 +113,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Codex benchmark configuration or execution failure",
 				"type": "thrown",
 				"description": "Throws Error for unsupported preflight settings, a failed Codex process, or a truthy reported model that differs from the candidate model. Failures rejected by the awaited process or event-parsing calls also propagate."
 			}
@@ -150,7 +150,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unsupported Codex benchmark settings or unavailable runner",
 						"type": "thrown",
 						"description": "Throws Error when tools is not default or effort is max, or when codex --version exits nonzero; process failures also reject."
 					}
@@ -187,7 +187,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Failed Codex benchmark or mismatched reported model",
 						"type": "thrown",
 						"description": "Throws Error when Codex exits nonzero or a truthy reportedModel differs from the candidate model; process and event-parsing failures also reject."
 					}

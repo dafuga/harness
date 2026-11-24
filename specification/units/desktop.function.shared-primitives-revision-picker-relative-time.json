@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.shared-primitives-revision-picker-relative-time",
+	"uid": "u_dro4rwiken",
+	"kind": "function",
+	"title": "relativeTime",
+	"responsibility": "Formats an instant relative to a supplied reference time for the revision picker.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/shared-primitives/revision-picker/relativeTime.ts"],
+		"symbols": ["relativeTime"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "relativeTime.instant",
+				"type": "string | null | undefined",
+				"required": true,
+				"description": "Recorded timestamp to parse. A missing or invalid timestamp returns Unknown."
+			},
+			{
+				"name": "relativeTime.now",
+				"type": "number",
+				"required": true,
+				"description": "Reference time in milliseconds since the Unix epoch."
+			}
+		],
+		"outputs": [
+			{
+				"name": "relativeTime",
+				"type": "string",
+				"description": "Localized relative date or Unknown when the recorded timestamp is unavailable."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "relativeTime",
+				"inputs": [
+					{
+						"name": "relativeTime.instant",
+						"type": "string | null | undefined",
+						"required": true,
+						"description": "Recorded timestamp to parse. A missing or invalid timestamp returns Unknown."
+					},
+					{
+						"name": "relativeTime.now",
+						"type": "number",
+						"required": true,
+						"description": "Reference time in milliseconds since the Unix epoch."
+					}
+				],
+				"outputs": [
+					{
+						"name": "relativeTime",
+						"type": "string",
+						"description": "Localized relative date or Unknown when the recorded timestamp is unavailable."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/shared-primitives/revision-picker/relativeTime.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/shared-primitives/revision-picker/relativeTime.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

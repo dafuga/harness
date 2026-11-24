@@ -13,7 +13,14 @@
 			"packages/reports/src/utils/shared-primitives/recordedValue.ts",
 			"packages/reports/src/utils/shared-primitives/recordedValue.types.ts"
 		],
-		"symbols": ["recordedValue", "read", "recordedValue", "RecordedNode", "RecordedNode"]
+		"symbols": [
+			"recordedValue",
+			"read",
+			"recordedValue",
+			"RecordedNode",
+			"RecordedField",
+			"RecordedNode"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -40,7 +47,8 @@
 							"status": "failed"
 						}
 					]
-				]
+				],
+				"unknownReason": "The renderer derives a display tree for any decoded evidence value, including absent data."
 			},
 			{
 				"name": "read.value",
@@ -55,7 +63,8 @@
 						"status": "passed",
 						"amount": 42.5
 					}
-				]
+				],
+				"unknownReason": "Recursive traversal can reach any decoded property value before checking its display kind."
 			},
 			{
 				"name": "read.depth",
@@ -196,7 +205,8 @@
 									"status": "failed"
 								}
 							]
-						]
+						],
+						"unknownReason": "The renderer derives a display tree for any decoded evidence value, including absent data."
 					}
 				],
 				"outputs": [
@@ -304,7 +314,8 @@
 								"status": "passed",
 								"amount": 42.5
 							}
-						]
+						],
+						"unknownReason": "Recursive traversal can reach any decoded property value before checking its display kind."
 					},
 					{
 						"name": "read.depth",

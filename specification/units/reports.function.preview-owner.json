@@ -74,22 +74,22 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "PreviewOwnerPortOccupiedError",
 				"type": "thrown",
 				"description": "Thrown with 'Preview ownership port is occupied by another application.' when the probe gets a non-OK status, a body longer than 2048 characters, or a JSON body whose protocol is not 'harness-preview-v1'."
 			},
 			{
-				"name": "Error",
+				"name": "InvalidPreviewOwnerAddressError",
 				"type": "thrown",
 				"description": "Thrown with 'Invalid preview owner address.' when the reported url is non-null but is not http://127.0.0.1:<digits>, which includes an empty string or a missing url field."
 			},
 			{
-				"name": "Error",
+				"name": "PreviewOwnerIdentityMismatchError",
 				"type": "thrown",
 				"description": "Thrown with 'A different Harness preview is already running at <url>. Close it before switching checkout or history data.' when the reported identity is not equal to the requested identity; <url> is the reported url, or 'startup' when url is null."
 			},
 			{
-				"name": "Error",
+				"name": "PreviewOwnerStillStartingError",
 				"type": "thrown",
 				"description": "Thrown with 'The existing Harness preview is still starting; no duplicate was launched.' after 100 attempts in which the owner still reported a null url, each followed by a 100 ms wait."
 			},
@@ -142,22 +142,22 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "PreviewOwnerPortOccupiedError",
 						"type": "thrown",
 						"description": "Thrown with 'Preview ownership port is occupied by another application.' when the probe gets a non-OK status, a body longer than 2048 characters, or a JSON body whose protocol is not 'harness-preview-v1'."
 					},
 					{
-						"name": "Error",
+						"name": "InvalidPreviewOwnerAddressError",
 						"type": "thrown",
 						"description": "Thrown with 'Invalid preview owner address.' when the reported url is non-null but is not http://127.0.0.1:<digits>, which includes an empty string or a missing url field."
 					},
 					{
-						"name": "Error",
+						"name": "PreviewOwnerIdentityMismatchError",
 						"type": "thrown",
 						"description": "Thrown with 'A different Harness preview is already running at <url>. Close it before switching checkout or history data.' when the reported identity is not equal to the requested identity; <url> is the reported url, or 'startup' when url is null."
 					},
 					{
-						"name": "Error",
+						"name": "PreviewOwnerStillStartingError",
 						"type": "thrown",
 						"description": "Thrown with 'The existing Harness preview is still starting; no duplicate was launched.' after 100 attempts in which the owner still reported a null url, each followed by a 100 ms wait."
 					},

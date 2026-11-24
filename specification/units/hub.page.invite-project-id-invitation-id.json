@@ -13,6 +13,7 @@
 			"hub.component.hub-frame",
 			"hub.component.invite-accept",
 			"hub.component.login-panel",
+			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h1"
 		]
 	},
@@ -53,6 +54,11 @@
 		},
 		{
 			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
 		},

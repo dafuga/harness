@@ -107,7 +107,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Deployment review, capacity, or scheduling failure",
 				"type": "thrown",
 				"description": "Throws an Error when a review reports blockers or activity capacity or scheduling fails; errors from environment mapping or deployment review also reject the call. Failures of queued execution are recorded on their activities and are not awaited by this function."
 			}
@@ -207,7 +207,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Deployment review, capacity, or scheduling failure",
 						"type": "thrown",
 						"description": "Throws an Error when a review reports blockers or activity capacity or scheduling fails; errors from environment mapping or deployment review also reject the call. Failures of queued execution are recorded on their activities and are not awaited by this function."
 					}

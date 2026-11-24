@@ -187,7 +187,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidPairingOfferError",
 				"type": "thrown",
 				"description": "pairingOffer throws an Error with the message 'Invalid pairing offer.' when the origin is not a permitted relay origin, when the text is longer than 320 characters, or when the text does not match the protocol shape. No other export throws for inputs of their declared types: readPairingOffer returns every refusal as a value."
 			}
@@ -233,7 +233,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidPairingOfferError",
 						"type": "thrown",
 						"description": "pairingOffer throws an Error with the message 'Invalid pairing offer.' when the origin is not a permitted relay origin, when the text is longer than 320 characters, or when the text does not match the protocol shape. No other export throws for inputs of their declared types: readPairingOffer returns every refusal as a value."
 					}

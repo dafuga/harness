@@ -66,7 +66,8 @@
 					{
 						"projectId": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921"
 					}
-				]
+				],
+				"unknownReason": "The caller supplies an unverified response that must be narrowed before fields can be read."
 			},
 			{
 				"name": "RemoteProjectResponseValidator.actor.value",
@@ -80,7 +81,8 @@
 							"emailVerified": true
 						}
 					}
-				]
+				],
+				"unknownReason": "The hosted actor response must be checked against the signed-in principal before it can be trusted."
 			},
 			{
 				"name": "RemoteProjectResponseValidator.actor.principalId",
@@ -101,7 +103,8 @@
 							"name": "Atlas Web"
 						}
 					]
-				]
+				],
+				"unknownReason": "The hosted project list is unchecked until the response and each entry are validated."
 			},
 			{
 				"name": "RemoteProjectResponseValidator.snapshot.value",
@@ -126,7 +129,8 @@
 						"entities": [],
 						"writable": true
 					}
-				]
+				],
+				"unknownReason": "The hosted snapshot is unchecked until its project identity and required fields match."
 			},
 			{
 				"name": "RemoteProjectResponseValidator.snapshot.projectId",
@@ -179,7 +183,8 @@
 							"packages/desktop/src/validators/projects-sessions/RemoteProjectResponseValidator.ts"
 						]
 					}
-				]
+				],
+				"unknownReason": "The hosted entity response must be checked against the requested entity and validated before use."
 			},
 			{
 				"name": "RemoteProjectResponseValidator.entity.entityId",
@@ -207,7 +212,8 @@
 							"imageSha256": null
 						}
 					]
-				]
+				],
+				"unknownReason": "The hosted messages response is unchecked until the validator inspects the entries."
 			},
 			{
 				"name": "RemoteProjectResponseValidator.history.value",
@@ -230,7 +236,8 @@
 						"complete": true,
 						"nextPage": null
 					}
-				]
+				],
+				"unknownReason": "The remote history response must pass entry validation before it becomes a history page."
 			},
 			{
 				"name": "RemoteProjectResponseValidator.comment.value",
@@ -267,7 +274,8 @@
 						],
 						"collaborationCommit": "0123456789abcdef0123456789abcdef01234567"
 					}
-				]
+				],
+				"unknownReason": "The comment acknowledgment could be malformed or refer to another request and is checked on receipt."
 			},
 			{
 				"name": "RemoteProjectResponseValidator.comment.input",
@@ -481,9 +489,74 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HostedActorIdentityError",
 				"type": "thrown",
-				"description": "These synchronous validators throw Error for malformed response records and invalid hosted projects, snapshots, entities, messages, history pages, or comment acknowledgments. Actor and comment validation also throws when principal, project, thread, anchor, request, text, or verified actor identity values do not satisfy the implementation's comparisons."
+				"description": "The hosted actor does not match the signed-in principal."
+			},
+			{
+				"name": "HostedActorRequiredError",
+				"type": "thrown",
+				"description": "The response does not contain a hosted actor."
+			},
+			{
+				"name": "HostedCommentAnchorMismatchError",
+				"type": "thrown",
+				"description": "The response has a different discussion anchor."
+			},
+			{
+				"name": "HostedCommentIdentityMismatchError",
+				"type": "thrown",
+				"description": "The comment ID, text, or actor fails its acknowledgment checks."
+			},
+			{
+				"name": "HostedCommentNotAcknowledgedError",
+				"type": "thrown",
+				"description": "The comment response does not acknowledge the requested collaboration operation."
+			},
+			{
+				"name": "HostedThreadMismatchError",
+				"type": "thrown",
+				"description": "The acknowledged thread does not match the requested entity or thread."
+			},
+			{
+				"name": "InvalidHostedEntityError",
+				"type": "thrown",
+				"description": "The entity response lacks the requested ID or required arrays."
+			},
+			{
+				"name": "InvalidHostedHistoryEventError",
+				"type": "thrown",
+				"description": "A history entry lacks a string ID or title."
+			},
+			{
+				"name": "InvalidHostedHistoryPageError",
+				"type": "thrown",
+				"description": "The history page lacks entries, completion status, or a valid cursor."
+			},
+			{
+				"name": "InvalidHostedMessagesError",
+				"type": "thrown",
+				"description": "The response is not a list of messages with string IDs and text."
+			},
+			{
+				"name": "InvalidHostedProjectError",
+				"type": "thrown",
+				"description": "A project entry lacks a valid ID or name."
+			},
+			{
+				"name": "InvalidHostedProjectsError",
+				"type": "thrown",
+				"description": "The hosted project list is not an array."
+			},
+			{
+				"name": "InvalidHostedResponseRecordError",
+				"type": "thrown",
+				"description": "The decoded result must be a non-null object that is not an array."
+			},
+			{
+				"name": "InvalidHostedSnapshotError",
+				"type": "thrown",
+				"description": "The hosted snapshot lacks the expected project identity or required fields."
 			}
 		],
 		"errorStatus": "declared",
@@ -500,7 +573,8 @@
 							{
 								"projectId": "8f43fbc4-6a12-4e8b-a8dc-8bba63f1a921"
 							}
-						]
+						],
+						"unknownReason": "The caller supplies an unverified response that must be narrowed before fields can be read."
 					}
 				],
 				"outputs": [
@@ -517,7 +591,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid hosted response record",
 						"type": "thrown",
 						"description": "Throws Error unless the value is a non-null object that is not an array."
 					}
@@ -539,7 +613,8 @@
 									"emailVerified": true
 								}
 							}
-						]
+						],
+						"unknownReason": "The hosted actor response must be checked against the signed-in principal before it can be trusted."
 					},
 					{
 						"name": "RemoteProjectResponseValidator.actor.principalId",
@@ -558,7 +633,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid hosted actor or principal mismatch",
 						"type": "thrown",
 						"description": "Throws Error for malformed response records, a missing actor, or an actor whose id differs from principalId or whose emailVerified value is not true."
 					}
@@ -580,7 +655,8 @@
 									"name": "Atlas Web"
 								}
 							]
-						]
+						],
+						"unknownReason": "The hosted project list is unchecked until the response and each entry are validated."
 					}
 				],
 				"outputs": [
@@ -601,7 +677,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid hosted project listing",
 						"type": "thrown",
 						"description": "Throws Error unless value is an array and every item is an object record with string id and name."
 					}
@@ -634,7 +710,8 @@
 								"entities": [],
 								"writable": true
 							}
-						]
+						],
+						"unknownReason": "The hosted snapshot is unchecked until its project identity and required fields match."
 					},
 					{
 						"name": "RemoteProjectResponseValidator.snapshot.projectId",
@@ -672,7 +749,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid hosted snapshot or project mismatch",
 						"type": "thrown",
 						"description": "Throws Error for malformed response records or unless project.id matches projectId, project.name is a string, revision.commit is 40 lowercase hexadecimal characters, and entities, branches, and commits are arrays."
 					}
@@ -726,7 +803,8 @@
 									"packages/desktop/src/validators/projects-sessions/RemoteProjectResponseValidator.ts"
 								]
 							}
-						]
+						],
+						"unknownReason": "The hosted entity response must be checked against the requested entity and validated before use."
 					},
 					{
 						"name": "RemoteProjectResponseValidator.entity.entityId",
@@ -785,7 +863,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid hosted entity or entity mismatch",
 						"type": "thrown",
 						"description": "Throws Error for a malformed response record or unless entity.id matches entityId and versions, sources, and threads are arrays."
 					}
@@ -814,7 +892,8 @@
 									"imageSha256": null
 								}
 							]
-						]
+						],
+						"unknownReason": "The hosted messages response is unchecked until the validator inspects the entries."
 					}
 				],
 				"outputs": [
@@ -841,7 +920,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid hosted thread messages",
 						"type": "thrown",
 						"description": "Throws Error unless value is an array and every message has string id and text."
 					}
@@ -872,7 +951,8 @@
 								"complete": true,
 								"nextPage": null
 							}
-						]
+						],
+						"unknownReason": "The remote history response must pass entry validation before it becomes a history page."
 					}
 				],
 				"outputs": [
@@ -901,7 +981,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid hosted history page",
 						"type": "thrown",
 						"description": "Throws Error for a malformed page or unless entries is an array, complete is boolean, nextPage is null or an integer of at least 1, and every entry has string id and title."
 					}
@@ -946,7 +1026,8 @@
 								],
 								"collaborationCommit": "0123456789abcdef0123456789abcdef01234567"
 							}
-						]
+						],
+						"unknownReason": "The comment acknowledgment could be malformed or refer to another request and is checked on receipt."
 					},
 					{
 						"name": "RemoteProjectResponseValidator.comment.input",
@@ -1020,7 +1101,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid hosted comment acknowledgment",
 						"type": "thrown",
 						"description": "Throws Error for malformed response records or unless the response matches the requested project, has a 40-character lowercase hexadecimal collaboration commit and comments array, and satisfies any requested thread id, anchor, requestId, text, actor id, and email verification checks."
 					}

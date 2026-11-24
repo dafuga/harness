@@ -94,7 +94,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Thrown as an `Error` with the message `Usage: with-resources <coding|agent-test|environment> -- <command...>` when the first argument is not `coding`, `agent-test`, or `environment`, the second is not `--`, or no argument follows `--`."
 			}
@@ -184,7 +184,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown as an `Error` with the message `Usage: with-resources <coding|agent-test|environment> -- <command...>` when the first argument is not `coding`, `agent-test`, or `environment`, the second is not `--`, or no argument follows `--`."
 					}

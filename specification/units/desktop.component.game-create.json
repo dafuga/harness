@@ -52,7 +52,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "MissingProjectIdError",
 				"type": "thrown",
 				"description": "Thrown with the message `The new game came back without a project id.` when opening a newly created game without a `created` callback and `snapshot.project.id` is missing or empty. `submit` catches it and displays `errorMessage(cause)` in the form alert."
 			}

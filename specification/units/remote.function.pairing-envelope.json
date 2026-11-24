@@ -66,7 +66,8 @@
 						"message": "pairing request"
 					},
 					null
-				]
+				],
+				"unknownReason": "The pairing message is supplied for JSON serialization and can have the caller's chosen shape."
 			},
 			{
 				"name": "openPairing.key",
@@ -239,7 +240,8 @@
 								"message": "pairing request"
 							},
 							null
-						]
+						],
+						"unknownReason": "The pairing message is supplied for JSON serialization and can have the caller's chosen shape."
 					}
 				],
 				"outputs": [

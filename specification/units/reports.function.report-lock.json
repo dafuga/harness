@@ -41,9 +41,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ReportLockBusyError",
 				"type": "thrown",
-				"description": "Rejects with `Error('Report is busy; retry this update')` after all 200 lock attempts fail. Non-`EEXIST` open errors, lock write or close errors, final unlink errors other than `ENOENT`, and rejection reasons from `operation` propagate."
+				"description": "Rejects with `ReportLockBusyError('Report is busy; retry this update')` after all 200 lock attempts fail. Non-`EEXIST` open errors, lock write or close errors, final unlink errors other than `ENOENT`, and rejection reasons from `operation` propagate."
 			}
 		],
 		"errorStatus": "declared",
@@ -75,9 +75,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ReportLockBusyError",
 						"type": "thrown",
-						"description": "Rejects with `Error('Report is busy; retry this update')` after all 200 lock attempts fail. Non-`EEXIST` open errors, lock write or close errors, final unlink errors other than `ENOENT`, and rejection reasons from `operation` propagate."
+						"description": "Rejects with `ReportLockBusyError('Report is busy; retry this update')` after all 200 lock attempts fail. Non-`EEXIST` open errors, lock write or close errors, final unlink errors other than `ENOENT`, and rejection reasons from `operation` propagate."
 					}
 				],
 				"errorStatus": "declared"

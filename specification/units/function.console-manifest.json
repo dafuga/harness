@@ -222,7 +222,7 @@
 				"description": "Thrown inside consoleManifest when the stored document is null, when files is neither an array nor null, or when a files entry is null, because the code reads those values without type checks; consoleManifest rejects with it."
 			},
 			{
-				"name": "Error",
+				"name": "Console manifest file write failure",
 				"type": "thrown",
 				"description": "Node.js filesystem error (a plain Error whose code is ENOENT, EACCES, ENOSPC or similar) that writeConsoleManifest rejects with when harness.console.json cannot be written in host, for example because the directory is missing or not writable."
 			}
@@ -423,7 +423,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Console manifest file write failure",
 						"type": "thrown",
 						"description": "Node.js filesystem error (a plain Error whose code is ENOENT, EACCES, ENOSPC or similar) that writeConsoleManifest rejects with when harness.console.json cannot be written in host, for example because the directory is missing or not writable."
 					}

@@ -53,7 +53,7 @@
 				"description": "Thrown when a file whose name matches the cache pattern contains the JSON value null, because entry.identity is read without a null check; the promise then rejects and the remaining names in the listing are not processed."
 			},
 			{
-				"name": "Error",
+				"name": "Projection cache eviction failure",
 				"type": "thrown",
 				"description": "A rejection from unlink on a file selected for removal (a matching file or one with an unusable identity) is not caught, so the promise rejects and the remaining names in the listing are not processed."
 			}
@@ -100,7 +100,7 @@
 						"description": "Thrown when a file whose name matches the cache pattern contains the JSON value null, because entry.identity is read without a null check; the promise then rejects and the remaining names in the listing are not processed."
 					},
 					{
-						"name": "Error",
+						"name": "Projection cache eviction failure",
 						"type": "thrown",
 						"description": "A rejection from unlink on a file selected for removal (a matching file or one with an unusable identity) is not caught, so the promise rejects and the remaining names in the listing are not processed."
 					}

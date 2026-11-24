@@ -218,7 +218,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Module task queue contention, sync, or Git failure",
 				"type": "thrown",
 				"description": "Thrown by update when the task ref loses 16 compare-and-swap attempts, by sync when the remote name is unusable or queue histories diverge, and by owner when the local owner UUID or process start identity is invalid. The operation message identifies the condition."
 			},
@@ -307,7 +307,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "TaskQueueContentionError",
 						"type": "thrown",
 						"description": "Thrown after 16 unsuccessful compare-and-swap attempts to update the task ref. Exceptions from reading or validating queue data also propagate."
 					},
@@ -350,7 +350,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "TaskQueueSyncError",
 						"type": "thrown",
 						"description": "Thrown when the remote name does not match the configured-name pattern or when the local and remote task histories have diverged. Divergence requires coordinating the queue owner before retrying."
 					}
@@ -376,7 +376,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "TaskOwnerIdentityError",
 						"type": "thrown",
 						"description": "Thrown when the stored local owner identity is not a UUID or the current process start time cannot be established."
 					}
@@ -422,7 +422,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "TaskQueueSyncError",
 						"type": "thrown",
 						"description": "Thrown when the remote name does not match the configured-name pattern or when the local and remote task histories have diverged. Divergence requires coordinating the queue owner before retrying."
 					}
@@ -455,7 +455,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "TaskOwnerIdentityError",
 						"type": "thrown",
 						"description": "Thrown when the stored local owner identity is not a UUID or the current process start time cannot be established."
 					}

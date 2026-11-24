@@ -40,7 +40,8 @@
 						"generation": 1,
 						"registeredAt": "2026-11-02T17:42:09.518Z"
 					}
-				]
+				],
+				"unknownReason": "The relay response to registration is unchecked until the host identifier is verified."
 			},
 			{
 				"name": "RelayReplyValidator.registered.hostId",
@@ -87,7 +88,8 @@
 						"registeredAt": "2026-11-02T17:42:09.518Z",
 						"devices": []
 					}
-				]
+				],
+				"unknownReason": "The relay host summary is external data validated at receive time."
 			},
 			{
 				"name": "RelayReplyValidator.summary.hostId",
@@ -108,7 +110,8 @@
 					{
 						"ok": true
 					}
-				]
+				],
+				"unknownReason": "The relay completion reply must identify the requested host or device before acceptance."
 			}
 		],
 		"outputs": [
@@ -178,7 +181,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Relay response unavailable or invalid",
 				"type": "thrown",
 				"description": "Thrown by `hubFail('unavailable')` whenever a check in any of the three operations fails, as an `Error` with the message 'Harness artifact unavailable' and `code` set to 'unavailable'. The error does not say which field failed."
 			}
@@ -204,7 +207,8 @@
 								"generation": 1,
 								"registeredAt": "2026-11-02T17:42:09.518Z"
 							}
-						]
+						],
+						"unknownReason": "The relay response to registration is unchecked until the host identifier is verified."
 					},
 					{
 						"name": "RelayReplyValidator.registered.hostId",
@@ -238,7 +242,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid relay registration acknowledgment",
 						"type": "thrown",
 						"description": "Thrown with `code` 'unavailable' when the value is not a non-array object, when its `hostId` differs from the `hostId` argument, when `generation` is not a safe non-negative integer, or when `registeredAt` is not a non-empty string."
 					}
@@ -283,7 +287,8 @@
 								"registeredAt": "2026-11-02T17:42:09.518Z",
 								"devices": []
 							}
-						]
+						],
+						"unknownReason": "The relay host summary is external data validated at receive time."
 					},
 					{
 						"name": "RelayReplyValidator.summary.hostId",
@@ -336,7 +341,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid relay host summary",
 						"type": "thrown",
 						"description": "Thrown with `code` 'unavailable' when the value is not a non-array object, when its `hostId` differs from the `hostId` argument, when `devices` is not an array, or when `name`, `online`, `generation`, `registeredAt` or any device entry fails its check."
 					}
@@ -355,7 +360,8 @@
 							{
 								"ok": true
 							}
-						]
+						],
+						"unknownReason": "The relay completion reply must identify the requested host or device before acceptance."
 					}
 				],
 				"outputs": [
@@ -372,7 +378,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid relay completion acknowledgment",
 						"type": "thrown",
 						"description": "Thrown with `code` 'unavailable' when the value is not a non-array object or when its `ok` is not exactly `true`."
 					}

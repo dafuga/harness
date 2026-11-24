@@ -60,7 +60,7 @@
 				"description": "A data request that the owner policy does not admit is answered 403 Forbidden before any history is read. The policy admits a request only when owner mode is loopback, the server is bound to a loopback address, the client connects from a loopback address and no address header is configured; Host and Forwarded headers are never consulted."
 			},
 			{
-				"name": "Error",
+				"name": "Entity history request failed",
 				"type": "thrown",
 				"description": "A data request that is not answered OK, such as a 403 refusal or a 404 for a file that is not stored, makes the client reject with an Error whose message is '<path> could not be loaded (<status>)', and the console catches it. A failed index shows 'The history could not be loaded. Refresh the page to try again.', a failed revision shows 'This revision could not be loaded. Refresh the page to try again.', and a failed first parent or activity read is taken as absent with no notice."
 			}

@@ -47,7 +47,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Thrown when the package specifier does not match the accepted registry-name and exact-version pattern, or when the selected existing dependency has a different version. A package.json read failure also rejects with the filesystem error."
 			},
@@ -96,7 +96,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown when the package specifier does not match the accepted registry-name and exact-version pattern, or when the selected existing dependency has a different version. A package.json read failure also rejects with the filesystem error."
 					},

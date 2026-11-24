@@ -4,8 +4,8 @@
 	"uid": "u_2vrw624qcu",
 	"kind": "component",
 	"title": "AccountSignIn",
-	"responsibility": "Owns the AccountSignIn Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Shows the native sign-in gate and offers Google, one-time code, cancel and retry actions as the hosted status changes.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -25,44 +25,51 @@
 		"symbols": ["AccountSignIn"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AccountSignIn.status",
 				"type": "NativeHostedStatus",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Hosted account status selects checking, configured sign-in, pending handoff, or unavailable states."
 			},
 			{
 				"name": "AccountSignIn.error",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Error text displayed as an alert when present."
 			},
 			{
 				"name": "AccountSignIn.busy",
 				"type": "boolean",
-				"required": true
+				"required": true,
+				"description": "Disables sign-in, retry and cancel actions while an account request is in progress."
 			},
 			{
 				"name": "AccountSignIn.connect",
 				"type": "(google: boolean) => void",
-				"required": true
+				"required": true,
+				"description": "Starts a hosted sign-in with Google when true, or the one-time code flow when false."
 			},
 			{
 				"name": "AccountSignIn.cancel",
 				"type": "() => void",
-				"required": true
+				"required": true,
+				"description": "Cancels the pending sign-in."
 			},
 			{
 				"name": "AccountSignIn.retry",
 				"type": "() => void",
-				"required": true
+				"required": true,
+				"description": "Refreshes the hosted account status after an unavailable or failed check."
 			}
 		],
 		"outputs": [
 			{
 				"name": "AccountSignIn",
-				"type": "markup"
+				"type": "markup",
+				"description": "A native account gate showing a status or alert, the appropriate sign-in or recovery actions, and the code and Hub address when available."
 			}
 		],
 		"errors": [],

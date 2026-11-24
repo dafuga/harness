@@ -1,0 +1,125 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.script.release-revision",
+	"uid": "u_3xrke762v6",
+	"kind": "script",
+	"title": "release-revision",
+	"responsibility": "Read the full Git commit of a clean tracked worktree for the desktop release stamp and validate revision values.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/scripts/release-revision.ts"],
+		"symbols": ["releaseRevision", "isRevision"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "releaseRevision.cwd",
+				"type": "string",
+				"required": false,
+				"description": "Git working directory to inspect. The default is the current directory."
+			},
+			{
+				"name": "isRevision.value",
+				"type": "unknown",
+				"required": true,
+				"description": "The candidate revision value.",
+				"unknownReason": "The guard accepts any value and determines whether it is a valid revision string."
+			}
+		],
+		"outputs": [
+			{
+				"name": "releaseRevision",
+				"type": "string",
+				"description": "Full lowercase Git commit hash for the clean tracked worktree."
+			},
+			{
+				"name": "isRevision",
+				"type": "value is string",
+				"description": "True when the value is a 40-character lowercase hexadecimal string."
+			}
+		],
+		"errors": [
+			{
+				"name": "MacPackageError",
+				"type": "thrown",
+				"description": "Git cannot read the commit or worktree status, HEAD is not a valid revision, or the worktree has tracked changes."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "releaseRevision",
+				"inputs": [
+					{
+						"name": "releaseRevision.cwd",
+						"type": "string",
+						"required": false,
+						"description": "Git working directory to inspect. The default is the current directory."
+					}
+				],
+				"outputs": [
+					{
+						"name": "releaseRevision",
+						"type": "string",
+						"description": "Full lowercase Git commit hash for the clean tracked worktree."
+					}
+				],
+				"errors": [
+					{
+						"name": "MacPackageError",
+						"type": "thrown",
+						"description": "Git cannot read the commit or worktree status, HEAD is not a valid revision, or the worktree has tracked changes."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "isRevision",
+				"inputs": [
+					{
+						"name": "isRevision.value",
+						"type": "unknown",
+						"required": true,
+						"description": "The candidate revision value.",
+						"unknownReason": "The guard accepts any value and determines whether it is a valid revision string."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isRevision",
+						"type": "value is string",
+						"description": "True when the value is a 40-character lowercase hexadecimal string."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.script.package-mac",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/scripts/release-revision.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/scripts/release-revision.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -59,7 +59,8 @@
 					{
 						"branch": "main"
 					}
-				]
+				],
+				"unknownReason": "The requested resource determines the set and types of query values."
 			},
 			{
 				"name": "HarnessApiService.call.method",
@@ -75,7 +76,8 @@
 				"description": "Record of parameters forwarded as the agent operation input. This service does not validate its keys; guarded write methods also require a writable branch tip.",
 				"examples": [
 					{}
-				]
+				],
+				"unknownReason": "The selected agent operation determines which values are accepted in its parameter record."
 			},
 			{
 				"name": "HarnessApiService.call.requestId",
@@ -211,7 +213,8 @@
 							{
 								"branch": "main"
 							}
-						]
+						],
+						"unknownReason": "The requested resource determines the set and types of query values."
 					}
 				],
 				"outputs": [
@@ -247,7 +250,8 @@
 						"description": "Record of parameters forwarded as the agent operation input. This service does not validate its keys; guarded write methods also require a writable branch tip.",
 						"examples": [
 							{}
-						]
+						],
+						"unknownReason": "The selected agent operation determines which values are accepted in its parameter record."
 					},
 					{
 						"name": "HarnessApiService.call.requestId",

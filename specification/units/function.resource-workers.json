@@ -130,7 +130,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidTestWorkerCeilingError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Invalid test worker ceiling' when HARNESS_RESOURCE_CPUS is a positive finite number and maximumWorkers is below 1 or NaN; with a missing or invalid HARNESS_RESOURCE_CPUS, an invalid maximumWorkers does not throw."
 			}
@@ -206,7 +206,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidTestWorkerCeilingError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Invalid test worker ceiling' when HARNESS_RESOURCE_CPUS is a positive finite number and maximumWorkers is below 1 or NaN; with a missing or invalid HARNESS_RESOURCE_CPUS, an invalid maximumWorkers does not throw."
 					}

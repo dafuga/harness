@@ -234,7 +234,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "RefusedScopeError",
 				"type": "thrown",
 				"description": "Thrown by recordedTip, and so by recordedScope, when the query mode is 'current' and its commit is not strictly equal to the tip; the message is 'Commit <first seven characters of the commit> is no longer the tip of branch <branch>.' Thrown by recordedScope when facts.kind is undefined or categoryOf returns null for it; the message is 'This entity is not registered at this commit.'"
 			}
@@ -284,7 +284,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "RefusedScopeError",
 						"type": "thrown",
 						"description": "Thrown when the query mode is 'current' and its commit is not the supplied tip; the message is 'Commit <first seven characters of the commit> is no longer the tip of branch <branch>.'"
 					}
@@ -469,7 +469,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "RefusedScopeError",
 						"type": "thrown",
 						"description": "Thrown when the query mode is 'current' and its commit is not facts.tip, with the message 'Commit <first seven characters of the commit> is no longer the tip of branch <branch>.' Thrown when facts.kind is undefined or categoryOf returns null for it, with the message 'This entity is not registered at this commit.'"
 					}

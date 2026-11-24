@@ -48,7 +48,8 @@
 				"type": "unknown",
 				"required": true,
 				"description": "Value passed to recordedValue to derive the content rendered by the component. Its type is unknown, so it can be any value; the visible form depends on the derived node kind.",
-				"examples": [null, "passed", true]
+				"examples": [null, "passed", true],
+				"unknownReason": "Recorded evidence can be any decoded value and the renderer classifies it before display."
 			},
 			{
 				"name": "RecordedValue.fullValuesLabel",
@@ -108,7 +109,7 @@
 				"inputs": [
 					{
 						"name": "RecordedValue.label.field",
-						"type": "unknown",
+						"type": "RecordedField",
 						"required": true
 					}
 				],
@@ -126,7 +127,7 @@
 				"inputs": [
 					{
 						"name": "RecordedValue.children.field",
-						"type": "unknown",
+						"type": "RecordedField",
 						"required": true
 					}
 				],

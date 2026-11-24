@@ -41,7 +41,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ThreadCommentProjectMismatchError",
 				"type": "thrown",
 				"description": "Thrown inside post when the current context has a projectId and the bridge returns a result for a different project; post catches it, stores its string form in error, and returns null."
 			}

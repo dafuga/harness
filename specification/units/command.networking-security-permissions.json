@@ -52,7 +52,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "The `show <profile>` action throws this Error with message `Unknown permission profile: <id>` when no catalog profile has the requested id."
 			}

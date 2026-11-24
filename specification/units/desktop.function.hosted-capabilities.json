@@ -42,7 +42,8 @@
 						"role": "viewer",
 						"executionAvailable": false
 					}
-				]
+				],
+				"unknownReason": "The remote project response has to be validated before any capability fields can be trusted."
 			},
 			{
 				"name": "hostedCapabilities.projectId",
@@ -91,9 +92,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "UnknownHostedProjectAccessError",
 				"type": "thrown",
-				"description": "Thrown as Error('Invalid hosted response.') when the value is null, not an object or an array, and as Error('Unknown hosted project access.') when the response id differs from projectId or the role (converted with String()) is not owner, writer, commenter or viewer."
+				"description": "Thrown as UnknownHostedProjectAccessError('Invalid hosted response.') when the value is null, not an object or an array, and as UnknownHostedProjectAccessError('Unknown hosted project access.') when the response id differs from projectId or the role (converted with String()) is not owner, writer, commenter or viewer."
 			}
 		],
 		"errorStatus": "declared",
@@ -125,7 +126,8 @@
 								"role": "viewer",
 								"executionAvailable": false
 							}
-						]
+						],
+						"unknownReason": "The remote project response has to be validated before any capability fields can be trusted."
 					},
 					{
 						"name": "hostedCapabilities.projectId",
@@ -174,9 +176,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "UnknownHostedProjectAccessError",
 						"type": "thrown",
-						"description": "Thrown as Error('Invalid hosted response.') when the value is null, not an object or an array, and as Error('Unknown hosted project access.') when the response id differs from projectId or the role (converted with String()) is not owner, writer, commenter or viewer."
+						"description": "Thrown as UnknownHostedProjectAccessError('Invalid hosted response.') when the value is null, not an object or an array, and as UnknownHostedProjectAccessError('Unknown hosted project access.') when the response id differs from projectId or the role (converted with String()) is not owner, writer, commenter or viewer."
 					}
 				],
 				"errorStatus": "declared"

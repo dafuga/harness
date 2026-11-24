@@ -45,7 +45,8 @@
 					{
 						"code": "unlisted-code"
 					}
-				]
+				],
+				"unknownReason": "The catch boundary may receive any value and inspects only a recognized public error code."
 			},
 			{
 				"name": "hubHttp.value",
@@ -59,7 +60,8 @@
 					{
 						"error": "not-found"
 					}
-				]
+				],
+				"unknownReason": "This helper emits JSON for responses whose shape is selected by the caller."
 			},
 			{
 				"name": "hubHttp.status",
@@ -188,7 +190,8 @@
 							{
 								"code": "unlisted-code"
 							}
-						]
+						],
+						"unknownReason": "The catch boundary may receive any value and inspects only a recognized public error code."
 					}
 				],
 				"outputs": [
@@ -216,7 +219,8 @@
 							{
 								"error": "not-found"
 							}
-						]
+						],
+						"unknownReason": "This helper emits JSON for responses whose shape is selected by the caller."
 					},
 					{
 						"name": "hubHttp.status",

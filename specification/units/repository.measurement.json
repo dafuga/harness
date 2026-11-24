@@ -298,7 +298,7 @@
 				"description": "JSON.parse throws SyntaxError when file contents are not valid JSON. read does not catch it, and forProfile propagates it through read."
 			},
 			{
-				"name": "Error",
+				"name": "Measurement repository filesystem failure",
 				"type": "thrown",
 				"description": "Node filesystem operations can throw or reject with Error when creating the destination directory or reading or writing a file fails."
 			}
@@ -405,7 +405,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Measurement repository filesystem failure",
 						"type": "thrown",
 						"description": "Node filesystem operations can throw or reject with Error when creating the destination directory or reading or writing a file fails."
 					}
@@ -512,7 +512,7 @@
 						"description": "JSON.parse throws SyntaxError when file contents are not valid JSON. read does not catch it, and forProfile propagates it through read."
 					},
 					{
-						"name": "Error",
+						"name": "Measurement file read failure",
 						"type": "thrown",
 						"description": "readFileSync can throw Error when the resolved file cannot be read."
 					}
@@ -619,7 +619,7 @@
 						"description": "JSON.parse throws SyntaxError when file contents are not valid JSON. read does not catch it, and forProfile propagates it through read."
 					},
 					{
-						"name": "Error",
+						"name": "Profile measurement file read failure",
 						"type": "thrown",
 						"description": "forProfile propagates filesystem Error failures from reading the first existing candidate."
 					}

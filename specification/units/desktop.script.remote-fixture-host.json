@@ -45,17 +45,17 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "FixtureRelayRegistrationError",
 				"type": "thrown",
 				"description": "Thrown inside the register callback that fixtureHost passes to RemoteHostService with the message 'The fixture relay refused the registration.' when the fixture relay answers a registration with a non-ok response. This file does not catch it, so it reaches startRemoteFixture only if RemoteHostService lets it through."
 			},
 			{
-				"name": "Error",
+				"name": "FixtureHostRelayConnectionError",
 				"type": "thrown",
 				"description": "Thrown by online() with the message 'The fixture host did not reach the fixture relay.' when enable() returned no host, or the host status is not 'online' on each of 200 checks spaced 50 ms apart, so startRemoteFixture rejects with it. Nothing started before it (the relay, the host, the state directory and the project directory) is stopped or removed."
 			},
 			{
-				"name": "Error",
+				"name": "Remote fixture host setup failure",
 				"type": "thrown",
 				"description": "Rejects with the error of any step that fails and is not caught in this file, such as startRelay, remoteFixtureProject, mkdtemp, fixtureHost (including the project registry), the host enable and status calls in online(), remoteFixtureControl, mkdir or writeFile. Nothing started before such a failure is stopped or removed, because stop is returned only on success."
 			}
@@ -93,17 +93,17 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "FixtureRelayRegistrationError",
 						"type": "thrown",
 						"description": "Thrown inside the register callback that fixtureHost passes to RemoteHostService with the message 'The fixture relay refused the registration.' when the fixture relay answers a registration with a non-ok response. This file does not catch it, so it reaches startRemoteFixture only if RemoteHostService lets it through."
 					},
 					{
-						"name": "Error",
+						"name": "FixtureHostRelayConnectionError",
 						"type": "thrown",
 						"description": "Thrown by online() with the message 'The fixture host did not reach the fixture relay.' when enable() returned no host, or the host status is not 'online' on each of 200 checks spaced 50 ms apart, so startRemoteFixture rejects with it. Nothing started before it (the relay, the host, the state directory and the project directory) is stopped or removed."
 					},
 					{
-						"name": "Error",
+						"name": "Remote fixture host setup failure",
 						"type": "thrown",
 						"description": "Rejects with the error of any step that fails and is not caught in this file, such as startRelay, remoteFixtureProject, mkdtemp, fixtureHost (including the project registry), the host enable and status calls in online(), remoteFixtureControl, mkdir or writeFile. Nothing started before such a failure is stopped or removed, because stop is returned only on success."
 					}

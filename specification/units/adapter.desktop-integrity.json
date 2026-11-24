@@ -43,9 +43,19 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Thrown with the message 'Integrity changes require the experimental copy' when app does not end with '/Codex Harness Experimental.app', with 'Expected enabled ASAR integrity' when the stored integrity read from the temporary alias bundle has used false, and with 'Integrity digest verification failed' when the read-back digest or the calculated digest has used false or the two sha256 digests differ. Errors from its filesystem calls and from the @electron/asar calls are not caught and also reject the promise."
+				"description": "Integrity changes require the experimental application copy and an enabled ASAR integrity record."
+			},
+			{
+				"name": "IntegrityDigestVerificationError",
+				"type": "thrown",
+				"description": "The read-back integrity record is disabled or its SHA-256 digest differs from the calculated digest."
+			},
+			{
+				"name": "Bundle filesystem or ASAR failure",
+				"type": "propagated",
+				"description": "Filesystem calls and the ASAR library can fail without translation."
 			}
 		],
 		"errorStatus": "declared",
@@ -73,9 +83,19 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Thrown with the message 'Integrity changes require the experimental copy' when app does not end with '/Codex Harness Experimental.app', with 'Expected enabled ASAR integrity' when the stored integrity read from the temporary alias bundle has used false, and with 'Integrity digest verification failed' when the read-back digest or the calculated digest has used false or the two sha256 digests differ. Errors from its filesystem calls and from the @electron/asar calls are not caught and also reject the promise."
+						"description": "Integrity changes require the experimental application copy and an enabled ASAR integrity record."
+					},
+					{
+						"name": "IntegrityDigestVerificationError",
+						"type": "thrown",
+						"description": "The read-back integrity record is disabled or its SHA-256 digest differs from the calculated digest."
+					},
+					{
+						"name": "Bundle filesystem or ASAR failure",
+						"type": "propagated",
+						"description": "Filesystem calls and the ASAR library can fail without translation."
 					}
 				],
 				"errorStatus": "declared"

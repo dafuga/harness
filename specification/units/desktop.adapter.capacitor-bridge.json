@@ -138,22 +138,22 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Agent method denied by device grant",
 				"type": "thrown",
 				"description": "Raised before anything is sent when the method is not in the granted set, so the bridge call rejects with an Error whose code is 'method-denied' and whose message says the operation is not available on this connection. The granted set is the one that the latest status given to allow produced."
 			},
 			{
-				"name": "Error",
+				"name": "Agent write requires a recorded revision",
 				"type": "thrown",
 				"description": "Raised before createPlan, openThread, approve or startRun is sent when no branch and commit are on record for the project, so the bridge call rejects with an Error telling the person to open the project at its branch tip first. A record is kept only from a live snapshot of the branch tip, and is cleared by a cached, commit-pinned or non-tip snapshot or by an allow that grants nothing."
 			},
 			{
-				"name": "Error",
+				"name": "Project cannot be opened from a phone",
 				"type": "thrown",
 				"description": "openProject always rejects on a phone, with an Error that says a phone has no folders to open and tells the person to add the project on the computer. Nothing is sent to the computer for this call."
 			},
 			{
-				"name": "Error",
+				"name": "Native bridge request failure",
 				"type": "thrown",
 				"description": "Every failed plugin request is converted here: the bridge call rejects with an Error that keeps the plugin's own message and code, falling back to a message saying the computer could not complete the request and to the code 'failed' when the plugin gives none. The raw value the plugin rejected with never reaches the caller."
 			}
