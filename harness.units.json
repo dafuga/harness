@@ -2565,6 +2565,12 @@
 		},
 		{
 			"from": "packages/hub/src/routes/api/tracker-overview/trackerOverviewInput.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeProviderPayload",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeProviderPayload.ts",
+			"reason": "The Hub parser and Desktop publisher share the bounded provider quota projection."
+		},
+		{
+			"from": "packages/hub/src/routes/api/tracker-overview/trackerOverviewInput.ts",
 			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy",
 			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewPrivacy.ts",
 			"reason": "The hosted and native Project Overview surfaces share the Reports display contract."
@@ -2586,6 +2592,12 @@
 			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
 			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
 			"reason": "The hosted and native Project Overview surfaces share the Reports display contract."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createTrackerOverviewPublisher.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeProviderPayload",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeProviderPayload.ts",
+			"reason": "The Hub parser and Desktop publisher share the bounded provider quota projection."
 		},
 		{
 			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createTrackerOverviewPublisher.ts",

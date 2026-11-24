@@ -156,22 +156,26 @@
 			{
 				"name": "overviewSelection.cards",
 				"type": "OverviewCard[]",
-				"required": true
+				"required": true,
+				"description": "Current Overview cards used to resolve the selected work item."
 			},
 			{
 				"name": "overviewSelection.selection",
 				"type": "ProjectOverviewSelection | null",
-				"required": true
+				"required": true,
+				"description": "The requested item, decision, or run, or null when the detail panel is closed."
 			},
 			{
 				"name": "overviewDetailRows.detail",
 				"type": "ReturnType<typeof overviewSelection>",
-				"required": true
+				"required": true,
+				"description": "Resolved Overview selection whose fields will be displayed."
 			},
 			{
 				"name": "overviewDetailRows.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Reference time in Unix milliseconds for relative timestamps."
 			}
 		],
 		"outputs": [
@@ -575,12 +579,14 @@
 					{
 						"name": "overviewSelection.cards",
 						"type": "OverviewCard[]",
-						"required": true
+						"required": true,
+						"description": "Current Overview cards used to resolve the selected work item."
 					},
 					{
 						"name": "overviewSelection.selection",
 						"type": "ProjectOverviewSelection | null",
-						"required": true
+						"required": true,
+						"description": "The requested item, decision, or run, or null when the detail panel is closed."
 					}
 				],
 				"outputs": [
@@ -598,12 +604,14 @@
 					{
 						"name": "overviewDetailRows.detail",
 						"type": "ReturnType<typeof overviewSelection>",
-						"required": true
+						"required": true,
+						"description": "Resolved Overview selection whose fields will be displayed."
 					},
 					{
 						"name": "overviewDetailRows.now",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Reference time in Unix milliseconds for relative timestamps."
 					}
 				],
 				"outputs": [
