@@ -31,7 +31,6 @@
 	let error = $state('');
 	let read = 0;
 	let active = true;
-
 	async function refresh() {
 		const turn = ++read;
 		loading = true;
@@ -109,15 +108,8 @@
 		}
 	}
 	function canGo(card: ApprovalCards[number]) {
-		return Boolean(
-			card.control &&
-			!card.control.preview &&
-			card.receipt?.decision === 'allow' &&
-			!card.goAt &&
-			!card.used &&
-			!card.progress &&
-			card.expiresAt > now
-		);
+		if (!card.control || card.control.preview || card.progress) return false;
+		return card.receipt?.decision === 'allow' && !card.goAt && !card.used && card.expiresAt > now;
 	}
 	const phases = {
 		stopped: 'Stopped before execution',
