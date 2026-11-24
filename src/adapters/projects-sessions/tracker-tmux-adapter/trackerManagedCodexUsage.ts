@@ -10,7 +10,8 @@ import { trackerManagedToken } from './trackerManagedLaunchReceipt';
 import type { TrackerHostLaunchPort } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
 import type { TrackerReceiptUsage } from '../../../services/agents-providers/TrackerDispatcherService.types';
 
-const codexHeaderBytes = 16 * 1024;
+// Session metadata can include the provider's full base instructions.
+const codexHeaderBytes = 128 * 1024;
 const codexTailBytes = 512 * 1024;
 const codexRolloutName = /^rollout-.+-([a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12})\.jsonl$/i;
 
