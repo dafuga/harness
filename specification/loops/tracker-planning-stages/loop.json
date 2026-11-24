@@ -1,0 +1,43 @@
+{
+	"name": "tracker-planning-stages",
+	"goal": "Prove planning stages, stage artifacts and attributed promotion through the Tracker journal, CLI, and the shared Mac and iPhone item views.",
+	"createdAt": "2026-11-24T22:32:18.633Z",
+	"updatedAt": "2026-11-24T22:33:24.168Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-24T22:33:24.168Z",
+			"evidence": "Committed specification defines stage order and explicit promotion, per-stage artifacts, compatibility, CLI and Mac/iPhone acceptance."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
