@@ -27,6 +27,21 @@ async function comment(page: Page, text: string) {
 	await expect(page.getByText(text, { exact: true })).toBeVisible();
 }
 
+async function captureComposer(page: Page, state: string) {
+	const folder = process.env.HEADLESS_RUN_ARTIFACTS;
+	if (process.env.TAKE_SCREENSHOT !== 'true' || !folder) return;
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+	});
+	const design = page.getByRole('img', { name: 'Alpha activity v002 desktop default' });
+	await expect(design).toBeVisible();
+	await design.evaluate((image: HTMLImageElement) => image.decode());
+	await page.mouse.move(0, 0);
+	await page.screenshot({
+		path: `${folder}/comments-${process.env.SCREENSHOT_LABEL ?? 'run'}-${state}.png`
+	});
+}
+
 test('Comment is the default, never starts a run and stays pending after a restart', async ({
 	page
 }) => {
@@ -63,7 +78,9 @@ test('Comment is the default, never starts a run and stays pending after a resta
 	await page.reload();
 	await expect(page.getByText('Tighten the header', { exact: true })).toBeVisible();
 	await expect(page.getByText(/Pending on this device · not shared/)).toBeVisible();
+	await captureComposer(page, 'pending');
 	await modes(page).getByRole('button', { name: 'Plan', exact: true }).click();
+	await captureComposer(page, 'plan');
 	await expect(page.getByLabel('Model', { exact: true })).toBeVisible();
 	await expect(page.getByRole('button', { name: 'Codex CLI', exact: true })).toBeVisible();
 	await expect(page.getByRole('button', { name: 'Send plan', exact: true })).toBeVisible();
