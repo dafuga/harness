@@ -1,0 +1,43 @@
+{
+	"name": "vault-setup",
+	"goal": "Resume and undo the isolated Vault executor installer, with one Mac approval and progress in both desktop apps",
+	"createdAt": "2026-11-24T00:08:34.595Z",
+	"updatedAt": "2026-11-24T00:09:46.552Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-24T00:09:46.552Z",
+			"evidence": "Tracker b3k3fs, xrmz3f and jw0799. Prove the Mac journal resumes and removes across interruption, rejects unsafe ownership, parses real sudo/Directory Services output, and both native Settings surfaces invoke the same installer and show its phases. Linux uses a separate rootless engine on an eligible host."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
