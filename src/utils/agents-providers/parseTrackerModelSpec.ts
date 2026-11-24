@@ -12,12 +12,6 @@ const defaultLadder: readonly TrackerModelRung[] = [
 		effort: 'high',
 		price: { input: 0.1, output: 0.5, cacheRead: 0.01, cacheWrite: 0.2 }
 	},
-	{ id: 'terra', cli: 'codex', model: 'gpt-6.1-terra', effort: 'medium', price: null },
-	{ id: 'sol', cli: 'codex', model: 'gpt-6.2-sol', effort: 'medium', price: null }
-];
-
-const pinnedModels: readonly TrackerModelRung[] = [
-	{ id: 'luna', cli: 'codex', model: 'gpt-6-luna', effort: 'medium', price: null },
 	{
 		id: 'sonnet',
 		cli: 'claude',
@@ -25,13 +19,19 @@ const pinnedModels: readonly TrackerModelRung[] = [
 		effort: 'medium',
 		price: { input: 2, output: 10, cacheRead: 0.1, cacheWrite: 4 }
 	},
+	{ id: 'terra', cli: 'codex', model: 'gpt-6.1-terra', effort: 'medium', price: null },
+	{ id: 'sol', cli: 'codex', model: 'gpt-6.2-sol', effort: 'medium', price: null },
 	{
 		id: 'opus',
 		cli: 'claude',
 		model: 'claude-opus-5-5',
 		effort: 'high',
 		price: { input: 4, output: 20, cacheRead: 0.2, cacheWrite: 8 }
-	},
+	}
+];
+
+const pinnedModels: readonly TrackerModelRung[] = [
+	{ id: 'luna', cli: 'codex', model: 'gpt-6-luna', effort: 'medium', price: null },
 	{
 		id: 'fable',
 		cli: 'claude',
@@ -41,11 +41,15 @@ const pinnedModels: readonly TrackerModelRung[] = [
 	}
 ];
 
+const configurableRungs = new Set(['haiku', 'terra', 'sol']);
+
 export function ladderFrom(config?: TrackerLadderConfig): TrackerModelRung[] {
 	return defaultLadder.map((rung) => {
-		const custom = config?.autolaunch?.ladder?.find(
-			(candidate) => candidate?.id === rung.id && candidate.model === rung.model
-		);
+		const custom = configurableRungs.has(rung.id)
+			? config?.autolaunch?.ladder?.find(
+					(candidate) => candidate?.id === rung.id && candidate.model === rung.model
+				)
+			: undefined;
 		const selected = { ...rung, ...custom, cli: rung.cli };
 		return { ...selected, price: selected.price && { ...selected.price } };
 	});
