@@ -51,12 +51,14 @@ type FleetComputer = ReturnType<typeof trackerFleetHealth>[number];
 /**
  * The overview status of one computer. Only a polling launcher counts as reachable; offline,
  * stale, failing, disabled and unknown computers all read as offline, so none is shown as
- * available without a fresh tick. A polling computer with active runs is busy.
+ * available without a fresh tick. A polling computer with launches held behind it is
+ * overloaded, otherwise one with active runs is busy.
  */
 function machineFromComputer(computer: FleetComputer) {
 	let status = 'offline';
 	if (computer.state === 'polling') {
-		status = (computer.active_runs ?? 0) > 0 ? 'busy' : 'ok';
+		if ((computer.queued ?? 0) > 0) status = 'overloaded';
+		else status = (computer.active_runs ?? 0) > 0 ? 'busy' : 'ok';
 	}
 	return { node: computer.computer, status, last_tick_at: computer.last_tick_at };
 }
@@ -115,7 +117,8 @@ const runnerSample = z.object({
 	last_tick_at: z.string().nullish(),
 	last_error: z.string().nullish(),
 	waiting_on: z.string().nullish(),
-	active: z.int().nonnegative().nullish()
+	active: z.int().nonnegative().nullish(),
+	queued: z.int().nonnegative().nullish()
 });
 
 function trackerFleetHealth(runtime: TrackerNativeRuntimeService, startedRuns: number) {
@@ -132,7 +135,7 @@ function trackerFleetHealth(runtime: TrackerNativeRuntimeService, startedRuns: n
 		return {
 			computer,
 			state: offline ? 'offline' : fleetRunnerState(runner, now),
-			...fleetRunnerDetails(runner, local ? startedRuns : runner?.active)
+			...fleetRunnerDetails(runner, local ? startedRuns : runner?.active, runner?.queued)
 		};
 	});
 }
@@ -143,9 +146,10 @@ function machineOffline(sampledAt: string | undefined, now: number) {
 
 function fleetRunnerDetails(
 	{ last_tick_at = null, last_error = null, waiting_on = null }: z.infer<typeof runnerSample> = {},
-	active: number | null | undefined
+	active: number | null | undefined,
+	queued: number | null | undefined
 ) {
-	return { last_tick_at, last_error, waiting_on, active_runs: active ?? null };
+	return { last_tick_at, last_error, waiting_on, active_runs: active ?? null, queued: queued ?? 0 };
 }
 
 function machineSamplesByNode(values: readonly unknown[]) {

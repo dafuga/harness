@@ -35,13 +35,7 @@ export class TrackerDispatchSchedulerService {
 	status() {
 		return {
 			enabled: this.options.policy?.enabled !== false,
-			stuck: this.repository.stuckRequests().map(({ flagged, ...item }) => ({
-				...item,
-				computer: item.computer ?? 'box',
-				reason: flagged
-					? 'waiting on Daniel (flagged)'
-					: (this.waits.get(item.id) ?? 'ready but has not started')
-			}))
+			stuck: stuckWithReasons(this.repository.stuckRequests(), this.waits)
 		};
 	}
 
@@ -50,7 +44,8 @@ export class TrackerDispatchSchedulerService {
 			enabled: this.options.policy?.enabled !== false,
 			last_tick_at: this.lastTickAt,
 			last_error: this.lastError,
-			waiting_on: this.waits.values().next().value ?? null
+			waiting_on: this.waits.values().next().value ?? null,
+			queued: this.waits.size
 		};
 	}
 
@@ -176,4 +171,17 @@ function adoptLegacyRuns(
 		const session = runner.legacySession(run);
 		if (session) repository.adoptLegacy(run, session);
 	}
+}
+
+function stuckWithReasons(
+	stuck: ReturnType<TrackerDispatchRepository['stuckRequests']>,
+	waits: ReadonlyMap<string, string>
+) {
+	return stuck.map(({ flagged, ...item }) => ({
+		...item,
+		computer: item.computer ?? 'box',
+		reason: flagged
+			? 'waiting on Daniel (flagged)'
+			: (waits.get(item.id) ?? 'ready but has not started')
+	}));
 }
