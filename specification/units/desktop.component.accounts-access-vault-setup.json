@@ -18,12 +18,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/accounts-access/VaultSetup.svelte"
-		],
-		"symbols": [
-			"VaultSetup"
-		]
+		"source": ["packages/desktop/src/components/accounts-access/VaultSetup.svelte"],
+		"symbols": ["VaultSetup"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -77,18 +73,15 @@
 			}
 		]
 	},
-	"scenarios": [
-		"vault-local-setup",
-		"component-catalog-previews"
-	],
-	"budgets": {
-		"size": "frozen",
-		"complexity": "frozen",
-		"performance": []
-	},
+	"scenarios": ["vault-local-setup", "component-catalog-previews"],
 	"preview": {
 		"scenario": "component-catalog-previews",
 		"state": "desktop-component-accounts-access-vault-setup",
 		"viewport": "desktop"
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
 	}
 }

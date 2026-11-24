@@ -8,13 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/commands/accounts-access/VaultSetupCommand.ts"
-		],
-		"symbols": [
-			"VaultSetupCommand",
-			"VaultSetupCommand.register"
-		]
+		"source": ["src/commands/accounts-access/VaultSetupCommand.ts"],
+		"symbols": ["VaultSetupCommand", "VaultSetupCommand.register"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -53,11 +48,12 @@
 				"outputs": [
 					{
 						"name": "VaultSetupCommand.register",
-						"type": "void"
+						"type": "void",
+						"description": "Registers the vault command and its setup, remove, and status subcommands. A failed installer surfaces its exit status to the caller."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []

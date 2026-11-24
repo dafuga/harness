@@ -19,12 +19,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/routes/settings/+page.svelte"
-		],
-		"symbols": [
-			"+page"
-		]
+		"source": ["packages/desktop/src/routes/settings/+page.svelte"],
+		"symbols": ["+page"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -98,11 +94,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"agent-settings",
-		"component-catalog-previews",
-		"vault-local-setup"
-	],
+	"scenarios": ["agent-settings", "component-catalog-previews", "vault-local-setup"],
 	"preview": {
 		"scenario": "component-catalog-previews",
 		"state": "desktop-page-settings",
