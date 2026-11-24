@@ -9,7 +9,8 @@ import {
 	notificationFixture,
 	start,
 	wire,
-	verifyDirectFollowUps
+	verifyDirectFollowUps,
+	verifyParkedReminderRetry
 } from './tracker-notification/fixture';
 
 test('tick holds direct reminders through quiet hours, groups once, and repeats only active flags after retry', async () => {
@@ -105,30 +106,7 @@ test('tick delivers the current explicit reminder once at its timestamp across r
 	await f.restart().tick();
 	expect(f.calls).toHaveLength(0);
 
-	f.at(wake);
-	await expect(f.restart().tick()).rejects.toThrow('synthetic lost acknowledgement');
-	expect(f.calls).toHaveLength(1);
-	const parkedUntil = wake + 10 * minute;
-	f.rows.set('delayed', { ...f.rows.get('delayed')!, parked_until: snooze(parkedUntil) });
-	f.at(parkedUntil - 1);
-	await f.restart().tick();
-	expect(f.calls).toHaveLength(1);
-	f.at(parkedUntil);
-	await measureTick(f.restart(), 'explicit-reminder-at-wake');
-	expect(f.calls.map(({ id }) => id)).toEqual([f.calls[0].id, f.calls[0].id]);
-	expect(wire(f.calls[1])).toMatchObject({
-		type: 'attention',
-		new: [
-			{
-				id: 'delayed',
-				reason: 'remind_at',
-				remind_at: snooze(wake),
-				question: 'Approve the fixture?'
-			}
-		]
-	});
-	await f.restart().tick();
-	expect(f.calls).toHaveLength(2);
+	await verifyParkedReminderRetry(f, wake);
 });
 
 test('tick sends a scheduled reminder through a webhook when it is the only hub destination', async () => {
