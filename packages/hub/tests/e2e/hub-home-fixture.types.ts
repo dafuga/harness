@@ -5,7 +5,7 @@ import type { hubHomeFixture } from './hub-home-fixture';
 export type CapturePosition = readonly [string, 'dark' | 'light', HomeFixtureState];
 export type HomeFixture = Awaited<ReturnType<typeof hubHomeFixture>>;
 
-export type HomeFixtureState = 'default' | 'busy' | 'empty' | 'loading';
+export type HomeFixtureState = 'default' | 'busy' | 'empty' | 'loading' | 'unavailable';
 export type FixtureProject = {
 	name: string;
 	apps: number;

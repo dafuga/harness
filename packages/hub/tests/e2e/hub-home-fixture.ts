@@ -1,5 +1,13 @@
 import type { Page } from '@playwright/test';
-import { hostedFixture, ada, atlas, hostedData } from './hosted-fixture';
+import { expect } from '../../../../test/support/browserTest';
+import {
+	hostedFixture,
+	ada,
+	atlas,
+	hostedData,
+	disableCollaboration,
+	waitForHubStatus
+} from './hosted-fixture';
 import { homeClock, homeData, mockup } from './hub-home-fixture-data';
 import type { FixtureProject, HomeFixtureState } from './hub-home-fixture.types';
 
@@ -61,15 +69,20 @@ export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
 		snapshot.providers.routinesReadAt = new Date(homeClock - 10_800_000).toISOString();
 	if (mode === 'empty') snapshot.providers.quota = null;
 	let release = () => {};
+	let released = false;
 	const pending = new Promise<void>((resolve) => {
-		release = resolve;
+		release = () => {
+			released = true;
+			resolve();
+		};
 	});
 	const sent: unknown[] = [];
 	await projectFixture(page, data.projects, mode === 'loading' ? pending : undefined);
 	await page.route('**/api/hub-home', async (route) => {
 		if (mode === 'loading') await pending;
 		const granted = state.signedIn && state.actor.id === ada.id;
-		await route.fulfill({ json: { granted, snapshot: granted ? snapshot : null } });
+		const hasSnapshot = granted && (mode !== 'unavailable' || released);
+		await route.fulfill({ json: { granted, snapshot: hasSnapshot ? snapshot : null } });
 	});
 	await page.route(/\/api\/hub-home\/chat(?:\?|$)/, async (route) => {
 		if (route.request().method() === 'POST') {
@@ -81,4 +94,61 @@ export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
 		return route.fulfill({ json: { id, status: 'sent' } });
 	});
 	return { release, sent, state, snapshot };
+}
+
+export async function unavailableHome(
+	{
+		page,
+		baseURL,
+		browserErrors
+	}: {
+		page: Page;
+		baseURL?: string;
+		browserErrors: Parameters<typeof disableCollaboration>[1];
+	},
+	fixture: Awaited<ReturnType<typeof hubHomeFixture>>,
+	capture: (screen: string) => Promise<void>
+) {
+	await disableCollaboration(page, browserErrors, baseURL!);
+	await Promise.all([
+		waitForHubStatus(page, '/api/projects', 503),
+		waitForHubStatus(page, '/api/hub-home', 200),
+		page.goto('/')
+	]);
+	const projects = page.getByRole('region', { name: 'Projects', exact: true });
+	await expect(projects).toBeVisible();
+	await fit(page, page.viewportSize()!.width);
+	await capture('root');
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Connect your Mac');
+	await expect(page.getByRole('status').filter({ hasText: 'same Google account' })).toBeVisible();
+	await expect(projects.getByText('Loading projects…')).toHaveCount(0);
+	await projects.getByRole('button', { name: 'See all projects' }).click();
+	const dialog = page.getByRole('dialog', { name: 'Projects', exact: true });
+	await expect(dialog.getByText('Loading projects…')).toHaveCount(0);
+	await capture('projects');
+	fixture.release();
+	await disableCollaboration(page, browserErrors, baseURL!);
+	await dialog.getByRole('button', { name: 'Try again' }).click();
+	if (fixture.snapshot.overview.status !== 'ready')
+		throw new Error('Expected a ready Tracker fixture');
+	const name = fixture.snapshot.overview.projects[0].agent;
+	await expect(dialog.getByRole('heading', { name, exact: true })).toBeVisible();
+	await expect(dialog.getByRole('link', { name: 'Open Project Overview' })).toHaveAttribute(
+		'href',
+		'/tracker-overview'
+	);
+	await capture('projects-recovered');
+	await page.keyboard.press('Escape');
+	await expect(projects.getByText(name, { exact: true })).toBeVisible();
+	await capture('tracker-projects');
+}
+
+export async function fit(page: Page, width: number) {
+	const bounds = await page.evaluate(() => ({
+		width: document.documentElement.scrollWidth,
+		columns: getComputedStyle(document.querySelector('.hh-grid')!).gridTemplateColumns.split(' ')
+			.length
+	}));
+	expect(bounds.width).toBeLessThanOrEqual(width);
+	expect(bounds.columns).toBe(width === 390 ? 1 : width === 834 ? 2 : width === 1440 ? 3 : 4);
 }

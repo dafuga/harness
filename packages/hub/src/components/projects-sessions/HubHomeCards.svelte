@@ -56,9 +56,11 @@
 		total={view.agents?.length}
 		summary={view.agents === null
 			? 'Loading agents…'
-			: !view.agents.length
-				? 'No agents yet'
-				: `${working} working · ${view.agents.length - working - attention} idle or offline`}
+			: !view.trackerConnected && !view.agents.length
+				? 'No activity data'
+				: !view.agents.length
+					? 'No agents yet'
+					: `${working} working · ${view.agents.length - working - attention} idle or offline`}
 		open={() => open('agents')}
 	>
 		{#if view.agents === null}
@@ -97,7 +99,7 @@
 				>
 			</EmptyState>
 		{:else}
-			{@render empty('Tracker is unavailable for this account.')}
+			{@render empty('Agent activity appears when Tracker data is available.')}
 		{/if}
 		{#snippet badge()}
 			{#if attention}<Pill tone="hh-tone po-state po-needs-you" state="needs-you"
@@ -164,8 +166,10 @@
 			{@render empty(
 				view.quotaConnected
 					? 'No subscriptions connected. Connect Claude Code or Codex to see how much usage is left.'
-					: 'Provider quota is unknown.',
-				'Connect a subscription',
+					: view.needsMac
+						? 'Quota readings appear when your Mac shares them.'
+						: 'Provider quota is unknown.',
+				view.needsMac ? undefined : 'Connect a subscription',
 				() => open('quota')
 			)}
 		{/if}

@@ -1,0 +1,65 @@
+{
+	"name": "km5fcb-hub-home",
+	"goal": "Prove the signed-in Hub Home shows an actionable Mac publishing state and recovers from a failed shared-project read without leaving Projects in loading.",
+	"createdAt": "2026-11-24T23:14:01.345Z",
+	"updatedAt": "2026-11-24T23:26:13.466Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-24T23:18:18.349Z",
+			"evidence": "Production eb44e0d authenticates and grants owner, but /api/projects returns collaboration-disabled and /api/hub-home has no fresh snapshot. R2 holds a 33-project snapshot expired since 12:46:49 UTC. Spec covers recovery via a fresh owner snapshot and first-load failure."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-24T23:18:20.604Z",
+			"evidence": "hub-home existing empty is a ready empty response and loading only resolves successfully. Register unavailable in the same UI scenario and drive the actual signed-in 503 plus granted null snapshot, retry and fresh Tracker recovery."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-24T23:22:02.415Z",
+			"evidence": "Isolated built app laptop dark regression on 22273708c7: actual heading Tracker is unavailable; expected Connect your Mac. Production-style owner null snapshot plus collaboration-disabled."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-24T23:23:41.308Z",
+			"evidence": "Scoped project failures end loading, fresh owner Tracker data fills the existing Projects card and dialog, and Home gives the owner a Mac sign-in step."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-24T23:26:13.466Z",
+			"evidence": "The unchanged built browser regression passed on fe1cdd30d2 and sealed the laptop capture. It verifies the Mac sign-in message, Projects recovery, authorized Tracker rows and the Project Overview link."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

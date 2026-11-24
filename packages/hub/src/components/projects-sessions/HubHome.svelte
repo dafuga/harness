@@ -42,6 +42,7 @@
 	const overview = $derived(
 		snapshot?.overview ?? (home ? { status: 'unavailable' as const } : null)
 	);
+	const projectsFailed = $derived(projectError && !list?.length);
 	const view: HomeView = $derived({
 		overview,
 		agents: snapshot?.agents ?? (home ? [] : null),
@@ -51,9 +52,12 @@
 			(home ? [] : null),
 		quota: snapshot?.providers.quota ?? (home ? [] : null),
 		projects: list,
+		projectsFailed,
+		trackerProjects: projectsFailed && overview?.status === 'ready' ? overview : null,
 		projectSnapshots,
 		work: soonestWork(overview),
 		owner: home?.granted ?? false,
+		needsMac: home?.granted === true && !snapshot,
 		trackerConnected: overview?.status === 'ready',
 		routinesConnected,
 		quotaConnected: Array.isArray(snapshot?.providers.quota),
@@ -137,11 +141,6 @@
 	<hx-div class="home-page hh-home">
 		<HubHomeHeader {view} />
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">
-			{#if projectError}
-				<hx-p class="po-notice" role="status"
-					>Shared projects could not be read. Home will try again while it is open.</hx-p
-				>
-			{/if}
 			<HubHomeCards {view} {open} />
 		</hx-main>
 		{#if selected}

@@ -47,6 +47,7 @@
 		},
 		'home-header': { view },
 		'home-plans': { plans: view.plans, agents: view.agents, discuss: noop },
+		'home-project-card': { view, open: noop },
 		'home-projects': { projects: list, snapshots, readProject },
 		'home-quota': { quota: view.quota, now: view.now, connected: true, reload: noop },
 		'home-row': { title: 'Review the export columns', meta: 'Atlas · 2h ago' },

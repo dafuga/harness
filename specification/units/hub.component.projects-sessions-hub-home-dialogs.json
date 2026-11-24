@@ -16,10 +16,14 @@
 			"hub.component.projects-sessions-hub-home-quota",
 			"hub.component.projects-sessions-hub-home-schedule",
 			"hub.component.projects-sessions-hub-home-work",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.harness-harness-icon",
 			"reports.component.modal",
+			"reports.component.projects-sessions-project-overview-project-overview",
 			"reports.component.shared-primitives-atoms-html-a",
-			"reports.component.shared-primitives-atoms-html-button"
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-p"
 		]
 	},
 	"owns": {
@@ -28,6 +32,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
 		"inputs": [
 			{
 				"name": "HubHomeDialogs.selected",
@@ -158,6 +163,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-harness-icon",
 			"via": "import",
 			"origin": "derived"
@@ -168,12 +178,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.projects-sessions-project-overview-project-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-a",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},

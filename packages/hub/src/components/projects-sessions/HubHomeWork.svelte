@@ -33,7 +33,11 @@
 		onclick={() => (tab = 'projects')}>By project</hx-button
 	>
 </hx-div>
-{#if tab === 'projects'}
+{#if overview?.status === 'unavailable'}
+	<EmptyState as="div" className="po-empty hh-empty"
+		>Work in progress appears when Tracker data is available.</EmptyState
+	>
+{:else if tab === 'projects'}
 	{#if overview?.status === 'ready'}
 		<hx-button
 			type="button"
@@ -45,10 +49,6 @@
 	<hx-div class="hh-overview"><ProjectOverview snapshot={visible} standalone={false} /></hx-div>
 {:else if overview === null}
 	<HubHomeSkeleton rows={6} />
-{:else if overview.status === 'unavailable'}
-	<EmptyState as="div" className="po-empty hh-empty"
-		>Tracker is unavailable for this account.</EmptyState
-	>
 {:else if !work.length}
 	<EmptyState as="div" className="po-empty hh-empty">No work is in progress.</EmptyState>
 {:else}
