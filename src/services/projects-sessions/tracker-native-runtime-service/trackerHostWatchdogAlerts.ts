@@ -54,6 +54,7 @@ export function recordWatchdogAlert(
 		key?: string;
 		host?: string;
 		localOnly?: boolean;
+		persist?: () => void;
 	},
 	at: number,
 	question:
@@ -82,8 +83,10 @@ export function recordWatchdogAlert(
 			question
 		})
 	};
-	const persist = () =>
+	const persist = () => {
 		store.writeMeta({ watchdog_alerts: JSON.stringify({ ...alerts, [key]: alert }) });
+		input.persist?.();
+	};
 	if (localOnly) persist();
 	else store.appendLocal({ itemId, fields }, persist);
 }

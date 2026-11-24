@@ -1,6 +1,9 @@
 // @harness-uid u_bl6xl2h4a3
 import { randomUUID } from 'node:crypto';
-import type { TrackerDispatcherService } from '../../agents-providers/TrackerDispatcherService';
+import type {
+	TrackerDispatcherService,
+	TrackerDispatchResult
+} from '../../agents-providers/TrackerDispatcherService';
 import { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
@@ -10,7 +13,8 @@ import type { WatchdogPane } from '../WatchdogPaneService.types';
 import { trackerSessionItemPrefix } from '../tracker-local-api-service/trackerLocalItemMutation';
 import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
 import { readWatchdogAlerts } from './trackerHostWatchdogState';
-import { sessionHealthInterval, trackerSessionHealth } from './trackerSessionHealth';
+import { trackerSessionHealth } from './trackerSessionHealth';
+import { flagRecoveryError, recoverTrackerSession } from './trackerSessionRecovery';
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
 import type {
 	TrackerSessionHealthIssue,
@@ -78,8 +82,24 @@ async function publishIssue(
 		launch
 	}: { now: number; items: readonly TrackerItem[]; launch?: TrackerWatchdogLaunch }
 ) {
-	const item = items.find(({ id, deleted }) => id === issue.item_id && !deleted);
-	const recovery = issue.recover && item ? await requestRecovery(store, item, launch, now) : null;
+	const candidate = items.find(({ id, deleted }) => id === issue.item_id && !deleted);
+	const item = candidate && new TrackerItemReadRepository(store.database).getStored(candidate.id);
+	if (item?.launch_source === 'recovery' && issue.kind === 'launch-stuck') {
+		flagRecoveryError(store, item, now, issue.reason);
+		return;
+	}
+	const recovery =
+		issue.recover && item && launch
+			? await recoverTrackerSession(store, { item, launch, now })
+			: null;
+	publishHealthNote(store, issue, { item, recovery, now });
+}
+
+function publishHealthNote(
+	store: TrackerPersistenceService,
+	issue: TrackerSessionHealthIssue,
+	{ item, recovery, now }: { item?: TrackerItem; recovery: string | null; now: number }
+) {
 	const prior = readWatchdogAlerts(store)[healthKey(issue)];
 	const currentReason = prior?.identity === issue.identity ? prior.reason : issue.reason;
 	const reason = recovery ? `${issue.reason} ${recovery}` : currentReason;
@@ -103,29 +123,17 @@ function healthKey(issue: TrackerSessionHealthIssue): string {
 	return `${issue.item_id}:${issue.kind}`;
 }
 
-async function requestRecovery(
-	store: TrackerPersistenceService,
-	item: TrackerItem,
-	launch: TrackerWatchdogLaunch | undefined,
-	now: number
-): Promise<string | null> {
-	const key = `tracker_watchdog_recovery:${item.id}`;
-	if (now - Number(store.getMeta(key) ?? -Infinity) < 3 * sessionHealthInterval) return null;
-	store.writeMeta({ [key]: String(now) });
-	if (!launch) return 'This host has no configured Tracker launcher.';
-	const result = await launch(item).catch(() => undefined);
-	if (!result) return 'Recovery request failed. Tracker will retry after its cooldown.';
-	if (result.status === 'requested')
-		return 'Tracker requested a fresh session from the item brief.';
-	if ('reason' in result) return `Recovery held: ${result.reason}.`;
-	return 'Tracker already has a launch request for this item.';
-}
-
 export function trackerRecoveryLaunch(
 	dispatch?: TrackerDispatcherService
 ): TrackerWatchdogLaunch | undefined {
 	if (!dispatch) return undefined;
-	return (item) => dispatch.request(item.id, { source: 'manual', token: randomUUID() });
+	return (item, attempt) =>
+		dispatch.request(item.id, {
+			source: 'recovery',
+			token: attempt?.token ?? randomUUID(),
+			expectedAuto: item.auto,
+			rung: attempt?.rung
+		});
 }
 
 export async function recheckTrackerRecovery(
@@ -137,16 +145,16 @@ export async function recheckTrackerRecovery(
 	item: TrackerItem,
 	launch: TrackerWatchdogLaunch,
 	now: number
-) {
+): Promise<TrackerDispatchResult> {
 	const repository = new TrackerItemReadRepository(store.database);
 	const panes = await (driver.inventory?.(signal) ?? driver.scan(signal));
 	signal.throwIfAborted();
-	if (!panes) return { status: 'held', reason: 'tmux inventory unavailable' } as const;
+	if (!panes) return { status: 'ignored', reason: 'tmux inventory unavailable' } as const;
 	const current = repository.getStored(item.id);
 	const issue = readTrackerSessionHealth(store, [current], panes, now).find(
 		({ item_id }) => item_id === item.id
 	);
-	if (issue?.kind !== 'missing' || !issue.recover)
+	if (current.auto !== item.auto || issue?.kind !== 'missing' || !issue.recover)
 		return { status: 'held', reason: 'item or session state changed during recovery' } as const;
 	return launch(current);
 }

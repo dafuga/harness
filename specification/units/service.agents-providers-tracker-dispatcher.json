@@ -13,6 +13,7 @@
 			"src/services/agents-providers/TrackerDispatcherService.types.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/launchEligibility.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/launchIntent.ts",
+			"src/services/agents-providers/tracker-dispatcher-service/recoveryIntent.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runClaim.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runMonitor.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runReceipt.ts",
@@ -74,6 +75,7 @@
 			"ownsLaunch",
 			"activeRun",
 			"inactive",
+			"trackerFlagBlocksRecovery",
 			"startable",
 			"skip",
 			"dueOwner",
@@ -86,6 +88,7 @@
 			"matchesRequest",
 			"requestLaunch",
 			"previewDueLaunch",
+			"recoveryIntent",
 			"launchStartupGrace",
 			"claimLaunch",
 			"prepareRetry",
@@ -247,6 +250,11 @@
 				"required": true
 			},
 			{
+				"name": "trackerFlagBlocksRecovery.question",
+				"type": "string | null",
+				"required": false
+			},
+			{
 				"name": "startable.item",
 				"type": "TrackerDispatchItem",
 				"required": true
@@ -403,6 +411,31 @@
 			},
 			{
 				"name": "previewDueLaunch.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "recoveryIntent.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "recoveryIntent.item",
+				"type": "TrackerDispatchItem",
+				"required": true
+			},
+			{
+				"name": "recoveryIntent.request",
+				"type": "Extract<TrackerLaunchRequest, { source: 'recovery' }>",
+				"required": true
+			},
+			{
+				"name": "recoveryIntent.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "recoveryIntent.now",
 				"type": "number",
 				"required": true
 			},
@@ -939,6 +972,24 @@
 				"errorStatus": "none-found"
 			},
 			{
+				"name": "trackerFlagBlocksRecovery",
+				"inputs": [
+					{
+						"name": "trackerFlagBlocksRecovery.question",
+						"type": "string | null",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerFlagBlocksRecovery",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "startable",
 				"inputs": [
 					{
@@ -1249,6 +1300,44 @@
 					{
 						"name": "previewDueLaunch",
 						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recoveryIntent",
+				"inputs": [
+					{
+						"name": "recoveryIntent.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "recoveryIntent.item",
+						"type": "TrackerDispatchItem",
+						"required": true
+					},
+					{
+						"name": "recoveryIntent.request",
+						"type": "Extract<TrackerLaunchRequest, { source: 'recovery' }>",
+						"required": true
+					},
+					{
+						"name": "recoveryIntent.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "recoveryIntent.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recoveryIntent",
+						"type": "TrackerDispatchDecision"
 					}
 				],
 				"errors": [],

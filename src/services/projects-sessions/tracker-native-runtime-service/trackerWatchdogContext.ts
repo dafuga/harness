@@ -42,7 +42,13 @@ function withContext(
 	const matching = samples.get(pane.cwd)?.filter(({ started }) => started >= pane.createdAt - 1000);
 	// A directory may be used by two interactive sessions. Do not attribute either to the pane.
 	if (matching?.length !== 1) return pane;
-	return { ...pane, contextTokens: matching[0].tokens };
+	const { tokens, model, effort } = matching[0];
+	return {
+		...pane,
+		contextTokens: tokens,
+		model: model ?? pane.model,
+		effort: effort ?? pane.effort
+	};
 }
 
 async function contextSample(
@@ -66,7 +72,7 @@ async function contextSample(
 			return undefined;
 		const lines = await readLines(file, Math.max(0, stat.size - tailBytes), tailBytes);
 		const tokens = lastContextTokens(lines);
-		return { ...head, tokens };
+		return { ...head, tokens, ...lastProviderSelection(lines) };
 	} finally {
 		await file.close();
 	}
@@ -93,6 +99,26 @@ function transcriptIdentity(lines: readonly string[]) {
 		if (Number.isFinite(started)) return { cwd, started };
 	}
 	return undefined;
+}
+
+function lastProviderSelection(lines: readonly string[]) {
+	for (let index = lines.length - 1; index >= 0; index--) {
+		const line = lines[index];
+		if (!line.includes('"model"')) continue;
+		const row = record(line);
+		if (row.type !== 'turn_context' && row.type !== 'assistant') continue;
+		const source = row.type === 'turn_context' ? object(row.payload) : object(row.message);
+		const { model, effort = source.reasoning_effort } = source;
+		if (typeof model !== 'string' || !/^(?:gpt|claude)-[a-z0-9._-]{1,72}$/.test(model)) continue;
+		return { model, effort: sampledEffort(effort) };
+	}
+	return undefined;
+}
+
+function sampledEffort(effort: unknown) {
+	return typeof effort === 'string' && /^(?:low|medium|high|xhigh|max|ultra)$/.test(effort)
+		? effort
+		: undefined;
 }
 
 function lastContextTokens(lines: readonly string[]) {

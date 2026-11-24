@@ -20,6 +20,7 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/readTrackerDuePreview.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerContextHandoff.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerGithubCli.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHandLaunchSelection.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdapter.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdapterSchema.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdmission.ts",
@@ -39,14 +40,21 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogSchema.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogState.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerLegacyExitReceipt.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerObservedRuns.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerRecoveryHistory.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerSecretSafetyRule.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerSessionHealth.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerSessionHealth.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerSessionHealthPanes.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerSessionHealthRuntime.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerSessionRecovery.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerSessionRecovery.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptExposure.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptExposure.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptPatterns.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptScan.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchHostSessions.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchHostSessions.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchLaunchRequests.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogContext.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogContext.types.ts",
@@ -93,6 +101,8 @@
 			"trackerDueItemPreview",
 			"trackerContextHandoffs",
 			"trackerGithubCli",
+			"handLaunchSelection",
+			"handLaunchNode",
 			"trackerHostAdapter",
 			"configuredHostAdapter",
 			"adapterIssue",
@@ -132,7 +142,6 @@
 			"recordStartupAlerts",
 			"recordWatchdogAlert",
 			"applyIdleDecision",
-			"paneNudgeKey",
 			"watchdogScan",
 			"watchdogEffectReceipt",
 			"trackerWatchdogAlerts",
@@ -140,24 +149,40 @@
 			"localWatchdogRuns",
 			"readWatchdogAlerts",
 			"finishObservedRuns",
+			"watchdogSnapshot",
+			"paneNudgeKey",
+			"handoffRunOwnership",
+			"activeWatchdogItem",
 			"trackerLegacyExitReceipt",
 			"legacyTrackerStartupProbe",
 			"trackerLegacySession",
+			"adoptTrackerHandLaunches",
+			"resetBudget",
+			"recoveryRung",
 			"trackerSecretSafetyRule",
 			"sessionHealthInterval",
+			"recoveryPollInterval",
 			"trackerSessionHealth",
 			"TrackerSessionHealthIssue",
 			"TrackerSessionHealthSnapshot",
 			"TrackerWatchdogLaunch",
+			"paneItems",
+			"unownedPane",
 			"readTrackerSessionHealth",
 			"applyTrackerSessionHealth",
 			"trackerRecoveryLaunch",
 			"recheckTrackerRecovery",
+			"recoverTrackerSession",
+			"flagRecoveryError",
+			"TrackerRecoveryState",
 			"recordTrackerTranscriptExposure",
 			"TrackerTranscriptExposure",
 			"trackerTranscriptMatches",
 			"trackerTranscriptScan",
 			"transcriptFiles",
+			"watchHostSessions",
+			"WatchdogSessionHost",
+			"WatchdogSessionScan",
 			"launchWithoutRunKind",
 			"watchLaunchRequests",
 			"sampleTrackerContexts",
@@ -310,6 +335,32 @@
 				"required": true
 			},
 			{
+				"name": "handLaunchSelection.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "handLaunchSelection.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "handLaunchSelection.pane",
+				"type": "WatchdogPane",
+				"required": false
+			},
+			{
+				"name": "handLaunchNode.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "handLaunchNode.after",
+				"type": "number",
+				"required": false,
+				"default": 0
+			},
+			{
 				"name": "trackerHostAdapter.config",
 				"type": "NonNullable<TrackerHostEffects['adapter']>",
 				"required": true
@@ -378,6 +429,12 @@
 				"name": "formatTrackerHostBrief.completion",
 				"type": "string",
 				"required": true
+			},
+			{
+				"name": "formatTrackerHostBrief.recovery",
+				"type": "boolean",
+				"required": false,
+				"default": false
 			},
 			{
 				"name": "sendWatchdogAlerts.store",
@@ -466,7 +523,7 @@
 			},
 			{
 				"name": "trackerHostLaunch.effects",
-				"type": "{ tmuxExecutable?: string; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; }",
+				"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; }",
 				"required": false,
 				"default": {}
 			},
@@ -638,7 +695,7 @@
 			},
 			{
 				"name": "recordWatchdogAlert.input",
-				"type": "{ itemId: string; kind: string; reason: string; identity: string; session?: string | null; key?: string; host?: string; localOnly?: boolean; }",
+				"type": "{ itemId: string; kind: string; reason: string; identity: string; session?: string | null; key?: string; host?: string; localOnly?: boolean; persist?: () => void; }",
 				"required": true
 			},
 			{
@@ -682,12 +739,6 @@
 				"required": true
 			},
 			{
-				"name": "paneNudgeKey.key",
-				"type": "string",
-				"required": true,
-				"description": "The stable watchdog pane key from which the nudge metadata key is derived."
-			},
-			{
 				"name": "watchdogItem.item",
 				"type": "TrackerItem",
 				"required": true
@@ -715,6 +766,62 @@
 			{
 				"name": "finishObservedRuns.now",
 				"type": "number",
+				"required": true
+			},
+			{
+				"name": "watchdogSnapshot.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "watchdogSnapshot.items",
+				"type": "readonly TrackerItem[]",
+				"required": true
+			},
+			{
+				"name": "watchdogSnapshot.panes",
+				"type": "readonly WatchdogPane[]",
+				"required": true
+			},
+			{
+				"name": "watchdogSnapshot.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "paneNudgeKey.key",
+				"type": "string",
+				"required": true,
+				"description": "The stable watchdog pane key from which the nudge metadata key is derived."
+			},
+			{
+				"name": "handoffRunOwnership.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "handoffRunOwnership.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "handoffRunOwnership.runId",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "handoffRunOwnership.pane",
+				"type": "WatchdogPane",
+				"required": true
+			},
+			{
+				"name": "activeWatchdogItem.items",
+				"type": "TrackerItemReadRepository",
+				"required": true
+			},
+			{
+				"name": "activeWatchdogItem.id",
+				"type": "string",
 				"required": true
 			},
 			{
@@ -748,8 +855,83 @@
 				"required": true
 			},
 			{
+				"name": "adoptTrackerHandLaunches.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "adoptTrackerHandLaunches.items",
+				"type": "readonly TrackerItem[]",
+				"required": true
+			},
+			{
+				"name": "adoptTrackerHandLaunches.panes",
+				"type": "readonly WatchdogPane[]",
+				"required": true
+			},
+			{
+				"name": "resetBudget.state",
+				"type": "TrackerRecoveryState | null",
+				"required": true
+			},
+			{
+				"name": "resetBudget.run",
+				"type": "TrackerListedRun | undefined",
+				"required": true
+			},
+			{
+				"name": "resetBudget.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "recoveryRung.run",
+				"type": "TrackerListedRun | undefined",
+				"required": true
+			},
+			{
+				"name": "recoveryRung.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "recoveryRung.node",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "trackerSessionHealth.snapshot",
 				"type": "TrackerSessionHealthSnapshot",
+				"required": true
+			},
+			{
+				"name": "paneItems.snapshot",
+				"type": "TrackerSessionHealthSnapshot",
+				"required": true
+			},
+			{
+				"name": "paneItems.pane",
+				"type": "WatchdogPane",
+				"required": true
+			},
+			{
+				"name": "unownedPane.host",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "unownedPane.pane",
+				"type": "WatchdogPane",
+				"required": true
+			},
+			{
+				"name": "unownedPane.associated",
+				"type": "readonly string[]",
+				"required": true
+			},
+			{
+				"name": "unownedPane.items",
+				"type": "ReadonlyMap<string, TrackerItem>",
 				"required": true
 			},
 			{
@@ -828,6 +1010,36 @@
 				"required": true
 			},
 			{
+				"name": "recoverTrackerSession.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "recoverTrackerSession.input",
+				"type": "{ item: TrackerItem; launch: TrackerWatchdogLaunch; now: number }",
+				"required": true
+			},
+			{
+				"name": "flagRecoveryError.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "flagRecoveryError.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "flagRecoveryError.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "flagRecoveryError.detail",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "recordTrackerTranscriptExposure.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -877,6 +1089,16 @@
 				"type": "number",
 				"required": false,
 				"default": 0
+			},
+			{
+				"name": "watchHostSessions.hosts",
+				"type": "WatchdogSessionHost",
+				"required": true
+			},
+			{
+				"name": "watchHostSessions.options",
+				"type": "WatchdogSessionScan",
+				"required": true
 			},
 			{
 				"name": "watchLaunchRequests.store",
@@ -1527,6 +1749,58 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "handLaunchSelection",
+				"inputs": [
+					{
+						"name": "handLaunchSelection.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "handLaunchSelection.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "handLaunchSelection.pane",
+						"type": "WatchdogPane",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "handLaunchSelection",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "handLaunchNode",
+				"inputs": [
+					{
+						"name": "handLaunchNode.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "handLaunchNode.after",
+						"type": "number",
+						"required": false,
+						"default": 0
+					}
+				],
+				"outputs": [
+					{
+						"name": "handLaunchNode",
+						"type": "string | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerHostAdapter",
 				"inputs": [
 					{
@@ -1637,6 +1911,12 @@
 						"name": "formatTrackerHostBrief.completion",
 						"type": "string",
 						"required": true
+					},
+					{
+						"name": "formatTrackerHostBrief.recovery",
+						"type": "boolean",
+						"required": false,
+						"default": false
 					}
 				],
 				"outputs": [
@@ -1790,7 +2070,7 @@
 					},
 					{
 						"name": "trackerHostLaunch.effects",
-						"type": "{ tmuxExecutable?: string; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; }",
+						"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; }",
 						"required": false,
 						"default": {}
 					}
@@ -2084,7 +2364,7 @@
 					},
 					{
 						"name": "recordWatchdogAlert.input",
-						"type": "{ itemId: string; kind: string; reason: string; identity: string; session?: string | null; key?: string; host?: string; localOnly?: boolean; }",
+						"type": "{ itemId: string; kind: string; reason: string; identity: string; session?: string | null; key?: string; host?: string; localOnly?: boolean; persist?: () => void; }",
 						"required": true
 					},
 					{
@@ -2145,25 +2425,6 @@
 					{
 						"name": "applyIdleDecision",
 						"type": "Promise<void>"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "paneNudgeKey",
-				"inputs": [
-					{
-						"name": "paneNudgeKey.key",
-						"type": "string",
-						"required": true,
-						"description": "The stable watchdog pane key from which the nudge metadata key is derived."
-					}
-				],
-				"outputs": [
-					{
-						"name": "paneNudgeKey",
-						"type": "string"
 					}
 				],
 				"errors": [],
@@ -2252,6 +2513,114 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "watchdogSnapshot",
+				"inputs": [
+					{
+						"name": "watchdogSnapshot.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "watchdogSnapshot.items",
+						"type": "readonly TrackerItem[]",
+						"required": true
+					},
+					{
+						"name": "watchdogSnapshot.panes",
+						"type": "readonly WatchdogPane[]",
+						"required": true
+					},
+					{
+						"name": "watchdogSnapshot.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "watchdogSnapshot",
+						"type": "WatchdogScan"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "paneNudgeKey",
+				"inputs": [
+					{
+						"name": "paneNudgeKey.key",
+						"type": "string",
+						"required": true,
+						"description": "The stable watchdog pane key from which the nudge metadata key is derived."
+					}
+				],
+				"outputs": [
+					{
+						"name": "paneNudgeKey",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "handoffRunOwnership",
+				"inputs": [
+					{
+						"name": "handoffRunOwnership.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "handoffRunOwnership.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "handoffRunOwnership.runId",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "handoffRunOwnership.pane",
+						"type": "WatchdogPane",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "handoffRunOwnership",
+						"type": "Pick<TrackerHandoffAttempt, 'token' | 'observed'> | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "activeWatchdogItem",
+				"inputs": [
+					{
+						"name": "activeWatchdogItem.items",
+						"type": "TrackerItemReadRepository",
+						"required": true
+					},
+					{
+						"name": "activeWatchdogItem.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "activeWatchdogItem",
+						"type": "TrackerItem | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerLegacyExitReceipt",
 				"inputs": [
 					{
@@ -2326,6 +2695,90 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "adoptTrackerHandLaunches",
+				"inputs": [
+					{
+						"name": "adoptTrackerHandLaunches.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "adoptTrackerHandLaunches.items",
+						"type": "readonly TrackerItem[]",
+						"required": true
+					},
+					{
+						"name": "adoptTrackerHandLaunches.panes",
+						"type": "readonly WatchdogPane[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "adoptTrackerHandLaunches",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "resetBudget",
+				"inputs": [
+					{
+						"name": "resetBudget.state",
+						"type": "TrackerRecoveryState | null",
+						"required": true
+					},
+					{
+						"name": "resetBudget.run",
+						"type": "TrackerListedRun | undefined",
+						"required": true
+					},
+					{
+						"name": "resetBudget.item",
+						"type": "TrackerItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "resetBudget",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recoveryRung",
+				"inputs": [
+					{
+						"name": "recoveryRung.run",
+						"type": "TrackerListedRun | undefined",
+						"required": true
+					},
+					{
+						"name": "recoveryRung.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "recoveryRung.node",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recoveryRung",
+						"type": "TrackerLaunchRung | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerSessionHealth",
 				"inputs": [
 					{
@@ -2338,6 +2791,62 @@
 					{
 						"name": "trackerSessionHealth",
 						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "paneItems",
+				"inputs": [
+					{
+						"name": "paneItems.snapshot",
+						"type": "TrackerSessionHealthSnapshot",
+						"required": true
+					},
+					{
+						"name": "paneItems.pane",
+						"type": "WatchdogPane",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "paneItems",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "unownedPane",
+				"inputs": [
+					{
+						"name": "unownedPane.host",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "unownedPane.pane",
+						"type": "WatchdogPane",
+						"required": true
+					},
+					{
+						"name": "unownedPane.associated",
+						"type": "readonly string[]",
+						"required": true
+					},
+					{
+						"name": "unownedPane.items",
+						"type": "ReadonlyMap<string, TrackerItem>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "unownedPane",
+						"type": "TrackerSessionHealthIssue | undefined"
 					}
 				],
 				"errors": [],
@@ -2464,6 +2973,62 @@
 				"outputs": [
 					{
 						"name": "recheckTrackerRecovery",
+						"type": "Promise<TrackerDispatchResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recoverTrackerSession",
+				"inputs": [
+					{
+						"name": "recoverTrackerSession.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "recoverTrackerSession.input",
+						"type": "{ item: TrackerItem; launch: TrackerWatchdogLaunch; now: number }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recoverTrackerSession",
+						"type": "Promise<string | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "flagRecoveryError",
+				"inputs": [
+					{
+						"name": "flagRecoveryError.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "flagRecoveryError.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "flagRecoveryError.now",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "flagRecoveryError.detail",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "flagRecoveryError",
 						"type": "unknown"
 					}
 				],
@@ -2572,6 +3137,29 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "watchHostSessions",
+				"inputs": [
+					{
+						"name": "watchHostSessions.hosts",
+						"type": "WatchdogSessionHost",
+						"required": true
+					},
+					{
+						"name": "watchHostSessions.options",
+						"type": "WatchdogSessionScan",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "watchHostSessions",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "watchLaunchRequests",

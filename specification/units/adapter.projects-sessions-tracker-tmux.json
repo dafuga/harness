@@ -17,6 +17,7 @@
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedLaunchReceipt.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedProviderCommands.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedWorkerProcess.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerTmuxClose.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerTmuxPane.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerWorkerClient.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/verifyTrackerTmuxSubmission.ts"
@@ -53,6 +54,8 @@
 			"prepareTrackerWorkingDirectory",
 			"trackerSocket",
 			"managedBrief",
+			"closePaneNames",
+			"closePaneCandidate",
 			"trackerPaneFormat",
 			"trackerSessionName",
 			"trackerTmuxPane",
@@ -271,6 +274,36 @@
 			{
 				"name": "managedBrief.input",
 				"type": "TrackerHostStartRequest",
+				"required": true
+			},
+			{
+				"name": "closePaneNames.pane",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "closePaneNames.attempt",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "closePaneNames.observed",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "closePaneCandidate.pane",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "closePaneCandidate.observed",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "closePaneCandidate.layouts",
+				"type": "TrackerTmuxPane[]",
 				"required": true
 			},
 			{
@@ -867,6 +900,62 @@
 					{
 						"name": "managedBrief",
 						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "closePaneNames",
+				"inputs": [
+					{
+						"name": "closePaneNames.pane",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "closePaneNames.attempt",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "closePaneNames.observed",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "closePaneNames",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "closePaneCandidate",
+				"inputs": [
+					{
+						"name": "closePaneCandidate.pane",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "closePaneCandidate.observed",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "closePaneCandidate.layouts",
+						"type": "TrackerTmuxPane[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "closePaneCandidate",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

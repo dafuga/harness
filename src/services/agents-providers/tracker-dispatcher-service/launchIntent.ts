@@ -20,6 +20,7 @@ import {
 	skip,
 	startable
 } from './launchEligibility';
+import { recoveryIntent } from './recoveryIntent';
 
 export function requestLaunch(
 	snapshot: TrackerDispatchSnapshot,
@@ -30,6 +31,8 @@ export function requestLaunch(
 	const { item } = snapshot;
 	if (!item || inactive(item)) return skip('held', 'item is missing or inactive');
 	if (!request.token.trim()) return skip('conflict', 'launch token is required');
+	if (request.source === 'recovery')
+		return recoveryIntent(snapshot, { item, request }, policy, now);
 	return request.source === 'manual'
 		? manualIntent(snapshot, { ...request, item }, policy, now)
 		: dueIntent(snapshot, { item, token: request.token }, policy, now);
