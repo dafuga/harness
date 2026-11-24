@@ -48,6 +48,13 @@ export async function proveForegroundSync(
 				.toMatchObject([
 					{ id: 22, node: 'synthetic-spoke', state: 'running', auto_token: 'spoke-token' }
 				]);
+			await expect
+				.poll(() => fixtureTrackerJson(hub, ['autolaunch', 'status']), { timeout: 8_000 })
+				.toMatchObject({
+					computers: expect.arrayContaining([
+						{ computer: 'synthetic-spoke', state: 'disabled', active_runs: 1 }
+					])
+				});
 			await verifyTrackerWire(syncPort, id);
 			const reverse = await fixtureTrackerJson(hub, ['add', 'Reverse fixture item']);
 			await expect
