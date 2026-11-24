@@ -116,6 +116,9 @@ test(
 			200,
 			{ computers: [{ hostId: host.hostId, name: host.name, online: false }] }
 		]);
+		// A host registered before discovery has no directory entry until it reconnects.
+		await f.relay.removeDirectoryHost('google:fixture-owner', host.hostId);
+		expect(await (await f.hub(owner, 'GET', '/hosts')).json()).toEqual({ computers: [] });
 		const socket = await connectHost(f.relay, host);
 		const online = await f.hub(owner, 'GET', '/hosts');
 		expect(await online.json()).toEqual({
