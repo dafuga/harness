@@ -1,13 +1,8 @@
 import { expect, type Locator, type Page, type TestInfo } from '@playwright/test';
 import { recordCapture } from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import { buildStamp } from '../../../../src/utils/buildStamp';
+import scenario from '../../../../specification/scenarios/remote-mobile-ui.json' with { type: 'json' };
 
-/** The viewports the scenario `remote-mobile-ui` names; a capture of any other size is refused. */
-const viewports: Record<string, string> = {
-	'1440x900': 'desktop',
-	'390x844': 'mobile',
-	'820x1180': 'tablet'
-};
 const note =
 	'Actual compiled renderer with a SYNTHETIC control port or native plugin in the page. No relay, host computer, phone, key or credential exists; this is no proof of a connection.';
 
@@ -54,7 +49,9 @@ export async function remoteEvidence(page: Page, info: TestInfo, state: string):
 	const buildId = buildStamp(stamp ?? undefined);
 	const revision = process.env.HARNESS_VERIFY_REVISION;
 	const size = page.viewportSize();
-	const viewport = viewports[`${size?.width}x${size?.height}`];
+	const viewport = scenario.viewports.find(
+		(item) => item.width === size?.width && item.height === size?.height
+	)?.id;
 	expect(buildId, 'The rendered compiled renderer must carry its build identity').toBeTruthy();
 	expect(revision, 'Evidence must identify the verification revision').toMatch(/^[a-f0-9]{40}$/);
 	expect(viewport, 'Evidence needs a viewport the scenario names').toBeTruthy();
