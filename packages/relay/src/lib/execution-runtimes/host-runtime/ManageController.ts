@@ -95,7 +95,7 @@ export class ManageController {
 					hostId: input.hostId
 				})
 			});
-		if (!indexed.ok) return relayError(503, 'unavailable');
+		if (!indexed.ok) return relayResponse(503, { error: 'unavailable' });
 		const registered = this.registry.register(input);
 		return registered ? relayResponse(200, registered) : relayError(403, 'forbidden');
 	}
