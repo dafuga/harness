@@ -23,12 +23,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/routes/(development-tooling)/deploy-approvals/+page.svelte"
-		],
-		"symbols": [
-			"+page"
-		]
+		"source": ["packages/desktop/src/routes/(development-tooling)/deploy-approvals/+page.svelte"],
+		"symbols": ["+page"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -121,9 +117,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"exact-release-deploy-approvals"
-	],
+	"scenarios": ["exact-release-deploy-approvals"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

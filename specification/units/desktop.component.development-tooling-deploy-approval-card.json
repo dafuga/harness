@@ -16,9 +16,7 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/development-tooling/DeployApprovalCard.svelte"
-		],
+		"source": ["packages/desktop/src/components/development-tooling/DeployApprovalCard.svelte"],
 		"symbols": [
 			"DeployApprovalCard",
 			"DeployApprovalCard.label",
@@ -167,9 +165,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"exact-release-deploy-approvals"
-	],
+	"scenarios": ["exact-release-deploy-approvals"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

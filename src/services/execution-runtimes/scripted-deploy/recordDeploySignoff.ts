@@ -124,10 +124,8 @@ function verifyUnrecordedSignoff(record: Journal, proof: Proof, registry: Deploy
 	verifySignoff(record, proof, registry);
 }
 
-export async function publishSignoff(
-	registry: DeployRegistry,
-	{ plan, signoff, signoffControl }: Journal
-) {
+export async function publishSignoff(registry: DeployRegistry, record: Journal) {
+	const { plan, signoff, signoffControl } = record;
 	if (!signoff || !signoffControl || !registry.approvalInbox) return;
 	await reportControlledRun(
 		runControlClient(registry),

@@ -12,11 +12,7 @@
 			"src/services/execution-runtimes/scripted-deploy/recordDeploySignoff.ts",
 			"src/services/execution-runtimes/scripted-deploy/recordDeploySignoff.types.ts"
 		],
-		"symbols": [
-			"recordDeploySignoff",
-			"publishSignoff",
-			"DeploySignoffContext"
-		]
+		"symbols": ["recordDeploySignoff", "publishSignoff", "DeploySignoffContext"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -47,18 +43,8 @@
 				"required": true
 			},
 			{
-				"name": "publishSignoff.plan",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "publishSignoff.signoff",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "publishSignoff.signoffControl",
-				"type": "unknown",
+				"name": "publishSignoff.record",
+				"type": "Journal",
 				"required": true
 			}
 		],
@@ -127,18 +113,8 @@
 						"required": true
 					},
 					{
-						"name": "publishSignoff.plan",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "publishSignoff.signoff",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "publishSignoff.signoffControl",
-						"type": "unknown",
+						"name": "publishSignoff.record",
+						"type": "Journal",
 						"required": true
 					}
 				],

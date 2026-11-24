@@ -39,10 +39,8 @@ export function runControlClient(registry: DeployRegistry): DeployApprovalClient
 	return new DeployApprovalClient(registry.approvalInbox);
 }
 
-export function deployApprovalCard(
-	{ plan, chain, differences, controlled, rollbackFrom }: ApprovalContext,
-	script: string
-) {
+export function deployApprovalCard(context: ApprovalContext, script: string) {
+	const { plan, chain, differences, controlled, rollbackFrom } = context;
 	const candidate = plan.restore ?? plan.release;
 	const legacyRestore = controlled && plan.environment === 'staging' && plan.action === 'rollback';
 	if (!candidate || (!candidate.artifact && !legacyRestore))

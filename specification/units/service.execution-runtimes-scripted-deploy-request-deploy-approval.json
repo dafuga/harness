@@ -47,28 +47,8 @@
 				"required": true
 			},
 			{
-				"name": "deployApprovalCard.plan",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "deployApprovalCard.chain",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "deployApprovalCard.differences",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "deployApprovalCard.controlled",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "deployApprovalCard.rollbackFrom",
-				"type": "unknown",
+				"name": "deployApprovalCard.context",
+				"type": "ApprovalContext",
 				"required": true
 			},
 			{
@@ -215,28 +195,8 @@
 				"name": "deployApprovalCard",
 				"inputs": [
 					{
-						"name": "deployApprovalCard.plan",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "deployApprovalCard.chain",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "deployApprovalCard.differences",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "deployApprovalCard.controlled",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "deployApprovalCard.rollbackFrom",
-						"type": "unknown",
+						"name": "deployApprovalCard.context",
+						"type": "ApprovalContext",
 						"required": true
 					},
 					{

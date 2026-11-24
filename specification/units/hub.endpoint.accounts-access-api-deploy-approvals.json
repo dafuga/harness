@@ -8,13 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/routes/(accounts-access)/api/deploy-approvals/+server.ts"
-		],
-		"symbols": [
-			"GET",
-			"POST"
-		]
+		"source": ["packages/hub/src/routes/(accounts-access)/api/deploy-approvals/+server.ts"],
+		"symbols": ["GET", "POST"]
 	},
 	"contract": {
 		"origin": "declared",

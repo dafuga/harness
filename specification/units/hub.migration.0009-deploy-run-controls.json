@@ -1,15 +1,14 @@
 {
 	"schemaVersion": 1,
 	"id": "hub.migration.0009-deploy-run-controls",
+	"uid": "u_2swnpyfd4k",
 	"kind": "migration",
 	"title": "0009-deploy-run-controls",
 	"responsibility": "Creates the run control ledger and preserves existing native approval rows and their format.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/db/migrations/0009-deploy-run-controls.sql"
-		],
+		"source": ["packages/hub/db/migrations/0009-deploy-run-controls.sql"],
 		"symbols": []
 	},
 	"contract": {
@@ -37,6 +36,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"uid": "u_2swnpyfd4k"
+	}
 }
