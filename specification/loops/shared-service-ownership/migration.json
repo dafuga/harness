@@ -1650,13 +1650,13 @@
 			"unit": "desktop.service.native-auth",
 			"from": "packages/desktop/src/services/NativeAuthService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
-			"definition": "dbb0bc320b5f033457136f31c50f5bdf20042f3800c8e70e737093484be823d7",
+			"definition": "b337cd50c30a1b7728757a2064d2dbfacd4549efac3cf31efc21cb8d8f360e13",
 			"relocationDefinition": "67a3c6213e0976f629348ba23061f5fa8274ef5c97eb067ee00cba2f8005485f",
 			"review": {
-				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+				"commit": "4b711d547bf08c89ebcfc87b9fb668960df1a5ae",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
-				"definition": "dbb0bc320b5f033457136f31c50f5bdf20042f3800c8e70e737093484be823d7",
-				"reason": "Enroll and refresh the native account through the Hub while preserving typed-code fallback."
+				"definition": "b337cd50c30a1b7728757a2064d2dbfacd4549efac3cf31efc21cb8d8f360e13",
+				"reason": "Reject replaced native sessions and submit exact approval decisions through the authenticated Hub transport."
 			},
 			"previousReviews": [
 				{
@@ -1682,6 +1682,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
 					"definition": "11320e6d5b82ebd8669a90d972996bc48246dc328a09bd57bceedada92cc671f",
 					"reason": "Reads the Tracker overview through the current native account and rejects stale sessions."
+				},
+				{
+					"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
+					"definition": "dbb0bc320b5f033457136f31c50f5bdf20042f3800c8e70e737093484be823d7",
+					"reason": "Enroll and refresh the native account through the Hub while preserving typed-code fallback."
 				}
 			]
 		},
@@ -4117,13 +4123,13 @@
 			"unit": "desktop.service.capacitor-projects",
 			"from": "packages/desktop/src/services/CapacitorProjectsService.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
-			"definition": "3a50b983cfb840d8f10425dd5014789e0ba50ca169c37c46978feec338bc8a04",
+			"definition": "aa55ccb647d1f9d629f1ced60b42a321db55850e22929dc2bf17167a724efbde",
 			"relocationDefinition": "fe30761246bf612fad1c8e18fa34c681a39a90ba14d7460dd78b469ebc5651f8",
 			"review": {
-				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+				"commit": "4b711d547bf08c89ebcfc87b9fb668960df1a5ae",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
-				"definition": "3a50b983cfb840d8f10425dd5014789e0ba50ca169c37c46978feec338bc8a04",
-				"reason": "Combine account and paired-computer projects after the phone owner signs in."
+				"definition": "aa55ccb647d1f9d629f1ced60b42a321db55850e22929dc2bf17167a724efbde",
+				"reason": "Route exact release approvals through the phone account bridge rather than a project or pairing grant."
 			},
 			"previousReviews": [
 				{
@@ -4137,6 +4143,12 @@
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
 					"definition": "d32f1355839ee8dd8af1ebc9e107dc17ced5aac289db63c84c25fb1286b22ef7",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
+					"definition": "3a50b983cfb840d8f10425dd5014789e0ba50ca169c37c46978feec338bc8a04",
+					"reason": "Combine account and paired-computer projects after the phone owner signs in."
 				}
 			]
 		},
@@ -5240,13 +5252,13 @@
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-			"definition": "795fd28ae7e4feffe99c57fea4a02ed05dca03049b0dd37e70b752647da05988",
+			"definition": "312e1350852746d06cc54b44f4b5e47769033c9d60acaf77027a9b4ac5dda53a",
 			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
 			"review": {
-				"commit": "caea83354142413dd97edae29bdd055924c9847b",
+				"commit": "4b711d547bf08c89ebcfc87b9fb668960df1a5ae",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-				"definition": "795fd28ae7e4feffe99c57fea4a02ed05dca03049b0dd37e70b752647da05988",
-				"reason": "Includes the fixed project overview call on the preload bridge."
+				"definition": "312e1350852746d06cc54b44f4b5e47769033c9d60acaf77027a9b4ac5dda53a",
+				"reason": "Expose the typed release approval operation through the private desktop transport."
 			},
 			"previousReviews": [
 				{
@@ -5284,6 +5296,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
 					"definition": "eee7526226128adc019a907c59b48598174ff5c5d5c086289aa101f63bbe9c14",
 					"reason": "Exposes gameLevelGenerate through the existing isolated preload while preserving its location, registered identity and previous bridge methods."
+				},
+				{
+					"commit": "caea83354142413dd97edae29bdd055924c9847b",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "795fd28ae7e4feffe99c57fea4a02ed05dca03049b0dd37e70b752647da05988",
+					"reason": "Includes the fixed project overview call on the preload bridge."
 				}
 			]
 		},
@@ -6632,13 +6650,13 @@
 			"unit": "desktop.service.local-client",
 			"from": "packages/desktop/src/services/LocalClientService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-			"definition": "9c46fd95a53ae5910c6017d453ca4764a90885f30398cb650df394509fab8563",
+			"definition": "ce673b46e31614013b9493a9f469d8109843c2e91832603c9b425d93cc87f0aa",
 			"relocationDefinition": "db0ec4b62e6922c297169687608d262d5d27c0fbea6e3b27da2a52def20bb765",
 			"review": {
-				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+				"commit": "4b711d547bf08c89ebcfc87b9fb668960df1a5ae",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-				"definition": "9c46fd95a53ae5910c6017d453ca4764a90885f30398cb650df394509fab8563",
-				"reason": "Carry native browser callback and device metadata through desktop initialization."
+				"definition": "ce673b46e31614013b9493a9f469d8109843c2e91832603c9b425d93cc87f0aa",
+				"reason": "Connect the local desktop approval operation to its authenticated native account service."
 			},
 			"previousReviews": [
 				{
@@ -6676,6 +6694,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
 					"reason": "Give local windows the same headless rendering workflow as remote clients.",
 					"definition": "fc4ac939b6401690b8183751141ab5a92f1b3b260a9096025bea4fa1a83e96b0"
+				},
+				{
+					"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+					"definition": "9c46fd95a53ae5910c6017d453ca4764a90885f30398cb650df394509fab8563",
+					"reason": "Carry native browser callback and device metadata through desktop initialization."
 				}
 			]
 		},
@@ -6683,13 +6707,13 @@
 			"unit": "desktop.service.local-operations",
 			"from": "packages/desktop/src/services/LocalOperationsService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-			"definition": "99a5afd915176506e32bbf0c7c0352db1ce862a3cca43c1871f72226e2a5aa81",
+			"definition": "a83c3790bbbca6a269353499f32d08ff2c98d67ab0688d37f0170a7ba22589e0",
 			"relocationDefinition": "6c93c210df9a0612e8b374298b009646d8cc776940b82b610c6aa2edf7a6f2b4",
 			"review": {
-				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+				"commit": "4b711d547bf08c89ebcfc87b9fb668960df1a5ae",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-				"definition": "99a5afd915176506e32bbf0c7c0352db1ce862a3cca43c1871f72226e2a5aa81",
-				"reason": "Retains typed local operation errors and main’s visual mockup runner wiring."
+				"definition": "a83c3790bbbca6a269353499f32d08ff2c98d67ab0688d37f0170a7ba22589e0",
+				"reason": "Admit the exact approval operation through the authenticated local desktop operation router."
 			},
 			"previousReviews": [
 				{
@@ -6709,6 +6733,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
 					"definition": "24abc5d2f2cb8a71536125e8a723d22be51876df584e9d9b8ff577877c4c59de",
 					"reason": "Dispatches the zero-argument project overview operation."
+				},
+				{
+					"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "99a5afd915176506e32bbf0c7c0352db1ce862a3cca43c1871f72226e2a5aa81",
+					"reason": "Retains typed local operation errors and main’s visual mockup runner wiring."
 				}
 			]
 		},
@@ -6867,13 +6897,13 @@
 			"unit": "desktop.adapter.capacitor-account",
 			"from": "packages/desktop/src/adapters/capacitor-account-adapter/CapacitorAccountAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-			"definition": "0f1b7bce3e635b55f5ebd8e8002b7d3d8388007b6fcb4a97d781262d51d559e0",
+			"definition": "bec7d62c567c7bafe5eb5a6410eb77032b7d3e74d15ab0c5c741f888a275ae75",
 			"relocationDefinition": "f54f1586b418a653ad39961751f61e977322b2dfa5d0ab7c8f660f3bb3cdd01a",
 			"review": {
-				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+				"commit": "4b711d547bf08c89ebcfc87b9fb668960df1a5ae",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-				"definition": "0f1b7bce3e635b55f5ebd8e8002b7d3d8388007b6fcb4a97d781262d51d559e0",
-				"reason": "Pass the sign-in mode and keep native account status and read authority isolated."
+				"definition": "bec7d62c567c7bafe5eb5a6410eb77032b7d3e74d15ab0c5c741f888a275ae75",
+				"reason": "Read and decide exact deploy approvals through the phone native account without exposing its session."
 			},
 			"previousReviews": [
 				{
@@ -6899,6 +6929,12 @@
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
 					"definition": "28418e2a350f2be7f85874f88cb640e98e4ca1f334c4ce53548e0588d470ee3c",
 					"reason": "Restores unknown at an input boundary: reverts the review-1 unknown-type change 80802304f8 (desktop.adapter.capacitor-account); behavior unchanged."
+				},
+				{
+					"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
+					"definition": "0f1b7bce3e635b55f5ebd8e8002b7d3d8388007b6fcb4a97d781262d51d559e0",
+					"reason": "Pass the sign-in mode and keep native account status and read authority isolated."
 				}
 			]
 		},
