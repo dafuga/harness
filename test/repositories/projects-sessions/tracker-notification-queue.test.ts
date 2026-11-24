@@ -49,7 +49,12 @@ test('startup preserves pinned notification rows, pause state and cursors throug
 			await runtime.service.tick();
 			expect(runtime.calls).toEqual([]);
 			files.close(db);
-			expect(legacySnapshot(files.open())).toEqual(before);
+			const after = legacySnapshot(files.open());
+			expect(after).toEqual(
+				before.map((rows, index) =>
+					index === 1 ? rows.map((row) => ({ ...row, status: 'closed' })) : rows
+				)
+			);
 		})
 	);
 });

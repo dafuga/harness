@@ -1,4 +1,7 @@
-import { verifyHostLaunchOutcomes } from '../../support/trackerLaunchOutcomeFixture';
+import {
+	verifyHostLaunchOutcomes,
+	verifyIdleCapacityQueue
+} from '../../support/trackerLaunchOutcomeFixture';
 import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
@@ -10,7 +13,7 @@ import { withTempDir } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
 import {
 	retainedTrackerTmuxFixture,
-	seedRetainedRuns,
+	seedCompletedRetainedRun,
 	startLinkedItem
 } from '../../support/trackerManagedProcessFixture';
 
@@ -34,11 +37,7 @@ async function proveHostCapacity(root: string) {
 	const signal = new AbortController().signal;
 	const closed = join(root, 'closed');
 	try {
-		seedRetainedRuns(db, now);
-		runtime.store.appendLocal({
-			itemId: 'old008abcd',
-			fields: { title: 'Finished fixture', kind: 'task', status: 'done' }
-		});
+		seedCompletedRetainedRun(runtime, db, now);
 		for (const id of ['next100001', 'next100002', 'next100003'])
 			queueCapacityItem(runtime, id, id === 'next100003');
 		clock += 300_000;
@@ -51,6 +50,9 @@ async function proveHostCapacity(root: string) {
 			.toEqual([{ item_id: 'next100001', state: 'running' }]);
 		expect(existsSync(closed)).toBe(false);
 		await verifyHostLaunchOutcomes(runtime, db, signal);
+		await verifyIdleCapacityQueue(runtime, db, signal, (elapsed) => {
+			clock += elapsed;
+		});
 		clock += 300_000;
 		writeFileSync(join(root, 'busy'), '');
 		await expectPaneRetained(runtime, signal, closed);

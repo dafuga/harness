@@ -4,6 +4,7 @@ import { WatchdogIdleService } from '../WatchdogIdleService';
 import { WatchdogPaneService } from '../WatchdogPaneService';
 import { WatchdogStartupService } from '../WatchdogStartupService';
 import type { WatchdogScan } from '../WatchdogPaneService.types';
+import { queueIdleWork } from './trackerWatchLaunchRequests';
 import { recordStartupAlerts } from './trackerHostWatchdogAlerts';
 import { applyIdleDecision } from './trackerHostWatchdogIdle';
 import {
@@ -59,6 +60,8 @@ async function scanHostSessions(
 	adoptTrackerHandLaunches(hosts.store, rows, panes);
 	const snapshot = watchdogSnapshot(hosts.store, rows, panes, now);
 	await inspectHostSessions(hosts, { rows, snapshot, launch: options.launch }, signal);
+	if (options.idleWork)
+		await queueIdleWork(hosts.store, { rows, snapshot, ...options.idleWork }, signal);
 }
 
 async function inspectHostSessions(

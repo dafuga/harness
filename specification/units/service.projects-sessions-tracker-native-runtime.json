@@ -7,6 +7,14 @@
 	"responsibility": "Owns the TrackerNativeRuntimeService service workflow.",
 	"responsibilityOrigin": "derived",
 	"status": "active",
+	"configControls": [
+		{
+			"source": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostEffectsSchema.ts",
+			"name": "idleWorkMinutes",
+			"audience": "operator",
+			"purpose": "Set how long an unassigned Tracker task can remain idle during Lisbon daytime before the hub requests pickup. Defaults to 120 minutes."
+		}
+	],
 	"owns": {
 		"source": [
 			"src/services/projects-sessions/TrackerNativeRuntimeService.ts",
@@ -187,6 +195,7 @@
 			"WatchdogSessionHost",
 			"WatchdogSessionScan",
 			"launchWithoutRunKind",
+			"queueIdleWork",
 			"watchLaunchRequests",
 			"sampleTrackerContexts",
 			"TrackerContextSample",
@@ -644,32 +653,14 @@
 				"required": true
 			},
 			{
-				"name": "trackerHostWatchdog.now",
-				"type": "() => number",
+				"name": "trackerHostWatchdog.options",
+				"type": "Pick<WatchdogSessionScan, 'now' | 'launch' | 'idleWork'>",
 				"required": true
 			},
 			{
-				"name": "trackerHostWatchdog.launch",
-				"type": "TrackerWatchdogLaunch",
-				"required": false
-			},
-			{
-				"name": "configuredHostWatchdog.store",
-				"type": "TrackerPersistenceService",
-				"required": true,
-				"description": "Tracker state and watch metadata store used by the host watchdog."
-			},
-			{
-				"name": "configuredHostWatchdog.now",
-				"type": "() => number",
-				"required": true,
-				"description": "Clock callback used to schedule watchdog work and timestamp observations."
-			},
-			{
-				"name": "configuredHostWatchdog.dispatch",
-				"type": "TrackerDispatcherService | undefined",
-				"required": true,
-				"description": "Dispatch scheduler used when the watchdog recovers a launch."
+				"name": "configuredHostWatchdog.runtime",
+				"type": "Pick<TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role'>",
+				"required": true
 			},
 			{
 				"name": "configuredHostWatchdog.watchdog",
@@ -1136,6 +1127,36 @@
 			{
 				"name": "watchHostSessions.options",
 				"type": "WatchdogSessionScan",
+				"required": true
+			},
+			{
+				"name": "queueIdleWork.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "queueIdleWork.rows",
+				"type": "readonly TrackerItem[]",
+				"required": true
+			},
+			{
+				"name": "queueIdleWork.snapshot",
+				"type": "WatchdogScan",
+				"required": true
+			},
+			{
+				"name": "queueIdleWork.dispatch",
+				"type": "TrackerDispatcherService",
+				"required": true
+			},
+			{
+				"name": "queueIdleWork.minutes",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "queueIdleWork.signal",
+				"type": "AbortSignal",
 				"required": true
 			},
 			{
@@ -2309,14 +2330,9 @@
 						"required": true
 					},
 					{
-						"name": "trackerHostWatchdog.now",
-						"type": "() => number",
+						"name": "trackerHostWatchdog.options",
+						"type": "Pick<WatchdogSessionScan, 'now' | 'launch' | 'idleWork'>",
 						"required": true
-					},
-					{
-						"name": "trackerHostWatchdog.launch",
-						"type": "TrackerWatchdogLaunch",
-						"required": false
 					}
 				],
 				"outputs": [
@@ -2332,22 +2348,9 @@
 				"name": "configuredHostWatchdog",
 				"inputs": [
 					{
-						"name": "configuredHostWatchdog.store",
-						"type": "TrackerPersistenceService",
-						"required": true,
-						"description": "Tracker state and watch metadata store used by the host watchdog."
-					},
-					{
-						"name": "configuredHostWatchdog.now",
-						"type": "() => number",
-						"required": true,
-						"description": "Clock callback used to schedule watchdog work and timestamp observations."
-					},
-					{
-						"name": "configuredHostWatchdog.dispatch",
-						"type": "TrackerDispatcherService | undefined",
-						"required": true,
-						"description": "Dispatch scheduler used when the watchdog recovers a launch."
+						"name": "configuredHostWatchdog.runtime",
+						"type": "Pick<TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role'>",
+						"required": true
 					},
 					{
 						"name": "configuredHostWatchdog.watchdog",
@@ -3261,6 +3264,49 @@
 				"errorStatus": "none-found"
 			},
 			{
+				"name": "queueIdleWork",
+				"inputs": [
+					{
+						"name": "queueIdleWork.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "queueIdleWork.rows",
+						"type": "readonly TrackerItem[]",
+						"required": true
+					},
+					{
+						"name": "queueIdleWork.snapshot",
+						"type": "WatchdogScan",
+						"required": true
+					},
+					{
+						"name": "queueIdleWork.dispatch",
+						"type": "TrackerDispatcherService",
+						"required": true
+					},
+					{
+						"name": "queueIdleWork.minutes",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "queueIdleWork.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "queueIdleWork",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "watchLaunchRequests",
 				"inputs": [
 					{
@@ -3432,6 +3478,11 @@
 		},
 		{
 			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-is-quiet-hour",
 			"via": "import",
 			"origin": "derived"
 		},

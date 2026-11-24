@@ -29,6 +29,9 @@ CREATE TABLE IF NOT EXISTS harness_notification_inflight(
 
 export function initializeQueueSchema(database: SqliteDatabase): void {
 	database.exec(notificationSchema);
+	const columns = database.prepare('PRAGMA table_info(reminders)').all() as { name: string }[];
+	if (columns.length && !columns.some(({ name }) => name === 'first_ping'))
+		database.exec('ALTER TABLE reminders ADD COLUMN first_ping INTEGER');
 }
 
 export function validateQueueTable(

@@ -1,4 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
+import type { TrackerDispatcherService } from '../../agents-providers/TrackerDispatcherService';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
@@ -15,5 +16,6 @@ export interface WatchdogSessionScan {
 	readItems: () => readonly TrackerItem[];
 	now: () => number;
 	launch?: TrackerWatchdogLaunch;
+	idleWork?: { dispatch: TrackerDispatcherService; minutes: number };
 	roots?: readonly string[];
 }

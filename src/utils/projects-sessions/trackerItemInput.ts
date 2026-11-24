@@ -5,9 +5,10 @@ import type { TrackerItemInput, TrackerItemValue } from './normalizeTrackerItemF
 import type {
 	TrackerDuplicateProbe,
 	TrackerItemMutationContext,
+	TrackerItemChange,
 	TrackerItemSnapshot
 } from './planTrackerItemMutation.types';
-import { trackerTimeZone } from './normalizeTrackerDue';
+import { normalizeTrackerParkUntil, trackerIsoTime, trackerTimeZone } from './normalizeTrackerDue';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
 
@@ -44,6 +45,11 @@ export function trackerItemInput(
 	applyRecurrenceFields(fields, current);
 	validateNamedModel(fields, context, current);
 	applyAliases(fields, body, context.node);
+	if (body.next_step !== undefined) Object.assign(fields, trackerNextStepFields(body.next_step));
+	if (!current && body.later === true) {
+		if (requestsTrackerLaunch(fields.auto)) throw trackerItemError('--later conflicts with --auto');
+		fields.schedule_off = 1;
+	}
 	checkItemInput(fields, context, body.force, current);
 	if (!requestsTrackerLaunch(fields.auto)) return fields;
 	if (!context.planLaunch)
@@ -135,6 +141,49 @@ function applyAliases(
 	if (body.callback_cmd) fields.callback = { cmd: body.callback_cmd, node };
 	if (body.flag || body.question) fields.needs_daniel = 1;
 	if (fields.needs_daniel) fields.resolved = 0;
+}
+
+export function trackerNextStepFields(value: TrackerItemValue): TrackerItemInput {
+	if (typeof value !== 'string' || !value.trim()) throw trackerItemError('next step text required');
+	const text = value.trim();
+	return { next_step: text, question: text, needs_daniel: 1, resolved: 0 };
+}
+
+function requireNextStep(item: TrackerItemSnapshot): void {
+	if (!item.next_step) throw trackerItemError('item has no open next step', 409);
+}
+
+export function trackerMoveOn(item: TrackerItemSnapshot): TrackerItemChange {
+	requireNextStep(item);
+	return {
+		fields: { status: 'done', needs_daniel: 0, resolved: 1, next_step: null, parked_until: null },
+		appendNote: 'Daniel moved on from this topic'
+	};
+}
+
+export function trackerParkNextStep(
+	item: TrackerItemSnapshot,
+	body: TrackerItemInput,
+	context: TrackerItemMutationContext
+): TrackerItemChange {
+	requireNextStep(item);
+	return { fields: { parked_until: normalizeTrackerParkUntil(body.until, context.now) } };
+}
+
+export function trackerResolveItem(
+	item: TrackerItemSnapshot,
+	body: TrackerItemInput,
+	context: TrackerItemMutationContext
+): TrackerItemChange {
+	return {
+		fields: {
+			...(item.next_step ? {} : { resolved: 1, needs_daniel: 0 }),
+			answered_at: trackerIsoTime(context.now),
+			answered_by: trackerItemValueOr(body.by, 'daniel'),
+			...(body.answer ? { answer: body.answer } : {}),
+			...(body.done ? { status: 'done' } : {})
+		}
+	};
 }
 
 export function guardTrackerDuplicate(

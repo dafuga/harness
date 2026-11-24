@@ -26,6 +26,7 @@ const adapterPolicy = {
 const transcriptRoots = z.array(absolutePath).min(1).max(12);
 const watchdogPolicy = {
 	chiefOfStaff: z.literal(true).optional(),
+	idleWorkMinutes: z.int().positive().max(1440).optional(),
 	transcriptRoots: transcriptRoots.optional()
 };
 const checkpoint = z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$/);

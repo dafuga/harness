@@ -16,9 +16,10 @@ export interface TrackerHostEffects {
 	watchdog?:
 		| (({ driver: string } | { tmux: string }) & {
 				chiefOfStaff?: true;
+				idleWorkMinutes?: number;
 				transcriptRoots?: string[];
 		  })
-		| { transcriptRoots: string[]; chiefOfStaff?: never };
+		| { transcriptRoots: string[]; chiefOfStaff?: never; idleWorkMinutes?: never };
 	adapter?: TrackerHostAdapterConfig & { leaseFile: string };
 }
 

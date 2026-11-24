@@ -45,10 +45,19 @@ function updateFields(
 			? { fields: trackerItemInput(body, context, item), appendNote: body.append_note }
 			: trackerItemTransitions[action](item, body, context);
 	const fields = normalizeTrackerItemFields(change.fields, context);
+	if (action !== 'move-on') guardNextStep(fields, item);
 	if (endsReminder(fields)) fields.remind_at = null;
 	if (change.appendNote) fields['note+'] = String(change.appendNote);
 	if (Object.keys(fields).length === 0) throw trackerItemError('nothing to update');
 	return fields;
+}
+
+function guardNextStep(fields: TrackerItemFields, item?: TrackerItemSnapshot): void {
+	if (!(fields.next_step ?? item?.next_step)) return;
+	if (fields.every ?? item?.every)
+		throw trackerItemError('recurring items cannot have a next step');
+	if (fields.status === 'ignored' || fields.needs_daniel === 0 || fields.deleted === 1)
+		throw trackerItemError('Daniel can close the next step with tracker move-on', 409);
 }
 
 function endsReminder(fields: TrackerItemFields): boolean {
@@ -67,6 +76,7 @@ function createFields(
 ): TrackerItemFields {
 	const fields = normalizeTrackerItemFields(trackerItemInput(body, context), context);
 	if (!fields.title) throw trackerItemError('title is required');
+	guardNextStep(fields);
 	return {
 		kind: 'task',
 		status: 'open',

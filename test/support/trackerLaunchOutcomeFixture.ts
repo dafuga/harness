@@ -3,60 +3,6 @@ import { expect } from 'vitest';
 import type { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { TrackerSupervisorService } from '../../src/services/projects-sessions/TrackerSupervisorService';
 import { trackerNodeApi } from '../../src/services/projects-sessions/tracker-node-service/trackerNodeListeners';
-import { fixtureTrackerJson, trackerProcess } from './trackerNodeProcess';
-import type { TrackerNodeFixture } from './trackerNodeProcess.types';
-
-export async function verifyLaunchCliOptions(spoke: TrackerNodeFixture, id: string) {
-	const short = id.slice(0, 6);
-	const launch = ['launch', short, '--project', 'Tracker', '--model', 'Fable:high'];
-	const rejected = await trackerProcess(spoke, launch).exited;
-	expect(rejected).toMatchObject({
-		code: 1,
-		stdout: '',
-		stderr: expect.stringContaining('launcher disabled')
-	});
-	const launched = await fixtureTrackerJson(spoke, ['show', short]);
-	expect(launched).toMatchObject({
-		id,
-		auto: expect.stringMatching(/^synthetic-spoke@/),
-		launch_source: 'manual',
-		launch_target: 'synthetic-spoke',
-		project: 'Tracker',
-		model: 'Fable:high'
-	});
-	expect((await trackerProcess(spoke, launch).exited).code).toBe(1);
-	expect(await fixtureTrackerJson(spoke, ['show', short])).toEqual(launched);
-	expect(await fixtureTrackerJson(spoke, ['pick', short])).toMatchObject({
-		rung: 'fable',
-		model: 'claude-fable-5-2',
-		effort: 'high',
-		pinned: true
-	});
-	expect((await trackerProcess(spoke, ['launch', short, '--model', 'sol:low']).exited).code).toBe(
-		1
-	);
-	await verifyLaunchCliTimeout(spoke, short, id);
-	expect(await fixtureTrackerJson(spoke, ['launch', 'on', short])).toMatchObject({
-		id,
-		schedule_off: false
-	});
-}
-
-async function verifyLaunchCliTimeout(spoke: TrackerNodeFixture, short: string, id: string) {
-	const clear = ['launch', 'off', short];
-	expect(await fixtureTrackerJson(spoke, clear)).toMatchObject({
-		id,
-		auto: null,
-		schedule_off: true
-	});
-	const waiting = await trackerProcess(spoke, ['launch', short, '--computer', 'grok-box']).exited;
-	expect(waiting).toMatchObject({
-		code: 1,
-		stdout: '',
-		stderr: expect.stringContaining('no run confirmation within 20 seconds on grok-box')
-	});
-	expect(await fixtureTrackerJson(spoke, clear)).toMatchObject({ id, auto: null });
-}
 
 export async function verifyLaunchWatchdogBoundary(
 	runtime: TrackerNativeRuntimeService,
@@ -185,4 +131,42 @@ function launchReply(runtime: TrackerNativeRuntimeService, id: string) {
 		new TrackerSupervisorService(runtime),
 		'fixture'
 	);
+}
+
+export async function verifyIdleCapacityQueue(
+	runtime: TrackerNativeRuntimeService,
+	database: DatabaseSync,
+	signal: AbortSignal,
+	advance: (elapsed: number) => void
+) {
+	const states = {
+		'idle-task1': {},
+		'later-task': { schedule_off: 1 },
+		'blocked-id': { needs_daniel: 1, question: 'Blocked: approval' }
+	};
+	const setActivity = database.prepare('UPDATE items SET updated_at = ? WHERE id = ?');
+	const lastActivity = new Date(runtime.now() - 119 * 60_000).toISOString();
+	for (const [id, state] of Object.entries(states)) {
+		const fields = { title: id, kind: 'task', status: 'open', project: 'Harness', ...state };
+		runtime.store.appendLocal({ itemId: id, fields });
+		setActivity.run(lastActivity, id);
+	}
+	await runtime.watchdog!.tick(signal);
+	const read = async (path: string) =>
+		await (await runtime.items.handle(new Request(`http://localhost${path}`))).json();
+	expect(await read('/items/idle-task1')).toMatchObject({ auto: null });
+	advance(60_000);
+	await runtime.watchdog!.tick(signal);
+	const queued = await read('/items/idle-task1');
+	expect(queued).toMatchObject({ auto: expect.any(String), launch_target: runtime.store.node });
+	expect(await read('/items/later-task')).toMatchObject({ auto: null });
+	expect(await read('/items/blocked-id')).toMatchObject({ auto: null });
+	advance(180_000);
+	await runtime.scheduler!.tick(signal);
+	expect(await read('/items/idle-task1')).toMatchObject({ auto: queued.auto });
+	expect(await read('/digest')).toMatchObject({
+		queued: expect.arrayContaining([
+			expect.objectContaining({ id: 'idle-task1', waiting_minutes: 3 })
+		])
+	});
 }

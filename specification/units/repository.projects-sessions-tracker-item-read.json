@@ -37,6 +37,7 @@
 			"TrackerItem",
 			"TrackerDigestItem",
 			"TrackerRecurringProblem",
+			"TrackerDigestGroups",
 			"TrackerDigest",
 			"TrackerItemReadError",
 			"TrackerItemReadError.constructor",
@@ -44,6 +45,8 @@
 			"StoredRecurringResult",
 			"formatTrackerDigest",
 			"serializeTrackerItem",
+			"trackerChaseFields",
+			"trackerAskAge",
 			"StoredTrackerNote",
 			"StoredTrackerCallback"
 		]
@@ -79,7 +82,7 @@
 				"name": "TrackerItemReadRepository.list.nowMs",
 				"type": "number",
 				"required": false,
-				"description": "Clock in milliseconds for filtering future reminders from flagged lists. Defaults to the current time."
+				"description": "Clock in milliseconds for filtering future reminders and parked decisions from flagged lists. Defaults to the current time."
 			},
 			{
 				"name": "TrackerItemReadRepository.digest.nowMs",
@@ -139,6 +142,11 @@
 				"required": true
 			},
 			{
+				"name": "buildTrackerDigest.runs",
+				"type": "TrackerRunReadRepository",
+				"required": true
+			},
+			{
 				"name": "formatTrackerDigest.digest",
 				"type": "TrackerDigest",
 				"required": true
@@ -152,6 +160,23 @@
 				"name": "serializeTrackerItem.notes",
 				"type": "SqliteStatement",
 				"required": true
+			},
+			{
+				"name": "trackerChaseFields.row",
+				"type": "TrackerItemRow",
+				"required": true
+			},
+			{
+				"name": "trackerAskAge.row",
+				"type": "TrackerItemRow",
+				"required": true,
+				"description": "Materialized item row with the journal clock for the open decision."
+			},
+			{
+				"name": "trackerAskAge.now",
+				"type": "number",
+				"required": true,
+				"description": "Current time in epoch milliseconds."
 			}
 		],
 		"outputs": [
@@ -292,7 +317,7 @@
 						"name": "TrackerItemReadRepository.list.nowMs",
 						"type": "number",
 						"required": false,
-						"description": "Clock in milliseconds for filtering future reminders from flagged lists. Defaults to the current time."
+						"description": "Clock in milliseconds for filtering future reminders and parked decisions from flagged lists. Defaults to the current time."
 					}
 				],
 				"outputs": [
@@ -434,6 +459,11 @@
 						"name": "buildTrackerDigest.timeZone",
 						"type": "string",
 						"required": true
+					},
+					{
+						"name": "buildTrackerDigest.runs",
+						"type": "TrackerRunReadRepository",
+						"required": true
 					}
 				],
 				"outputs": [
@@ -507,6 +537,50 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "trackerChaseFields",
+				"inputs": [
+					{
+						"name": "trackerChaseFields.row",
+						"type": "TrackerItemRow",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerChaseFields",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerAskAge",
+				"inputs": [
+					{
+						"name": "trackerAskAge.row",
+						"type": "TrackerItemRow",
+						"required": true,
+						"description": "Materialized item row with the journal clock for the open decision."
+					},
+					{
+						"name": "trackerAskAge.now",
+						"type": "number",
+						"required": true,
+						"description": "Current time in epoch milliseconds."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAskAge",
+						"type": "unknown",
+						"description": "The original ask time and elapsed whole minutes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -562,7 +636,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-next-tracker-clock",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-run-read",
 			"via": "import",
 			"origin": "derived"
 		}

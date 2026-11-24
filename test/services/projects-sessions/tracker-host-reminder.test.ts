@@ -40,17 +40,74 @@ test('the primary hub delivers a reminder once through its CoS host binding with
 				() => runtime.notifications?.tick()
 			);
 			await create().notifications?.tick();
-			const lines = readFileSync(receipts, 'utf8').trim().split('\n');
-			expect(lines.map((line) => JSON.parse(line))).toMatchObject([
+			expect(receivedReceipts(receipts)).toMatchObject([
 				{
 					operation: 'watchdog-cos',
 					alerts: [{ item_id: 'fixture123', kind: 'remind_at', at: wake }]
 				}
 			]);
+			await verifyAskFollowThrough(
+				runtime,
+				create,
+				{
+					now: () => now,
+					at: (at) => {
+						now = at;
+					}
+				},
+				receipts
+			);
 		} finally {
 			db.close();
 		}
 	}));
+
+async function verifyAskFollowThrough(
+	runtime: TrackerNativeRuntimeService,
+	restart: () => TrackerNativeRuntimeService,
+	{ now, at }: { now: () => number; at: (time: number) => void },
+	receipts: string
+) {
+	runtime.store.appendLocal({
+		itemId: 'decision01',
+		fields: { title: 'Synthetic ask', status: 'open', needs_daniel: 1, question: 'Proceed?' }
+	});
+	const asked = now();
+	const morning = Date.parse('2026-11-24T08:00:00Z');
+	await runtime.notifications?.tick();
+	at(morning);
+	await restart().notifications?.tick();
+	at(morning + 120 * 60_000);
+	await restart().notifications?.tick();
+	const alerts = receivedReceipts(receipts).flatMap(({ alerts }) => alerts);
+	expect(alerts.slice(1)).toMatchObject([
+		{
+			item_id: 'decision01',
+			kind: 'needs-daniel',
+			reason: expect.stringContaining(`for ${Math.floor((morning - asked) / 60_000)} minutes`)
+		},
+		{
+			item_id: 'decision01',
+			kind: 'needs-daniel',
+			reason: expect.stringContaining(`for ${Math.floor((morning - asked) / 60_000) + 120} minutes`)
+		}
+	]);
+	const answer = new Request('http://tracker-fixture.invalid/items/decision01/answer', {
+		method: 'POST',
+		body: JSON.stringify({ answer: 'Proceed' })
+	});
+	expect((await runtime.items.handle(answer))?.ok).toBe(true);
+	at(morning + 360 * 60_000);
+	await restart().notifications?.tick();
+	expect(receivedReceipts(receipts)).toHaveLength(3);
+}
+
+function receivedReceipts(path: string) {
+	return readFileSync(path, 'utf8')
+		.trim()
+		.split('\n')
+		.map((line) => JSON.parse(line));
+}
 
 const driver = `
 const { appendFileSync, readFileSync } = require('node:fs');

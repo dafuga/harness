@@ -40,11 +40,13 @@ export function requestLaunch(
 
 function manualIntent(
 	snapshot: TrackerDispatchSnapshot,
-	request: { item: TrackerDispatchItem; token: string; options?: TrackerLaunchOptions },
+	request: Extract<TrackerLaunchRequest, { source: 'manual' }> & { item: TrackerDispatchItem },
 	policy: TrackerDispatchPolicy,
 	now: number
 ): TrackerDispatchDecision {
-	const { item, options, token } = request;
+	const { item, options, token, unattended } = request;
+	const hold = unattended && unattendedHold(item, unattended.unchangedSince, policy);
+	if (hold) return hold;
 	const updated = { ...item, ...options };
 	const wanted = (updated.computer ?? 'auto').trim().toLowerCase() || 'auto';
 	const busy = hasOpenSession(snapshot, policy, now);
@@ -55,12 +57,20 @@ function manualIntent(
 	if (busy) return skip('conflict', 'a session is already open for this item');
 	if (snapshot.runs.some((run) => run.auto_token === token))
 		return skip('conflict', 'launch token was already used');
-	const target = manualTarget(updated, wanted, policy);
+	const target = manualTarget(updated, wanted, policy, !unattended);
 	if (!target.node) return skip('held', target.why);
 	return writeIntent(
 		{ token, target: canonicalNode(target.node, policy), source: 'manual' },
 		options
 	);
+}
+
+function unattendedHold(item: TrackerDispatchItem, cutoff: number, policy: TrackerDispatchPolicy) {
+	const hold = schedulingHold(item, policy);
+	if (hold) return skip('held', hold);
+	if (!startable(item) || (item.updatedAt ?? Infinity) > cutoff)
+		return skip('ignored', 'item changed while checking idle work');
+	return undefined;
 }
 
 function existingIntent(
@@ -102,10 +112,15 @@ function repeatedRequest(
 	);
 }
 
-function manualTarget(item: TrackerDispatchItem, wanted: string, policy: TrackerDispatchPolicy) {
+function manualTarget(
+	item: TrackerDispatchItem,
+	wanted: string,
+	policy: TrackerDispatchPolicy,
+	useFallback: boolean
+) {
 	if (wanted === 'auto') {
 		const choice = policy.chooseHost(item, { source: 'manual', requestedNode: null });
-		return { ...choice, node: choice.node ?? manualFallback(item, policy) };
+		return { ...choice, node: choice.node ?? (useFallback ? manualFallback(item, policy) : null) };
 	}
 	if (knownNode(wanted, policy)) return { node: canonicalNode(wanted, policy), why: '' };
 	return { node: null, why: 'computer must be mac, mb2, box, auto, or a known tracker node' };

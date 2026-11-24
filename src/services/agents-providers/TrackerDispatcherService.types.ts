@@ -167,7 +167,12 @@ export interface TrackerDispatchStore {
 }
 
 export type TrackerLaunchRequest =
-	| { source: 'manual'; token: string; options?: TrackerLaunchOptions }
+	| {
+			source: 'manual';
+			token: string;
+			options?: TrackerLaunchOptions;
+			unattended?: { unchangedSince: number };
+	  }
 	| { source: 'due'; token: string }
 	| { source: 'recovery'; token: string; expectedAuto: string | null; rung?: TrackerLaunchRung };
 

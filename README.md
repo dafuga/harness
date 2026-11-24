@@ -72,6 +72,10 @@ The Explorer’s APIs catalog lists HTTP endpoints and method exports at the sel
 
 ```bash
 harness tracker list --status in_progress
+harness tracker chase ITEM --note "Daniel asked for an update"
+harness tracker list --chased
+harness tracker digest
+harness tracker add "This task can wait" --later
 harness tracker show ITEM --json
 harness tracker note ITEM "Recorded a milestone"
 harness tracker remind ITEM --at 2026-11-24T14:30:00+00:00
@@ -80,9 +84,21 @@ harness tracker --help
 
 `harness tracker` selects the configured native Tracker API when a native
 node configuration is present. See the [native service guide](specification/tracker-native-service.md)
-for role selection, ownership and compatibility. With no native configuration,
-Harness forwards the original options, output and exit codes through the
-retained Tracker client.
+for role selection, ownership and compatibility.
+
+Use `chase` when Daniel has to ask for an update that was due. The digest
+reports chased items from the last seven days, pending launch age and the
+age of unanswered asks. Eligible tasks added by Daniel or Chief of Staff
+queue automatically. Use `--later` to opt out of automatic pickup.
+
+Record an idea awaiting Daniel with `tracker add "<idea>" --project <project>
+--next-step "<decision>"`. Use `tracker done <id> --next-step "<decision>"` when
+work is finished and Daniel still needs to choose what happens next. The digest
+continues listing the decision. Daniel can defer it with `tracker park <id>
+--until <date>` or close it with `tracker move-on <id>`.
+
+With no native configuration, Harness forwards the original options, output and
+exit codes through the retained Tracker client.
 
 Harness looks for `~/.local/libexec/harness/tracker-legacy` first, then
 `~/.local/bin/tracker`. Set `HARNESS_TRACKER_LEGACY_BIN` to an absolute

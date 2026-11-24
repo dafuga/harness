@@ -25,6 +25,7 @@ export interface TrackerNotificationItem {
 	agent: string | null;
 	due: string | null;
 	remind_at?: string | null;
+	parked_until?: string | null;
 	question: string | null;
 	answer: string | null;
 	blocked_reason: string | null;

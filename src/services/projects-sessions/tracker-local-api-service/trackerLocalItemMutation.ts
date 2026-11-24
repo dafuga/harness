@@ -28,6 +28,40 @@ export function itemMutation(
 		: { action, item: items.resolve(id), body };
 }
 
+export function trackerMutationBody(
+	body: TrackerItemInput,
+	action: TrackerItemAction | 'add' | undefined,
+	actor: string | null,
+	canLaunch: boolean
+): TrackerItemInput {
+	if ((action === 'park' || action === 'move-on') && !isDaniel(actor))
+		throw trackerItemError('only Daniel can park or close a next step', 403);
+	if (action !== 'add' || !canLaunch || !isDanielOrChief(actor)) return body;
+	if (body.later || body.auto !== undefined || !launchableCreation(body)) return body;
+	return { ...body, auto: true };
+}
+
+function isDanielOrChief(actor: string | null) {
+	return isDaniel(actor) || /^(?:cos|chief[-_ ]of[-_ ]staff)$/i.test(actorName(actor));
+}
+
+function isDaniel(actor: string | null) {
+	return /^(?:daniel(?: fugere)?|danielfugere)$/i.test(actorName(actor));
+}
+
+function actorName(actor: string | null) {
+	return actor?.split('@')[0]?.trim() ?? '';
+}
+
+function launchableCreation(body: TrackerItemInput) {
+	return (
+		(body.kind ?? 'task') === 'task' &&
+		!body.every &&
+		![body.flag, body.question, body.needs_daniel, body.next_step].some(Boolean) &&
+		(!body.status || body.status === 'open' || body.status === 'in_progress')
+	);
+}
+
 export function itemAction(
 	method: string,
 	id: string | undefined,

@@ -189,6 +189,24 @@ Use source-and-run-specific output directories for verification attempts. Before
 - Refresh prepared history when measurement support changes and verify the delivered data as well as the renderer. Every entity kind must show figures from its selected commit; old missing placeholders must not override current source observations. A portable index without its Git source must be rebuilt from that source rather than borrowing the working tree.
 - Show actual performance observations independently of budget declarations. Preserve workload, target and profile boundaries. A changed unit requires a fresh run; inherited observations of an unchanged unit keep their original revision and label. A focused benchmark does not grant full verification or approve a budget baseline.
 
+## Tracker follow-through
+
+Check `tracker digest` for queued launches, wait times and unanswered asks.
+Record a missed update with `tracker chase ITEM --note "Daniel asked for an update"`.
+Use `tracker list --chased` to review the quality record, including completed items.
+Ordinary tasks added by Daniel or Chief of Staff queue automatically. Use `--later`
+when an item should wait. Record answers to ordinary asks with `tracker answer ITEM "…"`.
+
+Chief of Staff creates a Tracker item when Daniel raises an idea, even if no work
+is ready to start. Check for an existing item first and record the project.
+Use `tracker add "Idea" --project PROJECT --next-step "Decision needed"` for a new
+idea that needs a decision. Update an existing item with `tracker update ITEM
+--next-step "Decision needed"`. When work finishes with a decision still open,
+use `tracker done ITEM --next-step "Decision needed"`. Include these items in
+status updates even when the project has no active run. Record Daniel's decision
+on the item. When he explicitly asks to defer or move on, relay it with
+`tracker park ITEM --until DATE --by Daniel` or `tracker move-on ITEM --by Daniel`.
+
 ## Module task handoff
 
 Codex sessions assigning module work use `harness task feature <id> --goal <text> --tldr <text>`, then `harness task add --input <file>`. A task must identify a registered module and include a wanted contract with responsibility, inputs, outputs and errors. Admission commits feature context and the contract to `refs/harness/tasks`; source HEAD and unrelated edits stay intact.

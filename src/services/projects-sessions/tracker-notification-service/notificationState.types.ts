@@ -55,6 +55,21 @@ export interface ReminderRow {
 	nextAt: number;
 	pings: number;
 	lastPing?: number;
+	firstPing?: number;
+}
+
+export interface DirectReminderBrief {
+	id: string;
+	title: string | null;
+	kind: string | null;
+	question: string | null;
+	due: string | null;
+	owner: string | null;
+	agent: string | null;
+	reason: 'needs_daniel' | 'due';
+	reminder_number: number;
+	first_noticed_at: string;
+	waiting_minutes?: number;
 }
 
 export interface FlagRow {

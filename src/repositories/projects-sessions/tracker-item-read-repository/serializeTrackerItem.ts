@@ -2,6 +2,7 @@
 import type { SqliteStatement } from '../../../core/development-tooling/sqliteTypes';
 import type { TrackerItem, TrackerItemRow } from '../TrackerItemReadRepository.types';
 import type { StoredTrackerCallback, StoredTrackerNote } from './serializeTrackerItem.types';
+import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
 import { TrackerItemReadError } from './TrackerItemReadError';
 
 /** Shape an item for public reads. SQLite-only fields and callback targets stay private. */
@@ -13,6 +14,9 @@ export function serializeTrackerItem(row: TrackerItemRow, notes: SqliteStatement
 		status: row.status,
 		blocked_reason: row.status === 'blocked' ? row.blocked_reason : null,
 		...ignoredFields(row),
+		...trackerChaseFields(row),
+		...(row.next_step && { next_step: row.next_step }),
+		...(row.parked_until && { parked_until: row.parked_until }),
 		due: row.due,
 		remind_at: nullIfEmpty(row.remind_at),
 		auto: nullIfEmpty(row.auto),
@@ -53,6 +57,28 @@ export function serializeTrackerItem(row: TrackerItemRow, notes: SqliteStatement
 		created_by: row.created_by,
 		updated_at: row.updated_at,
 		deleted: Boolean(row.deleted)
+	};
+}
+
+export function trackerChaseFields(row: TrackerItemRow) {
+	if (!row.chased_clock || !row.chased_count) return {};
+	return {
+		chased_at: new Date(hlcMilliseconds(row.chased_clock)).toISOString(),
+		chased_by: row.chased_by ?? null,
+		chased_reason: row.chased_reason ?? null,
+		chased_count: row.chased_count
+	};
+}
+
+export function trackerAskAge(row: TrackerItemRow, now: number) {
+	const { needs_daniel } = JSON.parse(row.clocks) as { needs_daniel?: string };
+	const at =
+		trackerClockMilliseconds(needs_daniel ?? '') ||
+		Date.parse(row.updated_at ?? row.created_at ?? '') ||
+		now;
+	return {
+		asked_at: new Date(at).toISOString(),
+		waiting_minutes: Math.max(0, Math.floor((now - at) / 60_000))
 	};
 }
 

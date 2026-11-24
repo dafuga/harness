@@ -1,3 +1,4 @@
+import { expect } from '../../../verificationExpect';
 import { createHash } from 'node:crypto';
 import { measureWorkload } from '../../../support/measureWorkload';
 import { TrackerNotificationService } from '../../../../src/services/projects-sessions/TrackerNotificationService';
@@ -142,4 +143,75 @@ export function measureTick(service: TrackerNotificationService, workload: strin
 	return measureWorkload('service.projects-sessions-tracker-notification', workload, () =>
 		service.tick()
 	);
+}
+
+export async function verifyDirectFollowUps(
+	f: ReturnType<typeof notificationFixture>,
+	first: number
+) {
+	f.at(first + 119 * minute);
+	await f.service.tick();
+	expect(f.calls).toHaveLength(2);
+	f.at(first + 120 * minute);
+	await f.restart().tick();
+	expect(wire(f.calls[2])).toMatchObject({
+		new: [],
+		reminders: [{ id: 'flag', reminder_number: 1, waiting_minutes: 665 }]
+	});
+	f.at(first + 360 * minute);
+	await f.restart().tick();
+	expect(wire(f.calls[3])).toMatchObject({
+		reminders: [{ id: 'flag', reminder_number: 2, waiting_minutes: 905 }]
+	});
+	const nextMorning = Date.parse('2026-02-04T08:00:00Z');
+	const parkedUntil = nextMorning + 10 * minute;
+	f.rows.set('flag', {
+		...f.rows.get('flag')!,
+		status: 'done',
+		parked_until: new Date(parkedUntil).toISOString()
+	});
+	f.at(nextMorning);
+	await f.service.tick();
+	expect(f.calls).toHaveLength(4);
+	f.at(parkedUntil);
+	await f.restart().tick();
+	expect(wire(f.calls[4])).toMatchObject({
+		reminders: [{ id: 'flag', reminder_number: 3, waiting_minutes: 1990 }]
+	});
+	f.rows.set('flag', { ...f.rows.get('flag')!, resolved: 1 });
+	f.at(nextMorning + 24 * 60 * minute);
+	await f.service.tick();
+	expect(f.calls).toHaveLength(5);
+	expect([...f.queue.read().reminders.values()].every((r) => r.status === 'closed')).toBe(true);
+}
+
+export async function verifyParkedReminderRetry(
+	f: ReturnType<typeof notificationFixture>,
+	wake: number
+) {
+	const snooze = (at: number) => new Date(at).toISOString();
+	f.at(wake);
+	await expect(f.restart().tick()).rejects.toThrow('synthetic lost acknowledgement');
+	expect(f.calls).toHaveLength(1);
+	const parkedUntil = wake + 10 * minute;
+	f.rows.set('delayed', { ...f.rows.get('delayed')!, parked_until: snooze(parkedUntil) });
+	f.at(parkedUntil - 1);
+	await f.restart().tick();
+	expect(f.calls).toHaveLength(1);
+	f.at(parkedUntil);
+	await measureTick(f.restart(), 'explicit-reminder-at-wake');
+	expect(f.calls.map(({ id }) => id)).toEqual([f.calls[0].id, f.calls[0].id]);
+	expect(wire(f.calls[1])).toMatchObject({
+		type: 'attention',
+		new: [
+			{
+				id: 'delayed',
+				reason: 'remind_at',
+				remind_at: snooze(wake),
+				question: 'Approve the fixture?'
+			}
+		]
+	});
+	await f.restart().tick();
+	expect(f.calls).toHaveLength(2);
 }

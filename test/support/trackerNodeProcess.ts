@@ -191,3 +191,26 @@ export async function verifyTrackerWire(port: number, id: string) {
 	});
 	expect((await fetch(loopback(port) + '/items', { method: 'POST', body: '{}' })).status).toBe(404);
 }
+
+export async function verifyDefaultPickup(hub: TrackerNodeFixture) {
+	const ready = await fixtureTrackerJson(hub, [
+		'add',
+		'Synthetic delegated work',
+		'--by',
+		'Chief of Staff'
+	]);
+	const later = await fixtureTrackerJson(hub, [
+		'add',
+		'Synthetic deferred paperwork',
+		'--by',
+		'Daniel',
+		'--later'
+	]);
+	expect(ready).toMatchObject({ auto: expect.any(String), launch_target: 'synthetic-hub' });
+	expect(later).toMatchObject({ auto: null, schedule_off: true });
+	expect(await fixtureTrackerJson(hub, ['digest'])).toMatchObject({
+		queued: [{ id: ready.id, waiting_minutes: expect.any(Number) }]
+	});
+	await fixtureTrackerJson(hub, ['done', ready.id]);
+	await fixtureTrackerJson(hub, ['done', later.id]);
+}

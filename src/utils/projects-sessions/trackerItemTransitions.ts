@@ -16,9 +16,14 @@ import {
 } from './normalizeTrackerDue';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
-import { guardTrackerDuplicate } from './trackerItemInput';
+import {
+	guardTrackerDuplicate,
+	trackerMoveOn,
+	trackerNextStepFields,
+	trackerParkNextStep,
+	trackerResolveItem
+} from './trackerItemInput';
 const start = { status: 'in_progress' };
-const resolved = { resolved: 1, needs_daniel: 0 };
 
 export const trackerItemTransitions: Record<
 	Exclude<TrackerItemAction, 'update'>,
@@ -32,17 +37,20 @@ export const trackerItemTransitions: Record<
 	progress: (_, body) => appendText('progress', body.text, start),
 	note: (_, body) => appendText('note', body.text, {}),
 	flag: flagItem,
+	chase: (_, body) => ({ fields: { 'chase+': body.note ?? null } }),
+	park: trackerParkNextStep,
+	'move-on': trackerMoveOn,
 	remind: (item, body, context) => {
 		if (item.status === 'done' || item.status === 'ignored')
 			throw trackerItemError('only active items can be reminded', 409);
 		return { fields: { remind_at: normalizeTrackerReminder(body.at, context.now) } };
 	},
-	answer: (_, body, context) => {
+	answer: (item, body, context) => {
 		if (!body.answer) throw trackerItemError('answer text required');
-		return resolveItem(body, context);
+		return trackerResolveItem(item, body, context);
 	},
 	unflag: () => ({ fields: { needs_daniel: 0 } }),
-	resolve: (_, body, context) => resolveItem(body, context),
+	resolve: trackerResolveItem,
 	done: finishItem,
 	ignore: ignoreItem,
 	unignore: unignoreItem
@@ -79,7 +87,7 @@ function unblockItem(item: TrackerItemSnapshot, body: TrackerItemInput): Tracker
 		);
 	}
 	return {
-		fields: { ...start, needs_daniel: 0 },
+		fields: start,
 		appendNote: body.note ? `unblocked: ${body.note}` : 'unblocked'
 	};
 }
@@ -114,29 +122,17 @@ function flagItem(
 	};
 }
 
-function resolveItem(
-	body: TrackerItemInput,
-	context: TrackerItemMutationContext
-): TrackerItemChange {
-	return {
-		fields: {
-			...resolved,
-			answered_at: trackerIsoTime(context.now),
-			answered_by: trackerItemValueOr(body.by, 'daniel'),
-			...(body.answer ? { answer: body.answer } : {}),
-			...(body.done ? { status: 'done' } : {})
-		}
-	};
-}
-
 function finishItem(
 	item: TrackerItemSnapshot,
 	body: TrackerItemInput,
 	context: TrackerItemMutationContext
 ): TrackerItemChange {
+	if (item.every && body.next_step !== undefined)
+		throw trackerItemError('recurring items cannot have a next step');
 	if (item.every) return finishOccurrence(item, body, context);
 	if (body.failed) throw trackerItemError('--failed is only for recurring items');
-	return { fields: { status: 'done' }, appendNote: body.note };
+	const decision = body.next_step === undefined ? {} : trackerNextStepFields(body.next_step);
+	return { fields: { status: 'done', ...decision }, appendNote: body.note };
 }
 
 function finishOccurrence(

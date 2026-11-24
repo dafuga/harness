@@ -11,8 +11,25 @@ export function formatTrackerDigest(digest: TrackerDigest): string {
 	return [
 		`Tracker digest - ${digest.local_time}`,
 		...section('BLOCKED', digest.blocked, blockedDetail),
-		...section('NEEDS DANIEL', digest.needs_daniel.filter(notBlocked), (item) =>
-			item.question ? `Q: ${item.question}` : ''
+		...section(
+			'NEEDS DANIEL',
+			digest.needs_daniel.filter((item) => !digest.blocked.some(({ id }) => id === item.id)),
+			askDetail
+		),
+		...section('QUEUED', digest.queued, (item) =>
+			[item.computer && `on ${item.computer}`, waitText(item.waiting_minutes)]
+				.filter(Boolean)
+				.join(' · ')
+		),
+		...section('Chased (7d)', digest.chased_7d, (item) =>
+			[
+				`×${item.chased_count}`,
+				item.chased_at,
+				item.chased_by && `by ${item.chased_by}`,
+				item.chased_reason
+			]
+				.filter(Boolean)
+				.join(' · ')
 		),
 		...section('OVERDUE', digest.overdue.filter(notBlocked), (item) => `due ${item.due}`),
 		...section('DUE TODAY', digest.due_today.filter(notBlocked), (item) =>
@@ -44,11 +61,29 @@ function line(item: TrackerDigestItem, detail: string): string {
 function blockedDetail(item: TrackerDigestItem): string {
 	return [
 		item.blocked_reason && `blocked: ${item.blocked_reason}`,
-		item.needs_daniel && 'NEEDS DANIEL',
+		item.needs_daniel &&
+			`NEEDS DANIEL · ${item.next_step ? askDetail(item) : waitText(item.waiting_minutes)}`,
 		item.due && `due ${item.due}`
 	]
 		.filter(Boolean)
 		.join('; ');
+}
+
+function askDetail(item: TrackerDigestItem): string {
+	return [
+		item.project && `Project: ${item.project}`,
+		item.next_step ? `Next step: ${item.next_step}` : item.question && `Q: ${item.question}`,
+		item.parked_until && `Parked until ${item.parked_until}`,
+		waitText(item.waiting_minutes)
+	]
+		.filter(Boolean)
+		.join(' · ');
+}
+
+function waitText(minutes: number | undefined): string {
+	if (minutes === undefined) return '';
+	const hours = Math.floor(minutes / 60);
+	return `waiting ${hours ? `${hours}h ` : ''}${minutes % 60}m`;
 }
 
 function recurrenceDetail(item: TrackerRecurringProblem): string {

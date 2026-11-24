@@ -1,5 +1,6 @@
 // @harness-uid u_dv4lnm54rz
 import type { TrackerItemClock, TrackerItemValue } from './normalizeTrackerItemFields.types';
+import { wallClockToEpochMs } from '../../helpers/attention-timing/wallClockToEpochMs';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
 
@@ -90,6 +91,15 @@ export function normalizeTrackerReminder(value: TrackerItemValue, now: number): 
 	}
 	if (at <= now) throw trackerItemError('reminder time must be in the future');
 	return trackerIsoTime(at);
+}
+
+export function normalizeTrackerParkUntil(value: TrackerItemValue, now: number): string {
+	const date = typeof value === 'string' && /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+	if (!date) return normalizeTrackerReminder(value, now);
+	normalizeTrackerReminder(`${date[0]}T23:59:59Z`, 0);
+	const [, year, month, day] = date.map(Number);
+	const at = wallClockToEpochMs({ year, month, day, hour: 8, minute: 0 }, trackerTimeZone);
+	return normalizeTrackerReminder(trackerIsoTime(at), now);
 }
 
 export function trackerIsoTime(epoch: number): string {

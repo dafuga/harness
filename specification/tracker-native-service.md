@@ -98,6 +98,12 @@ operator verifies the stopped database and chooses a rollback.
   Codex receipts persist token counters when one rollout matches the attempt’s
   owned worktree. Older or ambiguous attempts may have no usage.
   `show` includes retained run history and the local schedule preview.
+  Chief of Staff runs `tracker chase ITEM [--note TEXT]` when Daniel had to
+  ask for an overdue update or reports a miss. Each journal entry records
+  its actor, time and optional reason. `show` and `list` display the latest
+  entry and cumulative count, including after `done`. `list --chased`
+  includes completed items. The digest counts distinct items chased in the
+  last seven days.
   `ignore` and `unignore` use journal transitions and retain the actor, notes,
   and prior status. Automatic expiry for `ignore --until` is still pending.
   `sync` wakes the configured spoke links. Native launch writes a durable
@@ -124,21 +130,59 @@ operator verifies the stopped database and chooses a rollback.
 - **Recovery and handoff.** Tracker alerts on missing sessions and uses its
   normal dispatch path to recover eligible items with briefs after a grace
   period. It rechecks the live pane inventory before requesting recovery.
-  Opt-outs and outstanding flags hold recovery. For active context above
+  A started task can still recover after an automatic-pickup opt-out.
+  An explicit Daniel blocker holds recovery.
+
+  For other open or in-progress tasks, the hub watchdog checks for owner
+  activity, pending launches and active runs or panes before requesting
+  dispatch. It checks during 08:00–22:00 Lisbon time after two idle hours
+  by default. Configure `hostEffects.watchdog.idleWorkMinutes` to change
+  that threshold. The dispatcher chooses an approved computer, applies
+  normal capacity and retries pending requests. The digest lists queued
+  requests and their wait. If the task has no approved placement, the
+  watchdog alerts Chief of Staff. Ordinary tasks added by Daniel or
+  Chief of Staff queue by default. `tracker add ... --later` records a
+  persistent opt-out. `tracker launch on ITEM` re-enables automatic pickup. For active context above
   150,000 tokens, Tracker requests a short handoff once an owned pane is
   idle. It closes that pane for a fresh launch only after it verifies the
   handoff note and original attempt. Busy, attached, and unowned panes
   require Chief of Staff attention. Transcript roots allow local context
   measurement without including transcript contents in alerts.
+
 - **Chief of Staff.** `tracker needs-attention` and `tracker watchdog alerts`
   show active watchdog alerts with the item, computer, and session.
   `tracker watchdog dry-run` previews idle, startup, and recovery
   decisions without taking action. Set `watchdog.chiefOfStaff` on the
   primary Mac to deliver alerts to its idle CoS tmux pane and include MB2
   alerts over the existing host-key-verified SSH link. Delivery observes
-  Lisbon quiet hours and the thirty-minute cadence. The separate
-  thirty-minute tick continues to read `tracker list --flagged --json` for
-  ordinary decisions that need Daniel.
+  Lisbon quiet hours and the thirty-minute watchdog cadence. The separate
+  tick can still read `tracker list --flagged --json` for decisions.
+
+  Tracker sends the first ask, follows up two and six hours after the first
+  delivery, then repeats at 08:00 Lisbon each morning. Quiet hours run from
+  22:00 through 08:00. A quiet-hour follow-up waits for morning. If both
+  follow-up times have passed, the next repeat waits for the following morning.
+  Each ping includes how long the ask has waited. The digest shows every
+  open ask, including deferred and completed-item asks. Record Daniel's
+  answer with `tracker answer`, or use `unflag` or `ignore` to dismiss an
+  ordinary ask. iPhone push delivery depends on the separate `0wn8nf` rollout.
+
+  Chief of Staff files ideas when Daniel raises them and sets the project.
+  Use `add --next-step` or `update --next-step` to record a decision. Use
+  `done --next-step` when work finishes with a decision outstanding. That
+  completion records the work result while the question stays on the Lisbon
+  follow-up schedule. The digest lists the project, decision and its age even
+  if the project has no active runs. `answer` records a reply and leaves the
+  next step available for an explicit decision to move on.
+
+  Daniel can use `tracker park ITEM --until DATE` to hold pings until 08:00
+  Lisbon on that date, or pass an ISO timestamp with a time zone. The digest
+  shows the hold while the flagged worklist and reminder destinations wait.
+  `tracker move-on ITEM` records his decision and closes the item. These
+  commands use the trusted local Tracker actor and reject managed CLI
+  runners. Chief of Staff may relay Daniel's explicit decision with
+  `--by Daniel`. The actor is a local audit label.
+
 - **Adapter polling.** Only the designated primary Mac can poll retained
   GitHub sources. It uses the existing source owner, cursor, and
   `adapter-runner.lock` beside the journal. The GitHub CLI binding uses an

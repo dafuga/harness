@@ -176,5 +176,9 @@ export function legacySnapshot(database: DatabaseSync) {
 		'cos_state',
 		'meta'
 	];
-	return tables.map((table) => database.prepare(`SELECT * FROM ${table} ORDER BY rowid`).all());
+	return tables.map((table) => {
+		const columns =
+			table === 'reminders' ? 'key,item_id,kind,status,next_at,pings,last_ping,created_at' : '*';
+		return database.prepare(`SELECT ${columns} FROM ${table} ORDER BY rowid`).all();
+	});
 }

@@ -45,7 +45,9 @@ const blocked = summary('abc100', 'Blocked item', {
 	needs_daniel: true,
 	due: '2026-06-30',
 	owner: 'operator',
-	question: 'Approve?'
+	question: 'Approve?',
+	asked_at: UPDATED,
+	waiting_minutes: 2730
 });
 
 const problem = {
@@ -58,14 +60,23 @@ const problem = {
 	failed_local: '2026-06-30 08:00'
 };
 
-test('digest returns the full legacy groups and counts using the configured local day', () => {
+test('digest returns counts, unanswered asks and the configured local day', () => {
 	fixture.database.exec('PRAGMA query_only = ON');
 	expect(fixture.repository.digest(NOW)).toEqual({
 		generated_at: '2026-07-01T23:30:00.000Z',
 		local_time: '2026-07-02 00:30 Europe/Lisbon',
 		today: '2026-07-02',
 		blocked: [blocked],
-		needs_daniel: [blocked],
+		needs_daniel: [
+			blocked,
+			summary('abc200', 'Done item', {
+				status: 'done',
+				needs_daniel: true,
+				due: '2026-06-28',
+				asked_at: UPDATED,
+				waiting_minutes: 2730
+			})
+		],
 		overdue: [blocked, summary('abc400', 'Resolved item', { due: '2026-06-30' })],
 		due_today: [
 			summary('abc100more', 'Timestamp today', {
@@ -76,7 +87,17 @@ test('digest returns the full legacy groups and counts using the configured loca
 			summary('xyz100', 'Later today', { due: '2026-07-02T03:00:00.000Z' })
 		],
 		recurring_missed: [problem],
-		counts: { blocked: 1, needs_daniel: 1, overdue: 2, due_today: 3, recurring_missed: 1 }
+		queued: [],
+		chased_7d: [],
+		counts: {
+			blocked: 1,
+			needs_daniel: 2,
+			overdue: 2,
+			due_today: 3,
+			recurring_missed: 1,
+			queued: 0,
+			chased_7d: 0
+		}
 	});
 	const utc = fixture.repository.digest(NOW, 'UTC');
 	expect(utc.local_time).toBe('2026-07-01 23:30 UTC');
@@ -111,8 +132,12 @@ test('digestText renders legacy section order and omits blocked rows from other 
 		[
 			'Tracker digest - 2026-07-02 00:30 Europe/Lisbon',
 			'BLOCKED (1)',
-			'  - [abc100] Blocked item - blocked: Needs a plan; NEEDS DANIEL; due 2026-06-30 (task; owner operator, agent fixture-agent)',
-			'NEEDS DANIEL (0)',
+			'  - [abc100] Blocked item - blocked: Needs a plan; NEEDS DANIEL · waiting 45h 30m; due 2026-06-30 (task; owner operator, agent fixture-agent)',
+			'NEEDS DANIEL (1)',
+			'  - [abc200] Done item - waiting 45h 30m (task; agent fixture-agent)',
+			'QUEUED (0)',
+			'  (none)',
+			'Chased (7d) (0)',
 			'  (none)',
 			'OVERDUE (1)',
 			'  - [abc400] Resolved item - due 2026-06-30 (task; agent fixture-agent)',

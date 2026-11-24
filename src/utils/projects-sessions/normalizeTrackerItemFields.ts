@@ -25,6 +25,7 @@ const textFields = new Set([
 	'notes',
 	'parent',
 	'question',
+	'next_step',
 	'answer',
 	'answered_at',
 	'answered_by',
@@ -44,7 +45,8 @@ const textFields = new Set([
 	'ignored_prev_status',
 	'adapter_notice',
 	'adapter_instructions',
-	'adapter_due_owner'
+	'adapter_due_owner',
+	'chase+'
 ]);
 const flagFields = new Set([
 	'needs_daniel',
@@ -68,6 +70,7 @@ const normalizers = {
 	title: normalizeTitle,
 	due: normalizeTrackerDue,
 	remind_at: normalizeInstant,
+	parked_until: normalizeInstant,
 	ignored_until: normalizeTrackerDue,
 	callback: normalizeCallback,
 	repo: normalizeRepo,

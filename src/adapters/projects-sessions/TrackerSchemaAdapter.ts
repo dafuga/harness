@@ -13,6 +13,8 @@ export const trackerItemFields = [
 	'status',
 	'due',
 	'remind_at',
+	'next_step',
+	'parked_until',
 	'owner',
 	'agent',
 	'notes',
@@ -88,6 +90,21 @@ CREATE TABLE IF NOT EXISTS reminders(
 );
 `;
 
+// Derive counts from distinct journal operations, including those stored by older replicas.
+const chaseProjection = `
+CREATE INDEX IF NOT EXISTS ops_tracker_chase ON ops(item_id, hlc, op_id)
+	WHERE json_type(fields, '$."chase+"') IS NOT NULL;
+CREATE VIEW IF NOT EXISTS tracker_item_chases AS
+	SELECT chase_item_id, chased_clock, chased_by, chased_reason, chased_count
+	FROM (
+		SELECT item_id AS chase_item_id, hlc AS chased_clock, coalesce(actor, node) AS chased_by,
+			json_extract(fields, '$."chase+"') AS chased_reason,
+			count(*) OVER (PARTITION BY item_id) AS chased_count,
+			row_number() OVER (PARTITION BY item_id ORDER BY hlc DESC, op_id DESC) AS latest
+		FROM ops WHERE json_type(fields, '$."chase+"') IS NOT NULL
+	) WHERE latest = 1;
+`;
+
 export class TrackerSchemaAdapter {
 	constructor(
 		private readonly database: SqliteDatabase,
@@ -100,6 +117,7 @@ export class TrackerSchemaAdapter {
 		try {
 			this.database.exec(trackerSchema);
 			this.migrateColumns();
+			this.database.exec(chaseProjection);
 			const now = this.config.now ?? Date.now;
 			const createdAt = Number(this.metadata('created_at', () => String(now())));
 			const dbId = this.metadata('db_id', this.config.databaseId ?? randomUUID);

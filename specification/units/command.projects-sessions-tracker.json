@@ -38,6 +38,7 @@
 			"NativeTrackerPick",
 			"NativeTrackerRunRead",
 			"nativeTrackerCommonOptions",
+			"itemFields",
 			"nativeTrackerCommandOptions",
 			"nativeTrackerIdVerbs",
 			"nativeTrackerInspectionRequest",
@@ -109,6 +110,11 @@
 			{
 				"name": "formatListedRun.run",
 				"type": "NativeTrackerListedRun",
+				"required": true
+			},
+			{
+				"name": "itemFields.input",
+				"type": "Record<string, string | boolean | undefined>",
 				"required": true
 			},
 			{
@@ -192,6 +198,10 @@
 			},
 			{
 				"name": "nativeTrackerCommonOptions",
+				"type": "unknown"
+			},
+			{
+				"name": "itemFields",
 				"type": "unknown"
 			},
 			{
@@ -394,6 +404,24 @@
 					{
 						"name": "formatListedRun",
 						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "itemFields",
+				"inputs": [
+					{
+						"name": "itemFields.input",
+						"type": "Record<string, string | boolean | undefined>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "itemFields",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

@@ -8,7 +8,9 @@ import {
 	minute,
 	notificationFixture,
 	start,
-	wire
+	wire,
+	verifyDirectFollowUps,
+	verifyParkedReminderRetry
 } from './tracker-notification/fixture';
 
 test('tick holds direct reminders through quiet hours, groups once, and repeats only active flags after retry', async () => {
@@ -56,21 +58,21 @@ test('tick holds direct reminders through quiet hours, groups once, and repeats 
 			{ id: 'due', reminder_number: 0, reason: 'due' }
 		]
 	});
-	f.at(release + 65 * minute);
-	await f.service.tick();
-	expect(wire(f.calls[2])).toMatchObject({
-		new: [],
-		reminders: [{ id: 'flag', reminder_number: 1 }]
-	});
-	f.rows.set('flag', { ...f.rows.get('flag')!, resolved: 1 });
-	f.at(release + 125 * minute);
-	await f.service.tick();
-	expect(f.calls).toHaveLength(3);
-	expect([...f.queue.read().reminders.values()].every((r) => r.status === 'closed')).toBe(true);
+	await verifyDirectFollowUps(f, release + 5 * minute);
 });
 
 test('tick delivers the current explicit reminder once at its timestamp across restarts and quiet hours', async () => {
-	const f = notificationFixture({ options: { chiefOfStaff: chief } });
+	let uncertain = true;
+	const f = notificationFixture({
+		options: { chiefOfStaff: chief },
+		send: async () => {
+			if (uncertain) {
+				uncertain = false;
+				throw new Error('synthetic lost acknowledgement');
+			}
+			return { status: 'sent' };
+		}
+	});
 	const night = start + 180 * minute;
 	const wake = night + 2 * minute;
 	const snooze = (at: number) => new Date(at).toISOString();
@@ -104,22 +106,7 @@ test('tick delivers the current explicit reminder once at its timestamp across r
 	await f.restart().tick();
 	expect(f.calls).toHaveLength(0);
 
-	f.at(wake);
-	await measureTick(f.restart(), 'explicit-reminder-at-wake');
-	expect(f.calls).toHaveLength(1);
-	expect(wire(f.calls[0])).toMatchObject({
-		type: 'attention',
-		new: [
-			{
-				id: 'delayed',
-				reason: 'remind_at',
-				remind_at: snooze(wake),
-				question: 'Approve the fixture?'
-			}
-		]
-	});
-	await f.restart().tick();
-	expect(f.calls).toHaveLength(1);
+	await verifyParkedReminderRetry(f, wake);
 });
 
 test('tick sends a scheduled reminder through a webhook when it is the only hub destination', async () => {
@@ -140,7 +127,7 @@ test('tick sends a scheduled reminder through a webhook when it is the only hub 
 	});
 });
 
-test('tick coalesces legacy webhook escalations after a block and closes them on answer', async () => {
+test('tick follows up webhook asks on their own cadence and closes them on answer', async () => {
 	const f = notificationFixture();
 	f.options.webhook = { destination: chief, batch: false, coalesceMinutes: 10 };
 	await f.service.tick();
@@ -174,15 +161,19 @@ test('tick coalesces legacy webhook escalations after a block and closes them on
 		{ event: 'needs_daniel', escalation: 0, item_id: 'flag' }
 	]);
 
-	f.at(start + 60 * minute);
+	f.at(start + 119 * minute);
+	await f.restart().tick();
+	expect(f.calls).toHaveLength(2);
+	const morning = Date.parse('2026-02-03T08:00:00Z');
+	f.at(morning);
 	await f.restart().tick();
 	expect(wire(f.calls[2]).items).toMatchObject([
-		{ event: 'needs_daniel', escalation: 1, item_id: 'block' },
-		{ event: 'needs_daniel', escalation: 1, item_id: 'flag' }
+		{ event: 'needs_daniel', escalation: 1, item_id: 'block', waiting_minutes: 720 },
+		{ event: 'needs_daniel', escalation: 1, item_id: 'flag', waiting_minutes: 712 }
 	]);
 	f.rows.set('block', { ...f.rows.get('block')!, resolved: 1 });
 	f.rows.set('flag', { ...f.rows.get('flag')!, resolved: 1 });
-	f.at(start + 120 * minute);
+	f.at(morning + 360 * minute);
 	await f.service.tick();
 	expect(f.calls).toHaveLength(3);
 	expect([...f.queue.read().flags.values()].map((row) => row.status)).toEqual(['closed', 'closed']);

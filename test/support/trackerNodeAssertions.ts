@@ -1,4 +1,4 @@
-import { verifyLaunchCliOptions } from './trackerLaunchOutcomeFixture';
+import { verifyLaunchCliOptions } from './trackerManagedLaunchAssertions';
 import { createServer } from 'node:http';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { once } from 'node:events';
@@ -8,11 +8,12 @@ import {
 	loopback,
 	startTrackerFixture,
 	trackerProcess,
+	verifyDefaultPickup,
 	verifyTrackerWire
 } from './trackerNodeProcess';
 import type { TrackerFixtureReceipts, TrackerNodeFixture } from './trackerNodeProcess.types';
 import { verifyCosDryRun } from './verifyCosDryRun';
-import { verifyReminder } from './trackerNodeReminder';
+import { verifyProjectFollowUp, verifyReminder } from './trackerNodeReminder';
 export async function proveForegroundSync(
 	hub: TrackerNodeFixture,
 	spoke: TrackerNodeFixture,
@@ -45,12 +46,14 @@ export async function proveForegroundSync(
 				.poll(() => fixtureTrackerJson(hub, ['list']), { timeout: 8_000 })
 				.toEqual(expect.arrayContaining([expect.objectContaining({ id })]));
 			await verifySpokePublication(hub);
+			await verifyDefaultPickup(hub);
 			await verifyTrackerWire(syncPort, id);
 			const reverse = await fixtureTrackerJson(hub, ['add', 'Reverse fixture item']);
 			await expect
 				.poll(() => fixtureTrackerJson(spoke, ['list']), { timeout: 8_000 })
 				.toEqual(expect.arrayContaining([expect.objectContaining({ id: reverse.id })]));
 			await verifyTrackerNotificationFlow(hub, spoke, id, sink.receipts);
+			await verifyProjectFollowUp(hub, spoke);
 			expect(await fixtureTrackerJson(spoke, ['status'])).toMatchObject({
 				role: 'spoke',
 				sync: { connected: true, pending_push: 0 },
@@ -89,6 +92,21 @@ async function qualifyItemCommands(spoke: TrackerNodeFixture, id: string) {
 		id,
 		notes_log: [{ text: 'Retain this note' }]
 	});
+	expect(
+		await fixtureTrackerJson(spoke, [
+			'chase',
+			short,
+			'--note',
+			'Daniel asked for status',
+			'--by',
+			'Chief of Staff'
+		])
+	).toMatchObject({
+		id,
+		chased_count: 1,
+		chased_by: 'Chief of Staff',
+		chased_reason: 'Daniel asked for status'
+	});
 	await verifyLaunchCliOptions(spoke, id);
 }
 
@@ -105,14 +123,9 @@ async function verifyTrackerNotificationFlow(
 		.poll(async () => (await trackerProcess(hub, ['digest']).exited).stdout)
 		.toContain('Is the fixture ready?');
 	verifyCosDryRun(hub, id);
-	await expect
-		.poll(() => [...receipts.values()].find(({ path }) => path === '/cos')?.body, {
-			timeout: 9_000
-		})
-		.toMatchObject({
-			type: 'attention',
-			new: [{ id, question: 'Is the fixture ready?' }]
-		});
+	expect(await fixtureTrackerJson(hub, ['digest'])).toMatchObject({
+		needs_daniel: [{ id, question: 'Is the fixture ready?', waiting_minutes: expect.any(Number) }]
+	});
 	await verifyReminder(hub, spoke, id, receipts);
 	expect(
 		await fixtureTrackerJson(spoke, ['answer', id, 'Fixture confirmed', '--by', 'fixture-operator'])
@@ -128,10 +141,15 @@ async function verifyTrackerNotificationFlow(
 	).toMatchObject({ id, status: 'done' });
 	await verifyCompletionCallback(receipts, id);
 	await expect
+		.poll(() => fixtureTrackerJson(hub, ['list', '--chased']))
+		.toMatchObject([{ id, status: 'done', chased_count: 1 }]);
+	await expect
 		.poll(() => fixtureTrackerJson(hub, ['show', id]), { timeout: 8_000 })
 		.toMatchObject({
 			id,
 			status: 'done',
+			chased_count: 1,
+			chased_reason: 'Daniel asked for status',
 			answer: 'Fixture confirmed',
 			notes_log: expect.arrayContaining([
 				expect.objectContaining({ text: 'Completion before worktree cleanup' })

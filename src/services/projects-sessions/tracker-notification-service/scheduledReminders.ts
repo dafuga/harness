@@ -6,7 +6,7 @@ import type {
 	TrackerNotificationSource
 } from '../TrackerNotificationService.types';
 import { callbackRequest, webhookRequest } from './deliveryRequest';
-import { activeItem, eventId, isoTime, readyRows } from './notificationRules';
+import { activeItem, eventId, isoTime, parkedUntil, readyRows } from './notificationRules';
 import type { DeliveryAttempt, TrackerNotificationState } from './notificationState.types';
 
 function scheduledKey(item: TrackerNotificationItem): string {
@@ -71,6 +71,7 @@ export function nextScheduledReminder(
 			row.status = 'closed';
 			continue;
 		}
+		if (parkedUntil(item) > now) continue;
 		const request = scheduledRequest(item, eventId([row.key]), target.destination, {
 			source,
 			now,

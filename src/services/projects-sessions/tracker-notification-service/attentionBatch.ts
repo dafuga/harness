@@ -15,7 +15,7 @@ import type {
 	TrackerNotificationState
 } from './notificationState.types';
 import { webhookRequest } from './deliveryRequest';
-import { eventId, flagged, isoTime, minute } from './notificationRules';
+import { askQuietHours, eventId, flagged, isoTime, minute, parkedUntil } from './notificationRules';
 
 function waitingToLaunch(
 	entry: AttentionRow,
@@ -37,9 +37,13 @@ function stillRelevant(entry: AttentionRow, source: TrackerNotificationSource): 
 	if (!item || item.deleted || item.status === 'ignored') return false;
 	if (entry.kind === 'done') return item.status === 'done';
 	if (Date.parse(item.remind_at ?? '') > Date.parse(entry.line.at)) return false;
-	if (entry.kind === 'blocked') return item.status === 'blocked';
+	if (entry.kind === 'blocked') return stillBlocked(entry, item);
 	if (entry.kind === 'needs_daniel') return flagged(item);
 	return waitingToLaunch(entry, item, source);
+}
+
+function stillBlocked(entry: AttentionRow, item: TrackerNotificationItem): boolean {
+	return item.status === 'blocked' && (!entry.line.needs_daniel || flagged(item));
 }
 
 function eligibleLines(
@@ -103,7 +107,15 @@ function prepareAttention(
 	const group = groupAttentionLines(
 		pending.map((row) => ({ ...row, atMs: Date.parse(row.line.at) }))
 	);
-	const items = group.lines.map((row) => row.line);
+	const items = group.lines.map(({ line }) => {
+		if (line.event !== 'needs_daniel' && !line.needs_daniel) return line;
+		const at = Date.parse(line.at);
+		return {
+			...line,
+			first_noticed_at: line.at,
+			waiting_minutes: Math.max(0, Math.floor((now - at) / minute))
+		};
+	});
 	const keys = group.lines.map((row) => row.key);
 	const included = new Set(keys);
 	for (const row of pending) if (!included.has(row.key)) row.status = 'dropped';
@@ -138,7 +150,12 @@ export function nextAttention(
 		delete state.forceAttention;
 		return undefined;
 	}
+	const quiet = quietHourBoundary(now, askQuietHours) > now;
+	const sendable = pending.filter(({ line, itemId }) => {
+		if (line.event !== 'needs_daniel' && !line.needs_daniel) return true;
+		return !quiet && parkedUntil(source.item(itemId)) <= now;
+	});
 	const configured = { ...options, webhook };
-	if (!canSendAttention(state, configured, pending, now)) return undefined;
-	return prepareAttention(state, pending, configured, now);
+	if (!sendable.length || !canSendAttention(state, configured, sendable, now)) return undefined;
+	return prepareAttention(state, sendable, configured, now);
 }

@@ -1,0 +1,58 @@
+{
+	"name": "tracker-project-follow-up-shpe9k",
+	"goal": "Preserve undecided project next steps through completion, parking, and explicit move-on",
+	"createdAt": "2026-11-24T21:53:49.365Z",
+	"updatedAt": "2026-11-24T22:01:39.827Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-24T21:56:19.756Z",
+			"evidence": "Finished projects with an open owner decision stay visible and repeat until Daniel parks or closes them."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-24T21:56:21.872Z",
+			"evidence": "The local API lifecycle, direct reminder cadence, and paired signed-node replay lacked a parked completed-item decision."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-24T22:01:37.928Z",
+			"evidence": "Frozen cd44113556 fails on the missing decision and early parked ping. Isolated MB2 native CLI replay failed at the missing --next-step option."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-24T22:01:39.827Z",
+			"evidence": "Journal records the decision and hold separately from task completion. The same flag schedule resumes after a hold."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -11,7 +11,13 @@ import type {
 	TrackerNotificationState
 } from './notificationState.types';
 import type { OutboxGroup, OutboxRecipient } from './outboxRouting.types';
-import { flagged, holdRegularReminder, readyRows } from './notificationRules';
+import {
+	askQuietHours,
+	flagged,
+	holdRegularReminder,
+	parkedUntil,
+	readyRows
+} from './notificationRules';
 import { outboxBatch, outboxSingle } from './webhookBatch';
 import { normalizeActor } from './webhookEvents';
 
@@ -67,7 +73,7 @@ function relevant(row: OutboxRow, item: TrackerNotificationItem | undefined): bo
 	if (!item || item.deleted) return false;
 	if (row.kind === 'needs_daniel') return flagged(item);
 	if (row.kind === 'due') return item.status !== 'done' && item.due === row.payload.due;
-	return item.status === 'blocked';
+	return item.status === 'blocked' && (!row.payload.needs_daniel || flagged(item));
 }
 
 function drop(row: OutboxRow, reason: string): undefined {
@@ -95,7 +101,8 @@ function sendReady(
 		drop(row, 'no longer relevant');
 		return false;
 	}
-	const release = quietHourBoundary(now, options.quietHours);
+	if (parkedUntil(item) > now) return false;
+	const release = quietHourBoundary(now, row.kind === 'due' ? options.quietHours : askQuietHours);
 	if (release > now) row.nextAt = release;
 	return release <= now;
 }
