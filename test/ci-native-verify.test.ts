@@ -10,7 +10,7 @@ function job(name: string): string {
 }
 const check = job('check');
 const verify = job('verify');
-const xcode = '/Applications/Xcode_26.3.app/Contents/Developer';
+const xcode = '/Applications/Xcode_27.2.app/Contents/Developer';
 /** Where a line of the verify job stands, to compare the order of its steps. */
 const at = (text: string): number => verify.indexOf(text);
 
@@ -37,23 +37,33 @@ test('the full check stays on Linux with its display and dependency setup', () =
 
 test('the exact commit is verified on Apple silicon macOS, where native evidence exists', () => {
 	expect(verify).toContain('name: Verify the exact commit\n');
-	expect(verify).toMatch(/\n {4}runs-on: macos-15\n/);
+	expect(verify).toMatch(/\n {4}runs-on: xcode-27\n/);
 	expect(verify).toContain('test "$(uname -m)" = arm64');
 	expect(verify).not.toMatch(/ubuntu|xvfb|apt-get|--with-deps/);
 	expect(verify).toMatch(/\n {4}timeout-minutes: 180\n/);
 });
 
 test('one Xcode is pinned, selected for every tool that asks, and logged before anything runs', () => {
-	expect(verify).toMatch(new RegExp(`\\n {4}env:\\n {6}DEVELOPER_DIR: ${xcode}\\n`));
+	const iosApp = 'packages/desktop/ios/App';
+	const project = readFileSync(`${iosApp}/App.xcodeproj/project.pbxproj`, 'utf8');
+	const capacitor = readFileSync(`${iosApp}/CapApp-SPM/Package.swift`, 'utf8');
+	const minimumTargets = [...project.matchAll(/IPHONEOS_DEPLOYMENT_TARGET = ([\d.]+);/g)].map(
+		([, version]) => version
+	);
+	expect
+		.soft(minimumTargets, 'Minimum iOS version for the project and app target')
+		.toEqual(['15.0', '15.0', '15.0', '15.0']);
+	expect.soft(capacitor).toContain('platforms: [.iOS(.v15)]');
+	expect(verify).toContain(`\n    env:\n      DEVELOPER_DIR: ${xcode}\n`);
 	expect([...verify.matchAll(/Xcode_[\d.]+\.app/g)].map((found) => found[0])).toEqual([
-		'Xcode_26.3.app'
+		'Xcode_27.2.app'
 	]);
 	const selection = [
 		'test -d "$DEVELOPER_DIR"',
 		'sudo xcode-select --switch "$DEVELOPER_DIR"',
 		'test "$(xcode-select -p)" = "$DEVELOPER_DIR"',
 		'echo "DEVELOPER_DIR=$DEVELOPER_DIR"',
-		'xcodebuild -version | grep -Fx "Xcode 26.3"',
+		'xcodebuild -version | grep -Fx "Xcode 27.2"',
 		'xcodebuild -showsdks',
 		'xcrun --sdk iphonesimulator --show-sdk-version'
 	];
@@ -87,6 +97,19 @@ test('the macOS job keeps every obligation of the verification', () => {
 	expect(verify).toContain('git lfs install --local\n');
 	expect(verify).toMatch(/id: verify\n {8}continue-on-error: true\n/);
 	expect(verify.trimEnd().endsWith('run: exit 1')).toBe(true);
+	const releaseBuild = at('name: Build and verify the unsigned iOS Release app');
+	expect(releaseBuild).toBeGreaterThan(at('bun install --frozen-lockfile'));
+	expect(releaseBuild).toBeLessThan(at('verify run --commit'));
+	for (const required of [
+		'bun run cap:sync',
+		"-configuration Release -destination 'generic/platform=iOS'",
+		'CODE_SIGNING_ALLOWED=NO',
+		'xcrun --sdk iphoneos --show-sdk-version',
+		'Print :MinimumOSVersion',
+		'Print :DTSDKName'
+	]) {
+		expect(verify.slice(releaseBuild, at('verify run --commit'))).toContain(required);
+	}
 });
 
 test('existing evidence is read with a credential that is removed before the code runs', () => {
