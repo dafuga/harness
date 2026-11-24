@@ -133,20 +133,9 @@
 				"required": true
 			},
 			{
-				"name": "trackerManagedHostLauncher.client",
-				"type": "TrackerWorkerClient",
+				"name": "trackerManagedHostLauncher.options",
+				"type": "TrackerManagedLauncherOptions",
 				"required": true
-			},
-			{
-				"name": "trackerManagedHostLauncher.platform",
-				"type": "typeof process.platform",
-				"required": false
-			},
-			{
-				"name": "trackerManagedHostLauncher.transcriptRoots",
-				"type": "unknown[]",
-				"required": false,
-				"default": []
 			},
 			{
 				"name": "trackerManagedToken.node",
@@ -560,20 +549,9 @@
 						"required": true
 					},
 					{
-						"name": "trackerManagedHostLauncher.client",
-						"type": "TrackerWorkerClient",
+						"name": "trackerManagedHostLauncher.options",
+						"type": "TrackerManagedLauncherOptions",
 						"required": true
-					},
-					{
-						"name": "trackerManagedHostLauncher.platform",
-						"type": "typeof process.platform",
-						"required": false
-					},
-					{
-						"name": "trackerManagedHostLauncher.transcriptRoots",
-						"type": "unknown[]",
-						"required": false,
-						"default": []
 					}
 				],
 				"outputs": [

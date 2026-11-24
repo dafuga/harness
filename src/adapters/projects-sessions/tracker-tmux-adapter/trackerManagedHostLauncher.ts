@@ -41,8 +41,9 @@ import {
 
 export function trackerManagedHostLauncher(
 	config: TrackerManagedLaunchConfig,
-	{ client, platform = process.platform, transcriptRoots = [] }: TrackerManagedLauncherOptions
+	options: TrackerManagedLauncherOptions
 ): TrackerHostLaunchPort {
+	const { client, platform = process.platform, transcriptRoots = [] } = options;
 	const tmux = controlledTrackerExecutable(config.tmux);
 	const directory = privateTrackerDirectory(config.stateDirectory);
 	const trackerBin = realpathSync(config.trackerBinDirectory);
