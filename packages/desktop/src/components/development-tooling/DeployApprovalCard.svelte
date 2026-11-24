@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_xa7iq7huqp -->
 <script lang="ts">
+	import DetailList from '$shared/shared-primitives/DetailList.svelte';
 	import Modal from '$shared/Modal.svelte';
 	import type {
 		ApprovalCards,
@@ -51,11 +52,15 @@
 </script>
 
 <Modal open title="Review deploy approval" variant="text" onClose={close}>
-	<hx-dl data-deploy-approval-fields>
-		{#each fields as [label, value] (label)}
-			{#if value != null}<hx-dt>{label}</hx-dt><hx-dd>{value}</hx-dd>{/if}
-		{/each}
-	</hx-dl>
+	<DetailList
+		rows={fields.filter((row) => row[1] != null)}
+		rowKey={(row) => row[0] ?? ''}
+		className="deploy-approval-fields"
+		grouped={false}
+	>
+		{#snippet label(row)}{row[0]}{/snippet}
+		{#snippet children(row)}{row[1]}{/snippet}
+	</DetailList>
 	{#snippet footer()}
 		<hx-div class="decision-actions">
 			<hx-p role="status">{status}</hx-p>
@@ -71,27 +76,27 @@
 </Modal>
 
 <style>
-	:global(.viewer-dialog[open]:has([data-deploy-approval-fields])) {
+	:global(.viewer-dialog[open]:has(.deploy-approval-fields)) {
 		display: flex;
 		flex-direction: column;
 	}
-	:global(.viewer-dialog:has([data-deploy-approval-fields]) .viewer-content) {
+	:global(.viewer-dialog:has(.deploy-approval-fields) .viewer-content) {
 		min-height: 0;
 		overflow: auto;
 	}
-	:global(.viewer-dialog:has([data-deploy-approval-fields]) > footer) {
+	:global(.viewer-dialog:has(.deploy-approval-fields) > footer) {
 		flex: none;
 	}
-	dl {
+	:global(.deploy-approval-fields) {
 		display: grid;
 		grid-template-columns: minmax(6rem, 1fr) minmax(0, 3fr);
 		gap: var(--hx-space-8) var(--hx-space-12);
 		margin: 0;
 	}
-	dt {
+	:global(.deploy-approval-fields dt) {
 		color: var(--hx-color-text-muted);
 	}
-	dd {
+	:global(.deploy-approval-fields dd) {
 		margin: 0;
 		overflow-wrap: anywhere;
 	}

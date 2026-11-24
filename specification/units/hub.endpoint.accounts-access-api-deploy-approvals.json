@@ -4,62 +4,125 @@
 	"uid": "u_32tlacz6al",
 	"kind": "endpoint",
 	"title": "/(accounts-access)/api/deploy-approvals",
-	"responsibility": "Owns the /(accounts-access)/api/deploy-approvals HTTP endpoint.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Serves authenticated native decisions and scoped runner registration and claims for exact deploy attempts.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/routes/(accounts-access)/api/deploy-approvals/+server.ts"],
-		"symbols": ["GET", "POST"]
+		"source": [
+			"packages/hub/src/routes/(accounts-access)/api/deploy-approvals/+server.ts"
+		],
+		"symbols": [
+			"GET",
+			"POST"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "GET.request",
-				"type": "unknown",
+				"name": "request",
+				"type": "Request",
 				"required": true
 			},
 			{
-				"name": "GET.platform",
-				"type": "unknown",
-				"required": true
+				"name": "platform",
+				"type": "App.Platform | undefined",
+				"required": false
 			}
 		],
 		"outputs": [
 			{
-				"name": "GET",
-				"type": "unknown"
-			},
-			{
-				"name": "POST",
-				"type": "unknown"
+				"name": "response",
+				"type": "Response"
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "InvalidDecision",
+				"type": "HTTP 400"
+			},
+			{
+				"name": "UnknownApprovalAuthority",
+				"type": "HTTP 404"
+			},
+			{
+				"name": "DecisionUnavailable",
+				"type": "HTTP 409"
+			}
+		],
+		"errorStatus": "found",
 		"operations": [
 			{
 				"name": "GET",
 				"inputs": [
 					{
-						"name": "GET.request",
-						"type": "unknown",
+						"name": "request",
+						"type": "Request",
 						"required": true
 					},
 					{
-						"name": "GET.platform",
-						"type": "unknown",
-						"required": true
+						"name": "platform",
+						"type": "App.Platform | undefined",
+						"required": false
 					}
 				],
 				"outputs": [
 					{
-						"name": "GET",
-						"type": "unknown"
+						"name": "response",
+						"type": "Response"
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "InvalidDecision",
+						"type": "HTTP 400"
+					},
+					{
+						"name": "UnknownApprovalAuthority",
+						"type": "HTTP 404"
+					},
+					{
+						"name": "DecisionUnavailable",
+						"type": "HTTP 409"
+					}
+				],
+				"errorStatus": "found"
+			},
+			{
+				"name": "POST",
+				"inputs": [
+					{
+						"name": "request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "platform",
+						"type": "App.Platform | undefined",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "response",
+						"type": "Response"
+					}
+				],
+				"errors": [
+					{
+						"name": "InvalidDecision",
+						"type": "HTTP 400"
+					},
+					{
+						"name": "UnknownApprovalAuthority",
+						"type": "HTTP 404"
+					},
+					{
+						"name": "DecisionUnavailable",
+						"type": "HTTP 409"
+					}
+				],
+				"errorStatus": "found"
 			}
 		],
 		"initialization": []

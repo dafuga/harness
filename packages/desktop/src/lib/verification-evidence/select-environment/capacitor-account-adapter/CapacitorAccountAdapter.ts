@@ -73,6 +73,19 @@ function browserApiOf(send: (call: AccountNativeCall) => Promise<AccountNativeRe
 	};
 }
 
+function nativeDeployApprovals(
+	send: (call: AccountNativeCall) => Promise<AccountNativeReply>
+): NonNullable<DesktopBridge['deployApprovals']> {
+	return async (body) =>
+		json(
+			await send(
+				body
+					? { method: 'POST', path: deployApprovalPath, body }
+					: { method: 'GET', path: deployApprovalPath }
+			)
+		);
+}
+
 /**
  * This phone's own Hub account as a product interface. Google sign-in, the session and every
  * credential stay in the native plugin; here each read is one call of the Hub's project API
@@ -88,7 +101,6 @@ export class CapacitorAccountAdapter {
 	/** The generation in which the Hub denied the overview; the offer stays withdrawn until the account changes. */
 	private refusedAt: number | null = null;
 	constructor(private readonly config: CapacitorAccountAdapterConfig) {}
-
 	connect(): DesktopBridge {
 		const shared = browserBridge(browserApiOf((call) => this.send(call)));
 		const bridge: DesktopBridge = {
@@ -98,14 +110,7 @@ export class CapacitorAccountAdapter {
 				return () => this.listeners.delete(listener);
 			},
 			listProjects: () => this.listProjects(shared),
-			deployApprovals: async (input) =>
-				json(
-					await this.send(
-						input
-							? { method: 'POST', path: deployApprovalPath, body: input }
-							: { method: 'GET', path: deployApprovalPath }
-					)
-				),
+			deployApprovals: nativeDeployApprovals((call) => this.send(call)),
 			hostedStatus: () => this.account(() => this.config.plugin.status()),
 			connectHosted: (input) => this.account(() => this.config.plugin.connect(input)),
 			disconnectHosted: () => this.disconnect()

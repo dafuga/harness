@@ -40,20 +40,7 @@ test('only the configured native owner can decide one current release, and only 
 			200,
 			[{ ...card, receipt: null, used: false }]
 		]);
-		for (const result of await Promise.all([
-			fixture.nonOwner(decide),
-			fixture.scoped(decide),
-			fixture.browser(decide)
-		]))
-			expect(await response(result)).toEqual([404, { error: 'not-found' }]);
-		expect(await response(await fixture.session({ ...decide, plan: '9'.repeat(64) }))).toEqual([
-			409,
-			{ error: 'approval-unavailable' }
-		]);
-		expect(
-			await response(await fixture.session({ answer: 'Yes, deploy', item: 'fixture-item' }))
-		).toEqual([400, { error: 'invalid-input' }]);
-		expect(await response(await fixture.runner(collect))).toEqual([200, { status: 'pending' }]);
+		await refuseUnscopedDecisions(fixture, decide, collect);
 		const decisions = await Promise.all([fixture.session(decide), fixture.session(decide)]);
 		expect(decisions.map((item) => item.status).sort()).toEqual([200, 409]);
 		const receipt = await decisions.find((item) => item.ok)!.json();
@@ -113,6 +100,27 @@ test('denial, expiration, and revoked device or runner grants all prevent collec
 		await fixture.close();
 	}
 }, 20_000);
+
+async function refuseUnscopedDecisions(
+	fixture: Awaited<ReturnType<typeof deployApprovalFixture>>,
+	decide: { id: string; plan: string; decision: string },
+	collect: unknown
+) {
+	for (const result of await Promise.all([
+		fixture.nonOwner(decide),
+		fixture.scoped(decide),
+		fixture.browser(decide)
+	]))
+		expect(await response(result)).toEqual([404, { error: 'not-found' }]);
+	expect(await response(await fixture.session({ ...decide, plan: '9'.repeat(64) }))).toEqual([
+		409,
+		{ error: 'approval-unavailable' }
+	]);
+	expect(
+		await response(await fixture.session({ answer: 'Yes, deploy', item: 'fixture-item' }))
+	).toEqual([400, { error: 'invalid-input' }]);
+	expect(await response(await fixture.runner(collect))).toEqual([200, { status: 'pending' }]);
+}
 
 async function response(reply: Response) {
 	return [reply.status, await reply.json()];

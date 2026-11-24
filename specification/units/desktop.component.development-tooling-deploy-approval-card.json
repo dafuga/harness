@@ -19,13 +19,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/development-tooling/DeployApprovalCard.svelte"
-		],
-		"symbols": [
-			"DeployApprovalCard",
-			"DeployApprovalCard.footer"
-		]
+		"source": ["packages/desktop/src/components/development-tooling/DeployApprovalCard.svelte"],
+		"symbols": ["DeployApprovalCard", "DeployApprovalCard.footer"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -133,9 +128,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"exact-release-deploy-approvals"
-	],
+	"scenarios": ["exact-release-deploy-approvals"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

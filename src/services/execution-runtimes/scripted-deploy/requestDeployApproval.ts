@@ -1,10 +1,6 @@
 // @harness-uid u_2gix6yvno4
 import { ExpectedCliError } from '../../../core/development-tooling/errors';
-import {
-	hash,
-	type Journal,
-	type Plan
-} from '../../../core/execution-runtimes/scripted-deploy/contracts';
+import { hash } from '../../../core/execution-runtimes/scripted-deploy/contracts';
 import {
 	approvalCard,
 	approvalWindowMs
@@ -15,18 +11,24 @@ import type {
 	DeployRegistry
 } from '../../../validators/execution-runtimes/DeployManifestValidator';
 import { DeployApprovalClient } from './DeployApprovalClient';
+import type { ApprovalContext } from './requestDeployApproval.types';
 
 export async function requestDeployApproval(
-	{ plan, chain, differences }: { plan: Plan; chain: Journal | null; differences: number },
+	context: ApprovalContext,
 	registry: DeployRegistry,
 	config: DeployProject
 ): Promise<ApprovalReceipt | undefined> {
-	if (!registry.approvalInbox || plan.environment === 'staging') return;
+	const inbox = registry.approvalInbox;
+	if (!inbox || context.plan.environment === 'staging') return undefined;
+	return new DeployApprovalClient(inbox).wait(deployApprovalCard(context, config.scripts.smoke));
+}
+
+function deployApprovalCard({ plan, chain, differences }: ApprovalContext, script: string) {
 	const candidate = plan.restore ?? plan.release;
 	if (!candidate?.artifact)
 		throw new ExpectedCliError('Exact deploy approval requires a pinned artifact.');
 	const { target, version, source, artifact } = plan.restore ?? plan.previous;
-	const card = approvalCard.parse({
+	return approvalCard.parse({
 		id: plan.id,
 		plan: hash(plan),
 		project: plan.project,
@@ -38,7 +40,7 @@ export async function requestDeployApproval(
 		release: plan.release?.id ?? null,
 		parity: plan.parity,
 		allowedDifferences: differences,
-		smoke: config.scripts.smoke,
+		smoke: script,
 		manifest: plan.manifest,
 		predecessor:
 			chain?.smoke && plan.signoff
@@ -47,5 +49,4 @@ export async function requestDeployApproval(
 		rollback: { target, version, source, artifact },
 		expiresAt: plan.createdAt + approvalWindowMs
 	});
-	return new DeployApprovalClient(registry.approvalInbox).wait(card);
 }

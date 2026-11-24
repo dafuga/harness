@@ -23,12 +23,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/routes/(development-tooling)/deploy-approvals/+page.svelte"
-		],
-		"symbols": [
-			"+page"
-		]
+		"source": ["packages/desktop/src/routes/(development-tooling)/deploy-approvals/+page.svelte"],
+		"symbols": ["+page"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -39,13 +35,8 @@
 				"type": "markup"
 			}
 		],
-		"errors": [
-			{
-				"name": "Error",
-				"type": "thrown"
-			}
-		],
-		"errorStatus": "found",
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
@@ -126,9 +117,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"exact-release-deploy-approvals"
-	],
+	"scenarios": ["exact-release-deploy-approvals"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

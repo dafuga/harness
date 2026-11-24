@@ -79,21 +79,7 @@ async function approvalRequests(db: D1Database, close: () => Promise<void>) {
 	let runnerGrants = JSON.stringify({
 		'fixture:preprod': createHash('sha256').update(key).digest('hex')
 	});
-	const owner = await repository.issue({
-		kind: 'native',
-		actor: OWNER,
-		resource: 'projects',
-		parentHash: null
-	});
-	const browser = await repository.issue({
-		kind: 'browser',
-		actor: OWNER,
-		resource: 'projects',
-		parentHash: null
-	});
-	const native = async (actor = OWNER, resource = 'projects') =>
-		'Bearer ' +
-		(await repository.issue({ kind: 'native', actor, resource, parentHash: null })).credential;
+	const { owner, browser, native } = await fixtureIdentity(repository);
 	const serve = (request: Request) =>
 		serveDeployApprovals(request, {
 			owner: OWNER.id,
@@ -126,6 +112,17 @@ async function approvalRequests(db: D1Database, close: () => Promise<void>) {
 			return serve(request);
 		},
 		runner: (input: unknown) => serve(approvalRequest(url, 'DeployRunner ' + key, input))
+	};
+}
+
+async function fixtureIdentity(repository: SessionRepository) {
+	const issue = (kind: 'native' | 'browser', actor = OWNER, resource = 'projects') =>
+		repository.issue({ kind, actor, resource, parentHash: null });
+	return {
+		owner: await issue('native'),
+		browser: await issue('browser'),
+		native: async (actor = OWNER, resource = 'projects') =>
+			'Bearer ' + (await issue('native', actor, resource)).credential
 	};
 }
 

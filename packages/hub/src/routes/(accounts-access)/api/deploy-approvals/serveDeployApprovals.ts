@@ -10,7 +10,10 @@ import { DeployApprovalRepository } from '../../../../repositories/accounts-acce
 import { safeEqual } from '../../../../utils/verification-evidence/authSecrets';
 import { readOverviewText } from '../../../api/tracker-overview/trackerOverviewInput';
 import { hubHttpFailure } from '../../../api/[...path]/hub-api-controller/hubHttp';
-import type { DeployApprovalDependencies } from './serveDeployApprovals.types';
+import type {
+	DeployApprovalContext,
+	DeployApprovalDependencies
+} from './serveDeployApprovals.types';
 
 const headers = { 'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff' };
 const json = (body: unknown, status = 200) => Response.json(body, { status, headers });
@@ -20,44 +23,15 @@ const body = async (request: Request) =>
 	JSON.parse(await readOverviewText(request, 65536)) as unknown;
 
 export async function serveDeployApprovals(request: Request, deps: DeployApprovalDependencies) {
-	const url = new URL(request.url);
-	if (
-		!deps.owner ||
-		!/^google-[\w.-]+$/.test(deps.owner) ||
-		!deps.db ||
-		url.pathname !== deployApprovalPath ||
-		url.search
-	)
-		return hidden();
-	const context = {
-		owner: deps.owner,
-		now: deps.now,
-		repository: new DeployApprovalRepository(deps.db)
-	};
+	const context = approvalContext(request, deps);
+	if (!context) return hidden();
 	try {
 		const grant = /^DeployRunner ([\w-]{43})$/.exec(
 			request.headers.get('authorization') ?? ''
 		)?.[1];
 		if (grant && request.method === 'POST')
 			return await serveRunner(request, context, { grant, configured: deps.runnerGrants });
-		const session = await deps.sessions?.resolve(request);
-		if (
-			session?.kind !== 'native' ||
-			session.resource !== 'projects' ||
-			session.actor.id !== context.owner ||
-			!session.actor.emailVerified
-		)
-			return hidden();
-		if (request.method === 'GET')
-			return json(await context.repository.list(context.owner, context.now));
-		if (request.method !== 'POST') return hidden();
-		const receipt = await context.repository.decide(approvalDecision.parse(await body(request)), {
-			owner: context.owner,
-			now: context.now,
-			sessionHash: session.idHash,
-			grants: deps.runnerGrants ?? '{}'
-		});
-		return receipt ? json(receipt) : conflict();
+		return await serveOwner(request, context, deps.sessions, deps.runnerGrants ?? '{}');
 	} catch (cause) {
 		if (cause instanceof ZodError || cause instanceof SyntaxError)
 			return json({ error: 'invalid-input' }, 400);
@@ -67,9 +41,48 @@ export async function serveDeployApprovals(request: Request, deps: DeployApprova
 	}
 }
 
+function approvalContext(request: Request, { owner, db, now }: DeployApprovalDependencies) {
+	const url = new URL(request.url);
+	if (
+		!owner ||
+		!/^google-[\w.-]+$/.test(owner) ||
+		!db ||
+		url.pathname !== deployApprovalPath ||
+		url.search
+	)
+		return null;
+	return { owner, now, repository: new DeployApprovalRepository(db) };
+}
+
+async function serveOwner(
+	request: Request,
+	context: DeployApprovalContext,
+	sessions: DeployApprovalDependencies['sessions'],
+	grants: string
+) {
+	const session = await sessions?.resolve(request);
+	if (
+		session?.kind !== 'native' ||
+		session.resource !== 'projects' ||
+		session.actor.id !== context.owner ||
+		!session.actor.emailVerified
+	)
+		return hidden();
+	if (request.method === 'GET')
+		return json(await context.repository.list(context.owner, context.now));
+	if (request.method !== 'POST') return hidden();
+	const receipt = await context.repository.decide(approvalDecision.parse(await body(request)), {
+		owner: context.owner,
+		now: context.now,
+		sessionHash: session.idHash,
+		grants
+	});
+	return receipt ? json(receipt) : conflict();
+}
+
 async function serveRunner(
 	request: Request,
-	context: { owner: string; now: number; repository: DeployApprovalRepository },
+	context: DeployApprovalContext,
 	auth: { grant: string; configured?: string }
 ) {
 	const input = runnerInput.parse(await body(request));
