@@ -2,10 +2,11 @@
 	import { setContext, onDestroy, untrack } from 'svelte';
 	import { Controls, SvelteFlow, type Edge, type Node } from '@xyflow/svelte';
 	import { key } from '../../../../../hub/src/utils/browserContext';
-	import { remoteContext } from '../../../../../desktop/src/models/development-tooling/Environment.types';
+	import { nativeAccountContext, remoteContext, type EnvironmentHost, type NativeAccountContext } from '../../../../../desktop/src/models/development-tooling/Environment.types';
 	import { exampleDocument } from '../../../../../game/src/index';
 	import { previewUnits, previewComponent } from './units';
 	import { previewFixture } from './fixtures.svelte';
+	import { approvalsPage } from './deployApprovals';
 	import { routePreview } from './visualUnits';
 	import PresentationPreviews from './PresentationPreviews.svelte';
 	import ExplorerIndexPreview from './ExplorerIndexPreview.svelte';
@@ -73,6 +74,14 @@
 	let flowEdges = $state.raw<Edge[]>([]);
 	setContext(key, fixture.hub);
 	setContext(remoteContext, fixture.remote);
+	if (id === approvalsPage) {
+		const { harness } = window as unknown as EnvironmentHost;
+		setContext<NativeAccountContext>(nativeAccountContext, {
+			environment: { kind: 'electron', bridge: harness, local: true },
+			signedIn: true,
+			signOut: () => {}
+		});
+	}
 	onDestroy(fixture.cleanup);
 </script>
 

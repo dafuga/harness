@@ -15,6 +15,7 @@ import { previewNavigation } from './previewNavigation';
 import { previewCaptureBounds, reportViewDialog } from './previewCaptureBounds';
 import { hostedFixture } from '../../../../../hub/tests/e2e/hosted-fixture';
 import { applyActivityPreviewContext } from './activityPreviewContext';
+import { approvalCard, approvalsPage } from './deployApprovals';
 import { routeLoadingZoom } from './imageZoomActions';
 import { settlePreviewAudio } from './audioPreviewReadiness';
 import { prepareDesktopPage, frameDesktopCapture } from './desktopStateActions';
@@ -90,6 +91,7 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 		await expect(content.locator('.image-button').first()).toBeDisabled();
 	await applyActivityPreviewContext(page, content, id);
 	await readyRoute(page, id);
+	await approvalPreviewReady(content, id);
 	const dialog = {
 		'desktop.component.deployment-activity': 'Deployments',
 		'desktop.component.deployment-dialog': 'Deploy'
@@ -109,6 +111,15 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 	await settlePreviewImages(page, content, id, variant);
 	return content;
 }
+async function approvalPreviewReady(content: Locator, id: string) {
+	if (id === approvalsPage)
+		await expect(
+			content.getByRole('button', { name: 'Review fixture preprod deploy' })
+		).toBeVisible();
+	if (id === approvalCard)
+		await expect(content.getByRole('dialog', { name: 'Review deploy approval' })).toBeVisible();
+}
+
 /** Wait for the real route store, rather than its earlier gate or loading frame. */
 async function readyRoute(page: Page, id: string) {
 	if (overviewPreviews.has(id))

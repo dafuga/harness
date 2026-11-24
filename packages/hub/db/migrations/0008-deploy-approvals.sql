@@ -16,3 +16,6 @@ CREATE TABLE deploy_approval_requests (
 );
 CREATE INDEX deploy_approval_expiry ON deploy_approval_requests (expires_at);
 CREATE INDEX deploy_approval_owner ON deploy_approval_requests (owner, expires_at);
+
+-- Rollback after the approval lane is disabled and all requests have expired:
+-- DROP TABLE IF EXISTS deploy_approval_requests;

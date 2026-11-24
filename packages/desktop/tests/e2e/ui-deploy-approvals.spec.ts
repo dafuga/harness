@@ -49,23 +49,7 @@ async function fixture(page: Page, phone: boolean) {
 		return card.receipt;
 	});
 	if (phone) await remotePhoneFixture(page, 'unpaired');
-	else
-		await page.addInitScript(() => {
-			const host = window as unknown as {
-				harness: unknown;
-				__fixtureDeploy: (input?: unknown) => unknown;
-			};
-			host.harness = {
-				hostedStatus: async () => ({
-					state: 'signed-in',
-					configured: true,
-					actor: { id: 'google-synthetic' }
-				}),
-				listProjects: async () => [],
-				deployApprovals: (input?: unknown) => host.__fixtureDeploy(input),
-				onRunEvent: () => () => {}
-			};
-		});
+	else await installMacBridge(page);
 	return {
 		pending,
 		deny,
@@ -74,6 +58,25 @@ async function fixture(page: Page, phone: boolean) {
 			online = false;
 		}
 	};
+}
+
+async function installMacBridge(page: Page) {
+	await page.addInitScript(() => {
+		const host = window as unknown as {
+			harness: unknown;
+			__fixtureDeploy: (input?: unknown) => unknown;
+		};
+		host.harness = {
+			hostedStatus: async () => ({
+				state: 'signed-in',
+				configured: true,
+				actor: { id: 'google-synthetic' }
+			}),
+			listProjects: async () => [],
+			deployApprovals: (input?: unknown) => host.__fixtureDeploy(input),
+			onRunEvent: () => () => {}
+		};
+	});
 }
 
 for (const { name, width, height } of viewports) {
