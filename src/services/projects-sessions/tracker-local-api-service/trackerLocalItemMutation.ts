@@ -1,5 +1,5 @@
 // @harness-uid u_g7kdpz7bel
-import { randomBytes } from 'node:crypto';
+import { randomBytes, randomUUID } from 'node:crypto';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import type { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type {
@@ -8,8 +8,11 @@ import type {
 } from '../../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import type {
 	TrackerItemAction,
+	TrackerItemMutationContext,
 	TrackerItemMutation
 } from '../../../utils/projects-sessions/planTrackerItemMutation.types';
+import type { TrackerLocalApiOptions } from '../TrackerLocalApiService.types';
+import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { trackerItemTransitions } from '../../../utils/projects-sessions/trackerItemTransitions';
 
 import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
@@ -134,4 +137,30 @@ function parseItemBody(text: string): TrackerItemInput {
 		throw trackerItemError('JSON body must be an object');
 	}
 	return value as TrackerItemInput;
+}
+
+/** Resolve the clock, duplicate candidates and launch policy used for one local write. */
+export function itemMutationContext(
+	store: TrackerPersistenceService,
+	items: TrackerItemReadRepository,
+	options: TrackerLocalApiOptions
+): TrackerItemMutationContext {
+	const { planLaunch, runs } = options;
+	return {
+		node: store.node,
+		now: options.now?.() ?? Date.now(),
+		timeZone: options.timeZone,
+		launchNonce: randomUUID(),
+		candidates: items.candidates(),
+		validateModel: options.validateModel,
+		planLaunch:
+			planLaunch &&
+			((fields, current) =>
+				planLaunch(
+					fields,
+					current?.auto && runs?.launchConsumed(current.id, current.auto)
+						? { ...current, auto: null }
+						: current
+				))
+	};
 }

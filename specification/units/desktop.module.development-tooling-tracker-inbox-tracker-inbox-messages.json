@@ -22,9 +22,21 @@
 				"required": true
 			},
 			{
+				"name": "writeSentMessage.mode",
+				"type": "'phone' | 'mac'",
+				"required": false,
+				"default": "phone"
+			},
+			{
 				"name": "writeFailureMessage.code",
 				"type": "string | undefined",
 				"required": true
+			},
+			{
+				"name": "writeFailureMessage.mode",
+				"type": "'phone' | 'mac'",
+				"required": false,
+				"default": "phone"
 			}
 		],
 		"outputs": [
@@ -47,6 +59,12 @@
 						"name": "writeSentMessage.action",
 						"type": "WriteAction",
 						"required": true
+					},
+					{
+						"name": "writeSentMessage.mode",
+						"type": "'phone' | 'mac'",
+						"required": false,
+						"default": "phone"
 					}
 				],
 				"outputs": [
@@ -65,6 +83,12 @@
 						"name": "writeFailureMessage.code",
 						"type": "string | undefined",
 						"required": true
+					},
+					{
+						"name": "writeFailureMessage.mode",
+						"type": "'phone' | 'mac'",
+						"required": false,
+						"default": "phone"
 					}
 				],
 				"outputs": [

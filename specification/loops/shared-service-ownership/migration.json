@@ -5303,15 +5303,21 @@
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-			"definition": "795fd28ae7e4feffe99c57fea4a02ed05dca03049b0dd37e70b752647da05988",
+			"definition": "4e266fae4801302d332ef70b02859478d7e9be6adafcb09e731056d0f54c237c",
 			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
 			"review": {
-				"commit": "caea83354142413dd97edae29bdd055924c9847b",
+				"commit": "806d10dc5fbb1143068319f929c9e15cd586e0d3",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-				"definition": "795fd28ae7e4feffe99c57fea4a02ed05dca03049b0dd37e70b752647da05988",
-				"reason": "Includes the fixed project overview call on the preload bridge."
+				"definition": "4e266fae4801302d332ef70b02859478d7e9be6adafcb09e731056d0f54c237c",
+				"reason": "Exposes the direct Mac inbox source through the isolated preload and local transport."
 			},
 			"previousReviews": [
+				{
+					"commit": "caea83354142413dd97edae29bdd055924c9847b",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "795fd28ae7e4feffe99c57fea4a02ed05dca03049b0dd37e70b752647da05988",
+					"reason": "Includes the fixed project overview call on the preload bridge."
+				},
 				{
 					"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
@@ -6775,15 +6781,21 @@
 			"unit": "desktop.service.local-operations",
 			"from": "packages/desktop/src/services/LocalOperationsService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-			"definition": "b76b28a3eb27eb9146a788217e397fdbfec9bdcfe6a8bf5b22ba9c2d0be4c70d",
+			"definition": "9a008bdaf9829a21478c0d7ed710d34201077f1630a455a178adf8739131994f",
 			"relocationDefinition": "6c93c210df9a0612e8b374298b009646d8cc776940b82b610c6aa2edf7a6f2b4",
 			"review": {
-				"commit": "46be4288fc3844395376ec289b249c1efd41cf46",
+				"commit": "806d10dc5fbb1143068319f929c9e15cd586e0d3",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-				"definition": "b76b28a3eb27eb9146a788217e397fdbfec9bdcfe6a8bf5b22ba9c2d0be4c70d",
-				"reason": "Names the rejection for unexpected project overview fields while preserving its message and Error compatibility."
+				"definition": "9a008bdaf9829a21478c0d7ed710d34201077f1630a455a178adf8739131994f",
+				"reason": "Dispatches the Mac inbox read and confirmed write over the authenticated local transport."
 			},
 			"previousReviews": [
+				{
+					"commit": "46be4288fc3844395376ec289b249c1efd41cf46",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "b76b28a3eb27eb9146a788217e397fdbfec9bdcfe6a8bf5b22ba9c2d0be4c70d",
+					"reason": "Names the rejection for unexpected project overview fields while preserving its message and Error compatibility."
+				},
 				{
 					"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",

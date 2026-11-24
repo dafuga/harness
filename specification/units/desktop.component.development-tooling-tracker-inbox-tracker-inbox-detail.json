@@ -48,6 +48,13 @@
 				"description": "Full Tracker item ID to read and display."
 			},
 			{
+				"name": "TrackerInboxDetail.mode",
+				"type": "'phone' | 'mac'",
+				"required": false,
+				"default": "phone",
+				"description": "Chooses Mac commit feedback or phone queue feedback for confirmed writes."
+			},
+			{
 				"name": "TrackerInboxDetail.onchanged",
 				"type": "() => Promise<void>",
 				"required": true,

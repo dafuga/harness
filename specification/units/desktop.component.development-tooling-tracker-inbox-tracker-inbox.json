@@ -39,6 +39,13 @@
 				"type": "TrackerInboxSource",
 				"required": true,
 				"description": "Tracker read and confirmed-write operations supplied by the host environment."
+			},
+			{
+				"name": "TrackerInbox.mode",
+				"type": "'phone' | 'mac'",
+				"required": false,
+				"default": "phone",
+				"description": "Chooses direct Mac status or phone sync and outbox status."
 			}
 		],
 		"outputs": [

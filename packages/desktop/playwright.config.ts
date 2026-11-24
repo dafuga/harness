@@ -17,7 +17,7 @@ const port = previewPort(verifying ? '5797' : '5796');
 const url = `http://127.0.0.1:${port}`;
 // The Electron acceptances launch the built app themselves; only `test:native` names their project.
 const native =
-	/[\\/](native-desktop|game-native|project-overview-(?:electron|publisher))\.spec\.ts$/;
+	/[\\/](native-desktop|game-native|mac-tracker-inbox|project-overview-(?:electron|publisher))\.spec\.ts$/;
 
 export default defineConfig({
 	testDir: 'tests/e2e',

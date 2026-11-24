@@ -90,6 +90,11 @@ export interface ConfirmedWrite {
 	revision: string | null;
 }
 
+export interface InboxWriteReceipt {
+	intentId?: string;
+	status: string;
+}
+
 export type InboxFreshness = 'current' | 'stale' | 'unavailable';
 
 /** The result of one read or write, with the freshness the phone reported for it. */
@@ -109,12 +114,12 @@ export interface InboxOverview {
 	needsYouCapped: boolean;
 }
 
-/** What the inbox page needs from a phone replica. The phone adapter implements it over the tools. */
+/** The reads and confirmed writes supplied by the Mac bridge or the phone replica. */
 export interface TrackerInboxSource {
 	overview(): Promise<InboxReply<InboxOverview>>;
 	search(query: string): Promise<InboxReply<InboxRow[]>>;
 	detail(id: string): Promise<InboxReply<InboxDetail>>;
-	write(write: ConfirmedWrite): Promise<InboxReply<{ intentId: string; status: string }>>;
+	write(write: ConfirmedWrite): Promise<InboxReply<InboxWriteReceipt>>;
 	writes(): Promise<InboxReply<InboxWrite[]>>;
 	discard(intentId: string): Promise<InboxReply<unknown>>;
 }
