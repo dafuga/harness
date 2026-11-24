@@ -1,4 +1,3 @@
-undefined
 -- Controlled runs have a separate execution claim. Existing native approval rows stay in 0008.
 CREATE TABLE deploy_control_requests (
 	id TEXT PRIMARY KEY,
