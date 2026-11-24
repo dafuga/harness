@@ -10,7 +10,8 @@ import {
 	compatibilityFixture,
 	fixtureTime,
 	fixtureItem,
-	fixtureTitle
+	fixtureTitle,
+	verifyTrackerReminderScheduling
 } from '../../support/trackerCliCompatibilityFixture';
 
 beforeEach(async () => {
@@ -139,24 +140,7 @@ test('native remind schedules a decision without changing its state and filters 
 		itemId: fixtureItem,
 		fields: { status: 'blocked', needs_daniel: 1, question: 'Approve the fixture?' }
 	});
-	const now = new Date(fixtureTime).toISOString();
-	const at = new Date(Date.parse(now) + 60_000).toISOString();
-	expect(await run('remind', 'taskfi')).toMatchObject({
-		code: 1,
-		err: expect.stringContaining('--at')
-	});
-	for (const invalid of [now, now.slice(0, 10), now.slice(0, -1), 'tomorrow']) {
-		expect(await run('remind', 'taskfi', '--at', invalid)).toMatchObject({ code: 1 });
-	}
-	const scheduled = await run('remind', 'taskfi', '--at', at.replace('Z', '+00:00'), '--json');
-	expect(scheduled).toMatchObject({ code: 0, err: '' });
-	expect(JSON.parse(scheduled.out)).toMatchObject({
-		id: fixtureItem,
-		remind_at: at,
-		status: 'blocked',
-		needs_daniel: true,
-		question: 'Approve the fixture?'
-	});
+	const at = await verifyTrackerReminderScheduling(run);
 	expect(JSON.parse((await run('list', '--flagged', '--json')).out)).toEqual([]);
 	expect(JSON.parse((await run('digest', '--json')).out)).toMatchObject({
 		blocked: [],
