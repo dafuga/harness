@@ -9,6 +9,7 @@ import type {
 import type { TrackerRunReadRepository } from '../TrackerRunReadRepository';
 import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
 import { trackerChaseFields, trackerAskAge } from './serializeTrackerItem';
+import { trackerPlanningStage } from '../../../utils/projects-sessions/trackerPlanning';
 import type { StoredRecurringResult } from './buildTrackerDigest.types';
 
 /** Group active items by the configured calendar day and current recurring outcome. */
@@ -97,6 +98,7 @@ function summarize(row: TrackerItemRow, now: number): TrackerDigestItem {
 		kind: row.kind,
 		title: row.title,
 		status: row.status,
+		stage: trackerPlanningStage(row),
 		blocked_reason: row.status === 'blocked' ? row.blocked_reason : null,
 		needs_daniel: needsDaniel,
 		...(needsDaniel && trackerAskAge(row, now)),

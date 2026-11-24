@@ -12,6 +12,11 @@ import type {
 	TrackerItemRow
 } from './TrackerItemReadRepository.types';
 
+import {
+	trackerPlanningStageSql,
+	trackerStage
+} from '../../utils/projects-sessions/trackerPlanning';
+
 const itemChases = 'items LEFT JOIN tracker_item_chases ON chase_item_id = id';
 const activeStatus = "status NOT IN ('done', 'ignored')";
 const visibleItems = 'deleted = 0 AND title IS NOT NULL';
@@ -56,6 +61,10 @@ export class TrackerItemReadRepository {
 			if (!value) continue;
 			where.push(`${column} = ?`);
 			values.push(String(value));
+		}
+		if (filters.stage !== undefined) {
+			where.push(trackerPlanningStageSql + ' = ?');
+			values.push(trackerStage(filters.stage));
 		}
 		if (queryFlag(filters.flagged)) {
 			where.push(

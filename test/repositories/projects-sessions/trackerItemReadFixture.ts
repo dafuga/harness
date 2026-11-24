@@ -156,6 +156,8 @@ export function publicItem(
 		kind: 'task',
 		title,
 		status: 'open',
+		stage: 'idea',
+		planning: { artifacts: {}, promotions: [] },
 		blocked_reason: null,
 		due: null,
 		remind_at: null,

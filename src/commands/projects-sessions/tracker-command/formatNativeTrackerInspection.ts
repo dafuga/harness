@@ -25,6 +25,8 @@ export function formatNativeTrackerInspection(command: string, data: NativeTrack
 
 function formatItemDetail(item: NativeTrackerItemDetail): string {
 	const lines = [formatNativeTrackerItem(item), `  id: ${item.id}`];
+	for (const promotion of item.planning?.promotions ?? [])
+		lines.push(`  promoted to ${promotion.stage} by ${promotion.by} at ${promotion.at}`);
 	if (item.parent) lines.push(`  parent: ${item.parent}`);
 	if (item.question) lines.push(`  question: ${item.question}`);
 	if (item.answer)

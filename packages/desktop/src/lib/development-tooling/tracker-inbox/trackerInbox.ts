@@ -1,4 +1,13 @@
 // @harness-uid u_fy55qn2j57
+import type { TrackerStage } from '../../../../../../src/utils/projects-sessions/trackerPlanning.types';
+
+export const trackerStageLabels: Record<TrackerStage, string> = {
+	idea: 'Idea',
+	detail: 'Detailed idea',
+	design: 'Full design',
+	build: 'Implementation'
+};
+
 import type {
 	ConfirmedWrite,
 	InboxBucket,

@@ -1,5 +1,11 @@
 // @harness-uid u_st4dufvqxm
-export interface PhoneItemSource {
+import type {
+	TrackerPlanning,
+	TrackerPlanningFields,
+	TrackerStage
+} from '../../../utils/projects-sessions/trackerPlanning.types';
+
+export interface PhoneItemSource extends TrackerPlanningFields {
 	id: string;
 	title: string;
 	status: string;
@@ -31,6 +37,8 @@ export interface PhoneRunSource {
 }
 
 export interface PhoneTrackerRow {
+	stage: TrackerStage;
+	planning: TrackerPlanning;
 	id: string;
 	title: string;
 	project: string;

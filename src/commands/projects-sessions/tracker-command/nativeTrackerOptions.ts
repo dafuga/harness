@@ -1,5 +1,7 @@
 // @harness-uid u_r7qgepnoax
 import { resolve } from 'node:path';
+import { closeSync, fstatSync, openSync, readSync } from 'node:fs';
+import { trackerArtifactMaxBytes } from '../../../utils/projects-sessions/trackerPlanning';
 import type { NativeTrackerRequest } from './nativeTrackerCli.types';
 
 const text = { type: 'string' } as const;
@@ -72,10 +74,13 @@ export const nativeTrackerCommandOptions = new Map<
 	['launch', launchOptions],
 	['unlaunch', {}],
 	['show', {}],
+	['stage', {}],
+	['artifact', {}],
 	[
 		'list',
 		{
 			status: text,
+			stage: text,
 			kind: text,
 			agent: text,
 			owner: text,
@@ -175,6 +180,7 @@ export function nativeTrackerTimedItemRequest(
 	[id, ...words]: string[],
 	values: Record<string, string | boolean | undefined>
 ): NativeTrackerRequest | undefined {
+	if (command === 'stage' || command === 'artifact') return planningRequest(command, id, words);
 	if (command === 'remind') return reminderRequest(id, words, values.at);
 	const decision = decisionRequest(command, id, words, values.until);
 	if (decision) return decision;
@@ -210,4 +216,38 @@ function reminderRequest(
 ): NativeTrackerRequest {
 	if (!id || !at || words.length) throw new TypeError('usage: tracker remind <id> --at <time>');
 	return { method: 'POST', path: `/items/${encodeURIComponent(id)}/remind`, body: { at } };
+}
+
+function planningRequest(
+	command: 'stage' | 'artifact',
+	id: string,
+	[stage, file, ...rest]: string[]
+): NativeTrackerRequest {
+	const usage = `usage: tracker ${command} <id> idea|detail|design|build${command === 'artifact' ? ' <file>' : ''}`;
+	if (!id || !stage || (command === 'stage' ? file : !file || rest.length))
+		throw new TypeError(usage);
+	return {
+		method: 'POST',
+		path: `/items/${encodeURIComponent(id)}/${command}`,
+		body: command === 'stage' ? { stage } : { stage, artifact: readPlanningArtifact(file) }
+	};
+}
+
+function readPlanningArtifact(file: string): unknown {
+	try {
+		const fd = openSync(file, 'r');
+		try {
+			const info = fstatSync(fd);
+			const limit = trackerArtifactMaxBytes * 2;
+			if (!info.isFile() || info.size > limit) throw new Error();
+			const buffer = Buffer.alloc(limit + 1);
+			const size = readSync(fd, buffer, 0, buffer.length, 0);
+			if (size > limit) throw new Error();
+			return JSON.parse(buffer.subarray(0, size).toString('utf8'));
+		} finally {
+			closeSync(fd);
+		}
+	} catch {
+		throw new TypeError('could not read planning artifact JSON file');
+	}
 }

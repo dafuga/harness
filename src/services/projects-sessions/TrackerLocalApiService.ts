@@ -11,6 +11,7 @@ import {
 	trackerMutationBody
 } from './tracker-local-api-service/trackerLocalItemMutation';
 import { trackerInboxItem } from './tracker-local-api-service/trackerLocalInbox';
+import { writeTrackerPlanning } from './tracker-local-api-service/trackerLocalPlanning';
 import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
 import {
 	readTrackerItemDetail,
@@ -111,6 +112,18 @@ export class TrackerLocalApiService {
 	}
 
 	private async write(request: Request, [, id, verb]: string[]): Promise<Response | undefined> {
+		if (request.method === 'POST' && id && (verb === 'stage' || verb === 'artifact')) {
+			const item = await writeTrackerPlanning(
+				request,
+				{ id, verb, actor: readActor(request.headers) },
+				{
+					store: this.store,
+					items: this.items,
+					now: this.options.now?.() ?? Date.now()
+				}
+			);
+			return trackerResponse(200, item);
+		}
 		const action = itemAction(request.method, id, verb);
 		const manual =
 			this.options.manualLaunch && request.method === 'POST' && id && isTrackerManualLaunch(verb);

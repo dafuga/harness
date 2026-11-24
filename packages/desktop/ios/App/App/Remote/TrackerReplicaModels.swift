@@ -17,6 +17,8 @@ struct TrackerItemHeader: Codable {
     let updatedAt: String?
     let dueAt: String?
 
+    let stage: String?
+
     static let statuses = ["open", "in_progress", "blocked", "done", "ignored"]
 }
 
@@ -55,15 +57,18 @@ struct TrackerReplicaItem: Codable {
     let flag: Flag?
     let runs: [Run]
     let attentionRevision: String?
+    let stage: String?
+    let planning: TrackerReplicaPlanning?
 
     var header: TrackerItemHeader {
-        TrackerItemHeader(id: id, title: title, project: project, status: status, updatedAt: updatedAt, dueAt: dueAt)
+        TrackerItemHeader(id: id, title: title, project: project, status: status, updatedAt: updatedAt, dueAt: dueAt, stage: stage)
     }
 
     var valid: Bool {
         Self.short(id, 80) && Self.short(title, 240) && Self.short(project, 120)
             && TrackerItemHeader.statuses.contains(status)
             && Self.short(updatedAt ?? "", 40) && Self.short(dueAt ?? "", 40)
+            && (stage.map { ["idea", "detail", "design", "build"].contains($0) } ?? true)
             && notes.count <= 10 && notes.allSatisfy(Self.validNote)
             && (flag.map(Self.validFlag) ?? true)
             && runs.count <= 5 && runs.allSatisfy(Self.validRun)
@@ -87,6 +92,35 @@ struct TrackerReplicaItem: Codable {
     static func short(_ value: String, _ max: Int) -> Bool {
         value.utf8.count <= max && !value.utf8.contains(0)
     }
+}
+
+struct TrackerReplicaPlanning: Codable {
+    struct Artifact: Codable {
+        struct Link: Codable {
+            let label: String
+            let url: String
+            let kind: String?
+        }
+
+        struct Page: Codable {
+            let name: String
+            let states: [String: String]?
+            let links: [Link]?
+        }
+
+        let summary: String?
+        let pages: [Page]?
+        let links: [Link]?
+    }
+
+    struct Promotion: Codable {
+        let stage: String
+        let by: String
+        let at: String
+    }
+
+    let artifacts: [String: Artifact]
+    let promotions: [Promotion]
 }
 
 struct TrackerReplicaPage: Decodable {
