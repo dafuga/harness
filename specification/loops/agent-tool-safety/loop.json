@@ -2,7 +2,7 @@
 	"name": "agent-tool-safety",
 	"goal": "Prove raw model proposals cannot reach guarded effects without current scoped grants, applicable content and budget checks, and exact human authorization.",
 	"createdAt": "2026-11-24T00:13:47.450Z",
-	"updatedAt": "2026-11-24T08:36:47.879Z",
+	"updatedAt": "2026-11-24T11:11:44.619Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -39,6 +39,13 @@
 			"status": "complete",
 			"completedAt": "2026-11-24T08:36:47.879Z",
 			"evidence": "On harbor-mbp-2, vitest run --maxWorkers=1 test/services/agents-providers/agent-tool-safety.test.ts failed on the test-only checkpoint 6942956334 because approval executed changed resolved content. The unchanged test and all five cases passed with 35619814da. Harbor CLI 6b066c1 passed 135 tests with the Harness 35619814da SDK bundled, and all three one-worker Electron cases passed at Desktop 17d1218 with combined SQLite worker abb2ac9."
+		},
+		{
+			"id": "registry-baseline",
+			"title": "Pass the strict unit registry after rebasing",
+			"status": "complete",
+			"completedAt": "2026-11-24T11:11:44.619Z",
+			"evidence": "At 5f6eca3b20, the unchanged Counts contract findings per kind case failed with one bare Error and units check found two missing stable IDs. After UID backfill and documenting the broker failure as a returned decision, the unchanged case passed and units check reported zero stored or projected contract findings across 2088 units."
 		}
 	],
 	"evaluators": [

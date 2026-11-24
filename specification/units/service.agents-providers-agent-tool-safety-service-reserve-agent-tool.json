@@ -1,19 +1,15 @@
 {
 	"schemaVersion": 1,
 	"id": "service.agents-providers-agent-tool-safety-service-reserve-agent-tool",
+	"uid": "u_ztf5s6newj",
 	"kind": "service",
 	"title": "reserveAgentTool",
 	"responsibility": "Atomically reserves an allowed tool dispatch in the journal or issues an expiring, request-bound approval.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/agents-providers/agent-tool-safety-service/reserveAgentTool.ts"
-		],
-		"symbols": [
-			"requiresAgentToolApproval",
-			"reserveAgentTool"
-		]
+		"source": ["src/services/agents-providers/agent-tool-safety-service/reserveAgentTool.ts"],
+		"symbols": ["requiresAgentToolApproval", "reserveAgentTool"]
 	},
 	"contract": {
 		"origin": "declared",

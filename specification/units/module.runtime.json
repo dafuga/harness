@@ -8,9 +8,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/lib/runtime.ts"
-		],
+		"source": ["src/lib/runtime.ts"],
 		"symbols": [
 			"defaultRuntimeTimeoutMs",
 			"runtimeFailure",
@@ -225,9 +223,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"package-api"
-	],
+	"scenarios": ["package-api"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

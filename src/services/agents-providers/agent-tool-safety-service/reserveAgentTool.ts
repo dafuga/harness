@@ -1,3 +1,4 @@
+// @harness-uid u_ztf5s6newj
 import { createHash, randomUUID } from 'node:crypto';
 import type {
 	AgentToolApproval,

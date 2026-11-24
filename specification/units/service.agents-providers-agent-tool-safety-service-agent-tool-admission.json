@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "service.agents-providers-agent-tool-safety-service-agent-tool-admission",
+	"uid": "u_xm3geixk5t",
 	"kind": "service",
 	"title": "agentToolAdmission",
 	"responsibility": "Validates model proposals, resolves tool scope through the trusted adapter and applies specialty content checks.",
@@ -11,12 +12,7 @@
 			"src/services/agents-providers/agent-tool-safety-service/agentToolAdmission.ts",
 			"src/services/agents-providers/agent-tool-safety-service/agentToolAdmission.types.ts"
 		],
-		"symbols": [
-			"allowsAgentTool",
-			"admitAgentTool",
-			"agentToolContentDenial",
-			"AgentToolAdmission"
-		]
+		"symbols": ["allowsAgentTool", "admitAgentTool", "agentToolContentDenial", "AgentToolAdmission"]
 	},
 	"contract": {
 		"origin": "declared",
