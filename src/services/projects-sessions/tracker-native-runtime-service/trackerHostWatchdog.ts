@@ -7,6 +7,7 @@ import { WatchdogStartupService } from '../WatchdogStartupService';
 import type { WatchdogPane, WatchdogScan } from '../WatchdogPaneService.types';
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
+import { watchLaunchRequests } from './trackerWatchLaunchRequests';
 import { recordStartupAlerts } from './trackerHostWatchdogAlerts';
 import { applyIdleDecision, paneNudgeKey } from './trackerHostWatchdogIdle';
 import { sendWatchdogAlerts } from './trackerHostCos';
@@ -78,7 +79,8 @@ export function trackerHostWatchdog(
 					signal
 				);
 			}
-			if (chiefOfStaff && now() - lastCosPoll >= minute) {
+			const launchAlert = chiefOfStaff && watchLaunchRequests(store, now());
+			if (chiefOfStaff && (launchAlert || now() - lastCosPoll >= minute)) {
 				lastCosPoll = now();
 				peerAlerts = (await driver.peers?.(signal)) ?? peerAlerts;
 				await sendWatchdogAlerts(store, driver, alerts(), signal);

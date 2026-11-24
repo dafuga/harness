@@ -22,6 +22,7 @@
 			"TrackerDispatchRepository.managedRuns",
 			"TrackerDispatchRepository.legacyRuns",
 			"TrackerDispatchRepository.adoptLegacy",
+			"TrackerDispatchRepository.retireLegacy",
 			"TrackerDispatchRepository.assertLegacyRollbackSafe",
 			"TrackerDispatchRepository.candidates",
 			"TrackerDispatchRepository.stuckRequests",
@@ -33,6 +34,7 @@
 			"TrackerRunReservation",
 			"dispatchItem",
 			"dispatchJournalFields",
+			"legacyUnstarted",
 			"assertLegacyDispatchRollbackSafe",
 			"dispatchRunRows",
 			"managedDispatchRuns",
@@ -74,6 +76,11 @@
 			{
 				"name": "TrackerDispatchRepository.adoptLegacy.session",
 				"type": "TrackerSessionEvidence",
+				"required": true
+			},
+			{
+				"name": "TrackerDispatchRepository.retireLegacy.run",
+				"type": "TrackerRunReceipt",
 				"required": true
 			},
 			{
@@ -137,6 +144,11 @@
 				"required": true
 			},
 			{
+				"name": "legacyDispatchRuns.cutoff",
+				"type": "number",
+				"required": true
+			},
+			{
 				"name": "adoptLegacyDispatchRun.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -185,6 +197,10 @@
 				"type": "void"
 			},
 			{
+				"name": "TrackerDispatchRepository.retireLegacy",
+				"type": "void"
+			},
+			{
 				"name": "TrackerDispatchRepository.assertLegacyRollbackSafe",
 				"type": "void"
 			},
@@ -209,6 +225,10 @@
 				"type": "unknown"
 			},
 			{
+				"name": "legacyUnstarted",
+				"type": "unknown"
+			},
+			{
 				"name": "assertLegacyDispatchRollbackSafe",
 				"type": "void"
 			},
@@ -222,7 +242,7 @@
 			},
 			{
 				"name": "legacyDispatchRuns",
-				"type": "TrackerRunReceipt[]"
+				"type": "unknown"
 			},
 			{
 				"name": "adoptLegacyDispatchRun",
@@ -309,6 +329,24 @@
 				"outputs": [
 					{
 						"name": "TrackerDispatchRepository.adoptLegacy",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerDispatchRepository.retireLegacy",
+				"inputs": [
+					{
+						"name": "TrackerDispatchRepository.retireLegacy.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerDispatchRepository.retireLegacy",
 						"type": "void"
 					}
 				],
@@ -496,12 +534,17 @@
 						"name": "legacyDispatchRuns.node",
 						"type": "string",
 						"required": true
+					},
+					{
+						"name": "legacyDispatchRuns.cutoff",
+						"type": "number",
+						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "legacyDispatchRuns",
-						"type": "TrackerRunReceipt[]"
+						"type": "unknown"
 					}
 				],
 				"errors": [],

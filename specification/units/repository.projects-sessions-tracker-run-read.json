@@ -19,6 +19,7 @@
 			"TrackerRunReadRepository.list",
 			"TrackerRunReadRepository.launchConsumed",
 			"TrackerRunReadRepository.finished",
+			"TrackerRunReadRepository.latestLocalRunId",
 			"TrackerRunReadRepository.activeLocal",
 			"TrackerRunReadRepository.pendingEvents",
 			"TrackerRunReadRepository.exportLocal",
@@ -132,6 +133,10 @@
 				"type": "TrackerListedRun[]"
 			},
 			{
+				"name": "TrackerRunReadRepository.latestLocalRunId",
+				"type": "unknown"
+			},
+			{
 				"name": "TrackerRunReadRepository.activeLocal",
 				"type": "unknown"
 			},
@@ -220,6 +225,18 @@
 					{
 						"name": "TrackerRunReadRepository.finished",
 						"type": "TrackerListedRun[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerRunReadRepository.latestLocalRunId",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerRunReadRepository.latestLocalRunId",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

@@ -1,3 +1,4 @@
+import { verifyLaunchCliOptions } from './trackerLaunchOutcomeFixture';
 import { createServer } from 'node:http';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { once } from 'node:events';
@@ -88,35 +89,7 @@ async function qualifyItemCommands(spoke: TrackerNodeFixture, id: string) {
 		id,
 		notes_log: [{ text: 'Retain this note' }]
 	});
-	const launch = ['launch', short, '--project', 'Tracker', '--model', 'Fable:high'];
-	const launched = await fixtureTrackerJson(spoke, launch);
-	expect(launched).toMatchObject({
-		id,
-		auto: expect.stringMatching(/^synthetic-spoke@/),
-		launch_source: 'manual',
-		launch_target: 'synthetic-spoke',
-		project: 'Tracker',
-		model: 'Fable:high'
-	});
-	expect(await fixtureTrackerJson(spoke, launch)).toEqual(launched);
-	expect(await fixtureTrackerJson(spoke, ['pick', short])).toMatchObject({
-		rung: 'fable',
-		model: 'claude-fable-5-2',
-		effort: 'high',
-		pinned: true
-	});
-	expect((await trackerProcess(spoke, ['launch', short, '--model', 'sol:low']).exited).code).toBe(
-		1
-	);
-	expect(await fixtureTrackerJson(spoke, ['launch', 'off', short])).toMatchObject({
-		id,
-		auto: null,
-		schedule_off: true
-	});
-	expect(await fixtureTrackerJson(spoke, ['launch', 'on', short])).toMatchObject({
-		id,
-		schedule_off: false
-	});
+	await verifyLaunchCliOptions(spoke, id);
 }
 
 async function verifyTrackerNotificationFlow(

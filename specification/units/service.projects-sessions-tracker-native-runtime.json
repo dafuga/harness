@@ -47,6 +47,7 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptExposure.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptPatterns.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptScan.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchLaunchRequests.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogContext.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogContext.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogPeer.ts",
@@ -84,6 +85,9 @@
 			"TrackerGuestAuthWriter",
 			"composeTrackerLinks",
 			"composeTrackerTelemetry",
+			"trackerRunnerSample",
+			"trackerMachineSample",
+			"trackerFleetMachineStore",
 			"trackerSpokeStatus",
 			"readTrackerDuePreview",
 			"trackerDueItemPreview",
@@ -101,6 +105,7 @@
 			"sendWatchdogAlerts",
 			"trackerHostEffectsSchema",
 			"trackerHostInventory",
+			"hasManualTrackerPane",
 			"finishedTrackerSession",
 			"trackerHostLaunch",
 			"configuredHostDispatch",
@@ -136,6 +141,8 @@
 			"readWatchdogAlerts",
 			"finishObservedRuns",
 			"trackerLegacyExitReceipt",
+			"legacyTrackerStartupProbe",
+			"trackerLegacySession",
 			"trackerSecretSafetyRule",
 			"sessionHealthInterval",
 			"trackerSessionHealth",
@@ -151,6 +158,8 @@
 			"trackerTranscriptMatches",
 			"trackerTranscriptScan",
 			"transcriptFiles",
+			"launchWithoutRunKind",
+			"watchLaunchRequests",
 			"sampleTrackerContexts",
 			"TrackerContextSample",
 			"TrackerTranscriptRecord",
@@ -249,6 +258,11 @@
 				"name": "composeTrackerTelemetry.options",
 				"type": "TrackerNativeRuntimeOptions",
 				"required": true
+			},
+			{
+				"name": "composeTrackerTelemetry.scheduler",
+				"type": "TrackerDispatchSchedulerService",
+				"required": false
 			},
 			{
 				"name": "trackerSpokeStatus.links",
@@ -418,6 +432,16 @@
 			{
 				"name": "trackerHostInventory.signal",
 				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "hasManualTrackerPane.panes",
+				"type": "readonly WatchdogPane[]",
+				"required": true
+			},
+			{
+				"name": "hasManualTrackerPane.itemId",
+				"type": "string",
 				"required": true
 			},
 			{
@@ -614,7 +638,7 @@
 			},
 			{
 				"name": "recordWatchdogAlert.input",
-				"type": "{ itemId: string; kind: string; reason: string; identity: string; session?: string | null; key?: string; localOnly?: boolean; }",
+				"type": "{ itemId: string; kind: string; reason: string; identity: string; session?: string | null; key?: string; host?: string; localOnly?: boolean; }",
 				"required": true
 			},
 			{
@@ -696,6 +720,31 @@
 			{
 				"name": "trackerLegacyExitReceipt.directory",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "legacyTrackerStartupProbe.driver",
+				"type": "TrackerHostLaunchPort",
+				"required": true
+			},
+			{
+				"name": "legacyTrackerStartupProbe.directory",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "legacyTrackerStartupProbe.inventory",
+				"type": "() => readonly WatchdogPane[]",
+				"required": true
+			},
+			{
+				"name": "trackerLegacySession.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "trackerLegacySession.sessions",
+				"type": "readonly TrackerHostSession[]",
 				"required": true
 			},
 			{
@@ -828,6 +877,16 @@
 				"type": "number",
 				"required": false,
 				"default": 0
+			},
+			{
+				"name": "watchLaunchRequests.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "watchLaunchRequests.now",
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "sampleTrackerContexts.panes",
@@ -1329,6 +1388,11 @@
 						"name": "composeTrackerTelemetry.options",
 						"type": "TrackerNativeRuntimeOptions",
 						"required": true
+					},
+					{
+						"name": "composeTrackerTelemetry.scheduler",
+						"type": "TrackerDispatchSchedulerService",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -1339,6 +1403,18 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerFleetMachineStore",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "trackerFleetMachineStore",
+						"type": "TrackerHubMachineStore"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "trackerSpokeStatus",
@@ -1647,6 +1723,29 @@
 				"outputs": [
 					{
 						"name": "trackerHostInventory",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hasManualTrackerPane",
+				"inputs": [
+					{
+						"name": "hasManualTrackerPane.panes",
+						"type": "readonly WatchdogPane[]",
+						"required": true
+					},
+					{
+						"name": "hasManualTrackerPane.itemId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hasManualTrackerPane",
 						"type": "unknown"
 					}
 				],
@@ -1985,7 +2084,7 @@
 					},
 					{
 						"name": "recordWatchdogAlert.input",
-						"type": "{ itemId: string; kind: string; reason: string; identity: string; session?: string | null; key?: string; localOnly?: boolean; }",
+						"type": "{ itemId: string; kind: string; reason: string; identity: string; session?: string | null; key?: string; host?: string; localOnly?: boolean; }",
 						"required": true
 					},
 					{
@@ -2173,6 +2272,57 @@
 						"type": "thrown"
 					}
 				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "legacyTrackerStartupProbe",
+				"inputs": [
+					{
+						"name": "legacyTrackerStartupProbe.driver",
+						"type": "TrackerHostLaunchPort",
+						"required": true
+					},
+					{
+						"name": "legacyTrackerStartupProbe.directory",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "legacyTrackerStartupProbe.inventory",
+						"type": "() => readonly WatchdogPane[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "legacyTrackerStartupProbe",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "trackerLegacySession",
+				"inputs": [
+					{
+						"name": "trackerLegacySession.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "trackerLegacySession.sessions",
+						"type": "readonly TrackerHostSession[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerLegacySession",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{
@@ -2418,6 +2568,29 @@
 					{
 						"name": "transcriptFiles",
 						"type": "AsyncGenerator<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "watchLaunchRequests",
+				"inputs": [
+					{
+						"name": "watchLaunchRequests.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "watchLaunchRequests.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "watchLaunchRequests",
+						"type": "boolean"
 					}
 				],
 				"errors": [],
