@@ -58,7 +58,7 @@
 			{
 				"name": "trackerRunReport",
 				"type": "unknown",
-				"description": "Sorted aggregates by model rung and work type, including all-type totals."
+				"description": "Sorted attempt outcomes, measured durations, and API-equivalent cost estimates with coverage by rung and work type."
 			}
 		],
 		"errors": [],
@@ -111,7 +111,7 @@
 					{
 						"name": "trackerRunReport",
 						"type": "unknown",
-						"description": "Sorted aggregates by model rung and work type, including all-type totals."
+						"description": "Sorted attempt outcomes, measured durations, and API-equivalent cost estimates with coverage by rung and work type."
 					}
 				],
 				"errors": [],
@@ -123,6 +123,16 @@
 	"dependencies": [
 		{
 			"unit": "function.agents-providers-pick-tracker-model",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-analytics-service-tracker-run-records",
 			"via": "import",
 			"origin": "derived"
 		}

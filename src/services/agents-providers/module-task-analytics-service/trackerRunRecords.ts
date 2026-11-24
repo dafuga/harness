@@ -1,6 +1,7 @@
 // @harness-uid u_yqgzxyqdn5
 import { createHash } from 'node:crypto';
 import { createRunRecord } from './modelRunRecord';
+import { estimateApiCost } from './modelRunPricing';
 import type { RunRecord } from './modelRunRecord.types';
 import type {
 	TaskApiCost,
@@ -25,6 +26,7 @@ function projectRun(
 	history: ReadonlyMap<string, TrackerRunRow>,
 	{ outcome, endedAt }: { outcome: RunRecord['outcome']; endedAt: number }
 ): RunRecord {
+	const usage = trackerUsage(row);
 	return createRunRecord({
 		source: 'tracker',
 		id: runId(row.node, row.id),
@@ -40,8 +42,8 @@ function projectRun(
 		startedAt: row.started_at == null ? null : new Date(row.started_at).toISOString(),
 		finishedAt: new Date(endedAt).toISOString(),
 		outcome,
-		usage: trackerUsage(row),
-		cost: recordedCost(row.cost_usd ?? null)
+		usage,
+		cost: trackerRunCost(row, usage)
 	});
 }
 
@@ -98,7 +100,10 @@ function trackerUsage(row: TrackerRunRow): TaskUsage {
 	};
 }
 
-function recordedCost(usd: number | null): TaskApiCost {
+/** Price Codex usage with the shared rate card when the run has no saved cost. */
+export function trackerRunCost(row: TrackerRunRow, usage = trackerUsage(row)): TaskApiCost {
+	const usd = row.cost_usd ?? null;
+	if (usd === null && row.cli === 'codex') return estimateApiCost(row.model, usage);
 	return {
 		usd,
 		minimumUsd: usd,
