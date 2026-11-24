@@ -22,6 +22,7 @@ import {
 	trackerManagedToken
 } from './trackerManagedLaunchReceipt';
 import type { TrackerManagedReceipt } from './trackerManagedHostLauncher.types';
+import { trackerManagedCodexUsage } from './trackerManagedCodexUsage';
 import {
 	workerScript,
 	launchTmux,
@@ -39,16 +40,25 @@ export function trackerManagedHostLauncher(
 	config: TrackerManagedLaunchConfig,
 	{
 		client,
-		platform = process.platform
-	}: { client: TrackerWorkerClient; platform?: typeof process.platform }
+		platform = process.platform,
+		transcriptRoots = []
+	}: {
+		client: TrackerWorkerClient;
+		platform?: typeof process.platform;
+		transcriptRoots?: readonly string[];
+	}
 ): TrackerHostLaunchPort {
 	const tmux = controlledTrackerExecutable(config.tmux);
 	const directory = privateTrackerDirectory(config.stateDirectory);
 	const trackerBin = realpathSync(config.trackerBinDirectory);
 	const trackerExecutable = controlledTrackerExecutable(join(trackerBin, 'harness'));
 	const profiles = validateManagedProfiles(config);
-
 	return {
+		readUsage: trackerManagedCodexUsage(
+			directory,
+			platform === 'darwin' ? profiles.native?.profile : undefined,
+			transcriptRoots
+		),
 		async inspect({ node, keys }, signal) {
 			const sessions = [];
 			for (const key of keys) {

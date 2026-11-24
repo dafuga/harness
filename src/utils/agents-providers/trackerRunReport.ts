@@ -47,9 +47,9 @@ export function trackerRunReport(rows: readonly TrackerRunRow[]) {
 	const groups = new Map<string, ReturnType<typeof reportGroup>>();
 	for (const row of rows) {
 		if (row.state !== 'finished') continue;
-		const quote = trackerRunCost(row);
-		accumulate(groups, row, row.kind ?? '?', quote);
-		accumulate(groups, row, '*', quote);
+		const metrics = { quote: trackerRunCost(row), duration: measuredDuration(row) };
+		accumulate(groups, row, row.kind ?? '?', metrics);
+		accumulate(groups, row, '*', metrics);
 	}
 	return [...groups.values()].sort(compareGroups).map(withAverages);
 }
@@ -80,7 +80,7 @@ function accumulate(
 	groups: Map<string, ReturnType<typeof reportGroup>>,
 	row: TrackerRunRow,
 	kind: string,
-	quote: TaskApiCost
+	{ quote, duration }: { quote: TaskApiCost; duration: number | null }
 ) {
 	const key = JSON.stringify([row.rung, kind]);
 	const group = groups.get(key) ?? reportGroup(row.rung, kind);
@@ -98,11 +98,14 @@ function accumulate(
 		(row.output_tokens ?? 0) +
 		(row.cache_read_tokens ?? 0) +
 		(row.cache_write_tokens ?? 0);
-	if (row.started_at != null && row.ended_at != null && row.ended_at >= row.started_at) {
-		group.ms += row.ended_at - row.started_at;
-		group.timed++;
-	}
+	group.ms += duration ?? 0;
+	group.timed += Number(duration !== null);
 	groups.set(key, group);
+}
+
+function measuredDuration(row: TrackerRunRow): number | null {
+	const { started_at: start, ended_at: end } = row;
+	return start != null && end != null && end >= start ? end - start : null;
 }
 
 function compareGroups(

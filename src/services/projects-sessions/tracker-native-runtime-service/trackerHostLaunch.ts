@@ -28,13 +28,14 @@ export function trackerHostLaunch(
 		tmuxExecutable?: string;
 		adapter?: TrackerHostAdapterConfig;
 		workerClient?: TrackerWorkerClient;
+		transcriptRoots?: readonly string[];
 		now?: () => number;
 	} = {}
 ): NonNullable<TrackerNativeRuntimeOptions['dispatch']> {
 	const { adapter } = effects;
 	const tmuxExecutable =
 		effects.tmuxExecutable ?? ('managed' in config ? config.managed.tmux : undefined);
-	const driver = trackerHostLaunchPort(config, effects.workerClient);
+	const driver = trackerHostLaunchPort(config, effects.workerClient, effects.transcriptRoots);
 	const node = canonicalNode(store.node, {});
 	const repositories = new Map(
 		Object.entries(config.repositories).map(([project, route]) => [project.toLowerCase(), route])
@@ -105,6 +106,7 @@ export function configuredHostDispatch(
 	return launch
 		? trackerHostLaunch(store, launch, {
 				workerClient,
+				transcriptRoots: watchdog?.transcriptRoots,
 				adapter,
 				now,
 				tmuxExecutable: watchdog && 'tmux' in watchdog ? watchdog.tmux : undefined

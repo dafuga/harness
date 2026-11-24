@@ -17,7 +17,8 @@
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedProviderCommands.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedWorkerProcess.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerTmuxPane.ts",
-			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerWorkerClient.ts"
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerWorkerClient.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedCodexUsage.ts"
 		],
 		"symbols": [
 			"TrackerTmuxAdapter",
@@ -54,7 +55,8 @@
 			"matchesTrackerTmuxPane",
 			"trackerTmuxKeys",
 			"trackerWorkerClient",
-			"trackerGuestAuthFile"
+			"trackerGuestAuthFile",
+			"trackerManagedCodexUsage"
 		]
 	},
 	"contract": {
@@ -311,6 +313,27 @@
 				"name": "trackerGuestAuthFile.address",
 				"type": "Pick<TrackerWorkerClient, 'writeGuestAuth' | 'apiPort'>",
 				"required": true
+			},
+			{
+				"name": "trackerManagedCodexUsage.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerManagedCodexUsage.profile",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "trackerManagedCodexUsage.transcriptRoots",
+				"type": "readonly string[]",
+				"required": true
+			},
+			{
+				"name": "trackerManagedHostLauncher.transcriptRoots",
+				"type": "readonly string[]",
+				"required": false,
+				"default": []
 			}
 		],
 		"outputs": [
@@ -476,6 +499,12 @@
 						"name": "trackerManagedHostLauncher.platform",
 						"type": "typeof process.platform",
 						"required": false
+					},
+					{
+						"name": "trackerManagedHostLauncher.transcriptRoots",
+						"type": "readonly string[]",
+						"required": false,
+						"default": []
 					}
 				],
 				"outputs": [
@@ -895,6 +924,34 @@
 					}
 				],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerManagedCodexUsage",
+				"inputs": [
+					{
+						"name": "trackerManagedCodexUsage.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerManagedCodexUsage.profile",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "trackerManagedCodexUsage.transcriptRoots",
+						"type": "readonly string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerManagedCodexUsage",
+						"type": "TrackerHostLaunchPort['readUsage']"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -938,6 +995,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-watchdog-pane",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-module-task-runner-adapter-task-usage",
 			"via": "import",
 			"origin": "derived"
 		}

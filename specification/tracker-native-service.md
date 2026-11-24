@@ -89,7 +89,9 @@ operator verifies the stopped database and chooses a rollback.
   human-readable and JSON output. Use `tracker launch ITEM --model fable:high`
   to explicitly pin Fable for any project. Automatic selection excludes Fable.
   `models report` shows API-equivalent cost estimates with run coverage and
-  ranges when retained Codex usage spans unknown context tiers.
+  ranges when retained Codex usage spans unknown context tiers. Managed native
+  Codex receipts persist token counters when one rollout matches the attempt’s
+  owned worktree. Older or ambiguous attempts may have no usage.
   `show` includes retained run history and the local schedule preview.
   `ignore` and `unignore` use journal transitions and retain the actor, notes,
   and prior status. Automatic expiry for `ignore --until` is still pending.

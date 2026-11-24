@@ -26,7 +26,7 @@
 			},
 			{
 				"name": "trackerRunCost.usage",
-				"type": "unknown",
+				"type": "TaskUsage",
 				"required": false
 			}
 		],
@@ -71,7 +71,7 @@
 					},
 					{
 						"name": "trackerRunCost.usage",
-						"type": "unknown",
+						"type": "TaskUsage",
 						"required": false
 					}
 				],

@@ -101,7 +101,10 @@ function trackerUsage(row: TrackerRunRow): TaskUsage {
 }
 
 /** Price Codex usage with the shared rate card when the run has no saved cost. */
-export function trackerRunCost(row: TrackerRunRow, usage = trackerUsage(row)): TaskApiCost {
+export function trackerRunCost(
+	row: TrackerRunRow,
+	usage: TaskUsage = trackerUsage(row)
+): TaskApiCost {
 	const usd = row.cost_usd ?? null;
 	if (usd === null && row.cli === 'codex') return estimateApiCost(row.model, usage);
 	return {
