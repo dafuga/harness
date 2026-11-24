@@ -1572,13 +1572,13 @@
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-			"definition": "c23a9f77b3ec7aae8079517932436745a3d1952c9cef9da4011fbb9ea786f9cb",
+			"definition": "bfb968bf1f6be6d145e5102bbb4dda6eae49318f75e356b50d5e2b4a9bb6020a",
 			"relocationDefinition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b",
 			"review": {
-				"commit": "0ca8d9573fd317da3589a4d4e81cdebda5e3d958",
+				"commit": "9a8b98a7e403c518f4fdc5d5ba56797ff1d58273",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-				"definition": "c23a9f77b3ec7aae8079517932436745a3d1952c9cef9da4011fbb9ea786f9cb",
-				"reason": "Prepare app-owned macOS Safe Storage after Electron is ready and before opening the desktop backend."
+				"definition": "bfb968bf1f6be6d145e5102bbb4dda6eae49318f75e356b50d5e2b4a9bb6020a",
+				"reason": "Registers local Vault status and privileged actions for the trusted desktop window."
 			},
 			"previousReviews": [
 				{
@@ -1622,6 +1622,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 					"definition": "e25b8420c7df981d1cbeda1dde62442dec3e558bae0cf23581afa908186998a5",
 					"reason": "Passes the approved phone device settings and the dedicated write grant to the private device service."
+				},
+				{
+					"commit": "0ca8d9573fd317da3589a4d4e81cdebda5e3d958",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "c23a9f77b3ec7aae8079517932436745a3d1952c9cef9da4011fbb9ea786f9cb",
+					"reason": "Prepare app-owned macOS Safe Storage after Electron is ready and before opening the desktop backend."
 				}
 			]
 		},
@@ -5240,13 +5246,13 @@
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-			"definition": "795fd28ae7e4feffe99c57fea4a02ed05dca03049b0dd37e70b752647da05988",
+			"definition": "df95563712d1fd1fe2f1fbcd11b0ce97637195fce76face12391fbee050a5eb4",
 			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
 			"review": {
-				"commit": "caea83354142413dd97edae29bdd055924c9847b",
+				"commit": "9a8b98a7e403c518f4fdc5d5ba56797ff1d58273",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-				"definition": "795fd28ae7e4feffe99c57fea4a02ed05dca03049b0dd37e70b752647da05988",
-				"reason": "Includes the fixed project overview call on the preload bridge."
+				"definition": "df95563712d1fd1fe2f1fbcd11b0ce97637195fce76face12391fbee050a5eb4",
+				"reason": "Exposes only fixed Vault status, setup and remove requests through the isolated preload."
 			},
 			"previousReviews": [
 				{
@@ -5284,6 +5290,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
 					"definition": "eee7526226128adc019a907c59b48598174ff5c5d5c086289aa101f63bbe9c14",
 					"reason": "Exposes gameLevelGenerate through the existing isolated preload while preserving its location, registered identity and previous bridge methods."
+				},
+				{
+					"commit": "caea83354142413dd97edae29bdd055924c9847b",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "795fd28ae7e4feffe99c57fea4a02ed05dca03049b0dd37e70b752647da05988",
+					"reason": "Includes the fixed project overview call on the preload bridge."
 				}
 			]
 		},
