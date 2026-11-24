@@ -15,7 +15,7 @@ import {
 } from '../../support/trackerManagedProcessFixture';
 
 const node = 'daniel-primary-mbp';
-const now = 1_800_000_000_000;
+const now = Date.parse('2027-01-15T12:00:00Z');
 
 test('honors the host cap while retaining finished panes and reporting a flagged request', () =>
 	measureWorkload(
@@ -51,6 +51,9 @@ async function proveHostCapacity(root: string) {
 			.toEqual([{ item_id: 'next100001', state: 'running' }]);
 		expect(existsSync(closed)).toBe(false);
 		await verifyHostLaunchOutcomes(runtime, db, signal);
+		await verifyIdleCapacityQueue(runtime, signal, (elapsed) => {
+			clock += elapsed;
+		});
 		clock += 300_000;
 		writeFileSync(join(root, 'busy'), '');
 		await expectPaneRetained(runtime, signal, closed);
@@ -78,6 +81,45 @@ async function proveHostCapacity(root: string) {
 	} finally {
 		db.close();
 	}
+}
+
+async function verifyIdleCapacityQueue(
+	runtime: TrackerNativeRuntimeService,
+	signal: AbortSignal,
+	advance: (elapsed: number) => void
+) {
+	for (const id of ['idle-task1', 'later-task', 'blocked-id']) {
+		runtime.store.appendLocal({
+			itemId: id,
+			fields: {
+				title: id,
+				kind: 'task',
+				status: 'open',
+				project: 'Harness',
+				...(id === 'later-task' && { schedule_off: 1 }),
+				...(id === 'blocked-id' && { needs_daniel: 1, question: 'Blocked: approval' })
+			}
+		});
+	}
+	advance(119 * 60_000);
+	await runtime.watchdog!.tick(signal);
+	const read = async (path: string) =>
+		await (await runtime.items.handle(new Request(`http://localhost${path}`)))!.json();
+	expect(await read('/items/idle-task1')).toMatchObject({ auto: null });
+	advance(60_000);
+	await runtime.watchdog!.tick(signal);
+	const queued = await read('/items/idle-task1');
+	expect(queued).toMatchObject({ auto: expect.any(String), launch_target: node });
+	expect(await read('/items/later-task')).toMatchObject({ auto: null });
+	expect(await read('/items/blocked-id')).toMatchObject({ auto: null });
+	advance(180_000);
+	await runtime.scheduler!.tick(signal);
+	expect(await read('/items/idle-task1')).toMatchObject({ auto: queued.auto });
+	expect(await read('/digest')).toMatchObject({
+		queued: expect.arrayContaining([
+			expect.objectContaining({ id: 'idle-task1', waiting_minutes: 3 })
+		])
+	});
 }
 
 async function expectPaneRetained(

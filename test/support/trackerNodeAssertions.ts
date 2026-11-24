@@ -89,6 +89,21 @@ async function qualifyItemCommands(spoke: TrackerNodeFixture, id: string) {
 		id,
 		notes_log: [{ text: 'Retain this note' }]
 	});
+	expect(
+		await fixtureTrackerJson(spoke, [
+			'chase',
+			short,
+			'--note',
+			'Daniel asked for status',
+			'--by',
+			'Chief of Staff'
+		])
+	).toMatchObject({
+		id,
+		chased_count: 1,
+		chased_by: 'Chief of Staff',
+		chased_reason: 'Daniel asked for status'
+	});
 	await verifyLaunchCliOptions(spoke, id);
 }
 
@@ -128,10 +143,15 @@ async function verifyTrackerNotificationFlow(
 	).toMatchObject({ id, status: 'done' });
 	await verifyCompletionCallback(receipts, id);
 	await expect
+		.poll(() => fixtureTrackerJson(hub, ['list', '--chased']))
+		.toMatchObject([{ id, status: 'done', chased_count: 1 }]);
+	await expect
 		.poll(() => fixtureTrackerJson(hub, ['show', id]), { timeout: 8_000 })
 		.toMatchObject({
 			id,
 			status: 'done',
+			chased_count: 1,
+			chased_reason: 'Daniel asked for status',
 			answer: 'Fixture confirmed',
 			notes_log: expect.arrayContaining([
 				expect.objectContaining({ text: 'Completion before worktree cleanup' })

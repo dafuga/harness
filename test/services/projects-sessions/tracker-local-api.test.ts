@@ -60,6 +60,20 @@ test('commits item and notes under the actor, serves the overview feed and retur
 	const digest = await request('/digest?format=text');
 	expect(digest.headers.get('content-type')).toBe('text/plain; charset=utf-8');
 	expect(await digest.text()).toContain('Fixture bridge rollout');
+	const firstChase = await request(`/items/${prefix}/chase`, 'POST', { note: 'Asked for status' });
+	expect(firstChase.status).toBe(200);
+	expect(await firstChase.json()).toMatchObject({
+		id,
+		chased_count: 1,
+		chased_by: 'fixture-actor',
+		chased_reason: 'Asked for status'
+	});
+	await request(`/items/${prefix}/chase`, 'POST');
+	await request(`/items/${prefix}/done`, 'POST');
+	expect(await (await request('/items?chased=1')).json()).toMatchObject([
+		{ id, status: 'done', chased_count: 2, chased_at: '2026-11-21T12:00:00.000Z' }
+	]);
+	expect(await (await request('/digest?format=text')).text()).toContain('Chased (7d) (1)');
 	const removed = await request(`/items/${prefix}`, 'DELETE');
 	expect(removed.status).toBe(200);
 	expect(await removed.json()).toMatchObject({ id, deleted: true });
