@@ -66,10 +66,13 @@
 }
 .po-machine {
 	display: inline-flex;
+	flex-wrap: wrap;
 	align-items: center;
-	gap: var(--hx-space-8);
+	gap: var(--hx-space-4) var(--hx-space-8);
+	max-width: 100%;
+	overflow-wrap: anywhere;
 	min-height: var(--hx-space-32);
-	padding: 0 var(--hx-space-12);
+	padding: var(--hx-space-4) var(--hx-space-12);
 	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-pill);
 	font-size: var(--hx-type-size-compact);

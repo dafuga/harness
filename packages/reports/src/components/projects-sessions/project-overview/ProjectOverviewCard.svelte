@@ -15,7 +15,7 @@
 		sessionsText
 	} from './projectOverviewPresentation';
 	import type { ProjectOverviewCardProps } from './ProjectOverviewCard.types';
-	let { card, now, onOpen }: ProjectOverviewCardProps = $props();
+	let { card, now, onOpen, onDecision }: ProjectOverviewCardProps = $props();
 	const id = $props.id();
 	/** Phones show the top item only; a desktop card shows this many before the rest is counted. */
 	const shownItems = 3;
@@ -36,6 +36,11 @@
 			<hx-button type="button" class="po-action" onclick={() => onOpen(surfaced.item)}
 				>Open item</hx-button
 			>
+			{#if kind === 'attention' && onDecision}
+				<hx-button type="button" class="po-action" onclick={() => onDecision?.(surfaced.item)}
+					>Review decision</hx-button
+				>
+			{/if}
 		</hx-div>
 	</hx-div>
 {/snippet}

@@ -21,7 +21,7 @@ export const EXPECTED_SNAPSHOT = {
 		{ name: 'box', status: 'ok' },
 		{ name: 'mb2', status: 'offline' },
 		{ name: 'primary', status: 'busy' },
-		{ name: 'runner', status: 'overloaded' }
+		{ name: 'runner', status: 'overloaded', queued: 3, lastTickAt: '2026-11-20T20:40:00.000Z' }
 	],
 	projects: [
 		// needs-you: flagged, unresolved question; the note's token is redacted.
@@ -66,7 +66,8 @@ export const EXPECTED_SNAPSHOT = {
 			items: [
 				{
 					...row('d1', 'Write onboarding guide', 'in_progress', '2026-11-20T18:41:00.000Z'),
-					live: true
+					live: true,
+					runs: [{ id: 106, computer: 'box' }]
 				},
 				{
 					...row('d3', 'Pick theme', 'in_progress', '2026-11-20T16:41:00.000Z'),
@@ -100,7 +101,8 @@ export const EXPECTED_SNAPSHOT = {
 				{
 					...row('g1', 'Rate limit middleware', 'in_progress', '2026-11-19T04:41:00.000Z'),
 					due: '2026-11-21T12:00:00.000Z',
-					live: true
+					live: true,
+					runs: [{ id: 101, computer: 'box' }]
 				}
 			],
 			attention: null,

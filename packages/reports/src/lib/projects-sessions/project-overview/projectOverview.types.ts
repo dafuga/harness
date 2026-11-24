@@ -5,6 +5,23 @@ export type ProjectState = 'needs-you' | 'blocked' | 'active' | 'quiet' | 'done'
 /** Status of one computer as reported by the tracker's machine list. */
 export type MachineStatus = 'ok' | 'busy' | 'overloaded' | 'offline';
 
+export type OverviewMachine = {
+	name: string;
+	status: MachineStatus;
+	lastTickAt?: string | null;
+	queued?: number | null;
+};
+
+export type OverviewRun = { id: number; computer: string | null };
+
+export type OverviewProviderBudget = {
+	provider: 'claude' | 'codex';
+	readAt: string;
+	limits: { label: string; left: number; resetsAt: string | null }[];
+};
+
+export type OverviewUnavailableReason = 'stale' | 'host-revoked';
+
 /** One tracker item as shown on a card or in the read-only item detail. */
 export type OverviewItem = {
 	id: string;
@@ -13,6 +30,7 @@ export type OverviewItem = {
 	updatedAt: string;
 	due: string | null;
 	live: boolean;
+	runs?: OverviewRun[];
 	stale: boolean;
 };
 
@@ -37,7 +55,8 @@ export type OverviewSnapshot =
 	| {
 			status: 'ready';
 			projects: OverviewCard[];
-			machines: { name: string; status: MachineStatus }[];
+			machines: OverviewMachine[];
+			providerBudgets?: OverviewProviderBudget[] | null;
 			liveSessions: number;
 	  }
-	| { status: 'unavailable' };
+	| { status: 'unavailable'; reason?: OverviewUnavailableReason };

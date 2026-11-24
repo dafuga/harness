@@ -95,3 +95,53 @@ return JSON.stringify({
 }
 
 export type { FixtureView, PairingOffer, Acceptance } from './ios-acceptance-run.types';
+
+/** Waits for words on the page and records that they came; a timeout fails the check by name. */
+export async function seen(run: Acceptance, expression: string, words: string, name: string) {
+	try {
+		const value = await run.page.until(expression, words, 120);
+		run.record.check(true, name);
+		return value;
+	} catch (error) {
+		run.record.check(false, name);
+		throw error;
+	}
+}
+
+/** Exercise each detail on the same native owner snapshot as the Mac app. */
+export async function overviewDetails(run: Acceptance) {
+	const { page } = run;
+	await page.evaluate("press('Review decision');");
+	await seen(
+		run,
+		"return text('dialog');",
+		'Synthetic question for the owner?',
+		'the decision opens the current owner question'
+	);
+	await overviewShot(run, 'project-overview-decision');
+	await page.evaluate("press('Close');");
+	await page.evaluate("document.querySelector('.po-item-open')?.click();");
+	await seen(
+		run,
+		"return text('dialog');",
+		'Open run #101',
+		'the item offers its current live run'
+	);
+	await page.evaluate("press('Open run #101');");
+	await seen(
+		run,
+		"return text('dialog');",
+		'fixture-computer',
+		'the run opens its computer and status'
+	);
+	await overviewShot(run, 'project-overview-run');
+	await page.evaluate("press('Close');");
+}
+
+export async function overviewShot(run: Acceptance, name: string): Promise<void> {
+	await run.page.until(
+		"return String(document.fonts.status === 'loaded' && [...document.querySelectorAll('main img')].every(image => image.complete && image.naturalWidth > 0));",
+		'true'
+	);
+	await shot(run, name);
+}

@@ -1,7 +1,12 @@
 // @harness-uid u_k4rxbz6pq3
-import type { ReadyOverviewPayload } from './trackerOverviewInput.types';
+import type { OverviewDeps } from './trackerOverviewPolicy.types';
+import type { OverviewPayload, ReadyOverviewPayload } from './trackerOverviewInput.types';
 import { readySnapshot } from './trackerOverviewInput';
-import type { OverviewBucket, StoredOverview } from './trackerOverviewCache.types';
+import type {
+	OverviewBucket,
+	OverviewProvenance,
+	StoredOverview
+} from './trackerOverviewCache.types';
 
 /** A snapshot received longer ago than this is unavailable, never shown. */
 export const OVERVIEW_TTL_MS = 90_000;
@@ -21,9 +26,9 @@ export async function storeOverview(
 	bucket: OverviewBucket,
 	key: string,
 	snapshot: ReadyOverviewPayload,
-	now: number
+	provenance: OverviewProvenance
 ): Promise<void> {
-	const stored: StoredOverview = { receivedAt: now, snapshot };
+	const stored: StoredOverview = { ...provenance, snapshot };
 	await bucket.put(key, JSON.stringify(stored), {
 		httpMetadata: { contentType: 'application/json' }
 	});
@@ -34,20 +39,26 @@ export async function clearOverview(bucket: OverviewBucket, key: string): Promis
 	await bucket.delete(key);
 }
 
-/** The stored snapshot while it is fresh and well formed; null otherwise. */
+/** The latest snapshot is readable only while its publishing authority still exists. */
 export async function readOverview(
 	bucket: OverviewBucket,
 	key: string,
-	now: number
-): Promise<ReadyOverviewPayload | null> {
+	deps: Pick<OverviewDeps, 'now' | 'ownerId' | 'sessions'>
+): Promise<OverviewPayload> {
+	const unavailable = { status: 'unavailable' } as const;
 	const object = await bucket.get(key);
-	if (!object) return null;
+	if (!object) return unavailable;
 	try {
 		const stored = JSON.parse(await object.text()) as StoredOverview;
-		const age = now - stored.receivedAt;
-		if (!Number.isSafeInteger(stored.receivedAt) || age < 0 || age > OVERVIEW_TTL_MS) return null;
-		return readySnapshot(stored.snapshot);
+		const age = deps.now - stored.receivedAt;
+		if (!Number.isSafeInteger(stored.receivedAt) || age < 0) return unavailable;
+		if (age > OVERVIEW_TTL_MS) return { ...unavailable, reason: 'stale' };
+		if (typeof stored.publisher !== 'string' || !deps.ownerId) return unavailable;
+		const snapshot = readySnapshot(stored.snapshot);
+		if (!(await deps.sessions?.publisherLive(stored.publisher, deps.ownerId)))
+			return { ...unavailable, reason: 'host-revoked' };
+		return snapshot;
 	} catch {
-		return null;
+		return unavailable;
 	}
 }

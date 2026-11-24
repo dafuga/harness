@@ -60,7 +60,12 @@ function machineFromComputer(computer: FleetComputer) {
 		if ((computer.queued ?? 0) > 0) status = 'overloaded';
 		else status = (computer.active_runs ?? 0) > 0 ? 'busy' : 'ok';
 	}
-	return { node: computer.computer, status, last_tick_at: computer.last_tick_at };
+	return {
+		node: computer.computer,
+		status,
+		last_tick_at: computer.last_tick_at,
+		queued: computer.state === 'polling' ? computer.queued : null
+	};
 }
 
 function defaultWebhookStatus(hub: boolean) {
@@ -141,7 +146,8 @@ function trackerFleetHealth(runtime: TrackerNativeRuntimeService, startedRuns: n
 }
 
 function machineOffline(sampledAt: string | undefined, now: number) {
-	return !sampledAt || now - Date.parse(sampledAt) > 300_000;
+	const age = now - Date.parse(sampledAt ?? '');
+	return !Number.isFinite(age) || age < 0 || age > 300_000;
 }
 
 function fleetRunnerDetails(
@@ -149,7 +155,13 @@ function fleetRunnerDetails(
 	active: number | null | undefined,
 	queued: number | null | undefined
 ) {
-	return { last_tick_at, last_error, waiting_on, active_runs: active ?? null, queued: queued ?? 0 };
+	return {
+		last_tick_at,
+		last_error,
+		waiting_on,
+		active_runs: active ?? null,
+		queued: queued ?? null
+	};
 }
 
 function machineSamplesByNode(values: readonly unknown[]) {
@@ -165,9 +177,8 @@ function fleetRunnerState(runner: z.infer<typeof runnerSample> | undefined, now:
 	if (runner?.enabled == null) return 'unknown';
 	if (!runner.enabled) return 'disabled';
 	if (runner.last_error) return 'error';
-	return runner.last_tick_at && now - Date.parse(runner.last_tick_at) <= 120_000
-		? 'polling'
-		: 'stale';
+	const age = now - Date.parse(runner.last_tick_at ?? '');
+	return age >= 0 && age <= 120_000 ? 'polling' : 'stale';
 }
 
 function deliveryCounts(database: SqliteDatabase) {

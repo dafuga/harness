@@ -129,6 +129,9 @@ test('the browser owner queues one scoped message, only native claims it, and a 
 		const browser = await serve(homeRequest('GET', { cookie }, `/chat?id=${id}`));
 		expect(await browser.json()).toEqual({ id, status: 'sent' });
 		expect((await serve(homeRequest('GET', { cookie: other }, `/chat?id=${id}`))).status).toBe(404);
+		await fixture.revoke(bearer);
+		const revoked = await serve(homeRequest('GET', { cookie }));
+		expect(await revoked.json()).toEqual({ granted: true, snapshot: null });
 	} finally {
 		await close();
 	}

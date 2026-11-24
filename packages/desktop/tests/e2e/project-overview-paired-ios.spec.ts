@@ -6,6 +6,7 @@ import {
 	pairedPhoneFixture,
 	setPairedState
 } from './support/projectOverviewPairedFixture';
+import { captureOverview } from './support/projectOverviewNativeFixture';
 import { scenarioCapture } from './scenario-capture';
 import scenario from '../../../../specification/scenarios/project-overview-ios-renderer.json' with { type: 'json' };
 import type { ScenarioManifest } from '../../../../src/core/unitTypes';
@@ -70,6 +71,19 @@ test('an open item shows its read-only detail within the page and changes nothin
 		page.getByText('Synthetic question for the owner?', { exact: true }).first()
 	).toBeVisible();
 	await expect(page).toHaveURL(/\/projects$/);
+	await page.keyboard.press('Escape');
+	const phase = process.env.SCREENSHOT_LABEL ?? 'current';
+	await captureOverview(page, `ios-${phase}-navigation`);
+	await page.getByRole('button', { name: 'Review decision', exact: true }).click();
+	await expect(page.getByRole('dialog', { name: 'Review decision' })).toContainText(
+		'Synthetic question for the owner?'
+	);
+	await captureOverview(page, `ios-${phase}-decision`);
+	await page.keyboard.press('Escape');
+	await page.getByRole('button', { name: /Synthetic live item/ }).click();
+	await page.getByRole('button', { name: 'Open run #101' }).click();
+	await expect(page.getByRole('dialog', { name: 'Run #101' })).toContainText('fixture-computer');
+	await captureOverview(page, `ios-${phase}-run`);
 	await expectReadsOnly(page);
 });
 

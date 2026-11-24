@@ -3,6 +3,7 @@ import type {
 	OverviewCallout,
 	OverviewCard,
 	OverviewItem,
+	OverviewRun,
 	OverviewSnapshot,
 	ProjectState
 } from './projectOverview.types';
@@ -32,7 +33,10 @@ const STATE_RANK: Record<ProjectState, number> = {
 };
 
 /** Project validated tracker records into the overview. Pure: the same records and time give the same snapshot. */
-export function projectOverviewSnapshot(sources: TrackerSources, now: number): OverviewSnapshot {
+export function projectOverviewSnapshot(
+	sources: TrackerSources,
+	now: number
+): Extract<OverviewSnapshot, { status: 'ready' }> {
 	// Labels are sanitized for display only; the offline set and run joins keep the raw node names.
 	const offline = new Set(
 		sources.machines
@@ -40,10 +44,10 @@ export function projectOverviewSnapshot(sources: TrackerSources, now: number): O
 			.map((machine) => machine.node)
 	);
 	const machines = sources.machines
-		.map((machine) => ({ name: sanitizeText(machine.node), status: machine.status }))
+		.map(({ node, ...machine }) => ({ name: sanitizeText(node), ...machine }))
 		.sort((a, b) => compareText(a.name, b.name));
 	const items = sources.items.filter(isIncludedItem);
-	const liveByItem = countLiveRuns(sources.runs, new Set(items.map((item) => item.id)), offline);
+	const liveByItem = currentRuns(sources.runs, new Set(items.map((item) => item.id)), offline);
 	const cards = [...groupByAgent(items).entries()]
 		.map(([agent, rows]) => buildCard(agent, rows, liveByItem, now))
 		.filter((card): card is OverviewCard => card !== null)
@@ -57,25 +61,27 @@ export function projectOverviewSnapshot(sources: TrackerSources, now: number): O
 }
 
 /**
- * @pure Count each live run once per item. Runs on offline computers and runs of items
+ * @pure Keep each live run once per item. Runs on offline computers and runs of items
  * that are not on a card are ignored; the run's own project field is never read.
  */
-function countLiveRuns(
+function currentRuns(
 	runs: TrackerRunRecord[],
 	itemIds: ReadonlySet<string>,
 	offline: ReadonlySet<string>
-): Map<string, number> {
+): Map<string, OverviewRun[]> {
 	const seen = new Set<string>();
-	const counts = new Map<string, number>();
+	const current = new Map<string, OverviewRun[]>();
 	for (const run of runs) {
 		if (run.state !== 'running' || run.ended_at !== null || !itemIds.has(run.item_id)) continue;
 		if (run.node && offline.has(run.node)) continue;
 		const key = `${run.node ?? ''}:${run.id}`;
 		if (seen.has(key)) continue;
 		seen.add(key);
-		counts.set(run.item_id, (counts.get(run.item_id) ?? 0) + 1);
+		const rows = current.get(run.item_id) ?? [];
+		rows.push({ id: run.id, computer: run.node ? sanitizeText(run.node) : null });
+		current.set(run.item_id, rows);
 	}
-	return counts;
+	return current;
 }
 
 function groupByAgent(items: IncludedTrackerItem[]): Map<string, IncludedTrackerItem[]> {
@@ -92,11 +98,11 @@ function groupByAgent(items: IncludedTrackerItem[]): Map<string, IncludedTracker
 function buildCard(
 	agent: string,
 	rows: IncludedTrackerItem[],
-	liveByItem: ReadonlyMap<string, number>,
+	liveByItem: ReadonlyMap<string, OverviewRun[]>,
 	now: number
 ): OverviewCard | null {
-	const liveOf = (id: string) => (liveByItem.get(id) ?? 0) > 0;
-	const liveSessions = rows.reduce((sum, row) => sum + (liveByItem.get(row.id) ?? 0), 0);
+	const runsOf = (id: string) => liveByItem.get(id) ?? [];
+	const liveSessions = rows.reduce((sum, row) => sum + runsOf(row.id).length, 0);
 	const updatedAt = newest(rows.map((row) => row.updated_at));
 	const state = pickState(rows, liveSessions, updatedAt, now);
 	if (state === null) return null;
@@ -107,10 +113,10 @@ function buildCard(
 		counts: countStatuses(rows),
 		items: rows
 			.filter((row) => row.status === 'in_progress')
-			.map((row) => toOverviewItem(row, liveOf(row.id), now))
+			.map((row) => toOverviewItem(row, runsOf(row.id), now))
 			.sort(compareItems),
-		attention: attentionCallout(rows, liveOf, now),
-		blocked: blockedCallout(rows, liveOf, now),
+		attention: attentionCallout(rows, runsOf, now),
+		blocked: blockedCallout(rows, runsOf, now),
 		milestone: latestMilestone(rows),
 		updatedAt: isoTime(updatedAt)
 	};
@@ -142,20 +148,20 @@ function needsAnswer(row: IncludedTrackerItem): boolean {
 
 function attentionCallout(
 	rows: IncludedTrackerItem[],
-	liveOf: (id: string) => boolean,
+	runsOf: (id: string) => OverviewRun[],
 	now: number
 ): OverviewCallout | null {
 	const row = newestRow(rows.filter(needsAnswer));
-	return row ? toCallout(row, row.question || row.blocked_reason, liveOf(row.id), now) : null;
+	return row ? toCallout(row, row.question || row.blocked_reason, runsOf(row.id), now) : null;
 }
 
 function blockedCallout(
 	rows: IncludedTrackerItem[],
-	liveOf: (id: string) => boolean,
+	runsOf: (id: string) => OverviewRun[],
 	now: number
 ): OverviewCallout | null {
 	const row = newestRow(rows.filter((candidate) => candidate.status === 'blocked'));
-	return row ? toCallout(row, row.blocked_reason, liveOf(row.id), now) : null;
+	return row ? toCallout(row, row.blocked_reason, runsOf(row.id), now) : null;
 }
 
 /** @pure The newest note across the project's items, with its time in the snapshot form. */

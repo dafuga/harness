@@ -1,0 +1,43 @@
+{
+	"name": "project-overview-owner-parity",
+	"goal": "Prove owner-only fleet status and fresh Project Overview data, item, decision, and run detail from the shared Mac and iOS fixture.",
+	"createdAt": "2026-11-24T09:03:29.843Z",
+	"updatedAt": "2026-11-24T09:15:07.804Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-24T09:05:45.808Z",
+			"evidence": "Tracker wttfb9 and the existing owner overview contract define machine freshness, scoped quota, projected detail and Hub access fences. Reuse publisher telemetry and shared native owner fixture."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-24T09:15:07.804Z",
+			"evidence": "Shared owner projection exposes current run details and bounded queue and provider telemetry. Hub drops expired and revoked publishers without widening access."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

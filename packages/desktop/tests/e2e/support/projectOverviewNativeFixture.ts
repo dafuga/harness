@@ -1,102 +1,40 @@
+import { mkdir } from 'node:fs/promises';
 import type { Page } from '@playwright/test';
-import type {
-	OverviewItem,
-	OverviewSnapshot
-} from '../../../../reports/src/lib/projects-sessions/project-overview/projectOverview.types';
+import type { OverviewSnapshot } from '../../../../reports/src/lib/projects-sessions/project-overview/projectOverview.types';
+import { readProjectOverview } from '../../../../reports/src/lib/projects-sessions/project-overview/readProjectOverview';
+import { syntheticTrackerPayloads, TRACKER_URLS } from './projectOverviewElectronFixture';
 import type { OverviewBridge } from './projectOverviewNativeFixture.types';
 
-const at = '2026-11-20T20:41:00.000Z';
-const item = (
-	id: string,
-	title: string,
-	status: OverviewItem['status'],
-	extra: Partial<{ live: boolean; stale: boolean; due: string | null }> = {}
-): OverviewItem => ({
-	id,
-	title,
-	status,
-	updatedAt: at,
-	due: extra.due ?? null,
-	live: extra.live ?? false,
-	stale: extra.stale ?? false
-});
-
-/**
- * Synthetic tracker records only: one card per project state. No real project, person or
- * machine name appears here.
- */
-export const overviewSnapshot: OverviewSnapshot = {
-	status: 'ready',
-	projects: [
-		{
-			agent: 'fixture-needs',
-			state: 'needs-you',
-			liveSessions: 0,
-			counts: { open: 1, in_progress: 0, blocked: 0, done: 0 },
-			items: [item('fx-1', 'Synthetic question item', 'open')],
-			attention: {
-				item: item('fx-1', 'Synthetic question item', 'open'),
-				text: 'Synthetic question for the owner?'
-			},
-			blocked: null,
-			milestone: null,
-			updatedAt: at
-		},
-		{
-			agent: 'fixture-blocked',
-			state: 'blocked',
-			liveSessions: 0,
-			counts: { open: 0, in_progress: 0, blocked: 1, done: 0 },
-			items: [item('fx-2', 'Synthetic blocked item', 'blocked')],
-			attention: null,
-			blocked: {
-				item: item('fx-2', 'Synthetic blocked item', 'blocked'),
-				text: 'Synthetic blocked reason'
-			},
-			milestone: null,
-			updatedAt: at
-		},
-		{
-			agent: 'fixture-active',
-			state: 'active',
-			liveSessions: 1,
-			counts: { open: 0, in_progress: 1, blocked: 0, done: 0 },
-			items: [item('fx-3', 'Synthetic live item', 'in_progress', { live: true })],
-			attention: null,
-			blocked: null,
-			milestone: { text: 'Synthetic milestone', at },
-			updatedAt: at
-		},
-		{
-			agent: 'fixture-quiet',
-			state: 'quiet',
-			liveSessions: 0,
-			counts: { open: 0, in_progress: 1, blocked: 0, done: 0 },
-			items: [item('fx-4', 'Synthetic stale item', 'in_progress', { stale: true })],
-			attention: null,
-			blocked: null,
-			milestone: null,
-			updatedAt: at
-		},
-		{
-			agent: 'fixture-done',
-			state: 'done',
-			liveSessions: 0,
-			counts: { open: 0, in_progress: 0, blocked: 0, done: 2 },
-			items: [item('fx-5', 'Synthetic finished item', 'done')],
-			attention: null,
-			blocked: null,
-			milestone: null,
-			updatedAt: at
-		}
-	],
-	machines: [{ name: 'fixture-computer', status: 'busy' }],
-	liveSessions: 1
-};
+/** The same owner fixture is consumed by Electron, the paired renderer, and native iOS. */
+export async function fixtureOverview(now = Date.now()): Promise<OverviewSnapshot> {
+	const payloads = syntheticTrackerPayloads(now);
+	const mock = new Map(
+		Object.entries(TRACKER_URLS).map(([key, url]) => [url, payloads[key as keyof typeof payloads]])
+	);
+	const fetcher = async (url: RequestInfo | URL) => {
+		const data = mock.get(String(url));
+		return data ? Response.json(data) : new Response(null, { status: 404 });
+	};
+	const snapshot = await readProjectOverview(fetcher as typeof fetch, now);
+	return snapshot.status === 'ready'
+		? {
+				...snapshot,
+				providerBudgets: [
+					{
+						provider: 'claude',
+						readAt: new Date(now).toISOString(),
+						limits: [
+							{ label: 'Weekly', left: 72, resetsAt: new Date(now + 86_400_000).toISOString() }
+						]
+					}
+				]
+			}
+		: snapshot;
+}
 
 /** Installs the window bridge of the desktop app, answering the overview as `mode` says. */
 export async function fakeOverviewBridge(page: Page, mode: OverviewBridge) {
-	await page.addInitScript(installBridge, { mode, snapshot: overviewSnapshot });
+	await page.addInitScript(installBridge, { mode, snapshot: await fixtureOverview() });
 }
 
 function installBridge(input: { mode: OverviewBridge; snapshot: unknown }) {
@@ -123,6 +61,7 @@ function installBridge(input: { mode: OverviewBridge; snapshot: unknown }) {
 export async function captureOverview(page: Page, name: string) {
 	if (process.env.TAKE_SCREENSHOT !== 'true') return;
 	await page.evaluate(() => document.fonts.ready);
+	await mkdir('/tmp/harness-env-evidence', { recursive: true });
 	const revision = process.env.HARNESS_VERIFY_REVISION ?? 'local';
 	await page.screenshot({
 		path: `/tmp/harness-env-evidence/project-overview-${name}-${revision}.png`

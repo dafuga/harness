@@ -13,8 +13,6 @@ export const OWNER = ada;
 export const OTHER = grace;
 export const NOW = Date.UTC(2026, 10, 21, 8, 0, 0);
 export const OVERVIEW_URL = ORIGIN + '/api/tracker-overview';
-
-/** A bucket in memory with the three R2 operations the endpoint uses. Keys are visible for assertions. */
 export function memoryBucket() {
 	const objects = new Map<string, string>();
 	const bucket = {
@@ -33,7 +31,6 @@ export function memoryBucket() {
 	};
 	return bucket;
 }
-
 /** A ready snapshot with synthetic records only. Its live total agrees with its cards. */
 export function snapshot(): ReadyOverviewPayload {
 	const item = {
@@ -43,6 +40,7 @@ export function snapshot(): ReadyOverviewPayload {
 		updatedAt: '2026-11-21T07:59:00.000Z',
 		due: '2026-11-21T10:00:00.000Z',
 		live: true,
+		runs: [{ id: 101, computer: 'synthetic-computer' }],
 		stale: false
 	};
 	return {
@@ -60,7 +58,21 @@ export function snapshot(): ReadyOverviewPayload {
 				updatedAt: '2026-11-21T07:59:00.000Z'
 			}
 		],
-		machines: [{ name: 'synthetic-computer', status: 'ok' }],
+		machines: [
+			{
+				name: 'synthetic-computer',
+				status: 'ok',
+				queued: 0,
+				lastTickAt: '2026-11-21T07:59:00.000Z'
+			}
+		],
+		providerBudgets: [
+			{
+				provider: 'claude',
+				readAt: '2026-11-21T07:59:00.000Z',
+				limits: [{ label: 'Weekly', left: 72, resetsAt: null }]
+			}
+		],
 		liveSessions: 1
 	};
 }
@@ -80,7 +92,11 @@ export function overviewFixture(options: { owner?: string | null } = {}) {
 	const owner = options.owner === undefined ? OWNER.id : (options.owner ?? undefined);
 	const deps = (ownerId: string | undefined): OverviewDeps => ({
 		ownerId,
-		sessions,
+		sessions: {
+			resolve: (request) => sessions.resolve(request),
+			publisherLive: async (idHash, ownerId) =>
+				(await repository.live(idHash))?.actor.id === ownerId
+		},
 		bucket: bucket as unknown as OverviewBucket,
 		now: now()
 	});
@@ -88,6 +104,11 @@ export function overviewFixture(options: { owner?: string | null } = {}) {
 		bucket,
 		homeDeps: () => deps(owner),
 		owner,
+		async revoke(bearer: string) {
+			const record = await repository.find(bearer);
+			if (!record) throw new Error('Missing fixture session');
+			await repository.revoke(record);
+		},
 		advance(milliseconds: number) {
 			clock += milliseconds;
 		},
@@ -132,7 +153,6 @@ export function overviewRequest(
 	}
 	return new Request(OVERVIEW_URL, { method, headers });
 }
-
 /** Bodies the strict publish check must refuse: unknown keys, credential fields, bad shapes and inconsistent totals. */
 export function invalidSnapshots(): unknown[] {
 	const base = snapshot();
@@ -141,6 +161,13 @@ export function invalidSnapshots(): unknown[] {
 	return [
 		{ ...base, extra: true },
 		{ ...base, receivedAt: NOW },
+		{ ...base, providerBudgets: [{ ...base.providerBudgets?.[0], account: 'private' }] },
+		{
+			...base,
+			projects: [
+				{ ...card, items: [{ ...item, runs: [{ id: 1, computer: null, output: 'private' }] }] }
+			]
+		},
 		{ ...base, liveSessions: 2 },
 		{ ...base, projects: [{ ...card, accessToken: 'synthetic' }] },
 		{ ...base, projects: [{ ...card, state: 'unknown' }] },

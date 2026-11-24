@@ -20,6 +20,12 @@ export function syntheticMachines(): Record<string, unknown>[] {
 		{ node: 'box', role: 'primary', status: 'ok', reasons: [], agents: { claude: 7, codex: 2 } },
 		{ node: 'mb2', role: 'runner', status: 'offline', reasons: ['no sample for 40 min'] },
 		{ node: 'primary', role: 'primary', status: 'busy', reasons: ['CPU busy'] },
-		{ node: 'runner', role: 'runner', status: 'overloaded', reasons: ['RAM low'] }
+		{
+			node: 'runner',
+			role: 'runner',
+			status: 'overloaded',
+			queued: 3,
+			last_tick_at: '2026-11-20T20:40:00.000Z'
+		}
 	];
 }

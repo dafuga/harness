@@ -10,4 +10,5 @@ export interface ProjectOverviewCardProps {
 	/** The time in milliseconds that ETAs are judged against. */
 	now: number;
 	onOpen: (item: OverviewItem) => void;
+	onDecision?: (item: OverviewItem) => void;
 }

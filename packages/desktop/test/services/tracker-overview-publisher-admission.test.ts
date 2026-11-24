@@ -140,7 +140,7 @@ test('the owner snapshot validates both subscriptions and routine freshness with
 			provider,
 			readAt,
 			plan: null,
-			account: null,
+			account: 'private fixture account',
 			limits: [{ id: 'weekly', label: 'Weekly', left: 17, resetsAt: null }],
 			credits: null,
 			history: [],
@@ -150,6 +150,41 @@ test('the owner snapshot validates both subscriptions and routine freshness with
 		expect(await read(now)).toEqual({ routines: null, quota: null });
 		await writeFile(file, JSON.stringify(snapshot));
 		expect(await read(now + 300_000)).toEqual(snapshot);
+
+		vi.setSystemTime(now + 300_000);
+		const authority = fakeAuthority();
+		const publisher = createTrackerOverviewPublisher({
+			authority,
+			read: async () => ready,
+			env: {
+				HARNESS_TRACKER_OVERVIEW_PUBLISH: '1',
+				HARNESS_TRACKER_OVERVIEW_OWNER_ACTOR_ID: OWNER_ACTOR_ID,
+				HARNESS_HUB_HOME_PROVIDER_FILE: file
+			}
+		})!;
+		publisher.start();
+		try {
+			await publisher.tick();
+			expect(authority.put).toHaveBeenLastCalledWith(
+				credential,
+				JSON.stringify({
+					...ready,
+					providerBudgets: quota.map(({ provider }) => ({
+						provider,
+						readAt,
+						limits: [{ label: 'Weekly', left: 17, resetsAt: null }]
+					}))
+				})
+			);
+			await vi.advanceTimersByTimeAsync(3_600_000);
+			await publisher.tick();
+			expect(authority.put).toHaveBeenLastCalledWith(
+				credential,
+				JSON.stringify({ ...ready, providerBudgets: null })
+			);
+		} finally {
+			publisher.stop();
+		}
 		await writeFile(
 			file,
 			JSON.stringify({ ...snapshot, quota: [{ ...quota[0], readAt: 'invalid' }] })

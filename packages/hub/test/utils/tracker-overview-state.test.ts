@@ -74,11 +74,11 @@ test('the owner read sends one same-origin GET with no store and no credential',
 });
 
 test('an unavailable owner answer (503) still means the account is the owner', async () => {
-	const { fetcher } = answering(503, { status: 'unavailable' });
-	expect(await readOverview(fetcher)).toEqual({
-		kind: 'owner',
-		snapshot: { status: 'unavailable' }
-	});
+	for (const reason of [undefined, 'stale', 'host-revoked']) {
+		const snapshot = reason ? { status: 'unavailable', reason } : { status: 'unavailable' };
+		const { fetcher } = answering(503, snapshot);
+		expect(await readOverview(fetcher)).toEqual({ kind: 'owner', snapshot });
+	}
 });
 
 test.each([401, 403, 404])(

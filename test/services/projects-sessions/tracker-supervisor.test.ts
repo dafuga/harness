@@ -34,7 +34,7 @@ test('marks a polling computer with held launches as overloaded', async () => {
 			.poll(() => service.status())
 			.toMatchObject({
 				machines: expect.arrayContaining([
-					{ node: secondary, status: 'overloaded', last_tick_at: timestamp }
+					{ node: secondary, status: 'overloaded', last_tick_at: timestamp, queued: 1 }
 				])
 			});
 	} finally {

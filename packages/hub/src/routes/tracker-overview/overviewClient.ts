@@ -14,6 +14,11 @@ const unavailable: OverviewSnapshot = { status: 'unavailable' };
 function snapshotOf(body: unknown): OverviewSnapshot {
 	if (!body || typeof body !== 'object') return unavailable;
 	const value = body as Record<string, unknown>;
+	if (
+		value.status === 'unavailable' &&
+		(value.reason === 'stale' || value.reason === 'host-revoked')
+	)
+		return { status: 'unavailable', reason: value.reason };
 	const ready =
 		value.status === 'ready' &&
 		Array.isArray(value.projects) &&

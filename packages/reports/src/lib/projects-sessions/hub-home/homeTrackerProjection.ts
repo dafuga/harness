@@ -13,7 +13,7 @@ import type {
 	OwnerHomeSnapshot
 } from './hubHome.types';
 import { buildHomeAgents } from './homeTrackerAgents';
-import { homeProviderReadingIsStale } from './homeProviderPayload';
+import { homeProviderReadingIsStale, overviewProviderBudgets } from './homeProviderPayload';
 
 export const noProviders: HomeProviderReadings = { routines: null, quota: null };
 
@@ -86,7 +86,10 @@ export function buildHomeSnapshot(
 			(item) => !item.deleted && !item.sensitive && item.status !== 'ignored'
 		) ?? [];
 	const overview = sources
-		? projectOverviewSnapshot(sources, now)
+		? {
+				...projectOverviewSnapshot(sources, now),
+				providerBudgets: overviewProviderBudgets(providers.quota, now)
+			}
 		: { status: 'unavailable' as const };
 	const agents: HomeAgent[] = sources ? buildHomeAgents(overview, { ...sources, items }) : [];
 	return {

@@ -132,7 +132,9 @@ export function syntheticTrackerPayloads(now: number): TrackerDouble['payloads']
 		{ id: 101, node: 'fixture-computer', item_id: 'fx-active-1', state: 'running' },
 		{ id: 102, node: 'fixture-computer', item_id: 'fx-done-1', state: 'done' }
 	];
-	const machines = [{ node: 'fixture-computer', status: 'busy' }];
+	const machines = [
+		{ node: 'fixture-computer', status: 'busy', queued: 0, last_tick_at: minutesAgo(now, 1) }
+	];
 	const items = [...attentionItems(now), ...quietAndDoneItems(now), ...excludedItems(now)];
 	return { items, runs, machines };
 }
