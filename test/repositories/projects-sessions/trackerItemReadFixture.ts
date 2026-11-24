@@ -158,6 +158,7 @@ export function publicItem(
 		status: 'open',
 		blocked_reason: null,
 		due: null,
+		remind_at: null,
 		auto: null,
 		project: null,
 		repo: null,

@@ -80,7 +80,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Thrown when input.dimension is truthy and is neither \"2d\" nor \"3d\"; its message is exactly \"Dimension must be 2d or 3d.\"."
 			},
@@ -161,7 +161,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown when input.dimension is truthy and is neither \"2d\" nor \"3d\"; its message is exactly \"Dimension must be 2d or 3d.\"."
 					},

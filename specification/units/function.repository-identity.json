@@ -110,7 +110,7 @@
 				"description": "A URIError from decodeURIComponent inside fileURLToPath when the path of a file:// remote holds malformed percent-encoding, such as %zz. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
 			},
 			{
-				"name": "Error",
+				"name": "realpathSync failure (node:fs)",
 				"type": "thrown",
 				"description": "A file-system Error (for example code ENOENT or EACCES) from realpathSync on the Git common store, reached only when the checkout has no remote. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
 			}
@@ -156,7 +156,7 @@
 						"description": "A URIError from decodeURIComponent inside fileURLToPath when the path of a file:// remote holds malformed percent-encoding, such as %zz. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
 					},
 					{
-						"name": "Error",
+						"name": "realpathSync failure (node:fs)",
 						"type": "thrown",
 						"description": "A file-system Error (for example code ENOENT or EACCES) from realpathSync on the Git common store, reached only when the checkout has no remote. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
 					}
@@ -204,7 +204,7 @@
 						"description": "A URIError from decodeURIComponent inside fileURLToPath when the path of a file:// remote holds malformed percent-encoding, such as %zz. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
 					},
 					{
-						"name": "Error",
+						"name": "realpathSync failure (node:fs)",
 						"type": "thrown",
 						"description": "A file-system Error (for example code ENOENT or EACCES) from realpathSync on the Git common store, reached only when the checkout has no remote. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
 					}
@@ -252,7 +252,7 @@
 						"description": "A URIError from decodeURIComponent inside fileURLToPath when the path of a file:// remote holds malformed percent-encoding, such as %zz. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
 					},
 					{
-						"name": "Error",
+						"name": "realpathSync failure (node:fs)",
 						"type": "thrown",
 						"description": "A file-system Error (for example code ENOENT or EACCES) from realpathSync on the Git common store, reached only when the checkout has no remote. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
 					}

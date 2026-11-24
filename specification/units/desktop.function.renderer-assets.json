@@ -95,7 +95,7 @@
 				"description": "A percent-encoded pathname that decodeURIComponent cannot decode raises URIError."
 			},
 			{
-				"name": "Error",
+				"name": "Renderer asset path resolution or read failure",
 				"type": "thrown",
 				"description": "Filesystem failures while resolving the selected file or root, or reading the selected file, reject rendererAssets; failures from its initial stat are caught and instead select index.html."
 			}
@@ -183,7 +183,7 @@
 						"description": "A percent-encoded pathname that decodeURIComponent cannot decode raises URIError."
 					},
 					{
-						"name": "Error",
+						"name": "Renderer asset path resolution or read failure",
 						"type": "thrown",
 						"description": "Filesystem failures while resolving the selected file or root, or reading the selected file, reject rendererAssets; failures from its initial stat are caught and instead select index.html."
 					}

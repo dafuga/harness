@@ -87,7 +87,8 @@
 						"durationMs": 1250,
 						"archivedAt": null
 					}
-				]
+				],
+				"unknownReason": "Each property has the runtime type declared by its SQLite model field."
 			}
 		],
 		"outputs": [
@@ -129,7 +130,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Unknown SQLite field or invalid binding",
 				"type": "thrown",
 				"description": "Thrown when a key is not an own property of model.fields holding a field definition (message Unknown SQLite field: <property>), when the column name (field.column, or the snake_case property) is not an identifier of ASCII letters, digits and underscores that starts with a letter or underscore (message Invalid SQLite identifier: <name>), or when a value does not bind for its field type (message Invalid SQLite <type> field value). The first failing key aborts the whole call."
 			},
@@ -213,7 +214,8 @@
 								"durationMs": 1250,
 								"archivedAt": null
 							}
-						]
+						],
+						"unknownReason": "Each property has the runtime type declared by its SQLite model field."
 					}
 				],
 				"outputs": [
@@ -255,7 +257,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unknown SQLite field or invalid binding",
 						"type": "thrown",
 						"description": "Thrown when a key is not an own property of model.fields holding a field definition (message Unknown SQLite field: <property>), when the column name (field.column, or the snake_case property) is not an identifier of ASCII letters, digits and underscores that starts with a letter or underscore (message Invalid SQLite identifier: <name>), or when a value does not bind for its field type (message Invalid SQLite <type> field value). The first failing key aborts the whole call."
 					},

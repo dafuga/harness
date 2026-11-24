@@ -75,27 +75,27 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Missing managed preview option value",
 				"type": "thrown",
 				"description": "Thrown with the message 'Missing value for <option>.' when an option, supported or not, is the last token or its next token is empty or starts with '--'."
 			},
 			{
-				"name": "Error",
+				"name": "Unsupported managed preview option",
 				"type": "thrown",
 				"description": "Thrown with the message 'Unsupported managed preview option: <option>' when an option other than --config, --port or --host has a value."
 			},
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Harness previews bind to 127.0.0.1 only.' when --host is any value other than 127.0.0.1."
 			},
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Preview port must be from 1024 to 65535.' when the --port value, converted with Number(), is not an integer from 1024 to 65535 (NaN included)."
 			},
 			{
-				"name": "Error",
+				"name": "process.cwd/realpathSync failure (Node.js)",
 				"type": "thrown",
 				"description": "Thrown as a Node.js filesystem error, such as ENOENT, by process.cwd() when the working directory has been removed or by realpathSync when the root does not exist or cannot be resolved."
 			}
@@ -162,27 +162,27 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Missing managed preview option value",
 						"type": "thrown",
 						"description": "Thrown with the message 'Missing value for <option>.' when an option, supported or not, is the last token or its next token is empty or starts with '--'."
 					},
 					{
-						"name": "Error",
+						"name": "Unsupported managed preview option",
 						"type": "thrown",
 						"description": "Thrown with the message 'Unsupported managed preview option: <option>' when an option other than --config, --port or --host has a value."
 					},
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Harness previews bind to 127.0.0.1 only.' when --host is any value other than 127.0.0.1."
 					},
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Preview port must be from 1024 to 65535.' when the --port value, converted with Number(), is not an integer from 1024 to 65535 (NaN included)."
 					},
 					{
-						"name": "Error",
+						"name": "process.cwd/realpathSync failure (Node.js)",
 						"type": "thrown",
 						"description": "Thrown as a Node.js filesystem error, such as ENOENT, by process.cwd() when the working directory has been removed or by realpathSync when the root does not exist or cannot be resolved."
 					}

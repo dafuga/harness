@@ -2,10 +2,16 @@
 	import { setContext, onDestroy, untrack } from 'svelte';
 	import { Controls, SvelteFlow, type Edge, type Node } from '@xyflow/svelte';
 	import { key } from '../../../../../hub/src/utils/browserContext';
-	import { remoteContext } from '../../../../../desktop/src/models/development-tooling/Environment.types';
+	import {
+		nativeAccountContext,
+		remoteContext
+	} from '../../../../../desktop/src/models/development-tooling/Environment.types';
+	import type { NativeAccountContext } from '../../../../../desktop/src/models/development-tooling/Environment.types';
 	import { exampleDocument } from '../../../../../game/src/index';
+	import ChoiceRow from '../../../../../desktop/src/components/shared-primitives/ChoiceRow.svelte';
 	import { previewUnits, previewComponent } from './units';
 	import { previewFixture } from './fixtures.svelte';
+	import { previewTracker } from './remote.svelte';
 	import { routePreview } from './visualUnits';
 	import PresentationPreviews from './PresentationPreviews.svelte';
 	import ExplorerIndexPreview from './ExplorerIndexPreview.svelte';
@@ -13,6 +19,7 @@
 	import NativeAtomPreview from './NativeAtomPreview.svelte';
 	import HubHomeCatalogPreview from './HubHomeCatalogPreview.svelte';
 	import { isHubHomePreview } from './hubHomeCatalogData';
+	import { noop } from './shared';
 	let { id: requested }: { id: string } = $props();
 	const id = untrack(() => requested);
 	const unit = previewUnits.find((unit) => unit.id === id);
@@ -73,6 +80,12 @@
 	let flowEdges = $state.raw<Edge[]>([]);
 	setContext(key, fixture.hub);
 	setContext(remoteContext, fixture.remote);
+	if (id === 'desktop.page.tracker')
+		setContext<NativeAccountContext>(nativeAccountContext, {
+			environment: { kind: 'capacitor', bridge: undefined, local: false, tracker: previewTracker },
+			signedIn: true,
+			signOut: () => {}
+		});
 	onDestroy(fixture.cleanup);
 </script>
 
@@ -133,6 +146,11 @@
 					<div class="hx-nav"><Component {...fixture.props} /></div>
 				{:else if id in presentationIds}
 					<PresentationPreviews {id} {variant} />
+				{:else if id === 'desktop.component.shared-primitives-choice-rows'}
+					<Component {...fixture.props}>
+						<ChoiceRow name="Main" meta="Current branch" current onchoose={noop} />
+						<ChoiceRow name="Order history" meta="Feature branch" onchoose={noop} />
+					</Component>
 				{:else if fitted}
 					<div class="flow-host">
 						<SvelteFlow bind:nodes={flowNodes} bind:edges={flowEdges} colorMode="dark" fitView>

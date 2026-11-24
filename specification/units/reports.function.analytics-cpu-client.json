@@ -34,7 +34,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CpuSampleUnavailableError",
 				"type": "thrown",
 				"description": "Thrown inside refresh with the message 'CPU sample unavailable.' when the /api/analytics-cpu response is not ok. refresh catches it, along with network and JSON failures, and calls update(null) while the client is active, so callers of analyticsCpuClient never receive it."
 			}
@@ -60,7 +60,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CpuSampleUnavailableError",
 						"type": "thrown",
 						"description": "Thrown inside refresh with the message 'CPU sample unavailable.' when the /api/analytics-cpu response is not ok. refresh catches it, along with network and JSON failures, and calls update(null) while the client is active, so callers of analyticsCpuClient never receive it."
 					}

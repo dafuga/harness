@@ -25,14 +25,14 @@
 		"inputs": [
 			{
 				"name": "elementName.tag",
-				"type": "unknown",
+				"type": "string",
 				"required": true,
 				"description": "The tag name string that elementName converts into a component name, such as 'a', 'h1', or 'input-text', which is the form nativeAtoms uses for input types. It matters because elementName calls replace on it, so null, undefined, or any other non-string value throws, and the tag is not checked against the element lists.",
 				"examples": ["a", "h1", "input-text"]
 			},
 			{
 				"name": "atomTag.atom",
-				"type": "unknown",
+				"type": "{ name: string }",
 				"required": true,
 				"description": "A native atom object from nativeAtoms with a string name, such as 'HtmlDiv', which atomTag converts into an hx- tag name. It matters because atomTag reads only atom.name, so a null or undefined atom or a non-string name throws, and the tag and type fields are not used.",
 				"examples": [
@@ -53,7 +53,7 @@
 			},
 			{
 				"name": "nativeAtomSource.atom",
-				"type": "unknown",
+				"type": "{ tag: string; type?: string }",
 				"required": true,
 				"description": "A native atom object from nativeAtoms whose tag and optional type fields set the generated Svelte source. It matters because a null or undefined atom throws, a missing tag does not throw but makes the element name the literal 'undefined', and a missing type leaves the type attribute out.",
 				"examples": [
@@ -187,7 +187,7 @@
 				"inputs": [
 					{
 						"name": "elementName.tag",
-						"type": "unknown",
+						"type": "string",
 						"required": true,
 						"description": "The tag name string that elementName converts into a component name, such as 'a', 'h1', or 'input-text', which is the form nativeAtoms uses for input types. It matters because elementName calls replace on it, so null, undefined, or any other non-string value throws, and the tag is not checked against the element lists.",
 						"examples": ["a", "h1", "input-text"]
@@ -215,7 +215,7 @@
 				"inputs": [
 					{
 						"name": "atomTag.atom",
-						"type": "unknown",
+						"type": "{ name: string }",
 						"required": true,
 						"description": "A native atom object from nativeAtoms with a string name, such as 'HtmlDiv', which atomTag converts into an hx- tag name. It matters because atomTag reads only atom.name, so a null or undefined atom or a non-string name throws, and the tag and type fields are not used.",
 						"examples": [
@@ -257,7 +257,7 @@
 				"inputs": [
 					{
 						"name": "nativeAtomSource.atom",
-						"type": "unknown",
+						"type": "{ tag: string; type?: string }",
 						"required": true,
 						"description": "A native atom object from nativeAtoms whose tag and optional type fields set the generated Svelte source. It matters because a null or undefined atom throws, a missing tag does not throw but makes the element name the literal 'undefined', and a missing type leaves the type attribute out.",
 						"examples": [

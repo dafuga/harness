@@ -110,7 +110,7 @@
 				"description": "Thrown by JSON.parse when loop.json is not valid JSON; readLoop propagates it unchanged because only a missing file is converted to ExpectedCliError."
 			},
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Node.js file-system error from reading loop.json (other than ENOENT), writing loop.json or appending trace.ndjson; it is propagated unchanged and is not an ExpectedCliError. loop.json is written before the trace event, so a failed append leaves the loop closed without a loop.closed event."
 			}
@@ -213,7 +213,7 @@
 						"description": "Thrown by JSON.parse when loop.json is not valid JSON; readLoop propagates it unchanged because only a missing file is converted to ExpectedCliError."
 					},
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Node.js file-system error from reading loop.json (other than ENOENT), writing loop.json or appending trace.ndjson; it is propagated unchanged and is not an ExpectedCliError. loop.json is written before the trace event, so a failed append leaves the loop closed without a loop.closed event."
 					}

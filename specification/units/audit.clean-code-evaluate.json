@@ -231,7 +231,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Review input snapshot changed or became unreadable",
 				"type": "thrown",
 				"description": "Thrown inside this async function, so the promise rejects, when a source or supplied context input no longer matches its recorded hash or cannot be re-read (the result is discarded), when the localization response reports a different Jev model than the evaluation, or when settings.model is not jev-latest or jev-preview and Jev returns a different model. Failures from the injected evaluate and onUsage callbacks, from validating the Jev evaluation or localization response, and from the cache-key, assessment, location and cache-write helpers are not caught here and reject the promise unchanged."
 			}
@@ -447,7 +447,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Review input snapshot changed or became unreadable",
 						"type": "thrown",
 						"description": "Thrown inside this async function, so the promise rejects, when a source or supplied context input no longer matches its recorded hash or cannot be re-read (the result is discarded), when the localization response reports a different Jev model than the evaluation, or when settings.model is not jev-latest or jev-preview and Jev returns a different model. Failures from the injected evaluate and onUsage callbacks, from validating the Jev evaluation or localization response, and from the cache-key, assessment, location and cache-write helpers are not caught here and reject the promise unchanged."
 					}

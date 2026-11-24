@@ -128,7 +128,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "catalogDetail failure (desktop.function.catalog-detail)",
 				"type": "thrown",
 				"description": "Thrown by catalogDetail when the requested id has no matching catalog row at the revision; CatalogService.entity propagates this error unchanged."
 			}
@@ -242,7 +242,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "catalogDetail failure (desktop.function.catalog-detail)",
 						"type": "thrown",
 						"description": "Thrown by catalogDetail when the requested id has no matching catalog row at the revision; CatalogService.entity propagates this error unchanged."
 					}

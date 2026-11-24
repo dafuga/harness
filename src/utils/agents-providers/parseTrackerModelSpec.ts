@@ -31,16 +31,15 @@ const pinnedModels: readonly TrackerModelRung[] = [
 		model: 'claude-opus-5-5',
 		effort: 'high',
 		price: { input: 4, output: 20, cacheRead: 0.2, cacheWrite: 8 }
+	},
+	{
+		id: 'fable',
+		cli: 'claude',
+		model: 'claude-fable-5-2',
+		effort: 'high',
+		price: { input: 8, output: 40, cacheRead: 0.2, cacheWrite: 16 }
 	}
 ];
-
-const fable = {
-	id: 'fable',
-	cli: 'claude',
-	model: 'claude-fable-5-2',
-	effort: 'high',
-	price: { input: 8, output: 40, cacheRead: 0.2, cacheWrite: 16 }
-} satisfies TrackerModelRung;
 
 export function ladderFrom(config?: TrackerLadderConfig): TrackerModelRung[] {
 	return defaultLadder.map((rung) => {
@@ -54,16 +53,13 @@ export function ladderFrom(config?: TrackerLadderConfig): TrackerModelRung[] {
 
 export function parseTrackerModelSpec(
 	spec: string,
-	ladder: readonly TrackerModelRung[],
-	project: string | null,
-	config?: TrackerLadderConfig
+	ladder: readonly TrackerModelRung[]
 ): TrackerModelRung {
 	const [name, explicitEffort, extra] = String(spec).trim().split(':');
 	if (!name || extra !== undefined) throw new RangeError('expected model[:effort]');
 	const effort = explicitEffort === '' ? undefined : explicitEffort;
 	const alias = name.toLowerCase();
 	if (alias === 'gpt-6.1-sol') throw new RangeError('use gpt-6.2-sol instead of gpt-6.1-sol');
-	if (/fable/i.test(name)) return pinnedFable(effort, project, config);
 	return namedPin(alias, effort, ladder) ?? pinnedProviderModel(name, effort, ladder);
 }
 
@@ -82,19 +78,6 @@ function namedPin(alias: string, effort: string | undefined, ladder: readonly Tr
 		price: rung.price && { ...rung.price },
 		pinned: true
 	};
-}
-
-function pinnedFable(
-	effort: string | undefined,
-	project: string | null,
-	config?: TrackerLadderConfig
-): TrackerModelRung {
-	const allowed = config?.autolaunch?.fableProjects ?? ['BuildFlexity'];
-	if (!project || !allowed.some((candidate) => candidate.toLowerCase() === project.toLowerCase()))
-		throw new RangeError(
-			`Fable is only used for BuildFlexity items (project is "${project != null && project.length > 0 ? project : 'unset'}")`
-		);
-	return { ...fable, effort: effort ?? fable.effort, price: { ...fable.price }, pinned: true };
 }
 
 function pinnedProviderModel(

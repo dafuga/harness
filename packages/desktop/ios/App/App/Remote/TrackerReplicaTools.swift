@@ -58,7 +58,15 @@ extension TrackerReplicaStore {
             SELECT count(*) FROM flags WHERE slot = ? AND json_extract(value, '$.state') = 'open'
             """, [slot]).first?.first.flatMap { $0 }.flatMap(Int.init)
         let recent = try db.rows("SELECT value FROM items WHERE slot = ? ORDER BY updated DESC, id LIMIT 10", [slot])
-        return ["counts": counts, "unresolvedFlags": flags ?? 0, "recent": try headers(recent)]
+        let needing = try db.rows("""
+            SELECT items.value FROM items
+            WHERE items.slot = ? AND EXISTS (
+                SELECT 1 FROM flags WHERE flags.slot = items.slot AND flags.item = items.id
+                AND json_extract(flags.value, '$.state') = 'open')
+            ORDER BY items.updated DESC, items.id LIMIT 25
+            """, [slot])
+        return ["counts": counts, "unresolvedFlags": flags ?? 0, "recent": try headers(recent),
+                "needsYou": try headers(needing)]
     }
 
     private func show(id: String, slot: String) throws -> [String: Any] {
@@ -73,9 +81,12 @@ extension TrackerReplicaStore {
         let notes = try children(TrackerReplicaItem.Note.self, from: "notes", item: [slot, item])
         let flags = try children(TrackerReplicaItem.Flag.self, from: "flags", item: [slot, item])
         let runs = try children(TrackerReplicaItem.Run.self, from: "runs", item: [slot, item])
+        let revision = try db.rows("SELECT value FROM attention WHERE slot = ? AND item = ?", [slot, item])
+            .first?.first.flatMap { $0 }
         return ["item": try TrackerReplicaJSON.object(header), "notes": try TrackerReplicaJSON.object(notes),
                 "flag": try flags.first.map(TrackerReplicaJSON.object) ?? NSNull(),
-                "runs": try TrackerReplicaJSON.object(runs)]
+                "runs": try TrackerReplicaJSON.object(runs),
+                "attentionRevision": revision ?? NSNull()]
     }
 
     private func search(_ input: [String: Any], slot: String) throws -> [String: Any] {

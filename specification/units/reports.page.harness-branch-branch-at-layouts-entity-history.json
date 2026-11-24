@@ -60,7 +60,7 @@
 				"description": "A request the owner policy does not admit is answered 403 'Forbidden' by the server before any page is rendered or any history is read. The policy admits a request only in loopback owner mode, with the server bound to a loopback address, no address header configured, and a loopback client address."
 			},
 			{
-				"name": "Error",
+				"name": "Layout history request failed",
 				"type": "thrown",
 				"description": "The history client throws new Error with the message '<path> could not be loaded (<status>)', such as 'index.json could not be loaded (403)', when a data response is not OK; a network failure or a body that is not JSON rejects the read with the platform's error. The page catches it: a failed index or shown revision shows a notice asking the reader to refresh the page, and a failed first parent is read as none."
 			}

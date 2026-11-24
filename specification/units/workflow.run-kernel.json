@@ -438,7 +438,7 @@
 				"description": "Raised by fail() when a runtime name is not module, wasm, process or http, when a wasm or process kernel is not built, when an http runtime has no HARNESS_KERNEL_URL, or when a measurement file is missing or malformed. runtimeKind, kernelDefault and serveKernelRuntime throw it synchronously, while kernelSample rejects with it."
 			},
 			{
-				"name": "Error",
+				"name": "Kernel sample invocation failed",
 				"type": "thrown",
 				"description": "kernelSample rejects with a plain Error whose message is '<runtime kind> failed: <error message>' when the timed call returns a failed response. serveKernelRuntime rejects with the HTTP server's error event, such as a failure to listen, passed through unchanged."
 			},
@@ -882,7 +882,7 @@
 						"description": "Raised by fail() synchronously when the runtime is not one of the four kinds, when the wasm or process kernel is not built, or when the http runtime has no HARNESS_KERNEL_URL."
 					},
 					{
-						"name": "Error",
+						"name": "Kernel HTTP server bind failure",
 						"type": "thrown",
 						"description": "Rejects with the HTTP server's error event when the server cannot start listening on the port, passed through unchanged."
 					}
@@ -942,7 +942,7 @@
 						"description": "Raised by fail() and delivered as a rejection when the runtime is not one of the four kinds, when the wasm or process kernel is not built, or when the http runtime has no url."
 					},
 					{
-						"name": "Error",
+						"name": "Timed kernel invocation failed",
 						"type": "thrown",
 						"description": "Rejects with a plain Error whose message is '<runtime kind> failed: <error message>' when the timed call returns a failed response."
 					}

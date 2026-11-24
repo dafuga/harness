@@ -122,7 +122,8 @@
 					{
 						"error": "invalid-request"
 					}
-				]
+				],
+				"unknownReason": "The route selects the response payload shape; this helper serializes its supplied value."
 			},
 			{
 				"name": "authHttp.options",
@@ -150,7 +151,8 @@
 					{
 						"message": "GitHub request timed out"
 					}
-				]
+				],
+				"unknownReason": "Thrown values do not have a reliable type and the HTTP adapter narrows known authentication failures."
 			},
 			{
 				"name": "hasAuthorization.request",
@@ -400,7 +402,8 @@
 							{
 								"error": "invalid-request"
 							}
-						]
+						],
+						"unknownReason": "The route selects the response payload shape; this helper serializes its supplied value."
 					},
 					{
 						"name": "authHttp.options",
@@ -453,7 +456,8 @@
 							{
 								"message": "GitHub request timed out"
 							}
-						]
+						],
+						"unknownReason": "Thrown values do not have a reliable type and the HTTP adapter narrows known authentication failures."
 					}
 				],
 				"outputs": [

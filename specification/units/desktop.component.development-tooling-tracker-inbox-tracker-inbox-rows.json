@@ -1,0 +1,125 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows",
+	"uid": "u_zj35fp7e6k",
+	"kind": "component",
+	"title": "TrackerInboxRows",
+	"responsibility": "Lists Tracker item headers and lets the user select an item to review.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxRows.svelte"
+		],
+		"symbols": ["TrackerInboxRows"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "TrackerInboxRows.rows",
+				"type": "InboxRow[]",
+				"required": true,
+				"description": "Item headers to display in the current order."
+			},
+			{
+				"name": "TrackerInboxRows.selected",
+				"type": "string | null",
+				"required": true,
+				"description": "The selected Tracker item ID, or null when no item is selected."
+			},
+			{
+				"name": "TrackerInboxRows.empty",
+				"type": "string",
+				"required": true,
+				"description": "Message shown when the list has no items."
+			},
+			{
+				"name": "TrackerInboxRows.label",
+				"type": "string",
+				"required": true,
+				"description": "Accessible name for the item list."
+			},
+			{
+				"name": "TrackerInboxRows.onselect",
+				"type": "(id: string) => void",
+				"required": true,
+				"description": "Receives the full ID of the row the user opens."
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerInboxRows",
+				"type": "markup",
+				"description": "Lists Tracker item headers and lets the user select an item to review."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-inbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxRows.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxRows.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

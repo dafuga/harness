@@ -62,8 +62,9 @@ async function proveHostLaunch(root: string) {
 			expect((await request(initial, itemId, 'launch')).ok).toBe(true);
 		}
 		expect(initial.scheduler).toBeDefined();
-		await expect(initial.scheduler!.tick(signal)).rejects.toThrow(/host process/i);
+		await expect(initial.scheduler!.tick(signal)).resolves.toBeUndefined();
 		expect(runState(db, dockerId)).toMatchObject({ state: 'queued' });
+		expect(runState(db, macId)?.state).toBe('running');
 		db.close();
 		db = new DatabaseSync(path);
 		const resumed = runtime();

@@ -1,19 +1,17 @@
 import { createServer } from 'node:http';
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import type { TrackerFixtureReceipts } from './trackerNodeProcess.types';
 import { once } from 'node:events';
 import { expect } from 'vitest';
-import { TrackerSyncAuthService } from '../../src/services/networking-security/TrackerSyncAuthService';
 import {
 	fixtureTrackerJson,
 	loopback,
 	startTrackerFixture,
-	trackerFixtureKey,
-	trackerProcess
+	trackerProcess,
+	verifyTrackerWire
 } from './trackerNodeProcess';
-import type { TrackerNodeFixture } from './trackerNodeProcess.types';
+import type { TrackerFixtureReceipts, TrackerNodeFixture } from './trackerNodeProcess.types';
 import { verifyCosDryRun } from './verifyCosDryRun';
-
+import { verifyReminder } from './trackerNodeReminder';
 export async function proveForegroundSync(
 	hub: TrackerNodeFixture,
 	spoke: TrackerNodeFixture,
@@ -44,7 +42,8 @@ export async function proveForegroundSync(
 			expect(sync).toMatchObject({ code: 0, stdout: 'sync triggered\n' });
 			await expect
 				.poll(() => fixtureTrackerJson(hub, ['list']), { timeout: 8_000 })
-				.toMatchObject([{ id }]);
+				.toEqual(expect.arrayContaining([expect.objectContaining({ id })]));
+			await verifySpokePublication(hub);
 			await verifyTrackerWire(syncPort, id);
 			const reverse = await fixtureTrackerJson(hub, ['add', 'Reverse fixture item']);
 			await expect
@@ -65,6 +64,21 @@ export async function proveForegroundSync(
 	expect((await trackerProcess(spoke, ['ensure']).exited).code).toBe(3);
 }
 
+async function verifySpokePublication(hub: TrackerNodeFixture) {
+	await expect
+		.poll(() => fixtureTrackerJson(hub, ['runs', '--item', 'spokerun22']), { timeout: 8_000 })
+		.toMatchObject([
+			{ id: 22, node: 'synthetic-spoke', state: 'running', auto_token: 'spoke-token' }
+		]);
+	await expect
+		.poll(() => fixtureTrackerJson(hub, ['autolaunch', 'status']), { timeout: 8_000 })
+		.toMatchObject({
+			computers: expect.arrayContaining([
+				expect.objectContaining({ computer: 'synthetic-spoke', state: 'disabled', active_runs: 1 })
+			])
+		});
+}
+
 async function qualifyItemCommands(spoke: TrackerNodeFixture, id: string) {
 	const short = id.slice(0, 6);
 	expect(
@@ -74,16 +88,23 @@ async function qualifyItemCommands(spoke: TrackerNodeFixture, id: string) {
 		id,
 		notes_log: [{ text: 'Retain this note' }]
 	});
-	const launch = ['launch', short, '--model', 'sol:high'];
+	const launch = ['launch', short, '--project', 'Tracker', '--model', 'Fable:high'];
 	const launched = await fixtureTrackerJson(spoke, launch);
 	expect(launched).toMatchObject({
 		id,
 		auto: expect.stringMatching(/^synthetic-spoke@/),
 		launch_source: 'manual',
 		launch_target: 'synthetic-spoke',
-		model: 'sol:high'
+		project: 'Tracker',
+		model: 'Fable:high'
 	});
 	expect(await fixtureTrackerJson(spoke, launch)).toEqual(launched);
+	expect(await fixtureTrackerJson(spoke, ['pick', short])).toMatchObject({
+		rung: 'fable',
+		model: 'claude-fable-5-2',
+		effort: 'high',
+		pinned: true
+	});
 	expect((await trackerProcess(spoke, ['launch', short, '--model', 'sol:low']).exited).code).toBe(
 		1
 	);
@@ -96,27 +117,6 @@ async function qualifyItemCommands(spoke: TrackerNodeFixture, id: string) {
 		id,
 		schedule_off: false
 	});
-}
-
-async function verifyTrackerWire(port: number, id: string) {
-	const pathAndQuery = '/sync/pull?since=0&wait=0';
-	const url = loopback(port) + pathAndQuery;
-	expect((await fetch(url)).status).toBe(401);
-	const authorization = new TrackerSyncAuthService(trackerFixtureKey).authorizationHeader({
-		method: 'GET',
-		pathAndQuery
-	});
-	const response = await fetch(url, {
-		headers: { authorization, 'x-tracker-node': 'synthetic-observer' }
-	});
-	expect(response.status).toBe(200);
-	expect(await response.json()).toMatchObject({
-		hub: 'synthetic-hub',
-		ops: expect.arrayContaining([
-			expect.objectContaining({ item_id: id, actor: 'synthetic-attestation' })
-		])
-	});
-	expect((await fetch(loopback(port) + '/items', { method: 'POST', body: '{}' })).status).toBe(404);
 }
 
 async function verifyTrackerNotificationFlow(
@@ -140,6 +140,7 @@ async function verifyTrackerNotificationFlow(
 			type: 'attention',
 			new: [{ id, question: 'Is the fixture ready?' }]
 		});
+	await verifyReminder(hub, spoke, id, receipts);
 	expect(
 		await fixtureTrackerJson(spoke, ['answer', id, 'Fixture confirmed', '--by', 'fixture-operator'])
 	).toMatchObject({
@@ -185,7 +186,6 @@ async function verifyCompletionCallback(
 			])
 		);
 }
-
 export async function notificationSink(port: number) {
 	const receipts: TrackerFixtureReceipts = new Map();
 	const server = createServer((request, response) => {

@@ -63,32 +63,32 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HostedProjectBusyError",
 				"type": "thrown",
 				"description": "Thrown, rejecting the call, when selectProject is called while session.busy or session.pending is truthy, unless no hosted project is selected and the requested projectId equals session.projectId, which is the local project already open. Its message is 'Wait for the active project operation.'"
 			},
 			{
-				"name": "Error",
+				"name": "HostedProjectNotSelectedError",
 				"type": "thrown",
 				"description": "Thrown, rejecting the call, when a call dispatched to the selected hosted project passes a projectId that differs from it; a call that leaves projectId undefined is handled with the selected projectId. Its message is 'The requested project is not selected.'"
 			},
 			{
-				"name": "Error",
+				"name": "HostedProjectExecutorUnavailableError",
 				"type": "thrown",
 				"description": "Thrown, rejecting the call, for startRun, cancelRun, openThread and approve when the remote port has no agent method; providers returns an empty list in that case instead. Its message is 'Agent runs and source mutations are unavailable in shared projects without a connected executor.'"
 			},
 			{
-				"name": "Error",
+				"name": "HostedProjectEvidenceUnavailableError",
 				"type": "thrown",
 				"description": "Thrown, rejecting the call, when evidence or artifact is called while a hosted project is selected and the remote port has no method with that name. Its message is 'Recorded evidence of a shared project is not read on this computer yet.'"
 			},
 			{
-				"name": "Error",
+				"name": "HostedProjectOperationUnsupportedError",
 				"type": "thrown",
 				"description": "Thrown, rejecting the call, for a call made while a hosted project is selected whose key is not one of providers, startRun, cancelRun, openThread, approve, capabilities, pendingComments, addComment, snapshot, entity, source, image, messages, history, evidence or artifact. Its message is 'Agent runs and source mutations are unavailable in shared projects.'"
 			},
 			{
-				"name": "Error",
+				"name": "HostedProjectReadUnavailableError",
 				"type": "thrown",
 				"description": "Thrown, rejecting the call, when snapshot, entity, source, image, messages or history is called while a hosted project is selected and the remote port has no method with that name. Its message is 'Desktop operation unavailable.'"
 			}

@@ -62,7 +62,8 @@
 						"session_id": "session-4f2a",
 						"request_id": "request-7b9d"
 					}
-				]
+				],
+				"unknownReason": "The selected tool determines the input schema and its arguments are untrusted until parsed."
 			}
 		],
 		"outputs": [
@@ -97,7 +98,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "UnknownPickerOperationError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Unknown picker operation.' when name is none of the six operations; because pickerMcpTools is async, the caller receives it as a rejected promise."
 			},
@@ -149,7 +150,8 @@
 								"session_id": "session-4f2a",
 								"request_id": "request-7b9d"
 							}
-						]
+						],
+						"unknownReason": "The selected tool determines the input schema and its arguments are untrusted until parsed."
 					}
 				],
 				"outputs": [
@@ -169,7 +171,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "UnknownPickerOperationError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Unknown picker operation.' when name is none of the six operations; because pickerMcpTools is async, the caller receives it as a rejected promise."
 					},

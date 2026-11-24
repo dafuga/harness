@@ -39,7 +39,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Expired report or inconsistent replay frames",
 				"type": "thrown",
 				"description": "The service explicitly throws this Error when the report is expired after 30 days or when two preparation jobs are already in progress and a new distinct job is requested. Errors rejected by awaited dependencies also reject create."
 			}
@@ -66,7 +66,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Expired report or inconsistent replay frames",
 						"type": "thrown",
 						"description": "The service explicitly throws this Error when the report is expired after 30 days or when two preparation jobs are already in progress and a new distinct job is requested. Errors rejected by awaited dependencies also reject create."
 					}

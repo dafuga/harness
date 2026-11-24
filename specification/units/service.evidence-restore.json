@@ -46,7 +46,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Evidence restore repository or cache write failure",
 				"type": "thrown",
 				"description": "restore() can reject with an underlying repository or filesystem error while reading attached evidence or writing the local cache. The service does not catch or translate these failures."
 			}
@@ -71,7 +71,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Evidence restore repository or cache write failure",
 						"type": "thrown",
 						"description": "restore() can reject with an underlying repository or filesystem error while reading attached evidence or writing the local cache. The service does not catch or translate these failures."
 					}

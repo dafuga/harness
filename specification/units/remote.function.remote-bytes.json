@@ -232,7 +232,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidBase64Error",
 				"type": "thrown",
 				"description": "Thrown by fromBase64 for text that is not strict standard base64, and by fromBase64Url for text outside the URL-safe alphabet or with a length of 1 modulo 4."
 			},
@@ -416,7 +416,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidBase64Error",
 						"type": "thrown",
 						"description": "Thrown for text that is not strict standard base64, such as a character outside the alphabet, whitespace, unpadded input, or misplaced padding."
 					}
@@ -464,7 +464,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidBase64Error",
 						"type": "thrown",
 						"description": "Thrown for a character outside the URL-safe alphabet, including = padding, or for a length of 1 modulo 4."
 					}

@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS remote_runs(
   idle_nudges INTEGER NOT NULL DEFAULT 0,
   PRIMARY KEY(node, id)
 );
+CREATE INDEX IF NOT EXISTS remote_runs_item ON remote_runs(item_id, auto_token);
 CREATE TABLE IF NOT EXISTS launch_events(
   id INTEGER PRIMARY KEY AUTOINCREMENT, at INTEGER NOT NULL, kind TEXT NOT NULL,
   item_id TEXT, run_id INTEGER, text TEXT NOT NULL, batched INTEGER NOT NULL DEFAULT 0

@@ -50,12 +50,12 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "DeploymentCommandError",
 				"type": "thrown",
-				"description": "Rejects with new Error('Deployment command could not start.') when the child process emits an 'error' event, which the code treats as a failure to start."
+				"description": "Rejects with new DeploymentCommandError('Deployment command could not start.') when the child process emits an 'error' event, which the code treats as a failure to start."
 			},
 			{
-				"name": "Error",
+				"name": "Deployment command exited unsuccessfully",
 				"type": "thrown",
 				"description": "Rejects with new Error('Deployment step <first three args joined by spaces> failed (<code>).') when the child closes with any code other than 0, including null; stderr is never part of the message."
 			}
@@ -98,12 +98,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DeploymentCommandError",
 						"type": "thrown",
-						"description": "Rejects with new Error('Deployment command could not start.') when the child process emits an 'error' event, which the code treats as a failure to start."
+						"description": "Rejects with new DeploymentCommandError('Deployment command could not start.') when the child process emits an 'error' event, which the code treats as a failure to start."
 					},
 					{
-						"name": "Error",
+						"name": "Deployment command exited unsuccessfully",
 						"type": "thrown",
 						"description": "Rejects with new Error('Deployment step <first three args joined by spaces> failed (<code>).') when the child closes with any code other than 0, including null; stderr is never part of the message."
 					}

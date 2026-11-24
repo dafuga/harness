@@ -76,6 +76,12 @@
 				"description": "Status, identity fields, unresolved flag, recurrence and SQL limit. Omit status for active items and use status all with limit -1 for the Project Overview feed."
 			},
 			{
+				"name": "TrackerItemReadRepository.list.nowMs",
+				"type": "number",
+				"required": false,
+				"description": "Clock in milliseconds for filtering future reminders from flagged lists. Defaults to the current time."
+			},
+			{
 				"name": "TrackerItemReadRepository.digest.nowMs",
 				"type": "number",
 				"required": true,
@@ -281,6 +287,12 @@
 						"required": false,
 						"default": {},
 						"description": "Status, identity fields, unresolved flag, recurrence and SQL limit. Omit status for active items and use status all with limit -1 for the Project Overview feed."
+					},
+					{
+						"name": "TrackerItemReadRepository.list.nowMs",
+						"type": "number",
+						"required": false,
+						"description": "Clock in milliseconds for filtering future reminders from flagged lists. Defaults to the current time."
 					}
 				],
 				"outputs": [

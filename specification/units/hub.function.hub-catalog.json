@@ -584,7 +584,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Hub catalog artifact-corrupt",
 				"type": "thrown",
 				"description": "hubAttestPlan throws an Error with code artifact-corrupt for a registered-kind or draft-id mismatch. hubCatalog also propagates hubFail errors for invalid or missing committed artifacts, including artifact-corrupt, not-found, and metadata-too-large, and may propagate collaborator failures unchanged."
 			}
@@ -892,7 +892,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub catalog missing, corrupt, or oversized artifact",
 						"type": "thrown",
 						"description": "hubFail raises an Error with code artifact-corrupt, not-found, or metadata-too-large when committed records fail validation, required blobs are absent, or metadata exceeds its limit. Source, cache, and decoding failures from async collaborators also propagate without normalization."
 					}
@@ -1048,7 +1048,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub plan identity or category mismatch",
 						"type": "thrown",
 						"description": "Throws the Error created by hubFail with code artifact-corrupt when a registered unit kind differs from plan.category or an unregistered plan unitId differs from category.slug."
 					}

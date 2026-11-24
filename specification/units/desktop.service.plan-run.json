@@ -34,7 +34,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Plan agent modified project files",
 				"type": "thrown",
 				"description": "Thrown by run itself when the Plan agent changed project files: sourceChanges finds an added, deleted or changed path between the sourceSnapshot taken before runner.run and the one taken after it, where snapshots cover tracked files and untracked files that git does not ignore, although the turn is started with access 'read-only'. Its message says the changes remain recoverable and no design was approved; errors from the calls it makes (sourceSnapshot, runContext, runner.run and planDesign) are not caught and reject run unchanged."
 			},
@@ -70,7 +70,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Plan agent modified project files",
 						"type": "thrown",
 						"description": "Thrown by run itself when the Plan agent changed project files: sourceChanges finds an added, deleted or changed path between the sourceSnapshot taken before runner.run and the one taken after it, where snapshots cover tracked files and untracked files that git does not ignore, although the turn is started with access 'read-only'. Its message says the changes remain recoverable and no design was approved; errors from the calls it makes (sourceSnapshot, runContext, runner.run and planDesign) are not caught and reject run unchanged."
 					},

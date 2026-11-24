@@ -45,6 +45,9 @@ const columns = [
 	'credits_balance'
 ] as const;
 const reservationPrefix = 'harness_dispatch_run:';
+export const legacyUnstarted = `r.state = 'queued' AND r.started_at IS NULL AND r.ended_at IS NULL
+	AND r.tmux IS NULL AND r.session_name IS NULL AND r.session_id IS NULL
+	AND r.watch_pane IS NULL AND r.exit_code IS NULL`;
 
 export function assertLegacyDispatchRollbackSafe(database: SqliteDatabase): void {
 	const blocker = database
@@ -87,12 +90,14 @@ export function managedDispatchRuns(database: SqliteDatabase, node: string): Tra
 		.filter((row) => row.revision >= 0);
 }
 
-export function legacyDispatchRuns(database: SqliteDatabase, node: string): TrackerRunReceipt[] {
+export function legacyDispatchRuns(database: SqliteDatabase, node: string, cutoff: number) {
 	return localRows(
 		database,
 		`WHERE m.k IS NULL AND r.auto_token IS NOT NULL
-		AND r.state IN ('running','verifying') AND r.tmux IS NOT NULL
-		AND r.cli IN ('codex','claude') AND r.started_at IS NOT NULL`
+		AND r.cli IN ('codex','claude')
+		AND ((r.state IN ('running','verifying') AND r.tmux IS NOT NULL AND r.started_at IS NOT NULL)
+			OR (${legacyUnstarted} AND r.queued_at <= ?))`,
+		cutoff
 	).map((row) => receipt(row, node));
 }
 
@@ -166,7 +171,7 @@ export function persistDispatchRun(
 	if (run.node !== node || run.revision < 0)
 		throw new DOMException('Cannot write an unowned Tracker attempt', 'InvalidStateError');
 	const previous = localRows(store.database, 'WHERE r.id = ?', run.id)[0];
-	if (previous) assertRunVersion(previous, run, node);
+	if (previous) assertRunVersion(receipt(previous, node), run);
 	const fields = [...columns, 'tmux'];
 	const command = previous
 		? `UPDATE runs SET ${fields.map((column) => `${column} = ?`).join(', ')} WHERE id = ?`
@@ -188,12 +193,7 @@ function writeReservation(store: TrackerPersistenceService, run: TrackerRunRecei
 	store.writeMeta({ [reservationPrefix + run.id]: JSON.stringify(metadata) });
 }
 
-function assertRunVersion(
-	previous: TrackerStoredDispatchRun,
-	run: TrackerRunReceipt,
-	node: string
-) {
-	const version = receipt(previous, node);
+function assertRunVersion(version: TrackerRunReceipt, run: TrackerRunReceipt) {
 	if (
 		version.revision < 0 ||
 		run.revision !== version.revision + 1 ||

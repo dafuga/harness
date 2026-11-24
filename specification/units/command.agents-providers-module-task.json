@@ -47,7 +47,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid module task command arguments",
 				"type": "thrown",
 				"description": "The add action throws when the decoded task input text exceeds 1,000,000 characters, and the worker action throws when both `--once` and `--watch` are set. Registered actions can also reject when file reading, JSON parsing or a service call fails."
 			}

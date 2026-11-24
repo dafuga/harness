@@ -39,7 +39,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ActivityUnavailableError",
 				"type": "thrown",
 				"description": "Thrown inside refresh when the response status is not ok, with the message 'Activity unavailable.'; refresh catches it and calls missed while the client is active, so the methods returned by activityClient never reject with it."
 			}

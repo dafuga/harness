@@ -254,32 +254,32 @@
 				"description": "Thrown by BenchmarkDefinitionValidator.validate when the parsed definition fails the strict schema, for example an unknown key, a budget value outside its range, an invalid allowedFiles path, or a codex candidate that uses files tools or max effort."
 			},
 			{
-				"name": "Error",
+				"name": "BenchmarkDefinitionValidator.validate duplicate identifier failure",
 				"type": "thrown",
 				"description": "Thrown by BenchmarkDefinitionValidator.validate with message 'Duplicate benchmark identifiers or paths.' when the schema passes but allowedFiles, check ids or candidate ids contain a duplicate."
 			},
 			{
-				"name": "Error",
+				"name": "benchmarkGit failure",
 				"type": "thrown",
 				"description": "Thrown by benchmarkGit with message 'Benchmark Git operation failed. Verify the project and revision.' when a git command exits non-zero: the rev-parse calls and the ls-tree listing in prepareBenchmark, and the ls-tree listing and git archive in snapshotBenchmark."
 			},
 			{
-				"name": "Error",
+				"name": "prepareBenchmark project-root failure",
 				"type": "thrown",
 				"description": "Thrown by prepareBenchmark with message 'Benchmark project must be the Git repository root.' when the resolved project directory is not the realpath of the Git top-level directory."
 			},
 			{
-				"name": "Error",
+				"name": "benchmarkFiles unsupported-entry failure",
 				"type": "thrown",
 				"description": "Thrown by benchmarkFiles with message 'Benchmark snapshots do not support symlinks or submodules.' when a tree entry is not a regular 100644 or 100755 blob; prepareBenchmark and snapshotBenchmark both call it."
 			},
 			{
-				"name": "Error",
+				"name": "CodexBenchmarkAdapter.preflight failure",
 				"type": "thrown",
 				"description": "Thrown by CodexBenchmarkAdapter.preflight with message 'Codex runner is unavailable.' when codex --version exits non-zero; prepareBenchmark awaits it for each codex candidate, so no run is saved."
 			},
 			{
-				"name": "Error",
+				"name": "ClaudeBenchmarkAdapter.preflight failure",
 				"type": "thrown",
 				"description": "Thrown by ClaudeBenchmarkAdapter.preflight with message 'Claude runner is unavailable.' when claude --version exits non-zero; prepareBenchmark awaits it for each claude candidate, so no run is saved."
 			},
@@ -289,17 +289,17 @@
 				"description": "Rejected with BoundedCommandFailure through benchmarkProcess when a git, tar or runner --version child cannot start, hits its time limit, or writes more than the 8,000,000-byte output bound (message 'Command output limit exceeded.' in that case); prepareBenchmark and snapshotBenchmark do not catch it."
 			},
 			{
-				"name": "Error",
+				"name": "snapshotBenchmark tar-extraction failure",
 				"type": "thrown",
 				"description": "Thrown by snapshotBenchmark with message 'Could not extract benchmark snapshot.' when the tar extraction of the git archive exits non-zero."
 			},
 			{
-				"name": "Error",
+				"name": "snapshotBenchmark missing-file failure",
 				"type": "thrown",
 				"description": "Thrown by snapshotBenchmark with message 'Snapshot files are missing; export-ignore archives are unsupported.' when a file listed by benchmarkFiles is missing or not a regular file in the extracted baseline."
 			},
 			{
-				"name": "Error",
+				"name": "Benchmark definition or workspace filesystem failure",
 				"type": "thrown",
 				"description": "Node.js file-system error (for example with code ENOENT) from reading the definition, resolving the project, or creating and removing run directories; errors thrown by the supplied repository's directory or save methods also reject runBenchmark."
 			}
@@ -470,32 +470,32 @@
 						"description": "Thrown by BenchmarkDefinitionValidator.validate when the parsed definition fails the strict schema, for example an unknown key, a budget value outside its range, an invalid allowedFiles path, or a codex candidate that uses files tools or max effort."
 					},
 					{
-						"name": "Error",
+						"name": "BenchmarkDefinitionValidator.validate duplicate identifier failure",
 						"type": "thrown",
 						"description": "Thrown by BenchmarkDefinitionValidator.validate with message 'Duplicate benchmark identifiers or paths.' when the schema passes but allowedFiles, check ids or candidate ids contain a duplicate."
 					},
 					{
-						"name": "Error",
+						"name": "benchmarkGit failure",
 						"type": "thrown",
 						"description": "Thrown by benchmarkGit with message 'Benchmark Git operation failed. Verify the project and revision.' when a git command exits non-zero: the rev-parse calls and the ls-tree listing in prepareBenchmark, and the ls-tree listing and git archive in snapshotBenchmark."
 					},
 					{
-						"name": "Error",
+						"name": "prepareBenchmark project-root failure",
 						"type": "thrown",
 						"description": "Thrown by prepareBenchmark with message 'Benchmark project must be the Git repository root.' when the resolved project directory is not the realpath of the Git top-level directory."
 					},
 					{
-						"name": "Error",
+						"name": "benchmarkFiles unsupported-entry failure",
 						"type": "thrown",
 						"description": "Thrown by benchmarkFiles with message 'Benchmark snapshots do not support symlinks or submodules.' when a tree entry is not a regular 100644 or 100755 blob; prepareBenchmark and snapshotBenchmark both call it."
 					},
 					{
-						"name": "Error",
+						"name": "CodexBenchmarkAdapter.preflight failure",
 						"type": "thrown",
 						"description": "Thrown by CodexBenchmarkAdapter.preflight with message 'Codex runner is unavailable.' when codex --version exits non-zero; prepareBenchmark awaits it for each codex candidate, so no run is saved."
 					},
 					{
-						"name": "Error",
+						"name": "ClaudeBenchmarkAdapter.preflight failure",
 						"type": "thrown",
 						"description": "Thrown by ClaudeBenchmarkAdapter.preflight with message 'Claude runner is unavailable.' when claude --version exits non-zero; prepareBenchmark awaits it for each claude candidate, so no run is saved."
 					},
@@ -505,17 +505,17 @@
 						"description": "Rejected with BoundedCommandFailure through benchmarkProcess when a git, tar or runner --version child cannot start, hits its time limit, or writes more than the 8,000,000-byte output bound (message 'Command output limit exceeded.' in that case); prepareBenchmark and snapshotBenchmark do not catch it."
 					},
 					{
-						"name": "Error",
+						"name": "snapshotBenchmark tar-extraction failure",
 						"type": "thrown",
 						"description": "Thrown by snapshotBenchmark with message 'Could not extract benchmark snapshot.' when the tar extraction of the git archive exits non-zero."
 					},
 					{
-						"name": "Error",
+						"name": "snapshotBenchmark missing-file failure",
 						"type": "thrown",
 						"description": "Thrown by snapshotBenchmark with message 'Snapshot files are missing; export-ignore archives are unsupported.' when a file listed by benchmarkFiles is missing or not a regular file in the extracted baseline."
 					},
 					{
-						"name": "Error",
+						"name": "Benchmark definition or workspace filesystem failure",
 						"type": "thrown",
 						"description": "Node.js file-system error (for example with code ENOENT) from reading the definition, resolving the project, or creating and removing run directories; errors thrown by the supplied repository's directory or save methods also reject runBenchmark."
 					}

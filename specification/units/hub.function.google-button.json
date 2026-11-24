@@ -55,7 +55,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "GoogleSignInLoadError",
 				"type": "thrown",
 				"description": "The returned promise rejects with this error if the script load event completes without google.accounts.id or the script emits an error. The messages are Google sign-in did not load. and Google sign-in could not be loaded.; only the script-error path resets the shared loading promise."
 			}
@@ -87,7 +87,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "GoogleSignInLoadError",
 						"type": "thrown",
 						"description": "The returned promise rejects with this error if the script load event completes without google.accounts.id or the script emits an error. The messages are Google sign-in did not load. and Google sign-in could not be loaded.; only the script-error path resets the shared loading promise."
 					}

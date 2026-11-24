@@ -39,7 +39,8 @@
 						"uncertain": [],
 						"sinks": ["node-b"]
 					}
-				]
+				],
+				"unknownReason": "A kernel request is checked at runtime for graph and change shapes before it is used."
 			},
 			{
 				"name": "isObject.value",
@@ -52,7 +53,8 @@
 					},
 					null,
 					[]
-				]
+				],
+				"unknownReason": "This type guard deliberately accepts any JavaScript value to establish whether it is an object."
 			}
 		],
 		"outputs": [
@@ -114,7 +116,8 @@
 								"uncertain": [],
 								"sinks": ["node-b"]
 							}
-						]
+						],
+						"unknownReason": "A kernel request is checked at runtime for graph and change shapes before it is used."
 					}
 				],
 				"outputs": [
@@ -160,7 +163,8 @@
 							},
 							null,
 							[]
-						]
+						],
+						"unknownReason": "This type guard deliberately accepts any JavaScript value to establish whether it is an object."
 					}
 				],
 				"outputs": [

@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import { measureWorkload } from '../../support/measureWorkload';
 import {
 	pickTrackerModel,
 	retryTrackerModel
@@ -22,19 +23,23 @@ test('picks the lowest capable automatic rung in the Tracker ladder', () => {
 	});
 });
 
-test('keeps explicit model and effort even when the automatic choice can run cheaper', () => {
-	expect(
-		pickTrackerModel(
-			{ ...visualModule, model: 'opus:xhigh' },
-			{
-				history: { haiku: { ok: 25, fail: 0 } }
-			}
-		)
-	).toMatchObject({
-		rung: { id: 'opus', model: 'claude-opus-5-5', effort: 'xhigh', pinned: true },
-		reason: 'named on the item (opus:xhigh)'
-	});
-});
+test('keeps explicit model and effort even when the automatic choice can run cheaper', () =>
+	measureWorkload('function.agents-providers-pick-tracker-model', 'named-model-selection', () => {
+		expect(
+			pickTrackerModel(
+				{ ...visualModule, model: 'opus:xhigh' },
+				{
+					history: { haiku: { ok: 25, fail: 0 } }
+				}
+			)
+		).toMatchObject({
+			rung: { id: 'opus', model: 'claude-opus-5-5', effort: 'xhigh', pinned: true },
+			reason: 'named on the item (opus:xhigh)'
+		});
+		expect(
+			pickTrackerModel({ title: 'Review the scheduler', project: 'Tracker', model: 'fable' })
+		).toMatchObject({ rung: { id: 'fable', model: 'claude-fable-5-2', pinned: true } });
+	}));
 
 test('enforces the risk floor and reserves Haiku for Harness modules', () => {
 	const risky = { ...visualModule, notes: 'Backfill the database' };

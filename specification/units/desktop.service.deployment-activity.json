@@ -317,9 +317,34 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "DeploymentAlreadyStartedError",
 				"type": "thrown",
-				"description": "The service throws Error('Wait for queued deployments before starting more.') when unfinished entries plus count exceeds 128, Error('This deployment already started.') for a duplicate plan id, and Error('Configure the deployment target.') when no target exists. wait(id) rejects with Error('Unknown deployment.') for a missing id; a rejected dependency becomes Error('A required lower-environment deployment failed.'), while a work rejection is rethrown unchanged."
+				"description": "A deployment with the same plan ID is already registered."
+			},
+			{
+				"name": "DeploymentCapacityError",
+				"type": "thrown",
+				"description": "Scheduling would take the number of unfinished deployments beyond 128."
+			},
+			{
+				"name": "MissingDeploymentTargetError",
+				"type": "thrown",
+				"description": "The reviewed deployment has no target."
+			},
+			{
+				"name": "RequiredLowerEnvironmentDeploymentError",
+				"type": "thrown",
+				"description": "A required lower-environment deployment rejected before this deployment started."
+			},
+			{
+				"name": "UnknownDeploymentError",
+				"type": "thrown",
+				"description": "wait rejects when no deployment is registered with the supplied ID."
+			},
+			{
+				"name": "Deployment work rejection",
+				"type": "propagated",
+				"description": "For a registered deployment the underlying work rejection propagates without conversion."
 			}
 		],
 		"errorStatus": "declared",
@@ -484,9 +509,19 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "RequiredLowerEnvironmentDeploymentError",
 						"type": "thrown",
-						"description": "Rejects with Error('Unknown deployment.') for an unregistered id. For a registered id, it propagates work rejection and maps a rejected dependency to Error('A required lower-environment deployment failed.')."
+						"description": "A required lower-environment deployment rejected before this deployment started."
+					},
+					{
+						"name": "UnknownDeploymentError",
+						"type": "thrown",
+						"description": "wait rejects when no deployment is registered with the supplied ID."
+					},
+					{
+						"name": "Deployment work rejection",
+						"type": "propagated",
+						"description": "For a registered deployment the underlying work rejection propagates without conversion."
 					}
 				],
 				"errorStatus": "declared"
@@ -525,9 +560,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DeploymentCapacityError",
 						"type": "thrown",
-						"description": "Throws Error('Wait for queued deployments before starting more.') when the number of unfinished entries plus count exceeds 128."
+						"description": "Throws DeploymentCapacityError('Wait for queued deployments before starting more.') when the number of unfinished entries plus count exceeds 128."
 					}
 				],
 				"errorStatus": "declared"
@@ -656,9 +691,19 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DeploymentAlreadyStartedError",
 						"type": "thrown",
-						"description": "Throws Error('Wait for queued deployments before starting more.') when capacity is exceeded, Error('This deployment already started.') for a duplicate plan id, or Error('Configure the deployment target.') when reviewed.target is absent."
+						"description": "A deployment with the same plan ID is already registered."
+					},
+					{
+						"name": "DeploymentCapacityError",
+						"type": "thrown",
+						"description": "Scheduling would take the number of unfinished deployments beyond 128."
+					},
+					{
+						"name": "MissingDeploymentTargetError",
+						"type": "thrown",
+						"description": "The reviewed deployment has no target."
 					}
 				],
 				"errorStatus": "declared"

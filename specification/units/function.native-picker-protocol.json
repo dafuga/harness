@@ -43,14 +43,16 @@
 						"model": "claude-opus-5-5"
 					},
 					null
-				]
+				],
+				"unknownReason": "The picker protocol delivers a raw value and this guard checks only its outer object shape."
 			},
 			{
 				"name": "pickerProvider.model",
 				"type": "unknown",
 				"required": true,
 				"description": "Selected model value that determines the provider: exactly 'claude-opus-5-5' maps to 'harness-claude', and any other string not beginning with 'claude-' maps to 'openai'. Nonstring values and other strings beginning with 'claude-' are rejected by throwing an Error.",
-				"examples": ["claude-opus-5-5", "gpt-5", "claude-sonnet-5-5"]
+				"examples": ["claude-opus-5-5", "gpt-5", "claude-sonnet-5-5"],
+				"unknownReason": "The picker receives a value from protocol data and maps it by exact equality, with a default for every other value."
 			}
 		],
 		"outputs": [
@@ -102,7 +104,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "UnsupportedModelSelectionError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Unsupported model selection' by pickerProvider when the model is not a string or is a string beginning with 'claude-' other than exactly 'claude-opus-5-5'. nativePickerProtocol never throws."
 			}
@@ -123,7 +125,8 @@
 								"model": "claude-opus-5-5"
 							},
 							null
-						]
+						],
+						"unknownReason": "The picker protocol delivers a raw value and this guard checks only its outer object shape."
 					}
 				],
 				"outputs": [
@@ -150,7 +153,8 @@
 						"type": "unknown",
 						"required": true,
 						"description": "Selected model value that determines the provider: exactly 'claude-opus-5-5' maps to 'harness-claude', and any other string not beginning with 'claude-' maps to 'openai'. Nonstring values and other strings beginning with 'claude-' are rejected by throwing an Error.",
-						"examples": ["claude-opus-5-5", "gpt-5", "claude-sonnet-5-5"]
+						"examples": ["claude-opus-5-5", "gpt-5", "claude-sonnet-5-5"],
+						"unknownReason": "The picker receives a value from protocol data and maps it by exact equality, with a default for every other value."
 					}
 				],
 				"outputs": [
@@ -163,7 +167,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "UnsupportedModelSelectionError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Unsupported model selection' when the model is not a string or is a string beginning with 'claude-' other than exactly 'claude-opus-5-5'."
 					}

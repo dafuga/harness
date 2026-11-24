@@ -48,7 +48,8 @@
 							"data": "tQ4vB8mKzL2nFxRc7WdAoYe0SjUi5HgP9kNbT3MqVw6LaZxE1rDh_yJuC8Fs"
 						}
 					}
-				]
+				],
+				"unknownReason": "The host frame was decoded from JSON and must be validated before command dispatch."
 			}
 		],
 		"outputs": [
@@ -87,7 +88,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HostCommandError",
 				"type": "thrown",
 				"description": "Thrown with `Not a host command.` when the value is null, an array or a primitive, or when its `type` is none of the seven host commands, and with `Malformed host command.` when a known command lacks a required field, has an extra field or has an invalid field. `HostCommandService` catches either and ends the host's socket with code 4400."
 			}
@@ -128,7 +129,8 @@
 									"data": "tQ4vB8mKzL2nFxRc7WdAoYe0SjUi5HgP9kNbT3MqVw6LaZxE1rDh_yJuC8Fs"
 								}
 							}
-						]
+						],
+						"unknownReason": "The host frame was decoded from JSON and must be validated before command dispatch."
 					}
 				],
 				"outputs": [
@@ -167,7 +169,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HostCommandError",
 						"type": "thrown",
 						"description": "Thrown with `Not a host command.` when the value is null, an array or a primitive, or when its `type` is none of the seven host commands, and with `Malformed host command.` when a known command lacks a required field, has an extra field or has an invalid field. `HostCommandService` catches either and ends the host's socket with code 4400."
 					}

@@ -191,7 +191,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "realpathSync failure (repositoryIdentity)",
 				"type": "thrown",
 				"description": "Raised by realpathSync in repositoryIdentity, reached through ownedBySite, when a checkout with no remote has a Git store path that realpathSync cannot resolve; repositoryIdentity rethrows it and siteProcesses does not catch it."
 			},
@@ -383,7 +383,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "realpathSync failure (repositoryIdentity)",
 						"type": "thrown",
 						"description": "Raised by realpathSync in repositoryIdentity, reached through ownedBySite, when a checkout with no remote has a Git store path that realpathSync cannot resolve; repositoryIdentity rethrows it and siteProcesses does not catch it."
 					},

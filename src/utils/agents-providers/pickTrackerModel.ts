@@ -5,7 +5,6 @@ import {
 	floorReasons,
 	isHarnessModule,
 	isVisualInspection,
-	projectOf,
 	sizeOf,
 	solEffort
 } from './classifyTrackerTask';
@@ -38,7 +37,7 @@ export function pickTrackerModel(
 	const size = sizeOf(item);
 	const restrictions = floorReasons(item);
 	if (item.model) {
-		const rung = parseTrackerModelSpec(item.model, ladder, projectOf(item), cfg);
+		const rung = parseTrackerModelSpec(item.model, ladder);
 		const raised = raisedPinReason(item, rung, restrictions);
 		if (raised) {
 			const sol = ladder.at(-1)!;

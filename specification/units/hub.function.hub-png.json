@@ -44,7 +44,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Hub PNG artifact-corrupt",
 				"type": "thrown",
 				"description": "Every failed check and every exception raised during validation (for example from DecompressionStream) becomes an Error with the message 'Harness artifact unavailable' and the code 'artifact-corrupt', and the returned promise rejects with it."
 			}
@@ -84,7 +84,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub PNG artifact-corrupt",
 						"type": "thrown",
 						"description": "Every failed check and every exception raised during validation (for example from DecompressionStream) becomes an Error with the message 'Harness artifact unavailable' and the code 'artifact-corrupt', and the returned promise rejects with it."
 					}

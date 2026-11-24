@@ -48,7 +48,7 @@
 				"description": "Thrown when a built edge bundle has a from clause naming a node: or bun specifier or contains a require() call."
 			},
 			{
-				"name": "Error",
+				"name": "API build input or output filesystem failure",
 				"type": "propagated",
 				"description": "Uncaught filesystem rejections, such as a missing package.json or target/kernel/impact-kernel.wasm, also make the script fail, while a failed copy of specification/measurements/impact-kernel is ignored."
 			},

@@ -7,6 +7,31 @@ struct TrackerReplicaIntent: Codable {
     let action: String
     let text: String
     let revision: String?
+    /// The item status the phone showed. Only lifecycle actions carry it; older payloads decode as nil.
+    let expectedStatus: String?
+}
+
+struct TrackerReplicaActionRule {
+    let textRequired: Bool
+    let expectsStatus: Bool
+    let needsOpenFlag: Bool
+}
+
+/// Mirrors the server allowlist in phoneReplicaActions.ts. Anything else is refused before queueing.
+enum TrackerReplicaActions {
+    static let rules: [String: TrackerReplicaActionRule] = [
+        "note": TrackerReplicaActionRule(textRequired: true, expectsStatus: false, needsOpenFlag: false),
+        "flag": TrackerReplicaActionRule(textRequired: true, expectsStatus: false, needsOpenFlag: false),
+        "answer": TrackerReplicaActionRule(textRequired: true, expectsStatus: false, needsOpenFlag: true),
+        "start": TrackerReplicaActionRule(textRequired: false, expectsStatus: true, needsOpenFlag: false),
+        "reopen": TrackerReplicaActionRule(textRequired: false, expectsStatus: true, needsOpenFlag: false),
+        "block": TrackerReplicaActionRule(textRequired: true, expectsStatus: true, needsOpenFlag: false),
+        "unblock": TrackerReplicaActionRule(textRequired: false, expectsStatus: true, needsOpenFlag: false),
+        "resolve": TrackerReplicaActionRule(textRequired: false, expectsStatus: true, needsOpenFlag: true),
+        "done": TrackerReplicaActionRule(textRequired: false, expectsStatus: true, needsOpenFlag: false),
+        "ignore": TrackerReplicaActionRule(textRequired: true, expectsStatus: true, needsOpenFlag: false),
+        "unignore": TrackerReplicaActionRule(textRequired: false, expectsStatus: true, needsOpenFlag: false),
+    ]
 }
 
 struct TrackerReplicaConfirmation {
@@ -18,28 +43,35 @@ struct TrackerReplicaConfirmation {
 }
 
 enum TrackerReplicaWriteError: String, Error {
-    case denied, noReplica, noLocalMatch, invalidInput, noFlag, queueFull, unavailable
+    case denied, noReplica, noLocalMatch, invalidInput, noFlag, staleReview, queueFull, unavailable
 }
 
 extension TrackerReplicaStore {
-    /// The user is shown the stored item and, for an answer, the exact flag being answered.
+    /// The user is shown the stored item and, for an answer or resolve, the exact flag being acted on.
+    /// Lifecycle actions take the status shown here as the expected status, as the server checks it.
     func prepareWrite(scope: String, action: String, input: [String: Any]) throws -> TrackerReplicaConfirmation {
-        guard ["note", "flag", "answer"].contains(action), input.keys.sorted() == ["id", "text"],
+        let needsReview = action == "flag" || action == "answer"
+        guard let rule = TrackerReplicaActions.rules[action],
+            input.keys.allSatisfy({ $0 == "id" || $0 == "text" || (needsReview && $0 == "revision") }),
             let id = input["id"] as? String, id.utf8.count >= 6, TrackerReplicaItem.short(id, 80),
             let text = input["text"] as? String, TrackerReplicaItem.short(text, 512),
-            !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, safeDraft(text)
+            !rule.textRequired || !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, safeDraft(text)
         else { throw TrackerReplicaWriteError.invalidInput }
         let state = try writableState()
         let item = try itemForWrite(id.lowercased(), slot: state.slot)
-        if action == "answer", item.flag?.state != "open" { throw TrackerReplicaWriteError.noFlag }
+        if rule.needsOpenFlag, item.flag?.state != "open" { throw TrackerReplicaWriteError.noFlag }
         if action != "note", item.revision == nil { throw TrackerReplicaWriteError.noReplica }
+        if needsReview, (input["revision"] as? String) != item.revision {
+            throw TrackerReplicaWriteError.staleReview
+        }
         let intent = TrackerReplicaIntent(
             version: 1, intentId: UUID().uuidString.lowercased(), itemId: item.header.id,
-            action: action, text: text, revision: action == "note" ? nil : item.revision
+            action: action, text: text, revision: action == "note" ? nil : item.revision,
+            expectedStatus: rule.expectsStatus ? item.header.status : nil
         )
         return TrackerReplicaConfirmation(
-            scope: scope, itemTitle: item.header.title, question: action == "answer" ? item.flag?.question : nil,
-            intent: intent, discard: false
+            scope: scope, itemTitle: item.header.title,
+            question: rule.needsOpenFlag ? item.flag?.question : nil, intent: intent, discard: false
         )
     }
 
@@ -50,7 +82,7 @@ extension TrackerReplicaStore {
         let state = try writableState()
         let storage = try outbox()
         let payload = try storage.rows(
-            "SELECT payload FROM outbox WHERE intent = ? AND conflict IS NOT NULL", [intentId]
+            "SELECT payload FROM outbox WHERE intent = ? AND conflict IS NOT NULL AND conflict IS NOT 'accepted'", [intentId]
         ).first?.first.flatMap { $0 }
         guard let payload = payload else { throw TrackerReplicaWriteError.noLocalMatch }
         let intent = try TrackerReplicaJSON.decode(TrackerReplicaIntent.self, payload)
@@ -60,14 +92,18 @@ extension TrackerReplicaStore {
 
     func discardConflict(_ intent: TrackerReplicaIntent) throws {
         _ = try writableState()
-        try outbox().run("DELETE FROM outbox WHERE intent = ? AND conflict IS NOT NULL", [intent.intentId])
+        try outbox().run(
+            "DELETE FROM outbox WHERE intent = ? AND conflict IS NOT NULL AND conflict IS NOT 'accepted'",
+            [intent.intentId]
+        )
     }
 
     func enqueueWrite(_ intent: TrackerReplicaIntent) throws {
         _ = try writableState()
         let storage = try outbox()
         try storage.transaction {
-            let count = try storage.rows("SELECT count(*) FROM outbox").first?.first.flatMap { $0 }.flatMap(Int.init)
+            let count = try storage.rows("SELECT count(*) FROM outbox WHERE conflict IS NOT 'accepted'")
+                .first?.first.flatMap { $0 }.flatMap(Int.init)
             guard let count = count, count < 100 else { throw TrackerReplicaWriteError.queueFull }
             try storage.run(
                 "INSERT INTO outbox(intent, item, payload) VALUES (?, ?, ?)",
@@ -83,6 +119,7 @@ extension TrackerReplicaStore {
             WHERE pending.conflict IS NULL AND NOT EXISTS (
                 SELECT 1 FROM outbox earlier
                 WHERE earlier.item = pending.item AND earlier.sequence < pending.sequence
+                    AND earlier.conflict IS NOT 'accepted'
             )
             ORDER BY pending.sequence LIMIT 1
             """).first
@@ -90,13 +127,17 @@ extension TrackerReplicaStore {
         return try TrackerReplicaJSON.decode(TrackerReplicaIntent.self, row.first.flatMap { $0 })
     }
 
-    /// A conflict blocks this item's later writes. The other items can still drain.
+    /// A conflict blocks this item's later writes. The other items can still drain. An accepted
+    /// write stays visible as acknowledged; it no longer blocks anything.
     func finishWrite(_ intent: TrackerReplicaIntent, conflict: String?) throws {
         let storage = try outbox()
-        if let conflict = conflict {
-            try storage.run("UPDATE outbox SET conflict = ? WHERE intent = ?", [conflict, intent.intentId])
-        } else {
-            try storage.run("DELETE FROM outbox WHERE intent = ?", [intent.intentId])
+        try storage.transaction {
+            try storage.run("UPDATE outbox SET conflict = ? WHERE intent = ?", [conflict ?? "accepted", intent.intentId])
+            guard conflict == nil else { return }
+            try storage.run("""
+                DELETE FROM outbox WHERE sequence IN (
+                    SELECT sequence FROM outbox WHERE conflict = 'accepted' ORDER BY sequence DESC LIMIT -1 OFFSET 20)
+                """)
         }
     }
 
@@ -106,8 +147,17 @@ extension TrackerReplicaStore {
     func writeStatus() throws -> [[String: String]] {
         _ = try writableState()
         return try outbox().rows("SELECT intent, item, conflict FROM outbox ORDER BY sequence").map { row in
-            ["intentId": row[0] ?? "", "itemId": row[1] ?? "",
-             "status": row[2] == nil ? "queued" : "conflict", "reason": row[2] ?? ""]
+            let conflict = row[2]
+            let reason = conflict == nil || conflict == "accepted" ? "" : conflict ?? ""
+            return ["intentId": row[0] ?? "", "itemId": row[1] ?? "", "status": outboxStatus(conflict), "reason": reason]
+        }
+    }
+
+    private func outboxStatus(_ conflict: String?) -> String {
+        switch conflict {
+        case nil: return "queued"
+        case "accepted": return "accepted"
+        default: return "conflict"
         }
     }
 

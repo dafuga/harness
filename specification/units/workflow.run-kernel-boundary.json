@@ -225,7 +225,7 @@
 				"description": "Thrown when the process target has no native kernel command; the message is “Build the kernel first: bun run build:kernel.”"
 			},
 			{
-				"name": "Error",
+				"name": "Kernel boundary timing invocation failed",
 				"type": "thrown",
 				"description": "A timed invocation throws this when its runtime response is not ok; the message includes the runtime kind and the response error message."
 			}
@@ -437,7 +437,7 @@
 						"description": "Thrown when the process target has no native kernel command; the message is “Build the kernel first: bun run build:kernel.”"
 					},
 					{
-						"name": "Error",
+						"name": "Kernel boundary timing invocation failed",
 						"type": "thrown",
 						"description": "A timed invocation throws this when its runtime response is not ok; the message includes the runtime kind and the response error message."
 					}

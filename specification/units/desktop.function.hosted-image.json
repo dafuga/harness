@@ -24,7 +24,8 @@
 				"description": "The cached hosted image value to decode. Only strings are accepted; they are decoded as base64, and the resulting bytes must be at most 25,000,000 bytes, match `sha256`, and pass PNG validation.",
 				"examples": [
 					"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
-				]
+				],
+				"unknownReason": "The cache can return an arbitrary value, and the decoder accepts only bounded and verified image bytes."
 			},
 			{
 				"name": "hostedImage.sha256",
@@ -43,9 +44,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidHostedImageError",
 				"type": "thrown",
-				"description": "Throws Error('Invalid cached image.') when value is not a string. Throws Error('Hosted image hash mismatch.') when decoded bytes exceed 25,000,000 bytes or their lowercase SHA-256 digest differs; ImageBytesValidator also propagates Errors for invalid PNG data or its size and dimension limits."
+				"description": "Throws InvalidHostedImageError('Invalid cached image.') when value is not a string. Throws InvalidHostedImageError('Hosted image hash mismatch.') when decoded bytes exceed 25,000,000 bytes or their lowercase SHA-256 digest differs; ImageBytesValidator also propagates Errors for invalid PNG data or its size and dimension limits."
 			}
 		],
 		"errorStatus": "declared",
@@ -60,7 +61,8 @@
 						"description": "The cached hosted image value to decode. Only strings are accepted; they are decoded as base64, and the resulting bytes must be at most 25,000,000 bytes, match `sha256`, and pass PNG validation.",
 						"examples": [
 							"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
-						]
+						],
+						"unknownReason": "The cache can return an arbitrary value, and the decoder accepts only bounded and verified image bytes."
 					},
 					{
 						"name": "hostedImage.sha256",
@@ -79,9 +81,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidHostedImageError",
 						"type": "thrown",
-						"description": "Throws Error('Invalid cached image.') when value is not a string. Throws Error('Hosted image hash mismatch.') when decoded bytes exceed 25,000,000 bytes or their lowercase SHA-256 digest differs; ImageBytesValidator also propagates Errors for invalid PNG data or its size and dimension limits."
+						"description": "Throws InvalidHostedImageError('Invalid cached image.') when value is not a string. Throws InvalidHostedImageError('Hosted image hash mismatch.') when decoded bytes exceed 25,000,000 bytes or their lowercase SHA-256 digest differs; ImageBytesValidator also propagates Errors for invalid PNG data or its size and dimension limits."
 					}
 				],
 				"errorStatus": "declared"

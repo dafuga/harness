@@ -18,7 +18,6 @@ export interface TrackerModelRung {
 export interface TrackerLadderConfig {
 	autolaunch?: {
 		ladder?: readonly (Partial<TrackerModelRung> & Pick<TrackerModelRung, 'id' | 'model'>)[];
-		fableProjects?: readonly string[];
 		learning?: TrackerLearningConfig;
 	};
 }

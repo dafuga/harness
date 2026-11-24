@@ -28,6 +28,7 @@ export function trackerNodeNames(node: string, hub: boolean): string[] {
 
 const nonWorkAgent =
 	/^(?:(?:cos|chief[-_ ]of[-_ ]staff|personal|brainstorm(?:ing)?)(?:$|[-_ ])|(?:daniel|dad|coach|claire|boating|doc|email-router|recruiting)$)/i;
+const operationsAgent = /^(?:cos|chief[-_ ]of[-_ ]staff)(?:$|[-_ ])/i;
 const nonWorkTitle = /^\s*(?:decision|reminder|brainstorm(?:ing)?)(?::|\s+for\b)/i;
 
 export const minute = 60_000;
@@ -109,26 +110,33 @@ export function mayScheduleHere(
 
 export function dueItemHold(item: TrackerDispatchItem, policy: TrackerDispatchPolicy, now: number) {
 	return (
-		schedulingHold(item) ?? (isDueNow(item.due, policy.timezone, now) ? null : 'item is not due')
+		schedulingHold(item, policy) ??
+		(isDueNow(item.due, policy.timezone, now) ? null : 'item is not due')
 	);
 }
 
-export function schedulingHold(item: TrackerDispatchItem): string | null {
+export function schedulingHold(
+	item: TrackerDispatchItem,
+	policy?: Pick<TrackerDispatchPolicy, 'opsWorkdirAvailable'>
+): string | null {
 	if (item.scheduleOff) return 'automatic launch opted out';
 	if (item.kind !== 'task') return `item is a ${item.kind}; only tasks can launch`;
 	if (item.recurring) return 'recurring item';
 	if (item.awaitingAnswer) return 'waiting on Daniel';
 	if (item.status === 'blocked') return 'item is blocked';
-	return nonWorkReason(item);
+	return nonWorkReason(item, policy?.opsWorkdirAvailable);
 }
 
-function nonWorkReason(item: TrackerDispatchItem): string | null {
-	if (nonWorkTitle.test(item.title) || /^daniel(?: fugere)?$/i.test(item.owner?.trim() ?? '')) {
+function nonWorkReason(
+	item: TrackerDispatchItem,
+	opsAvailable?: TrackerDispatchPolicy['opsWorkdirAvailable']
+): string | null {
+	if (nonWorkTitle.test(item.title) || /^daniel(?: fugere)?$/i.test((item.owner ?? '').trim())) {
 		return 'decision or reminder for Daniel';
 	}
-	return nonWorkAgent.test(item.agent?.trim() ?? '')
-		? 'personal, brainstorming or Chief of Staff agent'
-		: null;
+	const agent = (item.agent ?? '').trim();
+	if (operationsAgent.test(agent) && opsAvailable?.(item)) return null;
+	return nonWorkAgent.test(agent) ? 'personal, brainstorming or Chief of Staff agent' : null;
 }
 
 export function isDueNow(due: string | null | undefined, timezone: string, now: number): boolean {

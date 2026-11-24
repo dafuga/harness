@@ -65,27 +65,27 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Recorded evidence entity or commit mismatch",
 				"type": "thrown",
 				"description": "Thrown when the evidence result names a different entity or commit than the requested scope. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
 			},
 			{
-				"name": "Error",
+				"name": "Recorded evidence project mismatch",
 				"type": "thrown",
 				"description": "Thrown when the requested project differs from the project in the evidence identity. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
 			},
 			{
-				"name": "Error",
+				"name": "Recorded evidence source commit mismatch",
 				"type": "thrown",
 				"description": "Thrown when the evidence identity source commit differs from the requested commit. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
 			},
 			{
-				"name": "Error",
+				"name": "Incomplete recorded thumbnail identity",
 				"type": "thrown",
 				"description": "Thrown when a recorded thumbnail supplies only some of scenario, state, and viewport. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
 			},
 			{
-				"name": "Error",
+				"name": "Unsupported preview image type",
 				"type": "thrown",
 				"description": "Thrown when the fetched artifact media type is neither image/png nor image/jpeg. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
 			}
@@ -135,27 +135,27 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Recorded evidence entity or commit mismatch",
 						"type": "thrown",
 						"description": "Thrown when the evidence result names a different entity or commit than the requested scope. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
 					},
 					{
-						"name": "Error",
+						"name": "Recorded evidence project mismatch",
 						"type": "thrown",
 						"description": "Thrown when the requested project differs from the project in the evidence identity. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
 					},
 					{
-						"name": "Error",
+						"name": "Recorded evidence source commit mismatch",
 						"type": "thrown",
 						"description": "Thrown when the evidence identity source commit differs from the requested commit. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
 					},
 					{
-						"name": "Error",
+						"name": "Incomplete recorded thumbnail identity",
 						"type": "thrown",
 						"description": "Thrown when a recorded thumbnail supplies only some of scenario, state, and viewport. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
 					},
 					{
-						"name": "Error",
+						"name": "Unsupported preview image type",
 						"type": "thrown",
 						"description": "Thrown when the fetched artifact media type is neither image/png nor image/jpeg. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
 					}

@@ -22,7 +22,7 @@ func trackerWriteSessionChecks() {
     let raw = bench.ask(push)
     check(raw.failure?.code == "method-denied", "tracker write: the generic bridge refuses raw pushes")
     var review: TrackerReplicaConfirmation?
-    bench.session.prepareTrackerWrite("answer", input: ["id": "fixture001", "text": "The isolated fixture"]) {
+    bench.session.prepareTrackerWrite("answer", input: ["id": "fixture001", "text": "The isolated fixture", "revision": revision]) {
         review = try? $0.get()
     }
     bench.settle()
@@ -34,6 +34,12 @@ func trackerWriteSessionChecks() {
     let initial = bench.link.asked(push).last?["input"] as? [String: Any]
     check(initial?["intentId"] as? String == review.intent.intentId && initial?["revision"] as? String == revision,
           "tracker write: confirmation sends the durable intent under its reviewed revision")
+    var stale: TrackerReplicaWriteError?
+    bench.session.prepareTrackerWrite("answer", input: ["id": "fixture001", "text": "Late", "revision": "stale"]) {
+        if case .failure(let error) = $0 { stale = error }
+    }
+    bench.settle()
+    check(stale == .staleReview, "tracker write: a changed flag needs a fresh review before an answer")
     let saved = bench.vault.record
     bench.close(bench.link, .lost)
     let restarted = Bench(record: saved, trackerRoot: root)
@@ -48,6 +54,7 @@ func trackerWriteSessionChecks() {
         pending = ($0["data"] as? [String: Any])?["writes"] as? [[String: String]]
     }
     restarted.settle()
-    check(pending?.isEmpty == true, "tracker write: the accepted receipt clears the local intent")
+    check(pending?.count == 1 && pending?.first?["status"] == "accepted",
+          "tracker write: the accepted receipt is kept as acknowledged, not pending")
     restarted.disconnect()
 }

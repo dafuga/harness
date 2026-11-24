@@ -159,7 +159,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Hosted evidence identity, access, or integrity failure",
 				"type": "thrown",
 				"description": "The implementation and its read validators throw Error for invalid evidence, artifact integrity, credentials, authority changes, or cache identity checks. The injected transport can also reject with its own error class."
 			},
@@ -268,7 +268,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hosted evidence query, revision, or access failure",
 						"type": "thrown",
 						"description": "Evidence validation, query binding, current-tip or first-parent checks, and hosted-read credential or cache identity guards can throw Error. Rejections from the injected evidence transport pass through with transport-defined error classes."
 					},
@@ -317,7 +317,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hosted artifact size, integrity, or access failure",
 						"type": "thrown",
 						"description": "Artifact size, SHA-256, media-attestation, kept-cache validation, or hosted-read guard failures throw Error. Rejections from the injected artifact transport pass through with transport-defined error classes."
 					},

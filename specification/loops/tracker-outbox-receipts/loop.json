@@ -1,0 +1,65 @@
+{
+	"name": "tracker-outbox-receipts",
+	"goal": "Keep only the newest 20 acknowledged phone Tracker writes after an offline queue drains.",
+	"createdAt": "2026-11-24T08:35:34.025Z",
+	"updatedAt": "2026-11-24T08:43:45.984Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-24T08:35:50.639Z",
+			"evidence": "Acknowledgments can arrive after all queued writes are inserted. Trimming at enqueue never runs as that batch drains, so the inbox retains more than 20 acknowledged writes."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-24T08:35:52.124Z",
+			"evidence": "The existing native outbox fixture checked durable ordering and conflict discard but accepted only one receipt. It now queues 21 writes before acknowledging them and checks the exact 20 retained IDs."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-24T08:43:41.264Z",
+			"evidence": "Native clean-snapshot checkpoint faf8ef5c6978 failed the receipt retention assertion in both Debug and Release."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-24T08:43:43.490Z",
+			"evidence": "Trim acknowledged receipts in the transaction that records acceptance. Keep pending and conflict rows outside the retention rule."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-24T08:43:45.984Z",
+			"evidence": "Unchanged native check passed on f3a20cd448 in the same environment. Checkpoint 99b38b0fc1b7, Debug 358/358 and Release 336/336."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

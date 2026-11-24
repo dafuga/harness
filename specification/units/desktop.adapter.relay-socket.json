@@ -65,7 +65,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "RelaySocketConnectionError",
 				"type": "thrown",
 				"description": "Rejects the returned opened promise when the socket emits an error event, with message “The relay could not be reached.”"
 			}
@@ -103,7 +103,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "RelaySocketConnectionError",
 						"type": "thrown",
 						"description": "Rejects the returned opened promise when the socket emits an error event, with message “The relay could not be reached.”"
 					}

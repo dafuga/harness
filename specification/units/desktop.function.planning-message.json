@@ -80,7 +80,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Change draft approval mismatch or message write failure",
 				"type": "thrown",
 				"description": "A Change draft throws if the plan has no current approval or its approval version differs from the draft version; rejections from readPlan and appendMessage also propagate."
 			}
@@ -152,7 +152,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Change draft approval mismatch or message write failure",
 						"type": "thrown",
 						"description": "A Change draft throws if the plan has no current approval or its approval version differs from the draft version; rejections from readPlan and appendMessage also propagate."
 					}

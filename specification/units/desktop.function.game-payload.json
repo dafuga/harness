@@ -37,7 +37,8 @@
 						"path": "static/game/checkpoints/abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789.png",
 						"commit": "0123456789abcdef0123456789abcdef01234567"
 					}
-				]
+				],
+				"unknownReason": "Game IPC payloads have channel-specific shapes verified by the selected validator."
 			}
 		],
 		"outputs": [
@@ -94,7 +95,8 @@
 								"path": "static/game/checkpoints/abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789.png",
 								"commit": "0123456789abcdef0123456789abcdef01234567"
 							}
-						]
+						],
+						"unknownReason": "Game IPC payloads have channel-specific shapes verified by the selected validator."
 					}
 				],
 				"outputs": [

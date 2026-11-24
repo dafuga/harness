@@ -14,6 +14,7 @@ export function serializeTrackerItem(row: TrackerItemRow, notes: SqliteStatement
 		blocked_reason: row.status === 'blocked' ? row.blocked_reason : null,
 		...ignoredFields(row),
 		due: row.due,
+		remind_at: nullIfEmpty(row.remind_at),
 		auto: nullIfEmpty(row.auto),
 		project: nullIfEmpty(row.project),
 		repo: nullIfEmpty(row.repo),

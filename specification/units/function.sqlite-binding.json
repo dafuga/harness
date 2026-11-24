@@ -30,7 +30,8 @@
 						"pageSize": 25
 					},
 					null
-				]
+				],
+				"unknownReason": "Application values vary with the field descriptor, which controls the binding checks and conversions."
 			},
 			{
 				"name": "sqliteBinding.field",
@@ -63,7 +64,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidSqliteFieldValueError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Invalid SQLite <type> field value' whenever the value cannot be encoded for the field: `undefined`, a function or symbol in a `json` field, a value of the wrong JavaScript kind (such as a string in a `number` field), `NaN` or an infinite number in a `number` field, and `null` in a non-nullable field other than `json`. Unsupported field types throw with the same message for every value except `null` on a nullable field."
 			},
@@ -90,7 +91,8 @@
 								"pageSize": 25
 							},
 							null
-						]
+						],
+						"unknownReason": "Application values vary with the field descriptor, which controls the binding checks and conversions."
 					},
 					{
 						"name": "sqliteBinding.field",
@@ -123,7 +125,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidSqliteFieldValueError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Invalid SQLite <type> field value' whenever the value cannot be encoded for the field: `undefined`, a function or symbol in a `json` field, a value of the wrong JavaScript kind (such as a string in a `number` field), `NaN` or an infinite number in a `number` field, and `null` in a non-nullable field other than `json`. Unsupported field types throw with the same message for every value except `null` on a nullable field."
 					},

@@ -125,9 +125,19 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ImageHashMismatchError",
 				"type": "thrown",
-				"description": "read rejects with an Error whose message is 'The requested project is not selected.' when projectId is given and is not the selected project's id, 'Open a project first.' when no project is open, 'Unknown project image.' when that version has no image with that sha256, or 'Image hash mismatch.' when the fetched bytes differ from the recorded length or SHA-256. Failures from the catalog, git, planning and cache writes pass through unchanged, such as 'Entity not found at this revision.', 'Image is not part of this entity/version.' and 'Cached authority changed during the read.'"
+				"description": "The fetched image bytes do not match the recorded length or SHA-256."
+			},
+			{
+				"name": "UnknownProjectImageError",
+				"type": "thrown",
+				"description": "The requested version has no image with the supplied SHA-256."
+			},
+			{
+				"name": "Project selection, image lookup, or cache failure",
+				"type": "propagated",
+				"description": "A requested project must be selected and open. Catalog, Git, planning, and cache write failures propagate unchanged."
 			}
 		],
 		"errorStatus": "declared",
@@ -230,9 +240,19 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ImageHashMismatchError",
 						"type": "thrown",
-						"description": "read rejects with an Error whose message is 'The requested project is not selected.' when projectId is given and is not the selected project's id, 'Open a project first.' when no project is open, 'Unknown project image.' when that version has no image with that sha256, or 'Image hash mismatch.' when the fetched bytes differ from the recorded length or SHA-256. Failures from the catalog, git, planning and cache writes pass through unchanged, such as 'Entity not found at this revision.', 'Image is not part of this entity/version.' and 'Cached authority changed during the read.'"
+						"description": "The fetched image bytes do not match the recorded length or SHA-256."
+					},
+					{
+						"name": "UnknownProjectImageError",
+						"type": "thrown",
+						"description": "The requested version has no image with the supplied SHA-256."
+					},
+					{
+						"name": "Project selection, image lookup, or cache failure",
+						"type": "propagated",
+						"description": "A requested project must be selected and open. Catalog, Git, planning, and cache write failures propagate unchanged."
 					}
 				],
 				"errorStatus": "declared"

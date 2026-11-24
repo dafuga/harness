@@ -1,5 +1,8 @@
 // @harness-uid u_fyf7e7kyi5
-import type { TrackerManagedLaunchConfig } from '../../../services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types';
+import type {
+	TrackerManagedLaunchConfig,
+	TrackerWorkerClient
+} from '../../../services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types';
 
 export type TrackerManagedPresence = 'live' | 'absent' | 'unknown';
 
@@ -34,4 +37,10 @@ export interface TrackerManagedExec {
 	command: TrackerManagedCommand;
 	clientPath: string;
 	guestAuthFile?: string;
+}
+
+export interface TrackerManagedLauncherOptions {
+	client: TrackerWorkerClient;
+	platform?: typeof process.platform;
+	transcriptRoots?: readonly string[];
 }

@@ -190,7 +190,7 @@
 				"description": "The run rejects with ZodError when HARNESS_RESOURCE_PRIORITY is outside 'agent-test', 'coding', or 'environment', or when resourceWork's resource request fails schema parsing."
 			},
 			{
-				"name": "Error",
+				"name": "Check run resource admission failure",
 				"type": "thrown",
 				"description": "The run rejects with Error when resource admission cannot establish the owner, the queue is full, or an inherited lease is invalid or too small; log-directory or log-file creation failures also propagate."
 			},
@@ -268,7 +268,7 @@
 						"description": "The run rejects with ZodError when HARNESS_RESOURCE_PRIORITY is outside 'agent-test', 'coding', or 'environment', or when resourceWork's resource request fails schema parsing."
 					},
 					{
-						"name": "Error",
+						"name": "Check run resource admission failure",
 						"type": "thrown",
 						"description": "The run rejects with Error when resource admission cannot establish the owner, the queue is full, or an inherited lease is invalid or too small; log-directory or log-file creation failures also propagate."
 					}
@@ -301,7 +301,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Check run log filesystem failure",
 						"type": "thrown",
 						"description": "The method rejects with Error when isolated execution cannot create or write its log; a non-passing command result instead resolves to undefined."
 					}

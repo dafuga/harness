@@ -54,7 +54,7 @@
 				"description": "Thrown by JSON.parse in measured() when the value returned by run.page.evaluate is not valid JSON text. The measure script returns JSON.stringify output, so this happens only for an unexpected page result."
 			},
 			{
-				"name": "Error",
+				"name": "Layout evaluation, screenshot, or assertion failure",
 				"type": "thrown",
 				"description": "Any error that run.page.evaluate or the awaited shot call throws or rejects with, and any synchronous throw from run.record.check, passed on unchanged because neither operation catches errors. The exact class comes from run.page and from ios-acceptance-run, which this file does not define."
 			}
@@ -90,7 +90,7 @@
 						"description": "Thrown by JSON.parse in measured() when the value returned by run.page.evaluate is not valid JSON text. The measure script returns JSON.stringify output, so this happens only for an unexpected page result."
 					},
 					{
-						"name": "Error",
+						"name": "Top layout evaluation, screenshot, or assertion failure",
 						"type": "thrown",
 						"description": "Any error that run.page.evaluate or the awaited shot call throws or rejects with, and any synchronous throw from run.record.check, passed on unchanged because topLayout does not catch errors. The exact class comes from run.page and from ios-acceptance-run, which this file does not define."
 					}
@@ -126,7 +126,7 @@
 						"description": "Thrown by JSON.parse in measured() when the value returned by run.page.evaluate is not valid JSON text. The measure script returns JSON.stringify output, so this happens only for an unexpected page result."
 					},
 					{
-						"name": "Error",
+						"name": "Scrolled layout evaluation, screenshot, or assertion failure",
 						"type": "thrown",
 						"description": "Any error that run.page.evaluate or the awaited shot call throws or rejects with, and any synchronous throw from run.record.check, passed on unchanged because scrolledLayout does not catch errors. The exact class comes from run.page and from ios-acceptance-run, which this file does not define."
 					}

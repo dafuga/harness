@@ -101,7 +101,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Entry-point read or export write failure",
 				"type": "thrown",
 				"description": "Rejects with the Node.js file-system Error from readFile, when plans is non-empty, or from writeFile, when the appended text differs from the file, for example ENOENT for a missing src/index.ts; applyExports does not catch it."
 			}
@@ -150,7 +150,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Entry-point read or export write failure",
 						"type": "thrown",
 						"description": "Rejects with the Node.js file-system Error from readFile, when plans is non-empty, or from writeFile, when the appended text differs from the file, for example ENOENT for a missing src/index.ts; applyExports does not catch it."
 					}

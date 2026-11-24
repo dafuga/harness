@@ -62,7 +62,8 @@
 					{
 						"count": 3
 					}
-				]
+				],
+				"unknownReason": "The selected event defines its payload, which is stored with the original value and without coercion."
 			},
 			{
 				"name": "EventLogService.since.resume",
@@ -193,7 +194,8 @@
 							{
 								"count": 3
 							}
-						]
+						],
+						"unknownReason": "The selected event defines its payload, which is stored with the original value and without coercion."
 					}
 				],
 				"outputs": [

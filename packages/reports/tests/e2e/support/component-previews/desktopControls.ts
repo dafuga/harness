@@ -7,6 +7,14 @@ import { routeIds } from './routeUnits';
 import { live } from './activity';
 import { ids } from './explorerData';
 export const desktopControls: Record<string, DesktopCase> = {
+	'desktop.component.accounts-access-account-sign-in': () => ({
+		status: { configured: true, state: 'signed-out' },
+		error: '',
+		busy: false,
+		connect: noop,
+		cancel: noop,
+		retry: noop
+	}),
 	'desktop.component.accounts-access-vault-setup': () => {
 		Object.assign(window, { vaultSetup: { status: async () => 'absent', run: async () => null } });
 		return {};

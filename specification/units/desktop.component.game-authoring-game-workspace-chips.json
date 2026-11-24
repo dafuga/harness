@@ -9,23 +9,15 @@
 	"status": "active",
 	"composition": {
 		"level": "organism",
-		"uses": [
-			"reports.component.explorer-ui-explorer-kit-pill"
-		]
+		"uses": ["reports.component.explorer-ui-explorer-kit-pill"]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/game-authoring/GameWorkspaceChips.svelte"
-		],
-		"symbols": [
-			"GameWorkspaceChips"
-		]
+		"source": ["packages/desktop/src/components/game-authoring/GameWorkspaceChips.svelte"],
+		"symbols": ["GameWorkspaceChips"]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": [
-			"reports.component.explorer-ui-explorer-kit-pill"
-		],
+		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
 		"inputs": [
 			{
 				"name": "GameWorkspaceChips.commit",
@@ -33,29 +25,21 @@
 				"required": false,
 				"default": "undefined (omitted)",
 				"description": "The historical commit being shown. A truthy string renders a History chip using shortCommit; an absent or empty string renders no History chip.",
-				"examples": [
-					"0123456789abcdef0123456789abcdef01234567"
-				]
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "GameWorkspaceChips.readonly",
 				"type": "boolean",
 				"required": true,
 				"description": "Whether the workspace is read-only. The component renders a Read-only chip only when this is true and commit is falsy.",
-				"examples": [
-					true,
-					false
-				]
+				"examples": [true, false]
 			},
 			{
 				"name": "GameWorkspaceChips.dirty",
 				"type": "boolean",
 				"required": true,
 				"description": "Whether there are edits not saved yet. When true, the component renders an Unsaved changes chip.",
-				"examples": [
-					true,
-					false
-				]
+				"examples": [true, false]
 			}
 		],
 		"outputs": [

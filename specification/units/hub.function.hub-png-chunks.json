@@ -94,7 +94,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Hub PNG artifact-corrupt",
 				"type": "thrown",
 				"description": "Rejected PNG structure calls hubFail() with its default code, throwing an Error with name Error, code artifact-corrupt, and message Harness artifact unavailable."
 			}
@@ -181,7 +181,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub PNG artifact-corrupt",
 						"type": "thrown",
 						"description": "Rejected PNG structure calls hubFail() with its default code, throwing an Error with name Error, code artifact-corrupt, and message Harness artifact unavailable."
 					}

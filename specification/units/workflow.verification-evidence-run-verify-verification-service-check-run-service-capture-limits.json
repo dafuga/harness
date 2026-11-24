@@ -162,7 +162,7 @@
 				"description": "digestFile throws Error with message \"Capture exceeded maxCaptureBytes or remaining maxRecordBytes while reading.\" when the bytes read so far exceed maxBytes; the chunk that crosses the ceiling is not hashed or retained."
 			},
 			{
-				"name": "Error",
+				"name": "Capture file is not regular or exceeds the limit",
 				"type": "thrown",
 				"description": "digestFile throws Error when the opened descriptor is not a regular file or when bytes read exceed maxBytes. File-system errors from opening, statting, reading, and closing also propagate."
 			}
@@ -221,7 +221,7 @@
 						"description": "digestFile throws Error with message \"Capture exceeded maxCaptureBytes or remaining maxRecordBytes while reading.\" when the bytes read so far exceed maxBytes; the chunk that crosses the ceiling is not hashed or retained."
 					},
 					{
-						"name": "Error",
+						"name": "Capture file is not regular or exceeds the limit",
 						"type": "thrown",
 						"description": "digestFile throws Error when the opened descriptor is not a regular file or when bytes read exceed maxBytes. File-system errors from opening, statting, reading, and closing also propagate."
 					}

@@ -23,6 +23,7 @@ export async function assertCatalogBeforeCapture({
 			'Review every recorded result for this selected revision'
 		);
 	await assertAudioIconState(component, unit.id);
+	await assertAccountAndLayoutPreviews(component, unit.id);
 	await assertRequiredShellState(component, unit.id, variant);
 	await assertCatalogNames(component, unit.id, variant);
 	await assertCatalogState(component, unit.id, variant, viewport.id);
@@ -71,6 +72,22 @@ async function assertCatalogNames(component: Locator, id: string, variant: strin
 		return titleBounds.left >= cardBounds.left && titleBounds.right <= cardBounds.right;
 	});
 	expect.soft(withinCard, 'The long component heading stays inside its card').toBe(true);
+}
+
+async function assertAccountAndLayoutPreviews(component: Locator, id: string) {
+	if (id === 'desktop.component.accounts-access-account-sign-in') {
+		const button = component.getByRole('button', { name: 'Sign in with Google' });
+		await expect(button).toBeVisible();
+		await expect
+			.poll(() => button.locator('img').evaluate((image: HTMLImageElement) => image.naturalWidth))
+			.toBeGreaterThan(0);
+	}
+	if (id === 'desktop.layout.root')
+		await expect(component.getByText('Child content', { exact: true })).toBeVisible();
+	if (id === 'hub.page.accounts-access-devices')
+		await expect(component.getByText('This browser', { exact: true })).toBeVisible();
+	if (id === 'hub.page.public-site-about')
+		await expect(component.getByRole('heading', { level: 1 })).toBeVisible();
 }
 
 /** Each required prop state joins the normal desktop/tablet/mobile catalog test matrix. */

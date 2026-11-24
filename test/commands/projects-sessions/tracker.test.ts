@@ -1,4 +1,7 @@
-import { expect, afterEach, test, vi } from 'vitest';
+import { expect, afterEach, beforeEach, onTestFinished, test, vi } from 'vitest';
+import { rmSync } from 'node:fs';
+import { createTempDirectory } from '../../support/temporary';
+import { measureWorkload } from '../../support/measureWorkload';
 import { TrackerCommand } from '../../../src/commands/projects-sessions/TrackerCommand';
 import { formatNativeTrackerRunRead } from '../../../src/commands/projects-sessions/tracker-command/formatNativeTrackerItem';
 import { nativeTrackerArgs } from '../../../src/commands/projects-sessions/tracker-command/nativeTrackerRequest';
@@ -7,8 +10,16 @@ import {
 	compatibilityFixture,
 	fixtureTime,
 	fixtureItem,
-	fixtureTitle
+	fixtureTitle,
+	verifyTrackerReminderScheduling
 } from '../../support/trackerCliCompatibilityFixture';
+
+beforeEach(async () => {
+	const configHome = await createTempDirectory('tracker-cli-config-');
+	onTestFinished(() => rmSync(configHome, { recursive: true, force: true }));
+	vi.stubEnv('HARNESS_TRACKER_CONFIG', undefined);
+	vi.stubEnv('XDG_CONFIG_HOME', configHome);
+});
 
 afterEach(() => {
 	vi.unstubAllEnvs();
@@ -30,40 +41,58 @@ test('Tracker rejects a shim that points back at Harness', () => {
 	expect(error).toHaveBeenCalledWith('tracker: the shim needs a retained legacy client.');
 });
 
-test('native Tracker forwards existing run, report and model selection commands', () => {
-	expect(nativeTrackerArgs(['runs', '--item', 'abc123', '--limit', '4', '--json']).request).toEqual(
-		{
+test('native Tracker forwards existing run, report and model selection commands', () =>
+	measureWorkload('command.projects-sessions-tracker', 'run-report-cli', async () => {
+		expect(
+			nativeTrackerArgs(['runs', '--item', 'abc123', '--limit', '4', '--json']).request
+		).toEqual({
 			method: 'GET',
 			path: '/runs?item=abc123&limit=4'
-		}
-	);
-	expect(nativeTrackerArgs(['models', 'report']).request).toEqual({
-		method: 'GET',
-		path: '/models/report'
-	});
-	expect(nativeTrackerArgs(['pick', 'abc123']).request).toEqual({
-		method: 'GET',
-		path: '/items/abc123/pick'
-	});
-	expect(() => nativeTrackerArgs(['models', 'delete'])).toThrow('usage: tracker models report');
-	expect(formatNativeTrackerRunRead('runs', [])).toBe('(no runs)');
-	expect(formatNativeTrackerRunRead('models', { ladder: ['sol'], rows: [] })).toBe(
-		'(no finished runs yet)'
-	);
-	expect(
-		formatNativeTrackerRunRead('pick', {
-			rung: 'sol',
-			model: 'gpt-6.2-sol',
-			effort: 'medium',
-			cli: 'codex',
-			pinned: true,
-			reason: 'named on the item',
-			computer: 'fixture-mac'
-		})
-	).toBe(
-		'sol (gpt-6.2-sol medium, codex) - named on the item\n  named on the item\n  computer: fixture-mac'
-	);
-});
+		});
+		expect(nativeTrackerArgs(['models', 'report']).request).toEqual({
+			method: 'GET',
+			path: '/models/report'
+		});
+		expect(nativeTrackerArgs(['pick', 'abc123']).request).toEqual({
+			method: 'GET',
+			path: '/items/abc123/pick'
+		});
+		expect(() => nativeTrackerArgs(['models', 'delete'])).toThrow('usage: tracker models report');
+		expect(formatNativeTrackerRunRead('runs', [])).toBe('(no runs)');
+		expect(formatNativeTrackerRunRead('models', { ladder: ['sol'], rows: [] })).toBe(
+			'(no finished runs yet)'
+		);
+		expect(
+			formatNativeTrackerRunRead('pick', {
+				rung: 'sol',
+				model: 'gpt-6.2-sol',
+				effort: 'medium',
+				cli: 'codex',
+				pinned: true,
+				reason: 'named on the item',
+				computer: 'fixture-mac'
+			})
+		).toBe(
+			'sol (gpt-6.2-sol medium, codex) - named on the item\n  named on the item\n  computer: fixture-mac'
+		);
+		await verifyCodexReportRange();
+	}));
+
+async function verifyCodexReportRange() {
+	const { database, run } = await compatibilityFixture();
+	database
+		.prepare(
+			`INSERT INTO runs (item_id, model, rung, cli, state, outcome, queued_at,
+			input_tokens, output_tokens, cache_read_tokens, cache_write_tokens)
+		VALUES (?, 'gpt-6.2-sol', 'sol', 'codex', 'finished', 'done', ?, 300000, 10000, 100000, 0)`
+		)
+		.run(fixtureItem, Date.parse(fixtureTime));
+	const { code, out } = await run('models', 'report');
+	expect(code).toBe(0);
+	expect(out).toContain('$0.71–$1.37');
+	expect(out).toContain('1/1');
+	expect(out).toContain('API-equivalent estimate');
+}
 
 test('native show prints the full human item and returns the enriched JSON for a prefix', async () => {
 	const { database, runtime, run } = await compatibilityFixture();
@@ -102,6 +131,29 @@ test('native show prints the full human item and returns the enriched JSON for a
 		code: 1,
 		out: '',
 		err: 'tracker: no item "absent"'
+	});
+});
+
+test('native remind schedules a decision without changing its state and filters attention until it wakes', async () => {
+	const { runtime, run } = await compatibilityFixture();
+	runtime.store.appendLocal({
+		itemId: fixtureItem,
+		fields: { status: 'blocked', needs_daniel: 1, question: 'Approve the fixture?' }
+	});
+	const at = await verifyTrackerReminderScheduling(run);
+	expect(JSON.parse((await run('list', '--flagged', '--json')).out)).toEqual([]);
+	expect(JSON.parse((await run('digest', '--json')).out)).toMatchObject({
+		blocked: [],
+		needs_daniel: []
+	});
+	expect(JSON.parse((await run('list', '--status', 'all', '--json')).out)).toEqual(
+		expect.arrayContaining([expect.objectContaining({ id: fixtureItem, remind_at: at })])
+	);
+	const answered = await run('answer', 'taskfi', 'Approved', '--json');
+	expect(JSON.parse(answered.out)).toMatchObject({
+		id: fixtureItem,
+		resolved: true,
+		remind_at: null
 	});
 });
 

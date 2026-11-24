@@ -36,7 +36,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidAudioFileError",
 				"type": "thrown",
 				"description": "Thrown inside POST when the 'audio' form field is missing or is not a File instance. POST's catch block turns it into a 400 JSON {error: 'Choose an audio file'} response, so POST resolves rather than rejecting with it."
 			}
@@ -68,7 +68,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidAudioFileError",
 						"type": "thrown",
 						"description": "Thrown inside POST when the 'audio' form field is missing or is not a File instance. POST's catch block turns it into a 400 JSON {error: 'Choose an audio file'} response, so POST resolves rather than rejecting with it."
 					}

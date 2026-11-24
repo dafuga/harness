@@ -103,7 +103,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Remote artifact data, integrity, or media failure",
 				"type": "thrown",
 				"description": "The service throws Error for malformed or oversized cached data, a SHA-256 mismatch, unsupported media, and hosted authority or cache-identity failures. read can also reject with an error from load or HostedReadService if no validated offline cache entry can satisfy the request."
 			}
@@ -194,7 +194,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Remote artifact data, integrity, or media failure",
 						"type": "thrown",
 						"description": "The operation rejects with Error for malformed or oversized cached data, a SHA-256 mismatch, unsupported media, and hosted authority or cache-identity failures. It can also propagate a load or HostedReadService rejection when no validated offline cache entry can satisfy the request."
 					}

@@ -13,6 +13,7 @@
 			"desktop.component.project-gate",
 			"desktop.component.remote-connection",
 			"desktop.component.workspace-shell",
+			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-p"
 		]
@@ -103,6 +104,11 @@
 		},
 		{
 			"unit": "desktop.style.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
 			"via": "import",
 			"origin": "derived"
 		},

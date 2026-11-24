@@ -63,7 +63,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Unsafe report retention path",
 				"type": "thrown",
 				"description": "The method can reject when a checked cleanup root, export lock, or publication-staging directory is a symbolic link; it also throws for invalid or mismatched publication receipts and invalid publication timestamps. Errors caught per report or during orphan cleanup are returned in errors, while failures before the report loop or in the cleanup log can reject run."
 			}
@@ -104,7 +104,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unsafe report retention path",
 						"type": "thrown",
 						"description": "The method can reject when a checked cleanup root, export lock, or publication-staging directory is a symbolic link; it also throws for invalid or mismatched publication receipts and invalid publication timestamps. Errors caught per report or during orphan cleanup are returned in errors, while failures before the report loop or in the cleanup log can reject run."
 					}

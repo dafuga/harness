@@ -7,7 +7,7 @@ import {
 	nativeTrackerCommandOptions,
 	nativeTrackerCommonOptions,
 	nativeTrackerIdVerbs,
-	nativeTrackerIgnoreRequest,
+	nativeTrackerTimedItemRequest,
 	nativeTrackerInspectionRequest
 } from './nativeTrackerOptions';
 
@@ -109,7 +109,7 @@ function itemQuery(
 				path: '/check' + query({ ...fields, text: requiredText(words, command) })
 			};
 		default:
-			return nativeTrackerIgnoreRequest(command, words, values);
+			return nativeTrackerTimedItemRequest(command, words, values);
 	}
 }
 

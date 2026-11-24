@@ -47,7 +47,8 @@
 						"code": "offer-expired"
 					},
 					"unrecognized rejection"
-				]
+				],
+				"unknownReason": "A scan can reject with arbitrary data; classification uses only a recognized error code."
 			},
 			{
 				"name": "scanNotice.cause",
@@ -62,7 +63,8 @@
 						"code": "offer-expired"
 					},
 					"unrecognized rejection"
-				]
+				],
+				"unknownReason": "The pairing scan rejection may come from any source and only known codes map to notices."
 			},
 			{
 				"name": "phoneName.value",
@@ -144,7 +146,8 @@
 								"code": "offer-expired"
 							},
 							"unrecognized rejection"
-						]
+						],
+						"unknownReason": "A scan can reject with arbitrary data; classification uses only a recognized error code."
 					}
 				],
 				"outputs": [
@@ -174,7 +177,8 @@
 								"code": "offer-expired"
 							},
 							"unrecognized rejection"
-						]
+						],
+						"unknownReason": "The pairing scan rejection may come from any source and only known codes map to notices."
 					}
 				],
 				"outputs": [

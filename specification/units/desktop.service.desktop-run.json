@@ -124,22 +124,22 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "DesktopRunStartConflictError",
 				"type": "thrown",
 				"description": "Thrown by start with 'A run is already active in this project.' when the session is busy or the arbiter cannot hold the project root for this client, since the arbiter allows one run per repository across every client on this computer. No run starts, and the session's busy flag is left as it was."
 			},
 			{
-				"name": "Error",
+				"name": "DesktopRunStartConflictError",
 				"type": "thrown",
 				"description": "Thrown by start with 'An agent or planning write is active in another Harness app.' when the project root is set but no repository lease is obtained; the run is released before the error is rethrown."
 			},
 			{
-				"name": "Error",
+				"name": "DesignOptionsOnChangeError",
 				"type": "thrown",
 				"description": "Thrown by designCount with 'A Change makes no design options.'; start rejects with it before any state is set, when designOptions is given on a request whose mode is not 'plan'."
 			},
 			{
-				"name": "Error",
+				"name": "InvalidDesignOptionsError",
 				"type": "thrown",
 				"description": "Thrown by designCount with 'Design options must be a whole number from 1 to 10.'; start rejects with it before any state is set, when the designOptions of a plan is not an integer from 1 to 10."
 			},
@@ -217,22 +217,22 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DesktopRunStartConflictError",
 						"type": "thrown",
 						"description": "Thrown by start with 'A run is already active in this project.' when the session is busy or the arbiter cannot hold the project root for this client, since the arbiter allows one run per repository across every client on this computer. No run starts, and the session's busy flag is left as it was."
 					},
 					{
-						"name": "Error",
+						"name": "DesktopRunStartConflictError",
 						"type": "thrown",
 						"description": "Thrown by start with 'An agent or planning write is active in another Harness app.' when the project root is set but no repository lease is obtained; the run is released before the error is rethrown."
 					},
 					{
-						"name": "Error",
+						"name": "DesignOptionsOnChangeError",
 						"type": "thrown",
 						"description": "Thrown by designCount with 'A Change makes no design options.'; start rejects with it before any state is set, when designOptions is given on a request whose mode is not 'plan'."
 					},
 					{
-						"name": "Error",
+						"name": "InvalidDesignOptionsError",
 						"type": "thrown",
 						"description": "Thrown by designCount with 'Design options must be a whole number from 1 to 10.'; start rejects with it before any state is set, when the designOptions of a plan is not an integer from 1 to 10."
 					},

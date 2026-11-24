@@ -67,6 +67,7 @@ const normalizers = {
 	status: normalizeStatus,
 	title: normalizeTitle,
 	due: normalizeTrackerDue,
+	remind_at: normalizeInstant,
 	ignored_until: normalizeTrackerDue,
 	callback: normalizeCallback,
 	repo: normalizeRepo,

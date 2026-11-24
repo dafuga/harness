@@ -45,7 +45,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Remote fixture control server startup failure",
 				"type": "thrown",
 				"description": "A synchronous exception raised while creating or starting the server rejects the returned promise, so no handle is produced. Request parsing, fixture-action, and oversized-body errors are caught by the request handler and returned as HTTP 409 JSON instead."
 			}
@@ -78,7 +78,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Remote fixture control server startup failure",
 						"type": "thrown",
 						"description": "A synchronous exception raised while creating or starting the server rejects the returned promise, so no handle is produced. Request parsing, fixture-action, and oversized-body errors are caught by the request handler and returned as HTTP 409 JSON instead."
 					}

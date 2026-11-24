@@ -6,6 +6,7 @@ const manifests = import.meta.glob<PreviewManifest>(
 		'../../../../../../specification/units/reports.page.*.json',
 		'../../../../../../specification/units/reports.layout.*.json',
 		'../../../../../../specification/units/desktop.page.*.json',
+		'../../../../../../specification/units/desktop.layout.*.json',
 		'../../../../../../specification/units/hub.page.*.json',
 		'../../../../../../specification/units/hub.layout.*.json'
 	],
@@ -22,8 +23,7 @@ export const previewUnits = Object.values(manifests)
 	}))
 	.sort((a, b) => a.id.localeCompare(b.id));
 // The actual visual routes and layout; compatibility aliases remain services without a preview.
-// Desktop's own pages draw too; its options-only layout renders nothing and is not read. The Hub
-// pages draw, and so does its layout, which frames them and reads the session itself.
+// Desktop and Hub layouts draw their frame around the supplied synthetic child.
 const sources = [
 	[
 		'../../../../',
@@ -44,7 +44,8 @@ const sources = [
 		import.meta.glob(
 			[
 				'../../../../../desktop/src/components/**/*.svelte',
-				'../../../../../desktop/src/routes/**/+page.svelte'
+				'../../../../../desktop/src/routes/**/+page.svelte',
+				'../../../../../desktop/src/routes/+layout.svelte'
 			],
 			{ eager: true, import: 'default' }
 		)

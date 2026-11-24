@@ -406,7 +406,7 @@
 				"description": "Rejected when spawning fails, the startup timeout elapses, the child exits before readiness, or the first stdout chunk is not JSON containing a string url. Timeout, early-exit, and invalid-readiness cases reject with Error."
 			},
 			{
-				"name": "Error",
+				"name": "Kernel benchmark child startup failure",
 				"type": "thrown",
 				"description": "serveKernel rejects with Error when child spawning fails, startup times out, the child exits before readiness, or its first stdout chunk is invalid JSON or contains a non-string url."
 			}
@@ -785,7 +785,7 @@
 						"description": "Rejected when spawning fails, the startup timeout elapses, the child exits before readiness, or the first stdout chunk is not JSON containing a string url. Timeout, early-exit, and invalid-readiness cases reject with Error."
 					},
 					{
-						"name": "Error",
+						"name": "Kernel benchmark child startup failure",
 						"type": "thrown",
 						"description": "serveKernel rejects with Error when child spawning fails, startup times out, the child exits before readiness, or its first stdout chunk is invalid JSON or contains a non-string url."
 					}

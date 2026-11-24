@@ -28,7 +28,8 @@
 						"model": "jev-1.13.0",
 						"exclude": ["src/generated"]
 					}
-				]
+				],
+				"unknownReason": "The setting comes from decoded configuration and is checked for object shape and valid field values here."
 			},
 			{
 				"name": "resolveCleanCodeSettings.options",
@@ -104,7 +105,8 @@
 								"model": "jev-1.13.0",
 								"exclude": ["src/generated"]
 							}
-						]
+						],
+						"unknownReason": "The setting comes from decoded configuration and is checked for object shape and valid field values here."
 					},
 					{
 						"name": "resolveCleanCodeSettings.options",

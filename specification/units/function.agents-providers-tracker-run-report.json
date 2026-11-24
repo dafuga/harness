@@ -47,6 +47,12 @@
 				"type": "readonly TrackerRunRow[]",
 				"required": true,
 				"description": "Run attempts from both local and replicated histories, keyed by node and run ID."
+			},
+			{
+				"name": "trackerRunReport.costFor",
+				"type": "(row: TrackerRunRow) => TaskApiCost",
+				"required": true,
+				"description": "Supplies the recorded estimate or price bounds for each finished attempt."
 			}
 		],
 		"outputs": [
@@ -58,7 +64,7 @@
 			{
 				"name": "trackerRunReport",
 				"type": "unknown",
-				"description": "Sorted aggregates by model rung and work type, including all-type totals."
+				"description": "Sorted attempt outcomes, measured durations, and API-equivalent cost estimates with coverage by rung and work type."
 			}
 		],
 		"errors": [],
@@ -105,13 +111,19 @@
 						"type": "readonly TrackerRunRow[]",
 						"required": true,
 						"description": "Run attempts from both local and replicated histories, keyed by node and run ID."
+					},
+					{
+						"name": "trackerRunReport.costFor",
+						"type": "(row: TrackerRunRow) => TaskApiCost",
+						"required": true,
+						"description": "Supplies the recorded estimate or price bounds for each finished attempt."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerRunReport",
 						"type": "unknown",
-						"description": "Sorted aggregates by model rung and work type, including all-type totals."
+						"description": "Sorted attempt outcomes, measured durations, and API-equivalent cost estimates with coverage by rung and work type."
 					}
 				],
 				"errors": [],
@@ -123,6 +135,11 @@
 	"dependencies": [
 		{
 			"unit": "function.agents-providers-pick-tracker-model",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
 			"via": "import",
 			"origin": "derived"
 		}

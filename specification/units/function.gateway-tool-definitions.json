@@ -82,7 +82,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "GatewayToolDefinitionError",
 				"type": "thrown",
 				"description": "Thrown when a namespace record has a non-array tools field; the message is \"Invalid namespace tools\". Also thrown when a non-namespace record has a stringified type other than \"function\" or \"custom\"; the message is \"Unsupported hosted tool; disable it explicitly for this provider\"."
 			}
@@ -152,7 +152,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "GatewayToolDefinitionError",
 						"type": "thrown",
 						"description": "Thrown when a namespace record has a non-array tools field; the message is \"Invalid namespace tools\". Also thrown when a non-namespace record has a stringified type other than \"function\" or \"custom\"; the message is \"Unsupported hosted tool; disable it explicitly for this provider\"."
 					}

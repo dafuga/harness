@@ -131,12 +131,12 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ConsoleBridgeError",
 				"type": "thrown",
 				"description": "Rejects connect with 'Chat closed while connecting.' when close() runs while the connect request is in flight; the adapter then sends a disconnect for that response's token and drops its snapshot."
 			},
 			{
-				"name": "Error",
+				"name": "ConsoleBridgeError",
 				"type": "thrown",
 				"description": "Thrown by the adapter's /api/agent request helper for any non-OK response, with the server's error text or 'Chat unavailable.' as the message and the HTTP status as a numeric status property."
 			},
@@ -151,7 +151,7 @@
 				"description": "Rejected by response.json() when the /api/agent body is not valid JSON; parsing runs before the status check, so a non-JSON error response rejects with this instead of an Error carrying a status."
 			},
 			{
-				"name": "Error",
+				"name": "ConsoleBridgeError",
 				"type": "thrown",
 				"description": "Thrown by the bridge's startRun with 'Retry the previous request before sending another.' while an earlier startRun with different input (ignoring conversation, branch and commit) is still pending, which lasts until that call succeeds or fails with a 4xx status other than 408 or 429."
 			},
@@ -166,7 +166,7 @@
 				"description": "Thrown by structuredClone when no startRun is pending and the new input contains a value that cannot be cloned, such as a function."
 			},
 			{
-				"name": "Error",
+				"name": "ConsoleBridgeError",
 				"type": "thrown",
 				"description": "Thrown by the bridge's selectProject on every call, with 'This web preview has one project.' as the message."
 			}
@@ -273,12 +273,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ConsoleBridgeError",
 						"type": "thrown",
 						"description": "Rejects connect with 'Chat closed while connecting.' when close() runs while the connect request is in flight; the adapter then sends a disconnect for that response's token and drops its snapshot."
 					},
 					{
-						"name": "Error",
+						"name": "ConsoleBridgeError",
 						"type": "thrown",
 						"description": "Thrown by the adapter's /api/agent request helper for any non-OK response, with the server's error text or 'Chat unavailable.' as the message and the HTTP status as a numeric status property."
 					},

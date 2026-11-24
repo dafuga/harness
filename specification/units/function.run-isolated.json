@@ -115,7 +115,7 @@
 				"description": "When `signal` is already aborted at entry, `throwIfAborted()` throws its reason unchanged; the default reason is a DOMException named `AbortError`."
 			},
 			{
-				"name": "Error",
+				"name": "Isolated process log write failure",
 				"type": "thrown",
 				"description": "Recursive creation of the parent directory for `run.log` and writing the captured bytes can reject with the filesystem error, so a command result is not returned if either operation fails."
 			}
@@ -207,7 +207,7 @@
 						"description": "When `signal` is already aborted at entry, `throwIfAborted()` throws its reason unchanged; the default reason is a DOMException named `AbortError`."
 					},
 					{
-						"name": "Error",
+						"name": "Isolated process log write failure",
 						"type": "thrown",
 						"description": "Recursive creation of the parent directory for `run.log` and writing the captured bytes can reject with the filesystem error, so a command result is not returned if either operation fails."
 					}

@@ -167,9 +167,24 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "DecartConnectionFailedError",
 				"type": "thrown",
-				"description": "connect rejects with Error when the prompt has no connector ('Live AI is unavailable until a credential-safe provider transport is configured.'), when the prompt's signal is already aborted ('AI preview cancelled.'), or when the connector throws or rejects ('AI video connection failed. The simple renderer remains available.'). Connector failures stop the captured tracks before the rejection, and an error from canvas.captureStream(25) is not caught, so it reaches the caller unchanged."
+				"description": "The connector rejected and the captured tracks were stopped."
+			},
+			{
+				"name": "DecartPreviewCancelledError",
+				"type": "thrown",
+				"description": "The preview request was already aborted."
+			},
+			{
+				"name": "DecartTransportUnavailableError",
+				"type": "thrown",
+				"description": "The browser preview requires a configured connector."
+			},
+			{
+				"name": "Canvas capture failure",
+				"type": "propagated",
+				"description": "An exception from canvas.captureStream(25) propagates unchanged."
 			}
 		],
 		"errorStatus": "declared",
@@ -251,9 +266,24 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DecartConnectionFailedError",
 						"type": "thrown",
-						"description": "connect rejects with Error when the prompt has no connector ('Live AI is unavailable until a credential-safe provider transport is configured.'), when the prompt's signal is already aborted ('AI preview cancelled.'), or when the connector throws or rejects ('AI video connection failed. The simple renderer remains available.'). Connector failures stop the captured tracks before the rejection, and an error from canvas.captureStream(25) is not caught, so it reaches the caller unchanged."
+						"description": "The connector rejected and the captured tracks were stopped."
+					},
+					{
+						"name": "DecartPreviewCancelledError",
+						"type": "thrown",
+						"description": "The preview request was already aborted."
+					},
+					{
+						"name": "DecartTransportUnavailableError",
+						"type": "thrown",
+						"description": "The browser preview requires a configured connector."
+					},
+					{
+						"name": "Canvas capture failure",
+						"type": "propagated",
+						"description": "An exception from canvas.captureStream(25) propagates unchanged."
 					}
 				],
 				"errorStatus": "declared"
@@ -327,9 +357,24 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DecartConnectionFailedError",
 						"type": "thrown",
-						"description": "connect rejects with Error when the prompt has no connector ('Live AI is unavailable until a credential-safe provider transport is configured.'), when the prompt's signal is already aborted ('AI preview cancelled.'), or when the connector throws or rejects ('AI video connection failed. The simple renderer remains available.'). Connector failures stop the captured tracks before the rejection, and an error from canvas.captureStream(25) is not caught, so it reaches the caller unchanged."
+						"description": "The connector rejected and the captured tracks were stopped."
+					},
+					{
+						"name": "DecartPreviewCancelledError",
+						"type": "thrown",
+						"description": "The preview request was already aborted."
+					},
+					{
+						"name": "DecartTransportUnavailableError",
+						"type": "thrown",
+						"description": "The browser preview requires a configured connector."
+					},
+					{
+						"name": "Canvas capture failure",
+						"type": "propagated",
+						"description": "An exception from canvas.captureStream(25) propagates unchanged."
 					}
 				],
 				"errorStatus": "declared"

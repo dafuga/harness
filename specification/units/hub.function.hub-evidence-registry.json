@@ -44,7 +44,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Hub committed evidence registry missing or corrupt",
 				"type": "thrown",
 				"description": "hubFail raises an Error when a source blob is missing, an artifact is invalid, a manifest path does not match its id, duplicate unit ids occur, or a ledger event fails validation; invalid JSON or UTF-8 in a manifest is surfaced as an artifact-corrupt Error."
 			},
@@ -92,7 +92,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub committed evidence registry missing or corrupt",
 						"type": "thrown",
 						"description": "hubFail raises an Error when a source blob is missing, an artifact is invalid, a manifest path does not match its id, duplicate unit ids occur, or a ledger event fails validation; invalid JSON or UTF-8 in a manifest is surfaced as an artifact-corrupt Error."
 					},

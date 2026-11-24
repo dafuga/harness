@@ -86,8 +86,9 @@ export interface TrackerDispatchPolicy {
 		item: TrackerDispatchItem,
 		scope: { source: TrackerLaunchSource; requestedNode: string | null }
 	): { node: string | null; why: string };
-	/** Whether the mapped repository exists on the requesting computer. */
+	/** Whether the requesting computer has an approved execution directory. */
 	localRepoAvailable?(item: TrackerDispatchItem): boolean;
+	opsWorkdirAvailable?(item: TrackerDispatchItem): boolean;
 	/** A null rung allows capacity to be checked for an invalid model request. */
 	admit(
 		item: TrackerDispatchItem,

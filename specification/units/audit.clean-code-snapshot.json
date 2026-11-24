@@ -114,7 +114,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ReviewContextBudgetExceededError",
 				"type": "thrown",
 				"description": "Rejects with an Error when the target cannot be read: its path resolves outside the root, it is a symlink or not a regular file, it is larger than 1 MiB, or a Node file-system error occurs. It also rejects with 'Target exceeds the bounded review context; no code was truncated.' when the state holding the target and its findings is over 24000 bytes, and with 'Supplied context exceeds the review budget.' when the final state is over 24000 bytes."
 			}
@@ -202,7 +202,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ReviewContextBudgetExceededError",
 						"type": "thrown",
 						"description": "Rejects with an Error when the target cannot be read: its path resolves outside the root, it is a symlink or not a regular file, it is larger than 1 MiB, or a Node file-system error occurs. It also rejects with 'Target exceeds the bounded review context; no code was truncated.' when the state holding the target and its findings is over 24000 bytes, and with 'Supplied context exceeds the review budget.' when the final state is over 24000 bytes."
 					}

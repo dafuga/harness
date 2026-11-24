@@ -147,11 +147,11 @@ Expose these exact tool names through an in-process app dispatcher. The
 dispatcher validates input and reads only the current SQLite scope. It has
 no arbitrary SQL, network, shell, or write entry point.
 
-| Tool             | JSON arguments                                                                         | JSON result data                                                                           |
-| ---------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `tracker_status` | Empty object                                                                           | Counts by status, unresolved flag count, and the most recently updated items, max 10       |
-| `tracker_show`   | `id`, full Tracker ID or unique prefix of at least six characters                      | One item, its retained notes, flag and runs. Ambiguous prefixes return candidates, max 10. |
-| `tracker_search` | `query`, 1–160 characters, optional `project`, `status` and `limit` (1–25, default 10) | Literal case-insensitive matches by ID or title, newest first with an ID tie-breaker       |
+| Tool             | JSON arguments                                                                         | JSON result data                                                                                                                    |
+| ---------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `tracker_status` | Empty object                                                                           | Counts by status, unresolved flag count, `needsYou` (up to 25 items with an open flag), and the most recently updated items, max 10 |
+| `tracker_show`   | `id`, full Tracker ID or unique prefix of at least six characters                      | One item, its retained notes, flag, runs and `attentionRevision`. Ambiguous prefixes return candidates, max 10.                     |
+| `tracker_search` | `query`, 1–160 characters, optional `project`, `status` and `limit` (1–25, default 10) | Literal case-insensitive matches by ID or title, newest first with an ID tie-breaker                                                |
 
 Every result reports `source: "local_tracker"`, `lastSyncedAt` or null,
 `partial`, and freshness (`current`, `stale`, or `unavailable`). Report
@@ -224,8 +224,10 @@ visible item. A flag compares its expected attention revision. An answer
 must match the exact still-unanswered flag. The hub validates current grant,
 visibility, and revision in the same transaction as the operation and
 idempotency receipt. A retry returns the same receipt even after a lost reply.
-Missing items, stale revisions, and revoked grants stop the affected intent
-for review. Never retarget an answer to a newer flag. Discard stored payloads
+A flag or answer carries the `revision` the user reviewed, from `attentionRevision`
+in `tracker_show`. A mismatch returns `staleReview` before anything is queued, so a
+changed flag needs a fresh review. Missing items, stale revisions, and revoked grants
+stop the affected intent for review. Never retarget an answer to a newer flag. Discard stored payloads
 when a scope is revoked. Reconcile accepted writes through ordinary deltas.
 
 ## Acceptance

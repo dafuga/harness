@@ -56,7 +56,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Unencodable QR input or oversized symbol",
 				"type": "thrown",
 				"description": "Throws Error('This cannot be shown as a QR code.') when the input fails the character or length check or the encoded symbol exceeds 77 modules; errors from qrcode.create propagate."
 			}
@@ -90,7 +90,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unencodable QR input or oversized symbol",
 						"type": "thrown",
 						"description": "Throws Error('This cannot be shown as a QR code.') when the input fails the character or length check or the encoded symbol exceeds 77 modules; errors from qrcode.create propagate."
 					}

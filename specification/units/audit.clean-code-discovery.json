@@ -148,9 +148,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Thrown by discoverCleanCodeFiles as `new Error('Cannot safely determine ignored files for clean code review.')` with the caught probe error as `cause`, only when that error has the code ETIMEDOUT. Other probe failures are not thrown and contribute no Git-ignored exclusions."
+				"description": "Thrown by discoverCleanCodeFiles as `new ExpectedCliError('Cannot safely determine ignored files for clean code review.')` with the caught probe error as `cause`, only when that error has the code ETIMEDOUT. Other probe failures are not thrown and contribute no Git-ignored exclusions."
 			}
 		],
 		"errorStatus": "declared",
@@ -268,9 +268,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Thrown by discoverCleanCodeFiles as `new Error('Cannot safely determine ignored files for clean code review.')` with the caught probe error as `cause`, only when that error has the code ETIMEDOUT. Other probe failures are not thrown and contribute no Git-ignored exclusions."
+						"description": "Thrown by discoverCleanCodeFiles as `new ExpectedCliError('Cannot safely determine ignored files for clean code review.')` with the caught probe error as `cause`, only when that error has the code ETIMEDOUT. Other probe failures are not thrown and contribute no Git-ignored exclusions."
 					}
 				],
 				"errorStatus": "declared"

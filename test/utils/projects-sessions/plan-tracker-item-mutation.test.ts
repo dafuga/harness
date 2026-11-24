@@ -76,7 +76,7 @@ test('start, progress and note emit only the fields for the requested transition
 	});
 });
 
-test('flag, answer, unflag and resolve preserve fields they do not write', () => {
+test('answer, unflag and resolve cancel even a reminder whose journal entry has yet to sync', () => {
 	expect(plan({ action: 'flag', item, body: { question: '  Proceed? ' } }, context).fields).toEqual(
 		{
 			needs_daniel: 1,
@@ -85,7 +85,10 @@ test('flag, answer, unflag and resolve preserve fields they do not write', () =>
 		}
 	);
 	expect(plan({ action: 'flag', item }, context).fields).toEqual({ needs_daniel: 1, resolved: 0 });
-	expect(plan({ action: 'unflag', item }, context).fields).toEqual({ needs_daniel: 0 });
+	expect(plan({ action: 'unflag', item }, context).fields).toEqual({
+		needs_daniel: 0,
+		remind_at: null
+	});
 	expect(
 		plan(
 			{ action: 'answer', item, body: { answer: '  yes  ', by: ' fixture operator ', done: true } },
@@ -96,6 +99,7 @@ test('flag, answer, unflag and resolve preserve fields they do not write', () =>
 		needs_daniel: 0,
 		answered_at: now,
 		answered_by: 'fixture operator',
+		remind_at: null,
 		answer: 'yes',
 		status: 'done'
 	});
@@ -103,13 +107,15 @@ test('flag, answer, unflag and resolve preserve fields they do not write', () =>
 		resolved: 1,
 		needs_daniel: 0,
 		answered_at: now,
-		answered_by: 'daniel'
+		answered_by: 'daniel',
+		remind_at: null
 	});
 });
 
 test('done finishes ordinary items and records recurring outcomes against the fixed clock', () => {
 	expect(plan({ action: 'done', item, body: { note: 'Complete' } }, context).fields).toEqual({
 		status: 'done',
+		remind_at: null,
 		'note+': 'Complete'
 	});
 	const recurring = {
@@ -145,6 +151,7 @@ test('ignore records the previous status and unignore restores it with a pending
 		plan({ action: 'ignore', item, body: { reason: '  defer  ', until: 'today' } }, context).fields
 	).toEqual({
 		status: 'ignored',
+		remind_at: null,
 		ignored_reason: 'defer',
 		ignored_by: 'unknown',
 		ignored_at: now,

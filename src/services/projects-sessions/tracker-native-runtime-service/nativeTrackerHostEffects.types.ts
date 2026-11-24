@@ -33,6 +33,7 @@ export interface TrackerManagedLaunchConfig {
 	tmux: string;
 	stateDirectory: string;
 	trackerBinDirectory: string;
+	opsWorkdir?: string;
 	native?: { codex: string; claude: string; profile: string };
 	docker?: { harness: string; image: string; profile: string };
 }

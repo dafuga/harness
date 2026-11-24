@@ -39,7 +39,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Corrupt stored Hub authentication record",
 				"type": "thrown",
 				"description": "Thrown with the message 'Hub auth record corrupt' by challenges.claim, githubStates.claim, exchanges.find and exchanges.claim when a row fails validation: the row is not an object, a required text column is not a non-empty string, a required integer column is not a safe integer, or an exchange's environment or status is not one of its allowed values."
 			},

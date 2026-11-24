@@ -161,7 +161,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Audit filesystem failure",
 				"type": "thrown",
 				"description": "A Node.js filesystem error (its code, such as ENOENT, ENOTDIR, EACCES or EISDIR, is set on the error) from listing the project root or its subfolders, reading harness.audit.json or an audited source file, or listing specification/modules or reading its module.json files; a missing specification/modules is not an error."
 			},
@@ -181,7 +181,7 @@
 				"description": "Raised through fail() for invalid settings: a limits value that is present but is not a positive integer, an invalid harness.audit.json cleanCode value (not an object, or an invalid mode, minConfidence, apiKeyEnv, model or exclude), or the cleanCode dryRun or refresh option while the resolved clean-code mode is 'off'."
 			},
 			{
-				"name": "Error",
+				"name": "Git ignore lookup timeout",
 				"type": "thrown",
 				"description": "Thrown with the message 'Cannot safely determine ignored files for clean code review.' only when the clean-code review runs and the git check-ignore call exceeds its 3000 ms timeout (the error has code ETIMEDOUT); the original error is attached as cause."
 			}
@@ -244,7 +244,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Audit filesystem failure",
 						"type": "thrown",
 						"description": "A Node.js filesystem error (its code, such as ENOENT, ENOTDIR, EACCES or EISDIR, is set on the error) from listing the project root or its subfolders, reading harness.audit.json or an audited source file, or listing specification/modules or reading its module.json files; a missing specification/modules is not an error."
 					},
@@ -264,7 +264,7 @@
 						"description": "Raised through fail() for invalid settings: a limits value that is present but is not a positive integer, an invalid harness.audit.json cleanCode value (not an object, or an invalid mode, minConfidence, apiKeyEnv, model or exclude), or the cleanCode dryRun or refresh option while the resolved clean-code mode is 'off'."
 					},
 					{
-						"name": "Error",
+						"name": "Git ignore lookup timeout",
 						"type": "thrown",
 						"description": "Thrown with the message 'Cannot safely determine ignored files for clean code review.' only when the clean-code review runs and the git check-ignore call exceeds its 3000 ms timeout (the error has code ETIMEDOUT); the original error is attached as cause."
 					}
@@ -362,7 +362,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Audit filesystem failure",
 						"type": "thrown",
 						"description": "A Node.js filesystem error (its code, such as ENOENT, ENOTDIR, EACCES or EISDIR, is set on the error) from listing the project root or its subfolders, reading harness.audit.json or an audited source file, or listing specification/modules or reading its module.json files; a missing specification/modules is not an error."
 					},
@@ -382,7 +382,7 @@
 						"description": "Raised through fail() for invalid settings: a limits value that is present but is not a positive integer, an invalid harness.audit.json cleanCode value (not an object, or an invalid mode, minConfidence, apiKeyEnv, model or exclude), or the cleanCode dryRun or refresh option while the resolved clean-code mode is 'off'."
 					},
 					{
-						"name": "Error",
+						"name": "Git ignore lookup timeout",
 						"type": "thrown",
 						"description": "Thrown with the message 'Cannot safely determine ignored files for clean code review.' only when the clean-code review runs and the git check-ignore call exceeds its 3000 ms timeout (the error has code ETIMEDOUT); the original error is attached as cause."
 					}

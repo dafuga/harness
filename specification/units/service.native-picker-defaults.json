@@ -102,7 +102,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidConfigurationEditsError",
 				"type": "thrown",
 				"description": "Thrown by write when params.edits is not an array; the message is “Invalid configuration edits”."
 			}
@@ -146,7 +146,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidConfigurationEditsError",
 						"type": "thrown",
 						"description": "Thrown by write when params.edits is not an array; the message is “Invalid configuration edits”."
 					}

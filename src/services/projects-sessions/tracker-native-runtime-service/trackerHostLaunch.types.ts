@@ -2,6 +2,10 @@
 import type { z } from 'zod';
 import type { WatchdogCli } from '../WatchdogPaneService.types';
 import type { TrackerDispatchRunner } from '../TrackerDispatchSchedulerService.types';
+import type {
+	TrackerRunReceipt,
+	TrackerReceiptUsage
+} from '../../agents-providers/TrackerDispatcherService.types';
 import type { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
 import type { TrackerHostRepository } from './nativeTrackerHostEffects.types';
 import type { TaskSelection } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
@@ -15,11 +19,13 @@ export interface TrackerHostRouteItem {
 	repo?: string | null;
 }
 
-export type TrackerHostRoute = (item: TrackerHostRouteItem) => TrackerHostRepository | undefined;
+export type TrackerHostTarget = TrackerHostRepository | { workdir: string; platform: 'macos' };
+
+export type TrackerHostRoute = (item: TrackerHostRouteItem) => TrackerHostTarget | undefined;
 
 export type TrackerHostStartReply = z.infer<typeof hostStart>;
 
-export interface TrackerHostStartRequest extends TrackerHostRepository {
+export type TrackerHostStartRequest = TrackerHostTarget & {
 	node: string;
 	itemId: string;
 	runId: number;
@@ -28,7 +34,7 @@ export interface TrackerHostStartRequest extends TrackerHostRepository {
 	brief: string;
 	backend: 'native' | 'docker';
 	queuedAt: number;
-}
+};
 
 export interface TrackerHostLaunchPort {
 	inspect(
@@ -36,6 +42,7 @@ export interface TrackerHostLaunchPort {
 		signal: AbortSignal
 	): Promise<TrackerHostSession[]>;
 	start(input: TrackerHostStartRequest, signal: AbortSignal): Promise<TrackerHostStartReply>;
+	readUsage?(run: TrackerRunReceipt, signal: AbortSignal): Promise<TrackerReceiptUsage | undefined>;
 	confirmNeverStarted?: TrackerDispatchRunner['confirmNeverStarted'];
 }
 

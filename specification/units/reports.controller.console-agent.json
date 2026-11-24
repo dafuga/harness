@@ -33,7 +33,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "request body read failure (Request.arrayBuffer)",
 				"type": "thrown",
 				"description": "A rejection from request.arrayBuffer() while the request body is read, which is awaited outside the handler's try block and is not caught, so handle rejects with it. Failures from JSON parsing, the JSON object check, consoleAgent or reply building are caught and returned as 400 responses, so they never reach the caller."
 			}
@@ -59,7 +59,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "request body read failure (Request.arrayBuffer)",
 						"type": "thrown",
 						"description": "A rejection from request.arrayBuffer() while the request body is read, which is awaited outside the handler's try block and is not caught, so handle rejects with it. Failures from JSON parsing, the JSON object check, consoleAgent or reply building are caught and returned as 400 responses, so they never reach the caller."
 					}

@@ -38,7 +38,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "The function throws an Error when the preview ownership port is not an integer from 1024 through 65535. Option parsing, preview startup, and preview-owner failures reject the promise and propagate."
 			}
@@ -67,7 +67,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "The function throws an Error when the preview ownership port is not an integer from 1024 through 65535. Option parsing, preview startup, and preview-owner failures reject the promise and propagate."
 					}
