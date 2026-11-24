@@ -142,6 +142,7 @@ function installPairedShell(input: PairedInstall) {
 	const calls: PairedAccountCall[] = [];
 	host.__pairedAccountCalls = calls;
 	const shell = pairedShell(input.mode);
+	shell.state = sessionStorage.getItem('harness-fixture-pairing') ?? shell.state;
 	const plugins: Record<string, PairedPlugin> = {
 		HarnessRemote: pairedRemote(shell) as never,
 		HarnessAccount: pairedAccount(shell, input, calls) as never
@@ -168,6 +169,7 @@ function installPairedShell(input: PairedInstall) {
 			/** What the native plugin announces: revocation, loss of the pairing, or a return. */
 			setState: (state: string) => {
 				shell.state = state;
+				sessionStorage.setItem('harness-fixture-pairing', state);
 				pairedEmit(shell);
 			}
 		}
