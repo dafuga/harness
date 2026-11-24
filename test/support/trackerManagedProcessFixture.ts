@@ -1,8 +1,9 @@
+import { trackerManagedToken } from '../../src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedLaunchReceipt';
 import type { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import type { DatabaseSync } from 'node:sqlite';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, unlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { expect } from 'vitest';
+import { expect, vi } from 'vitest';
 
 export const fixtureDockerImage = 'sha256:' + 'a'.repeat(64);
 
@@ -145,4 +146,75 @@ export async function startLinkedItem(runtime: TrackerNativeRuntimeService) {
 		body: JSON.stringify({ session_run: '8' })
 	});
 	expect((await runtime.items.handle(request)).ok).toBe(true);
+}
+
+export function managedTrackerItemRequest(
+	runtime: TrackerNativeRuntimeService,
+	itemId: string,
+	action: string
+) {
+	return runtime.items.handle(
+		new Request(`http://tracker-fixture.invalid/items/${itemId}/${action}`, {
+			method: 'POST',
+			body: '{}'
+		})
+	);
+}
+
+export async function verifyCancelledClaim(
+	runtime: TrackerNativeRuntimeService,
+	database: DatabaseSync,
+	attempts: string,
+	itemId: string
+) {
+	const signal = new AbortController().signal;
+	const tick = () => runtime.scheduler!.tick(signal);
+	expect((await managedTrackerItemRequest(runtime, itemId, 'done')).ok).toBe(true);
+	await tick();
+	for (const action of ['reopen', 'unlaunch', 'launch']) {
+		expect((await managedTrackerItemRequest(runtime, itemId, action)).ok).toBe(true);
+	}
+	const token = database.prepare('SELECT auto FROM items WHERE id = ?').get(itemId)!.auto;
+	const directory = join(
+		attempts,
+		trackerManagedToken(runtime.store.node, JSON.stringify([itemId, token, 1]))
+	);
+	mkdirSync(directory, { mode: 0o700 });
+	await tick();
+	const runs = () =>
+		database
+			.prepare('SELECT id,state,outcome,started_at FROM runs WHERE id >= 4 ORDER BY id')
+			.all();
+	const held = [{ id: 4, state: 'queued', outcome: null, started_at: null }];
+	expect(runs()).toEqual(held);
+	expect((await managedTrackerItemRequest(runtime, itemId, 'unlaunch')).ok).toBe(true);
+	expect((await managedTrackerItemRequest(runtime, itemId, 'launch')).ok).toBe(true);
+	await tick();
+	expect(runs()).toEqual(held);
+
+	const clock = vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 6 * 60_000);
+	const probe = join(attempts, '..', 'tmux-presence');
+	try {
+		for (const reply of ['tmux inventory permission denied', 'HARNESS_TRACKER_ATTEMPT=live']) {
+			writeFileSync(probe, reply);
+			await tick();
+			expect(runs()).toEqual(held);
+		}
+		unlinkSync(probe);
+		const marker = join(directory, 'started.tmp');
+		writeFileSync(marker, 'synthetic partial startup marker', { mode: 0o600 });
+		await tick();
+		expect(runs()).toEqual(held);
+		unlinkSync(marker);
+		await tick();
+		expect(runs()).toEqual([
+			{ id: 4, state: 'finished', outcome: 'abandoned', started_at: null },
+			{ id: 5, state: 'running', outcome: null, started_at: expect.any(Number) }
+		]);
+		expect((await managedTrackerItemRequest(runtime, itemId, 'done')).ok).toBe(true);
+		await tick();
+		expect(runs()).toHaveLength(2);
+	} finally {
+		clock.mockRestore();
+	}
 }

@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import { measureWorkload } from '../../support/measureWorkload';
 import {
 	ladderFrom,
 	parseTrackerModelSpec
@@ -52,18 +53,23 @@ test('rejects invalid syntax, outdated Sol, invalid Sol effort, and unknown alia
 	expect(() => parseTrackerModelSpec('example', ladder)).toThrow('unknown model "example"');
 });
 
-test('resolves explicit Fable aliases and canonical pins without a project', () => {
-	const ladder = ladderFrom();
-	expect(parseTrackerModelSpec('Fable', ladder)).toMatchObject({
-		id: 'fable',
-		model: 'claude-fable-5-2',
-		effort: 'high',
-		pinned: true
-	});
-	expect(parseTrackerModelSpec('claude-fable-5-2:medium', ladder)).toMatchObject({
-		id: 'fable',
-		effort: 'medium',
-		pinned: true
-	});
-	expect(ladder.map(({ id }) => id)).not.toContain('fable');
-});
+test('resolves explicit Fable aliases and canonical pins without a project', () =>
+	measureWorkload(
+		'function.agents-providers-parse-tracker-model-spec',
+		'explicit-fable-pins',
+		() => {
+			const ladder = ladderFrom();
+			expect(parseTrackerModelSpec('Fable', ladder)).toMatchObject({
+				id: 'fable',
+				model: 'claude-fable-5-2',
+				effort: 'high',
+				pinned: true
+			});
+			expect(parseTrackerModelSpec('claude-fable-5-2:medium', ladder)).toMatchObject({
+				id: 'fable',
+				effort: 'medium',
+				pinned: true
+			});
+			expect(ladder.map(({ id }) => id)).not.toContain('fable');
+		}
+	));
