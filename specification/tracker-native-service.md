@@ -343,10 +343,12 @@ the CLI. The inventory used local installation files and did not probe MB2.
 
 To replace a pending managed launch, run `tracker unlaunch <item>` and then
 `tracker launch <item>`. The launcher retires a cancelled retry that was never
-dispatched. After five minutes from dispatch, it also retires a cancelled
-reservation if the exact tmux session is absent and no startup or exit marker
-exists. The old row remains in run history as abandoned. Live or uncertain
-attempts continue to fence a new launch.
+dispatched. After five minutes, it also retires an undispatched retry whose item
+became ineligible, preserving any open question. For a dispatched reservation,
+expiry requires absence of the exact tmux session and all startup or exit
+markers. An eligible request can retry within its existing retry limit. Old
+rows remain in run history as abandoned. Live or uncertain attempts continue to
+fence new launches for the same item while the scheduler considers other work.
 
 - [ ] Wire owner-approved admin commands for `autolaunch pause/resume/clear-quota`
       and `reject`. Verify host admission, launcher limits, `ready/skipped`,

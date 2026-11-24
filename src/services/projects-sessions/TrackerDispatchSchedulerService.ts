@@ -9,16 +9,14 @@ import type {
 } from '../agents-providers/TrackerDispatcherService';
 import {
 	attemptKey,
-	minute,
 	ownsLaunch
 } from '../agents-providers/tracker-dispatcher-service/launchEligibility';
+import { launchStartupGrace } from '../agents-providers/tracker-dispatcher-service/runClaim';
 import type {
 	TrackerDispatchRunner,
-	TrackerDispatchSchedulerOptions
+	TrackerDispatchSchedulerOptions,
+	TrackerReservedStart
 } from './TrackerDispatchSchedulerService.types';
-
-// Allow an interrupted tmux startup to settle before treating absence as final.
-const startupGrace = 5 * minute;
 
 /** Reconcile committed attempts before reserving new work for the node. */
 export class TrackerDispatchSchedulerService {
@@ -83,7 +81,7 @@ export class TrackerDispatchSchedulerService {
 			}
 			const event =
 				(await this.options.runner.observe(run, attemptKey(run), signal)) ??
-				(await cancelledStartEvent(run, this.options, this.repository, signal));
+				(await expiredStartEvent(run, this.options, signal));
 			if (event) await this.dispatcher.record(run.item_id, run, event);
 		}
 		return false;
@@ -125,33 +123,51 @@ export class TrackerDispatchSchedulerService {
 			intent.source === 'due' ? await grant?.(id, intent.token, signal) : undefined;
 		signal.throwIfAborted();
 		const decision = await this.dispatcher.claim(id, intent.token, permission);
-		if (decision.status === 'held') this.waits.set(id, decision.reason);
+		if (decision.status === 'held' && !this.waits.has(id)) this.waits.set(id, decision.reason);
 		return this.release(decision, signal);
 	}
 
 	private async release(result: TrackerDispatchResult, signal: AbortSignal): Promise<boolean> {
 		if (result.status !== 'start') return false;
-		signal.throwIfAborted();
-		const event = await this.options.runner.start(
-			result,
-			signal,
-			launchCompletionInstructions(result.run.item_id)
-		);
-		if (event) await this.dispatcher.record(result.run.item_id, result.run, event);
-		return true;
+		const { run } = result;
+		const event = await startReservedRun(this.options.runner, result, signal);
+		if (!event) {
+			this.waits.set(run.item_id, 'waiting for host startup evidence');
+			return false;
+		}
+		const observed = await this.dispatcher.record(run.item_id, run, event);
+		return event.type === 'session' && observed.status === 'recorded';
 	}
 }
 
-async function cancelledStartEvent(
+async function startReservedRun(
+	runner: TrackerDispatchRunner,
+	reservation: TrackerReservedStart,
+	signal: AbortSignal
+) {
+	signal.throwIfAborted();
+	try {
+		return await runner.start(
+			reservation,
+			signal,
+			launchCompletionInstructions(reservation.run.item_id)
+		);
+	} catch {
+		// The host might have started the session before losing its reply.
+		return undefined;
+	} finally {
+		signal.throwIfAborted();
+	}
+}
+
+async function expiredStartEvent(
 	run: TrackerRunReceipt,
 	{ runner, policy }: TrackerDispatchSchedulerOptions,
-	repository: TrackerDispatchRepository,
 	signal: AbortSignal
 ) {
 	if (run.state !== 'queued' || run.dispatch_at === undefined) return undefined;
 	const now = policy ? policy.now() : Date.now();
-	if (now - run.dispatch_at < startupGrace) return undefined;
-	if (repository.readSnapshot(run.item_id).item?.launch?.token === run.auto_token) return undefined;
+	if (now - run.dispatch_at < launchStartupGrace) return undefined;
 	const confirmed = await runner.confirmNeverStarted?.(run, signal);
 	signal.throwIfAborted();
 	return confirmed ? ({ type: 'never-started' } as const) : undefined;
