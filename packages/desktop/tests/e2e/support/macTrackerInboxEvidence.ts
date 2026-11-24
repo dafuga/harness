@@ -1,4 +1,4 @@
-import type { Page } from '../../../../../test/support/browserTest';
+import type { ElectronApplication, Page } from '../../../../../test/support/browserTest';
 import { expect } from '../../../../../test/support/browserTest';
 import { resolve } from 'node:path';
 import scenario from '../../../../../specification/scenarios/mac-tracker-inbox.json' with { type: 'json' };
@@ -58,4 +58,17 @@ export async function captureMacInbox(page: Page, state: string) {
 			buildId: buildId!,
 			target: 'process'
 		});
+}
+
+export async function verifyMacWireframeOpen(app: ElectronApplication, page: Page) {
+	await app.evaluate(({ shell }) => {
+		shell.openExternal = async (url) => {
+			Reflect.set(process, 'trackerFixtureExternalUrl', url);
+		};
+	});
+	await page.getByRole('link', { name: 'Mac wireframe' }).click();
+	await expect
+		.poll(() => app.evaluate(() => Reflect.get(process, 'trackerFixtureExternalUrl')))
+		.toBe('https://example.test/mac.png');
+	await expect(page).toHaveURL(/\/tracker$/);
 }

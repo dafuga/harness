@@ -8,7 +8,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { _electron, expect, test } from '../../../../test/support/browserTest';
 import type { ElectronApplication, Page } from '../../../../test/support/browserTest';
 import scenario from '../../../../specification/scenarios/mac-tracker-inbox.json' with { type: 'json' };
-import { captureMacInbox } from './support/macTrackerInboxEvidence';
+import { captureMacInbox, verifyMacWireframeOpen } from './support/macTrackerInboxEvidence';
 import { TrackerItemReadRepository } from '../../../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerRunReadRepository } from '../../../../src/repositories/projects-sessions/TrackerRunReadRepository';
 import { TrackerLocalApiService } from '../../../../src/services/projects-sessions/TrackerLocalApiService';
@@ -129,6 +129,7 @@ for (const viewport of scenario.viewports)
 				const page = await seedHostedPage(app, join(temp, 'profile'), hub);
 				await page.setViewportSize({ width: viewport.width, height: viewport.height });
 				await exerciseInbox(page, api, items, id);
+				await verifyMacWireframeOpen(app, page);
 			} finally {
 				await app?.close();
 				await hub.close();
